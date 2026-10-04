@@ -8,7 +8,7 @@ on:
         required: true
         default: seongnam-flower-v2
         type: choice
-        options: [seongnam-flower-v2, bucheon-flower-v2]
+        options: [seongnam-flower-v2, bucheon-flower-v2, namyangju-flower-v2, pyeongtaek-flower-v2, anyang-flower-v2]
 permissions:
   contents: read
 concurrency:
@@ -43,6 +43,7 @@ jobs:
 
           sys.path.insert(0, 'site-factory/engine')
           from goyang_domain import NoRedirect, single_page
+          from provision_goyang import INITIAL_REGIONS, INITIAL_SOURCE_PROFILES, target_contract
 
           # Official API: GET account details and unfiltered single-page script list.
           # https://developers.cloudflare.com/api/resources/accounts/methods/get/
@@ -93,10 +94,15 @@ jobs:
               if (not token or token != token.strip() or '\r' in token or '\n' in token
                       or re.fullmatch(r'[0-9a-fA-F]{32}', account) is None):
                   raise ValueError()
-              names = {
+              supported_names = {
                   'seongnam-flower-v2': ['seongnam-flower-guide-qa'],
                   'bucheon-flower-v2': ['bucheon-flower-guide-qa', 'bucheon-flower-prod-disabled'],
-              }.get(os.environ.get('SITE_KEY'))
+              }
+              for key in INITIAL_REGIONS:
+                  if key in INITIAL_SOURCE_PROFILES:
+                      target = target_contract(key)
+                      supported_names[key] = [target['stagingWorker'], target['productionWorker']]
+              names = supported_names.get(os.environ.get('SITE_KEY'))
               if names is None:
                   raise ValueError()
               report['workerName'] = names[0]
@@ -127,6 +133,20 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: python3 site-factory/engine/bucheon_domain_attach.py --preflight --report bucheon-domain-readonly.json
+      - name: Inspect exact initial domain and production Worker without mutations
+        if: ${{ always() && contains(fromJSON('["namyangju-flower-v2","pyeongtaek-flower-v2","anyang-flower-v2"]'), inputs.site_key) }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SITE_KEY: ${{ inputs.site_key }}
+        run: python3 site-factory/engine/initial_domain.py --site-key "$SITE_KEY" --report initial-domain-readonly.json
+      - name: Save safe initial target preflight diagnostics
+        if: ${{ always() && contains(fromJSON('["namyangju-flower-v2","pyeongtaek-flower-v2","anyang-flower-v2"]'), inputs.site_key) }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: initial-domain-readonly-${{ github.run_id }}
+          path: initial-domain-readonly.json
+          if-no-files-found: ignore
       - name: Save safe Bucheon preflight diagnostics
         if: ${{ always() && inputs.site_key == 'bucheon-flower-v2' }}
         uses: actions/upload-artifact@v4
