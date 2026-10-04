@@ -496,6 +496,98 @@
         "keySha256": "efb7928d472ec7f0746d2754a67e8264e0a4995719f3c64f5e75a22ae945c29f",
         "previousApprovalEvidenceUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/214#issuecomment-5977112694"
       }
+    },
+    "namyangju-flower-v2": {
+      "repo": "joseungil-kr/fwith-site-factory",
+      "branch": "site-factory-namyangju-v2",
+      "root": "site-factory/namyangju-flower",
+      "siteUrl": "https://namyangju.fwith.kr",
+      "primaryLandingSlug": "",
+      "heroPath": "",
+      "worker": "namyangju-flower-prod-disabled",
+      "launchMode": "staging",
+      "productionEnabled": false,
+      "naverVerification": "",
+      "indexnowKey": "",
+      "templateKey": "flower-local-v2",
+      "allowedCategories": [
+        "funeral",
+        "business",
+        "school",
+        "event",
+        "gift",
+        "order",
+        "regions"
+      ],
+      "allowedPageTypes": [
+        "funeral-facility",
+        "order-help",
+        "price-guide",
+        "business-opening",
+        "school-event",
+        "event-venue",
+        "hospital-visit",
+        "personal-gift",
+        "station-transit",
+        "message-guide",
+        "regional-service"
+      ],
+      "categoryPageTypes": {
+        "funeral": [
+          "funeral-facility",
+          "order-help",
+          "price-guide"
+        ],
+        "business": [
+          "business-opening"
+        ],
+        "school": [
+          "school-event"
+        ],
+        "event": [
+          "event-venue"
+        ],
+        "gift": [
+          "hospital-visit",
+          "personal-gift",
+          "station-transit"
+        ],
+        "order": [
+          "order-help",
+          "price-guide",
+          "message-guide"
+        ],
+        "regions": [
+          "regional-service"
+        ]
+      },
+      "snapshotRenderer": "structured-json-v12",
+      "growthPaused": true,
+      "autoDeploySnapshots": false,
+      "graphScript": "scripts/qa_graph.mjs",
+      "stagingWranglerConfig": "wrangler.staging.jsonc",
+      "stagingUrl": "https://namyangju-flower-guide-qa.joseungil.workers.dev",
+      "requireRevisionApproval": true,
+      "requireSnapshotApproval": true,
+      "approvedRevision": "",
+      "approvalEvidenceUrl": "",
+      "stagingBuildIsolation": true,
+      "stagingWorker": "namyangju-flower-guide-qa",
+      "hubPolicy": "child-threshold-v1",
+      "initialLaunch": {
+        "mode": "whole-dong-initial",
+        "scopeKey": "namyangju-flower-v2-dong-coverage-20261005",
+        "membershipSourceSha256": "e488450c0c79bc07ffdc6041066e27532c01f01c2c5e204424729612098a0aba",
+        "coverageSha256": "e43e68aaa5225eb51c1e6fa39a8ad3916f1020da6d1dc3a454c4a800cfc0a5bb",
+        "memberIdentitySha256": "d198acd7f26214c0c5591e48f40ce545715c5819a9e1573c3ffb2814b6df2073",
+        "officialUnitCount": 20
+      },
+      "regionalService": {
+        "enabled": false,
+        "scopeKey": "namyangju-flower-v2-dong-coverage-20261005",
+        "definitionFile": "src/data/region-coverage.json",
+        "policyFile": "src/data/region-policy.json"
+      }
     }
   }
 }
