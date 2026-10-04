@@ -51,7 +51,8 @@ CATEGORY_TYPES = {
     'gift': ['hospital-visit', 'personal-gift', 'station-transit'],
     'order': ['order-help', 'price-guide', 'message-guide'],
 }
-REGIONS = {'goyang-flower-v2': '고양', 'seongnam-flower-v2': '성남', 'bucheon-flower-v2': '부천'}
+INITIAL_REGIONS = {'namyangju-flower-v2': '남양주', 'pyeongtaek-flower-v2': '평택', 'anyang-flower-v2': '안양'}
+REGIONS = {'goyang-flower-v2': '고양', 'seongnam-flower-v2': '성남', 'bucheon-flower-v2': '부천', **INITIAL_REGIONS}
 # A separate source profile leaves both existing bootstrap contracts unchanged.
 BUCHEON_TEMPLATE_REGISTRY_KEY = 'flower-local-v2-bucheon-bootstrap-r1'
 BUCHEON_SOURCE_TREE = '770d3f2d200d55ded378a649265cca3de81c130e'
@@ -62,11 +63,15 @@ LEGACY_LAUNCH_KEYS = {
     'seongnam-flower-v2': 'seongnam-flower-v2-trial-20261002',
     'bucheon-flower-v2': 'bucheon-flower-v2-trial-20261004',
 }
-# Intentionally empty until a clean zero-content, region-runtime-ready source
-# is independently reviewed and pinned here AND in the trusted template registry.
-# Registry-only declarations cannot self-approve a profile. Legacy pins below
-# are never fallback sources for whole-dong initial launches.
-INITIAL_SOURCE_PROFILES = {}
+# Independently reviewed clean runtime for the first three ordered initial sites.
+# Registry-only declarations cannot self-approve a different source. Historical
+# pins remain untouched and are never fallback initial-launch sources.
+INITIAL_SOURCE_PROFILES = {site: {
+    'registryKey': 'flower-local-v2-whole-initial-r2',
+    'sourceRevision': 'cbf988f15527d951f72fa68391f6a03f84e29476',
+    'sourceTree': '884abcbcbbc1d1f74095bb680e898e26c4498492',
+    'sourceCount': 71,
+} for site in INITIAL_REGIONS}
 INITIAL_SOURCE_ROOT = 'site-factory/templates/flower-local-v2-initial'
 INITIAL_ADAPTATIONS = ADAPTATIONS | {'src/data/region-coverage.json', 'src/data/region-policy.json'}
 INITIAL_MODES = ('whole-dong-initial', 'legacy-trial')
@@ -341,16 +346,17 @@ def checked_initial_scope(site_key, launch_key, scope_key, membership_bytes, mem
 
 def launch_scope(repo, target_revision, site_key, launch_key, scope_mode, **initial):
     require(scope_mode in (None,) + INITIAL_MODES, 'Unsupported initial scope mode')
-    known = LEGACY_LAUNCH_KEYS[site_key]
+    known = LEGACY_LAUNCH_KEYS.get(site_key)
     has_initial = any(value is not None for value in initial.values())
     # Preserve published historical invocations, including the original Goyang
     # default. Every other omitted mode selects whole coverage, never a trial.
-    historical = launch_key == known or (site_key == SITE_KEY and launch_key is None)
-    historical_resume = target_revision != 'absent' and isinstance(launch_key, str) and bool(
+    historical = known is not None and (launch_key == known or (site_key == SITE_KEY and launch_key is None))
+    historical_resume = known is not None and target_revision != 'absent' and isinstance(launch_key, str) and bool(
         re.fullmatch(re.escape(site_key) + r'-trial-[a-z0-9][a-z0-9-]{0,50}', launch_key))
     if scope_mode is None:
         scope_mode = 'legacy-trial' if (historical or historical_resume) and not has_initial else 'whole-dong-initial'
     if scope_mode == 'legacy-trial':
+        require(known is not None, 'This region has no historical trial; whole-dong initial scope is required')
         require(not has_initial, 'Legacy replay cannot consume initial membership')
         checked = checked_launch_key(site_key, launch_key)
         if not historical:
@@ -381,6 +387,9 @@ def site_entry(site_key=SITE_KEY, initial_scope=None):
     if site_key != SITE_KEY:
         entry.update(stagingBuildIsolation=True, stagingWorker=target['stagingWorker'])
     if initial_scope is not None:
+        entry['hubPolicy'] = 'child-threshold-v1'
+        entry['initialLaunch'] = {key: initial_scope[key] for key in
+            ('mode', 'scopeKey', 'membershipSourceSha256', 'coverageSha256', 'memberIdentitySha256', 'officialUnitCount')}
         entry['allowedCategories'].append('regions')
         entry['allowedPageTypes'].append('regional-service')
         entry['categoryPageTypes'] = {key: list(values) for key, values in CATEGORY_TYPES.items()}

@@ -50,6 +50,18 @@ def membership_pair(count=2):
 
 
 class InitialScopeTests(unittest.TestCase):
+    def test_first_three_new_regions_are_explicit_and_have_no_trial_fallback(self):
+        self.assertEqual(p.INITIAL_REGIONS,{'namyangju-flower-v2':'남양주','pyeongtaek-flower-v2':'평택','anyang-flower-v2':'안양'})
+        for site in p.INITIAL_REGIONS:
+            with self.subTest(site=site):
+                self.assertNotIn(site,p.LEGACY_LAUNCH_KEYS)
+                target=p.target_contract(site)
+                self.assertEqual(target['siteUrl'],'https://'+site.split('-')[0]+'.fwith.kr')
+                with self.assertRaisesRegex(p.ProvisionError,'no historical trial'):
+                    p.launch_scope(None,'absent',site,site+'-trial-20261005','legacy-trial')
+                with self.assertRaisesRegex(p.ProvisionError,'whole-dong initial launch key'):
+                    p.launch_scope(None,'absent',site,None,None,scope_key=None,membership_bytes=None,
+                        membership_sha256=None,coverage_bytes=None,coverage_sha256=None)
     def setUp(self):
         self.f = fixture.BootstrapTests('runTest')
         self.f.setUp()
@@ -114,7 +126,7 @@ class InitialScopeTests(unittest.TestCase):
         self.assertEqual(self.check()['officialUnitCount'], 51)
 
     def test_initial_profile_missing_cannot_fallback_to_reviewed_trial_pin(self):
-        self.assertEqual(p.INITIAL_SOURCE_PROFILES, {})
+        self.assertNotIn(SITE,p.INITIAL_SOURCE_PROFILES)
         with self.assertRaisesRegex(p.ProvisionError, 'No explicitly reviewed runtime-ready clean initial profile'):
             self.prepare()
         self.assertFalse((self.f.repo / p.target_contract(SITE)['root']).exists())
@@ -162,6 +174,9 @@ class InitialScopeTests(unittest.TestCase):
         self.assertEqual(registry['regionalService']['scopeKey'], SCOPE)
         self.assertFalse(registry['productionEnabled'])
         self.assertTrue(registry['growthPaused'])
+        self.assertEqual(registry['hubPolicy'],'child-threshold-v1')
+        self.assertEqual(registry['initialLaunch'],{key:plan['initialScope'][key] for key in
+            ('mode','scopeKey','membershipSourceSha256','coverageSha256','memberIdentitySha256','officialUnitCount')})
         prefix = 'target-files/' + p.target_contract(SITE)['root'] + '/'
         self.assertEqual(outputs[prefix + 'src/data/region-coverage.json'], self.kwargs()['coverage_bytes'])
         policy = json.loads(outputs[prefix + 'src/data/region-policy.json'])

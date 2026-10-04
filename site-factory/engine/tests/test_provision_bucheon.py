@@ -27,12 +27,12 @@ class BucheonTests(unittest.TestCase):
         return p.prepare(self.f.repo,self.f.control,target,SITE,launch)
 
     def test_only_bucheon_is_added_with_isolated_identity(self):
-        self.assertEqual(set(p.REGIONS),{'goyang-flower-v2','seongnam-flower-v2',SITE})
+        self.assertEqual(set(p.REGIONS)-set(p.INITIAL_REGIONS),{'goyang-flower-v2','seongnam-flower-v2',SITE})
         target=p.target_contract(SITE)
         self.assertEqual((target['branch'],target['root']),('site-factory-bucheon-v2','site-factory/bucheon-flower'))
         self.assertEqual(target['stagingWorker'],'bucheon-flower-guide-qa')
         self.assertEqual(target['productionWorker'],'bucheon-flower-prod-disabled')
-        with self.assertRaisesRegex(p.ProvisionError,'allowlist'):p.target_contract('namyangju-flower-v2')
+        with self.assertRaisesRegex(p.ProvisionError,'allowlist'):p.target_contract('unreviewed-flower-v2')
 
     def test_exact_new_profile_required_without_changing_legacy_pin(self):
         legacy=copy.deepcopy(self.f.templates['templates'][p.TEMPLATE_KEY])

@@ -62,6 +62,31 @@ class SnapshotTests(unittest.TestCase):
         self.render();self.assert_rejected_unchanged(payload(PAGE_KEY='other',SLUG='other',SNAPSHOT_ID='other',INTENT_KEY='different'))
     def test_unknown_renderer_fails(self):
         self.registry['sites']['test']['snapshotRenderer']='mystery';self.assert_rejected_unchanged(payload())
+    def test_unknown_hub_policy_fails_atomically(self):
+        self.registry['sites']['test']['hubPolicy']='mystery';self.assert_rejected_unchanged(payload())
+    def test_opt_in_hub_policy_tracks_thresholds_without_rewriting_frozen_rows(self):
+        self.registry['sites']['test']['hubPolicy']='child-threshold-v1'
+        data=self.root/'site/src/data'
+        previous={}
+        for count in range(1,7):
+            body=payload(PAGE_KEY=f'page-{count}',SLUG=f'slug-{count}',SNAPSHOT_ID=f'snapshot-{count}',
+                PUBLISH_QUEUE_RECORD_ID='rec'+str(count).zfill(14),PRIMARY_KEYWORD=f'수원 시험 {count}',
+                TITLE=f'수원 시험 {count} | TEST',INTENT_KEY=f'test-{count}')
+            self.render(body)
+            arch=json.loads((data/'architecture.json').read_text())
+            hub=arch['hubs'][0]
+            self.assertEqual((hub['children'],hub['indexable'],hub['menuVisible']),
+                             (count,count>=3,count>=5))
+            rows={r['pageKey']:r for r in json.loads((data/'pages.json').read_text())}
+            self.assertTrue(all(rows[key]==row for key,row in previous.items()))
+            previous=rows
+            self.assertEqual(self.render(body)['changedFiles'],[])
+    def test_absent_hub_policy_preserves_historical_metadata(self):
+        path=self.root/'site/src/data/architecture.json'
+        arch=json.loads(path.read_text());arch['hubs'][0].update(indexable=False,menuVisible=False)
+        path.write_text(json.dumps(arch));self.render()
+        hub=json.loads(path.read_text())['hubs'][0]
+        self.assertIs(hub['indexable'],False);self.assertIs(hub['menuVisible'],False)
     def test_preexisting_parity_failure_fails(self):
         p=self.root/'site/src/data/page-map.json';p.write_text(json.dumps({'pages':[{'pageKey':'wrong'}]}));self.assert_rejected_unchanged(payload())
     def test_file_replacement_failure_rolls_back(self):

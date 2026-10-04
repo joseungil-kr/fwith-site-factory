@@ -6,18 +6,19 @@ This adds an explicit whole-dong initial scope to `provision_goyang.py`. It is
 still a local, zero-customer-page infrastructure proposal builder, not a Writer,
 Reviewer, Publisher, domain tool, registry updater or scheduler.
 
-**No actual runtime-ready initial profile is registered by this change.**
-`INITIAL_SOURCE_PROFILES` is intentionally empty. A whole-initial request fails
-closed until an independently reviewed clean runtime profile is pinned in that
-code allowlist and in the trusted template registry. The existing 54-file
-Goyang/Seongnam pin and 65-file Bucheon pin cannot substitute for that profile.
-The prospective positive tests inject local synthetic fixture pins only; they
-are not a real profile registration, geographic finding or runtime review.
+**The first three initial targets have an independently reviewed clean source profile.**
+Namyangju, Pyeongtaek and Anyang use `flower-local-v2-whole-initial-r2`, commit
+`cbf988f15527d951f72fa68391f6a03f84e29476`, tree
+`884abcbcbbc1d1f74095bb680e898e26c4498492`, exactly 71 files. The same pin is
+required in code and the trusted registry. Historical 54/65-file profiles and
+the earlier r1 source remain unchanged. Source readiness does not approve real
+geography, content, frozen snapshots, deployment or unattended completion.
 
-The site allowlist remains exactly Goyang, Seongnam and Bucheon. This is not an
-arbitrary-site framework. A different region needs a separately reviewed target
-contract and clean source profile. No new region, record, remote branch, source
-pin, approval or schedule is created here.
+The explicit site allowlist is Goyang, Seongnam, Bucheon, Namyangju, Pyeongtaek
+and Anyang. The last three accept whole-dong initial scope only; no historical
+trial or one-page fallback exists for them. Additional targets require reviewed
+identity bindings. This local helper does not create records, remote branches,
+approvals or schedules.
 
 Current Bucheon already has source and customer content. Continue its existing
 source, exact content lineage and whole-dong scope; do not run this helper to
@@ -216,3 +217,13 @@ The existing Writer/Reviewer/Publisher process must then:
 This helper does none of these external steps and cannot represent them as
 complete. A missing profile, runtime contract, review or final barrier is a
 blocker rather than permission to skip membership or revert to a trial.
+
+## Initial-only hub consistency
+
+New initial registry proposals opt into `hubPolicy=child-threshold-v1`. Each
+frozen snapshot updates hub child counts and eligibility flags together:
+indexable at 3 children, menuVisible at 5. Preview noindex still overrides
+effective indexing. The r2 template graph gate rejects stale flags. Existing
+site entries remain unchanged, preserving historical snapshot replay bytes.
+The pinned source already renders an identical plain leading firstAnswer only
+once without changing the frozen Markdown; uncertain markup remains visible.

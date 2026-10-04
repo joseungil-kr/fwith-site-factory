@@ -428,6 +428,9 @@ def render(body, registry, workspace):
     renderer = target.get("snapshotRenderer", "markdown-v1")
     if renderer not in {"markdown-v1", "structured-json-v12"}:
         fail("Unknown registered snapshotRenderer; no implicit format guessing")
+    hub_policy = target.get("hubPolicy")
+    if hub_policy not in (None, "child-threshold-v1"):
+        fail("Unknown registered hub policy")
     pages = load_json(data / "pages.json") if renderer == "structured-json-v12" else None
     if pages is not None:
         tables["renderer"] = keyed(pages, "pages.json")
@@ -542,6 +545,12 @@ def render(body, registry, workspace):
             hubs.append({"category": "regions", "url": "/regions/", "label": "지역별", "children": 0})
     for hub in arch.get("hubs", []):
         hub["children"] = sum(r.get("parentHub") == hub.get("url") for r in tables["architecture"].values())
+        if hub_policy == "child-threshold-v1":
+            # Eligibility is source metadata. The site's preview/production
+            # robots gate still decides whether any route can be indexed.
+            # Explicit opt-in preserves byte-exact historical snapshot replay.
+            hub["indexable"] = hub["children"] >= 3
+            hub["menuVisible"] = hub["children"] >= 5
     # Validate every destination including symlink resolution before any writes.
     for path in writes:
         if not path.resolve().is_relative_to(root):
