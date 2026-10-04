@@ -3,10 +3,20 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {coverage,policy,architecture,regionalPages,groupsFor,assertRegionalInput,isUnboundTemplate} from '../src/lib/regional-runtime.mjs';
 import {validateDefinition,regionalMetadata} from '../src/lib/regions.mjs';
+import {validateHubMetadata} from '../scripts/qa_graph.mjs';
 const read=name=>JSON.parse(fs.readFileSync(new URL(`../src/data/${name}.json`,import.meta.url),'utf8'));
 const c={schemaVersion:2,siteKey:'template-only',scopeKey:'',unitBasis:'legal-dong-plus-eup-myeon',countIsPageQuota:false,verifiedAt:'',sourceBasisDate:'',officialSourceUrls:[],membershipSourceSha256:'',districts:[],units:[],administrativeCrosswalk:[],representatives:[]};
 const p={schemaVersion:1,siteKey:'template-only',scopeKey:'',enabled:false,officialHosts:[],unitTypes:[],rulesRevision:'',definitionFile:'src/data/region-coverage.json',state:'unbound-template',membershipSourceSha256:'',visualBindings:[]};
 const a={siteKey:'template-only',pages:[]},m={siteKey:'template-only',pages:[],snapshotLedger:{}};
+test('stored hub policy matches runtime thresholds, including empty and paused previews',()=>{
+ for(const count of [0,1,2,3,4,5,53]){
+  const pages=Array.from({length:count},()=>({category:'regions'}));
+  const hub={category:'regions',url:'/regions/',children:count,indexable:count>=3,menuVisible:count>=5};
+  assert.doesNotThrow(()=>validateHubMetadata(pages,{hubs:[hub]}));
+  for(const field of ['indexable','menuVisible'])assert.throws(()=>validateHubMetadata(pages,{hubs:[{...hub,[field]:!hub[field]}]}),/Stale hub index\/menu policy/);
+  assert.throws(()=>validateHubMetadata(pages,{hubs:[{...hub,children:count+1}]}),/Stale hub child count/);
+ }
+});
 test('actual runtime input matches its frozen manifest without template-only assumptions',()=>{
  const pages=read('pages');
  assert.deepEqual(assertRegionalInput(pages),regionalPages);

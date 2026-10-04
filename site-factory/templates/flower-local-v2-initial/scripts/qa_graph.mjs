@@ -2,6 +2,13 @@ import fs from 'node:fs';
 import {productFamilies,selectProducts} from '../src/lib/catalog.mjs';
 import {validateCustomerIntent,customerText} from './qa_intent.mjs';
 import {regionalRows,isRegional,assertRegionalMetadata,validateRegionalPurchase} from '../src/lib/regions.mjs';
+export function validateHubMetadata(pages,architecture) {
+ for(const h of architecture.hubs){
+  const count=pages.filter(p=>p.category===h.category).length;
+  if(h.children!==count)throw new Error('Stale hub child count '+h.url);
+  if(h.indexable!==(count>=3)||h.menuVisible!==(count>=5))throw new Error('Stale hub index/menu policy '+h.url);
+ }
+}
 export function validateGraph(data) {
  const {pages,manifest,map,architecture,products,coverage,policy}=data;
  regionalRows(pages,architecture,coverage,policy);
@@ -32,7 +39,7 @@ export function validateGraph(data) {
  }
  for(const p of pages) for(const key of p.relatedKeys||[])if(!seen.has(key)||key===p.pageKey)throw new Error('Invalid related key '+key);
  for(const collection of [manifest.pages,map.pages,architecture.pages])if(collection.length!==pages.length)throw new Error('Registry count mismatch');
- for(const h of architecture.hubs)if(h.children!==pages.filter(p=>p.category===h.category).length)throw new Error('Stale hub child count '+h.url);
+ validateHubMetadata(pages,architecture);
  for(const p of products){
   if(!p.sourceUrl || !['operator_confirmed','official_business_source'].includes(p.sourceLevel) || p.assetType!=='real_product' || !p.verifiedAt)throw new Error('Unverified product '+p.key);
   if(!p.orderUrl.startsWith('https://fwith.co.kr/'))throw new Error('Untrusted order destination '+p.key);
