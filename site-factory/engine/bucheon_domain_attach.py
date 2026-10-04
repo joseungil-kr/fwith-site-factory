@@ -36,13 +36,45 @@ def failure(code, status=None, codes=()):
     return error
 
 
-def preflight(transport, account_id):
+def preflight(transport, account_id, diagnostics=None):
     """Initial release only: never overwrite an unknown existing Worker or hostname."""
     if not isinstance(account_id, str) or not re.fullmatch(r'[0-9a-fA-F]{32}', account_id):
         raise failure('invalid_account_configuration')
     prefix = '/accounts/' + account_id
+    diagnostics = diagnostics if diagnostics is not None else {}
+    diagnostics.update(readStage='account', exceptionType=None, observedHttpStatus=None, cloudflareErrorCodes=[])
+
+    def observed_transport(method, path):
+        diagnostics.update(exceptionType=None, observedHttpStatus=None, cloudflareErrorCodes=[])
+        try:
+            value = transport(method, path)
+            status = getattr(transport, 'last_http_status', None)
+            if type(status) is int and 100 <= status <= 599:
+                diagnostics['observedHttpStatus'] = status
+            if isinstance(value, dict):
+                diagnostics['cloudflareErrorCodes'] = error_codes(value)
+            return value
+        except HTTPError as error:
+            diagnostics.update(exceptionType='HTTPError',
+                observedHttpStatus=error.code if type(error.code) is int and 100 <= error.code <= 599 else None)
+            try:
+                raw = error.read(8193)
+                if len(raw) <= 8192:
+                    diagnostics['cloudflareErrorCodes'] = error_codes(json.loads(raw))
+            except Exception:
+                pass
+            raise
+        except Exception as error:
+            status = getattr(transport, 'last_http_status', None)
+            if type(status) is int and 100 <= status <= 599:
+                diagnostics['observedHttpStatus'] = status
+            safe_types = {'TimeoutError', 'URLError', 'JSONDecodeError', 'UnicodeDecodeError',
+                          'RuntimeError', 'ValueError', 'SSLError', 'ConnectionError'}
+            name = type(error).__name__
+            diagnostics['exceptionType'] = name if name in safe_types else 'Exception'
+            raise
     try:
-        payload = transport('GET', prefix)
+        payload = observed_transport('GET', prefix)
     except HTTPError as error:
         raise failure('account_preflight_http_error', error.code) from None
     except Exception:
@@ -51,16 +83,20 @@ def preflight(transport, account_id):
             or not isinstance(payload.get('result'), dict) or payload['result'].get('id') != account_id):
         raise failure('account_preflight_identity_unverified')
     def inventory_transport(method, path):
-        value = transport(method, path)
+        value = observed_transport(method, path)
         if not isinstance(value, dict) or value.get('errors', []) != []:
+            diagnostics['exceptionType'] = 'PreflightError'
+            diagnostics['diagnosticCode'] = 'inventory_response_uncertain'
             raise failure('inventory_response_uncertain')
         return value
+    diagnostics['readStage'] = 'scripts'
     scripts = single_page(inventory_transport, prefix + '/workers/scripts')
     names = [row.get('id') for row in scripts]
     if any(not isinstance(name, str) or not name for name in names) or len(set(names)) != len(names):
         raise failure('scripts_inventory_unverified')
     if WORKER in names:
         raise failure('existing_worker_requires_reviewed_recovery')
+    diagnostics['readStage'] = 'domains'
     domains = single_page(inventory_transport, prefix + '/workers/domains')
     if any(not isinstance(row.get('hostname'), str) or not row['hostname']
            or not isinstance(row.get('service'), str) or not row['service'] for row in domains):
@@ -119,6 +155,7 @@ def main(argv=None):
         print("Bucheon domain request failed: missing_credentials")
         return 1
     opener = build_opener(NoRedirect())
+    diagnostics = {}
 
     def transport(method, path, body=None):
         expected = f"/accounts/{account_id}/workers/scripts/{WORKER}/domains/records"
@@ -129,21 +166,25 @@ def main(argv=None):
         request = Request("https://api.cloudflare.com/client/v4" + path, method=method,
                           data=None if body is None else json.dumps(body).encode(),
                           headers={"Authorization": "Bearer " + token, "Content-Type": "application/json"})
+        transport.last_http_status = None
         with opener.open(request, timeout=20) as response:
+            transport.last_http_status = response.status
             payload = response.read(1024 * 1024 + 1)
         if len(payload) > 1024 * 1024:
             raise RuntimeError("response_limit")
         return json.loads(payload)
 
     try:
-        state = preflight(transport, account_id) if args.preflight else attach(transport, account_id)
+        state = preflight(transport, account_id, diagnostics) if args.preflight else attach(transport, account_id)
     except PreflightError as error:
         if args.preflight and args.report:
-            args.report.write_text(json.dumps({"state":"bucheon_initial_target_blocked","code":error.code,"httpStatus":error.status,"mutationsPerformed":False})+"\n")
+            args.report.write_text(json.dumps({"state":"bucheon_initial_target_blocked","code":error.code,"httpStatus":error.status,"mutationsPerformed":False,**diagnostics})+"\n")
         print("Bucheon domain request failed: " + error.code
               + (f" HTTP {error.status}" if error.status is not None else "")
               + "; stage=" + ("read_only_preflight" if args.preflight else "native_custom_domain_put") + "; cloudflareErrorCodes="
               + json.dumps(getattr(error, "cloudflare_codes", [])))
+        if args.preflight:
+            print("Bucheon read-only diagnostics: " + json.dumps(diagnostics, sort_keys=True))
         return 1
     if args.preflight:
         if args.report: args.report.write_text(json.dumps(state, indent=2)+"\n")

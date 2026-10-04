@@ -164,6 +164,40 @@ class DomainTests(unittest.TestCase):
         def transport(method,path):
             self.assertEqual(method,'GET');calls.append(path);return rows[path]
         return rows,calls,transport
+    def test_preflight_diagnostics_preserve_stage_without_sensitive_message(self):
+        prefix='/accounts/'+'a'*32
+        for stage in ('scripts','domains'):
+            rows,calls,original=self.inventory();diagnostics={}
+            def transport(method,path):
+                if path.endswith('/'+stage):
+                    raise json.JSONDecodeError('DO_NOT_PRINT_TOKEN', 'DO_NOT_PRINT_BODY', 0)
+                return original(method,path)
+            with self.subTest(stage=stage), self.assertRaises(domain.PreflightError):
+                domain.preflight(transport,'a'*32,diagnostics)
+            self.assertEqual(diagnostics['readStage'],stage)
+            self.assertEqual(diagnostics['exceptionType'],'JSONDecodeError')
+            self.assertNotIn('DO_NOT_PRINT',json.dumps(diagnostics))
+            self.assertTrue(all(path.startswith(prefix) for path in calls))
+    def test_preflight_http_diagnostics_are_bounded_and_never_retry(self):
+        rows,calls,original=self.inventory();diagnostics={};attempts=[]
+        def transport(method,path):
+            if path.endswith('/domains'):
+                attempts.append(path)
+                raise HTTPError('https://private.invalid/?token=secret',403,'SECRET_MESSAGE',{'X-Secret':'secret'},
+                    io.BytesIO(b'{"errors":[{"code":10000,"message":"SECRET_BODY"}]}'))
+            return original(method,path)
+        with self.assertRaises(domain.PreflightError):domain.preflight(transport,'a'*32,diagnostics)
+        self.assertEqual(len(attempts),1)
+        self.assertEqual(diagnostics,{'readStage':'domains','exceptionType':'HTTPError','observedHttpStatus':403,'cloudflareErrorCodes':[10000]})
+        self.assertNotIn('SECRET',json.dumps(diagnostics))
+        self.assertNotIn('secret',json.dumps(diagnostics))
+    def test_preflight_uncertain_envelope_keeps_failure_and_safe_code(self):
+        rows,calls,transport=self.inventory();rows['/accounts/'+'a'*32+'/workers/scripts']['errors']=[{'code':123,'message':'SECRET'}];diagnostics={}
+        with self.assertRaisesRegex(domain.PreflightError,'request_failed'):domain.preflight(transport,'a'*32,diagnostics)
+        self.assertEqual(diagnostics['diagnosticCode'],'inventory_response_uncertain')
+        self.assertEqual(diagnostics['cloudflareErrorCodes'],[123])
+        self.assertEqual(diagnostics['readStage'],'scripts')
+        self.assertNotIn('SECRET',json.dumps(diagnostics))
     def test_initial_target_absence_requires_complete_get_only_observation(self):
         rows,calls,transport=self.inventory()
         result=domain.preflight(transport,'a'*32)

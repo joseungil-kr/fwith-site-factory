@@ -121,3 +121,16 @@ jobs:
           raise SystemExit(0 if report['accountVerified'] and report['exists'] is False else 1)
           PY
 
+      - name: Diagnose fixed Bucheon domain preflight without mutations
+        if: ${{ always() && inputs.site_key == 'bucheon-flower-v2' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 site-factory/engine/bucheon_domain_attach.py --preflight --report bucheon-domain-readonly.json
+      - name: Save safe Bucheon preflight diagnostics
+        if: ${{ always() && inputs.site_key == 'bucheon-flower-v2' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: bucheon-domain-readonly-${{ github.run_id }}
+          path: bucheon-domain-readonly.json
+          if-no-files-found: ignore
