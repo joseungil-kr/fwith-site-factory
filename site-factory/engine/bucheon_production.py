@@ -65,7 +65,8 @@ def resolve(site, repository, revision, launch_key, scope_key):
             and site.get('stagingBuildIsolation') is True, 'Bucheon review/isolation policy mismatch')
     require(site.get('regionalService') == REGIONAL_SERVICE
             and site['regionalService'].get('enabled') is True, 'Bucheon region opt-in missing')
-    require(site.get('indexnowKey') == site.get('naverVerification') == '', 'Bucheon ownership settings changed')
+    from indexnow_ownership import key_allowed
+    require(key_allowed(site) and site.get('naverVerification') == '', 'Bucheon ownership settings changed')
     require(launch_key == scope_key == SCOPE, 'Bucheon exact initial-coverage scope required')
     require(site.get('productionEnabled') is True and site.get('launchMode') == 'live',
             'Production Launch Gate is closed')
@@ -83,7 +84,7 @@ def resolve(site, repository, revision, launch_key, scope_key):
             'Bucheon reviewed source/barrier digests missing')
     return {'site_key': SITE, 'branch': IDENTITY['branch'], 'root': IDENTITY['root'], 'site_url': ORIGIN,
         'worker': WORKER, 'wrangler': 'wrangler.jsonc', 'revision': revision, 'build_root': 'release-build',
-        'graph': 'scripts/qa_graph.mjs', 'naver': '', 'indexnow': '', 'bucheon_coverage': 'true',
+        'graph': 'scripts/qa_graph.mjs', 'naver': '', 'indexnow': site.get('indexnowKey', ''), 'bucheon_coverage': 'true',
         'launch_key': launch_key, 'scope_key': scope_key}
 
 
@@ -185,17 +186,23 @@ def main():
     try:
         site = json.loads(args.registry.read_text())['sites'][SITE]
         resolve(site, IDENTITY['repo'], args.revision, SCOPE, SCOPE)
-        batch, evidence = validate_barrier_inputs(args.control, site, args.revision)
+        reviewed_revision = args.revision
+        if site.get('indexnowOwnership', {}).get('revision') == args.revision:
+            from indexnow_ownership import verify_source
+            proof = verify_source(site, args.revision, args.workspace)
+            reviewed_revision = proof['previousRevision']
+        batch, evidence = validate_barrier_inputs(args.control, site, reviewed_revision)
         # Existing helper remains authoritative. Unsupported schema/site fails closed
         # until the independently reviewed Bucheon adapter is installed on main.
         run = subprocess.run(['python3', str(args.control/'site-factory/engine/batch_barrier.py'),
               '--batch', str(args.control/batch), '--evidence', str(args.control/evidence),
               '--workspace', str(args.workspace)], check=True, capture_output=True, text=True)
         barrier = json.loads(run.stdout)
-        require(barrier.get('state') == 'staging_complete' and barrier.get('finalSourceSha') == args.revision,
+        require(barrier.get('state') == 'staging_complete' and barrier.get('finalSourceSha') == reviewed_revision,
                 'Independent whole-batch barrier did not complete')
         result = validate_source(args.root, args.baseline_root, site)
         result['revision'] = args.revision
+        result['reviewedContentRevision'] = reviewed_revision
         result['batchBarrier'] = barrier
     except (ValueError, KeyError, TypeError, OSError, subprocess.SubprocessError) as error:
         result = {'pipelineState': 'verification_blocked', 'siteKey': SITE, 'reason': str(error)}
@@ -206,3 +213,4 @@ def main():
 
 if __name__ == '__main__':
     raise SystemExit(main())
+

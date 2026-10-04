@@ -65,7 +65,8 @@ def resolve_goyang_coverage_target(site, repository, revision, launch_key, scope
     require(site.get("growthPaused") is True and site.get("autoDeploySnapshots") is False
             and site.get("requireRevisionApproval") is True and site.get("requireSnapshotApproval") is True,
             "Goyang paused approval policy mismatch")
-    require(site.get("indexnowKey") == "" and site.get("naverVerification") == "",
+    from indexnow_ownership import key_allowed
+    require(key_allowed(site) and site.get("naverVerification") == "",
             "Goyang coverage must preserve its current ownership configuration")
     require(site.get("administrativeCoverage") == {"enabled": True, "regionKey": "goyang", "unitBasis": "legal"}
             and site.get("categoryPageTypes", {}).get("regions") == ["regional-service"], "Goyang region opt-in missing")
@@ -602,3 +603,4 @@ def main():
 
 
 if __name__ == "__main__": main()
+

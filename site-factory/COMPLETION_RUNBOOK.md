@@ -73,7 +73,11 @@ provenance and Blueprint category/type pairs are checked before writes.
   publication or deployment occurred. Review it and send a new approved request
 - `snapshot_committed`: immutable content is in Git; live verification is pending
 - `live_verified`: the exact production source and all registered routes passed
-  live checks; only this terminal success may close a publishing issue
+  live checks; IndexNow reception remains pending and the publishing issue stays open
+- `live_verified_indexnow_received`: exact live QA plus a durable HTTP 200 or 202
+  receipt for the exact public URL set; only this terminal success closes a publishing issue
+- `indexnow_blocked_or_failed`: missing ownership proof, rejected request, uncertain
+  response, or receipt failure; never a successful skip and never indexing proof
 - `failed`, `verification_failed`, `verification_blocked`: keep the issue open;
   inspect the linked run/report, fix the specified input or gate, and retry the
   same immutable request or explicit superseding snapshot
@@ -150,3 +154,46 @@ never grants approval. Set `approval_status=approved` only after actual quality
 review, and copy its `approvedSnapshotHash` output. Before queue creation, a
 syntactically valid placeholder queue ID may be used because that field is
 excluded from review proof. The committed immutable hash includes the actual ID.
+
+
+
+## Mandatory post-publication IndexNow finalization
+
+The existing scheduled Snapshot Publisher calls the common production workflow.
+Its final step now invokes `indexnow_finalize.py` from trusted main after live QA;
+missing ownership configuration fails closed. No new scheduler or credentials are
+created by that step. Existing manual branch-triggered Ansan/Yongin deployments
+retain their working legacy submission paths and their existing token permissions.
+GITHUB_TOKEN snapshot pushes do not trigger those independent push workflows.
+
+The helper compares the current public sitemap with the built exact-source sitemap,
+checks every selected URL's 200 status, canonical, full revision, snapshot identity,
+robots/meta/response-header indexability, and the same-host public ownership file.
+Preview, thin excluded hubs, 404s and foreign URLs are never submitted. A changing
+or incomplete public URL set blocks the request rather than silently dropping URLs.
+
+Machine receipts are comments on the original deployment/Publisher request issue,
+with a JSON artifact in the same run. Cross-issue dedupe reads existing repository
+comments and binds origin, source SHA, endpoint, key digest and sorted URL-set hash.
+A started attempt without a terminal receipt, timeout, redirect or 5xx is uncertain;
+never automatically repeat it. HTTP 400/403/422 fail without an in-run retry. Only
+explicit HTTP 429 rejection gets up to three delayed attempts, respecting Retry-After.
+HTTP 200 means received; HTTP 202 means received with key validation pending. Neither
+establishes crawling, indexing or ranking. No key value or private data enters receipts.
+
+For a missing receipt after the site is already public, reuse this production workflow
+with `indexnow_only=true`, the exact live full SHA, site key and original receipt issue.
+The `[SITE-INDEXNOW]` issue form accepts SITE_KEY and EXPECTED_REVISION and uses that
+request issue for receipts. This path builds only for exact-source comparison and has
+no Cloudflare environment, deploy, domain-binding or credential steps. It shares the
+production concurrency lock and preserves Goyang's exact canonical-header lock rule.
+
+The one-time approved ownership-file setup is separately source-bound. Each new
+source differs from its original approved public source by exactly one regular public
+text file across the entire repository. Original content/batch QA remains immutable;
+its previous SHA is explicitly chained to the new ownership-only SHA. Both sources
+are built from their unchanged lockfiles and their output differs only by the new
+text file and deliberate full revision metadata. Existing public content and hostname
+binding must match before asset redeployment; domain attachment steps are not run.
+All existing binding identities, content and public sitemap scope are verified after.
+Later content updates do not re-enter that special one-file amendment path.

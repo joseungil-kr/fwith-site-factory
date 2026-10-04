@@ -16,6 +16,8 @@ on:
       launch_key: {description: Exact registered launch for scoped coverage, required: false, type: string}
       scope_key: {description: Exact registered scope for scoped coverage, required: false, type: string}
       expected_revision: {description: Full independently approved target commit SHA, required: true, type: string}
+      source_snapshot_issue: {description: Existing request issue for durable production receipts, required: true, type: string}
+      indexnow_only: {description: Verify and submit the already public revision without deploying, required: false, type: boolean, default: false}
   issues:
     types: [opened, reopened]
 permissions: {}
@@ -25,7 +27,7 @@ concurrency:
 jobs:
   deploy-and-verify:
     permissions: {contents: read, issues: write}
-    if: inputs.site_key != '' || github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[SITE-PRODUCTION-DEPLOY]')
+    if: ${{ inputs.indexnow_only != true && (inputs.site_key != '' || github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[SITE-PRODUCTION-DEPLOY]')) }}
     runs-on: ubuntu-latest
     env: {ASTRO_TELEMETRY_DISABLED: '1'}
     steps:
@@ -51,6 +53,13 @@ jobs:
                 throw new Error(`Untrusted actor/author: ${username}`);
               }
             }
+      - name: Validate existing receipt destination before work
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RECEIPT_ISSUE: ${{ inputs.source_snapshot_issue || github.event.issue.number }}
+        run: |
+          printf '%s' "$RECEIPT_ISSUE" | grep -Eq '^[1-9][0-9]*$'
+          test "$(gh api "repos/$GITHUB_REPOSITORY/issues/$RECEIPT_ISSUE" --jq .number)" = "$RECEIPT_ISSUE"
       - uses: actions/checkout@v4
         with: {ref: main, path: control}
       - name: Resolve approved production target
@@ -61,6 +70,7 @@ jobs:
           LAUNCH_KEY: ${{ inputs.launch_key }}
           SCOPE_KEY: ${{ inputs.scope_key }}
           ISSUE_BODY: ${{ github.event.issue.body }}
+          RECEIPT_ISSUE: ${{ inputs.source_snapshot_issue || github.event.issue.number }}
         run: |
           python3 - <<'PYTHON'
           import json, os, re
@@ -73,6 +83,15 @@ jobs:
           key=os.environ.get('SITE_KEY') or values.get('SITE_KEY','')
           site=json.load(open('control/.github/site-factory-sites.json'))['sites'].get(key)
           if not site or site['repo']!=os.environ['GITHUB_REPOSITORY']: raise SystemExit('Unregistered target')
+          requested_revision = os.environ.get('REVISION') or values.get('EXPECTED_REVISION', '')
+          ownership_only = site.get('indexnowOwnership', {}).get('revision') == requested_revision
+          if ownership_only:
+              import sys
+              sys.path.insert(0, 'control/site-factory/engine')
+              from indexnow_ownership import amendment
+              ownership = amendment(site, requested_revision)
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+                  out.write('ownership_only=true\nprevious_revision=' + ownership['previousRevision'] + '\n')
           if key == 'goyang-flower-v2':
               if not os.environ.get('SITE_KEY') and 'SITE_KEY: goyang-flower-v2' not in os.environ.get('ISSUE_BODY','').split('---BEGIN-',1)[0].splitlines():
                   raise SystemExit('Goyang issue SITE_KEY must use its exact canonical header for the shared deployment lock')
@@ -110,7 +129,7 @@ jobs:
               if site.get('approvedRevision')!=revision or not site.get('approvalEvidenceUrl','').startswith('https://github.com/'):
                   raise SystemExit('Exact revision lacks independent QA clearance in trusted registry')
           with open(os.environ['GITHUB_OUTPUT'],'a') as out:
-              for k,v in {'site_key':key,'branch':site['branch'],'root':site['root'],'site_url':site['siteUrl'],'worker':site.get('worker',''),'revision':revision,'wrangler':site.get('wranglerConfig','wrangler.jsonc'),'build_root':'target/'+site['root'],'graph':site.get('graphScript','scripts/qa_site_graph.mjs'),'naver':site.get('naverVerification',''),'indexnow':site.get('indexnowKey','')}.items():out.write(f'{k}={v}\n')
+              for k,v in {'site_key':key,'branch':site['branch'],'root':site['root'],'site_url':site['siteUrl'],'worker':site.get('worker',''),'revision':revision,'wrangler':site.get('wranglerConfig','wrangler.jsonc'),'build_root':'release-build' if ownership_only else 'target/'+site['root'],'graph':site.get('graphScript','scripts/qa_site_graph.mjs'),'naver':site.get('naverVerification',''),'indexnow':site.get('indexnowKey','')}.items():out.write(f'{k}={v}\n')
           PYTHON
       - name: Checkout pinned approved revision
         uses: actions/checkout@v4
@@ -123,12 +142,21 @@ jobs:
           git merge-base --is-ancestor "$REVISION" "origin/$BRANCH"
           test "$(git rev-parse HEAD)" = "$REVISION"
       - name: Isolate exact coverage release tree
-        if: steps.target.outputs.goyang_coverage == 'true' || steps.target.outputs.bucheon_coverage == 'true'
+        if: steps.target.outputs.goyang_coverage == 'true' || steps.target.outputs.bucheon_coverage == 'true' || steps.target.outputs.ownership_only == 'true'
         env: {ROOT: "${{ steps.target.outputs.root }}", REVISION: "${{ steps.target.outputs.revision }}"}
         run: |
           set -euo pipefail
           mkdir release-build
           git -C target archive "$REVISION:$ROOT" | tar -xf - -C release-build
+      - name: Verify exact ownership-only source amendment
+        if: steps.target.outputs.ownership_only == 'true'
+        run: python3 control/site-factory/engine/indexnow_ownership.py source --registry control/.github/site-factory-sites.json --site-key "${{ steps.target.outputs.site_key }}" --workspace target --report ownership-source.json
+      - name: Extract original approved ownership baseline
+        if: steps.target.outputs.ownership_only == 'true'
+        env: {ROOT: "${{ steps.target.outputs.root }}", PREVIOUS: "${{ steps.target.outputs.previous_revision }}"}
+        run: |
+          mkdir ownership-baseline
+          git -C target archive "$PREVIOUS:$ROOT" | tar -xf - -C ownership-baseline
       - name: Extract unchanged fixed Goyang canary baseline
         if: steps.target.outputs.goyang_coverage == 'true'
         run: |
@@ -161,6 +189,26 @@ jobs:
           npm run build
           python3 scripts/qa_static.py
           node "$GRAPH_SCRIPT"
+      - name: Build original approved ownership baseline with its unchanged lockfile
+        if: steps.target.outputs.ownership_only == 'true'
+        working-directory: ownership-baseline
+        env:
+          SITE_URL: ${{ steps.target.outputs.site_url }}
+          SITE_INDEXABLE: 'true'
+          SITE_FACTORY_REVISION: ${{ steps.target.outputs.previous_revision }}
+        run: |
+          test -f package-lock.json
+          npm ci
+          npm run build
+      - name: Verify ownership-only rendered delta and current public source
+        if: steps.target.outputs.ownership_only == 'true'
+        run: |
+          python3 control/site-factory/engine/indexnow_ownership.py artifacts --registry control/.github/site-factory-sites.json --site-key "${{ steps.target.outputs.site_key }}" --old-root ownership-baseline --root "${{ steps.target.outputs.build_root }}" --report ownership-artifacts.json
+          python3 control/site-factory/engine/indexnow_ownership.py old-live --registry control/.github/site-factory-sites.json --site-key "${{ steps.target.outputs.site_key }}" --old-root ownership-baseline --report ownership-old-live.json
+      - name: Verify existing ownership target binding before deploy
+        if: steps.target.outputs.ownership_only == 'true'
+        env: {CLOUDFLARE_API_TOKEN: "${{ secrets.CLOUDFLARE_API_TOKEN }}", CLOUDFLARE_ACCOUNT_ID: "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"}
+        run: python3 control/site-factory/engine/indexnow_ownership.py binding --registry control/.github/site-factory-sites.json --site-key "${{ steps.target.outputs.site_key }}" --report ownership-binding-before.json
       - name: Record build provenance
         run: python3 control/site-factory/engine/write_qa_provenance.py --root "${{ steps.target.outputs.build_root }}" --revision "${{ steps.target.outputs.revision }}" --output production-qa-provenance.json
       - name: Validate exact Goyang coverage artifact and frozen source
@@ -176,7 +224,7 @@ jobs:
         env: {CLOUDFLARE_API_TOKEN: "${{ secrets.CLOUDFLARE_API_TOKEN }}", CLOUDFLARE_ACCOUNT_ID: "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"}
         run: python3 control/site-factory/engine/verify_goyang_canonical.py binding --report goyang-binding-before.json
       - name: Verify initial Bucheon Worker and hostname are unassigned before asset deployment
-        if: steps.target.outputs.bucheon_coverage == 'true'
+        if: steps.target.outputs.bucheon_coverage == 'true' && steps.target.outputs.ownership_only != 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -200,18 +248,24 @@ jobs:
           else
             npx --yes wrangler@latest deploy -c "$WRANGLER_CONFIG"
           fi
+      - name: Verify ownership target binding preservation after deploy attempt
+        if: ${{ always() && steps.target.outputs.ownership_only == 'true' && steps.deploy.outcome != 'skipped' }}
+        env: {CLOUDFLARE_API_TOKEN: "${{ secrets.CLOUDFLARE_API_TOKEN }}", CLOUDFLARE_ACCOUNT_ID: "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"}
+        run: |
+          python3 control/site-factory/engine/indexnow_ownership.py binding --registry control/.github/site-factory-sites.json --site-key "${{ steps.target.outputs.site_key }}" --report ownership-binding-after.json
+          cmp ownership-binding-before.json ownership-binding-after.json
       - name: Verify Goyang binding preservation after deployment attempt
         if: ${{ always() && steps.target.outputs.goyang_coverage == 'true' && steps.deploy.outcome != 'skipped' }}
         env: {CLOUDFLARE_API_TOKEN: "${{ secrets.CLOUDFLARE_API_TOKEN }}", CLOUDFLARE_ACCOUNT_ID: "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"}
         run: python3 control/site-factory/engine/verify_goyang_canonical.py binding --report goyang-binding-after.json
       - name: Bind exact approved Seongnam hostname
-        if: steps.target.outputs.site_key == 'seongnam-flower-v2'
+        if: steps.target.outputs.site_key == 'seongnam-flower-v2' && steps.target.outputs.ownership_only != 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: python3 control/site-factory/engine/seongnam_domain_attach.py
       - name: Record one exact Bucheon domain request before mutation
-        if: steps.target.outputs.bucheon_coverage == 'true'
+        if: steps.target.outputs.bucheon_coverage == 'true' && steps.target.outputs.ownership_only != 'true'
         uses: actions/github-script@v7
         with:
           script: |
@@ -223,7 +277,7 @@ jobs:
                 body: `BUCHEON_DOMAIN_REQUEST_STARTED: run=${context.runId}. Exact bucheon.fwith.kr attachment without overrides; an unknown outcome requires inspection before another request.`});
             }
       - name: Bind exact approved Bucheon hostname without overrides
-        if: steps.target.outputs.bucheon_coverage == 'true'
+        if: steps.target.outputs.bucheon_coverage == 'true' && steps.target.outputs.ownership_only != 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -236,28 +290,26 @@ jobs:
         if: steps.target.outputs.goyang_coverage != 'true'
         run: python3 control/site-factory/engine/verify_live.py --site-key "${{ steps.target.outputs.site_key }}" --root "${{ steps.target.outputs.build_root }}" --origin "${{ steps.target.outputs.site_url }}" --revision "${{ steps.target.outputs.revision }}" --report live-qa-report.json --naver-verification "${{ steps.target.outputs.naver }}" --indexnow-key "${{ steps.target.outputs.indexnow }}"
       - name: Submit verified URLs to IndexNow
-        if: steps.target.outputs.indexnow != ''
-        working-directory: ${{ steps.target.outputs.build_root }}
+        id: indexnow
         env:
-          SITE_URL: ${{ steps.target.outputs.site_url }}
-          SITE_INDEXABLE: 'true'
-          SITE_ORIGIN: ${{ steps.target.outputs.site_url }}
-          LIVE_QA_VERIFIED_REVISION: ${{ steps.target.outputs.revision }}
-          INDEXNOW_INITIAL: 'true'
-          INDEXNOW_KEY: ${{ steps.target.outputs.indexnow }}
-          INDEXNOW_ENDPOINT: https://searchadvisor.naver.com/indexnow
+          GH_TOKEN: ${{ github.token }}
+          RECEIPT_ISSUE: ${{ inputs.source_snapshot_issue || github.event.issue.number }}
         run: |
-          node scripts/select_indexnow_urls.mjs
-          node scripts/submit_indexnow.mjs
-      - name: Record skipped IndexNow submission
-        if: steps.target.outputs.indexnow == ''
-        run: echo 'IndexNow not configured for this approved release; no submission attempted.' >> "$GITHUB_STEP_SUMMARY"
+          python3 control/site-factory/engine/indexnow_finalize.py \
+            --registry control/.github/site-factory-sites.json \
+            --site-key "${{ steps.target.outputs.site_key }}" \
+            --revision "${{ steps.target.outputs.revision }}" \
+            --root "${{ steps.target.outputs.build_root }}" \
+            --receipt-issue "$RECEIPT_ISSUE" --report indexnow-receipt.json \
+            --run-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
       - name: Save exact-revision QA reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: production-qa-${{ steps.target.outputs.site_key }}-${{ github.run_id }}
           path: |
+            indexnow-receipt.json
+            ownership-*.json
             production-qa-provenance.json
             live-qa-report.json
             goyang-coverage-source.json
@@ -270,10 +322,127 @@ jobs:
         if: github.event_name == 'issues' || inputs.source_snapshot_issue != ''
         env: {GH_TOKEN: "${{ github.token }}", REVISION: "${{ steps.target.outputs.revision }}", ISSUE_NUMBER: "${{ inputs.source_snapshot_issue || github.event.issue.number }}"}
         run: |
-          gh issue comment -R "$GITHUB_REPOSITORY" "$ISSUE_NUMBER" --body "PIPELINE_STATE: live_verified. Exact production revision=$REVISION, every registered route and sitemap verified. IndexNow is submitted only when a configured ownership key is present; search indexing/ranking is not guaranteed. Evidence: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          gh issue comment -R "$GITHUB_REPOSITORY" "$ISSUE_NUMBER" --body "PIPELINE_STATE: live_verified_indexnow_received. Exact production revision=$REVISION, every registered route and public sitemap verified, and IndexNow receipt saved. HTTP 202 indicates receipt with ownership validation pending. Search indexing/ranking is not verified. Evidence: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
           gh issue close -R "$GITHUB_REPOSITORY" "$ISSUE_NUMBER"
       - name: Report failed or blocked verification
-        if: failure() && github.event_name == 'issues'
-        env: {GH_TOKEN: "${{ github.token }}"}
+        if: failure() && (github.event_name == 'issues' || inputs.source_snapshot_issue != '')
+        env: {GH_TOKEN: "${{ github.token }}", ISSUE_NUMBER: "${{ inputs.source_snapshot_issue || github.event.issue.number }}"}
         run: |
-          gh issue comment -R "$GITHUB_REPOSITORY" "${{ github.event.issue.number }}" --body "PIPELINE_STATE: failed_or_verification_blocked. Deployment is not marked live_verified. The issue remains open for diagnosis and exact-revision retry. Evidence: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          gh issue comment -R "$GITHUB_REPOSITORY" "$ISSUE_NUMBER" --body "PIPELINE_STATE: failed_or_verification_blocked. Deployment or IndexNow finalization is incomplete; not marked live_verified_indexnow_received. The issue remains open for diagnosis and exact-revision retry. Evidence: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
+  finalize-existing-public:
+    permissions: {contents: read, issues: write}
+    if: inputs.indexnow_only == true || startsWith(github.event.issue.title, '[SITE-INDEXNOW]')
+    runs-on: ubuntu-latest
+    env: {ASTRO_TELEMETRY_DISABLED: '1'}
+    steps:
+      - name: Authorize repository writer
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const repo = context.payload.repository;
+            const users = new Set([context.actor]);
+            if (context.payload.issue) users.add(context.payload.issue.user.login);
+            for (const username of users) {
+              if (repo.owner.type === 'User' && username === repo.owner.login) continue;
+              const {data} = await github.rest.repos.getCollaboratorPermissionLevel({...context.repo, username});
+              if (!['admin', 'maintain', 'write'].includes(data.permission)) throw new Error('Untrusted request');
+            }
+      - name: Validate existing receipt destination before work
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RECEIPT_ISSUE: ${{ inputs.source_snapshot_issue || github.event.issue.number }}
+        run: |
+          printf '%s' "$RECEIPT_ISSUE" | grep -Eq '^[1-9][0-9]*$'
+          test "$(gh api "repos/$GITHUB_REPOSITORY/issues/$RECEIPT_ISSUE" --jq .number)" = "$RECEIPT_ISSUE"
+      - uses: actions/checkout@v4
+        with: {ref: main, path: control}
+      - name: Resolve existing public target without deployment
+        id: target
+        env:
+          SITE_KEY: ${{ inputs.site_key }}
+          REVISION: ${{ inputs.expected_revision }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          RECEIPT_ISSUE: ${{ inputs.source_snapshot_issue || github.event.issue.number }}
+        run: |
+          python3 - <<'PYTHON'
+          import json, os, re
+          values = {}
+          for line in os.environ.get('ISSUE_BODY', '').split('---BEGIN-', 1)[0].splitlines():
+              if ': ' in line:
+                  key, value = line.split(': ', 1)
+                  if key in values: raise SystemExit('Duplicate issue header')
+                  values[key] = value.strip()
+          key = os.environ.get('SITE_KEY') or values.get('SITE_KEY', '')
+          revision = os.environ.get('REVISION') or values.get('EXPECTED_REVISION', '')
+          site = json.load(open('control/.github/site-factory-sites.json'))['sites'].get(key)
+          if not site or site['repo'] != os.environ['GITHUB_REPOSITORY']: raise SystemExit('Unregistered site')
+          if key == 'goyang-flower-v2' and not os.environ.get('SITE_KEY') and 'SITE_KEY: goyang-flower-v2' not in os.environ.get('ISSUE_BODY', '').split('---BEGIN-', 1)[0].splitlines():
+              raise SystemExit('Goyang requires exact canonical SITE_KEY header for its shared lock')
+          if site.get('productionEnabled') is not True or site.get('launchMode') != 'live': raise SystemExit('Production gate closed')
+          if not re.fullmatch('[0-9a-f]{40}', revision): raise SystemExit('Full source SHA required')
+          if site.get('requireRevisionApproval') and site.get('approvedRevision') != revision:
+              raise SystemExit('Source does not match approved production revision')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              for key, value in {'site_key': key, 'revision': revision, 'branch': site['branch'],
+                                 'root': site['root'], 'site_url': site['siteUrl']}.items():
+                  out.write(f'{key}={value}\n')
+          PYTHON
+      - uses: actions/checkout@v4
+        with: {ref: "${{ steps.target.outputs.revision }}", path: target, fetch-depth: 0}
+      - name: Verify source branch ancestry
+        working-directory: target
+        env: {BRANCH: "${{ steps.target.outputs.branch }}", REVISION: "${{ steps.target.outputs.revision }}"}
+        run: |
+          git fetch origin "$BRANCH"
+          git merge-base --is-ancestor "$REVISION" "origin/$BRANCH"
+          test "$(git rev-parse HEAD)" = "$REVISION"
+      - uses: actions/setup-node@v4
+        with: {node-version: 22}
+      - name: Isolate exact public source for finalization
+        env: {ROOT: "${{ steps.target.outputs.root }}", REVISION: "${{ steps.target.outputs.revision }}"}
+        run: |
+          mkdir finalization-build
+          git -C target archive "$REVISION:$ROOT" | tar -xf - -C finalization-build
+      - name: Build exact public source for read-only sitemap comparison
+        working-directory: finalization-build
+        env:
+          SITE_URL: ${{ steps.target.outputs.site_url }}
+          SITE_INDEXABLE: 'true'
+          SITE_FACTORY_REVISION: ${{ steps.target.outputs.revision }}
+        run: |
+          test -f production-indexing.enabled
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+          npm run build
+      - name: Submit verified existing public URLs without deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RECEIPT_ISSUE: ${{ inputs.source_snapshot_issue || github.event.issue.number }}
+        run: |
+          python3 control/site-factory/engine/indexnow_finalize.py \
+            --registry control/.github/site-factory-sites.json \
+            --site-key "${{ steps.target.outputs.site_key }}" \
+            --revision "${{ steps.target.outputs.revision }}" \
+            --root finalization-build \
+            --receipt-issue "$RECEIPT_ISSUE" --report indexnow-receipt.json \
+            --run-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+      - name: Save IndexNow receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: indexnow-receipt-${{ github.run_id }}
+          path: indexnow-receipt.json
+          if-no-files-found: ignore
+      - name: Report accepted IndexNow receipt
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RECEIPT_ISSUE: ${{ inputs.source_snapshot_issue || github.event.issue.number }}
+        run: |
+          gh issue comment -R "$GITHUB_REPOSITORY" "$RECEIPT_ISSUE" --body "PIPELINE_STATE: live_verified_indexnow_received. Current exact public source and complete indexable sitemap received by IndexNow. See receipt for HTTP 200 or HTTP 202 key-validation-pending. Search indexing/ranking is not verified. No deployment was performed. Evidence: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+      - name: Report blocked IndexNow receipt
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RECEIPT_ISSUE: ${{ inputs.source_snapshot_issue || github.event.issue.number }}
+        run: |
+          gh issue comment -R "$GITHUB_REPOSITORY" "$RECEIPT_ISSUE" --body "PIPELINE_STATE: indexnow_blocked_or_failed. This is incomplete, not skipped success. Inspect the exact receipt before retrying. An uncertain POST is never automatically repeated. Evidence: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
