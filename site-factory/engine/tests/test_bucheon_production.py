@@ -198,6 +198,9 @@ class DomainTests(unittest.TestCase):
         self.assertEqual(diagnostics['cloudflareErrorCodes'],[123])
         self.assertEqual(diagnostics['readStage'],'scripts')
         self.assertNotIn('SECRET',json.dumps(diagnostics))
+        self.assertEqual(diagnostics['errorsShape'],'array')
+        self.assertIs(diagnostics['successVerified'],True)
+        self.assertIs(diagnostics['resultIsArray'],True)
     def test_initial_target_absence_requires_complete_get_only_observation(self):
         rows,calls,transport=self.inventory()
         result=domain.preflight(transport,'a'*32)

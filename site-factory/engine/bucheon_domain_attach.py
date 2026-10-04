@@ -87,6 +87,13 @@ def preflight(transport, account_id, diagnostics=None):
         if not isinstance(value, dict) or value.get('errors', []) != []:
             diagnostics['exceptionType'] = 'PreflightError'
             diagnostics['diagnosticCode'] = 'inventory_response_uncertain'
+            if isinstance(value, dict):
+                errors = value.get('errors')
+                diagnostics['errorsShape'] = ('null' if errors is None else 'array' if isinstance(errors, list) else 'other')
+                diagnostics['successVerified'] = value.get('success') is True
+                diagnostics['resultIsArray'] = isinstance(value.get('result'), list)
+            else:
+                diagnostics['errorsShape'] = 'non_object_response'
             raise failure('inventory_response_uncertain')
         return value
     diagnostics['readStage'] = 'scripts'
