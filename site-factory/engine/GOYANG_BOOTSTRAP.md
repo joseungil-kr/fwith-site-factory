@@ -1,5 +1,19 @@
 # Scheduled Creator: deterministic v2 region bootstrap
 
+## Current initial-creation contract
+
+New scheduled region creation uses an explicit whole-dong initial identity and
+complete official membership, followed by independent original-content review
+and one final frozen-Publisher batch. See [WHOLE_INITIAL_SCOPE.md](WHOLE_INITIAL_SCOPE.md)
+for exact inputs, hash types, the reviewed clean-runtime source gate and current
+limitations. Missing support never falls back to a one-page trial.
+
+The contracts and commands below document historical bootstrap/trial replay.
+Their known keys, pins, output bytes and exact provenance resumes are preserved.
+They are not a new-region one-page prerequisite. Current Bucheon already has
+source/content and must continue its established pipeline without rebootstrap.
+No runtime-ready whole-initial profile is registered by this helper change.
+
 `provision_goyang.py` keeps its original filename/default for compatibility and
 now also prepares the allowlisted Seongnam trial using the same engine.
 It prepares infrastructure only. Existing hosted Goyang content is not a new

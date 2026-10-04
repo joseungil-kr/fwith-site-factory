@@ -31,7 +31,7 @@ class RegionTests(unittest.TestCase):
 
     def test_distinct_trial_launch_is_required_and_legacy_is_never_reused(self):
         for launch in (None, 'seongnam-flower-v2-launch', 'seongnam-flower-v2-trial-', '../trial', 'wrong-trial-1'):
-            with self.subTest(launch=launch), self.assertRaisesRegex(p.ProvisionError, 'distinct explicit regional trial'):
+            with self.subTest(launch=launch), self.assertRaisesRegex(p.ProvisionError, 'distinct explicit'):
                 self.prepare(launch=launch)
         proof = json.loads(self.prepare()[0]['target-files/' + p.target_contract(SITE)['provenancePath']])
         self.assertEqual(proof['launchKey'], TRIAL)

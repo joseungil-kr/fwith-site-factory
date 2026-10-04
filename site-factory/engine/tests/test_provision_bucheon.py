@@ -64,7 +64,7 @@ class BucheonTests(unittest.TestCase):
 
     def test_explicit_trial_is_required_and_legacy_launch_is_not_consumed(self):
         for launch in (None,'bucheon-flower-v2-launch','goyang-flower-v2-launch','bucheon-flower-v2-trial-'):
-            with self.subTest(launch=launch),self.assertRaisesRegex(p.ProvisionError,'distinct explicit regional trial'):self.prepare(launch=launch)
+            with self.subTest(launch=launch),self.assertRaisesRegex(p.ProvisionError,'distinct explicit'):self.prepare(launch=launch)
 
     def test_resume_is_exact_and_existing_customer_content_is_protected(self):
         outputs,plan=self.prepare();self.assertEqual((outputs,plan),self.prepare())
