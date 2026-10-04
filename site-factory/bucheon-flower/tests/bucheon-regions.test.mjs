@@ -22,8 +22,11 @@ test('canonical24 and administrative37/48 match the pinned membership without pa
 });
 test('pending source has no regional pages or links and cannot become approved by geography',()=>{
  assert.deepEqual(directoryGroups([],read('architecture'),coverage,policy),[]);
- const f=fixture();assert.throws(()=>regionalRows(f.pages,f.architecture,coverage,policy),/approval/);
- assert.throws(()=>regionalMetadata(coverage,policy,products,coverage.representatives[0].pageKey),/reviewed binding/);
+ const f=fixture(),pendingCoverage=structuredClone(coverage),pendingPolicy=structuredClone(policy);
+ for(const r of pendingCoverage.representatives)r.status='candidate';
+ for(const v of pendingPolicy.visualBindings)v.status='pending-independent-review';
+ assert.throws(()=>regionalRows(f.pages,f.architecture,pendingCoverage,pendingPolicy),/approval/);
+ assert.throws(()=>regionalMetadata(pendingCoverage,pendingPolicy,products,pendingCoverage.representatives[0].pageKey),/reviewed binding/);
 });
 test('complete membership yields exactly24 unique routes and each administrative multi-target edge',()=>{
  const f=fixture();const groups=directoryGroups(f.pages,f.architecture,f.c,f.p);
