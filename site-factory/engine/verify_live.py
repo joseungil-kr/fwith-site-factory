@@ -568,8 +568,17 @@ def main():
                     result.update(upload, assetIsolationProbe=path)
         except PermissionError:
             result = {"pipelineState": "verification_blocked", "revision": args.revision, "reason": "Goyang HTTP403; verification remains blocked"}
-        except (AssertionError, ValueError, KeyError, TypeError, OSError, ET.ParseError):
-            result = {"pipelineState": "verification_failed", "revision": args.revision, "reason": "Goyang source/artifact/HTTP contract failed; no raw response is logged"}
+        except (AssertionError, ValueError, KeyError, TypeError, OSError, ET.ParseError) as error:
+            trace = error.__traceback__
+            parent = None
+            while trace.tb_next is not None:
+                parent, trace = trace, trace.tb_next
+            if trace.tb_frame.f_code.co_name == "require" and parent is not None:
+                trace = parent
+            result = {"pipelineState": "verification_failed", "revision": args.revision,
+                "reason": "Goyang source/artifact/HTTP contract failed; no raw response is logged",
+                "failedCheckFunction": trace.tb_frame.f_code.co_name, "failedCheckLine": trace.tb_lineno,
+                "exceptionType": type(error).__name__}
         Path(args.report).write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
         print(json.dumps(result, ensure_ascii=False))
         if result["pipelineState"] not in {"goyang_source_validated", "preview_verified", "live_verified"}:
