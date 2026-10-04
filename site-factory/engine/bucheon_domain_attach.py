@@ -84,7 +84,14 @@ def preflight(transport, account_id, diagnostics=None):
         raise failure('account_preflight_identity_unverified')
     def inventory_transport(method, path):
         value = observed_transport(method, path)
-        if not isinstance(value, dict) or value.get('errors', []) != []:
+        # Observed Workers Domains success envelope uses errors:null. Accept only
+        # its verified HTTP200/success/list form; single_page and collision checks
+        # below still require a complete, valid inventory before any mutation.
+        domain_null_errors = (path == prefix + '/workers/domains'
+            and diagnostics.get('observedHttpStatus') == 200
+            and isinstance(value, dict) and value.get('errors', 'missing') is None
+            and value.get('success') is True and isinstance(value.get('result'), list))
+        if not isinstance(value, dict) or (value.get('errors', []) != [] and not domain_null_errors):
             diagnostics['exceptionType'] = 'PreflightError'
             diagnostics['diagnosticCode'] = 'inventory_response_uncertain'
             if isinstance(value, dict):

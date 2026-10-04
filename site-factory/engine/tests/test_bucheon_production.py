@@ -164,6 +164,27 @@ class DomainTests(unittest.TestCase):
         def transport(method,path):
             self.assertEqual(method,'GET');calls.append(path);return rows[path]
         return rows,calls,transport
+    def test_domain_null_errors_requires_exact_success_complete_http200(self):
+        path='/accounts/'+'a'*32+'/workers/domains'
+        rows,calls,transport=self.inventory();rows[path]['errors']=None;transport.last_http_status=200
+        result=domain.preflight(transport,'a'*32)
+        self.assertEqual(result['state'],'bucheon_initial_target_absent_verified')
+        self.assertEqual(len(calls),3)
+        mutations=[lambda r:r[path].update(success=False),lambda r:r[path].update(result={}),
+            lambda r:r[path].update(errors=[{'code':10000}]),lambda r:r[path].update(errors={}),
+            lambda r:r[path].update(result_info={'total_count':1}),
+            lambda r:r[path].update(result=[{'hostname':'bucheon.fwith.kr','service':'existing'}]),
+            lambda r:r[path].update(result=[{'hostname':'other.fwith.kr','service':domain.WORKER}]),
+            lambda r:r[path].update(result=[{'hostname':'other.fwith.kr'}])]
+        for edit in mutations:
+            rows,calls,transport=self.inventory();rows[path]['errors']=None;transport.last_http_status=200;edit(rows)
+            with self.assertRaises(domain.PreflightError):domain.preflight(transport,'a'*32)
+        for status in (None,201,403,500):
+            rows,calls,transport=self.inventory();rows[path]['errors']=None;transport.last_http_status=status
+            with self.assertRaises(domain.PreflightError):domain.preflight(transport,'a'*32)
+        rows,calls,transport=self.inventory();transport.last_http_status=200
+        rows['/accounts/'+'a'*32+'/workers/scripts']['errors']=None
+        with self.assertRaises(domain.PreflightError):domain.preflight(transport,'a'*32)
     def test_preflight_diagnostics_preserve_stage_without_sensitive_message(self):
         prefix='/accounts/'+'a'*32
         for stage in ('scripts','domains'):
