@@ -13,8 +13,8 @@ on:
   workflow_dispatch:
     inputs:
       site_key: {description: Registered site key, required: true, type: string}
-      launch_key: {description: Exact registered launch for Goyang coverage only, required: false, type: string}
-      scope_key: {description: Exact registered scope for Goyang coverage only, required: false, type: string}
+      launch_key: {description: Exact registered launch for scoped coverage, required: false, type: string}
+      scope_key: {description: Exact registered scope for scoped coverage, required: false, type: string}
       expected_revision: {description: Full independently approved target commit SHA, required: true, type: string}
   issues:
     types: [opened, reopened]
@@ -86,6 +86,17 @@ jobs:
               with open(os.environ['GITHUB_OUTPUT'],'a') as out:
                   for k,v in resolved.items():out.write(f'{k}={v}\n')
               raise SystemExit(0)
+          if key == 'bucheon-flower-v2':
+              import sys
+              sys.path.insert(0,'control/site-factory/engine')
+              from bucheon_production import resolve
+              resolved=resolve(site,os.environ['GITHUB_REPOSITORY'],
+                  os.environ.get('REVISION') or values.get('EXPECTED_REVISION',''),
+                  os.environ.get('LAUNCH_KEY') or values.get('LAUNCH_KEY',''),
+                  os.environ.get('SCOPE_KEY') or values.get('SCOPE_KEY',''))
+              with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+                  for k,v in resolved.items():out.write(f'{k}={v}\n')
+              raise SystemExit(0)
           if key == 'seongnam-flower-v2':
               expected = {'siteUrl':'https://seongnam.fwith.kr','worker':'seongnam-flower-prod-disabled',
                           'root':'site-factory/seongnam-flower','branch':'site-factory-seongnam-v2'}
@@ -111,8 +122,8 @@ jobs:
           git fetch origin "$BRANCH"
           git merge-base --is-ancestor "$REVISION" "origin/$BRANCH"
           test "$(git rev-parse HEAD)" = "$REVISION"
-      - name: Isolate exact Goyang coverage release tree
-        if: steps.target.outputs.goyang_coverage == 'true'
+      - name: Isolate exact coverage release tree
+        if: steps.target.outputs.goyang_coverage == 'true' || steps.target.outputs.bucheon_coverage == 'true'
         env: {ROOT: "${{ steps.target.outputs.root }}", REVISION: "${{ steps.target.outputs.revision }}"}
         run: |
           set -euo pipefail
@@ -125,6 +136,13 @@ jobs:
           test "$(git -C target rev-parse e4eead3e881b3b4c09a60e2af5befb55b6787413:site-factory/goyang-flower)" = 27a45b8e99151c34b966f0a59a96110b91395fad
           mkdir canary-baseline
           git -C target archive e4eead3e881b3b4c09a60e2af5befb55b6787413:site-factory/goyang-flower | tar -xf - -C canary-baseline
+      - name: Extract unchanged Bucheon historical facility baseline
+        if: steps.target.outputs.bucheon_coverage == 'true'
+        run: |
+          set -euo pipefail
+          test "$(git -C target rev-parse ed5d30763d38ae1580974b1d377c07d4927dcdeb:site-factory/bucheon-flower)" = b92e058b30e9331baee1006f6c0d9c8a8e3775ec
+          mkdir bucheon-baseline
+          git -C target archive ed5d30763d38ae1580974b1d377c07d4927dcdeb:site-factory/bucheon-flower | tar -xf - -C bucheon-baseline
       - uses: actions/setup-node@v4
         with: {node-version: 22}
       - name: Build approved indexable artifact and rerun gates
@@ -135,10 +153,11 @@ jobs:
           SITE_FACTORY_REVISION: ${{ steps.target.outputs.revision }}
           GRAPH_SCRIPT: ${{ steps.target.outputs.graph }}
           GOYANG_COVERAGE: ${{ steps.target.outputs.goyang_coverage }}
+          BUCHEON_COVERAGE: ${{ steps.target.outputs.bucheon_coverage }}
         run: |
           test -f production-indexing.enabled
           if [ -f package-lock.json ]; then npm ci; else npm install; fi
-          if [ "$GOYANG_COVERAGE" = true ]; then npm test; fi
+          if [ "$GOYANG_COVERAGE" = true ] || [ "$BUCHEON_COVERAGE" = true ]; then npm test; fi
           npm run build
           python3 scripts/qa_static.py
           node "$GRAPH_SCRIPT"
@@ -148,10 +167,20 @@ jobs:
         if: steps.target.outputs.goyang_coverage == 'true'
         env: {ROOT: "${{ steps.target.outputs.build_root }}", REVISION: "${{ steps.target.outputs.revision }}", LAUNCH_KEY: "${{ steps.target.outputs.launch_key }}", SCOPE_KEY: "${{ steps.target.outputs.scope_key }}"}
         run: python3 control/site-factory/engine/verify_live.py --site-key goyang-flower-v2 --root "$ROOT" --baseline-root canary-baseline --registry control/.github/site-factory-sites.json --origin https://goyang.fwith.kr --revision "$REVISION" --launch-key "$LAUNCH_KEY" --scope-key "$SCOPE_KEY" --phase production --validate-only --report goyang-coverage-source.json
+      - name: Validate Bucheon approved whole-batch evidence and exact frozen source
+        if: steps.target.outputs.bucheon_coverage == 'true'
+        env: {REVISION: "${{ steps.target.outputs.revision }}"}
+        run: python3 control/site-factory/engine/bucheon_production.py --registry control/.github/site-factory-sites.json --root release-build --baseline-root bucheon-baseline --control control --workspace target --revision "$REVISION" --report bucheon-coverage-source.json
       - name: Verify existing Goyang binding before asset deployment
         if: steps.target.outputs.goyang_coverage == 'true'
         env: {CLOUDFLARE_API_TOKEN: "${{ secrets.CLOUDFLARE_API_TOKEN }}", CLOUDFLARE_ACCOUNT_ID: "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"}
         run: python3 control/site-factory/engine/verify_goyang_canonical.py binding --report goyang-binding-before.json
+      - name: Verify initial Bucheon Worker and hostname are unassigned before asset deployment
+        if: steps.target.outputs.bucheon_coverage == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 control/site-factory/engine/bucheon_domain_attach.py --preflight --report bucheon-domain-before.json
       - name: Deploy approved artifact
         id: deploy
         working-directory: ${{ steps.target.outputs.build_root }}
@@ -160,11 +189,14 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           WRANGLER_CONFIG: ${{ steps.target.outputs.wrangler }}
           GOYANG_COVERAGE: ${{ steps.target.outputs.goyang_coverage }}
+          BUCHEON_COVERAGE: ${{ steps.target.outputs.bucheon_coverage }}
         run: |
           test -n "$CLOUDFLARE_API_TOKEN"
           printf '%s' "$CLOUDFLARE_ACCOUNT_ID" | grep -Eq '^[0-9A-Fa-f]{32}$'
           if [ "$GOYANG_COVERAGE" = true ]; then
             npx --yes wrangler@4.146.0 deploy -c "$WRANGLER_CONFIG"
+          elif [ "$BUCHEON_COVERAGE" = true ]; then
+            npx --yes wrangler@4.147.0 deploy -c "$WRANGLER_CONFIG"
           else
             npx --yes wrangler@latest deploy -c "$WRANGLER_CONFIG"
           fi
@@ -178,6 +210,24 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: python3 control/site-factory/engine/seongnam_domain_attach.py
+      - name: Record one exact Bucheon domain request before mutation
+        if: steps.target.outputs.bucheon_coverage == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            if (Number(process.env.GITHUB_RUN_ATTEMPT) !== 1) throw new Error('Inspect any earlier Bucheon domain outcome before retrying');
+            if (context.payload.issue) {
+              const comments = await github.paginate(github.rest.issues.listComments, {...context.repo, issue_number: context.issue.number});
+              if (comments.some(c => c.body.includes('BUCHEON_DOMAIN_REQUEST_STARTED:'))) throw new Error('This request already attempted attachment; inspect its result before a fresh request');
+              await github.rest.issues.createComment({...context.repo, issue_number: context.issue.number,
+                body: `BUCHEON_DOMAIN_REQUEST_STARTED: run=${context.runId}. Exact bucheon.fwith.kr attachment without overrides; an unknown outcome requires inspection before another request.`});
+            }
+      - name: Bind exact approved Bucheon hostname without overrides
+        if: steps.target.outputs.bucheon_coverage == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 control/site-factory/engine/bucheon_domain_attach.py
       - name: Verify complete Goyang coverage HTTP artifact
         if: steps.target.outputs.goyang_coverage == 'true'
         env: {ROOT: "${{ steps.target.outputs.build_root }}", REVISION: "${{ steps.target.outputs.revision }}", LAUNCH_KEY: "${{ steps.target.outputs.launch_key }}", SCOPE_KEY: "${{ steps.target.outputs.scope_key }}"}
@@ -211,6 +261,8 @@ jobs:
             production-qa-provenance.json
             live-qa-report.json
             goyang-coverage-source.json
+            bucheon-coverage-source.json
+            bucheon-domain-before.json
             goyang-binding-before.json
             goyang-binding-after.json
           if-no-files-found: ignore

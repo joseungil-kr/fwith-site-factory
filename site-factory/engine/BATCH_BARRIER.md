@@ -201,3 +201,57 @@ trusted operators must acquire actual persisted independent approvals and QA
 records. Synthetic unit fixtures are never real membership/content/release
 approval. This helper is not automatically called by a workflow; a saved result
 alone does not open any gate.
+
+## Bucheon whole-dong coverage (exact additional schemaVersion 2 profile)
+
+The same scoped integrity checks also accept only `bucheon-flower-v2` /
+`bucheon-flower-v2-dong-coverage-20261004` with
+`contractType: "bucheon-all-remaining-legal-dongs"`. This does not enable other
+sites or a generic region allowlist, and leaves schema 1 and Goyang contracts
+unchanged. The exact Bucheon repository, branch and root are checked against its
+pinned registry, whose `regionalService` must contain exactly four matching fields:
+`enabled: true`, `scopeKey: "bucheon-flower-v2-dong-coverage-20261004"`,
+`definitionFile: "src/data/region-coverage.json"` and
+`policyFile: "src/data/region-policy.json"`. Missing, changed or extra fields fail
+closed; this is the existing source adapter contract, not a flexible allowlist.
+
+The Bucheon contract adds `membershipSourceSha256`, `policySha256` and
+`productsSha256` to its frozen
+identity, covering raw `region-policy.json` and `products.json` bytes. Its existing
+`coverageSha256` covers the schema-2 geographic definition. Both coverage and policy must carry the same
+reviewed membership research artifact digest as `membershipSourceSha256`. This
+binding is not authentication or independent review of the research. Each representative
+must be approved, represent exactly one legal dong, and the complete representative
+set must cover every legal unit exactly once. Membership is those representatives
+minus baseline details; the current researched set implies 24 additions while
+preserving the existing facility, not a hardcoded numerical quota.
+
+Freeze `baselineSourceSha` only after the reviewed schema-2 source adapter, exact
+query bindings and visual/product bindings are committed. Candidate/pending
+bindings are not accepted. Geographic membership alone never approves customer
+copy or assets. Changing coverage or bindings after the baseline requires a new
+frozen contract and actual independent approvals, not merely a recomputed hash.
+
+The existing pinned renderer reads additional Bucheon inputs. For each replay the
+helper copies committed coverage, policy, products and all exactly bound local
+image bytes into disposable storage alongside the four prior JSON files. Their
+bytes must remain unchanged at every checkpoint, review source and final source;
+policy image hashes must match. Bucheon's pinned controller registry and renderer,
+all four JSON files at baseline/review/checkpoint/final revisions, and these
+additional dependencies must be committed regular-file blobs. A byte-identical
+blob stored with symlink mode is refused rather than replayed as a regular file.
+A `site-catalog.json` at any of those revisions is refused because this registered
+Bucheon renderer profile does not support it; replay cannot silently omit a file
+that would change the real renderer's behavior. Replay must modify exactly the
+four JSON outputs and preserve every dependency byte.
+
+Final exact-source QA has the same complete rendered HOME/active-HUB/detail set,
+empty-HUB/unknown-route 404 set, legal/administrative alias discovery and trusted
+independent evidence requirements as Goyang. Bucheon content and QA reviewer
+identities must be nonblank strings distinct from Writer identities after trimming,
+and their evidence references must be nonblank HTTPS URLs without credentials or
+whitespace. This format check does not authenticate the reviewer or fetch the URL.
+The alias-name set is derived from
+schema-2 units and administrative crosswalk, not a guessed route count. This helper
+still returns only `staging_complete`, never production authorization, deployment
+success or actual HTTP/visual QA. Synthetic test fixtures are not real approvals.

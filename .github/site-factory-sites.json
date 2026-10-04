@@ -389,7 +389,8 @@
         "school",
         "event",
         "gift",
-        "order"
+        "order",
+        "regions"
       ],
       "allowedPageTypes": [
         "funeral-facility",
@@ -401,7 +402,8 @@
         "hospital-visit",
         "personal-gift",
         "station-transit",
-        "message-guide"
+        "message-guide",
+        "regional-service"
       ],
       "categoryPageTypes": {
         "funeral": [
@@ -427,6 +429,9 @@
           "order-help",
           "price-guide",
           "message-guide"
+        ],
+        "regions": [
+          "regional-service"
         ]
       },
       "snapshotRenderer": "structured-json-v12",
@@ -440,7 +445,30 @@
       "approvedRevision": "",
       "approvalEvidenceUrl": "",
       "stagingBuildIsolation": true,
-      "stagingWorker": "bucheon-flower-guide-qa"
+      "stagingWorker": "bucheon-flower-guide-qa",
+      "regionalService": {
+        "enabled": true,
+        "scopeKey": "bucheon-flower-v2-dong-coverage-20261004",
+        "definitionFile": "src/data/region-coverage.json",
+        "policyFile": "src/data/region-policy.json"
+      },
+      "coverageDeployment": {
+        "enabled": false,
+        "launchKey": "bucheon-flower-v2-dong-coverage-20261004",
+        "scopeKey": "bucheon-flower-v2-dong-coverage-20261004",
+        "canonicalOrigin": "https://bucheon.fwith.kr",
+        "worker": "bucheon-flower-prod-disabled",
+        "wranglerConfig": "wrangler.jsonc",
+        "baselineSourceSha": "ed5d30763d38ae1580974b1d377c07d4927dcdeb",
+        "membershipSha256": "71d937f74782ed7628122937008f6da698b393ea29c031a642dae28a7654a8a3",
+        "batchPath": "site-factory/releases/bucheon-dong-coverage-20261004/batch.json",
+        "batchEvidencePath": "site-factory/releases/bucheon-dong-coverage-20261004/evidence.json",
+        "productionManifestSha256": "",
+        "coverageSha256": "",
+        "regionPolicySha256": "",
+        "batchSha256": "",
+        "batchEvidenceSha256": ""
+      }
     }
   }
 }

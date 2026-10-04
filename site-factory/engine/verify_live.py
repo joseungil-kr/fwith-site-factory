@@ -411,15 +411,34 @@ def validate_html(html, origin, route, revision, snapshot=None, indexable=True, 
     return doc
 
 
+def validate_bucheon_response_robots(doc, indexable, robot_header, route):
+    # The reviewed Bucheon source emits meta-only noindex for production thin
+    # hubs and removes the preview blanket response header on production builds.
+    wanted = {'index', 'follow'} if indexable else {'noindex', 'follow'}
+    actual = {part.strip().lower() for part in doc.metas.get('robots', '').split(',')}
+    require(actual == wanted, 'Bucheon production robots meta mismatch at ' + route)
+    validate_bucheon_public_header(robot_header, route)
+
+
+def validate_bucheon_public_header(robot_header, route):
+    tokens = set(re.split(r'[,\s:]+', robot_header.lower()))
+    require(not tokens.intersection({'noindex', 'nofollow', 'none'}),
+            'Bucheon stale blocking response header at ' + route)
+
+
 def verify(root, origin, revision, fetch, naver_verification="", indexnow_key="", site_key=""):
+    if site_key == "bucheon-flower-v2":
+        require(origin == "https://bucheon.fwith.kr", "Bucheon live verification origin mismatch")
     manifest = json.loads((root / "src/data/publish-manifest.json").read_text())
     architecture = json.loads((root / "src/data/architecture.json").read_text()) if (root / "src/data/architecture.json").exists() else {}
     # Keep other registered sites on their established verification contract.
-    # Only the explicitly selected Seongnam release includes thin-hub/header/404 checks.
+    # Preserve Seongnam response-header requirements; Bucheon uses its own source contract.
     strict_seongnam = site_key == "seongnam-flower-v2"
+    strict_bucheon = site_key == "bucheon-flower-v2"
+    strict_routes = strict_seongnam or strict_bucheon
     routes = {"/": (None, True)}
     routes.update({p["url"]: (p["snapshotId"], True) for p in manifest["pages"] if p.get("status") == "approved"})
-    if strict_seongnam:
+    if strict_routes:
         routes.update({h["url"]: (None, h.get("children", 0) >= 3) for h in architecture.get("hubs", []) if h.get("children", 0) > 0})
     else:
         routes.update({h["url"]: (None, True) for h in architecture.get("hubs", []) if h.get("children", 1) > 0 and h.get("indexable", True)})
@@ -434,12 +453,16 @@ def verify(root, origin, revision, fetch, naver_verification="", indexnow_key=""
         if status == 403: raise PermissionError(f"Live QA blocked by HTTP403 at {route}; independent browser verification is required")
         assert status == 200, f"HTTP{status} at {route}"
         doc = validate_html(html, origin, route, revision, snapshot, indexable, headers.get("x-robots-tag", ""), strict_seongnam)
+        if strict_bucheon:
+            validate_bucheon_response_robots(doc, indexable, headers.get("x-robots-tag", ""), route)
         if route == "/" and naver_verification:
             assert doc.metas.get("naver-site-verification") == naver_verification
         fingerprint.update(html.encode())
-    status, robots, _ = response("/robots.txt")
+    status, robots, robots_headers = response("/robots.txt")
     assert status == 200 and "Allow: /" in robots and "Disallow: /" not in robots
     assert f"Sitemap: {origin}/sitemap-index.xml" in robots
+    if strict_bucheon:
+        validate_bucheon_public_header(robots_headers.get("x-robots-tag", ""), "/robots.txt")
     if indexnow_key:
         status, body, _ = response(f"/{indexnow_key}.txt")
         assert status == 200 and body.strip() == indexnow_key, "IndexNow ownership file mismatch"
@@ -447,6 +470,8 @@ def verify(root, origin, revision, fetch, naver_verification="", indexnow_key=""
     assert status == 200
     if strict_seongnam:
         assert "noindex" not in index_headers.get("x-robots-tag", "").lower(), "Sitemap has stale noindex header"
+    if strict_bucheon:
+        validate_bucheon_public_header(index_headers.get("x-robots-tag", ""), "/sitemap-index.xml")
     files = re.findall(r"<loc>(.*?)</loc>", index)
     assert files and all(url.startswith(origin + "/") for url in files)
     sitemap = ""
@@ -455,20 +480,32 @@ def verify(root, origin, revision, fetch, naver_verification="", indexnow_key=""
         assert status == 200
         if strict_seongnam:
             assert "noindex" not in headers.get("x-robots-tag", "").lower(), "Sitemap child has stale noindex header"
+        if strict_bucheon:
+            validate_bucheon_public_header(headers.get("x-robots-tag", ""), url)
         sitemap += unquote(content)
     expected_sitemap = {origin + route for route, (_, indexable) in routes.items() if indexable}
     actual_sitemap = set(re.findall(r"<loc>(.*?)</loc>", sitemap))
-    if strict_seongnam:
+    if strict_routes:
         assert actual_sitemap == expected_sitemap, f"Unexpected sitemap set: {actual_sitemap ^ expected_sitemap}"
     for route, (_, indexable) in routes.items():
         if not indexable: continue
         assert f"<loc>{origin}{route}</loc>" in sitemap, f"Missing sitemap route {route}"
     status, body, headers = response("/site-factory-live-qa-definitely-not-found/")
     assert status == 404 and "페이지를 찾을 수 없습니다" in body
-    if strict_seongnam:
+    if strict_routes:
         not_found = Document(body)
         assert "noindex" in not_found.metas.get("robots", "").lower(), "404 missing noindex meta"
         assert not not_found.canonicals and "application/ld+json" not in body, "404 has canonical or product schema"
+    if strict_bucheon:
+        require({x.strip().lower() for x in not_found.metas.get('robots', '').split(',')} ==
+                {'noindex', 'nofollow', 'noarchive'}, 'Bucheon 404 robots meta mismatch')
+        for hub in architecture.get('hubs', []):
+            if hub.get('children', 0) > 0: continue
+            status, body, _ = response(hub['url'])
+            page = Document(body)
+            require(status == 404 and not page.canonicals and 'application/ld+json' not in body
+                    and {x.strip().lower() for x in page.metas.get('robots', '').split(',')} ==
+                    {'noindex', 'nofollow', 'noarchive'}, 'Bucheon empty hub must remain a noindex 404')
     return {"pipelineState": "live_verified", "revision": revision, "origin": origin, "routes": len(routes), "manifestPages": len(manifest["pages"]), "htmlSha256": fingerprint.hexdigest()}
 
 

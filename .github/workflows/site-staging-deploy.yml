@@ -80,6 +80,16 @@ jobs:
               with open(os.environ['GITHUB_OUTPUT'],'a') as out:
                   for k,v in resolved.items():out.write(f'{k}={v}\n')
               raise SystemExit(0)
+          bucheon_coverage=False
+          if key == 'bucheon-flower-v2':
+              launch=os.environ.get('LAUNCH_KEY') or values.get('LAUNCH_KEY','')
+              scope=os.environ.get('SCOPE_KEY') or values.get('SCOPE_KEY','')
+              if launch or scope:
+                  headers=[line.split(': ',1)[0] for line in os.environ.get('ISSUE_BODY','').splitlines() if ': ' in line]
+                  if len(headers)!=len(set(headers)):raise SystemExit('Duplicate issue header')
+                  if launch!=scope or scope!='bucheon-flower-v2-dong-coverage-20261004' or site.get('regionalService',{}).get('enabled') is not True or site.get('regionalService')!={'enabled':True,'scopeKey':scope,'definitionFile':'src/data/region-coverage.json','policyFile':'src/data/region-policy.json'}:
+                      raise SystemExit('Bucheon exact initial-coverage preview scope mismatch')
+                  bucheon_coverage=True
           config,url=site.get('stagingWranglerConfig'),site.get('stagingUrl')
           if not config or not url or config==site.get('wranglerConfig','wrangler.jsonc') or url.rstrip('/')==site['siteUrl'].rstrip('/'):
               raise SystemExit('No isolated staging configuration: refusing to overwrite production')
@@ -109,7 +119,7 @@ jobs:
               for k,v in {'site_key':key,'root':site['root'],'url':url,'config':config,'revision':revision,
                           'branch':site['branch'],'isolated':str(isolated).lower(),
                           'build_root':'preview-build' if isolated else 'target/'+site['root'],
-                          'staging_worker':site.get('stagingWorker','')}.items():out.write(f'{k}={v}\n')
+                          'staging_worker':site.get('stagingWorker',''),'bucheon_coverage':str(bucheon_coverage).lower()}.items():out.write(f'{k}={v}\n')
           PYTHON
       - uses: actions/checkout@v4
         with: {ref: "${{ steps.target.outputs.revision }}", path: target}
@@ -136,7 +146,7 @@ jobs:
           git -C target archive e4eead3e881b3b4c09a60e2af5befb55b6787413:site-factory/goyang-flower | tar -xf - -C canary-baseline
       - name: Assert preview cannot route onto production
         working-directory: ${{ steps.target.outputs.build_root }}
-        env: {CONFIG: "${{ steps.target.outputs.config }}", ISOLATED: "${{ steps.target.outputs.isolated }}", STAGING_WORKER: "${{ steps.target.outputs.staging_worker }}", SITE_KEY: "${{ steps.target.outputs.site_key }}"}
+        env: {CONFIG: "${{ steps.target.outputs.config }}", ISOLATED: "${{ steps.target.outputs.isolated }}", STAGING_WORKER: "${{ steps.target.outputs.staging_worker }}", BUCHEON_COVERAGE: "${{ steps.target.outputs.bucheon_coverage }}", SITE_KEY: "${{ steps.target.outputs.site_key }}"}
         run: |
           python3 - <<'PYTHON'
           import json,os
@@ -147,7 +157,7 @@ jobs:
           if os.environ['ISOLATED']=='true':
               assert s['name']==os.environ['STAGING_WORKER'] and p['name']==s['name'].replace('-guide-qa','-prod-disabled')
               assert 'route' not in s and 'routes' not in s and 'triggers' not in s
-              if os.environ['SITE_KEY'] not in ('seongnam-flower-v2','goyang-flower-v2'):
+              if os.environ['SITE_KEY'] not in ('seongnam-flower-v2','goyang-flower-v2') and os.environ.get('BUCHEON_COVERAGE')!='true':
                   assert json.load(open('src/data/site-config.json'))['productionApproved'] is False
           PYTHON
       - uses: actions/setup-node@v4
