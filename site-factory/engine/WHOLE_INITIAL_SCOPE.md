@@ -7,7 +7,7 @@ still a local, zero-customer-page infrastructure proposal builder, not a Writer,
 Reviewer, Publisher, domain tool, registry updater or scheduler.
 
 **The first three initial targets have an independently reviewed clean source profile.**
-Namyangju, Pyeongtaek and Anyang use `flower-local-v2-whole-initial-r2`, commit
+Namyangju and Pyeongtaek use `flower-local-v2-whole-initial-r2`, commit
 `cbf988f15527d951f72fa68391f6a03f84e29476`, tree
 `884abcbcbbc1d1f74095bb680e898e26c4498492`, exactly 71 files. The same pin is
 required in code and the trusted registry. Historical 54/65-file profiles and
@@ -227,3 +227,17 @@ effective indexing. The r2 template graph gate rejects stale flags. Existing
 site entries remain unchanged, preserving historical snapshot replay bytes.
 The pinned source already renders an identical plain leading firstAnswer only
 once without changing the frozen Markdown; uncertain markup remains visible.
+
+## Anyang sourced cross-district exception
+
+Anyang alone uses `flower-local-v2-whole-initial-r3-anyang`, source
+`d7f7f15348c78d601356dcff2aaca2b3e426e216`, tree
+`08cd115e37f84014fcea8b708fa4d6cac74639a8`, 71 files. It retains the r2
+runtime and recognizes only the documented partial 비산1동 (동안구) → 안양동
+(법정 만안구) relationship, with the exact official ordinance source and
+explicit crossDistrictEvidence fields. All other cross-district relationships
+still fail. Membership and coverage must carry identical exception evidence.
+The legal canonical stays in 만안구; no duplicate URL or whole-district claim
+is introduced. This validates evidence shape; independent factual/content
+review is still required. Historical administrative names remain research
+metadata and are not implemented lookup routes by this patch.

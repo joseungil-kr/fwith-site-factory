@@ -72,6 +72,12 @@ INITIAL_SOURCE_PROFILES = {site: {
     'sourceTree': '884abcbcbbc1d1f74095bb680e898e26c4498492',
     'sourceCount': 71,
 } for site in INITIAL_REGIONS}
+INITIAL_SOURCE_PROFILES['anyang-flower-v2'] = {
+    'registryKey': 'flower-local-v2-whole-initial-r3-anyang',
+    'sourceRevision': 'd7f7f15348c78d601356dcff2aaca2b3e426e216',
+    'sourceTree': '08cd115e37f84014fcea8b708fa4d6cac74639a8',
+    'sourceCount': 71,
+}
 INITIAL_SOURCE_ROOT = 'site-factory/templates/flower-local-v2-initial'
 INITIAL_ADAPTATIONS = ADAPTATIONS | {'src/data/region-coverage.json', 'src/data/region-policy.json'}
 INITIAL_MODES = ('whole-dong-initial', 'legacy-trial')
@@ -321,7 +327,8 @@ def checked_initial_scope(site_key, launch_key, scope_key, membership_bytes, mem
                 relationship = (key, unit)
                 require(relationship not in relationships, 'Duplicate administrative relationship, including contradictory whole/partial scope')
                 relationships.add(relationship)
-                result.add((key, unit, scope))
+                exception = link.get('crossDistrictEvidence')
+                result.add((key, unit, scope, json.dumps(exception, ensure_ascii=False, sort_keys=True)))
         return result
     require(edges(aliases, True) == edges(crosswalk, False), 'Partial or changed administrative crosswalk')
     for field, actual in (('administrative_units', len(aliases)),
@@ -520,7 +527,8 @@ def validate_initial_coverage_shape(coverage):
                 and alias.get('districtKey') in district_keys, 'Invalid runtime administrative alias')
         for relation in alias['relations']:
             unit = next(unit for unit in coverage['units'] if unit['unitKey'] == relation['unitKey'])
-            require(alias['districtKey'] in unit['districtKeys'], 'Administrative alias district differs from its unit')
+            require(alias['districtKey'] in unit['districtKeys'] or exact_cross_district_evidence(coverage, alias, unit, relation),
+                    'Administrative alias district differs from its unit without exact reviewed exception evidence')
     keywords = set()
     for representative in coverage['representatives']:
         keyword = representative.get('primaryKeyword')
@@ -528,6 +536,20 @@ def validate_initial_coverage_shape(coverage):
                 and representative.get('queryEvidence') and representative.get('routeMode') == 'regional',
                 'Initial runtime requires unique researched canonical representative queries')
         keywords.add(keyword)
+
+
+def exact_cross_district_evidence(coverage, alias, unit, relation):
+    """Structural recognition of one sourced exception; factual review stays external."""
+    source = 'https://www.anyang.go.kr/main/downloadBbsFile.do?atchmnflNo=810157'
+    evidence = relation.get('crossDistrictEvidence')
+    return (coverage.get('siteKey') == 'anyang-flower-v2'
+            and alias.get('aliasKey') == '안양시/동안구/행정동/비산1동' and alias.get('districtKey') == 'dongan'
+            and unit.get('unitKey') == '안양시/만안구/법정동/안양동' and unit.get('districtKeys') == ['manan']
+            and relation.get('scope') == 'partial' and source in coverage.get('officialSourceUrls', [])
+            and type(evidence) is dict and set(evidence) == {'legalDistrictKey', 'administrativeDistrictKey', 'sourceUrl', 'sourceLocator', 'claim'}
+            and evidence.get('legalDistrictKey') == 'manan' and evidence.get('administrativeDistrictKey') == 'dongan'
+            and evidence.get('sourceUrl') == source
+            and all(isinstance(evidence.get(field), str) and evidence[field].strip() for field in ('sourceLocator', 'claim')))
 
 
 def validate_initial_empty(files, site_key, *, source_revision=None, initial_scope=None):
