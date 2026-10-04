@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {coverage,policy,architecture,regionalPages,groupsFor,assertRegionalInput,isUnboundTemplate} from '../src/lib/regional-runtime.mjs';
-import {validateDefinition,regionalMetadata} from '../src/lib/regions.mjs';
+import {validateDefinition,regionalMetadata,exactCrossDistrictEvidence} from '../src/lib/regions.mjs';
 import {validateHubMetadata} from '../scripts/qa_graph.mjs';
 const read=name=>JSON.parse(fs.readFileSync(new URL(`../src/data/${name}.json`,import.meta.url),'utf8'));
 const c={schemaVersion:2,siteKey:'template-only',scopeKey:'',unitBasis:'legal-dong-plus-eup-myeon',countIsPageQuota:false,verifiedAt:'',sourceBasisDate:'',officialSourceUrls:[],membershipSourceSha256:'',districts:[],units:[],administrativeCrosswalk:[],representatives:[]};
@@ -44,4 +44,23 @@ test('unbound sentinel is exact and cannot silently accept claims or content',()
  assert.throws(()=>validateDefinition(c,p),/opt-in mismatch/);
  assert.throws(()=>regionalMetadata(c,p,read('products'),'missing'),/reviewed binding/);
  if(coverage.siteKey==='template-only'){assert.throws(()=>groupsFor([{}]),/customer pages/);assert.throws(()=>assertRegionalInput([{}]),/customer pages/);}
+});
+
+const crossSource='https://www.anyang.go.kr/main/downloadBbsFile.do?atchmnflNo=810157';
+const crossCoverage={siteKey:'anyang-flower-v2',officialSourceUrls:[crossSource]};
+const crossAlias={aliasKey:'안양시/동안구/행정동/비산1동',districtKey:'dongan'};
+const crossUnit={unitKey:'안양시/만안구/법정동/안양동',districtKeys:['manan']};
+const crossRelation={scope:'partial',crossDistrictEvidence:{legalDistrictKey:'manan',administrativeDistrictKey:'dongan',sourceUrl:crossSource,sourceLocator:'조례 제3853호 별표2 PDF21–22',claim:'Synthetic test only; official exception must be independently reviewed.'}};
+test('cross-district relation requires the exact documented identity and evidence shape',()=>{
+ assert.equal(exactCrossDistrictEvidence(crossCoverage,crossAlias,crossUnit,crossRelation),true);
+ for(const field of Object.keys(crossRelation.crossDistrictEvidence)){
+  const rel=structuredClone(crossRelation);delete rel.crossDistrictEvidence[field];
+  assert.equal(exactCrossDistrictEvidence(crossCoverage,crossAlias,crossUnit,rel),false);
+ }
+ assert.equal(exactCrossDistrictEvidence(crossCoverage,crossAlias,crossUnit,{scope:'partial'}),false);
+ assert.equal(exactCrossDistrictEvidence(crossCoverage,crossAlias,crossUnit,{...crossRelation,scope:'whole'}),false);
+ assert.equal(exactCrossDistrictEvidence({...crossCoverage,siteKey:'other'},crossAlias,crossUnit,crossRelation),false);
+ assert.equal(exactCrossDistrictEvidence(crossCoverage,{...crossAlias,aliasKey:'other'},crossUnit,crossRelation),false);
+ assert.equal(exactCrossDistrictEvidence(crossCoverage,crossAlias,{...crossUnit,unitKey:'other'},crossRelation),false);
+ assert.equal(exactCrossDistrictEvidence({...crossCoverage,officialSourceUrls:[]},crossAlias,crossUnit,crossRelation),false);
 });

@@ -4,6 +4,17 @@ const unique=(items,key)=>{const values=items.map(x=>x[key]);if(values.some(x=>!
 const pathSafe=url=>/^\/[a-z0-9-]+\/[a-z0-9-]+\/$/.test(url);
 const official=(value,hosts)=>{try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password&&hosts.includes(u.hostname);}catch{return false;}};
 export const isRegional = page => page.category==='regions'||page.pageType==='regional-service';
+/** One officially sourced jurisdiction exception; this is not factual approval. */
+export function exactCrossDistrictEvidence(coverage,alias,unit,relation){
+ const source='https://www.anyang.go.kr/main/downloadBbsFile.do?atchmnflNo=810157';
+ const e=relation.crossDistrictEvidence;
+ return coverage.siteKey==='anyang-flower-v2'&&alias.aliasKey==='안양시/동안구/행정동/비산1동'&&alias.districtKey==='dongan'
+  &&unit.unitKey==='안양시/만안구/법정동/안양동'&&JSON.stringify(unit.districtKeys)==='["manan"]'&&relation.scope==='partial'
+  &&coverage.officialSourceUrls.includes(source)&&!!e&&typeof e==='object'&&!Array.isArray(e)
+  &&JSON.stringify(Object.keys(e).sort())===JSON.stringify(['legalDistrictKey','administrativeDistrictKey','sourceUrl','sourceLocator','claim'].sort())
+  &&e.legalDistrictKey==='manan'&&e.administrativeDistrictKey==='dongan'&&e.sourceUrl===source
+  &&['sourceLocator','claim'].every(k=>typeof e[k]==='string'&&e[k].trim());
+}
 export function validateDefinition(coverage,policy) {
  if(coverage?.schemaVersion!==2||policy?.schemaVersion!==1||coverage.siteKey!==policy.siteKey||coverage.scopeKey!==policy.scopeKey||!policy.scopeKey)fail('site/scope opt-in mismatch');
  if(coverage.unitBasis!=='legal-dong-plus-eup-myeon'||coverage.countIsPageQuota!==false)fail('unsupported unit basis or quota');
@@ -19,7 +30,7 @@ export function validateDefinition(coverage,policy) {
   if(!a.name||!districts.has(a.districtKey)||!Array.isArray(a.relations))fail('invalid administrative alias');
   if(!a.relations.length&&!a.unresolvedCandidateNames?.length)fail('empty alias requires explicit unresolved evidence');
   unique(a.relations,'unitKey');
-  for(const rel of a.relations)if(!units.has(rel.unitKey)||!units.get(rel.unitKey).districtKeys.includes(a.districtKey)||!['whole','partial','name-only','historical'].includes(rel.scope))fail(`invalid alias relation ${a.aliasKey}`);
+  for(const rel of a.relations)if(!units.has(rel.unitKey)||(!units.get(rel.unitKey).districtKeys.includes(a.districtKey)&&!exactCrossDistrictEvidence(coverage,a,units.get(rel.unitKey),rel))||!['whole','partial','name-only','historical'].includes(rel.scope))fail(`invalid alias relation ${a.aliasKey}`);
  }
  for(const key of ['pageKey','url','intentKey','primaryKeyword'])unique(coverage.representatives,key);
  const assigned=new Set();
@@ -48,7 +59,7 @@ export function directoryGroups(pages,architecture,coverage,policy) {
  const rows=regionalRows(pages,architecture,coverage,policy);if(policy.enabled!==true)return [];
  const published=new Map(rows.map(p=>[p.pageKey,p]));
  const representatives=coverage.representatives.filter(r=>r.status==='approved'&&published.has(r.pageKey));
- return coverage.districts.map(d=>({...d,items:representatives.filter(r=>r.unitKeys.some(key=>coverage.units.find(u=>u.unitKey===key).districtKeys.includes(d.key))).map(r=>({representative:r,page:published.get(r.pageKey),aliases:coverage.administrativeCrosswalk.filter(a=>a.districtKey===d.key&&a.relations.some(rel=>r.unitKeys.includes(rel.unitKey))).map(a=>({name:a.name,scope:a.relations.find(rel=>r.unitKeys.includes(rel.unitKey)).scope}))}))})).filter(d=>d.items.length);
+ return coverage.districts.map(d=>({...d,items:representatives.filter(r=>r.unitKeys.some(key=>coverage.units.find(u=>u.unitKey===key).districtKeys.includes(d.key))).map(r=>({representative:r,page:published.get(r.pageKey),aliases:coverage.administrativeCrosswalk.filter(a=>(a.districtKey===d.key||a.relations.some(rel=>r.unitKeys.includes(rel.unitKey)&&exactCrossDistrictEvidence(coverage,a,coverage.units.find(u=>u.unitKey===rel.unitKey),rel)))&&a.relations.some(rel=>r.unitKeys.includes(rel.unitKey))).map(a=>({name:a.name,scope:a.relations.find(rel=>r.unitKeys.includes(rel.unitKey)).scope}))}))})).filter(d=>d.items.length);
 }
 export function aliasTargets(name,pages,architecture,coverage,policy) {
  const groups=directoryGroups(pages,architecture,coverage,policy);return [...new Set(groups.flatMap(d=>d.items).filter(x=>x.aliases.some(a=>a.name===name)||x.representative.unitKeys.some(k=>(coverage.units.find(u=>u.unitKey===k).name===name||coverage.units.find(u=>u.unitKey===k).legalRi.includes(name)))).map(x=>x.page.url))];
