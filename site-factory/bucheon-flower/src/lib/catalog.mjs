@@ -1,5 +1,9 @@
 /** Map buyer intent to real catalog families. Unknown intent never inherits wreaths. */
 export function productFamilies(page) {
+  if(page.pageType==='regional-service'){
+    if(page.category!=='regions'||!Array.isArray(page.regionalProductFamilies)||!['catalog','consultation-only'].includes(page.regionalPurchaseMode)) throw new Error('Regional service requires reviewed purchase metadata');
+    return [...page.regionalProductFamilies];
+  }
   if (page.pageType === 'business-opening') return ['congrats'];
   if (['school-event', 'station-transit'].includes(page.pageType)) return ['bouquet'];
   if (['hospital-visit', 'personal-gift'].includes(page.pageType)) return ['bouquet', 'basket'];
@@ -23,7 +27,8 @@ export function productFamilies(page) {
 }
 export function selectProducts(page, products, limit = 3) {
   const families = productFamilies(page);
-  const rows = families.flatMap(family => products.filter(p => p.family === family));
+  const allowedProducts=page.pageType==='regional-service' ? products.filter(p=>(page.regionalProductKeys||[]).includes(p.key)) : products;
+  const rows = families.flatMap(family => allowedProducts.filter(p => p.family === family));
   if (families.length === 1) return rows.slice(0, limit);
   const first = families.map(family => rows.find(p => p.family === family)).filter(Boolean);
   return [...first, ...rows.filter(p => !first.includes(p))].slice(0, limit);

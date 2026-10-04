@@ -1,10 +1,12 @@
 import fs from 'node:fs';
 import {productFamilies,selectProducts} from '../src/lib/catalog.mjs';
-import {validateCustomerIntent} from './qa_intent.mjs';
+import {validateCustomerIntent,customerText} from './qa_intent.mjs';
+import {regionalRows,isRegional,assertRegionalMetadata,validateRegionalPurchase} from '../src/lib/regions.mjs';
 export function validateGraph(data) {
- const {pages,manifest,map,architecture,products}=data;
+ const {pages,manifest,map,architecture,products,coverage,policy}=data;
+ regionalRows(pages,architecture,coverage,policy);
  if(!pages.length) throw new Error('No approved pages');
- const compatible={funeral:['funeral-facility','order-help','price-guide'],business:['business-opening'],school:['school-event'],event:['event-venue'],gift:['hospital-visit','personal-gift','station-transit'],order:['order-help','price-guide','message-guide']};
+ const compatible={funeral:['funeral-facility','order-help','price-guide'],business:['business-opening'],school:['school-event'],event:['event-venue'],gift:['hospital-visit','personal-gift','station-transit'],order:['order-help','price-guide','message-guide'],regions:['regional-service']};
  const seen=new Set(), urls=new Set(), intents=new Set();
  for(const p of pages){
   if(!compatible[p.category]?.includes(p.pageType))throw new Error('Category/pageType mismatch '+p.pageKey);
@@ -14,6 +16,7 @@ export function validateGraph(data) {
   if(!p.snapshotId)throw new Error('Missing snapshotId '+p.pageKey);
   if(!p.title || !p.h1 || !p.firstAnswer || !p.description || !p.cardSummary)throw new Error('Incomplete content '+p.pageKey);
   validateCustomerIntent(p,products);
+  if(isRegional(p)){validateRegionalPurchase(p,products,customerText(p));assertRegionalMetadata(p,coverage,policy,products);}
   const a=architecture.pages.find(x=>x.pageKey===p.pageKey);
   const intent=a?.intentKey || p.intentKey || p.primaryKeyword;
   if(intents.has(intent))throw new Error('Intent collision '+intent);intents.add(intent);
@@ -24,6 +27,7 @@ export function validateGraph(data) {
   for(const collection of [manifest.pages,map.pages,architecture.pages]){
    const entries=collection.filter(x=>x.pageKey===p.pageKey);
    if(entries.length!==1 || entries[0].url!==p.url || entries[0].snapshotId!==p.snapshotId)throw new Error('Registry parity '+p.pageKey);
+   if(isRegional(p))assertRegionalMetadata(entries[0],coverage,policy,products);
   }
  }
  for(const p of pages) for(const key of p.relatedKeys||[])if(!seen.has(key)||key===p.pageKey)throw new Error('Invalid related key '+key);
@@ -38,6 +42,6 @@ export function validateGraph(data) {
 }
 export function loadGraph(root='.') {
  const read=name=>JSON.parse(fs.readFileSync(`${root}/src/data/${name}.json`,'utf8'));
- return {pages:read('pages'),manifest:read('publish-manifest'),map:read('page-map'),architecture:read('architecture'),products:read('products')};
+ return {pages:read('pages'),manifest:read('publish-manifest'),map:read('page-map'),architecture:read('architecture'),products:read('products'),coverage:read('region-coverage'),policy:read('region-policy')};
 }
 if(process.argv[1]?.endsWith('/qa_graph.mjs'))console.log('GRAPH QA PASSED',validateGraph(loadGraph()));
