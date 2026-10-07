@@ -1,0 +1,138 @@
+name: Namyangju C2 production source read-only verification
+on:
+  push:
+    branches: [manual-namyangju-production-check-20261007]
+    paths:
+      - '.github/workflows/namyangju-hosted-readonly-20261007.yml'
+      - '.github/scripts/namyangju-hosted-readonly-20261007.mjs'
+      - '.github/scripts/namyangju-hosted-receipts-20261007.py'
+permissions:
+  contents: read
+jobs:
+  inspect:
+    if: github.ref == 'refs/heads/manual-namyangju-production-check-20261007'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_FACTORY_REVISION: d02e86ed7fc39131431a0332a84002906be2f88b
+      SITE_URL: https://namyangju.fwith.kr
+      SITE_ORIGIN: https://namyangju.fwith.kr
+      SITE_INDEXABLE: 'true'
+      MANUAL_QA_PHASE: production
+      MANUAL_HOSTED_PRODUCTION: 'true'
+    steps:
+      - name: Check out actual read-only execution revision
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check out immutable deployed source
+        uses: actions/checkout@v4
+        with:
+          ref: d02e86ed7fc39131431a0332a84002906be2f88b
+          path: target
+          persist-credentials: false
+      - name: Check out immutable reviewed read-only M3 verifier
+        uses: actions/checkout@v4
+        with:
+          ref: 41ab5fd749d3e6f755788022158fefe06c523048
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Build exact expected deployed artifact
+        shell: bash
+        working-directory: target/site-factory/namyangju-flower
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 'd02e86ed7fc39131431a0332a84002906be2f88b'
+          npm ci --no-audit --no-fund
+          npm test
+          npm run build
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          d=pathlib.Path('dist');m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob('*')) if f.is_file()}
+          assert len(m)==58
+          assert hashlib.sha256(json.dumps(m,sort_keys=True,separators=(',',':')).encode()).hexdigest()=='1ebb3ee499491d11d3aa2e98a4e1154df169cc1faa78a6d8edc87a976403a7eb'
+          PY
+      - name: Verify every live byte with reviewed M3 verifier and fixed application client
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import ast,hashlib,json,pathlib,subprocess
+          out=pathlib.Path('namyangju-hosted-http');out.mkdir(exist_ok=True)
+          result=subprocess.run(['python3','control/scripts/manual-release-20261007/verify_http.py','control/.github/manual-release-20261007/namyangju.policy.json','production','target/site-factory/namyangju-flower/dist','d02e86ed7fc39131431a0332a84002906be2f88b'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+          private=result.stdout+result.stderr;(out/'m3-private-output.txt').write_bytes(private)
+          report={'passed':result.returncode==0,'exitCode':result.returncode,'privateDiagnosticSha256':hashlib.sha256(private).hexdigest(),'exceptionClass':None,'routeSha256':None}
+          if result.returncode:
+            last=result.stderr.decode(errors='replace').splitlines()[-1] if result.stderr else ''
+            kind,_,value=last.partition(':')
+            if kind.isidentifier():report['exceptionClass']=kind
+            try:
+              values=ast.literal_eval(value.strip())
+              route=next((v for v in values if isinstance(v,str) and v.startswith('/')),None) if isinstance(values,tuple) else None
+              if route is not None:report['routeSha256']=hashlib.sha256(route.encode()).hexdigest()
+            except (ValueError,SyntaxError):pass
+          (out/'m3-cli-status.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report));raise SystemExit(result.returncode)
+          PY
+      - name: Retain every verified live response without identity fallback
+        run: python3 .github/scripts/namyangju-hosted-receipts-20261007.py
+      - name: Install pinned capture client and Korean fonts
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/namyangju-readonly-playwright" >> "$GITHUB_ENV"
+          npm install --prefix "$RUNNER_TEMP/namyangju-readonly-playwright" --no-save --no-package-lock playwright@1.63.0
+          "$RUNNER_TEMP/namyangju-readonly-playwright/node_modules/.bin/playwright" install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+      - name: Capture actual hosted pixels with separate execution and deployed revisions
+        run: node .github/scripts/namyangju-hosted-readonly-20261007.mjs
+      - name: Enforce retrievable evidence chunks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import pathlib
+          root=pathlib.Path('target/namyangju-production-evidence')
+          for part in ['desktop','mobile']:
+            files=list((root/'screenshots'/part).glob('*.jpg'));assert len(files)==37
+            assert sum(f.stat().st_size for f in files)<24*1024*1024
+          assert sum(f.stat().st_size for f in root.glob('*.json'))<24*1024*1024
+          assert sum(f.stat().st_size for f in pathlib.Path('namyangju-hosted-http').rglob('*') if f.is_file())<24*1024*1024
+          PY
+      - name: Retain live HTTP response bodies and receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: namyangju-c2-production-http-${{ github.sha }}-${{ github.run_attempt }}
+          path: namyangju-hosted-http/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted capture facts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: namyangju-c2-production-facts-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/namyangju-production-evidence/*.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted desktop pixels
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: namyangju-c2-production-desktop-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/namyangju-production-evidence/screenshots/desktop/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted mobile pixels
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: namyangju-c2-production-mobile-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/namyangju-production-evidence/screenshots/mobile/
+          if-no-files-found: error
+          retention-days: 7
