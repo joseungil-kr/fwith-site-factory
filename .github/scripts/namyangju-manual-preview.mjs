@@ -30,7 +30,7 @@ assert.equal(frozen.length,20,'Unexpected frozen review scope');
 const provenance=read('src/data/manual-provenance.json');
 assert.equal(provenance.independentReview.status,'pending');
 assert.equal(provenance.contentHash,'1fb3a55e1938a5a4b60a3712e5812db88d2145048b4f2fb80d91f87ff14b0365');
-assert.equal(provenance.dependencyHash,'5f93a8961a36d62a28625caad68f1ea0c961ec6c7022ea3e0fd76ce865c6abc3');
+assert.equal(provenance.dependencyHash,'bcc8263b780a5c8479fc8eaf2db8c022db2f02b0e410ced09c97e1a698e90805');
 const categories=[...new Set([...frozen,...manual].map(p=>p.category))];
 const targets=[{id:'home',url:'/'},...categories.map(cat=>({id:cat+'-hub',url:`/${cat}/`})),...frozen.map(p=>({id:p.pageKey,url:p.url,page:p})),...manual.map(p=>({id:p.pageKey,url:p.url,page:p,manual:true}))];
 assert.equal(targets.length,37);
@@ -104,7 +104,7 @@ try {
       const expected=selectProducts(target.page,products,productFamilies(target.page).length>3?4:3).map(p=>p.img);
       assert.deepEqual(facts.articleProductImages,expected,'Native renderer product selection');
       const hub=`/${target.page.category}/`;
-      await page.locator(`a[href="${hub}"]`).first().click();
+      await page.locator(`a[href="${hub}"]:visible`).first().click();
       await page.waitForURL(origin+hub);
       await page.goBack({waitUntil:'networkidle'});
       await page.waitForURL(origin+target.url);
