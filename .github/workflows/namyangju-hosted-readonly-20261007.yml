@@ -1,0 +1,121 @@
+name: Namyangju fixed deployed source read-only verification
+on:
+  push:
+    branches: [manual-namyangju-hosted-check-20261007]
+    paths:
+      - '.github/workflows/namyangju-hosted-readonly-20261007.yml'
+      - '.github/scripts/namyangju-hosted-readonly-20261007.mjs'
+      - '.github/scripts/namyangju-hosted-diagnostic-20261007.py'
+permissions:
+  contents: read
+jobs:
+  inspect:
+    if: github.ref == 'refs/heads/manual-namyangju-hosted-check-20261007'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_FACTORY_REVISION: 65127f7793a7e7f1f5634fc09132da75bf5218c7
+      SITE_URL: https://namyangju-flower-guide-qa.joseungil.workers.dev
+      SITE_ORIGIN: https://namyangju-flower-guide-qa.joseungil.workers.dev
+      SITE_INDEXABLE: 'false'
+      MANUAL_QA_PHASE: preview
+      MANUAL_HOSTED_PREVIEW: 'true'
+    steps:
+      - name: Check out actual diagnostic execution revision
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check out immutable deployed source
+        uses: actions/checkout@v4
+        with:
+          ref: 65127f7793a7e7f1f5634fc09132da75bf5218c7
+          path: target
+          persist-credentials: false
+      - name: Check out immutable read-only verifier
+        uses: actions/checkout@v4
+        with:
+          ref: 9c3cebea6e4ba2c00055f74bc77a28f0f72af4e8
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Build exact expected deployed artifact
+        shell: bash
+        working-directory: target/site-factory/namyangju-flower
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = '65127f7793a7e7f1f5634fc09132da75bf5218c7'
+          npm ci --no-audit --no-fund
+          npm test
+          npm run build
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          d=pathlib.Path('dist');m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob('*')) if f.is_file()}
+          assert len(m)==58
+          assert hashlib.sha256(json.dumps(m,sort_keys=True,separators=(',',':')).encode()).hexdigest()=='630affba5bb3401ea01de95465d02d4a168a4cb912afe95a81c49b5b031d78b4'
+          PY
+      - name: Record response status and byte evidence with existing identities
+        id: probe
+        run: python3 .github/scripts/namyangju-hosted-diagnostic-20261007.py
+      - name: Verify every live byte with unchanged default verifier
+        if: steps.probe.outputs.readable == 'true'
+        run: python3 control/scripts/manual-release-20261007/verify_http.py control/.github/manual-release-20261007/namyangju.policy.json preview target/site-factory/namyangju-flower/dist 65127f7793a7e7f1f5634fc09132da75bf5218c7
+      - name: Install pinned capture client and Korean fonts
+        if: steps.probe.outputs.readable == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/namyangju-readonly-playwright" >> "$GITHUB_ENV"
+          npm install --prefix "$RUNNER_TEMP/namyangju-readonly-playwright" --no-save --no-package-lock playwright@1.63.0
+          "$RUNNER_TEMP/namyangju-readonly-playwright/node_modules/.bin/playwright" install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+      - name: Capture actual hosted pixels with separate execution and deployed revisions
+        if: steps.probe.outputs.readable == 'true'
+        run: node .github/scripts/namyangju-hosted-readonly-20261007.mjs
+      - name: Enforce retrievable evidence chunks
+        if: steps.probe.outputs.readable == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import pathlib
+          root=pathlib.Path('target/namyangju-preview-evidence')
+          for part in ['desktop','mobile']:
+            files=list((root/'screenshots'/part).glob('*.jpg'));assert len(files)==37
+            assert sum(f.stat().st_size for f in files)<24*1024*1024
+          assert sum(f.stat().st_size for f in root.glob('*.json'))<24*1024*1024
+          PY
+      - name: Retain diagnostic and capture facts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: namyangju-readonly-facts-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            namyangju-readonly-diagnostic/*.json
+            target/namyangju-preview-evidence/*.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted desktop pixels
+        if: success() && steps.probe.outputs.readable == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: namyangju-readonly-desktop-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/namyangju-preview-evidence/screenshots/desktop/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted mobile pixels
+        if: success() && steps.probe.outputs.readable == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: namyangju-readonly-mobile-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/namyangju-preview-evidence/screenshots/mobile/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Report unresolved default-client evidence without bypassing it
+        if: steps.probe.outputs.readable != 'true'
+        run: |
+          echo 'HTTP response diagnosis retained; exact default-client verification is blocked. No deployment or security change was attempted.'
+          exit 1
