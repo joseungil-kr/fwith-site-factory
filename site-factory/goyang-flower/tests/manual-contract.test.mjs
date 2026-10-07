@@ -18,7 +18,7 @@ function fixture(){
 }
 const validate=(p=proof,opts={})=>validateManualContract(pages,p,bytes,products,{bindings:actual,...opts});
 test('local candidate validates complete actual source bindings',()=>assert(validate()));
-test('pending production fails',()=>assert.throws(()=>validate(proof,{production:true}),/pending/));
+test('pending production fails',()=>assert.throws(()=>validate({...clone(proof),independentReview:{status:'pending'}},{production:true}),/pending/));
 test('synthetic test-only complete evidence passes contract',()=>{const {p,eb}=fixture();assert(validate(p,{production:true,reviewEvidenceBytes:eb}));});
 test('truthy missing evidence is insufficient',()=>{const {p}=fixture();assert.throws(()=>validate(p,{production:true}),/actual independent evidence bytes/);});
 test('modified evidence bytes fail checksum',()=>{const {p,eb}=fixture();assert.throws(()=>validate(p,{production:true,reviewEvidenceBytes:Buffer.concat([eb,Buffer.from(' ')])}),/bytes\/hash/);});

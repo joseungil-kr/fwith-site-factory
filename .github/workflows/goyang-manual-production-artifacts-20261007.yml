@@ -1,0 +1,178 @@
+name: Goyang reviewed production artifacts over loopback
+
+on:
+  push:
+    branches: [manual-goyang-source-c-20261007]
+    paths:
+      - 'site-factory/goyang-flower/**'
+      - '.github/workflows/goyang-manual-production-artifacts-20261007.yml'
+      - '.github/scripts/goyang-manual-production-capture.mjs'
+      - '.github/scripts/goyang-production-manifest.py'
+      - '.github/workflows/goyang-manual-release-20261007.yml'
+      - '.github/scripts/goyang-preview-artifacts.mjs'
+      - '.github/scripts/goyang-preview-artifacts.test.mjs'
+
+permissions:
+  contents: read
+
+jobs:
+  preview-evidence:
+    if: github.ref == 'refs/heads/manual-goyang-source-c-20261007'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_ORIGIN: https://goyang.fwith.kr
+      SITE_URL: https://goyang.fwith.kr
+      SITE_INDEXABLE: 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Assert read-only source-C evidence boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/goyang-manual-playwright" >> "$GITHUB_ENV"
+          test "$GITHUB_REF" = 'refs/heads/manual-goyang-source-c-20261007'
+          test "$SITE_URL" = 'https://goyang.fwith.kr'
+          test "$SITE_INDEXABLE" = 'true'
+          test "$SITE_ORIGIN" = 'https://goyang.fwith.kr'
+          mkdir -p goyang-preview-evidence
+          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/goyang-flower/src/data/manual-pages.json")).digest("hex");if(h!=="4ed9b0a80140ca1c867bd9f6eebe71fab43eca12c6d2d79255f3235d40a7fdb2")throw Error("Unexpected content digest"); const p=JSON.parse(fs.readFileSync("site-factory/goyang-flower/src/data/manual-provenance.json"));if(p.rendererHash!=="47a067b9428eaa454ae47afd29e0f2f5f9dc766e5f3589606e03796f01347bdc" || p.assetsHash!=="1f983822d5b6b40f56fd548d76f0bcd78953b2a7076de6ac5b34f85be01821ec" || p.frozenHash!=="263f6741c60b762bc0df73e711660a19c89aaf44ce10b230eba44f1950ecf410" || p.sourcesHash!=="11ca68d5aaf89714eacb165bca5ceb85504619dfd8341dd743a934a4cd1b5332" || p.catalogHash!=="ec5a547cf59a5641f3858deccf22f5961ac651229fc8f8e7f67d07d07527ac15" || p.catalogFileHash!=="33b543a8a051e5755742b8dacf22a77194e0d184e6173eea8c46386fd49c5b01"||p.independentReview.status!=="approved")throw Error("Unexpected candidate state");'
+          node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("site-factory/goyang-flower/src/data/manual-provenance.json")); fs.writeFileSync("goyang-preview-evidence/revision.json",JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,provenance:p},null,2));'
+      - name: Install native site dependencies
+        working-directory: site-factory/goyang-flower
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Native approved indexable production-origin build
+        shell: bash
+        working-directory: site-factory/goyang-flower
+        run: |
+          set -euo pipefail
+          npm run build 2>&1 | tee "$GITHUB_WORKSPACE/goyang-preview-evidence/native-build.log"
+      - name: Record and independently reproduce exact artifact bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/goyang-production-manifest.py record
+          (cd site-factory/goyang-flower && npm run build) 2>&1 | tee goyang-preview-evidence/rebuild.log
+          python3 .github/scripts/goyang-production-manifest.py verify
+      - name: Native regression tests
+        shell: bash
+        working-directory: site-factory/goyang-flower
+        run: |
+          set -euo pipefail
+          npm test 2>&1 | tee "$GITHUB_WORKSPACE/goyang-preview-evidence/native-tests.log"
+      - name: Install pinned official Playwright and Korean fonts
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix "$PLAYWRIGHT_INSTALL_ROOT" --no-save --no-package-lock playwright@1.63.0
+          "$PLAYWRIGHT_INSTALL_ROOT/node_modules/.bin/playwright" install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          fc-match 'Noto Sans CJK KR' > goyang-preview-evidence/font-match.txt
+          npm list --prefix "$PLAYWRIGHT_INSTALL_ROOT" --json > goyang-preview-evidence/playwright-dependencies.json
+      - name: Capture production artifact over loopback transport
+        run: node .github/scripts/goyang-manual-production-capture.mjs
+      - name: Partition original evidence without recompression
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test .github/scripts/goyang-preview-artifacts.test.mjs
+          node --input-type=module -e "import {partitionEvidence} from './.github/scripts/goyang-preview-artifacts.mjs';partitionEvidence('goyang-preview-evidence');"
+      - name: Retain logs and full capture manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: goyang-manual-preview-${{ github.sha }}-${{ github.run_attempt }}-logs
+          path: goyang-preview-evidence/parts/logs/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 01
+        if: always() && hashFiles('goyang-preview-evidence/parts/screens-01/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: goyang-manual-preview-${{ github.sha }}-${{ github.run_attempt }}-screens-01
+          path: goyang-preview-evidence/parts/screens-01/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 02
+        if: always() && hashFiles('goyang-preview-evidence/parts/screens-02/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: goyang-manual-preview-${{ github.sha }}-${{ github.run_attempt }}-screens-02
+          path: goyang-preview-evidence/parts/screens-02/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 03
+        if: always() && hashFiles('goyang-preview-evidence/parts/screens-03/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: goyang-manual-preview-${{ github.sha }}-${{ github.run_attempt }}-screens-03
+          path: goyang-preview-evidence/parts/screens-03/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 04
+        if: always() && hashFiles('goyang-preview-evidence/parts/screens-04/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: goyang-manual-preview-${{ github.sha }}-${{ github.run_attempt }}-screens-04
+          path: goyang-preview-evidence/parts/screens-04/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 05
+        if: always() && hashFiles('goyang-preview-evidence/parts/screens-05/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: goyang-manual-preview-${{ github.sha }}-${{ github.run_attempt }}-screens-05
+          path: goyang-preview-evidence/parts/screens-05/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 06
+        if: always() && hashFiles('goyang-preview-evidence/parts/screens-06/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: goyang-manual-preview-${{ github.sha }}-${{ github.run_attempt }}-screens-06
+          path: goyang-preview-evidence/parts/screens-06/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 07
+        if: always() && hashFiles('goyang-preview-evidence/parts/screens-07/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: goyang-manual-preview-${{ github.sha }}-${{ github.run_attempt }}-screens-07
+          path: goyang-preview-evidence/parts/screens-07/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 08
+        if: always() && hashFiles('goyang-preview-evidence/parts/screens-08/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: goyang-manual-preview-${{ github.sha }}-${{ github.run_attempt }}-screens-08
+          path: goyang-preview-evidence/parts/screens-08/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain exact production artifact bytes
+        uses: actions/upload-artifact@v4
+        with:
+          name: goyang-production-dist-${{ github.sha }}-${{ github.run_attempt }}
+          path: site-factory/goyang-flower/dist/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7

@@ -1,0 +1,102 @@
+name: Goyang reviewed assets-only manual release
+on:
+  push:
+    branches: [site-factory-goyang-v2]
+permissions:
+  contents: read
+concurrency:
+  group: goyang-reviewed-manual-release
+  cancel-in-progress: false
+jobs:
+  release:
+    if: github.ref == 'refs/heads/site-factory-goyang-v2'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      PHASE: production
+      SITE_URL: https://goyang.fwith.kr
+      SITE_ORIGIN: https://goyang.fwith.kr
+      SITE_INDEXABLE: 'true'
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          path: target
+          persist-credentials: false
+      - name: Check out trusted current approval authority
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: authority
+          persist-credentials: false
+      - name: Check out independently reviewed immutable control
+        uses: actions/checkout@v4
+        with:
+          ref: 9c3cebea6e4ba2c00055f74bc77a28f0f72af4e8
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Require independent exact-source authority before building
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 control/scripts/manual-release-20261007/gate.py authority/.github/manual-release-20261007/goyang.policy.json authority/.github/manual-release-20261007/goyang.approval.json target "$PHASE"
+      - name: Install exact native dependencies
+        working-directory: target/site-factory/goyang-flower
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Native regression, source and rendered-output gates
+        shell: bash
+        working-directory: target/site-factory/goyang-flower
+        run: |
+          set -euo pipefail
+          if [ "$PHASE" = production ]; then test -f production-indexing.enabled; fi
+          npm run build
+          npm test
+          python3 scripts/qa_static.py
+          node scripts/qa_bootstrap_or_graph.mjs
+          node scripts/qa_manual.mjs
+      - name: Require independently reviewed artifact bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 control/scripts/manual-release-20261007/gate.py authority/.github/manual-release-20261007/goyang.policy.json authority/.github/manual-release-20261007/goyang.approval.json target "$PHASE" artifact
+      - name: Install pinned official upload client
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix "$RUNNER_TEMP/goyang-manual-wrangler" --no-save --no-package-lock wrangler@4.147.0
+          test "$(node -p 'require(process.env.RUNNER_TEMP+"/goyang-manual-wrangler/node_modules/wrangler/package.json").version')" = '4.147.0'
+      - name: Upload reviewed static assets while preserving existing provider state
+        shell: bash
+        working-directory: target/site-factory/goyang-flower
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          helper="$GITHUB_WORKSPACE/control/scripts/manual-release-20261007"
+          policy="$GITHUB_WORKSPACE/authority/.github/manual-release-20261007/goyang.policy.json"
+          if [ "$PHASE" = production ]; then test -f production-indexing.enabled; fi
+          python3 "$helper/gate.py" "$policy" "$GITHUB_WORKSPACE/authority/.github/manual-release-20261007/goyang.approval.json" "$GITHUB_WORKSPACE/target" "$PHASE" artifact
+          python3 "$helper/provider_check.py" "$policy" "$PHASE" before
+          python3 "$helper/write_assets_only_config.py" "$policy" "$PHASE"
+          trap 'original=$?; trap - EXIT; python3 "$helper/provider_check.py" "$policy" "$PHASE" after; checked=$?; if [ "$original" -ne 0 ]; then exit "$original"; fi; exit "$checked"' EXIT
+          "$RUNNER_TEMP/goyang-manual-wrangler/node_modules/.bin/wrangler" deploy --config .manual-assets-only-20261007.jsonc
+      - name: Verify every live byte, response header and real 404
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 control/scripts/manual-release-20261007/verify_http.py authority/.github/manual-release-20261007/goyang.policy.json "$PHASE" target/site-factory/goyang-flower/dist "$GITHUB_SHA"
+      - name: Retain assets-only release receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: goyang-manual-production-receipts-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/manual-20261007-goyang-flower-v2-production-binding.json
+          if-no-files-found: warn
+          retention-days: 7
