@@ -1,0 +1,220 @@
+name: Hwaseong C2 production source read-only verification
+on:
+  push:
+    branches: [manual-hwaseong-production-check-20261007]
+    paths:
+      - '.github/workflows/hwaseong-hosted-readonly-20261007.yml'
+      - '.github/scripts/hwaseong-hosted-readonly-20261007.mjs'
+      - '.github/scripts/hwaseong-hosted-receipts-20261007.py'
+permissions:
+  contents: read
+jobs:
+  inspect:
+    if: github.ref == 'refs/heads/manual-hwaseong-production-check-20261007'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_FACTORY_REVISION: d7d7f47ecafc9bd9e3a75511379d430cd00e8510
+      SITE_URL: https://hwaseong.fwith.kr
+      SITE_ORIGIN: https://hwaseong.fwith.kr
+      SITE_INDEXABLE: 'true'
+      MANUAL_PREVIEW: 'false'
+      MANUAL_QA_PHASE: production
+      MANUAL_HOSTED_PRODUCTION: 'true'
+    steps:
+      - name: Check out actual read-only execution revision
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check out immutable deployed source
+        uses: actions/checkout@v4
+        with:
+          ref: d7d7f47ecafc9bd9e3a75511379d430cd00e8510
+          path: target
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check out immutable reviewed read-only M4 verifier
+        uses: actions/checkout@v4
+        with:
+          ref: 69a7fee6a64a21443be19eca50d734d9652a968c
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build exact expected deployed artifact
+        shell: bash
+        working-directory: target/site-factory/hwaseong-flower
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 'd7d7f47ecafc9bd9e3a75511379d430cd00e8510'
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run build
+          node --test scripts/*.test.mjs tests/*.test.mjs
+          python3 scripts/qa_static.py
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          d=pathlib.Path('dist');m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob('*')) if f.is_file()}
+          assert len(m)==87
+          assert hashlib.sha256(json.dumps(m,sort_keys=True,separators=(',',':')).encode()).hexdigest()=='91dc4b5fb190e98312e23dc1c7adf9a51dc4f4a8f99f262f7d6d8beb4af7bfea'
+          PY
+      - name: Verify every live byte with reviewed M4 verifier and fixed application client
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import ast,hashlib,json,pathlib,subprocess
+          out=pathlib.Path('hwaseong-hosted-http');out.mkdir(exist_ok=True)
+          result=subprocess.run(['python3','control/scripts/manual-release-20261007/verify_http.py','control/.github/manual-release-20261007/hwaseong.policy.json','production','target/site-factory/hwaseong-flower/dist','d7d7f47ecafc9bd9e3a75511379d430cd00e8510'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+          private=result.stdout+result.stderr;(out/'m4-private-output.txt').write_bytes(private)
+          report={'passed':result.returncode==0,'exitCode':result.returncode,'privateDiagnosticSha256':hashlib.sha256(private).hexdigest(),'exceptionClass':None,'routeSha256':None}
+          if result.returncode:
+            last=result.stderr.decode(errors='replace').splitlines()[-1] if result.stderr else ''
+            kind,_,value=last.partition(':')
+            if kind.isidentifier():report['exceptionClass']=kind
+            try:
+              values=ast.literal_eval(value.strip())
+              route=next((v for v in values if isinstance(v,str) and v.startswith('/')),None) if isinstance(values,tuple) else None
+              if route is not None:report['routeSha256']=hashlib.sha256(route.encode()).hexdigest()
+            except (ValueError,SyntaxError):pass
+          (out/'m4-cli-status.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report));raise SystemExit(result.returncode)
+          PY
+      - name: Retain every verified live response without identity fallback
+        run: python3 .github/scripts/hwaseong-hosted-receipts-20261007.py
+      - name: Install pinned capture client and Korean fonts
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/hwaseong-readonly-playwright" >> "$GITHUB_ENV"
+          npm install --prefix "$RUNNER_TEMP/hwaseong-readonly-playwright" --no-save --no-package-lock playwright@1.63.0
+          "$RUNNER_TEMP/hwaseong-readonly-playwright/node_modules/.bin/playwright" install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+      - name: Capture actual hosted pixels with separate execution and deployed revisions
+        run: node .github/scripts/hwaseong-hosted-readonly-20261007.mjs
+      - name: Enforce retrievable evidence chunks
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PYTHON'
+          import pathlib,hashlib,json,shutil
+          root=pathlib.Path('target/hwaseong-production-evidence');parts=root/'parts';parts.mkdir(parents=True,exist_ok=True)
+          files=sorted((root/'screenshots').rglob('*.jpg'));assert len(files)<=130
+          index=[]
+          for n in range(0,len(files),20):
+            batch=files[n:n+20];dest=parts/('screens-'+str(n//20+1).zfill(2));dest.mkdir(exist_ok=True)
+            assert sum(f.stat().st_size for f in batch)<24*1024*1024
+            rows=[]
+            for f in batch:
+              copied=dest/f.name;shutil.copyfile(f,copied);h=hashlib.sha256(f.read_bytes()).hexdigest();assert hashlib.sha256(copied.read_bytes()).hexdigest()==h
+              rows.append({'name':f.name,'sha256':h,'bytes':f.stat().st_size})
+            index.append({'part':dest.name,'files':rows})
+          assert sum(f.stat().st_size for f in root.glob('*.json'))<24*1024*1024
+          assert sum(f.stat().st_size for part in ['browser-html','browser-input','browser-receipts','browser-private-failures'] for f in (root/part).rglob('*') if f.is_file())<24*1024*1024
+          assert sum(f.stat().st_size for f in pathlib.Path('hwaseong-hosted-http').rglob('*') if f.is_file())<24*1024*1024
+          (root/'artifact-parts.json').write_text(json.dumps({'screenshots':len(files),'parts':index},indent=2)+'\n')
+          PYTHON
+      - name: Retain live HTTP response bodies and receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-c2-production-http-${{ github.sha }}-${{ github.run_attempt }}
+          path: hwaseong-hosted-http/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted capture facts
+        if: always() && hashFiles('target/hwaseong-production-evidence/*.json') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-c2-production-facts-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/hwaseong-production-evidence/*.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain original hosted screenshot part 01
+        if: always() && hashFiles('target/hwaseong-production-evidence/parts/screens-01/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-c2-production-screens-01-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/hwaseong-production-evidence/parts/screens-01/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain original hosted screenshot part 02
+        if: always() && hashFiles('target/hwaseong-production-evidence/parts/screens-02/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-c2-production-screens-02-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/hwaseong-production-evidence/parts/screens-02/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain original hosted screenshot part 03
+        if: always() && hashFiles('target/hwaseong-production-evidence/parts/screens-03/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-c2-production-screens-03-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/hwaseong-production-evidence/parts/screens-03/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain original hosted screenshot part 04
+        if: always() && hashFiles('target/hwaseong-production-evidence/parts/screens-04/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-c2-production-screens-04-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/hwaseong-production-evidence/parts/screens-04/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain original hosted screenshot part 05
+        if: always() && hashFiles('target/hwaseong-production-evidence/parts/screens-05/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-c2-production-screens-05-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/hwaseong-production-evidence/parts/screens-05/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain original hosted screenshot part 06
+        if: always() && hashFiles('target/hwaseong-production-evidence/parts/screens-06/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-c2-production-screens-06-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/hwaseong-production-evidence/parts/screens-06/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain original hosted screenshot part 07
+        if: always() && hashFiles('target/hwaseong-production-evidence/parts/screens-07/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-c2-production-screens-07-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/hwaseong-production-evidence/parts/screens-07/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain original hosted screenshot part 08
+        if: always() && hashFiles('target/hwaseong-production-evidence/parts/screens-08/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-c2-production-screens-08-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/hwaseong-production-evidence/parts/screens-08/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain actual browser HTML and immutable comparison receipts
+        if: always() && hashFiles('target/hwaseong-production-evidence/browser-html/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-c2-production-browser-bodies-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            target/hwaseong-production-evidence/browser-html/
+            target/hwaseong-production-evidence/browser-input/
+            target/hwaseong-production-evidence/browser-receipts/
+            target/hwaseong-production-evidence/browser-private-failures/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
