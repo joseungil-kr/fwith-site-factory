@@ -1,6 +1,6 @@
 import truth from '../data/business-truth.json';
 import architecture from '../data/architecture.json';
-import pages from '../data/pages.json';
+import pages from '../lib/all-pages.mjs';
 const domain = (import.meta.env.SITE_URL || 'https://suwon.fwith.kr').replace(/\/$/, '');
 export const site = {
   brand: truth.brand, region: '수원', domain,
@@ -12,4 +12,6 @@ export const site = {
   deliveryNotice: truth.deliveryNotice, productVariationNotice: truth.productVariationNotice,
   naverVerification: '80fedf144567fea99fe833d2937731a190854c41'
 };
-export const groups = architecture.hubs.filter(h => pages.some(p => p.category === h.category)).map(h => ({cat: h.category, label: h.label, url: h.url}));
+const manualHubs = [{category:"regions",label:"지역별 주문",url:"/regions/"}];
+export const groups = [...architecture.hubs,...manualHubs].filter(h => pages.some(p => p.category === h.category)).map(h => ({cat: h.category, label: h.label, url: h.url}));
+

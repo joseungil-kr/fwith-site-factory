@@ -1,5 +1,6 @@
 /** Map buyer intent to real catalog families. Unknown intent never inherits wreaths. */
 export function productFamilies(page) {
+  if(page.publicationMode==='manual-user-request' && page.pageType==='regional-service') return page.regionalProductFamilies;
   if (page.pageType === 'business-opening') return ['congrats'];
   if (['school-event', 'station-transit'].includes(page.pageType)) return ['bouquet'];
   if (['hospital-visit', 'personal-gift'].includes(page.pageType)) return ['bouquet', 'basket'];
@@ -13,6 +14,7 @@ export function productFamilies(page) {
   return [];
 }
 export function selectProducts(page, products, limit = 3) {
+  if(page.publicationMode==='manual-user-request' && page.pageType==='regional-service') return page.regionalProductKeys.map(k=>products.find(p=>p.key===k)).filter(Boolean).slice(0,limit);
   const families = productFamilies(page);
   const rows = families.flatMap(family => products.filter(p => p.family === family));
   if (families.length === 1) return rows.slice(0, limit);
@@ -32,3 +34,4 @@ export function homeProducts(products) {
   const keys = ['funeral-basic', 'congrats-basic', 'bouquet-happiness', 'basket-sunshine', 'bouquet-blue', 'funeral-premium'];
   return keys.map(key => products.find(p => p.key === key)).filter(Boolean);
 }
+

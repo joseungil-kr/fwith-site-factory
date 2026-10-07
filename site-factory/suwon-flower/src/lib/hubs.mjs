@@ -1,6 +1,7 @@
 /** Decision help stays category-specific; it does not prescribe detail structure. */
 /** @type {Record<string, {intro:string, decision:string[], families:string[], heading:string, cta:string}>} */
 export const hubGuides = {
+  regions: {intro:'수원에서 꽃을 받을 실제 주소를 확인하고 꽃다발·꽃바구니·화환 중 목적에 맞는 상품을 선택하세요. 행정동 이름과 주소의 법정동이 다를 수 있어 건물명과 수령정보를 함께 준비하는 것이 좋습니다.',decision:['법정동·도로명주소·건물명으로 도착할 장소 확인','선물·개업·조문에 맞는 꽃 형태 선택','수령시간·반입 조건과 추가 배송비 상담'],families:['bouquet','basket','congrats','funeral'],heading:'주소와 목적에 맞는 꽃 상품',cta:'꽃 상품 확인'},
   funeral: {
     intro: '빈소에 조의를 전할 근조화환을 고른 뒤 장례식장·빈소·상주명과 보내는 분 표기를 준비하세요. 기본 3단은 59,000원입니다.',
     decision: ['기본·고급·특대 중 예산에 맞는 크기 선택', '병원 본관 주소와 장례식장·빈소를 구분', '위로 문구와 개인·회사·단체 발신자 표기 확인'],
@@ -38,3 +39,4 @@ export function hubProducts(category, products, limit = 3) {
   const rest = families.flatMap(family => products.filter(p => p.family === family && !first.includes(p)));
   return [...first, ...rest].slice(0, limit);
 }
+

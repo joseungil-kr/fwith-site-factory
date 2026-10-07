@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import {socialImageFor} from '../src/lib/social-image.mjs';
 const pages=JSON.parse(fs.readFileSync('src/data/pages.json','utf8'));
 const architecture=JSON.parse(fs.readFileSync('src/data/architecture.json','utf8'));
+const origin=(process.env.SITE_URL||'https://suwon.fwith.kr').replace(/\/$/,'');
 const routes=['/',...architecture.hubs.filter(h=>pages.some(p=>p.category===h.category)).map(h=>h.url),...pages.map(p=>p.url)];
 test('all registered content routes have one middle purchase panel and verified social image',()=>{
   assert.equal(new Set(routes).size,routes.length);
@@ -15,12 +16,12 @@ test('all registered content routes have one middle purchase panel and verified 
     assert.match(panel,/href="https:\/\/fwith\.co\.kr"/);
     assert.doesNotMatch(panel,/<img\b/);
     const og=[...html.matchAll(/property="og:image" content="([^"]+)"/g)];assert.equal(og.length,1);
-    assert.ok(og[0][1].startsWith('https://suwon.fwith.kr/images/products/'));
-    const path=og[0][1].replace('https://suwon.fwith.kr','');const meta=socialImageFor({img:path});assert.equal(meta.path,path);
+    assert.ok(og[0][1].startsWith(origin+'/images/products/'));
+    const path=og[0][1].replace(origin,'');const meta=socialImageFor({img:path});assert.equal(meta.path,path);
     for(const [key,value] of [['width',meta.width],['height',meta.height],['type',meta.type]])assert.ok(html.includes(`property="og:image:${key}" content="${value}"`));
     assert.ok(fs.existsSync(`public${path}`));
     assert.equal((html.match(/<h1(?:\s|>)/g)||[]).length,1);
-    assert.ok(html.includes(`rel="canonical" href="https://suwon.fwith.kr${route}"`));
+    assert.ok(html.includes(`rel="canonical" href="${origin}${route}"`));
   }
 });
 test('an unknown catalog reference falls back to a verified existing product asset',()=>{

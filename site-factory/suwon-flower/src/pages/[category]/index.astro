@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PurchaseBanner from '../../components/PurchaseBanner.astro';
-import pages from '../../data/pages.json';
+import pages from '../../lib/all-pages.mjs';
 import products from '../../data/products.json';
 import ProductCards from '../../components/ProductCards.astro';
 import {site,groups} from '../../config/site';
@@ -24,3 +24,4 @@ const addressPage=(pages as any[]).find(p=>p.visualIntent==='order_address');
 <section class="card-grid big">{items.map((p:any)=><a class="page-card" href={p.url}><strong>{p.primaryKeyword}</strong><span>{p.cardSummary}</span><em>자세히 보기 →</em></a>)}</section>
 {addressPage && <aside class="journey-link"><span>수령정보 작성이 필요하다면</span><a href={addressPage.url}>주소·수령자 작성 안내 →</a></aside>}
 </BaseLayout>
+

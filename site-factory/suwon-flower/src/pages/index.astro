@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PurchaseBanner from '../components/PurchaseBanner.astro';
 import {site,groups} from '../config/site';
 import ProductCards from '../components/ProductCards.astro';
-import pages from '../data/pages.json';
+import pages from '../lib/all-pages.mjs';
 import products from '../data/products.json';
 import {homeProducts} from '../lib/catalog.mjs';
 import {hubGuides} from '../lib/hubs.mjs';
@@ -25,3 +25,4 @@ const heroProducts=['bouquet-happiness','basket-sunshine','funeral-basic','congr
 {groups.map(g=><article class="hub-block"><div class="hub-heading"><h3>{g.label}</h3><a href={g.url}>전체 보기 →</a></div><div class="card-grid">{pages.filter((p:any)=>p.category===g.cat).map((p:any)=><a class="page-card" href={p.url}><strong>{p.primaryKeyword}</strong><span>{p.cardSummary}</span></a>)}</div></article>)}</section>
 <section class="conversion-panel"><div><span class="eyebrow">주문 전에 준비하면 빨라집니다</span><h2>상품 · 주소 · 수령자 · 문구</h2><p>장례식장은 빈소·상주 정보를, 행사장은 행사명·홀·담당자를 함께 알려주세요.</p></div><div class="actions"><a class="btn light" href={site.phoneHref}>전화주문</a><a class="btn yellow" href={site.orderUrl}>온라인 주문</a></div></section>
 </BaseLayout>
+
