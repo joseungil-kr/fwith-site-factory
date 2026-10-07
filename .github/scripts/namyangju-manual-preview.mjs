@@ -108,6 +108,11 @@ try {
       await page.waitForURL(origin+hub);
       await page.goBack({waitUntil:'networkidle'});
       await page.waitForURL(origin+target.url);
+      await page.evaluate(()=>document.fonts.ready);
+      for(const img of await page.locator('img').all())await img.scrollIntoViewIfNeeded();
+      await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));
+      row.postNavigationImages=await page.evaluate(()=>[...document.images].map(i=>({src:new URL(i.src).pathname,complete:i.complete,width:i.naturalWidth,height:i.naturalHeight})));
+      assert(row.postNavigationImages.every(i=>i.complete&&i.width>0&&i.height>0),'Post-navigation decoded images');
       await page.evaluate(()=>window.scrollTo(0,0));
     }
     row.checks=['http-200','local-noindex','canonical','exact-commit','one-h1','no-horizontal-overflow','decoded-images','real-cta',...(target.page?['exact-page-marker','product-families','local-back-navigation']:[])];
