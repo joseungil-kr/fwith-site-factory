@@ -20,8 +20,8 @@ localizationPolicy: "local-required"
 region: "화성"
 verifiedAt: "2026-10-07"
 updatedAt: "2026-10-07"
-sourceUrls: ["https://www.srail.co.kr/cms/archive.do?pageId=KR0406020000", "https://hac.hcf.or.kr/content.do?key=2511190026", "https://dongtan.hallym.or.kr/index.asp", "https://www.hscity.go.kr/dongtan/dtTown/dongtan06/dongtan06Status.jsp"]
-sources: [{"name": "SR 동탄역 공식 안내", "url": "https://www.srail.co.kr/cms/archive.do?pageId=KR0406020000", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "화성시 공연장 반석아트홀 이용 안내", "url": "https://hac.hcf.or.kr/content.do?key=2511190026", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "한림대학교동탄성심병원 공식 홈페이지", "url": "https://dongtan.hallym.or.kr/index.asp", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "동탄6동 현재 법정동 안내", "url": "https://www.hscity.go.kr/dongtan/dtTown/dongtan06/dongtan06Status.jsp", "type": "official", "verifiedAt": "2026-10-07"}]
+sourceUrls: ["https://www.srail.co.kr/cms/archive.do?pageId=KR0406020000", "https://hac.hcf.or.kr/content.do?key=2511190026", "https://dongtan.hallym.or.kr/index.asp", "https://www.hscity.go.kr/dongtan/dtTown/dongtan06/dongtan06Status.jsp", "https://www.hscity.go.kr/town/dept/BD_selectDeptCntnts.do?q_cntntsTy=information&q_deptCode=57700150000", "https://www.hscity.go.kr/town/dept/BD_selectDeptCntnts.do?q_cntntsTy=guide&q_deptCode=57700120000", "https://law.go.kr/flDownload.do?flNm=%5B%EB%B6%99%EC%9E%84%5D+%ED%96%89%EC%A0%95%EA%B5%AC%EC%97%AD%EB%B3%84+%EC%A7%91%EB%B0%B0%EA%B6%8C%EC%97%AD&flSeq=161782643", "https://hwaseongcci.korcham.net/file/dext5uploaddata/2026/%EC%98%A4%EC%82%B0%EB%8F%99%20%EB%AA%85%EC%B9%AD%EB%B3%80%EA%B2%BD%20%EC%95%88%EB%82%B4%20%ED%8F%AC%EC%8A%A4%ED%84%B0.pdf"]
+sources: [{"name": "SR 동탄역 공식 안내", "url": "https://www.srail.co.kr/cms/archive.do?pageId=KR0406020000", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "화성시 공연장 반석아트홀 이용 안내", "url": "https://hac.hcf.or.kr/content.do?key=2511190026", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "한림대학교동탄성심병원 공식 홈페이지", "url": "https://dongtan.hallym.or.kr/index.asp", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "동탄6동 현재 법정동 안내", "url": "https://www.hscity.go.kr/dongtan/dtTown/dongtan06/dongtan06Status.jsp", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "동탄6동 현재 기본현황", "url": "https://www.hscity.go.kr/town/dept/BD_selectDeptCntnts.do?q_cntntsTy=information&q_deptCode=57700150000", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "동탄3동 행정복지센터 안내", "url": "https://www.hscity.go.kr/town/dept/BD_selectDeptCntnts.do?q_cntntsTy=guide&q_deptCode=57700120000", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "행정구역별 집배권역 능동 부분 표기", "url": "https://law.go.kr/flDownload.do?flNm=%5B%EB%B6%99%EC%9E%84%5D+%ED%96%89%EC%A0%95%EA%B5%AC%EC%97%AD%EB%B3%84+%EC%A7%91%EB%B0%B0%EA%B6%8C%EC%97%AD&flSeq=161782643", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "화성시 오산동 여울동 명칭 변경 안내", "url": "https://hwaseongcci.korcham.net/file/dext5uploaddata/2026/%EC%98%A4%EC%82%B0%EB%8F%99%20%EB%AA%85%EC%B9%AD%EB%B3%80%EA%B2%BD%20%EC%95%88%EB%82%B4%20%ED%8F%AC%EC%8A%A4%ED%84%B0.pdf", "type": "official", "verifiedAt": "2026-10-07"}]
 relatedPageKeys: ["hwaseong-flower-launch-29", "hwaseong-flower-launch-34"]
 ogImage: "/images/products/congrats-basic.jpg"
 ogImageAlt: "꽃이랑 축하 3단 화환 상품 예시"
@@ -32,6 +32,12 @@ ogImageAlt: "꽃이랑 축하 3단 화환 상품 예시"
 ## 동탄역: 열차 도착시각과 꽃 인수 장소를 나눕니다
 
 SR은 동탄역을 동탄역로 지하151의 지하 역사로 안내합니다. 열차에서 내렸다는 사실과 지상에서 꽃을 받았다는 사실은 다르므로 개찰구 안팎·출입구·만날 사람을 정해 주세요. 역사 안내에 남아 있는 오산동 표기는 현재 여울동 명칭과 대조하며 오산시로 배송지를 바꾸지 않습니다. [동탄역 꽃 수령](/places/dongtan-station-flower-pickup-timing/)에서 이동을 고려한 인수 방법을 확인하세요.
+
+## 동탄6동 이름과 능동 주소를 구분하세요
+
+동탄6동의 현재 공식 안내에는 여울동·방교동·금곡동이 각각 적혀 있습니다. 동탄6동이라는 말만으로 동탄역에서 받는 주문으로 정하지 말고, 받는 사람이 알려 준 도로명·건물번호·건물명과 실제 인수 지점을 확인해 주세요.
+
+능동은 병점구와 동탄구에 걸친 부분이 있어 동 이름만으로 구를 정하면 혼동할 수 있습니다. 받는 사람에게 구 이름까지 포함한 전체 도로명 주소와 건물·동·호실을 받아 주세요. 동탄3동 공식 안내의 주소도 ‘화성시 동탄구 지성로 151’처럼 구와 도로명이 함께 표시됩니다. 이 사례를 다른 능동 주소에 그대로 적용하지 않습니다. 병점 쪽 수령 준비는 [병점 지역 꽃배달 안내](/places/byeongjeom-local-flower-delivery/)도 함께 확인하세요.
 
 ## 반석아트홀: 꽃다발 보관 안내와 화환 설치는 별개
 

@@ -20,8 +20,8 @@ localizationPolicy: "local-required"
 region: "화성"
 verifiedAt: "2026-10-07"
 updatedAt: "2026-10-07"
-sourceUrls: ["https://www.haevichi.com/rollinghills/ko/meeting", "https://www.haevichi.com/ko/mobile/html/sub/concierge_rollinghills.html", "https://www.15774129.go.kr/portal/fnlfac/price_info.ajax?facilitycd=7000002716&sanbundiv=", "https://www.kyowonyeum.co.kr/Site/Funeral?fnrCd=1001"]
-sources: [{"name": "롤링힐스 공식 연회·웨딩 주소안내", "url": "https://www.haevichi.com/rollinghills/ko/meeting", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "롤링힐스 공식 컨시어지 층별안내", "url": "https://www.haevichi.com/ko/mobile/html/sub/concierge_rollinghills.html", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "e하늘 화성유일병원장례식장", "url": "https://www.15774129.go.kr/portal/fnlfac/price_info.ajax?facilitycd=7000002716&sanbundiv=", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "교원예움 화성 공식 시설안내", "url": "https://www.kyowonyeum.co.kr/Site/Funeral?fnrCd=1001", "type": "official", "verifiedAt": "2026-10-07"}]
+sourceUrls: ["https://www.haevichi.com/rollinghills/ko/meeting", "https://www.haevichi.com/ko/mobile/html/sub/concierge_rollinghills.html", "https://www.15774129.go.kr/portal/fnlfac/price_info.ajax?facilitycd=7000002716&sanbundiv=", "https://www.kyowonyeum.co.kr/Site/Funeral?fnrCd=1001", "https://www.hscity.go.kr/www/jebudo/BD_selectPassingTime.do", "https://www.hscity.go.kr/town/dept/BD_selectDeptCntnts.do?q_cntntsTy=guide&q_deptCode=57400220000", "https://www.hscity.go.kr/www/user/bbs/BD_selectBbs.do?q_bbsCode=1010&q_bbscttSn=10100001311024"]
+sources: [{"name": "롤링힐스 공식 연회·웨딩 주소안내", "url": "https://www.haevichi.com/rollinghills/ko/meeting", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "롤링힐스 공식 컨시어지 층별안내", "url": "https://www.haevichi.com/ko/mobile/html/sub/concierge_rollinghills.html", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "e하늘 화성유일병원장례식장", "url": "https://www.15774129.go.kr/portal/fnlfac/price_info.ajax?facilitycd=7000002716&sanbundiv=", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "교원예움 화성 공식 시설안내", "url": "https://www.kyowonyeum.co.kr/Site/Funeral?fnrCd=1001", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "화성시 제부도 통행시간 안내", "url": "https://www.hscity.go.kr/www/jebudo/BD_selectPassingTime.do", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "화성시 새솔동 안내와 명칭 유래", "url": "https://www.hscity.go.kr/town/dept/BD_selectDeptCntnts.do?q_cntntsTy=guide&q_deptCode=57400220000", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "화성시 2017 송산그린시티 동측 법정동명 보도자료", "url": "https://www.hscity.go.kr/www/user/bbs/BD_selectBbs.do?q_bbsCode=1010&q_bbscttSn=10100001311024", "type": "official", "verifiedAt": "2026-10-07"}]
 relatedPageKeys: ["hwaseong-flower-launch-29", "hwaseong-flower-launch-34"]
 ogImage: "/images/products/congrats-basic.jpg"
 ogImageAlt: "꽃이랑 축하 3단 화환 상품 예시"
@@ -40,6 +40,14 @@ ogImageAlt: "꽃이랑 축하 3단 화환 상품 예시"
 ## 마도면 교원예움은 VIP 이름만으로 접수하지 않기
 
 마도면 쌍송북로 111의 교원예움 화성장례식장은 VIP201·301호, 특실202·302호를 공식 안내합니다. 남양에서 출발한다는 설명을 배송주소로 사용하지 말고 마도면의 시설 주소를 적어주세요. 같은 VIP도 두 호실이므로 [교원예움 화성 상세](/funeral/kyowonyeum-hwaseong-funeral-wreath/)에서 번호까지 확인합니다.
+
+## 서신면 제부도는 통행시간과 수령시간을 따로 확인합니다
+
+남양 인근의 서부권 주문이라도 서신면 제부리의 제부도 안에서 받을 꽃은 목적지 조건을 따로 확인해야 합니다. 희망 도착시각과 [화성시 공식 제부도 통행시간표](https://www.hscity.go.kr/www/jebudo/BD_selectPassingTime.do)를 나누어 살펴봐 주세요. 공식 시간표도 기상상태에 따라 차이가 날 수 있다고 안내합니다. 당일 현장 통제와 들어가고 나오는 조건을 확인한 뒤 수령자와 시간을 맞춰야 하며, 시간표에 길이 열린다고 꽃 배송까지 확정되는 것은 아닙니다. 이 섬의 조건을 서신면 모든 주소에 적용하지 않습니다.
+
+## 송산그린시티라는 이름만으로 새솔동 주소를 바꾸지 마세요
+
+‘송산그린시티’라는 단지·상권 이름만 보고 송산면이나 남양읍으로 주소를 바꾸지 마세요. 화성시가 안내하는 동측지구의 법정동명은 새솔동이며, 송산면과 구분됩니다. 받는 분이 준 도로명 건물번호와 단지명·동호수를 그대로 대조하고, 생활권 이름을 행정구역으로 임의 변환하지 않는 편이 정확합니다. [목적지별 주소 준비](/order-help/hwaseong-address-by-destination-type/)에서 건물과 받는 사람을 함께 정리하세요.
 
 ## 상품과 전달 가능 시간 상담
 

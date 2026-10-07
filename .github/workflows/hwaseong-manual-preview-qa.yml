@@ -2,7 +2,7 @@ name: Hwaseong manual preview evidence
 
 on:
   push:
-    branches: [manual-hwaseong-qa-20261007]
+    branches: [manual-hwaseong-five-qa-20261007]
     paths:
       - 'site-factory/hwaseong-flower/**'
       - '.github/workflows/hwaseong-manual-preview-qa.yml'
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   preview-evidence:
-    if: github.ref == 'refs/heads/manual-hwaseong-qa-20261007'
+    if: github.ref == 'refs/heads/manual-hwaseong-five-qa-20261007'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -21,7 +21,7 @@ jobs:
       MANUAL_PREVIEW: 'true'
       SITE_URL: http://127.0.0.1:8935
       SITE_INDEXABLE: 'false'
-      EXPECTED_QA_RELEASE_HASH: 'eba8ce9059e2bd4d4defe4c19a9cb9948e7e64058b71d4e150d0398273f7e640'
+      EXPECTED_QA_RELEASE_HASH: 'e65b26efc54df7266408688ad67450860e9bd8933a37290b001277f69055773e'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,8 +36,9 @@ jobs:
           set -euo pipefail
           echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/hwaseong-manual-playwright" >> "$GITHUB_ENV"
           echo "XDG_CONFIG_HOME=$RUNNER_TEMP/hwaseong-qa-config" >> "$GITHUB_ENV"
-          test "$GITHUB_REF" = 'refs/heads/manual-hwaseong-qa-20261007'
+          test "$GITHUB_REF" = 'refs/heads/manual-hwaseong-five-qa-20261007'
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor d7d7f47ecafc9bd9e3a75511379d430cd00e8510 HEAD
           git merge-base --is-ancestor 2aa6703b81e25dbc3ec1a7def16799a02e4b34be HEAD
           git merge-base --is-ancestor 3ffc1443558ae6b375a472b2224c0c0125b5ebea HEAD
           git merge-base --is-ancestor 3225fcf46b31d511a15ce865cddad690f2dd4480 HEAD
@@ -50,7 +51,7 @@ jobs:
           const dir='site-factory/hwaseong-flower/';
           const p=JSON.parse(fs.readFileSync(dir+'src/data/manual-provenance.json'));
           assert.equal(p.releaseHash,process.env.EXPECTED_QA_RELEASE_HASH);
-          assert.equal(p.independentReview.status,'pending');
+          assert.equal(p.independentReview.status,'pending-independent-review');
           const file='public/images/hwaseong/hero-B-original.png';const b=fs.readFileSync(dir+file);
           const sha256=crypto.createHash('sha256').update(b).digest('hex');const gitBlob=crypto.createHash('sha1').update(Buffer.concat([Buffer.from('blob '+b.length+'\0'),b])).digest('hex');
           assert.equal(sha256,'3d0653ae4b8dd41864ccb88b08b8de12e606e97936d0f5768d1cc966b6fae09d');assert.equal(gitBlob,'a6183db9cfe59f6db028332c029e52f518cf2062');assert.equal(p.bindings[file],sha256);assert.equal(b.length,1939436);
