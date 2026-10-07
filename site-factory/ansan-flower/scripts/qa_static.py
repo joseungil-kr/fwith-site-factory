@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlparse, unquote
 import json
 import os
 import re
 import sys
+import subprocess
 
 DIST = Path("dist")
 EXPECTED_ORIGIN = os.environ.get("SITE_URL", "https://ansan.fwith.kr").rstrip("/")
@@ -93,29 +94,41 @@ def target_exists(href: str) -> bool:
     parsed = urlparse(href)
     if parsed.scheme or parsed.netloc or href.startswith(("#", "mailto:", "tel:", "javascript:")):
         return True
-    path = parsed.path
+    if re.search(r"%(?![0-9a-fA-F]{2})", parsed.path):
+        return False
+    try:
+        path = unquote(parsed.path, encoding="utf-8", errors="strict")
+    except UnicodeDecodeError:
+        return False
+    if "\\" in path or "\0" in path or any(part in (".", "..") for part in path.split("/")):
+        return False
     if not path.startswith("/"):
         return True
-    if path == "/":
-        return (DIST / "index.html").exists()
-    rel = path.lstrip("/")
-    direct = DIST / rel
-    if direct.is_file():
-        return True
-    if path.endswith("/"):
-        return (direct / "index.html").exists()
-    return (DIST / rel / "index.html").exists() or (DIST / f"{rel}.html").exists()
+    base = DIST.resolve()
+    direct = base / path.lstrip("/")
+    candidates = [direct, direct / "index.html"]
+    if not path.endswith("/"):
+        candidates.append(Path(str(direct) + ".html"))
+    return any(candidate.resolve().is_relative_to(base) and candidate.is_file() for candidate in candidates)
+
+
+def count_hubs(frozen_pages, manual_pages, categories):
+    # Manual pages arrive from the same guarded adapter used by the renderer.
+    eligible = [p for p in frozen_pages if p.get("status") in ("approved", "published")]
+    eligible += manual_pages
+    return {category: sum(1 for p in eligible if p.get("routeType") == "category"
+                         and p.get("category") == category) for category in categories}
 
 manifest_data = json.loads((Path("src/data/publish-manifest.json")).read_text(encoding="utf-8"))
-approved_pages = [p for p in manifest_data.get("pages", []) if p.get("status") in ("approved", "published")]
+manual_pages = []
+if Path("src/data/manual-page-map.json").exists():
+    # Fail closed on missing, stale or unapproved manual review evidence.
+    manual_pages = json.loads(subprocess.check_output([
+        "node", "--input-type=module", "-e",
+        "import {manualPages} from './src/lib/manual-runtime.mjs'; console.log(JSON.stringify(manualPages));",
+    ], text=True))
 hub_categories = ("guide", "funeral", "places", "occasions", "flower-knowledge", "order-help", "regions")
-hub_counts = {
-    category: sum(
-        1 for p in approved_pages
-        if p.get("routeType") == "category" and p.get("category") == category
-    )
-    for category in hub_categories
-}
+hub_counts = count_hubs(manifest_data.get("pages", []), manual_pages, hub_categories)
 thin_hub_files = {f"{category}/index.html" for category, count in hub_counts.items() if 0 < count < 3}
 
 architecture_path = Path("src/data/architecture.json")
