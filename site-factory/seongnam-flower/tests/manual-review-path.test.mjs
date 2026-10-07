@@ -1,0 +1,13 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';
+import {assertProductionReview,hash,digest} from '../src/lib/all-pages.mjs';
+function fixture(){
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'seongnam-review-test-'));fs.mkdirSync(path.join(root,'src/data'),{recursive:true});fs.mkdirSync(path.join(root,'reviews'));fs.writeFileSync(path.join(root,'reviewed.txt'),'fixture artifact, never published');
+ const scopeFileHashes={'reviewed.txt':hash(fs.readFileSync(path.join(root,'reviewed.txt')))};
+ const provenance={authorId:'test-only-author',expectedReviewerId:'test-only-independent-reviewer',scopeFileHashes,scopeDigest:digest(scopeFileHashes),independentReview:{status:'passed',evidencePath:'reviews/test-only-proof.json'}};
+ const evidence={reviewerId:provenance.expectedReviewerId,decision:'PASS',scopeDigest:provenance.scopeDigest,visualQa:'PASS',fullBodiesRead:true};
+ const save=()=>{fs.writeFileSync(path.join(root,'src/data/manual-provenance.json'),JSON.stringify(provenance));fs.writeFileSync(path.join(root,'reviews/test-only-proof.json'),JSON.stringify(evidence));};save();return {root,provenance,evidence,save,cleanup:()=>fs.rmSync(root,{recursive:true,force:true})};
+}
+test('production review resolves real files from stable package root, not prerender chunk location',()=>{const f=fixture();try{assert.equal(assertProductionReview(f.root),true);}finally{f.cleanup();}});
+test('pending, false independent identity, incomplete pixels, and stale proof fail',()=>{const f=fixture();try{for(const mutate of [()=>f.provenance.independentReview.status='pending',()=>{f.provenance.independentReview.status='passed';f.evidence.reviewerId='test-only-author';},()=>{f.evidence.reviewerId=f.provenance.expectedReviewerId;f.evidence.visualQa='pending';},()=>{f.evidence.visualQa='PASS';f.evidence.scopeDigest='stale';}]){mutate();f.save();assert.throws(()=>assertProductionReview(f.root));}}finally{f.cleanup();}});
+test('reviewed source changes are still rejected',()=>{const f=fixture();try{fs.writeFileSync(path.join(f.root,'reviewed.txt'),'mutated');assert.throws(()=>assertProductionReview(f.root),/source scope changed/);}finally{f.cleanup();}});
+test('unsafe review path and altered scope manifest are rejected',()=>{const f=fixture();try{f.provenance.independentReview.evidencePath='../proof.json';f.save();assert.throws(()=>assertProductionReview(f.root),/unsafe/);f.provenance.independentReview.evidencePath='reviews/test-only-proof.json';f.provenance.scopeFileHashes={};f.save();assert.throws(()=>assertProductionReview(f.root),/scope digest/);}finally{f.cleanup();}});

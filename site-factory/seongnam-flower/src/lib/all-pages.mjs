@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
+import path from 'node:path';
 import original from '../data/pages.json' with {type:'json'};
 import manual from '../data/manual-pages.json' with {type:'json'};
 import manualMap from '../data/manual-page-map.json' with {type:'json'};
@@ -23,13 +24,23 @@ export function assemble(frozen, authored){
 export const effectiveArchitecture={...originalArchitecture,pages:[...originalArchitecture.pages,...manualMap.pages],hubs:originalArchitecture.hubs.map(h=>({...h,children:[...original,...manual].filter(p=>p.category===h.category).length}))};
 export const effectiveManifest={...originalManifest,pages:[...originalManifest.pages,...manualMap.pages]};
 export const effectiveMap={...originalMap,pages:[...originalMap.pages,...manualMap.pages]};
-// Direct Astro builds also fail closed while independent review is pending.
-if(process.env.SITE_INDEXABLE==='true'){
- const provenance=JSON.parse(fs.readFileSync(new URL('../data/manual-provenance.json',import.meta.url)));
+// Standard package builds execute from the package root. Astro rebases import.meta.url
+// into prerender chunks, so filesystem-backed review evidence must use this stable root.
+export function assertProductionReview(packageRoot=process.cwd()) {
+ const root=path.resolve(packageRoot);
+ const provenance=JSON.parse(fs.readFileSync(path.join(root,'src/data/manual-provenance.json')));
  if(provenance.independentReview.status!=='passed')throw Error('Manual independent review is pending');
- if(!provenance.independentReview.evidencePath)throw Error('Manual independent review evidence is absent');
- const evidence=JSON.parse(fs.readFileSync(new URL('../../'+provenance.independentReview.evidencePath,import.meta.url)));
+ const evidencePath=provenance.independentReview.evidencePath;
+ if(typeof evidencePath!=='string'||!/^reviews\/[a-z0-9-]+\.json$/.test(evidencePath))throw Error('Manual independent review evidence is absent or unsafe');
+ const evidence=JSON.parse(fs.readFileSync(path.join(root,evidencePath)));
  if(evidence.reviewerId===provenance.authorId||evidence.reviewerId!==provenance.expectedReviewerId||evidence.decision!=='PASS'||evidence.scopeDigest!==provenance.scopeDigest||evidence.visualQa!=='PASS'||evidence.fullBodiesRead!==true)throw Error('Invalid independent manual review');
- for(const [file,sha] of Object.entries(provenance.scopeFileHashes))if(hash(fs.readFileSync(new URL('../../'+file,import.meta.url)))!==sha)throw Error('Reviewed source scope changed: '+file);
+ if(digest(provenance.scopeFileHashes)!==provenance.scopeDigest)throw Error('Invalid manual scope digest');
+ for(const [file,sha] of Object.entries(provenance.scopeFileHashes)){
+  if(path.isAbsolute(file)||file.split(/[\\/]/).includes('..'))throw Error('Unsafe manual scope path');
+  if(hash(fs.readFileSync(path.join(root,file)))!==sha)throw Error('Reviewed source scope changed: '+file);
+ }
+ return true;
 }
+// Direct Astro builds cannot bypass the same pending/reviewed-scope checks.
+if(process.env.SITE_INDEXABLE==='true')assertProductionReview();
 export default assemble(original,manual);
