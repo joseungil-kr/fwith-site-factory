@@ -17,13 +17,20 @@ def assert_response_status(response,url,route,expected_status):
  assert response.status not in (401,403,429),('access/rate-limit denied',route,response.status)
  assert response.status==expected_status and response.url==url,('status/redirect',route,response.status)
 
-# Verbatim pinned matcher and constants copied from the existing published helper:
+# Matcher based on the existing published helper; M4 adds only a second exact
+# whole-insertion/URL pair observed in retained production response evidence.
+# Original helper:
 # joseungil-kr/fwith-site-factory/site-factory/engine/verify_live.py
 # commit 657b9ce62b1a519ba606f9fb0110aa3679d0931c; source SHA-256
 # 88f987ce341dca2e607947b2da5ac6698642127bc992cc09d78ac4370b38d9a5.
 # This local copy avoids an unbound runtime import outside the control manifest.
 GOYANG_CF_BEACON_SRC = b"https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495"
 GOYANG_CF_BEACON_SHA256 = "8a5cd48fb3f913d009a128498bef6fadc43d5561daec87e79f6adcd0bcc903f5"
+# No URL prefixes, version wildcards, attribute stripping or generic normalization.
+PINNED_MANAGED_BEACONS = (
+    (GOYANG_CF_BEACON_SRC, GOYANG_CF_BEACON_SHA256),
+    (b"https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920", "53ed6266d9ab3cb60b83bb38278a519b4b688707f7254f5ffeeeb8bcaa3a5e4c"),
+)
 
 def goyang_artifact_matches(html, artifact, allow_managed_beacon=False):
     live = html.encode("utf-8")
@@ -36,9 +43,10 @@ def goyang_artifact_matches(html, artifact, allow_managed_beacon=False):
     if not live.startswith(prefix):
         return False
     inserted = live[len(prefix):-len(closing)]
-    return (inserted.startswith(b'<script type="module" src="' + GOYANG_CF_BEACON_SRC + b'" ')
-            and inserted.endswith(b'</script>\n') and inserted.count(b'<script') == 1
-            and hashlib.sha256(inserted).hexdigest() == GOYANG_CF_BEACON_SHA256)
+    return (inserted.endswith(b'</script>\n') and inserted.count(b'<script') == 1
+            and any(inserted.startswith(b'<script type="module" src="' + src + b'" ')
+                    and hashlib.sha256(inserted).hexdigest() == digest
+                    for src, digest in PINNED_MANAGED_BEACONS))
 
 def artifact_comparison(data,artifact,phase,is_html):
  """Return truthful hash evidence, or None. Never normalize either byte string.
@@ -58,7 +66,7 @@ def artifact_comparison(data,artifact,phase,is_html):
          'expectedArtifactSha256':hashlib.sha256(artifact).hexdigest(),
          'rawBodyBytes':len(data),'expectedArtifactBytes':len(artifact),
          'managedBeaconCount':0 if exact else 1,
-         'managedBeaconSha256':None if exact else GOYANG_CF_BEACON_SHA256}
+         'managedBeaconSha256':None if exact else hashlib.sha256(data[len(artifact)-len(b'</body></html>'):-len(b'</body></html>')]).hexdigest()}
 
 def verify_artifact(data,artifact,phase,is_html,route):
  receipt=artifact_comparison(data,artifact,phase,is_html)

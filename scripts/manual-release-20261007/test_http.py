@@ -176,4 +176,38 @@ class OfflineEndToEndTests(BeaconFixture):
   with patch.object(verifier.Meta,'feed',feed):
    with self.assertRaisesRegex(AssertionError,'404 indexing mismatch'):self.run_main()
 
+
+
+# M4: separately observed complete public insertion; no runtime wildcard.
+M4_NEW_BEACON = PINNED_PUBLIC_BEACON.replace(b'https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495',b'https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920').replace(b'sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==',b'sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==')
+M4_NEW_DIGEST = '53ed6266d9ab3cb60b83bb38278a519b4b688707f7254f5ffeeeb8bcaa3a5e4c'
+class DualExactBeaconTests(BeaconFixture):
+ def test_two_exact_url_and_whole_insertion_pairs_only(self):
+  self.assertEqual(len(verifier.PINNED_MANAGED_BEACONS),2)
+  self.assertEqual({digest for _,digest in verifier.PINNED_MANAGED_BEACONS},{verifier.GOYANG_CF_BEACON_SHA256,M4_NEW_DIGEST})
+  self.assertEqual(hashlib.sha256(M4_NEW_BEACON).hexdigest(),M4_NEW_DIGEST)
+  self.assertEqual(len(M4_NEW_BEACON),367)
+ def test_new_observed_insertion_reports_its_actual_digest(self):
+  for artifact in [self.artifact,self.artifact.replace(b'Original',b'Second',1)]:
+   live=self.inserted(artifact,M4_NEW_BEACON)
+   receipt=verifier.artifact_comparison(live,artifact,'production',True)
+   self.assertEqual(receipt['matchMode'],'pinned-managed-beacon')
+   self.assertEqual(receipt['managedBeaconSha256'],M4_NEW_DIGEST)
+   self.assertEqual(receipt['managedBeaconCount'],1)
+   self.assertEqual(receipt['rawBodySha256'],hashlib.sha256(live).hexdigest())
+   self.assertEqual(receipt['expectedArtifactSha256'],hashlib.sha256(artifact).hexdigest())
+ def test_new_version_never_allowed_in_preview_or_non_html(self):
+  for phase,is_html in [('preview',True),('preview',False),('production',False)]:self.rejected(self.inserted(beacon=M4_NEW_BEACON),phase=phase,is_html=is_html)
+ def test_mixed_pairs_unknown_version_and_integrity_fail(self):
+  for beacon in [M4_NEW_BEACON.replace(b'https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920',b'https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495'),M4_NEW_BEACON.replace(b'sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==',b'sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg=='),M4_NEW_BEACON.replace(b'v4bc70e',b'v5bc70e'),M4_NEW_BEACON.replace(b'type="module"',b'type="text/javascript"')]:self.rejected(self.inserted(beacon=beacon))
+ def test_duplicate_old_new_and_other_script_fail(self):
+  for beacon in [M4_NEW_BEACON+M4_NEW_BEACON,PINNED_PUBLIC_BEACON+M4_NEW_BEACON,M4_NEW_BEACON+PINNED_PUBLIC_BEACON,M4_NEW_BEACON+b'<script>extra()</script>']:
+   self.rejected(self.inserted(beacon=beacon))
+ def test_customer_bytes_and_whitespace_still_exact_with_new_beacon(self):
+  live=self.inserted(beacon=M4_NEW_BEACON)
+  for changed in [live.replace(b'<h1>Original',b'<h1>Changed'),live.replace(b'href="/contact/"',b'href="/other/"'),live.replace(b'"name":"Original"',b'"name":"Changed"'),live.replace(b'</head>',b' </head>'),live.replace(b'https://qa.example.test/',b'https://other.example.test/',1)]:self.rejected(changed)
+ def test_new_beacon_wrong_placement_and_truncated_closing_fail(self):
+  self.rejected(M4_NEW_BEACON+self.artifact)
+  self.rejected(self.inserted(beacon=M4_NEW_BEACON)[:-1])
+
 if __name__=='__main__':unittest.main()
