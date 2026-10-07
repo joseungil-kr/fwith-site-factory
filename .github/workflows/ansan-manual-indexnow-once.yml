@@ -1,0 +1,43 @@
+name: Ansan Manual 20 IndexNow Once
+
+on:
+  push:
+    branches: [manual-ansan-indexnow-20261007]
+    paths:
+      - .github/workflows/ansan-manual-indexnow-once.yml
+      - site-factory/ansan-flower/scripts/manual_indexnow_once.mjs
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ansan-manual-20-indexnow-20261007
+  cancel-in-progress: false
+
+jobs:
+  submit-once:
+    if: github.run_attempt == 1 && github.event.before == 'aeb04a9ed1f9f36692fd3e679e6e71c5c065224d'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify exact public pages and submit one IndexNow request
+        working-directory: site-factory/ansan-flower
+        run: node scripts/manual_indexnow_once.mjs
+      - name: Preserve sanitized validation and receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ansan-manual-20-indexnow-${{ github.run_id }}
+          path: |
+            site-factory/ansan-flower/manual-indexnow-receipt.json
+            site-factory/ansan-flower/manual-indexnow-validation.json
+            site-factory/ansan-flower/indexnow-urls.json
+          if-no-files-found: error
+          retention-days: 90
