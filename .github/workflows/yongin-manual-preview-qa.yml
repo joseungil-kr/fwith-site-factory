@@ -1,0 +1,83 @@
+name: Yongin manual preview evidence
+
+on:
+  push:
+    branches: [manual-yongin-qa-20261007]
+    paths:
+      - 'site-factory/yongin-flower/**'
+      - '.github/workflows/yongin-manual-preview-qa.yml'
+      - '.github/scripts/yongin-manual-preview.mjs'
+
+permissions:
+  contents: read
+
+jobs:
+  preview-evidence:
+    if: github.ref == 'refs/heads/manual-yongin-qa-20261007'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_URL: http://127.0.0.1:8935
+      SITE_INDEXABLE: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Assert fixed branch and reviewed source bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/yongin-manual-playwright" >> "$GITHUB_ENV"
+          test "$GITHUB_REF" = 'refs/heads/manual-yongin-qa-20261007'
+          test "$SITE_URL" = 'http://127.0.0.1:8935'
+          test "$SITE_INDEXABLE" = 'false'
+          mkdir -p yongin-preview-evidence
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          import {artifactDigest,artifactInventory} from './site-factory/yongin-flower/src/lib/manual-release-gate.mjs';
+          const expected='7caf84d1504636b10fdd1fd9e38878279f2aefd96efa630bd03296bc4d31bf8a';
+          assert.equal(artifactDigest(),expected,'Reviewed source bundle changed');
+          fs.writeFileSync('yongin-preview-evidence/revision.json',JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,sourceBase:'f6dfb14a74d265ae92a482969a1a060f2234e3d9',reviewedArtifactDigest:expected,productionApproval:'pending'},null,2));
+          fs.writeFileSync('yongin-preview-evidence/source-inventory.json',JSON.stringify(artifactInventory(),null,2));
+          JS
+      - name: Install native site dependencies
+        working-directory: site-factory/yongin-flower
+        run: npm install --no-package-lock
+      - name: Native gated loopback noindex build
+        shell: bash
+        working-directory: site-factory/yongin-flower
+        run: |
+          set -euo pipefail
+          npm run build 2>&1 | tee "$GITHUB_WORKSPACE/yongin-preview-evidence/native-build.log"
+          python3 scripts/qa_static.py 2>&1 | tee "$GITHUB_WORKSPACE/yongin-preview-evidence/native-static-qa.log"
+      - name: Native regression tests
+        shell: bash
+        working-directory: site-factory/yongin-flower
+        run: |
+          set -euo pipefail
+          node --test scripts/*.test.mjs tests/*.test.mjs 2>&1 | tee "$GITHUB_WORKSPACE/yongin-preview-evidence/native-tests.log"
+      - name: Install pinned official Playwright and Korean fonts
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix "$PLAYWRIGHT_INSTALL_ROOT" --no-save --no-package-lock playwright@1.63.0
+          "$PLAYWRIGHT_INSTALL_ROOT/node_modules/.bin/playwright" install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          fc-match 'Noto Sans CJK KR' > yongin-preview-evidence/font-match.txt
+          npm list --prefix "$PLAYWRIGHT_INSTALL_ROOT" --json > yongin-preview-evidence/playwright-dependencies.json
+      - name: Capture loopback desktop and mobile evidence
+        run: node .github/scripts/yongin-manual-preview.mjs
+      - name: Retain evidence for independent review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: yongin-manual-preview-${{ github.sha }}-${{ github.run_attempt }}
+          path: yongin-preview-evidence/
+          if-no-files-found: error
+          retention-days: 7

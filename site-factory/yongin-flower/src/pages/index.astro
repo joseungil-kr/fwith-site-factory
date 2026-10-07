@@ -1,6 +1,6 @@
 ---
 import {regionalPages} from '../lib/regional-runtime.mjs';
-import { getCollection } from 'astro:content';
+import { getDisplayArticles as getCollection } from '../lib/display-articles.mjs';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import OrderCTA from '../components/OrderCTA.astro';
 import ProductShowcase from '../components/ProductShowcase.astro';
@@ -11,7 +11,7 @@ import architecture from '../data/architecture.json';
 const activePageKeys = new Set((architecture.pages || []).filter((page) => page.sitemapIndexable !== false && page.status !== 'merged').map((page) => page.pageKey));
 const articles = (await getCollection(
   'articles',
-  ({ data }) => (data.draftStatus === 'approved' || data.draftStatus === 'published') && activePageKeys.has(data.pageKey)
+  ({ data }) => (data.draftStatus === 'approved' || data.draftStatus === 'published' || data.manualState === 'candidate') && activePageKeys.has(data.pageKey)
 )).sort((a, b) => b.data.pageKey.localeCompare(a.data.pageKey, 'ko'));
 
 const categoryCounts = articles.reduce<Record<string, number>>((acc, article) => {

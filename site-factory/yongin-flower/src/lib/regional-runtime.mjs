@@ -1,6 +1,6 @@
 import coverage from '../data/region-coverage.json' with {type:'json'};
 import policy from '../data/region-policy.json' with {type:'json'};
-import manifest from '../data/publish-manifest.json' with {type:'json'};
+import {effectiveManifest as manifest} from './manual-source.mjs';
 import architecture from '../data/architecture.json' with {type:'json'};
 import {regionalRows,directoryGroups,regionalMetadataFields} from './regions.mjs';
 export {coverage,policy,architecture};

@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getDisplayArticles as getCollection } from '../lib/display-articles.mjs';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import OrderCTA from './OrderCTA.astro';
 import { siteConfig } from '../config/site';
@@ -20,7 +20,7 @@ const roleByPageKey = new Map((architecture.pages || []).map((page) => [page.pag
 const articles = (await getCollection(
   'articles',
   ({ data }) =>
-    (data.draftStatus === 'approved' || data.draftStatus === 'published') &&
+    (data.draftStatus === 'approved' || data.draftStatus === 'published' || data.manualState === 'candidate') &&
     data.category === category &&
     activePageKeys.has(data.pageKey)
 )).sort((a, b) => a.data.pageKey.localeCompare(b.data.pageKey, 'ko'));

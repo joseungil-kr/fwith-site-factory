@@ -3,15 +3,17 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 import {regionalPages} from './src/lib/regional-runtime.mjs';
+import {assertManualProductionReady} from './src/lib/manual-release-gate.mjs';
+assertManualProductionReady();
 const site = process.env.SITE_URL || 'https://yongin.fwith.kr';
-const manifest = JSON.parse(readFileSync(new URL('./src/data/publish-manifest.json', import.meta.url), 'utf8'));
+import {effectiveManifest as manifest} from './src/lib/manual-source.mjs';
 const architecture = JSON.parse(readFileSync(new URL('./src/data/architecture.json', import.meta.url), 'utf8'));
 const hubCategories = ['funeral', 'business', 'school', 'event', 'gift', 'order', 'regions'];
 const activeArchitecture = (architecture.pages || []).filter(
   (page) => page.sitemapIndexable !== false && page.status !== 'merged'
 );
 const activePageKeys = new Set(activeArchitecture.map((page) => page.pageKey));
-const approved = (manifest.pages || []).filter((page) => ['approved', 'published'].includes(page.status));
+const approved = (manifest.pages || []).filter((page) => page.sourceType==='manual-authored'||['approved', 'published'].includes(page.status));
 const detailPages = approved.filter((page) => page.routeType === 'category' && activePageKeys.has(page.pageKey));
 const categoryCounts = detailPages.reduce((acc, page) => {
   acc[page.category] = (acc[page.category] ?? 0) + 1;
@@ -30,6 +32,7 @@ export default defineConfig({
   output: 'static',
   integrations: [sitemap({ filter: (page) => {
     const pathname = new URL(page).pathname;
+    if(process.env.SITE_INDEXABLE==='false')return false;
     if (pathname.startsWith('/regions/')) return (process.env.SITE_INDEXABLE === 'true' || (process.env.SITE_INDEXABLE !== 'false' && existsSync('production-indexing.enabled'))) && (pathname==='/regions/' ? regionalPages.length>=3 : regionalPages.some(p=>p.url===pathname));
     if (noindexHubs.has(pathname)) return false;
     if (knownArticlePaths.has(pathname)) return indexableArticlePaths.has(pathname);

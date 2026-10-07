@@ -8,9 +8,7 @@ const sourceRef = z.object({
   verifiedAt: z.coerce.date().optional(),
 });
 
-const articles = defineCollection({
-  loader: glob({ pattern: 'yongin-*.md', base: './src/content/articles' }),
-  schema: z.object({
+const legacyArticleSchema = z.object({
     pageKey: z.string(),
     snapshotId: z.string(),
     sourceDraftKey: z.string(),
@@ -62,7 +60,7 @@ const articles = defineCollection({
     sources: z.array(sourceRef).default([]),
     relatedPageKeys: z.array(z.string()).default([]),
     draftStatus: z.enum(['approved', 'published']).default('approved'),
-  }),
 });
-
-export const collections = { articles };
+const articles = defineCollection({loader: glob({pattern: "yongin-*.md",base:"./src/content/articles"}),schema:legacyArticleSchema});
+const manualArticles=defineCollection({loader:glob({pattern:"*.md",base:"./src/content/manual"}),schema:legacyArticleSchema.omit({snapshotId:true,sourceDraftKey:true,sourceRecordId:true,draftStatus:true}).extend({revisionId:z.string(),manualState:z.literal("candidate"),contentRole:z.literal("commercial-landing"),queryClass:z.literal("local-commercial")})});
+export const collections={articles,manualArticles};

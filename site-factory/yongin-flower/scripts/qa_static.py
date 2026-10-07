@@ -107,7 +107,10 @@ def target_exists(href: str) -> bool:
     return (DIST / rel / "index.html").exists() or (DIST / f"{rel}.html").exists()
 
 manifest_data = json.loads((Path("src/data/publish-manifest.json")).read_text(encoding="utf-8"))
-approved_pages = [p for p in manifest_data.get("pages", []) if p.get("status") in ("approved", "published")]
+manual_data = json.loads(Path("src/data/manual-pages.json").read_text(encoding="utf-8"))
+manual_keys = {p["pageKey"] for p in manual_data["pages"]}
+manifest_data["pages"] = [p for p in manifest_data["pages"] if p["pageKey"] not in manual_keys] + manual_data["pages"]
+approved_pages = [p for p in manifest_data.get("pages", []) if p.get("sourceType") == "manual-authored" or p.get("status") in ("approved", "published")]
 hub_categories = ("funeral", "business", "school", "event", "gift", "order", "regions")
 hub_counts = {
     category: sum(
@@ -146,7 +149,7 @@ for file in html_files:
         errors.append(f"{file}: missing canonical")
     elif not parser.canonical.startswith(EXPECTED_ORIGIN):
         errors.append(f"{file}: unexpected canonical {parser.canonical}")
-    if "localhost" in text or "127.0.0.1" in text:
+    if INDEXABLE and ("localhost" in text or "127.0.0.1" in text):
         errors.append(f"{file}: localhost reference remains in output")
 
     revision = parser.meta_names.get("site-factory-revision", "")
@@ -204,9 +207,11 @@ for file in html_files:
             errors.append(f"{file}: broken internal href {href}")
 
 sitemap = DIST / "sitemap-index.xml"
-if not sitemap.exists():
+if INDEXABLE and not sitemap.exists():
     errors.append("Missing sitemap-index.xml")
-else:
+elif not INDEXABLE and sitemap.exists():
+    errors.append("Noindex preview must not publish sitemap-index.xml")
+elif sitemap.exists():
     sm = sitemap.read_text(encoding="utf-8")
     if EXPECTED_ORIGIN not in sm:
         errors.append("Sitemap does not use expected production origin")

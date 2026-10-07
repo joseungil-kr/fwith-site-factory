@@ -1,6 +1,10 @@
+import {assertManualProductionReady} from '../src/lib/manual-release-gate.mjs';
+assertManualProductionReady();
+import {validateIndexNowDomain} from './indexnow-domain.mjs';
 import { readFileSync } from 'node:fs';
 
-const origin = (process.env.SITE_URL || process.env.SITE_ORIGIN || 'https://hwaseong.fwith.kr').replace(/\/$/, '');
+const origin = (process.env.SITE_URL || process.env.SITE_ORIGIN || 'https://yongin.fwith.kr').replace(/\/$/, '');
+validateIndexNowDomain(origin);
 const key = process.env.INDEXNOW_KEY;
 const endpoint = process.env.INDEXNOW_ENDPOINT || 'https://searchadvisor.naver.com/indexnow';
 
@@ -12,6 +16,7 @@ if (!Array.isArray(urls) || urls.length === 0) {
   process.exit(0);
 }
 
+validateIndexNowDomain(origin,urls);
 const host = new URL(origin).host;
 const keyLocation = `${origin}/${key}.txt`;
 

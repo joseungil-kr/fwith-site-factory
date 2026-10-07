@@ -1,7 +1,9 @@
+import {validateIndexNowDomain} from './indexnow-domain.mjs';
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 
-const origin = (process.env.SITE_URL || process.env.SITE_ORIGIN || 'https://hwaseong.fwith.kr').replace(/\/$/, '');
+const origin = (process.env.SITE_URL || process.env.SITE_ORIGIN || 'https://yongin.fwith.kr').replace(/\/$/, '');
+validateIndexNowDomain(origin);
 const initial = process.env.INDEXNOW_INITIAL === 'true';
 const baseSha = process.env.INDEXNOW_BASE_SHA || '';
 
@@ -59,19 +61,24 @@ if (initial || !baseSha) {
   } else {
     const currentPath = 'src/data/publish-manifest.json';
     const gitPath = (root ? root + '/' : '') + 'src/data/publish-manifest.json';
-    const current = JSON.parse(readFileSync(currentPath, 'utf8'));
+    const {effectiveManifest:current} = await import('../src/lib/manual-source.mjs');
     let previous = { pages: [] };
     try {
       previous = JSON.parse(execFileSync('git', ['show', `${baseSha}:${gitPath}`], { encoding:'utf8' }));
     } catch {}
 
+    try {
+      const priorManual = JSON.parse(execFileSync('git', ['show', `${baseSha}:${(root ? root + '/' : '')}src/data/manual-pages.json`], { encoding:'utf8' }));
+      const replaced = new Set(priorManual.pages.map(p=>p.pageKey));
+      previous.pages = previous.pages.filter(p=>!replaced.has(p.pageKey)).concat(priorManual.pages);
+    } catch {}
     const prevMap = new Map((previous.pages || []).map(p => [p.pageKey, p]));
     const curMap = new Map((current.pages || []).map(p => [p.pageKey, p]));
     const candidates = new Set();
 
     for (const [key, page] of curMap) {
       const old = prevMap.get(key);
-      if (!old || old.snapshotId !== page.snapshotId || old.url !== page.url || old.status !== page.status) {
+      if (!old || old.snapshotId !== page.snapshotId || old.revisionId !== page.revisionId || old.contentSha256 !== page.contentSha256 || old.url !== page.url || old.status !== page.status) {
         candidates.add(origin + page.url);
         candidates.add(origin + '/');
         if (page.category) candidates.add(origin + '/' + page.category + '/');
@@ -86,5 +93,6 @@ if (initial || !baseSha) {
   }
 }
 
+validateIndexNowDomain(origin,selected);
 writeFileSync('indexnow-urls.json', JSON.stringify([...new Set(selected)], null, 2) + '\n');
 console.log(`IndexNow selection: ${selected.length} URL(s), initial=${initial}`);
