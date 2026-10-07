@@ -299,13 +299,31 @@ def verify_release(site, revision, root, control, workspace):
         require(hashlib.sha256(raw).hexdigest() == config[hash_key], 'Initial trusted batch evidence bytes changed')
         documents.append(json.loads(raw))
     batch, evidence = documents
+    preview = site['initialPreviewRevision']
     require(batch.get('contractType') == 'whole-region-initial' and batch.get('siteKey') == result['site_key']
             and batch.get('scopeKey') == config['scopeKey'] and batch.get('baselineSourceSha') == config['baselineSourceSha']
             and batch.get('bootstrapSourceSha') == config['bootstrapSourceSha']
-            and evidence.get('finalSourceSha') == revision, 'Initial batch does not bind approved revision')
-    barrier = check(batch, evidence, GitEvidence(workspace))
-    require(barrier.get('state') == 'staging_complete' and barrier.get('finalSourceSha') == revision,
+            and evidence.get('finalSourceSha') == preview, 'Initial batch does not bind staged revision')
+    git = GitEvidence(workspace)
+    barrier = check(batch, evidence, git)
+    require(barrier.get('state') == 'staging_complete' and barrier.get('finalSourceSha') == preview,
             'Initial complete independent staging barrier failed')
+    source_root = result['root']
+    require(git.ancestor(preview, revision), 'Initial production revision does not descend from staged revision')
+    prior_paths, final_paths = git.paths(preview, source_root), git.paths(revision, source_root)
+    ownership = 'public/' + site['indexnowKey'] + '.txt'
+    require(final_paths == prior_paths | {'production-indexing.enabled', ownership},
+            'Initial production source inventory changed beyond approval and ownership')
+    config_path = source_root + '/src/data/site-config.json'
+    before = json.loads(git.read(preview, config_path))
+    after = json.loads(git.read(revision, config_path))
+    require(before.get('productionApproved') is False and after.get('productionApproved') is True,
+            'Initial production approval transition is invalid')
+    before['productionApproved'] = True
+    require(after == before, 'Initial production configuration changed beyond approval')
+    require(all(git.read(preview, source_root + '/' + name) == git.read(revision, source_root + '/' + name)
+                for name in prior_paths - {'src/data/site-config.json'}),
+            'Initial staged content or runtime changed during production approval')
     for filename, field in [('publish-manifest.json', 'productionManifestSha256'),
                             ('region-coverage.json', 'coverageSha256'), ('region-policy.json', 'regionPolicySha256')]:
         raw = regular_bytes(root, 'src/data/' + filename)
