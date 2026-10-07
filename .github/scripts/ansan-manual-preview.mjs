@@ -13,7 +13,7 @@ const origin='http://127.0.0.1:8934';
 assert.equal(process.env.SITE_URL,origin);
 assert.equal(process.env.SITE_INDEXABLE,'false');
 assert.equal(process.env.MANUAL_PREVIEW,'1');
-assert.equal(process.env.GITHUB_REF,'refs/heads/manual-ansan-qa-20261007');
+assert.equal(process.env.GITHUB_REF,'refs/heads/manual-ansan-regional-qa-20261007');
 assert(process.env.PLAYWRIGHT_INSTALL_ROOT);
 fs.mkdirSync(path.join(output,'screenshots'),{recursive:true});
 const require=createRequire(path.join(process.env.PLAYWRIGHT_INSTALL_ROOT,'package.json'));
@@ -22,8 +22,8 @@ assert.equal(require('playwright/package.json').version,'1.63.0');
 const read=file=>JSON.parse(fs.readFileSync(path.join(site,file),'utf8'));
 const manual=read('src/data/manual-page-map.json').pages;
 const products=[...read('src/data/products.json'),...read('src/data/site-catalog.json').products];
-assert.equal(manual.length,20,'Unexpected review scope; obtain new scope review first');
-const targets=[{id:'home',url:'/'},{id:'funeral-hub',url:'/funeral/'},{id:'places-hub',url:'/places/'},...manual.map(p=>({id:p.pageKey,url:p.url,manual:p}))];
+assert.equal(manual.length,24,'Unexpected bounded four-intent review scope');
+const targets=[{id:'home',url:'/'},{id:'funeral-hub',url:'/funeral/'},{id:'places-hub',url:'/places/'},{id:'regions-hub',url:'/regions/'},...manual.map(p=>({id:p.pageKey,url:p.url,manual:p}))];
 const network=[],consoleMessages=[],pageErrors=[],results=[];
 const mimes={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.webp':'image/webp','.woff2':'font/woff2','.txt':'text/plain; charset=utf-8','.xml':'application/xml; charset=utf-8'};
 const server=http.createServer((req,res)=>{
@@ -71,6 +71,7 @@ try {
       frozenMarker:!!document.querySelector('[data-snapshot-id]'),
       images:[...document.images].map(i=>({src:new URL(i.src).pathname,alt:i.alt,width:i.naturalWidth,height:i.naturalHeight})),
       articleProductImages:[...document.querySelectorAll('.article-products img')].map(i=>new URL(i.src).pathname),
+      productCards:[...document.querySelectorAll('.article-products .product-card')].map(p=>({name:p.querySelector('h4')?.textContent,price:p.querySelector('.product-price')?.textContent,image:new URL(p.querySelector('img').src).pathname})),
       phoneLinks:[...document.querySelectorAll('a[href="tel:18440644"]')].length,
       orderLinks:[...document.querySelectorAll('a[href="https://fwith.co.kr"]')].length,
       h1Box:(()=>{const b=document.querySelector('h1')?.getBoundingClientRect();return b?{x:b.x,y:b.y,width:b.width,height:b.height}:null;})(),
@@ -87,7 +88,8 @@ try {
     if(target.manual){
       assert.equal(facts.manualMarker,target.id,'Opaque manual marker');assert.equal(facts.frozenMarker,false,'No synthetic frozen marker');
       const expected=target.manual.productKeys.map(k=>products.find(p=>p.productKey===k).image);
-      assert.deepEqual(facts.articleProductImages,expected,'Actual rendered product families');
+      assert.deepEqual([...facts.articleProductImages].sort(),[...expected].sort(),'Actual rendered product families');
+      for(const key of target.manual.productKeys){const product=products.find(p=>p.productKey===key);const card=facts.productCards.find(p=>p.image===product.image);assert(card,'Missing actual product card');assert.equal(card.name,product.name);assert.equal(card.price,new Intl.NumberFormat('ko-KR').format(product.price)+'원');}
       // Read-only local history round trip; never click phone or merchant links.
       const hub=target.manual.parentHub;
       await page.locator(`a[href="${hub}"]:visible`).first().click();
@@ -122,3 +124,4 @@ try {
  if(!summary.machineChecksPassed)process.exitCode=1;
  console.log(JSON.stringify({captured:results.length,machineChecksPassed:summary.machineChecksPassed,pixelReview:'pending',productionApproval:'not-issued'}));
 }
+

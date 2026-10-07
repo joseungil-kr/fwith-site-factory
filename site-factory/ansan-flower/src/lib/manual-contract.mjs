@@ -2,6 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import assert from 'node:assert/strict';
+import {validateManualRegions} from './manual-regions.mjs';
+import {loadSiteProducts} from './site-catalog.mjs';
 export const WRITER_ID='wr6d547b77f81df4c03dcb151d';
 export const EXPECTED_REVIEWER_ID='rvc2ed89ba6195167edeb9e7c1';
 export const digest=value=>crypto.createHash('sha256').update(value).digest('hex');
@@ -17,7 +19,7 @@ export function manualBuildMode(env={}) {
 export function manualDigests(root) {
  const contentFiles=files(path.join(root,'src/content/manual')).filter(f=>f.endsWith('.md')).sort();
  const content=contentFiles.map(f=>[path.relative(root,f),digest(fs.readFileSync(f))]);
- const catalogFiles=['src/data/products.json','src/data/site-catalog.json','src/data/site-catalog-evidence.json','src/data/business-truth.json'];
+ const catalogFiles=['src/data/products.json','src/data/site-catalog.json','src/data/site-catalog-evidence.json','src/data/business-truth.json','src/data/manual-regional-bindings.json','src/data/region-coverage.json','src/data/region-policy.json'];
  const catalog=catalogFiles.map(f=>[f,digest(fs.readFileSync(path.join(root,f)))]);
  const codeFiles=[...files(path.join(root,'src')).filter(f=>/\.(?:mjs|ts|astro|css)$/.test(f)),...files(path.join(root,'scripts')).filter(f=>/\.(?:mjs|py)$/.test(f)),...files(path.join(root,'tests')).filter(f=>f.endsWith('.mjs')),path.join(root,'package.json'),path.join(root,'astro.config.mjs')].sort();
  const code=codeFiles.map(f=>[path.relative(root,f),digest(fs.readFileSync(f))]);
@@ -38,7 +40,7 @@ export function validateManual(root,env=process.env) {
  const frozen=read(root,'src/data/publish-manifest.json'),architecture=read(root,'src/data/architecture.json');
  const frozenKeys=new Set(frozen.pages.map(p=>p.pageKey)),frozenUrls=new Set([...frozen.pages,...architecture.pages].map(p=>p.url));
  const keys=new Set(),urls=new Set(),sources=new Set(),intents=new Set();
- const products=[...read(root,'src/data/products.json'),...read(root,'src/data/site-catalog.json').products];
+ const products=loadSiteProducts(root,map.siteKey);
  const legalFamilies=new Set(['funeral_wreath','congrats_wreath','flower_bouquet','flower_basket']);
  for(const row of map.pages){
   for(const key of ['snapshotId','snapshotHash','sourceDraftKey','sourceRecordId','publishQueueRecordId','approvalVerified','draftStatus'])assert.equal(row[key],undefined,'Manual record has fabricated frozen provenance: '+key);
@@ -47,8 +49,8 @@ export function validateManual(root,env=process.env) {
   assert(!urls.has(row.url)&&!frozenUrls.has(row.url),'Duplicate/frozen manual URL');urls.add(row.url);
   assert(!sources.has(row.file),'Duplicate manual source');sources.add(row.file);
   assert.equal(row.file,`src/content/manual/${row.pageKey}.md`);assert.equal(row.routeType,'category');
-  assert(['funeral','places','occasions','order-help','guide','flower-knowledge'].includes(row.category),'Regional content requires separate reviewed scope');
-  assert.notEqual(row.pageType,'regional-service');assert.equal(row.url,`/${row.category}/${row.slug}/`);assert.equal(row.parentHub,`/${row.category}/`);
+  assert(['funeral','places','occasions','order-help','guide','flower-knowledge','regions'].includes(row.category),'Invalid manual category');
+  assert.equal(row.category==='regions',row.pageType==='regional-service','Manual regional category/type mismatch');assert.equal(row.url,`/${row.category}/${row.slug}/`);assert.equal(row.parentHub,`/${row.category}/`);
   assert(row.primaryKeyword&&row.intentKey&&row.cluster&&row.queryEvidence&&Array.isArray(row.secondaryKeywords));assert(!intents.has(row.intentKey),'Duplicate manual intent');intents.add(row.intentKey);assert.equal(row.queryClass,'local-commercial');
   const text=fs.readFileSync(path.join(root,row.file),'utf8'),header=text.split('---')[1];assert(header,'Missing manual frontmatter');
   const front=Object.fromEntries(header.trim().split('\n').map(line=>{const i=line.indexOf(':');return [line.slice(0,i),JSON.parse(line.slice(i+1).trim())];}));
@@ -62,6 +64,7 @@ export function validateManual(root,env=process.env) {
   if(row.category==='funeral')assert(selected.every(p=>p.category==='funeral_wreath'),'Funeral product intent mismatch');
   if(row.pageType==='opening-business')assert(selected.every(p=>p.category==='congrats_wreath'),'Opening product intent mismatch');
  }
+ validateManualRegions(root,map.pages,products,read(root,'src/data/region-coverage.json'));
  const review=read(root,'src/data/manual-review.json');
  if(mode.production&&map.pages.length){
   assert.equal(review.status,'approved','Manual independent review pending');

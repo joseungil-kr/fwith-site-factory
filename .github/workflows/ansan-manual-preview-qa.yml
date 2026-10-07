@@ -2,7 +2,7 @@ name: Ansan manual preview evidence
 
 on:
   push:
-    branches: [manual-ansan-qa-20261007]
+    branches: [manual-ansan-regional-qa-20261007]
     paths:
       - 'site-factory/ansan-flower/**'
       - '.github/workflows/ansan-manual-preview-qa.yml'
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   preview-evidence:
-    if: github.ref == 'refs/heads/manual-ansan-qa-20261007'
+    if: github.ref == 'refs/heads/manual-ansan-regional-qa-20261007'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -33,7 +33,7 @@ jobs:
         run: |
           set -euo pipefail
           echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/ansan-manual-playwright" >> "$GITHUB_ENV"
-          test "$GITHUB_REF" = 'refs/heads/manual-ansan-qa-20261007'
+          test "$GITHUB_REF" = 'refs/heads/manual-ansan-regional-qa-20261007'
           test "$SITE_URL" = 'http://127.0.0.1:8934'
           test "$SITE_INDEXABLE" = 'false'
           mkdir -p ansan-preview-evidence
@@ -73,3 +73,4 @@ jobs:
           path: ansan-preview-evidence/
           if-no-files-found: error
           retention-days: 7
+
