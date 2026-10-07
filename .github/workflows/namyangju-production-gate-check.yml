@@ -1,0 +1,42 @@
+name: Namyangju exact20 production gate check
+on:
+  push:
+    branches: [codex/namyangju-production-gate]
+  pull_request:
+    paths:
+      - .github/site-factory-sites.json
+      - site-factory/engine/**
+      - site-factory/releases/namyangju-flower-v2-initial-20261005/**
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: control
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: site-factory-namyangju-v2
+          path: target
+          fetch-depth: 0
+      - name: Verify exact whole-region batch and production source without deploying
+        run: |
+          python3 control/site-factory/engine/whole_initial.py \
+            --registry control/.github/site-factory-sites.json \
+            --site-key namyangju-flower-v2 \
+            --revision 374918f70a532db2ef79bf30e6efbbc59741f1a5 \
+            --root target/site-factory/namyangju-flower \
+            --control control \
+            --workspace target \
+            --report initial-source.json
+          python3 - <<'PY'
+          import json
+          report=json.load(open('initial-source.json'))
+          assert report['pipelineState']=='initial_source_validated', report
+          assert report['batchBarrier']['state']=='staging_complete', report
+          assert report['batchBarrier']['newDetailCount']==20, report
+          print(json.dumps(report,ensure_ascii=False))
+          PY
