@@ -1,5 +1,5 @@
 """GET-only existing state inspection, with no secret values persisted or printed."""
-import json,os,re,sys,urllib.request
+import json,os,re,sys,urllib.request,urllib.error
 from pathlib import Path
 
 def require(ok,message):
@@ -70,7 +70,10 @@ def main():
  account=os.environ['CLOUDFLARE_ACCOUNT_ID'];token=os.environ['CLOUDFLARE_API_TOKEN'];require(bool(re.fullmatch('[0-9A-Fa-f]{32}',account)) and bool(token),'Missing provider credentials')
  def get(path):
   req=urllib.request.Request('https://api.cloudflare.com/client/v4'+path,headers={'Authorization':'Bearer '+token})
-  with urllib.request.urlopen(req,timeout=30) as r:d=json.load(r)
+  family=('settings' if path.endswith('/settings') else 'subdomain' if path.endswith('/subdomain') else 'domains' if '/workers/domains' in path else 'routes' if '/workers/routes' in path else 'zones' if path.startswith('/zones?') else 'unexpected-endpoint')
+  try:
+   with urllib.request.urlopen(req,timeout=30) as r:d=json.load(r)
+  except urllib.error.HTTPError as exc:raise ValueError('Provider GET '+family+' HTTP '+str(exc.code)) from None
   require(d.get('success') is True and not d.get('errors') and 'result' in d,'Provider read failed');return d
  state=inventory(get,account,p,phase)
  receipt=Path(os.environ['RUNNER_TEMP'])/('manual-20261007-'+p['siteKey']+'-'+phase+'-binding.json')
