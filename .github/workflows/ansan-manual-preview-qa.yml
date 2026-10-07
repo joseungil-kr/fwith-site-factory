@@ -21,7 +21,6 @@ jobs:
       MANUAL_PREVIEW: '1'
       SITE_URL: http://127.0.0.1:8934
       SITE_INDEXABLE: 'false'
-      PLAYWRIGHT_INSTALL_ROOT: ${{ runner.temp }}/ansan-manual-playwright
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,6 +32,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/ansan-manual-playwright" >> "$GITHUB_ENV"
           test "$GITHUB_REF" = 'refs/heads/manual-ansan-qa-20261007'
           test "$SITE_URL" = 'http://127.0.0.1:8934'
           test "$SITE_INDEXABLE" = 'false'
