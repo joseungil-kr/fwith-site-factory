@@ -1,0 +1,52 @@
+{
+  "enabled": false,
+  "siteKey": "suwon-flower-test",
+  "branch": "site-factory-suwon-v1",
+  "previewBranch": "manual-preview-suwon-20261007",
+  "root": "site-factory/suwon-flower",
+  "productionOrigin": "https://suwon.fwith.kr",
+  "worker": "suwon-flower-guide-test",
+  "previewWorker": "suwon-flower-guide-qa",
+  "previewOrigin": "https://suwon-flower-guide-qa.joseungil.workers.dev",
+  "productionConfig": "wrangler.jsonc",
+  "previewConfig": "wrangler.staging.jsonc",
+  "reasonInactive": "Awaiting independent workflow review, complete exact bundle proof, and service write authorization; Hwaseong additionally lacks verified isolated pixel QA route.",
+  "assignedAuthorId": null,
+  "assignedReviewerId": null,
+  "workflowPath": ".github/workflows/suwon-manual-release-20261007.yml",
+  "unresolvedBlockers": [
+    "Independent final release-code review required before activation"
+  ],
+  "environments": {
+    "preview": {
+      "SITE_URL": "https://suwon-flower-guide-qa.joseungil.workers.dev",
+      "SITE_ORIGIN": "https://suwon-flower-guide-qa.joseungil.workers.dev",
+      "SITE_INDEXABLE": "false"
+    },
+    "production": {
+      "SITE_URL": "https://suwon.fwith.kr",
+      "SITE_ORIGIN": "https://suwon.fwith.kr",
+      "SITE_INDEXABLE": "true"
+    }
+  },
+  "generatedRevisionKey": "revision",
+  "providerBaselineSha256": {
+    "production": "cf07c46af4bb2e91d4ae8fc179cc64feb378187471f5662b3a0a82adc31912a9",
+    "preview": "9ab2747dda3855ebd3b3013756cd1b48fff78185fdd44a63fe1eb26b338c0e4d"
+  },
+  "providerBaselineEvidence": {
+    "production": {
+      "runId": 37612509096,
+      "artifactId": 11478109100,
+      "artifactSha256": "5252d1ea6194d858deecb3d0bbb7adc9fbd579447703dcb17f67f55412103e5e",
+      "sourceRevision": "f4d39d6a46dd7e0510088a6300600ac32e6dbf28"
+    },
+    "preview": {
+      "runId": 37612509096,
+      "artifactId": 11477949270,
+      "artifactSha256": "19e973e9c23f6af308f35cb5f16526b37559a4fc22b40936a52a52994497d5f3",
+      "sourceRevision": "f4d39d6a46dd7e0510088a6300600ac32e6dbf28"
+    }
+  },
+  "pixelReviewMode": "isolated-hosted"
+}

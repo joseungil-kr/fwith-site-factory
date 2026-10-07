@@ -1,0 +1,52 @@
+{
+  "enabled": false,
+  "siteKey": "namyangju-flower-v2",
+  "branch": "site-factory-namyangju-v2",
+  "previewBranch": "manual-preview-namyangju-20261007",
+  "root": "site-factory/namyangju-flower",
+  "productionOrigin": "https://namyangju.fwith.kr",
+  "worker": "namyangju-flower-prod-disabled",
+  "previewWorker": "namyangju-flower-guide-qa",
+  "previewOrigin": "https://namyangju-flower-guide-qa.joseungil.workers.dev",
+  "productionConfig": "wrangler.jsonc",
+  "previewConfig": "wrangler.staging.jsonc",
+  "reasonInactive": "Awaiting independent workflow review, complete exact bundle proof, and service write authorization; Hwaseong additionally lacks verified isolated pixel QA route.",
+  "assignedAuthorId": null,
+  "assignedReviewerId": null,
+  "workflowPath": ".github/workflows/namyangju-manual-release-20261007.yml",
+  "unresolvedBlockers": [
+    "Independent final release-code review required before activation"
+  ],
+  "environments": {
+    "preview": {
+      "SITE_URL": "https://namyangju-flower-guide-qa.joseungil.workers.dev",
+      "SITE_ORIGIN": "https://namyangju-flower-guide-qa.joseungil.workers.dev",
+      "SITE_INDEXABLE": "false"
+    },
+    "production": {
+      "SITE_URL": "https://namyangju.fwith.kr",
+      "SITE_ORIGIN": "https://namyangju.fwith.kr",
+      "SITE_INDEXABLE": "true"
+    }
+  },
+  "generatedRevisionKey": "revision",
+  "providerBaselineSha256": {
+    "preview": "ffe8a4a7cdf854a8b909c3c89abe625b1e155c9a1772f76b4f5085987dd9fb9b",
+    "production": "5bc93dbdb52ea1dafc6c7c0412996be4df7190743c16cc46abbdc69d04eafeb7"
+  },
+  "providerBaselineEvidence": {
+    "preview": {
+      "runId": 37612509096,
+      "artifactId": 11477439702,
+      "artifactSha256": "7b13d8e846f8db1902a691f3a1a83cd805038d6d06b1509448d65bf54974934c",
+      "sourceRevision": "f4d39d6a46dd7e0510088a6300600ac32e6dbf28"
+    },
+    "production": {
+      "runId": 37612509096,
+      "artifactId": 11477309764,
+      "artifactSha256": "7f3ee4d1e0edacb17bffa8152cc792549f3824bb55eca65852ccc893b9ed1359",
+      "sourceRevision": "f4d39d6a46dd7e0510088a6300600ac32e6dbf28"
+    }
+  },
+  "pixelReviewMode": "isolated-hosted"
+}

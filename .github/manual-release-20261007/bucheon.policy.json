@@ -1,0 +1,52 @@
+{
+  "enabled": false,
+  "siteKey": "bucheon-flower-v2",
+  "branch": "site-factory-bucheon-v2",
+  "previewBranch": "manual-preview-bucheon-20261007",
+  "root": "site-factory/bucheon-flower",
+  "productionOrigin": "https://bucheon.fwith.kr",
+  "worker": "bucheon-flower-prod-disabled",
+  "previewWorker": "bucheon-flower-guide-qa",
+  "previewOrigin": "https://bucheon-flower-guide-qa.joseungil.workers.dev",
+  "productionConfig": "wrangler.jsonc",
+  "previewConfig": "wrangler.staging.jsonc",
+  "reasonInactive": "Awaiting independent workflow review, complete exact bundle proof, and service write authorization; Hwaseong additionally lacks verified isolated pixel QA route.",
+  "assignedAuthorId": null,
+  "assignedReviewerId": null,
+  "workflowPath": ".github/workflows/bucheon-manual-release-20261007.yml",
+  "unresolvedBlockers": [
+    "Independent final release-code review required before activation"
+  ],
+  "environments": {
+    "preview": {
+      "SITE_URL": "https://bucheon-flower-guide-qa.joseungil.workers.dev",
+      "SITE_ORIGIN": "https://bucheon-flower-guide-qa.joseungil.workers.dev",
+      "SITE_INDEXABLE": "false"
+    },
+    "production": {
+      "SITE_URL": "https://bucheon.fwith.kr",
+      "SITE_ORIGIN": "https://bucheon.fwith.kr",
+      "SITE_INDEXABLE": "true"
+    }
+  },
+  "generatedRevisionKey": "revision",
+  "providerBaselineSha256": {
+    "preview": "3a3b96326cbb83d6b977586865b4c390e8b2487c70709e0b4cb37d75e3616af0",
+    "production": "44ef57491090cab19802cf7293b40905bdc2bb9e433ae852d5cb16bb766839b7"
+  },
+  "providerBaselineEvidence": {
+    "preview": {
+      "runId": 37612509096,
+      "artifactId": 11477979271,
+      "artifactSha256": "1eed1bad1ab8548da67225a38c03e15df228eadb6592d71e5c417da67adc047e",
+      "sourceRevision": "f4d39d6a46dd7e0510088a6300600ac32e6dbf28"
+    },
+    "production": {
+      "runId": 37612509096,
+      "artifactId": 11477779443,
+      "artifactSha256": "b2cb5c594394d7b48d00b1665bdfc09bb360cd7692a9c444ac7c25458dab24ed",
+      "sourceRevision": "f4d39d6a46dd7e0510088a6300600ac32e6dbf28"
+    }
+  },
+  "pixelReviewMode": "isolated-hosted"
+}

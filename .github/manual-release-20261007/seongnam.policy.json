@@ -1,0 +1,52 @@
+{
+  "enabled": false,
+  "siteKey": "seongnam-flower-v2",
+  "branch": "site-factory-seongnam-v2",
+  "previewBranch": "manual-preview-seongnam-20261007",
+  "root": "site-factory/seongnam-flower",
+  "productionOrigin": "https://seongnam.fwith.kr",
+  "worker": "seongnam-flower-prod-disabled",
+  "previewWorker": "seongnam-flower-guide-qa",
+  "previewOrigin": "https://seongnam-flower-guide-qa.joseungil.workers.dev",
+  "productionConfig": "wrangler.jsonc",
+  "previewConfig": "wrangler.staging.jsonc",
+  "reasonInactive": "Awaiting independent workflow review, complete exact bundle proof, and service write authorization; Hwaseong additionally lacks verified isolated pixel QA route.",
+  "assignedAuthorId": null,
+  "assignedReviewerId": null,
+  "workflowPath": ".github/workflows/seongnam-manual-release-20261007.yml",
+  "unresolvedBlockers": [
+    "Independent final release-code review required before activation"
+  ],
+  "environments": {
+    "preview": {
+      "SITE_URL": "https://seongnam-flower-guide-qa.joseungil.workers.dev",
+      "SITE_ORIGIN": "https://seongnam-flower-guide-qa.joseungil.workers.dev",
+      "SITE_INDEXABLE": "false"
+    },
+    "production": {
+      "SITE_URL": "https://seongnam.fwith.kr",
+      "SITE_ORIGIN": "https://seongnam.fwith.kr",
+      "SITE_INDEXABLE": "true"
+    }
+  },
+  "generatedRevisionKey": "revision",
+  "providerBaselineSha256": {
+    "production": "3f9d84ddbbf1bf7759317503c74262e47432f4575525cfff6fb2f664c4119a28",
+    "preview": "8ee8e9759714a6e554c1ff6fc0944e943cb104fecd250e0e7e7dbda11be51ce7"
+  },
+  "providerBaselineEvidence": {
+    "production": {
+      "runId": 37612509096,
+      "artifactId": 11478074268,
+      "artifactSha256": "c20cf5a2350edcb6fd42b970296adc5ab959f9f3112a09cbafad82bc1e65a0cf",
+      "sourceRevision": "f4d39d6a46dd7e0510088a6300600ac32e6dbf28"
+    },
+    "preview": {
+      "runId": 37612509096,
+      "artifactId": 11477954311,
+      "artifactSha256": "a3963888b869477d1734478f78d0ed3354f76f3aff9580716c40625271dd8f55",
+      "sourceRevision": "f4d39d6a46dd7e0510088a6300600ac32e6dbf28"
+    }
+  },
+  "pixelReviewMode": "isolated-hosted"
+}
