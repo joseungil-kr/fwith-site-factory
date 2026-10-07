@@ -105,6 +105,37 @@ def snapshot_publish_key(state, page_key, revision):
     return f"{state['site_key']}:{state['scope_key']}:{page_key}:r{revision}"
 
 
+def freeze_batch(state, payloads, reviews):
+    """Bind all reviewed frozen payloads before the existing Publisher sees one.
+
+    A review must name the exact payload digest and a distinct reviewer.  The
+    caller must persist the returned state with CAS before making a Queue row.
+    """
+    if state["phase"] != "REVIEWING":
+        raise ValueError("batch is not in review")
+    if set(payloads) != set(state["page_keys"]) or set(reviews) != set(state["page_keys"]):
+        raise ValueError("whole-region payload/review membership incomplete")
+    frozen = []
+    for page_key in state["page_keys"]:
+        payload, review = payloads[page_key], reviews[page_key]
+        if (payload.get("page_key") != page_key or
+                payload.get("source_sha") != state["source_sha"] or
+                payload.get("membership_sha256") != state["membership_sha256"] or
+                not payload.get("body") or not payload.get("revision")):
+            raise ValueError("frozen payload provenance mismatch")
+        if (review.get("result") != "PASS" or
+                review.get("payload_sha256") != digest(payload) or
+                not review.get("reviewer_id") or
+                review.get("reviewer_id") == payload.get("writer_id") or
+                not review.get("evidence_url")):
+            raise ValueError("independent exact-payload approval missing")
+        frozen.append({"page_key": page_key, "payload_sha256": digest(payload),
+                       "approval_sha256": digest(review)})
+    result = dict(state)
+    result["frozen_sha256"] = digest(frozen)
+    return result
+
+
 def pending_snapshots(state, published):
     """Next page only; a lost event is harmless after durable readback."""
     if state["phase"] != "SNAPSHOTTING":

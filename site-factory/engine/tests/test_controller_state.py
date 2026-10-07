@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from controller_state import (acquire_lease, digest, new_release, next_ready_region,
+from controller_state import (acquire_lease, digest, freeze_batch, new_release, next_ready_region,
                               pending_snapshots, require_receipt, retry_delay,
                               snapshot_publish_key)
 
@@ -108,6 +108,20 @@ class ControllerStateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unique"):
             new_release({"site_key": "example", "priority": 1}, "scope", "a" * 40,
                         [{"page_key": "same"}, {"page_key": "same"}])
+
+    def test_freeze_requires_exact_member_payload_and_independent_review(self):
+        self.state["phase"] = "REVIEWING"
+        payloads = {key: {"page_key": key, "source_sha": "a" * 40,
+                          "membership_sha256": self.state["membership_sha256"],
+                          "body": "reviewed text", "revision": 1, "writer_id": "writer"}
+                    for key in self.state["page_keys"]}
+        reviews = {key: {"result": "PASS", "payload_sha256": digest(payload),
+                         "reviewer_id": "independent-reviewer", "evidence_url": "https://example.test/review"}
+                   for key, payload in payloads.items()}
+        self.assertEqual(len(freeze_batch(self.state, payloads, reviews)["frozen_sha256"]), 64)
+        del reviews["p36"]
+        with self.assertRaisesRegex(ValueError, "membership"):
+            freeze_batch(self.state, payloads, reviews)
 
 
 if __name__ == "__main__":
