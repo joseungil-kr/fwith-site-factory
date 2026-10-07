@@ -34,3 +34,4 @@ export function homeProducts(products) {
   const keys = ['funeral-basic', 'congrats-basic', 'bouquet-happiness', 'basket-sunshine', 'bouquet-blue', 'funeral-premium'];
   return keys.map(key => products.find(p => p.key === key)).filter(Boolean);
 }
+

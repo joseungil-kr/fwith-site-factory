@@ -2,7 +2,7 @@
 import RegionalHub from '../../components/RegionalHub.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PurchaseBanner from '../../components/PurchaseBanner.astro';
-import pages from '../../data/pages.json';
+import pages from '../../lib/all-pages.mjs';
 import products from '../../data/products.json';
 import ProductCards from '../../components/ProductCards.astro';
 import {site,groups} from '../../config/site';
@@ -15,7 +15,7 @@ const hero=selected[0];
 const illustration=group.cat==='business'?editorial.openingWreath:null;
 const addressPage=(pages as any[]).find(p=>p.visualIntent==='order_address');
 ---
-{group.cat==='regions' ? <RegionalHub/> : <BaseLayout title={`${site.region} ${group.label} 꽃배달 | ${site.brand}`} description={guide.intro} canonicalPath={group.url} socialImage={hero} orderUrl={hero?.orderUrl || site.orderUrl}>
+{group.cat==='regions' && items.every(p=>p.publicationMode!=='manual-user-request') ? <RegionalHub/> : <BaseLayout title={`${site.region} ${group.label} 꽃배달 | ${site.brand}`} description={guide.intro} canonicalPath={group.url} socialImage={hero} orderUrl={hero?.orderUrl || site.orderUrl}>
 <nav class="breadcrumb" aria-label="현재 위치"><a href="/">{site.region} 꽃배달</a><span>›</span><span>{group.label}</span></nav>
 <section class="category-hero hub-hero"><div><span class="eyebrow">{site.brand} {site.region}</span><h1>{site.region} {group.label} 꽃배달</h1><p>{guide.intro}</p><ul class="decision-list">{guide.decision.map((tip:string)=><li>{tip}</li>)}</ul><div class="actions"><a class="btn primary" href={site.phoneHref}>전화 상담·주문</a><a class="btn dark" href={hero?.orderUrl || site.orderUrl}>{guide.cta}</a></div></div>{illustration ? <figure class="hub-product editorial-hero" data-asset-type={illustration.assetType}><img src={illustration.img} alt={illustration.alt} width="1000" height="1000" loading="eager"/><figcaption>{illustration.caption}</figcaption></figure> : hero && <a class="hub-product" href={hero.orderUrl} data-product-family={hero.family} data-product-key={hero.key}><img src={hero.img} alt={hero.name} width="420" height="420" loading="eager"/><strong>{hero.name} · {hero.price.toLocaleString()}원</strong><span>상품 확인·주문 →</span></a>}</section>
 {group.cat==='gift' && <aside class="caution"><strong>병문안은 꽃 반입 가능 여부를 먼저 확인하세요</strong><p>병원·병동에 따라 생화가 제한될 수 있습니다. 수령 가능 여부를 확인한 뒤 꽃다발·꽃바구니를 선택해 주세요.</p></aside>}

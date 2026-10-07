@@ -1,3 +1,4 @@
+import manualPages from '../data/manual-pages.json' with {type:'json'};
 import coverage from '../data/region-coverage.json' with {type:'json'};
 import policy from '../data/region-policy.json' with {type:'json'};
 import manifest from '../data/publish-manifest.json' with {type:'json'};
@@ -7,7 +8,9 @@ export {coverage,policy,architecture};
 export const regionalPages=regionalRows(manifest.pages,architecture,coverage,policy);
 export function groupsFor(pages){return directoryGroups(pages,architecture,coverage,policy);}
 export function assertRegionalInput(pages){
- const regional=pages.filter(p=>p.category==='regions'||p.pageType==='regional-service');
+ // Manual pages carry their own digest-bound contract and never claim frozen registry approval.
+ const isExactManual=p=>p.publicationMode==='manual-user-request' && manualPages.some(m=>m.pageKey===p.pageKey && JSON.stringify(m)===JSON.stringify(p));
+ const regional=pages.filter(p=>!isExactManual(p) && (p.category==='regions'||p.pageType==='regional-service'));
  if(regional.length!==regionalPages.length)throw new Error('Regional input/manifest count mismatch');
  for(const page of regional){const frozen=regionalPages.find(p=>p.pageKey===page.pageKey);
   for(const field of ['pageKey','snapshotId','slug','category','pageType',...regionalMetadataFields])if(JSON.stringify(page[field])!==JSON.stringify(frozen?.[field]))throw new Error('Regional input/manifest mismatch '+field);
