@@ -88,7 +88,10 @@ def check_rendered_catalog(doc, url, products):
 def check(root=Path('.')):
     dist=root/'dist'; data=root/'src/data'
     pages=json.loads((data/'pages.json').read_text());manifest=json.loads((data/'publish-manifest.json').read_text())
-    arch=json.loads((data/'architecture.json').read_text());truth=json.loads((data/'business-truth.json').read_text())
+    pages += json.loads((data/'manual-pages.json').read_text()) if (data/'manual-pages.json').exists() else []
+    arch=json.loads((data/'architecture.json').read_text())
+    for h in arch['hubs']: h['children']=sum(p['category']==h['category'] for p in pages)
+    truth=json.loads((data/'business-truth.json').read_text())
     products=json.loads((data/'products.json').read_text())
     site_config=json.loads((data/'site-config.json').read_text())
     base=(os.environ.get('SITE_URL') or site_config['previewUrl']).rstrip('/')
@@ -160,3 +163,4 @@ def check(root=Path('.')):
     print(f'STATIC QA PASSED: {len(pages)} details, {len(expected)} HTML routes; indexable={indexable}; exact metadata/sitemap/snapshot/link parity')
 
 if __name__=='__main__':check()
+

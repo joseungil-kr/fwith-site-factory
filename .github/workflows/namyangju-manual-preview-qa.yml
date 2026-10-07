@@ -1,0 +1,78 @@
+name: Namyangju manual preview evidence
+
+on:
+  push:
+    branches: [manual-namyangju-qa-20261007]
+    paths:
+      - 'site-factory/namyangju-flower/**'
+      - '.github/workflows/namyangju-manual-preview-qa.yml'
+      - '.github/scripts/namyangju-manual-preview.mjs'
+
+permissions:
+  contents: read
+
+jobs:
+  preview-evidence:
+    if: github.ref == 'refs/heads/manual-namyangju-qa-20261007'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      MANUAL_LOCAL_PREVIEW: 'true'
+      SITE_URL: https://localhost:8934
+      SITE_INDEXABLE: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Assert fixed preview boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/namyangju-manual-playwright" >> "$GITHUB_ENV"
+          test "$GITHUB_REF" = 'refs/heads/manual-namyangju-qa-20261007'
+          test "$SITE_URL" = 'https://localhost:8934'
+          test "$SITE_INDEXABLE" = 'false'
+          test "$MANUAL_LOCAL_PREVIEW" = 'true'
+          mkdir -p namyangju-preview-evidence
+          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/namyangju-flower/src/data/manual-pages.json")).digest("hex");if(h!=="1fb3a55e1938a5a4b60a3712e5812db88d2145048b4f2fb80d91f87ff14b0365")throw Error("Unexpected content digest"); const p=JSON.parse(fs.readFileSync("site-factory/namyangju-flower/src/data/manual-provenance.json"));if(p.dependencyHash!=="5f93a8961a36d62a28625caad68f1ea0c961ec6c7022ea3e0fd76ce865c6abc3"||p.independentReview.status!=="pending")throw Error("Unexpected candidate state");' 
+          node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("site-factory/namyangju-flower/src/data/manual-provenance.json")); fs.writeFileSync("namyangju-preview-evidence/revision.json",JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,provenance:p},null,2));'
+      - name: Install native site dependencies
+        working-directory: site-factory/namyangju-flower
+        run: npm install --no-package-lock
+      - name: Native gated localhost noindex build
+        shell: bash
+        working-directory: site-factory/namyangju-flower
+        run: |
+          set -euo pipefail
+          npm run build 2>&1 | tee "$GITHUB_WORKSPACE/namyangju-preview-evidence/native-build.log"
+      - name: Native regression tests
+        shell: bash
+        working-directory: site-factory/namyangju-flower
+        run: |
+          set -euo pipefail
+          npm test 2>&1 | tee "$GITHUB_WORKSPACE/namyangju-preview-evidence/native-tests.log"
+      - name: Install pinned official Playwright and Korean fonts
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix "$PLAYWRIGHT_INSTALL_ROOT" --no-save --no-package-lock playwright@1.63.0
+          "$PLAYWRIGHT_INSTALL_ROOT/node_modules/.bin/playwright" install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          fc-match 'Noto Sans CJK KR' > namyangju-preview-evidence/font-match.txt
+          npm list --prefix "$PLAYWRIGHT_INSTALL_ROOT" --json > namyangju-preview-evidence/playwright-dependencies.json
+      - name: Capture localhost desktop and mobile evidence
+        run: node .github/scripts/namyangju-manual-preview.mjs
+      - name: Retain evidence for independent review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: namyangju-manual-preview-${{ github.sha }}-${{ github.run_attempt }}
+          path: namyangju-preview-evidence/
+          if-no-files-found: error
+          retention-days: 7
+

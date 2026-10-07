@@ -1,0 +1,31 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
+import manual from '../src/data/manual-pages.json' with {type:'json'};
+import provenance from '../src/data/manual-provenance.json' with {type:'json'};
+import original from '../src/data/pages.json' with {type:'json'};
+import products from '../src/data/products.json' with {type:'json'};
+import {validateCustomerIntent} from './qa_intent.mjs';
+import {pageSources} from '../src/lib/sources.mjs';
+import {productFamilies,selectProducts} from '../src/lib/catalog.mjs';
+const hash=x=>crypto.createHash('sha256').update(x).digest('hex');
+for(const [f,h] of Object.entries(provenance.originalFileSha256))assert.equal(hash(fs.readFileSync('src/data/'+f)),h,'Frozen file changed: '+f);
+assert.equal(hash(fs.readFileSync('src/data/manual-pages.json')),provenance.contentHash);
+const keys=new Set(original.map(x=>x.pageKey)),urls=new Set(original.map(x=>x.url)),intents=new Set(original.map(x=>x.intentKey||x.primaryKeyword));
+for(const p of manual){
+ assert.equal(p.publicationMode,'manual-user-request');assert.equal(p.manualReleaseId,provenance.manualReleaseId);
+ for(const f of ['snapshotId','snapshotHash','approvalVerified','sourceRecordId','publishQueueRecordId'])assert.equal(p[f],undefined,'Fake frozen provenance '+f);
+ assert(!keys.has(p.pageKey));keys.add(p.pageKey);assert(!urls.has(p.url));urls.add(p.url);assert(!intents.has(p.intentKey));intents.add(p.intentKey);
+ assert.equal(p.url,`/${p.category}/${p.slug}/`);
+ for(const f of ['title','h1','description','cardSummary','firstAnswer','contentMarkdown'])assert(p[f]?.trim(),'Missing '+f);
+ assert(p.title.startsWith(p.primaryKeyword));assert(p.h1.includes(p.primaryKeyword));assert(p.firstAnswer.startsWith(p.primaryKeyword.replace(' 안내',''))||p.firstAnswer.includes(p.primaryKeyword.split(' ').slice(0,2).join(' ')));
+ assert(!p.cardSummary.startsWith(p.primaryKeyword));assert.notEqual(p.firstAnswer,p.cardSummary);
+ assert.equal(hash(p.contentMarkdown),p.contentSha256);
+ pageSources(p);validateCustomerIntent(p,products);assert(selectProducts(p,products).length>0);
+ const html=fs.readFileSync('dist'+p.url+'index.html','utf8');
+ assert(html.includes(`data-manual-release-id="${p.manualReleaseId}"`));assert(!html.includes('data-snapshot-id='));
+ assert(html.includes(p.firstAnswer));assert(html.includes(p.h1));
+ for(const key of p.relatedKeys)assert([...original,...manual].some(x=>x.pageKey===key));
+ const families=productFamilies(p);if(p.category==='funeral')assert.deepEqual(families,['funeral']);if(p.pageType==='event-venue'||p.pageType==='business-opening')assert.deepEqual(families,['congrats']);
+}
+console.log(`MANUAL QA PASSED: ${manual.length} pages; ${original.length} frozen originals unchanged; no fabricated Factory provenance; content hashes, metadata, sources and product families verified`);
