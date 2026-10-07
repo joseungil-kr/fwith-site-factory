@@ -1,4 +1,7 @@
 ---
+import manualManifest from '../data/manual-manifest.json';
+import ManualFuneralOrderPanel from '../components/ManualFuneralOrderPanel.astro';
+import { getArticleCollection } from "../lib/manual-content";
 import { getCollection } from 'astro:content';
 import { removeRepeatedOpeningParagraph } from '../lib/article-opening.mjs';
 import BaseLayout from './BaseLayout.astro';
@@ -29,6 +32,7 @@ type SourceRef = {
 };
 
 interface Props {
+  orderPanel?: string;
   pageKey: string;
   title: string;
   description: string;
@@ -43,7 +47,8 @@ interface Props {
   contentRole?: string;
   localizationPolicy?: string;
   region: string;
-  snapshotId: string;
+  snapshotId?: string;
+  manualPublicationId?: string;
   slug: string;
   routeType: 'top_level' | 'category';
   sourceUrls?: string[];
@@ -57,7 +62,7 @@ interface Props {
 }
 
 const {
-  pageKey,
+  orderPanel,  pageKey,
   title,
   description,
   h1,
@@ -72,6 +77,7 @@ const {
   localizationPolicy = 'local-optional',
   region,
   snapshotId,
+  manualPublicationId,
   slug,
   routeType,
   sourceUrls = [],
@@ -118,10 +124,10 @@ const activePageKeys = new Set(
     .filter((page) => page.sitemapIndexable !== false && page.status !== 'merged')
     .map((page) => page.pageKey)
 );
-const allArticles = await getCollection(
+const allArticles = await getArticleCollection(
   'articles',
   ({ data }) =>
-    (data.draftStatus === 'approved' || data.draftStatus === 'published') &&
+    (data.draftStatus === 'approved' || data.draftStatus === 'published' || ('publicationMode' in data && data.publicationMode === 'manual-user-request')) &&
     activePageKeys.has(data.pageKey)
 );
 const detailCategoryCounts = allArticles
@@ -246,7 +252,8 @@ const articleContent=removeRepeatedOpeningParagraph(await Astro.slots.render('de
 
   <section
     class:list={['article-shell', isPrimaryLanding && 'primary-landing']}
-    data-snapshot-id={snapshotId}
+    data-snapshot-id={manualPublicationId ? undefined : snapshotId}
+    data-manual-publication-id={manualPublicationId}
     data-query-class={queryClass || undefined}
     data-visual-intent={visualIntent || undefined}
     data-asset-slot={assetSlot || undefined}
@@ -300,6 +307,8 @@ const articleContent=removeRepeatedOpeningParagraph(await Astro.slots.render('de
       <div class="article-grid article-grid-single">
         <article class="prose">
           <Fragment set:html={articleContent} />
+          {pageKey === 'hwaseong-manual-hwaseong-funeral-destination-directory' && <section aria-label="시설별 근조화환 상세"><h2>시설별 근조화환 주문 확인</h2><ul>{manualManifest.pages.filter(p => 'facilityCode' in p).map(p => <li><a href={p.url}>{p.h1}</a></li>)}</ul></section>}
+      {orderPanel === "funeral-catalog" && <ManualFuneralOrderPanel />}
           {normalizedSources.length > 0 && (
             <section class="source-list" aria-labelledby="source-title">
               <div class="source-list-head">
@@ -341,3 +350,4 @@ const articleContent=removeRepeatedOpeningParagraph(await Astro.slots.render('de
     </div>
   </section>
 </BaseLayout>
+

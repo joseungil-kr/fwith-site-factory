@@ -1,3 +1,4 @@
+import './scripts/validate_manual.mjs';
 import { readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
@@ -35,3 +36,4 @@ export default defineConfig({
   } })],
   trailingSlash: 'always',
 });
+

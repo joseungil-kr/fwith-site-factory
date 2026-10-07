@@ -3,9 +3,9 @@ import { existsSync } from 'node:fs';
 const siteUrl = import.meta.env.SITE_URL || 'https://hwaseong.fwith.kr';
 const indexableFlag = import.meta.env.SITE_INDEXABLE;
 const productionMarker = existsSync('production-indexing.enabled');
-const indexable =
+const indexable = process.env.MANUAL_PREVIEW !== 'true' && (
   indexableFlag === 'true' ||
-  (indexableFlag !== 'false' && productionMarker);
+  (indexableFlag !== 'false' && productionMarker));
 
 export const siteConfig = {
   siteKey: 'hwaseong-flower',
@@ -42,3 +42,4 @@ export const siteConfig = {
     { href: '/order-help/', label: '주문 도움', category: 'order-help', menuMinChildren: 5 },
   ],
 } as const;
+

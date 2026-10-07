@@ -1,4 +1,5 @@
 ---
+import { getArticleCollection } from "../../lib/manual-content";
 import { getCollection } from 'astro:content';
 import HubIndex from '../../components/HubIndex.astro';
 import architecture from '../../data/architecture.json';
@@ -51,10 +52,10 @@ export async function getStaticPaths() {
       .filter((page) => page.sitemapIndexable !== false && page.status !== 'merged')
       .map((page) => page.pageKey)
   );
-  const articles = await getCollection(
+  const articles = await getArticleCollection(
     'articles',
     ({ data }) =>
-      (data.draftStatus === 'approved' || data.draftStatus === 'published') &&
+      (data.draftStatus === 'approved' || data.draftStatus === 'published' || ('publicationMode' in data && data.publicationMode === 'manual-user-request')) &&
       data.routeType === 'category' &&
       activePageKeys.has(data.pageKey)
   );
@@ -74,3 +75,4 @@ const meta = categoryMeta[category];
   intro={meta.intro}
   description={meta.description}
 />
+

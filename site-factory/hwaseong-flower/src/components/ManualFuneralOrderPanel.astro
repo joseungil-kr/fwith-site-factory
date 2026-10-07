@@ -1,0 +1,22 @@
+---
+import products from '../data/products.json';
+import business from '../data/business-truth.json';
+const selected=products.filter(p=>['funeral-basic','funeral-premium'].includes(p.productKey));
+const money=new Intl.NumberFormat('ko-KR');
+---
+<section class="manual-order" aria-label="꽃이랑 근조화환 상품과 주문">
+  <h2>꽃이랑 근조화환 상품·주문</h2>
+  <div class="manual-products">
+    {selected.map(product=><article>
+      <img src={product.image} alt={product.imageAlt} width="480" height="480" loading="lazy" />
+      <h3>{product.name}</h3><p>{money.format(product.price)}원</p>
+    </article>)}
+  </div>
+  <p>카탈로그 상품 예시이며 해당 장례식장의 배송 실적 사진이 아닙니다. {business.productVariationNotice}</p>
+  <p>{business.deliveryNotice} 실제 빈소·반입 가능 여부와 요청 날짜의 전달 가능 시간, 배송 포함 총액은 주문 전에 확인해 주세요.</p>
+  <p><a class="manual-phone" href={business.phoneHref}>꽃이랑 {business.phone} 화환 주문 상담</a> · <a href={business.onlineOrderUrl}>온라인 상품·주문</a></p>
+  <p>전화 주문 {business.phoneOrderHours} · 온라인 주문 접수 {business.onlineOrderHours}. 접수시간이 심야 배송을 보장하지는 않습니다.</p>
+</section>
+<style>
+.manual-order{margin-block:2rem;padding:1.25rem;border:1px solid #e6d9dc;border-radius:1rem;background:#fffafb}.manual-products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.manual-products article{min-width:0;text-align:center}.manual-products img{display:block;width:100%;max-width:280px;height:auto;object-fit:contain;margin:auto}.manual-phone{font-weight:700}@media(max-width:430px){.manual-products{grid-template-columns:1fr}}
+</style>

@@ -8,9 +8,7 @@ const sourceRef = z.object({
   verifiedAt: z.coerce.date().optional(),
 });
 
-const articles = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/articles' }),
-  schema: z.object({
+const articleSchema = z.object({
     pageKey: z.string(),
     snapshotId: z.string(),
     sourceDraftKey: z.string(),
@@ -48,8 +46,9 @@ const articles = defineCollection({
     sourceUrls: z.array(z.string().url()).default([]),
     sources: z.array(sourceRef).default([]),
     relatedPageKeys: z.array(z.string()).default([]),
-    draftStatus: z.enum(['approved', 'published']).default('approved'),
-  }),
+    draftStatus: z.enum(['approved', 'published', 'manual-pending', 'manual-reviewed']).default('approved'),
 });
+const articles = defineCollection({loader: glob({pattern:'**/*.md',base:'./src/content/articles'}), schema:articleSchema});
+const manualArticles = defineCollection({loader: glob({pattern:'**/*.md',base:'./src/content/manual-articles'}), schema:articleSchema.omit({snapshotId:true,sourceDraftKey:true,sourceRecordId:true,draftStatus:true}).extend({orderPanel:z.literal('funeral-catalog').optional(),publicationMode:z.literal('manual-user-request'),manualPublicationId:z.string().regex(/^mp-[a-f0-9]{20}$/)})});
+export const collections = { articles, manualArticles };
 
-export const collections = { articles };

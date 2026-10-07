@@ -1,14 +1,15 @@
 ---
+import { getArticleCollection } from "../../lib/manual-content";
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
-type Article = CollectionEntry<'articles'>;
+type Article = CollectionEntry<'articles'> | CollectionEntry<'manualArticles'>;
 
 export async function getStaticPaths() {
-  const articles = await getCollection(
+  const articles = await getArticleCollection(
     'articles',
     ({ data }) =>
-      (data.draftStatus === 'approved' || data.draftStatus === 'published') &&
+      (data.draftStatus === 'approved' || data.draftStatus === 'published' || ('publicationMode' in data && data.publicationMode === 'manual-user-request')) &&
       data.routeType === 'category'
   );
   return articles.map((article) => ({
@@ -24,6 +25,7 @@ const { article } = Astro.props as { article: Article };
 const { Content } = await render(article);
 ---
 <ArticleLayout
+  orderPanel={'orderPanel' in article.data ? article.data.orderPanel : undefined}
   pageKey={article.data.pageKey}
   title={article.data.title}
   description={article.data.description}
@@ -38,7 +40,8 @@ const { Content } = await render(article);
   contentRole={article.data.contentRole}
   localizationPolicy={article.data.localizationPolicy}
   region={article.data.region}
-  snapshotId={article.data.snapshotId}
+  snapshotId={'snapshotId' in article.data ? article.data.snapshotId : undefined}
+  manualPublicationId={'manualPublicationId' in article.data ? article.data.manualPublicationId : undefined}
   slug={article.data.slug}
   routeType={article.data.routeType}
   sourceUrls={article.data.sourceUrls}
@@ -52,3 +55,4 @@ const { Content } = await render(article);
 >
   <Content />
 </ArticleLayout>
+

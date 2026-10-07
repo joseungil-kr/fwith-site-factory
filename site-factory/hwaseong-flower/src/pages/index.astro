@@ -1,4 +1,5 @@
 ---
+import { getArticleCollection } from "../lib/manual-content";
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import OrderCTA from '../components/OrderCTA.astro';
@@ -9,9 +10,9 @@ import architecture from '../data/architecture.json';
 
 const activePageKeys = new Set((architecture.pages || []).filter((page) => page.sitemapIndexable !== false && page.status !== 'merged').map((page) => page.pageKey));
 
-const articles = (await getCollection(
+const articles = (await getArticleCollection(
   'articles',
-  ({ data }) => (data.draftStatus === 'approved' || data.draftStatus === 'published') && activePageKeys.has(data.pageKey)
+  ({ data }) => (data.draftStatus === 'approved' || data.draftStatus === 'published' || ('publicationMode' in data && data.publicationMode === 'manual-user-request')) && activePageKeys.has(data.pageKey)
 )).sort((a, b) => b.data.pageKey.localeCompare(a.data.pageKey, 'ko'));
 
 const recent = articles.slice(0, 6);
@@ -109,3 +110,4 @@ const situations = [
     </div>
   </section>
 </BaseLayout>
+

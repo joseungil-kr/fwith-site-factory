@@ -1,14 +1,15 @@
 ---
+import { getArticleCollection } from "../lib/manual-content";
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import ArticleLayout from '../layouts/ArticleLayout.astro';
 
-type Article = CollectionEntry<'articles'>;
+type Article = CollectionEntry<'articles'> | CollectionEntry<'manualArticles'>;
 
 export async function getStaticPaths() {
-  const articles = await getCollection(
+  const articles = await getArticleCollection(
     'articles',
     ({ data }) =>
-      (data.draftStatus === 'approved' || data.draftStatus === 'published') &&
+      (data.draftStatus === 'approved' || data.draftStatus === 'published' || ('publicationMode' in data && data.publicationMode === 'manual-user-request')) &&
       data.routeType === 'top_level'
   );
   return articles.map((article) => ({
@@ -35,7 +36,8 @@ const { Content } = await render(article);
   contentRole={article.data.contentRole}
   localizationPolicy={article.data.localizationPolicy}
   region={article.data.region}
-  snapshotId={article.data.snapshotId}
+  snapshotId={'snapshotId' in article.data ? article.data.snapshotId : undefined}
+  manualPublicationId={'manualPublicationId' in article.data ? article.data.manualPublicationId : undefined}
   slug={article.data.slug}
   routeType={article.data.routeType}
   sourceUrls={article.data.sourceUrls}
@@ -49,3 +51,4 @@ const { Content } = await render(article);
 >
   <Content />
 </ArticleLayout>
+

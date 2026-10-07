@@ -1,4 +1,5 @@
 ---
+import { getArticleCollection } from "../lib/manual-content";
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import OrderCTA from './OrderCTA.astro';
@@ -19,10 +20,10 @@ const roleByPageKey = new Map((architecture.pages || []).map((page) => [page.pag
 const rolePriority: Record<string, number> = { REGION_SERVICE_LANDING: 0, PLACE_LANDING: 1, INTENT_LANDING: 2, PRICE_GUIDE: 3, INFORMATION_GUIDE: 4 };
 const roleLabel: Record<string, string> = { REGION_SERVICE_LANDING: '지역 서비스', PLACE_LANDING: '장소별 안내', INTENT_LANDING: '목적별 안내', PRICE_GUIDE: '가격 안내', INFORMATION_GUIDE: '정보 가이드' };
 
-const articles = (await getCollection(
+const articles = (await getArticleCollection(
   'articles',
   ({ data }) =>
-    (data.draftStatus === 'approved' || data.draftStatus === 'published') &&
+    (data.draftStatus === 'approved' || data.draftStatus === 'published' || ('publicationMode' in data && data.publicationMode === 'manual-user-request')) &&
     data.routeType === 'category' &&
     data.category === category && activePageKeys.has(data.pageKey)
 )).sort((a, b) => (rolePriority[roleByPageKey.get(a.data.pageKey) ?? 'INFORMATION_GUIDE'] ?? 99) - (rolePriority[roleByPageKey.get(b.data.pageKey) ?? 'INFORMATION_GUIDE'] ?? 99) || a.data.pageKey.localeCompare(b.data.pageKey, 'ko'));
@@ -97,3 +98,4 @@ const structureLabel: Record<string, string> = {
     </div>
   </section>
 </BaseLayout>
+
