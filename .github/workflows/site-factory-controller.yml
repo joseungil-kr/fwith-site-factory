@@ -1,0 +1,38 @@
+name: Site Factory v2 controller
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: site-factory-controller
+  cancel-in-progress: false
+
+jobs:
+  controller:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout trusted controller
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: controller
+      - name: Checkout durable controller state
+        uses: actions/checkout@v4
+        with:
+          ref: site-factory-controller-state
+          path: state
+          fetch-depth: 0
+      - name: Advance the existing release
+        env:
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+          AIRTABLE_BASE_ID: ${{ vars.SITE_FACTORY_AIRTABLE_BASE_ID }}
+          SITE_FACTORY_RUNTIME_TOKEN: ${{ secrets.SITE_FACTORY_RUNTIME_TOKEN }}
+          SITE_FACTORY_STAGE_ENDPOINTS: ${{ vars.SITE_FACTORY_STAGE_ENDPOINTS }}
+          SITE_FACTORY_WRITER_ID: ${{ vars.SITE_FACTORY_WRITER_ID }}
+          SITE_FACTORY_REVIEWER_ID: ${{ vars.SITE_FACTORY_REVIEWER_ID }}
+        run: |
+          python3 controller/site-factory/engine/controller_runtime.py \
+            --state-checkout state --owner "github-actions-${{ github.run_id }}"
