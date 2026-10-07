@@ -3,6 +3,20 @@ import fnmatch,hashlib,json,sys,urllib.request,urllib.error
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import quote
+# Existing repository QA application identities; chosen by declared phase once.
+# This is not a fallback identity, a browser impersonation or an access grant.
+CLIENT_IDENTITIES={'preview':'SiteFactory-StagingQA/3.0','production':'SiteFactory-LiveQA/3.0'}
+def request_response(url,phase,opener=None):
+ assert phase in CLIENT_IDENTITIES,'Unsupported verification phase'
+ request=urllib.request.Request(url,headers={'User-Agent':CLIENT_IDENTITIES[phase],'Cache-Control':'no-cache'})
+ try:return (opener or urllib.request.urlopen)(request,timeout=30)
+ except urllib.error.HTTPError as error:return error
+
+def assert_response_status(response,url,route,expected_status):
+ # Never retry, rotate identity, or interpret security/rate-limit denial as success.
+ assert response.status not in (401,403,429),('access/rate-limit denied',route,response.status)
+ assert response.status==expected_status and response.url==url,('status/redirect',route,response.status)
+
 class Meta(HTMLParser):
  def __init__(self):super().__init__();self.robots=[];self.revisions=[]
  def handle_starttag(self,tag,attrs):
@@ -36,10 +50,9 @@ def main():
  p=json.loads(Path(sys.argv[1]).read_text());phase=sys.argv[2];dist=Path(sys.argv[3]);revision=sys.argv[4];origin=p['previewOrigin' if phase=='preview' else 'productionOrigin'];headers=rules(dist/'_headers')
  def fetch(route,expected_status):
   url=origin+quote(route,safe='/')
-  try:r=urllib.request.urlopen(urllib.request.Request(url,headers={'Cache-Control':'no-cache'}),timeout=30)
-  except urllib.error.HTTPError as e:r=e
+  r=request_response(url,phase)
   with r:
-   assert r.status==expected_status and r.url==url,('status/redirect',route)
+   assert_response_status(r,url,route,expected_status)
    body=r.read();verify_headers(route,r.headers,headers);return body,r.headers
  for f in sorted(dist.rglob('*')):
   if not f.is_file() or f.name in ('_headers','_redirects','404.html'):continue
