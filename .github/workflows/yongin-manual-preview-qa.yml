@@ -2,21 +2,18 @@ name: Yongin manual preview evidence
 
 on:
   push:
-    branches: [manual-yongin-qa-20261007]
+    branches: [manual-yongin-five-qa-20261007]
     paths:
       - 'site-factory/yongin-flower/**'
       - '.github/workflows/yongin-manual-preview-qa.yml'
       - '.github/scripts/yongin-manual-preview.mjs'
-      - '.github/scripts/yongin-release-qa.py'
-      - '.github/scripts/test-yongin-release-qa.py'
-      - '.github/scripts/yongin-indexnow-once.py'
 
 permissions:
   contents: read
 
 jobs:
   preview-evidence:
-    if: github.ref == 'refs/heads/manual-yongin-qa-20261007'
+    if: github.ref == 'refs/heads/manual-yongin-five-qa-20261007'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -27,6 +24,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -35,7 +33,8 @@ jobs:
         run: |
           set -euo pipefail
           echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/yongin-manual-playwright" >> "$GITHUB_ENV"
-          test "$GITHUB_REF" = 'refs/heads/manual-yongin-qa-20261007'
+          test "$GITHUB_REF" = 'refs/heads/manual-yongin-five-qa-20261007'
+          git merge-base --is-ancestor bc49ea311ceebdc304288acf60b636cdb296d83c HEAD
           test "$SITE_URL" = 'http://127.0.0.1:8935'
           test "$SITE_INDEXABLE" = 'false'
           mkdir -p yongin-preview-evidence
@@ -43,9 +42,9 @@ jobs:
           import fs from 'node:fs';
           import assert from 'node:assert/strict';
           import {artifactDigest,artifactInventory} from './site-factory/yongin-flower/src/lib/manual-release-gate.mjs';
-          const expected='f0d4ef3e4596b3ef1679d05af98a2dbf807b66f5ee76fce25d71cf3a6f7d1150';
+          const expected='5662b6bdc5609f172f29b0d0e7e5fdfe958b90463f10d2c356866b718ecb590d';
           assert.equal(artifactDigest(),expected,'Reviewed source bundle changed');
-          fs.writeFileSync('yongin-preview-evidence/revision.json',JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,sourceBase:'f6dfb14a74d265ae92a482969a1a060f2234e3d9',reviewedArtifactDigest:expected,productionApproval:'pending'},null,2));
+          fs.writeFileSync('yongin-preview-evidence/revision.json',JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,sourceBase:'bc49ea311ceebdc304288acf60b636cdb296d83c',reviewedArtifactDigest:expected,productionApproval:'pending'},null,2));
           fs.writeFileSync('yongin-preview-evidence/source-inventory.json',JSON.stringify(artifactInventory(),null,2));
           JS
       - name: Manual release verification regression tests

@@ -18,10 +18,10 @@ updatedAt: "2026-10-07"
 queryClass: "local-commercial"
 visualIntent: "상품 형태와 전달 장소 확인"
 assetSlot: "CONTENT_IMAGE"
-sources: [{"name": "글로벌정보통신 공식 사무실 주소 안내", "url": "https://gic2020.co.kr/%EC%98%A4%EC%8B%9C%EB%8A%94%EA%B8%B8/", "type": "business", "verifiedAt": "2026-10-07"}, {"name": "ICT밸리컨벤션 공식 위치", "url": "https://www.ictconvention.co.kr/location/", "type": "facility", "verifiedAt": "2026-10-07"}, {"name": "아이티컨벤션 공식 위치", "url": "https://itconvention.co.kr/", "type": "facility", "verifiedAt": "2026-10-07"}, {"name": "용인시 현행 행정구역", "url": "https://www.yongin.go.kr/home/yiIf/yiIfCurSta/yiIfCurSta01/yiIfCurSta01_01.jsp", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "꽃이랑 공식 상품·주문 안내", "url": "https://fwith.co.kr/", "type": "business", "verifiedAt": "2026-10-07"}]
-sourceUrls: ["https://gic2020.co.kr/%EC%98%A4%EC%8B%9C%EB%8A%94%EA%B8%B8/", "https://www.ictconvention.co.kr/location/", "https://itconvention.co.kr/", "https://www.yongin.go.kr/home/yiIf/yiIfCurSta/yiIfCurSta01/yiIfCurSta01_01.jsp", "https://fwith.co.kr/"]
+sources: [{"name": "글로벌정보통신 공식 사무실 주소 안내", "url": "https://gic2020.co.kr/%EC%98%A4%EC%8B%9C%EB%8A%94%EA%B8%B8/", "type": "business", "verifiedAt": "2026-10-07"}, {"name": "ICT밸리컨벤션 공식 위치", "url": "https://www.ictconvention.co.kr/location/", "type": "facility", "verifiedAt": "2026-10-07"}, {"name": "아이티컨벤션 공식 위치", "url": "https://itconvention.co.kr/", "type": "facility", "verifiedAt": "2026-10-07"}, {"name": "용인시 현행 행정구역", "url": "https://www.yongin.go.kr/home/yiIf/yiIfCurSta/yiIfCurSta01/yiIfCurSta01_01.jsp", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "꽃이랑 공식 상품·주문 안내", "url": "https://fwith.co.kr/", "type": "business", "verifiedAt": "2026-10-07"}, {"name": "리얼테크 공식 사업장 주소", "url": "https://kr.realtecheng.co.kr/page/?M2_IDX=12978", "type": "business", "verifiedAt": "2026-10-07"}, {"name": "삼성SDI 공식 국내 사업장 안내", "url": "https://www.samsungsdi.co.kr/about-sdi/global-network.html", "type": "business", "verifiedAt": "2026-10-07"}, {"name": "한국관광공사 롯데프리미엄아울렛 기흥점 주소", "url": "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=144855", "type": "official", "verifiedAt": "2026-10-07"}, {"name": "이케아 기흥점 공식 주소", "url": "https://www.ikea.com/kr/ko/stores/giheung/", "type": "business", "verifiedAt": "2026-10-07"}, {"name": "이케아 상품 픽업 서비스 안내", "url": "https://www.ikea.com/kr/ko/customer-service/services/click-collect/", "type": "business", "verifiedAt": "2026-10-07"}]
+sourceUrls: ["https://gic2020.co.kr/%EC%98%A4%EC%8B%9C%EB%8A%94%EA%B8%B8/", "https://www.ictconvention.co.kr/location/", "https://itconvention.co.kr/", "https://www.yongin.go.kr/home/yiIf/yiIfCurSta/yiIfCurSta01/yiIfCurSta01_01.jsp", "https://fwith.co.kr/", "https://kr.realtecheng.co.kr/page/?M2_IDX=12978", "https://www.samsungsdi.co.kr/about-sdi/global-network.html", "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=144855", "https://www.ikea.com/kr/ko/stores/giheung/", "https://www.ikea.com/kr/ko/customer-service/services/click-collect/"]
 relatedPageKeys: ["yongin-flower-launch-25", "yongin-flower-launch-26"]
-revisionId: "yongin-manual-revision-09-20261007"
+revisionId: "yongin-manual-revision-09-20261007-r2"
 manualState: "candidate"
 ---
 
@@ -42,6 +42,18 @@ manualState: "candidate"
 아이티컨벤션은 공식 홈페이지에서 흥덕1로 13, 흥덕IT밸리 A동 2층을 안내합니다. 기흥ICT밸리의 기흥로 주소와는 다르므로 전화 상담에서 ‘IT밸리 A동’이라고만 말씀하시면 주소를 다시 확인해야 합니다. 영덕동 일대 사무실 선물인지 아이티컨벤션 예식 축하인지 목적도 구분해 주세요.
 
 예식으로 보내는 경우 [아이티컨벤션 주문 안내](/event/it-convention-wedding-wreath/)에서 홀과 청첩장 정보를 확인할 수 있습니다. 일반 회사로 보낸다면 컨벤션 이름을 빼고 실제 회사명·층·호실을 사용합니다.
+
+## 지곡동 공장은 회사 이름보다 받는 사업장을 확인하세요
+
+리얼테크 공식 안내는 본사·연구소·제1공장의 처인구 주소와 제2공장의 기흥구 지삼로 201번길 87(지곡동218-3)을 구분합니다. 회사명만으로 본사나 공장을 선택하지 말고 실제 받는 사업장·부서와 담당자가 확인한 인수 지점을 적어 주세요. [유림·동부 사업장 주소 구분](/business/yurim-dongbu-opening-flower-delivery/)에서 전체 사례를 확인할 수 있습니다. 이 주소 사례는 현재 이전 행사나 공장 출입 허가를 뜻하지 않습니다.
+
+## 공세로 본사와 수원 연구소를 회사명만으로 묶지 마세요
+
+삼성SDI라는 회사명만으로 기흥 본사와 수원 연구소를 같은 배송지로 잡지 마세요. 공식 사업장 안내는 기흥 본사를 용인시 기흥구 공세로 150-20, 수원 연구소를 수원시 영통구 삼성로 130으로 구분합니다. 축하받는 부서의 실제 사업장과 담당자가 지정한 외부 물품 인계 지점을 먼저 확인해 주세요. 공개된 주소가 현재 축하행사나 출입 허가, 꽃이랑과의 거래 관계를 뜻하지는 않습니다.
+
+## 고매동의 두 기흥점은 신고매로 건물번호가 다릅니다
+
+고매동의 ‘기흥점’이라는 표현만으로 매장을 고르지 마세요. 롯데프리미엄아울렛 기흥점은 신고매로 124, 이케아 기흥점은 신고매로 62로 주소가 다릅니다. 입점 매장에 보내는 축하꽃은 브랜드명·층·매장 담당자를 함께 적고, 쇼핑몰 안내데스크나 이케아 상품 픽업 창구가 외부 꽃을 대신 받는다고 정하지 않습니다. 실제 받는 사람에게 인계 위치와 반입 가능 여부를 따로 확인해 주세요.
 
 ## 그 밖의 기흥 주소를 정리할 때
 
