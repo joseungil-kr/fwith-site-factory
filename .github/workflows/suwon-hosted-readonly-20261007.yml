@@ -1,0 +1,207 @@
+name: Suwon C2 production source read-only verification
+on:
+  push:
+    branches: [manual-suwon-production-check-20261007]
+    paths:
+      - '.github/workflows/suwon-hosted-readonly-20261007.yml'
+      - '.github/scripts/suwon-hosted-readonly-20261007.mjs'
+      - '.github/scripts/suwon-hosted-receipts-20261007.py'
+permissions:
+  contents: read
+jobs:
+  inspect:
+    if: github.ref == 'refs/heads/manual-suwon-production-check-20261007'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_FACTORY_REVISION: e6e8248c44733583d2cbe08288db655fa9bc2302
+      SITE_URL: https://suwon.fwith.kr
+      SITE_ORIGIN: https://suwon.fwith.kr
+      SITE_INDEXABLE: 'true'
+      MANUAL_QA_PHASE: production
+      MANUAL_HOSTED_PRODUCTION: 'true'
+    steps:
+      - name: Check out actual read-only execution revision
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check out immutable deployed source
+        uses: actions/checkout@v4
+        with:
+          ref: e6e8248c44733583d2cbe08288db655fa9bc2302
+          path: target
+          persist-credentials: false
+      - name: Check out immutable reviewed read-only M4 verifier
+        uses: actions/checkout@v4
+        with:
+          ref: 69a7fee6a64a21443be19eca50d734d9652a968c
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Build exact expected deployed artifact
+        shell: bash
+        working-directory: target/site-factory/suwon-flower
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 'e6e8248c44733583d2cbe08288db655fa9bc2302'
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run build
+          npm test
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          d=pathlib.Path('dist');m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob('*')) if f.is_file()}
+          assert len(m)==75
+          assert hashlib.sha256(json.dumps(m,sort_keys=True,separators=(',',':')).encode()).hexdigest()=='80c86bc035cf8564cc3476b57894254f671442712fa56d70877332ea29d638bc'
+          PY
+      - name: Verify every live byte with reviewed M4 verifier and fixed application client
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import ast,hashlib,json,pathlib,subprocess
+          out=pathlib.Path('suwon-hosted-http');out.mkdir(exist_ok=True)
+          result=subprocess.run(['python3','control/scripts/manual-release-20261007/verify_http.py','control/.github/manual-release-20261007/suwon.policy.json','production','target/site-factory/suwon-flower/dist','e6e8248c44733583d2cbe08288db655fa9bc2302'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+          private=result.stdout+result.stderr;(out/'m4-private-output.txt').write_bytes(private)
+          report={'passed':result.returncode==0,'exitCode':result.returncode,'privateDiagnosticSha256':hashlib.sha256(private).hexdigest(),'exceptionClass':None,'routeSha256':None}
+          if result.returncode:
+            last=result.stderr.decode(errors='replace').splitlines()[-1] if result.stderr else ''
+            kind,_,value=last.partition(':')
+            if kind.isidentifier():report['exceptionClass']=kind
+            try:
+              values=ast.literal_eval(value.strip())
+              route=next((v for v in values if isinstance(v,str) and v.startswith('/')),None) if isinstance(values,tuple) else None
+              if route is not None:report['routeSha256']=hashlib.sha256(route.encode()).hexdigest()
+            except (ValueError,SyntaxError):pass
+          (out/'m4-cli-status.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report));raise SystemExit(result.returncode)
+          PY
+      - name: Retain every verified live response without identity fallback
+        run: python3 .github/scripts/suwon-hosted-receipts-20261007.py
+      - name: Install pinned capture client and Korean fonts
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/suwon-readonly-playwright" >> "$GITHUB_ENV"
+          npm install --prefix "$RUNNER_TEMP/suwon-readonly-playwright" --no-save --no-package-lock playwright@1.63.0
+          "$RUNNER_TEMP/suwon-readonly-playwright/node_modules/.bin/playwright" install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+      - name: Capture actual hosted pixels with separate execution and deployed revisions
+        run: node .github/scripts/suwon-hosted-readonly-20261007.mjs
+      - name: Enforce retrievable evidence chunks
+        if: always() && hashFiles('target/suwon-production-evidence/screenshots/**/*.jpg') != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PYCHUNKS'
+          import hashlib,json,pathlib,shutil
+          root=pathlib.Path('target/suwon-production-evidence');chunks=pathlib.Path('suwon-hosted-pixels');parts=[]
+          for viewport in ['desktop','mobile']:
+            files=sorted((root/'screenshots'/viewport).glob('*.jpg'));assert len(files)<=54
+            for start in range(0,len(files),16):
+              selected=files[start:start+16];name=f'{viewport}-part-{start//16+1:02d}';dest=chunks/name;dest.mkdir(parents=True,exist_ok=True)
+              assert sum(f.stat().st_size for f in selected)<24*1024*1024
+              rows=[]
+              for f in selected:
+                shutil.copy2(f,dest/f.name);assert (dest/f.name).read_bytes()==f.read_bytes();rows.append({'file':f.name,'bytes':f.stat().st_size,'sha256':hashlib.sha256(f.read_bytes()).hexdigest()})
+              parts.append({'part':name,'count':len(rows),'files':rows})
+          (root/'screenshot-chunks.json').write_text(json.dumps(parts,indent=2)+'\n')
+          assert sum(f.stat().st_size for f in root.glob('*.json'))<24*1024*1024
+          assert sum(f.stat().st_size for part in ['browser-html','browser-input','browser-receipts','browser-private-failures'] for f in (root/part).rglob('*') if f.is_file())<24*1024*1024
+          assert sum(f.stat().st_size for f in pathlib.Path('suwon-hosted-http').rglob('*') if f.is_file())<24*1024*1024
+          PYCHUNKS
+      - name: Retain live HTTP response bodies and receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-c2-production-http-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-hosted-http/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted capture facts
+        if: always() && hashFiles('target/suwon-production-evidence/*.json') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-c2-production-facts-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/suwon-production-evidence/*.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted desktop-part-01 pixels
+        if: always() && hashFiles('suwon-hosted-pixels/desktop-part-01/*.jpg') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-c2-production-desktop-part-01-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-hosted-pixels/desktop-part-01/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted desktop-part-02 pixels
+        if: always() && hashFiles('suwon-hosted-pixels/desktop-part-02/*.jpg') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-c2-production-desktop-part-02-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-hosted-pixels/desktop-part-02/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted desktop-part-03 pixels
+        if: always() && hashFiles('suwon-hosted-pixels/desktop-part-03/*.jpg') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-c2-production-desktop-part-03-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-hosted-pixels/desktop-part-03/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted desktop-part-04 pixels
+        if: always() && hashFiles('suwon-hosted-pixels/desktop-part-04/*.jpg') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-c2-production-desktop-part-04-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-hosted-pixels/desktop-part-04/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted mobile-part-01 pixels
+        if: always() && hashFiles('suwon-hosted-pixels/mobile-part-01/*.jpg') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-c2-production-mobile-part-01-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-hosted-pixels/mobile-part-01/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted mobile-part-02 pixels
+        if: always() && hashFiles('suwon-hosted-pixels/mobile-part-02/*.jpg') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-c2-production-mobile-part-02-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-hosted-pixels/mobile-part-02/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted mobile-part-03 pixels
+        if: always() && hashFiles('suwon-hosted-pixels/mobile-part-03/*.jpg') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-c2-production-mobile-part-03-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-hosted-pixels/mobile-part-03/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted mobile-part-04 pixels
+        if: always() && hashFiles('suwon-hosted-pixels/mobile-part-04/*.jpg') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-c2-production-mobile-part-04-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-hosted-pixels/mobile-part-04/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain actual browser HTML and immutable comparison receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-c2-production-browser-bodies-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            target/suwon-production-evidence/browser-html/
+            target/suwon-production-evidence/browser-input/
+            target/suwon-production-evidence/browser-receipts/
+            target/suwon-production-evidence/browser-private-failures/
+          if-no-files-found: error
+          retention-days: 7
