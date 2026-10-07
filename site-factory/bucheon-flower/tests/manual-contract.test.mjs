@@ -10,10 +10,11 @@ function approved(data=pages,body=bytes){
  p.independentReview={status:'approved',dependencyHash:p.dependencyHash,contentHash:p.contentHash,catalogHash:p.catalogHash,reviewerId:REVIEWER_ID,reviewedAt:'2026-10-07',evidencePath:'src/data/manual-review-evidence.json',evidenceSha256:digest(evidenceBytes)};
  return {data,p,body,options:{requireApproval:true,catalogBytes,dependencyHash:p.dependencyHash,reviewEvidence:evidence,reviewEvidenceBytes:evidenceBytes}};
 }
+function pending(){const p=structuredClone(proof);p.independentReview={status:'pending'};return p;}
 const run=x=>validateManualContract(x.data,x.p,x.body,products,x.options);
 function mutation(fn){const data=structuredClone(pages);fn(data);return approved(data,Buffer.from(JSON.stringify(data)));}
 test('candidate contract content checks pass without claiming approval',()=>assert(validateManualContract(pages,proof,bytes,products,{catalogBytes,dependencyHash:proof.dependencyHash})));
-test('pending manual review blocks production',()=>assert.throws(()=>validateManualContract(pages,proof,bytes,products,{requireApproval:true,catalogBytes,dependencyHash:proof.dependencyHash}),/review pending/));
+test('pending manual review blocks production',()=>assert.throws(()=>validateManualContract(pages,pending(),bytes,products,{requireApproval:true,catalogBytes,dependencyHash:proof.dependencyHash}),/review pending/));
 test('exact independent evidence permits production contract only in a fixture',()=>assert(run(approved())));
 test('content drift blocks even an approved review',()=>{const x=approved();x.body=Buffer.from('changed');assert.throws(()=>run(x),/digest drift/);});
 test('review digest mismatch fails closed',()=>{const x=approved();x.p.independentReview.contentHash='stale';assert.throws(()=>run(x),/bind current/);});
@@ -30,7 +31,7 @@ test('actual evidence bytes hash mismatch is rejected',()=>{const x=approved();x
 test('evidence object cannot differ from file bytes',()=>{const x=approved();x.options.reviewEvidence.status='pending';assert.throws(()=>run(x),/actual bytes/);});
 test('catalog byte changes invalidate candidate contract',()=>{const x=approved();x.options.catalogBytes=Buffer.concat([catalogBytes,Buffer.from(' ')]);assert.throws(()=>run(x),/Catalog digest/);});
 test('review must bind the same catalog',()=>{const x=approved();x.p.independentReview.catalogHash='stale';assert.throws(()=>run(x),/Review catalog/);});
-test('candidate environment flags never substitute for approval',()=>{process.env.ALLOW_MANUAL_CANDIDATE='1';process.env.MANUAL_CANDIDATE_BUILD='1';try{assert.throws(()=>validateManualContract(pages,proof,bytes,products,{requireApproval:true,catalogBytes,dependencyHash:proof.dependencyHash}),/review pending/);}finally{delete process.env.ALLOW_MANUAL_CANDIDATE;delete process.env.MANUAL_CANDIDATE_BUILD;}});
+test('candidate environment flags never substitute for approval',()=>{process.env.ALLOW_MANUAL_CANDIDATE='1';process.env.MANUAL_CANDIDATE_BUILD='1';try{assert.throws(()=>validateManualContract(pages,pending(),bytes,products,{requireApproval:true,catalogBytes,dependencyHash:proof.dependencyHash}),/review pending/);}finally{delete process.env.ALLOW_MANUAL_CANDIDATE;delete process.env.MANUAL_CANDIDATE_BUILD;}});
 for(const url of ['http://127.0.0.1:8871','http://localhost:8871/','http://[::1]:8871/'])test('explicit false clean loopback accepted: '+url,()=>assert(isLocalPreview({SITE_URL:url,SITE_INDEXABLE:'false'})));
 for(const env of [{SITE_URL:'https://bucheon.fwith.kr',SITE_INDEXABLE:'false'},{SITE_URL:'https://unknown.example',SITE_INDEXABLE:'false'},{SITE_URL:'http://localhost:8871'}, {SITE_INDEXABLE:'false'}, {SITE_URL:'http://localhost:8871',SITE_INDEXABLE:'true'},{SITE_URL:'http://u:p@localhost:8871',SITE_INDEXABLE:'false'},{SITE_URL:'http://localhost:8871/path',SITE_INDEXABLE:'false'},{SITE_URL:'http://localhost:8871/?x=1',SITE_INDEXABLE:'false'},{SITE_URL:'http://localhost:8871/#x',SITE_INDEXABLE:'false'},{SITE_URL:'http://localhost.attacker.example',SITE_INDEXABLE:'false'}])test('not a pending local preview: '+JSON.stringify(env),()=>assert.equal(isLocalPreview(env),false));
 function boundaryFixture({productionApproved=true,env={},approvedReview=false,entry='script',mutate=null}={}){
@@ -39,7 +40,7 @@ function boundaryFixture({productionApproved=true,env={},approvedReview=false,en
   const src=new URL('../'+name,import.meta.url);fs.cpSync(src,path.join(root,name),{recursive:true,filter:(p)=>!p.includes('__pycache__')});
  }
  const config=JSON.parse(fs.readFileSync(path.join(root,'src/data/site-config.json')));config.productionApproved=productionApproved;fs.writeFileSync(path.join(root,'src/data/site-config.json'),JSON.stringify(config));
- const fixture=approved();fixture.p.dependencyHash=dependencyDigest(root);fixture.p.independentReview.dependencyHash=fixture.p.dependencyHash;fixture.options.reviewEvidence.dependencyHash=fixture.p.dependencyHash;fixture.options.reviewEvidenceBytes=Buffer.from(JSON.stringify(fixture.options.reviewEvidence));fixture.p.independentReview.evidenceSha256=digest(fixture.options.reviewEvidenceBytes);const pending={...proof,dependencyHash:fixture.p.dependencyHash};fs.writeFileSync(path.join(root,'src/data/manual-provenance.json'),JSON.stringify(approvedReview?fixture.p:pending));
+ const fixture=approved();fixture.p.dependencyHash=dependencyDigest(root);fixture.p.independentReview.dependencyHash=fixture.p.dependencyHash;fixture.options.reviewEvidence.dependencyHash=fixture.p.dependencyHash;fixture.options.reviewEvidenceBytes=Buffer.from(JSON.stringify(fixture.options.reviewEvidence));fixture.p.independentReview.evidenceSha256=digest(fixture.options.reviewEvidenceBytes);const pendingProof={...pending(),dependencyHash:fixture.p.dependencyHash};fs.writeFileSync(path.join(root,'src/data/manual-provenance.json'),JSON.stringify(approvedReview?fixture.p:pendingProof));
  if(approvedReview)fs.writeFileSync(path.join(root,'src/data/manual-review-evidence.json'),fixture.options.reviewEvidenceBytes);
  if(mutate)mutate(root);
  if(entry==='astro')fs.symlinkSync(fs.realpathSync(new URL('../node_modules',import.meta.url)),path.join(root,'node_modules'),'dir');

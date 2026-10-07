@@ -1,61 +1,66 @@
-name: Bucheon manual preview evidence
-
+name: Bucheon exact manual artifacts and pixel evidence
 on:
   push:
     branches: [manual-bucheon-qa-20261007]
     paths:
       - 'site-factory/bucheon-flower/**'
       - '.github/workflows/bucheon-manual-preview-qa.yml'
+      - '.github/workflows/bucheon-manual-release-20261007.yml'
       - '.github/scripts/bucheon-manual-preview.mjs'
-
 permissions:
   contents: read
-
 jobs:
-  preview-evidence:
+  exact-evidence:
     if: github.ref == 'refs/heads/manual-bucheon-qa-20261007'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        phase: [preview, production]
     env:
       ASTRO_TELEMETRY_DISABLED: '1'
-      MANUAL_LOCAL_PREVIEW: 'true'
-      SITE_URL: https://localhost:8934
-      SITE_INDEXABLE: 'false'
+      MANUAL_QA_PHASE: ${{ matrix.phase }}
+      SITE_URL: ${{ matrix.phase == 'preview' && 'https://bucheon-flower-guide-qa.joseungil.workers.dev' || 'https://bucheon.fwith.kr' }}
+      SITE_ORIGIN: ${{ matrix.phase == 'preview' && 'https://bucheon-flower-guide-qa.joseungil.workers.dev' || 'https://bucheon.fwith.kr' }}
+      SITE_INDEXABLE: ${{ matrix.phase == 'preview' && 'false' || 'true' }}
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Assert fixed preview boundary
+      - name: Assert exact content and reviewed native boundary
         shell: bash
         run: |
           set -euo pipefail
-          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/bucheon-manual-playwright" >> "$GITHUB_ENV"
           test "$GITHUB_REF" = 'refs/heads/manual-bucheon-qa-20261007'
-          test "$SITE_URL" = 'https://localhost:8934'
-          test "$SITE_INDEXABLE" = 'false'
-          test "$MANUAL_LOCAL_PREVIEW" = 'true'
-          mkdir -p bucheon-preview-evidence
-          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/bucheon-flower/src/data/manual-pages.json")).digest("hex");if(h!=="fc747c9e6360557adcc1ccfa1c9ac018910b64bea71c2c6731aee1d3fd525a2b")throw Error("Unexpected content digest"); const p=JSON.parse(fs.readFileSync("site-factory/bucheon-flower/src/data/manual-provenance.json"));if(p.dependencyHash!=="f34756bce92764bf7c5315274b1e79e07bdd26b6d682939e94ec7d72a9da954d"||p.independentReview.status!=="pending")throw Error("Unexpected candidate state");' 
-          node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("site-factory/bucheon-flower/src/data/manual-provenance.json")); fs.writeFileSync("bucheon-preview-evidence/revision.json",JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,provenance:p},null,2));'
-      - name: Install native site dependencies
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/bucheon-manual-playwright" >> "$GITHUB_ENV"
+          mkdir -p "bucheon-$MANUAL_QA_PHASE-evidence/logs"
+          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/bucheon-flower/src/data/manual-pages.json")).digest("hex");if(h!=="fc747c9e6360557adcc1ccfa1c9ac018910b64bea71c2c6731aee1d3fd525a2b")throw Error("Unexpected content digest");const p=JSON.parse(fs.readFileSync("site-factory/bucheon-flower/src/data/manual-provenance.json"));if(p.dependencyHash!=="7f6193fb523bec081992d256d0d357dca440347aab8b31d5643de84e2251855a"||p.independentReview.status!=="approved")throw Error("Native review missing");'
+          node -e 'const fs=require("fs");fs.writeFileSync("bucheon-"+process.env.MANUAL_QA_PHASE+"-evidence/logs/revision.json",JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,phase:process.env.MANUAL_QA_PHASE,siteUrl:process.env.SITE_URL,siteIndexable:process.env.SITE_INDEXABLE},null,2));'
+      - name: Install exact native dependency lock
         working-directory: site-factory/bucheon-flower
-        run: npm install --no-package-lock
-      - name: Native gated localhost noindex build
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Build twice and prove exact deterministic artifacts
         shell: bash
         working-directory: site-factory/bucheon-flower
         run: |
           set -euo pipefail
-          mkdir -p ../evidence
-          npm run build 2>&1 | tee "$GITHUB_WORKSPACE/bucheon-preview-evidence/native-build.log"
-      - name: Native regression tests
-        shell: bash
-        working-directory: site-factory/bucheon-flower
-        run: |
-          set -euo pipefail
-          npm test 2>&1 | tee "$GITHUB_WORKSPACE/bucheon-preview-evidence/native-tests.log"
+          evidence="$GITHUB_WORKSPACE/bucheon-$MANUAL_QA_PHASE-evidence"
+          for attempt in first second; do
+            mkdir -p ../evidence
+            npm run build 2>&1 | tee "$evidence/logs/native-build-$attempt.log"
+            npm test 2>&1 | tee "$evidence/logs/native-tests-$attempt.log"
+            python3 scripts/qa_static.py 2>&1 | tee "$evidence/logs/static-$attempt.log"
+            node scripts/qa_graph.mjs 2>&1 | tee "$evidence/logs/graph-$attempt.log"
+            python3 -c 'import hashlib,json,pathlib,sys; d=pathlib.Path("dist"); m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob("*")) if f.is_file()}; assert len(m)==64,len(m);pathlib.Path(sys.argv[1]).write_text(json.dumps(m,sort_keys=True,separators=(",",":")))' "$evidence/logs/$attempt.manifest.json"
+          done
+          cmp "$evidence/logs/first.manifest.json" "$evidence/logs/second.manifest.json"
+          cp -a dist "$evidence/dist"
+          sha256sum "$evidence/logs/second.manifest.json" > "$evidence/logs/artifact-manifest.sha256"
       - name: Install pinned official Playwright and Korean fonts
         shell: bash
         run: |
@@ -64,44 +69,52 @@ jobs:
           "$PLAYWRIGHT_INSTALL_ROOT/node_modules/.bin/playwright" install --with-deps chromium
           sudo apt-get update
           sudo apt-get install -y fonts-noto-cjk
-          fc-match 'Noto Sans CJK KR' > bucheon-preview-evidence/font-match.txt
-          npm list --prefix "$PLAYWRIGHT_INSTALL_ROOT" --json > bucheon-preview-evidence/playwright-dependencies.json
-      - name: Capture localhost desktop and mobile evidence
+          fc-match 'Noto Sans CJK KR' > "bucheon-$MANUAL_QA_PHASE-evidence/logs/font-match.txt"
+      - name: Capture both viewports of every exact rendered route
         run: node .github/scripts/bucheon-manual-preview.mjs
-      - name: Check bounded evidence groups
+      - name: Enforce independently retrievable evidence chunks
         shell: bash
         run: |
-          node -e 'const fs=require("fs");const root="bucheon-preview-evidence/screenshots";for(const suffix of ["-desktop.jpg","-mobile.jpg"]){const files=fs.readdirSync(root).filter(x=>x.endsWith(suffix));if(files.length!==43)throw Error("Unexpected capture count");const bytes=files.reduce((n,f)=>n+fs.statSync(root+"/"+f).size,0);if(bytes>31*1024*1024)throw Error("Evidence group exceeds materialization budget");console.log(JSON.stringify({suffix,files:files.length,bytes}));}'
-      - name: Retain small logs and machine results
+          set -euo pipefail
+          python3 - <<'PY'
+          import os,pathlib
+          root=pathlib.Path('bucheon-'+os.environ['MANUAL_QA_PHASE']+'-evidence')
+          for part in ['screenshots/desktop','screenshots/mobile','logs','dist']:
+            files=[f for f in (root/part).rglob('*') if f.is_file()]
+            assert files,part
+            assert sum(f.stat().st_size for f in files)<24*1024*1024,part
+          PY
+      - name: Retain machine evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bucheon-manual-preview-metadata-${{ github.sha }}-${{ github.run_attempt }}
+          name: bucheon-${{ matrix.phase }}-logs-${{ github.sha }}-${{ github.run_attempt }}
           path: |
-            bucheon-preview-evidence/revision.json
-            bucheon-preview-evidence/native-build.log
-            bucheon-preview-evidence/native-tests.log
-            bucheon-preview-evidence/font-match.txt
-            bucheon-preview-evidence/playwright-dependencies.json
-            bucheon-preview-evidence/capture-results.json
-            bucheon-preview-evidence/browser-console.json
-            bucheon-preview-evidence/page-errors.json
-            bucheon-preview-evidence/network.json
+            bucheon-${{ matrix.phase }}-evidence/*.json
+            bucheon-${{ matrix.phase }}-evidence/logs/
           if-no-files-found: error
           retention-days: 7
-      - name: Retain desktop screenshots
-        if: success()
+      - name: Retain exact dist
         uses: actions/upload-artifact@v4
         with:
-          name: bucheon-manual-preview-desktop-${{ github.sha }}-${{ github.run_attempt }}
-          path: bucheon-preview-evidence/screenshots/*-desktop.jpg
+          name: bucheon-${{ matrix.phase }}-dist-${{ github.sha }}-${{ github.run_attempt }}
+          path: bucheon-${{ matrix.phase }}-evidence/dist/
           if-no-files-found: error
           retention-days: 7
-      - name: Retain mobile screenshots
-        if: success()
+          include-hidden-files: true
+      - name: Retain desktop pixels
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bucheon-manual-preview-mobile-${{ github.sha }}-${{ github.run_attempt }}
-          path: bucheon-preview-evidence/screenshots/*-mobile.jpg
+          name: bucheon-${{ matrix.phase }}-desktop-${{ github.sha }}-${{ github.run_attempt }}
+          path: bucheon-${{ matrix.phase }}-evidence/screenshots/desktop/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain mobile pixels
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bucheon-${{ matrix.phase }}-mobile-${{ github.sha }}-${{ github.run_attempt }}
+          path: bucheon-${{ matrix.phase }}-evidence/screenshots/mobile/
           if-no-files-found: error
           retention-days: 7

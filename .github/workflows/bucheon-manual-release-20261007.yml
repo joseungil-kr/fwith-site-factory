@@ -1,0 +1,150 @@
+name: Bucheon reviewed assets-only manual release
+on:
+  push:
+    branches: [manual-preview-bucheon-20261007, site-factory-bucheon-v2]
+permissions:
+  contents: read
+concurrency:
+  group: bucheon-reviewed-manual-release
+  cancel-in-progress: false
+jobs:
+  release:
+    if: github.ref == 'refs/heads/manual-preview-bucheon-20261007' || github.ref == 'refs/heads/site-factory-bucheon-v2'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      PHASE: ${{ github.ref_name == 'manual-preview-bucheon-20261007' && 'preview' || 'production' }}
+      SITE_URL: ${{ github.ref_name == 'manual-preview-bucheon-20261007' && 'https://bucheon-flower-guide-qa.joseungil.workers.dev' || 'https://bucheon.fwith.kr' }}
+      SITE_ORIGIN: ${{ github.ref_name == 'manual-preview-bucheon-20261007' && 'https://bucheon-flower-guide-qa.joseungil.workers.dev' || 'https://bucheon.fwith.kr' }}
+      SITE_INDEXABLE: ${{ github.ref_name == 'manual-preview-bucheon-20261007' && 'false' || 'true' }}
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          path: target
+          persist-credentials: false
+      - name: Check out trusted current approval authority
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: authority
+          persist-credentials: false
+      - name: Check out independently reviewed immutable control
+        uses: actions/checkout@v4
+        with:
+          ref: 9c3cebea6e4ba2c00055f74bc77a28f0f72af4e8
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Require independent exact-source authority before building
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 control/scripts/manual-release-20261007/gate.py authority/.github/manual-release-20261007/bucheon.policy.json authority/.github/manual-release-20261007/bucheon.approval.json target "$PHASE"
+      - name: Install exact native dependencies
+        working-directory: target/site-factory/bucheon-flower
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Native regression, source and rendered-output gates
+        shell: bash
+        working-directory: target/site-factory/bucheon-flower
+        run: |
+          set -euo pipefail
+          if [ "$PHASE" = production ]; then test -f production-indexing.enabled; fi
+          mkdir -p ../evidence
+          npm run build
+          npm test
+          python3 scripts/qa_static.py
+          node scripts/qa_graph.mjs
+      - name: Require independently reviewed artifact bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 control/scripts/manual-release-20261007/gate.py authority/.github/manual-release-20261007/bucheon.policy.json authority/.github/manual-release-20261007/bucheon.approval.json target "$PHASE" artifact
+      - name: Install pinned official upload client
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix "$RUNNER_TEMP/bucheon-manual-wrangler" --no-save --no-package-lock wrangler@4.147.0
+          test "$(node -p 'require(process.env.RUNNER_TEMP+"/bucheon-manual-wrangler/node_modules/wrangler/package.json").version')" = '4.147.0'
+      - name: Upload reviewed static assets while preserving existing provider state
+        shell: bash
+        working-directory: target/site-factory/bucheon-flower
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          helper="$GITHUB_WORKSPACE/control/scripts/manual-release-20261007"
+          policy="$GITHUB_WORKSPACE/authority/.github/manual-release-20261007/bucheon.policy.json"
+          if [ "$PHASE" = production ]; then test -f production-indexing.enabled; fi
+          python3 "$helper/gate.py" "$policy" "$GITHUB_WORKSPACE/authority/.github/manual-release-20261007/bucheon.approval.json" "$GITHUB_WORKSPACE/target" "$PHASE" artifact
+          python3 "$helper/provider_check.py" "$policy" "$PHASE" before
+          python3 "$helper/write_assets_only_config.py" "$policy" "$PHASE"
+          trap 'original=$?; trap - EXIT; python3 "$helper/provider_check.py" "$policy" "$PHASE" after; checked=$?; if [ "$original" -ne 0 ]; then exit "$original"; fi; exit "$checked"' EXIT
+          "$RUNNER_TEMP/bucheon-manual-wrangler/node_modules/.bin/wrangler" deploy --config .manual-assets-only-20261007.jsonc
+      - name: Verify every live byte, response header and real 404
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 control/scripts/manual-release-20261007/verify_http.py authority/.github/manual-release-20261007/bucheon.policy.json "$PHASE" target/site-factory/bucheon-flower/dist "$GITHUB_SHA"
+      - name: Install hosted preview capture dependencies
+        if: env.PHASE == 'preview'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/bucheon-manual-playwright" >> "$GITHUB_ENV"
+          npm install --prefix "$RUNNER_TEMP/bucheon-manual-playwright" --no-save --no-package-lock playwright@1.63.0
+          "$RUNNER_TEMP/bucheon-manual-playwright/node_modules/.bin/playwright" install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+      - name: Capture exact isolated hosted preview
+        if: env.PHASE == 'preview'
+        working-directory: target
+        env:
+          MANUAL_QA_PHASE: preview
+          MANUAL_HOSTED_PREVIEW: 'true'
+        run: node .github/scripts/bucheon-manual-preview.mjs
+      - name: Enforce retrievable hosted evidence chunks
+        if: env.PHASE == 'preview'
+        shell: bash
+        working-directory: target
+        run: |
+          set -euo pipefail
+          python3 - <<'PYTHON'
+          import pathlib
+          root=pathlib.Path('bucheon-preview-evidence')
+          for part in ['desktop','mobile']:
+            files=list((root/'screenshots'/part).glob('*.jpg'))
+            assert len(files)==43,part
+            assert sum(f.stat().st_size for f in files)<24*1024*1024,part
+          assert sum(f.stat().st_size for f in root.glob('*.json'))<24*1024*1024
+          PYTHON
+      - name: Retain hosted machine evidence
+        if: always() && env.PHASE == 'preview'
+        uses: actions/upload-artifact@v4
+        with:
+          name: bucheon-hosted-logs-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/bucheon-preview-evidence/*.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted desktop pixels
+        if: always() && env.PHASE == 'preview'
+        uses: actions/upload-artifact@v4
+        with:
+          name: bucheon-hosted-desktop-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/bucheon-preview-evidence/screenshots/desktop/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted mobile pixels
+        if: always() && env.PHASE == 'preview'
+        uses: actions/upload-artifact@v4
+        with:
+          name: bucheon-hosted-mobile-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/bucheon-preview-evidence/screenshots/mobile/
+          if-no-files-found: error
+          retention-days: 7

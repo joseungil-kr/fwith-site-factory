@@ -8,13 +8,16 @@ import {createRequire} from 'node:module';
 // Evidence-only runner: fixed loopback site, no deploy client and no external navigation.
 const root=process.cwd(),site=path.join(root,'site-factory/bucheon-flower');
 const dist=fs.realpathSync(path.join(site,'dist'));
-const output=path.join(root,'bucheon-preview-evidence');
-const origin='http://127.0.0.1:8934'; // Transport only: never a publication destination.
-const canonicalOrigin='https://localhost:8934'; // HTTPS metadata required by native social-image rules.
+const phase=process.env.MANUAL_QA_PHASE;
+assert(['preview','production'].includes(phase),'Fixed evidence phase required');
+const hosted=process.env.MANUAL_HOSTED_PREVIEW==='true';
+assert(!hosted||phase==='preview','Hosted capture is fixed to existing isolated QA Worker');
+const output=path.join(root,'bucheon-'+phase+'-evidence');
+const canonicalOrigin=phase==='preview'?'https://bucheon-flower-guide-qa.joseungil.workers.dev':'https://bucheon.fwith.kr';
+const origin=hosted?canonicalOrigin:'http://127.0.0.1:8934';
 assert.equal(process.env.SITE_URL,canonicalOrigin);
-assert.equal(process.env.SITE_INDEXABLE,'false');
-assert.equal(process.env.MANUAL_LOCAL_PREVIEW,'true');
-assert.equal(process.env.GITHUB_REF,'refs/heads/manual-bucheon-qa-20261007');
+assert.equal(process.env.SITE_INDEXABLE,phase==='preview'?'false':'true');
+assert.equal(process.env.GITHUB_REF,hosted?'refs/heads/manual-preview-bucheon-20261007':'refs/heads/manual-bucheon-qa-20261007');
 assert(process.env.PLAYWRIGHT_INSTALL_ROOT);
 fs.mkdirSync(path.join(output,'screenshots'),{recursive:true});
 const require=createRequire(path.join(process.env.PLAYWRIGHT_INSTALL_ROOT,'package.json'));
@@ -28,9 +31,9 @@ const {selectProducts,productFamilies}=await import(new URL('../../site-factory/
 assert.equal(manual.length,13,'Unexpected manual review scope');
 assert.equal(frozen.length,25,'Unexpected frozen review scope');
 const provenance=read('src/data/manual-provenance.json');
-assert.equal(provenance.independentReview.status,'pending');
+assert.equal(provenance.independentReview.status,'approved');
 assert.equal(provenance.contentHash,'fc747c9e6360557adcc1ccfa1c9ac018910b64bea71c2c6731aee1d3fd525a2b');
-assert.equal(provenance.dependencyHash,'f34756bce92764bf7c5315274b1e79e07bdd26b6d682939e94ec7d72a9da954d');
+assert.equal(provenance.dependencyHash,'7f6193fb523bec081992d256d0d357dca440347aab8b31d5643de84e2251855a');
 const categories=[...new Set([...frozen,...manual].map(p=>p.category))];
 const targets=[{id:'home',url:'/'},...categories.map(cat=>({id:cat+'-hub',url:`/${cat}/`})),...frozen.map(p=>({id:p.pageKey,url:p.url,page:p})),...manual.map(p=>({id:p.pageKey,url:p.url,page:p,manual:true}))];
 assert.equal(targets.length,43);
@@ -51,7 +54,7 @@ const server=http.createServer((req,res)=>{
   if(req.method==='HEAD')res.end();else fs.createReadStream(real).pipe(res);
  } catch {res.writeHead(400);res.end('Invalid request');}
 });
-await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(8934,'127.0.0.1',resolve);});
+if(!hosted)await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(8934,'127.0.0.1',resolve);});
 let browser;
 try {
  browser=await chromium.launch();
@@ -90,8 +93,9 @@ try {
       fontFamily:getComputedStyle(document.body).fontFamily
     }));
     row.facts=facts;
-    assert.match(facts.robots,/noindex/,'Preview robots');
-    assert.equal(decodeURI(facts.canonical),decodeURI(canonicalOrigin+target.url),'HTTPS loopback canonical distinct from HTTP transport');
+    if(phase==='preview')assert.match(facts.robots,/noindex/,'Preview robots');
+    else if(target.page||target.id==='home'){assert.match(facts.robots,/(^|,)\s*index(,|$)/,'Production indexable route');assert(!facts.robots.includes('noindex'));}
+    assert.equal(decodeURI(facts.canonical),decodeURI(canonicalOrigin+target.url),'Exact phase canonical distinct from local transport');
     assert.equal(facts.revision,process.env.GITHUB_SHA,'Exact commit marker');
     assert.equal(facts.h1.length,1,'H1 count');
     assert(facts.scrollWidth<=facts.width+1,'Horizontal overflow');
@@ -115,7 +119,7 @@ try {
       assert.equal(await page.locator('[data-page-key]').getAttribute('data-page-key'),target.id,'History restored exact target');
       await page.evaluate(()=>window.scrollTo(0,0));
     }
-    row.checks=['http-200','local-noindex','canonical','exact-commit','one-h1','no-horizontal-overflow','decoded-images','real-cta',...(target.page?['exact-page-marker','product-families','local-back-navigation']:[])];
+    row.checks=['http-200',phase==='preview'?'preview-noindex':'native-production-robots','canonical','exact-commit','one-h1','no-horizontal-overflow','decoded-images','real-cta',...(target.page?['exact-page-marker','product-families','local-back-navigation']:[])];
    } catch(error){row.errors.push(error.stack||String(error));}
    try {
     await page.waitForLoadState('networkidle');
@@ -123,7 +127,8 @@ try {
     for(const img of await page.locator('img').all())await img.scrollIntoViewIfNeeded();
     await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));
     await page.evaluate(()=>window.scrollTo(0,0));
-    row.screenshot=`screenshots/${target.id}-${viewport.name}.jpg`;
+    row.screenshot=`screenshots/${viewport.name}/${target.id}-${viewport.name}.jpg`;
+    fs.mkdirSync(path.join(output,'screenshots',viewport.name),{recursive:true});
     await page.screenshot({path:path.join(output,row.screenshot),type:'jpeg',quality:85,fullPage:true,animations:'disabled'});
     row.screenshotSha256=crypto.createHash('sha256').update(fs.readFileSync(path.join(output,row.screenshot))).digest('hex');
    } catch(error){row.errors.push('Screenshot: '+error.message);}
@@ -133,8 +138,8 @@ try {
  }
 } finally {
  if(browser)await browser.close();
- await new Promise(resolve=>server.close(resolve));
- const summary={state:'captured-awaiting-independent-pixel-review',commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,transportOrigin:origin,canonicalOrigin,frozenPageCount:frozen.length,provenance:read('src/data/manual-provenance.json'),manualPageCount:manual.length,resultCount:results.length,results,machineChecksPassed:results.length===targets.length*2&&results.every(r=>!r.errors.length)&&pageErrors.length===0&&network.every(r=>!r.blockedExternal&&!r.failure&&!(r.status>=400)),pixelReview:'pending',productionApproval:'not-issued'};
+ if(server.listening)await new Promise(resolve=>server.close(resolve));
+ const summary={state:'captured-awaiting-independent-pixel-review',commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,transportOrigin:origin,canonicalOrigin,phase,hosted,frozenPageCount:frozen.length,provenance:read('src/data/manual-provenance.json'),manualPageCount:manual.length,resultCount:results.length,results,machineChecksPassed:results.length===targets.length*2&&results.every(r=>!r.errors.length)&&pageErrors.length===0&&network.every(r=>!r.blockedExternal&&!r.failure&&!(r.status>=400)),pixelReview:'pending',productionApproval:'not-issued'};
  fs.writeFileSync(path.join(output,'capture-results.json'),JSON.stringify(summary,null,2)+'\n');
  fs.writeFileSync(path.join(output,'browser-console.json'),JSON.stringify(consoleMessages,null,2)+'\n');
  fs.writeFileSync(path.join(output,'page-errors.json'),JSON.stringify(pageErrors,null,2)+'\n');
