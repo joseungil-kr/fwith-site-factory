@@ -1,0 +1,36 @@
+{
+  "enabled": false,
+  "siteKey": "bucheon-flower-v2",
+  "branch": "site-factory-bucheon-v2",
+  "previewBranch": "manual-preview-bucheon-20261007",
+  "root": "site-factory/bucheon-flower",
+  "productionOrigin": "https://bucheon.fwith.kr",
+  "worker": "bucheon-flower-prod-disabled",
+  "previewWorker": "bucheon-flower-guide-qa",
+  "previewOrigin": "https://bucheon-flower-guide-qa.joseungil.workers.dev",
+  "productionConfig": "wrangler.jsonc",
+  "previewConfig": "wrangler.staging.jsonc",
+  "reasonInactive": "Awaiting independent workflow review, complete exact bundle proof, and service write authorization; Hwaseong additionally lacks verified isolated pixel QA route.",
+  "assignedAuthorId": null,
+  "assignedReviewerId": null,
+  "workflowPath": ".github/workflows/bucheon-manual-release-20261007.yml",
+  "unresolvedBlockers": [
+    "R2: independently validate native private/loopback and existing hosted preview contract",
+    "R4: relevant provider routes/resource settings baseline inventory not yet reviewed",
+    "R7: complete native test matrix and compatibility adapters not independently executed",
+    "Original qa_static.py manual-route compatibility adapter not yet independently reviewed"
+  ],
+  "environments": {
+    "preview": {
+      "SITE_URL": "https://bucheon-flower-guide-qa.joseungil.workers.dev",
+      "SITE_ORIGIN": "https://bucheon-flower-guide-qa.joseungil.workers.dev",
+      "SITE_INDEXABLE": "false"
+    },
+    "production": {
+      "SITE_URL": "https://bucheon.fwith.kr",
+      "SITE_ORIGIN": "https://bucheon.fwith.kr",
+      "SITE_INDEXABLE": "true"
+    }
+  },
+  "generatedRevisionKey": "revision"
+}

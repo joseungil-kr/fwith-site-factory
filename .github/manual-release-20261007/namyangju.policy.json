@@ -1,0 +1,35 @@
+{
+  "enabled": false,
+  "siteKey": "namyangju-flower-v2",
+  "branch": "site-factory-namyangju-v2",
+  "previewBranch": "manual-preview-namyangju-20261007",
+  "root": "site-factory/namyangju-flower",
+  "productionOrigin": "https://namyangju.fwith.kr",
+  "worker": "namyangju-flower-prod-disabled",
+  "previewWorker": "namyangju-flower-guide-qa",
+  "previewOrigin": "https://namyangju-flower-guide-qa.joseungil.workers.dev",
+  "productionConfig": "wrangler.jsonc",
+  "previewConfig": "wrangler.staging.jsonc",
+  "reasonInactive": "Awaiting independent workflow review, complete exact bundle proof, and service write authorization; Hwaseong additionally lacks verified isolated pixel QA route.",
+  "assignedAuthorId": null,
+  "assignedReviewerId": null,
+  "workflowPath": ".github/workflows/namyangju-manual-release-20261007.yml",
+  "unresolvedBlockers": [
+    "R2: independently validate native private/loopback and existing hosted preview contract",
+    "R4: relevant provider routes/resource settings baseline inventory not yet reviewed",
+    "R7: complete native test matrix and compatibility adapters not independently executed"
+  ],
+  "environments": {
+    "preview": {
+      "SITE_URL": "https://namyangju-flower-guide-qa.joseungil.workers.dev",
+      "SITE_ORIGIN": "https://namyangju-flower-guide-qa.joseungil.workers.dev",
+      "SITE_INDEXABLE": "false"
+    },
+    "production": {
+      "SITE_URL": "https://namyangju.fwith.kr",
+      "SITE_ORIGIN": "https://namyangju.fwith.kr",
+      "SITE_INDEXABLE": "true"
+    }
+  },
+  "generatedRevisionKey": "revision"
+}
