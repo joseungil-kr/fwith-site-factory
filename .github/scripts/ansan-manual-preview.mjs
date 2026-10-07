@@ -94,6 +94,10 @@ try {
       await page.waitForURL(origin+hub);
       await page.goBack({waitUntil:'networkidle'});
       await page.waitForURL(origin+target.url);
+      // History restoration may recreate lazy images. Verify decoded pixels again at capture time.
+      await page.evaluate(()=>document.fonts.ready);
+      for(const img of await page.locator('img').all())await img.scrollIntoViewIfNeeded();
+      await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));
       await page.evaluate(()=>window.scrollTo(0,0));
     }
     row.checks=['http-200','local-noindex','canonical','exact-commit','one-h1','no-horizontal-overflow','decoded-images','real-cta',...(target.manual?['opaque-marker','product-families','local-back-navigation']:[])];
