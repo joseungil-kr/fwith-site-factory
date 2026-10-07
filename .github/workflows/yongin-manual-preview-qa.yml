@@ -7,6 +7,9 @@ on:
       - 'site-factory/yongin-flower/**'
       - '.github/workflows/yongin-manual-preview-qa.yml'
       - '.github/scripts/yongin-manual-preview.mjs'
+      - '.github/scripts/yongin-release-qa.py'
+      - '.github/scripts/test-yongin-release-qa.py'
+      - '.github/scripts/yongin-indexnow-once.py'
 
 permissions:
   contents: read
@@ -45,6 +48,8 @@ jobs:
           fs.writeFileSync('yongin-preview-evidence/revision.json',JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,sourceBase:'f6dfb14a74d265ae92a482969a1a060f2234e3d9',reviewedArtifactDigest:expected,productionApproval:'pending'},null,2));
           fs.writeFileSync('yongin-preview-evidence/source-inventory.json',JSON.stringify(artifactInventory(),null,2));
           JS
+      - name: Manual release verification regression tests
+        run: python3 .github/scripts/test-yongin-release-qa.py
       - name: Install native site dependencies
         working-directory: site-factory/yongin-flower
         run: npm install --no-package-lock

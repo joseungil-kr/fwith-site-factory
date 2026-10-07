@@ -7,6 +7,9 @@ on:
     paths:
       - 'site-factory/yongin-flower/**'
       - '.github/workflows/yongin-v2-staging-deploy.yml'
+      - '.github/scripts/yongin-release-qa.py'
+      - '.github/scripts/test-yongin-release-qa.py'
+      - '.github/scripts/yongin-indexnow-once.py'
   workflow_dispatch:
 
 permissions:
@@ -43,6 +46,8 @@ jobs:
           printf '%s' "$CLOUDFLARE_ACCOUNT_ID" | grep -Eq '^[0-9A-Fa-f]{32}$'
       - name: Install dependencies
         run: npm install
+      - name: Release verification regression tests
+        run: python3 ../../.github/scripts/test-yongin-release-qa.py
       - name: Build noindex staging
         run: npm run build
       - name: Deploy preview worker
@@ -59,47 +64,13 @@ jobs:
         env:
           PREVIEW_URL: ${{ steps.deploy.outputs.url }}
           EXPECTED_REVISION: ${{ github.sha }}
-        run: |
-          python3 - <<'PY'
-          import os, time, urllib.request
-          base=os.environ["PREVIEW_URL"].rstrip("/")
-          expected=os.environ["EXPECTED_REVISION"]
-          def get(path):
-              req=urllib.request.Request(base+path,headers={"User-Agent":"SiteFactory-YonginV2/1.0"})
-              with urllib.request.urlopen(req,timeout=30) as r:
-                  return r.status,r.read().decode("utf-8",errors="replace")
-          last=None
-          for i in range(30):
-              try:
-                  code,home=get("/")
-                  assert code==200
-                  assert "용인" in home and "꽃배달" in home
-                  assert "noindex" in home.lower()
-                  assert f'name="site-factory-revision" content="{expected}"' in home
-                  code,robots=get("/robots.txt")
-                  assert code==200 and "Disallow: /" in robots
-                  pages = [
-                      ("/funeral/yongin-severance-funeral-condolence-wreath/", "용인세브란스병원 장례식장 근조화환"),
-                      ("/business/suji-opening-flowers/", "수지구 개업 축하꽃"),
-                      ("/school/dankook-jukjeon-graduation-flowers/", "단국대학교 죽전캠퍼스 졸업식 꽃"),
-                      ("/event/poeun-art-hall-performance-flowers/", "용인포은아트홀 공연 축하꽃"),
-                      ("/gift/yongin-severance-visit-flowers/", "용인세브란스병원 병문안 꽃"),
-                      ("/order/yongin-same-day-flower-order/", "용인 당일 꽃배달"),
-                  ]
-                  for path, phrase in pages:
-                      code,html=get(path)
-                      assert code==200, (path, code)
-                      lower=html.lower()
-                      assert "noindex" in lower, path
-                      assert "<h1" in lower, path
-                      assert phrase in html, path
-                      assert f'name="site-factory-revision" content="{expected}"' in html, path
-                  print("YONGIN V2 STAGING QA PASSED:",base)
-                  print("Verified HOME + 6 canary detail URLs.")
-                  break
-              except Exception as e:
-                  last=e
-                  time.sleep(4)
-          else:
-              raise SystemExit(f"Preview not ready: {last}")
-          PY
+        run: python3 ../../.github/scripts/yongin-release-qa.py staging
+
+      - name: Preserve staging live verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: yongin-staging-proof-${{ github.sha }}
+          path: site-factory/yongin-flower/staging-live-qa.json
+          if-no-files-found: warn
+          retention-days: 14
