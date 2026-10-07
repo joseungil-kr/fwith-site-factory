@@ -2,7 +2,7 @@ name: Goyang manual preview evidence
 
 on:
   push:
-    branches: [manual-goyang-qa-20261007]
+    branches: [manual-goyang-three-facility-preview-20261007]
     paths:
       - 'site-factory/goyang-flower/**'
       - '.github/workflows/goyang-manual-preview-qa.yml'
@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   preview-evidence:
-    if: github.ref == 'refs/heads/manual-goyang-qa-20261007'
+    if: github.ref == 'refs/heads/manual-goyang-three-facility-preview-20261007'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -35,16 +35,16 @@ jobs:
         run: |
           set -euo pipefail
           echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/goyang-manual-playwright" >> "$GITHUB_ENV"
-          test "$GITHUB_REF" = 'refs/heads/manual-goyang-qa-20261007'
+          test "$GITHUB_REF" = 'refs/heads/manual-goyang-three-facility-preview-20261007'
           test "$SITE_URL" = 'https://localhost:8936'
           test "$SITE_INDEXABLE" = 'false'
           test "$MANUAL_LOCAL_PREVIEW" = 'true'
           mkdir -p goyang-preview-evidence
-          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/goyang-flower/src/data/manual-pages.json")).digest("hex");if(h!=="4ed9b0a80140ca1c867bd9f6eebe71fab43eca12c6d2d79255f3235d40a7fdb2")throw Error("Unexpected content digest"); const p=JSON.parse(fs.readFileSync("site-factory/goyang-flower/src/data/manual-provenance.json"));if(p.rendererHash!=="47a067b9428eaa454ae47afd29e0f2f5f9dc766e5f3589606e03796f01347bdc" || p.assetsHash!=="1f983822d5b6b40f56fd548d76f0bcd78953b2a7076de6ac5b34f85be01821ec" || p.frozenHash!=="263f6741c60b762bc0df73e711660a19c89aaf44ce10b230eba44f1950ecf410" || p.sourcesHash!=="11ca68d5aaf89714eacb165bca5ceb85504619dfd8341dd743a934a4cd1b5332" || p.catalogHash!=="ec5a547cf59a5641f3858deccf22f5961ac651229fc8f8e7f67d07d07527ac15" || p.catalogFileHash!=="33b543a8a051e5755742b8dacf22a77194e0d184e6173eea8c46386fd49c5b01"||p.independentReview.status!=="pending")throw Error("Unexpected candidate state");' 
+          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/goyang-flower/src/data/manual-pages.json")).digest("hex");if(h!=="283a46f49d6489cd1636341cdbcf2e16b59b15738dbe0ce2188cc77d4f588f99")throw Error("Unexpected content digest"); const p=JSON.parse(fs.readFileSync("site-factory/goyang-flower/src/data/manual-provenance.json"));if(p.rendererHash!=="47a067b9428eaa454ae47afd29e0f2f5f9dc766e5f3589606e03796f01347bdc" || p.assetsHash!=="1f983822d5b6b40f56fd548d76f0bcd78953b2a7076de6ac5b34f85be01821ec" || p.frozenHash!=="263f6741c60b762bc0df73e711660a19c89aaf44ce10b230eba44f1950ecf410" || p.sourcesHash!=="b141db9cc04b5126b6e63700e32944e6c3d212d5d29bf359c68c908443ffd956" || p.catalogHash!=="ec5a547cf59a5641f3858deccf22f5961ac651229fc8f8e7f67d07d07527ac15" || p.catalogFileHash!=="33b543a8a051e5755742b8dacf22a77194e0d184e6173eea8c46386fd49c5b01"||p.independentReview.status!=="pending")throw Error("Unexpected candidate state");' 
           node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("site-factory/goyang-flower/src/data/manual-provenance.json")); fs.writeFileSync("goyang-preview-evidence/revision.json",JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,provenance:p},null,2));'
       - name: Install native site dependencies
         working-directory: site-factory/goyang-flower
-        run: npm install --no-package-lock
+        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Native gated localhost noindex build
         shell: bash
         working-directory: site-factory/goyang-flower
@@ -157,3 +157,4 @@ jobs:
           if-no-files-found: error
           compression-level: 0
           retention-days: 7
+

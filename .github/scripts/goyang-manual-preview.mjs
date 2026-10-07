@@ -14,7 +14,7 @@ const canonicalOrigin='https://localhost:8936'; // HTTPS metadata required by na
 assert.equal(process.env.SITE_URL,canonicalOrigin);
 assert.equal(process.env.SITE_INDEXABLE,'false');
 assert.equal(process.env.MANUAL_LOCAL_PREVIEW,'true');
-assert.equal(process.env.GITHUB_REF,'refs/heads/manual-goyang-qa-20261007');
+assert.equal(process.env.GITHUB_REF,'refs/heads/manual-goyang-three-facility-preview-20261007');
 assert(process.env.PLAYWRIGHT_INSTALL_ROOT);
 fs.mkdirSync(path.join(output,'screenshots'),{recursive:true});
 const require=createRequire(path.join(process.env.PLAYWRIGHT_INSTALL_ROOT,'package.json'));
@@ -25,20 +25,20 @@ const manual=read('src/data/manual-pages.json');
 const frozen=read('src/data/pages.json');
 const products=read('src/data/products.json');
 const {selectProducts,productFamilies}=await import(new URL('../../site-factory/goyang-flower/src/lib/catalog.mjs',import.meta.url));
-assert.equal(manual.length,11,'Unexpected manual review scope');
+assert.equal(manual.length,13,'Unexpected manual review scope');
 assert.equal(frozen.length,54,'Unexpected frozen review scope');
 const provenance=read('src/data/manual-provenance.json');
 assert.equal(provenance.independentReview.status,'pending');
-assert.equal(provenance.contentHash,'4ed9b0a80140ca1c867bd9f6eebe71fab43eca12c6d2d79255f3235d40a7fdb2');
+assert.equal(provenance.contentHash,'283a46f49d6489cd1636341cdbcf2e16b59b15738dbe0ce2188cc77d4f588f99');
 assert.equal(provenance.rendererHash,'47a067b9428eaa454ae47afd29e0f2f5f9dc766e5f3589606e03796f01347bdc');
 assert.equal(provenance.assetsHash,'1f983822d5b6b40f56fd548d76f0bcd78953b2a7076de6ac5b34f85be01821ec');
 assert.equal(provenance.frozenHash,'263f6741c60b762bc0df73e711660a19c89aaf44ce10b230eba44f1950ecf410');
-assert.equal(provenance.sourcesHash,'11ca68d5aaf89714eacb165bca5ceb85504619dfd8341dd743a934a4cd1b5332');
+assert.equal(provenance.sourcesHash,'b141db9cc04b5126b6e63700e32944e6c3d212d5d29bf359c68c908443ffd956');
 assert.equal(provenance.catalogHash,'ec5a547cf59a5641f3858deccf22f5961ac651229fc8f8e7f67d07d07527ac15');
 assert.equal(provenance.catalogFileHash,'33b543a8a051e5755742b8dacf22a77194e0d184e6173eea8c46386fd49c5b01');
 const categories=[...new Set([...frozen,...manual].map(p=>p.category))];
 const targets=[{id:'home',url:'/'},...categories.map(cat=>({id:cat+'-hub',url:`/${cat}/`})),...frozen.map(p=>({id:p.pageKey,url:p.url,page:p})),...manual.map(p=>({id:p.pageKey,url:p.url,page:p,manual:true}))];
-assert.equal(targets.length,71);
+assert.equal(targets.length,73);
 for(const target of targets)assert(/^\/(?:[a-z0-9-]+\/)*$/.test(target.url),'Unsafe capture route');
 const network=[],consoleMessages=[],pageErrors=[],results=[];
 const mimes={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.webp':'image/webp','.woff2':'font/woff2','.txt':'text/plain; charset=utf-8','.xml':'application/xml; charset=utf-8'};
@@ -125,6 +125,12 @@ try {
     row.checks=['http-200','local-noindex','canonical','exact-commit','one-h1','no-horizontal-overflow','decoded-images','real-cta',...(target.page?['exact-page-marker','product-families','local-back-navigation']:[])];
    } catch(error){row.errors.push(error.stack||String(error));}
    try {
+    await page.goto(origin+target.url,{waitUntil:'networkidle'});
+    await page.evaluate(()=>document.fonts.ready);
+    for(const img of await page.locator('img').all())await img.scrollIntoViewIfNeeded();
+    await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));
+    await page.evaluate(()=>window.scrollTo(0,0));
+    assert.equal(page.url(),origin+target.url);
     row.screenshot=`screenshots/${target.id}-${viewport.name}.jpg`;
     await page.screenshot({path:path.join(output,row.screenshot),type:'jpeg',quality:85,fullPage:true,animations:'disabled'});
     row.screenshotSha256=crypto.createHash('sha256').update(fs.readFileSync(path.join(output,row.screenshot))).digest('hex');
@@ -144,4 +150,5 @@ try {
  if(!summary.machineChecksPassed)process.exitCode=1;
  console.log(JSON.stringify({captured:results.length,machineChecksPassed:summary.machineChecksPassed,pixelReview:'pending',productionApproval:'not-issued'}));
 }
+
 
