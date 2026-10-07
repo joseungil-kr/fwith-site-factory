@@ -20,3 +20,9 @@ test('regional product bindings fail closed and retain ordered official catalog 
  assert.throws(()=>selectProducts({pageType:'regional-service'},products),/binding/);
  assert.throws(()=>selectProducts({pageType:'regional-service',regionalProductKeys:['missing']},products),/registered/);
 });
+
+test('manual district guides retain explicit mobile-visible home purpose and detail entries',()=>{
+ const html=fs.readFileSync('dist/index.html','utf8');
+ assert.match(html,/<a[^>]*class="page-card purpose-card"[^>]*href="\/regions\/"/);
+ for(const page of manualPages.filter(p=>p.category==='regions'))assert(html.includes('href="'+page.url+'"'));
+});

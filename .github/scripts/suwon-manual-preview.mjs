@@ -30,7 +30,7 @@ assert.equal(frozen.length,30,'Unexpected frozen review scope');
 const provenance=read('src/data/manual-provenance.json');
 assert.equal(provenance.independentReview.status,'pending');
 assert.equal(provenance.manualPagesSha256,'8c489b18891a34968146f659ab67c94a378ecd3591db5d69dc61bc5b493269cf');
-assert.equal(provenance.scopeDigest,'95af729f891aeb22be9915c2b5b4388804661790319cc62e1a1a727486fe2a86');
+assert.equal(provenance.scopeDigest,'798f04994e7901737a9a91939bf1490aefd03ffe8720d65e58e451ed843e6eb9');
 assert.equal(provenance.manualRevisionsSha256,'ffdf11206d6e93c741cd04294a53dfa244e256d8b583b5b2fc93524687aa319b');
 const revisions=read('src/data/manual-revisions.json');assert.equal(revisions.length,4);
 const categories=[...new Set([...frozen,...manual].map(p=>p.category))];
@@ -94,6 +94,7 @@ try {
       fontFamily:getComputedStyle(document.body).fontFamily
     }));
     row.facts=facts;
+    if(target.id==='home'){assert.equal(await page.locator('.purpose-navigation a[href="/regions/"]:visible').count(),1,'Visible manual district home entry on every viewport');for(const guide of manual.filter(p=>p.category==='regions'))assert(await page.locator('.hub-overview a[href="'+guide.url+'"]:visible').count()===1,'Visible manual district detail link');}
     assert.match(facts.robots,/noindex/,'Preview robots');
     assert.equal(decodeURI(facts.canonical),decodeURI(canonicalOrigin+target.url),'HTTPS loopback canonical distinct from HTTP transport');
     assert.equal(facts.revision,process.env.GITHUB_SHA,'Exact commit marker');
