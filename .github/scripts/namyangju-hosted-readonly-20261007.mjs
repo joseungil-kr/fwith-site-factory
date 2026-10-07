@@ -7,7 +7,7 @@ import {createRequire} from 'node:module';
 
 // Evidence-only runner: fixed loopback site, no deploy client and no external navigation.
 const workflowRoot=process.cwd(),root=path.join(workflowRoot,'target'),site=path.join(root,'site-factory/namyangju-flower');
-const expectedSourceRevision='65127f7793a7e7f1f5634fc09132da75bf5218c7';
+const expectedSourceRevision='d02e86ed7fc39131431a0332a84002906be2f88b';
 const dist=fs.realpathSync(path.join(site,'dist'));
 const phase=process.env.MANUAL_QA_PHASE;
 assert(['preview','production'].includes(phase),'Fixed evidence phase required');
@@ -40,7 +40,23 @@ const categories=[...new Set([...frozen,...manual].map(p=>p.category))];
 const targets=[{id:'home',url:'/'},...categories.map(cat=>({id:cat+'-hub',url:`/${cat}/`})),...frozen.map(p=>({id:p.pageKey,url:p.url,page:p})),...manual.map(p=>({id:p.pageKey,url:p.url,page:p,manual:true}))];
 assert.equal(targets.length,37);
 for(const target of targets)assert(/^\/(?:[a-z0-9-]+\/)*$/.test(target.url),'Unsafe capture route');
+async function settleCaptureFrame(page){
+ const frame=await page.evaluate(async()=>{
+  await document.fonts.ready;
+  await Promise.all([...document.images].map(image=>image.decode()));
+  window.scrollTo({left:0,top:0,behavior:'instant'});
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  const header=document.querySelector('header'),h1=document.querySelector('h1');
+  if(!header||!h1)throw new Error('Missing header/H1 capture geometry');
+  return {scrollX:window.scrollX,scrollY:window.scrollY,headerBottom:header.getBoundingClientRect().bottom,h1Top:h1.getBoundingClientRect().top,decodedImageCount:document.images.length};
+ });
+ assert.equal(frame.scrollX,0,'Screenshot must have zero horizontal scroll');
+ assert.equal(frame.scrollY,0,'Screenshot must have zero vertical scroll');
+ assert(frame.h1Top>=frame.headerBottom,'Header/H1 overlap in settled capture');
+ return frame;
+}
 const network=[],consoleMessages=[],pageErrors=[],results=[];
+let deniedResponse=null;
 const mimes={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.webp':'image/webp','.woff2':'font/woff2','.txt':'text/plain; charset=utf-8','.xml':'application/xml; charset=utf-8'};
 const server=http.createServer((req,res)=>{
  try {
@@ -62,21 +78,22 @@ try {
  browser=await chromium.launch();
  for(const viewport of [{name:'desktop',width:1440,height:1100},{name:'mobile',width:390,height:844}]){
   const context=await browser.newContext({viewport:{width:viewport.width,height:viewport.height},deviceScaleFactor:1,locale:'ko-KR',reducedMotion:'reduce'});
-  await context.route('**/*',async route=>{const url=route.request().url();if(new URL(url).origin!==origin){network.push({viewport:viewport.name,url,blockedExternal:true});await route.abort();}else await route.continue();});
+  await context.route('**/*',async route=>{if(deniedResponse){await route.abort();return;}const url=route.request().url();if(new URL(url).origin!==origin){network.push({viewport:viewport.name,url,blockedExternal:true});await route.abort();}else await route.continue();});
   const page=await context.newPage();
   page.on('console',message=>consoleMessages.push({viewport:viewport.name,page:page.url(),type:message.type(),text:message.text()}));
   page.on('pageerror',error=>pageErrors.push({viewport:viewport.name,page:page.url(),message:error.message}));
-  page.on('response',response=>network.push({viewport:viewport.name,url:response.url(),status:response.status()}));
+  page.on('response',response=>{const row={viewport:viewport.name,url:response.url(),status:response.status()};network.push(row);if([401,403,429].includes(row.status)&&new URL(row.url).origin===origin)deniedResponse=row;});
   page.on('requestfailed',request=>network.push({viewport:viewport.name,url:request.url(),failure:request.failure()?.errorText}));
   for(const target of targets){
    const row={id:target.id,url:target.url,viewport:viewport.name,checks:[],errors:[]};
    try {
     const response=await page.goto(origin+target.url,{waitUntil:'networkidle'});
+    assert(!deniedResponse,'Access/rate-limit denial: stop capture without retries');
     assert.equal(response.status(),200,'HTTP status');
     await page.evaluate(()=>document.fonts.ready);
     for(const img of await page.locator('img').all())await img.scrollIntoViewIfNeeded();
     await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));
-    await page.evaluate(()=>window.scrollTo(0,0));
+    row.initialSettledFrame=await settleCaptureFrame(page);
     const facts=await page.evaluate(()=>({
       robots:document.querySelector('meta[name="robots"]')?.content,
       canonical:document.querySelector('link[rel="canonical"]')?.href,
@@ -112,6 +129,7 @@ try {
       const hub=`/${target.page.category}/`;
       await page.locator(`a[href="${hub}"]:visible`).first().click();
       await page.waitForURL(origin+hub);
+      assert(!deniedResponse,'Access/rate-limit denial: no back-navigation request');
       await page.goBack({waitUntil:'networkidle'});
       await page.waitForURL(origin+target.url);
       await page.evaluate(()=>document.fonts.ready);
@@ -119,24 +137,27 @@ try {
       await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));
       row.postNavigationImages=await page.evaluate(()=>[...document.images].map(i=>({src:new URL(i.src).pathname,complete:i.complete,width:i.naturalWidth,height:i.naturalHeight})));
       assert(row.postNavigationImages.every(i=>i.complete&&i.width>0&&i.height>0),'Post-navigation decoded images');
-      await page.evaluate(()=>window.scrollTo(0,0));
+      row.afterBackSettledFrame=await settleCaptureFrame(page);
     }
     row.checks=['http-200',phase==='preview'?'preview-noindex':'native-production-robots','canonical','exact-commit','one-h1','no-horizontal-overflow','decoded-images','real-cta',...(target.page?['exact-page-marker','product-families','local-back-navigation']:[])];
    } catch(error){row.errors.push(error.stack||String(error));}
+   if(deniedResponse){row.errors.push('Access/rate-limit denial: capture stopped');results.push(row);break;}
    try {
     row.screenshot=`screenshots/${viewport.name}/${target.id}-${viewport.name}.jpg`;
     fs.mkdirSync(path.join(output,'screenshots',viewport.name),{recursive:true});
+    row.captureFrame=await settleCaptureFrame(page);
     await page.screenshot({path:path.join(output,row.screenshot),type:'jpeg',quality:85,fullPage:true,animations:'disabled'});
     row.screenshotSha256=crypto.createHash('sha256').update(fs.readFileSync(path.join(output,row.screenshot))).digest('hex');
    } catch(error){row.errors.push('Screenshot: '+error.message);}
    results.push(row);
   }
   await context.close();
+  if(deniedResponse)break;
  }
 } finally {
  if(browser)await browser.close();
  if(server.listening)await new Promise(resolve=>server.close(resolve));
- const summary={state:'captured-awaiting-independent-pixel-review',commit:expectedSourceRevision,diagnosticWorkflowRevision:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,transportOrigin:origin,canonicalOrigin,phase,hosted,frozenPageCount:frozen.length,provenance:read('src/data/manual-provenance.json'),manualPageCount:manual.length,resultCount:results.length,results,machineChecksPassed:results.length===targets.length*2&&results.every(r=>!r.errors.length)&&pageErrors.length===0&&network.every(r=>!r.blockedExternal&&!r.failure&&!(r.status>=400)),pixelReview:'pending',productionApproval:'not-issued'};
+ const summary={state:'captured-awaiting-independent-pixel-review',commit:expectedSourceRevision,diagnosticWorkflowRevision:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,transportOrigin:origin,canonicalOrigin,phase,hosted,deniedResponse,frozenPageCount:frozen.length,provenance:read('src/data/manual-provenance.json'),manualPageCount:manual.length,resultCount:results.length,results,machineChecksPassed:results.length===targets.length*2&&results.every(r=>!r.errors.length)&&pageErrors.length===0&&network.every(r=>!r.blockedExternal&&!r.failure&&!(r.status>=400)),pixelReview:'pending',productionApproval:'not-issued'};
  fs.writeFileSync(path.join(output,'capture-results.json'),JSON.stringify(summary,null,2)+'\n');
  fs.writeFileSync(path.join(output,'browser-console.json'),JSON.stringify(consoleMessages,null,2)+'\n');
  fs.writeFileSync(path.join(output,'page-errors.json'),JSON.stringify(pageErrors,null,2)+'\n');
