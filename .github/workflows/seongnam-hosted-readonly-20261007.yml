@@ -1,7 +1,7 @@
-name: Seongnam C2 deployed source read-only verification
+name: Seongnam C2 production source read-only verification
 on:
   push:
-    branches: [manual-seongnam-hosted-check-20261007]
+    branches: [manual-seongnam-production-check-20261007]
     paths:
       - '.github/workflows/seongnam-hosted-readonly-20261007.yml'
       - '.github/scripts/seongnam-hosted-readonly-20261007.mjs'
@@ -10,17 +10,17 @@ permissions:
   contents: read
 jobs:
   inspect:
-    if: github.ref == 'refs/heads/manual-seongnam-hosted-check-20261007'
+    if: github.ref == 'refs/heads/manual-seongnam-production-check-20261007'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
       ASTRO_TELEMETRY_DISABLED: '1'
       SITE_FACTORY_REVISION: 06f4049c2c8e818ef7474e628031c5f901b4ecab
-      SITE_URL: https://seongnam-flower-guide-qa.joseungil.workers.dev
-      SITE_ORIGIN: https://seongnam-flower-guide-qa.joseungil.workers.dev
-      SITE_INDEXABLE: 'false'
-      MANUAL_QA_PHASE: preview
-      MANUAL_HOSTED_PREVIEW: 'true'
+      SITE_URL: https://seongnam.fwith.kr
+      SITE_ORIGIN: https://seongnam.fwith.kr
+      SITE_INDEXABLE: 'true'
+      MANUAL_QA_PHASE: production
+      MANUAL_HOSTED_PRODUCTION: 'true'
     steps:
       - name: Check out actual read-only execution revision
         uses: actions/checkout@v4
@@ -32,10 +32,10 @@ jobs:
           ref: 06f4049c2c8e818ef7474e628031c5f901b4ecab
           path: target
           persist-credentials: false
-      - name: Check out immutable read-only M2 verifier
+      - name: Check out immutable reviewed read-only M4 verifier
         uses: actions/checkout@v4
         with:
-          ref: 657b9ce62b1a519ba606f9fb0110aa3679d0931c
+          ref: 69a7fee6a64a21443be19eca50d734d9652a968c
           path: control
           persist-credentials: false
       - uses: actions/setup-node@v4
@@ -48,7 +48,6 @@ jobs:
           set -euo pipefail
           test "$(git rev-parse HEAD)" = '06f4049c2c8e818ef7474e628031c5f901b4ecab'
           npm ci --no-audit --no-fund
-          mkdir -p ../evidence
           npm test
           python3 -m unittest discover -s tests -p '*_test.py'
           npm run build
@@ -58,10 +57,30 @@ jobs:
           import hashlib,json,pathlib
           d=pathlib.Path('dist');m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob('*')) if f.is_file()}
           assert len(m)==64
-          assert hashlib.sha256(json.dumps(m,sort_keys=True,separators=(',',':')).encode()).hexdigest()=='da951f81d97a8c9bef38a38531ce083be70aaa782aa79f43d8e72051737cb19e'
+          assert hashlib.sha256(json.dumps(m,sort_keys=True,separators=(',',':')).encode()).hexdigest()=='3f54e9d2c786a70e0083bd402f719d5f25ac03f90b4a76aac70680566c8f2f0e'
           PY
-      - name: Verify every live byte with unchanged M2 application client
-        run: python3 control/scripts/manual-release-20261007/verify_http.py control/.github/manual-release-20261007/seongnam.policy.json preview target/site-factory/seongnam-flower/dist 06f4049c2c8e818ef7474e628031c5f901b4ecab
+      - name: Verify every live byte with reviewed M4 verifier and fixed application client
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import ast,hashlib,json,pathlib,subprocess
+          out=pathlib.Path('seongnam-hosted-http');out.mkdir(exist_ok=True)
+          result=subprocess.run(['python3','control/scripts/manual-release-20261007/verify_http.py','control/.github/manual-release-20261007/seongnam.policy.json','production','target/site-factory/seongnam-flower/dist','06f4049c2c8e818ef7474e628031c5f901b4ecab'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+          private=result.stdout+result.stderr;(out/'m4-private-output.txt').write_bytes(private)
+          report={'passed':result.returncode==0,'exitCode':result.returncode,'privateDiagnosticSha256':hashlib.sha256(private).hexdigest(),'exceptionClass':None,'routeSha256':None}
+          if result.returncode:
+            last=result.stderr.decode(errors='replace').splitlines()[-1] if result.stderr else ''
+            kind,_,value=last.partition(':')
+            if kind.isidentifier():report['exceptionClass']=kind
+            try:
+              values=ast.literal_eval(value.strip())
+              route=next((v for v in values if isinstance(v,str) and v.startswith('/')),None) if isinstance(values,tuple) else None
+              if route is not None:report['routeSha256']=hashlib.sha256(route.encode()).hexdigest()
+            except (ValueError,SyntaxError):pass
+          (out/'m4-cli-status.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report));raise SystemExit(result.returncode)
+          PY
       - name: Retain every verified live response without identity fallback
         run: python3 .github/scripts/seongnam-hosted-receipts-20261007.py
       - name: Install pinned capture client and Korean fonts
@@ -79,20 +98,21 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python3 - <<'PYCHUNKS'
+          python3 - <<'PY'
           import pathlib
-          root=pathlib.Path('target/seongnam-preview-evidence')
-          for part,expected in [('screens-01',18),('screens-02',18),('screens-03',18),('screens-04',16)]:
-            files=list((root/part).glob('*.jpg'));assert len(files)==expected,part
-            assert sum(f.stat().st_size for f in files)<24*1024*1024,part
-          assert sum(f.stat().st_size for f in (root/'metadata').glob('*'))<24*1024*1024
+          root=pathlib.Path('target/seongnam-production-evidence')
+          for part in ['desktop','mobile']:
+            files=list((root/'screenshots'/part).glob('*.jpg'));assert len(files)==35
+            assert sum(f.stat().st_size for f in files)<24*1024*1024
+          assert sum(f.stat().st_size for f in root.glob('*.json'))<24*1024*1024
+          assert sum(f.stat().st_size for part in ['browser-html','browser-input','browser-receipts','browser-private-failures'] for f in (root/part).rglob('*') if f.is_file())<24*1024*1024
           assert sum(f.stat().st_size for f in pathlib.Path('seongnam-hosted-http').rglob('*') if f.is_file())<24*1024*1024
-          PYCHUNKS
+          PY
       - name: Retain live HTTP response bodies and receipts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: seongnam-c2-hosted-http-${{ github.sha }}-${{ github.run_attempt }}
+          name: seongnam-c2-production-http-${{ github.sha }}-${{ github.run_attempt }}
           path: seongnam-hosted-http/
           if-no-files-found: error
           retention-days: 7
@@ -100,39 +120,35 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: seongnam-c2-hosted-facts-${{ github.sha }}-${{ github.run_attempt }}
-          path: target/seongnam-preview-evidence/metadata/
+          name: seongnam-c2-production-facts-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/seongnam-production-evidence/*.json
           if-no-files-found: error
           retention-days: 7
-      - name: Retain hosted screens-01 pixels
+      - name: Retain hosted desktop pixels
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: seongnam-c2-hosted-screens-01-${{ github.sha }}-${{ github.run_attempt }}
-          path: target/seongnam-preview-evidence/screens-01/
+          name: seongnam-c2-production-desktop-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/seongnam-production-evidence/screenshots/desktop/
           if-no-files-found: error
           retention-days: 7
-      - name: Retain hosted screens-02 pixels
+      - name: Retain hosted mobile pixels
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: seongnam-c2-hosted-screens-02-${{ github.sha }}-${{ github.run_attempt }}
-          path: target/seongnam-preview-evidence/screens-02/
+          name: seongnam-c2-production-mobile-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/seongnam-production-evidence/screenshots/mobile/
           if-no-files-found: error
           retention-days: 7
-      - name: Retain hosted screens-03 pixels
+      - name: Retain actual browser HTML and immutable comparison receipts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: seongnam-c2-hosted-screens-03-${{ github.sha }}-${{ github.run_attempt }}
-          path: target/seongnam-preview-evidence/screens-03/
-          if-no-files-found: error
-          retention-days: 7
-      - name: Retain hosted screens-04 pixels
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: seongnam-c2-hosted-screens-04-${{ github.sha }}-${{ github.run_attempt }}
-          path: target/seongnam-preview-evidence/screens-04/
+          name: seongnam-c2-production-browser-bodies-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            target/seongnam-production-evidence/browser-html/
+            target/seongnam-production-evidence/browser-input/
+            target/seongnam-production-evidence/browser-receipts/
+            target/seongnam-production-evidence/browser-private-failures/
           if-no-files-found: error
           retention-days: 7
