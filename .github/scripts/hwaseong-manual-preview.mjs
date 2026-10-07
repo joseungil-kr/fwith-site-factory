@@ -16,7 +16,13 @@ async function settleImages(page){
  await page.evaluate(()=>document.fonts.ready);
  for(const img of await page.locator('img').all())await img.scrollIntoViewIfNeeded();
  await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));
- await page.evaluate(async()=>{await Promise.all([...document.images].map(i=>i.decode()));window.scrollTo(0,0);});
+ await page.evaluate(async()=>{
+  await Promise.all([...document.images].map(i=>i.decode()));
+  // The site's smooth-scroll CSS must not leave a sticky header mid-capture.
+  window.scrollTo({top:0,left:0,behavior:'instant'});
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+ });
+ await page.waitForFunction(()=>window.scrollX===0&&window.scrollY===0);
 }
 
 try{
@@ -43,7 +49,19 @@ try{
     }
     row.checks.push('http-200','noindex','canonical','exact-commit','single-h1','no-overflow','decoded-images','cta-hrefs','correct-provenance');
    }catch(e){row.errors.push(e.stack||String(e));}
-   try{await settleImages(page);row.screenshot=`screenshots/${target.id}-${viewport.name}.jpg`;await page.screenshot({path:path.join(output,row.screenshot),type:'jpeg',quality:85,fullPage:true,animations:'disabled'});row.screenshotSha256=crypto.createHash('sha256').update(fs.readFileSync(path.join(output,row.screenshot))).digest('hex');}catch(e){row.errors.push('Screenshot: '+e.message);}
+   try{
+    await settleImages(page);
+    row.captureGeometry=await page.evaluate(()=>{
+     const box=element=>{const r=element.getBoundingClientRect();return {top:r.top,bottom:r.bottom,left:r.left,right:r.right,width:r.width,height:r.height};};
+     return {scrollX:window.scrollX,scrollY:window.scrollY,header:box(document.querySelector('.site-header')),h1:box(document.querySelector('h1'))};
+    });
+    assert.equal(row.captureGeometry.scrollX,0,'Capture horizontal scroll not settled');
+    assert.equal(row.captureGeometry.scrollY,0,'Capture vertical scroll not settled');
+    assert(Math.abs(row.captureGeometry.header.top)<=1,'Sticky header not at viewport top');
+    assert(row.captureGeometry.h1.top>=row.captureGeometry.header.bottom-1,'Sticky header overlaps H1');
+    row.checks.push('settled-top-capture','unobscured-h1');
+    row.screenshot=`screenshots/${target.id}-${viewport.name}.jpg`;await page.screenshot({path:path.join(output,row.screenshot),type:'jpeg',quality:85,fullPage:true,animations:'disabled'});row.screenshotSha256=crypto.createHash('sha256').update(fs.readFileSync(path.join(output,row.screenshot))).digest('hex');
+   }catch(e){row.errors.push('Screenshot: '+e.message);}
    results.push(row);
   }
   await context.close();
