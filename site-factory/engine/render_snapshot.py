@@ -533,7 +533,7 @@ def render(body, registry, workspace):
     ledger[p["SNAPSHOT_ID"]] = {"pageKey": key, "snapshotHash": digest, "publishQueueRecordId": p["PUBLISH_QUEUE_RECORD_ID"]}
     manifest["snapshotLedger"] = ledger
     tables["map"][key] = dict(entry)
-    tables["architecture"][key] = {**entry, "pageRole": p["PAGE_ROLE"], "parentHub": p["PARENT_HUB"], "intentKey": p["INTENT_KEY"], "contentRole": p["CONTENT_ROLE"], "localizationPolicy": p["LOCALIZATION_POLICY"], "sitemapIndexable": bool(target.get("productionEnabled")), "status": "primary"}
+    tables["architecture"][key] = {**entry, "pageRole": p["PAGE_ROLE"], "parentHub": p["PARENT_HUB"], "intentKey": p["INTENT_KEY"], "contentRole": p["CONTENT_ROLE"], "localizationPolicy": p["LOCALIZATION_POLICY"], "sitemapIndexable": publication_approved if (p["SITE_KEY"] == "namyangju-flower-v2" and target.get("initialLaunch", {}).get("scopeKey") == "namyangju-flower-v2-dong-coverage-20261005" and hub_policy == "child-threshold-v1") else bool(target.get("productionEnabled")), "status": "primary"}
     for name, doc, filename in (("manifest", manifest, "publish-manifest.json"), ("map", page_map, "page-map.json"), ("architecture", arch, "architecture.json")):
         doc.update({"siteKey": p["SITE_KEY"], "pages": sorted(tables[name].values(), key=lambda r: r["pageKey"])})
         if name != "architecture":

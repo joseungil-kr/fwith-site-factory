@@ -33,7 +33,32 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--site-key', required=True, choices=sorted(INITIAL_REGIONS))
     parser.add_argument('--report', type=Path, required=True)
+    parser.add_argument('--attach', action='store_true')
+    parser.add_argument('--registry', type=Path)
+    parser.add_argument('--revision')
     args = parser.parse_args(argv)
+    if args.attach:
+        from whole_initial import resolve
+        if args.registry is None or not args.revision:
+            raise ValueError('Exact independently reviewed production revision is required')
+        site = json.loads(args.registry.read_text())['sites'][args.site_key]
+        config = site['initialDeployment']
+        if config.get('siteKey') != args.site_key:
+            raise ValueError('Initial domain identity mismatch')
+        resolve(site, site['repo'], args.revision, config['launchKey'], config['scopeKey'])
+        target = target_contract(args.site_key)
+        original = adapter.HOSTNAME, adapter.WORKER
+        try:
+            adapter.HOSTNAME = target['siteUrl'].removeprefix('https://')
+            adapter.WORKER = target['productionWorker']
+            status = adapter.main(['--report', str(args.report)])
+        finally:
+            adapter.HOSTNAME, adapter.WORKER = original
+        args.report.write_text(json.dumps({'state': 'initial_domain_request_accepted' if status == 0 else 'initial_domain_attach_failed_or_uncertain',
+            'siteKey': args.site_key, 'hostname': target['siteUrl'].removeprefix('https://'),
+            'worker': target['productionWorker'], 'liveVerified': False,
+            'requiresInspectionBeforeRetry': status != 0}, indent=2) + '\n')
+        return status
     return inspect_initial(args.site_key, args.report)
 
 

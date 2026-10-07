@@ -59,11 +59,30 @@ jobs:
         run: |
           python3 - <<'PYTHON'
           import json,os,re
-          values=dict(line.split(': ',1) for line in os.environ.get('ISSUE_BODY','').splitlines() if ': ' in line)
+          values={}
+          header=os.environ.get('ISSUE_BODY','').split('---BEGIN-',1)[0]
+          for line in header.splitlines():
+              if ': ' in line:
+                  name,value=line.split(': ',1)
+                  if name in values: raise SystemExit('Duplicate issue header')
+                  values[name]=value.strip()
           key=os.environ.get('SITE_KEY') or values.get('SITE_KEY','')
           revision=os.environ.get('REVISION') or values.get('EXPECTED_REVISION','')
           site=json.load(open('control/.github/site-factory-sites.json'))['sites'].get(key)
           if not site or site['repo']!=os.environ['GITHUB_REPOSITORY']:raise SystemExit('Unregistered target')
+          import sys
+          sys.path.insert(0, 'control/site-factory/engine')
+          if key == 'namyangju-flower-v2':
+              from whole_initial import resolve_preview
+              header= os.environ.get('ISSUE_BODY','').split('---BEGIN-',1)[0]
+              names=[line.split(': ',1)[0] for line in header.splitlines() if ': ' in line]
+              if len(names)!=len(set(names)):raise SystemExit('Duplicate issue header')
+              resolved=resolve_preview(site,os.environ['GITHUB_REPOSITORY'],key,revision,
+                  os.environ.get('LAUNCH_KEY') or values.get('LAUNCH_KEY',''),
+                  os.environ.get('SCOPE_KEY') or values.get('SCOPE_KEY',''))
+              with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+                  for k,v in resolved.items():out.write(f'{k}={v}\n')
+              raise SystemExit(0)
           if key == 'goyang-flower-v2':
               launch=os.environ.get('LAUNCH_KEY') or values.get('LAUNCH_KEY','')
               scope=os.environ.get('SCOPE_KEY') or values.get('SCOPE_KEY','')
@@ -146,7 +165,7 @@ jobs:
           git -C target archive e4eead3e881b3b4c09a60e2af5befb55b6787413:site-factory/goyang-flower | tar -xf - -C canary-baseline
       - name: Assert preview cannot route onto production
         working-directory: ${{ steps.target.outputs.build_root }}
-        env: {CONFIG: "${{ steps.target.outputs.config }}", ISOLATED: "${{ steps.target.outputs.isolated }}", STAGING_WORKER: "${{ steps.target.outputs.staging_worker }}", BUCHEON_COVERAGE: "${{ steps.target.outputs.bucheon_coverage }}", SITE_KEY: "${{ steps.target.outputs.site_key }}"}
+        env: {CONFIG: "${{ steps.target.outputs.config }}", ISOLATED: "${{ steps.target.outputs.isolated }}", STAGING_WORKER: "${{ steps.target.outputs.staging_worker }}", BUCHEON_COVERAGE: "${{ steps.target.outputs.bucheon_coverage }}", SITE_KEY: "${{ steps.target.outputs.site_key }}", INITIAL_COVERAGE: "${{ steps.target.outputs.initial_coverage }}"}
         run: |
           python3 - <<'PYTHON'
           import json,os
@@ -157,8 +176,26 @@ jobs:
           if os.environ['ISOLATED']=='true':
               assert s['name']==os.environ['STAGING_WORKER'] and p['name']==s['name'].replace('-guide-qa','-prod-disabled')
               assert 'route' not in s and 'routes' not in s and 'triggers' not in s
-              if os.environ['SITE_KEY'] not in ('seongnam-flower-v2','goyang-flower-v2') and os.environ.get('BUCHEON_COVERAGE')!='true':
+              if os.environ['SITE_KEY'] not in ('seongnam-flower-v2','goyang-flower-v2') and os.environ.get('BUCHEON_COVERAGE')!='true' and os.environ.get('INITIAL_COVERAGE')!='true':
                   assert json.load(open('src/data/site-config.json'))['productionApproved'] is False
+          PYTHON
+      - name: Fetch exact reviewed initial template source object
+        if: steps.target.outputs.initial_coverage == 'true'
+        env: {TEMPLATE_REVISION: "${{ steps.target.outputs.template_revision }}"}
+        run: git -C target fetch --no-tags origin "$TEMPLATE_REVISION"
+      - name: Verify exact complete initial preview snapshot source
+        if: steps.target.outputs.initial_coverage == 'true'
+        env: {SITE_KEY: "${{ steps.target.outputs.site_key }}", REVISION: "${{ steps.target.outputs.revision }}"}
+        run: |
+          python3 - <<'PYTHON'
+          import json, os, sys
+          from pathlib import Path
+          sys.path.insert(0, 'control/site-factory/engine')
+          from whole_initial import validate_preview_source
+          key=os.environ['SITE_KEY']
+          site=json.load(open('control/.github/site-factory-sites.json'))['sites'][key]
+          result=validate_preview_source(site,key,os.environ['REVISION'],Path('preview-build'),Path('target'))
+          Path('initial-preview-source.json').write_text(json.dumps(result)+'\n')
           PYTHON
       - uses: actions/setup-node@v4
         with: {node-version: 22}
@@ -276,9 +313,13 @@ jobs:
         env: {ROOT: "${{ steps.target.outputs.build_root }}", REVISION: "${{ steps.target.outputs.revision }}", LAUNCH_KEY: "${{ steps.target.outputs.launch_key }}", SCOPE_KEY: "${{ steps.target.outputs.scope_key }}", PROBE_PATH: "${{ steps.target.outputs.probe_path }}"}
         run: python3 control/site-factory/engine/verify_live.py --site-key goyang-flower-v2 --root "$ROOT" --baseline-root canary-baseline --registry control/.github/site-factory-sites.json --origin https://goyang.fwith.kr --revision "$REVISION" --launch-key "$LAUNCH_KEY" --scope-key "$SCOPE_KEY" --phase preview --version-preview --version-upload-result "$RUNNER_TEMP/goyang-version-upload.ndjson" --probe-path "$PROBE_PATH" --report preview-verification.json
       - name: Verify isolated exact-revision preview
-        if: steps.target.outputs.goyang_coverage != 'true'
+        if: steps.target.outputs.goyang_coverage != 'true' && steps.target.outputs.initial_coverage != 'true'
         env: {ORIGIN: "${{ steps.target.outputs.url }}", REVISION: "${{ steps.target.outputs.revision }}"}
         run: python3 control/site-factory/engine/verify_preview.py --origin "$ORIGIN" --revision "$REVISION" --report preview-verification.json
+      - name: Verify every initial preview HTML route and static artifact byte
+        if: steps.target.outputs.initial_coverage == 'true'
+        env: {SITE_KEY: "${{ steps.target.outputs.site_key }}", ORIGIN: "${{ steps.target.outputs.url }}", REVISION: "${{ steps.target.outputs.revision }}"}
+        run: python3 control/site-factory/engine/verify_initial.py --root preview-build --site-key "$SITE_KEY" --origin "$ORIGIN" --revision "$REVISION" --phase preview --report preview-verification.json
       - name: Save preview artifact
         if: ${{ always() && steps.build.outcome == 'success' }}
         uses: actions/upload-artifact@v4
@@ -287,6 +328,7 @@ jobs:
           path: |
             ${{ steps.target.outputs.build_root }}/dist/
             preview-verification.json
+            initial-preview-source.json
             goyang-coverage-source.json
             goyang-binding-before.json
             goyang-binding-after.json

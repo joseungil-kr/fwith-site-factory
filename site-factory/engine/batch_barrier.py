@@ -6,6 +6,8 @@ import json
 from pathlib import Path, PurePosixPath
 import re
 import subprocess
+import sys
+import os
 import tempfile
 from urllib.parse import urlsplit
 
@@ -68,6 +70,18 @@ class GitEvidence:
         require(sha(older) and sha(newer), 'Expected full checkpoint SHA')
         return subprocess.run(['git', '-C', str(self.workspace), 'merge-base', '--is-ancestor', older, newer],
                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0
+
+    def paths(self, revision, root):
+        rows = self.run('ls-tree', '-rz', revision, '--', root).split(b'\0')
+        result = set()
+        for row in filter(None, rows):
+            meta, raw_path = row.split(b'\t', 1)
+            mode, kind, _ = meta.decode().split()
+            path = raw_path.decode()
+            require(mode == '100644' and kind == 'blob' and path.startswith(root + '/'),
+                    'Initial source inventory contains non-regular files')
+            result.add(path[len(root) + 1:])
+        return result
 
 
 def check(batch, evidence, git):
@@ -175,27 +189,33 @@ BUCHEON_SITE = 'bucheon-flower-v2'
 BUCHEON_SCOPE = 'bucheon-flower-v2-dong-coverage-20261004'
 BUCHEON_TARGET = {'repo': 'joseungil-kr/fwith-site-factory', 'branch': 'site-factory-bucheon-v2',
                   'root': 'site-factory/bucheon-flower'}
+LEGACY_RENDERER_ALLOWLIST = {
+    (BUCHEON_SITE, '00d63c5b557401100ae44b25e8c804c28c9c461e'):
+        'bd3d22c3a584c94133e8bea1ea0603b94f2dbd6c60ad3ca25c5e9d5e0f6fdcd3',
+}
 
 
-def bucheon_representatives(coverage):
+def bucheon_representatives(coverage, site=BUCHEON_SITE, scope=BUCHEON_SCOPE, unit_types=('legal-dong',)):
     """One reviewed schema-2 representative for every exact Bucheon legal dong."""
     require(type(coverage.get('schemaVersion')) is int and coverage['schemaVersion'] == 2
-            and coverage.get('siteKey') == BUCHEON_SITE and coverage.get('scopeKey') == BUCHEON_SCOPE
+            and coverage.get('siteKey') == site and coverage.get('scopeKey') == scope
             and coverage.get('unitBasis') == 'legal-dong-plus-eup-myeon'
             and coverage.get('countIsPageQuota') is False, 'Bucheon coverage adapter mismatch')
     units = indexed(coverage['units'], 'unitKey')
     districts = indexed(coverage['districts'], 'key')
-    require(units and districts and all(u.get('unitType') == 'legal-dong'
+    require(units and districts and all(u.get('unitType') in unit_types
             and isinstance(u.get('name'), str) and u['name']
             and isinstance(u.get('districtKeys'), list) and len(u['districtKeys']) == 1
-            and u['districtKeys'][0] in districts and u.get('legalRi') == [] for u in units.values()),
+            and u['districtKeys'][0] in districts and isinstance(u.get('legalRi'), list)
+            and (u['unitType'] != 'legal-dong' or u['legalRi'] == []) for u in units.values()),
             'Bucheon requires district-bound legal dongs')
     aliases = indexed(coverage['administrativeCrosswalk'], 'aliasKey')
     for alias in aliases.values():
         relations = indexed(alias['relations'], 'unitKey')
         require(isinstance(alias.get('name'), str) and alias['name'] and relations
                 and alias.get('districtKey') in districts and not alias.get('unresolvedCandidateNames')
-                and all(key in units and alias['districtKey'] in units[key]['districtKeys']
+                and all(key in units and (alias['districtKey'] in units[key]['districtKeys']
+                        or (site == 'namyangju-flower-v2' and __import__('provision_goyang').exact_cross_district_evidence(coverage, alias, units[key], rel)))
                         and rel.get('scope') in ('whole', 'partial') for key, rel in relations.items()),
                 'Bucheon administrative relation mismatch')
     rows = coverage['representatives']
@@ -251,7 +271,7 @@ def read_bucheon_dependency(git, revision, path):
     return git.read(revision, path)
 
 
-def bucheon_dependencies(batch, coverage_raw, git, revision, root):
+def bucheon_dependencies(batch, coverage_raw, git, revision, root, site=BUCHEON_SITE, scope=BUCHEON_SCOPE, unit_types=('legal-dong',)):
     require(read_bucheon_dependency(git, revision, root + '/src/data/region-coverage.json') == coverage_raw,
             'Bucheon baseline coverage dependency changed')
     dependencies = {'src/data/region-coverage.json': coverage_raw}
@@ -264,8 +284,8 @@ def bucheon_dependencies(batch, coverage_raw, git, revision, root):
         dependencies[path] = raw
     policy = json.loads(dependencies['src/data/region-policy.json'])
     require(type(policy.get('schemaVersion')) is int and policy['schemaVersion'] == 1
-            and policy.get('enabled') is True and policy.get('siteKey') == BUCHEON_SITE
-            and policy.get('scopeKey') == BUCHEON_SCOPE and policy.get('unitTypes') == ['legal-dong'],
+            and policy.get('enabled') is True and policy.get('siteKey') == site
+            and policy.get('scopeKey') == scope and policy.get('unitTypes') == list(unit_types),
             'Bucheon regional policy mismatch')
     coverage = json.loads(coverage_raw)
     require(isinstance(batch.get('membershipSourceSha256'), str)
@@ -295,7 +315,9 @@ def check_bucheon_dependencies(dependencies, git, revision, root):
 
 
 def goyang_identity(batch):
-    fields = GOYANG_IDENTITY + (('policySha256', 'productsSha256', 'membershipSourceSha256') if batch.get('siteKey') == BUCHEON_SITE else ())
+    fields = GOYANG_IDENTITY + (('policySha256', 'productsSha256', 'membershipSourceSha256') if batch.get('siteKey') == BUCHEON_SITE or batch.get('contractType') == 'whole-region-initial' else ())
+    if batch.get('contractType') == 'whole-region-initial':
+        fields += ('bootstrapSourceSha',)
     return digest({key: batch[key] for key in fields} |
                   {'members': sorted(batch['members'], key=lambda row: row['pageKey'])})
 
@@ -318,7 +340,7 @@ def snapshot_tables(git, revision, root, site=GOYANG_SITE):
     return documents, tables, raw
 
 
-def goyang_replay_checkpoint(payload, registry, prior_raw, root, dependencies=None):
+def goyang_replay_checkpoint(payload, registry, prior_raw, root, dependencies=None, renderer_bytes=None):
     """Replay the actual approved snapshot renderer in disposable local storage.
 
     Neither the evidence checkout nor remote state is written. Only the existing
@@ -335,7 +357,22 @@ def goyang_replay_checkpoint(payload, registry, prior_raw, root, dependencies=No
             destination = workspace / root / path
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes(raw)
-        result = snapshot_renderer.render(payload, registry, workspace)
+        if renderer_bytes is None:
+            result = snapshot_renderer.render(payload, registry, workspace)
+        else:
+            # Historical batches retain their exact reviewed renderer bytes.
+            # Do not weaken old proof hashes because current main gained an
+            # opt-in adapter. The isolated control files stay outside workspace.
+            with tempfile.TemporaryDirectory(prefix='pinned-renderer-') as controls:
+                control = Path(controls)
+                (control / 'render_snapshot.py').write_bytes(renderer_bytes)
+                (control / 'registry.json').write_text(json.dumps(registry))
+                (control / 'payload.txt').write_text(payload)
+                run = subprocess.run([sys.executable, '-I', str(control / 'render_snapshot.py'),
+                    '--registry', str(control / 'registry.json'), '--payload', str(control / 'payload.txt'),
+                    '--workspace', str(workspace)], capture_output=True, text=True, check=True,
+                    env={'PATH': os.defpath, 'PYTHONIOENCODING': 'utf-8'}, timeout=30)
+                result = json.loads(run.stdout)
         expected_paths = {root + '/src/data/' + name + '.json' for name in prior_raw}
         require(result.get('publicationApproved') is True and result.get('approvalVerified') is True
                 and set(result.get('changedFiles', [])) == expected_paths,
@@ -350,10 +387,16 @@ def goyang_replay_checkpoint(payload, registry, prior_raw, root, dependencies=No
 
 def check_goyang(batch, evidence, git):
     """Scoped all-remaining barrier. Geography gives membership, never approval."""
+    initial = batch.get('contractType') == 'whole-region-initial'
     bucheon = batch.get('siteKey') == BUCHEON_SITE
+    scoped = bucheon or initial
     site, scope, expected_target, contract = (
         (BUCHEON_SITE, BUCHEON_SCOPE, BUCHEON_TARGET, 'bucheon-all-remaining-legal-dongs') if bucheon else
         (GOYANG_SITE, GOYANG_SCOPE, GOYANG_TARGET, 'goyang-all-remaining-legal-dongs'))
+    if initial:
+        from whole_initial import initial_batch_identity
+        site, scope, expected_target = initial_batch_identity(batch)
+        contract = 'whole-region-initial'
     require(type(batch.get('schemaVersion')) is int and batch['schemaVersion'] == 2
             and batch.get('contractType') == contract, 'Unsupported scoped batch schema')
     require(batch.get('siteKey') == site and batch.get('scopeKey') == scope, 'Registered batch scope mismatch')
@@ -366,19 +409,21 @@ def check_goyang(batch, evidence, git):
             'Goyang evidence identity mismatch')
     final, base = evidence.get('finalSourceSha'), batch['baselineSourceSha']
     require(sha(final) and git.ancestor(base, final), 'Final source does not descend from baseline')
-    if bucheon:
+    if scoped:
         for path in ('.github/site-factory-sites.json', 'site-factory/engine/render_snapshot.py'):
             read_bucheon_dependency(git, batch['registryRevision'], path)
     registry = json.loads(git.read(batch['registryRevision'], '.github/site-factory-sites.json'))
-    require(git.read(batch['registryRevision'], 'site-factory/engine/render_snapshot.py') ==
-            Path(snapshot_renderer.__file__).read_bytes(), 'Executing renderer differs from pinned controller bytes')
+    renderer_bytes = git.read(batch['registryRevision'], 'site-factory/engine/render_snapshot.py')
+    same_renderer = renderer_bytes == Path(snapshot_renderer.__file__).read_bytes()
+    require(same_renderer or (not initial and LEGACY_RENDERER_ALLOWLIST.get((site, batch['registryRevision']))
+            == hashlib.sha256(renderer_bytes).hexdigest()), 'Executing renderer differs from pinned controller bytes')
     target = registry['sites'][site]
     require(all(target.get(k) == v for k, v in expected_target.items())
             and target.get('snapshotRenderer') == 'structured-json-v12'
             and target.get('categoryPageTypes', {}).get('regions') == ['regional-service'], 'Registered target mismatch')
-    if bucheon:
+    if scoped:
         require(target.get('regionalService') == {
-                    'enabled': True, 'scopeKey': BUCHEON_SCOPE,
+                    'enabled': True, 'scopeKey': scope,
                     'definitionFile': 'src/data/region-coverage.json', 'policyFile': 'src/data/region-policy.json'}
                 and target['regionalService']['enabled'] is True
                 and target.get('administrativeCoverage') is None, 'Bucheon registered adapter mismatch')
@@ -389,6 +434,9 @@ def check_goyang(batch, evidence, git):
             and target.get('requireSnapshotApproval') is True and target.get('requireRevisionApproval') is True,
             'Goyang batch requires explicit snapshots and no intermediate automatic deploy')
     root = target['root']
+    if initial:
+        from whole_initial import validate_initial_binding
+        validate_initial_binding(batch, target, git, base, final)
     base_docs, baseline, base_raw = snapshot_tables(git, base, root, site)
     require(hashlib.sha256(base_raw['publish-manifest']).hexdigest() == batch['baselineManifestSha256'],
             'Baseline raw manifest digest mismatch')
@@ -397,9 +445,10 @@ def check_goyang(batch, evidence, git):
             and git.read(final, root + '/src/data/region-coverage.json') == coverage_raw, 'Coverage bytes changed')
     coverage = json.loads(coverage_raw)
     dependencies = {}
-    if bucheon:
-        units = bucheon_representatives(coverage)
-        dependencies = bucheon_dependencies(batch, coverage_raw, git, base, root)
+    if scoped:
+        unit_types = tuple(sorted({u['unitType'] for u in coverage['units']})) if initial else ('legal-dong',)
+        units = bucheon_representatives(coverage, site, scope, unit_types)
+        dependencies = bucheon_dependencies(batch, coverage_raw, git, base, root, site, scope, unit_types)
         check_bucheon_dependencies(dependencies, git, final, root)
     else:
         require(coverage.get('siteKey') == GOYANG_SITE and coverage.get('scopeKey') == GOYANG_SCOPE
@@ -414,10 +463,12 @@ def check_goyang(batch, evidence, git):
         unit = units[key]
         require(re.fullmatch(r'[a-z0-9-]+', unit['slug'])
                 and unit['url'] == '/regions/' + unit['slug'] + '/'
-                and member['intentKey'] == ('bucheon' if bucheon else 'goyang') + '|flower-delivery|local-order|' + unit['slug']
-                and (not bucheon or member['intentKey'] == unit['intentKey']), 'Goyang member route/intent mismatch')
-    require(baseline_keys and all(row.get('status') == 'approved' and row.get('approvalVerified') is True
-                                for row in baseline['publish-manifest'].values()), 'Baseline contains unapproved details')
+                and member['intentKey'] == site.split('-')[0] + '|flower-delivery|local-order|' + unit['slug']
+                and (not scoped or member['intentKey'] == unit['intentKey']), 'Goyang member route/intent mismatch')
+    require((not baseline_keys if initial else bool(baseline_keys)) and all(row.get('status') == 'approved' and row.get('approvalVerified') is True
+                                for row in baseline['publish-manifest'].values()), 'Initial baseline must be empty; historical baseline must contain approved details')
+    if initial:
+        require(base_docs['publish-manifest'].get('snapshotLedger') == {}, 'Initial baseline ledger must be empty')
     docs, tables, raw = snapshot_tables(git, final, root, site)
     require(set(tables['publish-manifest']) == baseline_keys | set(members), 'Final manifest has missing or extra details')
     for name, old in baseline.items():
@@ -454,7 +505,7 @@ def check_goyang(batch, evidence, git):
                 and p.get('APPROVAL_STATUS') == 'approved' and p.get('APPROVED_SNAPSHOT_HASH') == reviewed,
                 key + ': exact frozen approval mismatch')
         approval = item.get('reviewerApproval', {})
-        if bucheon:
+        if scoped:
             require_bucheon_reviewer(approval)
             require(approval['reviewer'].strip() != item['writerRunId'].strip(),
                     key + ': independent Bucheon reviewer required')
@@ -475,10 +526,11 @@ def check_goyang(batch, evidence, git):
                             if r.get('status') == 'approved' and r.get('approvalVerified') is True}
         require(all(k in approved_targets for k in p['relatedKeys']), key + ': future/unapproved related link')
         commit_docs, committed, commit_raw = snapshot_tables(git, commit, root, site)
-        if bucheon:
+        if scoped:
             check_bucheon_dependencies(dependencies, git, reviewed_source, root)
             check_bucheon_dependencies(dependencies, git, commit, root)
-        expected_raw = goyang_replay_checkpoint(item['payload'], registry, prior_raw, root, dependencies)
+        expected_raw = goyang_replay_checkpoint(item['payload'], registry, prior_raw, root, dependencies,
+                                               None if same_renderer else renderer_bytes)
         for name in expected_raw:
             require(commit_raw[name] == expected_raw[name],
                     key + ': checkpoint four JSON files differ from pinned renderer: ' + name)
@@ -502,12 +554,15 @@ def check_goyang(batch, evidence, git):
     for route, hub in hubs.items():
         children = sum(p.get('category') == hub.get('category') for p in tables['publish-manifest'].values())
         require(route == '/' + hub['category'] + '/' and hub.get('children') == children, 'Hub route/count mismatch')
-        require({k: v for k, v in hub.items() if k != 'children'} ==
-                {k: v for k, v in baseline_hubs[route].items() if k != 'children'}, 'Baseline hub policy changed')
+        derived = {'children', 'indexable', 'menuVisible'} if initial else {'children'}
+        require({k: v for k, v in hub.items() if k not in derived} ==
+                {k: v for k, v in baseline_hubs[route].items() if k not in derived}, 'Baseline hub policy changed')
+        if initial:
+            require(hub.get('indexable') is (children >= 3) and hub.get('menuVisible') is (children >= 5), 'Initial hub policy differs from runtime')
         (active if children else absent).add(route)
     routes = {'/'} | active | {r['url'] for r in tables['publish-manifest'].values()}
     qa = evidence.get('qa', {}); manifest_hash = hashlib.sha256(raw['publish-manifest']).hexdigest()
-    if bucheon:
+    if scoped:
         require_bucheon_reviewer(qa)
         require(qa['reviewer'].strip() not in {item['writerRunId'].strip() for item in evidence['items']},
                 'Independent Bucheon visual QA required')

@@ -83,6 +83,20 @@ jobs:
           key=os.environ.get('SITE_KEY') or values.get('SITE_KEY','')
           site=json.load(open('control/.github/site-factory-sites.json'))['sites'].get(key)
           if not site or site['repo']!=os.environ['GITHUB_REPOSITORY']: raise SystemExit('Unregistered target')
+          import sys
+          sys.path.insert(0, 'control/site-factory/engine')
+          if key == 'namyangju-flower-v2':
+              if 'SITE_KEY: goyang-flower-v2' in os.environ.get('ISSUE_BODY', ''):
+                  raise SystemExit('Initial issue body must not select another site deployment lock')
+              from whole_initial import resolve
+              resolved=resolve(site,os.environ['GITHUB_REPOSITORY'],
+                  os.environ.get('REVISION') or values.get('EXPECTED_REVISION',''),
+                  os.environ.get('LAUNCH_KEY') or values.get('LAUNCH_KEY',''),
+                  os.environ.get('SCOPE_KEY') or values.get('SCOPE_KEY',''))
+              if resolved['site_key'] != key: raise SystemExit('Initial request identity mismatch')
+              with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+                  for k,v in resolved.items():out.write(f'{k}={v}\n')
+              raise SystemExit(0)
           requested_revision = os.environ.get('REVISION') or values.get('EXPECTED_REVISION', '')
           ownership_only = site.get('indexnowOwnership', {}).get('revision') == requested_revision
           if ownership_only:
@@ -142,7 +156,7 @@ jobs:
           git merge-base --is-ancestor "$REVISION" "origin/$BRANCH"
           test "$(git rev-parse HEAD)" = "$REVISION"
       - name: Isolate exact coverage release tree
-        if: steps.target.outputs.goyang_coverage == 'true' || steps.target.outputs.bucheon_coverage == 'true' || steps.target.outputs.ownership_only == 'true'
+        if: steps.target.outputs.goyang_coverage == 'true' || steps.target.outputs.bucheon_coverage == 'true' || steps.target.outputs.initial_coverage == 'true' || steps.target.outputs.ownership_only == 'true'
         env: {ROOT: "${{ steps.target.outputs.root }}", REVISION: "${{ steps.target.outputs.revision }}"}
         run: |
           set -euo pipefail
@@ -171,6 +185,14 @@ jobs:
           test "$(git -C target rev-parse ed5d30763d38ae1580974b1d377c07d4927dcdeb:site-factory/bucheon-flower)" = b92e058b30e9331baee1006f6c0d9c8a8e3775ec
           mkdir bucheon-baseline
           git -C target archive ed5d30763d38ae1580974b1d377c07d4927dcdeb:site-factory/bucheon-flower | tar -xf - -C bucheon-baseline
+      - name: Fetch exact reviewed initial template source object
+        if: steps.target.outputs.initial_coverage == 'true'
+        env: {TEMPLATE_REVISION: "${{ steps.target.outputs.template_revision }}"}
+        run: git -C target fetch --no-tags origin "$TEMPLATE_REVISION"
+      - name: Validate exact initial whole-batch and independent hosted evidence
+        if: steps.target.outputs.initial_coverage == 'true'
+        env: {SITE_KEY: "${{ steps.target.outputs.site_key }}", REVISION: "${{ steps.target.outputs.revision }}"}
+        run: python3 control/site-factory/engine/whole_initial.py --registry control/.github/site-factory-sites.json --site-key "$SITE_KEY" --revision "$REVISION" --root release-build --control control --workspace target --report initial-source.json
       - uses: actions/setup-node@v4
         with: {node-version: 22}
       - name: Build approved indexable artifact and rerun gates
@@ -182,10 +204,11 @@ jobs:
           GRAPH_SCRIPT: ${{ steps.target.outputs.graph }}
           GOYANG_COVERAGE: ${{ steps.target.outputs.goyang_coverage }}
           BUCHEON_COVERAGE: ${{ steps.target.outputs.bucheon_coverage }}
+          INITIAL_COVERAGE: ${{ steps.target.outputs.initial_coverage }}
         run: |
           test -f production-indexing.enabled
           if [ -f package-lock.json ]; then npm ci; else npm install; fi
-          if [ "$GOYANG_COVERAGE" = true ] || [ "$BUCHEON_COVERAGE" = true ]; then npm test; fi
+          if [ "$GOYANG_COVERAGE" = true ] || [ "$BUCHEON_COVERAGE" = true ] || [ "$INITIAL_COVERAGE" = true ]; then npm test; fi
           npm run build
           python3 scripts/qa_static.py
           node "$GRAPH_SCRIPT"
@@ -219,6 +242,13 @@ jobs:
         if: steps.target.outputs.bucheon_coverage == 'true'
         env: {REVISION: "${{ steps.target.outputs.revision }}"}
         run: python3 control/site-factory/engine/bucheon_production.py --registry control/.github/site-factory-sites.json --root release-build --baseline-root bucheon-baseline --control control --workspace target --revision "$REVISION" --report bucheon-coverage-source.json
+      - name: Verify initial production Worker and hostname are unassigned
+        if: steps.target.outputs.initial_coverage == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SITE_KEY: ${{ steps.target.outputs.site_key }}
+        run: python3 control/site-factory/engine/initial_domain.py --site-key "$SITE_KEY" --report initial-domain-before.json
       - name: Verify existing Goyang binding before asset deployment
         if: steps.target.outputs.goyang_coverage == 'true'
         env: {CLOUDFLARE_API_TOKEN: "${{ secrets.CLOUDFLARE_API_TOKEN }}", CLOUDFLARE_ACCOUNT_ID: "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"}
@@ -238,12 +268,13 @@ jobs:
           WRANGLER_CONFIG: ${{ steps.target.outputs.wrangler }}
           GOYANG_COVERAGE: ${{ steps.target.outputs.goyang_coverage }}
           BUCHEON_COVERAGE: ${{ steps.target.outputs.bucheon_coverage }}
+          INITIAL_COVERAGE: ${{ steps.target.outputs.initial_coverage }}
         run: |
           test -n "$CLOUDFLARE_API_TOKEN"
           printf '%s' "$CLOUDFLARE_ACCOUNT_ID" | grep -Eq '^[0-9A-Fa-f]{32}$'
           if [ "$GOYANG_COVERAGE" = true ]; then
             npx --yes wrangler@4.146.0 deploy -c "$WRANGLER_CONFIG"
-          elif [ "$BUCHEON_COVERAGE" = true ]; then
+          elif [ "$BUCHEON_COVERAGE" = true ] || [ "$INITIAL_COVERAGE" = true ]; then
             npx --yes wrangler@4.147.0 deploy -c "$WRANGLER_CONFIG"
           else
             npx --yes wrangler@latest deploy -c "$WRANGLER_CONFIG"
@@ -282,6 +313,26 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: python3 control/site-factory/engine/bucheon_domain_attach.py
+      - name: Record one exact initial domain request before mutation
+        if: steps.target.outputs.initial_coverage == 'true'
+        uses: actions/github-script@v7
+        env: {SITE_KEY: "${{ steps.target.outputs.site_key }}", RECEIPT_ISSUE: "${{ inputs.source_snapshot_issue || github.event.issue.number }}"}
+        with:
+          script: |
+            if (Number(process.env.GITHUB_RUN_ATTEMPT) !== 1) throw new Error('Inspect earlier initial-domain outcome before retrying');
+            const issue_number=Number(process.env.RECEIPT_ISSUE);
+            const comments=await github.paginate(github.rest.issues.listComments,{...context.repo,issue_number});
+            const marker=`INITIAL_DOMAIN_REQUEST_STARTED: site=${process.env.SITE_KEY}`;
+            if(comments.some(c=>c.body.includes(marker)))throw new Error('Initial domain request already attempted; inspect its result');
+            await github.rest.issues.createComment({...context.repo,issue_number,body:`${marker}; run=${context.runId}. No overrides; uncertain outcome requires inspection.`});
+      - name: Bind exact reviewed initial hostname without overrides
+        if: steps.target.outputs.initial_coverage == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SITE_KEY: ${{ steps.target.outputs.site_key }}
+          REVISION: ${{ steps.target.outputs.revision }}
+        run: python3 control/site-factory/engine/initial_domain.py --site-key "$SITE_KEY" --attach --registry control/.github/site-factory-sites.json --revision "$REVISION" --report initial-domain-after.json
       - name: Verify complete Goyang coverage HTTP artifact
         if: steps.target.outputs.goyang_coverage == 'true'
         env: {ROOT: "${{ steps.target.outputs.build_root }}", REVISION: "${{ steps.target.outputs.revision }}", LAUNCH_KEY: "${{ steps.target.outputs.launch_key }}", SCOPE_KEY: "${{ steps.target.outputs.scope_key }}"}
@@ -293,8 +344,12 @@ jobs:
             sleep 10
           done
       - name: Verify exact live revision and every published route
-        if: steps.target.outputs.goyang_coverage != 'true'
+        if: steps.target.outputs.goyang_coverage != 'true' && steps.target.outputs.initial_coverage != 'true'
         run: python3 control/site-factory/engine/verify_live.py --site-key "${{ steps.target.outputs.site_key }}" --root "${{ steps.target.outputs.build_root }}" --origin "${{ steps.target.outputs.site_url }}" --revision "${{ steps.target.outputs.revision }}" --report live-qa-report.json --naver-verification "${{ steps.target.outputs.naver }}" --indexnow-key "${{ steps.target.outputs.indexnow }}"
+      - name: Verify every initial public HTML route and static artifact byte
+        if: steps.target.outputs.initial_coverage == 'true'
+        env: {SITE_KEY: "${{ steps.target.outputs.site_key }}", ORIGIN: "${{ steps.target.outputs.site_url }}", REVISION: "${{ steps.target.outputs.revision }}"}
+        run: python3 control/site-factory/engine/verify_initial.py --root release-build --site-key "$SITE_KEY" --origin "$ORIGIN" --revision "$REVISION" --phase production --report live-qa-report.json
       - name: Submit verified URLs to IndexNow
         id: indexnow
         env:
@@ -315,6 +370,9 @@ jobs:
           name: production-qa-${{ steps.target.outputs.site_key }}-${{ github.run_id }}
           path: |
             indexnow-receipt.json
+            initial-source.json
+            initial-domain-before.json
+            initial-domain-after.json
             ownership-*.json
             production-qa-provenance.json
             live-qa-report.json
@@ -383,6 +441,18 @@ jobs:
           revision = os.environ.get('REVISION') or values.get('EXPECTED_REVISION', '')
           site = json.load(open('control/.github/site-factory-sites.json'))['sites'].get(key)
           if not site or site['repo'] != os.environ['GITHUB_REPOSITORY']: raise SystemExit('Unregistered site')
+          if key == 'namyangju-flower-v2':
+              if 'SITE_KEY: goyang-flower-v2' in os.environ.get('ISSUE_BODY', ''):
+                  raise SystemExit('Initial issue body must not select another site deployment lock')
+              import sys
+              sys.path.insert(0, 'control/site-factory/engine')
+              from whole_initial import resolve
+              binding=site['initialDeployment']
+              resolved=resolve(site,os.environ['GITHUB_REPOSITORY'],revision,binding['launchKey'],binding['scopeKey'])
+              if resolved['site_key'] != key: raise SystemExit('Initial finalization identity mismatch')
+              with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+                  for name,value in resolved.items():out.write(f'{name}={value}\n')
+              raise SystemExit(0)
           if key == 'goyang-flower-v2' and not os.environ.get('SITE_KEY') and 'SITE_KEY: goyang-flower-v2' not in os.environ.get('ISSUE_BODY', '').split('---BEGIN-', 1)[0].splitlines():
               raise SystemExit('Goyang requires exact canonical SITE_KEY header for its shared lock')
           if site.get('productionEnabled') is not True or site.get('launchMode') != 'live': raise SystemExit('Production gate closed')
@@ -413,6 +483,14 @@ jobs:
         run: |
           mkdir finalization-build
           git -C target archive "$REVISION:$ROOT" | tar -xf - -C finalization-build
+      - name: Fetch exact initial renderer source before receipt recovery
+        if: steps.target.outputs.initial_coverage == 'true'
+        env: {TEMPLATE_REVISION: "${{ steps.target.outputs.template_revision }}"}
+        run: git -C target fetch --no-tags origin "$TEMPLATE_REVISION"
+      - name: Validate unchanged initial source before read-only recovery build
+        if: steps.target.outputs.initial_coverage == 'true'
+        env: {SITE_KEY: "${{ steps.target.outputs.site_key }}", REVISION: "${{ steps.target.outputs.revision }}"}
+        run: python3 control/site-factory/engine/whole_initial.py --registry control/.github/site-factory-sites.json --site-key "$SITE_KEY" --revision "$REVISION" --root finalization-build --control control --workspace target --report initial-source.json
       - name: Build exact public source for read-only sitemap comparison
         working-directory: finalization-build
         env:
@@ -446,6 +524,8 @@ jobs:
               if [ "$attempt" = 6 ]; then exit 1; fi
               sleep 10
             done
+          elif [ "$SITE_KEY" = namyangju-flower-v2 ]; then
+            python3 control/site-factory/engine/verify_initial.py --root finalization-build --site-key "$SITE_KEY" --origin "$ORIGIN" --revision "$REVISION" --phase production --report recovery-live-qa.json
           else
             python3 control/site-factory/engine/verify_live.py --site-key "$SITE_KEY" --root finalization-build --origin "$ORIGIN" --revision "$REVISION" --naver-verification "$NAVER" --indexnow-key "$INDEXNOW" --report recovery-live-qa.json
           fi
@@ -468,6 +548,9 @@ jobs:
           name: indexnow-receipt-${{ github.run_id }}
           path: |
             indexnow-receipt.json
+            initial-source.json
+            initial-domain-before.json
+            initial-domain-after.json
             recovery-live-qa.json
           if-no-files-found: ignore
       - name: Report accepted IndexNow receipt
