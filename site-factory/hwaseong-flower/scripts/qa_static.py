@@ -9,6 +9,35 @@ import sys
 
 DIST = Path("dist")
 EXPECTED_ORIGIN = os.environ.get("SITE_URL", "https://hwaseong.fwith.kr").rstrip("/")
+MANUAL_PREVIEW = os.environ.get("MANUAL_PREVIEW") == "true"
+
+def valid_loopback_preview_origin(origin, preview, indexable_env):
+    """The manual capture exception is limited to its fixed loopback port."""
+    if not preview or indexable_env != "false":
+        return False
+    try:
+        parsed = urlparse(origin)
+        return (
+            origin == origin.strip()
+            and parsed.scheme == "http"
+            and parsed.hostname in ("127.0.0.1", "localhost")
+            and parsed.port == 8935
+            and parsed.netloc in ("127.0.0.1:8935", "localhost:8935")
+            and not parsed.username and not parsed.password
+            and parsed.path in ("", "/")
+            and not parsed.params and not parsed.query and not parsed.fragment
+        )
+    except ValueError:
+        return False
+
+def uses_expected_origin(url):
+    parsed, expected = urlparse(url), urlparse(EXPECTED_ORIGIN)
+    return (parsed.scheme, parsed.netloc) == (expected.scheme, expected.netloc)
+
+def unexpected_loopback_reference(text, allowed):
+    if allowed:
+        text = re.sub(re.escape(EXPECTED_ORIGIN) + r"(?=[/\"'<>\s]|$)", "", text)
+    return "localhost" in text or "127.0.0.1" in text
 PRIMARY_LANDING_SLUG = os.environ.get("PRIMARY_LANDING_SLUG", "").strip("/")
 HERO_PATH = os.environ.get("HERO_PATH", "images/hwaseong/hero-B-original.png").strip("/")
 INDEXABLE_ENV = os.environ.get("SITE_INDEXABLE")
@@ -19,6 +48,11 @@ INDEXABLE = (
     else PRODUCTION_MARKER
 )
 errors = []
+LOOPBACK_PREVIEW = valid_loopback_preview_origin(
+    os.environ.get("SITE_URL", ""), MANUAL_PREVIEW, INDEXABLE_ENV
+)
+if MANUAL_PREVIEW and not LOOPBACK_PREVIEW:
+    errors.append("Manual preview requires explicit noindex and the fixed loopback origin on port 8935")
 
 REQUIRED_OG = [
     "og:type", "og:site_name", "og:title", "og:description",
@@ -144,9 +178,9 @@ for file in html_files:
         errors.append(f"{file}: expected exactly 1 H1, found {parser.h1_count}")
     if not parser.canonical:
         errors.append(f"{file}: missing canonical")
-    elif not parser.canonical.startswith(EXPECTED_ORIGIN):
+    elif not uses_expected_origin(parser.canonical):
         errors.append(f"{file}: unexpected canonical {parser.canonical}")
-    if "localhost" in text or "127.0.0.1" in text:
+    if unexpected_loopback_reference(text, LOOPBACK_PREVIEW):
         errors.append(f"{file}: localhost reference remains in output")
 
     revision = parser.meta_names.get("site-factory-revision", "")
@@ -161,7 +195,7 @@ for file in html_files:
             errors.append(f"{file}: missing {key}")
 
     og_image = parser.meta_props.get("og:image", "")
-    if og_image and not og_image.startswith(EXPECTED_ORIGIN):
+    if og_image and not uses_expected_origin(og_image):
         errors.append(f"{file}: og:image must use canonical origin: {og_image}")
 
     rel_file = file.relative_to(DIST).as_posix()
