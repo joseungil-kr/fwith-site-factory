@@ -70,11 +70,36 @@ jobs:
           npm list --prefix "$PLAYWRIGHT_INSTALL_ROOT" --json > suwon-preview-evidence/playwright-dependencies.json
       - name: Capture localhost desktop and mobile evidence
         run: node .github/scripts/suwon-manual-preview.mjs
-      - name: Retain evidence for independent review
+      - name: Group unchanged screenshots into bounded evidence parts
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PYCODE'
+          from pathlib import Path
+          import shutil, json, hashlib
+          root = Path('suwon-preview-evidence')
+          manifest = []
+          for viewport in ['desktop', 'mobile']:
+              files = sorted((root / 'screenshots').glob('*-' + viewport + '.jpg'))
+              for index in range(4):
+                  group = files[index * 16:(index + 1) * 16]
+                  if not group:
+                      continue
+                  destination = root / 'upload-parts' / (viewport + '-part-' + str(index + 1))
+                  destination.mkdir(parents=True, exist_ok=True)
+                  total = sum(file.stat().st_size for file in group)
+                  if total > 30 * 1024 * 1024:
+                      raise SystemExit('Screenshot part exceeds safe download size; preserve quality and split further')
+                  for source in group:
+                      shutil.copyfile(source, destination / source.name)
+                      manifest.append({'viewport': viewport, 'part': index + 1, 'file': source.name, 'bytes': source.stat().st_size, 'sha256': hashlib.sha256(source.read_bytes()).hexdigest()})
+          (root / 'split-artifact-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+          PYCODE
+      - name: Retain logs and capture manifest
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: suwon-manual-preview-${{ github.sha }}-${{ github.run_attempt }}
+          name: suwon-manual-preview-logs-${{ github.sha }}-${{ github.run_attempt }}
           path: |
             suwon-preview-evidence/revision.json
             suwon-preview-evidence/native-build.log
@@ -85,7 +110,70 @@ jobs:
             suwon-preview-evidence/browser-console.json
             suwon-preview-evidence/page-errors.json
             suwon-preview-evidence/network.json
-            suwon-preview-evidence/screenshots/*.jpg
+            suwon-preview-evidence/split-artifact-manifest.json
           if-no-files-found: error
           retention-days: 7
-
+      - name: Retain desktop screenshot part 1
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-manual-preview-desktop-1-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-preview-evidence/upload-parts/desktop-part-1/*.jpg
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain desktop screenshot part 2
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-manual-preview-desktop-2-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-preview-evidence/upload-parts/desktop-part-2/*.jpg
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain desktop screenshot part 3
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-manual-preview-desktop-3-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-preview-evidence/upload-parts/desktop-part-3/*.jpg
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain desktop screenshot part 4
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-manual-preview-desktop-4-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-preview-evidence/upload-parts/desktop-part-4/*.jpg
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain mobile screenshot part 1
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-manual-preview-mobile-1-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-preview-evidence/upload-parts/mobile-part-1/*.jpg
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain mobile screenshot part 2
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-manual-preview-mobile-2-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-preview-evidence/upload-parts/mobile-part-2/*.jpg
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain mobile screenshot part 3
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-manual-preview-mobile-3-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-preview-evidence/upload-parts/mobile-part-3/*.jpg
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain mobile screenshot part 4
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-manual-preview-mobile-4-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-preview-evidence/upload-parts/mobile-part-4/*.jpg
+          if-no-files-found: error
+          retention-days: 7
