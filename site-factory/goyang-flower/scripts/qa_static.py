@@ -170,6 +170,10 @@ def check(root=Path('.')):
     dist=root/'dist'; data=root/'src/data'
     pages=json.loads((data/'pages.json').read_text());manifest=json.loads((data/'publish-manifest.json').read_text())
     arch=json.loads((data/'architecture.json').read_text());truth=json.loads((data/'business-truth.json').read_text())
+    manual=json.loads((data/'manual-pages.json').read_text()) if (data/'manual-pages.json').exists() else []
+    pages=pages+manual
+    arch={**arch,'hubs':[{**h,'children':sum(p['category']==h['category'] for p in pages)} for h in arch['hubs']]}
+
     products=json.loads((data/'products.json').read_text())
     social_proof=json.loads((data/'social-image-provenance.json').read_text())
     check_social_provenance(root,products,social_proof)
@@ -236,6 +240,10 @@ def check(root=Path('.')):
         assert '/regions/' not in expected and not (dist/'regions/index.html').exists(), 'Empty regional hub generated'
     for page in manifest['pages']:
         assert docs[page['url']].snapshots==[page['snapshotId']],f'Snapshot not rendered: {page["pageKey"]}'
+    for page in manual:
+        html=(dist/page['url'].strip('/')/'index.html').read_text()
+        assert 'data-manual-release-id="'+page['manualReleaseId']+'"' in html, 'Manual release provenance not rendered'
+        assert not docs[page['url']].snapshots, 'Manual content impersonates a frozen snapshot'
     sitemap_urls=set()
     for file in dist.glob('sitemap-*.xml'):
         tree=ET.parse(file)

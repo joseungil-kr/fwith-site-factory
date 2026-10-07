@@ -1,0 +1,34 @@
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+import assert from 'node:assert/strict';
+import pages,{architecture} from '../src/lib/all-pages.mjs';
+import manual from '../src/data/manual-pages.json' with {type:'json'};
+import proof from '../src/data/manual-provenance.json' with {type:'json'};
+import products from '../src/data/products.json' with {type:'json'};
+import {validateCustomerIntent} from './qa_intent.mjs';
+import {validateGraph,loadGraph} from './qa_graph.mjs';
+import {productFamilies,selectProducts} from '../src/lib/catalog.mjs';
+import {validateManualContract,collectBindings} from '../src/lib/manual-contract.mjs';
+const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
+validateGraph(loadGraph());
+validateManualContract(manual,proof,fs.readFileSync('src/data/manual-pages.json'),products,{bindings:collectBindings('.')});
+for(const [f,h] of Object.entries(proof.frozenFiles))assert.equal(hash(fs.readFileSync('src/data/'+f)),h,'Frozen original changed '+f);
+assert.equal(new Set(pages.map(p=>p.url)).size,pages.length,'URL collision');
+assert.equal(new Set(pages.map(p=>p.intentKey||p.primaryKeyword)).size,pages.length,'Intent collision');
+for(const p of manual){
+ for(const forbidden of ['snapshotId','snapshotHash','approvalVerified','sourceRecordId','publishQueueRecordId'])assert(!(forbidden in p),'Fake frozen provenance '+forbidden);
+ assert.equal(p.publicationMode,'manual-user-request');assert.equal(p.manualReleaseId,proof.manualReleaseId);
+ assert(p.title.startsWith(p.primaryKeyword),'Title alignment '+p.url);assert(p.h1.includes(p.primaryKeyword),'H1 alignment '+p.url);assert(p.firstAnswer.startsWith(p.primaryKeyword),'Answer alignment '+p.url);
+ assert(!p.cardSummary.startsWith(p.primaryKeyword),'Card repeats target '+p.url);
+ assert.equal(hash(p.contentMarkdown),p.contentSha256,'Content digest mismatch');
+ assert.equal(proof.pages.find(q=>q.pageKey===p.pageKey)?.contentSha256,p.contentSha256,'Manual ledger mismatch');
+ assert.equal(p.url,`/${p.category}/${p.slug}/`);
+ assert(p.sources.length && p.sources.every(s=>s.url.startsWith('https://')&&s.verifiedAt==='2026-10-07'));
+ validateCustomerIntent(p,products);
+ const families=productFamilies(p);assert(selectProducts(p,products).every(x=>families.includes(x.family)));
+ const html=fs.readFileSync('dist'+p.url+'index.html','utf8');assert(html.includes(p.manualReleaseId));assert(!html.includes('data-snapshot-id='));
+ assert(html.includes('tel:18440644'));assert(html.includes('https://fwith.co.kr'));assert(html.includes('width="540"')||html.includes('editorial-hero'));
+}
+assert.equal(manual.length,proof.pages.length);
+const result={status:'PASS',manualPages:manual.length,totalDetails:pages.length,originalsUnchanged:Object.keys(proof.frozenFiles),runtimeHubs:architecture.hubs.filter(h=>h.children>0).length,independentReview:proof.independentReview.status};
+fs.writeFileSync('../manual-qa.json',JSON.stringify(result,null,2)+'\n');console.log(result);
