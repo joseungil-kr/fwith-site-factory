@@ -1,87 +1,139 @@
-name: Seongnam manual build-only preview
+name: Seongnam exact manual artifacts and pixel evidence
 on:
   push:
     branches: [manual-seongnam-qa-20261007]
     paths:
       - 'site-factory/seongnam-flower/**'
-      - '.github/scripts/seongnam-manual-preview.mjs'
       - '.github/workflows/seongnam-manual-preview-qa.yml'
+      - '.github/workflows/seongnam-manual-release-20261007.yml'
+      - '.github/scripts/seongnam-manual-preview.mjs'
 permissions:
   contents: read
 jobs:
-  preview:
+  exact-evidence:
     if: github.ref == 'refs/heads/manual-seongnam-qa-20261007'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        phase: [preview, production]
     env:
-      SITE_URL: https://localhost:8936
-      SITE_INDEXABLE: 'false'
       ASTRO_TELEMETRY_DISABLED: '1'
+      MANUAL_QA_PHASE: ${{ matrix.phase }}
+      SITE_URL: ${{ matrix.phase == 'preview' && 'https://seongnam-flower-guide-qa.joseungil.workers.dev' || 'https://seongnam.fwith.kr' }}
+      SITE_ORIGIN: ${{ matrix.phase == 'preview' && 'https://seongnam-flower-guide-qa.joseungil.workers.dev' || 'https://seongnam.fwith.kr' }}
+      SITE_INDEXABLE: ${{ matrix.phase == 'preview' && 'false' || 'true' }}
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
-      - name: Assert noindex build-only scope
+          node-version: '24'
+      - name: Assert exact content and reviewed native boundary
+        shell: bash
         run: |
-          test "$GITHUB_REF" = refs/heads/manual-seongnam-qa-20261007
-          test "$SITE_URL" = https://localhost:8936
-          test "$SITE_INDEXABLE" = false
-          mkdir -p seongnam-preview-evidence/metadata
+          set -euo pipefail
+          test "$GITHUB_REF" = 'refs/heads/manual-seongnam-qa-20261007'
           echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/seongnam-manual-playwright" >> "$GITHUB_ENV"
-      - name: Install existing native site dependencies
+          mkdir -p "seongnam-$MANUAL_QA_PHASE-evidence/logs"
+          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/seongnam-flower/src/data/manual-pages.json")).digest("hex");if(h!=="cb220c408b5b133384142c5dbbda9d2798b3d6e8590587264a874e3fe0343dd4")throw Error("Unexpected content digest");const p=JSON.parse(fs.readFileSync("site-factory/seongnam-flower/src/data/manual-provenance.json"));if(p.scopeDigest!=="a3753ce1ee70136e93f4048c0e53d8fa22936d63cd520afb2cef0f9e6f9fd30b"||p.independentReview.status!=="passed")throw Error("Native review missing");'
+          node -e 'const fs=require("fs");fs.writeFileSync("seongnam-"+process.env.MANUAL_QA_PHASE+"-evidence/logs/revision.json",JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,phase:process.env.MANUAL_QA_PHASE,siteUrl:process.env.SITE_URL,siteIndexable:process.env.SITE_INDEXABLE},null,2));'
+      - name: Install exact native dependency lock
         working-directory: site-factory/seongnam-flower
-        run: npm install --no-package-lock
-      - name: Native build and all regression tests
+        run: npm ci --no-audit --no-fund
+      - name: Build twice and prove exact deterministic artifacts
+        shell: bash
         working-directory: site-factory/seongnam-flower
         run: |
           set -euo pipefail
-          npm run build 2>&1 | tee "$GITHUB_WORKSPACE/seongnam-preview-evidence/metadata/build.log"
-          npm test 2>&1 | tee "$GITHUB_WORKSPACE/seongnam-preview-evidence/metadata/tests.log"
-          python3 -m unittest discover -s tests -p '*_test.py' 2>&1 | tee "$GITHUB_WORKSPACE/seongnam-preview-evidence/metadata/python-tests.log"
-      - name: Install pinned official browser QA tools and Korean fonts
+          evidence="$GITHUB_WORKSPACE/seongnam-$MANUAL_QA_PHASE-evidence"
+          for attempt in first second; do
+            npm test 2>&1 | tee "$evidence/logs/native-tests-$attempt.log"
+            python3 -m unittest discover -s tests -p '*_test.py' 2>&1 | tee "$evidence/logs/python-tests-$attempt.log"
+            npm run build 2>&1 | tee "$evidence/logs/native-build-$attempt.log"
+            python3 scripts/qa_static.py 2>&1 | tee "$evidence/logs/static-$attempt.log"
+            node scripts/qa_graph.mjs 2>&1 | tee "$evidence/logs/graph-$attempt.log"
+            python3 -c 'import hashlib,json,pathlib,sys; d=pathlib.Path("dist"); m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob("*")) if f.is_file()}; assert len(m)==64,len(m);pathlib.Path(sys.argv[1]).write_text(json.dumps(m,sort_keys=True,separators=(",",":")))' "$evidence/logs/$attempt.manifest.json"
+          done
+          cmp "$evidence/logs/first.manifest.json" "$evidence/logs/second.manifest.json"
+          cp -a dist "$evidence/dist"
+          sha256sum "$evidence/logs/second.manifest.json" > "$evidence/logs/artifact-manifest.sha256"
+      - name: Install pinned official Playwright and Korean fonts
+        shell: bash
         run: |
+          set -euo pipefail
           npm install --prefix "$PLAYWRIGHT_INSTALL_ROOT" --no-save --no-package-lock playwright@1.63.0
           "$PLAYWRIGHT_INSTALL_ROOT/node_modules/.bin/playwright" install --with-deps chromium
           sudo apt-get update
           sudo apt-get install -y fonts-noto-cjk
-          fc-match 'Noto Sans CJK KR' > seongnam-preview-evidence/metadata/fonts.txt
-      - name: Verify and capture 35 routes at both widths
+          fc-match 'Noto Sans CJK KR' > "seongnam-$MANUAL_QA_PHASE-evidence/logs/font-match.txt"
+      - name: Capture both viewports of every exact rendered route
         run: node .github/scripts/seongnam-manual-preview.mjs
-      - uses: actions/upload-artifact@v4
+      - name: Enforce independently retrievable evidence chunks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os,pathlib
+          root=pathlib.Path('seongnam-'+os.environ['MANUAL_QA_PHASE']+'-evidence')
+          for part in ['screens-01','screens-02','screens-03','screens-04','metadata','logs','dist']:
+            files=[f for f in (root/part).rglob('*') if f.is_file()]
+            assert files,part
+            assert sum(f.stat().st_size for f in files)<24*1024*1024,part
+            if part.startswith("screens-"): assert len(files)<=18,part
+          machine=[f for part in ['metadata','logs'] for f in (root/part).rglob('*') if f.is_file()]
+          assert sum(f.stat().st_size for f in machine)<24*1024*1024,'combined machine evidence artifact'
+          PY
+      - name: Retain machine evidence
         if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: seongnam-manual-metadata-${{ github.sha }}-${{ github.run_attempt }}
-          path: seongnam-preview-evidence/metadata/
+          name: seongnam-${{ matrix.phase }}-logs-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            seongnam-${{ matrix.phase }}-evidence/metadata/
+            seongnam-${{ matrix.phase }}-evidence/logs/
           if-no-files-found: error
           retention-days: 7
-      - uses: actions/upload-artifact@v4
-        if: always()
+      - name: Retain exact dist
+        uses: actions/upload-artifact@v4
         with:
-          name: seongnam-manual-screens-01-${{ github.sha }}-${{ github.run_attempt }}
-          path: seongnam-preview-evidence/screens-01/
-          if-no-files-found: warn
+          name: seongnam-${{ matrix.phase }}-dist-${{ github.sha }}-${{ github.run_attempt }}
+          path: seongnam-${{ matrix.phase }}-evidence/dist/
+          if-no-files-found: error
           retention-days: 7
-      - uses: actions/upload-artifact@v4
+          include-hidden-files: true
+      - name: Retain pixels 01
         if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: seongnam-manual-screens-02-${{ github.sha }}-${{ github.run_attempt }}
-          path: seongnam-preview-evidence/screens-02/
-          if-no-files-found: warn
+          name: seongnam-${{ matrix.phase }}-screens-01-${{ github.sha }}-${{ github.run_attempt }}
+          path: seongnam-${{ matrix.phase }}-evidence/screens-01/
+          if-no-files-found: error
           retention-days: 7
-      - uses: actions/upload-artifact@v4
+      - name: Retain pixels 02
         if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: seongnam-manual-screens-03-${{ github.sha }}-${{ github.run_attempt }}
-          path: seongnam-preview-evidence/screens-03/
-          if-no-files-found: warn
+          name: seongnam-${{ matrix.phase }}-screens-02-${{ github.sha }}-${{ github.run_attempt }}
+          path: seongnam-${{ matrix.phase }}-evidence/screens-02/
+          if-no-files-found: error
           retention-days: 7
-      - uses: actions/upload-artifact@v4
+      - name: Retain pixels 03
         if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: seongnam-manual-screens-04-${{ github.sha }}-${{ github.run_attempt }}
-          path: seongnam-preview-evidence/screens-04/
-          if-no-files-found: warn
+          name: seongnam-${{ matrix.phase }}-screens-03-${{ github.sha }}-${{ github.run_attempt }}
+          path: seongnam-${{ matrix.phase }}-evidence/screens-03/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain pixels 04
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seongnam-${{ matrix.phase }}-screens-04-${{ github.sha }}-${{ github.run_attempt }}
+          path: seongnam-${{ matrix.phase }}-evidence/screens-04/
+          if-no-files-found: error
           retention-days: 7
