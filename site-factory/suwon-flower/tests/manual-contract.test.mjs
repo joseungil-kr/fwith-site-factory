@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import pages,{frozenPages,manualPages,manualRevisions,assemble,digest} from '../src/lib/all-pages.mjs';
 const copy=x=>structuredClone(x);
-test('manual pages remain distinct from frozen ledger and preserve every original URL',()=>{assert.equal(pages.length,46);assert.equal(frozenPages.length,30);for(const p of frozenPages)assert(pages.some(x=>x.pageKey===p.pageKey&&x.url===p.url));for(const p of manualPages)assert(!('snapshotId' in p));});
+test('manual pages remain distinct from frozen ledger and preserve every original URL',()=>{assert.equal(pages.length,47);assert.equal(frozenPages.length,30);for(const p of frozenPages)assert(pages.some(x=>x.pageKey===p.pageKey&&x.url===p.url));for(const p of manualPages)assert(!('snapshotId' in p));});
 test('an addendum cannot silently target changed original content',()=>{const b=copy(frozenPages);b.find(p=>p.pageKey===manualRevisions[0].pageKey).h1+=' changed';assert.throws(()=>assemble(b,manualPages,manualRevisions),/hash mismatch/);});
 test('addendum tampering and unknown targets fail closed',()=>{let r=copy(manualRevisions);r[0].sectionsToAppend[0][1]+=' changed';assert.throws(()=>assemble(frozenPages,manualPages,r),/digest mismatch/);r=copy(manualRevisions);r[0].pageKey='unknown';assert.throws(()=>assemble(frozenPages,manualPages,r),/Unknown/);});
 test('manual content cannot claim a frozen snapshot or reuse a primary URL',()=>{let m=copy(manualPages);m[0].snapshotId='fake';assert.throws(()=>assemble(frozenPages,m,manualRevisions),/frozen approval/);m=copy(manualPages);m[0].url=frozenPages[0].url;assert.throws(()=>assemble(frozenPages,m,manualRevisions),/Duplicate/);});

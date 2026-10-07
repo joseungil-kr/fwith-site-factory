@@ -1,29 +1,28 @@
 name: Suwon exact manual artifacts and pixel evidence
 on:
   push:
-    branches: [manual-suwon-reconciled-qa-20261007]
+    branches: [manual-suwon-three-facility-preview-20261007]
     paths:
       - 'site-factory/suwon-flower/**'
       - '.github/workflows/suwon-manual-preview-qa.yml'
-      - '.github/workflows/suwon-manual-release-20261007.yml'
       - '.github/scripts/suwon-manual-preview.mjs'
 permissions:
   contents: read
 jobs:
   exact-evidence:
-    if: github.ref == 'refs/heads/manual-suwon-reconciled-qa-20261007'
+    if: github.ref == 'refs/heads/manual-suwon-three-facility-preview-20261007'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:
-        phase: [preview, production]
+        phase: [preview]
     env:
       ASTRO_TELEMETRY_DISABLED: '1'
       MANUAL_QA_PHASE: ${{ matrix.phase }}
-      SITE_URL: ${{ matrix.phase == 'preview' && 'https://suwon-flower-guide-qa.joseungil.workers.dev' || 'https://suwon.fwith.kr' }}
-      SITE_ORIGIN: ${{ matrix.phase == 'preview' && 'https://suwon-flower-guide-qa.joseungil.workers.dev' || 'https://suwon.fwith.kr' }}
-      SITE_INDEXABLE: ${{ matrix.phase == 'preview' && 'false' || 'true' }}
+      SITE_URL: http://127.0.0.1:8934
+      SITE_ORIGIN: http://127.0.0.1:8934
+      SITE_INDEXABLE: 'false'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,10 +35,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$GITHUB_REF" = 'refs/heads/manual-suwon-reconciled-qa-20261007'
+          test "$GITHUB_REF" = 'refs/heads/manual-suwon-three-facility-preview-20261007'
           echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/suwon-manual-playwright" >> "$GITHUB_ENV"
           mkdir -p "suwon-$MANUAL_QA_PHASE-evidence/logs"
-          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/suwon-flower/src/data/manual-pages.json")).digest("hex");if(h!=="8c489b18891a34968146f659ab67c94a378ecd3591db5d69dc61bc5b493269cf")throw Error("Unexpected content digest");const p=JSON.parse(fs.readFileSync("site-factory/suwon-flower/src/data/manual-provenance.json"));if(p.scopeDigest!=="798f04994e7901737a9a91939bf1490aefd03ffe8720d65e58e451ed843e6eb9"||p.independentReview.status!=="passed")throw Error("Native review missing");'
+          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/suwon-flower/src/data/manual-pages.json")).digest("hex");if(h!=="6bac9e54f6110a2ceaa39ff4ec6754917815221ecc6001dc221b26efa8e9c77a")throw Error("Unexpected content digest");const p=JSON.parse(fs.readFileSync("site-factory/suwon-flower/src/data/manual-provenance.json"));if(p.scopeDigest!=="c371c14fd94f320780d8764ab605a684d56f4e0a76ad860b835f36a89a87a96d"||p.independentReview.status!=="pending")throw Error("Unexpected pending candidate state");'
           node -e 'const fs=require("fs");fs.writeFileSync("suwon-"+process.env.MANUAL_QA_PHASE+"-evidence/logs/revision.json",JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,phase:process.env.MANUAL_QA_PHASE,siteUrl:process.env.SITE_URL,siteIndexable:process.env.SITE_INDEXABLE},null,2));'
       - name: Install exact native dependency lock
         working-directory: site-factory/suwon-flower
@@ -55,7 +54,7 @@ jobs:
             npm test 2>&1 | tee "$evidence/logs/native-tests-$attempt.log"
             python3 scripts/qa_static.py 2>&1 | tee "$evidence/logs/static-$attempt.log"
             node scripts/qa_graph.mjs 2>&1 | tee "$evidence/logs/graph-$attempt.log"
-            python3 -c 'import hashlib,json,pathlib,sys; d=pathlib.Path("dist"); m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob("*")) if f.is_file()}; assert len(m)==75,len(m);pathlib.Path(sys.argv[1]).write_text(json.dumps(m,sort_keys=True,separators=(",",":")))' "$evidence/logs/$attempt.manifest.json"
+            python3 -c 'import hashlib,json,pathlib,sys; d=pathlib.Path("dist"); m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob("*")) if f.is_file()}; assert len(m)==76,len(m);pathlib.Path(sys.argv[1]).write_text(json.dumps(m,sort_keys=True,separators=(",",":")))' "$evidence/logs/$attempt.manifest.json"
           done
           cmp "$evidence/logs/first.manifest.json" "$evidence/logs/second.manifest.json"
           cp -a dist "$evidence/dist"
@@ -80,7 +79,7 @@ jobs:
           root=pathlib.Path('suwon-'+os.environ['MANUAL_QA_PHASE']+'-evidence')
           for viewport in ['desktop','mobile']:
             files=sorted((root/'screenshots'/viewport).glob('*.jpg'))
-            assert len(files)==54,viewport
+            assert len(files)==55,viewport
             for i,f in enumerate(files):
               dest=root/'screenshots'/(viewport+'-'+str(i//16+1))
               dest.mkdir(parents=True,exist_ok=True)
@@ -174,3 +173,4 @@ jobs:
           path: suwon-${{ matrix.phase }}-evidence/screenshots/mobile-4/
           if-no-files-found: error
           retention-days: 7
+

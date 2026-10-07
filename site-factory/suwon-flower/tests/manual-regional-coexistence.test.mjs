@@ -7,7 +7,7 @@ import {selectProducts} from '../src/lib/catalog.mjs';
 const products=JSON.parse(fs.readFileSync(new URL('../src/data/products.json',import.meta.url)));
 test('disabled regional registry coexists with four separately authored district guides',()=>{
  assert.equal(policy.enabled,false);assert.equal(regionalPages.length,0);
- assert.equal(frozenPages.length,30);assert.equal(manualPages.length,16);assert.equal(manualPages.filter(p=>p.category==='regions').length,4);
+ assert.equal(frozenPages.length,30);assert.equal(manualPages.length,17);assert.equal(manualPages.filter(p=>p.category==='regions').length,4);
  assert.deepEqual(assertRegionalInput(allPages),[]);
 });
 test('manual flag alone cannot bypass frozen regional provenance',()=>{
