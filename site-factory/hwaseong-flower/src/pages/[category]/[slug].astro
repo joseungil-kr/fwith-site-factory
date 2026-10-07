@@ -1,6 +1,7 @@
 ---
 import { getArticleCollection } from "../../lib/manual-content";
 import { getCollection, render, type CollectionEntry } from 'astro:content';
+import {assertRegionalInput} from '../../lib/regional-runtime.mjs';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
 type Article = CollectionEntry<'articles'> | CollectionEntry<'manualArticles'>;
@@ -12,6 +13,7 @@ export async function getStaticPaths() {
       (data.draftStatus === 'approved' || data.draftStatus === 'published' || ('publicationMode' in data && data.publicationMode === 'manual-user-request')) &&
       data.routeType === 'category'
   );
+  assertRegionalInput(articles.map(article=>article.data));
   return articles.map((article) => ({
     params: {
       category: article.data.category,

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "validate:snapshot": "node scripts/validate_snapshot.mjs",
-    "build": "node scripts/validate_manual.mjs && node scripts/write_build_revision.mjs && npm run qa:utf8 && npm run validate:snapshot && astro check && astro build && npm run inject:banners && npm run qa:seo && npm run qa:graph",
+    "build": "node scripts/validate_manual.mjs && node scripts/qa_regions.mjs && node scripts/write_build_revision.mjs && npm run qa:utf8 && npm run validate:snapshot && astro check && astro build && npm run inject:banners && npm run qa:seo && npm run qa:graph",
     "preview": "astro preview",
     "qa:utf8": "node scripts/qa_utf8.mjs",
     "qa:graph": "node scripts/qa_site_graph.mjs",
@@ -13,11 +13,11 @@
     "qa:seo": "node scripts/qa_seo_score.mjs"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.0.0",
-    "astro": "^7.3.5"
+    "@astrojs/sitemap": "3.7.4",
+    "astro": "7.3.6"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.0",
-    "typescript": "^5.9.0"
+    "@astrojs/check": "0.9.10",
+    "typescript": "5.9.3"
   }
 }

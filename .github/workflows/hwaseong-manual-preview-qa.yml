@@ -21,7 +21,7 @@ jobs:
       MANUAL_PREVIEW: 'true'
       SITE_URL: http://127.0.0.1:8935
       SITE_INDEXABLE: 'false'
-      EXPECTED_QA_RELEASE_HASH: '4d2cf287b96abe6157a04ce14e02f4190adf49edaefaa5ab340fedb70604b2d9'
+      EXPECTED_QA_RELEASE_HASH: 'eba8ce9059e2bd4d4defe4c19a9cb9948e7e64058b71d4e150d0398273f7e640'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -39,6 +39,8 @@ jobs:
           test "$GITHUB_REF" = 'refs/heads/manual-hwaseong-qa-20261007'
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           git merge-base --is-ancestor 2aa6703b81e25dbc3ec1a7def16799a02e4b34be HEAD
+          git merge-base --is-ancestor 3ffc1443558ae6b375a472b2224c0c0125b5ebea HEAD
+          git merge-base --is-ancestor 3225fcf46b31d511a15ce865cddad690f2dd4480 HEAD
           test "$SITE_URL" = 'http://127.0.0.1:8935'
           test "$SITE_INDEXABLE" = 'false'
           test "$MANUAL_PREVIEW" = 'true'
@@ -54,9 +56,9 @@ jobs:
           assert.equal(sha256,'3d0653ae4b8dd41864ccb88b08b8de12e606e97936d0f5768d1cc966b6fae09d');assert.equal(gitBlob,'a6183db9cfe59f6db028332c029e52f518cf2062');assert.equal(p.bindings[file],sha256);assert.equal(b.length,1939436);
           fs.writeFileSync('hwaseong-preview-evidence/revision.json',JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,releaseHash:p.releaseHash,provenance:p,asset:{file,sha256,gitBlob,bytes:b.length},productionApproval:'not-issued'},null,2)+'\n');
           JS
-      - name: Install native site dependencies without changing source manifests
+      - name: Install exact reviewed native dependency lock
         working-directory: site-factory/hwaseong-flower
-        run: npm install --no-package-lock
+        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Native gated localhost noindex build and static QA
         shell: bash
         working-directory: site-factory/hwaseong-flower

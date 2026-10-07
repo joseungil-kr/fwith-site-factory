@@ -1,12 +1,23 @@
-import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {spawnSync} from 'node:child_process';
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {spawnSync} from 'node:child_process';import os from 'node:os';import path from 'node:path';
 import {validateManualContract as coreValidate,digest,releaseDigest} from '../src/lib/manual-contract.mjs';
 const manifest=JSON.parse(fs.readFileSync('src/data/manual-manifest.json'));const proof=JSON.parse(fs.readFileSync('src/data/manual-provenance.json'));const observed={...proof.bindings};
 const evidence={status:'approved',fullBodiesRead:true,contentQa:'PASS',codeQa:'PASS',catalogAndAssetsQa:'PASS',visualQa:'PASS',ruleRevision:proof.ruleRevision,ruleHashes:proof.ruleHashes,reviewedAt:'2026-10-07T10:00:00.000Z',pages:manifest.pages.map(p=>({pageKey:p.pageKey,decision:'PASS',fullBodyRead:true,contentSha256:proof.bindings[p.file],metadataSha256:digest(JSON.stringify(p))})),releaseHash:proof.releaseHash,writerId:proof.writerId,reviewerId:proof.expectedReviewerId,manualReleaseId:proof.manualReleaseId};
 const validateManualContract=(m,p,o,opt={})=>coreValidate(m,p,o,{inventory:Object.keys(o),...opt});
+const pending=()=>({...structuredClone(proof),independentReview:{status:'pending'}});
+// Exercise actual entrypoints in disposable copies; never revoke the reviewed source's proof.
+function runPendingFixture(command,args,env,timeout=60000){
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'hwaseong-pending-'));
+ try{
+  for(const file of Object.keys(proof.bindings)){const target=path.join(root,file);fs.mkdirSync(path.dirname(target),{recursive:true});fs.copyFileSync(file,target);}
+  fs.writeFileSync(path.join(root,'src/data/manual-provenance.json'),JSON.stringify(pending()));
+  fs.symlinkSync(path.resolve('node_modules'),path.join(root,'node_modules'),'dir');
+  return spawnSync(command,args,{cwd:root,env:{...process.env,...env,ASTRO_TELEMETRY_DISABLED:'1',XDG_CONFIG_HOME:path.join(root,'.config')},encoding:'utf8',timeout});
+ }finally{fs.rmSync(root,{recursive:true,force:true});}
+}
 const approved=()=>({...structuredClone(proof),independentReview:{status:'approved',reviewerId:proof.expectedReviewerId,reviewedAt:evidence.reviewedAt,evidencePath:'test-only',releaseHash:proof.releaseHash,evidenceHash:digest(JSON.stringify(evidence))}});
-test('pending candidate permits only nonindex preview',()=>assert(validateManualContract(manifest,proof,observed,{preview:true})));
+test('pending candidate permits only nonindex preview',()=>assert(validateManualContract(manifest,pending(),observed,{preview:true})));
 test('indexable preview rejects',()=>assert.throws(()=>validateManualContract(manifest,proof,observed,{preview:true,indexable:true}),/cannot be indexable/));
-test('pending production rejects',()=>assert.throws(()=>validateManualContract(manifest,proof,observed),/review pending/));
+test('pending production rejects',()=>assert.throws(()=>validateManualContract(manifest,pending(),observed),/review pending/));
 test('genuine bound evidence fixture passes contract',()=>assert(validateManualContract(manifest,approved(),observed,{evidence})));
 test('tampered source rejects',()=>{const o={...observed};o[Object.keys(o)[0]]='bad';assert.throws(()=>validateManualContract(manifest,approved(),o,{evidence}),/hash drift/)});
 test('missing hash rejects',()=>{const p=approved();p.bindings=null;assert.throws(()=>validateManualContract(manifest,p,observed,{evidence}),/Missing file hashes/)});
@@ -16,10 +27,10 @@ test('missing evidence rejects',()=>assert.throws(()=>validateManualContract(man
 test('stale evidence rejects',()=>assert.throws(()=>validateManualContract(manifest,approved(),observed,{evidence:{...evidence,releaseHash:'stale'}}),/Evidence mismatch/));
 test('wrong release evidence rejects',()=>assert.throws(()=>validateManualContract(manifest,approved(),observed,{evidence:{...evidence,manualReleaseId:'wrong'}}),/Evidence mismatch/));
 test('frozen provenance on manual page rejects',()=>{const m=structuredClone(manifest);m.pages[0].snapshotId='fake';assert.throws(()=>validateManualContract(m,proof,observed,{preview:true}),/Fabricated frozen/)});
-test('actual script rejects indexable preview env combination',()=>{const r=spawnSync(process.execPath,['scripts/validate_manual.mjs'],{env:{...process.env,MANUAL_PREVIEW:'true',SITE_INDEXABLE:'true'},encoding:'utf8'});assert.notEqual(r.status,0);assert.match(r.stderr,/cannot be indexable/)});
-test('actual script rejects production with pending review regardless legacy flags',()=>{const r=spawnSync(process.execPath,['scripts/validate_manual.mjs'],{env:{...process.env,MANUAL_PREVIEW:'false',SITE_INDEXABLE:'true',ALLOW_MANUAL_CANDIDATE:'1',MANUAL_CANDIDATE_BUILD:'1'},encoding:'utf8'});assert.notEqual(r.status,0);assert.match(r.stderr,/review pending/)});
-test('rendered manual pages noindex, manual ID only',()=>{for(const p of manifest.pages){const h=fs.readFileSync('dist'+p.url+'index.html','utf8');assert.match(h,/<meta[^>]*name="robots"[^>]*content="noindex/);assert.match(h,/data-manual-publication-id="mp-[a-f0-9]{20}"/);assert(!h.includes('data-snapshot-id='));}});
-test('direct Astro invocation cannot bypass independent production gate',()=>{const r=spawnSync('node_modules/.bin/astro',['build'],{env:{...process.env,MANUAL_PREVIEW:'false',SITE_INDEXABLE:'true',ASTRO_TELEMETRY_DISABLED:'1',XDG_CONFIG_HOME:'/tmp/hwaseong-direct-astro'},encoding:'utf8',timeout:60000});assert.notEqual(r.status,0);assert.match(r.stderr+r.stdout,/Independent review pending/)});
+test('actual script rejects indexable preview env combination',()=>{const r=runPendingFixture(process.execPath,['scripts/validate_manual.mjs'],{MANUAL_PREVIEW:'true',SITE_INDEXABLE:'true'});assert.notEqual(r.status,0);assert.match(r.stderr,/cannot be indexable/)});
+test('actual script rejects production with pending review regardless legacy flags',()=>{const r=runPendingFixture(process.execPath,['scripts/validate_manual.mjs'],{MANUAL_PREVIEW:'false',SITE_INDEXABLE:'true',ALLOW_MANUAL_CANDIDATE:'1',MANUAL_CANDIDATE_BUILD:'1'});assert.notEqual(r.status,0);assert.match(r.stderr,/review pending/)});
+test('rendered manual pages match requested indexing, manual ID only',()=>{for(const p of manifest.pages){const h=fs.readFileSync('dist'+p.url+'index.html','utf8');const indexable=process.env.SITE_INDEXABLE==='true';assert.match(h,indexable?/<meta[^>]*name="robots"[^>]*content="index,follow/:/<meta[^>]*name="robots"[^>]*content="noindex/);assert.match(h,/data-manual-publication-id="mp-[a-f0-9]{20}"/);assert(!h.includes('data-snapshot-id='));}});
+test('direct Astro invocation cannot bypass independent production gate',()=>{const r=runPendingFixture(path.resolve('node_modules/.bin/astro'),['build'],{MANUAL_PREVIEW:'false',SITE_INDEXABLE:'true'});assert.notEqual(r.status,0);assert.match(r.stderr+r.stdout,/Independent review pending/)});
 
 for(const field of ['contentQa','codeQa','catalogAndAssetsQa','visualQa'])test('reject incomplete '+field,()=>assert.throws(()=>validateManualContract(manifest,approved(),observed,{evidence:{...evidence,[field]:'UNVERIFIED'}}),/QA incomplete/));
 test('fullBodiesRead false fails',()=>assert.throws(()=>validateManualContract(manifest,approved(),observed,{evidence:{...evidence,fullBodiesRead:false}}),/Full bodies/));
