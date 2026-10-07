@@ -1,3 +1,4 @@
+import {manualPages,manualPreview} from '../src/lib/manual-runtime.mjs';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 
@@ -40,7 +41,7 @@ for (const file of htmlFiles) {
   pages.set(normalize(route), { file, html: readFileSync(file, 'utf8') });
 }
 const sitemapFiles = readdirSync(dist).filter(n => /^sitemap-\d+\.xml$/.test(n));
-if (sitemapFiles.length === 0) errors.push('No sitemap-N.xml files generated.');
+if (sitemapFiles.length === 0 && !manualPreview) errors.push('No sitemap-N.xml files generated.');
 const sitemapRoutes = new Set();
 for (const name of sitemapFiles) {
   const xml = readFileSync(join(dist, name), 'utf8');
@@ -92,7 +93,7 @@ for (const [route, count] of inbound) {
 }
 
 const manifest = JSON.parse(readFileSync('src/data/publish-manifest.json', 'utf8'));
-const approved = (manifest.pages || []).filter(p => ['approved','published'].includes(p.status));
+const approved = [...(manifest.pages || []).filter(p => ['approved','published'].includes(p.status)),...manualPages];
 const hubCategories = ['guide', 'funeral', 'places', 'occasions', 'flower-knowledge', 'order-help', 'regions'];
 const hubStats = [];
 for (const category of hubCategories) {
@@ -108,7 +109,7 @@ for (const category of hubCategories) {
   }
   const hubNoindex = /noindex/i.test(robotsFor(pages.get(hub).html));
   if (children.length < 3 && !hubNoindex) errors.push(`Thin hub must be noindex until 3 documents: ${hub}`);
-  if (children.length >= 3 && hubNoindex) errors.push(`Hub with 3+ documents should be indexable: ${hub}`);
+  if (children.length >= 3 && hubNoindex && !manualPreview) errors.push(`Hub with 3+ documents should be indexable: ${hub}`);
   for (const page of children) if (!pages.has(normalize(page.url))) errors.push(`Manifest child missing generated HTML: ${page.pageKey} -> ${page.url}`);
   hubStats.push(`${category}=${children.length}${children.length < 3 ? '(noindex)' : '(index)'}`);
 }

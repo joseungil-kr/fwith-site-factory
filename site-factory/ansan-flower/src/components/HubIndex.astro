@@ -1,9 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
+import { getVisibleArticles as getCollection, isArticleVisible } from '../lib/all-articles';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import OrderCTA from './OrderCTA.astro';
 import { siteConfig } from '../config/site';
-import architecture from '../data/architecture.json';
+import architecture from '../lib/all-architecture.mjs';
 
 interface Props {
   category: 'guide' | 'funeral' | 'places' | 'occasions' | 'flower-knowledge' | 'order-help';
@@ -22,7 +22,7 @@ const roleLabel: Record<string, string> = { REGION_SERVICE_LANDING: '지역 서�
 const articles = (await getCollection(
   'articles',
   ({ data }) =>
-    (data.draftStatus === 'approved' || data.draftStatus === 'published') &&
+    isArticleVisible(data) &&
     data.routeType === 'category' &&
     data.category === category && activePageKeys.has(data.pageKey)
 )).sort((a, b) => (rolePriority[roleByPageKey.get(a.data.pageKey) ?? 'INFORMATION_GUIDE'] ?? 99) - (rolePriority[roleByPageKey.get(b.data.pageKey) ?? 'INFORMATION_GUIDE'] ?? 99) || a.data.pageKey.localeCompare(b.data.pageKey, 'ko'));

@@ -1,13 +1,14 @@
 ---
-import { getCollection } from 'astro:content';
+import { getVisibleArticles as getCollection, isArticleVisible } from '../lib/all-articles';
 import { removeRepeatedOpeningParagraph } from '../lib/article-opening.mjs';
 import BaseLayout from './BaseLayout.astro';
 import ProductShowcase from '../components/ProductShowcase.astro';
 import { pageProductKeys } from '../lib/site-catalog.mjs';
+import {manualPages} from '../lib/manual-runtime.mjs';
 import { selectRelatedArticles } from '../lib/related-articles.mjs';
 import { regionalPages } from '../lib/regional-runtime.mjs';
 import { siteConfig } from '../config/site';
-import architecture from '../data/architecture.json';
+import architecture from '../lib/all-architecture.mjs';
 import '../styles/article.css';
 
 type ArchitectureEntry = {
@@ -47,7 +48,8 @@ interface Props {
   contentRole?: string;
   localizationPolicy?: string;
   region: string;
-  snapshotId: string;
+  snapshotId?: string;
+  manualPageId?: string;
   slug: string;
   routeType: 'top_level' | 'category';
   sourceUrls?: string[];
@@ -76,6 +78,7 @@ const {
   localizationPolicy = 'local-optional',
   region,
   snapshotId,
+  manualPageId,
   slug,
   routeType,
   sourceUrls = [],
@@ -126,7 +129,7 @@ const activePageKeys = new Set(
 const allArticles = await getCollection(
   'articles',
   ({ data }) =>
-    (data.draftStatus === 'approved' || data.draftStatus === 'published') &&
+    ('publicationMode' in data ? data.publicationMode === 'manual-user-request' : (data.draftStatus === 'approved' || data.draftStatus === 'published')) &&
     activePageKeys.has(data.pageKey)
 );
 const detailCategoryCounts = allArticles
@@ -221,7 +224,8 @@ const breadcrumbSchema = {
   itemListElement: breadcrumbItems,
 };
 const regionalPage=regionalPages.find((page: {pageKey:string;regionalPurchaseMode?:string;regionalProductKeys:string[]})=>page.pageKey===pageKey);
-const selectedProductKeys=regionalPage?.regionalPurchaseMode==='catalog' ? regionalPage.regionalProductKeys : pageProductKeys(process.cwd(),siteConfig.siteKey,pageKey);
+const manualPage=manualPages.find((p: {pageKey:string;productKeys:string[]})=>p.pageKey===pageKey);
+const selectedProductKeys=manualPage ? manualPage.productKeys : regionalPage?.regionalPurchaseMode==='catalog' ? regionalPage.regionalProductKeys : pageProductKeys(process.cwd(),siteConfig.siteKey,pageKey);
 const articleContent=removeRepeatedOpeningParagraph(await Astro.slots.render('default'),firstAnswer);
 ---
 <BaseLayout title={seoTitle} description={description} canonicalPath={canonicalPath} robotsOverride={!architectureIndexable ? "noindex,follow,max-image-preview:large" : undefined} ogType="article" ogImage={ogImage} ogImageAlt={ogImageAlt}>
@@ -231,6 +235,7 @@ const articleContent=removeRepeatedOpeningParagraph(await Astro.slots.render('de
   <section
     class:list={['article-shell', isPrimaryLanding && 'primary-landing']}
     data-snapshot-id={snapshotId}
+    data-manual-page={manualPageId}
     data-query-class={queryClass || undefined}
     data-visual-intent={visualIntent || undefined}
     data-asset-slot={assetSlot || undefined}

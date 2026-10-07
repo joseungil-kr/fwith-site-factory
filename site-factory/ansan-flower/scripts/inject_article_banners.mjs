@@ -52,7 +52,7 @@ function renderBanner(index) {
 let changed = 0;
 for (const file of walk(DIST).filter((p) => p.endsWith('.html'))) {
   let html = fs.readFileSync(file, 'utf8');
-  if (!html.includes('data-snapshot-id=') || !html.includes('<article class="prose">')) continue;
+  if (!(html.includes('data-snapshot-id=') || html.includes('data-manual-page=')) || !html.includes('<article class="prose">')) continue;
   if (html.includes('data-order-banner=')) continue;
 
   const startTag = '<article class="prose">';

@@ -5,12 +5,14 @@
   "scripts": {
     "dev": "astro dev",
     "validate:snapshot": "node scripts/validate_snapshot.mjs",
-    "build": "node scripts/qa_regions.mjs && node scripts/write_build_revision.mjs && npm run qa:utf8 && npm run validate:snapshot && astro check && astro build && npm run inject:banners && npm run qa:seo && npm run qa:graph",
+    "build": "node scripts/qa_manual.mjs && node scripts/qa_regions.mjs && node scripts/write_build_revision.mjs && npm run qa:utf8 && npm run validate:snapshot && astro check && astro build && npm run inject:banners && npm run qa:seo && npm run qa:graph",
     "preview": "astro preview",
     "qa:utf8": "node scripts/qa_utf8.mjs",
     "qa:graph": "node scripts/qa_site_graph.mjs",
     "inject:banners": "node scripts/inject_article_banners.mjs",
-    "qa:seo": "node scripts/qa_seo_score.mjs"
+    "qa:seo": "node scripts/qa_seo_score.mjs",
+    "build:manual-preview": "MANUAL_PREVIEW=1 SITE_URL=http://127.0.0.1:8934 SITE_INDEXABLE=false npm run build",
+    "qa:manual": "node scripts/qa_manual.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.0.0",

@@ -1,3 +1,4 @@
+import {manualPages,manualPreview} from './src/lib/manual-runtime.mjs';
 import { readFileSync, existsSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
@@ -5,8 +6,9 @@ import sitemap from '@astrojs/sitemap';
 import {regionalPages} from './src/lib/regional-runtime.mjs';
 const site = process.env.SITE_URL || 'https://ansan.fwith.kr';
 const manifest = JSON.parse(readFileSync(new URL('./src/data/publish-manifest.json', import.meta.url), 'utf8'));
-const architecture = JSON.parse(readFileSync(new URL('./src/data/architecture.json', import.meta.url), 'utf8'));
-const approved = (manifest.pages || []).filter((page) => ['approved', 'published'].includes(page.status));
+const frozenArchitecture = JSON.parse(readFileSync(new URL('./src/data/architecture.json', import.meta.url), 'utf8'));
+const architecture = {...frozenArchitecture,pages:[...frozenArchitecture.pages,...manualPages]};
+const approved = [...(manifest.pages || []).filter((page) => ['approved', 'published'].includes(page.status)),...manualPages];
 const hubCategories = ['guide', 'funeral', 'places', 'occasions', 'flower-knowledge', 'order-help', 'regions'];
 const activeArchitecture = (architecture.pages || []).filter(
   (page) => page.sitemapIndexable !== false && page.status !== 'merged'
@@ -35,6 +37,7 @@ export default defineConfig({
   output: 'static',
   integrations: [sitemap({ filter: (page) => {
     const pathname = new URL(page).pathname;
+    if(manualPreview) return false;
     if (pathname.startsWith('/regions/')) return (process.env.SITE_INDEXABLE === 'true' || (process.env.SITE_INDEXABLE !== 'false' && existsSync('production-indexing.enabled'))) && (pathname==='/regions/' ? regionalPages.length>=3 : regionalPages.some(p=>p.url===pathname));
     if (noindexHubs.has(pathname)) return false;
     if (blockedArchitecturePaths.has(pathname)) return false;

@@ -1,9 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
+import { getVisibleArticles as getCollection, isArticleVisible } from '../../lib/all-articles';
 import RegionalHub from '../../components/RegionalHub.astro';
 import {regionalPages} from '../../lib/regional-runtime.mjs';
 import HubIndex from '../../components/HubIndex.astro';
-import architecture from '../../data/architecture.json';
+import architecture from '../../lib/all-architecture.mjs';
 import { siteConfig } from '../../config/site';
 
 const categoryMeta = {
@@ -56,7 +56,7 @@ export async function getStaticPaths() {
   const articles = await getCollection(
     'articles',
     ({ data }) =>
-      (data.draftStatus === 'approved' || data.draftStatus === 'published') &&
+      isArticleVisible(data) &&
       data.routeType === 'category' &&
       activePageKeys.has(data.pageKey)
   );

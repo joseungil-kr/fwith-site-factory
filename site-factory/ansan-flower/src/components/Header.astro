@@ -1,14 +1,14 @@
 ---
-import { getCollection } from 'astro:content';
+import { getVisibleArticles as getCollection, isArticleVisible } from '../lib/all-articles';
 import { siteConfig } from '../config/site';
-import architecture from '../data/architecture.json';
+import architecture from '../lib/all-architecture.mjs';
 import business from '../data/business-truth.json';
 
 const activePageKeys = new Set((architecture.pages || []).filter((page) => page.sitemapIndexable !== false && page.status !== 'merged').map((page) => page.pageKey));
 
 const articles = await getCollection(
   'articles',
-  ({ data }) => (data.draftStatus === 'approved' || data.draftStatus === 'published') && activePageKeys.has(data.pageKey)
+  ({ data }) => isArticleVisible(data) && activePageKeys.has(data.pageKey)
 );
 
 const categoryCounts = articles

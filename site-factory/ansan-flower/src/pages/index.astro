@@ -1,18 +1,18 @@
 ---
 import {regionalPages} from '../lib/regional-runtime.mjs';
-import { getCollection } from 'astro:content';
+import { getVisibleArticles as getCollection, isArticleVisible } from '../lib/all-articles';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import OrderCTA from '../components/OrderCTA.astro';
 import ProductShowcase from '../components/ProductShowcase.astro';
 import business from '../data/business-truth.json';
 import { siteConfig } from '../config/site';
-import architecture from '../data/architecture.json';
+import architecture from '../lib/all-architecture.mjs';
 
 const activePageKeys = new Set((architecture.pages || []).filter((page) => page.sitemapIndexable !== false && page.status !== 'merged').map((page) => page.pageKey));
 
 const articles = (await getCollection(
   'articles',
-  ({ data }) => (data.draftStatus === 'approved' || data.draftStatus === 'published') && activePageKeys.has(data.pageKey)
+  ({ data }) => isArticleVisible(data) && activePageKeys.has(data.pageKey)
 )).sort((a, b) => b.data.pageKey.localeCompare(a.data.pageKey, 'ko'));
 
 const recent = articles.slice(0, 6);

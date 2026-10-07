@@ -47,7 +47,7 @@ const rows=[];
 let failed=false;
 for(const file of walk(DIST).filter(p=>p.endsWith('.html'))){
   const html=fs.readFileSync(file,'utf8');
-  if(!html.includes('data-snapshot-id=')) continue;
+  if(!(html.includes('data-snapshot-id=') || html.includes('data-manual-page='))) continue;
 
   const rel='/' + path.relative(DIST,file).replace(/\\/g,'/').replace(/index\.html$/,'').replace(/\.html$/,'');
   const title=textOnly(m(html,/<title[^>]*>([\s\S]*?)<\/title>/i));
