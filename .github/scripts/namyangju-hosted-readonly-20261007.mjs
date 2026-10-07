@@ -4,12 +4,13 @@ import http from 'node:http';
 import crypto from 'node:crypto';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
+import {spawnSync} from 'node:child_process';
 
 // Evidence-only runner: fixed approved production host, no deploy client and no external navigation.
 const workflowRoot=process.cwd(),root=path.join(workflowRoot,'target'),site=path.join(root,'site-factory/namyangju-flower');
 const expectedSourceRevision='d02e86ed7fc39131431a0332a84002906be2f88b';
-const expectedVerificationRevision='41ab5fd749d3e6f755788022158fefe06c523048';
-const expectedVerificationHelperSha256='ceda678e546014bcf80704a5cc7f095ab7ce13594bc9f2583f9849db85ce0ddf';
+const expectedVerificationRevision='69a7fee6a64a21443be19eca50d734d9652a968c';
+const expectedVerificationHelperSha256='ad1b8ba2667f992e39875bbfc4b819578e9f25770ecbf4d20848af6312d59e39';
 const dist=fs.realpathSync(path.join(site,'dist'));
 const phase=process.env.MANUAL_QA_PHASE;
 assert(['preview','production'].includes(phase),'Fixed evidence phase required');
@@ -58,24 +59,28 @@ async function settleCaptureFrame(page){
  return frame;
 }
 // BEGIN receipt-bound telemetry isolation functions (offline-tested from these bytes).
-const managedBeaconUrl='https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495';
-const managedBeaconSha256='8a5cd48fb3f913d009a128498bef6fadc43d5561daec87e79f6adcd0bcc903f5';
-function knownManagedBeaconRequest(url,resourceType,frameUrl,receipts){
- const receipt=receipts.get(frameUrl);
- return url===managedBeaconUrl&&resourceType==='script'&&receipt?.comparison?.matchMode==='pinned-managed-beacon'&&receipt.comparison.managedBeaconCount===1&&receipt.comparison.managedBeaconSha256===managedBeaconSha256;
+const managedBeaconPairs=new Map([
+ ['https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495','8a5cd48fb3f913d009a128498bef6fadc43d5561daec87e79f6adcd0bcc903f5'],
+ ['https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920','53ed6266d9ab3cb60b83bb38278a519b4b688707f7254f5ffeeeb8bcaa3a5e4c']
+]);
+function knownManagedBeaconRequest(url,resourceType,frameUrl,receipts,navigation){
+ return managedBeaconPairs.has(url)&&resourceType==='script'&&receipts.has(frameUrl)&&navigation?.expectedUrl===frameUrl;
 }
-function bindDocumentBytes(url,data,receipts,verifiedDocuments){
- const receipt=receipts.get(url);
- assert(receipt,'Document has no successful immutable-verifier receipt');
+function bindBrowserReceipt(url,data,receipt,httpReceipt,documentKey,verifiedDocuments){
  const actual=crypto.createHash('sha256').update(data).digest('hex');
- assert.equal(actual,receipt.bodySha256,'Browser HTML differs from M3-verified raw body');
- assert.equal(actual,receipt.comparison.rawBodySha256,'Browser HTML differs from comparison receipt');
- assert.equal(data.length,receipt.comparison.rawBodyBytes,'Browser HTML byte count changed');
- verifiedDocuments.add(url);
- return {url,rawBodySha256:actual,rawBodyBytes:data.length,matchMode:receipt.comparison.matchMode};
+ assert.equal(receipt.passed,true);assert.equal(receipt.url,url);assert.equal(receipt.status,200);
+ assert.equal(receipt.comparison.rawBodySha256,actual,'Browser comparison is not bound to its actual bytes');
+ assert.equal(receipt.comparison.rawBodyBytes,data.length,'Browser body byte count changed');
+ assert.equal(receipt.comparison.expectedArtifactSha256,httpReceipt.expectedSha256,'Browser artifact differs from preflight C2 artifact');
+ assert(['exact','pinned-managed-beacon'].includes(receipt.comparison.matchMode));
+ if(receipt.comparison.matchMode==='exact'){assert.equal(receipt.comparison.managedBeaconCount,0);assert.equal(receipt.comparison.managedBeaconSha256,null);}
+ else {assert.equal(receipt.comparison.managedBeaconCount,1);assert([...managedBeaconPairs.values()].includes(receipt.comparison.managedBeaconSha256));}
+ const row={url,documentKey,httpRawBodySha256:httpReceipt.bodySha256,browserRawBodySha256:actual,browserRawBodyBytes:data.length,comparison:receipt.comparison,bodyFile:receipt.bodyFile};
+ assert(!verifiedDocuments.has(documentKey),'Browser navigation receipt duplicated');verifiedDocuments.set(documentKey,row);return row;
 }
 function permittedBlockedTelemetry(row,verifiedDocuments){
- return row.expectedPinnedTelemetry===true&&row.blockedExternal===true&&row.url===managedBeaconUrl&&verifiedDocuments.has(row.frameUrl);
+ const receipt=verifiedDocuments.get(row.documentKey);
+ return row.expectedPinnedTelemetry===true&&row.blockedExternal===true&&receipt?.url===row.frameUrl&&receipt.comparison.matchMode==='pinned-managed-beacon'&&managedBeaconPairs.get(row.url)===receipt.comparison.managedBeaconSha256;
 }
 function acceptedNetworkRow(row,verifiedDocuments){
  if(row.blockedExternal||row.failure)return permittedBlockedTelemetry(row,verifiedDocuments);
@@ -100,10 +105,23 @@ for(const row of httpReceipt.responses){
  assert(!documentReceipts.has(row.url),'Duplicate document receipt');documentReceipts.set(row.url,row);
 }
 assert.equal(documentReceipts.size,37);
-const verifiedDocuments=new Set(),documentResponseChecks=[],blockedRequests=new WeakMap();
-async function verifyBrowserDocument(response,expectedUrl){
- assert(response,'Missing browser navigation response');assert.equal(response.status(),200);assert.equal(response.url(),expectedUrl);
- const row=bindDocumentBytes(expectedUrl,await response.body(),documentReceipts,verifiedDocuments);documentResponseChecks.push(row);return row;
+const verifiedDocuments=new Map(),documentResponseChecks=[],blockedRequests=new WeakMap();
+const declaredHeaderNames=fs.readFileSync(path.join(dist,'_headers'),'utf8').split('\n').filter(line=>/^\s+[^#\s][^:]*:/.test(line)).map(line=>line.trim().split(':',1)[0].toLowerCase());
+async function verifyBrowserDocument(response,expectedUrl,navigation){
+ assert(response,'Missing browser navigation response');assert.equal(response.status(),200);assert.equal(response.url(),expectedUrl);assert.equal(navigation.expectedUrl,expectedUrl);
+ const prior=documentReceipts.get(expectedUrl);assert(prior,'Unknown browser document');
+ const data=await response.body(),bodyHash=crypto.createHash('sha256').update(data).digest('hex');
+ for(const dir of ['browser-html','browser-input','browser-receipts'])fs.mkdirSync(path.join(output,dir),{recursive:true});
+ const bodyFile=path.join(output,'browser-html',bodyHash+'.html');fs.writeFileSync(bodyFile,data);
+ const identity=crypto.createHash('sha256').update(expectedUrl+'\0'+bodyHash+'\0'+navigation.key).digest('hex');
+ const inputFile=path.join(output,'browser-input',identity+'.json'),receiptFile=path.join(output,'browser-receipts',identity+'.json');
+ const allHeaders=await response.allHeaders(),headers=Object.fromEntries([...new Set(['content-type','cf-ray','cf-cache-status','cache-control','x-robots-tag',...declaredHeaderNames])].filter(key=>allHeaders[key]!==undefined).map(key=>[key,allHeaders[key]]));
+ fs.writeFileSync(inputFile,JSON.stringify({route:prior.route,url:response.url(),status:response.status(),headers,bodyFile,receiptFile})+'\n');
+ const checked=spawnSync('python3',[path.join(workflowRoot,'.github/scripts/namyangju-hosted-receipts-20261007.py'),'--browser-input',inputFile],{encoding:'utf8'});
+ assert.equal(checked.status,0,'Bound immutable M4 rejected actual browser HTML; raw evidence retained');
+ const receipt=JSON.parse(fs.readFileSync(receiptFile,'utf8'));
+ assert.equal(receipt.sourceRevision,expectedSourceRevision);assert.equal(receipt.verificationControlRevision,expectedVerificationRevision);assert.equal(receipt.verificationHelperSha256,expectedVerificationHelperSha256);assert.equal(receipt.executionRevision,process.env.GITHUB_SHA);assert.equal(receipt.artifactManifestSha256,httpReceipt.artifactManifestSha256);
+ const row=bindBrowserReceipt(expectedUrl,data,receipt,prior,navigation.key,verifiedDocuments);documentResponseChecks.push(row);return row;
 }
 const network=[],consoleMessages=[],pageErrors=[],results=[];
 let deniedResponse=null;
@@ -127,13 +145,15 @@ let browser;
 try {
  browser=await chromium.launch();
  for(const viewport of [{name:'desktop',width:1440,height:1100},{name:'mobile',width:390,height:844}]){
+  let activeNavigation=null,navigationSequence=0;
+  const beginNavigation=url=>activeNavigation={key:viewport.name+':'+(++navigationSequence),expectedUrl:url};
   const context=await browser.newContext({viewport:{width:viewport.width,height:viewport.height},deviceScaleFactor:1,locale:'ko-KR',reducedMotion:'reduce'});
   await context.route('**/*',async route=>{
    if(deniedResponse){await route.abort();return;}
    const request=route.request(),url=request.url();
    if(new URL(url).origin!==origin){
     const frameUrl=request.frame().url();
-    const row={viewport:viewport.name,url,frameUrl,blockedExternal:true,expectedPinnedTelemetry:knownManagedBeaconRequest(url,request.resourceType(),frameUrl,documentReceipts)};
+    const row={viewport:viewport.name,url,frameUrl,blockedExternal:true,expectedPinnedTelemetry:knownManagedBeaconRequest(url,request.resourceType(),frameUrl,documentReceipts,activeNavigation),documentKey:activeNavigation?.key};
     network.push(row);blockedRequests.set(request,row);await route.abort();
    }else await route.continue();
   });
@@ -145,10 +165,11 @@ try {
   for(const target of targets){
    const row={id:target.id,url:target.url,viewport:viewport.name,checks:[],errors:[]};
    try {
+    beginNavigation(origin+target.url);
     const response=await page.goto(origin+target.url,{waitUntil:'networkidle'});
     assert(!deniedResponse,'Access/rate-limit denial: stop capture without retries');
     assert.equal(response.status(),200,'HTTP status');
-    row.initialDocument=await verifyBrowserDocument(response,origin+target.url);
+    row.initialDocument=await verifyBrowserDocument(response,origin+target.url,activeNavigation);
     await page.evaluate(()=>document.fonts.ready);
     for(const img of await page.locator('img').all())await img.scrollIntoViewIfNeeded();
     await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));
@@ -186,16 +207,18 @@ try {
       const expected=selectProducts(target.page,products,productFamilies(target.page).length>3?4:3).map(p=>p.img);
       assert.deepEqual(facts.articleProductImages,expected,'Native renderer product selection');
       const hub=`/${target.page.category}/`;
+      beginNavigation(origin+hub);
       const [hubResponse]=await Promise.all([
         page.waitForResponse(response=>response.request().isNavigationRequest()&&response.url()===origin+hub),
         page.locator(`a[href="${hub}"]:visible`).first().click()
       ]);
       await page.waitForURL(origin+hub);
       assert(!deniedResponse,'Access/rate-limit denial: no back-navigation request');
-      row.hubDocument=await verifyBrowserDocument(hubResponse,origin+hub);
+      row.hubDocument=await verifyBrowserDocument(hubResponse,origin+hub,activeNavigation);
+      beginNavigation(origin+target.url);
       const backResponse=await page.goBack({waitUntil:'networkidle'});
       assert(!deniedResponse,'Access/rate-limit denial: no capture continuation');
-      row.backDocument=await verifyBrowserDocument(backResponse,origin+target.url);
+      row.backDocument=await verifyBrowserDocument(backResponse,origin+target.url,activeNavigation);
       await page.waitForURL(origin+target.url);
       await page.evaluate(()=>document.fonts.ready);
       for(const img of await page.locator('img').all())await img.scrollIntoViewIfNeeded();
