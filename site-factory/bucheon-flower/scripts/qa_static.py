@@ -2,7 +2,7 @@
 from pathlib import Path
 from html.parser import HTMLParser
 from urllib.parse import urlparse, unquote, urljoin
-import json, os, re, xml.etree.ElementTree as ET
+import json, os, re, hashlib, xml.etree.ElementTree as ET
 
 class Document(HTMLParser):
     def __init__(self, text):
@@ -88,6 +88,13 @@ def check_rendered_catalog(doc, url, products):
 def check(root=Path('.')):
     dist=root/'dist'; data=root/'src/data'
     pages=json.loads((data/'pages.json').read_text());manifest=json.loads((data/'publish-manifest.json').read_text())
+    manual_path=data/'manual-pages.json'
+    if manual_path.exists():
+        proof=json.loads((data/'manual-provenance.json').read_text())
+        for name,expected_hash in proof['immutableFiles'].items():
+            assert hashlib.sha256((root/name).read_bytes()).hexdigest()==expected_hash, f'Frozen file modified: {name}'
+        assert hashlib.sha256(manual_path.read_bytes()).hexdigest()==proof['contentHash'], 'Manual content digest drift'
+        pages=pages+json.loads(manual_path.read_text())
     arch=json.loads((data/'architecture.json').read_text());truth=json.loads((data/'business-truth.json').read_text())
     products=json.loads((data/'products.json').read_text())
     site_config=json.loads((data/'site-config.json').read_text())
@@ -150,7 +157,7 @@ def check(root=Path('.')):
         tree=ET.parse(file)
         for loc in tree.iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc'):
             if not (loc.text or '').endswith('.xml'):sitemap_urls.add(unquote(loc.text or ''))
-    sitemap_expected={'/'}|{p['url'] for p in pages}|{h['url'] for h in arch['hubs'] if h['children']>=3}
+    sitemap_expected={'/'}|{p['url'] for p in pages}|{h['url'] for h in arch['hubs'] if sum(p['category']==h['category'] for p in pages)>=3}
     assert sitemap_urls=={base+u for u in sitemap_expected},f'Sitemap mismatch: {sitemap_urls ^ {base+u for u in sitemap_expected}}'
     headers=(dist/'_headers').read_text()
     assert ('X-Robots-Tag: noindex, nofollow, noarchive' not in headers) if indexable else ('X-Robots-Tag: noindex, nofollow, noarchive' in headers)
