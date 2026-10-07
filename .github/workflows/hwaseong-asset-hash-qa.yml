@@ -1,0 +1,59 @@
+name: Hwaseong pinned asset hash evidence
+
+on:
+  push:
+    branches: [manual-hwaseong-qa-20261007]
+    paths:
+      - '.github/workflows/hwaseong-asset-hash-qa.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  asset-readback:
+    if: github.ref == 'refs/heads/manual-hwaseong-qa-20261007'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read exact deployed source revision
+        uses: actions/checkout@v4
+        with:
+          ref: '2aa6703b81e25dbc3ec1a7def16799a02e4b34be'
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify pinned existing PNG and record byte hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = 'refs/heads/manual-hwaseong-qa-20261007'
+          test "$(git rev-parse HEAD)" = '2aa6703b81e25dbc3ec1a7def16799a02e4b34be'
+          mkdir -p hwaseong-asset-evidence
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          import crypto from 'node:crypto';
+          import assert from 'node:assert/strict';
+          import {execFileSync} from 'node:child_process';
+          const sourceRevision='2aa6703b81e25dbc3ec1a7def16799a02e4b34be';
+          const file='site-factory/hwaseong-flower/public/images/hwaseong/hero-B-original.png';
+          const expectedGitBlob='a6183db9cfe59f6db028332c029e52f518cf2062';
+          const bytes=fs.readFileSync(file);
+          const gitBlob=crypto.createHash('sha1').update(Buffer.concat([Buffer.from('blob '+bytes.length+'\0'),bytes])).digest('hex');
+          const treeBlob=execFileSync('git',['rev-parse',sourceRevision+':'+file],{encoding:'utf8'}).trim();
+          assert.equal(gitBlob,expectedGitBlob);
+          assert.equal(treeBlob,expectedGitBlob);
+          assert.equal(bytes.length,1939436);
+          assert.equal(bytes.subarray(0,8).toString('hex'),'89504e470d0a1a0a');
+          const result={purpose:'read-only-existing-asset-evidence',sourceRevision,workflowCommit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,file,byteLength:bytes.length,gitBlobSha1:gitBlob,treeBlobSha1:treeBlob,sha256:crypto.createHash('sha256').update(bytes).digest('hex'),pngWidth:bytes.readUInt32BE(16),pngHeight:bytes.readUInt32BE(20),previewBuildPerformed:false,productionApproval:'not-issued'};
+          fs.writeFileSync('hwaseong-asset-evidence/pinned-png-hashes.json',JSON.stringify(result,null,2)+'\n');
+          console.log(JSON.stringify(result,null,2));
+          JS
+      - name: Retain read-only evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-pinned-asset-${{ github.sha }}-${{ github.run_attempt }}
+          path: hwaseong-asset-evidence/
+          if-no-files-found: error
+          retention-days: 7
