@@ -40,30 +40,20 @@ def inventory(get,account,p,phase):
  for row in paginate(get,base+'/workers/domains'):
   require(isinstance(row,dict) and all(isinstance(row.get(k),str) for k in ('id','hostname','service','zone_id')),'Incomplete domain record')
   require(row.get('environment') in (None,'production'),'Unreviewed nonproduction domain environment')
-  domains.append({k:row.get(k) for k in ('id','hostname','service','environment','zone_id','zone_name')})
+  domains.append({k:row.get(k) for k in ('id','hostname','service','environment','zone_id','zone_name','enabled','previews_enabled')})
  host=p['productionOrigin'].removeprefix('https://');found=[r for r in domains if r['hostname']==host]
  require(len(found)==1 and found[0]['service']==p['worker'],'Fixed production binding absent or changed')
  if phase=='preview':
   require(sub['enabled'] is True,'Existing QA workers.dev is disabled')
   require(get(base+'/workers/subdomain')['result'].get('subdomain')=='joseungil','Unexpected account subdomain')
   require(not any(r['service']==worker for r in domains),'QA Worker has unexpected custom domains')
- zone_rows=paginate(get,'/zones?account.id='+account)
- zones=[]
- for row in zone_rows:
-  require(isinstance(row,dict) and isinstance(row.get('id'),str) and row.get('account',{}).get('id')==account,'Malformed account zone inventory')
-  zones.append(row['id'])
- zones=sorted(set(zones))
- require(bool(zones) and all(re.fullmatch('[0-9a-f]{32}',z) for z in zones),'Invalid account zone identity')
- require({r['zone_id'] for r in domains}<=set(zones),'Account zone inventory incomplete')
- routes={}
- for zone in zones:
-  result=[]
-  for row in paginate(get,'/zones/'+zone+'/workers/routes'):
-   require(isinstance(row,dict) and isinstance(row.get('id'),str) and isinstance(row.get('pattern'),str),'Malformed route')
-   require(set(row)<={'id','pattern','script'},'Unreviewed route fields')
-   result.append(row)
-  routes[zone]=sorted(result,key=lambda x:x['id'])
- return {'worker':worker,'settings':current,'workersDev':sub,'domains':sorted(domains,key=lambda x:x['id']),'routeZones':zones,'routes':routes}
+ # Do not repeat the denied legacy zone-route endpoint. The proposed release
+ # config has no routes at all; pinned Wrangler 4.147.0 skips both route and
+ # custom-domain publication. This is explicitly NOT a legacy-route inventory.
+ relevant=[r for r in domains if r['service']==worker or r['hostname']==host]
+ require(all(r['hostname'].endswith('.fwith.kr') for r in relevant),'Unexpected non-fwith target domain')
+ require(all(r.get('zone_name') in (None,'fwith.kr') for r in relevant),'Unexpected target zone')
+ return {'worker':worker,'settings':current,'workersDev':sub,'domains':sorted(relevant,key=lambda x:x['id']),'legacyRoutes':{'state':'not_read_not_modified','requiresAssetsOnlyConfig':True},'scope':'fixed-worker-and-existing-fwith.kr-domains'}
 
 def main():
  p=json.loads(Path(sys.argv[1]).read_text());phase=sys.argv[2];checkpoint=sys.argv[3]
@@ -82,12 +72,14 @@ def main():
  require(checkpoint in ('before','after'),'Invalid checkpoint')
  expected=p.get('providerBaseline',{}).get(phase)
  require(isinstance(expected,dict) and state==expected,'Provider state differs from independently accepted baseline')
- config=json.loads(Path(p['previewConfig' if phase=='preview' else 'productionConfig']).read_text())
+ config=json.loads(Path('.manual-assets-only-20261007.jsonc').read_text())
+ require('routes' not in config and 'route' not in config,'Provider mutation must not configure routes/domains')
  require(config.get('workers_dev')==state['workersDev']['enabled'],'Config would change workers.dev exposure')
+ require(isinstance(state['workersDev'].get('previews_enabled'),bool) and config.get('preview_urls')==state['workersDev']['previews_enabled'],'Config would change preview URL exposure')
  require(config['compatibility_date']==state['settings']['compatibility_date'][:10],'Config would change compatibility settings')
  if checkpoint=='before':receipt.write_text(json.dumps(state,sort_keys=True))
  else:require(json.loads(receipt.read_text())==state,'Provider state changed during deployment')
- print('Existing reviewed settings, domains, routes and workers.dev unchanged: '+checkpoint)
+ print('Existing reviewed settings, fixed fwith domains and workers.dev unchanged; legacy routes unrequested: '+checkpoint)
 if __name__=='__main__':
  try:main()
  except Exception as exc:
