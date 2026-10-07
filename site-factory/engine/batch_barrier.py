@@ -494,10 +494,12 @@ def check_goyang(batch, evidence, git):
                   'TARGET_REPO': target['repo'], 'TARGET_BRANCH': target['branch'], 'TARGET_ROOT': root,
                   'SLUG': unit['slug'], 'CATEGORY': 'regions', 'ROUTE_TYPE': 'category',
                   'PAGE_TYPE': 'regional-service', 'PAGE_ROLE': 'REGION_SERVICE_LANDING',
-                  'STRUCTURE_TYPE': 'REGION_SERVICE_LANDING', 'PARENT_HUB': '/regions/',
+                  'PARENT_HUB': '/regions/',
                   'LOCALIZATION_POLICY': 'local-required', 'QUERY_CLASS': 'local-commercial',
                   'VISUAL_INTENT': 'flower_delivery', 'ASSET_SLOT': 'REAL_PROOF'}
-        require(all(p.get(k) == v for k, v in wanted.items()) and p['url'] == unit['url']
+        structure = ('address_specific_purchase_decision' if initial else 'REGION_SERVICE_LANDING')
+        require(all(p.get(k) == v for k, v in wanted.items()) and p.get('STRUCTURE_TYPE') == structure
+                and p['url'] == unit['url']
                 and all(p.get(k) for k in ('H1', 'FIRST-ANSWER', 'CARD-SUMMARY'))
                 and not p.get('SUPERSEDES_SNAPSHOT_ID'), key + ': regional frozen payload mismatch')
         storage, reviewed = frozen_hashes(p)
