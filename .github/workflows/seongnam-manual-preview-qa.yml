@@ -1,29 +1,28 @@
 name: Seongnam exact manual artifacts and pixel evidence
 on:
   push:
-    branches: [manual-seongnam-qa-20261007]
+    branches: [manual-seongnam-five-qa-20261007]
     paths:
       - 'site-factory/seongnam-flower/**'
       - '.github/workflows/seongnam-manual-preview-qa.yml'
-      - '.github/workflows/seongnam-manual-release-20261007.yml'
       - '.github/scripts/seongnam-manual-preview.mjs'
 permissions:
   contents: read
 jobs:
   exact-evidence:
-    if: github.ref == 'refs/heads/manual-seongnam-qa-20261007'
+    if: github.ref == 'refs/heads/manual-seongnam-five-qa-20261007'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:
-        phase: [preview, production]
+        phase: [preview]
     env:
       ASTRO_TELEMETRY_DISABLED: '1'
       MANUAL_QA_PHASE: ${{ matrix.phase }}
-      SITE_URL: ${{ matrix.phase == 'preview' && 'https://seongnam-flower-guide-qa.joseungil.workers.dev' || 'https://seongnam.fwith.kr' }}
-      SITE_ORIGIN: ${{ matrix.phase == 'preview' && 'https://seongnam-flower-guide-qa.joseungil.workers.dev' || 'https://seongnam.fwith.kr' }}
-      SITE_INDEXABLE: ${{ matrix.phase == 'preview' && 'false' || 'true' }}
+      SITE_URL: https://seongnam-flower-guide-qa.joseungil.workers.dev
+      SITE_ORIGIN: https://seongnam-flower-guide-qa.joseungil.workers.dev
+      SITE_INDEXABLE: 'false'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,10 +35,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$GITHUB_REF" = 'refs/heads/manual-seongnam-qa-20261007'
+          test "$GITHUB_REF" = 'refs/heads/manual-seongnam-five-qa-20261007'
           echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/seongnam-manual-playwright" >> "$GITHUB_ENV"
+          test "$MANUAL_QA_PHASE" = 'preview'
+          test "$SITE_INDEXABLE" = 'false'
+          test "$SITE_URL" = 'https://seongnam-flower-guide-qa.joseungil.workers.dev'
+          git merge-base --is-ancestor 06f4049c2c8e818ef7474e628031c5f901b4ecab HEAD
           mkdir -p "seongnam-$MANUAL_QA_PHASE-evidence/logs"
-          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/seongnam-flower/src/data/manual-pages.json")).digest("hex");if(h!=="cb220c408b5b133384142c5dbbda9d2798b3d6e8590587264a874e3fe0343dd4")throw Error("Unexpected content digest");const p=JSON.parse(fs.readFileSync("site-factory/seongnam-flower/src/data/manual-provenance.json"));if(p.scopeDigest!=="a3753ce1ee70136e93f4048c0e53d8fa22936d63cd520afb2cef0f9e6f9fd30b"||p.independentReview.status!=="passed")throw Error("Native review missing");'
+          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/seongnam-flower/src/data/manual-pages.json")).digest("hex");if(h!=="84de46e70ebd88c8058b57bb54ede0748385025052326e235e2a00bb543a81de")throw Error("Unexpected content digest");const p=JSON.parse(fs.readFileSync("site-factory/seongnam-flower/src/data/manual-provenance.json"));if(p.scopeDigest!=="7f882e379dfeaaa59dbc1d463cfc26b5b56a5c85c306827ac6f29a068516663f"||p.independentReview.status!=="pending")throw Error("Unexpected candidate review state");'
           node -e 'const fs=require("fs");fs.writeFileSync("seongnam-"+process.env.MANUAL_QA_PHASE+"-evidence/logs/revision.json",JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,phase:process.env.MANUAL_QA_PHASE,siteUrl:process.env.SITE_URL,siteIndexable:process.env.SITE_INDEXABLE},null,2));'
       - name: Install exact native dependency lock
         working-directory: site-factory/seongnam-flower
@@ -51,7 +54,7 @@ jobs:
           set -euo pipefail
           evidence="$GITHUB_WORKSPACE/seongnam-$MANUAL_QA_PHASE-evidence"
           for attempt in first second; do
-            npm test 2>&1 | tee "$evidence/logs/native-tests-$attempt.log"
+            node --test scripts/*.test.mjs tests/*.test.mjs 2>&1 | tee "$evidence/logs/native-tests-$attempt.log"
             python3 -m unittest discover -s tests -p '*_test.py' 2>&1 | tee "$evidence/logs/python-tests-$attempt.log"
             npm run build 2>&1 | tee "$evidence/logs/native-build-$attempt.log"
             python3 scripts/qa_static.py 2>&1 | tee "$evidence/logs/static-$attempt.log"
