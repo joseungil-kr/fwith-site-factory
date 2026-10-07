@@ -8,13 +8,16 @@ import {createRequire} from 'node:module';
 // Evidence-only runner: fixed loopback site, no deploy client and no external navigation.
 const root=process.cwd(),site=path.join(root,'site-factory/namyangju-flower');
 const dist=fs.realpathSync(path.join(site,'dist'));
-const output=path.join(root,'namyangju-preview-evidence');
-const origin='http://127.0.0.1:8934'; // Transport only: never a publication destination.
-const canonicalOrigin='https://localhost:8934'; // HTTPS metadata required by native social-image rules.
+const phase=process.env.MANUAL_QA_PHASE;
+assert(['preview','production'].includes(phase),'Fixed evidence phase required');
+const hosted=process.env.MANUAL_HOSTED_PREVIEW==='true';
+assert(!hosted||phase==='preview','Hosted capture is fixed to existing isolated QA Worker');
+const output=path.join(root,'namyangju-'+phase+'-evidence');
+const canonicalOrigin=phase==='preview'?'https://namyangju-flower-guide-qa.joseungil.workers.dev':'https://namyangju.fwith.kr';
+const origin=hosted?canonicalOrigin:'http://127.0.0.1:8934'; // Local artifact transport or exact approved isolated host.
 assert.equal(process.env.SITE_URL,canonicalOrigin);
-assert.equal(process.env.SITE_INDEXABLE,'false');
-assert.equal(process.env.MANUAL_LOCAL_PREVIEW,'true');
-assert.equal(process.env.GITHUB_REF,'refs/heads/manual-namyangju-qa-20261007');
+assert.equal(process.env.SITE_INDEXABLE,phase==='preview'?'false':'true');
+assert.equal(process.env.GITHUB_REF,hosted?'refs/heads/manual-preview-namyangju-20261007':'refs/heads/manual-namyangju-qa-20261007');
 assert(process.env.PLAYWRIGHT_INSTALL_ROOT);
 fs.mkdirSync(path.join(output,'screenshots'),{recursive:true});
 const require=createRequire(path.join(process.env.PLAYWRIGHT_INSTALL_ROOT,'package.json'));
@@ -28,7 +31,7 @@ const {selectProducts,productFamilies}=await import(new URL('../../site-factory/
 assert.equal(manual.length,12,'Unexpected manual review scope');
 assert.equal(frozen.length,20,'Unexpected frozen review scope');
 const provenance=read('src/data/manual-provenance.json');
-assert.equal(provenance.independentReview.status,'pending');
+assert.equal(provenance.independentReview.status,'approved');
 assert.equal(provenance.contentHash,'1fb3a55e1938a5a4b60a3712e5812db88d2145048b4f2fb80d91f87ff14b0365');
 assert.equal(provenance.dependencyHash,'bcc8263b780a5c8479fc8eaf2db8c022db2f02b0e410ced09c97e1a698e90805');
 const categories=[...new Set([...frozen,...manual].map(p=>p.category))];
@@ -51,7 +54,7 @@ const server=http.createServer((req,res)=>{
   if(req.method==='HEAD')res.end();else fs.createReadStream(real).pipe(res);
  } catch {res.writeHead(400);res.end('Invalid request');}
 });
-await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(8934,'127.0.0.1',resolve);});
+if(!hosted)await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(8934,'127.0.0.1',resolve);});
 let browser;
 try {
  browser=await chromium.launch();
@@ -90,8 +93,9 @@ try {
       fontFamily:getComputedStyle(document.body).fontFamily
     }));
     row.facts=facts;
-    assert.match(facts.robots,/noindex/,'Preview robots');
-    assert.equal(decodeURI(facts.canonical),decodeURI(canonicalOrigin+target.url),'HTTPS loopback canonical distinct from HTTP transport');
+    if(phase==='preview')assert.match(facts.robots,/noindex/,'Preview robots');
+    else if(target.page||target.id==='home'){assert.match(facts.robots,/(^|,)\s*index(,|$)/,'Production indexable route');assert(!facts.robots.includes('noindex'));}
+    assert.equal(decodeURI(facts.canonical),decodeURI(canonicalOrigin+target.url),'Exact phase canonical distinct from local transport');
     assert.equal(facts.revision,process.env.GITHUB_SHA,'Exact commit marker');
     assert.equal(facts.h1.length,1,'H1 count');
     assert(facts.scrollWidth<=facts.width+1,'Horizontal overflow');
@@ -115,10 +119,11 @@ try {
       assert(row.postNavigationImages.every(i=>i.complete&&i.width>0&&i.height>0),'Post-navigation decoded images');
       await page.evaluate(()=>window.scrollTo(0,0));
     }
-    row.checks=['http-200','local-noindex','canonical','exact-commit','one-h1','no-horizontal-overflow','decoded-images','real-cta',...(target.page?['exact-page-marker','product-families','local-back-navigation']:[])];
+    row.checks=['http-200',phase==='preview'?'preview-noindex':'native-production-robots','canonical','exact-commit','one-h1','no-horizontal-overflow','decoded-images','real-cta',...(target.page?['exact-page-marker','product-families','local-back-navigation']:[])];
    } catch(error){row.errors.push(error.stack||String(error));}
    try {
-    row.screenshot=`screenshots/${target.id}-${viewport.name}.jpg`;
+    row.screenshot=`screenshots/${viewport.name}/${target.id}-${viewport.name}.jpg`;
+    fs.mkdirSync(path.join(output,'screenshots',viewport.name),{recursive:true});
     await page.screenshot({path:path.join(output,row.screenshot),type:'jpeg',quality:85,fullPage:true,animations:'disabled'});
     row.screenshotSha256=crypto.createHash('sha256').update(fs.readFileSync(path.join(output,row.screenshot))).digest('hex');
    } catch(error){row.errors.push('Screenshot: '+error.message);}
@@ -128,8 +133,8 @@ try {
  }
 } finally {
  if(browser)await browser.close();
- await new Promise(resolve=>server.close(resolve));
- const summary={state:'captured-awaiting-independent-pixel-review',commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,transportOrigin:origin,canonicalOrigin,frozenPageCount:frozen.length,provenance:read('src/data/manual-provenance.json'),manualPageCount:manual.length,resultCount:results.length,results,machineChecksPassed:results.length===targets.length*2&&results.every(r=>!r.errors.length)&&pageErrors.length===0&&network.every(r=>!r.blockedExternal&&!r.failure&&!(r.status>=400)),pixelReview:'pending',productionApproval:'not-issued'};
+ if(server.listening)await new Promise(resolve=>server.close(resolve));
+ const summary={state:'captured-awaiting-independent-pixel-review',commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,transportOrigin:origin,canonicalOrigin,phase,hosted,frozenPageCount:frozen.length,provenance:read('src/data/manual-provenance.json'),manualPageCount:manual.length,resultCount:results.length,results,machineChecksPassed:results.length===targets.length*2&&results.every(r=>!r.errors.length)&&pageErrors.length===0&&network.every(r=>!r.blockedExternal&&!r.failure&&!(r.status>=400)),pixelReview:'pending',productionApproval:'not-issued'};
  fs.writeFileSync(path.join(output,'capture-results.json'),JSON.stringify(summary,null,2)+'\n');
  fs.writeFileSync(path.join(output,'browser-console.json'),JSON.stringify(consoleMessages,null,2)+'\n');
  fs.writeFileSync(path.join(output,'page-errors.json'),JSON.stringify(pageErrors,null,2)+'\n');

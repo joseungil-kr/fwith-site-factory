@@ -9,6 +9,8 @@ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'nyj-guard-tests-'));
 for(const name of ['src','public','scripts','astro.config.mjs','package.json'])fs.cpSync(path.join(projectRoot,name),path.join(tmp,name),{recursive:true});
 const proofFile=path.join(tmp,'src/data/manual-provenance.json');
 const original=JSON.parse(fs.readFileSync(proofFile));
+// Pending approval is a test fixture, independent of the real reviewed release.
+original.independentReview={status:'pending'};
 const publicEnv={SITE_URL:'https://namyangju.fwith.kr',SITE_INDEXABLE:'false',MANUAL_LOCAL_PREVIEW:'true'};
 const localEnv={SITE_URL:'http://127.0.0.1:8877',SITE_INDEXABLE:'false',MANUAL_LOCAL_PREVIEW:'true'};
 function save(proof){fs.writeFileSync(proofFile,JSON.stringify(proof));}
@@ -29,3 +31,18 @@ test.after(()=>fs.rmSync(tmp,{recursive:true,force:true}));
 test('local candidate requires exact false indexability',()=>{for(const value of [undefined,'','False','0','invalid']){const env={...localEnv,SITE_INDEXABLE:value};assert(!isPrivatePreview(env,'https://localhost:8877'));save(original);assert.throws(()=>assertManualRelease(tmp,env),/pending/);}});
 test('loopback must be a clean canonical origin',()=>{for(const origin of ['https://localhost:8877/','https://localhost:8877/path','https://localhost:8877/?x=1','https://localhost:8877/#part','https://user@localhost:8877','https://127.1','https://LOCALHOST:8877','https://localhost:8877/a/..'])assert(!isPrivatePreview(localEnv,origin),origin);});
 test('fixed writer identity cannot be substituted',()=>{const p=structuredClone(original);p.writerId='another-writer';save(p);assert.throws(()=>assertManualRelease(tmp,localEnv),/Unexpected writer identity/);});
+
+function assertReleaseWorkflow(text){
+ const upload=text.slice(text.indexOf('      - name: Upload reviewed static assets'),text.indexOf('      - name: Verify every live byte'));
+ assert(upload.includes('if [ "$PHASE" = production ]; then test -f production-indexing.enabled; fi'),'Production indexing marker required before upload');
+ const gate=upload.indexOf('python3 "$helper/gate.py"');
+ const provider=upload.indexOf('python3 "$helper/provider_check.py" "$policy" "$PHASE" before');
+ const deploy=upload.indexOf('wrangler" deploy --config .manual-assets-only-20261007.jsonc');
+ assert(gate>=0&&provider>gate&&deploy>provider,'Fresh exact artifact gate required immediately before provider inspection/upload');
+ assert(upload.slice(gate,provider).includes('"$PHASE" artifact'),'Must verify artifact as well as source');
+ assert(text.indexOf('      - name: Install pinned official upload client')<text.indexOf('      - name: Upload reviewed static assets'),'Fresh authority gate must follow client installation');
+}
+const releaseWorkflow=fs.readFileSync(new URL('../../../.github/workflows/namyangju-manual-release-20261007.yml',import.meta.url),'utf8');
+test('release requires production marker and final fresh artifact authority',()=>assertReleaseWorkflow(releaseWorkflow));
+test('missing final production marker fails workflow regression',()=>assert.throws(()=>assertReleaseWorkflow(releaseWorkflow.replaceAll('if [ "$PHASE" = production ]; then test -f production-indexing.enabled; fi','')),/indexing marker/));
+test('missing final artifact recheck fails workflow regression',()=>assert.throws(()=>assertReleaseWorkflow(releaseWorkflow.replace('python3 "$helper/gate.py"','python3 "$helper/omitted.py"')),/Fresh exact artifact/));
