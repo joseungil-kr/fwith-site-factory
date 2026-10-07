@@ -77,6 +77,10 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with: {node-version: 22}
+      - name: Install Namyangju parent PostCSS dependency
+        if: steps.target.outputs.site_key == 'namyangju-flower-v2'
+        working-directory: target
+        run: npm ci --ignore-scripts
       - name: Render immutable snapshot into registered renderer
         id: render
         env: {ISSUE_BODY: "${{ github.event.issue.body }}"}
