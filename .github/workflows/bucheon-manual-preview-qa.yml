@@ -48,6 +48,7 @@ jobs:
         working-directory: site-factory/bucheon-flower
         run: |
           set -euo pipefail
+          mkdir -p ../evidence
           npm run build 2>&1 | tee "$GITHUB_WORKSPACE/bucheon-preview-evidence/native-build.log"
       - name: Native regression tests
         shell: bash
