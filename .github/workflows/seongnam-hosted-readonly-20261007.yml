@@ -1,0 +1,138 @@
+name: Seongnam C2 deployed source read-only verification
+on:
+  push:
+    branches: [manual-seongnam-hosted-check-20261007]
+    paths:
+      - '.github/workflows/seongnam-hosted-readonly-20261007.yml'
+      - '.github/scripts/seongnam-hosted-readonly-20261007.mjs'
+      - '.github/scripts/seongnam-hosted-receipts-20261007.py'
+permissions:
+  contents: read
+jobs:
+  inspect:
+    if: github.ref == 'refs/heads/manual-seongnam-hosted-check-20261007'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_FACTORY_REVISION: 06f4049c2c8e818ef7474e628031c5f901b4ecab
+      SITE_URL: https://seongnam-flower-guide-qa.joseungil.workers.dev
+      SITE_ORIGIN: https://seongnam-flower-guide-qa.joseungil.workers.dev
+      SITE_INDEXABLE: 'false'
+      MANUAL_QA_PHASE: preview
+      MANUAL_HOSTED_PREVIEW: 'true'
+    steps:
+      - name: Check out actual read-only execution revision
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check out immutable deployed source
+        uses: actions/checkout@v4
+        with:
+          ref: 06f4049c2c8e818ef7474e628031c5f901b4ecab
+          path: target
+          persist-credentials: false
+      - name: Check out immutable read-only M2 verifier
+        uses: actions/checkout@v4
+        with:
+          ref: 657b9ce62b1a519ba606f9fb0110aa3679d0931c
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Build exact expected deployed artifact
+        shell: bash
+        working-directory: target/site-factory/seongnam-flower
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = '06f4049c2c8e818ef7474e628031c5f901b4ecab'
+          npm ci --no-audit --no-fund
+          mkdir -p ../evidence
+          npm test
+          python3 -m unittest discover -s tests -p '*_test.py'
+          npm run build
+          python3 scripts/qa_static.py
+          node scripts/qa_graph.mjs
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          d=pathlib.Path('dist');m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob('*')) if f.is_file()}
+          assert len(m)==64
+          assert hashlib.sha256(json.dumps(m,sort_keys=True,separators=(',',':')).encode()).hexdigest()=='da951f81d97a8c9bef38a38531ce083be70aaa782aa79f43d8e72051737cb19e'
+          PY
+      - name: Verify every live byte with unchanged M2 application client
+        run: python3 control/scripts/manual-release-20261007/verify_http.py control/.github/manual-release-20261007/seongnam.policy.json preview target/site-factory/seongnam-flower/dist 06f4049c2c8e818ef7474e628031c5f901b4ecab
+      - name: Retain every verified live response without identity fallback
+        run: python3 .github/scripts/seongnam-hosted-receipts-20261007.py
+      - name: Install pinned capture client and Korean fonts
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/seongnam-readonly-playwright" >> "$GITHUB_ENV"
+          npm install --prefix "$RUNNER_TEMP/seongnam-readonly-playwright" --no-save --no-package-lock playwright@1.63.0
+          "$RUNNER_TEMP/seongnam-readonly-playwright/node_modules/.bin/playwright" install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+      - name: Capture actual hosted pixels with separate execution and deployed revisions
+        run: node .github/scripts/seongnam-hosted-readonly-20261007.mjs
+      - name: Enforce retrievable evidence chunks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PYCHUNKS'
+          import pathlib
+          root=pathlib.Path('target/seongnam-preview-evidence')
+          for part,expected in [('screens-01',18),('screens-02',18),('screens-03',18),('screens-04',16)]:
+            files=list((root/part).glob('*.jpg'));assert len(files)==expected,part
+            assert sum(f.stat().st_size for f in files)<24*1024*1024,part
+          assert sum(f.stat().st_size for f in (root/'metadata').glob('*'))<24*1024*1024
+          assert sum(f.stat().st_size for f in pathlib.Path('seongnam-hosted-http').rglob('*') if f.is_file())<24*1024*1024
+          PYCHUNKS
+      - name: Retain live HTTP response bodies and receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seongnam-c2-hosted-http-${{ github.sha }}-${{ github.run_attempt }}
+          path: seongnam-hosted-http/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted capture facts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seongnam-c2-hosted-facts-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/seongnam-preview-evidence/metadata/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted screens-01 pixels
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seongnam-c2-hosted-screens-01-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/seongnam-preview-evidence/screens-01/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted screens-02 pixels
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seongnam-c2-hosted-screens-02-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/seongnam-preview-evidence/screens-02/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted screens-03 pixels
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seongnam-c2-hosted-screens-03-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/seongnam-preview-evidence/screens-03/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain hosted screens-04 pixels
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seongnam-c2-hosted-screens-04-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/seongnam-preview-evidence/screens-04/
+          if-no-files-found: error
+          retention-days: 7
