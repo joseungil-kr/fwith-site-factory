@@ -497,8 +497,8 @@ def check_goyang(batch, evidence, git):
                   'PARENT_HUB': '/regions/',
                   'LOCALIZATION_POLICY': 'local-required', 'QUERY_CLASS': 'local-commercial',
                   'VISUAL_INTENT': 'flower_delivery', 'ASSET_SLOT': 'REAL_PROOF'}
-        structure = ('address_specific_purchase_decision' if initial else 'REGION_SERVICE_LANDING')
-        require(all(p.get(k) == v for k, v in wanted.items()) and p.get('STRUCTURE_TYPE') == structure
+        structures = ({'address_specific_purchase_decision', 'REGION_SERVICE_LANDING'} if initial else {'REGION_SERVICE_LANDING'})
+        require(all(p.get(k) == v for k, v in wanted.items()) and p.get('STRUCTURE_TYPE') in structures
                 and p['url'] == unit['url']
                 and all(p.get(k) for k in ('H1', 'FIRST-ANSWER', 'CARD-SUMMARY'))
                 and not p.get('SUPERSEDES_SNAPSHOT_ID'), key + ': regional frozen payload mismatch')

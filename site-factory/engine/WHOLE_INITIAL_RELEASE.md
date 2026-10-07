@@ -69,6 +69,10 @@ approved revision and evidence URL in main. `initialDeployment` records:
 - batchSha256, batchEvidenceSha256, productionManifestSha256, coverageSha256,
   regionPolicySha256
 
+The batch evidence and hosted QA bind the pinned noindex `initialPreviewRevision`.
+The public revision descends from that preview and may change only
+`site-config.json` approval plus the indexing marker and registered ownership
+file. The production gate compares every other source byte with the preview.
 The existing `[SITE-PRODUCTION-DEPLOY]` path validates this before npm/build,
 checks the exact Worker/hostname for collisions, deploys serially and sends one
 non-overriding domain request. Unknown attachment outcomes require inspection;
