@@ -111,6 +111,8 @@ class ControllerStateTests(unittest.TestCase):
 
     def test_freeze_requires_exact_member_payload_and_independent_review(self):
         self.state["phase"] = "REVIEWING"
+        self.state["writer_id"] = "writer"
+        self.state["reviewer_id"] = "independent-reviewer"
         payloads = {key: {"page_key": key, "source_sha": "a" * 40,
                           "membership_sha256": self.state["membership_sha256"],
                           "body": "reviewed text", "revision": 1, "writer_id": "writer"}

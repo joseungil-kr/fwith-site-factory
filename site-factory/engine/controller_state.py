@@ -80,6 +80,12 @@ def require_receipt(state, phase, receipt):
     if phase == "REVIEWING" and (receipt.get("approved_count") != state["member_count"] or
                                   not receipt.get("independent_review")):
         raise ValueError("independent whole-region review incomplete")
+    if phase == "WRITING" and (not receipt.get("writer_id") or
+                                receipt.get("draft_count") != state["member_count"]):
+        raise ValueError("whole-region writer handoff incomplete")
+    if phase == "REVIEWING" and (not receipt.get("reviewer_id") or
+                                  receipt.get("reviewer_id") == state.get("writer_id")):
+        raise ValueError("writer cannot review own work")
     if phase == "SNAPSHOTTING" and (receipt.get("snapshot_count") != state["member_count"] or
                                     len(set(receipt.get("page_keys", []))) != state["member_count"]):
         raise ValueError("whole-region snapshot barrier incomplete")
@@ -95,6 +101,10 @@ def require_receipt(state, phase, receipt):
     receipt_hash = digest(receipt)
     receipts[phase] = receipt_hash
     result["receipts"] = receipts
+    if phase == "WRITING":
+        result["writer_id"] = receipt["writer_id"]
+    if phase == "REVIEWING":
+        result["reviewer_id"] = receipt["reviewer_id"]
     result["phase"] = PHASES[PHASES.index(phase) + 1]
     return result
 
@@ -121,12 +131,14 @@ def freeze_batch(state, payloads, reviews):
         if (payload.get("page_key") != page_key or
                 payload.get("source_sha") != state["source_sha"] or
                 payload.get("membership_sha256") != state["membership_sha256"] or
-                not payload.get("body") or not payload.get("revision")):
+                not payload.get("body") or not payload.get("revision") or
+                not payload.get("writer_id") or payload.get("writer_id") != state.get("writer_id")):
             raise ValueError("frozen payload provenance mismatch")
         if (review.get("result") != "PASS" or
                 review.get("payload_sha256") != digest(payload) or
                 not review.get("reviewer_id") or
                 review.get("reviewer_id") == payload.get("writer_id") or
+                review.get("reviewer_id") != state.get("reviewer_id") or
                 not review.get("evidence_url")):
             raise ValueError("independent exact-payload approval missing")
         frozen.append({"page_key": page_key, "payload_sha256": digest(payload),
