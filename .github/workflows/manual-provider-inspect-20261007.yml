@@ -1,0 +1,57 @@
+name: Inspect existing six manual-release targets 20261007
+'on':
+  push:
+    branches:
+    - manual-provider-inspect-20261007
+    paths:
+    - .github/workflows/manual-provider-inspect-20261007.yml
+permissions:
+  contents: read
+jobs:
+  inspect-only:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - site: suwon
+          phase: preview
+        - site: suwon
+          phase: production
+        - site: hwaseong
+          phase: production
+        - site: goyang
+          phase: preview
+        - site: goyang
+          phase: production
+        - site: seongnam
+          phase: preview
+        - site: seongnam
+          phase: production
+        - site: bucheon
+          phase: preview
+        - site: bucheon
+          phase: production
+        - site: namyangju
+          phase: preview
+        - site: namyangju
+          phase: production
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: fbf77ac4d8bf2e09db7b9fba960b749409ef8680
+        path: control
+        persist-credentials: false
+    - name: Read existing provider state only
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      run: python3 control/scripts/manual-release-20261007/provider_check.py control/.github/manual-release-20261007/${{
+        matrix.site }}.policy.json "${{ matrix.phase }}" inspect
+    - uses: actions/upload-artifact@v4
+      with:
+        name: manual-provider-${{ matrix.site }}-${{ matrix.phase }}-${{ github.sha
+          }}
+        path: ${{ runner.temp }}/manual-20261007-*.json
+        if-no-files-found: error
+        retention-days: 7
