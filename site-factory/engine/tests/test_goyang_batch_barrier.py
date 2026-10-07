@@ -31,6 +31,9 @@ class MemoryGit:
     def ancestor(self, older, newer):
         return older in self.history and newer in self.history and self.history.index(older) <= self.history.index(newer)
 
+    def paths(self, revision, root):
+        return {path[len(root)+1:] for rev,path in self.documents if rev == revision and path.startswith(root+'/')}
+
 
 def source_rows(p, order):
     storage, _ = frozen_hashes(p)

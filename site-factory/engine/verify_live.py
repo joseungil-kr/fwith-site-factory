@@ -428,6 +428,7 @@ def validate_bucheon_public_header(robot_header, route):
 
 
 def verify(root, origin, revision, fetch, naver_verification="", indexnow_key="", site_key=""):
+    require(site_key != "namyangju-flower-v2", "Namyangju initial release requires verify_initial.py full artifact verification")
     if site_key == "bucheon-flower-v2":
         require(origin == "https://bucheon.fwith.kr", "Bucheon live verification origin mismatch")
     manifest = json.loads((root / "src/data/publish-manifest.json").read_text())
