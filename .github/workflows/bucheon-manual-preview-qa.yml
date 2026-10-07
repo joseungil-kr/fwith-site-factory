@@ -68,11 +68,15 @@ jobs:
           npm list --prefix "$PLAYWRIGHT_INSTALL_ROOT" --json > bucheon-preview-evidence/playwright-dependencies.json
       - name: Capture localhost desktop and mobile evidence
         run: node .github/scripts/bucheon-manual-preview.mjs
-      - name: Retain evidence for independent review
+      - name: Check bounded evidence groups
+        shell: bash
+        run: |
+          node -e 'const fs=require("fs");const root="bucheon-preview-evidence/screenshots";for(const suffix of ["-desktop.jpg","-mobile.jpg"]){const files=fs.readdirSync(root).filter(x=>x.endsWith(suffix));if(files.length!==43)throw Error("Unexpected capture count");const bytes=files.reduce((n,f)=>n+fs.statSync(root+"/"+f).size,0);if(bytes>31*1024*1024)throw Error("Evidence group exceeds materialization budget");console.log(JSON.stringify({suffix,files:files.length,bytes}));}'
+      - name: Retain small logs and machine results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bucheon-manual-preview-${{ github.sha }}-${{ github.run_attempt }}
+          name: bucheon-manual-preview-metadata-${{ github.sha }}-${{ github.run_attempt }}
           path: |
             bucheon-preview-evidence/revision.json
             bucheon-preview-evidence/native-build.log
@@ -83,7 +87,21 @@ jobs:
             bucheon-preview-evidence/browser-console.json
             bucheon-preview-evidence/page-errors.json
             bucheon-preview-evidence/network.json
-            bucheon-preview-evidence/screenshots/*.jpg
           if-no-files-found: error
           retention-days: 7
-
+      - name: Retain desktop screenshots
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bucheon-manual-preview-desktop-${{ github.sha }}-${{ github.run_attempt }}
+          path: bucheon-preview-evidence/screenshots/*-desktop.jpg
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain mobile screenshots
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bucheon-manual-preview-mobile-${{ github.sha }}-${{ github.run_attempt }}
+          path: bucheon-preview-evidence/screenshots/*-mobile.jpg
+          if-no-files-found: error
+          retention-days: 7
