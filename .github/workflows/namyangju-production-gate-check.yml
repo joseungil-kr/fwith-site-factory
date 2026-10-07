@@ -1,4 +1,4 @@
-name: Namyangju exact20 production gate check
+name: Namyangju historical exact20 initial-release regression
 on:
   push:
     branches: [codex/namyangju-production-gate]
@@ -19,13 +19,17 @@ jobs:
           fetch-depth: 0
       - uses: actions/checkout@v4
         with:
-          ref: site-factory-namyangju-v2
+          ref: 374918f70a532db2ef79bf30e6efbbc59741f1a5
           path: target
           fetch-depth: 0
-      - name: Verify exact whole-region batch and production source without deploying
+      - name: Load genuine immutable registry for historical initial20 regression
+        run: |
+          set -euo pipefail
+          git -C control show dbb8c43ca51e732c8744a03dbbbd6cb14d042604:.github/site-factory-sites.json > historical-registry.json
+      - name: Verify historical exact20 fixture using current PR engine without deploying
         run: |
           python3 control/site-factory/engine/whole_initial.py \
-            --registry control/.github/site-factory-sites.json \
+            --registry historical-registry.json \
             --site-key namyangju-flower-v2 \
             --revision 374918f70a532db2ef79bf30e6efbbc59741f1a5 \
             --root target/site-factory/namyangju-flower \
