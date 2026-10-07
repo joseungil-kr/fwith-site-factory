@@ -90,7 +90,7 @@ try {
       assert.deepEqual(facts.articleProductImages,expected,'Actual rendered product families');
       // Read-only local history round trip; never click phone or merchant links.
       const hub=target.manual.parentHub;
-      await page.locator(`a[href="${hub}"]`).first().click();
+      await page.locator(`a[href="${hub}"]:visible`).first().click();
       await page.waitForURL(origin+hub);
       await page.goBack({waitUntil:'networkidle'});
       await page.waitForURL(origin+target.url);
