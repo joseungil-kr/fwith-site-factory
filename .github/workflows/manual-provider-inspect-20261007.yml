@@ -21,8 +21,6 @@ jobs:
         - site: hwaseong
           phase: production
         - site: goyang
-          phase: preview
-        - site: goyang
           phase: production
         - site: seongnam
           phase: preview
@@ -39,7 +37,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        ref: fbf77ac4d8bf2e09db7b9fba960b749409ef8680
+        ref: a20a6263440b16354ab5a54f850c5c256594e939
         path: control
         persist-credentials: false
     - name: Read existing provider state only
