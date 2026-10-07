@@ -47,6 +47,7 @@ try{
      // Match the always-visible article breadcrumb, never a hidden mobile header anchor.
      const anchor=page.locator(`nav.breadcrumbs a[href="${hub}"]:visible`).first();assert.equal(await anchor.count(),1,'Visible breadcrumb missing');await anchor.scrollIntoViewIfNeeded();assert(await anchor.isVisible());await anchor.click();await page.waitForURL(origin+hub);await page.goBack({waitUntil:'networkidle'});await page.waitForURL(origin+target.url);await settleImages(page);row.checks.push('visible-breadcrumb-roundtrip');
     }
+    assert(!(await page.locator('body').innerText()).includes('**'),'Visible unrendered Markdown bold marker');row.checks.push('no-visible-markdown-markers');
     row.checks.push('http-200','noindex','canonical','exact-commit','single-h1','no-overflow','decoded-images','cta-hrefs','correct-provenance');
    }catch(e){row.errors.push(e.stack||String(e));}
    try{
