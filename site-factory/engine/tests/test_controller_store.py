@@ -1,6 +1,7 @@
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 import sys
 
@@ -14,6 +15,19 @@ def git(cwd, *args):
 
 
 class GitStoreTests(unittest.TestCase):
+    def test_read_failure_is_not_a_missing_release(self):
+        with patch("controller_store._git", side_effect=["", "a" * 40,
+                                                         "releases/example--scope.json",
+                                                         RuntimeError("object read failed")]):
+            with self.assertRaisesRegex(RuntimeError, "object read failed"):
+                GitStateStore(Path("unused")).read("example:scope")
+
+    def test_tree_failure_is_not_a_missing_release(self):
+        with patch("controller_store._git", side_effect=["", "a" * 40,
+                                                         RuntimeError("tree read failed")]):
+            with self.assertRaisesRegex(RuntimeError, "tree read failed"):
+                GitStateStore(Path("unused")).read("example:scope")
+
     def test_two_controllers_cannot_commit_same_checkpoint(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

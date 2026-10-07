@@ -39,10 +39,12 @@ class GitStateStore:
         path = _path(release_key)
         _git(self.checkout, "fetch", "origin", self.branch)
         revision = _git(self.checkout, "rev-parse", "FETCH_HEAD")
-        try:
-            raw = _git(self.checkout, "show", f"{revision}:{path}")
-        except RuntimeError:
+        # Only a successful tree read can establish absence. Authentication,
+        # corrupt-object and transport failures must never restart a release.
+        entry = _git(self.checkout, "ls-tree", "--name-only", revision, "--", path)
+        if not entry:
             return revision, None
+        raw = _git(self.checkout, "show", f"{revision}:{path}")
         return revision, json.loads(raw)
 
     def compare_and_swap(self, release_key, expected_revision, state):
