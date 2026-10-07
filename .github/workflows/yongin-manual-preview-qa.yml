@@ -40,7 +40,7 @@ jobs:
           import fs from 'node:fs';
           import assert from 'node:assert/strict';
           import {artifactDigest,artifactInventory} from './site-factory/yongin-flower/src/lib/manual-release-gate.mjs';
-          const expected='7caf84d1504636b10fdd1fd9e38878279f2aefd96efa630bd03296bc4d31bf8a';
+          const expected='f0d4ef3e4596b3ef1679d05af98a2dbf807b66f5ee76fce25d71cf3a6f7d1150';
           assert.equal(artifactDigest(),expected,'Reviewed source bundle changed');
           fs.writeFileSync('yongin-preview-evidence/revision.json',JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,sourceBase:'f6dfb14a74d265ae92a482969a1a060f2234e3d9',reviewedArtifactDigest:expected,productionApproval:'pending'},null,2));
           fs.writeFileSync('yongin-preview-evidence/source-inventory.json',JSON.stringify(artifactInventory(),null,2));

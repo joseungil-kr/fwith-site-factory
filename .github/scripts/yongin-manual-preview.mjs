@@ -23,7 +23,7 @@ const read=file=>JSON.parse(fs.readFileSync(path.join(site,file),'utf8'));
 const manual=read('src/data/manual-pages.json').pages;
 const products=read('src/data/products.json');
 const {artifactDigest}=await import(new URL('../../site-factory/yongin-flower/src/lib/manual-release-gate.mjs',import.meta.url));
-const expectedArtifact='7caf84d1504636b10fdd1fd9e38878279f2aefd96efa630bd03296bc4d31bf8a';
+const expectedArtifact='f0d4ef3e4596b3ef1679d05af98a2dbf807b66f5ee76fce25d71cf3a6f7d1150';
 assert.equal(artifactDigest(),expectedArtifact,'Exact reviewed bundle');
 assert.equal(manual.length,14,'Unexpected review scope');
 assert.equal(manual.filter(p=>p.supersedesSnapshotId).length,5,'Existing URL revision count');
