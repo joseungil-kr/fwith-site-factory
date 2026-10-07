@@ -23,7 +23,7 @@ def require(condition, message):
 def read_pages(site):
     frozen = json.loads((site / 'src/data/publish-manifest.json').read_text())['pages']
     manual = json.loads((site / 'src/data/manual-pages.json').read_text())['pages']
-    require(len(frozen) == 31 and len(manual) == 14, 'Expected 31 frozen and 14 manual pages')
+    require(len(frozen) == 31 and len(manual) == 15, 'Expected 31 frozen and 15 manual pages')
     keys, urls = set(), set()
     for collection in [frozen, manual]:
         keys.clear()
@@ -38,7 +38,7 @@ def read_pages(site):
             urls.add(url)
     old = {p['pageKey']: p for p in frozen}
     replacements = {p['pageKey'] for p in manual if p['pageKey'] in old}
-    require(len(replacements) == 5, 'Expected exactly five manual replacements')
+    require(replacements == {'yongin-flower-launch-07','yongin-flower-launch-08','yongin-flower-launch-09','yongin-flower-launch-10','yongin-flower-launch-11','yongin-flower-launch-14'}, 'Expected exactly the six declared manual replacements')
     for page in manual:
         require(page.get('sourceType') == 'manual-authored' and page.get('revisionId'), 'Missing manual identity')
         if page['pageKey'] in old:
@@ -154,7 +154,7 @@ def sitemap_urls(base):
 
 def indexnow_scope(manual, live_urls):
     candidates = {ORIGIN + '/', *(ORIGIN + p['url'] for p in manual), *(ORIGIN + '/' + p['category'] + '/' for p in manual)}
-    require(len(candidates) == 18, 'Expected 14 manual detail URLs, homepage and three changed hubs')
+    require(len(candidates) == 20, 'Expected 15 manual detail URLs, homepage and four changed hubs')
     require(candidates <= live_urls, 'Changed IndexNow URL missing from live sitemap')
     require(all(urlparse(url).scheme == 'https' and urlparse(url).netloc == 'yongin.fwith.kr' for url in candidates), 'Invalid IndexNow host')
     return sorted(candidates)
@@ -221,7 +221,7 @@ def main():
         try:
             receipt = verify_release(args.site, base, revision, indexable)
             (args.site / f'{args.mode}-live-qa.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n')
-            print(f'YONGIN V2 {args.mode.upper()} QA PASSED: revision={revision}, pages=40, manual=14, frozen=26, hubs=6')
+            print(f'YONGIN V2 {args.mode.upper()} QA PASSED: revision={revision}, pages=40, manual=15, frozen=25, hubs=6')
             return
         except Exception as error:
             last = error

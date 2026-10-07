@@ -43,9 +43,23 @@ class ReleaseTests(unittest.TestCase):
             identity += f' data-original-snapshot="{page["supersedesSnapshotId"]}"'
         return identity
 
-    def test_effective_manifest_has_26_original_and_14_manual(self):
+    def test_effective_manifest_has_25_original_and_15_manual(self):
         self.assertEqual(len(self.pages), 40)
-        self.assertEqual(sum(p.get('sourceType') == 'manual-authored' for p in self.pages), 14)
+        self.assertEqual(sum(p.get('sourceType') == 'manual-authored' for p in self.pages), 15)
+
+    def test_replacement_set_cannot_swap_an_unapproved_original(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'src/data').mkdir(parents=True)
+            frozen = json.loads((SITE / 'src/data/publish-manifest.json').read_text())
+            authored = json.loads((SITE / 'src/data/manual-pages.json').read_text())
+            row = next(p for p in authored['pages'] if p['pageKey'] == 'yongin-flower-launch-14')
+            other = next(p for p in frozen['pages'] if p['pageKey'] == 'yongin-flower-launch-12')
+            row.update(pageKey=other['pageKey'], url=other['url'], supersedesSnapshotId=other['snapshotId'])
+            (root / 'src/data/publish-manifest.json').write_text(json.dumps(frozen))
+            (root / 'src/data/manual-pages.json').write_text(json.dumps(authored))
+            with self.assertRaisesRegex(ValueError, 'six declared manual replacements'):
+                qa.read_pages(root)
 
     def test_all_manifest_identities_pass(self):
         for page in self.pages:
@@ -129,10 +143,10 @@ class ReleaseTests(unittest.TestCase):
         for value in ['', 'all', 'index, follow', 'max-image-preview:large']:
             qa.verify_http_indexing({'X-Robots-Tag': value}, '/business/a/')
 
-    def test_indexnow_exact_18_changed_urls(self):
+    def test_indexnow_exact_20_changed_urls(self):
         live = {qa.ORIGIN + '/', *(qa.ORIGIN + p['url'] for p in self.pages), *(qa.ORIGIN + p for p in qa.HUBS)}
         urls = qa.indexnow_scope(self.manual, live)
-        self.assertEqual(len(urls), 18)
+        self.assertEqual(len(urls), 20)
         self.assertEqual(set(urls), {qa.ORIGIN + '/', *(qa.ORIGIN + p['url'] for p in self.manual), *(qa.ORIGIN + '/' + p['category'] + '/' for p in self.manual)})
 
     def test_indexnow_rejects_missing_live_url(self):
