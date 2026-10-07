@@ -1,11 +1,12 @@
 import fs from 'node:fs';
+import effectivePages from '../src/lib/all-pages.mjs';
 import {validateRegionalPurchase} from '../src/lib/regions.mjs';
 import crypto from 'node:crypto';
 import assert from 'node:assert/strict';
 import {homeProducts, productFamilies} from '../src/lib/catalog.mjs';
 import {hubGuides, hubGuide, hubProducts} from '../src/lib/hubs.mjs';
 const read=name=>JSON.parse(fs.readFileSync(`src/data/${name}.json`,'utf8'));
-const products=read('products'),proof=read('catalog-provenance'),pages=read('pages');
+const products=read('products'),proof=read('catalog-provenance'),pages=effectivePages;
 const sourceBytes=fs.readFileSync('src/data/catalog-source-evidence.json');
 assert.equal(crypto.createHash('sha256').update(sourceBytes).digest('hex'),proof.sourceEvidenceSha256);
 const evidence=JSON.parse(sourceBytes);

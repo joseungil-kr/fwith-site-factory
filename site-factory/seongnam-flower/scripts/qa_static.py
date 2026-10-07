@@ -7,7 +7,7 @@ import hashlib, json, os, re, xml.etree.ElementTree as ET
 class Document(HTMLParser):
     def __init__(self, text):
         super().__init__(convert_charrefs=True)
-        self.meta={};self.meta_entries=[];self.order_banner_count=0;self.h1=0;self.canonical=[];self.links=[];self.images=[];self.snapshots=[];self.title='';self.in_title=False
+        self.meta={};self.meta_entries=[];self.order_banner_count=0;self.h1=0;self.canonical=[];self.links=[];self.images=[];self.snapshots=[];self.manual_revisions=[];self.title='';self.in_title=False
         self.visible=[];self.ignored=0;self.sections=[];self.journey_links=[];self.primary_families=[];self.product_families=[]
         self.journey_aside=0;self.purpose_cards=[];self.active_purpose=None
         self.markdown_blocks=[];self.markdown_depth=0;self.active_markdown_block=None
@@ -53,6 +53,7 @@ class Document(HTMLParser):
             self.product_families.append(a['data-product-family'])
             if 'detail-product' in a.get('class','') or 'hero-product' in a.get('class',''):self.primary_families.append(a['data-product-family'])
         if 'data-snapshot-id' in a:self.snapshots.append(a['data-snapshot-id'])
+        if 'data-content-revision' in a:self.manual_revisions.append(a['data-content-revision'])
     def handle_endtag(self,tag):
         if self.active_markdown_block is not None and tag==self.active_markdown_block['type']:self.active_markdown_block=None
         if tag=='div' and len(self.elements)==self.markdown_depth:self.markdown_depth=0
@@ -191,14 +192,14 @@ def check_opening_visual(doc, page, products, root):
 
 def check(root=Path('.')):
     dist=root/'dist'; data=root/'src/data'
-    pages=json.loads((data/'pages.json').read_text());manifest=json.loads((data/'publish-manifest.json').read_text())
-    arch=json.loads((data/'architecture.json').read_text());truth=json.loads((data/'business-truth.json').read_text())
+    pages=json.loads((data/'pages.json').read_text())+json.loads((data/'manual-pages.json').read_text());manifest=json.loads((data/'publish-manifest.json').read_text());manifest['pages']+=json.loads((data/'manual-page-map.json').read_text())['pages']
+    arch=json.loads((data/'architecture.json').read_text());arch['pages']+=json.loads((data/'manual-page-map.json').read_text())['pages'];[h.update(children=sum(p['category']==h['category'] for p in pages)) for h in arch['hubs']];truth=json.loads((data/'business-truth.json').read_text())
     products=json.loads((data/'products.json').read_text())
     social_proof=json.loads((data/'catalog-provenance.json').read_text())
     import subprocess
     subprocess.run(['node', 'scripts/qa_seongnam_catalog.mjs'], cwd=root, check=True)
     navigation=json.loads(subprocess.check_output(['node','--input-type=module','-e',
-        "import fs from 'node:fs'; import {productFamilies} from './src/lib/catalog.mjs'; import {hubGuide} from './src/lib/hubs.mjs'; import {displayMarkdownBlocks,inlineTokens} from './src/lib/content.mjs'; const pages=JSON.parse(fs.readFileSync('src/data/pages.json')); const cats=[...new Set(pages.filter(p=>p.category!=='regions').map(p=>p.category))]; console.log(JSON.stringify({body:Object.fromEntries(pages.map(p=>[p.pageKey,displayMarkdownBlocks(p.contentMarkdown||'',p.firstAnswer).map(b=>({type:b.type,text:inlineTokens(b.text).map(t=>t.text).join('')}))])),families:Object.fromEntries(pages.map(p=>[p.pageKey,productFamilies(p)])),purpose:Object.fromEntries(cats.map(c=>['/'+c+'/',hubGuide(c,pages).decision[0]]))}));"],cwd=root,text=True))
+        "import fs from 'node:fs'; import {productFamilies} from './src/lib/catalog.mjs'; import {hubGuide} from './src/lib/hubs.mjs'; import {displayMarkdownBlocks,inlineTokens} from './src/lib/content.mjs'; const pages=JSON.parse(fs.readFileSync('src/data/pages.json')).concat(JSON.parse(fs.readFileSync('src/data/manual-pages.json'))); const cats=[...new Set(pages.filter(p=>p.category!=='regions').map(p=>p.category))]; console.log(JSON.stringify({body:Object.fromEntries(pages.map(p=>[p.pageKey,displayMarkdownBlocks(p.contentMarkdown||'',p.firstAnswer).map(b=>({type:b.type,text:inlineTokens(b.text).map(t=>t.text).join('')}))])),families:Object.fromEntries(pages.map(p=>[p.pageKey,productFamilies(p)])),purpose:Object.fromEntries(cats.map(c=>['/'+c+'/',hubGuide(c,pages).decision[0]]))}));"],cwd=root,text=True))
     site_config=json.loads((data/'site-config.json').read_text())
     base=(os.environ.get('SITE_URL') or site_config['previewUrl']).rstrip('/')
     indexable=os.environ.get('SITE_INDEXABLE')=='true'
@@ -257,7 +258,9 @@ def check(root=Path('.')):
             if path!=url:incoming[path].add(url)
     for url in expected-{'/'}:assert incoming[url],f'Orphan page: {url}'
     for page in manifest['pages']:
-        assert docs[page['url']].snapshots==[page['snapshotId']],f'Snapshot not rendered: {page["pageKey"]}'
+        if page.get('sourceType')=='manual-authored':
+            assert docs[page['url']].manual_revisions==[page['revisionId']] and not docs[page['url']].snapshots,f'Manual lineage not rendered: {page["pageKey"]}'
+        else:assert docs[page['url']].snapshots==[page['snapshotId']],f'Snapshot not rendered: {page["pageKey"]}'
     sitemap_urls=set()
     for file in dist.glob('sitemap-*.xml'):
         tree=ET.parse(file)

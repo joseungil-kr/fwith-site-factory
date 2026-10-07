@@ -1,5 +1,6 @@
 /** Map buyer intent to real catalog families. Unknown intent never inherits wreaths. */
 export function productFamilies(page) {
+  if(page.sourceType==='manual-authored'){if(!Array.isArray(page.manualProductFamilies)||!page.manualProductFamilies.length||page.manualProductFamilies.some(f=>!['funeral','congrats'].includes(f)))throw Error('Invalid manual catalog binding');return page.manualProductFamilies;}
   if(page.pageType==='regional-service'){if(!Array.isArray(page.regionalProductFamilies))throw new Error('Missing regional product binding');return page.regionalProductFamilies;}
   if (page.pageType === 'business-opening') return ['congrats'];
   if (['school-event', 'station-transit'].includes(page.pageType)) return ['bouquet'];

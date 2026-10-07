@@ -1,6 +1,6 @@
 import truth from '../data/business-truth.json';
-import architecture from '../data/architecture.json';
-import pages from '../data/pages.json';
+import {effectiveArchitecture as architecture} from '../lib/all-pages.mjs';
+import pages from '../lib/all-pages.mjs';
 import config from '../data/site-config.json';
 const domain = (import.meta.env.SITE_URL || config.previewUrl).replace(/\/$/, '');
 export const site = {

@@ -1,7 +1,7 @@
 import {defineConfig} from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import config from './src/data/site-config.json' with {type:'json'};
-import architecture from './src/data/architecture.json' with {type:'json'};
+import {effectiveArchitecture as architecture} from './src/lib/all-pages.mjs';
 import {regionalPages} from './src/lib/regional-runtime.mjs';
 const site = process.env.SITE_URL || config.previewUrl;
 const thinHubs=new Set(architecture.hubs.filter(h=>h.children<3).map(h=>h.url));

@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import effectivePages,{effectiveArchitecture,effectiveManifest,effectiveMap} from '../src/lib/all-pages.mjs';
 import {productFamilies,selectProducts} from '../src/lib/catalog.mjs';
 import {validateCustomerIntent} from './qa_intent.mjs';
 export function validateGraph(data) {
@@ -11,7 +12,8 @@ export function validateGraph(data) {
   if(!p.pageKey || seen.has(p.pageKey))throw new Error('Duplicate/missing pageKey');seen.add(p.pageKey);
   if(!/^\/[a-z0-9-]+\/[a-z0-9-]+\/$/.test(p.url) || urls.has(p.url))throw new Error('Duplicate/unsafe URL '+p.url);urls.add(p.url);
   if(p.url!==`/${p.category}/${p.slug}/`)throw new Error('Route mismatch '+p.pageKey);
-  if(!p.snapshotId)throw new Error('Missing snapshotId '+p.pageKey);
+  if(p.sourceType!=='manual-authored'&&!p.snapshotId)throw new Error('Missing source lineage '+p.pageKey);
+  if(p.sourceType==='manual-authored'&&(!p.revisionId||!p.contentSha256||p.snapshotId))throw Error('Invalid manual lineage');
   if(!p.title || !p.h1 || !p.firstAnswer || !p.description || !p.cardSummary)throw new Error('Incomplete content '+p.pageKey);
   validateCustomerIntent(p,products);
   const a=architecture.pages.find(x=>x.pageKey===p.pageKey);
@@ -23,7 +25,7 @@ export function validateGraph(data) {
   if(selected.some(x=>!allowed.includes(x.family)))throw new Error('Product intent mismatch '+p.pageKey);
   for(const collection of [manifest.pages,map.pages,architecture.pages]){
    const entries=collection.filter(x=>x.pageKey===p.pageKey);
-   if(entries.length!==1 || entries[0].url!==p.url || entries[0].snapshotId!==p.snapshotId)throw new Error('Registry parity '+p.pageKey);
+   if(entries.length!==1 || entries[0].url!==p.url || (p.sourceType==='manual-authored' ? entries[0].revisionId!==p.revisionId || entries[0].contentSha256!==p.contentSha256 : entries[0].snapshotId!==p.snapshotId))throw new Error('Registry parity '+p.pageKey);
   }
  }
  for(const p of pages) for(const key of p.relatedKeys||[])if(!seen.has(key)||key===p.pageKey)throw new Error('Invalid related key '+key);
@@ -39,6 +41,6 @@ export function validateGraph(data) {
 }
 export function loadGraph(root='.') {
  const read=name=>JSON.parse(fs.readFileSync(`${root}/src/data/${name}.json`,'utf8'));
- return {pages:read('pages'),manifest:read('publish-manifest'),map:read('page-map'),architecture:read('architecture'),products:read('products')};
+ return {pages:effectivePages,manifest:effectiveManifest,map:effectiveMap,architecture:effectiveArchitecture,products:read('products')};
 }
 if(process.argv[1]?.endsWith('/qa_graph.mjs'))console.log('GRAPH QA PASSED',validateGraph(loadGraph()));

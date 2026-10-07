@@ -1,0 +1,87 @@
+name: Seongnam manual build-only preview
+on:
+  push:
+    branches: [manual-seongnam-qa-20261007]
+    paths:
+      - 'site-factory/seongnam-flower/**'
+      - '.github/scripts/seongnam-manual-preview.mjs'
+      - '.github/workflows/seongnam-manual-preview-qa.yml'
+permissions:
+  contents: read
+jobs:
+  preview:
+    if: github.ref == 'refs/heads/manual-seongnam-qa-20261007'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SITE_URL: https://localhost:8936
+      SITE_INDEXABLE: 'false'
+      ASTRO_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Assert noindex build-only scope
+        run: |
+          test "$GITHUB_REF" = refs/heads/manual-seongnam-qa-20261007
+          test "$SITE_URL" = https://localhost:8936
+          test "$SITE_INDEXABLE" = false
+          mkdir -p seongnam-preview-evidence/metadata
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/seongnam-manual-playwright" >> "$GITHUB_ENV"
+      - name: Install existing native site dependencies
+        working-directory: site-factory/seongnam-flower
+        run: npm install --no-package-lock
+      - name: Native build and all regression tests
+        working-directory: site-factory/seongnam-flower
+        run: |
+          set -euo pipefail
+          npm run build 2>&1 | tee "$GITHUB_WORKSPACE/seongnam-preview-evidence/metadata/build.log"
+          npm test 2>&1 | tee "$GITHUB_WORKSPACE/seongnam-preview-evidence/metadata/tests.log"
+          python3 -m unittest discover -s tests -p '*_test.py' 2>&1 | tee "$GITHUB_WORKSPACE/seongnam-preview-evidence/metadata/python-tests.log"
+      - name: Install pinned official browser QA tools and Korean fonts
+        run: |
+          npm install --prefix "$PLAYWRIGHT_INSTALL_ROOT" --no-save --no-package-lock playwright@1.63.0
+          "$PLAYWRIGHT_INSTALL_ROOT/node_modules/.bin/playwright" install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          fc-match 'Noto Sans CJK KR' > seongnam-preview-evidence/metadata/fonts.txt
+      - name: Verify and capture 35 routes at both widths
+        run: node .github/scripts/seongnam-manual-preview.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seongnam-manual-metadata-${{ github.sha }}-${{ github.run_attempt }}
+          path: seongnam-preview-evidence/metadata/
+          if-no-files-found: error
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seongnam-manual-screens-01-${{ github.sha }}-${{ github.run_attempt }}
+          path: seongnam-preview-evidence/screens-01/
+          if-no-files-found: warn
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seongnam-manual-screens-02-${{ github.sha }}-${{ github.run_attempt }}
+          path: seongnam-preview-evidence/screens-02/
+          if-no-files-found: warn
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seongnam-manual-screens-03-${{ github.sha }}-${{ github.run_attempt }}
+          path: seongnam-preview-evidence/screens-03/
+          if-no-files-found: warn
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seongnam-manual-screens-04-${{ github.sha }}-${{ github.run_attempt }}
+          path: seongnam-preview-evidence/screens-04/
+          if-no-files-found: warn
+          retention-days: 7
