@@ -70,7 +70,7 @@ def verify(root, site_key, origin, revision, phase, fetch):
         require(doc.snapshots == ([snapshot] if snapshot else []), 'Initial exact snapshot identity mismatch')
         headers_ok(headers)
         artifact = (root/'dist'/route.lstrip('/')/'index.html').read_bytes()
-        require(goyang_artifact_matches(html, artifact), 'Initial hosted HTML body/schema/CTA differs from built reviewed artifact')
+        require(goyang_artifact_matches(html, artifact, phase == 'production'), 'Initial hosted HTML body/schema/CTA differs from built reviewed artifact')
         fingerprint.update(raw)
     for route in sorted(absent):
         status, raw, headers = response(route)
@@ -79,7 +79,7 @@ def verify(root, site_key, origin, revision, phase, fetch):
         require(status == 404 and doc.h1 == 1 and doc.metas.get('site-factory-revision') == revision
                 and doc.metas.get('robots') == 'noindex,nofollow,noarchive' and not doc.canonicals
                 and not doc.snapshots and 'application/ld+json' not in html
-                and goyang_artifact_matches(html, (root/'dist/404.html').read_bytes()),
+                and goyang_artifact_matches(html, (root/'dist/404.html').read_bytes(), phase == 'production'),
                 'Initial unknown/empty-hub 404 artifact mismatch')
         headers_ok(headers)
     asset_count = 0

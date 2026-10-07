@@ -4,6 +4,8 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
+import hashlib
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import verify_initial as qa
 
@@ -60,6 +62,19 @@ class InitialHTTPTests(unittest.TestCase):
                     raw=raw.replace(b'Exact body',b'Changed body') if kind=='body' else raw.replace(b'>{}</script>',b'>{"changed":true}</script>') if kind=='schema' else raw.replace(b'</body>',b'<script>arbitrary()</script></body>')
                 return status,raw,headers
             with self.subTest(kind=kind),self.assertRaisesRegex(ValueError,'HTML'):self.check(fetch)
+    def test_production_accepts_only_the_existing_pinned_cloudflare_beacon(self):
+        import verify_live
+        beacon=(b'<script type="module" src="'+verify_live.GOYANG_CF_BEACON_SRC
+                +b'" integrity="sha512-synthetic" data-cf-beacon=\'{"token":"fixture"}\' crossorigin="anonymous"></script>\n')
+        def fetch(route):
+            status,raw,headers=self.fetch(route)
+            if raw.endswith(b'</body></html>'):
+                raw=raw.replace(b'</body></html>',beacon+b'</body></html>')
+            return status,raw,headers
+        with patch.object(verify_live,'GOYANG_CF_BEACON_SHA256',hashlib.sha256(beacon).hexdigest()):
+            self.assertEqual(self.check(fetch)['pipelineState'],'live_verified')
+            self.phase='preview';self.origin='https://namyangju-flower-guide-qa.joseungil.workers.dev';self.make()
+            with self.assertRaisesRegex(ValueError,'HTML'):self.check(fetch)
     def test_missing_detail_hub_and_asset_fail(self):
         for missing in ['/regions/dong-0/','/regions/','/image.png']:
             def fetch(route):
