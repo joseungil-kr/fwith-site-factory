@@ -4,7 +4,7 @@ from pathlib import Path
 CONTROL='657b9ce62b1a519ba606f9fb0110aa3679d0931c'
 BASELINE='bc49ea311ceebdc304288acf60b636cdb296d83c'
 ROOT='site-factory/yongin-flower'
-FILES=['.github/workflows/yongin-v2-production-deploy.yml','.github/scripts/yongin-supplemental-gate.py','.github/scripts/yongin-release-qa.py','.github/scripts/test-yongin-release-qa.py','.github/workflows/yongin-supplemental-production-artifacts.yml','.github/scripts/yongin-supplemental-production-capture.mjs','.github/scripts/yongin-indexnow-once.py']
+FILES=['.github/workflows/yongin-v2-production-deploy.yml','.github/workflows/yongin-v2-staging-deploy.yml','.github/scripts/yongin-supplemental-gate.py','.github/scripts/yongin-release-qa.py','.github/scripts/test-yongin-release-qa.py','.github/workflows/yongin-supplemental-production-artifacts.yml','.github/scripts/yongin-supplemental-production-capture.mjs','.github/scripts/yongin-indexnow-once.py']
 CHECKS=['sourceReview','immutableBaseline','nativeGates','routes','assets','cta','catalog','canonicalGraph','pixelQA','productionIndexableBuild','productionArtifactReview','unreleasedDeltaReconciled']
 def validate(a,revision,source,execution,delta,artifact=None):
  def require(ok,msg):
