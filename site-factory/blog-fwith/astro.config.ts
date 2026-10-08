@@ -26,9 +26,10 @@ const robotsHeaders = () => ({
   name: "site-factory-noindex-headers",
   hooks: {
     "astro:build:done": async ({ dir }: { dir: URL }) => {
-      if (process.env.SITE_INDEXABLE !== "true") {
-        await writeFile(new URL("_headers", dir), "/*\n  X-Robots-Tag: noindex, nofollow\n");
-      }
+      const headers = process.env.SITE_INDEXABLE === "true"
+        ? "/search/*\n  X-Robots-Tag: noindex, nofollow\n/archives/*\n  X-Robots-Tag: noindex, nofollow\n/404\n  X-Robots-Tag: noindex, nofollow\n"
+        : "/*\n  X-Robots-Tag: noindex, nofollow\n";
+      await writeFile(new URL("_headers", dir), headers);
     },
   },
 });
@@ -39,7 +40,10 @@ export default defineConfig({
     mdx(),
     sitemap({
       filter: page =>
-        config.features?.showArchives !== false || !page.endsWith("/archives/"),
+        !page.endsWith("/search/") &&
+        !page.endsWith("/404/") &&
+        !page.endsWith("/404") &&
+        (config.features?.showArchives !== false || !page.endsWith("/archives/")),
     }),
     robotsHeaders(),
   ],
