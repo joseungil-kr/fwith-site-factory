@@ -1,0 +1,81 @@
+name: Ansan immutable baseline GET-only evidence
+on:
+  push:
+    branches: [manual-ansan-baseline-readonly-aeb04a9-20261008]
+    paths:
+      - '.github/workflows/ansan-baseline-readonly-aeb04a9-20261008.yml'
+      - '.github/scripts/ansan-baseline-readonly-aeb04a9-20261008.py'
+permissions:
+  contents: read
+concurrency:
+  group: ansan-baseline-readonly-aeb04a9-20261008
+  cancel-in-progress: false
+jobs:
+  collect:
+    if: github.ref == 'refs/heads/manual-ansan-baseline-readonly-aeb04a9-20261008'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_URL: https://ansan.fwith.kr
+      SITE_ORIGIN: https://ansan.fwith.kr
+      SITE_INDEXABLE: 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check out immutable existing production source
+        uses: actions/checkout@v4
+        with:
+          ref: aeb04a9ed1f9f36692fd3e679e6e71c5c065224d
+          path: target
+          persist-credentials: false
+      - name: Check out immutable reviewed M4 byte comparator
+        uses: actions/checkout@v4
+        with:
+          ref: 69a7fee6a64a21443be19eca50d734d9652a968c
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.3'
+      - name: Build existing production source without publishing
+        working-directory: target/site-factory/ansan-flower
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 'aeb04a9ed1f9f36692fd3e679e6e71c5c065224d'
+          mkdir -p "$GITHUB_WORKSPACE/ansan-baseline-evidence"
+          git ls-tree -r HEAD -- . > "$GITHUB_WORKSPACE/ansan-baseline-evidence/source-tree.txt"
+          # Original source has no package lock. Do not change its source or gates.
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+          npm list --json > "$GITHUB_WORKSPACE/ansan-baseline-evidence/dependencies.json"
+          npm run build 2>&1 | tee "$GITHUB_WORKSPACE/ansan-baseline-evidence/build.log"
+          python3 scripts/qa_static.py
+          node scripts/qa_site_graph.mjs
+          node --test tests/*.test.mjs scripts/*.test.mjs
+          python3 scripts/test_production_contract.py
+          python3 - <<'PY'
+          import pathlib,shutil
+          dist=pathlib.Path('dist');out=pathlib.Path('../../../ansan-baseline-evidence/expected-html')
+          for f in sorted(dist.rglob('*.html')):
+            target=out/f.relative_to(dist);target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(f,target)
+          PY
+      - name: GET-only exact live artifacts and source-bound receipts
+        run: >-
+          python3 .github/scripts/ansan-baseline-readonly-aeb04a9-20261008.py
+          --target target --control control --out ansan-baseline-evidence
+      - name: Bound all evidence before artifact upload
+        id: evidence_bounds
+        if: always()
+        run: >-
+          python3 .github/scripts/ansan-baseline-readonly-aeb04a9-20261008.py
+          --bound-only --out ansan-baseline-evidence
+      - name: Retain baseline proof and all response bodies
+        if: always() && steps.evidence_bounds.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ansan-baseline-aeb04a9-${{ github.sha }}-${{ github.run_attempt }}
+          path: ansan-baseline-evidence/
+          if-no-files-found: error
+          retention-days: 14
