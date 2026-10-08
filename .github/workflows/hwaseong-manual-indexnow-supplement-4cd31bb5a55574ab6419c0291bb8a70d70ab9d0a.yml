@@ -1,0 +1,59 @@
+name: hwaseong Manual Supplemental IndexNow Once
+on:
+  push:
+    branches: [manual-hwaseong-indexnow-supplement-4cd31bb5a55574ab6419c0291bb8a70d70ab9d0a]
+permissions:
+  contents: read
+concurrency:
+  group: manual-hwaseong-indexnow-supplement-4cd31bb5a55574ab6419c0291bb8a70d70ab9d0a
+  cancel-in-progress: false
+jobs:
+  submit-once:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test helper without external actions
+        working-directory: scripts/manual-supplement-indexnow-20261007
+        run: python -m unittest -v test_manual_indexnow.py
+      - name: Reverify exact public QA and prepare intent without POST
+        id: prepare
+        run: >-
+          python scripts/manual-supplement-indexnow-20261007/manual_indexnow.py
+          --plan scripts/manual-supplement-indexnow-20261007/plan.pending.json
+          --site hwaseong-flower --intent indexnow-intent.json --report indexnow-receipt.json
+      - name: Preserve durable pre-POST intent
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.prepare.outputs.intent_name }}
+          path: indexnow-intent.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Download persisted intent for byte readback
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.prepare.outputs.intent_name }}
+          path: downloaded-intent
+      - name: Compare downloaded durable intent bytes
+        run: cmp -- indexnow-intent.json downloaded-intent/indexnow-intent.json
+      - name: Verify intent readback and submit exactly once
+        run: >-
+          python scripts/manual-supplement-indexnow-20261007/manual_indexnow.py
+          --plan scripts/manual-supplement-indexnow-20261007/plan.pending.json
+          --site hwaseong-flower --intent downloaded-intent/indexnow-intent.json --report indexnow-receipt.json --submit
+      - name: Retain receipt even for failed or uncertain response
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-manual-indexnow-receipt-${{ github.run_id }}
+          path: |
+            indexnow-intent.json
+            indexnow-receipt.json
+          if-no-files-found: error
+          retention-days: 90
