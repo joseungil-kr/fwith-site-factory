@@ -49,7 +49,9 @@ for page in pages:
     )
     canonical = re.search(r'<link rel="canonical" href="([^"]+)"', html)
     require(canonical is not None and canonical.group(1).startswith(origin + "/"), f"canonical_origin_mismatch:{relative}")
-    for asset in re.findall(r'(?:src|href)="(/_astro/[^"]+)"', html):
+    for asset in re.findall(r'(?:src|href)="(/[^"]+)"', html):
+        if not (asset.startswith("/_astro/") or asset == "/favicon.svg"):
+            continue
         require((root / asset.lstrip("/")).is_file(), f"asset_missing:{relative}:{asset}")
 
 sitemap = read("sitemap-0.xml")
