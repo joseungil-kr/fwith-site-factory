@@ -3,8 +3,8 @@ import { defineAstroPaperConfig } from "./src/types/config";
 export default defineAstroPaperConfig({
   site: {
     url: "https://blog.fwith.kr/",
-    title: "전국 꽃배달 정보 | 꽃이랑",
-    description: "지역별 근조화환, 축하화환, 꽃배달 이용 정보를 안내합니다.",
+    title: "꽃이랑 블로그",
+    description: "지역별 꽃배달, 근조와 축하 상황별 안내를 준비하는 꽃이랑 블로그입니다.",
     author: "꽃이랑",
     profile: "",
     ogImage: "default-og.jpg",
@@ -22,10 +22,7 @@ export default defineAstroPaperConfig({
     dynamicOgImage: true,
     showArchives: false,
     showBackButton: true,
-    editPost: {
-      enabled: false,
-      url: "",
-    },
+    editPost: { enabled: false },
     search: "pagefind",
   },
   socials: [],

@@ -4,6 +4,7 @@ import {
   fontProviders,
   svgoOptimizer,
 } from "astro/config";
+import { writeFile } from "node:fs/promises";
 import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
@@ -19,12 +20,41 @@ import {
 import { transformerFileName } from "./src/utils/transformers/fileName";
 import config from "./astro-paper.config";
 
+const noindexHeaders = () => ({
+  name: "site-factory-noindex-headers",
+  hooks: {
+    "astro:build:done": async ({ dir }: { dir: URL }) => {
+      await writeFile(
+        new URL("_headers", dir),
+        "/*\n  X-Robots-Tag: noindex, nofollow\n"
+      );
+    },
+  },
+});
+
 export default defineConfig({
   site: config.site.url,
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    sitemap({
+      filter: page =>
+        config.features?.showArchives !== false || !page.endsWith("/archives/"),
+    }),
+    noindexHeaders(),
+  ],
+  i18n: {
+    locales: ["ko"],
+    defaultLocale: "ko",
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   markdown: {
     processor: unified({
-      remarkPlugins: [remarkToc, [remarkCollapse, { test: "Table of contents" }]],
+      remarkPlugins: [
+        remarkToc,
+        [remarkCollapse, { test: "Table of contents" }],
+      ],
       rehypePlugins: [rehypeCallouts],
     }),
     shikiConfig: {
