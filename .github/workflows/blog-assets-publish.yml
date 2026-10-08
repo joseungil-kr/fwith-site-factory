@@ -1,0 +1,371 @@
+name: Blog Manual Static Assets Publish
+on:
+  workflow_dispatch:
+    inputs:
+      expected_revision:
+        description: Exact reviewed 40-character blog source SHA
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: blog-fwith-custom-domain-initial
+  cancel-in-progress: false
+jobs:
+  build:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      artifact_id: ${{ steps.artifact.outputs.artifact-id }}
+      release_sha256: ${{ steps.package.outputs.release_sha256 }}
+    steps:
+      - name: Authorize exact first-attempt source
+        uses: actions/github-script@v7
+        env:
+          REVISION: ${{ inputs.expected_revision }}
+        with:
+          script: |
+            if (!/^[0-9a-f]{40}$/.test(process.env.REVISION)) throw new Error('Full source SHA required');
+            if (process.env.GITHUB_RUN_ATTEMPT !== '1') throw new Error('Mutation reruns disabled');
+            const owner = context.payload.repository.owner;
+            if (!(owner.type === 'User' && context.actor === owner.login)) {
+              const {data} = await github.rest.repos.getCollaboratorPermissionLevel({...context.repo, username: context.actor});
+              if (!['admin', 'maintain', 'write'].includes(data.permission)) throw new Error('Untrusted actor');
+            }
+            const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/site-factory-blog-fwith'});
+            if (data.object.type !== 'commit' || data.object.sha !== process.env.REVISION) throw new Error('Not the exact blog branch head');
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - name: Validate fixed blog identity and closed generic gates
+        run: |
+          python3 - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'control/site-factory/engine')
+          from blog_domain import validate_registry
+          validate_registry(Path('control/.github/site-factory-sites.json'))
+          PY
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.expected_revision }}
+          path: target
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify exact source and branch ancestry
+        working-directory: target
+        env:
+          REVISION: ${{ inputs.expected_revision }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$REVISION"
+          git merge-base --is-ancestor "$REVISION" origin/site-factory-blog-fwith
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build and QA without provider credentials
+        working-directory: target/site-factory/blog-fwith
+        env:
+          ASTRO_TELEMETRY_DISABLED: '1'
+          SITE_URL: https://blog.fwith.kr
+          SITE_INDEXABLE: 'true'
+          SITE_FACTORY_REVISION: ${{ inputs.expected_revision }}
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+          python3 scripts/qa_static.py
+      - name: Package exact artifact
+        id: package
+        env:
+          REVISION: ${{ inputs.expected_revision }}
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, shutil, stat
+          from pathlib import Path
+          source = Path('target/site-factory/blog-fwith/dist')
+          assert source.is_dir() and not source.is_symlink()
+          files = {}
+          for p in sorted(source.rglob('*')):
+              mode = p.lstat().st_mode
+              assert stat.S_ISDIR(mode) or stat.S_ISREG(mode), 'unsafe_artifact_type'
+              if p.is_file():
+                  files[p.relative_to(source).as_posix()] = hashlib.sha256(p.read_bytes()).hexdigest()
+          assert all(p in files for p in ('index.html', '404.html', '_headers', 'robots.txt', 'sitemap-index.xml', 'rss.xml'))
+          release = Path('release')
+          release.mkdir()
+          shutil.copytree(source, release/'dist')
+          manifest = dict(schemaVersion=1, repository=os.environ['GITHUB_REPOSITORY'],
+              sourceBranch='site-factory-blog-fwith', sourceRoot='site-factory/blog-fwith',
+              revision=os.environ['REVISION'], controlRevision=os.environ['GITHUB_SHA'],
+              runId=os.environ['GITHUB_RUN_ID'], origin='https://blog.fwith.kr',
+              worker='blog-fwith-prod-disabled', indexable=True, files=files)
+          data = (json.dumps(manifest, sort_keys=True, indent=2)+'\n').encode()
+          (release/'release.json').write_bytes(data)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write('release_sha256='+hashlib.sha256(data).hexdigest()+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        id: artifact
+        with:
+          name: blog-publish-build-${{ github.run_id }}
+          path: release/
+          include-hidden-files: true
+          if-no-files-found: error
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Reject mutation reruns
+        run: test "$GITHUB_RUN_ATTEMPT" = 1
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ needs.build.outputs.artifact_id }}
+          merge-multiple: true
+          path: release
+      - name: Validate exact artifact, SEO and fixed route-less config
+        env:
+          REVISION: ${{ inputs.expected_revision }}
+          RELEASE_SHA256: ${{ needs.build.outputs.release_sha256 }}
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, re, stat, sys
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import urlsplit, unquote
+          import xml.etree.ElementTree as ET
+          sys.path.insert(0, 'control/site-factory/engine')
+          from blog_domain import validate_registry
+          validate_registry(Path('control/.github/site-factory-sites.json'))
+          origin = 'https://blog.fwith.kr'
+          root = Path('release/dist')
+          assert {p.name for p in Path('release').iterdir()} == {'dist','release.json'}
+          raw = Path('release/release.json').read_bytes()
+          assert re.fullmatch('[0-9a-f]{64}', os.environ['RELEASE_SHA256'])
+          assert hashlib.sha256(raw).hexdigest() == os.environ['RELEASE_SHA256']
+          m = json.loads(raw)
+          expected = dict(schemaVersion=1, repository='joseungil-kr/fwith-site-factory',
+              sourceBranch='site-factory-blog-fwith', sourceRoot='site-factory/blog-fwith',
+              revision=os.environ['REVISION'], controlRevision=os.environ['GITHUB_SHA'],
+              runId=os.environ['GITHUB_RUN_ID'], origin=origin,
+              worker='blog-fwith-prod-disabled', indexable=True)
+          assert set(m) == set(expected)|{'files'} and all(m[k] == v for k,v in expected.items())
+          assert m['indexable'] is True and re.fullmatch('[0-9a-f]{40}', m['revision'])
+          actual = {}
+          assert root.is_dir() and not root.is_symlink()
+          for p in sorted(root.rglob('*')):
+              mode = p.lstat().st_mode
+              assert stat.S_ISDIR(mode) or stat.S_ISREG(mode), 'unsafe_artifact_type'
+              rel = p.relative_to(root)
+              assert not any(part.startswith('.') for part in rel.parts), 'hidden_artifact_path'
+              assert p.name not in {'_worker.js','_routes.json','_redirects','package.json','package-lock.json'}
+              assert not p.name.startswith('wrangler.'), 'artifact_config_forbidden'
+              if p.is_file(): actual[rel.as_posix()] = hashlib.sha256(p.read_bytes()).hexdigest()
+          assert actual == m['files'], 'artifact_hash_or_file_set_mismatch'
+          assert all(p in actual for p in ('index.html','404.html','_headers','robots.txt','sitemap-index.xml','rss.xml'))
+          for parent in [Path('release').resolve(), *Path('release').resolve().parents]:
+              assert not (parent/'.wrangler/deploy/config.json').exists(), 'wrangler_config_redirect'
+          def local(url):
+              u = urlsplit(url)
+              assert u.scheme == 'https' and u.netloc == 'blog.fwith.kr' and not u.query and not u.fragment
+              path = unquote(u.path)
+              assert path.startswith('/') and not any(x in ('.','..') for x in path.split('/'))
+              return path
+          class Page(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.meta={}; self.canon=[]; self.images=[]; self.article=False; self.has_article=False
+              def handle_starttag(self,tag,attrs):
+                  a=dict(attrs)
+                  if tag=='meta' and a.get('name'):
+                      k=a['name'].lower(); assert k not in self.meta, 'duplicate_meta'; self.meta[k]=a.get('content','')
+                  if tag=='link' and a.get('rel')=='canonical': self.canon.append(a.get('href',''))
+                  if tag=='article' and a.get('id')=='article': self.article=True; self.has_article=True
+                  if tag=='img' and self.article: self.images.append(a)
+              def handle_endtag(self,tag):
+                  if tag=='article': self.article=False
+          pages=[]; articles=[]; image_paths=set()
+          for p in sorted(root.rglob('*.html')):
+              rel=p.relative_to(root).as_posix(); h=Page(); h.feed(p.read_text())
+              assert h.meta.get('site-factory-revision') == m['revision'], 'revision_mismatch'
+              assert len(h.canon)==1, 'canonical_count'
+              path=local(h.canon[0]); exceptional=rel in {'404.html','search/index.html','search.html','archives/index.html','archives.html'}
+              if not exceptional:
+                  expected_path='/' if rel=='index.html' else '/'+rel.removesuffix('index.html') if rel.endswith('/index.html') else '/'+rel.removesuffix('.html')
+                  assert path.rstrip('/') == expected_path.rstrip('/'), 'canonical_path_mismatch'
+              directives={x.strip().lower() for x in h.meta.get('robots','').split(',')}
+              assert directives == ({'noindex','nofollow'} if exceptional else {'index','follow'}), 'robots_meta_mismatch'
+              item=dict(file=rel, url=h.canon[0], noindex=exceptional)
+              if rel != '404.html': pages.append(item)
+              if h.has_article:
+                  assert 'blog-preparation' not in path and not exceptional, 'preparation_article_not_a_release'
+                  assert len(h.images)==1 and h.images[0].get('alt','').strip(), 'one_article_image_required'
+                  src=h.images[0].get('src',''); assert not src.startswith('//'), 'protocol_relative_image'
+                  image=local(origin+src if src.startswith('/') else src)
+                  assert image.lstrip('/') in actual, 'article_image_missing'
+                  image_paths.add(image); articles.append(h.canon[0])
+          assert articles, 'no_real_articles'
+          robots=(root/'robots.txt').read_text()
+          lines=[x.strip() for x in robots.splitlines() if x.strip() and not x.strip().startswith('#')]
+          assert lines == ['User-agent: *','Allow: /','Sitemap: '+origin+'/sitemap-index.xml'], 'robots_not_indexable'
+          section=''
+          for line in (root/'_headers').read_text().splitlines():
+              if not line.strip() or line.lstrip().startswith('#'): continue
+              if not line[0].isspace(): section=line.strip()
+              elif section=='/*' and line.strip().lower().startswith('x-robots-tag:'):
+                  assert not re.search(r'\b(noindex|nofollow|none)\b',line,re.I), 'blanket_noindex_header'
+          index=ET.fromstring((root/'sitemap-index.xml').read_bytes())
+          assert index.tag.rsplit('}',1)[-1]=='sitemapindex'
+          maps=[n.text for n in index.iter() if n.tag.rsplit('}',1)[-1]=='loc']
+          assert maps and len(maps)==len(set(maps))
+          urls=[]
+          for url in maps:
+              path=local(url); assert path.lstrip('/') in actual
+              doc=ET.fromstring((root/path.lstrip('/')).read_bytes())
+              assert doc.tag.rsplit('}',1)[-1]=='urlset'
+              urls.extend(n.text for n in doc.iter() if n.tag.rsplit('}',1)[-1]=='loc')
+          for url in urls: local(url)
+          assert len(urls)==len(set(urls))
+          assert set(urls)=={p['url'] for p in pages if not p['noindex']}, 'sitemap_exact_routes_mismatch'
+          contract=dict(origin=origin,revision=m['revision'],pages=pages,articles=articles,
+              images=sorted(image_paths),sitemaps=['/sitemap-index.xml']+[local(x) for x in maps],files=actual)
+          Path('http-contract.json').write_text(json.dumps(contract,sort_keys=True,indent=2)+'\n')
+          config=dict(name='blog-fwith-prod-disabled',compatibility_date='2026-10-08',workers_dev=False,
+              assets=dict(directory='./dist/',not_found_handling='404-page',html_handling='auto-trailing-slash'))
+          Path('release/wrangler.publish.json').write_text(json.dumps(config,indent=2)+'\n')
+          Path('artifact-check.json').write_text(json.dumps(dict(state='artifact_verified',revision=m['revision'],
+              releaseSha256=os.environ['RELEASE_SHA256'],files=len(actual),articles=articles),indent=2)+'\n')
+          PY
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Recheck exact source before publishing
+        uses: actions/github-script@v7
+        env:
+          REVISION: ${{ inputs.expected_revision }}
+        with:
+          script: |
+            const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/site-factory-blog-fwith'});
+            if (data.object.type !== 'commit' || data.object.sha !== process.env.REVISION) throw new Error('Blog branch moved; do not publish stale source');
+      - name: GET-only existing binding check
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 control/site-factory/engine/blog_domain.py --registry control/.github/site-factory-sites.json --mode readback --report binding-before.json
+      - name: Update fixed existing Worker assets once
+        id: deploy
+        continue-on-error: true
+        working-directory: release
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_LOG_SANITIZE: 'true'
+          WRANGLER_SEND_METRICS: 'false'
+        run: |
+          if ! npx --yes wrangler@4.148.0 deploy --config wrangler.publish.json > "$RUNNER_TEMP/blog-assets-upload.log" 2>&1; then
+            echo 'Upload failed or uncertain. Inspect GET/HTTP evidence; do not rerun this mutation.'
+            exit 1
+          fi
+      - name: GET-only binding readback
+        id: binding
+        if: ${{ always() && (steps.deploy.outcome == 'success' || steps.deploy.outcome == 'failure') }}
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 control/site-factory/engine/blog_domain.py --registry control/.github/site-factory-sites.json --mode readback --report binding-after.json
+      - name: Verify exact public release and actual 404
+        id: http
+        if: ${{ always() && steps.binding.outcome == 'success' }}
+        continue-on-error: true
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,re,time
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.error import HTTPError
+          from urllib.parse import quote,urlsplit
+          from urllib.request import Request,build_opener,HTTPRedirectHandler
+          c=json.loads(Path('http-contract.json').read_text()); base=c['origin']
+          class NoRedirect(HTTPRedirectHandler):
+              def redirect_request(self,*args,**kwargs): return None
+          opener=build_opener(NoRedirect())
+          class Page(HTMLParser):
+              def __init__(self): super().__init__(); self.meta={}; self.canon=[]
+              def handle_starttag(self,tag,attrs):
+                  a=dict(attrs)
+                  if tag=='meta' and a.get('name'): self.meta[a['name'].lower()]=a.get('content','')
+                  if tag=='link' and a.get('rel')=='canonical': self.canon.append(a.get('href',''))
+          def get(path,status=200):
+              url=base+quote(path,safe='/%-._~')
+              req=Request(url,headers={'User-Agent':'SiteFactory-BlogPublishQA/1.0','Accept-Encoding':'identity'})
+              try: response=opener.open(req,timeout=15)
+              except HTTPError as error: response=error
+              with response:
+                  assert response.code==status, 'http_status_'+str(response.code)
+                  body=response.read(20*1024*1024+1); assert len(body)<=20*1024*1024, 'response_limit'
+                  return body,response.headers
+          def verify():
+              checked=[]
+              for item in c['pages']:
+                  path=urlsplit(item['url']).path; body,headers=get(path)
+                  assert headers.get('Content-Type','').lower().startswith('text/html'), 'html_content_type'
+                  h=Page(); h.feed(body.decode('utf-8'))
+                  assert h.meta.get('site-factory-revision')==c['revision'], 'public_revision_mismatch'
+                  assert h.canon==[item['url']], 'public_canonical_mismatch'
+                  expected={'noindex','nofollow'} if item['noindex'] else {'index','follow'}
+                  assert {x.strip().lower() for x in h.meta.get('robots','').split(',')}==expected, 'public_robots_meta'
+                  if not item['noindex']:
+                      assert not re.search(r'\b(noindex|nofollow|none)\b',','.join(headers.get_all('X-Robots-Tag',[])),re.I), 'public_noindex_header'
+                  checked.append(path)
+              for path in ['/robots.txt','/rss.xml',*c['sitemaps'],*c['images']]:
+                  body,headers=get(path)
+                  assert hashlib.sha256(body).hexdigest()==c['files'][path.lstrip('/')], 'public_asset_digest_mismatch'
+                  if path in c['images']: assert headers.get('Content-Type','').lower().startswith('image/'), 'image_content_type'
+                  checked.append(path)
+              body,headers=get('/.site-factory-missing-'+c['revision']+'/',404)
+              h=Page(); h.feed(body.decode('utf-8'))
+              assert h.meta.get('site-factory-revision')==c['revision'], 'wrong_404_revision'
+              assert 'noindex' in h.meta.get('robots','').lower(), '404_must_be_noindex'
+              assert hashlib.sha256(body).hexdigest()==c['files']['404.html'], 'wrong_404_body'
+              return checked
+          result=dict(state='publish_verification_failed',origin=base,revision=c['revision'])
+          for attempt in range(1,13):
+              try:
+                  checked=verify(); result.update(state='publish_verified',attempts=attempt,checkedPaths=checked); break
+              except Exception as error:
+                  result.update(attempts=attempt,lastFailure=type(error).__name__,failureCode=str(error) if isinstance(error,AssertionError) else 'request_or_parse_failed')
+                  if attempt<12: time.sleep(5)
+          Path('public-http.json').write_text(json.dumps(result,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(result,sort_keys=True))
+          assert result['state']=='publish_verified', 'public_release_unverified'
+          PY
+      - name: Retain safe release evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: blog-publish-result-${{ github.run_id }}
+          path: |
+            artifact-check.json
+            http-contract.json
+            binding-before.json
+            binding-after.json
+            public-http.json
+            release/release.json
+            release/wrangler.publish.json
+          if-no-files-found: warn
+      - name: Require verified result
+        if: always()
+        env:
+          DEPLOY: ${{ steps.deploy.outcome }}
+          BINDING: ${{ steps.binding.outcome }}
+          HTTP: ${{ steps.http.outcome }}
+        run: test "$DEPLOY" = success && test "$BINDING" = success && test "$HTTP" = success
