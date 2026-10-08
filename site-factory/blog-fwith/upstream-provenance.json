@@ -32,7 +32,11 @@
     "postcss.config.mjs",
     "scripts/copy-pagefind.mjs",
     "wrangler.jsonc",
-    "wrangler.staging.jsonc"
+    "wrangler.staging.jsonc",
+    "src/styles/theme.css",
+    "src/pages/og.png.ts",
+    "src/pages/posts/[...slug]/index.png.ts",
+    "public/licenses/NotoSansKR-OFL.txt"
   ],
   "excludedUpstreamCustomerContent": "English sample posts and the upstream author profile were removed from customer-facing routes.",
   "qaFile": "scripts/qa_static.py",
@@ -43,6 +47,22 @@
     "npmrc": "../../.npmrc: legacy-peer-deps=true",
     "verified": "npm ci followed by npm run build and scripts/qa_static.py with the staging preview environment"
   },
-  "removedStaleScaffoldFiles": ["astro.config.mjs"],
-  "notes": "No production publish, IndexNow submission, or search indexing is enabled during preview installation."
+  "removedStaleScaffoldFiles": [
+    "astro.config.mjs"
+  ],
+  "notes": "No production publish, IndexNow submission, or search indexing is enabled during preview installation.",
+  "fonts": {
+    "family": "Noto Sans KR",
+    "weights": [
+      400,
+      500,
+      700
+    ],
+    "format": "TTF",
+    "delivery": "Astro self-hosted provider assets; also used by Satori at build time",
+    "license": "SIL Open Font License 1.1",
+    "licenseFile": "public/licenses/NotoSansKR-OFL.txt",
+    "licenseSource": "https://github.com/google/fonts/blob/main/ofl/notosanskr/OFL.txt",
+    "licenseSourceBlob": "1c9f43281b8f216c5461fe9ac729afbade7724e4"
+  }
 }
