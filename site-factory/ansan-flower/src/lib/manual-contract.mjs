@@ -4,8 +4,8 @@ import crypto from 'node:crypto';
 import assert from 'node:assert/strict';
 import {validateManualRegions} from './manual-regions.mjs';
 import {loadSiteProducts} from './site-catalog.mjs';
-export const WRITER_ID='wr6d547b77f81df4c03dcb151d';
-export const EXPECTED_REVIEWER_ID='rvc2ed89ba6195167edeb9e7c1';
+export const WRITER_ID='60aca2bf-e351-4d63-971a-b8eb1095b0f8';
+export const EXPECTED_REVIEWER_ID='3eef5a0b-25df-4af7-97a8-fe838dd6d708';
 export const digest=value=>crypto.createHash('sha256').update(value).digest('hex');
 const read=(root,file)=>JSON.parse(fs.readFileSync(path.join(root,file),'utf8'));
 const files=(dir)=>fs.existsSync(dir)?fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?files(path.join(dir,e.name)):[path.join(dir,e.name)]):[];
@@ -71,7 +71,7 @@ export function validateManual(root,env=process.env) {
   assert(review.reviewerId&&review.reviewerId!==provenance.writerId,'Writer cannot approve own manual content');
   assert.equal(review.reviewerId,provenance.expectedReviewerId,'Unrecognized independent reviewer');
   assert.equal(review.writerId,provenance.writerId);assert(review.reviewedAt&&review.evidenceFile&&review.evidenceSha256,'Missing independent review evidence');
-  assert.equal(review.evidenceFile,'src/data/manual-review-evidence.json','Untrusted evidence location');
+  assert.equal(review.evidenceFile,'src/data/manual-supplemental-review-evidence-20261008.json','Untrusted evidence location');
   const evidenceBytes=fs.readFileSync(path.join(root,review.evidenceFile));assert.equal(digest(evidenceBytes),review.evidenceSha256,'Review evidence bytes drift');
   const evidence=JSON.parse(evidenceBytes);assert.equal(evidence.status,'approved');assert.equal(evidence.kind,'independent-manual-content-review');assert.equal(evidence.reviewerId,review.reviewerId);assert.equal(evidence.writerId,provenance.writerId);assert(evidence.checkedCustomerFields===true&&evidence.checkedSources===true&&evidence.checkedRenderer===true,'Incomplete independent review');
   for(const key of ['contentHash','catalogHash','codeHash','pageMapHash','assetHash','bundleHash']){assert.equal(review[key],hashes[key],'Review digest drift '+key);assert.equal(evidence[key],hashes[key],'Evidence digest drift '+key);}
