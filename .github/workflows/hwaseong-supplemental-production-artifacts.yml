@@ -1,0 +1,191 @@
+name: Hwaseong reviewed production artifacts over loopback
+
+on:
+  push:
+    branches: [manual-hwaseong-supplement-artifacts-20261008]
+    paths:
+      - 'site-factory/hwaseong-flower/**'
+      - '.github/workflows/hwaseong-supplemental-production-artifacts.yml'
+      - '.github/scripts/hwaseong-supplemental-production-capture.mjs'
+      - '.github/scripts/hwaseong-supplemental-production-manifest.py'
+      - '.github/workflows/hwaseong-manual-release-20261007.yml'
+      - '.github/scripts/hwaseong-supplemental-artifacts.mjs'
+      - '.github/scripts/hwaseong-supplemental-artifacts.test.mjs'
+
+permissions:
+  contents: read
+
+jobs:
+  preview-evidence:
+    if: github.ref == 'refs/heads/manual-hwaseong-supplement-artifacts-20261008'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      MANUAL_PREVIEW: 'false'
+      SITE_ORIGIN: https://hwaseong.fwith.kr
+      SITE_URL: https://hwaseong.fwith.kr
+      SITE_INDEXABLE: 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Assert read-only source-C evidence boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "XDG_CONFIG_HOME=$RUNNER_TEMP/hwaseong-source-c-config" >> "$GITHUB_ENV"
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/hwaseong-manual-playwright" >> "$GITHUB_ENV"
+          test "$GITHUB_REF" = 'refs/heads/manual-hwaseong-supplement-artifacts-20261008'
+          test "$SITE_URL" = 'https://hwaseong.fwith.kr'
+          test "$SITE_INDEXABLE" = 'true'
+          test "$SITE_ORIGIN" = 'https://hwaseong.fwith.kr'
+          mkdir -p hwaseong-source-c-evidence
+          test "$MANUAL_PREVIEW" = 'false'
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor 3225fcf46b31d511a15ce865cddad690f2dd4480 HEAD
+          node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("site-factory/hwaseong-flower/src/data/manual-provenance.json")); if(p.releaseHash!=="e080df03daa26fd43d5a0e1a925f5b15e462482d7597d8c4688c446d0bfabc20"||p.independentReview.status!=="approved")throw Error("Native independent review pending"); fs.writeFileSync("hwaseong-source-c-evidence/revision.json",JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,provenance:p,deploymentPerformed:false},null,2));'
+      - name: Install native site dependencies
+        working-directory: site-factory/hwaseong-flower
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Native approved indexable production-origin build
+        shell: bash
+        working-directory: site-factory/hwaseong-flower
+        run: |
+          set -euo pipefail
+          npm run build 2>&1 | tee "$GITHUB_WORKSPACE/hwaseong-source-c-evidence/native-build.log"
+      - name: Record and independently reproduce exact artifact bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/hwaseong-supplemental-production-manifest.py record
+          (cd site-factory/hwaseong-flower && npm run build) 2>&1 | tee hwaseong-source-c-evidence/rebuild.log
+          python3 .github/scripts/hwaseong-supplemental-production-manifest.py verify
+      - name: Native regression tests
+        shell: bash
+        working-directory: site-factory/hwaseong-flower
+        run: |
+          set -euo pipefail
+          node --test scripts/*.test.mjs tests/*.test.mjs 2>&1 | tee "$GITHUB_WORKSPACE/hwaseong-source-c-evidence/native-tests.log"
+      - name: Native production static and genuine approval verification
+        shell: bash
+        working-directory: site-factory/hwaseong-flower
+        run: |
+          set -euo pipefail
+          python3 scripts/qa_static.py 2>&1 | tee "$GITHUB_WORKSPACE/hwaseong-source-c-evidence/static-qa.log"
+          node scripts/validate_manual.mjs
+          npm list --json > "$GITHUB_WORKSPACE/hwaseong-source-c-evidence/site-dependencies.json"
+      - name: Install pinned official Playwright and Korean fonts
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix "$PLAYWRIGHT_INSTALL_ROOT" --no-save --no-package-lock playwright@1.63.0
+          "$PLAYWRIGHT_INSTALL_ROOT/node_modules/.bin/playwright" install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          fc-match 'Noto Sans CJK KR' > hwaseong-source-c-evidence/font-match.txt
+          npm list --prefix "$PLAYWRIGHT_INSTALL_ROOT" --json > hwaseong-source-c-evidence/playwright-dependencies.json
+      - name: Capture production artifact over loopback transport
+        run: node .github/scripts/hwaseong-supplemental-production-capture.mjs
+      - name: Partition original evidence without recompression
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test .github/scripts/hwaseong-supplemental-artifacts.test.mjs
+          node --input-type=module -e "import {partitionEvidence} from './.github/scripts/hwaseong-supplemental-artifacts.mjs';partitionEvidence('hwaseong-source-c-evidence');"
+      - name: Retain logs and full capture manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-supplemental-production-pixels-${{ github.sha }}-${{ github.run_attempt }}-logs
+          path: hwaseong-source-c-evidence/parts/logs/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 01
+        if: always() && hashFiles('hwaseong-source-c-evidence/parts/screens-01/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-supplemental-production-pixels-${{ github.sha }}-${{ github.run_attempt }}-screens-01
+          path: hwaseong-source-c-evidence/parts/screens-01/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 02
+        if: always() && hashFiles('hwaseong-source-c-evidence/parts/screens-02/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-supplemental-production-pixels-${{ github.sha }}-${{ github.run_attempt }}-screens-02
+          path: hwaseong-source-c-evidence/parts/screens-02/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 03
+        if: always() && hashFiles('hwaseong-source-c-evidence/parts/screens-03/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-supplemental-production-pixels-${{ github.sha }}-${{ github.run_attempt }}-screens-03
+          path: hwaseong-source-c-evidence/parts/screens-03/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 04
+        if: always() && hashFiles('hwaseong-source-c-evidence/parts/screens-04/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-supplemental-production-pixels-${{ github.sha }}-${{ github.run_attempt }}-screens-04
+          path: hwaseong-source-c-evidence/parts/screens-04/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 05
+        if: always() && hashFiles('hwaseong-source-c-evidence/parts/screens-05/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-supplemental-production-pixels-${{ github.sha }}-${{ github.run_attempt }}-screens-05
+          path: hwaseong-source-c-evidence/parts/screens-05/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 06
+        if: always() && hashFiles('hwaseong-source-c-evidence/parts/screens-06/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-supplemental-production-pixels-${{ github.sha }}-${{ github.run_attempt }}-screens-06
+          path: hwaseong-source-c-evidence/parts/screens-06/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 07
+        if: always() && hashFiles('hwaseong-source-c-evidence/parts/screens-07/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-supplemental-production-pixels-${{ github.sha }}-${{ github.run_attempt }}-screens-07
+          path: hwaseong-source-c-evidence/parts/screens-07/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain original screenshots 08
+        if: always() && hashFiles('hwaseong-source-c-evidence/parts/screens-08/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-supplemental-production-pixels-${{ github.sha }}-${{ github.run_attempt }}-screens-08
+          path: hwaseong-source-c-evidence/parts/screens-08/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Retain exact production artifact bytes
+        uses: actions/upload-artifact@v4
+        with:
+          name: hwaseong-supplemental-production-dist-${{ github.sha }}-${{ github.run_attempt }}
+          path: site-factory/hwaseong-flower/dist/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+

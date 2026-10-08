@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';import crypto from 'node:crypto';import 
 export const digest=b=>crypto.createHash('sha256').update(b).digest('hex');
 export const releaseDigest=bindings=>digest(JSON.stringify(Object.entries(bindings).sort(([a],[b])=>a.localeCompare(b))));
 export const RULE_REVISION='8986a1936615cd0d814b816db7816488e40bacc1';
-export const EXPECTED_REVIEWER='independent-suwon-hwaseong-review-20261007';
+export const EXPECTED_REVIEWER='supplement-guide-review-89bc7a8013c04401';
 export const PINNED_RULE_HASHES={
  'quality/rules/sources/site_factory_query_first_v1_1_test.md':'2a5ccd0a033f832df02f172cc3f09445f03c7d18b44af722264fad275d46488f',
  'quality/rules/sources/site_factory_rules_v1.md':'571e445716658eaf79e9583c54ee1e0c3204cdaa9c400f1eb67dd2816769db3d',
