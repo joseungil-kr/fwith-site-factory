@@ -12,7 +12,8 @@ ORIGIN='https://yongin.fwith.kr'
 REPO='joseungil-kr/fwith-site-factory'
 KEY='92c88bd5983202f9f0f07ce422cfc19de89603d8bf1e14d3685724b3b5193c98'
 M4_SHA256='ad1b8ba2667f992e39875bbfc4b819578e9f25770ecbf4d20848af6312d59e39'
-EXPECTED_FILES=122
+# Exact BC regular-file inventory verified in run 37706728150; excludes directories.
+EXPECTED_FILES=70
 EXPECTED_HTML=47
 class NoRedirect(HTTPRedirectHandler):
  def redirect_request(self,*args,**kwargs):return None
