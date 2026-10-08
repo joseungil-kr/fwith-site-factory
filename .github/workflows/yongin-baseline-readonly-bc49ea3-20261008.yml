@@ -1,0 +1,75 @@
+name: Yongin immutable baseline GET-only evidence
+on:
+  push:
+    branches: [manual-yongin-baseline-readonly-bc49ea3-20261008]
+    paths:
+      - '.github/workflows/yongin-baseline-readonly-bc49ea3-20261008.yml'
+      - '.github/scripts/yongin-baseline-readonly-bc49ea3-20261008.py'
+permissions:
+  contents: read
+concurrency:
+  group: yongin-baseline-readonly-bc49ea3-20261008
+  cancel-in-progress: false
+jobs:
+  collect:
+    if: github.ref == 'refs/heads/manual-yongin-baseline-readonly-bc49ea3-20261008'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_URL: https://yongin.fwith.kr
+      SITE_ORIGIN: https://yongin.fwith.kr
+      SITE_INDEXABLE: 'true'
+      HERO_PATH: images/yongin/hero-B-original.png
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check out immutable existing production source
+        uses: actions/checkout@v4
+        with:
+          ref: bc49ea311ceebdc304288acf60b636cdb296d83c
+          path: target
+          persist-credentials: false
+      - name: Check out immutable reviewed M4 byte comparator
+        uses: actions/checkout@v4
+        with:
+          ref: 69a7fee6a64a21443be19eca50d734d9652a968c
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.3'
+      - name: Build existing production source without publishing
+        working-directory: target/site-factory/yongin-flower
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 'bc49ea311ceebdc304288acf60b636cdb296d83c'
+          mkdir -p "$GITHUB_WORKSPACE/yongin-baseline-evidence"
+          git ls-tree -r HEAD -- . > "$GITHUB_WORKSPACE/yongin-baseline-evidence/source-tree.txt"
+          # Original source has no package lock. Do not change its source or gates.
+          npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+          npm list --json > "$GITHUB_WORKSPACE/yongin-baseline-evidence/dependencies.json"
+          npm run build 2>&1 | tee "$GITHUB_WORKSPACE/yongin-baseline-evidence/build.log"
+          python3 scripts/qa_static.py
+          node scripts/qa_site_graph.mjs
+          python3 ../../.github/scripts/test-yongin-release-qa.py
+          python3 - <<'PY'
+          import pathlib,shutil
+          dist=pathlib.Path('dist');out=pathlib.Path('../../../yongin-baseline-evidence/expected-html')
+          for f in sorted(dist.rglob('*.html')):
+            target=out/f.relative_to(dist);target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(f,target)
+          PY
+      - name: GET-only exact live artifacts and source-bound receipts
+        run: >-
+          python3 .github/scripts/yongin-baseline-readonly-bc49ea3-20261008.py
+          --target target --control control --out yongin-baseline-evidence
+      - name: Retain baseline proof and all response bodies
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: yongin-baseline-bc49ea3-${{ github.sha }}-${{ github.run_attempt }}
+          path: yongin-baseline-evidence/
+          if-no-files-found: error
+          retention-days: 14
