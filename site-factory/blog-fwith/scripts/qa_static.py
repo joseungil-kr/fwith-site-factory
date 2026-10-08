@@ -11,11 +11,11 @@ pages=sorted(root.glob('**/*.html')); require(pages,'no_html_routes'); home=read
 require('https://fwith.co.kr' in home,'brand_cta_missing'); require(origin.startswith('https://'),'site_url_missing')
 posts=[p for p in pages if p.as_posix().startswith('dist/posts/') and p.name=='index.html' and p.parent.name!='posts']; require(posts,'no_published_posts')
 if indexable:
- require('Allow: /' in robots,'robots_allow_missing'); require(not (root/'_headers').exists(),'indexable_noindex_header_present')
+ require('Allow: /' in robots,'robots_allow_missing'); require('/*\n  X-Robots-Tag: noindex' not in read('_headers'),'indexable_blanket_noindex_header_present')
 else:
  require('Disallow: /' in robots,'robots_block_missing'); require('noindex' in read('_headers'),'noindex_header_missing')
 for p in pages:
- h=p.read_text(encoding='utf-8'); rel=p.relative_to(root).as_posix(); forced=rel in {'404.html','search/index.html'}; expected='index,follow' if indexable and not forced else 'noindex,nofollow'
+ h=p.read_text(encoding='utf-8'); rel=p.relative_to(root).as_posix(); forced=rel in {'404.html','search/index.html','archives/index.html'}; expected='index,follow' if indexable and not forced else 'noindex,nofollow'
  require(f'name="robots" content="{expected}"' in h,f'robots_meta_mismatch:{rel}'); require(f'name="site-factory-revision" content="{revision}"' in h,f'revision_meta_missing:{rel}')
  c=re.search(r'<link rel="canonical" href="([^"]+)"',h); require(c and c.group(1).startswith(origin+'/'),f'canonical_origin_mismatch:{rel}')
  for a in re.findall(r'(?:src|href)="(/[^\"]+)"',h):
