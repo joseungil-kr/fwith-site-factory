@@ -1,0 +1,204 @@
+name: Blog Custom Domain Noindex Preview
+on:
+  workflow_dispatch:
+    inputs:
+      expected_revision:
+        description: Exact tested 40-character blog source SHA
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: blog-fwith-custom-domain-initial
+  cancel-in-progress: false
+jobs:
+  build:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Authorize exact first-attempt source
+        uses: actions/github-script@v7
+        env:
+          REVISION: ${{ inputs.expected_revision }}
+        with:
+          script: |
+            if (!/^[0-9a-f]{40}$/.test(process.env.REVISION)) throw new Error('Full source SHA required');
+            if (process.env.GITHUB_RUN_ATTEMPT !== '1') throw new Error('Mutation reruns disabled');
+            const owner=context.payload.repository.owner;
+            if (!(owner.type==='User' && context.actor===owner.login)) {
+              const {data}=await github.rest.repos.getCollaboratorPermissionLevel({...context.repo,username:context.actor});
+              if (!['admin','maintain','write'].includes(data.permission)) throw new Error('Untrusted actor');
+            }
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.expected_revision }}
+          path: target
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify source ancestry
+        working-directory: target
+        env:
+          REVISION: ${{ inputs.expected_revision }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$REVISION"
+          git merge-base --is-ancestor "$REVISION" origin/site-factory-blog-fwith
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build noindex artifact
+        working-directory: target/site-factory/blog-fwith
+        env:
+          ASTRO_TELEMETRY_DISABLED: '1'
+          SITE_URL: https://blog.fwith.kr
+          SITE_INDEXABLE: 'false'
+          SITE_FACTORY_REVISION: ${{ inputs.expected_revision }}
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+          python3 scripts/qa_static.py
+      - name: Package artifact
+        env:
+          REVISION: ${{ inputs.expected_revision }}
+        run: |
+          mkdir -p release
+          cp -R target/site-factory/blog-fwith/dist release/dist
+          python3 - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          root=Path('release/dist')
+          files={}
+          for p in sorted(root.rglob('*')):
+              assert not p.is_symlink()
+              if p.is_file(): files[p.relative_to(root).as_posix()]=hashlib.sha256(p.read_bytes()).hexdigest()
+          assert files and 'index.html' in files and '_headers' in files
+          Path('release/release.json').write_text(json.dumps(dict(revision=os.environ['REVISION'],origin='https://blog.fwith.kr',worker='blog-fwith-prod-disabled',indexable=False,files=files),sort_keys=True,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: blog-domain-build-${{ github.run_id }}
+          path: release/
+          include-hidden-files: true
+          if-no-files-found: error
+  initial-domain:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Reject reruns
+        run: test "$GITHUB_RUN_ATTEMPT" = 1
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: blog-domain-build-${{ github.run_id }}
+          path: release
+      - name: Validate registry, artifact and route-less config
+        env:
+          REVISION: ${{ inputs.expected_revision }}
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,sys
+          from pathlib import Path
+          sys.path.insert(0,'control/site-factory/engine')
+          from blog_domain import validate_registry
+          validate_registry(Path('control/.github/site-factory-sites.json'))
+          root=Path('release/dist')
+          m=json.loads(Path('release/release.json').read_text())
+          assert m['revision']==os.environ['REVISION'] and m['origin']=='https://blog.fwith.kr' and m['worker']=='blog-fwith-prod-disabled' and m['indexable'] is False
+          actual={}
+          for p in sorted(root.rglob('*')):
+              assert not p.is_symlink()
+              if p.is_file(): actual[p.relative_to(root).as_posix()]=hashlib.sha256(p.read_bytes()).hexdigest()
+          assert actual==m['files']
+          Path('release/wrangler.domain.json').write_text(json.dumps({'name':'blog-fwith-prod-disabled','compatibility_date':'2026-10-08','workers_dev':False,'assets':{'directory':'./dist/','not_found_handling':'404-page','html_handling':'auto-trailing-slash'}},indent=2)+'\n')
+          PY
+      - name: GET-only initial collision preflight
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 control/site-factory/engine/blog_domain.py --registry control/.github/site-factory-sites.json --mode preflight --report domain-before.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Upload new fixed Worker assets
+        working-directory: release
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_LOG_SANITIZE: 'true'
+          WRANGLER_SEND_METRICS: 'false'
+        run: |
+          if ! npx --yes wrangler@4.148.0 deploy --config wrangler.domain.json > "$RUNNER_TEMP/blog-domain-upload.log" 2>&1; then
+            echo 'Upload failed or uncertain. Never rerun; inspect provider state.'
+            exit 1
+          fi
+      - name: Create attach intent
+        env:
+          REVISION: ${{ inputs.expected_revision }}
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          Path('attach-intent.json').write_text(json.dumps({'repository':os.environ['GITHUB_REPOSITORY'],'runId':os.environ['GITHUB_RUN_ID'],'revision':os.environ['REVISION'],'hostname':'blog.fwith.kr','worker':'blog-fwith-prod-disabled','indexable':False,'override_scope':False,'override_existing_origin':False,'override_existing_dns_record':False,'preflightSha256':hashlib.sha256(Path('domain-before.json').read_bytes()).hexdigest(),'releaseSha256':hashlib.sha256(Path('release/release.json').read_bytes()).hexdigest()},sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Persist intent before PUT
+        uses: actions/upload-artifact@v4
+        with:
+          name: blog-domain-intent-${{ github.run_id }}
+          path: attach-intent.json
+          if-no-files-found: error
+      - uses: actions/download-artifact@v4
+        with:
+          name: blog-domain-intent-${{ github.run_id }}
+          path: intent-readback
+      - run: cmp attach-intent.json intent-readback/attach-intent.json
+      - name: Single no-override attach
+        id: attach
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 control/site-factory/engine/blog_domain.py --registry control/.github/site-factory-sites.json --mode attach --report domain-attach.json
+      - name: GET-only binding readback
+        id: readback
+        if: ${{ always() && steps.attach.outcome != 'skipped' }}
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 control/site-factory/engine/blog_domain.py --registry control/.github/site-factory-sites.json --mode readback --report domain-after.json
+      - name: Verify custom-host noindex source
+        id: http
+        if: steps.attach.outcome == 'success' && steps.readback.outcome == 'success'
+        continue-on-error: true
+        env:
+          REVISION: ${{ inputs.expected_revision }}
+        run: python3 control/site-factory/engine/verify_preview.py --origin https://blog.fwith.kr --revision "$REVISION" --report custom-host-http.json
+      - name: Retain safe evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: blog-domain-result-${{ github.run_id }}
+          path: |
+            domain-before.json
+            attach-intent.json
+            domain-attach.json
+            domain-after.json
+            custom-host-http.json
+            release/release.json
+            release/wrangler.domain.json
+          if-no-files-found: warn
+      - name: Require verified result
+        if: always()
+        env:
+          ATTACH: ${{ steps.attach.outcome }}
+          READBACK: ${{ steps.readback.outcome }}
+          HTTP: ${{ steps.http.outcome }}
+        run: |
+          test "$ATTACH" = success && test "$READBACK" = success && test "$HTTP" = success
