@@ -55,8 +55,10 @@ def collect(target,control,out):
  spec=importlib.util.spec_from_file_location('m4',verifier);m4=importlib.util.module_from_spec(spec);spec.loader.exec_module(m4)
  dist=target/'site-factory/yongin-flower/dist';require(dist.is_dir(),'missing_dist')
  files={str(p.relative_to(dist)):p for p in sorted(dist.rglob('*')) if p.is_file()}
- require(len(files)==EXPECTED_FILES,'unexpected_artifact_count')
  manifest={name:digest(p.read_bytes()) for name,p in files.items()};save(out/'artifact-manifest.json',manifest)
+ inventory={'sourceRevision':SOURCE,'expectedTotalFiles':EXPECTED_FILES,'actualTotalFiles':len(files),'htmlFiles':sum(p.suffix=='.html' for p in files.values()),'unservedControls':[name for name in ('_headers','_redirects') if name in files],'artifactManifestFileSha256':digest((out/'artifact-manifest.json').read_bytes())}
+ save(out/'artifact-inventory-status.json',inventory);print(json.dumps(inventory),flush=True)
+ require(len(files)==EXPECTED_FILES,'unexpected_artifact_count')
  headers=m4.rules(dist/'_headers');rows=[];html_map={};cached={}
  check_source()
  def fetch(path,route,status):
@@ -104,5 +106,5 @@ def main():
  args.out.mkdir(parents=True,exist_ok=True)
  try:collect(args.target,args.control,args.out)
  except Exception as error:
-  save(args.out/'failure.json',{'passed':False,'exceptionClass':type(error).__name__,'reason':str(error) if isinstance(error,ValueError) and re.fullmatch('[a-z0-9_]+',str(error)) else 'verification_failed','sourceRevision':SOURCE});raise SystemExit(1)
+  failure={'passed':False,'exceptionClass':type(error).__name__,'reason':str(error) if isinstance(error,ValueError) and re.fullmatch('[a-z0-9_]+',str(error)) else 'verification_failed','sourceRevision':SOURCE};save(args.out/'failure.json',failure);print(json.dumps(failure),flush=True);raise SystemExit(1)
 if __name__=='__main__':main()
