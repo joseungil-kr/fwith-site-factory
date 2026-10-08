@@ -1,0 +1,237 @@
+name: Ansan supplemental actual-public read-only verification
+on:
+  push:
+    branches: [manual-ansan-supplemental-public-check-20261008]
+    paths:
+      - '.github/workflows/ansan-hosted-readonly-20261007.yml'
+      - '.github/scripts/ansan-hosted-readonly-20261007.mjs'
+      - '.github/scripts/ansan-hosted-receipts-20261007.py'
+      - '.github/scripts/ansan-hosted-source-binding-20261008.json'
+permissions:
+  contents: read
+jobs:
+  inspect:
+    if: github.ref == 'refs/heads/manual-ansan-supplemental-public-check-20261008'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_FACTORY_REVISION: a8116e0991c9a009ab1bfa085510fb1066cced9e
+      SITE_URL: https://ansan.fwith.kr
+      SITE_ORIGIN: https://ansan.fwith.kr
+      SITE_INDEXABLE: 'true'
+      MANUAL_QA_PHASE: production
+      MANUAL_HOSTED_PRODUCTION: 'true'
+      VERIFIED_UPLOAD_RUN_ID: '37726484131'
+      VERIFIED_PROVIDER_VERSION: '9c4c54d0-cfc4-49f7-92d3-7532e9f55b62'
+      VERIFIED_AUTHORITY_REVISION: 'dcdfb7eb67098c56fe1f24e727f2907ddf8b9cce'
+      VERIFIED_UPLOAD_RECEIPT_SHA256: '35aada7ebe51473d180561a574ab4165db0c8e6dafd28d0834c9dcbc7b15c11f'
+    steps:
+      - name: Check out actual read-only execution revision
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check out immutable deployed source
+        uses: actions/checkout@v4
+        with:
+          ref: a8116e0991c9a009ab1bfa085510fb1066cced9e
+          path: target
+          persist-credentials: false
+      - name: Check out immutable reviewed read-only M4 verifier
+        uses: actions/checkout@v4
+        with:
+          ref: 69a7fee6a64a21443be19eca50d734d9652a968c
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build exact expected deployed artifact
+        shell: bash
+        working-directory: target/site-factory/ansan-flower
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 'a8116e0991c9a009ab1bfa085510fb1066cced9e'
+          python3 - <<'PYSOURCE'
+          import hashlib,json,pathlib,subprocess
+          root=pathlib.Path('../../').resolve();binding=json.loads(pathlib.Path('../../../.github/scripts/ansan-hosted-source-binding-20261008.json').read_text())
+          assert subprocess.check_output(['git','rev-parse','HEAD']).decode().strip()==binding['revision']
+          for p,expected in {**binding['sourceFiles'],**binding['executionFiles']}.items():
+            data=subprocess.check_output(['git','show',binding['revision']+':'+p]);assert hashlib.sha256(data).hexdigest()==expected,p
+          assert len(binding['sourceFiles'])==134 and len(binding['executionFiles'])==10
+          assert hashlib.sha256(json.dumps(binding['sourceFiles'],sort_keys=True,separators=(',',':')).encode()).hexdigest()==binding['sourceManifestSha256']
+          PYSOURCE
+          npm install --no-package-lock --no-audit --no-fund
+          npm run build
+          node --test scripts/*.test.mjs tests/*.test.mjs
+          python3 scripts/qa_static.py
+          node scripts/qa_site_graph.mjs
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          d=pathlib.Path('dist');m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob('*')) if f.is_file()}
+          assert len(m)==71
+          assert hashlib.sha256(json.dumps(m,sort_keys=True,separators=(',',':')).encode()).hexdigest()=='c3acc22df8270cbde058c6c1fcf1edae99eb76d557c03f6032cbbd5086d95523'
+          PY
+      - name: Fail closed until reviewed upload provenance is frozen
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PYPINS'
+          import os,re
+          pins={'VERIFIED_UPLOAD_RUN_ID':r'[0-9]+','VERIFIED_PROVIDER_VERSION':r'[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}','VERIFIED_AUTHORITY_REVISION':r'[a-f0-9]{40}','VERIFIED_UPLOAD_RECEIPT_SHA256':r'[a-f0-9]{64}'}
+          for key,pattern in pins.items():assert re.fullmatch(pattern,os.environ.get(key,'')), 'Pending or invalid verified upload pin: '+key
+          PYPINS
+      - name: Verify every live byte with reviewed M4 verifier and fixed application client
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import ast,hashlib,json,pathlib,subprocess
+          out=pathlib.Path('ansan-hosted-http');out.mkdir(exist_ok=True)
+          policy=out/'fixed-public-origin-policy.json';policy.write_text(json.dumps({'productionOrigin':'https://ansan.fwith.kr'})+'\n')
+          result=subprocess.run(['python3','control/scripts/manual-release-20261007/verify_http.py',str(policy),'production','target/site-factory/ansan-flower/dist','a8116e0991c9a009ab1bfa085510fb1066cced9e'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+          private=result.stdout+result.stderr;(out/'m4-private-output.txt').write_bytes(private)
+          report={'passed':result.returncode==0,'exitCode':result.returncode,'privateDiagnosticSha256':hashlib.sha256(private).hexdigest(),'exceptionClass':None,'routeSha256':None}
+          if result.returncode:
+            last=result.stderr.decode(errors='replace').splitlines()[-1] if result.stderr else ''
+            kind,_,value=last.partition(':')
+            if kind.isidentifier():report['exceptionClass']=kind
+            try:
+              values=ast.literal_eval(value.strip())
+              route=next((v for v in values if isinstance(v,str) and v.startswith('/')),None) if isinstance(values,tuple) else None
+              if route is not None:report['routeSha256']=hashlib.sha256(route.encode()).hexdigest()
+            except (ValueError,SyntaxError):pass
+          (out/'m4-cli-status.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report));raise SystemExit(result.returncode)
+          PY
+      - name: Retain every verified live response without identity fallback
+        run: python3 .github/scripts/ansan-hosted-receipts-20261007.py
+      - name: Install pinned capture client and Korean fonts
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/ansan-readonly-playwright" >> "$GITHUB_ENV"
+          npm install --prefix "$RUNNER_TEMP/ansan-readonly-playwright" --no-save --no-package-lock playwright@1.63.0
+          "$RUNNER_TEMP/ansan-readonly-playwright/node_modules/.bin/playwright" install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+      - name: Capture actual hosted pixels with separate execution and deployed revisions
+        run: node .github/scripts/ansan-hosted-readonly-20261007.mjs
+      - name: Enforce retrievable evidence chunks
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import pathlib
+          root=pathlib.Path('target/ansan-production-evidence')
+          import shutil,hashlib
+          files=sorted((root/'screenshots').rglob('*.jpg'));assert len(files)<=94
+          for i in range(6):
+            selected=files[i*16:(i+1)*16]
+            if not selected:continue
+            out=root/'parts'/('screens-'+str(i+1).zfill(2));out.mkdir(parents=True,exist_ok=True)
+            for f in selected:
+              dest=out/(f.parent.name+'-'+f.name);shutil.copyfile(f,dest);assert hashlib.sha256(f.read_bytes()).digest()==hashlib.sha256(dest.read_bytes()).digest()
+            assert sum(f.stat().st_size for f in out.glob('*.jpg'))<24*1024*1024
+          PY
+      - name: Bound retained diagnostics even after failed HTTP or capture
+        id: bounds
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PYBOUNDS'
+          import pathlib
+          root=pathlib.Path('target/ansan-production-evidence')
+          assert sum(f.stat().st_size for f in root.glob('*.json'))<24*1024*1024
+          assert sum(f.stat().st_size for part in ['browser-html','browser-input','browser-receipts','browser-private-failures'] for f in (root/part).rglob('*') if f.is_file())<24*1024*1024
+          assert sum(f.stat().st_size for f in pathlib.Path('ansan-hosted-http').rglob('*') if f.is_file())<24*1024*1024
+          for part in (root/'parts').glob('*'):
+            assert sum(f.stat().st_size for f in part.rglob('*') if f.is_file())<24*1024*1024
+          PYBOUNDS
+      - name: Retain live HTTP response bodies and receipts
+        if: always() && steps.bounds.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ansan-supplemental-public-http-${{ github.sha }}-${{ github.run_attempt }}
+          path: ansan-hosted-http/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Retain hosted capture facts
+        if: always() && steps.bounds.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ansan-supplemental-public-facts-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/ansan-production-evidence/*.json
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Retain original hosted pixels 01
+        if: always() && steps.bounds.outcome == 'success' && hashFiles('target/ansan-production-evidence/parts/screens-01/*.jpg') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: ansan-supplemental-public-screens-01-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/ansan-production-evidence/parts/screens-01/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Retain original hosted pixels 02
+        if: always() && steps.bounds.outcome == 'success' && hashFiles('target/ansan-production-evidence/parts/screens-02/*.jpg') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: ansan-supplemental-public-screens-02-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/ansan-production-evidence/parts/screens-02/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Retain original hosted pixels 03
+        if: always() && steps.bounds.outcome == 'success' && hashFiles('target/ansan-production-evidence/parts/screens-03/*.jpg') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: ansan-supplemental-public-screens-03-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/ansan-production-evidence/parts/screens-03/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Retain original hosted pixels 04
+        if: always() && steps.bounds.outcome == 'success' && hashFiles('target/ansan-production-evidence/parts/screens-04/*.jpg') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: ansan-supplemental-public-screens-04-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/ansan-production-evidence/parts/screens-04/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Retain original hosted pixels 05
+        if: always() && steps.bounds.outcome == 'success' && hashFiles('target/ansan-production-evidence/parts/screens-05/*.jpg') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: ansan-supplemental-public-screens-05-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/ansan-production-evidence/parts/screens-05/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Retain original hosted pixels 06
+        if: always() && steps.bounds.outcome == 'success' && hashFiles('target/ansan-production-evidence/parts/screens-06/*.jpg') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: ansan-supplemental-public-screens-06-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/ansan-production-evidence/parts/screens-06/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Retain actual browser HTML and immutable comparison receipts
+        if: always() && steps.bounds.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ansan-supplemental-public-browser-bodies-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            target/ansan-production-evidence/browser-html/
+            target/ansan-production-evidence/browser-input/
+            target/ansan-production-evidence/browser-receipts/
+            target/ansan-production-evidence/browser-private-failures/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
