@@ -22,4 +22,4 @@ for(const p of manual.pages){
 }
 if(coverage.places.length!==42||new Set(coverage.places.map(p=>p.name)).size!==42)throw Error('Incomplete crosswalk');
 for(const p of coverage.places)if(!urls.has(p.url))throw Error('Crosswalk dead URL');
-console.log(JSON.stringify({manualIntegrity:'PASS',manualRows:manual.pages.length,activeArticles:effectiveManifest.pages.length,crosswalkNames:42,localCompleteness:'NOT_CLAIMED',artifactDigest:artifactDigest(),reviewState:JSON.parse(fs.readFileSync('src/data/manual-release-review.json','utf8')).decision}));
+console.log(JSON.stringify({manualIntegrity:'PASS',manualRows:manual.pages.length,activeArticles:effectiveManifest.pages.length,crosswalkNames:42,localCompleteness:'NOT_CLAIMED',artifactDigest:artifactDigest(),reviewState:JSON.parse(fs.readFileSync('src/data/manual-supplemental-review-20261007.json','utf8')).decision}));

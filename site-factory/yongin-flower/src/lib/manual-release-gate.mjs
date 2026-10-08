@@ -4,14 +4,14 @@ import crypto from 'node:crypto';
 const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'../..');
 const digest=s=>crypto.createHash('sha256').update(s).digest('hex');
 export function artifactInventory(){
- const paths=[];const walk=dir=>{for(const e of fs.readdirSync(path.join(root,dir),{withFileTypes:true})){const rel=dir+'/'+e.name;if(e.isDirectory())walk(rel);else if(e.isFile()&&!['src/data/build-revision.json','src/data/manual-release-review.json'].includes(rel))paths.push(rel);}};
+ const paths=[];const walk=dir=>{for(const e of fs.readdirSync(path.join(root,dir),{withFileTypes:true})){const rel=dir+'/'+e.name;if(e.isDirectory())walk(rel);else if(e.isFile()&&!['src/data/build-revision.json','src/data/manual-release-review.json','src/data/manual-supplemental-review-20261007.json'].includes(rel))paths.push(rel);}};
  for(const dir of ['src','scripts','public'])walk(dir);
  for(const file of ['package.json','astro.config.mjs'])paths.push(file);
  return paths.sort().map(file=>({file,sha256:digest(fs.readFileSync(path.join(root,file)))}));
 }
 export function artifactDigest(){return digest(JSON.stringify(artifactInventory()));}
-export const assignedWriter='writer-yongin-01';
-export const assignedReviewer='reviewer-regional-02';
+export const assignedWriter='bf80b5b2-7a03-4e58-8ec1-0f855389ba48';
+export const assignedReviewer='supplement-guide-review-89bc7a8013c04401';
 export const releaseOrigin='https://yongin.fwith.kr';
 export function isLocalNoindexPreview(env){
  if(env.SITE_INDEXABLE!=='false'||!env.SITE_URL)return false;
@@ -35,7 +35,7 @@ export function assertManualProductionReady(){
  const target=new URL(process.env.SITE_URL||releaseOrigin);
  if(target.origin!==releaseOrigin||target.pathname!=='/'||target.search||target.hash||target.username||target.password)throw Error('MANUAL_RELEASE_BLOCKED: unknown public origin');
  const manual=JSON.parse(fs.readFileSync(path.join(root,'src/data/manual-pages.json'),'utf8'));
- const review=JSON.parse(fs.readFileSync(path.join(root,'src/data/manual-release-review.json'),'utf8'));
+ const review=JSON.parse(fs.readFileSync(path.join(root,'src/data/manual-supplemental-review-20261007.json'),'utf8'));
  validateReview(review,artifactDigest(),manual.pages.map(p=>p.pageKey));
  return {mode:'production',releaseApproved:true};
 }

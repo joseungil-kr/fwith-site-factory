@@ -61,6 +61,19 @@ class ReleaseTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'six declared manual replacements'):
                 qa.read_pages(root)
 
+    def test_release_receipt_counts_effective_frozen_pages(self):
+        def response(base, path):
+            if path == '/robots.txt':
+                return 200, 'User-agent: *\nDisallow: /', {}
+            if path in ['/sitemap-index.xml', '/sitemap-0.xml', '/용인꽃배달/']:
+                return 404, '', {}
+            return 200, 'offline test document', {}
+        with patch.object(qa, 'read_pages', return_value=(self.pages, self.manual)), patch.object(qa, 'get', response), patch.object(qa, 'verify_page'), patch.object(Path, 'read_text', return_value='offline test document'):
+            receipt = qa.verify_release(SITE, 'http://127.0.0.1:8935', REVISION, False)
+        self.assertEqual(receipt['detailCount'], 40)
+        self.assertEqual(receipt['manualCount'], 15)
+        self.assertEqual(receipt['frozenCount'], 25)
+
     def test_all_manifest_identities_pass(self):
         for page in self.pages:
             with self.subTest(page=page['pageKey']):

@@ -9,7 +9,7 @@ on:
       - ".github/workflows/yongin-v2-production-deploy.yml"
       - ".github/scripts/yongin-release-qa.py"
       - ".github/scripts/test-yongin-release-qa.py"
-      - ".github/scripts/yongin-indexnow-once.py"
+      - ".github/scripts/yongin-supplemental-gate.py"
   workflow_dispatch:
 
 permissions:
@@ -39,7 +39,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Check out current independent main authority
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: release-authority
+          persist-credentials: false
+      - name: Check out immutable M2 hashing helpers
+        uses: actions/checkout@v4
+        with:
+          ref: 657b9ce62b1a519ba606f9fb0110aa3679d0931c
+          path: release-control
+          persist-credentials: false
+      - name: Require exact independent supplemental source approval
+        working-directory: ${{ github.workspace }}
+        run: python3 .github/scripts/yongin-supplemental-gate.py . release-authority release-control source
 
       - name: Require production indexing marker
         run: test -f production-indexing.enabled
@@ -57,7 +74,7 @@ jobs:
           printf '%s' "$CLOUDFLARE_ACCOUNT_ID" | grep -Eq '^[0-9A-Fa-f]{32}$'
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --no-package-lock
 
       - name: Release verification regression tests
         run: python3 ../../.github/scripts/test-yongin-release-qa.py
@@ -71,6 +88,10 @@ jobs:
       - name: Site graph QA
         run: node scripts/qa_site_graph.mjs
 
+      - name: Require exact independently reviewed artifact before upload
+        working-directory: ${{ github.workspace }}
+        run: python3 .github/scripts/yongin-supplemental-gate.py . release-authority release-control artifact
+
       - name: Deploy production custom domain
         run: npx --yes wrangler@latest deploy -c wrangler.production.jsonc
 
@@ -79,28 +100,12 @@ jobs:
           EXPECTED_REVISION: ${{ github.sha }}
         run: python3 ../../.github/scripts/yongin-release-qa.py production
 
-      - name: Select IndexNow URLs
-        env:
-          EXPECTED_REVISION: ${{ github.sha }}
-        run: python3 ../../.github/scripts/yongin-release-qa.py indexnow
-
-      - name: Submit IndexNow once with durable receipt
-        if: github.run_attempt == 1
-        run: python3 ../../.github/scripts/yongin-indexnow-once.py
-
-      - name: Report withheld IndexNow retry
-        if: github.run_attempt != 1
-        run: echo 'IndexNow POST was withheld on rerun. Inspect the original submission receipt before any retry.'
-
-      - name: Preserve live verification and IndexNow receipt
+      - name: Preserve live verification
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: yongin-production-proof-${{ github.sha }}
           path: |
             site-factory/yongin-flower/production-live-qa.json
-            site-factory/yongin-flower/indexnow-urls.json
-            site-factory/yongin-flower/indexnow-receipt.log
-            site-factory/yongin-flower/indexnow-submission-receipt.json
           if-no-files-found: warn
           retention-days: 14

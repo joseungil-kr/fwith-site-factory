@@ -186,7 +186,7 @@ def verify_release(site, base, revision, indexable):
         for path in ['/sitemap-index.xml', '/sitemap-0.xml']:
             require(get(base, path)[0] == 404, f'Staging exposes {path}')
     require(get(base, '/용인꽃배달/')[0] == 404, 'Duplicate landing page is still accessible')
-    return {'revision': revision, 'origin': base, 'indexable': indexable, 'detailCount': len(pages), 'frozenCount': 26, 'manualCount': len(manual), 'hubCount': len(HUBS), 'verifiedPaths': paths, 'decision': 'pass'}
+    return {'revision': revision, 'origin': base, 'indexable': indexable, 'detailCount': len(pages), 'frozenCount': len(pages) - len(manual), 'manualCount': len(manual), 'hubCount': len(HUBS), 'verifiedPaths': paths, 'decision': 'pass'}
 
 
 def main():

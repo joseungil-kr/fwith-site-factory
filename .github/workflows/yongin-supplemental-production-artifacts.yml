@@ -1,0 +1,176 @@
+name: Yongin supplemental production artifacts, no deployment
+
+on:
+  push:
+    branches: [manual-yongin-supplemental-artifacts-20261007]
+    paths:
+      - 'site-factory/yongin-flower/**'
+      - '.github/workflows/yongin-supplemental-production-artifacts.yml'
+      - '.github/scripts/yongin-supplemental-production-capture.mjs'
+      - '.github/scripts/yongin-release-qa.py'
+      - '.github/scripts/test-yongin-release-qa.py'
+
+permissions:
+  contents: read
+
+jobs:
+  preview-evidence:
+    if: github.ref == 'refs/heads/manual-yongin-supplemental-artifacts-20261007'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_URL: https://yongin.fwith.kr
+      SITE_ORIGIN: https://yongin.fwith.kr
+      EXPECTED_SOURCE_BUNDLE: '15b00e0a83444ea26a3050f84aaded21d1bc4661f4340dca1a2bbc61149647ef'
+      SITE_INDEXABLE: 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Assert fixed branch and reviewed source bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/yongin-manual-playwright" >> "$GITHUB_ENV"
+          test "$GITHUB_REF" = 'refs/heads/manual-yongin-supplemental-artifacts-20261007'
+          git merge-base --is-ancestor bc49ea311ceebdc304288acf60b636cdb296d83c HEAD
+          test "$SITE_URL" = 'https://yongin.fwith.kr'
+          test "$SITE_INDEXABLE" = 'true'
+          mkdir -p yongin-production-artifact-evidence
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          import {artifactDigest,artifactInventory} from './site-factory/yongin-flower/src/lib/manual-release-gate.mjs';
+          const expected=process.env.EXPECTED_SOURCE_BUNDLE;
+          assert.match(expected??'',/^[a-f0-9]{64}$/);
+          assert.equal(artifactDigest(),expected,'Reviewed source bundle changed');
+          fs.writeFileSync('yongin-production-artifact-evidence/revision.json',JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,sourceBase:'bc49ea311ceebdc304288acf60b636cdb296d83c',reviewedArtifactDigest:expected,productionApproval:'pending'},null,2));
+          fs.writeFileSync('yongin-production-artifact-evidence/source-inventory.json',JSON.stringify(artifactInventory(),null,2));
+          JS
+      - name: Manual release verification regression tests
+        run: python3 .github/scripts/test-yongin-release-qa.py
+      - name: Install native site dependencies
+        working-directory: site-factory/yongin-flower
+        run: npm install --no-package-lock
+      - name: Native gated production-origin indexable build
+        shell: bash
+        working-directory: site-factory/yongin-flower
+        run: |
+          set -euo pipefail
+          npm run build 2>&1 | tee "$GITHUB_WORKSPACE/yongin-production-artifact-evidence/native-build.log"
+          python3 scripts/qa_static.py 2>&1 | tee "$GITHUB_WORKSPACE/yongin-production-artifact-evidence/native-static-qa.log"
+      - name: Record exact production artifact manifest
+        run: |
+          python3 - <<'PYTHON'
+          import hashlib,json,pathlib
+          d=pathlib.Path('site-factory/yongin-flower/dist')
+          m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob('*')) if f.is_file()}
+          assert m
+          pathlib.Path('yongin-production-artifact-evidence/dist-manifest.json').write_text(json.dumps({'files':m,'fileCount':len(m),'artifactManifestSha256':hashlib.sha256(json.dumps(m,sort_keys=True,separators=(',',':')).encode()).hexdigest()},indent=2)+'\n')
+          PYTHON
+      - name: Rebuild and require identical production bytes
+        working-directory: site-factory/yongin-flower
+        run: |
+          npm run build
+          python3 - <<'PYTHON'
+          import hashlib,json,pathlib
+          d=pathlib.Path('dist');m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob('*')) if f.is_file()}
+          before=json.loads(pathlib.Path('../../yongin-production-artifact-evidence/dist-manifest.json').read_text())
+          assert m==before['files'], 'Production artifact not reproducible'
+          PYTHON
+      - name: Native regression tests
+        shell: bash
+        working-directory: site-factory/yongin-flower
+        run: |
+          set -euo pipefail
+          node --test scripts/*.test.mjs tests/*.test.mjs 2>&1 | tee "$GITHUB_WORKSPACE/yongin-production-artifact-evidence/native-tests.log"
+      - name: Install pinned official Playwright and Korean fonts
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix "$PLAYWRIGHT_INSTALL_ROOT" --no-save --no-package-lock playwright@1.63.0
+          "$PLAYWRIGHT_INSTALL_ROOT/node_modules/.bin/playwright" install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          fc-match 'Noto Sans CJK KR' > yongin-production-artifact-evidence/font-match.txt
+          npm list --prefix "$PLAYWRIGHT_INSTALL_ROOT" --json > yongin-production-artifact-evidence/playwright-dependencies.json
+      - name: Capture loopback desktop and mobile evidence
+        run: node .github/scripts/yongin-supplemental-production-capture.mjs
+      - name: Partition original pixels without recompression
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import pathlib,shutil
+          root=pathlib.Path('yongin-production-artifact-evidence');files=sorted((root/'screenshots').glob('*.jpg'))
+          assert len(files)<=100
+          for n in range(0,len(files),20):
+              batch=files[n:n+20];assert sum(f.stat().st_size for f in batch)<24*1024*1024
+              dest=root/'parts'/('screens-'+str(n//20+1));dest.mkdir(parents=True,exist_ok=True)
+              for f in batch:shutil.copyfile(f,dest/f.name)
+          assert sum(f.stat().st_size for f in root.glob('*.json'))+sum(f.stat().st_size for f in (root/'html').glob('*'))<24*1024*1024
+          PY
+      - name: Retain evidence for independent review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: yongin-supplemental-production-artifacts-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            yongin-production-artifact-evidence/*.json
+            yongin-production-artifact-evidence/*.log
+            yongin-production-artifact-evidence/html/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Preserve exact production dist for independent review
+        uses: actions/upload-artifact@v4
+        with:
+          name: yongin-supplemental-production-dist-${{ github.sha }}-${{ github.run_attempt }}
+          path: site-factory/yongin-flower/dist/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always() && hashFiles('yongin-production-artifact-evidence/parts/screens-1/**') != ''
+        with:
+          name: yongin-supplemental-artifact-screens-1-${{ github.sha }}-${{ github.run_attempt }}
+          path: yongin-production-artifact-evidence/parts/screens-1/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always() && hashFiles('yongin-production-artifact-evidence/parts/screens-2/**') != ''
+        with:
+          name: yongin-supplemental-artifact-screens-2-${{ github.sha }}-${{ github.run_attempt }}
+          path: yongin-production-artifact-evidence/parts/screens-2/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always() && hashFiles('yongin-production-artifact-evidence/parts/screens-3/**') != ''
+        with:
+          name: yongin-supplemental-artifact-screens-3-${{ github.sha }}-${{ github.run_attempt }}
+          path: yongin-production-artifact-evidence/parts/screens-3/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always() && hashFiles('yongin-production-artifact-evidence/parts/screens-4/**') != ''
+        with:
+          name: yongin-supplemental-artifact-screens-4-${{ github.sha }}-${{ github.run_attempt }}
+          path: yongin-production-artifact-evidence/parts/screens-4/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always() && hashFiles('yongin-production-artifact-evidence/parts/screens-5/**') != ''
+        with:
+          name: yongin-supplemental-artifact-screens-5-${{ github.sha }}-${{ github.run_attempt }}
+          path: yongin-production-artifact-evidence/parts/screens-5/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
