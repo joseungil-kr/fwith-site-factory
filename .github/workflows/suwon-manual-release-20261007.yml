@@ -107,7 +107,7 @@ jobs:
         env:
           MANUAL_QA_PHASE: preview
           MANUAL_HOSTED_PREVIEW: 'true'
-        run: node .github/scripts/suwon-manual-preview.mjs
+        run: node .github/scripts/suwon-supplemental-artifacts.mjs
       - name: Enforce retrievable hosted evidence chunks
         if: env.PHASE == 'preview'
         shell: bash
@@ -119,7 +119,7 @@ jobs:
           root=pathlib.Path('suwon-preview-evidence')
           for viewport in ['desktop','mobile']:
             files=sorted((root/'screenshots'/viewport).glob('*.jpg'))
-            assert len(files)==54,viewport
+            assert len(files)==55,viewport
             for i,f in enumerate(files):
               dest=root/'screenshots'/(viewport+'-'+str(i//16+1))
               dest.mkdir(parents=True,exist_ok=True)
@@ -200,3 +200,4 @@ jobs:
           path: target/suwon-preview-evidence/screenshots/mobile-4/
           if-no-files-found: error
           retention-days: 7
+

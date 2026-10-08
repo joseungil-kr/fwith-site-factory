@@ -1,0 +1,176 @@
+name: Suwon supplemental preview and production artifacts only
+on:
+  push:
+    branches: [manual-suwon-supplemental-artifacts-20261007]
+    paths:
+      - 'site-factory/suwon-flower/**'
+      - '.github/workflows/suwon-supplemental-artifacts.yml'
+      - '.github/scripts/suwon-supplemental-artifacts.mjs'
+permissions:
+  contents: read
+jobs:
+  exact-evidence:
+    if: github.ref == 'refs/heads/manual-suwon-supplemental-artifacts-20261007'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        phase: [preview, production]
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      MANUAL_QA_PHASE: ${{ matrix.phase }}
+      SITE_URL: ${{ matrix.phase == 'preview' && 'https://suwon-flower-guide-qa.joseungil.workers.dev' || 'https://suwon.fwith.kr' }}
+      SITE_ORIGIN: ${{ matrix.phase == 'preview' && 'https://suwon-flower-guide-qa.joseungil.workers.dev' || 'https://suwon.fwith.kr' }}
+      SITE_INDEXABLE: ${{ matrix.phase == 'preview' && 'false' || 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Assert exact content and reviewed native boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = 'refs/heads/manual-suwon-supplemental-artifacts-20261007'
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/suwon-manual-playwright" >> "$GITHUB_ENV"
+          mkdir -p "suwon-$MANUAL_QA_PHASE-evidence/logs"
+          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/suwon-flower/src/data/manual-pages.json")).digest("hex");if(h!=="6bac9e54f6110a2ceaa39ff4ec6754917815221ecc6001dc221b26efa8e9c77a")throw Error("Unexpected content digest");const p=JSON.parse(fs.readFileSync("site-factory/suwon-flower/src/data/manual-provenance.json"));if(p.scopeDigest!=="c371c14fd94f320780d8764ab605a684d56f4e0a76ad860b835f36a89a87a96d"||p.independentReview.status!=="passed")throw Error("Independent native source review missing");'
+          node -e 'const fs=require("fs");fs.writeFileSync("suwon-"+process.env.MANUAL_QA_PHASE+"-evidence/logs/revision.json",JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,phase:process.env.MANUAL_QA_PHASE,siteUrl:process.env.SITE_URL,siteIndexable:process.env.SITE_INDEXABLE},null,2));'
+      - name: Install exact native dependency lock
+        working-directory: site-factory/suwon-flower
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Build twice and prove exact deterministic artifacts
+        shell: bash
+        working-directory: site-factory/suwon-flower
+        run: |
+          set -euo pipefail
+          evidence="$GITHUB_WORKSPACE/suwon-$MANUAL_QA_PHASE-evidence"
+          for attempt in first second; do
+            npm run build 2>&1 | tee "$evidence/logs/native-build-$attempt.log"
+            npm test 2>&1 | tee "$evidence/logs/native-tests-$attempt.log"
+            python3 scripts/qa_static.py 2>&1 | tee "$evidence/logs/static-$attempt.log"
+            node scripts/qa_graph.mjs 2>&1 | tee "$evidence/logs/graph-$attempt.log"
+            python3 -c 'import hashlib,json,pathlib,sys; d=pathlib.Path("dist"); m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob("*")) if f.is_file()}; assert len(m)==76,len(m);pathlib.Path(sys.argv[1]).write_text(json.dumps(m,sort_keys=True,separators=(",",":")))' "$evidence/logs/$attempt.manifest.json"
+          done
+          cmp "$evidence/logs/first.manifest.json" "$evidence/logs/second.manifest.json"
+          cp -a dist "$evidence/dist"
+          sha256sum "$evidence/logs/second.manifest.json" > "$evidence/logs/artifact-manifest.sha256"
+      - name: Install pinned official Playwright and Korean fonts
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix "$PLAYWRIGHT_INSTALL_ROOT" --no-save --no-package-lock playwright@1.63.0
+          "$PLAYWRIGHT_INSTALL_ROOT/node_modules/.bin/playwright" install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          fc-match 'Noto Sans CJK KR' > "suwon-$MANUAL_QA_PHASE-evidence/logs/font-match.txt"
+      - name: Capture both viewports of every exact rendered route
+        run: node .github/scripts/suwon-supplemental-artifacts.mjs
+      - name: Enforce independently retrievable evidence chunks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os,pathlib
+          root=pathlib.Path('suwon-'+os.environ['MANUAL_QA_PHASE']+'-evidence')
+          for viewport in ['desktop','mobile']:
+            files=sorted((root/'screenshots'/viewport).glob('*.jpg'))
+            assert len(files)==55,viewport
+            for i,f in enumerate(files):
+              dest=root/'screenshots'/(viewport+'-'+str(i//16+1))
+              dest.mkdir(parents=True,exist_ok=True)
+              (dest/f.name).write_bytes(f.read_bytes())
+          for part in [v+'-'+str(i) for v in ['desktop','mobile'] for i in range(1,5)]:
+            assert sum(f.stat().st_size for f in (root/'screenshots'/part).glob('*.jpg'))<24*1024*1024,part
+          for part in ['logs','dist']:
+            files=[f for f in (root/part).rglob('*') if f.is_file()]
+            assert files,part
+            assert sum(f.stat().st_size for f in files)<24*1024*1024,part
+          PY
+      - name: Retain machine evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-${{ matrix.phase }}-logs-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            suwon-${{ matrix.phase }}-evidence/*.json
+            suwon-${{ matrix.phase }}-evidence/logs/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain exact dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-${{ matrix.phase }}-dist-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-${{ matrix.phase }}-evidence/dist/
+          if-no-files-found: error
+          retention-days: 7
+          include-hidden-files: true
+      - name: Retain ${{ matrix.phase }} desktop pixels 1
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-${{ matrix.phase }}-desktop-1-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-${{ matrix.phase }}-evidence/screenshots/desktop-1/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain ${{ matrix.phase }} desktop pixels 2
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-${{ matrix.phase }}-desktop-2-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-${{ matrix.phase }}-evidence/screenshots/desktop-2/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain ${{ matrix.phase }} desktop pixels 3
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-${{ matrix.phase }}-desktop-3-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-${{ matrix.phase }}-evidence/screenshots/desktop-3/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain ${{ matrix.phase }} desktop pixels 4
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-${{ matrix.phase }}-desktop-4-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-${{ matrix.phase }}-evidence/screenshots/desktop-4/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain ${{ matrix.phase }} mobile pixels 1
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-${{ matrix.phase }}-mobile-1-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-${{ matrix.phase }}-evidence/screenshots/mobile-1/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain ${{ matrix.phase }} mobile pixels 2
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-${{ matrix.phase }}-mobile-2-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-${{ matrix.phase }}-evidence/screenshots/mobile-2/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain ${{ matrix.phase }} mobile pixels 3
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-${{ matrix.phase }}-mobile-3-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-${{ matrix.phase }}-evidence/screenshots/mobile-3/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain ${{ matrix.phase }} mobile pixels 4
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suwon-${{ matrix.phase }}-mobile-4-${{ github.sha }}-${{ github.run_attempt }}
+          path: suwon-${{ matrix.phase }}-evidence/screenshots/mobile-4/
+          if-no-files-found: error
+          retention-days: 7
+
