@@ -8,7 +8,7 @@ import {spawnSync} from 'node:child_process';
 
 // Evidence-only runner: fixed actual production host, no deploy client and no external navigation.
 const workflowRoot=process.cwd(),root=path.join(workflowRoot,'target'),site=path.join(root,'site-factory/yongin-flower');
-const expectedSourceRevision='7016a15dfa758a2e9669a5c92a888a619c929452';
+const expectedSourceRevision='f243fab54012c21b2480a14b4b118a29856db505';
 const expectedVerificationRevision='69a7fee6a64a21443be19eca50d734d9652a968c';
 const expectedVerificationHelperSha256='ad1b8ba2667f992e39875bbfc4b819578e9f25770ecbf4d20848af6312d59e39';
 const dist=fs.realpathSync(path.join(site,'dist'));
@@ -32,7 +32,7 @@ const read=file=>JSON.parse(fs.readFileSync(path.join(site,file),'utf8'));
 const manual=read('src/data/manual-pages.json').pages;
 const products=read('src/data/products.json');
 const {artifactDigest}=await import(new URL('../../target/site-factory/yongin-flower/src/lib/manual-release-gate.mjs',import.meta.url));
-const expectedArtifact='15b00e0a83444ea26a3050f84aaded21d1bc4661f4340dca1a2bbc61149647ef';
+const expectedArtifact='6d1a1644c4e4b2159d458a5e36e1d2d87863aa853df729c9063f76b63a141d7b';
 assert.equal(artifactDigest(),expectedArtifact,'Exact reviewed native source bundle');
 assert.equal(manual.length,15);assert.equal(manual.filter(p=>p.supersedesSnapshotId).length,6);
 const frozen=read('src/data/publish-manifest.json').pages;assert.equal(frozen.length,31);

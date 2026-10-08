@@ -2,7 +2,7 @@
 import datetime,hashlib,importlib.util,json,os,re,subprocess,sys
 from pathlib import Path
 from urllib.parse import quote,urlsplit,urlunsplit
-SOURCE='7016a15dfa758a2e9669a5c92a888a619c929452'
+SOURCE='f243fab54012c21b2480a14b4b118a29856db505'
 CONTROL='69a7fee6a64a21443be19eca50d734d9652a968c'
 DEPLOYMENT_CONTROL='657b9ce62b1a519ba606f9fb0110aa3679d0931c'
 ORIGIN='https://yongin.fwith.kr'
@@ -15,12 +15,12 @@ assert hashlib.sha256(helper.read_bytes()).hexdigest()=='ad1b8ba2667f992e39875bb
 spec=importlib.util.spec_from_file_location('reviewed_M4_http',helper);qa=importlib.util.module_from_spec(spec);spec.loader.exec_module(qa)
 manifest={str(f.relative_to(DIST)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(DIST.rglob('*')) if f.is_file()}
 assert len(manifest)==70
-assert hashlib.sha256(json.dumps(manifest,sort_keys=True,separators=(',',':')).encode()).hexdigest()=='939501df8d1a18a1545f2ef9c16329efd58ad02ba86204d99427162559c7bbd3'
+assert hashlib.sha256(json.dumps(manifest,sort_keys=True,separators=(',',':')).encode()).hexdigest()=='4f105e4dafe8be2a598ff347b8af6488265432c217829fbe095594489e627501'
 deployment_pins={'deploymentRunId':os.environ.get('VERIFIED_UPLOAD_RUN_ID',''),'deploymentProviderVersion':os.environ.get('VERIFIED_PROVIDER_VERSION',''),'deploymentAuthorityRevision':os.environ.get('VERIFIED_AUTHORITY_REVISION',''),'deploymentReceiptSha256':os.environ.get('VERIFIED_UPLOAD_RECEIPT_SHA256','')}
 for key,pattern in [('deploymentRunId',r'[0-9]+'),('deploymentProviderVersion',r'[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}'),('deploymentAuthorityRevision',r'[a-f0-9]{40}'),('deploymentReceiptSha256',r'[a-f0-9]{64}')]:
  assert re.fullmatch(pattern,deployment_pins[key]),'Pending verified upload pin: '+key
 header_rules=qa.rules(DIST/'_headers');rows=[];active_route=None
-report={'startedAtUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'executionRevision':os.environ['GITHUB_SHA'],'executionRef':os.environ['GITHUB_REF'],'sourceRevision':SOURCE,'controlRevision':CONTROL,'verificationControlRevision':CONTROL,'deploymentControlRevision':DEPLOYMENT_CONTROL,**deployment_pins,'deploymentOutcome':'uploaded; original deployment job outcome retained in bound receipt','verificationHelperSha256':hashlib.sha256(helper.read_bytes()).hexdigest(),'phase':'production','artifactManifestSha256':'939501df8d1a18a1545f2ef9c16329efd58ad02ba86204d99427162559c7bbd3','runId':os.environ['GITHUB_RUN_ID'],'origin':ORIGIN,'requestIdentity':qa.CLIENT_IDENTITIES['production'],'passed':False,'responses':rows}
+report={'startedAtUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'executionRevision':os.environ['GITHUB_SHA'],'executionRef':os.environ['GITHUB_REF'],'sourceRevision':SOURCE,'controlRevision':CONTROL,'verificationControlRevision':CONTROL,'deploymentControlRevision':DEPLOYMENT_CONTROL,**deployment_pins,'deploymentOutcome':'uploaded; original deployment job outcome retained in bound receipt','verificationHelperSha256':hashlib.sha256(helper.read_bytes()).hexdigest(),'phase':'production','artifactManifestSha256':'4f105e4dafe8be2a598ff347b8af6488265432c217829fbe095594489e627501','runId':os.environ['GITHUB_RUN_ID'],'origin':ORIGIN,'requestIdentity':qa.CLIENT_IDENTITIES['production'],'passed':False,'responses':rows}
 def safe_final_url(value):
  parsed=urlsplit(value);host=parsed.hostname or ''
  if parsed.port is not None:host+=':'+str(parsed.port)
@@ -31,7 +31,7 @@ def fetch(route,file,status,storage):
  url=ORIGIN+quote(route,safe='/');row={'route':route,'url':url,'expectedStatus':status,'expectedSha256':hashlib.sha256(file.read_bytes()).hexdigest()};rows.append(row)
  response=qa.request_response(url,'production')
  with response:
-  row.update(status=response.status,finalUrl=safe_final_url(response.url),exactFinalUrl=response.url==url,headers={k:response.headers.get(k) for k in ['content-type','cf-ray','cf-cache-status','x-robots-tag','cache-control','x-content-type-options','x-frame-options','referrer-policy'] if response.headers.get(k) is not None})
+  row.update(status=response.status,finalUrl=safe_final_url(response.url),exactFinalUrl=response.url==url,headers={k:response.headers.get(k) for k in ['content-type','cf-ray','cf-cache-status','x-robots-tag','cache-control','x-content-type-options','x-frame-options','referrer-policy','permissions-policy'] if response.headers.get(k) is not None})
   qa.assert_response_status(response,url,route,status)
   data=response.read();row.update(receivedAtUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),bodyBytes=len(data),bodySha256=hashlib.sha256(data).hexdigest());body=OUT/'responses'/storage;body.parent.mkdir(parents=True,exist_ok=True);body.write_bytes(data)
   mime=response.headers.get_content_type();expected_mime=__import__('mimetypes').guess_type(file.name)[0]

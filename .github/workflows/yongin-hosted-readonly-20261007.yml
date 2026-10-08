@@ -15,16 +15,16 @@ jobs:
     timeout-minutes: 25
     env:
       ASTRO_TELEMETRY_DISABLED: '1'
-      SITE_FACTORY_REVISION: 7016a15dfa758a2e9669a5c92a888a619c929452
+      SITE_FACTORY_REVISION: f243fab54012c21b2480a14b4b118a29856db505
       SITE_URL: https://yongin.fwith.kr
       SITE_ORIGIN: https://yongin.fwith.kr
       SITE_INDEXABLE: 'true'
       MANUAL_QA_PHASE: production
       MANUAL_HOSTED_PRODUCTION: 'true'
-      VERIFIED_UPLOAD_RUN_ID: '37716657139'
-      VERIFIED_PROVIDER_VERSION: '54b8b393-af1e-4230-9f39-1a13610520b3'
-      VERIFIED_AUTHORITY_REVISION: '057f89c9d6374e65b284ef1f1124b9469f6660cf'
-      VERIFIED_UPLOAD_RECEIPT_SHA256: '9b8edbfabd0f7df81aefaad771b6fdfd715cca6963942364c6a9504caab7ecc1'
+      VERIFIED_UPLOAD_RUN_ID: '37723743040'
+      VERIFIED_PROVIDER_VERSION: 'f5ff30fd-3ba0-44f5-9dbc-b5a628989eac'
+      VERIFIED_AUTHORITY_REVISION: 'f40a06fdd792bf874a4168b84a41a8ead91a8113'
+      VERIFIED_UPLOAD_RECEIPT_SHA256: '049c4513aceb48b5399109ce3a166a10e5ba3d857b14c5deff433a044e5a2bbc'
     steps:
       - name: Check out actual read-only execution revision
         uses: actions/checkout@v4
@@ -33,7 +33,7 @@ jobs:
       - name: Check out immutable deployed source
         uses: actions/checkout@v4
         with:
-          ref: 7016a15dfa758a2e9669a5c92a888a619c929452
+          ref: f243fab54012c21b2480a14b4b118a29856db505
           path: target
           persist-credentials: false
       - name: Check out immutable reviewed read-only M4 verifier
@@ -50,7 +50,7 @@ jobs:
         working-directory: target/site-factory/yongin-flower
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = '7016a15dfa758a2e9669a5c92a888a619c929452'
+          test "$(git rev-parse HEAD)" = 'f243fab54012c21b2480a14b4b118a29856db505'
           npm install --no-package-lock --no-audit --no-fund
           npm run build
           node --test scripts/*.test.mjs tests/*.test.mjs
@@ -60,7 +60,7 @@ jobs:
           import hashlib,json,pathlib
           d=pathlib.Path('dist');m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob('*')) if f.is_file()}
           assert len(m)==70
-          assert hashlib.sha256(json.dumps(m,sort_keys=True,separators=(',',':')).encode()).hexdigest()=='939501df8d1a18a1545f2ef9c16329efd58ad02ba86204d99427162559c7bbd3'
+          assert hashlib.sha256(json.dumps(m,sort_keys=True,separators=(',',':')).encode()).hexdigest()=='4f105e4dafe8be2a598ff347b8af6488265432c217829fbe095594489e627501'
           PY
       - name: Fail closed until reviewed upload provenance is frozen
         shell: bash
@@ -79,7 +79,7 @@ jobs:
           import ast,hashlib,json,pathlib,subprocess
           out=pathlib.Path('yongin-hosted-http');out.mkdir(exist_ok=True)
           policy=out/'fixed-public-origin-policy.json';policy.write_text(json.dumps({'productionOrigin':'https://yongin.fwith.kr'})+'\n')
-          result=subprocess.run(['python3','control/scripts/manual-release-20261007/verify_http.py',str(policy),'production','target/site-factory/yongin-flower/dist','7016a15dfa758a2e9669a5c92a888a619c929452'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+          result=subprocess.run(['python3','control/scripts/manual-release-20261007/verify_http.py',str(policy),'production','target/site-factory/yongin-flower/dist','f243fab54012c21b2480a14b4b118a29856db505'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
           private=result.stdout+result.stderr;(out/'m4-private-output.txt').write_bytes(private)
           report={'passed':result.returncode==0,'exitCode':result.returncode,'privateDiagnosticSha256':hashlib.sha256(private).hexdigest(),'exceptionClass':None,'routeSha256':None}
           if result.returncode:
