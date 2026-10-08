@@ -1,0 +1,210 @@
+name: Seongnam supplemental isolated preview read-only verification
+on:
+  push:
+    branches: [manual-seongnam-supplemental-hosted-check-20261008]
+    paths:
+      - '.github/workflows/seongnam-hosted-readonly-20261007.yml'
+      - '.github/scripts/seongnam-hosted-readonly-20261007.mjs'
+      - '.github/scripts/seongnam-hosted-receipts-20261007.py'
+permissions:
+  contents: read
+jobs:
+  inspect:
+    if: github.ref == 'refs/heads/manual-seongnam-supplemental-hosted-check-20261008'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_FACTORY_REVISION: 9cf55b95126eaf4f4a603e8fefe184f19872c1f2
+      SITE_URL: https://seongnam-flower-guide-qa.joseungil.workers.dev
+      SITE_ORIGIN: https://seongnam-flower-guide-qa.joseungil.workers.dev
+      SITE_INDEXABLE: 'false'
+      MANUAL_QA_PHASE: preview
+      MANUAL_HOSTED_PREVIEW: 'true'
+      VERIFIED_UPLOAD_RUN_ID: '37713002763'
+      VERIFIED_PROVIDER_VERSION: '7233ed9d-ae1d-4f61-9246-8fb7468e5c1b'
+      VERIFIED_AUTHORITY_REVISION: '6f455ed5fe8600efd89bac827b35e962aa5c7946'
+      VERIFIED_UPLOAD_RECEIPT_SHA256: '1e00635dc05c3d78a33126227ec87fe55acf78a4929659a3ca0d9c5bd81a7c54'
+    steps:
+      - name: Check out actual read-only execution revision
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check out immutable deployed source
+        uses: actions/checkout@v4
+        with:
+          ref: 9cf55b95126eaf4f4a603e8fefe184f19872c1f2
+          path: target
+          persist-credentials: false
+      - name: Check out immutable reviewed read-only M4 verifier
+        uses: actions/checkout@v4
+        with:
+          ref: 69a7fee6a64a21443be19eca50d734d9652a968c
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Build exact expected deployed artifact
+        shell: bash
+        working-directory: target/site-factory/seongnam-flower
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = '9cf55b95126eaf4f4a603e8fefe184f19872c1f2'
+          npm ci --ignore-scripts --no-audit --no-fund
+          node --test scripts/revision-preservation.test.mjs
+          npm test
+          python3 -m unittest discover -s tests -p '*_test.py'
+          npm run build
+          python3 scripts/qa_static.py
+          node scripts/qa_graph.mjs
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          d=pathlib.Path('dist');m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob('*')) if f.is_file()}
+          assert len(m)==64
+          assert hashlib.sha256(json.dumps(m,sort_keys=True,separators=(',',':')).encode()).hexdigest()=='3a18531ac801f254f047c9f2f293320e88d59ce44b0ac4e135348d064bee52f9'
+          PY
+      - name: Fail closed until reviewed upload provenance is frozen
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PYPINS'
+          import os,re
+          pins={'VERIFIED_UPLOAD_RUN_ID':r'[0-9]+','VERIFIED_PROVIDER_VERSION':r'[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}','VERIFIED_AUTHORITY_REVISION':r'[a-f0-9]{40}','VERIFIED_UPLOAD_RECEIPT_SHA256':r'[a-f0-9]{64}'}
+          for key,pattern in pins.items():assert re.fullmatch(pattern,os.environ.get(key,'')), 'Pending or invalid verified upload pin: '+key
+          PYPINS
+      - name: Verify every live byte with reviewed M4 verifier and fixed application client
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import ast,hashlib,json,pathlib,subprocess
+          out=pathlib.Path('seongnam-hosted-http');out.mkdir(exist_ok=True)
+          result=subprocess.run(['python3','control/scripts/manual-release-20261007/verify_http.py','control/.github/manual-release-20261007/seongnam.policy.json','preview','target/site-factory/seongnam-flower/dist','9cf55b95126eaf4f4a603e8fefe184f19872c1f2'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+          private=result.stdout+result.stderr;(out/'m4-private-output.txt').write_bytes(private)
+          report={'passed':result.returncode==0,'exitCode':result.returncode,'privateDiagnosticSha256':hashlib.sha256(private).hexdigest(),'exceptionClass':None,'routeSha256':None}
+          if result.returncode:
+            last=result.stderr.decode(errors='replace').splitlines()[-1] if result.stderr else ''
+            kind,_,value=last.partition(':')
+            if kind.isidentifier():report['exceptionClass']=kind
+            try:
+              values=ast.literal_eval(value.strip())
+              route=next((v for v in values if isinstance(v,str) and v.startswith('/')),None) if isinstance(values,tuple) else None
+              if route is not None:report['routeSha256']=hashlib.sha256(route.encode()).hexdigest()
+            except (ValueError,SyntaxError):pass
+          (out/'m4-cli-status.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report));raise SystemExit(result.returncode)
+          PY
+      - name: Retain every verified live response without identity fallback
+        run: python3 .github/scripts/seongnam-hosted-receipts-20261007.py
+      - name: Install pinned capture client and Korean fonts
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/seongnam-readonly-playwright" >> "$GITHUB_ENV"
+          npm install --prefix "$RUNNER_TEMP/seongnam-readonly-playwright" --no-save --no-package-lock playwright@1.63.0
+          "$RUNNER_TEMP/seongnam-readonly-playwright/node_modules/.bin/playwright" install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+      - name: Capture actual hosted pixels with separate execution and deployed revisions
+        run: node .github/scripts/seongnam-hosted-readonly-20261007.mjs
+      - name: Enforce retrievable evidence chunks
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import pathlib
+          root=pathlib.Path('target/seongnam-preview-evidence')
+          import shutil,hashlib
+          files=sorted((root/'screenshots').rglob('*.jpg'));assert len(files)<=70
+          for i in range(4):
+            selected=files[i*18:(i+1)*18]
+            if not selected:continue
+            out=root/'parts'/('screens-'+str(i+1).zfill(2));out.mkdir(parents=True,exist_ok=True)
+            for f in selected:
+              dest=out/(f.parent.name+'-'+f.name);shutil.copyfile(f,dest);assert hashlib.sha256(f.read_bytes()).digest()==hashlib.sha256(dest.read_bytes()).digest()
+            assert sum(f.stat().st_size for f in out.glob('*.jpg'))<24*1024*1024
+          PY
+      - name: Bound retained diagnostics even after failed HTTP or capture
+        id: bounds
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PYBOUNDS'
+          import pathlib
+          root=pathlib.Path('target/seongnam-preview-evidence')
+          assert sum(f.stat().st_size for f in root.glob('*.json'))<24*1024*1024
+          assert sum(f.stat().st_size for part in ['browser-html','browser-input','browser-receipts','browser-private-failures'] for f in (root/part).rglob('*') if f.is_file())<24*1024*1024
+          assert sum(f.stat().st_size for f in pathlib.Path('seongnam-hosted-http').rglob('*') if f.is_file())<24*1024*1024
+          for part in (root/'parts').glob('*'):
+            assert sum(f.stat().st_size for f in part.rglob('*') if f.is_file())<24*1024*1024
+          PYBOUNDS
+      - name: Retain live HTTP response bodies and receipts
+        if: always() && steps.bounds.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: seongnam-supplemental-preview-http-${{ github.sha }}-${{ github.run_attempt }}
+          path: seongnam-hosted-http/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Retain hosted capture facts
+        if: always() && steps.bounds.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: seongnam-supplemental-preview-facts-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/seongnam-preview-evidence/*.json
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Retain original hosted pixels 01
+        if: always() && steps.bounds.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: seongnam-supplemental-preview-screens-01-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/seongnam-preview-evidence/parts/screens-01/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Retain original hosted pixels 02
+        if: always() && steps.bounds.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: seongnam-supplemental-preview-screens-02-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/seongnam-preview-evidence/parts/screens-02/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Retain original hosted pixels 03
+        if: always() && steps.bounds.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: seongnam-supplemental-preview-screens-03-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/seongnam-preview-evidence/parts/screens-03/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Retain original hosted pixels 04
+        if: always() && steps.bounds.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: seongnam-supplemental-preview-screens-04-${{ github.sha }}-${{ github.run_attempt }}
+          path: target/seongnam-preview-evidence/parts/screens-04/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - name: Retain actual browser HTML and immutable comparison receipts
+        if: always() && steps.bounds.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: seongnam-supplemental-preview-browser-bodies-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            target/seongnam-preview-evidence/browser-html/
+            target/seongnam-preview-evidence/browser-input/
+            target/seongnam-preview-evidence/browser-receipts/
+            target/seongnam-preview-evidence/browser-private-failures/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
