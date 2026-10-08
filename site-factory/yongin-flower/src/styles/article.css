@@ -190,3 +190,8 @@
   .source-list li>a{display:inline-block;margin-top:7px;}
   .related-question-grid,.landing-quick{grid-template-columns:1fr;}
 }
+
+/* Keep ordinary Korean word grouping; wrap overlong facility names on narrow screens. */
+@media (max-width: 620px) {
+  .article-header h1 { overflow-wrap: anywhere; }
+}

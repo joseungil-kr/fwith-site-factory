@@ -44,9 +44,9 @@ jobs:
           import fs from 'node:fs';
           import assert from 'node:assert/strict';
           import {artifactDigest,artifactInventory} from './site-factory/yongin-flower/src/lib/manual-release-gate.mjs';
-          const expected='5662b6bdc5609f172f29b0d0e7e5fdfe958b90463f10d2c356866b718ecb590d';
+          const expected='6d1a1644c4e4b2159d458a5e36e1d2d87863aa853df729c9063f76b63a141d7b';
           assert.equal(artifactDigest(),expected,'Reviewed source bundle changed');
-          fs.writeFileSync('yongin-preview-evidence/revision.json',JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,sourceBase:'bc49ea311ceebdc304288acf60b636cdb296d83c',reviewedArtifactDigest:expected,productionApproval:'pending'},null,2));
+          fs.writeFileSync('yongin-preview-evidence/revision.json',JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,sourceBase:'bc49ea311ceebdc304288acf60b636cdb296d83c',reviewedArtifactDigest:expected,sourceReview:'eligible-css-delta-only',pixelReview:'pending',productionApproval:'pending'},null,2));
           fs.writeFileSync('yongin-preview-evidence/source-inventory.json',JSON.stringify(artifactInventory(),null,2));
           JS
       - name: Manual release verification regression tests

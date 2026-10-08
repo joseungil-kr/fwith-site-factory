@@ -23,12 +23,14 @@ const read=file=>JSON.parse(fs.readFileSync(path.join(site,file),'utf8'));
 const manual=read('src/data/manual-pages.json').pages;
 const products=read('src/data/products.json');
 const {artifactDigest}=await import(new URL('../../site-factory/yongin-flower/src/lib/manual-release-gate.mjs',import.meta.url));
-const expectedArtifact='5662b6bdc5609f172f29b0d0e7e5fdfe958b90463f10d2c356866b718ecb590d';
+const expectedArtifact='6d1a1644c4e4b2159d458a5e36e1d2d87863aa853df729c9063f76b63a141d7b';
 assert.equal(artifactDigest(),expectedArtifact,'Exact reviewed bundle');
 assert.equal(manual.length,15,'Unexpected review scope');
 assert.equal(manual.filter(p=>p.supersedesSnapshotId).length,6,'Existing URL revision count');
 assert.equal(manual.filter(p=>!p.supersedesSnapshotId).length,9,'New URL count');
-const targets=[{id:'home',url:'/'},{id:'funeral-hub',url:'/funeral/'},{id:'business-hub',url:'/business/'},{id:'event-hub',url:'/event/'},{id:'school-hub',url:'/school/'},...manual.map(p=>({id:p.pageKey,url:p.url,manual:p}))];
+const targets=[{id:'home',url:'/'},{id:'funeral-hub',url:'/funeral/'},{id:'business-hub',url:'/business/'},{id:'event-hub',url:'/event/'},{id:'school-hub',url:'/school/'},...manual.map(p=>({id:p.pageKey,url:p.url,manual:p})),{id:'frozen-seoul-hospital',url:'/funeral/yongin-seoul-hospital-funeral-wreath/',snapshotId:'yongin-flower-launch-04-launch-v2'}];
+assert.equal(targets.length,21,'Existing 40 captures plus frozen-route desktop/mobile');
+assert.equal(new Set(targets.map(p=>p.url)).size,21,'Duplicate capture target');
 const network=[],consoleMessages=[],pageErrors=[],results=[];
 const mimes={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.webp':'image/webp','.woff2':'font/woff2','.txt':'text/plain; charset=utf-8','.xml':'application/xml; charset=utf-8'};
 const server=http.createServer((req,res)=>{
@@ -76,6 +78,7 @@ try {
       manualMarker:document.querySelector('[data-manual-revision]')?.getAttribute('data-manual-revision'),
       originalSnapshot:document.querySelector('[data-original-snapshot]')?.getAttribute('data-original-snapshot')??null,
       frozenMarker:!!document.querySelector('[data-snapshot-id]'),
+      frozenSnapshotId:document.querySelector('[data-snapshot-id]')?.getAttribute('data-snapshot-id')??null,
       images:[...document.images].map(i=>({src:new URL(i.src).pathname,alt:i.alt,width:i.naturalWidth,height:i.naturalHeight})),
       articleProductImages:[...document.querySelectorAll('.manual-products img')].map(i=>new URL(i.src).pathname),
       phoneLinks:[...document.querySelectorAll('a[href="tel:18440644"]')].length,
@@ -89,6 +92,7 @@ try {
     assert.equal(facts.revision,process.env.GITHUB_SHA,'Exact commit marker');
     assert.equal(facts.h1.length,1,'H1 count');
     assert(facts.scrollWidth<=facts.width+1,'Horizontal overflow');
+    if(target.snapshotId){assert.equal(facts.frozenSnapshotId,target.snapshotId,'Exact frozen route snapshot');assert(!facts.manualMarker,'Frozen route must not become manual');}
     assert(facts.phoneLinks>0&&facts.orderLinks>0,'Real order anchors');
     assert(facts.images.every(i=>i.width>0&&i.height>0&&i.alt.trim()),'Image decode/alt');
     if(target.manual){
@@ -108,7 +112,7 @@ try {
       await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));
       await page.evaluate(()=>window.scrollTo(0,0));
     }
-    row.checks=['http-200','local-noindex','canonical','exact-commit','one-h1','no-horizontal-overflow','decoded-images','real-cta',...(target.manual?['opaque-marker','product-families','local-back-navigation']:[])];
+    row.checks=['http-200','local-noindex','canonical','exact-commit','one-h1','no-horizontal-overflow','decoded-images','real-cta',...(target.manual?['opaque-marker','product-families','local-back-navigation']:[]),...(target.snapshotId?['exact-frozen-snapshot']:[])];
    } catch(error){row.errors.push(error.stack||String(error));}
    try {
     row.html=`html/${target.id}-${viewport.name}.html`;
