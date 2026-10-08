@@ -55,6 +55,7 @@ for page in pages:
         require((root / asset.lstrip("/")).is_file(), f"asset_missing:{relative}:{asset}")
 
 sitemap = read("sitemap-0.xml")
-require(origin + "/" in sitemap and "https://blog.fwith.kr/" not in sitemap, "sitemap_origin_mismatch")
+sitemap_origins = set(re.findall(r"<loc>(https?://[^/]+)", sitemap))
+require(sitemap_origins == {origin}, "sitemap_origin_mismatch")
 
 print("static QA passed")

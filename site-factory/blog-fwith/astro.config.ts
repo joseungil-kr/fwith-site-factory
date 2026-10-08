@@ -76,13 +76,13 @@ export default defineConfig({
   },
   fonts: [
     {
-      name: "Google Sans Code",
-      cssVariable: "--font-google-sans-code",
+      name: "Noto Sans KR",
+      cssVariable: "--font-noto-sans-kr",
       provider: fontProviders.google(),
-      fallbacks: ["monospace"],
-      weights: [300, 400, 500, 600, 700],
-      styles: ["normal", "italic"],
-      formats: ["woff", "ttf"],
+      fallbacks: ["system-ui", "sans-serif"],
+      weights: [400, 500, 700],
+      styles: ["normal"],
+      formats: ["ttf"],
     },
   ],
   env: {
