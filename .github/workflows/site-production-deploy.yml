@@ -455,6 +455,15 @@ jobs:
               raise SystemExit(0)
           if key == 'goyang-flower-v2' and not os.environ.get('SITE_KEY') and 'SITE_KEY: goyang-flower-v2' not in os.environ.get('ISSUE_BODY', '').split('---BEGIN-', 1)[0].splitlines():
               raise SystemExit('Goyang requires exact canonical SITE_KEY header for its shared lock')
+          if key == 'blog-fwith':
+              import sys
+              from pathlib import Path
+              sys.path.insert(0, 'control/site-factory/engine')
+              from blog_indexnow_finalize import resolved_target
+              resolved = resolved_target(Path('control/.github/site-factory-sites.json'), revision)
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+                  for name, value in resolved.items(): out.write(f'{name}={value}\n')
+              raise SystemExit(0)
           if site.get('productionEnabled') is not True or site.get('launchMode') != 'live': raise SystemExit('Production gate closed')
           if not re.fullmatch('[0-9a-f]{40}', revision): raise SystemExit('Full source SHA required')
           if site.get('requireRevisionApproval') and site.get('approvedRevision') != revision:
@@ -497,8 +506,9 @@ jobs:
           SITE_URL: ${{ steps.target.outputs.site_url }}
           SITE_INDEXABLE: 'true'
           SITE_FACTORY_REVISION: ${{ steps.target.outputs.revision }}
+          SITE_KEY: ${{ steps.target.outputs.site_key }}
         run: |
-          test -f production-indexing.enabled
+          if [ "$SITE_KEY" != blog-fwith ]; then test -f production-indexing.enabled; fi
           if [ -f package-lock.json ]; then npm ci; else npm install; fi
           npm run build
       - name: Extract fixed Goyang baseline for exact live recovery QA
@@ -517,7 +527,9 @@ jobs:
           NAVER: ${{ steps.target.outputs.naver }}
           INDEXNOW: ${{ steps.target.outputs.indexnow }}
         run: |
-          if [ "$SITE_KEY" = goyang-flower-v2 ]; then
+          if [ "$SITE_KEY" = blog-fwith ]; then
+            python3 control/site-factory/engine/blog_indexnow_finalize.py verify --registry control/.github/site-factory-sites.json --revision "$REVISION" --root finalization-build --report recovery-live-qa.json
+          elif [ "$SITE_KEY" = goyang-flower-v2 ]; then
             for attempt in 1 2 3 4 5 6; do
               if python3 control/site-factory/engine/verify_live.py --site-key "$SITE_KEY" --root finalization-build --baseline-root canary-baseline --registry control/.github/site-factory-sites.json --origin "$ORIGIN" --revision "$REVISION" --launch-key "$LAUNCH_KEY" --scope-key "$SCOPE_KEY" --phase production --report recovery-live-qa.json; then break; fi
               if grep -q '"pipelineState": "verification_blocked"' recovery-live-qa.json; then exit 1; fi
@@ -534,13 +546,22 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RECEIPT_ISSUE: ${{ inputs.source_snapshot_issue || github.event.issue.number }}
         run: |
-          python3 control/site-factory/engine/indexnow_finalize.py \
-            --registry control/.github/site-factory-sites.json \
-            --site-key "${{ steps.target.outputs.site_key }}" \
-            --revision "${{ steps.target.outputs.revision }}" \
-            --root finalization-build \
-            --receipt-issue "$RECEIPT_ISSUE" --report indexnow-receipt.json \
-            --run-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          if [ "${{ steps.target.outputs.site_key }}" = blog-fwith ]; then
+            python3 control/site-factory/engine/blog_indexnow_finalize.py submit \
+              --registry control/.github/site-factory-sites.json \
+              --revision "${{ steps.target.outputs.revision }}" \
+              --root finalization-build \
+              --receipt-issue "$RECEIPT_ISSUE" --report indexnow-receipt.json \
+              --run-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          else
+            python3 control/site-factory/engine/indexnow_finalize.py \
+              --registry control/.github/site-factory-sites.json \
+              --site-key "${{ steps.target.outputs.site_key }}" \
+              --revision "${{ steps.target.outputs.revision }}" \
+              --root finalization-build \
+              --receipt-issue "$RECEIPT_ISSUE" --report indexnow-receipt.json \
+              --run-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          fi
       - name: Save IndexNow receipt
         if: always()
         uses: actions/upload-artifact@v4
@@ -566,3 +587,4 @@ jobs:
           RECEIPT_ISSUE: ${{ inputs.source_snapshot_issue || github.event.issue.number }}
         run: |
           gh issue comment -R "$GITHUB_REPOSITORY" "$RECEIPT_ISSUE" --body "PIPELINE_STATE: indexnow_blocked_or_failed. This is incomplete, not skipped success. Inspect the exact receipt before retrying. An uncertain POST is never automatically repeated. Evidence: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
