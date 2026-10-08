@@ -203,7 +203,8 @@ jobs:
                   assert path.rstrip('/') == expected_path.rstrip('/'), 'canonical_path_mismatch'
               directives={x.strip().lower() for x in h.meta.get('robots','').split(',')}
               assert directives == ({'noindex','nofollow'} if exceptional else {'index','follow'}), 'robots_meta_mismatch'
-              item=dict(file=rel, url=h.canon[0], noindex=exceptional)
+              request_path='/' if rel=='index.html' else '/'+rel.removesuffix('index.html') if rel.endswith('/index.html') else '/'+rel.removesuffix('.html')
+              item=dict(file=rel, url=h.canon[0], requestPath=request_path, noindex=exceptional)
               if rel != '404.html': pages.append(item)
               if h.has_article:
                   assert 'blog-preparation' not in path and not exceptional, 'preparation_article_not_a_release'
@@ -316,7 +317,7 @@ jobs:
           def verify():
               checked=[]
               for item in c['pages']:
-                  path=urlsplit(item['url']).path; body,headers=get(path)
+                  path=item['requestPath']; body,headers=get(path)
                   assert headers.get('Content-Type','').lower().startswith('text/html'), 'html_content_type'
                   h=Page(); h.feed(body.decode('utf-8'))
                   assert h.meta.get('site-factory-revision')==c['revision'], 'public_revision_mismatch'
