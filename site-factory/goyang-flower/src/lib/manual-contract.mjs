@@ -3,10 +3,10 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import {productFamilies,selectProducts} from './catalog.mjs';
-export const WRITER_ID='manual-goyang-writer-20261007';
-export const REVIEWER_ID='independent-manual-review-20261007';
+export const WRITER_ID='7aeb5b8d-fab3-4526-8598-dcea31bd73e6';
+export const REVIEWER_ID='supplement-source-review-9739ec25610d44e7';
 export const RELEASE_ID='goyang-missing-pages-20261007';
-export const EVIDENCE_PATH='src/data/manual-review/goyang-missing-pages-20261007.json';
+export const EVIDENCE_PATH='src/data/manual-review/goyang-supplemental-source-review-20261007.json';
 export const digest=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 export const BINDING_KEYS=['contentHash','sourcesHash','catalogHash','catalogFileHash','rendererHash','assetsHash','frozenHash'];
 const filesUnder=(root,relative)=>{
