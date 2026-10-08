@@ -22,14 +22,13 @@ import config from "./astro-paper.config";
 
 const siteUrl = process.env.SITE_URL ?? config.site.url;
 
-const noindexHeaders = () => ({
+const robotsHeaders = () => ({
   name: "site-factory-noindex-headers",
   hooks: {
     "astro:build:done": async ({ dir }: { dir: URL }) => {
-      await writeFile(
-        new URL("_headers", dir),
-        "/*\n  X-Robots-Tag: noindex, nofollow\n"
-      );
+      if (process.env.SITE_INDEXABLE !== "true") {
+        await writeFile(new URL("_headers", dir), "/*\n  X-Robots-Tag: noindex, nofollow\n");
+      }
     },
   },
 });
@@ -42,7 +41,7 @@ export default defineConfig({
       filter: page =>
         config.features?.showArchives !== false || !page.endsWith("/archives/"),
     }),
-    noindexHeaders(),
+    robotsHeaders(),
   ],
   i18n: {
     locales: ["ko"],

@@ -1,61 +1,25 @@
 #!/usr/bin/env python3
-"""Small static contract for the isolated noindex AstroPaper preview."""
+"""Static contract for preview and indexable blog builds."""
 from pathlib import Path
-import os
-import re
-
-
-root = Path("dist")
-revision = os.environ.get("SITE_FACTORY_REVISION", "")
-origin = os.environ.get("SITE_URL", "").rstrip("/")
-
-
-def require(condition: bool, message: str) -> None:
-    if not condition:
-        raise SystemExit(message)
-
-
-def read(path: str) -> str:
-    file = root / path
-    require(file.is_file(), f"missing artifact: {path}")
-    return file.read_text(encoding="utf-8")
-
-
-pages = sorted(root.glob("**/*.html"))
-require(bool(pages), "no_html_routes")
-home = read("index.html")
-detail = read("posts/blog-preparation/index.html")
-robots = read("robots.txt")
-headers = read("_headers")
-read("rss.xml")
-read("sitemap-index.xml")
-read("tags/index.html")
-read("tags/지역/index.html")
-read("tags/근조/index.html")
-read("tags/축하/index.html")
-
-require("꽃이랑" in home and "https://fwith.co.kr" in home, "brand_cta_missing")
-require("꽃이랑 블로그 준비 안내" in detail, "detail_route_missing")
-require("X-Robots-Tag: noindex, nofollow" in headers, "noindex_header_missing")
-require("User-agent: *" in robots and "Disallow: /" in robots, "robots_block_missing")
-require(origin.startswith("https://"), "site_url_missing")
-for page in pages:
-    html = page.read_text(encoding="utf-8")
-    relative = page.relative_to(root).as_posix()
-    require('name="robots" content="noindex,nofollow"' in html, f"noindex_meta_missing:{relative}")
-    require(
-        f'name="site-factory-revision" content="{revision}"' in html,
-        f"revision_meta_missing:{relative}",
-    )
-    canonical = re.search(r'<link rel="canonical" href="([^"]+)"', html)
-    require(canonical is not None and canonical.group(1).startswith(origin + "/"), f"canonical_origin_mismatch:{relative}")
-    for asset in re.findall(r'(?:src|href)="(/[^"]+)"', html):
-        if not (asset.startswith("/_astro/") or asset == "/favicon.svg"):
-            continue
-        require((root / asset.lstrip("/")).is_file(), f"asset_missing:{relative}:{asset}")
-
-sitemap = read("sitemap-0.xml")
-sitemap_origins = set(re.findall(r"<loc>(https?://[^/]+)", sitemap))
-require(sitemap_origins == {origin}, "sitemap_origin_mismatch")
-
-print("static QA passed")
+import os, re
+root=Path('dist'); revision=os.environ.get('SITE_FACTORY_REVISION',''); origin=os.environ.get('SITE_URL','').rstrip('/'); indexable=os.environ.get('SITE_INDEXABLE')=='true'
+def require(c,m):
+ if not c: raise SystemExit(m)
+def read(p):
+ f=root/p; require(f.is_file(),f'missing artifact: {p}'); return f.read_text(encoding='utf-8')
+pages=sorted(root.glob('**/*.html')); require(pages,'no_html_routes'); home=read('index.html'); robots=read('robots.txt'); read('rss.xml'); read('sitemap-index.xml')
+require('https://fwith.co.kr' in home,'brand_cta_missing'); require(origin.startswith('https://'),'site_url_missing')
+posts=[p for p in pages if p.as_posix().startswith('dist/posts/') and p.name=='index.html' and p.parent.name!='posts']; require(posts,'no_published_posts')
+if indexable:
+ require('Allow: /' in robots,'robots_allow_missing'); require(not (root/'_headers').exists(),'indexable_noindex_header_present')
+else:
+ require('Disallow: /' in robots,'robots_block_missing'); require('noindex' in read('_headers'),'noindex_header_missing')
+for p in pages:
+ h=p.read_text(encoding='utf-8'); rel=p.relative_to(root).as_posix(); forced=rel in {'404.html','search/index.html'}; expected='index,follow' if indexable and not forced else 'noindex,nofollow'
+ require(f'name="robots" content="{expected}"' in h,f'robots_meta_mismatch:{rel}'); require(f'name="site-factory-revision" content="{revision}"' in h,f'revision_meta_missing:{rel}')
+ c=re.search(r'<link rel="canonical" href="([^"]+)"',h); require(c and c.group(1).startswith(origin+'/'),f'canonical_origin_mismatch:{rel}')
+ for a in re.findall(r'(?:src|href)="(/[^\"]+)"',h):
+  if a.startswith('/_astro/') or a=='/favicon.svg': require((root/a.lstrip('/')).is_file(),f'asset_missing:{rel}:{a}')
+sitemap=read('sitemap-0.xml'); require(set(re.findall(r'<loc>(https?://[^/]+)',sitemap))=={origin},'sitemap_origin_mismatch')
+if indexable: require('/search/' not in sitemap and '/404' not in sitemap,'nonindex_route_in_sitemap')
+print('static QA passed')

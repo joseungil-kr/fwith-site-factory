@@ -12,6 +12,7 @@ type Props = {
   description?: string;
   ogImage?: string;
   canonicalURL?: string;
+  noindex?: boolean;
 };
 
 const { site } = config;
@@ -23,6 +24,7 @@ const {
   description = site.description,
   ogImage = resolveDefaultOgImagePath(config),
   canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+  noindex = false,
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.site ?? Astro.url);
@@ -46,7 +48,7 @@ const rssHref = getRelativeLocaleUrl(
     <meta name="generator" content={Astro.generator} />
     <meta
       name="robots"
-      content={indexable ? "index,follow" : "noindex,nofollow"}
+      content={indexable && !noindex ? "index,follow" : "noindex,nofollow"}
     />
     <meta name="site-factory-revision" content={revision} />
 
