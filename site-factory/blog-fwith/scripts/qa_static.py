@@ -2,10 +2,12 @@
 """Small static contract for the isolated noindex AstroPaper preview."""
 from pathlib import Path
 import os
+import re
 
 
 root = Path("dist")
 revision = os.environ.get("SITE_FACTORY_REVISION", "")
+origin = os.environ.get("SITE_URL", "").rstrip("/")
 
 
 def require(condition: bool, message: str) -> None:
@@ -19,6 +21,8 @@ def read(path: str) -> str:
     return file.read_text(encoding="utf-8")
 
 
+pages = sorted(root.glob("**/*.html"))
+require(bool(pages), "no_html_routes")
 home = read("index.html")
 detail = read("posts/blog-preparation/index.html")
 robots = read("robots.txt")
@@ -32,10 +36,23 @@ read("tags/축하/index.html")
 
 require("꽃이랑" in home and "https://fwith.co.kr" in home, "brand_cta_missing")
 require("꽃이랑 블로그 준비 안내" in detail, "detail_route_missing")
-require('name="robots" content="noindex,nofollow"' in home, "noindex_meta_missing")
 require("X-Robots-Tag: noindex, nofollow" in headers, "noindex_header_missing")
 require("User-agent: *" in robots and "Disallow: /" in robots, "robots_block_missing")
-if revision:
-    require(f'name="site-factory-revision" content="{revision}"' in home, "revision_meta_missing")
+require(origin.startswith("https://"), "site_url_missing")
+for page in pages:
+    html = page.read_text(encoding="utf-8")
+    relative = page.relative_to(root).as_posix()
+    require('name="robots" content="noindex,nofollow"' in html, f"noindex_meta_missing:{relative}")
+    require(
+        f'name="site-factory-revision" content="{revision}"' in html,
+        f"revision_meta_missing:{relative}",
+    )
+    canonical = re.search(r'<link rel="canonical" href="([^"]+)"', html)
+    require(canonical is not None and canonical.group(1).startswith(origin + "/"), f"canonical_origin_mismatch:{relative}")
+    for asset in re.findall(r'(?:src|href)="(/_astro/[^"]+)"', html):
+        require((root / asset.lstrip("/")).is_file(), f"asset_missing:{relative}:{asset}")
+
+sitemap = read("sitemap-0.xml")
+require(origin + "/" in sitemap and "https://blog.fwith.kr/" not in sitemap, "sitemap_origin_mismatch")
 
 print("static QA passed")

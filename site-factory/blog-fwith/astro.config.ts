@@ -20,6 +20,8 @@ import {
 import { transformerFileName } from "./src/utils/transformers/fileName";
 import config from "./astro-paper.config";
 
+const siteUrl = process.env.SITE_URL ?? config.site.url;
+
 const noindexHeaders = () => ({
   name: "site-factory-noindex-headers",
   hooks: {
@@ -33,7 +35,7 @@ const noindexHeaders = () => ({
 });
 
 export default defineConfig({
-  site: config.site.url,
+  site: siteUrl,
   integrations: [
     mdx(),
     sitemap({

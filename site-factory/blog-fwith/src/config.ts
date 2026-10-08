@@ -8,10 +8,12 @@ import userConfig from "@/astro-paper.config";
 import type { ResolvedAstroPaperConfig } from "./types/config";
 
 const DEFAULT_OG_IMAGE = "default-og.jpg";
+const siteUrl = import.meta.env.SITE_URL ?? userConfig.site.url;
 
 const config: ResolvedAstroPaperConfig = {
   site: {
     ...userConfig.site,
+    url: siteUrl,
     ogImage: userConfig.site.ogImage ?? DEFAULT_OG_IMAGE,
     lang: userConfig.site.lang ?? "en",
     timezone: userConfig.site.timezone ?? "UTC",
