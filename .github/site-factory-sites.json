@@ -1,6 +1,22 @@
 {
   "schemaVersion": 1,
   "sites": {
+    "blog-fwith": {
+      "repo": "joseungil-kr/fwith-site-factory",
+      "branch": "site-factory-blog-fwith",
+      "root": "site-factory/blog-fwith",
+      "siteUrl": "https://blog.fwith.kr",
+      "worker": "blog-fwith-prod-disabled",
+      "wranglerConfig": "wrangler.jsonc",
+      "stagingWorker": "blog-fwith-guide-qa",
+      "stagingWranglerConfig": "wrangler.staging.jsonc",
+      "stagingUrl": "https://blog-fwith-guide-qa.joseungil.workers.dev",
+      "launchMode": "staging",
+      "productionEnabled": false,
+      "growthPaused": true,
+      "autoDeploySnapshots": false,
+      "stagingBuildIsolation": false
+    },
     "ansan-flower-test": {
       "repo": "joseungil-kr/fwith-site-factory",
       "branch": "site-factory-ansan-v1",

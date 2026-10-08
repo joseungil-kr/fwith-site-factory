@@ -8,7 +8,7 @@ on:
         required: true
         default: seongnam-flower-v2
         type: choice
-        options: [seongnam-flower-v2, bucheon-flower-v2, namyangju-flower-v2, pyeongtaek-flower-v2, anyang-flower-v2]
+        options: [seongnam-flower-v2, bucheon-flower-v2, namyangju-flower-v2, pyeongtaek-flower-v2, anyang-flower-v2, blog-fwith]
 permissions:
   contents: read
 concurrency:
@@ -95,6 +95,7 @@ jobs:
                       or re.fullmatch(r'[0-9a-fA-F]{32}', account) is None):
                   raise ValueError()
               supported_names = {
+                  'blog-fwith': ['blog-fwith-guide-qa', 'blog-fwith-prod-disabled'],
                   'seongnam-flower-v2': ['seongnam-flower-guide-qa'],
                   'bucheon-flower-v2': ['bucheon-flower-guide-qa', 'bucheon-flower-prod-disabled'],
               }
