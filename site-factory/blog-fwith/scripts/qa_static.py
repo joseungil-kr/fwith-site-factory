@@ -11,7 +11,7 @@ pages=sorted(root.glob('**/*.html')); require(pages,'no_html_routes'); home=read
 require('https://fwith.co.kr' in home,'brand_cta_missing'); require(origin.startswith('https://'),'site_url_missing')
 posts=[p for p in pages if p.as_posix().startswith('dist/posts/') and p.name=='index.html' and p.parent.name!='posts']; require(posts,'no_published_posts')
 if indexable:
- require('Allow: /' in robots,'robots_allow_missing'); require('/*\n  X-Robots-Tag: noindex' not in read('_headers'),'indexable_blanket_noindex_header_present')
+ require('Allow: /' in robots,'robots_allow_missing'); require(not re.search(r'^/\*\s*\n\s+X-Robots-Tag:\s*noindex',read('_headers'),re.M),'indexable_blanket_noindex_header_present')
 else:
  require('Disallow: /' in robots,'robots_block_missing'); require('noindex' in read('_headers'),'noindex_header_missing')
 for p in pages:
