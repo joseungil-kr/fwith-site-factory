@@ -182,16 +182,18 @@ jobs:
               return path
           class Page(HTMLParser):
               def __init__(self):
-                  super().__init__(); self.meta={}; self.canon=[]; self.images=[]; self.article=False; self.has_article=False
+                  super().__init__(); self.meta={}; self.canon=[]; self.images=[]; self.article=False; self.has_article=False; self.anchor=None
               def handle_starttag(self,tag,attrs):
                   a=dict(attrs)
                   if tag=='meta' and a.get('name'):
                       k=a['name'].lower(); assert k not in self.meta, 'duplicate_meta'; self.meta[k]=a.get('content','')
                   if tag=='link' and a.get('rel')=='canonical': self.canon.append(a.get('href',''))
                   if tag=='article' and a.get('id')=='article': self.article=True; self.has_article=True
-                  if tag=='img' and self.article: self.images.append(a)
+                  if tag=='a' and self.article: self.anchor=a.get('href','')
+                  if tag=='img' and self.article: self.images.append({**a, '_link':self.anchor})
               def handle_endtag(self,tag):
                   if tag=='article': self.article=False
+                  if tag=='a': self.anchor=None
           pages=[]; articles=[]; image_paths=set()
           for p in sorted(root.rglob('*.html')):
               rel=p.relative_to(root).as_posix(); h=Page(); h.feed(p.read_text())
@@ -208,11 +210,22 @@ jobs:
               if rel != '404.html': pages.append(item)
               if h.has_article:
                   assert 'blog-preparation' not in path and not exceptional, 'preparation_article_not_a_release'
-                  assert len(h.images)==1 and h.images[0].get('alt','').strip(), 'one_article_image_required'
-                  src=h.images[0].get('src',''); assert not src.startswith('//'), 'protocol_relative_image'
-                  image=local(origin+src if src.startswith('/') else src)
-                  assert image.lstrip('/') in actual, 'article_image_missing'
-                  image_paths.add(image); articles.append(h.canon[0])
+                  slug=path.rstrip('/').rsplit('/',1)[-1]
+                  legacy=slug in {'funeral-wreath-ribbon-messages','clinic-opening-congratulatory-wreath'}
+                  assert len(h.images)==(1 if legacy else 2), 'article_image_count_mismatch'
+                  article_images=[]
+                  for img in h.images:
+                      assert img.get('alt','').strip(), 'article_image_alt_required'
+                      src=img.get('src',''); assert not src.startswith('//'), 'protocol_relative_image'
+                      image=local(origin+src if src.startswith('/') else src)
+                      assert image.lstrip('/') in actual, 'article_image_missing'
+                      article_images.append(image); image_paths.add(image)
+                      if image=='/images/phone-consultation-banner.png':
+                          assert img.get('_link')=='tel:18440644', 'banner_phone_link_mismatch'
+                  assert len(set(article_images))==len(article_images), 'duplicate_article_images'
+                  if not legacy:
+                      assert set(article_images)=={'/images/phone-consultation-banner.png','/images/posts/'+slug+'.png'}, 'article_image_contract_mismatch'
+                  articles.append(h.canon[0])
           assert articles, 'no_real_articles'
           robots=(root/'robots.txt').read_text()
           lines=[x.strip() for x in robots.splitlines() if x.strip() and not x.strip().startswith('#')]
