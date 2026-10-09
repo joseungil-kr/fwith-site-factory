@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T19:07:50.577Z",
+  "updatedAt": "2026-10-09T19:11:07.928Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -28,7 +28,7 @@
   "current": {
     "scopeKey": "gwacheon-direct-initial-20261010",
     "city": "과천시",
-    "status": "researching_membership",
+    "status": "source_publication_in_progress",
     "owner": {
       "scheduledRunAt": "2026-10-09T19:00:00Z",
       "observedMessageAt": "2026-10-09T18:57:20Z",
@@ -64,8 +64,10 @@
     "lastSuccessfulStage": "fresh_remote_scope_and_conflict_readback",
     "nextIntent": "Publish independently reviewed exact source and bounded direct controls after final source review",
     "pendingExternalAction": {
-      "action": "prepare_and_review_region",
-      "idempotencyKey": "gwacheon-direct-initial-20261010"
+      "action": "create_source_branch",
+      "branch": "site-factory-gwacheon-direct",
+      "idempotencyKey": "gwacheon-direct-initial-20261010-source-4851451e",
+      "fixedParent": "0ee0d615e4feb8f67ac90f123b943174d11bcf00"
     },
     "receiptJournal": {
       "number": 266,
@@ -87,9 +89,18 @@
       "writerADigest": "c142448200ddae54ceac5cf79d444a1b983be26590117d003b13a5b12e69bdb7",
       "writerBDigest": "2ebea3edfee338a8d02f46a917418dc18313eb86c9d73432b5851ad27a0cb333",
       "catalogPrices": "verified2026-10-09T18:59:50Z",
-      "sourceBuild": "pending_final_membership_pin",
-      "hostedQa": "pending"
-    }
+      "sourceBuild": "PASS_NODE22",
+      "hostedQa": "pending",
+      "sourceTests": 64,
+      "publisherTests": 34,
+      "sourceFilesVerified": 69,
+      "exactMatchingProductCards": 40,
+      "normalHtmlRoutes": 12,
+      "sitemapUrls": 12,
+      "sourceInventorySha256": "4851451e3a152fa92fda5544fb9218e126d686e28ec0cbdd2d6c81108be1bba1",
+      "publicationManifestRawSha256": "50c2fb75fd362491f1025344c823aa1c6083cf62ec7fe629ff8cd0afddc1ef00"
+    },
+    "controlRevision": "253a08eb4c0962ca774889608dc73cea057dd6dd"
   },
   "history": [
     {
