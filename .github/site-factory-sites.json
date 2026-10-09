@@ -631,6 +631,98 @@
         "coverageSha256": "e0da14276f14b87bfa92abb182ff5e690e6e91e3ef32e8f79ffaefa6b4464a43",
         "regionPolicySha256": "8760e854f6c93ed985f3d7e0351cb9953dc61a94f01ed962faa654b088a0de65"
       }
+    },
+    "pyeongtaek-flower-v2": {
+      "repo": "joseungil-kr/fwith-site-factory",
+      "branch": "site-factory-pyeongtaek-v2",
+      "root": "site-factory/pyeongtaek-flower",
+      "siteUrl": "https://pyeongtaek.fwith.kr",
+      "primaryLandingSlug": "",
+      "heroPath": "",
+      "worker": "pyeongtaek-flower-prod-disabled",
+      "launchMode": "staging",
+      "productionEnabled": false,
+      "naverVerification": "",
+      "indexnowKey": "",
+      "templateKey": "flower-local-v2",
+      "allowedCategories": [
+        "funeral",
+        "business",
+        "school",
+        "event",
+        "gift",
+        "order",
+        "regions"
+      ],
+      "allowedPageTypes": [
+        "funeral-facility",
+        "order-help",
+        "price-guide",
+        "business-opening",
+        "school-event",
+        "event-venue",
+        "hospital-visit",
+        "personal-gift",
+        "station-transit",
+        "message-guide",
+        "regional-service"
+      ],
+      "categoryPageTypes": {
+        "funeral": [
+          "funeral-facility",
+          "order-help",
+          "price-guide"
+        ],
+        "business": [
+          "business-opening"
+        ],
+        "school": [
+          "school-event"
+        ],
+        "event": [
+          "event-venue"
+        ],
+        "gift": [
+          "hospital-visit",
+          "personal-gift",
+          "station-transit"
+        ],
+        "order": [
+          "order-help",
+          "price-guide",
+          "message-guide"
+        ],
+        "regions": [
+          "regional-service"
+        ]
+      },
+      "snapshotRenderer": "structured-json-v12",
+      "growthPaused": true,
+      "autoDeploySnapshots": false,
+      "graphScript": "scripts/qa_graph.mjs",
+      "stagingWranglerConfig": "wrangler.staging.jsonc",
+      "stagingUrl": "https://pyeongtaek-flower-guide-qa.joseungil.workers.dev",
+      "requireRevisionApproval": true,
+      "requireSnapshotApproval": true,
+      "approvedRevision": "",
+      "approvalEvidenceUrl": "",
+      "stagingBuildIsolation": true,
+      "stagingWorker": "pyeongtaek-flower-guide-qa",
+      "hubPolicy": "child-threshold-v1",
+      "initialLaunch": {
+        "mode": "whole-dong-initial",
+        "scopeKey": "pyeongtaek-flower-v2-dong-coverage-20261009",
+        "membershipSourceSha256": "1d9880f65cdef4b07316e0d0e63dfc0daf64502d856a23a9681e87e1703f4ec7",
+        "coverageSha256": "5e9c4fcad6367219b6232f6b78c6d9b08df232af82cfe0ca549b5ed67cc5fa80",
+        "memberIdentitySha256": "28f06be4554a116aa64210d04009a04c1422f81cc66890191ddc0d6d1f850e09",
+        "officialUnitCount": 37
+      },
+      "regionalService": {
+        "enabled": false,
+        "scopeKey": "pyeongtaek-flower-v2-dong-coverage-20261009",
+        "definitionFile": "src/data/region-coverage.json",
+        "policyFile": "src/data/region-policy.json"
+      }
     }
   }
 }
