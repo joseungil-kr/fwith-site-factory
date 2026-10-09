@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T17:40:56.347Z",
+  "updatedAt": "2026-10-09T18:58:48.459Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -25,7 +25,54 @@
   "excludedHosts": [
     "blog.fwith.kr"
   ],
-  "current": null,
+  "current": {
+    "scopeKey": "gwacheon-direct-initial-20261010",
+    "city": "과천시",
+    "status": "researching_membership",
+    "owner": {
+      "scheduledRunAt": "2026-10-09T19:00:00Z",
+      "observedMessageAt": "2026-10-09T18:57:20Z",
+      "serviceInvocationId": null,
+      "checkpointId": "direct-gwacheon-20261009T190000Z",
+      "active": true
+    },
+    "identity": {
+      "repository": "joseungil-kr/fwith-site-factory",
+      "branch": "site-factory-gwacheon-direct",
+      "root": "site-factory/gwacheon-flower",
+      "worker": "gwacheon-flower-guide",
+      "hostname": "gwacheon.fwith.kr",
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": false
+    },
+    "input": {
+      "controlRevision": "f01652ae896d3b60eebb9e75d09ff55626914527",
+      "runtimeSourceRevision": "f13a51b75707e5b2e4cfb499da48372faa314858"
+    },
+    "conflictChecks": {
+      "branchesChecked": 106,
+      "matchingBranch": false,
+      "openPullRequests": 0,
+      "mainMatchingPaths": false,
+      "inProgressWorkflows": 0,
+      "providerOwnershipCollisionCheck": "pending_required_before_mutation"
+    },
+    "selection": {
+      "sourceUrl": "https://kosis.kr/visual/eRegionIndex/eRegionCompare.do",
+      "reason": "Next unbuilt Gyeonggi municipality in official code order; earlier Dongducheon,Ansan,Goyang already complete"
+    },
+    "lastSuccessfulStage": "fresh_remote_scope_and_conflict_readback",
+    "nextIntent": "Freeze official legal membership and customer purchase plan before writing",
+    "pendingExternalAction": {
+      "action": "prepare_and_review_region",
+      "idempotencyKey": "gwacheon-direct-initial-20261010"
+    },
+    "receiptJournal": {
+      "number": 266,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266",
+      "reuseExistingWithoutReopen": true
+    }
+  },
   "history": [
     {
       "scopeKey": "uijeongbu-direct-initial-20261010",
@@ -460,7 +507,7 @@
       ]
     }
   ],
-  "nextAction": "select_next_unbuilt_region_at_next_hourly_invocation",
+  "nextAction": "resume_current_region",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
