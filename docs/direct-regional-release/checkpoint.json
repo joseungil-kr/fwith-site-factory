@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T21:18:58.590Z",
+  "updatedAt": "2026-10-09T21:21:58.414Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -29,7 +29,7 @@
   "current": {
     "scopeKey": "osan-direct-initial-20261010",
     "city": "오산시",
-    "status": "independent_content_pass_preparing_source",
+    "status": "ready_for_exact_direct_workflow",
     "owner": {
       "scheduledRunAt": "2026-10-09T21:00:00Z",
       "observedExecutionAt": "2026-10-09T21:05:25Z",
@@ -44,7 +44,7 @@
       "worker": "osan-flower-guide",
       "hostname": "osan.fwith.kr",
       "externalCreationVerified": false,
-      "sourceBranchCreatedVerified": false
+      "sourceBranchCreatedVerified": true
     },
     "input": {
       "controlRevision": "4baec62e67b53501a087bfa313ce18f07ef5bdea",
@@ -62,16 +62,18 @@
       "mainMatchingPaths": false,
       "providerOwnershipCollisionCheck": "pending_required_before_mutation"
     },
-    "lastSuccessfulStage": "independent_source_candidate_build_and_exact_writer_binding",
+    "lastSuccessfulStage": "independent_exact_remote_source_final_sha_build",
     "nextIntent": "Freeze official membership then independently write and review original local purchase content",
     "pendingExternalAction": {
-      "action": "create_exact_reviewed_region_branch_and_source_commit",
-      "target": "site-factory-osan-direct",
-      "root": "site-factory/osan-flower",
-      "idempotencyKey": "osan-source-initial-20261010",
-      "frozenMembershipSha256": "031c12f94831312d1db2fa26b206ca22dccbee4831797dbd068e01ce2b13bab0",
-      "files": 69,
-      "force": false
+      "action": "workflow_dispatch",
+      "workflow": "osan-direct-publish.yml",
+      "expectedRevision": "79b52147729166b0d00fb62deb6d68df0391b34c",
+      "indexnowOnly": false,
+      "hostname": "osan.fwith.kr",
+      "worker": "osan-flower-guide",
+      "existingAccountOnly": true,
+      "noOverrides": true,
+      "idempotencyKey": "osan-direct-release-79b52147729166b0d00fb62deb6d68df0391b34c"
     },
     "plan": {
       "state": "independent_all_24_content_pass",
@@ -91,7 +93,7 @@
       "writerBDigest": "23a3f6c2537d7216a922e233e1605bcb8305c9202dc05ede83f7b215c89e8769",
       "writerCDigest": "8158729d0b2bd44252f36c2ade3a478cb4faa1acefd9524081cb64abca9d3d20",
       "catalogPrices": "verified2026-10-09T21:07:39Z",
-      "sourceBuild": "PASS_PRECOMMIT_CANDIDATE_FINAL_SHA_PENDING",
+      "sourceBuild": "PASS_FINAL_SOURCE_SHA_NODE22",
       "hostedQa": "not_executed",
       "sourceTests": 64,
       "publisherTests": 34,
@@ -99,8 +101,11 @@
       "exactMatchingProductCards": 96,
       "normalHtmlRoutes": 26,
       "sitemapUrls": 26,
-      "artifactFiles": 43
-    }
+      "artifactFiles": 43,
+      "remoteReadback": "PASS_69_FULL_BYTES_AND_CONTROLS",
+      "sourceInventorySha256": "190b0db1631214e6722c15fbc1746781433d9e4707e571ba8964f1823cd42428"
+    },
+    "sourceRevision": "79b52147729166b0d00fb62deb6d68df0391b34c"
   },
   "history": [
     {
