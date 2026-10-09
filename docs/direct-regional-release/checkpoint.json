@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T21:17:14.037Z",
+  "updatedAt": "2026-10-09T21:18:58.590Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -62,13 +62,16 @@
       "mainMatchingPaths": false,
       "providerOwnershipCollisionCheck": "pending_required_before_mutation"
     },
-    "lastSuccessfulStage": "independent_all_24_content_review",
+    "lastSuccessfulStage": "independent_source_candidate_build_and_exact_writer_binding",
     "nextIntent": "Freeze official membership then independently write and review original local purchase content",
     "pendingExternalAction": {
-      "action": "prepare_new_region_source_branch",
+      "action": "create_exact_reviewed_region_branch_and_source_commit",
       "target": "site-factory-osan-direct",
+      "root": "site-factory/osan-flower",
       "idempotencyKey": "osan-source-initial-20261010",
-      "dispatchAuthorizedOnlyAfterIndependentReview": true
+      "frozenMembershipSha256": "031c12f94831312d1db2fa26b206ca22dccbee4831797dbd068e01ce2b13bab0",
+      "files": 69,
+      "force": false
     },
     "plan": {
       "state": "independent_all_24_content_pass",
@@ -88,8 +91,15 @@
       "writerBDigest": "23a3f6c2537d7216a922e233e1605bcb8305c9202dc05ede83f7b215c89e8769",
       "writerCDigest": "8158729d0b2bd44252f36c2ade3a478cb4faa1acefd9524081cb64abca9d3d20",
       "catalogPrices": "verified2026-10-09T21:07:39Z",
-      "sourceBuild": "pending",
-      "hostedQa": "not_executed"
+      "sourceBuild": "PASS_PRECOMMIT_CANDIDATE_FINAL_SHA_PENDING",
+      "hostedQa": "not_executed",
+      "sourceTests": 64,
+      "publisherTests": 34,
+      "sourceFilesVerified": 69,
+      "exactMatchingProductCards": 96,
+      "normalHtmlRoutes": 26,
+      "sitemapUrls": 26,
+      "artifactFiles": 43
     }
   },
   "history": [
