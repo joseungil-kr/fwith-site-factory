@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T16:00:00Z",
+  "updatedAt": "2026-10-09T16:08:00Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -26,7 +26,7 @@
   "current": {
     "scopeKey": "gwangmyeong-direct-initial-20261010",
     "city": "광명시",
-    "status": "membership_fixed_preparing_content",
+    "status": "content_reviewed_static_qa_pending",
     "owner": {
       "scheduledRunAt": "2026-10-09T16:00:00Z",
       "observedMessageAt": "2026-10-09T15:57:01Z",
@@ -47,14 +47,14 @@
       "membershipSha256": "2fa5031edce0b60c6dbf6a4fdfc6a2fbe8c3f9e68ac28f110adfcdb1927aabf2",
       "plannedArticleCount": 8,
       "minimumPassedArticles": 8,
-      "passedArticleCount": 0,
+      "passedArticleCount": 8,
       "administrativeUnits": 19
     },
     "input": {
       "controlRevision": "133c5ade96b9b6385e78f859209cb83c15215c47",
       "runtimeSourceRevision": "c047f1127f7908085fce55ab41504a23ff9b199c"
     },
-    "lastSuccessfulStage": "official_membership_and_remote_conflict_research",
+    "lastSuccessfulStage": "eight_independent_content_reviews",
     "nextIntent": "write_and_independently_review_eight_articles_then_direct_publish",
     "conflictChecks": {
       "branchesChecked": 104,
@@ -70,8 +70,25 @@
       "reuseExistingWithoutReopen": true
     },
     "pendingExternalAction": {
-      "action": "claim_scope_and_publish_membership",
-      "idempotencyKey": "gwangmyeong-direct-initial-20261010"
+      "action": "publish_reviewed_customer_source_and_city_scoped_control",
+      "idempotencyKey": "gwangmyeong-direct-initial-20261010-source-v1",
+      "requiredBeforeWrite": "independent_integrated_source_and_exact_helper_review_PASS",
+      "branch": "site-factory-gwangmyeong-direct",
+      "controlPaths": [
+        ".github/workflows/gwangmyeong-direct-publish.yml",
+        "scripts/direct-gwangmyeong/publish.py",
+        "scripts/direct-gwangmyeong/test_publish.py"
+      ],
+      "receiptIssue": 266,
+      "oldFactoryInvocationAllowed": false
+    },
+    "review": {
+      "independentContent": "PASS",
+      "writerADigest": "82f9231f8f7caa09cfdd9a11af3d54ffb5f370b96c031cd4a1f7b9e2e3041a18",
+      "writerBDigest": "19ce4f8679326a1aa7287dabf183cb7ae1d95f2c4efa383e450b7a97cacd9fe0",
+      "membership": "PASS",
+      "catalogPrices": "verified2026-10-09T16:00Z",
+      "sourceBuild": "independent_review_pending"
     }
   },
   "history": [
