@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T19:15:30.853Z",
+  "updatedAt": "2026-10-09T19:57:59.505Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -25,7 +25,53 @@
   "excludedHosts": [
     "blog.fwith.kr"
   ],
-  "current": null,
+  "current": {
+    "scopeKey": "guri-direct-initial-20261010",
+    "city": "구리시",
+    "status": "research_and_prepare",
+    "owner": {
+      "scheduledRunAt": "2026-10-09T20:00:00Z",
+      "observedMessageAt": "2026-10-09T19:56:39Z",
+      "serviceInvocationId": null,
+      "checkpointId": "direct-guri-20261009T200000Z",
+      "active": true
+    },
+    "identity": {
+      "repository": "joseungil-kr/fwith-site-factory",
+      "branch": "site-factory-guri-direct",
+      "root": "site-factory/guri-flower",
+      "worker": "guri-flower-guide",
+      "hostname": "guri.fwith.kr",
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": false
+    },
+    "input": {
+      "controlRevision": "02b876b76169891438556942d89cac535223fc85",
+      "runtimeSourceRevision": "f13a51b75707e5b2e4cfb499da48372faa314858"
+    },
+    "selection": {
+      "sourceUrl": "https://kosis.kr/visual/eRegionIndex/eRegionCompare.do",
+      "reason": "Next unbuilt Gyeonggi municipality in official code order, excluding completed sites and approval-waiting Gwacheon"
+    },
+    "conflictChecks": {
+      "branchesChecked": 107,
+      "matchingBranch": false,
+      "openPullRequests": 0,
+      "mainMatchingPaths": false,
+      "inProgressWorkflows": 0,
+      "providerOwnershipCollisionCheck": "pending_required_before_mutation"
+    },
+    "lastSuccessfulStage": "remote_checkpoint_and_conflict_readback",
+    "pendingExternalAction": {
+      "action": "prepare_source_and_controls",
+      "idempotencyKey": "guri-direct-initial-20261010-prepare"
+    },
+    "receiptJournal": {
+      "number": 266,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266",
+      "reuseExistingWithoutReopen": true
+    }
+  },
   "history": [
     {
       "scopeKey": "uijeongbu-direct-initial-20261010",
@@ -461,7 +507,7 @@
       ]
     }
   ],
-  "nextAction": "next_hourly_invocation_prepare_next_unbuilt_nonconflicting_region_or_resume_explicitly_approved_pending_release",
+  "nextAction": "Prepare current Guri; preserve exact Gwacheon waitingApproval without dispatch",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
