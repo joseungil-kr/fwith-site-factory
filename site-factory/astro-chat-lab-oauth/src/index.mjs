@@ -61,6 +61,13 @@ export class OAuthStateVault {
     if(request.method!=="POST")return fail("Method not allowed",405);
     let input;
     try{input=await request.json();}catch{return fail("Invalid input",400);}
+    if(action==="/network-probe-once") {
+      return this.ctx.storage.transaction(async tx=>{
+        if(await tx.get("transportProbeConsumed"))return fail("Probe already consumed",409);
+        await tx.put("transportProbeConsumed",true);
+        return fail("Probe authorized",201);
+      });
+    }
     if(!verifierFormat(input.verifier))return fail("Invalid verifier",400);
     if(action==="/create"){
       if(typeof input.expires!=="number"||input.expires<=Date.now()||
@@ -249,11 +256,64 @@ async function callback(request,url,env){
     return fail("GitHub authentication service unavailable ["+stage+"]",502,clear);
   }
 }
+
+/**
+ * One-time, self-expiring transport diagnosis. No real OAuth credentials or
+ * authorization codes are used. Called once by the deployment runner, then
+ * removed from the source immediately after the diagnostic completes.
+ */
+async function tokenTransportProbe(env) {
+  if(Date.now()>Date.parse("2026-10-09T08:00:00Z"))return fail("Not found",404);
+  const once=await env.OAUTH_STATE.get(
+    env.OAUTH_STATE.idFromName("token-transport-diagnostic-v1")
+  ).fetch("https://internal.invalid/network-probe-once",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:"{}",
+  });
+  if(once.status!==201)return fail("Already tested",410);
+  const results={};
+  for(const mode of ["manual","error"]) {
+    try {
+      const result=await fetch("https://github.com/login/oauth/access_token",{
+        method:"POST",
+        redirect:mode,
+        headers:{
+          Accept:"application/json",
+          "Content-Type":"application/json",
+          "User-Agent":"astro-chat-lab-transport-check/1",
+        },
+        body:JSON.stringify({
+          client_id:"invalid-diagnostic-client",
+          client_secret:"not-a-secret",
+          code:"not-an-oauth-code",
+          redirect_uri:CALLBACK,
+        })
+      });
+      results[mode]={status:result.status,redirected:result.status>=300&&result.status<400};
+    }catch(err) {
+      const name=err instanceof TypeError ? "TypeError" : err instanceof Error ? "Error" : "Unknown";
+      const safe=typeof err?.message==="string"?err.message:"";
+      const className=/redirect/i.test(safe)?"redirect":
+        /network|fetch failed|connection|socket/i.test(safe)?"network":
+        /invalid|unsupported/i.test(safe)?"request":
+        /policy|disallow|forbid|security/i.test(safe)?"policy":"unknown";
+      results[mode]={errorName:name,errorKind:className};
+    }
+  }
+  return new Response(JSON.stringify({diagnostic:"noncredential-token-transport",results}),{
+    status:200,
+    headers:headers({"Content-Type":"application/json; charset=utf-8"}),
+  });
+}
+
 export default {
   async fetch(request,env){
     const url=new URL(request.url);
     if(url.origin!==AUTH_ORIGIN)return fail("Unrecognized OAuth hostname",403);
     if(request.method!=="GET")return fail("Method not allowed",405);
+    if(url.pathname==="/__diagnostics__/token-transport-20261009")
+      return tokenTransportProbe(env);
     if(url.pathname==="/health"){
       const configured=ready(env);
       return new Response(JSON.stringify({

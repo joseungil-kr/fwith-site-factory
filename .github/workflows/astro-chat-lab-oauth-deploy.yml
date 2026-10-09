@@ -73,6 +73,22 @@ jobs:
           set -euo pipefail
           python3 site-factory/astro-chat-lab-oauth/verify_live.py
 
+      - name: One-time noncredential OAuth transport probe
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from urllib.request import Request,urlopen
+          import json
+          url='https://astro-chat-lab-oauth-qa.joseungil.workers.dev/__diagnostics__/token-transport-20261009'
+          req=Request(url,headers={'User-Agent':'AstroChatLab-TransportQA/1.0'})
+          with urlopen(req,timeout=25) as res:
+              obj=json.load(res)
+          assert obj.get('diagnostic')=='noncredential-token-transport'
+          results=obj.get('results',{})
+          assert set(results)=={'manual','error'}
+          print('TRANSPORT_PROBE_SAFE_RESULT='+json.dumps(results,sort_keys=True))
+          PY
+
       - name: Deployment and next secure credential step
         run: |
           {

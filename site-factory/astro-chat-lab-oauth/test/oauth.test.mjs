@@ -177,3 +177,30 @@ test("non-secret stage identifiers classify provider transport and parse failure
     }
   }finally{globalThis.fetch=original;}
 });
+
+test("One-time noncredential transport probe does not disclose OAuth secrets",async()=>{
+  const e=env();
+  const original=globalThis.fetch;
+  let calls=0;
+  try {
+    globalThis.fetch=async(url,options)=>{
+      calls++;
+      assert.equal(String(url),"https://github.com/login/oauth/access_token");
+      assert.equal(options.method,"POST");
+      assert.equal(options.body.includes(e.GITHUB_OAUTH_CLIENT_SECRET),false);
+      assert.equal(options.body.includes(e.GITHUB_OAUTH_CLIENT_ID),false);
+      return new Response("bad-verification-code",{status:401});
+    };
+    const first=await oauth.fetch(get("/__diagnostics__/token-transport-20261009"),e);
+    assert.equal(first.status,200);
+    const json=await first.json();
+    assert.equal(json.diagnostic,"noncredential-token-transport");
+    assert.equal(json.results.manual.status,401);
+    assert.equal(json.results.error.status,401);
+    assert.equal(calls,2);
+    const repeat=await oauth.fetch(get("/__diagnostics__/token-transport-20261009"),e);
+    assert.equal(repeat.status,410);
+    assert.equal(calls,2);
+    assert.equal(repeat.headers.get("Cache-Control").startsWith("no-store"),true);
+  }finally{globalThis.fetch=original;}
+});
