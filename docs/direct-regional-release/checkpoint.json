@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T23:52:04.675Z",
+  "updatedAt": "2026-10-09T23:55:09.980Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -31,7 +31,7 @@
   "current": {
     "scopeKey": "gunpo-direct-initial-20261010",
     "city": "군포시",
-    "status": "direct_release_running",
+    "status": "public_http_and_indexnow_verified_browser_qa_pending",
     "owner": {
       "scheduledRunAt": "2026-10-09T23:00:00Z",
       "observedExecutionAt": "2026-10-09T22:55:42Z",
@@ -48,7 +48,7 @@
       "root": "site-factory/gunpo-flower",
       "worker": "gunpo-flower-guide",
       "hostname": "gunpo.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true
     },
     "input": {
@@ -65,21 +65,16 @@
       "openPullRequests": 0,
       "inProgressWorkflows": 0,
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "pending_before_mutation"
+      "providerOwnershipCollisionCheck": "PASS_account_verified_target_absent_before_publish_exact_binding_after"
     },
-    "lastSuccessfulStage": "approved_exact_workflow_dispatched",
-    "nextIntent": "Track actual run and independent hosted QA then GSC",
+    "lastSuccessfulStage": "actual_CI_public_http_and_durable_indexnow200",
+    "nextIntent": "Finish independent hosted browser QA then register current sitemap once",
     "pendingExternalAction": {
-      "action": "workflow_dispatch_with_fixed_hostname_attachment",
-      "workflow": "gunpo-direct-publish.yml",
-      "expectedRevision": "1d440850fc4ca039abcaacc8a5f3a866ba9c8b12",
-      "indexnowOnly": false,
-      "hostname": "gunpo.fwith.kr",
-      "worker": "gunpo-flower-guide",
-      "existingAccountOnly": true,
-      "noOverrides": true,
-      "idempotencyKey": "gunpo-direct-release-1d440850fc4ca039abcaacc8a5f3a866ba9c8b12",
-      "controlRevision": "622d2730f568e8358094c76f9c012be95b3f2d34"
+      "action": "submit_gsc_sitemap_after_independent_hosted_ui_qa",
+      "siteUrl": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://gunpo.fwith.kr/sitemap-index.xml",
+      "idempotencyKey": "gunpo-gsc-undefined",
+      "precondition": "Independent all-route desktop/narrow hosted QA PASS and fresh existing-sitemap lookup"
     },
     "plan": {
       "state": "independently_reviewed_complete_initial_content",
@@ -131,7 +126,21 @@
     "publicQa": {
       "status": "not_executed"
     },
-    "indexNowReceipt": null,
+    "indexNowReceipt": {
+      "attempt": 1,
+      "endpoint": "https://searchadvisor.naver.com/indexnow",
+      "fingerprint": "0ac3011a198d93204beabc86cec64a8d9116ec292f50b921a55796a7d65a9774",
+      "httpStatus": 200,
+      "origin": "https://gunpo.fwith.kr",
+      "recordedAt": "2026-10-09T23:52:49.797073+00:00",
+      "revision": "1d440850fc4ca039abcaacc8a5f3a866ba9c8b12",
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38006459136",
+      "siteKey": "gunpo-flower-direct",
+      "state": "received",
+      "urlCount": 11,
+      "urlSetSha256": "50fc96ed31650377bf423f17c00ea68f10ffc84c5d1dfc147613533b55deac5e",
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6091262492"
+    },
     "gsc": {
       "status": "not_submitted"
     },
@@ -159,7 +168,8 @@
       "dispatchObservedAt": "2026-10-09T23:51:44.155Z",
       "createdAt": "2026-10-09T23:51:42Z",
       "dispatchCount": 1,
-      "result": "in_progress"
+      "result": "success",
+      "completedAt": "2026-10-09T23:52:57Z"
     }
   },
   "history": [
