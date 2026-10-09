@@ -3,7 +3,7 @@
   "scopeKey": "gwacheon-direct-initial-20261010",
   "sourceRevision": "1cf4c2fd922053f5966200c01c331cd1bb6f8a7f",
   "controlRevision": "253a08eb4c0962ca774889608dc73cea057dd6dd",
-  "status": "independent_predeploy_source_approved_hosted_pending",
+  "status": "independent_exact_source_approved_hosted_pending_user_hostname_approval",
   "reviews": {
     "membership-review.json": {
       "status": "PASS_FIXED_DENOMINATOR",
@@ -364,6 +364,20 @@
       "remaining": "Remote exact control commit/tree and actual CI artifacts pending",
       "remoteCommit": "253a08eb4c0962ca774889608dc73cea057dd6dd",
       "exactRemoteBlobsVerified": true
+    },
+    "remote-readback-review.json": {
+      "status": "PASS_REMOTE_AND_EXACT_SOURCE_SHA_BUILD",
+      "checkedAtUtc": "2026-10-09T19:13:09.771031+00:00",
+      "sourceRevision": "1cf4c2fd922053f5966200c01c331cd1bb6f8a7f",
+      "controlRevision": "72def2329da60e2b057ba7061e3449646e05e08a",
+      "exactSourceBlobs": 69,
+      "exactControlBlobs": 3,
+      "sourceBranchHeadVerified": true,
+      "node22ExactShaBuild": "PASS",
+      "distFiles": 29,
+      "sourceInventorySha256": "4851451e3a152fa92fda5544fb9218e126d686e28ec0cbdd2d6c81108be1bba1",
+      "independentDistManifestSha256": "b5e7938226fe60d97cfda8c10c0bc62daf92d72e0836bd49cd3cea655f37b2da",
+      "remaining": "Actual run control identity, CI exact build/result artifacts, public HTTP/browser gates"
     }
   },
   "evidenceDigests": {
@@ -1595,5 +1609,19 @@
         "matchesIssue266Comment": false
       }
     ]
+  },
+  "executionBlocker": {
+    "stage": "official_run_workflow_click",
+    "deniedAt": "2026-10-09T19:14:42Z",
+    "reason": "specific_hostname_attachment_approval_required",
+    "workflowRunCreated": false,
+    "providerMutationExecuted": false,
+    "readbackVerifiedAt": "2026-10-09T19:15:02Z",
+    "retryCount": 0
+  },
+  "approvalRequired": {
+    "action": "Attach gwacheon.fwith.kr to gwacheon-flower-guide and deploy reviewed direct static source",
+    "reason": "Mandatory action review requires explicit approval for this specific hostname attachment",
+    "scope": "Existing fwith.kr Cloudflare account, no overrides; no DNS ownership, credential, permission, security or other-site changes"
   }
 }
