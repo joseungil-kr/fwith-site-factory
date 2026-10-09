@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T22:23:49.354Z",
+  "updatedAt": "2026-10-09T22:27:07.644Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -77,7 +77,14 @@
     },
     "lastSuccessfulStage": "actual_public_http_and_durable_indexnow200",
     "nextIntent": "Finish independent desktop/narrow actual screens then submit verified sitemap to GSC",
-    "pendingExternalAction": null,
+    "pendingExternalAction": {
+      "action": "submit_sitemap_if_not_already_confirmed",
+      "property": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://siheung.fwith.kr/sitemap-index.xml",
+      "expectedSourceRevision": "25608a70c4abfe992a7a0eb4fd8fc1365402a683",
+      "precondition": "independent_full_desktop_narrow_and_http_QA_must_PASS_before_call",
+      "idempotencyKey": "siheung-gsc-25608a70c4abfe992a7a0eb4fd8fc1365402a683"
+    },
     "controlRevision": "9b944f87570c9c603b1bba96f10b08119c8f2367",
     "review": {
       "membership": "PASS",
