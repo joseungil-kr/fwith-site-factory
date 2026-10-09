@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T16:24:54Z",
+  "updatedAt": "2026-10-09T17:07:05Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -24,7 +24,58 @@
   "excludedHosts": [
     "blog.fwith.kr"
   ],
-  "current": null,
+  "current": {
+    "scopeKey": "dongducheon-direct-initial-20261010",
+    "city": "동두천시",
+    "status": "claimed_research_and_content_preparation",
+    "owner": {
+      "scheduledRunAt": "2026-10-09T17:00:00Z",
+      "observedMessageAt": "2026-10-09T17:03:56Z",
+      "serviceInvocationId": null,
+      "checkpointId": "direct-dongducheon-20261009T170000Z",
+      "active": true
+    },
+    "identity": {
+      "repository": "joseungil-kr/fwith-site-factory",
+      "branch": "site-factory-dongducheon-direct",
+      "root": "site-factory/dongducheon-flower",
+      "worker": "dongducheon-flower-guide",
+      "hostname": "dongducheon.fwith.kr",
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": false
+    },
+    "plan": {
+      "state": "official_membership_crosswalk_preparation",
+      "plannedArticleCount": 12,
+      "minimumPassedArticles": 11,
+      "passedArticleCount": 0,
+      "membershipPath": "docs/direct-regional-release/dongducheon/membership.json",
+      "membershipSaved": false
+    },
+    "input": {
+      "controlRevision": "6dbe05b7b9860afc36e39a55f1ceac9bffb311a9",
+      "runtimeSourceRevision": "9eea3825094c17689936987319e7b5e026f6b7bf"
+    },
+    "conflictChecks": {
+      "branchesChecked": 105,
+      "matchingBranch": false,
+      "openPullRequests": 0,
+      "mainMatchingPaths": false,
+      "inProgressWorkflows": 0,
+      "providerOwnershipCollisionCheck": "pending_required_before_mutation"
+    },
+    "lastSuccessfulStage": "selection_and_remote_conflict_readback",
+    "nextIntent": "Fix official membership and original content plan, independent review before source publication",
+    "receiptJournal": {
+      "number": 266,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266",
+      "reuseExistingWithoutReopen": true
+    },
+    "pendingExternalAction": {
+      "action": "claim_direct_scope",
+      "idempotencyKey": "direct-dongducheon-20261009T170000Z"
+    }
+  },
   "history": [
     {
       "scopeKey": "uijeongbu-direct-initial-20261010",
@@ -101,7 +152,7 @@
         "processing": "pending",
         "errors": 0,
         "warnings": 0,
-        "lastObservedAt": "2026-10-09T15:57:50Z"
+        "lastObservedAt": "2026-10-09T17:05:08Z"
       },
       "pendingExternalAction": null,
       "receiptJournal": {
@@ -258,7 +309,8 @@
         "lastSubmitted": "2026-10-09T16:17:53.604Z",
         "processing": "pending",
         "errors": 0,
-        "warnings": 0
+        "warnings": 0,
+        "lastObservedAt": "2026-10-09T17:05:08Z"
       },
       "evidencePath": "docs/direct-regional-release/gwangmyeong/completion-evidence.json",
       "evidenceSha256": "183d0bb6854366f682d6a3b3df46ec0941a2980adeacaf8444bb76910d6fcf33",
@@ -282,5 +334,5 @@
       ]
     }
   ],
-  "nextAction": "select_next_unbuilt_region_on_next_hourly_invocation"
+  "nextAction": "resume_current_region"
 }
