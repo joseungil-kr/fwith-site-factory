@@ -72,8 +72,8 @@ test("valid state, one-time exchange, popup source/origin and explicit postMessa
       return new Response(JSON.stringify({access_token:"fake-github-token",scope:"public_repo"}),{status:200});
     if(String(url).endsWith("/user"))
       return new Response(JSON.stringify({login:"joseungil-kr"}),{status:200});
-    if(String(url).includes("/collaborators/"))
-      return new Response(JSON.stringify({permission:"admin"}),{status:200});
+    if(String(url)==="https://api.github.com/repos/joseungil-kr/fwith-site-factory")
+      return new Response(JSON.stringify({full_name:"joseungil-kr/fwith-site-factory",owner:{login:"joseungil-kr"},private:false,permissions:{push:true,admin:true}}),{status:200});
     throw new Error("unexpected call");
   };
   try{
@@ -123,8 +123,8 @@ test("wrong Github account, no write permission and broad OAuth token scope reje
           return new Response(JSON.stringify({access_token:"unsafe-test-token",scope:cs.scope}),{status:200});
         if(String(url).endsWith("/user"))
           return new Response(JSON.stringify({login:cs.login}),{status:200});
-        if(String(url).includes("/collaborators/"))
-          return new Response(JSON.stringify({permission:cs.permission}),{status:200});
+        if(String(url)==="https://api.github.com/repos/joseungil-kr/fwith-site-factory")
+          return new Response(JSON.stringify({full_name:"joseungil-kr/fwith-site-factory",owner:{login:"joseungil-kr"},private:false,permissions:{push:cs.permission==="admin",admin:cs.permission==="admin"}}),{status:200});
         throw Error("unexpected URL");
       };
       const out=await oauth.fetch(get("/callback?state="+l.state+"&code=sample-code",
@@ -142,8 +142,8 @@ test("non-secret stage identifiers classify provider transport and parse failure
     {at:"TOKEN_FORMAT",mode:"html",failOn:1},
     {at:"USER_FETCH",mode:"throw",failOn:2},
     {at:"USER_FORMAT",mode:"html",failOn:2},
-    {at:"PERMISSION_FETCH",mode:"throw",failOn:3},
-    {at:"PERMISSION_FORMAT",mode:"html",failOn:3},
+    {at:"REPO_FETCH",mode:"throw",failOn:3},
+    {at:"REPO_FORMAT",mode:"html",failOn:3},
   ];
   try{
     for(const choice of failures){
@@ -159,8 +159,8 @@ test("non-secret stage identifiers classify provider transport and parse failure
           return new Response(JSON.stringify({access_token:"sensitive-fake-token",scope:"public_repo"}),{status:200});
         if(String(url).endsWith("/user"))
           return new Response(JSON.stringify({login:"joseungil-kr"}),{status:200});
-        if(String(url).includes("/collaborators/"))
-          return new Response(JSON.stringify({permission:"admin"}),{status:200});
+        if(String(url)==="https://api.github.com/repos/joseungil-kr/fwith-site-factory")
+          return new Response(JSON.stringify({full_name:"joseungil-kr/fwith-site-factory",owner:{login:"joseungil-kr"},private:false,permissions:{push:true,admin:true}}),{status:200});
         throw new Error("invalid upstream request");
       };
       const url="/callback?code=sample-code&state="+login.state;
@@ -227,4 +227,115 @@ test("GitHub 200 OAuth credential errors are safely classified without raw detai
     assert.equal(await out.text(),
       "GitHub authentication service unavailable [TOKEN_INCORRECT_CLIENT_CREDENTIALS]");
   }finally{globalThis.fetch=original;}
+});
+
+
+test("Authenticated GitHub /user and /repos requests use manual redirects and never forward bearer token",async()=>{
+  const env0=env(), login=await start(env0);
+  const original=globalThis.fetch;
+  const calls=[];
+  globalThis.fetch=async(url,opts)=>{
+    calls.push({url,redirect:opts.redirect});
+    if(url==="https://github.com/login/oauth/access_token"){
+      assert.equal(opts.redirect,"manual");
+      return new Response(JSON.stringify({access_token:"testing-token",scope:"public_repo"}),{status:200});
+    }
+    assert.equal(opts.redirect,"manual","Authenticated API cannot auto-follow redirects");
+    assert.equal(opts.headers.Authorization,"Bearer testing-token");
+    if(url==="https://api.github.com/user")
+      return new Response(JSON.stringify({login:"joseungil-kr"}),{status:200});
+    if(url==="https://api.github.com/repos/joseungil-kr/fwith-site-factory")
+      return new Response(JSON.stringify({full_name:"joseungil-kr/fwith-site-factory",owner:{login:"joseungil-kr"},private:false,permissions:{push:true,admin:true}}),{status:200});
+    throw new Error("Unexpected endpoint");
+  };
+  try {
+    const res=await oauth.fetch(get("/callback?state="+login.state+"&code=sample-code",
+       {"Cookie":login.cookie}),env0);
+    assert.equal(res.status,200);
+    assert.deepEqual(calls.map(c=>c.url),[
+      "https://github.com/login/oauth/access_token",
+      "https://api.github.com/user",
+      "https://api.github.com/repos/joseungil-kr/fwith-site-factory"
+    ]);
+  }finally{globalThis.fetch=original;}
+});
+
+test("Bearer token is never forwarded through user or repository HTTP redirects",async()=>{
+  for(const redirectAt of ["USER","REPO"]){
+    const env0=env(),login=await start(env0);
+    const original=globalThis.fetch;
+    let calls=0;
+    globalThis.fetch=async(url,opts)=>{
+      calls++;
+      if(url==="https://github.com/login/oauth/access_token")
+        return new Response(JSON.stringify({access_token:"fake-bearer",scope:"public_repo"}),{status:200});
+      if(url==="https://api.github.com/user"){
+        assert.equal(opts.redirect,"manual");
+        if(redirectAt==="USER")return new Response(null,{status:302,headers:{Location:"https://evil.example/steal"}});
+        return new Response(JSON.stringify({login:"joseungil-kr"}),{status:200});
+      }
+      if(url==="https://api.github.com/repos/joseungil-kr/fwith-site-factory"){
+        assert.equal(opts.redirect,"manual");
+        return new Response(null,{status:307,headers:{Location:"https://evil.example/steal"}});
+      }
+      throw new Error("Token was sent to unexpected destination");
+    };
+    try {
+      const res=await oauth.fetch(get("/callback?state="+login.state+"&code=sample-code",{"Cookie":login.cookie}),env0);
+      assert.equal(res.status,502);
+      assert.equal(await res.text(),"GitHub authentication service unavailable ["+redirectAt+"_REDIRECT]");
+      assert.equal(calls,redirectAt==="USER"?2:3);
+    }finally{globalThis.fetch=original;}
+  }
+});
+
+test("User/repository HTTP errors are classified without raw token or response leakage",async()=>{
+  const cases=[
+    {stage:"USER",code:401},
+    {stage:"REPO",code:403}
+  ];
+  for(const choice of cases){
+    const e=env(),s=await start(e);
+    const original=globalThis.fetch;
+    globalThis.fetch=async(url)=>{
+      if(url==="https://github.com/login/oauth/access_token")
+        return new Response(JSON.stringify({access_token:"secretish-fake",scope:"public_repo"}),{status:200});
+      if(url==="https://api.github.com/user")
+        return choice.stage==="USER"?
+          new Response("confidential-github-response",{status:choice.code}):
+          new Response(JSON.stringify({login:"joseungil-kr"}),{status:200});
+      return new Response("confidential-github-response",{status:choice.code});
+    };
+    try{
+      const r=await oauth.fetch(get("/callback?state="+s.state+"&code=sample-code",{"Cookie":s.cookie}),e);
+      assert.equal(r.status,502);
+      assert.equal(await r.text(),
+        "GitHub authentication service unavailable ["+choice.stage+"_HTTP_"+choice.code+"]");
+    }finally{globalThis.fetch=original;}
+  }
+});
+
+test("Repository access fails closed when wrong owner, private, or not writable",async()=>{
+  const variants=[
+    {full_name:"other/incorrect",owner:{login:"joseungil-kr"},private:false,permissions:{push:true}},
+    {full_name:"joseungil-kr/fwith-site-factory",owner:{login:"other"},private:false,permissions:{push:true}},
+    {full_name:"joseungil-kr/fwith-site-factory",owner:{login:"joseungil-kr"},private:true,permissions:{push:true}},
+    {full_name:"joseungil-kr/fwith-site-factory",owner:{login:"joseungil-kr"},private:false,permissions:{push:false,admin:false}}
+  ];
+  for(const mockRepo of variants){
+    const e=env(),s=await start(e);
+    const old=globalThis.fetch;
+    globalThis.fetch=async(url)=>{
+      if(url==="https://github.com/login/oauth/access_token")
+        return new Response(JSON.stringify({access_token:"token",scope:"public_repo"}));
+      if(url==="https://api.github.com/user")
+        return new Response(JSON.stringify({login:"joseungil-kr"}));
+      return new Response(JSON.stringify(mockRepo));
+    };
+    try{
+      const resp=await oauth.fetch(get("/callback?state="+s.state+"&code=sample-code",{"Cookie":s.cookie}),e);
+      assert.equal(resp.status,403);
+      assert.match(await resp.text(),/repository write access denied/);
+    }finally{globalThis.fetch=old;}
+  }
 });

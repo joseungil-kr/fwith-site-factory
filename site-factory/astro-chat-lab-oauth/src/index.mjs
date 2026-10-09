@@ -140,6 +140,12 @@ class OAuthStageFailure extends Error {
   }
 }
 async function github(url,token,stage){
+  // Hard-coded GitHub hosts only; no untrusted URLs may receive this token.
+  const dest=new URL(url);
+  if(dest.protocol!=="https:"||dest.hostname!=="api.github.com"||
+     !["/user","/repos/joseungil-kr/fwith-site-factory"].includes(dest.pathname)||
+     dest.search||dest.hash)
+    throw new OAuthStageFailure(stage+"_URL_BLOCKED");
   let r;
   try {
     r=await fetch(url,{
@@ -148,12 +154,20 @@ async function github(url,token,stage){
         "User-Agent":"astro-chat-lab-oauth/1",
         Accept:"application/vnd.github+json",
         "X-GitHub-Api-Version":"2022-11-28"
-      },redirect:"error"
+      },
+      // Do not follow 3xx: a redirect must never receive a bearer token.
+      redirect:"manual"
     });
   } catch {
     throw new OAuthStageFailure(stage+"_FETCH");
   }
-  if(!r.ok)return null;
+  if(r.status>=300&&r.status<400)
+    throw new OAuthStageFailure(stage+"_REDIRECT");
+  if(!r.ok) {
+    const approved=[400,401,403,404,409,422,429,500,502,503];
+    throw new OAuthStageFailure(approved.includes(r.status)
+      ? stage+"_HTTP_"+r.status : stage+"_HTTP_OTHER");
+  }
   try {
     return await r.json();
   } catch {
@@ -205,10 +219,15 @@ async function exchange(env,code){
     scope.includes("repo")||scope.includes("delete_repo"))return null;
   const user=await github("https://api.github.com/user",info.access_token,"USER");
   if(!user||user.login!==USER)return null;
-  const permission=await github("https://api.github.com/repos/"+USER+"/"+REPO+
-    "/collaborators/"+encodeURIComponent(user.login)+"/permission",
-    info.access_token,"PERMISSION");
-  if(!permission||!["admin","maintain","write"].includes(permission.permission))return null;
+  const repository=await github("https://api.github.com/repos/"+USER+"/"+REPO,
+    info.access_token,"REPO");
+  // Only a published PUBLIC repository with the exact owner and the
+  // authenticated user's explicit GitHub push/admin permissions is allowed.
+  // The public /repos API is supported by the approved public_repo scope.
+  if(!repository||repository.full_name!==USER+"/"+REPO||
+     repository.owner?.login!==USER||repository.private!==false||
+     !(repository.permissions?.push===true||
+       repository.permissions?.admin===true))return null;
   return info.access_token;
 }
 function callbackPage(token){
