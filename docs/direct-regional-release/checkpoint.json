@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T17:09:00Z",
+  "updatedAt": "2026-10-09T17:16:40Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -27,7 +27,7 @@
   "current": {
     "scopeKey": "dongducheon-direct-initial-20261010",
     "city": "동두천시",
-    "status": "claimed_research_and_content_preparation",
+    "status": "independent_content_pass_runtime_verification",
     "owner": {
       "scheduledRunAt": "2026-10-09T17:00:00Z",
       "observedMessageAt": "2026-10-09T17:03:56Z",
@@ -45,14 +45,23 @@
       "sourceBranchCreatedVerified": false
     },
     "plan": {
-      "state": "official_membership_fixed",
+      "state": "reviewed_partial_initial_release",
       "plannedArticleCount": 12,
       "minimumPassedArticles": 11,
-      "passedArticleCount": 0,
+      "passedArticleCount": 11,
       "membershipPath": "docs/direct-regional-release/dongducheon/membership.json",
       "membershipSaved": true,
       "membershipSha256": "700ff279794acf48c1abedb44b2df083cdcec6e6eccf3f96e8012fd57f5a5514",
-      "administrativeUnits": 8
+      "administrativeUnits": 8,
+      "deferred": [
+        {
+          "name": "걸산동",
+          "slug": "geolsan-dong",
+          "route": "/regions/geolsan-dong/",
+          "status": "deferred",
+          "reason": "DEFERRED_QUALITY_HOLD: insufficient independently verified commercial purchase context; controlled-access delivery conditions not established; no page or inbound link will be published"
+        }
+      ]
     },
     "input": {
       "controlRevision": "6dbe05b7b9860afc36e39a55f1ceac9bffb311a9",
@@ -66,14 +75,27 @@
       "inProgressWorkflows": 0,
       "providerOwnershipCollisionCheck": "pending_required_before_mutation"
     },
-    "lastSuccessfulStage": "scope_claim_full_readback",
-    "nextIntent": "Fix official membership and original content plan, independent review before source publication",
+    "lastSuccessfulStage": "independent_content_and_catalog_review",
+    "nextIntent": "Publish exact reviewed source and bounded direct controls after verification; no deployment until fresh ref/source readback",
     "receiptJournal": {
       "number": 266,
       "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266",
       "reuseExistingWithoutReopen": true
     },
-    "pendingExternalAction": null
+    "pendingExternalAction": {
+      "action": "publish_reviewed_customer_source_and_bounded_control_files",
+      "idempotencyKey": "dongducheon-direct-initial-20261010-source-r1",
+      "condition": "only after independent runtime/control/build verification"
+    },
+    "review": {
+      "independentContent": "PASS",
+      "writerADigest": "dd270867ca11f2a5df7aa7b44ecef04faed7ee52a901b2964ac4469cca762e39",
+      "writerBDigest": "7d3b1bd33c921c178dd2e1f7b8a419ca0c6f100f6f9120af8c16abe4e691ba62",
+      "membership": "PASS",
+      "catalogPrices": "verified2026-10-09T17:08:16Z",
+      "sourceBuild": "pending",
+      "hostedQa": "pending"
+    }
   },
   "history": [
     {
