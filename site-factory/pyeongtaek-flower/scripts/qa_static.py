@@ -85,6 +85,13 @@ def check_rendered_catalog(doc, url, products):
         assert p['orderUrl'] in rendered['links'] or p['orderUrl'] in doc.links,f'Rendered SKU order mismatch: {url} {p["key"]}'
         assert f'{p["price"]:,}원' in ''.join(rendered['text']),f'Rendered catalog price mismatch: {url} {p["key"]}'
 
+def check_home_catalog(doc, products):
+    families={p['family'] for p in products};keys={p['key'] for p in products}
+    assert families and len(keys)==len(products), 'Home catalog must be nonempty with unique product keys'
+    assert set(doc.primary_families)==families, 'Home hero differs from active catalog purposes'
+    assert set(doc.product_families)==families, 'Home product selection differs from active catalog purposes'
+    assert {p['key'] for p in doc.product_records}==keys, 'Home omits or adds an active catalog product'
+
 def check(root=Path('.')):
     dist=root/'dist'; data=root/'src/data'
     pages=json.loads((data/'pages.json').read_text());manifest=json.loads((data/'publish-manifest.json').read_text())
@@ -119,8 +126,7 @@ def check(root=Path('.')):
     for page in pages:
         check_customer_journey(docs[page['url']],page,pages)
         check_rendered_intent(docs[page['url']],page,products)
-    assert {'bouquet','basket','funeral','congrats'} <= set(docs['/'].primary_families), 'Home hero omits advertised product purpose'
-    assert {'bouquet','basket','funeral','congrats'} <= set(docs['/'].product_families), 'Home product selection omits advertised product purpose'
+    check_home_catalog(docs['/'], products)
     for page in pages:
         slot=page.get('assetSlot')
         assert slot in [None,'','NONE','REAL_PROOF'],f'Unsupported dedicated asset slot: {page["url"]}'

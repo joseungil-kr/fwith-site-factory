@@ -41,8 +41,8 @@ export function productHeading(page) {
   return '목적에 맞는 꽃 상품 비교';
 }
 
-/** Initial selection spans the site's advertised purposes; no price or SKU aliases. */
+/** Pyeongtaek's active wreath selection; unavailable gift families never inherit wreaths. */
 export function homeProducts(products) {
-  const keys = ['funeral-basic', 'congrats-basic', 'bouquet-happiness', 'basket-sunshine', 'bouquet-blue', 'funeral-premium'];
+  const keys = ['funeral-basic', 'funeral-premium', 'funeral-large', 'funeral-xl', 'congrats-basic', 'congrats-premium', 'congrats-large', 'congrats-xl'];
   return keys.map(key => products.find(p => p.key === key)).filter(Boolean);
 }
