@@ -72,7 +72,7 @@ jobs:
           echo "source_sha=$SHA" >> "$GITHUB_OUTPUT"
           echo "Verified exact experiment source commit: $SHA"
 
-      - name: GET-only Cloudflare account subdomain and Worker collision check
+      - name: GET-only verify existing isolated Cloudflare Worker binding
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -98,13 +98,19 @@ jobs:
           set -euo pipefail
           pnpm install --frozen-lockfile
 
+      - name: Test Decap datetime storage compatibility and invalid dates
+        working-directory: site-factory/astro-chat-lab
+        run: |
+          set -euo pipefail
+          node --experimental-strip-types scripts/test-cms-dates.mjs
+
       - name: Astro check, static build and Pagefind
         working-directory: site-factory/astro-chat-lab
         run: |
           set -euo pipefail
           pnpm run build
 
-      - name: QA generated HTML, one post, canonical, noindex and static assets
+      - name: QA published posts, drafts, admin, media, canonical and noindex
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "${{ steps.materialize.outputs.source_sha }}"
@@ -120,7 +126,7 @@ jobs:
           set -euo pipefail
           npx --yes wrangler@4.148.0 deploy --config wrangler.jsonc
 
-      - name: Verify actual workers.dev homepage, Korean article, assets, robots and 404
+      - name: Verify actual workers.dev content, drafts, admin, media, robots and 404
         run: |
           set -euo pipefail
           python3 site-factory/astro-chat-lab/qa.py live
@@ -136,5 +142,5 @@ jobs:
             echo '- Source commit: ${{ steps.materialize.outputs.source_sha }}'
             echo "- Homepage: $ASTRO_CHAT_ORIGIN/"
             echo "- Test post: $ASTRO_CHAT_ORIGIN/posts/webchat-astro-first-post/"
-            echo '- Verification: HTML, canonical, noindex, static assets and HTTP 404 all passed'
+            echo '- Verification: dynamic content, drafts, /admin static files, media, noindex and real HTTP 404 passed'
           } >> "$GITHUB_STEP_SUMMARY"

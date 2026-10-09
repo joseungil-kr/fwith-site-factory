@@ -1,0 +1,58 @@
+# Decap CMS 3.16.3, OAuth intentionally gated pending explicit approval.
+# Never set base_url or auth_endpoint until a deployed auth worker is verified.
+backend:
+  name: github
+  repo: joseungil-kr/fwith-site-factory
+  branch: astro-chat-lab
+  auth_scope: public_repo
+  site_domain: astro-chat-lab-qa.joseungil.workers.dev
+
+site_url: https://astro-chat-lab-qa.joseungil.workers.dev
+display_url: https://astro-chat-lab-qa.joseungil.workers.dev
+
+# Relative to GitHub REPOSITORY ROOT, not the Astro project.
+media_folder: "site-factory/astro-chat-lab/public/uploads"
+# Public URL (Astro copies public/* to the site root).
+public_folder: "/uploads"
+
+collections:
+  - name: "posts"
+    label: "블로그 글"
+    label_singular: "게시물"
+    folder: "site-factory/astro-chat-lab/src/content/posts"
+    create: true
+    delete: false
+    extension: "md"
+    format: "frontmatter"
+    slug: "{{slug}}"
+    identifier_field: "title"
+    preview_path: "/posts/{{slug}}/"
+    summary: "{{title}}"
+    fields:
+      - { label: "제목", name: "title", widget: "string" }
+      - { label: "요약", name: "description", widget: "text" }
+      - label: "발행 날짜와 시간"
+        name: "pubDatetime"
+        widget: "datetime"
+        default: "{{now}}"
+        format: "YYYY-MM-DDTHH:mm:ssZ"
+        picker_utc: false
+        hint: "ISO 8601 시간대 포함. 미래 날짜의 글은 아직 공개되지 않습니다."
+      - label: "태그"
+        name: "tags"
+        widget: "list"
+        required: false
+        default: []
+      - label: "초안 (공개하지 않음)"
+        name: "draft"
+        widget: "boolean"
+        default: true
+      - label: "추천 글"
+        name: "featured"
+        widget: "boolean"
+        default: false
+        required: false
+      - label: "본문"
+        name: "body"
+        widget: "markdown"
+        hint: "제목은 자동 H1으로 표시됩니다. 본문은 ## 소제목부터 사용하세요. 이미지 도구로 /uploads에 저장합니다."

@@ -10,3 +10,11 @@
 - 원본 저작권 및 MIT 라이선스는 LICENSE 참조
 
 새 글을 추가할 때는 src/content/posts에 Markdown 파일을 작성한 후 시험 브랜치에 커밋합니다. 원본 템플릿의 릴리스 예시 글은 포함하지 않습니다.
+
+## Decap CMS integration (authentication pending)
+
+The /admin static files and content-field mapping are staged for this isolated test site.
+GitHub OAuth is deliberately not initialized until explicit permission for the broad
+public_repo scope and dedicated OAuth Worker/secret setup. See DECAP_AUTH_SETUP.md.
+When authorized, CMS edits on astro-chat-lab will trigger the same isolated push-based
+build and deployment. This does not imply browser login or CMS writes were tested.
