@@ -181,6 +181,16 @@ def check_build(posts):
             assert not path.exists(), "Draft/future post incorrectly emitted"
     for asset in assets:
         assert (DIST/asset.lstrip("/")).is_file(), "Missing asset "+asset
+    # Verify every uploaded image is copied into dist, including draft media.
+    uploads=[]
+    upload_dir=ROOT/"public/uploads"
+    for f in sorted(upload_dir.rglob("*")):
+        if not f.is_file() or f.name.startswith("."):
+            continue
+        rel=f.relative_to(upload_dir)
+        dest=DIST/"uploads"/rel
+        assert dest.is_file() and dest.stat().st_size==f.stat().st_size, "CMS media missing or mismatched: "+str(rel)
+        uploads.append("/uploads/"+rel.as_posix())
     robots=(DIST/"robots.txt").read_text(encoding="utf-8")
     assert "Disallow: /" in robots and "Allow: /" not in robots
     admin=(DIST/"admin/index.html")
@@ -197,13 +207,14 @@ def check_build(posts):
         'media_folder: "site-factory/astro-chat-lab/public/uploads"',
         'public_folder: "/uploads"']:
         assert marker in cfg, "CMS config missing: "+marker
+    assert re.search(r'(?m)^\s*name: "body"\s*\n\s*widget: "richtext"\s*$',cfg), "Decap Rich Text body widget not active"
     gated="CMS_MANUAL_INIT = true" in admin_html
     assert not gated, "Decap CMS still gated after verified OAuth configuration"
     assert "oauth-approval-pending" not in admin_html, "Old pre-auth placeholder still deployed"
     assert re.search(r"^\s*base_url: https://astro-chat-lab-oauth-qa\.joseungil\.workers\.dev\s*$",cfg,re.M), "Incorrect auth Worker base_url"
     assert re.search(r"^\s*auth_endpoint: auth\s*$",cfg,re.M), "Incorrect OAuth endpoint"
     return dict(published=sorted(expected),unpublished=sorted(p["path"] for p in posts if not p["published"]),
-        assets=sorted(assets),images=sorted(images),adminGated=gated)
+        assets=sorted(assets),images=sorted(images),uploads=sorted(uploads),adminGated=gated)
 
 def http(path,binary=False):
     req=Request(ORIGIN+quote(path,safe="/-._~%"),headers={"User-Agent":"AstroChatLab-CMS-QA/2.0"})
@@ -224,7 +235,7 @@ def check_live(posts,inventory):
             check_post(body,p)
         else:
             assert status==404, "Draft article leaked publicly: "+p["path"]
-    for file in inventory["assets"]+inventory["images"]:
+    for file in inventory["assets"]+inventory["images"]+inventory["uploads"]:
         status,_=http(file,binary=True)
         assert status==200, "Public asset HTTP error "+file
     for file in ("/admin/","/admin/config.yml"):
