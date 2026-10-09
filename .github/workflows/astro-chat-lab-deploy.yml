@@ -120,6 +120,13 @@ jobs:
           set -euo pipefail
           node --experimental-strip-types scripts/test-cms-dates.mjs
 
+      - name: Validate safe CMS inline image previews and editor options
+        working-directory: site-factory/astro-chat-lab
+        run: |
+          set -euo pipefail
+          node --check public/admin/preview.js
+          node --test scripts/test_cms_preview.mjs
+
       - name: Astro check, static build and Pagefind
         working-directory: site-factory/astro-chat-lab
         run: |

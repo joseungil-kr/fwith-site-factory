@@ -57,4 +57,9 @@ collections:
       - label: "본문"
         name: "body"
         widget: "richtext"
-        hint: "새 Rich Text 편집기 · 본문은 Markdown으로 저장됩니다. 제목 H1은 자동 출력되므로 본문은 소제목부터 입력하세요. 이미지 업로드 경로는 /uploads입니다."
+        # Keep the approved Decap richtext control and Markdown storage.
+        # Remove Code Block from "+" to prevent accidental void/code insertion.
+        editor_components: ["image"]
+        buttons: ["bold", "italic", "link", "heading-two", "heading-three", "quote", "bulleted-list", "numbered-list"]
+        modes: ["rich_text", "raw"]
+        hint: "이미지 삽입은 + → Image를 선택합니다. 이미지 뒤에는 Enter로 새 문단을 만드세요. 본문은 Markdown으로 저장되며 제목(H1)은 자동 표시됩니다."
