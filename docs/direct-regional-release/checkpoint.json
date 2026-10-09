@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T21:21:58.414Z",
+  "updatedAt": "2026-10-09T21:23:12.320Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -29,7 +29,7 @@
   "current": {
     "scopeKey": "osan-direct-initial-20261010",
     "city": "오산시",
-    "status": "ready_for_exact_direct_workflow",
+    "status": "direct_workflow_in_progress",
     "owner": {
       "scheduledRunAt": "2026-10-09T21:00:00Z",
       "observedExecutionAt": "2026-10-09T21:05:25Z",
@@ -62,19 +62,9 @@
       "mainMatchingPaths": false,
       "providerOwnershipCollisionCheck": "pending_required_before_mutation"
     },
-    "lastSuccessfulStage": "independent_exact_remote_source_final_sha_build",
+    "lastSuccessfulStage": "official_workflow_dispatch_accepted",
     "nextIntent": "Freeze official membership then independently write and review original local purchase content",
-    "pendingExternalAction": {
-      "action": "workflow_dispatch",
-      "workflow": "osan-direct-publish.yml",
-      "expectedRevision": "79b52147729166b0d00fb62deb6d68df0391b34c",
-      "indexnowOnly": false,
-      "hostname": "osan.fwith.kr",
-      "worker": "osan-flower-guide",
-      "existingAccountOnly": true,
-      "noOverrides": true,
-      "idempotencyKey": "osan-direct-release-79b52147729166b0d00fb62deb6d68df0391b34c"
-    },
+    "pendingExternalAction": null,
     "plan": {
       "state": "independent_all_24_content_pass",
       "plannedArticleCount": 24,
@@ -105,7 +95,17 @@
       "remoteReadback": "PASS_69_FULL_BYTES_AND_CONTROLS",
       "sourceInventorySha256": "190b0db1631214e6722c15fbc1746781433d9e4707e571ba8964f1823cd42428"
     },
-    "sourceRevision": "79b52147729166b0d00fb62deb6d68df0391b34c"
+    "sourceRevision": "79b52147729166b0d00fb62deb6d68df0391b34c",
+    "actualWorkflow": {
+      "runId": 37993088199,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/37993088199",
+      "sourceRevision": "79b52147729166b0d00fb62deb6d68df0391b34c",
+      "controlRevision": "abc5237511193730cc90edef6fea0b2a970870ca",
+      "dispatchObservedAt": "2026-10-09T21:23:12.320Z",
+      "createdAt": "2026-10-09T21:22:45Z",
+      "dispatchCount": 1,
+      "result": "in_progress"
+    }
   },
   "history": [
     {
