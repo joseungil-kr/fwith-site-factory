@@ -124,6 +124,7 @@ jobs:
         working-directory: site-factory/astro-chat-lab
         run: |
           set -euo pipefail
+          python3 -m py_compile qa.py
           node --check public/admin/preview.js
           node --test scripts/test_cms_preview.mjs
 

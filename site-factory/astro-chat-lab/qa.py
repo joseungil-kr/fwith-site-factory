@@ -197,7 +197,7 @@ def check_build(posts):
     config=(DIST/"admin/config.yml")
     assert admin.is_file() and config.is_file(), "Admin files not copied to static dist"
     preview_js=DIST/"admin/preview.js"
-    assert preview_js.is_file(), "Dedicated safe CMS image preview extension missing"
+    assert preview_js.is_file(), "Dedicated safe CMS preview extension missing"
     preview_code=preview_js.read_text(encoding="utf-8")
     assert 'cms.registerPreviewTemplate("posts", PostsPreview)' in preview_code
     assert 'dangerouslySetInnerHTML' not in preview_code
@@ -213,9 +213,10 @@ def check_build(posts):
         'media_folder: "site-factory/astro-chat-lab/public/uploads"',
         'public_folder: "/uploads"']:
         assert marker in cfg, "CMS config missing: "+marker
-    assert 'editor_components: ["image"]' in cfg, "Code Block must not be offered to editors"
+    assert re.search(r'(?m)^\s*name: "body"\s*\n\s*widget: "richtext"\s*$',cfg), "Decap Rich Text body widget not active"
+    assert 'editor_components: ["image"]' in cfg, "Code Block should not be offered to editors"
     assert 'modes: ["rich_text", "raw"]' in cfg, "Raw Markdown fallback missing"
-    assert re.search(r'(?m)^\s*name: "body"\s*\n\s*widget: "richtext"\s*
+    assert re.search(r'(?m)^\s*name: "body"\s*\n\s*widget: "richtext"\s*$',cfg), "Richtext widget not active"
     gated="CMS_MANUAL_INIT = true" in admin_html
     assert not gated, "Decap CMS still gated after verified OAuth configuration"
     assert "oauth-approval-pending" not in admin_html, "Old pre-auth placeholder still deployed"
@@ -256,69 +257,9 @@ def check_live(posts,inventory):
         elif file=="/admin/config.yml":
             assert "base_url: https://astro-chat-lab-oauth-qa.joseungil.workers.dev" in body, "Live config has wrong auth base_url"
             assert "auth_endpoint: auth" in body and "auth_scope: public_repo" in body, "Live OAuth config incomplete"
-            assert 'editor_components: ["image"]' in body, "Live editor has code block enabled"
+            assert 'editor_components: ["image"]' in body, "Live editor has Code Block enabled"
         else:
-            assert 'cms.registerPreviewTemplate("posts", PostsPreview)' in body, "Live preview extension not deployed"
-    status,robots=http("/robots.txt")
-    assert status==200 and "Disallow: /" in robots
-    status,_=http("/missing-cms-test-20261009/")
-    assert status==404, "Unknown route must return HTTP 404"
-    print(json.dumps({"phase":"public-http","result":"PASS","origin":ORIGIN,**inventory,
-          "robots":200,"unknown":404},ensure_ascii=False))
-
-posts=load_posts()
-inventory=check_build(posts)
-if MODE=="build":
-    print(json.dumps({"phase":"build","result":"PASS",**inventory},ensure_ascii=False))
-elif MODE=="live":
-    for attempt in range(1,7):
-        try:
-            check_live(posts,inventory);break
-        except (AssertionError,URLError,TimeoutError) as e:
-            if attempt==6: raise SystemExit("Public QA failed: "+str(e))
-            time.sleep(8)
-else:raise SystemExit("Usage: qa.py build|live")
-,cfg), "Decap Rich Text body widget not active"
-    gated="CMS_MANUAL_INIT = true" in admin_html
-    assert not gated, "Decap CMS still gated after verified OAuth configuration"
-    assert "oauth-approval-pending" not in admin_html, "Old pre-auth placeholder still deployed"
-    assert re.search(r"^\s*base_url: https://astro-chat-lab-oauth-qa\.joseungil\.workers\.dev\s*$",cfg,re.M), "Incorrect auth Worker base_url"
-    assert re.search(r"^\s*auth_endpoint: auth\s*$",cfg,re.M), "Incorrect OAuth endpoint"
-    return dict(published=sorted(expected),unpublished=sorted(p["path"] for p in posts if not p["published"]),
-        assets=sorted(assets),images=sorted(images),uploads=sorted(uploads),adminGated=gated)
-
-def http(path,binary=False):
-    req=Request(ORIGIN+quote(path,safe="/-._~%"),headers={"User-Agent":"AstroChatLab-CMS-QA/2.0"})
-    try:
-        with urlopen(req,timeout=20) as resp:
-            return resp.status, resp.read() if binary else resp.read().decode("utf-8",errors="replace")
-    except HTTPError as e:
-        return e.code, e.read() if binary else e.read().decode("utf-8",errors="replace")
-
-def check_live(posts,inventory):
-    status,home=http("/")
-    assert status==200
-    inspect(home,"/")
-    for p in posts:
-        status,body=http(p["path"])
-        if p["published"]:
-            assert status==200, "Public article HTTP error "+p["path"]+" "+str(status)
-            check_post(body,p)
-        else:
-            assert status==404, "Draft article leaked publicly: "+p["path"]
-    for file in inventory["assets"]+inventory["images"]+inventory["uploads"]:
-        status,_=http(file,binary=True)
-        assert status==200, "Public asset HTTP error "+file
-    for file in ("/admin/","/admin/config.yml"):
-        status,body=http(file)
-        assert status==200, "Admin static asset HTTP error "+file
-        if file=="/admin/":
-            assert "decap-cms@3.16.3/dist/decap-cms.js" in body, "Pinned Decap script absent in live HTML"
-            assert "CMS_MANUAL_INIT" not in body, "CMS not active in live HTML"
-            assert 'name="robots" content="noindex, nofollow"' in body, "Admin noindex missing"
-        else:
-            assert "base_url: https://astro-chat-lab-oauth-qa.joseungil.workers.dev" in body, "Live config has wrong auth base_url"
-            assert "auth_endpoint: auth" in body and "auth_scope: public_repo" in body, "Live OAuth config incomplete"
+            assert 'cms.registerPreviewTemplate("posts", PostsPreview)' in body, "Live preview extension missing"
     status,robots=http("/robots.txt")
     assert status==200 and "Disallow: /" in robots
     status,_=http("/missing-cms-test-20261009/")
