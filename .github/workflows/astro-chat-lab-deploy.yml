@@ -1,0 +1,140 @@
+name: Astro Chat Lab - Isolated Workers Static Assets
+on:
+  push:
+    branches:
+      - astro-chat-lab
+    paths:
+      - 'site-factory/astro-chat-lab/**'
+      - '.github/workflows/astro-chat-lab-deploy.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: astro-chat-lab-qa-deploy
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Import pinned template, build, deploy and verify
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/astro-chat-lab'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+    steps:
+      - name: Checkout exact event commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Ensure only isolated experiment paths changed
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import subprocess
+          changed = subprocess.check_output(['git','diff','--name-only','origin/main...HEAD'],text=True).splitlines()
+          assert changed, 'No experiment paths changed'
+          allowed=lambda path: path.startswith('site-factory/astro-chat-lab/') or path=='.github/workflows/astro-chat-lab-deploy.yml'
+          assert all(allowed(path) for path in changed), 'Cross-site change detected: '+repr([x for x in changed if not allowed(x)])
+          print('Isolated source paths:',len(changed))
+          PY
+
+      - name: Materialize complete pinned AstroPaper source into test branch
+        id: materialize
+        run: |
+          set -euo pipefail
+          ROOT=site-factory/astro-chat-lab
+          if [ ! -f "$ROOT/UPSTREAM_PIN.json" ]; then
+            UPSTREAM_DIR="$RUNNER_TEMP/astro-paper-pinned"
+            export UPSTREAM_DIR
+            mkdir -p "$UPSTREAM_DIR"
+            git -C "$UPSTREAM_DIR" init -q
+            git -C "$UPSTREAM_DIR" fetch -q --no-tags --depth=1 https://github.com/satnaing/astro-paper.git 35cfa7fbe0b897306d27670d3819e55d5205f3dd
+            git -C "$UPSTREAM_DIR" checkout -q --detach FETCH_HEAD
+            test "$(git -C "$UPSTREAM_DIR" rev-parse HEAD)" = "35cfa7fbe0b897306d27670d3819e55d5205f3dd"
+            python3 "$ROOT/bootstrap.py"
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -- "$ROOT"
+            git diff --cached --quiet && { echo 'No pinned source was written'; exit 1; }
+            git commit -m "test(astro-chat-lab): import full pinned AstroPaper and publish one Korean test post"
+            git push origin HEAD:refs/heads/astro-chat-lab
+          fi
+          SHA="$(git rev-parse HEAD)"
+          test -f "$ROOT/UPSTREAM_PIN.json"
+          test -f "$ROOT/pnpm-lock.yaml"
+          test -f "$ROOT/src/content/posts/webchat-astro-first-post.md"
+          git checkout --detach "$SHA"
+          test "$(git rev-parse HEAD)" = "$SHA"
+          echo "source_sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "Verified exact experiment source commit: $SHA"
+
+      - name: GET-only Cloudflare account subdomain and Worker collision check
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          python3 site-factory/astro-chat-lab/cloudflare_preflight.py
+
+      - name: Install pinned pnpm 11.3.0
+        uses: pnpm/action-setup@v4
+        with:
+          version: '11.3.0'
+
+      - name: Use Node.js 24 and pinned lockfile
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: pnpm
+          cache-dependency-path: site-factory/astro-chat-lab/pnpm-lock.yaml
+
+      - name: Install exact dependency lock
+        working-directory: site-factory/astro-chat-lab
+        run: |
+          set -euo pipefail
+          pnpm install --frozen-lockfile
+
+      - name: Astro check, static build and Pagefind
+        working-directory: site-factory/astro-chat-lab
+        run: |
+          set -euo pipefail
+          pnpm run build
+
+      - name: QA generated HTML, one post, canonical, noindex and static assets
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ steps.materialize.outputs.source_sha }}"
+          python3 site-factory/astro-chat-lab/qa.py build
+
+      - name: Publish dedicated new Worker, never client Workers
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_SEND_METRICS: 'false'
+        working-directory: site-factory/astro-chat-lab
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4.148.0 deploy --config wrangler.jsonc
+
+      - name: Verify actual workers.dev homepage, Korean article, assets, robots and 404
+        run: |
+          set -euo pipefail
+          python3 site-factory/astro-chat-lab/qa.py live
+
+      - name: Record source and independent deployment evidence
+        run: |
+          {
+            echo '## Astro chat deployment'
+            echo '- Repository: joseungil-kr/fwith-site-factory'
+            echo '- Branch: astro-chat-lab'
+            echo '- Root: site-factory/astro-chat-lab'
+            echo '- Pinned upstream: 35cfa7fbe0b897306d27670d3819e55d5205f3dd'
+            echo '- Source commit: ${{ steps.materialize.outputs.source_sha }}'
+            echo "- Homepage: $ASTRO_CHAT_ORIGIN/"
+            echo "- Test post: $ASTRO_CHAT_ORIGIN/posts/webchat-astro-first-post/"
+            echo '- Verification: HTML, canonical, noindex, static assets and HTTP 404 all passed'
+          } >> "$GITHUB_STEP_SUMMARY"
