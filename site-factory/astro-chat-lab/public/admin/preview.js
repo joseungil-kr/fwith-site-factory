@@ -335,9 +335,47 @@
       }
       return ImageThumbnailPreview(props);
     }
+    // This is the actual editable IMAGE field (the left-side checkerboard).
+    // Upstream FileControl.withFileControl renders its own <Image>, which calls
+    // getAsset(value, field) inside useEffect. With value="/uploads/name.png",
+    // Decap treats it as an absolute URL and SKIPS the unsaved File/AssetProxy.
+    // Retain the original Decap control, callbacks and state management; wrap
+    // only its getAsset lookup so a staged blob can be found before deployment.
+    function StagedImageControl(props) {
+      function resolveControlAsset(value, field) {
+        const getAsset = props && props.getAsset;
+        if (typeof getAsset !== "function") return null;
+        const filename = mediaName(value);
+        if (filename) {
+          // Nested Image editor fields may supply a field-specific folder.
+          // The blog's global media folder is the canonical upload location.
+          for (const fieldHint of [field, undefined]) {
+            let asset;
+            try {
+              asset = getAsset(filename, fieldHint);
+            } catch {
+              continue;
+            }
+            const assetUrl = asset && typeof asset.toString === "function"
+              ? asset.toString()
+              : "";
+            if (typeof assetUrl === "string" &&
+                assetUrl.startsWith("blob:" + origin + "/") &&
+                asset.path !== "empty.svg" && !asset.path?.endsWith("/empty.svg")) {
+              return asset;
+            }
+          }
+        }
+        // Already-published images, original File values and other supported
+        // types retain the official Decap handling and media picker behavior.
+        return getAsset(value, field);
+      }
+      return h(original.control, { ...props, getAsset: resolveControlAsset });
+    }
+
     cms.registerWidget({
       name: "image",
-      controlComponent: original.control,
+      controlComponent: StagedImageControl,
       previewComponent: Thumbnail,
       schema: original.schema,
       globalStyles: original.globalStyles,

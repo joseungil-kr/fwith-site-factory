@@ -217,7 +217,9 @@ function initializeImageThumbnail(options={}) {
   assert.equal(registrations.length,1,"Only image widget may be overridden");
   const custom=registrations[0];
   assert.equal(custom.name,"image");
-  assert.equal(custom.controlComponent,nativeControl,"Original upload/pick control must remain");
+  assert.notEqual(custom.controlComponent,nativeControl,"Only a getAsset adapter should wrap the original control");
+  const wrapped=custom.controlComponent({getAsset:()=>null});
+  assert.equal(wrapped.tag,nativeControl,"Decap's original IMAGE picker must remain mounted");
   assert.equal(custom.schema,original.schema,"Decap field schema must remain");
   assert.equal(custom.globalStyles,original.globalStyles);
   return {custom,original,FakeFile};
@@ -225,7 +227,7 @@ function initializeImageThumbnail(options={}) {
 
 test("IMAGE input uses original upload control with only its thumbnail replaced",()=>{
   const {custom,original}=initializeImageThumbnail();
-  assert.equal(custom.controlComponent,original.control);
+  assert.equal(custom.controlComponent({getAsset:()=>null}).tag,original.control);
   assert.notEqual(custom.previewComponent,original.preview);
   assert.equal(custom.schema,original.schema);
   assert.equal(custom.allowMapValue,false);
@@ -313,4 +315,65 @@ test("IMAGE input refuses outside-origin URLs and cannot send credentials",()=>{
   assert.equal(flatten(tree,"img").length,0);
   assert.equal(flatten(tree,"p").length,1);
   assert.match(flatten(tree,"p")[0].children.join(""),/허용된/);
+});
+
+
+test("Real IMAGE control finds fresh staged blob before an /uploads URL is deployed",()=>{
+  const {custom,original}=initializeImageThumbnail();
+  const file="신규-업로드-이미지.jpg";
+  const rawPath="/uploads/"+file;
+  const blob="blob:"+siteOrigin+"/8bb022f1-5ea5-4b9b-9ea7-5eeab60e831e";
+  const field={get:()=>null};
+  const rootProps={
+    value:rawPath,field,onChange:()=>{},onOpenMediaLibrary:()=>{},
+    getAsset(name,meta) {
+      if(name===file && meta===undefined)
+        return {path:"site-factory/astro-chat-lab/public/uploads/"+file,toString:()=>blob};
+      if(name===file)return {path:"empty.svg",toString:()=>""};
+      return {path:name,toString:()=>siteOrigin+rawPath};
+    }
+  };
+  const wrapped=custom.controlComponent(rootProps);
+  assert.equal(wrapped.tag,original.control,"Native Decap upload/choose UI must stay in place");
+  assert.equal(wrapped.props.onChange,rootProps.onChange);
+  assert.equal(wrapped.props.onOpenMediaLibrary,rootProps.onOpenMediaLibrary);
+  assert.equal(wrapped.props.value,rawPath);
+  const asset=wrapped.props.getAsset(rawPath,field);
+  assert.equal(asset.toString(),blob,"Native Image child should immediately get staged image");
+});
+
+test("Existing IMAGE values keep public URLs when there is no staged blob",()=>{
+  const {custom}=initializeImageThumbnail();
+  const filename="how-to.jpg",path="/uploads/"+filename,field={get:()=>null};
+  const seen=[];
+  const wrapped=custom.controlComponent({
+    value:path,field,getAsset(name,meta){
+      seen.push([name,meta]);
+      if(name===filename)return {path:"empty.svg",toString:()=>""};
+      return {path:name,toString:()=>siteOrigin+path};
+    }
+  });
+  assert.equal(wrapped.props.getAsset(path,field).toString(),siteOrigin+path);
+  assert.equal(seen.some(([path])=>path==="/uploads/"+filename),true);
+});
+
+test("IMAGE control never forwards unrelated URLs through an upload folder",()=>{
+  const {custom}=initializeImageThumbnail();
+  const target="https://elsewhere.example/test.jpg";
+  const wrapped=custom.controlComponent({
+    getAsset(path){return {path,toString:()=>path};}
+  });
+  assert.equal(wrapped.props.getAsset(target).toString(),target);
+});
+
+test("IMAGE control refuses another origin's blob as locally staged",()=>{
+  const {custom}=initializeImageThumbnail();
+  const path="/uploads/new.jpg",field={get:()=>null};
+  const wrapped=custom.controlComponent({
+    getAsset(value){
+      if(value==="new.jpg")return {path:"file.jpg",toString:()=> "blob:https://evil.example/abc"};
+      return {path:value,toString:()=>siteOrigin+value};
+    }
+  });
+  assert.equal(wrapped.props.getAsset(path,field).toString(),siteOrigin+path);
 });

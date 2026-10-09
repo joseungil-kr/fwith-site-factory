@@ -201,12 +201,13 @@ def check_build(posts):
     preview_code=preview_js.read_text(encoding="utf-8")
     assert 'cms.registerPreviewTemplate("posts", PostsPreview)' in preview_code
     assert 'registerImageThumbnail();' in preview_code, "Native image widget thumbnail not fixed"
-    assert 'controlComponent: original.control' in preview_code, "Original Decap media picker not preserved"
+    assert 'controlComponent: StagedImageControl' in preview_code, "IMAGE input must use staged media adapter"
+    assert 'return h(original.control, { ...props, getAsset: resolveControlAsset })' in preview_code, "Original Decap picker must be preserved"
     assert 'dangerouslySetInnerHTML' not in preview_code
     admin_html=admin.read_text(encoding="utf-8")
     cfg=config.read_text(encoding="utf-8")
     for marker in ["decap-cms@3.16.3/dist/decap-cms.js",
-                    "/admin/preview.js?v=3",
+                    "/admin/preview.js?v=4",
                     'name="robots" content="noindex, nofollow"']:
         assert marker in admin_html, "Admin HTML safety marker missing: "+marker
     for marker in ["name: github","repo: joseungil-kr/fwith-site-factory",
