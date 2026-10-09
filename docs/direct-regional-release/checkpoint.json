@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T19:11:07.928Z",
+  "updatedAt": "2026-10-09T19:12:56.064Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -28,7 +28,7 @@
   "current": {
     "scopeKey": "gwacheon-direct-initial-20261010",
     "city": "과천시",
-    "status": "source_publication_in_progress",
+    "status": "source_published_final_build_verification",
     "owner": {
       "scheduledRunAt": "2026-10-09T19:00:00Z",
       "observedMessageAt": "2026-10-09T18:57:20Z",
@@ -43,7 +43,7 @@
       "worker": "gwacheon-flower-guide",
       "hostname": "gwacheon.fwith.kr",
       "externalCreationVerified": false,
-      "sourceBranchCreatedVerified": false
+      "sourceBranchCreatedVerified": true
     },
     "input": {
       "controlRevision": "f01652ae896d3b60eebb9e75d09ff55626914527",
@@ -61,13 +61,14 @@
       "sourceUrl": "https://kosis.kr/visual/eRegionIndex/eRegionCompare.do",
       "reason": "Next unbuilt Gyeonggi municipality in official code order; earlier Dongducheon,Ansan,Goyang already complete"
     },
-    "lastSuccessfulStage": "fresh_remote_scope_and_conflict_readback",
-    "nextIntent": "Publish independently reviewed exact source and bounded direct controls after final source review",
+    "lastSuccessfulStage": "source_and_control_publication_verified",
+    "nextIntent": "Dispatch exact reviewed source through official existing GitHub workflow UI once after final source SHA build verification",
     "pendingExternalAction": {
-      "action": "create_source_branch",
-      "branch": "site-factory-gwacheon-direct",
-      "idempotencyKey": "gwacheon-direct-initial-20261010-source-4851451e",
-      "fixedParent": "0ee0d615e4feb8f67ac90f123b943174d11bcf00"
+      "action": "workflow_dispatch",
+      "workflow": "gwacheon-direct-publish.yml",
+      "expectedRevision": "1cf4c2fd922053f5966200c01c331cd1bb6f8a7f",
+      "indexnowOnly": false,
+      "idempotencyKey": "gwacheon-direct-release-1cf4c2fd922053f5966200c01c331cd1bb6f8a7f"
     },
     "receiptJournal": {
       "number": 266,
@@ -98,9 +99,12 @@
       "normalHtmlRoutes": 12,
       "sitemapUrls": 12,
       "sourceInventorySha256": "4851451e3a152fa92fda5544fb9218e126d686e28ec0cbdd2d6c81108be1bba1",
-      "publicationManifestRawSha256": "50c2fb75fd362491f1025344c823aa1c6083cf62ec7fe629ff8cd0afddc1ef00"
+      "publicationManifestRawSha256": "50c2fb75fd362491f1025344c823aa1c6083cf62ec7fe629ff8cd0afddc1ef00",
+      "remoteReadback": "PASS_69_BLOBS"
     },
-    "controlRevision": "253a08eb4c0962ca774889608dc73cea057dd6dd"
+    "controlRevision": "253a08eb4c0962ca774889608dc73cea057dd6dd",
+    "sourceRevision": "1cf4c2fd922053f5966200c01c331cd1bb6f8a7f",
+    "evidencePath": "docs/direct-regional-release/gwacheon/independent-predeploy-evidence.json"
   },
   "history": [
     {
