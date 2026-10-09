@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T23:50:38.744Z",
+  "updatedAt": "2026-10-09T23:52:04.675Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -31,7 +31,7 @@
   "current": {
     "scopeKey": "gunpo-direct-initial-20261010",
     "city": "군포시",
-    "status": "approved_exact_source_dispatch_pending",
+    "status": "direct_release_running",
     "owner": {
       "scheduledRunAt": "2026-10-09T23:00:00Z",
       "observedExecutionAt": "2026-10-09T22:55:42Z",
@@ -67,8 +67,8 @@
       "mainMatchingPaths": false,
       "providerOwnershipCollisionCheck": "pending_before_mutation"
     },
-    "lastSuccessfulStage": "independent_exact_source_control_readback_and_final_sha_build",
-    "nextIntent": "After exact hostname approval resume same reviewed source and official workflow; otherwise later invocation may prepare next eligible region",
+    "lastSuccessfulStage": "approved_exact_workflow_dispatched",
+    "nextIntent": "Track actual run and independent hosted QA then GSC",
     "pendingExternalAction": {
       "action": "workflow_dispatch_with_fixed_hostname_attachment",
       "workflow": "gunpo-direct-publish.yml",
@@ -151,6 +151,15 @@
       "scope": "custom_hostname_attachment",
       "receivedAt": "2026-10-09T23:49:53Z",
       "contentOrDeploymentPerformedManuallyByUser": false
+    },
+    "actualWorkflow": {
+      "runId": 38006459136,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38006459136",
+      "controlRevision": "a5a1ffbae128e970ac4df39491537a4a93dda06a",
+      "dispatchObservedAt": "2026-10-09T23:51:44.155Z",
+      "createdAt": "2026-10-09T23:51:42Z",
+      "dispatchCount": 1,
+      "result": "in_progress"
     }
   },
   "history": [
