@@ -34,6 +34,10 @@ for name in (
         shutil.copy2(item, target)
 
 # Remove posts from the *copied* template only, not from upstream or client sites.
+# Dynamic OG image generation is deliberately disabled; a Korean title does not
+# need to be drawn with the upstream Latin-only Google Sans Code image font.
+(root / "src/pages/og.png.ts").unlink()
+
 posts = root / "src/content/posts"
 shutil.rmtree(posts)
 posts.mkdir(parents=True)
@@ -168,8 +172,6 @@ export default {
 """
 (root / "src/i18n/lang/ko.ts").write_text(lang, encoding="utf-8")
 
-(root / "_headers").write_text("/*\\n  X-Robots-Tag: noindex, nofollow\\n", encoding="utf-8")  # provider-specific, not relied on for index control
-(root / "public/_headers").write_text("/*\\n  X-Robots-Tag: noindex, nofollow\\n", encoding="utf-8")
 (root / "wrangler.jsonc").write_text(json.dumps({
     "name":"astro-chat-lab-qa",
     "compatibility_date":"2026-10-09",
