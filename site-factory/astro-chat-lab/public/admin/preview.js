@@ -87,7 +87,7 @@
 
   // A safety fallback avoids the browser's broken-image icon; it does not
   // mistake an unsaved in-memory image for a live published asset.
-  function imageNode(markdownPath, alt, caption, getAsset, key) {
+  function imageNode(markdownPath, alt, caption, getAsset, key, thumbnail) {
     const publicUrl = publicImageUrl(markdownPath);
     if (!publicUrl) return h("p", { key, role: "status" }, "허용된 /uploads 이미지 주소가 아닙니다.");
     const preview = localAssetUrl(markdownPath, getAsset) || publicUrl;
@@ -153,12 +153,12 @@
       window.setTimeout(retry, 350);
     }
 
-    return h("figure", { key, style: { margin: "18px 0 24px" } },
+    return h("figure", { key, style: { margin: thumbnail ? "4px 0" : "18px 0 24px" } },
       h("img", {
         src: preview,
         alt: alt || "게시물 이미지",
         title: caption || undefined,
-        style: imageStyle,
+        style: thumbnail ? { ...imageStyle, maxWidth: "170px", maxHeight: "115px" } : imageStyle,
         onLoad: function (event) {
           const img = event.currentTarget;
           if (!img || !img.dataset) return;
@@ -292,6 +292,60 @@
       ...renderBody(get("body"), props.getAsset)
     );
   }
+
+
+  /*
+   * Decap's built-in IMAGE field preview calls getAsset(value, field) with
+   * /uploads/filename. Root-relative URLs bypass Decap's unsaved media store,
+   * making the little left-side thumbnail appear broken. Keep its original
+   * upload/choose-image control and schema; replace ONLY the preview renderer.
+   *
+   * Official Decap 3.16.3 API:
+   *   getWidget('image') => { control, preview, schema, globalStyles }
+   *   registerWidget({ name, controlComponent, previewComponent, schema, ...})
+   */
+  function ImageThumbnailPreview(props) {
+    const { value, getAsset, field } = props;
+    if (!value) return null;
+
+    const items = Array.isArray(value) ? value :
+      typeof value?.toArray === "function" ? value.toArray() : [value];
+    return h("div", {
+      style: { width: "100%", minHeight: "115px", padding: "6px 0" },
+      "data-astro-image-preview": "v3"
+    }, ...items.map((path, i) =>
+      typeof path === "string" ?
+        imageNode(path, "이미지", "", name => getAsset?.(name, field), "thumbnail-" + i, true) :
+        h("small", { key: "unknown-" + i }, "이미지 형식을 확인할 수 없습니다.")
+    ));
+  }
+
+  function registerImageThumbnail() {
+    if (typeof cms.getWidget !== "function" || typeof cms.registerWidget !== "function") return;
+    const original = cms.getWidget("image");
+    if (!original || !original.control || !original.preview) return;
+
+    // Save the old component for the rare File-value path. This is used only
+    // to delegate raw File preview with the original React lifecycle.
+    const upstreamPreview = original.preview;
+    function Thumbnail(props) {
+      const value = props?.value;
+      if (typeof File !== "undefined" && value instanceof File) {
+        return h(upstreamPreview, props);
+      }
+      return ImageThumbnailPreview(props);
+    }
+    cms.registerWidget({
+      name: "image",
+      controlComponent: original.control,
+      previewComponent: Thumbnail,
+      schema: original.schema,
+      globalStyles: original.globalStyles,
+      allowMapValue: original.allowMapValue,
+    });
+  }
+
+  registerImageThumbnail();
 
   cms.registerPreviewTemplate("posts", PostsPreview);
 })();

@@ -192,3 +192,125 @@ test("Warning stays hidden while the image loads and appears only after genuine 
   assert.equal(note.hidden,false);
   assert.equal(note.style.display,"block");
 });
+
+
+// The left IMAGE field's thumbnail is a different Decap widget from the
+// right-side posts preview. Exercise the actual registerWidget override.
+function initializeImageThumbnail(options={}) {
+  const h=(tag,props,...children)=>({tag,props:props||{},children});
+  const nativeControl=function RealDecapImageControl(){};
+  const nativePreview=function RealDecapImagePreview(){};
+  const original={
+    control:nativeControl,preview:nativePreview,
+    schema:{type:"string"},globalStyles:"image-standard-css",
+    allowMapValue:false
+  };
+  const registrations=[];
+  const CMS={
+    getWidget(name){assert.equal(name,"image");return original;},
+    registerWidget(widget){registrations.push(widget);},
+    registerPreviewTemplate(){}
+  };
+  const FakeFile=class FakeFile{};
+  const window={h,CMS,location:{origin:siteOrigin},setTimeout:options.setTimeout};
+  runInNewContext(script,{window,URL,console,File:FakeFile});
+  assert.equal(registrations.length,1,"Only image widget may be overridden");
+  const custom=registrations[0];
+  assert.equal(custom.name,"image");
+  assert.equal(custom.controlComponent,nativeControl,"Original upload/pick control must remain");
+  assert.equal(custom.schema,original.schema,"Decap field schema must remain");
+  assert.equal(custom.globalStyles,original.globalStyles);
+  return {custom,original,FakeFile};
+}
+
+test("IMAGE input uses original upload control with only its thumbnail replaced",()=>{
+  const {custom,original}=initializeImageThumbnail();
+  assert.equal(custom.controlComponent,original.control);
+  assert.notEqual(custom.previewComponent,original.preview);
+  assert.equal(custom.schema,original.schema);
+  assert.equal(custom.allowMapValue,false);
+});
+
+test("IMAGE input immediately displays the staged Decap File blob by basename",()=>{
+  const {custom}=initializeImageThumbnail();
+  const filename="한글-파일명.png";
+  const path="/uploads/"+filename;
+  const blob="blob:"+siteOrigin+"/e08d5d27-9129-4cca-b828-a91e6f054082";
+  const requests=[],field={name:"image",widget:"image"};
+  const tree=custom.previewComponent({
+    value:path,field,
+    getAsset(name,actualField){
+      requests.push([name,actualField]);
+      return {path:"site-factory/astro-chat-lab/public/uploads/"+name,toString:()=>blob};
+    }
+  });
+  const img=flatten(tree,"img");
+  assert.equal(img.length,1);
+  assert.equal(img[0].props.src,blob);
+  assert.equal(img[0].props.style.maxWidth,"170px");
+  assert.equal(img[0].props.style.maxHeight,"115px");
+  assert.deepEqual(requests,[[filename,field]],"Never query /uploads path for unsaved asset");
+});
+
+test("IMAGE input uses valid /uploads URL when image was previously saved",()=>{
+  const {custom}=initializeImageThumbnail();
+  const path="/uploads/how-to.jpg";
+  const tree=custom.previewComponent({
+    value:path,field:{name:"image"},
+    getAsset:()=>({path:"empty.svg",toString:()=>""})
+  });
+  const imgs=flatten(tree,"img");
+  assert.equal(imgs.length,1);
+  assert.equal(imgs[0].props.src,siteOrigin+path);
+});
+
+test("IMAGE input retries pending Decap asset without waiting for Publish",()=>{
+  const timers=[];
+  const {custom}=initializeImageThumbnail({setTimeout:fn=>{timers.push(fn);}});
+  const filename="예시.jpg",path="/uploads/"+filename;
+  const url=siteOrigin+path;
+  const blob="blob:"+siteOrigin+"/cebc525f-3c69-40cd-8c6d-6632d361447f";
+  let ready=false;
+  const tree=custom.previewComponent({
+    value:path,field:{name:"image"},
+    getAsset(){
+      return ready?
+        {path:"site-factory/astro-chat-lab/public/uploads/"+filename,toString:()=>blob}:
+        {path:"empty.svg",toString:()=>""};
+    }
+  });
+  const image=flatten(tree,"img")[0];
+  assert.equal(image.props.src,url);
+  const warning={hidden:true,style:{display:"none"}};
+  const el={src:url,dataset:{},hidden:false,style:{display:"block"},isConnected:true,nextSibling:warning};
+  image.props.onError({currentTarget:el});
+  assert.equal(timers.length,1);
+  ready=true;
+  timers.shift()();
+  assert.equal(el.src,blob);
+  image.props.onLoad({currentTarget:el});
+  assert.equal(warning.hidden,true);
+  assert.equal(warning.style.display,"none");
+});
+
+test("IMAGE input keeps native blob URL lifecycle for raw File values",()=>{
+  const {custom,original,FakeFile}=initializeImageThumbnail();
+  const value=new FakeFile();
+  const props={value,field:{name:"image"},getAsset:()=>null};
+  const node=custom.previewComponent(props);
+  assert.equal(node.tag,original.preview,
+    "Raw File objects must use original React useEffect create/revoke lifecycle");
+  assert.equal(node.props,props);
+});
+
+test("IMAGE input refuses outside-origin URLs and cannot send credentials",()=>{
+  const {custom}=initializeImageThumbnail();
+  const tree=custom.previewComponent({
+    value:"https://elsewhere.example/secret.png",
+    field:{name:"image"},
+    getAsset(){throw new Error("Should not fetch untrusted URL");}
+  });
+  assert.equal(flatten(tree,"img").length,0);
+  assert.equal(flatten(tree,"p").length,1);
+  assert.match(flatten(tree,"p")[0].children.join(""),/허용된/);
+});
