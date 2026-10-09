@@ -81,7 +81,7 @@ test("A missing CMS preview image retries the saved URL and never shows a broken
   const el={src:blob,dataset:{},hidden:false,nextSibling:alt};
   img.props.onError({currentTarget:el});
   assert.equal(el.src,siteOrigin+"/uploads/file.jpg");
-  assert.equal(el.dataset.retried,"1");
+  assert.equal(el.dataset.triedPublic,"1");
   img.props.onError({currentTarget:el});
   assert.equal(el.hidden,true);
   assert.equal(alt.hidden,false);
@@ -127,7 +127,7 @@ test("Decap's empty.svg placeholder is not mistaken for a selected image",()=>{
 
 test("Asynchronously staged images are picked up without publishing or reloading",()=>{
   const filename="초안-사진.jpg";
-  const url=siteOrigin+"/uploads/"+filename;
+  const url=new URL("/uploads/"+filename,siteOrigin).href;
   const blob="blob:"+siteOrigin+"/51ac57dd-983f-4f9c-93b8-c931ab409bf8";
   let ready=false;
   const timers=[],reads=[];
