@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T20:08:12.891Z",
+  "updatedAt": "2026-10-09T20:12:05.641Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -43,7 +43,7 @@
       "worker": "guri-flower-guide",
       "hostname": "guri.fwith.kr",
       "externalCreationVerified": false,
-      "sourceBranchCreatedVerified": false
+      "sourceBranchCreatedVerified": true
     },
     "input": {
       "controlRevision": "02b876b76169891438556942d89cac535223fc85",
@@ -61,14 +61,18 @@
       "inProgressWorkflows": 0,
       "providerOwnershipCollisionCheck": "pending_required_before_mutation"
     },
-    "lastSuccessfulStage": "independent_source_and_controls_review",
+    "lastSuccessfulStage": "independent_exact_source_control_readback_and_final_sha_build",
     "pendingExternalAction": {
-      "action": "create_exact_reviewed_source_branch",
-      "branch": "site-factory-guri-direct",
-      "parentRevision": "192439433b76a98371ecdd40987e612323203673",
-      "fileCount": 69,
-      "publicationManifestRawSha256": "3bd84149d416af4b2b035f89ad8443f690ddc0874ab8fdbe6a1eb5fea096e7d9",
-      "idempotencyKey": "guri-direct-initial-20261010-source-3bd84149d416"
+      "action": "workflow_dispatch_with_fixed_hostname_attachment",
+      "workflow": "guri-direct-publish.yml",
+      "expectedRevision": "1afe5cf775ea8efcd8e8c8c30dce7925106b0078",
+      "controlRevision": "79de964aaf085a6ad195a013b159b3bbeca77128",
+      "indexnowOnly": false,
+      "hostname": "guri.fwith.kr",
+      "worker": "guri-flower-guide",
+      "existingAccountOnly": true,
+      "noOverrides": true,
+      "idempotencyKey": "guri-direct-release-1afe5cf775ea8efcd8e8c8c30dce7925106b0078"
     },
     "receiptJournal": {
       "number": 266,
@@ -90,7 +94,7 @@
       "writerADigest": "f6e902bb09f9bce6b10d33c43ccbe93bbee7f141aaf7788c664fa163d34b1031",
       "writerBDigest": "3aac4ab7c03051e3b56f17a25d0925a0df962fce920dd719a17725fa1e060344",
       "catalogPrices": "verified2026-10-09T19:59Z",
-      "sourceBuild": "PASS_CANDIDATE_NODE22",
+      "sourceBuild": "PASS_FINAL_SOURCE_SHA_NODE22",
       "hostedQa": "not_executed",
       "sourceTests": 64,
       "publisherTests": 34,
@@ -99,9 +103,11 @@
       "normalHtmlRoutes": 9,
       "sitemapUrls": 9,
       "sourceInventorySha256": "0132db7d7a445b38551a45663c685bf977430e143592e2fbe1d2cc30320cc87d",
-      "publicationManifestRawSha256": "3bd84149d416af4b2b035f89ad8443f690ddc0874ab8fdbe6a1eb5fea096e7d9"
+      "publicationManifestRawSha256": "3bd84149d416af4b2b035f89ad8443f690ddc0874ab8fdbe6a1eb5fea096e7d9",
+      "remoteReadback": "PASS_69_BLOBS_AND_CONTROLS"
     },
-    "controlRevision": "5460cef0e4072e944a636da93900e6c859cfe7fe"
+    "controlRevision": "5460cef0e4072e944a636da93900e6c859cfe7fe",
+    "sourceRevision": "1afe5cf775ea8efcd8e8c8c30dce7925106b0078"
   },
   "history": [
     {
