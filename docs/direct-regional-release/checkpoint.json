@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T21:34:28.511Z",
+  "updatedAt": "2026-10-09T22:05:23.512Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -27,7 +27,56 @@
   "excludedHosts": [
     "blog.fwith.kr"
   ],
-  "current": null,
+  "current": {
+    "scopeKey": "siheung-direct-initial-20261010",
+    "city": "시흥시",
+    "status": "preparing_direct_release",
+    "owner": {
+      "scheduledRunAt": "2026-10-09T22:00:00Z",
+      "observedExecutionAt": "2026-10-09T22:04:19Z",
+      "serviceInvocationId": null,
+      "checkpointId": "direct-siheung-20261009T220000Z",
+      "active": true,
+      "executionState": "running"
+    },
+    "identity": {
+      "repository": "joseungil-kr/fwith-site-factory",
+      "branch": "site-factory-siheung-direct",
+      "root": "site-factory/siheung-flower",
+      "worker": "siheung-flower-guide",
+      "hostname": "siheung.fwith.kr",
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": false
+    },
+    "input": {
+      "controlRevision": "88c5d5d07ec75732f5cd72a1a5a3ddc631e5ea3b",
+      "runtimeSourceRevision": "79b52147729166b0d00fb62deb6d68df0391b34c"
+    },
+    "selection": {
+      "officialCode": "41390",
+      "reason": "Next eligible unbuilt Gyeonggi municipality by official code; completed Osan and approval-waiting Gwacheon excluded"
+    },
+    "conflictChecks": {
+      "branchesChecked": 109,
+      "matchingBranch": false,
+      "openPullRequests": 0,
+      "inProgressWorkflows": 0,
+      "mainMatchingPaths": false,
+      "providerOwnershipCollisionCheck": "pending_required_before_mutation"
+    },
+    "plan": {
+      "state": "official_membership_research_complete_freeze_pending",
+      "plannedArticleCount": 31,
+      "minimumPassedArticles": 28,
+      "passedArticleCount": 0,
+      "administrativeUnits": 20,
+      "crosswalkRelationships": 41,
+      "deferred": []
+    },
+    "lastSuccessfulStage": "fresh_checkpoint_refs_conflicts_and_official_membership_selection",
+    "nextIntent": "Freeze official membership and prepare independently reviewed original content and verified direct runtime",
+    "pendingExternalAction": null
+  },
   "history": [
     {
       "scopeKey": "uijeongbu-direct-initial-20261010",
