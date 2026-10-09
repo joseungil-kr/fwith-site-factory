@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T16:08:00Z",
+  "updatedAt": "2026-10-09T16:13:15Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -26,7 +26,7 @@
   "current": {
     "scopeKey": "gwangmyeong-direct-initial-20261010",
     "city": "광명시",
-    "status": "content_reviewed_static_qa_pending",
+    "status": "source_published_awaiting_deployment",
     "owner": {
       "scheduledRunAt": "2026-10-09T16:00:00Z",
       "observedMessageAt": "2026-10-09T15:57:01Z",
@@ -40,7 +40,8 @@
       "root": "site-factory/gwangmyeong-flower",
       "worker": "gwangmyeong-flower-guide",
       "hostname": "gwangmyeong.fwith.kr",
-      "externalCreationVerified": false
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": true
     },
     "plan": {
       "membershipPath": "docs/direct-regional-release/gwangmyeong/membership.json",
@@ -54,7 +55,7 @@
       "controlRevision": "133c5ade96b9b6385e78f859209cb83c15215c47",
       "runtimeSourceRevision": "c047f1127f7908085fce55ab41504a23ff9b199c"
     },
-    "lastSuccessfulStage": "eight_independent_content_reviews",
+    "lastSuccessfulStage": "exact_source_published_and_build_verified",
     "nextIntent": "write_and_independently_review_eight_articles_then_direct_publish",
     "conflictChecks": {
       "branchesChecked": 104,
@@ -70,17 +71,14 @@
       "reuseExistingWithoutReopen": true
     },
     "pendingExternalAction": {
-      "action": "publish_reviewed_customer_source_and_city_scoped_control",
-      "idempotencyKey": "gwangmyeong-direct-initial-20261010-source-v1",
-      "requiredBeforeWrite": "independent_integrated_source_and_exact_helper_review_PASS",
-      "branch": "site-factory-gwangmyeong-direct",
-      "controlPaths": [
-        ".github/workflows/gwangmyeong-direct-publish.yml",
-        "scripts/direct-gwangmyeong/publish.py",
-        "scripts/direct-gwangmyeong/test_publish.py"
-      ],
-      "receiptIssue": 266,
-      "oldFactoryInvocationAllowed": false
+      "action": "workflow_dispatch",
+      "workflow": ".github/workflows/gwangmyeong-direct-publish.yml",
+      "expected_revision": "9eea3825094c17689936987319e7b5e026f6b7bf",
+      "indexnow_only": false,
+      "dispatchCount": 0,
+      "idempotencyKey": "gwangmyeong-publish-9eea3825094c17689936987319e7b5e026f6b7bf",
+      "providerChecksRequired": true,
+      "requiredBeforeDispatch": "independent_final_remote_readback_PASS"
     },
     "review": {
       "independentContent": "PASS",
@@ -88,8 +86,16 @@
       "writerBDigest": "19ce4f8679326a1aa7287dabf183cb7ae1d95f2c4efa383e450b7a97cacd9fe0",
       "membership": "PASS",
       "catalogPrices": "verified2026-10-09T16:00Z",
-      "sourceBuild": "independent_review_pending"
-    }
+      "sourceBuild": "PASS",
+      "sourceTests": 64,
+      "publisherTests": 33,
+      "sourceFilesVerified": 69,
+      "exactMatchingProductCards": 32,
+      "normalHtmlRoutes": 10,
+      "sitemapUrls": 10
+    },
+    "sourceRevision": "9eea3825094c17689936987319e7b5e026f6b7bf",
+    "controlRevision": "a9cfa681e8a1a1db9a8ff97c3b5f7bbeef612c9d"
   },
   "history": [
     {
