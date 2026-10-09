@@ -42,7 +42,7 @@ export function validateGraph(data) {
  validateHubMetadata(pages,architecture);
  for(const p of products){
   if(!p.sourceUrl || !['operator_confirmed','official_business_source'].includes(p.sourceLevel) || p.assetType!=='real_product' || !p.verifiedAt)throw new Error('Unverified product '+p.key);
-  if(!p.orderUrl.startsWith('https://fwith.co.kr/'))throw new Error('Untrusted order destination '+p.key);
+  if(p.orderUrl!=='https://fwith.co.kr'&&!p.orderUrl.startsWith('https://fwith.co.kr/'))throw new Error('Untrusted order destination '+p.key);
   if(!Number.isFinite(p.price)||p.price<0)throw new Error('Invalid product price '+p.key);
  }
  return {pages:pages.length,hubs:architecture.hubs.filter(h=>h.children>0).length};
