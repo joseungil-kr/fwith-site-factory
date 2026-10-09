@@ -99,7 +99,7 @@
   }
 
   function textNodes(text, prefix) {
-    // Text remains React text nodes; no dangerouslySetInnerHTML or permissive sanitizer.
+    // Text remains React text nodes; no raw HTML insertion and no permissive sanitizer.
     const nodes = [];
     const rx = /\[([^\]]+)\]\(([^)\s]+)\)|(\*\*([^*]+)\*\*)/g;
     let match, last = 0, i = 0;
