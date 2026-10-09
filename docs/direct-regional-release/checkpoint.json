@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T23:03:54.202Z",
+  "updatedAt": "2026-10-09T23:08:14.805Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -31,7 +31,7 @@
   "current": {
     "scopeKey": "gunpo-direct-initial-20261010",
     "city": "군포시",
-    "status": "independent_content_pass_source_preparation",
+    "status": "exact_source_ready_for_direct_dispatch",
     "owner": {
       "scheduledRunAt": "2026-10-09T23:00:00Z",
       "observedExecutionAt": "2026-10-09T22:55:42Z",
@@ -46,7 +46,7 @@
       "worker": "gunpo-flower-guide",
       "hostname": "gunpo.fwith.kr",
       "externalCreationVerified": false,
-      "sourceBranchCreatedVerified": false
+      "sourceBranchCreatedVerified": true
     },
     "input": {
       "controlRevision": "0ea21449f57fdca33ec90cf3675a1095696bdc44",
@@ -64,12 +64,18 @@
       "mainMatchingPaths": false,
       "providerOwnershipCollisionCheck": "pending_before_mutation"
     },
-    "lastSuccessfulStage": "independent_content_membership_catalog_controls_review",
-    "nextIntent": "Create exact reviewed Gunpo source branch from current main without altering other site files",
+    "lastSuccessfulStage": "independent_exact_source_control_readback_and_final_sha_build",
+    "nextIntent": "Invoke existing fixed Gunpo workflow once at reviewed source",
     "pendingExternalAction": {
-      "action": "create_source_branch_and_commit",
-      "target": "site-factory-gunpo-direct",
-      "idempotencyKey": "gunpo-direct-initial-20261010-nine-articles-v1"
+      "action": "workflow_dispatch_with_fixed_hostname_attachment",
+      "workflow": "gunpo-direct-publish.yml",
+      "expectedRevision": "1d440850fc4ca039abcaacc8a5f3a866ba9c8b12",
+      "indexnowOnly": false,
+      "hostname": "gunpo.fwith.kr",
+      "worker": "gunpo-flower-guide",
+      "existingAccountOnly": true,
+      "noOverrides": true,
+      "idempotencyKey": "gunpo-direct-release-1d440850fc4ca039abcaacc8a5f3a866ba9c8b12"
     },
     "plan": {
       "state": "independently_reviewed_complete_initial_content",
@@ -90,8 +96,16 @@
       "membership": "PASS",
       "catalogPrices": "verified2026-10-09T22:58:51Z",
       "publisherTests": 34,
-      "hostedQa": "not_executed"
-    }
+      "hostedQa": "not_executed",
+      "sourceBuild": "PASS_FINAL_SOURCE_SHA_NODE22",
+      "sourceTests": 64,
+      "sourceFilesVerified": 69,
+      "normalHtmlRoutes": 11,
+      "sitemapUrls": 11,
+      "exactMatchingProductCards": 36,
+      "remoteReadback": "PASS_69_FULL_BYTES_AND_CONTROLS"
+    },
+    "sourceRevision": "1d440850fc4ca039abcaacc8a5f3a866ba9c8b12"
   },
   "history": [
     {
