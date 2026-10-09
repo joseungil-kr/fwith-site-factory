@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T15:34:47Z",
+  "updatedAt": "2026-10-09T15:44:34Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -39,7 +39,7 @@
       "root": "site-factory/uijeongbu-flower",
       "worker": "uijeongbu-flower-guide",
       "hostname": "uijeongbu.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true
     },
     "plan": {
@@ -75,7 +75,7 @@
       "sitemapUrls": 14,
       "deferredAndUnknown404": "PASS",
       "desktop": "PASS",
-      "narrow": "in_progress"
+      "narrow": "PASS"
     },
     "indexNowReceipt": {
       "state": "preflight_failed_before_post",
@@ -94,10 +94,14 @@
       "warnings": 0
     },
     "pendingExternalAction": {
-      "action": "bounded_workflow_code_repair_then_submission_only",
-      "sourceRevision": "c047f1127f7908085fce55ab41504a23ff9b199c",
+      "action": "workflow_dispatch",
+      "workflow": ".github/workflows/uijeongbu-direct-publish.yml",
+      "controlRevision": "26dc5a2f9b9637cdf5b141d5ca9afb0081c64db5",
+      "expected_revision": "c047f1127f7908085fce55ab41504a23ff9b199c",
+      "indexnow_only": true,
+      "dispatchCount": 0,
       "cloudflareMutationsAllowed": false,
-      "indexNowPostAllowedOnlyAfterFreshGuardsAndEmptyJournal": true
+      "idempotencyKey": "uijeongbu-indexnow-recovery-c047f1127f7908085fce55ab41504a23ff9b199c"
     },
     "receiptJournal": {
       "number": 266,
@@ -107,14 +111,14 @@
     "review": {
       "independentContent": "PASS",
       "sourceTests": 65,
-      "publisherTests": 27,
+      "publisherTests": 31,
       "sourceFilesVerified": 69,
       "exactMatchingProductCards": 48,
       "normalHtmlRoutes": 14,
       "sitemapUrls": 14,
       "sourceReviewSha256": "622f9884bc092b2703aedcf552e3256323fd36c1a1b6d23fb666dacfb1d80255",
       "sourceBuildWithFinalSha": "PASS",
-      "hostedQa": "not_yet_run"
+      "hostedQa": "PASS"
     },
     "actualWorkflow": {
       "runId": 37952223139,
