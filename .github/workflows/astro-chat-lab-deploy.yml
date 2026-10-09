@@ -40,10 +40,13 @@ jobs:
           before=os.environ.get('PUSH_BEFORE','')
           after=os.environ['GITHUB_SHA']
           assert re.fullmatch('[0-9a-f]{40}', after), 'Invalid checkout SHA'
+          # -z returns raw UTF-8 paths: Git's default core.quotePath quotes Korean
+          # filenames with octal escape sequences, causing false cross-site errors.
           if re.fullmatch('[0-9a-f]{40}', before) and before!='0'*40:
-              changed=subprocess.check_output(['git','diff','--name-only',before,after],text=True).splitlines()
+              args=['git','-c','core.quotePath=false','diff','--name-only','-z',before,after]
           else:
-              changed=subprocess.check_output(['git','diff-tree','--no-commit-id','--name-only','-r',after],text=True).splitlines()
+              args=['git','-c','core.quotePath=false','diff-tree','--no-commit-id','--name-only','-z','-r',after]
+          changed=[p for p in subprocess.check_output(args).decode('utf-8').split('\0') if p]
           assert changed, 'No files changed in event'
           allowed=lambda path: path.startswith('site-factory/astro-chat-lab/') or path=='.github/workflows/astro-chat-lab-deploy.yml'
           assert all(allowed(path) for path in changed), 'Cross-site change detected in push: '+repr([x for x in changed if not allowed(x)])
