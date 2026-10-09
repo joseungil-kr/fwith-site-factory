@@ -19,7 +19,7 @@ def get(path):
         req=urllib.request.Request(base+path,method="GET",headers=headers)
         with urllib.request.urlopen(req,timeout=25) as response:
             data=response.read()
-            return response.status,json.loads(data) if data else None
+            return response.status, json.loads(data) if data and path=="/workers/subdomain" else None
     except urllib.error.HTTPError as exc:
         return exc.code,None
     except (urllib.error.URLError,TimeoutError) as exc:
