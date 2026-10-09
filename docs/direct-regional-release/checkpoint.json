@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T15:00:35Z",
+  "updatedAt": "2026-10-09T15:04:43Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -42,9 +42,11 @@
       "externalCreationVerified": false
     },
     "plan": {
-      "state": "official_membership_under_verification",
-      "membershipSha256": null,
-      "plannedArticleCount": null,
+      "state": "membership_fixed_queries_preparing",
+      "membershipPath": "docs/direct-regional-release/uijeongbu/membership.json",
+      "membershipSha256": "6e4e060d2725cda0f11ff3f8c75921ec6754177815800766e600388cea2822e1",
+      "plannedArticleCount": 13,
+      "minimumPassedArticles": 12,
       "passedArticleCount": 0,
       "deferred": []
     },
@@ -52,13 +54,19 @@
       "controlRevision": "9af603856e27cdf6d8979a345b781ca4123626c7",
       "runtimeSourceRevision": "f2f29584f1832b6f040fc2901a6e60c5899be23a"
     },
-    "lastSuccessfulStage": "selection_and_read_only_trigger_audit",
-    "nextIntent": "freeze official membership and prepare original articles plus bounded direct runtime",
+    "lastSuccessfulStage": "official_membership_independently_checked",
+    "nextIntent": "create one ordinary IndexNow receipt journal issue; write and review 13 regional articles",
     "sourceRevision": null,
     "runUrl": null,
     "publicQa": null,
     "indexNowReceipt": null,
-    "gsc": null
+    "gsc": null,
+    "pendingExternalAction": {
+      "action": "create_issue",
+      "title": "Uijeongbu direct release receipts",
+      "idempotencyKey": "uijeongbu-direct-initial-20261010-indexnow-journal",
+      "searchVerifiedNoMatchesAt": "2026-10-09T15:04:29Z"
+    }
   },
   "history": []
 }
