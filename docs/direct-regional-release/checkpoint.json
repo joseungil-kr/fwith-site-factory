@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T22:20:20.847Z",
+  "updatedAt": "2026-10-09T22:21:29.518Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -75,19 +75,9 @@
       "membershipPath": "docs/direct-regional-release/siheung/membership.json",
       "membershipSha256": "8f9f9d4f6b960744542ab52b9b379427ff7a08009d653ce13cd4a7ded3756691"
     },
-    "lastSuccessfulStage": "exact_remote_source_independent_final_sha_build",
-    "nextIntent": "Invoke existing fixed direct workflow once for the independently reviewed exact source",
-    "pendingExternalAction": {
-      "action": "workflow_dispatch",
-      "workflow": "siheung-direct-publish.yml",
-      "expectedRevision": "25608a70c4abfe992a7a0eb4fd8fc1365402a683",
-      "indexnowOnly": false,
-      "hostname": "siheung.fwith.kr",
-      "worker": "siheung-flower-guide",
-      "existingAccountOnly": true,
-      "noOverrides": true,
-      "idempotencyKey": "siheung-direct-release-25608a70c4abfe992a7a0eb4fd8fc1365402a683"
-    },
+    "lastSuccessfulStage": "official_workflow_dispatched_once",
+    "nextIntent": "Verify actual CI terminal artifact, public HTTP/screens, receipt and GSC",
+    "pendingExternalAction": null,
     "controlRevision": "9b944f87570c9c603b1bba96f10b08119c8f2367",
     "review": {
       "membership": "PASS",
@@ -107,7 +97,17 @@
       "sourceInventorySha256": "027f2c408df810c38ce45f01e9529288229abea5381c85b337f56aaa8c01c6cb",
       "remoteReadback": "PASS_69_FULL_BYTES_AND_CONTROLS"
     },
-    "sourceRevision": "25608a70c4abfe992a7a0eb4fd8fc1365402a683"
+    "sourceRevision": "25608a70c4abfe992a7a0eb4fd8fc1365402a683",
+    "actualWorkflow": {
+      "runId": 37998733433,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/37998733433",
+      "sourceRevision": "25608a70c4abfe992a7a0eb4fd8fc1365402a683",
+      "controlRevision": "96252b7efd79b71ca3f8a0af689aefdfcfe70ac6",
+      "dispatchObservedAt": "2026-10-09T22:21:09.604Z",
+      "createdAt": "2026-10-09T22:21:08Z",
+      "dispatchCount": 1,
+      "result": "in_progress"
+    }
   },
   "history": [
     {
