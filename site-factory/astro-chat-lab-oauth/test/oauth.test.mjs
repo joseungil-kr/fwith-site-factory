@@ -178,29 +178,53 @@ test("non-secret stage identifiers classify provider transport and parse failure
   }finally{globalThis.fetch=original;}
 });
 
-test("One-time noncredential transport probe does not disclose OAuth secrets",async()=>{
-  const e=env();
+test("GitHub token exchange uses manual redirects and blocks cross-origin secret forwarding",async()=>{
   const original=globalThis.fetch;
-  let calls=0;
+  const e=env(),login=await start(e);
+  let requests=0;
+  globalThis.fetch=async(url,options)=>{
+    requests++;
+    assert.equal(url,"https://github.com/login/oauth/access_token");
+    assert.equal(options.method,"POST");
+    assert.equal(options.redirect,"manual");
+    return new Response(null,{status:302,headers:{Location:"https://evil.example/collect"}});
+  };
   try {
-    globalThis.fetch=async(url,options)=>{
-      calls++;
-      assert.equal(String(url),"https://github.com/login/oauth/access_token");
-      assert.equal(options.method,"POST");
-      assert.equal(options.body.includes(e.GITHUB_OAUTH_CLIENT_SECRET),false);
-      assert.equal(options.body.includes(e.GITHUB_OAUTH_CLIENT_ID),false);
-      return new Response("bad-verification-code",{status:401});
-    };
-    const first=await oauth.fetch(get("/__diagnostics__/token-transport-20261009"),e);
-    assert.equal(first.status,200);
-    const json=await first.json();
-    assert.equal(json.diagnostic,"noncredential-token-transport");
-    assert.equal(json.results.manual.status,401);
-    assert.equal(json.results.error.status,401);
-    assert.equal(calls,2);
-    const repeat=await oauth.fetch(get("/__diagnostics__/token-transport-20261009"),e);
-    assert.equal(repeat.status,410);
-    assert.equal(calls,2);
-    assert.equal(repeat.headers.get("Cache-Control").startsWith("no-store"),true);
+    const out=await oauth.fetch(get("/callback?state="+login.state+"&code=sample-code",
+      {"Cookie":login.cookie}),e);
+    assert.equal(out.status,502);
+    assert.equal(await out.text(),"GitHub authentication service unavailable [TOKEN_REDIRECT]");
+    assert.equal(requests,1);
+    assert.equal((await oauth.fetch(get("/callback?state="+login.state+"&code=sample-code",
+      {"Cookie":login.cookie}),e)).status,400);
+  }finally{globalThis.fetch=original;}
+});
+test("non-2xx GitHub token endpoint response is classified without exposing body",async()=>{
+  const original=globalThis.fetch;
+  const e=env(),login=await start(e);
+  globalThis.fetch=async(url,options)=>{
+    assert.equal(options.redirect,"manual");
+    return new Response('contains-token-or-secret-but-must-never-be-read',{status:404});
+  };
+  try {
+    const out=await oauth.fetch(get("/callback?state="+login.state+"&code=sample-code",
+      {"Cookie":login.cookie}),e);
+    assert.equal(out.status,502);
+    assert.equal(await out.text(),"GitHub authentication service unavailable [TOKEN_HTTP_404]");
+  }finally{globalThis.fetch=original;}
+});
+test("GitHub 200 OAuth credential errors are safely classified without raw details",async()=>{
+  const original=globalThis.fetch;
+  const e=env(),login=await start(e);
+  globalThis.fetch=async()=>new Response(JSON.stringify({
+    error:"incorrect_client_credentials",
+    error_description:"DO-NOT-LEAK-SECRET"
+  }),{status:200});
+  try {
+    const out=await oauth.fetch(get("/callback?state="+login.state+"&code=sample-code",
+      {"Cookie":login.cookie}),e);
+    assert.equal(out.status,502);
+    assert.equal(await out.text(),
+      "GitHub authentication service unavailable [TOKEN_INCORRECT_CLIENT_CREDENTIALS]");
   }finally{globalThis.fetch=original;}
 });

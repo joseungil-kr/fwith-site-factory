@@ -61,13 +61,6 @@ export class OAuthStateVault {
     if(request.method!=="POST")return fail("Method not allowed",405);
     let input;
     try{input=await request.json();}catch{return fail("Invalid input",400);}
-    if(action==="/network-probe-once") {
-      return this.ctx.storage.transaction(async tx=>{
-        if(await tx.get("transportProbeConsumed"))return fail("Probe already consumed",409);
-        await tx.put("transportProbeConsumed",true);
-        return fail("Probe authorized",201);
-      });
-    }
     if(!verifierFormat(input.verifier))return fail("Invalid verifier",400);
     if(action==="/create"){
       if(typeof input.expires!=="number"||input.expires<=Date.now()||
@@ -170,8 +163,11 @@ async function github(url,token,stage){
 async function exchange(env,code){
   let r;
   try {
+    // Prevent Cloudflare's redirect:error mode from rejecting this endpoint
+    // before the HTTP status can be examined. Manual mode NEVER auto-follows:
+    // GitHub redirects are explicitly rejected rather than forwarding secrets.
     r=await fetch("https://github.com/login/oauth/access_token",{
-      method:"POST",redirect:"error",
+      method:"POST",redirect:"manual",
       headers:{"Accept":"application/json","Content-Type":"application/json",
         "User-Agent":"astro-chat-lab-oauth/1"},
       body:JSON.stringify({client_id:env.GITHUB_OAUTH_CLIENT_ID,
@@ -180,13 +176,30 @@ async function exchange(env,code){
   } catch {
     throw new OAuthStageFailure("TOKEN_FETCH");
   }
-  if(!r.ok)return null;
+  if(r.status>=300 && r.status<400)
+    throw new OAuthStageFailure("TOKEN_REDIRECT");
+  if(!r.ok) {
+    const allowed=[400,401,403,404,429,500,502,503];
+    throw new OAuthStageFailure(allowed.includes(r.status)
+      ? "TOKEN_HTTP_"+r.status : "TOKEN_HTTP_OTHER");
+  }
   let info;
   try {
     info=await r.json();
   } catch {
     throw new OAuthStageFailure("TOKEN_FORMAT");
   }
+  // GitHub also returns HTTP 200 with an OAuth error payload for invalid
+  // credentials/codes. Only fixed error categories may be shown publicly.
+  const errors={
+    bad_verification_code:"TOKEN_BAD_VERIFICATION_CODE",
+    incorrect_client_credentials:"TOKEN_INCORRECT_CLIENT_CREDENTIALS",
+    redirect_uri_mismatch:"TOKEN_REDIRECT_URI_MISMATCH",
+    expired_token:"TOKEN_EXPIRED",
+    application_suspended:"TOKEN_APP_SUSPENDED",
+  };
+  if(typeof info.error==="string")
+    throw new OAuthStageFailure(errors[info.error]||"TOKEN_PROVIDER_REJECTED");
   const scope=typeof info.scope==="string"?info.scope.split(",").map(x=>x.trim()):[];
   if(typeof info.access_token!=="string"||!scope.includes("public_repo")||
     scope.includes("repo")||scope.includes("delete_repo"))return null;
@@ -256,64 +269,11 @@ async function callback(request,url,env){
     return fail("GitHub authentication service unavailable ["+stage+"]",502,clear);
   }
 }
-
-/**
- * One-time, self-expiring transport diagnosis. No real OAuth credentials or
- * authorization codes are used. Called once by the deployment runner, then
- * removed from the source immediately after the diagnostic completes.
- */
-async function tokenTransportProbe(env) {
-  if(Date.now()>Date.parse("2026-10-09T08:00:00Z"))return fail("Not found",404);
-  const once=await env.OAUTH_STATE.get(
-    env.OAUTH_STATE.idFromName("token-transport-diagnostic-v1")
-  ).fetch("https://internal.invalid/network-probe-once",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:"{}",
-  });
-  if(once.status!==201)return fail("Already tested",410);
-  const results={};
-  for(const mode of ["manual","error"]) {
-    try {
-      const result=await fetch("https://github.com/login/oauth/access_token",{
-        method:"POST",
-        redirect:mode,
-        headers:{
-          Accept:"application/json",
-          "Content-Type":"application/json",
-          "User-Agent":"astro-chat-lab-transport-check/1",
-        },
-        body:JSON.stringify({
-          client_id:"invalid-diagnostic-client",
-          client_secret:"not-a-secret",
-          code:"not-an-oauth-code",
-          redirect_uri:CALLBACK,
-        })
-      });
-      results[mode]={status:result.status,redirected:result.status>=300&&result.status<400};
-    }catch(err) {
-      const name=err instanceof TypeError ? "TypeError" : err instanceof Error ? "Error" : "Unknown";
-      const safe=typeof err?.message==="string"?err.message:"";
-      const className=/redirect/i.test(safe)?"redirect":
-        /network|fetch failed|connection|socket/i.test(safe)?"network":
-        /invalid|unsupported/i.test(safe)?"request":
-        /policy|disallow|forbid|security/i.test(safe)?"policy":"unknown";
-      results[mode]={errorName:name,errorKind:className};
-    }
-  }
-  return new Response(JSON.stringify({diagnostic:"noncredential-token-transport",results}),{
-    status:200,
-    headers:headers({"Content-Type":"application/json; charset=utf-8"}),
-  });
-}
-
 export default {
   async fetch(request,env){
     const url=new URL(request.url);
     if(url.origin!==AUTH_ORIGIN)return fail("Unrecognized OAuth hostname",403);
     if(request.method!=="GET")return fail("Method not allowed",405);
-    if(url.pathname==="/__diagnostics__/token-transport-20261009")
-      return tokenTransportProbe(env);
     if(url.pathname==="/health"){
       const configured=ready(env);
       return new Response(JSON.stringify({
