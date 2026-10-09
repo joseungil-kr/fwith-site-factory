@@ -1,0 +1,86 @@
+name: Astro Chat Lab OAuth - Isolated Secure Worker
+
+on:
+  push:
+    branches:
+      - astro-chat-lab
+    paths:
+      - 'site-factory/astro-chat-lab-oauth/**'
+      - '.github/workflows/astro-chat-lab-oauth-deploy.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: astro-chat-lab-oauth-qa
+  cancel-in-progress: false
+
+jobs:
+  oauth-worker:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/astro-chat-lab'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact isolated source commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Guard against cross-project mutations and validate JS syntax
+        run: |
+          set -euo pipefail
+          git diff-tree --no-commit-id --name-only -r HEAD | while read -r name; do
+            case "$name" in
+              site-factory/astro-chat-lab-oauth/*|.github/workflows/astro-chat-lab-oauth-deploy.yml) ;;
+              *) echo "Outside the auth worker boundary"; exit 1 ;;
+            esac
+          done
+          node --check site-factory/astro-chat-lab-oauth/src/index.mjs
+
+      - name: Node 24 for OAuth security unit tests
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Run OAuth replay, origin, scope, permission and expiry tests
+        working-directory: site-factory/astro-chat-lab-oauth
+        run: |
+          set -euo pipefail
+          node --test test/oauth.test.mjs
+
+      - name: Cloudflare GET-only target and account preflight
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          python3 site-factory/astro-chat-lab-oauth/cloudflare_preflight.py
+
+      - name: Deploy ONLY dedicated OAuth Worker and its short-lived session state
+        working-directory: site-factory/astro-chat-lab-oauth
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_SEND_METRICS: 'false'
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4.148.0 deploy --config wrangler.jsonc
+
+      - name: HTTP verify OAuth Worker without external credentials
+        run: |
+          set -euo pipefail
+          python3 site-factory/astro-chat-lab-oauth/verify_live.py
+
+      - name: Deployment and next secure credential step
+        run: |
+          {
+            echo '## Secure OAuth Worker deployed'
+            echo "- Source commit: ${{ github.sha }}"
+            echo '- Worker: astro-chat-lab-oauth-qa'
+            echo '- GitHub callback: https://astro-chat-lab-oauth-qa.joseungil.workers.dev/callback'
+            echo '- Health: https://astro-chat-lab-oauth-qa.joseungil.workers.dev/health'
+            echo '- OAuth App and Client Secret must be configured in official GitHub/Cloudflare UI before CMS login.'
+            echo '- Blog Worker and operating sites were not modified.'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,22 @@
+{
+  "name": "astro-chat-lab-oauth-qa",
+  "main": "./src/index.mjs",
+  "compatibility_date": "2026-10-09",
+  "workers_dev": true,
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "OAUTH_STATE",
+        "class_name": "OAuthStateVault"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "oauth-state-v1",
+      "new_sqlite_classes": [
+        "OAuthStateVault"
+      ]
+    }
+  ]
+}
