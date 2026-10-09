@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T21:08:47.675Z",
+  "updatedAt": "2026-10-09T21:12:07.810Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -29,7 +29,7 @@
   "current": {
     "scopeKey": "osan-direct-initial-20261010",
     "city": "오산시",
-    "status": "researching",
+    "status": "writing_original_articles",
     "owner": {
       "scheduledRunAt": "2026-10-09T21:00:00Z",
       "observedExecutionAt": "2026-10-09T21:05:25Z",
@@ -62,9 +62,14 @@
       "mainMatchingPaths": false,
       "providerOwnershipCollisionCheck": "pending_required_before_mutation"
     },
-    "lastSuccessfulStage": "official_membership_24_fixed",
+    "lastSuccessfulStage": "official_membership_frozen_catalog_and_controls_independently_reviewed",
     "nextIntent": "Freeze official membership then independently write and review original local purchase content",
-    "pendingExternalAction": null,
+    "pendingExternalAction": {
+      "action": "prepare_new_region_source_branch",
+      "target": "site-factory-osan-direct",
+      "idempotencyKey": "osan-source-initial-20261010",
+      "dispatchAuthorizedOnlyAfterIndependentReview": true
+    },
     "plan": {
       "state": "fixed_original_membership_before_writing",
       "plannedArticleCount": 24,
@@ -75,7 +80,8 @@
       "crosswalkRelationships": 39,
       "passedArticleCount": 0,
       "deferred": []
-    }
+    },
+    "controlRevision": "01c5601f20b72fb39337be092a814d93e05f13d5"
   },
   "history": [
     {
