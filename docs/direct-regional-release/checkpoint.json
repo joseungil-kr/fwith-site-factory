@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T17:26:35Z",
+  "updatedAt": "2026-10-09T17:28:45Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -27,15 +27,16 @@
   "current": {
     "scopeKey": "dongducheon-direct-initial-20261010",
     "city": "동두천시",
-    "status": "blocked_domain_attachment_confirmation",
+    "status": "approved_exact_domain_attachment_ready_for_dispatch",
     "owner": {
       "scheduledRunAt": "2026-10-09T17:00:00Z",
       "observedMessageAt": "2026-10-09T17:03:56Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-dongducheon-20261009T170000Z",
-      "active": false,
-      "executionState": "paused_for_required_confirmation",
-      "pausedAt": "2026-10-09T17:24:24Z"
+      "active": true,
+      "executionState": "resumed_after_explicit_target_approval",
+      "pausedAt": "2026-10-09T17:24:24Z",
+      "resumedAt": "2026-10-09T17:27:12Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -90,13 +91,13 @@
       "expectedRevision": "f13a51b75707e5b2e4cfb499da48372faa314858",
       "indexnowOnly": false,
       "idempotencyKey": "dongducheon-direct-publish-f13a51b75707e5b2e4cfb499da48372faa314858",
-      "status": "not_executed_action_review_denied",
+      "status": "approved_not_executed",
       "targetHostname": "dongducheon.fwith.kr",
       "targetWorker": "dongducheon-flower-guide",
       "overridesEnabled": false,
       "providerBinding": "not_yet_observed",
       "dispatchCount": 0,
-      "requiredAction": "Explicit approval for bounded custom-hostname attachment within existing account"
+      "requiredAction": "Fresh ref/source/active release readback then exact one workflow dispatch"
     },
     "review": {
       "independentContent": "PASS",
@@ -129,7 +130,15 @@
       "indexNow": "not_submitted",
       "gsc": "not_submitted"
     },
-    "evidencePath": "docs/direct-regional-release/dongducheon/independent-predeploy-evidence.json"
+    "evidencePath": "docs/direct-regional-release/dongducheon/independent-predeploy-evidence.json",
+    "domainAttachmentApproval": {
+      "authorizedAt": "2026-10-09T17:27:12Z",
+      "hostname": "dongducheon.fwith.kr",
+      "worker": "dongducheon-flower-guide",
+      "existingAccountOnly": true,
+      "noOverrides": true,
+      "scope": "Exact custom-hostname connection and reviewed direct deployment; no DNS ownership, credential, permission, security or other-site changes"
+    }
   },
   "history": [
     {
@@ -389,5 +398,16 @@
       ]
     }
   ],
-  "nextAction": "resume_current_region"
+  "nextAction": "resume_current_region",
+  "executionPolicy": {
+    "version": "approval-wait-does-not-block-preparation-v1",
+    "effectiveAt": "2026-10-09T17:27:12Z",
+    "approvalWaitingAction": "Preserve exact region/source/evidence in waitingApproval; continue next eligible unbuilt region preparation on subsequent hourly invocations",
+    "maximumNewRegionsPerInvocation": 1,
+    "approvedPendingReleasePriority": true,
+    "releaseConcurrency": 1,
+    "unapprovedActions": "Do not dispatch, attach hostname, override security or fabricate completion; approvals may be supplied later as an explicit bounded list",
+    "scheduleChanged": false
+  },
+  "waitingApproval": []
 }
