@@ -121,8 +121,8 @@ def check_post(html,meta):
     for line in meta["body"].splitlines():
         if not line.strip() or line.startswith(("#","- ","* ",">","![","|")):
             continue
-        cleaned=re.sub(r"\\[([^\\]]+)\\]\\([^)]+\\)",r"\\1",line)
-        cleaned=re.sub(r"[\\*_\\\\]","",cleaned).replace(chr(96),"")
+        cleaned=re.sub(r"\[([^\]]+)\]\([^)]+\)",r"\1",line)
+        cleaned=re.sub(r"[\*_\\]","",cleaned).replace(chr(96),"")
         text=compact(cleaned)
         if len(text)>35:
             candidates+=1
