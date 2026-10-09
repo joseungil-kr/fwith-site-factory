@@ -338,13 +338,48 @@ def public_http():
     raise last
 
 
+def indexnow_site():
+    c = json.loads(Path('http-contract.json').read_text())
+    key = (Path('release/dist') / c['ownershipFile']).read_text().strip()
+    return dict(siteKey='uijeongbu-flower-direct', siteUrl=ORIGIN, productionEnabled=True, launchMode='live', indexnowKey=key)
+
+
+def observed_indexnow_request(method, url, payload=None):
+    from indexnow_finalize import request, ENDPOINT
+    require((method == 'GET' and url.startswith(ORIGIN + '/') and payload is None)
+            or (method == 'POST' and url == ENDPOINT), 'indexnow_observation_scope_mismatch')
+    path = Path('indexnow-http-observations.json')
+    previous = json.loads(path.read_text()) if path.exists() else []
+    redacted_url = ORIGIN + '/[ownership-proof]' if re.fullmatch(r'/[A-Za-z0-9-]{8,128}[.]txt', urlsplit(url).path) else url
+    record = dict(method=method, url=redacted_url, userAgent='SiteFactory-IndexNow/2.0', observedAt=int(time.time()))
+    try:
+        status, body, headers = request(method, url, payload)
+        record.update(httpStatus=status, contentType=headers.get('content-type', ''),
+                      xRobotsTag=headers.get('x-robots-tag', ''),
+                      cfMitigated=headers.get('cf-mitigated', ''),
+                      bodySha256=sha(body.encode('utf-8')))
+        save(path, previous + [record])
+        return status, body, headers
+    except Exception as error:
+        record.update(httpStatus=None, errorType=type(error).__name__)
+        save(path, previous + [record])
+        raise
+
+
+def indexnow_probe():
+    helpers()
+    from indexnow_finalize import verify_public
+    urls = verify_public(indexnow_site(), revision(), Path('release'),
+                         lambda url: observed_indexnow_request('GET', url))
+    return dict(state='indexnow_get_preflight_verified', revision=revision(),
+                sitemapUrls=len(urls), mutationsPerformed=False, submissionAttempted=False)
+
+
 def indexnow():
     helpers()
     from indexnow_finalize import finalize, Journal
-    c = json.loads(Path('http-contract.json').read_text())
-    key = (Path('release/dist') / c['ownershipFile']).read_text().strip()
-    site = dict(siteKey='uijeongbu-flower-direct', siteUrl=ORIGIN, productionEnabled=True, launchMode='live', indexnowKey=key)
-    result = finalize(site, revision(), Path('release'), Journal(REPOSITORY, RECEIPT_ISSUE),
+    result = finalize(indexnow_site(), revision(), Path('release'), Journal(REPOSITORY, RECEIPT_ISSUE),
+                      transport=observed_indexnow_request,
                       run_url='https://github.com/' + REPOSITORY + '/actions/runs/' + os.environ['GITHUB_RUN_ID'])
     result['searchIndexing'] = 'not_verified'
     return result
@@ -352,7 +387,7 @@ def indexnow():
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('mode', choices=['package', 'artifact', 'preflight', 'attach', 'readback', 'http', 'indexnow'])
+    p.add_argument('mode', choices=['package', 'artifact', 'preflight', 'attach', 'readback', 'http', 'indexnow-probe', 'indexnow'])
     p.add_argument('--source', type=Path)
     p.add_argument('--report', type=Path, required=True)
     args = p.parse_args()
@@ -361,6 +396,7 @@ def main():
         elif args.mode == 'artifact': result = artifact()
         elif args.mode in ('preflight', 'attach', 'readback'): result = provider(args.mode)
         elif args.mode == 'http': result = public_http()
+        elif args.mode == 'indexnow-probe': result = indexnow_probe()
         else: result = indexnow()
         save(args.report, result)
         print(json.dumps({k: v for k, v in result.items() if k not in ('urls', 'files')}, sort_keys=True))

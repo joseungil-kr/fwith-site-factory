@@ -64,6 +64,50 @@ class PublishTests(unittest.TestCase):
         self.assertNotIn('airtable', workflow.lower())
         self.assertNotIn('controller', workflow.lower())
 
+    def test_finalization_job_has_no_provider_credentials_or_mutation(self):
+        workflow = (ROOT / '.github/workflows/uijeongbu-direct-publish.yml').read_text()
+        self.assertIn('  publish:\n    if: inputs.indexnow_only != true', workflow)
+        finalization = workflow.split('  finalize_indexnow:\n', 1)[1]
+        self.assertIn('if: inputs.indexnow_only == true', finalization)
+        for forbidden in ['CLOUDFLARE', 'secrets.', 'wrangler@', 'publish.py preflight', 'publish.py attach', 'publish.py readback']:
+            self.assertNotIn(forbidden, finalization)
+        for required in ['publish.py artifact', 'publish.py http', 'publish.py indexnow-probe', 'publish.py indexnow', 'indexnow-http-observations.json']:
+            self.assertIn(required, finalization)
+        self.assertLess(finalization.index('publish.py indexnow-probe'), finalization.index('publish.py indexnow --report'))
+
+    def test_observer_preserves_status_headers_body_and_records_exact_sitemap(self):
+        import indexnow_finalize as engine
+        old = Path.cwd()
+        with tempfile.TemporaryDirectory() as temp:
+            try:
+                os.chdir(temp)
+                response = (503, 'Temporary response', {'x-robots-tag': 'noindex', 'content-type': 'text/plain'})
+                with patch.object(engine, 'request', return_value=response) as request:
+                    result = pub.observed_indexnow_request('GET', pub.ORIGIN + '/sitemap-index.xml')
+                self.assertEqual(result, response)
+                request.assert_called_once_with('GET', pub.ORIGIN + '/sitemap-index.xml', None)
+                row = json.loads(Path('indexnow-http-observations.json').read_text())[0]
+                self.assertEqual(row['url'], pub.ORIGIN + '/sitemap-index.xml')
+                self.assertEqual(row['httpStatus'], 503); self.assertEqual(row['xRobotsTag'], 'noindex')
+                self.assertEqual(row['userAgent'], 'SiteFactory-IndexNow/2.0')
+            finally: os.chdir(old)
+
+    def test_observer_redacts_ownership_proof_and_rejects_foreign_calls(self):
+        import indexnow_finalize as engine
+        old = Path.cwd()
+        with tempfile.TemporaryDirectory() as temp:
+            try:
+                os.chdir(temp)
+                with patch.object(engine, 'request', return_value=(200, 'proofvalue123', {})):
+                    pub.observed_indexnow_request('GET', pub.ORIGIN + '/proofvalue123.txt')
+                text = Path('indexnow-http-observations.json').read_text()
+                self.assertNotIn('proofvalue123', text); self.assertIn('[ownership-proof]', text)
+                with patch.object(engine, 'request', side_effect=AssertionError('network must not run')):
+                    for method, url in [('GET', 'https://other.example/sitemap-index.xml'), ('POST', pub.ORIGIN + '/')]:
+                        with self.assertRaisesRegex(ValueError, 'indexnow_observation_scope_mismatch'):
+                            pub.observed_indexnow_request(method, url)
+            finally: os.chdir(old)
+
     def test_fixed_route_set(self):
         self.assertEqual(len(pub.SLUGS), 13)
         self.assertEqual(pub.DEFERRED_SLUGS, {'jail-dong'})
@@ -225,6 +269,19 @@ class ArtifactTests(unittest.TestCase):
         file = self.root / 'regions/uijeongbu-dong/index.html'
         file.write_text(file.read_text().replace('follow,index', 'follow,noindex')); self.seal()
         with self.assertRaisesRegex(ValueError, 'robots_meta_mismatch'): pub.artifact()
+
+    def test_indexnow_probe_is_get_only_and_does_not_touch_receipt_journal(self):
+        import indexnow_finalize as engine
+        pub.artifact(); calls = []
+        def transport(method, url, payload=None):
+            calls.append((method, url, payload))
+            path = pub.local_path(url)
+            file = self.root / (path.lstrip('/') + 'index.html' if path.endswith('/') else path.lstrip('/'))
+            return 200, file.read_text(), {}
+        with patch.object(engine, 'request', side_effect=transport), patch.object(engine, 'Journal', side_effect=AssertionError('probe must not journal')):
+            result = pub.indexnow_probe()
+        self.assertEqual(result['sitemapUrls'], 14); self.assertFalse(result['submissionAttempted'])
+        self.assertTrue(all(method == 'GET' and payload is None for method, url, payload in calls))
 
     def test_deferred_customer_link_is_blocked(self):
         file = self.root / 'index.html'
