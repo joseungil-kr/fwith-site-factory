@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T19:00:47.895Z",
+  "updatedAt": "2026-10-09T19:07:50.577Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -62,7 +62,7 @@
       "reason": "Next unbuilt Gyeonggi municipality in official code order; earlier Dongducheon,Ansan,Goyang already complete"
     },
     "lastSuccessfulStage": "fresh_remote_scope_and_conflict_readback",
-    "nextIntent": "Freeze official legal membership and customer purchase plan before writing",
+    "nextIntent": "Publish independently reviewed exact source and bounded direct controls after final source review",
     "pendingExternalAction": {
       "action": "prepare_and_review_region",
       "idempotencyKey": "gwacheon-direct-initial-20261010"
@@ -73,14 +73,22 @@
       "reuseExistingWithoutReopen": true
     },
     "plan": {
-      "state": "official_membership_frozen_query_research",
+      "state": "independent_content_pass_source_review_pending",
       "plannedArticleCount": 10,
       "minimumPassedArticles": 9,
       "membershipPath": "docs/direct-regional-release/gwacheon/membership.json",
-      "membershipSha256": "e0d9e93a740ce8c62b46c43aaafe4f346e00c4d533e77ad45e96d65856f8e442",
+      "membershipSha256": "7ca262a6ab65af337ba86aca3b3751b1f1fe85d25cd8f6c60cbd3afec8f58d8e",
       "administrativeUnits": 7,
-      "passedArticleCount": 0,
+      "passedArticleCount": 10,
       "deferred": []
+    },
+    "review": {
+      "independentContent": "PASS",
+      "writerADigest": "c142448200ddae54ceac5cf79d444a1b983be26590117d003b13a5b12e69bdb7",
+      "writerBDigest": "2ebea3edfee338a8d02f46a917418dc18313eb86c9d73432b5851ad27a0cb333",
+      "catalogPrices": "verified2026-10-09T18:59:50Z",
+      "sourceBuild": "pending_final_membership_pin",
+      "hostedQa": "pending"
     }
   },
   "history": [
@@ -480,10 +488,11 @@
         "accepted": true,
         "confirmed": true,
         "lastSubmitted": "2026-10-09T17:39:29.885Z",
-        "processing": "pending",
+        "processing": "downloaded",
         "errors": 0,
         "warnings": 0,
-        "lastObservedAt": "2026-10-09T17:39:33Z"
+        "lastObservedAt": "2026-10-09T19:02:45Z",
+        "lastDownloaded": "2026-10-09T17:39:31.029Z"
       },
       "elapsedSecondsFromObservedStart": 2220,
       "elapsedSecondsFromScheduledStart": 2456
