@@ -5,26 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
     <title>Decap CMS | 웹채팅 Astro 블로그 실험실</title>
-    <style>
-      body { margin: 0; padding: 48px 20px; background: #f8fafc; color: #1f2937;
-             font: 16px/1.8 "Noto Sans KR", "Malgun Gothic", sans-serif; }
-      main { max-width: 700px; margin: auto; border: 1px solid #e2e8f0;
-             border-radius: 14px; background: white; padding: 28px; }
-      h1 { margin: 0 0 16px; font-size: clamp(1.3rem, 3vw, 1.8rem); }
-      a { color: #155aa5; }
-    </style>
-    <!-- OAuth has not been approved. Prevent fallback login via the default Netlify endpoint. -->
-    <script>window.CMS_MANUAL_INIT = true;</script>
   </head>
   <body>
-    <main id="oauth-approval-pending">
-      <h1>Decap CMS 인증 연결 준비 중</h1>
-      <p>편집기 파일과 글·이미지 저장 경로가 준비되었습니다. GitHub OAuth 승인 및
-      별도 인증 서버 검증 전에는 보안을 위해 로그인을 시작하지 않습니다.</p>
-      <p>현재 게시물을 확인하려면 <a href="/">블로그 첫 화면</a>으로 이동하세요.</p>
-      <p><small>검색엔진 색인 제외 · 기존 고객 사이트와 분리된 시험 환경</small></p>
-    </main>
-    <!-- Pinned official Decap package. CMS remains deliberately uninitialized until OAuth approval. -->
+    <noscript>블로그 글을 관리하려면 JavaScript를 사용 설정해 주세요.</noscript>
+    <!-- Official Decap CMS 3.16.3; GitHub OAuth endpoint is fixed in config.yml. -->
     <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.16.3/dist/decap-cms.js"></script>
   </body>
 </html>

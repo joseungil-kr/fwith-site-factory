@@ -80,6 +80,11 @@ jobs:
           set -euo pipefail
           python3 site-factory/astro-chat-lab/cloudflare_preflight.py
 
+      - name: Fail closed unless dedicated OAuth Worker is configured and safe
+        run: |
+          set -euo pipefail
+          python3 site-factory/astro-chat-lab/scripts/check_oauth_readiness.py
+
       - name: Install pinned pnpm 11.3.0
         uses: pnpm/action-setup@v4
         with:

@@ -1,10 +1,12 @@
-# Decap CMS 3.16.3, OAuth intentionally gated pending explicit approval.
-# Never set base_url or auth_endpoint until a deployed auth worker is verified.
+# Decap CMS 3.16.3, GitHub OAuth on dedicated verified Cloudflare Worker.
+# The public_repo scope is NOT restricted to this branch or folder.
 backend:
   name: github
   repo: joseungil-kr/fwith-site-factory
   branch: astro-chat-lab
   auth_scope: public_repo
+  base_url: https://astro-chat-lab-oauth-qa.joseungil.workers.dev
+  auth_endpoint: auth
   site_domain: astro-chat-lab-qa.joseungil.workers.dev
 
 site_url: https://astro-chat-lab-qa.joseungil.workers.dev

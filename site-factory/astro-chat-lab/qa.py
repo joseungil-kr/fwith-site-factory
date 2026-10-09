@@ -195,11 +195,10 @@ def check_build(posts):
         'public_folder: "/uploads"']:
         assert marker in cfg, "CMS config missing: "+marker
     gated="CMS_MANUAL_INIT = true" in admin_html
-    if gated:
-        assert not re.search(r"^\s*base_url:",cfg,re.M), "OAuth incorrectly enabled while CMS gated"
-    else:
-        assert re.search(r"^\s*base_url: https://[a-z0-9.-]+\.workers\.dev\s*$",cfg,re.M)
-        assert re.search(r"^\s*auth_endpoint: auth\s*$",cfg,re.M)
+    assert not gated, "Decap CMS still gated after verified OAuth configuration"
+    assert "oauth-approval-pending" not in admin_html, "Old pre-auth placeholder still deployed"
+    assert re.search(r"^\s*base_url: https://astro-chat-lab-oauth-qa\.joseungil\.workers\.dev\s*$",cfg,re.M), "Incorrect auth Worker base_url"
+    assert re.search(r"^\s*auth_endpoint: auth\s*$",cfg,re.M), "Incorrect OAuth endpoint"
     return dict(published=sorted(expected),unpublished=sorted(p["path"] for p in posts if not p["published"]),
         assets=sorted(assets),images=sorted(images),adminGated=gated)
 
@@ -226,8 +225,15 @@ def check_live(posts,inventory):
         status,_=http(file,binary=True)
         assert status==200, "Public asset HTTP error "+file
     for file in ("/admin/","/admin/config.yml"):
-        status,_=http(file)
+        status,body=http(file)
         assert status==200, "Admin static asset HTTP error "+file
+        if file=="/admin/":
+            assert "decap-cms@3.16.3/dist/decap-cms.js" in body, "Pinned Decap script absent in live HTML"
+            assert "CMS_MANUAL_INIT" not in body, "CMS not active in live HTML"
+            assert 'name="robots" content="noindex, nofollow"' in body, "Admin noindex missing"
+        else:
+            assert "base_url: https://astro-chat-lab-oauth-qa.joseungil.workers.dev" in body, "Live config has wrong auth base_url"
+            assert "auth_endpoint: auth" in body and "auth_scope: public_repo" in body, "Live OAuth config incomplete"
     status,robots=http("/robots.txt")
     assert status==200 and "Disallow: /" in robots
     status,_=http("/missing-cms-test-20261009/")
