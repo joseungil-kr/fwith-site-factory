@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T16:15:08Z",
+  "updatedAt": "2026-10-09T16:16:35Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -26,7 +26,7 @@
   "current": {
     "scopeKey": "gwangmyeong-direct-initial-20261010",
     "city": "광명시",
-    "status": "deployment_running",
+    "status": "public_indexnow_received_ui_and_gsc_pending",
     "owner": {
       "scheduledRunAt": "2026-10-09T16:00:00Z",
       "observedMessageAt": "2026-10-09T15:57:01Z",
@@ -40,7 +40,7 @@
       "root": "site-factory/gwangmyeong-flower",
       "worker": "gwangmyeong-flower-guide",
       "hostname": "gwangmyeong.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true
     },
     "plan": {
@@ -55,7 +55,7 @@
       "controlRevision": "133c5ade96b9b6385e78f859209cb83c15215c47",
       "runtimeSourceRevision": "c047f1127f7908085fce55ab41504a23ff9b199c"
     },
-    "lastSuccessfulStage": "exact_source_published_and_build_verified",
+    "lastSuccessfulStage": "public_http_and_indexnow200",
     "nextIntent": "write_and_independently_review_eight_articles_then_direct_publish",
     "conflictChecks": {
       "branchesChecked": 104,
@@ -71,14 +71,11 @@
       "reuseExistingWithoutReopen": true
     },
     "pendingExternalAction": {
-      "action": "workflow_dispatch",
-      "workflow": ".github/workflows/gwangmyeong-direct-publish.yml",
-      "expected_revision": "9eea3825094c17689936987319e7b5e026f6b7bf",
-      "indexnow_only": false,
-      "dispatchCount": 1,
-      "idempotencyKey": "gwangmyeong-publish-9eea3825094c17689936987319e7b5e026f6b7bf",
-      "providerChecksRequired": true,
-      "requiredBeforeDispatch": "independent_final_remote_readback_PASS"
+      "action": "gsc_submit_sitemap_once_if_not_already_submitted",
+      "siteUrl": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://gwangmyeong.fwith.kr/sitemap-index.xml",
+      "idempotencyKey": "gwangmyeong-gsc-initial-9eea3825094c17689936987319e7b5e026f6b7bf",
+      "preconditions": "exact_public_sitemap_and_independent_public_readback"
     },
     "review": {
       "independentContent": "PASS",
@@ -105,6 +102,25 @@
       "dispatchClickedAt": "2026-10-09T16:14:31Z",
       "dispatchCount": 1,
       "result": "queued"
+    },
+    "publicQa": {
+      "http": "PASS",
+      "normalHtmlRoutes": 10,
+      "sitemapUrls": 10,
+      "desktop": "in_progress",
+      "narrow": "in_progress",
+      "sourceRevision": "9eea3825094c17689936987319e7b5e026f6b7bf"
+    },
+    "indexNowReceipt": {
+      "state": "received",
+      "httpStatus": 200,
+      "urlCount": 10,
+      "attempt": 1,
+      "recordedAt": "2026-10-09T16:16:15.353741+00:00",
+      "fingerprint": "f66b33ca39174288964038eab45c9f789fc0932afd7ca486891b7f172fe12c6b",
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6084774037",
+      "runId": 37957713415,
+      "sourceRevision": "9eea3825094c17689936987319e7b5e026f6b7bf"
     }
   },
   "history": [
