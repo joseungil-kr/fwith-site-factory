@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T15:28:10Z",
+  "updatedAt": "2026-10-09T15:30:27Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -25,7 +25,7 @@
   "current": {
     "scopeKey": "uijeongbu-direct-initial-20261010",
     "city": "의정부시",
-    "status": "ready_to_deploy",
+    "status": "deploy_running",
     "owner": {
       "scheduledRunAt": "2026-10-09T15:00:00Z",
       "observedMessageAt": "2026-10-09T14:58:09Z",
@@ -63,19 +63,14 @@
       "controlRevision": "bce007c3ac0c1d74eeaf1fd5878b862ad47e0986",
       "runtimeSourceRevision": "f2f29584f1832b6f040fc2901a6e60c5899be23a"
     },
-    "lastSuccessfulStage": "exact_source_remote_readback_and_independent_final_sha_build",
-    "nextIntent": "dispatch fixed Uijeongbu workflow once with exact reviewed source SHA",
+    "lastSuccessfulStage": "actual_workflow_dispatch_confirmed",
+    "nextIntent": "read actual CI deployment, independent public QA and IndexNow receipt, then submit GSC sitemap",
     "sourceRevision": "c047f1127f7908085fce55ab41504a23ff9b199c",
-    "runUrl": null,
+    "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/37952223139",
     "publicQa": null,
     "indexNowReceipt": null,
     "gsc": null,
-    "pendingExternalAction": {
-      "action": "workflow_dispatch",
-      "workflow": ".github/workflows/uijeongbu-direct-publish.yml",
-      "expectedRevision": "c047f1127f7908085fce55ab41504a23ff9b199c",
-      "idempotencyKey": "uijeongbu-direct-initial-20261010:c047f1127f7908085fce55ab41504a23ff9b199c"
-    },
+    "pendingExternalAction": null,
     "receiptJournal": {
       "number": 266,
       "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266",
@@ -92,6 +87,14 @@
       "sourceReviewSha256": "622f9884bc092b2703aedcf552e3256323fd36c1a1b6d23fb666dacfb1d80255",
       "sourceBuildWithFinalSha": "PASS",
       "hostedQa": "not_yet_run"
+    },
+    "actualWorkflow": {
+      "runId": 37952223139,
+      "sourceRevision": "c047f1127f7908085fce55ab41504a23ff9b199c",
+      "controlRevision": "e20bbf7d3224ab782fe990958d903c55bea82672",
+      "dispatchClickedAt": "2026-10-09T15:29:53Z",
+      "dispatchCount": 1,
+      "result": "pending"
     }
   },
   "history": []
