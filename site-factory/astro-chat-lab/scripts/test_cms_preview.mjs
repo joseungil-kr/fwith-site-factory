@@ -268,7 +268,7 @@ test("IMAGE input retries pending Decap asset without waiting for Publish",()=>{
   const timers=[];
   const {custom}=initializeImageThumbnail({setTimeout:fn=>{timers.push(fn);}});
   const filename="예시.jpg",path="/uploads/"+filename;
-  const url=siteOrigin+path;
+  const url=new URL(path,siteOrigin).href;
   const blob="blob:"+siteOrigin+"/cebc525f-3c69-40cd-8c6d-6632d361447f";
   let ready=false;
   const tree=custom.previewComponent({
