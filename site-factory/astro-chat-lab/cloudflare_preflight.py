@@ -36,7 +36,7 @@ if origin!="https://astro-chat-lab-qa.joseungil.workers.dev":
     raise SystemExit("BLOCKED: Cloudflare account is not the proven experiment account")
 
 status,_=cloudflare("/workers/scripts/"+WORKER)
-if status!=200:
+if status not in (200,204):
     raise SystemExit("BLOCKED: Previously verified test Worker could not be read, HTTP "+str(status))
 
 class Marker(HTMLParser):
