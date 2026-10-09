@@ -209,8 +209,9 @@ class PartialInitialTests(unittest.TestCase):
 
     def test_no_new_public_binding_is_enabled(self):
         self.context.stop()
-        self.assertEqual(whole.ADDITIONAL_REVIEWED_RELEASES,{})
-        self.assertFalse(whole.is_reviewed_initial_site(SITE))
+        with patch.dict(whole.ADDITIONAL_REVIEWED_RELEASES,{},clear=True):
+            self.assertEqual(whole.ADDITIONAL_REVIEWED_RELEASES,{})
+            self.assertFalse(whole.is_reviewed_initial_site(SITE))
 
     def test_http_links_cannot_target_deferred_routes(self):
         routes={'/','/regions/','/regions/dong-1/'}

@@ -77,8 +77,8 @@ changing old hashes/counts, or marking unfinished content PASS. Current
 Pyeongtaek scope is35 of original37; Chilwon/Wolgok remain deferred. Historical
 exact20/24/full releases keep their existing contracts.
 
-Only Pyeongtaek's inactive adapter currently supports this exception; no active
-binding is added by the code. Keep original membership/frozen lineage, source
+Pyeongtaek's exact35-of37 preparation binding is registered with an approved-empty
+baseline. Other regions remain unregistered; production approval is still closed. Keep original membership/frozen lineage, source
 and security boundaries. Finish the exact released set, build and inspect its
 isolated noindex preview, then run the existing batch/hosted/visual/public gates.
 Do not wait for deferred content after the authorized released set meets every

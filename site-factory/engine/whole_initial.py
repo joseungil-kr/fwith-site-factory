@@ -33,7 +33,74 @@ def require(condition, message):
 # Add an entry only after independent geography/bootstrap review, using the
 # exact initialLaunch fields, bootstrap commit and durable review evidence URL.
 # No request or registry value may populate this trusted mapping at runtime.
-ADDITIONAL_REVIEWED_RELEASES = {}
+ADDITIONAL_REVIEWED_RELEASES = {'pyeongtaek-flower-v2': {'bootstrapSourceSha': 'b5ddfad37e00216bc7eea5b200b2ed2725d971ed',
+                          'initialLaunch': {'coverageSha256': '5e9c4fcad6367219b6232f6b78c6d9b08df232af82cfe0ca549b5ed67cc5fa80',
+                                            'memberIdentitySha256': '28f06be4554a116aa64210d04009a04c1422f81cc66890191ddc0d6d1f850e09',
+                                            'membershipSourceSha256': '1d9880f65cdef4b07316e0d0e63dfc0daf64502d856a23a9681e87e1703f4ec7',
+                                            'mode': 'whole-dong-initial',
+                                            'officialUnitCount': 37,
+                                            'scopeKey': 'pyeongtaek-flower-v2-dong-coverage-20261009'},
+                          'releaseSubset': {'deferredPageKeys': ['pyeongtaek-flower-v2-region-chilwon-dong',
+                                                                 'pyeongtaek-flower-v2-region-wolgok-dong'],
+                                            'memberIdentitySha256': '28f06be4554a116aa64210d04009a04c1422f81cc66890191ddc0d6d1f850e09',
+                                            'membershipSourceSha256': '1d9880f65cdef4b07316e0d0e63dfc0daf64502d856a23a9681e87e1703f4ec7',
+                                            'minimumReleasePercent': 90,
+                                            'mode': 'reviewed-partial-initial',
+                                            'officialUnitCount': 37,
+                                            'releasedPageKeys': ['pyeongtaek-flower-v2-region-anjung-eup',
+                                                                 'pyeongtaek-flower-v2-region-bijeon-dong',
+                                                                 'pyeongtaek-flower-v2-region-cheongbuk-eup',
+                                                                 'pyeongtaek-flower-v2-region-cheongnyong-dong',
+                                                                 'pyeongtaek-flower-v2-region-chilgoe-dong',
+                                                                 'pyeongtaek-flower-v2-region-doil-dong',
+                                                                 'pyeongtaek-flower-v2-region-dokgok-dong',
+                                                                 'pyeongtaek-flower-v2-region-dongsak-dong',
+                                                                 'pyeongtaek-flower-v2-region-gajae-dong',
+                                                                 'pyeongtaek-flower-v2-region-godeok-dong',
+                                                                 'pyeongtaek-flower-v2-region-godeok-myeon',
+                                                                 'pyeongtaek-flower-v2-region-gunmun-dong',
+                                                                 'pyeongtaek-flower-v2-region-hapjeong-dong',
+                                                                 'pyeongtaek-flower-v2-region-hyeondeok-myeon',
+                                                                 'pyeongtaek-flower-v2-region-ichung-dong',
+                                                                 'pyeongtaek-flower-v2-region-jangan-dong',
+                                                                 'pyeongtaek-flower-v2-region-jangdang-dong',
+                                                                 'pyeongtaek-flower-v2-region-jije-dong',
+                                                                 'pyeongtaek-flower-v2-region-jinwi-myeon',
+                                                                 'pyeongtaek-flower-v2-region-jisan-dong',
+                                                                 'pyeongtaek-flower-v2-region-jukbaek-dong',
+                                                                 'pyeongtaek-flower-v2-region-mogok-dong',
+                                                                 'pyeongtaek-flower-v2-region-oseong-myeon',
+                                                                 'pyeongtaek-flower-v2-region-paengseong-eup',
+                                                                 'pyeongtaek-flower-v2-region-poseung-eup',
+                                                                 'pyeongtaek-flower-v2-region-pyeongtaek-dong',
+                                                                 'pyeongtaek-flower-v2-region-segyo-dong',
+                                                                 'pyeongtaek-flower-v2-region-seojeong-dong',
+                                                                 'pyeongtaek-flower-v2-region-seotan-myeon',
+                                                                 'pyeongtaek-flower-v2-region-sindae-dong',
+                                                                 'pyeongtaek-flower-v2-region-sinjang-dong',
+                                                                 'pyeongtaek-flower-v2-region-sosa-dong',
+                                                                 'pyeongtaek-flower-v2-region-tongbok-dong',
+                                                                 'pyeongtaek-flower-v2-region-yongi-dong',
+                                                                 'pyeongtaek-flower-v2-region-yucheon-dong'],
+                                            'reviewEvidenceUrl': 'https://github.com/joseungil-kr/fwith-site-factory/issues/259#issuecomment-6079831428',
+                                            'schemaVersion': 1,
+                                            'scopeKey': 'pyeongtaek-flower-v2-dong-coverage-20261009',
+                                            'siteKey': 'pyeongtaek-flower-v2'},
+                          'reviewEvidenceUrl': 'https://github.com/joseungil-kr/fwith-site-factory/issues/259',
+                          'runtimeAmendment': {'files': {'scripts/qa_graph.mjs': {'afterSha256': '8fa5d3fd40bb74bbcf1c23ed2dea9a9c49a04c889cdcab31f14637f5a67a3d83',
+                                                                                  'beforeSha256': '784ecc6607cb901013f7f20acd36f08e35d9cd398c1b24a72e4cb92e4459f6b0'},
+                                                         'scripts/qa_static.py': {'afterSha256': '3b98ba053e1780aefff95ab3abf74c831384ef7dd94765c7b0e7ce40689fe0b7',
+                                                                                  'beforeSha256': '7c090373913ecedb2cda57cdba9566d03a9204acee3e27751aa93f3e01a2f8cf'},
+                                                         'src/data/products.json': {'afterSha256': '43f41f12124c2b21a078fdb205ee34850bafedb8af91667e39a3947118d0fd54',
+                                                                                    'beforeSha256': 'fccdb179cd3a84b08d64118e28c21c3f98a2fb2f30dbcfd827a507a71accecba'},
+                                                         'src/data/social-image-provenance.json': {'afterSha256': '4b72317462084cb5540f1421be29e0359e8473fcd6eee9a035158547bf5d24de',
+                                                                                                   'beforeSha256': '5522143a4d11cbad31c1138bbfdc048fe5d8a201ac46049f68f61638ec3596e2'},
+                                                         'src/lib/catalog.mjs': {'afterSha256': '9718c58e66d3b62a792f018a7ac3ed51efb6cc40f0b1e44180d848df3c0cc91b',
+                                                                                 'beforeSha256': '5d2474bf6138ce5f65f52129e0f037c92b6a192b62f4f17b1705e87f41bfe5dc'},
+                                                         'src/pages/index.astro': {'afterSha256': '31637a18a2ed6f098aefb322c085520581da6d58841e9b4371c89c7189cd60e4',
+                                                                                   'beforeSha256': 'a4989becc961eb0bb579c5ab694b4caac24f80e260aec0dd278d6e454db8c169'}},
+                                               'reviewEvidenceUrl': 'https://github.com/joseungil-kr/fwith-site-factory/issues/259#issuecomment-6080035719'},
+                          'templateRevision': 'cbf988f15527d951f72fa68391f6a03f84e29476'}}
 
 # Only this independently reviewed site-only catalog reconciliation is modeled.
 # It never changes immutable bootstrap bytes or admits arbitrary code/assets.
@@ -41,6 +108,9 @@ RUNTIME_RECONCILIATION_PATHS = frozenset({
     'src/data/products.json', 'src/lib/catalog.mjs', 'src/pages/index.astro',
     'src/data/social-image-provenance.json', 'scripts/qa_static.py',
 })
+# The exact Pyeongtaek partial profile may additionally reconcile this QA-only
+# official bare-root URL check; all before/after bytes still require review.
+RUNTIME_PARTIAL_GRAPH_PATHS = RUNTIME_RECONCILIATION_PATHS | {'scripts/qa_graph.mjs'}
 
 
 def is_initial_candidate(site):
@@ -138,7 +208,11 @@ def reviewed_runtime_amendment(binding):
         return None
     require(type(amendment) is dict and set(amendment) == {'files', 'reviewEvidenceUrl'}
             and type(amendment.get('files')) is dict
-            and set(amendment['files']) == RUNTIME_RECONCILIATION_PATHS
+            and (set(amendment['files']) == RUNTIME_RECONCILIATION_PATHS
+                 or (set(amendment['files']) == RUNTIME_PARTIAL_GRAPH_PATHS
+                     and type(binding.get('releaseSubset')) is dict
+                     and binding['releaseSubset'].get('mode') == 'reviewed-partial-initial'
+                     and binding['releaseSubset'].get('siteKey') == 'pyeongtaek-flower-v2'))
             and re.fullmatch(r'https://github\.com/joseungil-kr/fwith-site-factory/issues/[1-9][0-9]*(?:#issuecomment-[0-9]+)?', amendment.get('reviewEvidenceUrl', '')),
             'Initial runtime amendment requires exact reviewed catalog paths and evidence')
     for hashes in amendment['files'].values():

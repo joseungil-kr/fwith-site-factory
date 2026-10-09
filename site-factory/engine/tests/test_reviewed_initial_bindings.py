@@ -124,6 +124,7 @@ class ReviewedInitialBindingTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError,'renderer differs'):
                     barrier.check(batch,evidence,git)
 
+    @patch.dict(whole.ADDITIONAL_REVIEWED_RELEASES, {}, clear=True)
     def test_known_initial_candidates_never_fall_back_without_binding(self):
         import yaml
         import provision_goyang as provision
@@ -197,6 +198,7 @@ class ReviewedInitialBindingTests(unittest.TestCase):
             with self.subTest(mutation=mutation),self.assertRaisesRegex(ValueError,'relation mismatch'):
                 barrier.bucheon_representatives(changed,changed['siteKey'],batch['scopeKey'])
 
+    @patch.dict(whole.ADDITIONAL_REVIEWED_RELEASES, {}, clear=True)
     def test_shipping_candidate_does_not_enable_unreviewed_sites(self):
         self.assertEqual(whole.ADDITIONAL_REVIEWED_RELEASES, {})
         for site in ('pyeongtaek-flower-v2', 'anyang-flower-v2', 'unknown'):

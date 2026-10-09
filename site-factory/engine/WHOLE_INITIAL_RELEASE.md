@@ -1,9 +1,9 @@
 # Reviewed initial release scope
 
-Namyangju remains the only active reviewed initial binding. The inactive R3
-adapter supports separately reviewed regional and exact catalog amendments;
-ADDITIONAL_REVIEWED_RELEASES remains empty. The partial-release extension below
-is implemented only for Pyeongtaek and does not activate it or any other region.
+Namyangju retains its historical initial binding. Pyeongtaek now has an explicit
+reviewed35-of37 source-preparation binding and reviewed empty baseline. This
+permits its frozen Publisher preparation, not production: public/revision gates
+remain closed. Other regions are not activated by this registration.
 
 ## Initial quantity acceptance, effective 2026-10-09
 
@@ -25,8 +25,10 @@ and deferred page-key partitions, threshold90, and durable independent review
 URL. Both lists must partition the original member set. The trusted code binding
 holds this object; the registry's initialReleaseSubsetSha256 and the batch's
 releaseSubsetSha256 must equal its canonical JSON SHA256. Do not derive trusted
-bindings from request/registry content at runtime. The proposed contract has no
-review URL and is deliberately not activatable until reviewed.
+bindings from request/registry content at runtime. The registered machine-readable contract is
+`../releases/pyeongtaek-flower-v2-initial-20261009/release-subset.json`; its
+canonical hash is mirrored in the registry. Its review URL covers preparation,
+not content snapshots or public deployment.
 
 The approved-empty baseline retains all37 units, aliases, ri, evidence, routes
 and queries. Only released35 representative statuses become approved; deferred2
@@ -45,6 +47,18 @@ released target. Bind alias QA to releaseSubsetSha256, keep the full geographic
 coverage digest, and check same-origin HTML anchors cannot point outside the
 rendered route set. Exact source/asset/robots/sitemap parity remains mandatory.
 Deferred pages are excluded from snapshots, links, sitemap and IndexNow URL sets.
+
+The reviewed Pyeongtaek runtime amendment includes the original five catalog/HOME
+paths plus the exact scripts/qa_graph.mjs correction accepting the existing
+verified official bare-root order URL. Only this reviewed partial profile admits
+that sixth path; every before/after hash and the immutable71-file inventory remain
+checked. Existing five-path contracts stay valid and no product/Truth URL changes.
+
+For this exact reviewed Pyeongtaek partial scope, preserve the existing renderer's
+identifier-valued STRUCTURE_TYPE and nonempty source-bound VISUAL_INTENT. Do not
+rewrite approved Writer metadata to historical constants. Frozen review/storage
+hashes and exact renderer replay continue to bind these values. Historical
+Namyangju and Bucheon metadata constraints remain unchanged.
 
 Later completion of deferred pages requires independently reviewed new snapshots
 and an explicitly revised release/growth contract with normal QA; never mutate

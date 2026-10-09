@@ -518,8 +518,16 @@ def check_goyang(batch, evidence, git):
                   'PARENT_HUB': '/regions/',
                   'LOCALIZATION_POLICY': 'local-required', 'QUERY_CLASS': 'local-commercial',
                   'VISUAL_INTENT': 'flower_delivery', 'ASSET_SLOT': 'REAL_PROOF'}
+        reviewed_partial = (initial and site == 'pyeongtaek-flower-v2'
+                            and reviewed_release_binding(site).get('releaseSubset') is not None)
+        if reviewed_partial:
+            # Preserve the official renderer's identifier/nonempty metadata
+            # contract. Exact values remain bound by frozen approval and replay.
+            wanted.pop('VISUAL_INTENT')
         structures = ({'address_specific_purchase_decision', 'REGION_SERVICE_LANDING'} if initial else {'REGION_SERVICE_LANDING'})
-        require(all(p.get(k) == v for k, v in wanted.items()) and p.get('STRUCTURE_TYPE') in structures
+        require(all(p.get(k) == v for k, v in wanted.items())
+                and (reviewed_partial or p.get('STRUCTURE_TYPE') in structures)
+                and (not reviewed_partial or bool(p.get('VISUAL_INTENT')))
                 and p['url'] == unit['url']
                 and all(p.get(k) for k in ('H1', 'FIRST-ANSWER', 'CARD-SUMMARY'))
                 and not p.get('SUPERSEDES_SNAPSHOT_ID'), key + ': regional frozen payload mismatch')
