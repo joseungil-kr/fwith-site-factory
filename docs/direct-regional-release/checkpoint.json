@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T22:16:00.277Z",
+  "updatedAt": "2026-10-09T22:20:20.847Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -46,7 +46,7 @@
       "worker": "siheung-flower-guide",
       "hostname": "siheung.fwith.kr",
       "externalCreationVerified": false,
-      "sourceBranchCreatedVerified": false
+      "sourceBranchCreatedVerified": true
     },
     "input": {
       "controlRevision": "88c5d5d07ec75732f5cd72a1a5a3ddc631e5ea3b",
@@ -75,15 +75,18 @@
       "membershipPath": "docs/direct-regional-release/siheung/membership.json",
       "membershipSha256": "8f9f9d4f6b960744542ab52b9b379427ff7a08009d653ce13cd4a7ded3756691"
     },
-    "lastSuccessfulStage": "31_reviewed_articles_and_local_source_build",
-    "nextIntent": "Freeze official membership and prepare independently reviewed original content and verified direct runtime",
+    "lastSuccessfulStage": "exact_remote_source_independent_final_sha_build",
+    "nextIntent": "Invoke existing fixed direct workflow once for the independently reviewed exact source",
     "pendingExternalAction": {
-      "action": "create_fixed_source_branch_and_commit",
-      "branch": "site-factory-siheung-direct",
-      "root": "site-factory/siheung-flower",
-      "sourceFileCount": 69,
-      "idempotencyKey": "siheung-direct-initial-20261010-source-027f2c408df810c38ce45f01e9529288229abea5381c85b337f56aaa8c01c6cb",
-      "sourceInventorySha256": "027f2c408df810c38ce45f01e9529288229abea5381c85b337f56aaa8c01c6cb"
+      "action": "workflow_dispatch",
+      "workflow": "siheung-direct-publish.yml",
+      "expectedRevision": "25608a70c4abfe992a7a0eb4fd8fc1365402a683",
+      "indexnowOnly": false,
+      "hostname": "siheung.fwith.kr",
+      "worker": "siheung-flower-guide",
+      "existingAccountOnly": true,
+      "noOverrides": true,
+      "idempotencyKey": "siheung-direct-release-25608a70c4abfe992a7a0eb4fd8fc1365402a683"
     },
     "controlRevision": "9b944f87570c9c603b1bba96f10b08119c8f2367",
     "review": {
@@ -91,7 +94,7 @@
       "catalogPrices": "verified2026-10-09T22:07:46Z",
       "publisherTests": 34,
       "independentContent": "PASS",
-      "sourceBuild": "PASS_LOCAL_CANDIDATE_PENDING_FINAL_SHA",
+      "sourceBuild": "PASS_FINAL_SOURCE_SHA_NODE22",
       "hostedQa": "not_executed",
       "writerADigest": "fd8e1b82667db53edb67f040a60f85d1c62d99835fd38e79788d0084b67323cb",
       "writerBDigest": "6927f4719b1ba1c0bd522a96f61293d9bd620c33fc2a59cc2073e7c28a1c0d91",
@@ -101,8 +104,10 @@
       "normalHtmlRoutes": 33,
       "sitemapUrls": 33,
       "exactMatchingProductCards": 124,
-      "sourceInventorySha256": "027f2c408df810c38ce45f01e9529288229abea5381c85b337f56aaa8c01c6cb"
-    }
+      "sourceInventorySha256": "027f2c408df810c38ce45f01e9529288229abea5381c85b337f56aaa8c01c6cb",
+      "remoteReadback": "PASS_69_FULL_BYTES_AND_CONTROLS"
+    },
+    "sourceRevision": "25608a70c4abfe992a7a0eb4fd8fc1365402a683"
   },
   "history": [
     {
