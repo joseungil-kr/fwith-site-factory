@@ -13,3 +13,12 @@ Regional customer text, geography and source bindings were written specifically 
 Run with Node 22: npm ci; npm test; SITE_URL=https://anyang.fwith.kr SITE_INDEXABLE=true SITE_FACTORY_REVISION=<source commit SHA> npm run build.
 
 The retained runtime fields snapshotId and snapshotHash identify local direct-content snapshots and their SHA-256 content digests. They do not represent Airtable records, factory queue runs or issue-published drafts. The four page collections must agree. Release review and full remote commit readback occur before deployment. The public text ownership file is a per-site IndexNow proof, not an account API credential.
+
+
+## Additional venue article release, 2026-10-09
+
+The update appends five source-grounded venue-order articles to the seven existing legal-dong pages. It uses the same runtime, products, photographs, ordering destinations, Worker, hostname and ownership proof. The seven original article bodies and URLs remain intact; reviewed related-reading links connect each venue article to its local district page.
+
+There are 12 customer articles and 16 normal HTML routes. The sitemap has 15 URLs: home, 12 articles, the regional hub and the three-article funeral hub. The two-article event hub remains `noindex,follow` and is excluded from the sitemap under the existing thin-hub policy. The 404 page is additional and never indexable. No tag taxonomy or new content engine was added.
+
+`direct-checkpoint.json` describes the reviewed candidate and deliberately records deployment as pending. A source commit cannot include its own final SHA or prove a future upload. Exact Actions source/control SHAs, release artifact digests, public HTTP hash/revision readback and the IndexNow receipt establish publication separately. Submission does not prove search-engine indexing.

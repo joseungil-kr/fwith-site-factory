@@ -126,6 +126,8 @@ def check(root=Path('.')):
     for page in pages:
         check_customer_journey(docs[page['url']],page,pages)
         check_rendered_intent(docs[page['url']],page,products)
+        if page.get('productCardKeys'):
+            assert {p['key'] for p in docs[page['url']].product_records}==set(page['productCardKeys']), f'Reviewed product card set mismatch: {page["url"]}'
     check_home_catalog(docs['/'], products)
     for page in pages:
         slot=page.get('assetSlot')

@@ -21,7 +21,7 @@ const regionalSocialProduct=page.pageType==='regional-service' ? products.find(p
 if(page.pageType==='regional-service' && !regionalSocialProduct) throw new Error('Regional social image has no verified product binding');
 const journey=nextSteps(page,pages);
 const related=relatedReading(page,pages);
-const productSet=selectProducts(page,products,productFamilies(page).length>3?4:3); const hero=productSet[0];
+const productSet=selectProducts(page,products,page.productCardLimit===4||productFamilies(page).length>3?4:3); const hero=productSet[0];
 const illustration=detailIllustration(page,editorial);
 const sources=pageSources(page);
 const category=groups.find(g=>g.cat===page.category);
