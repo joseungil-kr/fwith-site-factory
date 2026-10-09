@@ -1,0 +1,150 @@
+{
+  "checkedAt": "2026-10-09T23:00:17.340Z",
+  "baseRevision": "0ea21449f57fdca33ec90cf3675a1095696bdc44",
+  "status": "PASS",
+  "mainPushTriggersStoppedFactory": false,
+  "newSourcePushTriggersStoppedFactory": false,
+  "existingReceiptCommentTriggersStoppedFactory": false,
+  "workflows": [
+    {
+      "path": ".github/workflows/airtable-fix-test.yml",
+      "sha": "bc666020387bbeb13ba73534d7928ccf495a6e74",
+      "trigger": "name: Airtable Fix Test\n\non:\n  issues:\n    types: [opened]\n\npermissions:\n  contents: write\n  issues: write\n"
+    },
+    {
+      "path": ".github/workflows/airtable-publish-test.yml",
+      "sha": "27c3edbf22893409c01439d5a30ba6fcfd26a3c0",
+      "trigger": "name: Airtable Publish Test\n\non:\n  issues:\n    types: [opened]\n\npermissions:\n  contents: write\n  issues: write\n"
+    },
+    {
+      "path": ".github/workflows/ansan-cloudflare-live-test.yml",
+      "sha": "9c047cd37130d1f1e56e278ccf9db983d834a543",
+      "trigger": "name: Ansan Cloudflare Live Test\n\non:\n  issues:\n    types: [opened]\n\npermissions:\n  contents: read\n  issues: write\n"
+    },
+    {
+      "path": ".github/workflows/ansan-indexnow-production.yml",
+      "sha": "f0091a7283943203aef354da4dbc130ffb858ab3",
+      "trigger": "name: Ansan Production IndexNow\n\non:\n  push:\n    branches:\n      - site-factory-ansan-v1\n  workflow_dispatch:\n\npermissions:\n  contents: read\n"
+    },
+    {
+      "path": ".github/workflows/ansan-live-qa.yml",
+      "sha": "2699177a9bd018e9dc2a01104ca1a4e7059d8c51",
+      "trigger": "name: Ansan Live QA\n\non:\n  push:\n    branches:\n      - site-factory-ansan-v1\n  workflow_dispatch:\n\npermissions:\n  contents: read\n"
+    },
+    {
+      "path": ".github/workflows/anyang-direct-publish.yml",
+      "sha": "903bd61a48a9e71d2632ed9d52eaa9d0cd38966e",
+      "trigger": "name: Anyang Direct GitHub Static Publish\non:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Anyang source SHA\n        required: true\n        type: string\npermissions:\n  contents: read\nconcurrency:\n  group: anyang-direct-public-release\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/blog-assets-publish.yml",
+      "sha": "8244fcfe3f993ef0feaae3aa7a70f16bdd66f1f0",
+      "trigger": "name: Blog Manual Static Assets Publish\non:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character blog source SHA\n        required: true\n        type: string\npermissions:\n  contents: read\nconcurrency:\n  group: blog-fwith-custom-domain-initial\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/blog-domain-preview.yml",
+      "sha": "93947e767b58d20c26dbffdd751204228362defc",
+      "trigger": "name: Blog Custom Domain Noindex Preview\non:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact tested 40-character blog source SHA\n        required: true\n        type: string\npermissions:\n  contents: read\nconcurrency:\n  group: blog-fwith-custom-domain-initial\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/dongducheon-direct-publish.yml",
+      "sha": "70c3d242d2347ee6d036b3fa14902c32e5928663",
+      "trigger": "name: Dongducheon Direct GitHub Static Publish\non:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Dongducheon source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean\npermissions:\n  contents: read\nconcurrency:\n  group: dongducheon-direct-public-release\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/goyang-canonical-noindex-deploy.yml",
+      "sha": "999b0b85e3b3f2c31177d5306221b00ac2770dd3",
+      "trigger": "name: Goyang Fixed Canonical Noindex Redeploy\n\non:\n  workflow_dispatch:\npermissions:\n  contents: read\nconcurrency:\n  group: site-staging-${{ github.repository }}\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/goyang-cloudflare-token-identity.yml",
+      "sha": "95b2978d53b5bb79d13bef4ab0e148234ba6ccd1",
+      "trigger": "name: Goyang Existing Cloudflare Token Identity\n\non:\n  workflow_dispatch:\npermissions: {}\n"
+    },
+    {
+      "path": ".github/workflows/goyang-domain-attach.yml",
+      "sha": "61da04aab04d5527d82723bd90bb7f2c542bb3f8",
+      "trigger": "name: Goyang Existing Worker Domain Attach\n\non:\n  workflow_dispatch:\n    inputs:\n      confirm_unused:\n        description: I confirm goyang.fwith.kr is unused and authorize attaching it to the existing QA Worker without asset deployment.\n        required: true\n        default: false\n        type: boolean\npermissions:\n  contents: read\nconcurrency:\n  group: site-staging-${{ github.repository }}\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/goyang-noindex-domain.yml",
+      "sha": "bb1ed135a6b78661a9b8bbab6a2fab72efc93527",
+      "trigger": "name: Goyang Noindex Domain Inspection\n\non:\n  workflow_dispatch:\n    inputs:\n      apply:\n        description: Reserved for separately reviewed binding implementation; leave false.\n        required: true\n        default: false\n        type: boolean\npermissions:\n  contents: read\nconcurrency:\n  group: site-staging-${{ github.repository }}\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/goyang-robots-bic.yml",
+      "sha": "201ae6105b42cbbd54aad65cd80806ba27f9ffcd",
+      "trigger": "name: Goyang Robots Only BIC Exception\n\non:\n  workflow_dispatch:\npermissions:\n  contents: read\nconcurrency:\n  group: site-staging-${{ github.repository }}\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/goyang-staging-qa.yml",
+      "sha": "0c64cdcc9b8cc8516d6b84d9e3c4c7d2937e34c9",
+      "trigger": "name: Goyang Staging HTTP QA\n\non:\n  workflow_dispatch:\n    inputs:\n      mode:\n        description: Fixed historical HTTP QA or GET-only preview capability observation\n        required: true\n        default: fixed-http\n        type: choice\n        options: [fixed-http, preview-capabilities]\n      scope_key: {description: Exact registered scope for capability observation, required: false, type: string}\n      expected_revision: {description: Exact registered reviewed source reference, required: false, type: string}\n  issues:\n    types: [opened, reopened]\n\npermissions:\n  contents: read\n"
+    },
+    {
+      "path": ".github/workflows/guri-direct-publish.yml",
+      "sha": "e4fc9aba232049ccba8d2ea77e8a0a5b119bcd36",
+      "trigger": "name: Guri Direct GitHub Static Publish\non:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Guri source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean\npermissions:\n  contents: read\nconcurrency:\n  group: guri-direct-public-release\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/gwacheon-direct-publish.yml",
+      "sha": "63c2e8663bf5460ff25fafe2634d8e8379aadb30",
+      "trigger": "name: Gwacheon Direct GitHub Static Publish\non:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Gwacheon source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean\npermissions:\n  contents: read\nconcurrency:\n  group: gwacheon-direct-public-release\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/gwangmyeong-direct-publish.yml",
+      "sha": "88f965a2a6ad90124b9c2c062e190adb52e59642",
+      "trigger": "name: Gwangmyeong Direct GitHub Static Publish\non:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Gwangmyeong source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean\npermissions:\n  contents: read\nconcurrency:\n  group: gwangmyeong-direct-public-release\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/namyangju-production-gate-check.yml",
+      "sha": "eb23ab627751bea0e3aed48441f29fa0ed4aec11",
+      "trigger": "name: Namyangju historical exact20 initial-release regression\non:\n  push:\n    branches: [codex/namyangju-production-gate]\n  pull_request:\n    paths:\n      - .github/site-factory-sites.json\n      - site-factory/engine/**\n      - site-factory/releases/namyangju-flower-v2-initial-20261005/**\npermissions:\n  contents: read"
+    },
+    {
+      "path": ".github/workflows/osan-direct-publish.yml",
+      "sha": "f203e18aad7b1934eb9e2976be9cbe588a1429b1",
+      "trigger": "name: Osan Direct GitHub Static Publish\non:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Osan source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean\npermissions:\n  contents: read\nconcurrency:\n  group: osan-direct-public-release\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/pyeongtaek-direct-publish.yml",
+      "sha": "25987e47dc57fe328318d90a8ac339ac7bdaaac8",
+      "trigger": "name: Pyeongtaek Direct GitHub Static Publish\non:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Pyeongtaek source SHA\n        required: true\n        type: string\npermissions:\n  contents: read\nconcurrency:\n  group: pyeongtaek-direct-public-release\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/seongnam-worker-preflight.yml",
+      "sha": "8d28aac4d6d38de8f5ca1f036f9d6cb97265a601",
+      "trigger": "name: Seongnam Worker Read-only Preflight\n\non:\n  workflow_dispatch:\n    inputs:\n      site_key:\n        description: Exact supported region to inspect\n        required: true\n        default: seongnam-flower-v2\n        type: choice\n        options: [seongnam-flower-v2, bucheon-flower-v2, namyangju-flower-v2, pyeongtaek-flower-v2, anyang-flower-v2, blog-fwith]\npermissions:\n  contents: read\nconcurrency:\n  group: site-staging-${{ github.repository }}\n  cancel-in-progress: false\n"
+    },
+    {
+      "path": ".github/workflows/siheung-direct-publish.yml",
+      "sha": "4457fd2a0f010d134bf1a67a8b7b4feabba347c0",
+      "trigger": "name: Siheung Direct GitHub Static Publish\non:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Siheung source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean\npermissions:\n  contents: read\nconcurrency:\n  group: siheung-direct-public-release\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/site-factory-controller.yml",
+      "sha": "c5fdc122f010ed86d54dc73d0bcd6b14ce65f8c9",
+      "trigger": "name: Site Factory v2 controller\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: write\n\nconcurrency:\n  group: site-factory-controller\n  cancel-in-progress: false\n"
+    },
+    {
+      "path": ".github/workflows/site-production-deploy.yml",
+      "sha": "ac6c550733fa12c80acec1caa56552136f3f483b",
+      "trigger": "name: Site Factory Production Deploy\non:\n  workflow_call:\n    inputs:\n      site_key: {required: true, type: string}\n      launch_key: {required: false, type: string, default: ''}\n      scope_key: {required: false, type: string, default: ''}\n      expected_revision: {required: true, type: string}\n      source_snapshot_issue: {required: false, type: string, default: ''}\n    secrets:\n      CLOUDFLARE_API_TOKEN: {required: true}\n      CLOUDFLARE_ACCOUNT_ID: {required: true}\n  workflow_dispatch:\n    inputs:\n      site_key: {description: Registered site key, required: true, type: string}\n      launch_key: {description: Exact registered launch for scoped coverage, required: false, type: string}\n      scope_key: {description: Exact registered scope for scoped coverage, required: false, type: string}\n      expected_revision: {description: Full independently approved target commit SHA, required: true, type: string}\n      source_snapshot_issue: {description: Existing request issue for durable production receipts, required: true, type: string}\n      indexnow_only: {description: Verify and submit the already public revision without deploying, required: false, type: boolean, default: false}\n  issues:\n    types: [opened, reopened]\npermissions: {}\nconcurrency:\n  group: \"${{ (inputs.site_key == 'goyang-flower-v2' || contains(github.event.issue.body, 'SITE_KEY: goyang-flower-v2')) && format('site-staging-{0}', github.repository) || format('site-production-{0}', github.repository) }}\"\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/site-snapshot-publish-test.yml",
+      "sha": "7eebd408e7610195473bf87a695a147a36958d6c",
+      "trigger": "name: Site Factory Snapshot Publish\non:\n  issues:\n    types: [opened, reopened]\npermissions: {}\nconcurrency:\n  group: site-snapshot-${{ github.event.issue.number }}\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/site-staging-deploy.yml",
+      "sha": "e01d28267aeed7a4ec006b5d04511bbec55844ab",
+      "trigger": "name: Site Factory Isolated Staging Preview\non:\n  workflow_call:\n    inputs:\n      site_key: {required: true, type: string}\n      launch_key: {required: false, type: string, default: ''}\n      scope_key: {required: false, type: string, default: ''}\n      expected_revision: {required: true, type: string}\n      source_snapshot_issue: {required: false, type: string, default: ''}\n    secrets:\n      CLOUDFLARE_API_TOKEN: {required: true}\n      CLOUDFLARE_ACCOUNT_ID: {required: true}\n  workflow_dispatch:\n    inputs:\n      site_key: {description: Registered site key, required: true, type: string}\n      launch_key: {description: Exact registered launch for Goyang coverage only, required: false, type: string}\n      scope_key: {description: Exact registered scope for Goyang coverage only, required: false, type: string}\n      expected_revision: {description: Full preview source commit SHA, required: true, type: string}\n  issues:\n    types: [opened, reopened]\npermissions: {}\nconcurrency:\n  group: site-staging-${{ github.repository }}\n  cancel-in-progress: false"
+    },
+    {
+      "path": ".github/workflows/uijeongbu-direct-publish.yml",
+      "sha": "d34cca2c5f804eb0839b6ad38109ed727e70fcb7",
+      "trigger": "name: Uijeongbu Direct GitHub Static Publish\non:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Uijeongbu source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean\npermissions:\n  contents: read\nconcurrency:\n  group: uijeongbu-direct-public-release\n  cancel-in-progress: false"
+    }
+  ]
+}
