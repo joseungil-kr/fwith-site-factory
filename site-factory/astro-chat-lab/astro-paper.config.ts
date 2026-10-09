@@ -22,10 +22,7 @@ export default defineAstroPaperConfig({
     dynamicOgImage: false,
     showArchives: false,
     showBackButton: true,
-    editPost: {
-      enabled: false,
-      url: "https://github.com/satnaing/astro-paper/edit/main/",
-    },
+    editPost: { enabled: false },
     search: false,
   },
   socials: [],
