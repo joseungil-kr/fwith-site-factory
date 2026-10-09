@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T23:00:13.356Z",
+  "updatedAt": "2026-10-09T23:03:54.202Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -31,7 +31,7 @@
   "current": {
     "scopeKey": "gunpo-direct-initial-20261010",
     "city": "군포시",
-    "status": "research_and_preparation",
+    "status": "independent_content_pass_source_preparation",
     "owner": {
       "scheduledRunAt": "2026-10-09T23:00:00Z",
       "observedExecutionAt": "2026-10-09T22:55:42Z",
@@ -64,19 +64,33 @@
       "mainMatchingPaths": false,
       "providerOwnershipCollisionCheck": "pending_before_mutation"
     },
-    "lastSuccessfulStage": "official_membership_fixed",
-    "nextIntent": "Store independently reviewed fixed publisher and source scaffolding; await original article handoff",
-    "pendingExternalAction": null,
+    "lastSuccessfulStage": "independent_content_membership_catalog_controls_review",
+    "nextIntent": "Create exact reviewed Gunpo source branch from current main without altering other site files",
+    "pendingExternalAction": {
+      "action": "create_source_branch_and_commit",
+      "target": "site-factory-gunpo-direct",
+      "idempotencyKey": "gunpo-direct-initial-20261010-nine-articles-v1"
+    },
     "plan": {
-      "state": "fixed_official_membership_before_writing",
+      "state": "independently_reviewed_complete_initial_content",
       "plannedArticleCount": 9,
       "minimumPassedArticles": 9,
-      "passedArticleCount": 0,
+      "passedArticleCount": 9,
       "administrativeUnits": 12,
       "crosswalkRelationships": 19,
       "deferred": [],
       "membershipPath": "docs/direct-regional-release/gunpo/membership.json",
       "membershipSha256": "4bc0c747b3371bc9e640cb4dee5779abedfd26fd065682db3078e80280c7834d"
+    },
+    "controlRevision": "5e6c6bb9e93aca3ee3e8525ccac12d35a1e9377e",
+    "review": {
+      "independentContent": "PASS",
+      "writerADigest": "d3e1930bfc60ec16ba4d515c10a4ec1fc70ae7637837dbb5b755989fca061c36",
+      "writerBDigest": "60769f7f9df6274e3760b44707136ea6b552a734462228977e151ec9c290e009",
+      "membership": "PASS",
+      "catalogPrices": "verified2026-10-09T22:58:51Z",
+      "publisherTests": 34,
+      "hostedQa": "not_executed"
     }
   },
   "history": [
