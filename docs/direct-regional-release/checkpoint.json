@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T21:23:12.320Z",
+  "updatedAt": "2026-10-09T21:24:29.854Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -29,7 +29,7 @@
   "current": {
     "scopeKey": "osan-direct-initial-20261010",
     "city": "오산시",
-    "status": "direct_workflow_in_progress",
+    "status": "public_ci_pass_independent_hosted_qa_pending",
     "owner": {
       "scheduledRunAt": "2026-10-09T21:00:00Z",
       "observedExecutionAt": "2026-10-09T21:05:25Z",
@@ -62,8 +62,8 @@
       "mainMatchingPaths": false,
       "providerOwnershipCollisionCheck": "pending_required_before_mutation"
     },
-    "lastSuccessfulStage": "official_workflow_dispatch_accepted",
-    "nextIntent": "Freeze official membership then independently write and review original local purchase content",
+    "lastSuccessfulStage": "direct_ci_public_http_and_indexnow200",
+    "nextIntent": "Finish independent exact-source hosted HTTP and desktop/narrow review, then submit verified sitemap to existing GSC domain",
     "pendingExternalAction": null,
     "plan": {
       "state": "independent_all_24_content_pass",
@@ -104,7 +104,31 @@
       "dispatchObservedAt": "2026-10-09T21:23:12.320Z",
       "createdAt": "2026-10-09T21:22:45Z",
       "dispatchCount": 1,
-      "result": "in_progress"
+      "result": "success",
+      "completedAt": "2026-10-09T21:24:00Z"
+    },
+    "indexNowReceipt": {
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6089497612",
+      "attempt": 1,
+      "endpoint": "https://searchadvisor.naver.com/indexnow",
+      "fingerprint": "fa540e8995360fdc3b5eedd87b228217728632bca8cdb489b709ea46db3efc28",
+      "httpStatus": 200,
+      "origin": "https://osan.fwith.kr",
+      "recordedAt": "2026-10-09T21:23:52.427984+00:00",
+      "revision": "79b52147729166b0d00fb62deb6d68df0391b34c",
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/37993088199",
+      "siteKey": "osan-flower-direct",
+      "state": "received",
+      "urlCount": 26,
+      "urlSetSha256": "c598e9881418c7940f9ac7d6a57b6f9441eede1fcadf52d91923e5e564ee2cd0"
+    },
+    "publicQa": {
+      "status": "independent_http_and_desktop_narrow_pending",
+      "ciHttp": "PASS",
+      "sourceRevision": "79b52147729166b0d00fb62deb6d68df0391b34c"
+    },
+    "gsc": {
+      "status": "not_submitted_pending_independent_hosted_qa"
     }
   },
   "history": [
