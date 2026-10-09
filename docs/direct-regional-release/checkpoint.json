@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T21:24:29.854Z",
+  "updatedAt": "2026-10-09T21:30:23.053Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -43,7 +43,7 @@
       "root": "site-factory/osan-flower",
       "worker": "osan-flower-guide",
       "hostname": "osan.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true
     },
     "input": {
@@ -60,11 +60,20 @@
       "openPullRequests": 0,
       "inProgressWorkflows": 0,
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "pending_required_before_mutation"
+      "providerOwnershipCollisionCheck": "PASS_account_verified_target_absent_before_publish_exact_binding_after"
     },
     "lastSuccessfulStage": "direct_ci_public_http_and_indexnow200",
     "nextIntent": "Finish independent exact-source hosted HTTP and desktop/narrow review, then submit verified sitemap to existing GSC domain",
-    "pendingExternalAction": null,
+    "pendingExternalAction": {
+      "action": "submit_sitemap",
+      "siteUrl": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://osan.fwith.kr/sitemap-index.xml",
+      "sourceRevision": "79b52147729166b0d00fb62deb6d68df0391b34c",
+      "precondition": "independent_full_hosted_desktop_narrow_QA_PASS",
+      "idempotencyKey": "gsc-osan-sitemap-79b52147729166b0d00fb62deb6d68df0391b34c",
+      "existingRegistrationCheckedAt": "2026-10-09T21:29:22Z",
+      "existingRegistrationFound": false
+    },
     "plan": {
       "state": "independent_all_24_content_pass",
       "plannedArticleCount": 24,
@@ -207,7 +216,7 @@
         "processing": "pending",
         "errors": 0,
         "warnings": 0,
-        "lastObservedAt": "2026-10-09T17:05:08Z"
+        "lastObservedAt": "2026-10-09T21:29:22Z"
       },
       "pendingExternalAction": null,
       "receiptJournal": {
@@ -365,7 +374,7 @@
         "processing": "downloaded",
         "errors": 0,
         "warnings": 0,
-        "lastObservedAt": "2026-10-09T17:39:33Z",
+        "lastObservedAt": "2026-10-09T21:29:22Z",
         "lastDownloaded": "2026-10-09T16:44:24.711Z"
       },
       "evidencePath": "docs/direct-regional-release/gwangmyeong/completion-evidence.json",
@@ -531,7 +540,7 @@
         "processing": "downloaded",
         "errors": 0,
         "warnings": 0,
-        "lastObservedAt": "2026-10-09T19:02:45Z",
+        "lastObservedAt": "2026-10-09T21:29:22Z",
         "lastDownloaded": "2026-10-09T17:39:31.029Z"
       },
       "elapsedSecondsFromObservedStart": 2220,
@@ -657,7 +666,7 @@
         "processing": "pending",
         "errors": 0,
         "warnings": 0,
-        "lastObservedAt": "2026-10-09T20:24:00.661Z"
+        "lastObservedAt": "2026-10-09T21:29:22Z"
       },
       "nextIntent": "Next hourly invocation may select next unbuilt eligible region while preserving approval-waiting Gwacheon",
       "userIntervention": false,
