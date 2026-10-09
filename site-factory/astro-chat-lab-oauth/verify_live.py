@@ -21,7 +21,7 @@ import time
 for attempt in range(1,13):
     status,headers,body=get("/health")
     print("OAuth public health attempt "+str(attempt)+": HTTP "+str(status))
-    if status in (200,503):
+    if status==200:
         try:
             data=json.loads(body)
             if data.get("service")=="astro-chat-lab-oauth-qa":
@@ -29,11 +29,11 @@ for attempt in range(1,13):
         except ValueError:
             pass
     if attempt==12:
-        raise SystemExit("OAuth live health failed: expected 200/503 with service identity; last HTTP "+str(status))
+        raise SystemExit("OAuth credentials or Worker health not ready after deployment; last HTTP "+str(status))
     time.sleep(8)
 assert data.get("service")=="astro-chat-lab-oauth-qa"
 assert data.get("callback")==expected
-assert data.get("configured") is (status==200)
+assert status==200 and data.get("configured") is True, "OAuth secrets and Dashboard variables must be preserved on deploy"
 assert "no-store" in headers.get("Cache-Control","")
 assert "noindex" in headers.get("X-Robots-Tag","")
 assert "Access-Control-Allow-Origin" not in headers

@@ -131,34 +131,63 @@ async function auth(request,url,env){
     })
   });
 }
-async function github(url,token){
-  const r=await fetch(url,{
-    headers:{
-      Authorization:"Bearer "+token,
-      "User-Agent":"astro-chat-lab-oauth/1",
-      Accept:"application/vnd.github+json",
-      "X-GitHub-Api-Version":"2022-11-28"
-    },redirect:"error"
-  });
-  return r.ok?r.json():null;
+// Only fixed, non-sensitive stage codes may reach the popup. Never copy raw
+// GitHub responses, exception messages, URL parameters or tokens into errors.
+class OAuthStageFailure extends Error {
+  constructor(stage) {
+    super("OAuth upstream stage failed");
+    this.stage=stage;
+  }
+}
+async function github(url,token,stage){
+  let r;
+  try {
+    r=await fetch(url,{
+      headers:{
+        Authorization:"Bearer "+token,
+        "User-Agent":"astro-chat-lab-oauth/1",
+        Accept:"application/vnd.github+json",
+        "X-GitHub-Api-Version":"2022-11-28"
+      },redirect:"error"
+    });
+  } catch {
+    throw new OAuthStageFailure(stage+"_FETCH");
+  }
+  if(!r.ok)return null;
+  try {
+    return await r.json();
+  } catch {
+    throw new OAuthStageFailure(stage+"_FORMAT");
+  }
 }
 async function exchange(env,code){
-  const r=await fetch("https://github.com/login/oauth/access_token",{
-    method:"POST",redirect:"error",
-    headers:{"Accept":"application/json","Content-Type":"application/json",
-      "User-Agent":"astro-chat-lab-oauth/1"},
-    body:JSON.stringify({client_id:env.GITHUB_OAUTH_CLIENT_ID,
-      client_secret:env.GITHUB_OAUTH_CLIENT_SECRET,code,redirect_uri:CALLBACK})
-  });
+  let r;
+  try {
+    r=await fetch("https://github.com/login/oauth/access_token",{
+      method:"POST",redirect:"error",
+      headers:{"Accept":"application/json","Content-Type":"application/json",
+        "User-Agent":"astro-chat-lab-oauth/1"},
+      body:JSON.stringify({client_id:env.GITHUB_OAUTH_CLIENT_ID,
+        client_secret:env.GITHUB_OAUTH_CLIENT_SECRET,code,redirect_uri:CALLBACK})
+    });
+  } catch {
+    throw new OAuthStageFailure("TOKEN_FETCH");
+  }
   if(!r.ok)return null;
-  const info=await r.json();
+  let info;
+  try {
+    info=await r.json();
+  } catch {
+    throw new OAuthStageFailure("TOKEN_FORMAT");
+  }
   const scope=typeof info.scope==="string"?info.scope.split(",").map(x=>x.trim()):[];
   if(typeof info.access_token!=="string"||!scope.includes("public_repo")||
     scope.includes("repo")||scope.includes("delete_repo"))return null;
-  const user=await github("https://api.github.com/user",info.access_token);
+  const user=await github("https://api.github.com/user",info.access_token,"USER");
   if(!user||user.login!==USER)return null;
   const permission=await github("https://api.github.com/repos/"+USER+"/"+REPO+
-    "/collaborators/"+encodeURIComponent(user.login)+"/permission",info.access_token);
+    "/collaborators/"+encodeURIComponent(user.login)+"/permission",
+    info.access_token,"PERMISSION");
   if(!permission||!["admin","maintain","write"].includes(permission.permission))return null;
   return info.access_token;
 }
@@ -215,8 +244,9 @@ async function callback(request,url,env){
     const token=await exchange(env,code);
     if(!token)return fail("GitHub account or repository write access denied",403,clear);
     return callbackPage(token);
-  }catch{
-    return fail("GitHub authentication service unavailable",502,clear);
+  }catch(error){
+    const stage=error instanceof OAuthStageFailure ? error.stage : "CALLBACK_RENDER";
+    return fail("GitHub authentication service unavailable ["+stage+"]",502,clear);
   }
 }
 export default {

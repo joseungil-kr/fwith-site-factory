@@ -134,3 +134,46 @@ test("wrong Github account, no write permission and broad OAuth token scope reje
     }
   }finally{globalThis.fetch=original;}
 });
+
+test("non-secret stage identifiers classify provider transport and parse failures",async()=>{
+  const original=globalThis.fetch;
+  const failures=[
+    {at:"TOKEN_FETCH",mode:"throw",failOn:1},
+    {at:"TOKEN_FORMAT",mode:"html",failOn:1},
+    {at:"USER_FETCH",mode:"throw",failOn:2},
+    {at:"USER_FORMAT",mode:"html",failOn:2},
+    {at:"PERMISSION_FETCH",mode:"throw",failOn:3},
+    {at:"PERMISSION_FORMAT",mode:"html",failOn:3},
+  ];
+  try{
+    for(const choice of failures){
+      const e=env(),login=await start(e);
+      let calls=0;
+      globalThis.fetch=async(url)=>{
+        calls++;
+        if(calls===choice.failOn){
+          if(choice.mode==="throw")throw new Error("sensitive_internal_error");
+          return new Response("not-json-or-secrets",{status:200,headers:{"Content-Type":"text/html"}});
+        }
+        if(String(url).includes("/login/oauth/access_token"))
+          return new Response(JSON.stringify({access_token:"sensitive-fake-token",scope:"public_repo"}),{status:200});
+        if(String(url).endsWith("/user"))
+          return new Response(JSON.stringify({login:"joseungil-kr"}),{status:200});
+        if(String(url).includes("/collaborators/"))
+          return new Response(JSON.stringify({permission:"admin"}),{status:200});
+        throw new Error("invalid upstream request");
+      };
+      const url="/callback?code=sample-code&state="+login.state;
+      const first=await oauth.fetch(get(url,{"Cookie":login.cookie}),e);
+      assert.equal(first.status,502,choice.at);
+      const body=await first.text();
+      assert.equal(body,"GitHub authentication service unavailable ["+choice.at+"]");
+      assert.ok(!body.includes("sensitive"));
+      assert.ok(!body.includes("sample-code"));
+      assert.ok(!body.includes(login.state));
+      const replay=await oauth.fetch(get(url,{"Cookie":login.cookie}),e);
+      assert.equal(replay.status,400);
+      assert.equal(replay.headers.get("Location"),null);
+    }
+  }finally{globalThis.fetch=original;}
+});

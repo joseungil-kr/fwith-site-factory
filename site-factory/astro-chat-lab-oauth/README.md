@@ -64,3 +64,21 @@ insecure original Cloudflare community proxy is NOT installed.
 
 The auth Durable Object is used only for short-lived OAuth state and
 does not serve as a blog content database. Cloudflare plan usage limits apply.
+
+## Non-sensitive OAuth failure diagnosis
+
+The browser popup may show `GitHub authentication service unavailable [STAGE]`.
+These stage names contain no tokens, authorization codes, state values, or secret
+material; a previous generic 502 did not reveal which remote request failed.
+`TOKEN_FETCH` and `TOKEN_FORMAT` refer to GitHub OAuth exchange transport
+and JSON, `USER_FETCH/FORMAT` refer to GitHub's user endpoint, and
+`PERMISSION_FETCH/FORMAT` refer to the repository collaborator permission
+endpoint. `CALLBACK_RENDER` is an unclassified response-generation exception.
+
+If login fails, capture only the bracketed STAGE shown in the popup. Never
+paste callback query parameters, tokens, OAuth code, or cookies into chat.
+Retry with a fresh `/admin/` login since an OAuth state is one-use only.
+
+Wrangler `keep_vars: true` preserves the public Client ID entered in the
+Cloudflare dashboard. Cloudflare preserves encrypted secrets through code deploy.
+The workflow now fails closed unless live /health is HTTP 200 configured:true.
