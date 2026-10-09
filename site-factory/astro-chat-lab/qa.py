@@ -204,7 +204,7 @@ def check_build(posts):
     admin_html=admin.read_text(encoding="utf-8")
     cfg=config.read_text(encoding="utf-8")
     for marker in ["decap-cms@3.16.3/dist/decap-cms.js",
-                    "/admin/preview.js?v=1",
+                    "/admin/preview.js?v=2",
                     'name="robots" content="noindex, nofollow"']:
         assert marker in admin_html, "Admin HTML safety marker missing: "+marker
     for marker in ["name: github","repo: joseungil-kr/fwith-site-factory",

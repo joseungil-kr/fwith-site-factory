@@ -25,14 +25,41 @@
     }
   }
 
-  function localAssetUrl(path, getAsset) {
-    if (typeof getAsset !== "function") return null;
+  function mediaName(path) {
+    // CMS stores the Markdown URL as /uploads/name.ext but stages the File
+    // in Redux under the repository-relative media folder + basename.
+    // getAsset("/uploads/name.ext") bypasses the staged File lookup.
+    if (!publicImageUrl(path)) return null;
     try {
-      const asset = getAsset(path);
-      const result = asset && typeof asset.toString === "function" ? asset.toString() : "";
-      if (typeof result === "string" && result.startsWith("blob:" + origin + "/")) return result;
+      const u = new URL(path, origin);
+      if (u.search || u.hash) return null;
+      const pieces = u.pathname.split("/").filter(Boolean);
+      if (pieces.length !== 2 || pieces[0] !== "uploads") return null;
+      const name = decodeURIComponent(pieces[1]);
+      if (!name || name === "." || name === ".." ||
+          name.includes("/") || name.includes("\\") || name.length > 255) return null;
+      return name;
     } catch {
-      // In-memory asset unavailable: the public upload path may still be usable.
+      return null;
+    }
+  }
+
+  function localAssetUrl(path, getAsset) {
+    const filename = mediaName(path);
+    if (!filename || typeof getAsset !== "function") return null;
+    try {
+      // Filename-only lets Decap resolve config.media_folder and find the
+      // unsaved File's AssetProxy, which supplies a blob: URL immediately.
+      const asset = getAsset(filename);
+      if (!asset || asset.path === "empty.svg" || asset.path?.endsWith("/empty.svg")) {
+        return null; // Internal Decap placeholder, not the selected image.
+      }
+      const result = typeof asset.toString === "function" ? asset.toString() : "";
+      if (typeof result === "string" && result.startsWith("blob:" + origin + "/")) {
+        return result;
+      }
+    } catch {
+      // Decap may still be populating the staged media Redux entry.
     }
     return null;
   }
@@ -64,26 +91,104 @@
     const publicUrl = publicImageUrl(markdownPath);
     if (!publicUrl) return h("p", { key, role: "status" }, "허용된 /uploads 이미지 주소가 아닙니다.");
     const preview = localAssetUrl(markdownPath, getAsset) || publicUrl;
-    const fallback = "미리보기 이미지가 아직 준비되지 않았습니다. 글 저장 후 다시 열어 확인하세요.";
+    const fallback = "이미지를 불러올 수 없습니다. 업로드 상태와 파일 경로를 확인하세요.";
+
+    function showImage(img) {
+      img.hidden = false;
+      if (img.style) img.style.display = "block";
+      const warning = img.nextSibling;
+      if (warning) {
+        warning.hidden = true;
+        if (warning.style) warning.style.display = "none";
+      }
+    }
+
+    function showFailure(img) {
+      img.hidden = true;
+      if (img.style) img.style.display = "none";
+      const warning = img.nextSibling;
+      if (warning) {
+        warning.hidden = false;
+        if (warning.style) warning.style.display = "block";
+      }
+    }
+
+    function ensureImageState(img) {
+      if (!img.dataset) return;
+      if (img.dataset.mediaPath !== markdownPath) {
+        img.dataset.mediaPath = markdownPath;
+        img.dataset.polling = "0";
+        img.dataset.triedPublic = "0";
+        delete img.dataset.lastTriedLocal;
+      }
+    }
+
+    function retryPendingAsset(img) {
+      if (!img.dataset || img.dataset.polling === "1") return;
+      if (!img.isConnected || typeof window.setTimeout !== "function") {
+        showFailure(img);
+        return;
+      }
+      img.dataset.polling = "1";
+      let attempts = 0;
+      function retry() {
+        if (!img.isConnected || img.dataset.mediaPath !== markdownPath ||
+            img.dataset.polling !== "1") return;
+        const local = localAssetUrl(markdownPath, getAsset);
+        if (local && local !== img.dataset.lastTriedLocal) {
+          img.dataset.lastTriedLocal = local;
+          img.dataset.polling = "0";
+          showImage(img);
+          img.src = local;
+          return;
+        }
+        attempts++;
+        if (attempts >= 24) {
+          img.dataset.polling = "0";
+          showFailure(img);
+        } else {
+          window.setTimeout(retry, 350);
+        }
+      }
+      window.setTimeout(retry, 350);
+    }
+
     return h("figure", { key, style: { margin: "18px 0 24px" } },
       h("img", {
         src: preview,
         alt: alt || "게시물 이미지",
         title: caption || undefined,
         style: imageStyle,
+        onLoad: function (event) {
+          const img = event.currentTarget;
+          if (!img || !img.dataset) return;
+          ensureImageState(img);
+          img.dataset.polling = "0";
+          showImage(img);
+        },
         onError: function (event) {
           const img = event.currentTarget;
           if (!img || !img.dataset) return;
-          if (img.dataset.retried !== "1" && img.src !== publicUrl) {
-            img.dataset.retried = "1";
+          ensureImageState(img);
+          const staged = localAssetUrl(markdownPath, getAsset);
+          // If the image that just failed was already the staged blob, record
+          // it as tried. Never loop forever between a broken blob and 404.
+          if (staged && staged === img.src) img.dataset.lastTriedLocal = staged;
+          if (staged && staged !== img.src && staged !== img.dataset.lastTriedLocal) {
+            img.dataset.lastTriedLocal = staged;
+            img.src = staged;
+            return;
+          }
+          if (img.src !== publicUrl && img.dataset.triedPublic !== "1") {
+            img.dataset.triedPublic = "1";
             img.src = publicUrl;
             return;
           }
-          img.hidden = true;
-          if (img.nextSibling) img.nextSibling.hidden = false;
+          retryPendingAsset(img);
         },
       }),
-      h("small", { hidden: true, style: { color: "#93510c", display: "block" } }, fallback),
+      // Do NOT set display:block here: it overrides the HTML hidden attribute.
+      h("small", { hidden: true, style: { color: "#93510c" } }, fallback),
       caption ? h("figcaption", { style: { color: "#6a7280", fontSize: "0.88rem" } }, caption) : null
     );
   }
