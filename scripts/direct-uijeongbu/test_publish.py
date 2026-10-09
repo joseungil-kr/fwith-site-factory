@@ -66,9 +66,11 @@ class PublishTests(unittest.TestCase):
 
     def test_fixed_route_set(self):
         self.assertEqual(len(pub.SLUGS), 13)
-        self.assertEqual(len(pub.ARTICLE_ROUTES), 13)
-        self.assertEqual(len(pub.ROUTES), 15)
-        self.assertEqual(len(pub.SITEMAP_ROUTES), 15)
+        self.assertEqual(pub.DEFERRED_SLUGS, {'jail-dong'})
+        self.assertEqual(pub.DEFERRED, ['/regions/jail-dong/'])
+        self.assertEqual(len(pub.ARTICLE_ROUTES), 12)
+        self.assertEqual(len(pub.ROUTES), 14)
+        self.assertEqual(len(pub.SITEMAP_ROUTES), 14)
         self.assertEqual(pub.THIN_HUB_ROUTES, set())
         self.assertEqual(pub.ROUTES - pub.SITEMAP_ROUTES, pub.THIN_HUB_ROUTES)
         self.assertTrue(pub.REGION_ROUTES <= pub.SITEMAP_ROUTES)
@@ -200,7 +202,7 @@ class ArtifactTests(unittest.TestCase):
 
     def test_exact_fixed_artifact_and_http_counts(self):
         result = pub.artifact()
-        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (13, 15, 15))
+        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (12, 14, 14))
         contract = json.loads(Path('http-contract.json').read_text())
         self.assertTrue(all(p['robots'] == ['follow', 'index'] for p in contract['pages']))
         def fixture_get(path, status=200):
@@ -209,7 +211,7 @@ class ArtifactTests(unittest.TestCase):
             return (self.root / file).read_bytes(), headers
         with patch.object(pub, 'get', side_effect=fixture_get):
             result = pub.http_once(contract)
-        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (13, 15, 15))
+        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (12, 14, 14))
 
     def test_missing_article_is_blocked(self):
         (self.root / 'regions/uijeongbu-dong/index.html').unlink(); self.seal()
@@ -223,6 +225,24 @@ class ArtifactTests(unittest.TestCase):
         file = self.root / 'regions/uijeongbu-dong/index.html'
         file.write_text(file.read_text().replace('follow,index', 'follow,noindex')); self.seal()
         with self.assertRaisesRegex(ValueError, 'robots_meta_mismatch'): pub.artifact()
+
+    def test_deferred_customer_link_is_blocked(self):
+        file = self.root / 'index.html'
+        file.write_text(file.read_text() + '<a href="/regions/jail-dong/">Deferred</a>'); self.seal()
+        with self.assertRaisesRegex(ValueError, 'deferred_link_published'): pub.artifact()
+
+    def test_deferred_route_is_probed_as_a_real_404(self):
+        pub.artifact()
+        contract = json.loads(Path('http-contract.json').read_text())
+        calls = []
+        def fixture_get(path, status=200):
+            calls.append((path, status))
+            headers = Message(); headers['Content-Type'] = 'text/html'
+            file = '404.html' if status == 404 else (path.lstrip('/') + 'index.html' if path.endswith('/') else path.lstrip('/'))
+            return (self.root / file).read_bytes(), headers
+        with patch.object(pub, 'get', side_effect=fixture_get): pub.http_once(contract)
+        self.assertIn(('/regions/jail-dong/', 404), calls)
+        self.assertNotIn(('/regions/jail-dong/', 200), calls)
 
     def test_unreviewed_hub_is_blocked(self):
         file = self.root / 'event/index.html'

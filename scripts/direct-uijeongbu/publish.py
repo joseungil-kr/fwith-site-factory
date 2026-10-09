@@ -28,7 +28,8 @@ ORIGIN = 'https://' + HOSTNAME
 WORKER = 'uijeongbu-flower-guide'
 RECEIPT_ISSUE = 266
 SLUGS = ['uijeongbu-dong', 'howon-dong', 'jangam-dong', 'singok-dong', 'yonghyeon-dong', 'millak-dong', 'nakyang-dong', 'jail-dong', 'geumo-dong', 'ganeung-dong', 'nogyang-dong', 'gosan-dong', 'sangok-dong']
-REGION_ROUTES = {'/regions/' + slug + '/' for slug in SLUGS}
+DEFERRED_SLUGS = {'jail-dong'}
+REGION_ROUTES = {'/regions/' + slug + '/' for slug in SLUGS if slug not in DEFERRED_SLUGS}
 ADDED_ROUTES = set()
 ARTICLE_ROUTES = REGION_ROUTES
 THIN_HUB_ROUTES = set()
@@ -41,7 +42,7 @@ def expected_robots(route):
         return {'noindex', 'nofollow', 'noarchive'}
     return {'noindex', 'follow'} if route in THIN_HUB_ROUTES else {'index', 'follow'}
 
-DEFERRED = []
+DEFERRED = ['/regions/jail-dong/']
 LIMIT = 20 * 1024 * 1024
 
 
