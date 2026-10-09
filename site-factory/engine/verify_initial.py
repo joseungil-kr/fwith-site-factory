@@ -6,19 +6,37 @@ import json
 from pathlib import Path
 import re
 import time
-from urllib.parse import unquote
+from urllib.parse import unquote, urljoin, urlsplit
+from html.parser import HTMLParser
 import xml.etree.ElementTree as ET
 
 from provision_goyang import target_contract
-from whole_initial import is_reviewed_initial_site, reviewed_release_binding
+from whole_initial import is_reviewed_initial_site, reviewed_release_binding, released_initial_keys
 from verify_live import (Document, validate_html, goyang_http_fetch,
                          goyang_artifact_matches, require)
+
+
+def validate_release_links(html, origin, route, routes):
+    class Anchors(HTMLParser):
+        def handle_starttag(self, tag, attrs):
+            if tag != 'a':
+                return
+            href = dict(attrs).get('href', '')
+            parsed = urlsplit(urljoin(origin + route, href))
+            # Hostnames are case-insensitive. Treat same-host links as internal
+            # even across scheme/default-port spellings; redirects must not hide
+            # links to a deferred route. External shop/phone anchors stay external.
+            if parsed.scheme in ('http', 'https') and parsed.hostname == urlsplit(origin).hostname:
+                path = unquote(parsed.path)
+                require(path in routes, 'Initial internal anchor targets absent release route: ' + path)
+    Anchors().feed(html)
 
 
 def verify(root, site_key, origin, revision, phase, fetch):
     root = Path(root)
     require(is_reviewed_initial_site(site_key) and re.fullmatch(r'[0-9a-f]{40}', revision or ''), 'Unknown initial identity')
-    reviewed_release_binding(site_key)
+    binding = reviewed_release_binding(site_key)
+    subset = binding.get('releaseSubset')
     target = target_contract(site_key)
     require(phase in ('preview', 'production') and origin == target['stagingUrl' if phase == 'preview' else 'siteUrl'],
             'Initial HTTP verification origin/phase mismatch')
@@ -33,6 +51,12 @@ def verify(root, site_key, origin, revision, phase, fetch):
                 and row['url'] not in routes, 'Invalid initial frozen route')
         routes[row['url']] = (row['snapshotId'], True)
     absent = {'/site-factory-live-qa-definitely-not-found/'}
+    if subset is not None:
+        coverage = json.loads((root/'src/data/region-coverage.json').read_text())
+        reps = {row['pageKey']: row for row in coverage['representatives']}
+        released = released_initial_keys(binding, site_key, reps)
+        require({row['pageKey'] for row in manifest['pages']} == released, 'Initial HTTP release subset differs')
+        absent.update(reps[key]['url'] for key in subset['deferredPageKeys'])
     for hub in architecture['hubs']:
         count = sum(row['category'] == hub['category'] for row in manifest['pages'])
         require(hub.get('children') == count and hub.get('indexable') is (count >= 3)
@@ -65,6 +89,8 @@ def verify(root, site_key, origin, revision, phase, fetch):
         require(status == 200, 'Initial route is absent or failed: ' + route)
         require(headers.get('content-type', '').split(';', 1)[0].strip() == 'text/html', 'Initial page MIME mismatch')
         html = raw.decode('utf-8')
+        if subset is not None:
+            validate_release_links(html, origin, route, set(routes))
         doc = validate_html(html, origin, route, revision, snapshot, phase == 'production' and eligible)
         expected = {'noindex', 'nofollow', 'noarchive'} if phase == 'preview' else {'index', 'follow'} if eligible else {'noindex', 'follow'}
         require(set(doc.metas.get('robots', '').split(',')) == expected, 'Initial exact robots meta mismatch')

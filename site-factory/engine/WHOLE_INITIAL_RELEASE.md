@@ -1,6 +1,54 @@
-# Namyangju-only candidate scope
+# Reviewed initial release scope
 
-This candidate registers only namyangju-flower-v2-dong-coverage-20261005 and its exact reviewed 20-member profile. Other initial regions remain unavailable in controller workflow dispatch. The following historical design describes shared machinery; it is not authorization to enable other regions.
+Namyangju remains the only active reviewed initial binding. The inactive R3
+adapter supports separately reviewed regional and exact catalog amendments;
+ADDITIONAL_REVIEWED_RELEASES remains empty. The partial-release extension below
+is implemented only for Pyeongtaek and does not activate it or any other region.
+
+## Initial quantity acceptance, effective 2026-10-09
+
+The owner's current acceptance policy is to publish once at least 90% of the
+planned initial pages are complete, allowing the remainder (up to 10%) to be deferred or
+completed in later daily work. This replaces an unqualified all-pages quantity
+condition for new initial launches. It does not loosen source, content, visual,
+frozen-snapshot, security, domain or exact-revision deployment requirements.
+Previously completed exact100% releases and Namyangju20/Bucheon24 history remain
+unchanged. A future region needs its own explicit reviewed contract; a registry
+count edit or a generic feature flag never activates partial release.
+
+For the current Pyeongtaek proposal, retain all original37 canonical identities
+and their original membership/coverage/memberIdentity hashes. Release35
+(94.5946%) and defer Chilwon-dong/Wolgok-dong2 (5.4054%). Do not label the full
+37-page content/coverage condition PASS. Freeze a separate releaseSubset with
+mode reviewed-partial-initial, the original source fields, sorted exact released
+and deferred page-key partitions, threshold90, and durable independent review
+URL. Both lists must partition the original member set. The trusted code binding
+holds this object; the registry's initialReleaseSubsetSha256 and the batch's
+releaseSubsetSha256 must equal its canonical JSON SHA256. Do not derive trusted
+bindings from request/registry content at runtime. The proposed contract has no
+review URL and is deliberately not activatable until reviewed.
+
+The approved-empty baseline retains all37 units, aliases, ri, evidence, routes
+and queries. Only released35 representative statuses become approved; deferred2
+remain candidate. Supply exact35 reviewed visualBindings. Content approval for
+each released page and its existing frozen digest/Queue/Issue/commit lineage
+remain mandatory. Existing runtime directory/alias helpers already select
+approved published rows; they must yield no link to deferred or empty routes.
+
+Staging source validation requires exact35 released snapshots and preserves the
+original denominator37. Independent hosted/visual QA follows creation of the
+noindex preview; it is not a new prerequisite for creating that preview. The
+batch barrier replays every released snapshot and requires HOME, active hubs,
+all35 routes, and explicit canonical-free404 checks for deferred2 plus empty
+hubs/unknown paths. Alias discovery covers only original names with at least one
+released target. Bind alias QA to releaseSubsetSha256, keep the full geographic
+coverage digest, and check same-origin HTML anchors cannot point outside the
+rendered route set. Exact source/asset/robots/sitemap parity remains mandatory.
+Deferred pages are excluded from snapshots, links, sitemap and IndexNow URL sets.
+
+Later completion of deferred pages requires independently reviewed new snapshots
+and an explicitly revised release/growth contract with normal QA; never mutate
+this frozen initial contract or treat deferred work as already published.
 
 # Exact whole-region initial release
 
@@ -8,6 +56,12 @@ This extends the existing snapshot, staging, production and IndexNow paths for
 the three explicit initial identities. It creates no scheduler, agent framework,
 account, credential or permission. A saved prompt or a passing synthetic test is
 not an unattended completion. Keep an actual invocation/record/commit/run trail.
+
+## Historical full-membership contract
+
+The following remains the default exact-full contract when releaseSubset is absent.
+Only the explicitly reviewed partial exception above changes its quantity,
+representative-status, visual-binding and alias/404 expectations.
 
 ## Roles and source boundary
 

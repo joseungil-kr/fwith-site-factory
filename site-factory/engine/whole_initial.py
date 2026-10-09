@@ -61,7 +61,8 @@ def reviewed_release_binding(site):
             'Initial region has no reviewed source and identity profile')
     binding = ADDITIONAL_REVIEWED_RELEASES.get(site)
     fields = {'initialLaunch', 'bootstrapSourceSha', 'templateRevision', 'reviewEvidenceUrl'}
-    require(type(binding) is dict and set(binding) in (fields, fields | {'runtimeAmendment'}),
+    require(type(binding) is dict and set(binding) in (fields, fields | {'runtimeAmendment'},
+                fields | {'releaseSubset'}, fields | {'runtimeAmendment', 'releaseSubset'}),
         'Initial region has no exact independently reviewed release binding')
     initial = binding['initialLaunch']
     require(type(initial) is dict and set(initial) == set(INITIAL_FIELDS)
@@ -79,7 +80,55 @@ def reviewed_release_binding(site):
                              binding.get('reviewEvidenceUrl', '')),
             'Initial reviewed release source or independent evidence binding is malformed')
     reviewed_runtime_amendment(binding)
+    reviewed_release_subset(binding, site)
     return binding
+
+
+def release_subset_digest(subset):
+    return hashlib.sha256(json.dumps(subset, ensure_ascii=False, sort_keys=True,
+        separators=(',', ':')).encode()).hexdigest()
+
+
+def reviewed_release_subset(binding, site):
+    """Explicit release selection, never a rewrite of original geography or approval."""
+    subset = binding.get('releaseSubset')
+    if subset is None:
+        require('releaseSubset' not in binding, 'Initial release subset cannot be empty')
+        return None
+    fields = {'schemaVersion', 'mode', 'siteKey', 'scopeKey', 'membershipSourceSha256',
+              'memberIdentitySha256', 'officialUnitCount', 'minimumReleasePercent',
+              'releasedPageKeys', 'deferredPageKeys', 'reviewEvidenceUrl'}
+    initial = binding['initialLaunch']
+    require(site == 'pyeongtaek-flower-v2' and type(subset) is dict and set(subset) == fields
+            and type(subset.get('schemaVersion')) is int and subset['schemaVersion'] == 1
+            and subset.get('mode') == 'reviewed-partial-initial' and subset.get('siteKey') == site
+            and all(subset.get(key) == initial[key] for key in
+                ('scopeKey', 'membershipSourceSha256', 'memberIdentitySha256', 'officialUnitCount'))
+            and type(subset.get('minimumReleasePercent')) is int and subset['minimumReleasePercent'] == 90
+            and re.fullmatch(r'https://github\.com/joseungil-kr/fwith-site-factory/issues/[1-9][0-9]*(?:#issuecomment-[0-9]+)?',
+                             subset.get('reviewEvidenceUrl') or ''),
+            'Initial partial release needs original membership and exact independent review')
+    for field in ('releasedPageKeys', 'deferredPageKeys'):
+        keys = subset.get(field)
+        require(type(keys) is list and keys and all(type(key) is str and
+                re.fullmatch(re.escape(site) + r'-region-[a-z0-9]+(?:-[a-z0-9]+)*', key) for key in keys)
+                and keys == sorted(set(keys)), 'Initial release/deferred keys must be exact sorted unique sets')
+    released, deferred = set(subset['releasedPageKeys']), set(subset['deferredPageKeys'])
+    count = initial['officialUnitCount']
+    require(not released & deferred and len(released | deferred) == count
+            and len(released) * 100 >= count * 90,
+            'Initial partial release must retain original denominator and release at least90 percent')
+    return subset
+
+
+def released_initial_keys(binding, site, original_keys):
+    subset = reviewed_release_subset(binding, site)
+    original_keys = set(original_keys)
+    if subset is None:
+        return original_keys
+    require(set(subset['releasedPageKeys']) | set(subset['deferredPageKeys']) == original_keys,
+            'Initial release/deferred partition differs from immutable original membership')
+    return set(subset['releasedPageKeys'])
 
 
 def reviewed_runtime_amendment(binding):
@@ -113,6 +162,12 @@ def validate_reviewed_membership(site, target):
     if 'reviewEvidenceUrl' in binding:
         require(target.get('initialReviewEvidenceUrl') == binding['reviewEvidenceUrl'],
                 'Initial independent membership review evidence binding changed')
+    subset = reviewed_release_subset(binding, site)
+    if subset is not None:
+        require(target.get('initialReleaseSubsetSha256') == release_subset_digest(subset),
+                'Initial exact reviewed release subset binding changed')
+    else:
+        require('initialReleaseSubsetSha256' not in target, 'Initial release subset is not reviewed')
     amendment = reviewed_runtime_amendment(binding)
     if amendment is not None:
         digest = hashlib.sha256(json.dumps(amendment, ensure_ascii=False, sort_keys=True,
@@ -132,6 +187,12 @@ def initial_batch_identity(batch):
     require(batch.get('ruleRevision') == RULE_REVISION and
             batch.get('templateRevision') == initial_source_profile(site)['sourceRevision'],
             'Initial batch rule/template revision differs from reviewed profile')
+    subset = reviewed_release_subset(binding, site)
+    if subset is not None:
+        require(batch.get('releaseSubsetSha256') == release_subset_digest(subset),
+                'Initial batch release subset binding changed')
+    else:
+        require('releaseSubsetSha256' not in batch, 'Initial batch release subset is not reviewed')
     target = target_contract(site)
     return site, scope, {'repo': 'joseungil-kr/fwith-site-factory',
                         'branch': target['branch'], 'root': target['root']}
@@ -192,8 +253,10 @@ def validate_initial_binding(batch, target, git, base, final):
     promoted = copy.deepcopy(candidate)
     require(all(row.get('status') == 'candidate' for row in promoted['representatives']),
             'Initial bootstrap must start with candidate geography')
+    released_keys = released_initial_keys(binding, site, {m['page_key'] for m in members})
     for row in promoted['representatives']:
-        row['status'] = 'approved'
+        if row['pageKey'] in released_keys:
+            row['status'] = 'approved'
     require(coverage == promoted, 'Initial units/aliases/ri/names/evidence changed beyond candidate approval')
     baseline_policy = json.loads(git.read(base, identity['root'] + '/src/data/region-policy.json'))
     expected_policy = json.loads(git.read(bootstrap, identity['root'] + '/src/data/region-policy.json'))
@@ -201,6 +264,10 @@ def validate_initial_binding(batch, target, git, base, final):
                            visualBindings=baseline_policy.get('visualBindings'))
     require(isinstance(expected_policy['visualBindings'], list) and expected_policy['visualBindings']
             and baseline_policy == expected_policy, 'Initial policy changed outside reviewed enablement and visual bindings')
+    if binding.get('releaseSubset') is not None:
+        visual_keys = [row.get('pageKey') for row in baseline_policy['visualBindings']]
+        require(len(visual_keys) == len(set(visual_keys)) and set(visual_keys) == released_keys,
+                'Initial partial release requires exact released visual bindings')
     from provision_goyang import validate_initial_coverage_shape
     validate_initial_coverage_shape(coverage)
     reps = coverage.get('representatives', [])
@@ -369,7 +436,17 @@ def validate_preview_source(site, key, revision, root, workspace=None, *, git=No
                'templateRevision': initial_source_profile(key)['sourceRevision'],
                'membershipSourceSha256': site['initialLaunch']['membershipSourceSha256'],
                'bootstrapSourceSha': site['initialBootstrapRevision']}
+    if 'initialReleaseSubsetSha256' in site:
+        binding['releaseSubsetSha256'] = site['initialReleaseSubsetSha256']
     validate_initial_binding(binding, site, evidence_git, site['initialPreviewBaselineRevision'], revision)
+    if reviewed_release_binding(key).get('releaseSubset') is not None:
+        source_root = target_contract(key)['root']
+        for filename in ('region-coverage.json', 'region-policy.json'):
+            path = 'src/data/' + filename
+            committed = evidence_git.read(revision, source_root + '/' + path)
+            require(committed == evidence_git.read(site['initialPreviewBaselineRevision'], source_root + '/' + path)
+                    and regular_bytes(root, path) == committed,
+                    'Initial partial preview geographic/visual dependency bytes changed: ' + filename)
     raw = regular_bytes(root, 'src/data/publish-manifest.json')
     require(hashlib.sha256(raw).hexdigest() == site['initialPreviewManifestSha256'], 'Initial preview frozen manifest changed')
     manifest = json.loads(raw)
@@ -382,13 +459,14 @@ def validate_preview_source(site, key, revision, root, workspace=None, *, git=No
             and coverage.get('membershipSourceSha256') == site['initialLaunch']['membershipSourceSha256']
             and policy.get('enabled') is True, 'Initial preview source scope mismatch')
     count = site['initialLaunch']['officialUnitCount']
-    require(type(count) is int and count > 0 and len(rows) == len(reps) == len(coverage['units']) == count
-            and rows.keys() == reps.keys(), 'Initial preview must contain the complete whole-region membership')
+    released_keys = released_initial_keys(reviewed_release_binding(key), key, reps.keys())
+    require(type(count) is int and count > 0 and len(reps) == len(coverage['units']) == count
+            and set(rows) == released_keys, 'Initial preview must contain the exact reviewed release membership')
     require(all(row.get('status') == 'approved' and row.get('approvalVerified') is True
                 and row.get('category') == 'regions' and row.get('pageType') == 'regional-service'
                 and row.get('scopeKey') == scope and reps[k].get('status') == 'approved'
                 for k, row in rows.items()), 'Initial preview includes unapproved or out-of-scope snapshot')
-    return {'state': 'initial_preview_source_validated', 'siteKey': key, 'revision': revision, 'details': count}
+    return {'state': 'initial_preview_source_validated', 'siteKey': key, 'revision': revision, 'details': len(rows), 'officialUnits': count}
 
 
 def verify_release(site, revision, root, control, workspace):

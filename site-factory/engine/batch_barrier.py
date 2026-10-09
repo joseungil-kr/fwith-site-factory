@@ -201,7 +201,7 @@ LEGACY_RENDERER_ALLOWLIST = {
 }
 
 
-def bucheon_representatives(coverage, site=BUCHEON_SITE, scope=BUCHEON_SCOPE, unit_types=('legal-dong',)):
+def bucheon_representatives(coverage, site=BUCHEON_SITE, scope=BUCHEON_SCOPE, unit_types=('legal-dong',), released_keys=None):
     """One reviewed schema-2 representative for every exact Bucheon legal dong."""
     require(type(coverage.get('schemaVersion')) is int and coverage['schemaVersion'] == 2
             and coverage.get('siteKey') == site and coverage.get('scopeKey') == scope
@@ -231,7 +231,8 @@ def bucheon_representatives(coverage, site=BUCHEON_SITE, scope=BUCHEON_SCOPE, un
     assigned = []
     for row in representatives.values():
         require(isinstance(row.get('unitKeys'), list) and len(row['unitKeys']) == 1
-                and row['unitKeys'][0] in units and row.get('status') == 'approved'
+                and row['unitKeys'][0] in units
+                and row.get('status') == ('approved' if released_keys is None or row['pageKey'] in released_keys else 'candidate')
                 and row.get('routeMode') == 'regional' and row.get('queryEvidence'),
                 'Bucheon representative needs one independently reviewed legal dong')
         assigned.extend(row['unitKeys'])
@@ -300,7 +301,11 @@ def bucheon_dependencies(batch, coverage_raw, git, revision, root, site=BUCHEON_
             and policy.get('membershipSourceSha256') == batch['membershipSourceSha256'],
             'Bucheon membership research binding mismatch')
     bindings = indexed(policy['visualBindings'], 'pageKey')
-    require(set(bindings) == set(indexed(coverage['representatives'], 'pageKey')),
+    expected_bindings = set(indexed(coverage['representatives'], 'pageKey'))
+    if batch.get('contractType') == 'whole-region-initial':
+        from whole_initial import reviewed_release_binding, released_initial_keys
+        expected_bindings = released_initial_keys(reviewed_release_binding(site), site, expected_bindings)
+    require(set(bindings) == expected_bindings,
             'Bucheon exact representative visual bindings required')
     for asset in bindings.values():
         image = asset.get('image', '')
@@ -324,6 +329,8 @@ def goyang_identity(batch):
     fields = GOYANG_IDENTITY + (('policySha256', 'productsSha256', 'membershipSourceSha256') if batch.get('siteKey') == BUCHEON_SITE or batch.get('contractType') == 'whole-region-initial' else ())
     if batch.get('contractType') == 'whole-region-initial':
         fields += ('bootstrapSourceSha',)
+        if 'releaseSubsetSha256' in batch:
+            fields += ('releaseSubsetSha256',)
     return digest({key: batch[key] for key in fields} |
                   {'members': sorted(batch['members'], key=lambda row: row['pageKey'])})
 
@@ -454,7 +461,14 @@ def check_goyang(batch, evidence, git):
     dependencies = {}
     if scoped:
         unit_types = tuple(sorted({u['unitType'] for u in coverage['units']})) if initial else ('legal-dong',)
-        units = bucheon_representatives(coverage, site, scope, unit_types)
+        released_keys = None
+        if initial:
+            from whole_initial import reviewed_release_binding, released_initial_keys
+            released_keys = released_initial_keys(reviewed_release_binding(site), site,
+                {row['pageKey'] for row in coverage['representatives']})
+        units = bucheon_representatives(coverage, site, scope, unit_types, released_keys)
+        if released_keys is not None:
+            units = {key: row for key, row in units.items() if key in released_keys}
         dependencies = bucheon_dependencies(batch, coverage_raw, git, base, root, site, scope, unit_types)
         check_bucheon_dependencies(dependencies, git, final, root)
     else:
@@ -569,6 +583,9 @@ def check_goyang(batch, evidence, git):
         if initial:
             require(hub.get('indexable') is (children >= 3) and hub.get('menuVisible') is (children >= 5), 'Initial hub policy differs from runtime')
         (active if children else absent).add(route)
+    subset = reviewed_release_binding(site).get('releaseSubset') if initial else None
+    if subset is not None:
+        absent.update(row['url'] for row in coverage['representatives'] if row['pageKey'] in subset['deferredPageKeys'])
     routes = {'/'} | active | {r['url'] for r in tables['publish-manifest'].values()}
     qa = evidence.get('qa', {}); manifest_hash = hashlib.sha256(raw['publish-manifest']).hexdigest()
     if scoped:
@@ -584,7 +601,13 @@ def check_goyang(batch, evidence, git):
             'Every final rendered route needs actual noindex QA')
     require(set(not_found) == absent and all(r.get('state') == 'passed' and r.get('status') == 404
                 and r.get('canonicalAbsent') is True for r in not_found.values()), 'Exact empty-hub/unknown 404 QA required')
-    names = sorted({r['name'] for r in coverage['units'] + coverage['administrativeCrosswalk']})
+    name_rows = coverage['units'] + coverage['administrativeCrosswalk']
+    if subset is not None:
+        published_units = {unit for row in units.values() for unit in row['unitKeys']}
+        name_rows = [row for row in coverage['units'] if row['unitKey'] in published_units] + [
+            row for row in coverage['administrativeCrosswalk'] if any(rel['unitKey'] in published_units for rel in row['relations'])]
+        require(qa.get('releaseSubsetSha256') == batch['releaseSubsetSha256'], 'Initial alias QA release subset changed')
+    names = sorted({r['name'] for r in name_rows})
     require(qa.get('aliasCoverageSha256') == batch['coverageSha256'] and qa.get('discoverableNames') == names,
             'Complete legal/administrative alias discovery not verified')
     require(qa.get('reviewer') not in {item['writerRunId'] for item in evidence['items']}, 'Independent visual QA required')

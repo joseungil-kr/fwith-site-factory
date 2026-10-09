@@ -67,6 +67,25 @@ provenance and Blueprint category/type pairs are checked before writes.
     IndexNow runs only after exact live QA. An accepted submission is not a
     search-engine indexing or ranking guarantee.
 
+## Initial partial-release quantity policy (2026-10-09)
+
+For new initial launches, the owner's acceptance condition is at least90% of
+planned pages complete, with the remainder (up to10%) deferred or completed later. Apply
+this through the exact reviewed release subset described in
+`engine/WHOLE_INITIAL_RELEASE.md`, not by shrinking the geographic inventory,
+changing old hashes/counts, or marking unfinished content PASS. Current
+Pyeongtaek scope is35 of original37; Chilwon/Wolgok remain deferred. Historical
+exact20/24/full releases keep their existing contracts.
+
+Only Pyeongtaek's inactive adapter currently supports this exception; no active
+binding is added by the code. Keep original membership/frozen lineage, source
+and security boundaries. Finish the exact released set, build and inspect its
+isolated noindex preview, then run the existing batch/hosted/visual/public gates.
+Do not wait for deferred content after the authorized released set meets every
+other gate. Do not call CONTENT_PASS, a code test, or a snapshot commit live.
+Use actual approved-revision deployment, HTTP verification and IndexNow receipts;
+record GSC verification/sitemap submission separately from indexing/ranking.
+
 ## States, failures and recovery
 
 - `preview_ready_approval_required`: versioned input passed preview QA; no branch

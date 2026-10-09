@@ -543,6 +543,9 @@ def render(body, registry, workspace):
             if (not regional or regional.get("scopeKey") != binding['initialLaunch']['scopeKey']
                     or hub_policy != "child-threshold-v1"):
                 fail("Initial snapshot must use its exact reviewed regional scope and hub policy")
+            subset = binding.get('releaseSubset')
+            if subset is not None and key not in subset['releasedPageKeys']:
+                fail("Initial snapshot is outside the exact reviewed release subset")
             initial_eligibility = True
     tables["architecture"][key] = {**entry, "pageRole": p["PAGE_ROLE"], "parentHub": p["PARENT_HUB"], "intentKey": p["INTENT_KEY"], "contentRole": p["CONTENT_ROLE"], "localizationPolicy": p["LOCALIZATION_POLICY"], "sitemapIndexable": publication_approved if initial_eligibility else bool(target.get("productionEnabled")), "status": "primary"}
     for name, doc, filename in (("manifest", manifest, "publish-manifest.json"), ("map", page_map, "page-map.json"), ("architecture", arch, "architecture.json")):
