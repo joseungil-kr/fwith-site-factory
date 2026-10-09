@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T15:49:58Z",
+  "updatedAt": "2026-10-09T16:00:00Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -23,7 +23,57 @@
   "excludedHosts": [
     "blog.fwith.kr"
   ],
-  "current": null,
+  "current": {
+    "scopeKey": "gwangmyeong-direct-initial-20261010",
+    "city": "광명시",
+    "status": "membership_fixed_preparing_content",
+    "owner": {
+      "scheduledRunAt": "2026-10-09T16:00:00Z",
+      "observedMessageAt": "2026-10-09T15:57:01Z",
+      "serviceInvocationId": null,
+      "checkpointId": "direct-gwangmyeong-20261009T160000Z",
+      "active": true
+    },
+    "identity": {
+      "repository": "joseungil-kr/fwith-site-factory",
+      "branch": "site-factory-gwangmyeong-direct",
+      "root": "site-factory/gwangmyeong-flower",
+      "worker": "gwangmyeong-flower-guide",
+      "hostname": "gwangmyeong.fwith.kr",
+      "externalCreationVerified": false
+    },
+    "plan": {
+      "membershipPath": "docs/direct-regional-release/gwangmyeong/membership.json",
+      "membershipSha256": "2fa5031edce0b60c6dbf6a4fdfc6a2fbe8c3f9e68ac28f110adfcdb1927aabf2",
+      "plannedArticleCount": 8,
+      "minimumPassedArticles": 8,
+      "passedArticleCount": 0,
+      "administrativeUnits": 19
+    },
+    "input": {
+      "controlRevision": "133c5ade96b9b6385e78f859209cb83c15215c47",
+      "runtimeSourceRevision": "c047f1127f7908085fce55ab41504a23ff9b199c"
+    },
+    "lastSuccessfulStage": "official_membership_and_remote_conflict_research",
+    "nextIntent": "write_and_independently_review_eight_articles_then_direct_publish",
+    "conflictChecks": {
+      "branchesChecked": 104,
+      "matchingBranch": false,
+      "openPullRequests": 0,
+      "mainMatchingPaths": false,
+      "inProgressWorkflows": 0,
+      "providerOwnershipCollisionCheck": "pending_required_before_mutation"
+    },
+    "receiptJournal": {
+      "number": 266,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266",
+      "reuseExistingWithoutReopen": true
+    },
+    "pendingExternalAction": {
+      "action": "claim_scope_and_publish_membership",
+      "idempotencyKey": "gwangmyeong-direct-initial-20261010"
+    }
+  },
   "history": [
     {
       "scopeKey": "uijeongbu-direct-initial-20261010",
@@ -99,7 +149,8 @@
         "lastSubmitted": "2026-10-09T15:34:08.908Z",
         "processing": "pending",
         "errors": 0,
-        "warnings": 0
+        "warnings": 0,
+        "lastObservedAt": "2026-10-09T15:57:50Z"
       },
       "pendingExternalAction": null,
       "receiptJournal": {
@@ -166,5 +217,5 @@
       ]
     }
   ],
-  "nextAction": "select_next_unbuilt_region_on_next_hourly_invocation"
+  "nextAction": "resume_current_region"
 }
