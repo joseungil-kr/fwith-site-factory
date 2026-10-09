@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T20:14:07.058Z",
+  "updatedAt": "2026-10-09T20:16:10.006Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -28,7 +28,7 @@
   "current": {
     "scopeKey": "guri-direct-initial-20261010",
     "city": "구리시",
-    "status": "direct_release_in_progress",
+    "status": "public_deployed_independent_qa_pending",
     "owner": {
       "scheduledRunAt": "2026-10-09T20:00:00Z",
       "observedMessageAt": "2026-10-09T19:56:39Z",
@@ -61,7 +61,7 @@
       "inProgressWorkflows": 0,
       "providerOwnershipCollisionCheck": "pending_required_before_mutation"
     },
-    "lastSuccessfulStage": "official_workflow_dispatch_readback",
+    "lastSuccessfulStage": "direct_ci_terminal_success_indexnow200",
     "pendingExternalAction": null,
     "receiptJournal": {
       "number": 266,
@@ -105,7 +105,32 @@
       "dispatchObservedAt": "2026-10-09T20:13:44Z",
       "createdAt": "2026-10-09T20:13:43Z",
       "dispatchCount": 1,
-      "result": "in_progress"
+      "result": "success",
+      "completedAt": "2026-10-09T20:15:08Z"
+    },
+    "indexNowReceipt": {
+      "attempt": 1,
+      "endpoint": "https://searchadvisor.naver.com/indexnow",
+      "fingerprint": "71b12809c98d6acf2346d901f5cdbf450120f35a22ca9519df564496a78bff7b",
+      "httpStatus": 200,
+      "origin": "https://guri.fwith.kr",
+      "recordedAt": "2026-10-09T20:15:01.726485+00:00",
+      "revision": "1afe5cf775ea8efcd8e8c8c30dce7925106b0078",
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/37985557103",
+      "siteKey": "guri-flower-direct",
+      "state": "received",
+      "urlCount": 9,
+      "urlSetSha256": "810174b9c217db0ddeb130dc9dd2f6c701e43b4a332a5b20f1bea8408b2942bc",
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6088515243"
+    },
+    "publicQa": {
+      "workflowHttp": "PASS",
+      "independentHttp": "home_200_exact_revision_h1_one",
+      "desktop": "pending",
+      "narrow": "pending"
+    },
+    "gsc": {
+      "status": "not_submitted"
     }
   },
   "history": [
