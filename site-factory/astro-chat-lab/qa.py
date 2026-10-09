@@ -113,27 +113,30 @@ def check_post(html,meta):
     page=inspect(html,meta["path"])
     assert len(page.h1)==1 and compact(page.h1[0])==compact(meta["title"]), "H1 title mismatch"
     article=compact("".join(page.article))
-    assert len(article)>30, "Empty article body"
+    assert article or page.images, "Published article must contain text or image"
     for heading in re.findall(r"^##\s+(.+)$",meta["body"],re.M):
         clean=re.sub(r"[\*_]","",heading)
         assert any(compact(x)==compact(clean) for x in page.h2), "CMS heading missing in HTML"
     candidates=matched=0
     for line in meta["body"].splitlines():
-        if not line.strip() or line.startswith(("#","- ","* ",">","![","|")):
+        line=line.strip()
+        if not line or line.startswith((chr(96)*3,"~~~","![","|")):
             continue
+        # Strip headings and bullets before comparing short Markdown texts.
+        line=re.sub(r"^#{1,6}\s+","",line)
+        line=re.sub(r"^(?:[-*+]\s+|\d+[.)]\s+)","",line)
         cleaned=re.sub(r"\[([^\]]+)\]\([^)]+\)",r"\1",line)
         cleaned=re.sub(r"[\*_\\]","",cleaned).replace(chr(96),"")
         text=compact(cleaned)
-        if len(text)>35:
+        if len(text)>=2:
             candidates+=1
-            if text[:24] in article:
+            if text[:min(24,len(text))] in article:
                 matched+=1
-    # Markdown may add inline markup, encoded entities and other presentation
-    # transformations. Still require a majority of user-authored paragraphs
-    # to appear, in addition to the exact title and every H2 above.
-    assert candidates>0 and matched>=max(1,(candidates+1)//2), (
-        f"Insufficient body parity: {matched}/{candidates} source paragraphs"
-    )
+    # Short text such as '본문테스트' is a valid CMS article. Empty text
+    # remains invalid; image-only content requires an actual image.
+    assert (candidates>0 and matched>=max(1,(candidates+1)//2)) or (
+        candidates==0 and bool(page.images)
+    ), f"Insufficient body parity: {matched}/{candidates} source excerpts"
     uploads=[]
     for raw in page.images:
         uri=urlsplit(raw)

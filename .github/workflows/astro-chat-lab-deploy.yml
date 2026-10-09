@@ -132,6 +132,12 @@ jobs:
           test "$(git rev-parse HEAD)" = "${{ steps.materialize.outputs.source_sha }}"
           python3 site-factory/astro-chat-lab/qa.py build
 
+      - name: Dry-run short Korean CMS draft publication; restore draft before deployment
+        run: |
+          set -euo pipefail
+          python3 site-factory/astro-chat-lab/scripts/qa_cms_short_publish.py
+          test "$(git rev-parse HEAD)" = "${{ steps.materialize.outputs.source_sha }}"
+
       - name: Publish dedicated new Worker, never client Workers
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
