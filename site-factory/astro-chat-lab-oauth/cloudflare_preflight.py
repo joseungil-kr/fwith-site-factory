@@ -46,6 +46,7 @@ elif status in (200,204):
         except urllib.error.HTTPError as err:
             http_status=err.code
             body=err.read()
+        print("Existing OAuth Worker health HTTP status: "+str(http_status))
         if http_status not in (200,503):
             raise ValueError("Unexpected health HTTP status")
         parsed=json.loads(body)

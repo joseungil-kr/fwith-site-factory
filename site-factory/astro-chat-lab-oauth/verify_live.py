@@ -16,9 +16,21 @@ def get(path,method="GET"):
     except urllib.error.HTTPError as e:
         return e.code,dict(e.headers),e.read()
 
-status,headers,body=get("/health")
-assert status in (200,503), "Unexpected OAuth health HTTP status"
-data=json.loads(body)
+import time
+
+for attempt in range(1,13):
+    status,headers,body=get("/health")
+    print("OAuth public health attempt "+str(attempt)+": HTTP "+str(status))
+    if status in (200,503):
+        try:
+            data=json.loads(body)
+            if data.get("service")=="astro-chat-lab-oauth-qa":
+                break
+        except ValueError:
+            pass
+    if attempt==12:
+        raise SystemExit("OAuth live health failed: expected 200/503 with service identity; last HTTP "+str(status))
+    time.sleep(8)
 assert data.get("service")=="astro-chat-lab-oauth-qa"
 assert data.get("callback")==expected
 assert data.get("configured") is (status==200)
