@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T17:28:45Z",
+  "updatedAt": "2026-10-09T17:30:45Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -27,7 +27,7 @@
   "current": {
     "scopeKey": "dongducheon-direct-initial-20261010",
     "city": "동두천시",
-    "status": "approved_exact_domain_attachment_ready_for_dispatch",
+    "status": "deployment_running",
     "owner": {
       "scheduledRunAt": "2026-10-09T17:00:00Z",
       "observedMessageAt": "2026-10-09T17:03:56Z",
@@ -78,27 +78,14 @@
       "inProgressWorkflows": 0,
       "providerOwnershipCollisionCheck": "pending_required_before_mutation"
     },
-    "lastSuccessfulStage": "exact_remote_source_control_and_node22_independent_review",
+    "lastSuccessfulStage": "actual_workflow_dispatch_after_explicit_target_approval",
     "nextIntent": "Resume same exact source only after domain-attachment action approval is satisfied; do not create another region or retry through a different execution path",
     "receiptJournal": {
       "number": 266,
       "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266",
       "reuseExistingWithoutReopen": true
     },
-    "pendingExternalAction": {
-      "action": "workflow_dispatch_including_fixed_custom_hostname_attachment",
-      "workflow": ".github/workflows/dongducheon-direct-publish.yml",
-      "expectedRevision": "f13a51b75707e5b2e4cfb499da48372faa314858",
-      "indexnowOnly": false,
-      "idempotencyKey": "dongducheon-direct-publish-f13a51b75707e5b2e4cfb499da48372faa314858",
-      "status": "approved_not_executed",
-      "targetHostname": "dongducheon.fwith.kr",
-      "targetWorker": "dongducheon-flower-guide",
-      "overridesEnabled": false,
-      "providerBinding": "not_yet_observed",
-      "dispatchCount": 0,
-      "requiredAction": "Fresh ref/source/active release readback then exact one workflow dispatch"
-    },
+    "pendingExternalAction": null,
     "review": {
       "independentContent": "PASS",
       "writerADigest": "dd270867ca11f2a5df7aa7b44ecef04faed7ee52a901b2964ac4469cca762e39",
@@ -138,6 +125,23 @@
       "existingAccountOnly": true,
       "noOverrides": true,
       "scope": "Exact custom-hostname connection and reviewed direct deployment; no DNS ownership, credential, permission, security or other-site changes"
+    },
+    "actualWorkflow": {
+      "runId": 37966691887,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/37966691887",
+      "sourceRevision": "f13a51b75707e5b2e4cfb499da48372faa314858",
+      "controlRevision": "7bcd98fa163270b006589daf1f63795fb47eebdb",
+      "dispatchObservedAt": "2026-10-09T17:29:59Z",
+      "createdAt": "2026-10-09T17:29:57Z",
+      "dispatchCount": 1,
+      "result": "in_progress"
+    },
+    "userIntervention": true,
+    "manualAssistance": {
+      "type": "user_action_specific_approval",
+      "scope": "custom_hostname_attachment",
+      "receivedAt": "2026-10-09T17:27:12Z",
+      "contentOrDeploymentPerformedManuallyByUser": false
     }
   },
   "history": [
@@ -407,7 +411,14 @@
     "approvedPendingReleasePriority": true,
     "releaseConcurrency": 1,
     "unapprovedActions": "Do not dispatch, attach hostname, override security or fabricate completion; approvals may be supplied later as an explicit bounded list",
-    "scheduleChanged": false
+    "scheduleChanged": false,
+    "savedAutomationPromptUpdate": {
+      "verifiedAt": "2026-10-09T17:30:34Z",
+      "promptReadbackMatched": true,
+      "scheduleChanged": false,
+      "nameChanged": false,
+      "enabledChanged": false
+    }
   },
   "waitingApproval": []
 }
