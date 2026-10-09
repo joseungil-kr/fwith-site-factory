@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T17:21:35Z",
+  "updatedAt": "2026-10-09T17:25:00Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -27,13 +27,15 @@
   "current": {
     "scopeKey": "dongducheon-direct-initial-20261010",
     "city": "동두천시",
-    "status": "source_published_predeployment_verification",
+    "status": "blocked_domain_attachment_confirmation",
     "owner": {
       "scheduledRunAt": "2026-10-09T17:00:00Z",
       "observedMessageAt": "2026-10-09T17:03:56Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-dongducheon-20261009T170000Z",
-      "active": true
+      "active": false,
+      "executionState": "paused_for_required_confirmation",
+      "pausedAt": "2026-10-09T17:24:24Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -75,24 +77,26 @@
       "inProgressWorkflows": 0,
       "providerOwnershipCollisionCheck": "pending_required_before_mutation"
     },
-    "lastSuccessfulStage": "source_and_control_remote_readback",
-    "nextIntent": "Dispatch existing bounded workflow once for exact source after final SHA build and independent remote verification",
+    "lastSuccessfulStage": "exact_remote_source_control_and_node22_independent_review",
+    "nextIntent": "Resume same exact source only after domain-attachment action approval is satisfied; do not create another region or retry through a different execution path",
     "receiptJournal": {
       "number": 266,
       "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266",
       "reuseExistingWithoutReopen": true
     },
     "pendingExternalAction": {
-      "action": "workflow_dispatch",
+      "action": "workflow_dispatch_including_fixed_custom_hostname_attachment",
       "workflow": ".github/workflows/dongducheon-direct-publish.yml",
       "expectedRevision": "f13a51b75707e5b2e4cfb499da48372faa314858",
       "indexnowOnly": false,
       "idempotencyKey": "dongducheon-direct-publish-f13a51b75707e5b2e4cfb499da48372faa314858",
-      "preconditions": [
-        "Final source SHA Node22 build PASS",
-        "Independent exact remote source/control review PASS",
-        "Fresh active release and ownership check"
-      ]
+      "status": "not_executed_action_review_denied",
+      "targetHostname": "dongducheon.fwith.kr",
+      "targetWorker": "dongducheon-flower-guide",
+      "overridesEnabled": false,
+      "providerBinding": "not_yet_observed",
+      "dispatchCount": 0,
+      "requiredAction": "Explicit approval for bounded custom-hostname attachment within existing account"
     },
     "review": {
       "independentContent": "PASS",
@@ -100,7 +104,7 @@
       "writerBDigest": "7d3b1bd33c921c178dd2e1f7b8a419ca0c6f100f6f9120af8c16abe4e691ba62",
       "membership": "PASS",
       "catalogPrices": "verified2026-10-09T17:08:16Z",
-      "sourceBuild": "PASS_REVIEWED_SOURCE_PENDING_FINAL_SHA_REBUILD",
+      "sourceBuild": "PASS_FINAL_SOURCE_SHA_NODE22",
       "hostedQa": "pending",
       "sourceTests": 64,
       "publisherTests": 34,
@@ -112,7 +116,19 @@
       "sourceInventorySha256": "6deeafa002723208e889b39bde80a686d7b76b405bc197bacc28d7549f35adfa"
     },
     "sourceRevision": "f13a51b75707e5b2e4cfb499da48372faa314858",
-    "controlRevision": "d37724df7dfba5945dcc89c36b3ec49c236965af"
+    "controlRevision": "d37724df7dfba5945dcc89c36b3ec49c236965af",
+    "executionBlocker": {
+      "stage": "official_run_workflow_click",
+      "firstDeniedAt": "2026-10-09T17:23:35Z",
+      "retryDeniedAt": "2026-10-09T17:24:24Z",
+      "sameCallRetryCount": 1,
+      "reason": "Action review classified custom-hostname attachment as a domain-side mutation requiring separate approval despite existing no-override release instruction",
+      "workflowRunCreated": false,
+      "providerMutationExecuted": false,
+      "publicQa": "not_executed",
+      "indexNow": "not_submitted",
+      "gsc": "not_submitted"
+    }
   },
   "history": [
     {
