@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T15:47:06Z",
+  "updatedAt": "2026-10-09T15:49:58Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -17,38 +17,144 @@
     "bucheon.fwith.kr",
     "namyangju.fwith.kr",
     "pyeongtaek.fwith.kr",
-    "anyang.fwith.kr"
+    "anyang.fwith.kr",
+    "uijeongbu.fwith.kr"
   ],
   "excludedHosts": [
     "blog.fwith.kr"
   ],
-  "current": {
-    "scopeKey": "uijeongbu-direct-initial-20261010",
-    "city": "의정부시",
-    "status": "public_verified_indexnow_recovery",
-    "owner": {
-      "scheduledRunAt": "2026-10-09T15:00:00Z",
-      "observedMessageAt": "2026-10-09T14:58:09Z",
-      "serviceInvocationId": null,
-      "checkpointId": "direct-uijeongbu-20261009T150000Z",
-      "active": true
-    },
-    "identity": {
-      "repository": "joseungil-kr/fwith-site-factory",
-      "branch": "site-factory-uijeongbu-direct",
-      "root": "site-factory/uijeongbu-flower",
-      "worker": "uijeongbu-flower-guide",
+  "current": null,
+  "history": [
+    {
+      "scopeKey": "uijeongbu-direct-initial-20261010",
+      "city": "의정부시",
+      "status": "complete_public_qa_indexnow_received_gsc_submitted",
+      "owner": {
+        "scheduledRunAt": "2026-10-09T15:00:00Z",
+        "observedMessageAt": "2026-10-09T14:58:09Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-uijeongbu-20261009T150000Z",
+        "active": false,
+        "completedAt": "2026-10-09T15:49:20Z"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-uijeongbu-direct",
+        "root": "site-factory/uijeongbu-flower",
+        "worker": "uijeongbu-flower-guide",
+        "hostname": "uijeongbu.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true
+      },
+      "plan": {
+        "state": "reviewed_partial_initial_release",
+        "membershipPath": "docs/direct-regional-release/uijeongbu/membership.json",
+        "membershipSha256": "6e4e060d2725cda0f11ff3f8c75921ec6754177815800766e600388cea2822e1",
+        "plannedArticleCount": 13,
+        "minimumPassedArticles": 12,
+        "passedArticleCount": 12,
+        "deferred": [
+          {
+            "name": "자일동",
+            "slug": "jail-dong",
+            "route": "/regions/jail-dong/",
+            "reason": "DEFERRED_QUALITY_HOLD: verified locality anchors did not establish a sufficiently specific commercial wreath purchase answer; not published and no inbound links",
+            "status": "deferred"
+          }
+        ]
+      },
+      "input": {
+        "controlRevision": "bce007c3ac0c1d74eeaf1fd5878b862ad47e0986",
+        "runtimeSourceRevision": "f2f29584f1832b6f040fc2901a6e60c5899be23a"
+      },
+      "lastSuccessfulStage": "independent_public_qa_indexnow200_gsc_readback",
+      "nextIntent": "Next hourly invocation may select next unbuilt region; retain Jail deferred backlog",
+      "sourceRevision": "c047f1127f7908085fce55ab41504a23ff9b199c",
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/37952223139",
+      "publicQa": {
+        "http": "PASS",
+        "checkedPaths": 29,
+        "sourceRevision": "c047f1127f7908085fce55ab41504a23ff9b199c",
+        "normalHtmlRoutes": 14,
+        "sitemapUrls": 14,
+        "deferredAndUnknown404": "PASS",
+        "desktop": "PASS",
+        "narrow": "PASS"
+      },
+      "indexNowReceipt": {
+        "state": "received",
+        "httpStatus": 200,
+        "urlCount": 14,
+        "attempt": 1,
+        "recordedAt": "2026-10-09T15:47:41.854869+00:00",
+        "fingerprint": "2df9fe06892743cc245cffaba04e109a3cf98d11e3862068980bba29a33d2228",
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6084292647",
+        "runId": 37954272286,
+        "sourceRevision": "c047f1127f7908085fce55ab41504a23ff9b199c"
+      },
+      "gsc": {
+        "sitemapUrl": "https://uijeongbu.fwith.kr/sitemap-index.xml",
+        "accepted": true,
+        "confirmed": true,
+        "lastSubmitted": "2026-10-09T15:34:08.908Z",
+        "processing": "pending",
+        "errors": 0,
+        "warnings": 0
+      },
+      "pendingExternalAction": null,
+      "receiptJournal": {
+        "number": 266,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266",
+        "readbackVerified": true
+      },
+      "review": {
+        "independentContent": "PASS",
+        "sourceTests": 65,
+        "publisherTests": 31,
+        "sourceFilesVerified": 69,
+        "exactMatchingProductCards": 48,
+        "normalHtmlRoutes": 14,
+        "sitemapUrls": 14,
+        "sourceReviewSha256": "622f9884bc092b2703aedcf552e3256323fd36c1a1b6d23fb666dacfb1d80255",
+        "sourceBuildWithFinalSha": "PASS",
+        "hostedQa": "PASS"
+      },
+      "actualWorkflow": {
+        "runId": 37952223139,
+        "sourceRevision": "c047f1127f7908085fce55ab41504a23ff9b199c",
+        "controlRevision": "e20bbf7d3224ab782fe990958d903c55bea82672",
+        "dispatchClickedAt": "2026-10-09T15:29:53Z",
+        "dispatchCount": 1,
+        "result": "failure_after_public_http"
+      },
+      "recoveryWorkflow": {
+        "runId": 37954272286,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/37954272286",
+        "controlRevision": "d171ada5fc80c49748b1ccbf8a40c968b2e33ab2",
+        "expectedRevision": "c047f1127f7908085fce55ab41504a23ff9b199c",
+        "indexnowOnly": true,
+        "dispatchClickedAt": "2026-10-09T15:46:33Z",
+        "result": "success",
+        "providerPublish": "skipped"
+      },
+      "indexNowInitialFailure": {
+        "state": "preflight_failed_before_post",
+        "error": "sitemap_not_public",
+        "historicalHttpStatusOrHeader": "not_retained_by_original_helper",
+        "journalConfirmedEmpty": true,
+        "submissionAttempted": false
+      },
+      "evidencePath": "docs/direct-regional-release/uijeongbu/completion-evidence.json",
+      "evidenceSha256": "98b574cf5457c626695996aa8107c7d0971b0b1386c001dab30a2c8c71fa9132",
+      "elapsedSecondsFromObservedStart": 3071,
+      "elapsedSecondsFromScheduledStart": 2960,
+      "userIntervention": false
+    }
+  ],
+  "maintenanceBacklog": [
+    {
+      "scopeKey": "uijeongbu-direct-initial-20261010",
       "hostname": "uijeongbu.fwith.kr",
-      "externalCreationVerified": true,
-      "sourceBranchCreatedVerified": true
-    },
-    "plan": {
-      "state": "reviewed_partial_initial_release",
-      "membershipPath": "docs/direct-regional-release/uijeongbu/membership.json",
-      "membershipSha256": "6e4e060d2725cda0f11ff3f8c75921ec6754177815800766e600388cea2822e1",
-      "plannedArticleCount": 13,
-      "minimumPassedArticles": 12,
-      "passedArticleCount": 12,
       "deferred": [
         {
           "name": "자일동",
@@ -58,85 +164,7 @@
           "status": "deferred"
         }
       ]
-    },
-    "input": {
-      "controlRevision": "bce007c3ac0c1d74eeaf1fd5878b862ad47e0986",
-      "runtimeSourceRevision": "f2f29584f1832b6f040fc2901a6e60c5899be23a"
-    },
-    "lastSuccessfulStage": "public_http_and_gsc_submission_verified",
-    "nextIntent": "review bounded credential-free indexnow_only recovery; preserve live source and deployment",
-    "sourceRevision": "c047f1127f7908085fce55ab41504a23ff9b199c",
-    "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/37952223139",
-    "publicQa": {
-      "http": "PASS",
-      "checkedPaths": 29,
-      "sourceRevision": "c047f1127f7908085fce55ab41504a23ff9b199c",
-      "normalHtmlRoutes": 14,
-      "sitemapUrls": 14,
-      "deferredAndUnknown404": "PASS",
-      "desktop": "PASS",
-      "narrow": "PASS"
-    },
-    "indexNowReceipt": {
-      "state": "preflight_failed_before_post",
-      "error": "sitemap_not_public",
-      "historicalHttpStatusOrHeader": "not_retained_by_original_helper",
-      "journalConfirmedEmpty": true,
-      "submissionAttempted": false
-    },
-    "gsc": {
-      "sitemapUrl": "https://uijeongbu.fwith.kr/sitemap-index.xml",
-      "accepted": true,
-      "confirmed": true,
-      "lastSubmitted": "2026-10-09T15:34:08.908Z",
-      "processing": "pending",
-      "errors": 0,
-      "warnings": 0
-    },
-    "pendingExternalAction": {
-      "action": "workflow_dispatch",
-      "workflow": ".github/workflows/uijeongbu-direct-publish.yml",
-      "controlRevision": "26dc5a2f9b9637cdf5b141d5ca9afb0081c64db5",
-      "expected_revision": "c047f1127f7908085fce55ab41504a23ff9b199c",
-      "indexnow_only": true,
-      "dispatchCount": 1,
-      "cloudflareMutationsAllowed": false,
-      "idempotencyKey": "uijeongbu-indexnow-recovery-c047f1127f7908085fce55ab41504a23ff9b199c"
-    },
-    "receiptJournal": {
-      "number": 266,
-      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266",
-      "readbackVerified": true
-    },
-    "review": {
-      "independentContent": "PASS",
-      "sourceTests": 65,
-      "publisherTests": 31,
-      "sourceFilesVerified": 69,
-      "exactMatchingProductCards": 48,
-      "normalHtmlRoutes": 14,
-      "sitemapUrls": 14,
-      "sourceReviewSha256": "622f9884bc092b2703aedcf552e3256323fd36c1a1b6d23fb666dacfb1d80255",
-      "sourceBuildWithFinalSha": "PASS",
-      "hostedQa": "PASS"
-    },
-    "actualWorkflow": {
-      "runId": 37952223139,
-      "sourceRevision": "c047f1127f7908085fce55ab41504a23ff9b199c",
-      "controlRevision": "e20bbf7d3224ab782fe990958d903c55bea82672",
-      "dispatchClickedAt": "2026-10-09T15:29:53Z",
-      "dispatchCount": 1,
-      "result": "failure_after_public_http"
-    },
-    "recoveryWorkflow": {
-      "runId": 37954272286,
-      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/37954272286",
-      "controlRevision": "d171ada5fc80c49748b1ccbf8a40c968b2e33ab2",
-      "expectedRevision": "c047f1127f7908085fce55ab41504a23ff9b199c",
-      "indexnowOnly": true,
-      "dispatchClickedAt": "2026-10-09T15:46:33Z",
-      "result": "queued"
     }
-  },
-  "history": []
+  ],
+  "nextAction": "select_next_unbuilt_region_on_next_hourly_invocation"
 }
