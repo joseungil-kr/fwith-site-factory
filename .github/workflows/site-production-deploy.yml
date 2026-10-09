@@ -85,7 +85,9 @@ jobs:
           if not site or site['repo']!=os.environ['GITHUB_REPOSITORY']: raise SystemExit('Unregistered target')
           import sys
           sys.path.insert(0, 'control/site-factory/engine')
-          if key == 'namyangju-flower-v2':
+          from whole_initial import is_initial_candidate, reviewed_release_binding
+          if is_initial_candidate(key):
+              reviewed_release_binding(key)
               if 'SITE_KEY: goyang-flower-v2' in os.environ.get('ISSUE_BODY', ''):
                   raise SystemExit('Initial issue body must not select another site deployment lock')
               from whole_initial import resolve
@@ -441,7 +443,11 @@ jobs:
           revision = os.environ.get('REVISION') or values.get('EXPECTED_REVISION', '')
           site = json.load(open('control/.github/site-factory-sites.json'))['sites'].get(key)
           if not site or site['repo'] != os.environ['GITHUB_REPOSITORY']: raise SystemExit('Unregistered site')
-          if key == 'namyangju-flower-v2':
+          import sys
+          sys.path.insert(0, 'control/site-factory/engine')
+          from whole_initial import is_initial_candidate, reviewed_release_binding
+          if is_initial_candidate(key):
+              reviewed_release_binding(key)
               if 'SITE_KEY: goyang-flower-v2' in os.environ.get('ISSUE_BODY', ''):
                   raise SystemExit('Initial issue body must not select another site deployment lock')
               import sys
@@ -526,6 +532,7 @@ jobs:
           SCOPE_KEY: ${{ steps.target.outputs.scope_key }}
           NAVER: ${{ steps.target.outputs.naver }}
           INDEXNOW: ${{ steps.target.outputs.indexnow }}
+          INITIAL_COVERAGE: ${{ steps.target.outputs.initial_coverage }}
         run: |
           if [ "$SITE_KEY" = blog-fwith ]; then
             python3 control/site-factory/engine/blog_indexnow_finalize.py verify --registry control/.github/site-factory-sites.json --revision "$REVISION" --root finalization-build --report recovery-live-qa.json
@@ -536,7 +543,7 @@ jobs:
               if [ "$attempt" = 6 ]; then exit 1; fi
               sleep 10
             done
-          elif [ "$SITE_KEY" = namyangju-flower-v2 ]; then
+          elif [ "$SITE_KEY" = namyangju-flower-v2 ] || [ "${INITIAL_COVERAGE:-false}" = true ]; then
             python3 control/site-factory/engine/verify_initial.py --root finalization-build --site-key "$SITE_KEY" --origin "$ORIGIN" --revision "$REVISION" --phase production --report recovery-live-qa.json
           else
             python3 control/site-factory/engine/verify_live.py --site-key "$SITE_KEY" --root finalization-build --origin "$ORIGIN" --revision "$REVISION" --naver-verification "$NAVER" --indexnow-key "$INDEXNOW" --report recovery-live-qa.json

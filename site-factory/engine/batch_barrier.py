@@ -189,6 +189,12 @@ BUCHEON_SITE = 'bucheon-flower-v2'
 BUCHEON_SCOPE = 'bucheon-flower-v2-dong-coverage-20261004'
 BUCHEON_TARGET = {'repo': 'joseungil-kr/fwith-site-factory', 'branch': 'site-factory-bucheon-v2',
                   'root': 'site-factory/bucheon-flower'}
+# Exact existing Namyangju frozen batch controller. This pin preserves its
+# already-reviewed renderer when current main gains additional strict adapters.
+INITIAL_RENDERER_ALLOWLIST = {
+    ('namyangju-flower-v2', '45f13097c9e951934486f88b0735fd59394f20c3'):
+        '3ea763515965fcdf43a0f013e0bc44e931e6fb16a21014f12a722f8cf87b2ad9',
+}
 LEGACY_RENDERER_ALLOWLIST = {
     (BUCHEON_SITE, '00d63c5b557401100ae44b25e8c804c28c9c461e'):
         'bd3d22c3a584c94133e8bea1ea0603b94f2dbd6c60ad3ca25c5e9d5e0f6fdcd3',
@@ -215,7 +221,7 @@ def bucheon_representatives(coverage, site=BUCHEON_SITE, scope=BUCHEON_SCOPE, un
         require(isinstance(alias.get('name'), str) and alias['name'] and relations
                 and alias.get('districtKey') in districts and not alias.get('unresolvedCandidateNames')
                 and all(key in units and (alias['districtKey'] in units[key]['districtKeys']
-                        or (site == 'namyangju-flower-v2' and __import__('provision_goyang').exact_cross_district_evidence(coverage, alias, units[key], rel)))
+                        or __import__('provision_goyang').exact_cross_district_evidence(coverage, alias, units[key], rel))
                         and rel.get('scope') in ('whole', 'partial') for key, rel in relations.items()),
                 'Bucheon administrative relation mismatch')
     rows = coverage['representatives']
@@ -415,7 +421,8 @@ def check_goyang(batch, evidence, git):
     registry = json.loads(git.read(batch['registryRevision'], '.github/site-factory-sites.json'))
     renderer_bytes = git.read(batch['registryRevision'], 'site-factory/engine/render_snapshot.py')
     same_renderer = renderer_bytes == Path(snapshot_renderer.__file__).read_bytes()
-    require(same_renderer or (not initial and LEGACY_RENDERER_ALLOWLIST.get((site, batch['registryRevision']))
+    renderer_allowlist = INITIAL_RENDERER_ALLOWLIST if initial else LEGACY_RENDERER_ALLOWLIST
+    require(same_renderer or (renderer_allowlist.get((site, batch['registryRevision']))
             == hashlib.sha256(renderer_bytes).hexdigest()), 'Executing renderer differs from pinned controller bytes')
     target = registry['sites'][site]
     require(all(target.get(k) == v for k, v in expected_target.items())

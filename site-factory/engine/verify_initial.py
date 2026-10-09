@@ -10,14 +10,15 @@ from urllib.parse import unquote
 import xml.etree.ElementTree as ET
 
 from provision_goyang import target_contract
-from whole_initial import INITIAL_REGIONS
+from whole_initial import is_reviewed_initial_site, reviewed_release_binding
 from verify_live import (Document, validate_html, goyang_http_fetch,
                          goyang_artifact_matches, require)
 
 
 def verify(root, site_key, origin, revision, phase, fetch):
     root = Path(root)
-    require(site_key in INITIAL_REGIONS and re.fullmatch(r'[0-9a-f]{40}', revision or ''), 'Unknown initial identity')
+    require(is_reviewed_initial_site(site_key) and re.fullmatch(r'[0-9a-f]{40}', revision or ''), 'Unknown initial identity')
+    reviewed_release_binding(site_key)
     target = target_contract(site_key)
     require(phase in ('preview', 'production') and origin == target['stagingUrl' if phase == 'preview' else 'siteUrl'],
             'Initial HTTP verification origin/phase mismatch')

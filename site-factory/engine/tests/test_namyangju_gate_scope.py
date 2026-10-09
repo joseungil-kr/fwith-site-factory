@@ -42,11 +42,12 @@ class NamyangjuGateScopeTests(unittest.TestCase):
   with tempfile.TemporaryDirectory() as directory:
    root=pathlib.Path(directory);(root/'src/data').mkdir(parents=True)
    (root/'src/data/publish-manifest.json').write_text('{"pages": []}')
-   for key in ['pyeongtaek-flower-v2','anyang-flower-v2','suwon-flower-test']:
+   for key in ['suwon-flower-test']:
     with self.subTest(site=key),self.assertRaises(ReachedLegacyFetch):
      verify_live.verify(root,'https://example.com','4'*40,fetch,site_key=key)
-   with self.assertRaisesRegex(ValueError,'Namyangju initial release'):
-    verify_live.verify(root,'https://example.com','4'*40,fetch,site_key=SITE)
+   for key in [SITE,'pyeongtaek-flower-v2','anyang-flower-v2']:
+    with self.subTest(site=key),self.assertRaisesRegex(ValueError,'initial release'):
+     verify_live.verify(root,'https://example.com','4'*40,fetch,site_key=key)
  def test_recovery_shell_dispatches_only_namyangju_to_initial(self):
   import re,subprocess
   text=(P/'.github/workflows/site-production-deploy.yml').read_text()

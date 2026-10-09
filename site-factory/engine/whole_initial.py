@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bindings for the exact Namyangju whole-region initial release.
+"""Bindings for explicitly reviewed whole-region initial releases.
 
 Reuses the frozen snapshot/batch pipeline. This module does not select regions,
 write content, approve evidence, schedule work or create credentials.
@@ -29,14 +29,108 @@ def require(condition, message):
         raise ValueError(message)
 
 
+# Preparation only: no new site is enabled by its provision/template profile.
+# Add an entry only after independent geography/bootstrap review, using the
+# exact initialLaunch fields, bootstrap commit and durable review evidence URL.
+# No request or registry value may populate this trusted mapping at runtime.
+ADDITIONAL_REVIEWED_RELEASES = {}
+
+# Only this independently reviewed site-only catalog reconciliation is modeled.
+# It never changes immutable bootstrap bytes or admits arbitrary code/assets.
+RUNTIME_RECONCILIATION_PATHS = frozenset({
+    'src/data/products.json', 'src/lib/catalog.mjs', 'src/pages/index.astro',
+    'src/data/social-image-provenance.json', 'scripts/qa_static.py',
+})
+
+
+def is_initial_candidate(site):
+    """Known whole-initial identities never fall back to generic release gates."""
+    return site in ALL_INITIAL_REGIONS
+
+
+def is_reviewed_initial_site(site):
+    return site in INITIAL_REGIONS or site in ADDITIONAL_REVIEWED_RELEASES
+
+
+def reviewed_release_binding(site):
+    if site == 'namyangju-flower-v2':
+        # Preserve the established exact20 contract and historical source pin.
+        return {'initialLaunch': REVIEWED_INITIAL,
+                'bootstrapSourceSha': REVIEWED_BOOTSTRAP_REVISION}
+    require(site in ALL_INITIAL_REGIONS and site in ALL_INITIAL_SOURCE_PROFILES,
+            'Initial region has no reviewed source and identity profile')
+    binding = ADDITIONAL_REVIEWED_RELEASES.get(site)
+    fields = {'initialLaunch', 'bootstrapSourceSha', 'templateRevision', 'reviewEvidenceUrl'}
+    require(type(binding) is dict and set(binding) in (fields, fields | {'runtimeAmendment'}),
+        'Initial region has no exact independently reviewed release binding')
+    initial = binding['initialLaunch']
+    require(type(initial) is dict and set(initial) == set(INITIAL_FIELDS)
+            and initial.get('mode') == 'whole-dong-initial'
+            and re.fullmatch(re.escape(site) + r'-dong-coverage-[0-9]{8}', initial.get('scopeKey', ''))
+            and type(initial.get('officialUnitCount')) is int and initial['officialUnitCount'] > 0
+            and all(re.fullmatch(r'[0-9a-f]{64}', initial.get(key, '')) for key in
+                ('membershipSourceSha256', 'coverageSha256', 'memberIdentitySha256')),
+            'Initial reviewed release membership binding is malformed')
+    from datetime import datetime
+    datetime.strptime(initial['scopeKey'][-8:], '%Y%m%d')
+    require(re.fullmatch(r'[0-9a-f]{40}', binding.get('bootstrapSourceSha', ''))
+            and binding.get('templateRevision') == ALL_INITIAL_SOURCE_PROFILES[site]['sourceRevision']
+            and re.fullmatch(r'https://github\.com/joseungil-kr/fwith-site-factory/issues/[1-9][0-9]*(?:#issuecomment-[0-9]+)?',
+                             binding.get('reviewEvidenceUrl', '')),
+            'Initial reviewed release source or independent evidence binding is malformed')
+    reviewed_runtime_amendment(binding)
+    return binding
+
+
+def reviewed_runtime_amendment(binding):
+    amendment = binding.get('runtimeAmendment')
+    if amendment is None:
+        require('runtimeAmendment' not in binding, 'Initial runtime amendment cannot be empty')
+        return None
+    require(type(amendment) is dict and set(amendment) == {'files', 'reviewEvidenceUrl'}
+            and type(amendment.get('files')) is dict
+            and set(amendment['files']) == RUNTIME_RECONCILIATION_PATHS
+            and re.fullmatch(r'https://github\.com/joseungil-kr/fwith-site-factory/issues/[1-9][0-9]*(?:#issuecomment-[0-9]+)?', amendment.get('reviewEvidenceUrl', '')),
+            'Initial runtime amendment requires exact reviewed catalog paths and evidence')
+    for hashes in amendment['files'].values():
+        require(type(hashes) is dict and set(hashes) == {'beforeSha256', 'afterSha256'}
+                and all(re.fullmatch(r'[0-9a-f]{64}', value) for value in hashes.values())
+                and hashes['beforeSha256'] != hashes['afterSha256'],
+                'Initial runtime amendment requires exact changed source hashes')
+    return amendment
+
+
+def initial_source_profile(site):
+    reviewed_release_binding(site)
+    return INITIAL_SOURCE_PROFILES.get(site, ALL_INITIAL_SOURCE_PROFILES.get(site))
+
+
+def validate_reviewed_membership(site, target):
+    binding = reviewed_release_binding(site)
+    require(target.get('initialLaunch') == binding['initialLaunch'],
+            'Initial membership differs from exact reviewed20 profile' if site == 'namyangju-flower-v2'
+            else 'Initial membership differs from exact reviewed release profile')
+    if 'reviewEvidenceUrl' in binding:
+        require(target.get('initialReviewEvidenceUrl') == binding['reviewEvidenceUrl'],
+                'Initial independent membership review evidence binding changed')
+    amendment = reviewed_runtime_amendment(binding)
+    if amendment is not None:
+        digest = hashlib.sha256(json.dumps(amendment, ensure_ascii=False, sort_keys=True,
+            separators=(',', ':')).encode()).hexdigest()
+        require(target.get('initialRuntimeAmendmentSha256') == digest,
+                'Initial independently reviewed runtime amendment binding changed')
+    else:
+        require('initialRuntimeAmendmentSha256' not in target, 'Initial runtime amendment is not reviewed')
+    return binding
+
+
 def initial_batch_identity(batch):
     site, scope = batch.get('siteKey'), batch.get('scopeKey')
-    require(site in INITIAL_REGIONS and site in INITIAL_SOURCE_PROFILES,
-            'Initial region has no reviewed source and identity profile')
-    require(scope == 'namyangju-flower-v2-dong-coverage-20261005',
+    binding = reviewed_release_binding(site)
+    require(scope == binding['initialLaunch']['scopeKey'],
             'Initial batch needs its exact whole-region scope')
     require(batch.get('ruleRevision') == RULE_REVISION and
-            batch.get('templateRevision') == INITIAL_SOURCE_PROFILES[site]['sourceRevision'],
+            batch.get('templateRevision') == initial_source_profile(site)['sourceRevision'],
             'Initial batch rule/template revision differs from reviewed profile')
     target = target_contract(site)
     return site, scope, {'repo': 'joseungil-kr/fwith-site-factory',
@@ -46,11 +140,11 @@ def initial_batch_identity(batch):
 def validate_initial_binding(batch, target, git, base, final):
     """Bind geographic membership and unchanged runtime to actual bootstrap bytes."""
     site, scope, identity = initial_batch_identity(batch)
-    require(target.get('initialLaunch') == REVIEWED_INITIAL, 'Initial membership differs from exact reviewed20 profile')
+    binding = validate_reviewed_membership(site, target)
     contract = target_contract(site)
-    profile = INITIAL_SOURCE_PROFILES[site]
+    profile = initial_source_profile(site)
     bootstrap = batch.get('bootstrapSourceSha')
-    require(bootstrap == REVIEWED_BOOTSTRAP_REVISION, 'Initial bootstrap differs from exact reviewed input source')
+    require(bootstrap == binding['bootstrapSourceSha'], 'Initial bootstrap differs from exact reviewed input source')
     require(isinstance(bootstrap, str) and re.fullmatch(r'[0-9a-f]{40}', bootstrap)
             and git.ancestor(bootstrap, base), 'Initial baseline must descend from exact bootstrap revision')
     require(target.get('hubPolicy') == 'child-threshold-v1', 'Initial hub policy opt-in is missing')
@@ -85,7 +179,7 @@ def validate_initial_binding(batch, target, git, base, final):
     for member in members:
         slug = member.get('slug', '')
         require(re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', slug)
-                and member.get('unit_key', '').startswith(INITIAL_REGIONS[site] + '시/')
+                and member.get('unit_key', '').startswith(ALL_INITIAL_REGIONS[site] + '시/')
                 and member.get('page_key') == site + '-region-' + slug
                 and member.get('route') == '/regions/' + slug + '/'
                 and member.get('intent_key') == site.split('-')[0] + '|flower-delivery|local-order|' + slug,
@@ -150,6 +244,9 @@ def validate_initial_binding(batch, target, git, base, final):
         require(type(config.get('productionApproved')) is bool, 'Initial source approval must be boolean')
         original['productionApproved'] = config['productionApproved']
         require(config == original, 'Initial site configuration changed outside production approval')
+    amendment = reviewed_runtime_amendment(binding)
+    amended_files = amendment['files'] if amendment is not None else {}
+    require(set(amended_files) <= paths, 'Initial runtime amendment cannot add source files')
     source_files = {}
     for row in source_manifest:
         relative = row['path']
@@ -158,7 +255,14 @@ def validate_initial_binding(batch, target, git, base, final):
         original = git.read(profile['sourceRevision'], provenance['sourceRoot'] + '/' + relative)
         source_files[relative] = original
         require(hashlib.sha256(original).hexdigest() == row.get('sha256'), 'Initial source manifest hash changed')
-        if relative not in INITIAL_ADAPTATIONS | {'src/data/pages.json'}:
+        if relative in amended_files:
+            hashes = amended_files[relative]
+            require(hashlib.sha256(original).hexdigest() == hashes['beforeSha256'],
+                    'Initial runtime amendment original source hash changed')
+            for revision in (base, final):
+                require(hashlib.sha256(git.read(revision, identity['root'] + '/' + relative)).hexdigest()
+                        == hashes['afterSha256'], 'Initial reviewed runtime amendment bytes changed: ' + relative)
+        elif relative not in INITIAL_ADAPTATIONS | {'src/data/pages.json'}:
             for revision in (base, final):
                 require(git.read(revision, identity['root'] + '/' + relative) == original,
                         'Initial reviewed runtime/Truth/catalog asset changed: ' + relative)
@@ -172,8 +276,8 @@ def validate_initial_binding(batch, target, git, base, final):
 def resolve(site, repository, revision, launch_key, scope_key):
     """Public gate is bound to an exact reviewed initial batch, never growth flags."""
     key = site.get('initialDeployment', {}).get('siteKey')
-    require(site.get('initialLaunch') == REVIEWED_INITIAL, 'Initial membership differs from exact reviewed20 profile')
-    require(key in INITIAL_REGIONS and key in INITIAL_SOURCE_PROFILES, 'Unknown initial deployment identity')
+    validate_reviewed_membership(key, site)
+    require(is_reviewed_initial_site(key), 'Unknown initial deployment identity')
     target = target_contract(key)
     require(repository == 'joseungil-kr/fwith-site-factory' and site.get('repo') == repository,
             'Initial repository identity mismatch')
@@ -218,13 +322,13 @@ def resolve(site, repository, revision, launch_key, scope_key):
             'site_url': target['siteUrl'], 'worker': target['productionWorker'], 'wrangler': 'wrangler.jsonc',
             'revision': revision, 'build_root': 'release-build', 'graph': 'scripts/qa_graph.mjs',
             'naver': '', 'indexnow': site['indexnowKey'], 'initial_coverage': 'true',
-            'template_revision': INITIAL_SOURCE_PROFILES[key]['sourceRevision'],
+            'template_revision': initial_source_profile(key)['sourceRevision'],
             'launch_key': launch_key, 'scope_key': scope_key}
 
 
 def resolve_preview(site, repository, key, revision, launch_key, scope_key):
-    require(site.get('initialLaunch') == REVIEWED_INITIAL, 'Initial membership differs from exact reviewed20 profile')
-    require(key in INITIAL_REGIONS and key in INITIAL_SOURCE_PROFILES, 'Unknown initial preview identity')
+    validate_reviewed_membership(key, site)
+    require(is_reviewed_initial_site(key), 'Unknown initial preview identity')
     target = target_contract(key)
     require(repository == site.get('repo') == 'joseungil-kr/fwith-site-factory'
             and all(site.get(k) == target[v] for k, v in [('branch', 'branch'), ('root', 'root'),
@@ -250,7 +354,7 @@ def resolve_preview(site, repository, key, revision, launch_key, scope_key):
     return {'site_key': key, 'root': target['root'], 'url': target['stagingUrl'], 'config': 'wrangler.staging.jsonc',
             'revision': revision, 'branch': target['branch'], 'isolated': 'true', 'build_root': 'preview-build',
             'staging_worker': target['stagingWorker'], 'initial_coverage': 'true',
-            'template_revision': INITIAL_SOURCE_PROFILES[key]['sourceRevision'],
+            'template_revision': initial_source_profile(key)['sourceRevision'],
             'launch_key': launch_key, 'scope_key': scope_key}
 
 
@@ -262,7 +366,7 @@ def validate_preview_source(site, key, revision, root, workspace=None, *, git=No
     require(workspace is not None or git is not None, 'Initial preview needs committed source evidence')
     evidence_git = git if git is not None else GitEvidence(workspace)
     binding = {'siteKey': key, 'scopeKey': scope, 'ruleRevision': RULE_REVISION,
-               'templateRevision': INITIAL_SOURCE_PROFILES[key]['sourceRevision'],
+               'templateRevision': initial_source_profile(key)['sourceRevision'],
                'membershipSourceSha256': site['initialLaunch']['membershipSourceSha256'],
                'bootstrapSourceSha': site['initialBootstrapRevision']}
     validate_initial_binding(binding, site, evidence_git, site['initialPreviewBaselineRevision'], revision)
