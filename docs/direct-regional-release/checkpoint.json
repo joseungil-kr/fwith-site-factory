@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-09T17:30:45Z",
+  "updatedAt": "2026-10-09T17:34:56.821Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -27,7 +27,7 @@
   "current": {
     "scopeKey": "dongducheon-direct-initial-20261010",
     "city": "동두천시",
-    "status": "deployment_running",
+    "status": "public_http_verified_screen_qa_in_progress",
     "owner": {
       "scheduledRunAt": "2026-10-09T17:00:00Z",
       "observedMessageAt": "2026-10-09T17:03:56Z",
@@ -44,7 +44,7 @@
       "root": "site-factory/dongducheon-flower",
       "worker": "dongducheon-flower-guide",
       "hostname": "dongducheon.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true
     },
     "plan": {
@@ -78,14 +78,20 @@
       "inProgressWorkflows": 0,
       "providerOwnershipCollisionCheck": "pending_required_before_mutation"
     },
-    "lastSuccessfulStage": "actual_workflow_dispatch_after_explicit_target_approval",
-    "nextIntent": "Resume same exact source only after domain-attachment action approval is satisfied; do not create another region or retry through a different execution path",
+    "lastSuccessfulStage": "public_http_and_indexnow200_verified",
+    "nextIntent": "Complete independent desktop/narrow QA, then submit exact public sitemap to GSC and read back",
     "receiptJournal": {
       "number": 266,
       "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266",
       "reuseExistingWithoutReopen": true
     },
-    "pendingExternalAction": null,
+    "pendingExternalAction": {
+      "action": "submit_sitemap",
+      "siteUrl": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://dongducheon.fwith.kr/sitemap-index.xml",
+      "idempotencyKey": "gsc-dongducheon-f13a51b75707e5b2e4cfb499da48372faa314858",
+      "precondition": "independent hosted desktop/narrow QA PASS"
+    },
     "review": {
       "independentContent": "PASS",
       "writerADigest": "dd270867ca11f2a5df7aa7b44ecef04faed7ee52a901b2964ac4469cca762e39",
@@ -134,7 +140,8 @@
       "dispatchObservedAt": "2026-10-09T17:29:59Z",
       "createdAt": "2026-10-09T17:29:57Z",
       "dispatchCount": 1,
-      "result": "in_progress"
+      "result": "success",
+      "completedAt": "2026-10-09T17:31:35Z"
     },
     "userIntervention": true,
     "manualAssistance": {
@@ -142,6 +149,30 @@
       "scope": "custom_hostname_attachment",
       "receivedAt": "2026-10-09T17:27:12Z",
       "contentOrDeploymentPerformedManuallyByUser": false
+    },
+    "indexNowReceipt": {
+      "attempt": 1,
+      "endpoint": "https://searchadvisor.naver.com/indexnow",
+      "fingerprint": "92726408b78e28bbbc4c22053bb1889d55c28feb2d8f656567888afed223e9db",
+      "httpStatus": 200,
+      "origin": "https://dongducheon.fwith.kr",
+      "recordedAt": "2026-10-09T17:31:28.654813+00:00",
+      "revision": "f13a51b75707e5b2e4cfb499da48372faa314858",
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/37966691887",
+      "siteKey": "dongducheon-flower-direct",
+      "state": "received",
+      "urlCount": 13,
+      "urlSetSha256": "75c174bf093f26858991a6a0ed560ff325fd385bd1b4a7308f343449378c53ab",
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6085957867"
+    },
+    "publicQa": {
+      "http": "PASS",
+      "checkedPaths": 28,
+      "normalHtmlRoutes": 13,
+      "sitemapUrls": 13,
+      "sourceRevision": "f13a51b75707e5b2e4cfb499da48372faa314858",
+      "desktop": "PASS",
+      "narrow": "in_progress"
     }
   },
   "history": [
