@@ -105,7 +105,7 @@ jobs:
           artifact-ids: ${{ needs.build.outputs.artifact_id }}
           merge-multiple: true
           path: release
-      - name: Verify exact artifact, 7 routes, SEO, assets and CTAs
+      - name: Verify exact artifact, 12 articles, 15 sitemap URLs, SEO, assets and CTAs
         env:
           RELEASE_SHA256: ${{ needs.build.outputs.release_sha256 }}
         run: python3 control/scripts/direct-anyang/publish.py artifact --report artifact-check.json
