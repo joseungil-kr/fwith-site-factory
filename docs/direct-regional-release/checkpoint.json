@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T00:56:12.918Z",
+  "updatedAt": "2026-10-10T01:08:55.224Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -24,182 +24,13 @@
     "guri.fwith.kr",
     "osan.fwith.kr",
     "siheung.fwith.kr",
-    "gunpo.fwith.kr"
+    "gunpo.fwith.kr",
+    "uiwang.fwith.kr"
   ],
   "excludedHosts": [
     "blog.fwith.kr"
   ],
-  "current": {
-    "scopeKey": "uiwang-direct-initial-20261010",
-    "city": "의왕시",
-    "status": "resuming_hosted_browser_qa",
-    "owner": {
-      "scheduledRunAt": "2026-10-10T01:00:00Z",
-      "observedExecutionAt": "2026-10-10T00:55:40Z",
-      "predecessorCompletionPriority": "Gunpo approved release completed before new city claim",
-      "newRegionStartedAt": "2026-10-10T00:01:05Z",
-      "serviceInvocationId": null,
-      "checkpointId": "direct-uiwang-resume-20261010T010000Z",
-      "active": true,
-      "resumedAt": "2026-10-10T00:56:12.918Z",
-      "previousExecution": {
-        "scheduledRunAt": "2026-10-10T00:00:00Z",
-        "observedExecutionAt": "2026-10-09T23:55:34Z",
-        "predecessorCompletionPriority": "Gunpo approved release completed before new city claim",
-        "newRegionStartedAt": "2026-10-10T00:01:05Z",
-        "serviceInvocationId": null,
-        "checkpointId": "direct-uiwang-20261010T000000Z",
-        "active": false,
-        "resumedAt": "2026-10-10T00:18:41.121Z",
-        "endedAt": "2026-10-10T00:33:42.605Z"
-      }
-    },
-    "identity": {
-      "repository": "joseungil-kr/fwith-site-factory",
-      "branch": "site-factory-uiwang-direct",
-      "root": "site-factory/uiwang-flower",
-      "worker": "uiwang-flower-guide",
-      "hostname": "uiwang.fwith.kr",
-      "externalCreationVerified": true,
-      "sourceBranchCreatedVerified": true
-    },
-    "input": {
-      "controlRevision": "02777593468f41c51c33d8c1b2bb82e82fc42e58",
-      "runtimeSourceRevision": "1d440850fc4ca039abcaacc8a5f3a866ba9c8b12"
-    },
-    "selection": {
-      "officialCode": "41430",
-      "reason": "Next eligible municipality after completed Gunpo in official code order; approval-waiting Gwacheon excluded"
-    },
-    "conflictChecks": {
-      "branchesChecked": 111,
-      "matchingBranch": false,
-      "openPullRequests": 0,
-      "inProgressWorkflows": 0,
-      "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "PASS_actual_run_38008562918"
-    },
-    "plan": {
-      "state": "fixed_official_membership_before_writing",
-      "plannedArticleCount": 11,
-      "minimumPassedArticles": 10,
-      "passedArticleCount": 11,
-      "administrativeUnits": 6,
-      "crosswalkRelationships": 16,
-      "deferred": [],
-      "membershipPath": "docs/direct-regional-release/uiwang/membership.json",
-      "membershipSha256": "c731c3d631682155b0eac7a8ced94fb2f57586435f02e6851759159785488552"
-    },
-    "lastSuccessfulStage": "independent_public_http_and_durable_indexnow_receipt",
-    "nextIntent": "Recheck actual hosted desktop/narrow connection, complete visual QA then submit and read back GSC; do not redeploy or repeat IndexNow",
-    "pendingExternalAction": {
-      "action": "hosted_browser_qa_then_conditional_gsc_submission",
-      "sourceRevision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
-      "hostname": "uiwang.fwith.kr",
-      "sitemap": "https://uiwang.fwith.kr/sitemap-index.xml",
-      "requiresAdditionalUserApproval": false
-    },
-    "controlRevision": "2bfa98811097ddf4a0e8f4cc8f3bb3195422af9b",
-    "review": {
-      "sourceInventorySha256": "91603cd2e3fe9ce6c3793324364c51110504c4705d40cfdeed3662a0c86fd8ad",
-      "writerDigests": [
-        "d0a86ac85a87b8957ea999090c9b64f71c08ee08723ef37eec0c090f2ecded76",
-        "d28d44acde3932a1db9cc7ee50ad6d471f0188927e1affaa925e5c4335832764"
-      ],
-      "sourceTests": 64,
-      "publisherTests": 34,
-      "htmlRoutes": 13,
-      "sitemapUrls": 13,
-      "hostedQa": "HTTP_PASS_VISUAL_PENDING",
-      "evidencePath": "docs/direct-regional-release/uiwang/precommit-source-review.json",
-      "finalEvidencePath": "docs/direct-regional-release/uiwang/final-predeploy-review.json",
-      "finalArtifactSha256": "6a410416be2b3aaa2ff75aa684f2cf1e569059ad66dec937fe32cf0b4c7a0757"
-    },
-    "sourceRevision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
-    "requiredApproval": {
-      "action": "Run the existing Uiwang direct publication workflow, including attaching uiwang.fwith.kr to uiwang-flower-guide in the existing Cloudflare account and publishing the reviewed exact source",
-      "target": {
-        "hostname": "uiwang.fwith.kr",
-        "worker": "uiwang-flower-guide",
-        "workflow": ".github/workflows/uiwang-direct-publish.yml",
-        "sourceRevision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412"
-      },
-      "reason": "Action-time safety review requires explicit approval for this exact custom hostname attachment.",
-      "scope": "Only this hostname and reviewed source; no overrides, ownership transfer, credentials or security changes."
-    },
-    "dispatch": {
-      "status": "completed",
-      "runId": 38008562918,
-      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38008562918",
-      "controlRevision": "8adceeab84caa276efdfe0890a0ce94843f2f119",
-      "createdAt": "2026-10-10T00:19:43Z",
-      "sourceRevision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
-      "attempt": 1,
-      "conclusion": "success",
-      "completedAt": "2026-10-10T00:20:58Z"
-    },
-    "publication": {
-      "status": "public_http_verified",
-      "url": "https://uiwang.fwith.kr/",
-      "sourceRevision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
-      "hostedQa": "HTTP_PASS_DESKTOP_NARROW_NOT_VERIFIED_BROWSER_CONNECTION_REFUSED",
-      "indexNow": {
-        "attempt": 1,
-        "endpoint": "https://searchadvisor.naver.com/indexnow",
-        "fingerprint": "b42b421945553a71b2ec4c47aa04ef3245e5485809124a46b1cb6cb958ec4662",
-        "httpStatus": 200,
-        "origin": "https://uiwang.fwith.kr",
-        "recordedAt": "2026-10-10T00:20:51.408840+00:00",
-        "revision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
-        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38008562918",
-        "siteKey": "uiwang-flower-direct",
-        "state": "received",
-        "urlCount": 13,
-        "urlSetSha256": "6d67d959b07ab0b3b9eff73df8f53ddbe6c65aec1baa0a9eb41fb4033e157ecf",
-        "evidenceUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6091536819"
-      },
-      "gsc": "NOT_SUBMITTED_PENDING_REQUIRED_HOSTED_VISUAL_QA"
-    },
-    "approval": {
-      "status": "explicit_user_approved",
-      "confirmedAt": "2026-10-10T00:18:06Z",
-      "targetHostname": "uiwang.fwith.kr",
-      "targetWorker": "uiwang-flower-guide",
-      "sourceRevision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
-      "scope": "Existing account exact hostname attachment and reviewed source publication only"
-    },
-    "dispatchHistory": [
-      {
-        "status": "rejected_before_execution",
-        "controlRevision": "5c490bba60ab347c6690e4033d1e2a96882ff127",
-        "attemptedAt": "2026-10-10T00:14:59.072Z",
-        "verifiedAt": "2026-10-10T00:16:10.220Z",
-        "runId": null,
-        "globalLatest100Matches": 0,
-        "workflowUiRunCount": 0
-      }
-    ],
-    "ciVerification": {
-      "status": "PASS",
-      "evidencePath": "docs/direct-regional-release/uiwang/ci-verification.json",
-      "sha256": "18ddb9243ad935c6a24ac77f978c4aaaf43295c14aba4deb96b4e5b17226f502"
-    },
-    "blocker": {
-      "type": "technical_browser_connection",
-      "lastObservedAt": "2026-10-10T00:32:34Z",
-      "message": "Actual cloud browser returns HTTP502 [Errno111] Connection refused; independent public HTTP and CI pass. Cause unestablished.",
-      "safeRecoveryTried": [
-        "ordinary reload",
-        "hard refresh",
-        "query navigation",
-        "fresh tab in same cloud browser",
-        "two quiet propagation waits"
-      ],
-      "siteSourceChangeRequired": false,
-      "evidencePath": "docs/direct-regional-release/uiwang/partial-public-review.json",
-      "sha256": "caaa8117ceae4e2e1ff26f7702f686f06f401efc389137c226bbc83b036e6aa0"
-    }
-  },
+  "current": null,
   "history": [
     {
       "scopeKey": "uijeongbu-direct-initial-20261010",
@@ -1155,6 +986,212 @@
       },
       "elapsedSecondsAfterApproval": 597,
       "evidenceSha256": "37e799e519812cb435f3b8d29a4f2139eced895ba0a5ace0d3ecfc3d421f3a2c"
+    },
+    {
+      "scopeKey": "uiwang-direct-initial-20261010",
+      "city": "의왕시",
+      "status": "complete_public_qa_indexnow_received_gsc_submitted",
+      "owner": {
+        "scheduledRunAt": "2026-10-10T01:00:00Z",
+        "observedExecutionAt": "2026-10-10T00:55:40Z",
+        "predecessorCompletionPriority": "Gunpo approved release completed before new city claim",
+        "newRegionStartedAt": "2026-10-10T00:01:05Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-uiwang-resume-20261010T010000Z",
+        "active": false,
+        "resumedAt": "2026-10-10T00:56:12.918Z",
+        "previousExecution": {
+          "scheduledRunAt": "2026-10-10T00:00:00Z",
+          "observedExecutionAt": "2026-10-09T23:55:34Z",
+          "predecessorCompletionPriority": "Gunpo approved release completed before new city claim",
+          "newRegionStartedAt": "2026-10-10T00:01:05Z",
+          "serviceInvocationId": null,
+          "checkpointId": "direct-uiwang-20261010T000000Z",
+          "active": false,
+          "resumedAt": "2026-10-10T00:18:41.121Z",
+          "endedAt": "2026-10-10T00:33:42.605Z"
+        },
+        "executionState": "completed",
+        "completedAt": "2026-10-10T01:08:55.224Z"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-uiwang-direct",
+        "root": "site-factory/uiwang-flower",
+        "worker": "uiwang-flower-guide",
+        "hostname": "uiwang.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true
+      },
+      "input": {
+        "controlRevision": "02777593468f41c51c33d8c1b2bb82e82fc42e58",
+        "runtimeSourceRevision": "1d440850fc4ca039abcaacc8a5f3a866ba9c8b12"
+      },
+      "selection": {
+        "officialCode": "41430",
+        "reason": "Next eligible municipality after completed Gunpo in official code order; approval-waiting Gwacheon excluded"
+      },
+      "conflictChecks": {
+        "branchesChecked": 111,
+        "matchingBranch": false,
+        "openPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "PASS_actual_run_38008562918"
+      },
+      "plan": {
+        "state": "reviewed_complete_initial_release",
+        "plannedArticleCount": 11,
+        "minimumPassedArticles": 10,
+        "passedArticleCount": 11,
+        "administrativeUnits": 6,
+        "crosswalkRelationships": 16,
+        "deferred": [],
+        "membershipPath": "docs/direct-regional-release/uiwang/membership.json",
+        "membershipSha256": "c731c3d631682155b0eac7a8ced94fb2f57586435f02e6851759159785488552"
+      },
+      "lastSuccessfulStage": "independent_public_qa_indexnow200_gsc_download_readback",
+      "nextIntent": "Next invocation may select next eligible unbuilt region; preserve separate Gwacheon approval wait",
+      "pendingExternalAction": null,
+      "controlRevision": "2bfa98811097ddf4a0e8f4cc8f3bb3195422af9b",
+      "review": {
+        "sourceInventorySha256": "91603cd2e3fe9ce6c3793324364c51110504c4705d40cfdeed3662a0c86fd8ad",
+        "writerDigests": [
+          "d0a86ac85a87b8957ea999090c9b64f71c08ee08723ef37eec0c090f2ecded76",
+          "d28d44acde3932a1db9cc7ee50ad6d471f0188927e1affaa925e5c4335832764"
+        ],
+        "sourceTests": 64,
+        "publisherTests": 34,
+        "htmlRoutes": 13,
+        "sitemapUrls": 13,
+        "hostedQa": "PASS",
+        "evidencePath": "docs/direct-regional-release/uiwang/precommit-source-review.json",
+        "finalEvidencePath": "docs/direct-regional-release/uiwang/final-predeploy-review.json",
+        "finalArtifactSha256": "6a410416be2b3aaa2ff75aa684f2cf1e569059ad66dec937fe32cf0b4c7a0757",
+        "publicEvidencePath": "docs/direct-regional-release/uiwang/final-public-review.json",
+        "publicEvidenceSha256": "d068e3eebf63f19d1a8eafd46b8bd832d98e7d1ca751696790cd0426d919237e"
+      },
+      "sourceRevision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
+      "requiredApproval": {
+        "action": "Run the existing Uiwang direct publication workflow, including attaching uiwang.fwith.kr to uiwang-flower-guide in the existing Cloudflare account and publishing the reviewed exact source",
+        "target": {
+          "hostname": "uiwang.fwith.kr",
+          "worker": "uiwang-flower-guide",
+          "workflow": ".github/workflows/uiwang-direct-publish.yml",
+          "sourceRevision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412"
+        },
+        "reason": "Action-time safety review requires explicit approval for this exact custom hostname attachment.",
+        "scope": "Only this hostname and reviewed source; no overrides, ownership transfer, credentials or security changes.",
+        "status": "resolved_by_explicit_user_approval"
+      },
+      "dispatch": {
+        "status": "completed",
+        "runId": 38008562918,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38008562918",
+        "controlRevision": "8adceeab84caa276efdfe0890a0ce94843f2f119",
+        "createdAt": "2026-10-10T00:19:43Z",
+        "sourceRevision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
+        "attempt": 1,
+        "conclusion": "success",
+        "completedAt": "2026-10-10T00:20:58Z"
+      },
+      "publication": {
+        "status": "public_qa_and_search_submissions_complete",
+        "url": "https://uiwang.fwith.kr/",
+        "sourceRevision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
+        "hostedQa": "PASS",
+        "indexNow": {
+          "attempt": 1,
+          "endpoint": "https://searchadvisor.naver.com/indexnow",
+          "fingerprint": "b42b421945553a71b2ec4c47aa04ef3245e5485809124a46b1cb6cb958ec4662",
+          "httpStatus": 200,
+          "origin": "https://uiwang.fwith.kr",
+          "recordedAt": "2026-10-10T00:20:51.408840+00:00",
+          "revision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
+          "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38008562918",
+          "siteKey": "uiwang-flower-direct",
+          "state": "received",
+          "urlCount": 13,
+          "urlSetSha256": "6d67d959b07ab0b3b9eff73df8f53ddbe6c65aec1baa0a9eb41fb4033e157ecf",
+          "evidenceUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6091536819"
+        },
+        "gsc": "accepted_confirmed_downloaded_zero_errors"
+      },
+      "approval": {
+        "status": "explicit_user_approved",
+        "confirmedAt": "2026-10-10T00:18:06Z",
+        "targetHostname": "uiwang.fwith.kr",
+        "targetWorker": "uiwang-flower-guide",
+        "sourceRevision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
+        "scope": "Existing account exact hostname attachment and reviewed source publication only"
+      },
+      "dispatchHistory": [
+        {
+          "status": "rejected_before_execution",
+          "controlRevision": "5c490bba60ab347c6690e4033d1e2a96882ff127",
+          "attemptedAt": "2026-10-10T00:14:59.072Z",
+          "verifiedAt": "2026-10-10T00:16:10.220Z",
+          "runId": null,
+          "globalLatest100Matches": 0,
+          "workflowUiRunCount": 0
+        }
+      ],
+      "ciVerification": {
+        "status": "PASS",
+        "evidencePath": "docs/direct-regional-release/uiwang/ci-verification.json",
+        "sha256": "18ddb9243ad935c6a24ac77f978c4aaaf43295c14aba4deb96b4e5b17226f502"
+      },
+      "blocker": {
+        "type": "technical_browser_connection",
+        "lastObservedAt": "2026-10-10T00:32:34Z",
+        "message": "Actual cloud browser returns HTTP502 [Errno111] Connection refused; independent public HTTP and CI pass. Cause unestablished.",
+        "safeRecoveryTried": [
+          "ordinary reload",
+          "hard refresh",
+          "query navigation",
+          "fresh tab in same cloud browser",
+          "two quiet propagation waits"
+        ],
+        "siteSourceChangeRequired": false,
+        "evidencePath": "docs/direct-regional-release/uiwang/partial-public-review.json",
+        "sha256": "caaa8117ceae4e2e1ff26f7702f686f06f401efc389137c226bbc83b036e6aa0",
+        "resolvedAt": "2026-10-10T00:56:25Z",
+        "resolution": "Existing cloud browser rendered hostname; full actual hosted two-width QA subsequently passed without source or security change"
+      },
+      "publicQa": {
+        "http": "PASS",
+        "checkedPaths": 27,
+        "normalHtmlRoutes": 13,
+        "sitemapUrls": 13,
+        "desktop": "PASS",
+        "narrow": "PASS",
+        "desktopWidth": 1180,
+        "narrowWidth": 500,
+        "actualRouteObservations": 28,
+        "articleCardsPerWidth": 44
+      },
+      "gsc": {
+        "sitemapUrl": "https://uiwang.fwith.kr/sitemap-index.xml",
+        "accepted": true,
+        "confirmed": true,
+        "lastSubmitted": "2026-10-10T01:08:17.840Z",
+        "lastDownloaded": "2026-10-10T01:08:18.935Z",
+        "processing": "downloaded",
+        "errors": 0,
+        "warnings": 0,
+        "lastObservedAt": "2026-10-10T01:08:55.224Z",
+        "searchIndexing": "not_verified"
+      },
+      "manualAssistance": {
+        "type": "user_action_specific_approval",
+        "scope": "uiwang.fwith.kr hostname attachment and reviewed publication",
+        "receivedAt": "2026-10-10T00:18:06Z",
+        "contentOrDeploymentPerformedManuallyByUser": false
+      },
+      "userIntervention": true,
+      "evidencePath": "docs/direct-regional-release/uiwang/completion-evidence.json",
+      "elapsedSecondsFromNewRegionStart": 4070,
+      "elapsedSecondsThisResume": 795
     }
   ],
   "maintenanceBacklog": [
