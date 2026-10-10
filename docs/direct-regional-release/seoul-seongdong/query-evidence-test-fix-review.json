@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "reviewerRole": "Independent runtime reviewer",
+  "verdict": "NARROW_QUERY_EVIDENCE_TEST_REPAIR_PASS",
+  "generatorSha256": "d75da34282807da76b56ddf96a2ece0307dbf8f51fda18cb07a82c9ff6101dda",
+  "sourceTestTemplateSha256": "7ccecbbfcf864ede962c0e6eda07bafbbbfcc603a2cc654cea899c0c5bdea4fd",
+  "frozenPlanSha256": "dfe96adfa74edef943370f6129ebf5460702c461db4901b2c4ed47bd5d57edfc",
+  "patchSha256": "c1eb75338370fd3108e9342258e2a55770f23b98e2ec8e8a8d6d567a2fff45ac",
+  "exactFrozenQueryEvidenceMatched": true,
+  "cases": [
+    {
+      "case": "unchanged_exact_frozen_evidence",
+      "exitCode": 0,
+      "expected": "PASS",
+      "correctOutcome": true
+    },
+    {
+      "case": "changed_query_evidence",
+      "exitCode": 1,
+      "expected": "FAIL_CLOSED",
+      "correctOutcome": true
+    },
+    {
+      "case": "missing_query_evidence",
+      "exitCode": 1,
+      "expected": "FAIL_CLOSED",
+      "correctOutcome": true
+    },
+    {
+      "case": "extra_unfrozen_query_field",
+      "exitCode": 1,
+      "expected": "FAIL_CLOSED",
+      "correctOutcome": true
+    },
+    {
+      "case": "foreign_representative_keyword",
+      "exitCode": 1,
+      "expected": "FAIL_CLOSED",
+      "correctOutcome": true
+    },
+    {
+      "case": "foreign_membership_name",
+      "exitCode": 1,
+      "expected": "FAIL_CLOSED",
+      "correctOutcome": true
+    },
+    {
+      "case": "foreign_public_article_body",
+      "exitCode": 1,
+      "expected": "FAIL_CLOSED",
+      "correctOutcome": true
+    },
+    {
+      "case": "workflow_id_in_public_source",
+      "exitCode": 1,
+      "expected": "FAIL_CLOSED",
+      "correctOutcome": true
+    }
+  ],
+  "scope": "One exact frozen non-rendered research field excluded only after deep equality. No customer field exclusion and no runtime/publisher changes.",
+  "actualReleaseApproval": false
+}
