@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T10:43:58.054Z",
+  "updatedAt": "2026-10-10T10:46:17.264Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -363,7 +363,7 @@
       "heldArticleCount": 1,
       "passedRatio": 0.9615384615384616
     },
-    "lastSuccessfulStage": "official_exact_source_dispatch_run_confirmed",
+    "lastSuccessfulStage": "official_deployment_and_IndexNow_HTTP200_observed_independent_HTTP_pending",
     "nextIntent": "Recover cloud browser and re-read actual runs before any further dispatch; retain exact user-approved source and scope.",
     "pendingExternalAction": {
       "action": "workflow_dispatch",
@@ -427,14 +427,15 @@
       "approvedAt": "2026-10-10T10:23:25Z"
     },
     "publication": {
-      "state": "workflow_running",
+      "state": "deployed_ci_success_independent_http_pending",
       "intendedUrl": "https://gwangju.fwith.kr",
-      "publicUrl": null,
-      "articleCountPublished": 0,
+      "publicUrl": "https://gwangju.fwith.kr",
+      "articleCountPublished": 25,
       "runId": 38045888959,
       "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38045888959",
       "controlRevision": "57fccc39ef5ca499167f73447a23f373f14920d2",
-      "startedAt": "2026-10-10T10:43:19Z"
+      "startedAt": "2026-10-10T10:43:19Z",
+      "ciConclusion": "success"
     },
     "publicQa": {
       "state": "not_performed",
@@ -3978,16 +3979,13 @@
     {
       "scopeKey": "yangju-direct-initial-20261010",
       "city": "양주시",
-      "status": "waiting_service_execution_approval_prepared_source",
+      "status": "approved_exact_release_resuming",
       "owner": {
-        "scheduledRunAt": "2026-10-10T09:00:00Z",
-        "observedExecutionAt": "2026-10-10T09:05:03Z",
-        "newRegionStartedAt": "2026-10-10T09:06:42.787Z",
+        "scheduledRunAt": "2026-10-10T10:00:00Z",
         "serviceInvocationId": null,
-        "checkpointId": "direct-yangju-20261010T090000Z",
-        "active": false,
-        "executionState": "waiting_service_execution_approval",
-        "writesStoppedAt": "2026-10-10T09:45:30.060Z"
+        "checkpointId": "direct-resume-yangju-20261010T100000Z",
+        "active": true,
+        "executionState": "approved_dispatch_intent"
       },
       "identity": {
         "repository": "joseungil-kr/fwith-site-factory",
@@ -4335,7 +4333,7 @@
         "passedRatio": 0.9090909090909091
       },
       "lastSuccessfulStage": "exact_remote_source_readback_and_independent_Node22_build",
-      "nextIntent": "Resume exact reviewed Yangju source through official direct workflow only after required service execution approval; freshly re-read source/main/ownership and provider collision checks.",
+      "nextIntent": "Dispatch unchanged explicitly approved source after fresh zero-run UI and exact source/control readback.",
       "pendingExternalAction": {
         "action": "workflow_dispatch",
         "workflow": ".github/workflows/yangju-direct-publish.yml",
@@ -4347,7 +4345,7 @@
         "target": "yangju-flower-guide / yangju.fwith.kr",
         "idempotencyKey": "yangju-direct-initial-20261010:publish:e1a0ca7a178f1e25d3f6a34855f7f51cf66d822e",
         "dispatchAttempted": false,
-        "requires": "Service execution approval for own-cloud browser official GitHub Run workflow path"
+        "requires": "existing user approval satisfied; provider GET collision/no-override remain mandatory inside official workflow"
       },
       "review": {
         "independentContent": "PASS_EXACT_20_ARTICLES",
