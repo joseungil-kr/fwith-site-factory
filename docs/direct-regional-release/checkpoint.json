@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T10:24:02.326Z",
+  "updatedAt": "2026-10-10T10:34:52.200Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "gwangju-direct-initial-20261010",
     "city": "경기도 광주시",
-    "status": "approved_exact_release_resuming",
+    "status": "approved_release_technical_recovery",
     "owner": {
       "scheduledRunAt": "2026-10-10T10:00:00Z",
       "observedExecutionAt": "2026-10-10T10:04:27Z",
@@ -364,7 +364,7 @@
       "passedRatio": 0.9615384615384616
     },
     "lastSuccessfulStage": "fresh_69_source_7_controls_exact_review_readback_browser_selection_restored",
-    "nextIntent": "Resume exact approved source through official Gwangju direct workflow after required service execution approval; re-read source/main/ownership first.",
+    "nextIntent": "Recover cloud browser and re-read actual runs before any further dispatch; retain exact user-approved source and scope.",
     "pendingExternalAction": {
       "action": "workflow_dispatch",
       "workflow": ".github/workflows/gwangju-direct-publish.yml",
@@ -375,9 +375,10 @@
       },
       "target": "gwangju-flower-guide / gwangju.fwith.kr",
       "idempotencyKey": "gwangju-direct-initial-20261010:publish:b6373facad5548f3a4680d8e6eaaa588d5a93682",
-      "dispatchAttempted": false,
-      "requires": "Service execution approval for own-cloud browser official GitHub Run workflow path",
-      "dispatchClickRejectedAt": "2026-10-10T10:10:51.277Z"
+      "dispatchAttempted": true,
+      "requires": "Restore own-cloud browser renderer; required approval is already granted",
+      "dispatchClickRejectedAt": "2026-10-10T10:10:51.277Z",
+      "dispatchConfirmed": false
     },
     "review": {
       "independentContent": "PASS_EXACT_25_ARTICLES",
@@ -399,14 +400,16 @@
       "imageBodyDigestSha256": "0bd6064eee1e0b6d7face49e0b8f739be2920ef96bde9af699937fc1acf58e22"
     },
     "deploymentAccessObservation": {
-      "at": "2026-10-10T08:20:59Z",
-      "tool": "own-cloud-browser-selection",
-      "result": "JavaScript execution did not receive approval",
-      "attempts": 2,
-      "authorizationRetry": 1,
-      "dispatchAttempted": false,
-      "requiredApprovalRequestId": null,
-      "causeConfirmed": false
+      "at": "2026-10-10T10:34:52.200Z",
+      "kind": "technical_browser_renderer_crash",
+      "browser": "own-cloud Chrome",
+      "page": "https://github.com/joseungil-kr/fwith-site-factory/actions/workflows/gwangju-direct-publish.yml",
+      "error": "Aw, Snap! Error code: 9",
+      "causeConfirmed": false,
+      "approvalState": "explicit_user_approved",
+      "dispatchResult": "not_confirmed_no_new_run_in_fresh_GitHub_readback",
+      "lastRepositoryRunId": 38034917448,
+      "recovery": "Reload briefly restored zero-run workflow page, then renderer crashed again; heavy local builds serialized."
     },
     "sourceRevision": "b6373facad5548f3a4680d8e6eaaa588d5a93682",
     "controlRevision": "20e6658d50b0d55c0e1d403e22c9cdac656a89c5",
@@ -446,7 +449,7 @@
       "listReadback": null
     },
     "incompleteStages": [
-      "service_browser_execution_approval",
+      "cloud_browser_renderer_technical_recovery",
       "provider_account_worker_domain_GET_collision_checks",
       "official_exact_source_workflow_dispatch_and_CI",
       "live_exact_revision_HTTP_images_CTA_canonical_robots_sitemap_404_links_QA",
@@ -3497,7 +3500,7 @@
     {
       "scopeKey": "gwangju-direct-initial-20261010",
       "city": "경기도 광주시",
-      "status": "approved_exact_release_resuming",
+      "status": "approved_release_technical_recovery",
       "owner": {
         "scheduledRunAt": "2026-10-10T10:00:00Z",
         "observedExecutionAt": "2026-10-10T10:04:27Z",
@@ -3828,7 +3831,7 @@
         "passedRatio": 0.9615384615384616
       },
       "lastSuccessfulStage": "fresh_69_source_7_controls_exact_review_readback_browser_selection_restored",
-      "nextIntent": "Resume exact approved source through official Gwangju direct workflow after required service execution approval; re-read source/main/ownership first.",
+      "nextIntent": "Recover cloud browser and re-read actual runs before any further dispatch; retain exact user-approved source and scope.",
       "pendingExternalAction": {
         "action": "workflow_dispatch",
         "workflow": ".github/workflows/gwangju-direct-publish.yml",
@@ -3839,9 +3842,10 @@
         },
         "target": "gwangju-flower-guide / gwangju.fwith.kr",
         "idempotencyKey": "gwangju-direct-initial-20261010:publish:b6373facad5548f3a4680d8e6eaaa588d5a93682",
-        "dispatchAttempted": false,
-        "requires": "Service execution approval for own-cloud browser official GitHub Run workflow path",
-        "dispatchClickRejectedAt": "2026-10-10T10:10:51.277Z"
+        "dispatchAttempted": true,
+        "requires": "Restore own-cloud browser renderer; required approval is already granted",
+        "dispatchClickRejectedAt": "2026-10-10T10:10:51.277Z",
+        "dispatchConfirmed": false
       },
       "review": {
         "independentContent": "PASS_EXACT_25_ARTICLES",
@@ -3863,14 +3867,16 @@
         "imageBodyDigestSha256": "0bd6064eee1e0b6d7face49e0b8f739be2920ef96bde9af699937fc1acf58e22"
       },
       "deploymentAccessObservation": {
-        "at": "2026-10-10T08:20:59Z",
-        "tool": "own-cloud-browser-selection",
-        "result": "JavaScript execution did not receive approval",
-        "attempts": 2,
-        "authorizationRetry": 1,
-        "dispatchAttempted": false,
-        "requiredApprovalRequestId": null,
-        "causeConfirmed": false
+        "at": "2026-10-10T10:34:52.200Z",
+        "kind": "technical_browser_renderer_crash",
+        "browser": "own-cloud Chrome",
+        "page": "https://github.com/joseungil-kr/fwith-site-factory/actions/workflows/gwangju-direct-publish.yml",
+        "error": "Aw, Snap! Error code: 9",
+        "causeConfirmed": false,
+        "approvalState": "explicit_user_approved",
+        "dispatchResult": "not_confirmed_no_new_run_in_fresh_GitHub_readback",
+        "lastRepositoryRunId": 38034917448,
+        "recovery": "Reload briefly restored zero-run workflow page, then renderer crashed again; heavy local builds serialized."
       },
       "sourceRevision": "b6373facad5548f3a4680d8e6eaaa588d5a93682",
       "controlRevision": "20e6658d50b0d55c0e1d403e22c9cdac656a89c5",
@@ -3910,7 +3916,7 @@
         "listReadback": null
       },
       "incompleteStages": [
-        "service_browser_execution_approval",
+        "cloud_browser_renderer_technical_recovery",
         "provider_account_worker_domain_GET_collision_checks",
         "official_exact_source_workflow_dispatch_and_CI",
         "live_exact_revision_HTTP_images_CTA_canonical_robots_sitemap_404_links_QA",
