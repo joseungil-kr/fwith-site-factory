@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T16:25:44.542Z",
+  "updatedAt": "2026-10-10T16:34:06.462Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-jung-direct-initial-20261010",
     "city": "서울특별시 중구",
-    "status": "independent_content_pass_source_assembled",
+    "status": "source_saved_verified_ready_for_exact_dispatch",
     "owner": {
       "scheduledRunAt": "2026-10-10T16:00:00Z",
       "observedExecutionAt": "2026-10-10T16:02:54.602Z",
@@ -134,13 +134,16 @@
       "deferredArticleCount": 0
     },
     "changeIntent": {
-      "action": "save_exact_independently_reviewed_source_and_direct_control",
-      "target": "site-factory-seoul-jung-direct/site-factory/seoul-jung-flower",
-      "expectedSourceBranchHead": "4939451f6033a38cf4be2314ad531faee6fd1ef9",
-      "idempotencyKey": "seoul-jung:source:220c6f149147db40fb58aa8a06374b770cf757be93239f8f4ff41a7613e66472"
+      "action": "workflow_dispatch_once_exact_reviewed_source",
+      "target": ".github/workflows/seoul-jung-direct-publish.yml",
+      "sourceRevision": "07ae85ac13698dc4a0edc7faa00de21379f366fa",
+      "indexnowOnly": false,
+      "idempotencyKey": "seoul-jung:publish:07ae85ac13698dc4a0edc7faa00de21379f366fa",
+      "sourceHeadVerified": true,
+      "mandatoryServiceApproval": "honor_if_requested_at_execution"
     },
-    "lastSuccessfulStage": "independent_content_and_image_review_pass_seven_of_seven",
-    "nextIntent": "Save exact reviewed source/control; verify Node22 full build/static and remote full bytes before dispatch.",
+    "lastSuccessfulStage": "exact_source_saved_full_remote_readback_node22_independent_local_build_and_static_qa_pass",
+    "nextIntent": "Dispatch fixed direct workflow once; require provider no-override collision checks and all live HTTP before search confirmation.",
     "review": {
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
       "planReviewSha256": "7daddef0074d717bc376485fe15b45b6f33c250942545d07d9e2bcb4554798b0",
@@ -149,7 +152,28 @@
       "runtimePreparationStatus": "NODE22_FIXTURE_PASS_NOT_ACTUAL_SOURCE_OR_PUBLISH_PASS",
       "articlesSha256": "220c6f149147db40fb58aa8a06374b770cf757be93239f8f4ff41a7613e66472",
       "independentReviewSha256": "dc14f3acdb7a511d30892130c9ac00ce5fedbf0f872adf0e917900531f8f070a",
-      "contentStatus": "PASS"
+      "contentStatus": "PASS",
+      "runtimeStatus": "PASS_LOCAL_BUILD_AT_EXACT_SOURCE_REVISION",
+      "runtimeReviewSha256": "b8ea0fbe39daafbe7287ed1a6d6821fbdd94a97f925a2ab1afce4720a74b4787"
+    },
+    "sourceRevision": "07ae85ac13698dc4a0edc7faa00de21379f366fa",
+    "validation": {
+      "sourceRevision": "07ae85ac13698dc4a0edc7faa00de21379f366fa",
+      "nodeVersion": "22.23.3",
+      "sourceTestsPassed": 68,
+      "publisherTestsPassed": 42,
+      "build": "PASS",
+      "static": "PASS",
+      "graph": "PASS",
+      "artifactFiles": 26,
+      "normalHtmlRoutes": 9,
+      "articleCount": 7,
+      "sitemapUrls": 9,
+      "loopbackHttpCheckedPaths": 23,
+      "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+      "remoteReadbackSha256": "37f87421cf5454fee441d8338c3e985faeecf3e02e3534e8026a888a60de158f",
+      "publicProductionHttp": "NOT_YET_RUN",
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS"
     }
   },
   "history": [
@@ -4522,7 +4546,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Save exact reviewed source/control; verify Node22 full build/static and remote full bytes before dispatch.",
+  "nextAction": "Dispatch fixed direct workflow once; require provider no-override collision checks and all live HTTP before search confirmation.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",

@@ -1,0 +1,942 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-10T16:30:55.987046+00:00",
+  "verdict": "PASS_LOCAL_BUILD_AT_EXACT_SOURCE_REVISION",
+  "findings": [
+    {
+      "id": "UNSUPPORTED_AUTHORING_IMAGE_ALT_OMITTED",
+      "severity": "informational",
+      "status": "documented_expected_projection",
+      "affectedSlugs": [
+        "euljiro6ga-nmc-condolence-wreath",
+        "jangchung2ga-ambassador-wedding-wreath",
+        "pildong2ga-korea-house-wedding-wreath",
+        "sindang-ddp-fashion-opening-wreath",
+        "namchang-namdaemun-opening-wreath",
+        "jungnim-lw-convention-event-wreath",
+        "euljiro7ga-ddp-exhibition-wreath"
+      ],
+      "detail": "Unsupported authoring metadata imageAlt omitted; renderer's actual meaningful product alt retained. The documented customer schema excludes imageAlt. All supported customer fields exactly match the approved projection. Rendered element alt equals the exact catalog product name, and rendered OG/Twitter alt equals brand plus that product name. Full authoring-record field parity is not claimed.",
+      "sourceOfContractClarification": "Parent task clarification: imageAlt was authoring-only metadata outside the existing runtime schema; no preservation requirement. No source schema or tests were changed."
+    }
+  ],
+  "canPublish": false,
+  "reviewerModifiedSource": false,
+  "sourceCommitSha": "07ae85ac13698dc4a0edc7faa00de21379f366fa",
+  "remoteSourceByteReadback": "pending_parent_readback",
+  "buildRevision": "07ae85ac13698dc4a0edc7faa00de21379f366fa",
+  "buildRevisionIsPlaceholder": false,
+  "controlCommitSha": null,
+  "sourceInventorySha256": "54ad4d8810f2a5aa6e9c78222255ac18090d8031ec5c64459fc59bda2f1fc842",
+  "sourceFiles": {
+    "assembly-summary.json": "3e18f87c6427a558c2990e5bfb01e03d7d5a33a85738120e49f0960393695b61",
+    "runtime-preparation.json": "b376b862cd29ef0017e6a7d59eaac30f2be29c5b9b95170e08260ddec80620ee",
+    ".github/workflows/seoul-jung-direct-publish.yml": "101888fca2cb5b00514375280ecac177076dbe68601bbad1b06b6162a9867df0",
+    "site-factory/seoul-jung-flower/README.md": "0a8d019a638cf0d439b1387012a19c085894813b4d2ea00545e77dc278581228",
+    "site-factory/seoul-jung-flower/.gitignore": "0a5eef845a42deb1d0b1f0c56b1dffdbd79a29cd1db049a5d4dbbf7a6372cbf3",
+    "site-factory/seoul-jung-flower/package.json": "48b91c214520401f938676dab0c0ca0789c7c991b945eaf94dafb4b60120f2ab",
+    "site-factory/seoul-jung-flower/wrangler.jsonc": "f5d89d5965b2c5a18066ce7cd53ef1cdff691835e53469608e72982468d05172",
+    "site-factory/seoul-jung-flower/package-lock.json": "247ea260dec6f082770f06215e59854d90d02b1548db41d44bb0453c6a2f62bf",
+    "site-factory/seoul-jung-flower/astro.config.mjs": "d3f5870839bdd3685e0292df487a2c22008424214db13aee7f992c2b1ccc1109",
+    "site-factory/seoul-jung-flower/tsconfig.json": "903f5bd9f78e464bbf03c0d68f91a5d8b76092f9abc22c3dd78d8c2f3f4d8e93",
+    "site-factory/seoul-jung-flower/scripts/qa_static.py": "7d8e6d04f68e3875f92f31630f092a2147ca71f424efd16db45229a665b704a7",
+    "site-factory/seoul-jung-flower/scripts/assert_preview_boundary.mjs": "8d9c7ea611375ffeb1b2fb65b7e0397929b7c6e5020917f7ae1aa2faed1ea56f",
+    "site-factory/seoul-jung-flower/scripts/write_response_headers.mjs": "e2bb388129c8e4144cfd880523a45d86ad03b4e7075d9532f0ba825ad65ebc1e",
+    "site-factory/seoul-jung-flower/scripts/write_build_revision.mjs": "7e0de1d50032c7789e05ef25fecfab2a19702cbac6e46fab451c6ae154934278",
+    "site-factory/seoul-jung-flower/scripts/qa_graph.mjs": "8fa5d3fd40bb74bbcf1c23ed2dea9a9c49a04c889cdcab31f14637f5a67a3d83",
+    "site-factory/seoul-jung-flower/scripts/qa_bootstrap_or_graph.mjs": "45e205884a3da37eaf768aaa6fb95772e5635a2fa371e263446140a612e9ce84",
+    "site-factory/seoul-jung-flower/scripts/qa_intent.mjs": "c1fa7486e7a9e2f1fbe2e56f7e408cb143495541811a3a7c6b9c3fdfac2e6b99",
+    "site-factory/seoul-jung-flower/public/34359aa3b701adc8afff8fd9b7a7ce4c.txt": "8582cf4f999165bb43199a5ecb78c0006ca65064803e798fe5647d23ffad00e7",
+    "site-factory/seoul-jung-flower/public/_headers": "1b27a67288f21cf98b19d15cef8fa084bf7d7ca7a0f89975dd48ba51f90ed015",
+    "site-factory/seoul-jung-flower/public/favicon.svg": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+    "site-factory/seoul-jung-flower/tests/social-image.test.mjs": "d19b8ac38116cae9c42ca5b264ac0c79d262101bdb00a94eaa84a7369c3ff53f",
+    "site-factory/seoul-jung-flower/tests/journey-contract.test.mjs": "a9e9defb22a540fa79fa04af55614d0634acb265f78a60a2352aec146d0a3461",
+    "site-factory/seoul-jung-flower/tests/regions-template.test.mjs": "085766ebad57491f3d7d4e8b0a15f4c7d05daf199aeb7816c349cdab5346bbcb",
+    "site-factory/seoul-jung-flower/tests/visual.test.mjs": "9b2afdef5c9c847c7965f362a93effec26b17ed2a801e00379a6682fde258811",
+    "site-factory/seoul-jung-flower/tests/purchase-banner-contract.test.mjs": "85747a2ac013fbe12a0519b4e1e2d7761da3ebb9dcf137a28cde7f1b5b165c4c",
+    "site-factory/seoul-jung-flower/tests/answer-opening.test.mjs": "6f726874f40007833011ec3f95dd6cf35cf8effad8870b7317df6cd8b9a8a312",
+    "site-factory/seoul-jung-flower/tests/direct-source.test.mjs": "142a856c2e79a96941269eff396d1801b9b25f4c82a08e95ff6e8a5d7b7f4156",
+    "site-factory/seoul-jung-flower/tests/sources.test.mjs": "5eec659e38f74d45a908ab8bef9a11498d6880a3659855c91481387a2bdac987",
+    "site-factory/seoul-jung-flower/tests/catalog.test.mjs": "803b9cdf84cfacea9fd2d8f9c98181fc301f377130005de80c97ca459e963909",
+    "site-factory/seoul-jung-flower/src/lib/hubs.mjs": "cd3289a46fd77b1d5b32b3a5c5878d95243a6a5224bc8f1ba3095168acf55d2a",
+    "site-factory/seoul-jung-flower/src/lib/social-image.mjs": "15008f3e008430001e88298858bf4998a7901024623cd9ec8d7da162513ec1a3",
+    "site-factory/seoul-jung-flower/src/lib/regional-runtime.mjs": "3806324e102a54e6c9c5ea416cce624d1a3351e1a6e1b4a211ab8a2da73e84df",
+    "site-factory/seoul-jung-flower/src/lib/catalog.mjs": "c9b9e85db884360669ea7a883e9c2b69073eb9e79e4a43c97af0cff3153b4cec",
+    "site-factory/seoul-jung-flower/src/lib/sources.mjs": "0bea1d95eed1c8544baf757baabdd4eaf2827788250575b626c9a0879efd1d9f",
+    "site-factory/seoul-jung-flower/src/lib/journey.mjs": "c07934204e5ddbd8b9126b715aae569b410dedbbbfe9ff80a1c518fe8be6c400",
+    "site-factory/seoul-jung-flower/src/lib/content.mjs": "13bb46b0945b4b39f31bdc2c171c77ea5943cc16a92c1b91dc5674ed4befbb79",
+    "site-factory/seoul-jung-flower/src/lib/regions.mjs": "59421a639f73ab10da4516ce069c8ab46dfa75ac3ad3a660847b8b647e0ed489",
+    "site-factory/seoul-jung-flower/src/lib/visual.mjs": "a0bba0aa048d56f3a323b347a7e0022f39b01029da844dbfd7ed86e9dce6c44e",
+    "site-factory/seoul-jung-flower/src/layouts/BaseLayout.astro": "2105979c8ad49708d3780e20f134ca80d1afa77d2547585b11f107345ee89580",
+    "site-factory/seoul-jung-flower/src/data/region-coverage.json": "9006b0b32cccacb424fd4d204bb99b46fbc1352b30a3700125bdb01884b1ccf0",
+    "site-factory/seoul-jung-flower/src/data/page-map.json": "05961fc1dc90741635e4f3ef277a91c3bc1b2a71b91523fe3f57a1a1e27a5d01",
+    "site-factory/seoul-jung-flower/src/data/business-truth.json": "4376a0f0472af885958f0402cac6c1cad4a0397a498c8bab51fb750774d460a0",
+    "site-factory/seoul-jung-flower/src/data/publish-manifest.json": "48338d315964d2b277819896b9bcb09eb31600bb6272a361cb1ec9b65f2f21ad",
+    "site-factory/seoul-jung-flower/src/data/region-policy.json": "6c1e6408963516ff43ee278685306bb9b16bc3b4130e6021851fad70865ac7d8",
+    "site-factory/seoul-jung-flower/src/data/direct-checkpoint.json": "a0407b24130d0e588219ae90d03a3a62ff07fcfc213e8e69c6804cd66fd3ad7e",
+    "site-factory/seoul-jung-flower/src/data/pages.json": "ed29b5e2f46e0d2fa7605b921bc94dd635b0b58e13aa2522ca433f641b11f54b",
+    "site-factory/seoul-jung-flower/src/data/architecture.json": "225aa2b4591b6f107bf76058d8b189c6ccd3614f727305ea29a6f23f3bafbddc",
+    "site-factory/seoul-jung-flower/src/data/editorial-assets.json": "00cbe0b89572b78c7694ae100e04a5fa7b3e64295739ae9ee60eee2496b4e1ec",
+    "site-factory/seoul-jung-flower/src/data/social-image-provenance.json": "06c0c2d0776aca5551216aebf102ba508f8f0a76d9d1f911c25aa941cb96a452",
+    "site-factory/seoul-jung-flower/src/data/products.json": "f271c0aa5e4368fbeacd287dc4717f0d5d34d0e7c0f38fb1dcd24305d9772272",
+    "site-factory/seoul-jung-flower/src/data/site-config.json": "670178fac0d7373b7a6c1f7624e765b89cd288106ecda87741e5838ca961a627",
+    "site-factory/seoul-jung-flower/src/components/RegionDirectory.astro": "9407a7c1a7008d09805731d6d288973ca67d1aa38f82d52012455d34c2b3b3b3",
+    "site-factory/seoul-jung-flower/src/components/ProductCards.astro": "5f249fb03794c892a727813e326d03f141f086199257620e0ca0f6d6cf993083",
+    "site-factory/seoul-jung-flower/src/components/InlineText.astro": "ac748bd0e67c41dab43634bbb63a606d2f2124d1f2c089b1266a52795c3ceb0a",
+    "site-factory/seoul-jung-flower/src/components/InlineOrderBanner.astro": "9c4a05aa806810d5d27a0040e357ccdd89c7d465d9d0d43df0ce48cec8fe33a0",
+    "site-factory/seoul-jung-flower/src/components/MarkdownContent.astro": "664e29b01720f12ac6b479b9fe722907c192f1df44338ba3df9a764ba7e3ac77",
+    "site-factory/seoul-jung-flower/src/styles/global.css": "903963c83c95f9a42c2fc6c21bb096e457f723ed58c1d5b9fe1195a00105e723",
+    "site-factory/seoul-jung-flower/src/config/site.ts": "6b9cc94cc48ad3e101be0e57b70153d8a22ce4457a3042f46fb2594f73d7eea5",
+    "site-factory/seoul-jung-flower/src/pages/404.astro": "f4497cf673dd7cf0e2d045ec7c8253fb56f20b366689efea473e36c080adae9e",
+    "site-factory/seoul-jung-flower/src/pages/robots.txt.ts": "b7dbb859b51755671b762c0e6d7f9b42cbcfc65e32eb5267cbd27fd4f075a8f7",
+    "site-factory/seoul-jung-flower/src/pages/index.astro": "a53f4316970c8ee3823f87e1cc89f800ecdcd2837c100eb9ad76dc5c0d2e3b02",
+    "site-factory/seoul-jung-flower/src/pages/[category]/index.astro": "9885bfda63af9ccadfa70a512b67f069e337220981a3d3a40df5816258f4b592",
+    "site-factory/seoul-jung-flower/src/pages/[category]/[slug].astro": "68cc66c5de06096778228c6972c6c7fe33fc98a79ab05a3bc722fe6f05219788",
+    "site-factory/seoul-jung-flower/public/images/editorial/opening-wreath-illustration-v1.webp": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+    "site-factory/seoul-jung-flower/public/images/products/funeral-xl.webp": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+    "site-factory/seoul-jung-flower/public/images/products/congrats-xl.jpg": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+    "site-factory/seoul-jung-flower/public/images/products/congrats-basic.jpg": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+    "site-factory/seoul-jung-flower/public/images/products/congrats-large.jpg": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+    "site-factory/seoul-jung-flower/public/images/products/funeral-basic.webp": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+    "site-factory/seoul-jung-flower/public/images/products/funeral-large.webp": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+    "site-factory/seoul-jung-flower/public/images/products/funeral-premium.webp": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+    "site-factory/seoul-jung-flower/public/images/products/congrats-premium.jpg": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+    "scripts/direct-seoul-jung/test_publish.py": "267c3cbc5d4cc91c81d1abd112052ce6628421f1fcd0d6cbba1707436e9c0c73",
+    "scripts/direct-seoul-jung/publish.py": "1594238801edc69519b5498609a69c368f1f9d8c046242c251fb36f2eb6481b3"
+  },
+  "repositorySourceInventorySha256": "b909d686b4d347b9d10afe2298a0096214c09bc7c03f29764f04409939b76c51",
+  "repositorySourceFiles": {
+    ".github/workflows/seoul-jung-direct-publish.yml": "101888fca2cb5b00514375280ecac177076dbe68601bbad1b06b6162a9867df0",
+    "site-factory/seoul-jung-flower/README.md": "0a8d019a638cf0d439b1387012a19c085894813b4d2ea00545e77dc278581228",
+    "site-factory/seoul-jung-flower/.gitignore": "0a5eef845a42deb1d0b1f0c56b1dffdbd79a29cd1db049a5d4dbbf7a6372cbf3",
+    "site-factory/seoul-jung-flower/package.json": "48b91c214520401f938676dab0c0ca0789c7c991b945eaf94dafb4b60120f2ab",
+    "site-factory/seoul-jung-flower/wrangler.jsonc": "f5d89d5965b2c5a18066ce7cd53ef1cdff691835e53469608e72982468d05172",
+    "site-factory/seoul-jung-flower/package-lock.json": "247ea260dec6f082770f06215e59854d90d02b1548db41d44bb0453c6a2f62bf",
+    "site-factory/seoul-jung-flower/astro.config.mjs": "d3f5870839bdd3685e0292df487a2c22008424214db13aee7f992c2b1ccc1109",
+    "site-factory/seoul-jung-flower/tsconfig.json": "903f5bd9f78e464bbf03c0d68f91a5d8b76092f9abc22c3dd78d8c2f3f4d8e93",
+    "site-factory/seoul-jung-flower/scripts/qa_static.py": "7d8e6d04f68e3875f92f31630f092a2147ca71f424efd16db45229a665b704a7",
+    "site-factory/seoul-jung-flower/scripts/assert_preview_boundary.mjs": "8d9c7ea611375ffeb1b2fb65b7e0397929b7c6e5020917f7ae1aa2faed1ea56f",
+    "site-factory/seoul-jung-flower/scripts/write_response_headers.mjs": "e2bb388129c8e4144cfd880523a45d86ad03b4e7075d9532f0ba825ad65ebc1e",
+    "site-factory/seoul-jung-flower/scripts/write_build_revision.mjs": "7e0de1d50032c7789e05ef25fecfab2a19702cbac6e46fab451c6ae154934278",
+    "site-factory/seoul-jung-flower/scripts/qa_graph.mjs": "8fa5d3fd40bb74bbcf1c23ed2dea9a9c49a04c889cdcab31f14637f5a67a3d83",
+    "site-factory/seoul-jung-flower/scripts/qa_bootstrap_or_graph.mjs": "45e205884a3da37eaf768aaa6fb95772e5635a2fa371e263446140a612e9ce84",
+    "site-factory/seoul-jung-flower/scripts/qa_intent.mjs": "c1fa7486e7a9e2f1fbe2e56f7e408cb143495541811a3a7c6b9c3fdfac2e6b99",
+    "site-factory/seoul-jung-flower/public/34359aa3b701adc8afff8fd9b7a7ce4c.txt": "8582cf4f999165bb43199a5ecb78c0006ca65064803e798fe5647d23ffad00e7",
+    "site-factory/seoul-jung-flower/public/_headers": "1b27a67288f21cf98b19d15cef8fa084bf7d7ca7a0f89975dd48ba51f90ed015",
+    "site-factory/seoul-jung-flower/public/favicon.svg": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+    "site-factory/seoul-jung-flower/tests/social-image.test.mjs": "d19b8ac38116cae9c42ca5b264ac0c79d262101bdb00a94eaa84a7369c3ff53f",
+    "site-factory/seoul-jung-flower/tests/journey-contract.test.mjs": "a9e9defb22a540fa79fa04af55614d0634acb265f78a60a2352aec146d0a3461",
+    "site-factory/seoul-jung-flower/tests/regions-template.test.mjs": "085766ebad57491f3d7d4e8b0a15f4c7d05daf199aeb7816c349cdab5346bbcb",
+    "site-factory/seoul-jung-flower/tests/visual.test.mjs": "9b2afdef5c9c847c7965f362a93effec26b17ed2a801e00379a6682fde258811",
+    "site-factory/seoul-jung-flower/tests/purchase-banner-contract.test.mjs": "85747a2ac013fbe12a0519b4e1e2d7761da3ebb9dcf137a28cde7f1b5b165c4c",
+    "site-factory/seoul-jung-flower/tests/answer-opening.test.mjs": "6f726874f40007833011ec3f95dd6cf35cf8effad8870b7317df6cd8b9a8a312",
+    "site-factory/seoul-jung-flower/tests/direct-source.test.mjs": "142a856c2e79a96941269eff396d1801b9b25f4c82a08e95ff6e8a5d7b7f4156",
+    "site-factory/seoul-jung-flower/tests/sources.test.mjs": "5eec659e38f74d45a908ab8bef9a11498d6880a3659855c91481387a2bdac987",
+    "site-factory/seoul-jung-flower/tests/catalog.test.mjs": "803b9cdf84cfacea9fd2d8f9c98181fc301f377130005de80c97ca459e963909",
+    "site-factory/seoul-jung-flower/src/lib/hubs.mjs": "cd3289a46fd77b1d5b32b3a5c5878d95243a6a5224bc8f1ba3095168acf55d2a",
+    "site-factory/seoul-jung-flower/src/lib/social-image.mjs": "15008f3e008430001e88298858bf4998a7901024623cd9ec8d7da162513ec1a3",
+    "site-factory/seoul-jung-flower/src/lib/regional-runtime.mjs": "3806324e102a54e6c9c5ea416cce624d1a3351e1a6e1b4a211ab8a2da73e84df",
+    "site-factory/seoul-jung-flower/src/lib/catalog.mjs": "c9b9e85db884360669ea7a883e9c2b69073eb9e79e4a43c97af0cff3153b4cec",
+    "site-factory/seoul-jung-flower/src/lib/sources.mjs": "0bea1d95eed1c8544baf757baabdd4eaf2827788250575b626c9a0879efd1d9f",
+    "site-factory/seoul-jung-flower/src/lib/journey.mjs": "c07934204e5ddbd8b9126b715aae569b410dedbbbfe9ff80a1c518fe8be6c400",
+    "site-factory/seoul-jung-flower/src/lib/content.mjs": "13bb46b0945b4b39f31bdc2c171c77ea5943cc16a92c1b91dc5674ed4befbb79",
+    "site-factory/seoul-jung-flower/src/lib/regions.mjs": "59421a639f73ab10da4516ce069c8ab46dfa75ac3ad3a660847b8b647e0ed489",
+    "site-factory/seoul-jung-flower/src/lib/visual.mjs": "a0bba0aa048d56f3a323b347a7e0022f39b01029da844dbfd7ed86e9dce6c44e",
+    "site-factory/seoul-jung-flower/src/layouts/BaseLayout.astro": "2105979c8ad49708d3780e20f134ca80d1afa77d2547585b11f107345ee89580",
+    "site-factory/seoul-jung-flower/src/data/region-coverage.json": "9006b0b32cccacb424fd4d204bb99b46fbc1352b30a3700125bdb01884b1ccf0",
+    "site-factory/seoul-jung-flower/src/data/page-map.json": "05961fc1dc90741635e4f3ef277a91c3bc1b2a71b91523fe3f57a1a1e27a5d01",
+    "site-factory/seoul-jung-flower/src/data/business-truth.json": "4376a0f0472af885958f0402cac6c1cad4a0397a498c8bab51fb750774d460a0",
+    "site-factory/seoul-jung-flower/src/data/publish-manifest.json": "48338d315964d2b277819896b9bcb09eb31600bb6272a361cb1ec9b65f2f21ad",
+    "site-factory/seoul-jung-flower/src/data/region-policy.json": "6c1e6408963516ff43ee278685306bb9b16bc3b4130e6021851fad70865ac7d8",
+    "site-factory/seoul-jung-flower/src/data/direct-checkpoint.json": "a0407b24130d0e588219ae90d03a3a62ff07fcfc213e8e69c6804cd66fd3ad7e",
+    "site-factory/seoul-jung-flower/src/data/pages.json": "ed29b5e2f46e0d2fa7605b921bc94dd635b0b58e13aa2522ca433f641b11f54b",
+    "site-factory/seoul-jung-flower/src/data/architecture.json": "225aa2b4591b6f107bf76058d8b189c6ccd3614f727305ea29a6f23f3bafbddc",
+    "site-factory/seoul-jung-flower/src/data/editorial-assets.json": "00cbe0b89572b78c7694ae100e04a5fa7b3e64295739ae9ee60eee2496b4e1ec",
+    "site-factory/seoul-jung-flower/src/data/social-image-provenance.json": "06c0c2d0776aca5551216aebf102ba508f8f0a76d9d1f911c25aa941cb96a452",
+    "site-factory/seoul-jung-flower/src/data/products.json": "f271c0aa5e4368fbeacd287dc4717f0d5d34d0e7c0f38fb1dcd24305d9772272",
+    "site-factory/seoul-jung-flower/src/data/site-config.json": "670178fac0d7373b7a6c1f7624e765b89cd288106ecda87741e5838ca961a627",
+    "site-factory/seoul-jung-flower/src/components/RegionDirectory.astro": "9407a7c1a7008d09805731d6d288973ca67d1aa38f82d52012455d34c2b3b3b3",
+    "site-factory/seoul-jung-flower/src/components/ProductCards.astro": "5f249fb03794c892a727813e326d03f141f086199257620e0ca0f6d6cf993083",
+    "site-factory/seoul-jung-flower/src/components/InlineText.astro": "ac748bd0e67c41dab43634bbb63a606d2f2124d1f2c089b1266a52795c3ceb0a",
+    "site-factory/seoul-jung-flower/src/components/InlineOrderBanner.astro": "9c4a05aa806810d5d27a0040e357ccdd89c7d465d9d0d43df0ce48cec8fe33a0",
+    "site-factory/seoul-jung-flower/src/components/MarkdownContent.astro": "664e29b01720f12ac6b479b9fe722907c192f1df44338ba3df9a764ba7e3ac77",
+    "site-factory/seoul-jung-flower/src/styles/global.css": "903963c83c95f9a42c2fc6c21bb096e457f723ed58c1d5b9fe1195a00105e723",
+    "site-factory/seoul-jung-flower/src/config/site.ts": "6b9cc94cc48ad3e101be0e57b70153d8a22ce4457a3042f46fb2594f73d7eea5",
+    "site-factory/seoul-jung-flower/src/pages/404.astro": "f4497cf673dd7cf0e2d045ec7c8253fb56f20b366689efea473e36c080adae9e",
+    "site-factory/seoul-jung-flower/src/pages/robots.txt.ts": "b7dbb859b51755671b762c0e6d7f9b42cbcfc65e32eb5267cbd27fd4f075a8f7",
+    "site-factory/seoul-jung-flower/src/pages/index.astro": "a53f4316970c8ee3823f87e1cc89f800ecdcd2837c100eb9ad76dc5c0d2e3b02",
+    "site-factory/seoul-jung-flower/src/pages/[category]/index.astro": "9885bfda63af9ccadfa70a512b67f069e337220981a3d3a40df5816258f4b592",
+    "site-factory/seoul-jung-flower/src/pages/[category]/[slug].astro": "68cc66c5de06096778228c6972c6c7fe33fc98a79ab05a3bc722fe6f05219788",
+    "site-factory/seoul-jung-flower/public/images/editorial/opening-wreath-illustration-v1.webp": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+    "site-factory/seoul-jung-flower/public/images/products/funeral-xl.webp": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+    "site-factory/seoul-jung-flower/public/images/products/congrats-xl.jpg": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+    "site-factory/seoul-jung-flower/public/images/products/congrats-basic.jpg": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+    "site-factory/seoul-jung-flower/public/images/products/congrats-large.jpg": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+    "site-factory/seoul-jung-flower/public/images/products/funeral-basic.webp": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+    "site-factory/seoul-jung-flower/public/images/products/funeral-large.webp": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+    "site-factory/seoul-jung-flower/public/images/products/funeral-premium.webp": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+    "site-factory/seoul-jung-flower/public/images/products/congrats-premium.jpg": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+    "scripts/direct-seoul-jung/test_publish.py": "267c3cbc5d4cc91c81d1abd112052ce6628421f1fcd0d6cbba1707436e9c0c73",
+    "scripts/direct-seoul-jung/publish.py": "1594238801edc69519b5498609a69c368f1f9d8c046242c251fb36f2eb6481b3"
+  },
+  "inputSha256": {
+    "fixed-plan.json": "7c803014821f7f582f799789dcf6381d5ff382b5263e0eb547cc45cdb0842c0c",
+    "articles-author.json": "220c6f149147db40fb58aa8a06374b770cf757be93239f8f4ff41a7613e66472",
+    "articles-independent-review.json": "dc14f3acdb7a511d30892130c9ac00ce5fedbf0f872adf0e917900531f8f070a",
+    "release-meta.json": "bff76ffe869ec78c63cb6fa14fe6e00c8002dba56b8b329ba833b3c89b8d04fa",
+    "coverage-input.json": "d094febb9a719ea061f600cec7db87ac50bf9b3f84d78b962e58ff1ee491dff8"
+  },
+  "nodeVersion": "v22.23.3",
+  "npmVersion": "11.9.0",
+  "npmCi": {
+    "status": "PASS",
+    "offline": true,
+    "packagesAdded": 283
+  },
+  "tests": {
+    "source": 68,
+    "publisher": 42,
+    "failed": 0
+  },
+  "build": {
+    "status": "PASS",
+    "astroDiagnostics": {
+      "files": 38,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 0
+    },
+    "staticQa": {
+      "articles": 7,
+      "normalHtmlRoutes": 9,
+      "sitemapUrls": 9,
+      "notFoundFiles": 1
+    },
+    "graphQa": {
+      "pages": 7,
+      "hubs": 1
+    },
+    "artifactFiles": 26
+  },
+  "artifactInventorySha256": "e6ca4cd4eca28ba80a10b2168d033a1dd4e3ea948dd46b763ef7f895e02a9c22",
+  "artifactFileSha256": {
+    "robots.txt": "11fbad9f802565a809b84e6080b192dec80b123126e6f68d06543a01ebb0b9ca",
+    "sitemap-0.xml": "de0adece10c520e7bb790e63a9e89ee8bab06be8e38299957e461a2247272c65",
+    "34359aa3b701adc8afff8fd9b7a7ce4c.txt": "8582cf4f999165bb43199a5ecb78c0006ca65064803e798fe5647d23ffad00e7",
+    "_headers": "1b27a67288f21cf98b19d15cef8fa084bf7d7ca7a0f89975dd48ba51f90ed015",
+    "404.html": "32bf56691f60ddefd98a601a00230f3fcdac95e2834d3abee0d3bc1300e21835",
+    "index.html": "fce26fc8e5a1ae139e23ff3132bda3a46ecc74525c8bb3c654bed86df1c444c0",
+    "favicon.svg": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+    "sitemap-index.xml": "ed8a63f9e7252e8e99cd2eb6d5b51bdaab55a6436399599828c7ed0dfc902241",
+    "_astro/BaseLayout.MRzcX74D.css": "1d272ba03de0b407c46bf1dc6c1c07059011ece39837a18dc349f273084f880b",
+    "regions/index.html": "14d386bef2b4d65ef436b48f60c28cdda0b83cec37a8b2a4f2ba9f6d75a90268",
+    "images/editorial/opening-wreath-illustration-v1.webp": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+    "images/products/funeral-xl.webp": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+    "images/products/congrats-xl.jpg": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+    "images/products/congrats-basic.jpg": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+    "images/products/congrats-large.jpg": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+    "images/products/funeral-basic.webp": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+    "images/products/funeral-large.webp": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+    "images/products/funeral-premium.webp": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+    "images/products/congrats-premium.jpg": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+    "regions/euljiro7ga-ddp-exhibition-wreath/index.html": "a78be695727b9f62adb261927668da606f6299993804d639821cbf7f819f31b8",
+    "regions/pildong2ga-korea-house-wedding-wreath/index.html": "aa17bca4253a5bfe6af477bb990bfdea97787adefd0f7ef2b50e61293229f070",
+    "regions/jungnim-lw-convention-event-wreath/index.html": "6a1a487e71809184cb219e4e41b155747a0a0147497af4e1eb38ffed876df836",
+    "regions/namchang-namdaemun-opening-wreath/index.html": "5f846e4927f494bd84079ee0e744c9b102771aac00d1c06e123d2b03351a9354",
+    "regions/euljiro6ga-nmc-condolence-wreath/index.html": "17ef6499877b74a51d5fda8fff77b6f48c7c826d7b54f81ae02c73c7a9294799",
+    "regions/jangchung2ga-ambassador-wedding-wreath/index.html": "c84593c90f04dbd70039dd2929f29d79fde1b90d3e41926a09eb0eeddc3cb530",
+    "regions/sindang-ddp-fashion-opening-wreath/index.html": "7b3cdc038f14ffac675bc232be00304213000aefffb040d4266d9215ff05a26a"
+  },
+  "releaseManifestSha256": "2696bc3b718ca93b36dcb46d79f3fedd5bb1ea2d02f5d4a8b94cc9714ae9ce8b",
+  "checks": [
+    {
+      "check": "every original source byte remains unchanged in reviewed build copy",
+      "status": "PASS",
+      "fileCount": 74
+    },
+    {
+      "check": "same previously reviewed full local source inventory",
+      "status": "PASS"
+    },
+    {
+      "check": "72 repository files exclude two local assembly summaries",
+      "status": "PASS"
+    },
+    {
+      "check": "real independent content approval exact input digests",
+      "status": "PASS"
+    },
+    {
+      "check": "seven exact approved mapped customer field records",
+      "status": "PASS"
+    },
+    {
+      "check": "74 legal 15 administrative 92 relationships 32 partial 7 representatives",
+      "status": "PASS"
+    },
+    {
+      "check": "four rendered product cards euljiro6ga-nmc-condolence-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "source-bound rendered metadata euljiro6ga-nmc-condolence-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "real phone and commerce CTA euljiro6ga-nmc-condolence-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "four rendered product cards jangchung2ga-ambassador-wedding-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "source-bound rendered metadata jangchung2ga-ambassador-wedding-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "real phone and commerce CTA jangchung2ga-ambassador-wedding-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "four rendered product cards pildong2ga-korea-house-wedding-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "source-bound rendered metadata pildong2ga-korea-house-wedding-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "real phone and commerce CTA pildong2ga-korea-house-wedding-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "four rendered product cards sindang-ddp-fashion-opening-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "source-bound rendered metadata sindang-ddp-fashion-opening-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "real phone and commerce CTA sindang-ddp-fashion-opening-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "four rendered product cards namchang-namdaemun-opening-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "source-bound rendered metadata namchang-namdaemun-opening-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "real phone and commerce CTA namchang-namdaemun-opening-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "four rendered product cards jungnim-lw-convention-event-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "source-bound rendered metadata jungnim-lw-convention-event-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "real phone and commerce CTA jungnim-lw-convention-event-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "four rendered product cards euljiro7ga-ddp-exhibition-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "source-bound rendered metadata euljiro7ga-ddp-exhibition-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "real phone and commerce CTA euljiro7ga-ddp-exhibition-wreath",
+      "status": "PASS"
+    },
+    {
+      "check": "exact built original product photograph funeral-basic",
+      "status": "PASS"
+    },
+    {
+      "check": "exact built original product photograph funeral-premium",
+      "status": "PASS"
+    },
+    {
+      "check": "exact built original product photograph funeral-large",
+      "status": "PASS"
+    },
+    {
+      "check": "exact built original product photograph funeral-xl",
+      "status": "PASS"
+    },
+    {
+      "check": "exact built original product photograph congrats-basic",
+      "status": "PASS"
+    },
+    {
+      "check": "exact built original product photograph congrats-premium",
+      "status": "PASS"
+    },
+    {
+      "check": "exact built original product photograph congrats-large",
+      "status": "PASS"
+    },
+    {
+      "check": "exact built original product photograph congrats-xl",
+      "status": "PASS"
+    },
+    {
+      "check": "actual built artifact has exact approved routes and sitemap",
+      "status": "PASS",
+      "state": "artifact_verified",
+      "revision": "07ae85ac13698dc4a0edc7faa00de21379f366fa",
+      "files": 26,
+      "regionCount": 7,
+      "articleCount": 7,
+      "htmlRoutes": 9,
+      "noindexHubs": 0,
+      "sitemapUrls": 9
+    },
+    {
+      "check": "loopback actual HTTP bytes metadata assets and unknown 404",
+      "status": "PASS",
+      "checkedPaths": 23,
+      "productionHttpVerified": false
+    },
+    {
+      "check": "source npm tests68 publisher42 and build zero diagnostics",
+      "status": "PASS"
+    },
+    {
+      "check": "ten HTML files nine normal plus one404",
+      "status": "PASS"
+    },
+    {
+      "check": "all rendered product element and social-image alts are meaningful and exact to verified photographs",
+      "status": "PASS",
+      "normalRoutes": 9,
+      "articleRoutes": 7,
+      "uniqueProductPhotographs": 8
+    }
+  ],
+  "pages": [
+    {
+      "route": "/regions/euljiro6ga-nmc-condolence-wreath/",
+      "title": "국립중앙의료원 장례식장 근조화환 주문",
+      "productCards": [
+        "funeral-basic",
+        "funeral-premium",
+        "funeral-large",
+        "funeral-xl"
+      ],
+      "heroProduct": "funeral-basic",
+      "canonical": "https://seoul-jung.fwith.kr/regions/euljiro6ga-nmc-condolence-wreath/",
+      "htmlSha256": "17ef6499877b74a51d5fda8fff77b6f48c7c826d7b54f81ae02c73c7a9294799",
+      "snapshotHash": "d10076c3e885b50328d1c5bfb604e590dd1030bf0cd7a39fa1679efaf1d812f7"
+    },
+    {
+      "route": "/regions/jangchung2ga-ambassador-wedding-wreath/",
+      "title": "앰배서더 서울 풀만 결혼식 축하화환",
+      "productCards": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "heroProduct": "congrats-basic",
+      "canonical": "https://seoul-jung.fwith.kr/regions/jangchung2ga-ambassador-wedding-wreath/",
+      "htmlSha256": "c84593c90f04dbd70039dd2929f29d79fde1b90d3e41926a09eb0eeddc3cb530",
+      "snapshotHash": "9b3eb0478f8c25c7d6ab42f35518e7662d061fe981f58559623eb36914776e42"
+    },
+    {
+      "route": "/regions/pildong2ga-korea-house-wedding-wreath/",
+      "title": "한국의집 전통혼례 축하화환 상담",
+      "productCards": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "heroProduct": "congrats-basic",
+      "canonical": "https://seoul-jung.fwith.kr/regions/pildong2ga-korea-house-wedding-wreath/",
+      "htmlSha256": "aa17bca4253a5bfe6af477bb990bfdea97787adefd0f7ef2b50e61293229f070",
+      "snapshotHash": "7e2c5f5bfa10d4b289807009e8140c893832bfea4e8272ad77c9f6e36f53b2bd"
+    },
+    {
+      "route": "/regions/sindang-ddp-fashion-opening-wreath/",
+      "title": "DDP패션몰 매장 개업화환 주문",
+      "productCards": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "heroProduct": "congrats-basic",
+      "canonical": "https://seoul-jung.fwith.kr/regions/sindang-ddp-fashion-opening-wreath/",
+      "htmlSha256": "7b3cdc038f14ffac675bc232be00304213000aefffb040d4266d9215ff05a26a",
+      "snapshotHash": "3f0aae0f4a3c094e81d86846569c5e972ca440abeb8193ee4d3f58c567152692"
+    },
+    {
+      "route": "/regions/namchang-namdaemun-opening-wreath/",
+      "title": "남대문시장 거래처 개업화환 주문",
+      "productCards": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "heroProduct": "congrats-basic",
+      "canonical": "https://seoul-jung.fwith.kr/regions/namchang-namdaemun-opening-wreath/",
+      "htmlSha256": "5f846e4927f494bd84079ee0e744c9b102771aac00d1c06e123d2b03351a9354",
+      "snapshotHash": "6852e0ee95a6a4382a6a53d282dc7821513722e1582123b08f2d337bb5b205f7"
+    },
+    {
+      "route": "/regions/jungnim-lw-convention-event-wreath/",
+      "title": "서울역 LW컨벤션 행사 축하화환",
+      "productCards": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "heroProduct": "congrats-basic",
+      "canonical": "https://seoul-jung.fwith.kr/regions/jungnim-lw-convention-event-wreath/",
+      "htmlSha256": "6a1a487e71809184cb219e4e41b155747a0a0147497af4e1eb38ffed876df836",
+      "snapshotHash": "ff3700e90a1dc374fec2ad5feb9bd81e1628775ad9325fb9f47fa72f1acfd3b4"
+    },
+    {
+      "route": "/regions/euljiro7ga-ddp-exhibition-wreath/",
+      "title": "DDP 전시 개막 축하화환 주문",
+      "productCards": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "heroProduct": "congrats-basic",
+      "canonical": "https://seoul-jung.fwith.kr/regions/euljiro7ga-ddp-exhibition-wreath/",
+      "htmlSha256": "a78be695727b9f62adb261927668da606f6299993804d639821cbf7f819f31b8",
+      "snapshotHash": "01eb45721872b90ac0bb734706bdfa20ee1f2270d6cc22e8fcbe56702e5ff363"
+    }
+  ],
+  "productImages": [
+    {
+      "key": "funeral-basic",
+      "path": "/images/products/funeral-basic.webp",
+      "sha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+      "dimensions": [
+        480,
+        480
+      ],
+      "type": "image/webp"
+    },
+    {
+      "key": "funeral-premium",
+      "path": "/images/products/funeral-premium.webp",
+      "sha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+      "dimensions": [
+        480,
+        480
+      ],
+      "type": "image/webp"
+    },
+    {
+      "key": "funeral-large",
+      "path": "/images/products/funeral-large.webp",
+      "sha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+      "dimensions": [
+        480,
+        480
+      ],
+      "type": "image/webp"
+    },
+    {
+      "key": "funeral-xl",
+      "path": "/images/products/funeral-xl.webp",
+      "sha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+      "dimensions": [
+        480,
+        480
+      ],
+      "type": "image/webp"
+    },
+    {
+      "key": "congrats-basic",
+      "path": "/images/products/congrats-basic.jpg",
+      "sha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+      "dimensions": [
+        1000,
+        1000
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "key": "congrats-premium",
+      "path": "/images/products/congrats-premium.jpg",
+      "sha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+      "dimensions": [
+        1000,
+        1000
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "key": "congrats-large",
+      "path": "/images/products/congrats-large.jpg",
+      "sha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+      "dimensions": [
+        1000,
+        1000
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "key": "congrats-xl",
+      "path": "/images/products/congrats-xl.jpg",
+      "sha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+      "dimensions": [
+        1000,
+        1000
+      ],
+      "type": "image/jpeg"
+    }
+  ],
+  "localHttp": {
+    "status": "PASS",
+    "checkedPaths": 23,
+    "unknownHttpStatus": 404,
+    "productionHttpVerified": false
+  },
+  "remoteWritesPerformed": false,
+  "browserUsed": false,
+  "providerCredentialsUsed": false,
+  "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+  "limitations": [
+    "Build uses the expected exact source commit. Reviewer has not yet independently compared remote source blob bytes; control commit is not yet published.",
+    "Loopback HTTP verifies rendered bytes and parser behavior with a reviewer-owned static server; it does not verify Cloudflare configuration or a production 404.",
+    "No browser screen QA, remote CI/artifact, provider binding, production HTTP, or IndexNow POST/receipt was verified here.",
+    "Verify remote source blob equivalence, exact published control commit, CI artifact and live production gates before treating this as release evidence."
+  ],
+  "renderedAltChecks": [
+    {
+      "route": "/",
+      "images": [
+        {
+          "src": "/images/products/funeral-basic.webp",
+          "alt": "근조 3단 화환",
+          "productKey": "funeral-basic"
+        },
+        {
+          "src": "/images/products/funeral-premium.webp",
+          "alt": "근조 고급 3단 화환",
+          "productKey": "funeral-premium"
+        },
+        {
+          "src": "/images/products/congrats-basic.jpg",
+          "alt": "축하 3단 화환",
+          "productKey": "congrats-basic"
+        },
+        {
+          "src": "/images/products/congrats-premium.jpg",
+          "alt": "축하 고급 3단 화환",
+          "productKey": "congrats-premium"
+        },
+        {
+          "src": "/images/products/funeral-basic.webp",
+          "alt": "근조 3단 화환",
+          "productKey": "funeral-basic"
+        },
+        {
+          "src": "/images/products/funeral-premium.webp",
+          "alt": "근조 고급 3단 화환",
+          "productKey": "funeral-premium"
+        },
+        {
+          "src": "/images/products/funeral-large.webp",
+          "alt": "근조 특대 3단 화환",
+          "productKey": "funeral-large"
+        },
+        {
+          "src": "/images/products/funeral-xl.webp",
+          "alt": "근조 특특대 3단 화환",
+          "productKey": "funeral-xl"
+        },
+        {
+          "src": "/images/products/congrats-basic.jpg",
+          "alt": "축하 3단 화환",
+          "productKey": "congrats-basic"
+        },
+        {
+          "src": "/images/products/congrats-premium.jpg",
+          "alt": "축하 고급 3단 화환",
+          "productKey": "congrats-premium"
+        },
+        {
+          "src": "/images/products/congrats-large.jpg",
+          "alt": "축하 특대 3단 화환",
+          "productKey": "congrats-large"
+        },
+        {
+          "src": "/images/products/congrats-xl.jpg",
+          "alt": "축하 특특대 3단 화환",
+          "productKey": "congrats-xl"
+        }
+      ],
+      "ogImage": "https://seoul-jung.fwith.kr/images/products/funeral-basic.webp",
+      "renderedOgImageAlt": "꽃이랑 근조 3단 화환",
+      "renderedTwitterImageAlt": "꽃이랑 근조 3단 화환"
+    },
+    {
+      "route": "/regions/",
+      "images": [],
+      "ogImage": "https://seoul-jung.fwith.kr/images/products/funeral-basic.webp",
+      "renderedOgImageAlt": "꽃이랑 근조 3단 화환",
+      "renderedTwitterImageAlt": "꽃이랑 근조 3단 화환"
+    },
+    {
+      "route": "/regions/euljiro6ga-nmc-condolence-wreath/",
+      "images": [
+        {
+          "src": "/images/products/funeral-basic.webp",
+          "alt": "근조 3단 화환",
+          "productKey": "funeral-basic"
+        },
+        {
+          "src": "/images/products/funeral-basic.webp",
+          "alt": "근조 3단 화환",
+          "productKey": "funeral-basic"
+        },
+        {
+          "src": "/images/products/funeral-premium.webp",
+          "alt": "근조 고급 3단 화환",
+          "productKey": "funeral-premium"
+        },
+        {
+          "src": "/images/products/funeral-large.webp",
+          "alt": "근조 특대 3단 화환",
+          "productKey": "funeral-large"
+        },
+        {
+          "src": "/images/products/funeral-xl.webp",
+          "alt": "근조 특특대 3단 화환",
+          "productKey": "funeral-xl"
+        }
+      ],
+      "ogImage": "https://seoul-jung.fwith.kr/images/products/funeral-basic.webp",
+      "renderedOgImageAlt": "꽃이랑 근조 3단 화환",
+      "renderedTwitterImageAlt": "꽃이랑 근조 3단 화환"
+    },
+    {
+      "route": "/regions/jangchung2ga-ambassador-wedding-wreath/",
+      "images": [
+        {
+          "src": "/images/products/congrats-basic.jpg",
+          "alt": "축하 3단 화환",
+          "productKey": "congrats-basic"
+        },
+        {
+          "src": "/images/products/congrats-basic.jpg",
+          "alt": "축하 3단 화환",
+          "productKey": "congrats-basic"
+        },
+        {
+          "src": "/images/products/congrats-premium.jpg",
+          "alt": "축하 고급 3단 화환",
+          "productKey": "congrats-premium"
+        },
+        {
+          "src": "/images/products/congrats-large.jpg",
+          "alt": "축하 특대 3단 화환",
+          "productKey": "congrats-large"
+        },
+        {
+          "src": "/images/products/congrats-xl.jpg",
+          "alt": "축하 특특대 3단 화환",
+          "productKey": "congrats-xl"
+        }
+      ],
+      "ogImage": "https://seoul-jung.fwith.kr/images/products/congrats-basic.jpg",
+      "renderedOgImageAlt": "꽃이랑 축하 3단 화환",
+      "renderedTwitterImageAlt": "꽃이랑 축하 3단 화환"
+    },
+    {
+      "route": "/regions/pildong2ga-korea-house-wedding-wreath/",
+      "images": [
+        {
+          "src": "/images/products/congrats-basic.jpg",
+          "alt": "축하 3단 화환",
+          "productKey": "congrats-basic"
+        },
+        {
+          "src": "/images/products/congrats-basic.jpg",
+          "alt": "축하 3단 화환",
+          "productKey": "congrats-basic"
+        },
+        {
+          "src": "/images/products/congrats-premium.jpg",
+          "alt": "축하 고급 3단 화환",
+          "productKey": "congrats-premium"
+        },
+        {
+          "src": "/images/products/congrats-large.jpg",
+          "alt": "축하 특대 3단 화환",
+          "productKey": "congrats-large"
+        },
+        {
+          "src": "/images/products/congrats-xl.jpg",
+          "alt": "축하 특특대 3단 화환",
+          "productKey": "congrats-xl"
+        }
+      ],
+      "ogImage": "https://seoul-jung.fwith.kr/images/products/congrats-basic.jpg",
+      "renderedOgImageAlt": "꽃이랑 축하 3단 화환",
+      "renderedTwitterImageAlt": "꽃이랑 축하 3단 화환"
+    },
+    {
+      "route": "/regions/sindang-ddp-fashion-opening-wreath/",
+      "images": [
+        {
+          "src": "/images/products/congrats-basic.jpg",
+          "alt": "축하 3단 화환",
+          "productKey": "congrats-basic"
+        },
+        {
+          "src": "/images/products/congrats-basic.jpg",
+          "alt": "축하 3단 화환",
+          "productKey": "congrats-basic"
+        },
+        {
+          "src": "/images/products/congrats-premium.jpg",
+          "alt": "축하 고급 3단 화환",
+          "productKey": "congrats-premium"
+        },
+        {
+          "src": "/images/products/congrats-large.jpg",
+          "alt": "축하 특대 3단 화환",
+          "productKey": "congrats-large"
+        },
+        {
+          "src": "/images/products/congrats-xl.jpg",
+          "alt": "축하 특특대 3단 화환",
+          "productKey": "congrats-xl"
+        }
+      ],
+      "ogImage": "https://seoul-jung.fwith.kr/images/products/congrats-basic.jpg",
+      "renderedOgImageAlt": "꽃이랑 축하 3단 화환",
+      "renderedTwitterImageAlt": "꽃이랑 축하 3단 화환"
+    },
+    {
+      "route": "/regions/namchang-namdaemun-opening-wreath/",
+      "images": [
+        {
+          "src": "/images/products/congrats-basic.jpg",
+          "alt": "축하 3단 화환",
+          "productKey": "congrats-basic"
+        },
+        {
+          "src": "/images/products/congrats-basic.jpg",
+          "alt": "축하 3단 화환",
+          "productKey": "congrats-basic"
+        },
+        {
+          "src": "/images/products/congrats-premium.jpg",
+          "alt": "축하 고급 3단 화환",
+          "productKey": "congrats-premium"
+        },
+        {
+          "src": "/images/products/congrats-large.jpg",
+          "alt": "축하 특대 3단 화환",
+          "productKey": "congrats-large"
+        },
+        {
+          "src": "/images/products/congrats-xl.jpg",
+          "alt": "축하 특특대 3단 화환",
+          "productKey": "congrats-xl"
+        }
+      ],
+      "ogImage": "https://seoul-jung.fwith.kr/images/products/congrats-basic.jpg",
+      "renderedOgImageAlt": "꽃이랑 축하 3단 화환",
+      "renderedTwitterImageAlt": "꽃이랑 축하 3단 화환"
+    },
+    {
+      "route": "/regions/jungnim-lw-convention-event-wreath/",
+      "images": [
+        {
+          "src": "/images/products/congrats-basic.jpg",
+          "alt": "축하 3단 화환",
+          "productKey": "congrats-basic"
+        },
+        {
+          "src": "/images/products/congrats-basic.jpg",
+          "alt": "축하 3단 화환",
+          "productKey": "congrats-basic"
+        },
+        {
+          "src": "/images/products/congrats-premium.jpg",
+          "alt": "축하 고급 3단 화환",
+          "productKey": "congrats-premium"
+        },
+        {
+          "src": "/images/products/congrats-large.jpg",
+          "alt": "축하 특대 3단 화환",
+          "productKey": "congrats-large"
+        },
+        {
+          "src": "/images/products/congrats-xl.jpg",
+          "alt": "축하 특특대 3단 화환",
+          "productKey": "congrats-xl"
+        }
+      ],
+      "ogImage": "https://seoul-jung.fwith.kr/images/products/congrats-basic.jpg",
+      "renderedOgImageAlt": "꽃이랑 축하 3단 화환",
+      "renderedTwitterImageAlt": "꽃이랑 축하 3단 화환"
+    },
+    {
+      "route": "/regions/euljiro7ga-ddp-exhibition-wreath/",
+      "images": [
+        {
+          "src": "/images/products/congrats-basic.jpg",
+          "alt": "축하 3단 화환",
+          "productKey": "congrats-basic"
+        },
+        {
+          "src": "/images/products/congrats-basic.jpg",
+          "alt": "축하 3단 화환",
+          "productKey": "congrats-basic"
+        },
+        {
+          "src": "/images/products/congrats-premium.jpg",
+          "alt": "축하 고급 3단 화환",
+          "productKey": "congrats-premium"
+        },
+        {
+          "src": "/images/products/congrats-large.jpg",
+          "alt": "축하 특대 3단 화환",
+          "productKey": "congrats-large"
+        },
+        {
+          "src": "/images/products/congrats-xl.jpg",
+          "alt": "축하 특특대 3단 화환",
+          "productKey": "congrats-xl"
+        }
+      ],
+      "ogImage": "https://seoul-jung.fwith.kr/images/products/congrats-basic.jpg",
+      "renderedOgImageAlt": "꽃이랑 축하 3단 화환",
+      "renderedTwitterImageAlt": "꽃이랑 축하 3단 화환"
+    }
+  ],
+  "productPixelInspection": {
+    "status": "PASS",
+    "images": 8,
+    "source": "built artifact photographs",
+    "reviewMethod": "Reviewer visually inspected an eight-photo contact sheet, and independently matched every source and built file by SHA-256, dimensions and MIME.",
+    "observations": "Four condolence wreath photographs and four colorful congratulatory wreath photographs match their product families. Congratulatory sample photographs contain wedding ribbon text; rendered customer notices identify ribbon text as examples and require the intended wording to be confirmed.",
+    "contactSheetSha256": "780e0e5476ff0955d337a92b317c4c9847e7e050aaef37786e4613b932a618d2",
+    "notBrowserScreenQa": true
+  }
+}
