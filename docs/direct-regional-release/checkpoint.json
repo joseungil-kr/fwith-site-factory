@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T06:29:52.217Z",
+  "updatedAt": "2026-10-10T06:31:33.694Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,14 +33,16 @@
   "current": {
     "scopeKey": "anseong-direct-initial-20261010",
     "city": "안성시",
-    "status": "published_http_pass_search_submission_intent",
+    "status": "released_search_submitted_visual_qa_deferred",
     "owner": {
       "scheduledRunAt": "2026-10-10T06:00:00Z",
       "observedExecutionAt": "2026-10-10T06:01:14.435Z",
       "newRegionStartedAt": "2026-10-10T06:01:14.435Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-anseong-20261010T060000Z",
-      "active": true
+      "active": false,
+      "completedAt": "2026-10-10T06:31:33.694Z",
+      "executionState": "released_with_visual_review_deferred"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -410,18 +412,12 @@
         }
       ]
     },
-    "lastSuccessfulStage": "public_http_and_indexnow200_verified",
-    "nextIntent": "Submit public sitemap once, confirm list_sitemaps readback, preserve deferred visual cases",
-    "pendingExternalAction": {
-      "action": "GSC_submit_sitemap",
-      "target": "sc-domain:fwith.kr",
-      "sitemapUrl": "https://anseong.fwith.kr/sitemap-index.xml",
-      "sourceRevision": "39a23593b6d2134627edccb9a02378dac708e5c4",
-      "idempotencyKey": "anseong-gsc-39a23593b6d2134627edccb9a02378dac708e5c4"
-    },
+    "lastSuccessfulStage": "public_http_indexnow200_gsc_confirmed",
+    "nextIntent": "Deferred batch desktop/narrow visual review; next invocation may select next unbuilt region",
+    "pendingExternalAction": null,
     "review": {
       "independentContent": "PASS",
-      "hostedQa": "not_run",
+      "hostedQa": "HTTP_PASS_VISUAL_DEFERRED",
       "visualQa": "deferred_not_pass",
       "writerDigests": {
         "a": "9057e84fb11b12bc702d4e1d71204da029a5fa5fdb7a09f0d28a3c05a8b43999",
@@ -466,7 +462,72 @@
       "status": "PASS_OFFICIAL_CI_ARTIFACT_AND_RECEIPT",
       "evidencePath": "docs/direct-regional-release/anseong/ci-verification.json",
       "sha256": "545af414d963bfcb8aba9942f478a1b44c25a1fcc5907ae17ff3f46fb8dba7cf"
-    }
+    },
+    "indexNowReceipt": {
+      "state": "received",
+      "httpStatus": 200,
+      "attempt": 1,
+      "urlCount": 46,
+      "urlSetSha256": "aefc63fba8004097b8e07a2247bb959a0b3a04ef00bd2bba6f4f14b0de558244",
+      "fingerprint": "85e37cd54c34f1038ae5b0cb5cfc4ffb529138e8aaa50e06d71d95ec6515a565",
+      "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6094646049",
+      "receiptIssue": 266,
+      "getObservations": 100,
+      "submissionObservations": 1,
+      "allGet200AndNoBlockingRobotsOrChallenge": true,
+      "httpMeaning": "accepted",
+      "searchIndexing": "not_verified"
+    },
+    "gsc": {
+      "sitemapUrl": "https://anseong.fwith.kr/sitemap-index.xml",
+      "accepted": true,
+      "confirmed": true,
+      "lastSubmitted": "2026-10-10T06:30:48.669Z",
+      "isPending": true,
+      "isSitemapsIndex": false,
+      "warnings": "0",
+      "errors": "0",
+      "readback": {
+        "path": "https://anseong.fwith.kr/sitemap-index.xml",
+        "lastSubmitted": "2026-10-10T06:30:48.669Z",
+        "isPending": true,
+        "isSitemapsIndex": false,
+        "warnings": "0",
+        "errors": "0"
+      },
+      "lastObservedAt": "2026-10-10T06:31:33.694Z"
+    },
+    "publication": {
+      "url": "https://anseong.fwith.kr/",
+      "sourceRevision": "39a23593b6d2134627edccb9a02378dac708e5c4",
+      "indexNow": {
+        "state": "received",
+        "httpStatus": 200,
+        "attempt": 1,
+        "urlCount": 46,
+        "urlSetSha256": "aefc63fba8004097b8e07a2247bb959a0b3a04ef00bd2bba6f4f14b0de558244",
+        "fingerprint": "85e37cd54c34f1038ae5b0cb5cfc4ffb529138e8aaa50e06d71d95ec6515a565",
+        "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6094646049",
+        "receiptIssue": 266,
+        "getObservations": 100,
+        "submissionObservations": 1,
+        "allGet200AndNoBlockingRobotsOrChallenge": true,
+        "httpMeaning": "accepted",
+        "searchIndexing": "not_verified"
+      },
+      "searchIndexing": "not_verified"
+    },
+    "deferredVisualQa": {
+      "status": "deferred_not_pass",
+      "evidencePath": "docs/direct-regional-release/anseong/deferred-visual-qa-handoff.json",
+      "sha256": "4c6a4993df3f799d0009328dc0861456dae926a788c1978bbb3581f39ef4e302",
+      "pendingNormalRoutes": 46,
+      "pending404Routes": 2,
+      "totalRouteWidthObservations": 96,
+      "authorizedAt": "2026-10-10T03:43:40Z"
+    },
+    "userIntervention": false,
+    "elapsedSecondsFromObservedStart": 1819
   },
   "history": [
     {
@@ -2584,6 +2645,505 @@
       },
       "userIntervention": false,
       "elapsedSecondsFromObservedStart": 2168
+    },
+    {
+      "scopeKey": "anseong-direct-initial-20261010",
+      "city": "안성시",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "owner": {
+        "scheduledRunAt": "2026-10-10T06:00:00Z",
+        "observedExecutionAt": "2026-10-10T06:01:14.435Z",
+        "newRegionStartedAt": "2026-10-10T06:01:14.435Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-anseong-20261010T060000Z",
+        "active": false,
+        "completedAt": "2026-10-10T06:31:33.694Z",
+        "executionState": "released_with_visual_review_deferred"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-anseong-direct",
+        "root": "site-factory/anseong-flower",
+        "worker": "anseong-flower-guide",
+        "hostname": "anseong.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true
+      },
+      "input": {
+        "controlRevision": "2ddbc8f28d168088dd684b7b6f0dd8aefad3c128",
+        "runtimeSourceRevision": "0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920"
+      },
+      "selection": {
+        "officialCode": "41550",
+        "reason": "Next unbuilt municipality in remote checkpoint official code order; completed and released hosts excluded"
+      },
+      "conflictChecks": {
+        "branchesChecked": 115,
+        "matchingBranch": false,
+        "openMatchingPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "PASS_exact_account_worker_domain_no_override"
+      },
+      "plan": {
+        "state": "reviewed_44_of_45",
+        "plannedArticleCount": 45,
+        "minimumPassedArticles": 41,
+        "passedArticleCount": 44,
+        "administrativeUnits": 15,
+        "crosswalkRelationships": 45,
+        "deferred": [
+          {
+            "slug": "balhwa-dong",
+            "name": "발화동",
+            "administrativeName": "안성1동",
+            "primaryKeyword": "안성 발화동 꽃배달",
+            "title": "안성 발화동 꽃배달 | 화환이 적합한 공식 수령 맥락 추가 확인",
+            "h1": "안성 발화동 꽃배달 | 화환이 적합한 공식 수령 맥락 추가 확인",
+            "intent": "화환이 적합한 공식 수령 맥락 추가 확인",
+            "sourceUrl": null,
+            "sourceName": null,
+            "verifiedFactsAndLimits": "HOLD:요양시설개인선물수요를화환으로유도하지않음;다른공식행사시설근거필요",
+            "state": "hold_research",
+            "family": "congrats"
+          }
+        ],
+        "membershipPath": "docs/direct-regional-release/anseong/membership.json",
+        "membershipSha256": "84661e35f0a7ff521fda0b3e6a2b03121a0b21ff1f6f55dc788e4b3f61c8b3e1",
+        "articles": [
+          {
+            "name": "봉산동",
+            "slug": "bongsan-dong",
+            "route": "/regions/bongsan-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "숭인동",
+            "slug": "sungin-dong",
+            "route": "/regions/sungin-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "영동",
+            "slug": "yeong-dong",
+            "route": "/regions/yeong-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "봉남동",
+            "slug": "bongnam-dong",
+            "route": "/regions/bongnam-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "구포동",
+            "slug": "gupo-dong",
+            "route": "/regions/gupo-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "동본동",
+            "slug": "dongbon-dong",
+            "route": "/regions/dongbon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "명륜동",
+            "slug": "myeongnyun-dong",
+            "route": "/regions/myeongnyun-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "옥천동",
+            "slug": "okcheon-dong",
+            "route": "/regions/okcheon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "낙원동",
+            "slug": "nagwon-dong",
+            "route": "/regions/nagwon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "창전동",
+            "slug": "changjeon-dong",
+            "route": "/regions/changjeon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "성남동",
+            "slug": "seongnam-dong",
+            "route": "/regions/seongnam-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "신흥동",
+            "slug": "sinheung-dong",
+            "route": "/regions/sinheung-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "인지동",
+            "slug": "inji-dong",
+            "route": "/regions/inji-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "금산동",
+            "slug": "geumsan-dong",
+            "route": "/regions/geumsan-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "연지동",
+            "slug": "yeonji-dong",
+            "route": "/regions/yeonji-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "대천동",
+            "slug": "daecheon-dong",
+            "route": "/regions/daecheon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "서인동",
+            "slug": "seoin-dong",
+            "route": "/regions/seoin-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "석정동",
+            "slug": "seokjeong-dong",
+            "route": "/regions/seokjeong-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "아양동",
+            "slug": "ayang-dong",
+            "route": "/regions/ayang-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "금석동",
+            "slug": "geumseok-dong",
+            "route": "/regions/geumseok-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "계동",
+            "slug": "gye-dong",
+            "route": "/regions/gye-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "옥산동",
+            "slug": "oksan-dong",
+            "route": "/regions/oksan-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "사곡동",
+            "slug": "sagok-dong",
+            "route": "/regions/sagok-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "도기동",
+            "slug": "dogi-dong",
+            "route": "/regions/dogi-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "당왕동",
+            "slug": "dangwang-dong",
+            "route": "/regions/dangwang-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "가사동",
+            "slug": "gasa-dong",
+            "route": "/regions/gasa-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "가현동",
+            "slug": "gahyeon-dong",
+            "route": "/regions/gahyeon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "신건지동",
+            "slug": "singeonji-dong",
+            "route": "/regions/singeonji-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "신소현동",
+            "slug": "sinsohyeon-dong",
+            "route": "/regions/sinsohyeon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "신모산동",
+            "slug": "sinmosan-dong",
+            "route": "/regions/sinmosan-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "현수동",
+            "slug": "hyeonsu-dong",
+            "route": "/regions/hyeonsu-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "발화동",
+            "slug": "balhwa-dong",
+            "route": "/regions/balhwa-dong/",
+            "status": "hold_research",
+            "writerBatch": "b"
+          },
+          {
+            "name": "중리동",
+            "slug": "jungni-dong",
+            "route": "/regions/jungni-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "공도읍",
+            "slug": "gongdo-eup",
+            "route": "/regions/gongdo-eup/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "보개면",
+            "slug": "bogae-myeon",
+            "route": "/regions/bogae-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "금광면",
+            "slug": "geumgwang-myeon",
+            "route": "/regions/geumgwang-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "서운면",
+            "slug": "seoun-myeon",
+            "route": "/regions/seoun-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "미양면",
+            "slug": "miyang-myeon",
+            "route": "/regions/miyang-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "대덕면",
+            "slug": "daedeok-myeon",
+            "route": "/regions/daedeok-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "양성면",
+            "slug": "yangseong-myeon",
+            "route": "/regions/yangseong-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "원곡면",
+            "slug": "wongok-myeon",
+            "route": "/regions/wongok-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "일죽면",
+            "slug": "iljuk-myeon",
+            "route": "/regions/iljuk-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "죽산면",
+            "slug": "juksan-myeon",
+            "route": "/regions/juksan-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "삼죽면",
+            "slug": "samjuk-myeon",
+            "route": "/regions/samjuk-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "고삼면",
+            "slug": "gosam-myeon",
+            "route": "/regions/gosam-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          }
+        ]
+      },
+      "lastSuccessfulStage": "public_http_indexnow200_gsc_confirmed",
+      "nextIntent": "Deferred batch desktop/narrow visual review; next invocation may select next unbuilt region",
+      "pendingExternalAction": null,
+      "review": {
+        "independentContent": "PASS",
+        "hostedQa": "HTTP_PASS_VISUAL_DEFERRED",
+        "visualQa": "deferred_not_pass",
+        "writerDigests": {
+          "a": "9057e84fb11b12bc702d4e1d71204da029a5fa5fdb7a09f0d28a3c05a8b43999",
+          "b": "fe001b24137ce0139df74e0ba8025d1d431f98f31834a157832819f8bfc7b967",
+          "c": "febb994d9d10899004f330f8d9f0c14b9cff33f894833647dc483571ed7ef8db"
+        },
+        "sourceTests": 64,
+        "helperTests": 34,
+        "sourceFiles": 69,
+        "artifactFiles": 63,
+        "normalHtmlRoutes": 46,
+        "sitemapUrls": 46,
+        "localBuild": "PASS_EXACT_SOURCE_SHA_NODE22",
+        "sourceFileManifestSha256": "8428053d15c035a8238869f81ea5ff88ebeb1c3298123228192b7c6f5895197f",
+        "localReviewSha256": "ac43a0b64b75595d06feaa7c593d5d88b8e935290ae8e3de3eb2dc962bc7e724",
+        "remoteReadback": "PASS_69_FULL_SOURCE_3_CONTROLS",
+        "finalEvidencePath": "docs/direct-regional-release/anseong/final-release-review.json",
+        "finalEvidenceSha256": "810fc09a4e4b0f1fc76ce7e0e4ec3986e6d8b0d209c04c13f825aa26b48a8177"
+      },
+      "sourceRevision": "39a23593b6d2134627edccb9a02378dac708e5c4",
+      "controlRevision": "c3cc536814a2396c76b020dc9dfd048651d3873c",
+      "actualWorkflow": {
+        "runId": 38030904188,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38030904188",
+        "sourceRevision": "39a23593b6d2134627edccb9a02378dac708e5c4",
+        "controlRevision": "8c830d96800277068354d6cda8b7a792fc90b730",
+        "createdAt": "2026-10-10T06:25:52Z",
+        "dispatchCount": 1,
+        "status": "completed",
+        "result": "success",
+        "completedAt": "2026-10-10T06:27:21Z"
+      },
+      "publicQa": {
+        "status": "PASS_INDEPENDENT_PUBLIC_HTTP_BYTES",
+        "checkedAt": "2026-10-10T06:29:17.931Z",
+        "paths": 63,
+        "normalHtmlRoutes": 46,
+        "sitemapUrls": 46,
+        "visualQa": "deferred_not_pass"
+      },
+      "ciVerification": {
+        "status": "PASS_OFFICIAL_CI_ARTIFACT_AND_RECEIPT",
+        "evidencePath": "docs/direct-regional-release/anseong/ci-verification.json",
+        "sha256": "545af414d963bfcb8aba9942f478a1b44c25a1fcc5907ae17ff3f46fb8dba7cf"
+      },
+      "indexNowReceipt": {
+        "state": "received",
+        "httpStatus": 200,
+        "attempt": 1,
+        "urlCount": 46,
+        "urlSetSha256": "aefc63fba8004097b8e07a2247bb959a0b3a04ef00bd2bba6f4f14b0de558244",
+        "fingerprint": "85e37cd54c34f1038ae5b0cb5cfc4ffb529138e8aaa50e06d71d95ec6515a565",
+        "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6094646049",
+        "receiptIssue": 266,
+        "getObservations": 100,
+        "submissionObservations": 1,
+        "allGet200AndNoBlockingRobotsOrChallenge": true,
+        "httpMeaning": "accepted",
+        "searchIndexing": "not_verified"
+      },
+      "gsc": {
+        "sitemapUrl": "https://anseong.fwith.kr/sitemap-index.xml",
+        "accepted": true,
+        "confirmed": true,
+        "lastSubmitted": "2026-10-10T06:30:48.669Z",
+        "isPending": true,
+        "isSitemapsIndex": false,
+        "warnings": "0",
+        "errors": "0",
+        "readback": {
+          "path": "https://anseong.fwith.kr/sitemap-index.xml",
+          "lastSubmitted": "2026-10-10T06:30:48.669Z",
+          "isPending": true,
+          "isSitemapsIndex": false,
+          "warnings": "0",
+          "errors": "0"
+        },
+        "lastObservedAt": "2026-10-10T06:31:33.694Z"
+      },
+      "publication": {
+        "url": "https://anseong.fwith.kr/",
+        "sourceRevision": "39a23593b6d2134627edccb9a02378dac708e5c4",
+        "indexNow": {
+          "state": "received",
+          "httpStatus": 200,
+          "attempt": 1,
+          "urlCount": 46,
+          "urlSetSha256": "aefc63fba8004097b8e07a2247bb959a0b3a04ef00bd2bba6f4f14b0de558244",
+          "fingerprint": "85e37cd54c34f1038ae5b0cb5cfc4ffb529138e8aaa50e06d71d95ec6515a565",
+          "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6094646049",
+          "receiptIssue": 266,
+          "getObservations": 100,
+          "submissionObservations": 1,
+          "allGet200AndNoBlockingRobotsOrChallenge": true,
+          "httpMeaning": "accepted",
+          "searchIndexing": "not_verified"
+        },
+        "searchIndexing": "not_verified"
+      },
+      "deferredVisualQa": {
+        "status": "deferred_not_pass",
+        "evidencePath": "docs/direct-regional-release/anseong/deferred-visual-qa-handoff.json",
+        "sha256": "4c6a4993df3f799d0009328dc0861456dae926a788c1978bbb3581f39ef4e302",
+        "pendingNormalRoutes": 46,
+        "pending404Routes": 2,
+        "totalRouteWidthObservations": 96,
+        "authorizedAt": "2026-10-10T03:43:40Z"
+      },
+      "userIntervention": false,
+      "elapsedSecondsFromObservedStart": 1819
     }
   ],
   "maintenanceBacklog": [
@@ -2614,7 +3174,7 @@
       ]
     }
   ],
-  "nextAction": "Prepare Anseong only under fixed45 plan, preserve prior releases and deferred visual reviews",
+  "nextAction": "Next invocation: verify remote ownership and select next unbuilt official-code municipality; preserve all visual QA deferrals and held articles.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -3598,12 +4158,512 @@
       },
       "userIntervention": false,
       "elapsedSecondsFromObservedStart": 2168
+    },
+    {
+      "scopeKey": "anseong-direct-initial-20261010",
+      "city": "안성시",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "owner": {
+        "scheduledRunAt": "2026-10-10T06:00:00Z",
+        "observedExecutionAt": "2026-10-10T06:01:14.435Z",
+        "newRegionStartedAt": "2026-10-10T06:01:14.435Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-anseong-20261010T060000Z",
+        "active": false,
+        "completedAt": "2026-10-10T06:31:33.694Z",
+        "executionState": "released_with_visual_review_deferred"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-anseong-direct",
+        "root": "site-factory/anseong-flower",
+        "worker": "anseong-flower-guide",
+        "hostname": "anseong.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true
+      },
+      "input": {
+        "controlRevision": "2ddbc8f28d168088dd684b7b6f0dd8aefad3c128",
+        "runtimeSourceRevision": "0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920"
+      },
+      "selection": {
+        "officialCode": "41550",
+        "reason": "Next unbuilt municipality in remote checkpoint official code order; completed and released hosts excluded"
+      },
+      "conflictChecks": {
+        "branchesChecked": 115,
+        "matchingBranch": false,
+        "openMatchingPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "PASS_exact_account_worker_domain_no_override"
+      },
+      "plan": {
+        "state": "reviewed_44_of_45",
+        "plannedArticleCount": 45,
+        "minimumPassedArticles": 41,
+        "passedArticleCount": 44,
+        "administrativeUnits": 15,
+        "crosswalkRelationships": 45,
+        "deferred": [
+          {
+            "slug": "balhwa-dong",
+            "name": "발화동",
+            "administrativeName": "안성1동",
+            "primaryKeyword": "안성 발화동 꽃배달",
+            "title": "안성 발화동 꽃배달 | 화환이 적합한 공식 수령 맥락 추가 확인",
+            "h1": "안성 발화동 꽃배달 | 화환이 적합한 공식 수령 맥락 추가 확인",
+            "intent": "화환이 적합한 공식 수령 맥락 추가 확인",
+            "sourceUrl": null,
+            "sourceName": null,
+            "verifiedFactsAndLimits": "HOLD:요양시설개인선물수요를화환으로유도하지않음;다른공식행사시설근거필요",
+            "state": "hold_research",
+            "family": "congrats"
+          }
+        ],
+        "membershipPath": "docs/direct-regional-release/anseong/membership.json",
+        "membershipSha256": "84661e35f0a7ff521fda0b3e6a2b03121a0b21ff1f6f55dc788e4b3f61c8b3e1",
+        "articles": [
+          {
+            "name": "봉산동",
+            "slug": "bongsan-dong",
+            "route": "/regions/bongsan-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "숭인동",
+            "slug": "sungin-dong",
+            "route": "/regions/sungin-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "영동",
+            "slug": "yeong-dong",
+            "route": "/regions/yeong-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "봉남동",
+            "slug": "bongnam-dong",
+            "route": "/regions/bongnam-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "구포동",
+            "slug": "gupo-dong",
+            "route": "/regions/gupo-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "동본동",
+            "slug": "dongbon-dong",
+            "route": "/regions/dongbon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "명륜동",
+            "slug": "myeongnyun-dong",
+            "route": "/regions/myeongnyun-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "옥천동",
+            "slug": "okcheon-dong",
+            "route": "/regions/okcheon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "낙원동",
+            "slug": "nagwon-dong",
+            "route": "/regions/nagwon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "창전동",
+            "slug": "changjeon-dong",
+            "route": "/regions/changjeon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "성남동",
+            "slug": "seongnam-dong",
+            "route": "/regions/seongnam-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "신흥동",
+            "slug": "sinheung-dong",
+            "route": "/regions/sinheung-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "인지동",
+            "slug": "inji-dong",
+            "route": "/regions/inji-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "금산동",
+            "slug": "geumsan-dong",
+            "route": "/regions/geumsan-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "연지동",
+            "slug": "yeonji-dong",
+            "route": "/regions/yeonji-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "대천동",
+            "slug": "daecheon-dong",
+            "route": "/regions/daecheon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "서인동",
+            "slug": "seoin-dong",
+            "route": "/regions/seoin-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "석정동",
+            "slug": "seokjeong-dong",
+            "route": "/regions/seokjeong-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "아양동",
+            "slug": "ayang-dong",
+            "route": "/regions/ayang-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "금석동",
+            "slug": "geumseok-dong",
+            "route": "/regions/geumseok-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "계동",
+            "slug": "gye-dong",
+            "route": "/regions/gye-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "옥산동",
+            "slug": "oksan-dong",
+            "route": "/regions/oksan-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "사곡동",
+            "slug": "sagok-dong",
+            "route": "/regions/sagok-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "도기동",
+            "slug": "dogi-dong",
+            "route": "/regions/dogi-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "당왕동",
+            "slug": "dangwang-dong",
+            "route": "/regions/dangwang-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "가사동",
+            "slug": "gasa-dong",
+            "route": "/regions/gasa-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "가현동",
+            "slug": "gahyeon-dong",
+            "route": "/regions/gahyeon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "신건지동",
+            "slug": "singeonji-dong",
+            "route": "/regions/singeonji-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "신소현동",
+            "slug": "sinsohyeon-dong",
+            "route": "/regions/sinsohyeon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "신모산동",
+            "slug": "sinmosan-dong",
+            "route": "/regions/sinmosan-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "현수동",
+            "slug": "hyeonsu-dong",
+            "route": "/regions/hyeonsu-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "발화동",
+            "slug": "balhwa-dong",
+            "route": "/regions/balhwa-dong/",
+            "status": "hold_research",
+            "writerBatch": "b"
+          },
+          {
+            "name": "중리동",
+            "slug": "jungni-dong",
+            "route": "/regions/jungni-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "공도읍",
+            "slug": "gongdo-eup",
+            "route": "/regions/gongdo-eup/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "보개면",
+            "slug": "bogae-myeon",
+            "route": "/regions/bogae-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "금광면",
+            "slug": "geumgwang-myeon",
+            "route": "/regions/geumgwang-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "서운면",
+            "slug": "seoun-myeon",
+            "route": "/regions/seoun-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "미양면",
+            "slug": "miyang-myeon",
+            "route": "/regions/miyang-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "대덕면",
+            "slug": "daedeok-myeon",
+            "route": "/regions/daedeok-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "양성면",
+            "slug": "yangseong-myeon",
+            "route": "/regions/yangseong-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "원곡면",
+            "slug": "wongok-myeon",
+            "route": "/regions/wongok-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "일죽면",
+            "slug": "iljuk-myeon",
+            "route": "/regions/iljuk-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "죽산면",
+            "slug": "juksan-myeon",
+            "route": "/regions/juksan-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "삼죽면",
+            "slug": "samjuk-myeon",
+            "route": "/regions/samjuk-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "고삼면",
+            "slug": "gosam-myeon",
+            "route": "/regions/gosam-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          }
+        ]
+      },
+      "lastSuccessfulStage": "public_http_indexnow200_gsc_confirmed",
+      "nextIntent": "Deferred batch desktop/narrow visual review; next invocation may select next unbuilt region",
+      "pendingExternalAction": null,
+      "review": {
+        "independentContent": "PASS",
+        "hostedQa": "HTTP_PASS_VISUAL_DEFERRED",
+        "visualQa": "deferred_not_pass",
+        "writerDigests": {
+          "a": "9057e84fb11b12bc702d4e1d71204da029a5fa5fdb7a09f0d28a3c05a8b43999",
+          "b": "fe001b24137ce0139df74e0ba8025d1d431f98f31834a157832819f8bfc7b967",
+          "c": "febb994d9d10899004f330f8d9f0c14b9cff33f894833647dc483571ed7ef8db"
+        },
+        "sourceTests": 64,
+        "helperTests": 34,
+        "sourceFiles": 69,
+        "artifactFiles": 63,
+        "normalHtmlRoutes": 46,
+        "sitemapUrls": 46,
+        "localBuild": "PASS_EXACT_SOURCE_SHA_NODE22",
+        "sourceFileManifestSha256": "8428053d15c035a8238869f81ea5ff88ebeb1c3298123228192b7c6f5895197f",
+        "localReviewSha256": "ac43a0b64b75595d06feaa7c593d5d88b8e935290ae8e3de3eb2dc962bc7e724",
+        "remoteReadback": "PASS_69_FULL_SOURCE_3_CONTROLS",
+        "finalEvidencePath": "docs/direct-regional-release/anseong/final-release-review.json",
+        "finalEvidenceSha256": "810fc09a4e4b0f1fc76ce7e0e4ec3986e6d8b0d209c04c13f825aa26b48a8177"
+      },
+      "sourceRevision": "39a23593b6d2134627edccb9a02378dac708e5c4",
+      "controlRevision": "c3cc536814a2396c76b020dc9dfd048651d3873c",
+      "actualWorkflow": {
+        "runId": 38030904188,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38030904188",
+        "sourceRevision": "39a23593b6d2134627edccb9a02378dac708e5c4",
+        "controlRevision": "8c830d96800277068354d6cda8b7a792fc90b730",
+        "createdAt": "2026-10-10T06:25:52Z",
+        "dispatchCount": 1,
+        "status": "completed",
+        "result": "success",
+        "completedAt": "2026-10-10T06:27:21Z"
+      },
+      "publicQa": {
+        "status": "PASS_INDEPENDENT_PUBLIC_HTTP_BYTES",
+        "checkedAt": "2026-10-10T06:29:17.931Z",
+        "paths": 63,
+        "normalHtmlRoutes": 46,
+        "sitemapUrls": 46,
+        "visualQa": "deferred_not_pass"
+      },
+      "ciVerification": {
+        "status": "PASS_OFFICIAL_CI_ARTIFACT_AND_RECEIPT",
+        "evidencePath": "docs/direct-regional-release/anseong/ci-verification.json",
+        "sha256": "545af414d963bfcb8aba9942f478a1b44c25a1fcc5907ae17ff3f46fb8dba7cf"
+      },
+      "indexNowReceipt": {
+        "state": "received",
+        "httpStatus": 200,
+        "attempt": 1,
+        "urlCount": 46,
+        "urlSetSha256": "aefc63fba8004097b8e07a2247bb959a0b3a04ef00bd2bba6f4f14b0de558244",
+        "fingerprint": "85e37cd54c34f1038ae5b0cb5cfc4ffb529138e8aaa50e06d71d95ec6515a565",
+        "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6094646049",
+        "receiptIssue": 266,
+        "getObservations": 100,
+        "submissionObservations": 1,
+        "allGet200AndNoBlockingRobotsOrChallenge": true,
+        "httpMeaning": "accepted",
+        "searchIndexing": "not_verified"
+      },
+      "gsc": {
+        "sitemapUrl": "https://anseong.fwith.kr/sitemap-index.xml",
+        "accepted": true,
+        "confirmed": true,
+        "lastSubmitted": "2026-10-10T06:30:48.669Z",
+        "isPending": true,
+        "isSitemapsIndex": false,
+        "warnings": "0",
+        "errors": "0",
+        "readback": {
+          "path": "https://anseong.fwith.kr/sitemap-index.xml",
+          "lastSubmitted": "2026-10-10T06:30:48.669Z",
+          "isPending": true,
+          "isSitemapsIndex": false,
+          "warnings": "0",
+          "errors": "0"
+        },
+        "lastObservedAt": "2026-10-10T06:31:33.694Z"
+      },
+      "publication": {
+        "url": "https://anseong.fwith.kr/",
+        "sourceRevision": "39a23593b6d2134627edccb9a02378dac708e5c4",
+        "indexNow": {
+          "state": "received",
+          "httpStatus": 200,
+          "attempt": 1,
+          "urlCount": 46,
+          "urlSetSha256": "aefc63fba8004097b8e07a2247bb959a0b3a04ef00bd2bba6f4f14b0de558244",
+          "fingerprint": "85e37cd54c34f1038ae5b0cb5cfc4ffb529138e8aaa50e06d71d95ec6515a565",
+          "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6094646049",
+          "receiptIssue": 266,
+          "getObservations": 100,
+          "submissionObservations": 1,
+          "allGet200AndNoBlockingRobotsOrChallenge": true,
+          "httpMeaning": "accepted",
+          "searchIndexing": "not_verified"
+        },
+        "searchIndexing": "not_verified"
+      },
+      "deferredVisualQa": {
+        "status": "deferred_not_pass",
+        "evidencePath": "docs/direct-regional-release/anseong/deferred-visual-qa-handoff.json",
+        "sha256": "4c6a4993df3f799d0009328dc0861456dae926a788c1978bbb3581f39ef4e302",
+        "pendingNormalRoutes": 46,
+        "pending404Routes": 2,
+        "totalRouteWidthObservations": 96,
+        "authorizedAt": "2026-10-10T03:43:40Z"
+      },
+      "userIntervention": false,
+      "elapsedSecondsFromObservedStart": 1819
     }
   ],
   "releasedKnownHosts": [
     "hanam.fwith.kr",
     "paju.fwith.kr",
     "gwacheon.fwith.kr",
-    "icheon.fwith.kr"
+    "icheon.fwith.kr",
+    "anseong.fwith.kr"
   ]
 }
