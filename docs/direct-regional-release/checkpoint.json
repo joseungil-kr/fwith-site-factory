@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T19:11:26.841Z",
+  "updatedAt": "2026-10-10T19:17:38.877Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-gwangjin-direct-initial-20261010",
     "city": "서울특별시 광진구",
-    "status": "plan_frozen_before_authoring",
+    "status": "content_reviewed_building",
     "owner": {
       "scheduledRunAt": "2026-10-10T19:00:00Z",
       "observedExecutionAt": "2026-10-10T19:04:28.316Z",
@@ -78,9 +78,10 @@
       }
     },
     "changeIntent": {
-      "action": "author_original_content_and_prepare_reviewed_source",
+      "action": "save_independently_reviewed_source_then_validate_exact_remote_revision",
       "target": "site-factory-seoul-gwangjin-direct",
-      "idempotencyKey": "seoul-gwangjin:plan-frozen:f93fd890372feba394f1b786d16722a2c221490fbb501566238e6f48090b2fbb"
+      "idempotencyKey": "seoul-gwangjin:source-save:3c89244c5ef639632cbf83d404f4f1bd9ccd6bef2fcf4e33a5da20ebbb2c071c",
+      "expectedSourceBranchHead": "fe1676fb50fd448ff1bc0fe3062278b4cee726e9"
     },
     "unfinishedStages": [
       "plan_freeze",
@@ -111,38 +112,46 @@
           "slug": "hwayang-dong-konkuk-hospital-condolence-wreath",
           "title": "건국대학교병원 장례식장 근조화환 주문",
           "primaryKeyword": "건국대학교병원 장례식장 근조화환 주문",
-          "status": "planned"
+          "status": "independent_content_pass_pending_publication"
         },
         {
           "slug": "gwangjang-dong-walkerhill-wedding-wreath",
           "title": "워커힐 결혼식 축하화환 주문",
           "primaryKeyword": "워커힐 결혼식 축하화환 주문",
-          "status": "planned"
+          "status": "independent_content_pass_pending_publication"
         },
         {
           "slug": "guui-dong-weddingsquare-gangbyeon-wreath",
           "title": "웨딩스퀘어 강변 결혼식 축하화환 주문",
           "primaryKeyword": "웨딩스퀘어 강변 결혼식 축하화환 주문",
-          "status": "planned"
+          "status": "independent_content_pass_pending_publication"
         },
         {
           "slug": "junggok-dong-jeil-market-opening-wreath",
           "title": "중곡제일시장 거래처 개업화환 주문",
           "primaryKeyword": "중곡제일시장 거래처 개업화환 주문",
-          "status": "planned"
+          "status": "independent_content_pass_pending_publication"
         },
         {
           "slug": "jayang-dong-ku-convention-event-wreath",
           "title": "KU컨벤션 기업행사 축하화환 주문",
           "primaryKeyword": "KU컨벤션 기업행사 축하화환 주문",
-          "status": "planned"
+          "status": "independent_content_pass_pending_publication"
         }
-      ]
+      ],
+      "planFreezeRevision": "22a948adb84edc50926d411f17ef71f25805ba3e",
+      "approvedArticleCount": 5,
+      "deferredArticleCount": 0
     },
     "review": {
       "screenQa": "DEFERRED_NOT_PASS",
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
-      "planReviewSha256": "75d9ba7df8cb3af30cc1b9c5954e998e22382229d03d3e41baa2356b2ec89f57"
+      "planReviewSha256": "75d9ba7df8cb3af30cc1b9c5954e998e22382229d03d3e41baa2356b2ec89f57",
+      "contentStatus": "PASS",
+      "articlesSha256": "3c89244c5ef639632cbf83d404f4f1bd9ccd6bef2fcf4e33a5da20ebbb2c071c",
+      "independentReviewSha256": "7bfc782f49421b4002fae1af56d2c5a02c9d523a398267f91f86ed2fc5b364e9",
+      "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
+      "contentRevision": 1
     }
   },
   "history": [
