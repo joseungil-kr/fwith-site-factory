@@ -1,0 +1,29 @@
+{
+  "checkedAt": "2026-10-10T12:32:14.611Z",
+  "mainRevision": "275a5595d596c0cd6b739c00c852b855505770e8",
+  "branchCount": 121,
+  "workflowCount": 39,
+  "allWorkflowsReadFully": true,
+  "pushWorkflows": [
+    {
+      "path": ".github/workflows/ansan-indexnow-production.yml",
+      "trigger": "\non:\n  push:\n    branches:\n      - site-factory-ansan-v1\n  workflow_dispatch:\n"
+    },
+    {
+      "path": ".github/workflows/ansan-live-qa.yml",
+      "trigger": "\non:\n  push:\n    branches:\n      - site-factory-ansan-v1\n  workflow_dispatch:\n"
+    },
+    {
+      "path": ".github/workflows/namyangju-production-gate-check.yml",
+      "trigger": "\non:\n  push:\n    branches: [codex/namyangju-production-gate]\n  pull_request:\n    paths:\n      - .github/site-factory-sites.json\n      - site-factory/engine/**\n      - site-factory/releases/namyangju-flower-v2-initial-20261005/**"
+    }
+  ],
+  "regionalMainAndSourcePush": "No push trigger matches main or site-factory-yeoncheon-direct",
+  "issueCreation": "Not used",
+  "inProgressWorkflowCount": 0,
+  "openPullRequestCount": 0,
+  "matchingTargetBranch": false,
+  "mainTargetPaths": false,
+  "previousOwnerActualWritesStoppedAt": "2026-10-10T12:22:52.115Z",
+  "previousSource": "8fbcc607193d2ea3c34286519cff7d5f3380479a"
+}
