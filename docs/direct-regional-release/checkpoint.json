@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T12:42:10.852Z",
+  "updatedAt": "2026-10-10T12:46:57.426Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "yeoncheon-direct-initial-20261010",
     "city": "연천군",
-    "status": "independently_reviewed_source_save_intent",
+    "status": "source_saved_control_publication_intent",
     "owner": {
       "scheduledRunAt": "2026-10-10T12:00:00Z",
       "observedExecutionAt": "2026-10-10T12:24:45.477Z",
@@ -49,7 +49,8 @@
       "root": "site-factory/yeoncheon-flower",
       "worker": "yeoncheon-flower-guide",
       "hostname": "yeoncheon.fwith.kr",
-      "externalCreationVerified": false
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": true
     },
     "selection": {
       "officialCode": "41800",
@@ -180,13 +181,12 @@
       "heldArticleCount": 1,
       "passedRatio": 0.9
     },
-    "lastSuccessfulStage": "independent_content_and_catalog_image_review",
+    "lastSuccessfulStage": "reviewed_exact_source_saved_and_remote_readback",
     "nextIntent": "Verify official membership and freeze unique purchase-content plan before authoring",
     "changeIntent": {
-      "action": "create_source_branch_and_commit",
-      "target": "site-factory-yeoncheon-direct / site-factory/yeoncheon-flower",
-      "idempotencyKey": "yeoncheon-direct-initial-20261010:save-source:b081651514a807b0ed90386e0b2166f6fdbb630125678247ae6875ce07cb7be7",
-      "inventorySha256": "b081651514a807b0ed90386e0b2166f6fdbb630125678247ae6875ce07cb7be7"
+      "action": "publish_fixed_direct_controls_then_exact_dispatch",
+      "target": ".github/workflows/yeoncheon-direct-publish.yml",
+      "idempotencyKey": "yeoncheon-direct-initial-20261010:dispatch:f02912710d4e127241ae6e72269966d0a906b1b0"
     },
     "idempotencyKey": "yeoncheon-direct-initial-20261010:claim",
     "publication": {
@@ -199,7 +199,17 @@
       "runtime": "PASS_INDEPENDENT_NODE22_65_SOURCE_34_HELPER",
       "visual": "DEFERRED_BY_USER_NOT_PASS",
       "reviewSha256": "3853ebab7c8d6668bcb4d538ad70e2fa5108ccd63065852b2459dc31c238e636",
-      "evidencePath": "docs/direct-regional-release/yeoncheon/review.json"
+      "evidencePath": "docs/direct-regional-release/yeoncheon/review.json",
+      "remoteSource": "PASS_69_FULL_FILES_EXACT_BLOB_READBACK"
+    },
+    "sourceRevision": "f02912710d4e127241ae6e72269966d0a906b1b0",
+    "pendingExternalAction": {
+      "action": "workflow_dispatch",
+      "target": ".github/workflows/yeoncheon-direct-publish.yml",
+      "expectedRevision": "f02912710d4e127241ae6e72269966d0a906b1b0",
+      "state": "not_attempted",
+      "fixedWorker": "yeoncheon-flower-guide",
+      "fixedHostname": "yeoncheon.fwith.kr"
     }
   },
   "history": [
