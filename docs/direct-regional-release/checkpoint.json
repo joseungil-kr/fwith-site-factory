@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T06:15:03.423Z",
+  "updatedAt": "2026-10-10T06:19:50.853Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "anseong-direct-initial-20261010",
     "city": "안성시",
-    "status": "content_reviewed_runtime_verification",
+    "status": "reviewed_source_publication_intent",
     "owner": {
       "scheduledRunAt": "2026-10-10T06:00:00Z",
       "observedExecutionAt": "2026-10-10T06:01:14.435Z",
@@ -410,10 +410,12 @@
         }
       ]
     },
-    "lastSuccessfulStage": "independent_content_44_of_45_pass",
-    "nextIntent": "Verify exact runtime/build/security/control and publish reviewed source only",
+    "lastSuccessfulStage": "independent_content_and_local_runtime_pass",
+    "nextIntent": "Publish exact69reviewed files to fixed regional branch; remote fullreadback and finalSHA build before dispatch",
     "pendingExternalAction": {
-      "action": "create_anseong_direct_source_and_controls_after_review",
+      "action": "create_reviewed_anseong_source_branch",
+      "target": "site-factory-anseong-direct",
+      "sourceInventorySha256": "8428053d15c035a8238869f81ea5ff88ebeb1c3298123228192b7c6f5895197f",
       "idempotencyKey": "anseong-direct-initial-20261010-source-v1"
     },
     "review": {
@@ -421,10 +423,19 @@
       "hostedQa": "not_run",
       "visualQa": "deferred_not_pass",
       "writerDigests": {
-        "a": "9dbf128800b5aedf97f752a77929bf930e93d7bfce0188cd705bd160c0f2acaf",
-        "b": "319ef3625cf453d8701f8d58994ca522d7db53574ab896fd5661da7546446a56",
-        "c": "4f60bccb871a36a0d577312e8b9c44b1c4e0de721d96a1c96a35f078f93add5a"
-      }
+        "a": "9057e84fb11b12bc702d4e1d71204da029a5fa5fdb7a09f0d28a3c05a8b43999",
+        "b": "fe001b24137ce0139df74e0ba8025d1d431f98f31834a157832819f8bfc7b967",
+        "c": "febb994d9d10899004f330f8d9f0c14b9cff33f894833647dc483571ed7ef8db"
+      },
+      "sourceTests": 64,
+      "helperTests": 34,
+      "sourceFiles": 69,
+      "artifactFiles": 63,
+      "normalHtmlRoutes": 46,
+      "sitemapUrls": 46,
+      "localBuild": "PASS_INDEPENDENT_NODE22_PROVISIONAL",
+      "sourceFileManifestSha256": "8428053d15c035a8238869f81ea5ff88ebeb1c3298123228192b7c6f5895197f",
+      "localReviewSha256": "ac43a0b64b75595d06feaa7c593d5d88b8e935290ae8e3de3eb2dc962bc7e724"
     }
   },
   "history": [
