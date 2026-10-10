@@ -1,0 +1,54 @@
+{
+  "status": "PASS_INDEPENDENT_FIXED_CONTROL_REVIEW",
+  "checkedAt": "2026-10-10T02:13:47.365660+00:00",
+  "baselineMain": "538fba3ba95b7524cf0a04e223856a3a580605df",
+  "baselineSource": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
+  "helperTests": 34,
+  "files": [
+    {
+      "path": "scripts/direct-hanam/publish.py",
+      "localPath": "/workspace/scratch/71bb604b6b5d/hourly-direct-0200/workflow/scripts/direct-hanam/publish.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "72d4ab212bb8afc66c0dd7c98b9e4b65cb5b7c0d",
+      "sha256": "d488bc69cce1b2e87e04184a2133705c0805b3065b1d219efe7fbdce586a5d2c",
+      "bytes": 24588
+    },
+    {
+      "path": "scripts/direct-hanam/test_publish.py",
+      "localPath": "/workspace/scratch/71bb604b6b5d/hourly-direct-0200/workflow/scripts/direct-hanam/test_publish.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2ececcd02bbfb4fa75582df12cd1aabc476bfdd5",
+      "sha256": "2a68ee82107482302a938eed394d4aac6ab9bfd3734eb5d64adf5bac6d21c039",
+      "bytes": 21367
+    },
+    {
+      "path": ".github/workflows/hanam-direct-publish.yml",
+      "localPath": "/workspace/scratch/71bb604b6b5d/hourly-direct-0200/workflow/.github/workflows/hanam-direct-publish.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1c21a640d6fadf9231e00ca9833d33d10741cae6",
+      "sha256": "50b27b1f3b3bb0dc94178fcfe50fcee9ca6561f8f48565fd8ac3f23d7df39bf9",
+      "bytes": 11211
+    }
+  ],
+  "findings": [
+    "Only fixed city identity, explicit 24 route set and derived route counts differ from fetched current Uiwang controls.",
+    "Build and immutable artifact checks do not have provider credentials; actor, branch-head, final recheck and first-attempt restrictions remain.",
+    "GET-only absent-target check and exact-bound readback; fixed hostname PUT with all three override flags false.",
+    "No Factory, registry, scheduler or Airtable integration; 30 current main workflow triggers audited.",
+    "Content and source finalization not yet reviewed. Route count changes after quality holds require another exact control digest review.",
+    "Final delta independently reviewed: Dangjeong deferred and checked as 404; routes25, source23 of24, no weakening of safety logic. Re-ran34 helper tests PASS."
+  ],
+  "finalRouteCounts": {
+    "planned": 24,
+    "passed": 23,
+    "minimum": 22,
+    "normalRoutes": 25,
+    "sitemapUrls": 25,
+    "deferred": [
+      "/regions/dangjeong-dong/"
+    ]
+  }
+}

@@ -111,7 +111,7 @@ jobs:
           artifact-ids: ${{ needs.build.outputs.artifact_id }}
           merge-multiple: true
           path: release
-      - name: Verify exact artifact, 24 of 24 planned articles, 26 sitemap URLs and real 404, SEO, assets and CTAs
+      - name: Verify exact artifact, 23 of 24 planned articles, 25 sitemap URLs and real 404, SEO, assets and CTAs
         env:
           RELEASE_SHA256: ${{ needs.build.outputs.release_sha256 }}
         run: python3 control/scripts/direct-hanam/publish.py artifact --report artifact-check.json

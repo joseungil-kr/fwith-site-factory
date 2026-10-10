@@ -125,11 +125,11 @@ class PublishTests(unittest.TestCase):
 
     def test_fixed_route_set(self):
         self.assertEqual(len(pub.SLUGS), 24)
-        self.assertEqual(pub.DEFERRED_SLUGS, set())
-        self.assertEqual(pub.DEFERRED, [])
-        self.assertEqual(len(pub.ARTICLE_ROUTES), 24)
-        self.assertEqual(len(pub.ROUTES), 26)
-        self.assertEqual(len(pub.SITEMAP_ROUTES), 26)
+        self.assertEqual(pub.DEFERRED_SLUGS, {'dangjeong-dong'})
+        self.assertEqual(pub.DEFERRED, ['/regions/dangjeong-dong/'])
+        self.assertEqual(len(pub.ARTICLE_ROUTES), 23)
+        self.assertEqual(len(pub.ROUTES), 25)
+        self.assertEqual(len(pub.SITEMAP_ROUTES), 25)
         self.assertEqual(pub.THIN_HUB_ROUTES, set())
         self.assertEqual(pub.ROUTES - pub.SITEMAP_ROUTES, pub.THIN_HUB_ROUTES)
         self.assertTrue(pub.REGION_ROUTES <= pub.SITEMAP_ROUTES)
@@ -280,7 +280,7 @@ class ArtifactTests(unittest.TestCase):
 
     def test_exact_fixed_artifact_and_http_counts(self):
         result = pub.artifact()
-        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (24, 26, 26))
+        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (23, 25, 25))
         contract = json.loads(Path('http-contract.json').read_text())
         self.assertTrue(all(p['robots'] == ['follow', 'index'] for p in contract['pages']))
         def fixture_get(path, status=200):
@@ -289,7 +289,7 @@ class ArtifactTests(unittest.TestCase):
             return (self.root / file).read_bytes(), headers
         with patch.object(pub, 'get', side_effect=fixture_get):
             result = pub.http_once(contract)
-        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (24, 26, 26))
+        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (23, 25, 25))
 
     def test_missing_article_is_blocked(self):
         (self.root / 'regions/cheonhyeon-dong/index.html').unlink(); self.seal()
@@ -314,7 +314,7 @@ class ArtifactTests(unittest.TestCase):
             return 200, file.read_text(), {}
         with patch.object(engine, 'request', side_effect=transport), patch.object(engine, 'Journal', side_effect=AssertionError('probe must not journal')):
             result = pub.indexnow_probe()
-        self.assertEqual(result['sitemapUrls'], 26); self.assertFalse(result['submissionAttempted'])
+        self.assertEqual(result['sitemapUrls'], 25); self.assertFalse(result['submissionAttempted'])
         self.assertTrue(all(method == 'GET' and payload is None for method, url, payload in calls))
 
     def test_unreviewed_customer_link_is_blocked(self):
