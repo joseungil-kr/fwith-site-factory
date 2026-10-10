@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T13:33:23.937Z",
+  "updatedAt": "2026-10-10T13:35:55.856Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "gapyeong-direct-initial-20261010",
     "city": "가평군",
-    "status": "ready_exact_dispatch",
+    "status": "official_dispatch_running",
     "owner": {
       "scheduledRunAt": "2026-10-10T13:00:00Z",
       "observedExecutionAt": "2026-10-10T13:03:27.495Z",
@@ -127,8 +127,8 @@
       "passedArticleCount": 6,
       "heldArticleCount": 0
     },
-    "lastSuccessfulStage": "independently_reviewed_source_and_fixed_control_readback",
-    "nextIntent": "Dispatch exact reviewed Gapyeong source once through the official Run workflow UI, respecting any mandatory service approval",
+    "lastSuccessfulStage": "official_workflow_dispatch_confirmed",
+    "nextIntent": "Observe official build, provider GET collision checks and terminal publication evidence before any retries",
     "changeIntent": {
       "action": "workflow_dispatch",
       "target": ".github/workflows/gapyeong-direct-publish.yml",
@@ -142,11 +142,15 @@
       "idempotencyKey": "gapyeong-direct-initial-20261010:publish:2b214219e78d722d32dbbd9957a1f9b33ca771c4"
     },
     "publication": {
-      "state": "not_dispatched",
-      "runId": null,
+      "state": "in_progress",
+      "runId": 38056313315,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38056313315",
+      "createdAt": "2026-10-10T13:35:36Z",
+      "dispatchCount": 1,
+      "sourceRevision": "2b214219e78d722d32dbbd9957a1f9b33ca771c4",
+      "controlRevision": "f7150c50921d7e4a050a9a4bc65429266b967c34",
       "url": "https://gapyeong.fwith.kr",
-      "urlState": "target_not_verified_public",
-      "observedExistingRuns": 0
+      "urlState": "target_publication_unverified"
     },
     "review": {
       "articlesSha256": "e120d7e097c7b152c0a955ed4ddcadc77609a8fe8eff55e49629b1a3ca70f621",
@@ -3205,7 +3209,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Dispatch exact reviewed Gapyeong source once through the official Run workflow UI, respecting any mandatory service approval",
+  "nextAction": "Observe official build, provider GET collision checks and terminal publication evidence before any retries",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
