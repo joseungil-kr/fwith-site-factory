@@ -1,0 +1,221 @@
+{
+  "checkedAt": "2026-10-10T15:36:48.275327+00:00",
+  "scope": "Synthetic offline controls only; no external requests, journal writes, content approval or real source assembly",
+  "codeSha256": "46347957f840b89a82037d298c3258e1f6c87c30a3243a522af969c93d7563fa",
+  "generatedFixturePublisherSha256": "2f461529470a0f8795c84675a70b7ee35241e86fadd110d7687820bbb206ddcd",
+  "unchangedSharedEngineSha256": "55f5274d3fcc713e82fd8ce18e280447e68e9e460bc1ff3f9bf5cc683834935f",
+  "publisherSemanticDelta": {
+    "changed": [
+      "indexnow"
+    ],
+    "added": [
+      "DiagnosticReviewJournal"
+    ],
+    "removed": []
+  },
+  "results": {
+    "403": {
+      "postCount": 1,
+      "calls": [
+        {
+          "method": "POST",
+          "url": "https://searchadvisor.naver.com/indexnow"
+        }
+      ],
+      "outcomes": [
+        {
+          "error": "indexnow_rejected_http_403"
+        },
+        {
+          "error": "indexnow_403_diagnostic_review_required"
+        }
+      ],
+      "journalStates": [
+        "started",
+        "rejected"
+      ]
+    },
+    "200": {
+      "postCount": 1,
+      "calls": [
+        {
+          "method": "POST",
+          "url": "https://searchadvisor.naver.com/indexnow"
+        }
+      ],
+      "outcomes": [
+        {
+          "siteKey": "jongno-flower-direct",
+          "origin": "https://jongno.fwith.kr",
+          "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "endpoint": "https://searchadvisor.naver.com/indexnow",
+          "urlSetSha256": "ea38eeec79c9d364b246a4614dd022b1b93f998f21ebe7863831f62b0a36bda6",
+          "urlCount": 2,
+          "fingerprint": "68ddbd0bae5589b6ccedf1c7d62b255725504237ed538db152cde089d53fcb61",
+          "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/offline-fixture",
+          "state": "received",
+          "attempt": 1,
+          "recordedAt": "2026-10-10T15:36:48.270257+00:00",
+          "httpStatus": 200,
+          "urls": [
+            "https://jongno.fwith.kr/",
+            "https://jongno.fwith.kr/regions/"
+          ],
+          "searchIndexing": "not_verified"
+        },
+        {
+          "siteKey": "jongno-flower-direct",
+          "origin": "https://jongno.fwith.kr",
+          "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "endpoint": "https://searchadvisor.naver.com/indexnow",
+          "urlSetSha256": "ea38eeec79c9d364b246a4614dd022b1b93f998f21ebe7863831f62b0a36bda6",
+          "urlCount": 2,
+          "state": "already_received",
+          "receiptState": "received",
+          "httpStatus": 200,
+          "fingerprint": "68ddbd0bae5589b6ccedf1c7d62b255725504237ed538db152cde089d53fcb61",
+          "receiptRun": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/offline-fixture",
+          "urls": [
+            "https://jongno.fwith.kr/",
+            "https://jongno.fwith.kr/regions/"
+          ],
+          "searchIndexing": "not_verified"
+        }
+      ],
+      "journalStates": [
+        "started",
+        "received"
+      ]
+    },
+    "202": {
+      "postCount": 1,
+      "calls": [
+        {
+          "method": "POST",
+          "url": "https://searchadvisor.naver.com/indexnow"
+        }
+      ],
+      "outcomes": [
+        {
+          "siteKey": "jongno-flower-direct",
+          "origin": "https://jongno.fwith.kr",
+          "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "endpoint": "https://searchadvisor.naver.com/indexnow",
+          "urlSetSha256": "ea38eeec79c9d364b246a4614dd022b1b93f998f21ebe7863831f62b0a36bda6",
+          "urlCount": 2,
+          "fingerprint": "68ddbd0bae5589b6ccedf1c7d62b255725504237ed538db152cde089d53fcb61",
+          "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/offline-fixture",
+          "state": "received_key_validation_pending",
+          "attempt": 1,
+          "recordedAt": "2026-10-10T15:36:48.271113+00:00",
+          "httpStatus": 202,
+          "urls": [
+            "https://jongno.fwith.kr/",
+            "https://jongno.fwith.kr/regions/"
+          ],
+          "searchIndexing": "not_verified"
+        },
+        {
+          "siteKey": "jongno-flower-direct",
+          "origin": "https://jongno.fwith.kr",
+          "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "endpoint": "https://searchadvisor.naver.com/indexnow",
+          "urlSetSha256": "ea38eeec79c9d364b246a4614dd022b1b93f998f21ebe7863831f62b0a36bda6",
+          "urlCount": 2,
+          "state": "already_received",
+          "receiptState": "received_key_validation_pending",
+          "httpStatus": 202,
+          "fingerprint": "68ddbd0bae5589b6ccedf1c7d62b255725504237ed538db152cde089d53fcb61",
+          "receiptRun": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/offline-fixture",
+          "urls": [
+            "https://jongno.fwith.kr/",
+            "https://jongno.fwith.kr/regions/"
+          ],
+          "searchIndexing": "not_verified"
+        }
+      ],
+      "journalStates": [
+        "started",
+        "received_key_validation_pending"
+      ]
+    },
+    "unknown": {
+      "postCount": 1,
+      "calls": [
+        {
+          "method": "POST",
+          "url": "https://searchadvisor.naver.com/indexnow"
+        }
+      ],
+      "outcomes": [
+        {
+          "error": "submission_outcome_uncertain"
+        },
+        {
+          "error": "prior_submission_outcome_uncertain"
+        }
+      ],
+      "journalStates": [
+        "started",
+        "unknown"
+      ]
+    },
+    "started": {
+      "postCount": 1,
+      "calls": [
+        {
+          "method": "POST",
+          "url": "https://searchadvisor.naver.com/indexnow"
+        }
+      ],
+      "outcomes": [
+        {
+          "error": "submission_outcome_uncertain"
+        },
+        {
+          "error": "prior_submission_outcome_uncertain"
+        }
+      ],
+      "journalStates": [
+        "started"
+      ]
+    },
+    "sourceChanged": {
+      "postCount": 0,
+      "calls": [],
+      "outcomes": [
+        {
+          "error": "public_source_changed_before_submission"
+        }
+      ],
+      "journalStates": []
+    },
+    "differentFingerprint": {
+      "postCount": 2,
+      "calls": [
+        {
+          "method": "POST",
+          "url": "https://searchadvisor.naver.com/indexnow"
+        },
+        {
+          "method": "POST",
+          "url": "https://searchadvisor.naver.com/indexnow"
+        }
+      ],
+      "outcomes": [
+        {
+          "error": "indexnow_rejected_http_403"
+        },
+        {
+          "error": "indexnow_rejected_http_403"
+        }
+      ],
+      "journalStates": [
+        "started",
+        "rejected",
+        "started",
+        "rejected"
+      ]
+    }
+  }
+}

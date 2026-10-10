@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "jongno-direct-initial-20261010",
     "city": "서울특별시 종로구",
-    "status": "owned_membership_and_query_research",
+    "status": "independent_content_pass_source_save_pending",
     "owner": {
       "scheduledRunAt": "2026-10-10T15:00:00Z",
       "observedExecutionAt": "2026-10-10T15:19:58.725474Z",
@@ -41,7 +41,7 @@
       "serviceInvocationId": null,
       "checkpointId": "direct-jongno-initial-20261010T150000Z",
       "active": true,
-      "executionState": "research_and_prepare_source",
+      "executionState": "save_reviewed_source_then_node22_build",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T15:12:44.377Z",
       "priorOwnerReadbackConfirmedAt": "2026-10-10T15:12:46.599Z"
     },
@@ -85,47 +85,59 @@
           "slug": "yeongeon-dong-snuh-condolence-wreath",
           "title": "서울대병원 장례식장 근조화환 주문",
           "primaryKeyword": "서울대병원 장례식장 근조화환 주문",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass"
         },
         {
           "slug": "pyeong-dong-redcross-funeral-wreath",
           "title": "서울적십자병원 장례식장 근조화환",
           "primaryKeyword": "서울적십자병원 장례식장 근조화환",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass"
         },
         {
           "slug": "buam-dong-hw-convention-wreath",
           "title": "HW컨벤션 결혼식 축하화환",
           "primaryKeyword": "HW컨벤션 결혼식 축하화환",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass"
         },
         {
           "slug": "myeongnyun3ga-skk-convention-wreath",
           "title": "성균관컨벤션 결혼식 화환 주문",
           "primaryKeyword": "성균관컨벤션 결혼식 화환 주문",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass"
         },
         {
           "slug": "junghak-dong-apelgamo-gwanghwamun-wreath",
           "title": "아펠가모 광화문 축하화환 주문",
           "primaryKeyword": "아펠가모 광화문 축하화환 주문",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass"
         },
         {
           "slug": "seorin-dong-global-center-event-wreath",
           "title": "서울글로벌센터 행사 축하화환",
           "primaryKeyword": "서울글로벌센터 행사 축하화환",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass"
         }
-      ]
+      ],
+      "approvedArticleCount": 6,
+      "deferredArticleCount": 0
     },
     "changeIntent": {
-      "action": "freeze_six_unique_purchase_intents_then_author_new_content",
-      "target": "site-factory-jongno-direct / site-factory/jongno-flower",
-      "idempotencyKey": "jongno:plan:bc8a904a6c9c44ba0f77cac1e20135a928ac49c624e36db3d45e504b51ea9c4a"
+      "action": "create_exact_reviewed_jongno_source_branch",
+      "target": "site-factory-jongno-direct",
+      "root": "site-factory/jongno-flower",
+      "idempotencyKey": "jongno:source:341211fee4781e1159f095e99127de789173e27488a34a56b04ff609f00773e9"
     },
-    "lastSuccessfulStage": "official_membership_catalog_images_and_fixed_plan_independently_verified",
-    "nextIntent": "Author the exact six planned articles, then independent content review; all six must pass."
+    "lastSuccessfulStage": "six_articles_and_eight_product_images_independent_review_pass",
+    "nextIntent": "Save exact source, independently build and test using Node22, then publish controls and request official workflow execution.",
+    "review": {
+      "articlesSha256": "341211fee4781e1159f095e99127de789173e27488a34a56b04ff609f00773e9",
+      "independentReviewSha256": "f630aff14c6ff8c2089436cf7e8dd1368397c6bd7059b85eb3b1c0383be4ea97",
+      "runtimeReviewSha256": "67d59ea2c79b369ec8a666d4ca384ddb31e1a889871248c1642b46f29f3a5f70",
+      "runtimeStatus": "fixture_safety_pass_exact_source_node22_build_pending",
+      "screenQa": "deferred_not_pass",
+      "authorRevision": 3,
+      "preflightFindingResolved": "Five generic additional-cost caveats now explicitly state delivery fees; independent content rereview passed."
+    }
   },
   "history": [
     {
