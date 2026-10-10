@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T00:33:42.605Z",
+  "updatedAt": "2026-10-10T00:56:12.918Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -32,17 +32,27 @@
   "current": {
     "scopeKey": "uiwang-direct-initial-20261010",
     "city": "의왕시",
-    "status": "public_indexnow_received_browser_qa_blocked",
+    "status": "resuming_hosted_browser_qa",
     "owner": {
-      "scheduledRunAt": "2026-10-10T00:00:00Z",
-      "observedExecutionAt": "2026-10-09T23:55:34Z",
+      "scheduledRunAt": "2026-10-10T01:00:00Z",
+      "observedExecutionAt": "2026-10-10T00:55:40Z",
       "predecessorCompletionPriority": "Gunpo approved release completed before new city claim",
       "newRegionStartedAt": "2026-10-10T00:01:05Z",
       "serviceInvocationId": null,
-      "checkpointId": "direct-uiwang-20261010T000000Z",
-      "active": false,
-      "resumedAt": "2026-10-10T00:18:41.121Z",
-      "endedAt": "2026-10-10T00:33:42.605Z"
+      "checkpointId": "direct-uiwang-resume-20261010T010000Z",
+      "active": true,
+      "resumedAt": "2026-10-10T00:56:12.918Z",
+      "previousExecution": {
+        "scheduledRunAt": "2026-10-10T00:00:00Z",
+        "observedExecutionAt": "2026-10-09T23:55:34Z",
+        "predecessorCompletionPriority": "Gunpo approved release completed before new city claim",
+        "newRegionStartedAt": "2026-10-10T00:01:05Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-uiwang-20261010T000000Z",
+        "active": false,
+        "resumedAt": "2026-10-10T00:18:41.121Z",
+        "endedAt": "2026-10-10T00:33:42.605Z"
+      }
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -50,7 +60,7 @@
       "root": "site-factory/uiwang-flower",
       "worker": "uiwang-flower-guide",
       "hostname": "uiwang.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true
     },
     "input": {
@@ -67,7 +77,7 @@
       "openPullRequests": 0,
       "inProgressWorkflows": 0,
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "pending_before_mutation"
+      "providerOwnershipCollisionCheck": "PASS_actual_run_38008562918"
     },
     "plan": {
       "state": "fixed_official_membership_before_writing",
@@ -100,7 +110,7 @@
       "publisherTests": 34,
       "htmlRoutes": 13,
       "sitemapUrls": 13,
-      "hostedQa": "not_yet_deployed",
+      "hostedQa": "HTTP_PASS_VISUAL_PENDING",
       "evidencePath": "docs/direct-regional-release/uiwang/precommit-source-review.json",
       "finalEvidencePath": "docs/direct-regional-release/uiwang/final-predeploy-review.json",
       "finalArtifactSha256": "6a410416be2b3aaa2ff75aa684f2cf1e569059ad66dec937fe32cf0b4c7a0757"
