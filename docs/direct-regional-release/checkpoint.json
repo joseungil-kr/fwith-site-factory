@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T02:04:13.143Z",
+  "updatedAt": "2026-10-10T02:18:29.563Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "hanam-direct-initial-20261010",
     "city": "하남시",
-    "status": "official_membership_fixed_and_content_preparation",
+    "status": "independent_precommit_pass_source_save_pending",
     "owner": {
       "scheduledRunAt": "2026-10-10T02:00:00Z",
       "observedExecutionAt": "2026-10-10T01:59:07Z",
@@ -69,13 +69,20 @@
       "providerOwnershipCollisionCheck": "pending_before_mutation"
     },
     "plan": {
-      "state": "fixed_official_membership_before_writing",
+      "state": "reviewed_23_of_24",
       "plannedArticleCount": 24,
       "minimumPassedArticles": 22,
-      "passedArticleCount": 0,
+      "passedArticleCount": 23,
       "administrativeUnits": 14,
       "crosswalkRelationships": 32,
-      "deferred": [],
+      "deferred": [
+        {
+          "name": "당정동",
+          "slug": "dangjeong-dong",
+          "status": "deferred_quality_hold",
+          "reason": "No sufficiently verified recipient and distinct commercial purchase context; original denominator retained; no emitted page or inbound link"
+        }
+      ],
       "membershipPath": "docs/direct-regional-release/hanam/membership.json",
       "membershipSha256": "3ca1c0307232cabe244fb77614fb4890287540bba31b24b05cdb138898cf0864",
       "membershipEvidenceHistory": [
@@ -90,9 +97,48 @@
         "checkedAt": "2026-10-10T02:04:13.143Z"
       }
     },
-    "lastSuccessfulStage": "fixed_official_membership",
-    "nextIntent": "Freeze freshly verified official membership before customer writing; prepare reviewed direct runtime",
-    "pendingExternalAction": null
+    "lastSuccessfulStage": "independent_content_and_local_source_review",
+    "nextIntent": "Publish exact reviewed69-file source on isolated Hanam branch",
+    "pendingExternalAction": {
+      "action": "create_reviewed_source_branch",
+      "branch": "site-factory-hanam-direct",
+      "idempotencyKey": "hanam-source-30d6f98ebc8f8b2adc6abfdd6f221bc8f0eb92e835077a1a6384c3d48a63365f"
+    },
+    "controlRevision": "5df1cd730d18f965786e95a0569d8665f7c88dd2",
+    "review": {
+      "status": "PASS_INDEPENDENT_PRECOMMIT_SOURCE",
+      "checkedAt": "2026-10-10T02:15:40.383517+00:00",
+      "inputContentDigests": {
+        "a": "1c6eb4f4ae26d3437496f0c76fa20fc4ad7e90c7ff1ea1fe7130b9874fbc2923",
+        "b": "36cf2a687d57a0392f7e60faa7d96330ba9394b39911cdf13a4eb73c396fdf8a"
+      },
+      "sourceInventorySha256": "30d6f98ebc8f8b2adc6abfdd6f221bc8f0eb92e835077a1a6384c3d48a63365f",
+      "sourceFiles": 69,
+      "reusedVerifiedFiles": 56,
+      "sourceTests": 64,
+      "publisherTests": 34,
+      "nodeVersion": "22.23.3",
+      "build": "PASS_ASTRO_STATIC_GRAPH",
+      "artifactFiles": 42,
+      "normalHtmlRoutes": 25,
+      "sitemapUrls": 25,
+      "originalN": 24,
+      "passedArticleCount": 23,
+      "minimumPassed": 22,
+      "exactArticleProductCards": 92,
+      "allProductCardsIncludingHome": 100,
+      "internalLinksChecked": 202,
+      "administrativeAliases": 14,
+      "relations": 32,
+      "allCustomerFieldsEqualReviewedRecords": true,
+      "reviewerModifiedCustomerContent": false,
+      "deferred": [
+        "/regions/dangjeong-dong/"
+      ],
+      "unavailableDirectoryLabel": "Verified exact component diff: noninteractive span labels deferred member; no inbound link or sitemap route, retains32 official relations.",
+      "remotePublicationAndFinalRevisionBuild": "pending",
+      "hostedBrowserAndHTTP": "pending"
+    }
   },
   "history": [
     {
