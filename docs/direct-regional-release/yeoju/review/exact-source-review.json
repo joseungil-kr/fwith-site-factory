@@ -1,0 +1,146 @@
+{
+  "status": "TECHNICAL_HOLD_EXACT_SOURCE_BUILD_UNVERIFIED",
+  "checkedAtUtc": "2026-10-10T12:02:14.420347+00:00",
+  "sourceRevision": "8fbcc607193d2ea3c34286519cff7d5f3380479a",
+  "sourceTree": "c705dd41664c3533f973a9cd164e6ef573df7817",
+  "controlRevision": "01afaadfe96351003d67bb6de5fb7dd89cdbce7e",
+  "fullRemoteSourceFilesVerified": 69,
+  "fullRemoteControlFilesVerified": 7,
+  "fullRemoteByteMismatches": 0,
+  "sourceManifestSha256": "d564ed2a0ccebe725b75991f3561d4efb8a97b5200edaec63b1c843eedd461b7",
+  "exactInputInventory": {
+    "path": "../input-inventory-v2.json",
+    "sha256": "40bbf394d18c70fbc42c3df5786d5a34d685a73ef3f56f628aa970446740527b"
+  },
+  "sourceTests": {
+    "status": "PASS",
+    "count": 64,
+    "nodeVersion": "v22.23.3"
+  },
+  "publisherTests": {
+    "status": "PASS",
+    "count": 34,
+    "environment": "Explicit empty environment allowlist; exact pinned remote helper and engine bytes."
+  },
+  "metadataCorrection": {
+    "status": "PASS_INDEPENDENT_METADATA_ONLY_CORRECTION",
+    "checkedAtUtc": "2026-10-10T11:49:24.132332+00:00",
+    "claimCommit": "e2e08be05e71f2a3e29714a3328549bbe7367682",
+    "claimPath": "docs/direct-regional-release/checkpoint.json",
+    "independentlyReadClaimValue": "2026-10-10T11:00:35.531Z",
+    "sourceChanges": [
+      {
+        "path": "src/data/direct-checkpoint.json",
+        "key": "newRegionStartedAt",
+        "oldSha256": "5cdbb4d8d72794d71143a16622b25f5001881f729d675e112baee59d5fe8a9e8",
+        "newSha256": "df0ead396accc0b9a7e03d8b7ac2b157721355d32492dd94c6df9e1441b336d9"
+      },
+      {
+        "path": "src/data/publish-manifest.json",
+        "key": "directRelease.newRegionStartedAt",
+        "oldSha256": "893ba16ae7d712462e813af06508470c6f2b79d55fa39b182529fc8f0b454a33",
+        "newSha256": "7c2dfb6aaff0ebf95f15e403f22773dae04a6f35ba9ce174bbcb36b98fa9797d"
+      }
+    ],
+    "nonSourceChange": "timing.json.newRegionStartedAt only",
+    "unchangedSourceFiles": 67,
+    "unchangedControlFiles": 7,
+    "allAuthoredCustomerFieldsAndImagesUnchanged": true,
+    "sourceManifestSha256": "d564ed2a0ccebe725b75991f3561d4efb8a97b5200edaec63b1c843eedd461b7",
+    "oldSourceRevision": "b382df7df207f0bb4503c17a5a128dc7c46f1d4c",
+    "oldSourcePublicationApproval": "WITHHELD_PROVENANCE_DEFECT",
+    "replacementCommitAndExactBuild": "PENDING"
+  },
+  "priorProvisionalGates": {
+    "reference": "../gates-result.json",
+    "sha256": "510e02b94dd44167b5d8434e8cb1a7ec5a43b9edbf652d26bc130c10b5e6d3f3",
+    "scope": "Earlier local candidate passed Node22 typecheck/static/graph/artifact and independent DOM audit. Two subsequently corrected provenance timestamps mean it is not exact-revision approval of the replacement commit."
+  },
+  "realRevisionAttempts": [
+    {
+      "sourceRevision": "b382df7df207f0bb4503c17a5a128dc7c46f1d4c",
+      "result": "SUPERSEDED_AND_ASTRO_CHECK_TIMEOUT",
+      "timeoutSeconds": 300,
+      "runnerSession": 18147,
+      "runnerTerminalExitCode": 1
+    },
+    {
+      "sourceRevision": "8fbcc607193d2ea3c34286519cff7d5f3380479a",
+      "nodeHeapMiB": 384,
+      "result": "ASTRO_CHECK_KILLED_EXIT137",
+      "runnerSession": 65533,
+      "runnerTerminalExitCode": 1
+    },
+    {
+      "sourceRevision": "8fbcc607193d2ea3c34286519cff7d5f3380479a",
+      "nodeHeapMiB": 256,
+      "result": "ASTRO_CHECK_TIMEOUT",
+      "timeoutSeconds": 300,
+      "runnerSession": 81397,
+      "runnerTerminalExitCode": 1
+    }
+  ],
+  "exactTypecheck": "UNVERIFIED",
+  "exactStaticBuild": "NOT_COMPLETED",
+  "exactStaticGraphQa": "NOT_RUN",
+  "exactArtifactValidation": "NOT_RUN",
+  "exactArtifactDigest": null,
+  "exactDomRenderAudit": "NOT_RUN",
+  "failureCause": "Unconfirmed. Exit137 and severe slowdown are consistent with resource pressure, but neither OOM nor orphaned descendants has been established.",
+  "nestedProcessTermination": "Not established: process listings, including the escalated read-only listing restricted to the known review workspace, expose per-call PID namespaces and no cross-session child identity. No unrelated process was killed. Another build requires confirming cleanup of any known prior children and a process-group-managed runner.",
+  "publicationApproved": false,
+  "stateIsNotApprovalWait": true,
+  "actualHostedHttp": "NOT_PERFORMED",
+  "actualDesktopNarrowQa": "DEFERRED_NOT_PASS",
+  "authoredSourceChangedByReviewer": false,
+  "evidence": [
+    {
+      "path": "remote-readback-summary-v2.json",
+      "sha256": "89b863c3cc9083bf1a8f52ae902f246fb74a8ef27369af06916f620f47ff03e7"
+    },
+    {
+      "path": "remote-source-v2/verification.json",
+      "sha256": "5b22940f28f2b2cdb792af8e861e692cf2d7439f24245205e63a33384914119a"
+    },
+    {
+      "path": "remote-controls/verification.json",
+      "sha256": "3db3b5617b614762655526c7438d4eb660e4e94974d74726dd4c2b180b6ce4b4"
+    },
+    {
+      "path": "remote-body-and-image-digests-v2.json",
+      "sha256": "8da4fa039f2d48cf19934ffb8ed93d7ae2be2877d473513c5ed660dd67d36db1"
+    },
+    {
+      "path": "input-inventory-v2.json",
+      "sha256": "40bbf394d18c70fbc42c3df5786d5a34d685a73ef3f56f628aa970446740527b"
+    },
+    {
+      "path": "timing-correction-independent.json",
+      "sha256": "7b0867e3fe3490ee848ec3632cd517ccc8a60b676298d04799cab64c9e04ab70"
+    },
+    {
+      "path": "exact-source-v2-attempt1-exit137/build.log",
+      "sha256": "dacbf0faaf93a30acd0d9df95d6b8c268ed6b67d0aebc462af61ec9a1d115876"
+    },
+    {
+      "path": "exact-source-v2-attempt1-exit137.log",
+      "sha256": "0f40c2f0a6d9c37424c642b8ecae637eb08227b54b6fe806e182b66bbd3182ea"
+    },
+    {
+      "path": "exact-source-v2/build.log",
+      "sha256": "33aa0d147b5a453b2805a117c1df7f5e3674f27d940186c695f113f982a8251a"
+    },
+    {
+      "path": "exact-source-v2/source-tests.log",
+      "sha256": "93a955ddbff72ea9f4ebee575603f0432ae466ecc16447d0ef3fb6fdbd4becfc"
+    },
+    {
+      "path": "exact-source-v2/helper-tests.log",
+      "sha256": "e93849a465c4aea1946e2c06f475166b3ed4cfb0154691a90ac274862dbc1d83"
+    },
+    {
+      "path": "exact-source-v2-run.log",
+      "sha256": "af762cb1fbcfde1b81bc6d95b435c591c1222502a4a25dcebeda2087cd8649f0"
+    }
+  ]
+}
