@@ -28,7 +28,7 @@ ORIGIN = 'https://' + HOSTNAME
 WORKER = 'paju-flower-guide'
 RECEIPT_ISSUE = 266
 SLUGS = ['geumchon-dong', 'adong-dong', 'yadong-dong', 'geomsan-dong', 'maekgeum-dong', 'gyoha-dong', 'yadang-dong', 'dayul-dong', 'odo-dong', 'sangjiseok-dong', 'sannam-dong', 'dongpae-dong', 'dangha-dong', 'munbal-dong', 'songchon-dong', 'mokdong-dong', 'hajiseok-dong', 'seopae-dong', 'sinchon-dong', 'yeondasan-dong', 'wadong-dong', 'geumneung-dong', 'munsan-eup', 'paju-eup', 'beobwon-eup', 'jori-eup', 'wollong-myeon', 'tanhyeon-myeon', 'gwangtan-myeon', 'papyeong-myeon', 'jeokseong-myeon', 'gunnae-myeon', 'jangdan-myeon', 'jindong-myeon', 'jinseo-myeon']
-DEFERRED_SLUGS = set()
+DEFERRED_SLUGS = {'jangdan-myeon', 'jinseo-myeon', 'jindong-myeon'}
 REGION_ROUTES = {'/regions/' + slug + '/' for slug in SLUGS if slug not in DEFERRED_SLUGS}
 ADDED_ROUTES = set()
 ARTICLE_ROUTES = REGION_ROUTES
@@ -42,7 +42,7 @@ def expected_robots(route):
         return {'noindex', 'nofollow', 'noarchive'}
     return {'noindex', 'follow'} if route in THIN_HUB_ROUTES else {'index', 'follow'}
 
-DEFERRED = []
+DEFERRED = ['/regions/jangdan-myeon/', '/regions/jindong-myeon/', '/regions/jinseo-myeon/']
 LIMIT = 20 * 1024 * 1024
 
 
