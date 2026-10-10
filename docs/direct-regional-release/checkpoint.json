@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T17:35:16.910017+00:00",
+  "updatedAt": "2026-10-10T17:37:55.319374+00:00",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-yongsan-direct-initial-20261010",
     "city": "서울특별시 용산구",
-    "status": "formal_publish_workflow_dispatched",
+    "status": "published_indexnow_received_gsc_pending",
     "owner": {
       "scheduledRunAt": "2026-10-10T17:00:00Z",
       "observedExecutionAt": "2026-10-10T17:01:55.856Z",
@@ -74,15 +74,13 @@
       "publicHostObservation": "Web could not access hostname; unknown, not proof of absence"
     },
     "changeIntent": {
-      "action": "publish_fixed_direct_workflow_then_dispatch_exact_source_once",
-      "target": ".github/workflows/seoul-yongsan-direct-publish.yml",
+      "action": "submit_public_sitemap_after_independent_http_pass_then_list_readback",
+      "target": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://seoul-yongsan.fwith.kr/sitemap-index.xml",
       "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
-      "idempotencyKey": "seoul-yongsan:workflow-dispatch:30a1fd5465a290561ba0e95cd51f81707862c650",
-      "dispatchCount": 1,
-      "providerPreflightRequired": "GET account worker hostname and no-override ownership collision checks before mutations",
-      "actualRunId": 38072325986
+      "idempotencyKey": "seoul-yongsan:gsc-submit:30a1fd5465a290561ba0e95cd51f81707862c650"
     },
-    "lastSuccessfulStage": "formal_exact_source_workflow_dispatch_and_run_readback",
+    "lastSuccessfulStage": "published_exact_source_and_durable_indexnow_http200",
     "review": {
       "screenQa": "DEFERRED_NOT_PASS",
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
@@ -171,17 +169,85 @@
       "loopbackHttpCheckedPaths": 21,
       "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
       "remoteReadbackSha256": "c6117c409e6dc418d27d6bed629e640cda3605196c6974ed19fc0de0be5dedd9",
-      "publicProductionHttp": "NOT_YET_RUN",
+      "publicProductionHttp": "PASS_CI_EXACT_SOURCE_PUBLIC_HTTP_INDEPENDENT_REVIEW_IN_PROGRESS",
       "screenQa": "DEFERRED_BY_USER_NOT_PASS"
     },
     "controlRevision": "637d6657e262504e66903663255ae3031fe58371",
     "run": {
       "id": 38072325986,
       "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
-      "status": "queued",
+      "status": "completed",
       "dispatchCount": 1,
       "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
-      "controlRevision": "637d6657e262504e66903663255ae3031fe58371"
+      "controlRevision": "637d6657e262504e66903663255ae3031fe58371",
+      "conclusion": "success",
+      "createdAt": "2026-10-10T17:35:00Z",
+      "completedAt": "2026-10-10T17:36:25Z"
+    },
+    "deployment": {
+      "id": 38072325986,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
+      "status": "completed",
+      "dispatchCount": 1,
+      "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+      "controlRevision": "637d6657e262504e66903663255ae3031fe58371",
+      "conclusion": "success",
+      "createdAt": "2026-10-10T17:35:00Z",
+      "completedAt": "2026-10-10T17:36:25Z",
+      "runId": 38072325986,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
+      "runAttempt": 1,
+      "workflowDispatchCount": 1
+    },
+    "indexNow": {
+      "attempt": 1,
+      "endpoint": "https://searchadvisor.naver.com/indexnow",
+      "fingerprint": "9d667f416738d68165081bd20938b7dc248140cc1c40a27ae04131372cf67422",
+      "httpStatus": 200,
+      "origin": "https://seoul-yongsan.fwith.kr",
+      "recordedAt": "2026-10-10T17:36:15.123820+00:00",
+      "revision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
+      "siteKey": "seoul-yongsan-flower-direct",
+      "state": "received",
+      "urlCount": 7,
+      "urlSetSha256": "247c9ca24a044b686f3ca1c66f32621d8d7971a91ad4e536dcac8eb6424f0d50",
+      "commentId": 6100324883,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6100324883",
+      "durableReadbackVerified": true
+    },
+    "publication": {
+      "url": "https://seoul-yongsan.fwith.kr",
+      "articleCount": 5,
+      "normalHtmlPages": 7,
+      "totalHtmlIncluding404": 8,
+      "sitemapUrls": 7,
+      "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+      "runId": 38072325986,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
+      "publicHttp": {
+        "articleCount": 5,
+        "attempts": 3,
+        "checkedPaths": 21,
+        "htmlRoutes": 7,
+        "noindexHubs": 0,
+        "normalizedCloudflareBeacons": 8,
+        "regionCount": 5,
+        "revision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+        "sitemapUrls": 7,
+        "state": "public_release_verified",
+        "unknownHttpStatus": 404
+      },
+      "providerBinding": {
+        "accountVerified": true,
+        "dnsState": "not_observed",
+        "hostname": "seoul-yongsan.fwith.kr",
+        "hostnameBindingExists": true,
+        "mutationsPerformed": false,
+        "state": "binding_verified",
+        "worker": "seoul-yongsan-flower-guide",
+        "workerExists": true
+      }
     }
   },
   "history": [
