@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T08:33:16.091Z",
+  "updatedAt": "2026-10-10T08:43:20.470Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,14 +33,15 @@
   "current": {
     "scopeKey": "gwangju-direct-initial-20261010",
     "city": "경기도 광주시",
-    "status": "source_reviewed_save_pending",
+    "status": "waiting_service_execution_approval_prepared_source",
     "owner": {
       "scheduledRunAt": "2026-10-10T08:00:00Z",
       "observedExecutionAt": "2026-10-10T08:04:55Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-gwangju-20261010T080000Z",
-      "active": true,
-      "executionState": "researching"
+      "active": false,
+      "executionState": "waiting_service_execution_approval",
+      "writesStoppedAt": "2026-10-10T08:43:20.470Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -48,7 +49,8 @@
       "root": "site-factory/gwangju-flower",
       "worker": "gwangju-flower-guide",
       "hostname": "gwangju.fwith.kr",
-      "externalCreationVerified": false
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": true
     },
     "selection": {
       "officialCode": "41610",
@@ -362,12 +364,20 @@
       "heldArticleCount": 1,
       "passedRatio": 0.9615384615384616
     },
-    "lastSuccessfulStage": "independent_content_and_copied_build_review",
-    "nextIntent": "Research official membership and freeze unique purchase content plan before writing",
+    "lastSuccessfulStage": "exact_remote_source_readback_and_independent_Node22_build",
+    "nextIntent": "Resume exact approved source through official Gwangju direct workflow after required service execution approval; re-read source/main/ownership first.",
     "pendingExternalAction": {
-      "action": "save_69_exact_reviewed_source_files",
-      "target": "site-factory-gwangju-direct:site-factory/gwangju-flower",
-      "idempotencyKey": "gwangju-direct-initial-20261010:source:0249316733adb0c3af778e00d2bba98f99a3bf7cbb304db95f4dda9cf54f7a90"
+      "action": "workflow_dispatch",
+      "workflow": ".github/workflows/gwangju-direct-publish.yml",
+      "ref": "main",
+      "inputs": {
+        "expected_revision": "b6373facad5548f3a4680d8e6eaaa588d5a93682",
+        "indexnow_only": false
+      },
+      "target": "gwangju-flower-guide / gwangju.fwith.kr",
+      "idempotencyKey": "gwangju-direct-initial-20261010:publish:b6373facad5548f3a4680d8e6eaaa588d5a93682",
+      "dispatchAttempted": false,
+      "requires": "Service execution approval for own-cloud browser official GitHub Run workflow path"
     },
     "review": {
       "independentContent": "PASS_EXACT_25_ARTICLES",
@@ -378,7 +388,15 @@
       "articleDigests": {
         "a": "31ac5de9e4e01a96d476cc9da4aa247531b0eb3ee6fc727e3f11f1c4c456f3b9",
         "b": "426a97deba269f4e08351afb9c865b08ea3edade038c5968b989fccd3b71966e"
-      }
+      },
+      "remoteSource": "PASS_69_FULL_SOURCE_3_CONTROL_4_ENGINE_BLOBS",
+      "exactSourceBuild": "PASS_NODE22_64_SOURCE_34_HELPER_44_ARTIFACT_FILES",
+      "normalHtmlRoutes": 27,
+      "sitemapUrls": 27,
+      "evidencePath": "docs/direct-regional-release/gwangju/review/independent-runtime/final-source-ready-review.json",
+      "evidenceSha256": "74b23294df79d61ee01926092873901bbb4ed8016bbd06b78852bc55f55d52fe",
+      "imageBodyDigestPath": "docs/direct-regional-release/gwangju/review/independent-runtime/final-image-body-digest-inventory.json",
+      "imageBodyDigestSha256": "0bd6064eee1e0b6d7face49e0b8f739be2920ef96bde9af699937fc1acf58e22"
     },
     "deploymentAccessObservation": {
       "at": "2026-10-10T08:20:59Z",
@@ -389,7 +407,84 @@
       "dispatchAttempted": false,
       "requiredApprovalRequestId": null,
       "causeConfirmed": false
-    }
+    },
+    "sourceRevision": "b6373facad5548f3a4680d8e6eaaa588d5a93682",
+    "controlRevision": "20e6658d50b0d55c0e1d403e22c9cdac656a89c5",
+    "approval": {
+      "state": "waiting_service_execution_approval",
+      "ordinaryUserReleaseAuthorization": "already_granted",
+      "exactAction": "Select own-cloud Chrome and use official GitHub Gwangju direct Run workflow",
+      "targetWorkflowUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/workflows/gwangju-direct-publish.yml",
+      "sourceRevision": "b6373facad5548f3a4680d8e6eaaa588d5a93682",
+      "scope": "Only existing reviewed Gwangju direct workflow for fixed source; does not approve credential, permission, security or DNS ownership changes",
+      "reason": "Own-cloud browser selection returned JavaScript execution did not receive approval on initial call and one identical authorized retry.",
+      "pendingRequestId": null,
+      "causeBeyondToolResult": "not_confirmed",
+      "approvedSourceMustMatchReview": true
+    },
+    "publication": {
+      "state": "not_attempted",
+      "intendedUrl": "https://gwangju.fwith.kr",
+      "publicUrl": null,
+      "articleCountPublished": 0,
+      "runId": null
+    },
+    "publicQa": {
+      "state": "not_performed",
+      "http": "not_performed",
+      "desktop": "not_performed_deferred_allowed",
+      "narrow": "not_performed_deferred_allowed"
+    },
+    "indexnow": {
+      "state": "not_submitted",
+      "receipt": null
+    },
+    "gsc": {
+      "state": "not_submitted",
+      "submitResult": null,
+      "listReadback": null
+    },
+    "incompleteStages": [
+      "service_browser_execution_approval",
+      "provider_account_worker_domain_GET_collision_checks",
+      "official_exact_source_workflow_dispatch_and_CI",
+      "live_exact_revision_HTTP_images_CTA_canonical_robots_sitemap_404_links_QA",
+      "IndexNow_durable_receipt",
+      "GSC_submit_and_readback",
+      "deferred_desktop_narrow_visual_QA",
+      "held_mokhyeon_dong_content"
+    ],
+    "pendingVisualRoutes": [
+      "/",
+      "/regions/",
+      "/regions/gyeongan-dong/",
+      "/regions/songjeong-dong/",
+      "/regions/tanbeol-dong/",
+      "/regions/sam-dong/",
+      "/regions/jik-dong/",
+      "/regions/jangji-dong/",
+      "/regions/mok-dong/",
+      "/regions/sinhyeon-dong/",
+      "/regions/munhyeong-dong/",
+      "/regions/maesan-dong/",
+      "/regions/chowol-eup/",
+      "/regions/docheok-myeon/",
+      "/regions/namjong-myeon/",
+      "/regions/ssangnyeong-dong/",
+      "/regions/hoedeok-dong/",
+      "/regions/jungdae-dong/",
+      "/regions/taejeon-dong/",
+      "/regions/yeok-dong/",
+      "/regions/gosan-dong/",
+      "/regions/neungpyeong-dong/",
+      "/regions/chuja-dong/",
+      "/regions/yangbeol-dong/",
+      "/regions/gonjiam-eup/",
+      "/regions/toechon-myeon/",
+      "/regions/namhansanseong-myeon/",
+      "/regions/mokhyeon-dong/",
+      "/__gwangju_qa_missing__/"
+    ]
   },
   "history": [
     {
@@ -3383,7 +3478,464 @@
       "enabledChanged": false
     }
   },
-  "waitingApproval": [],
+  "waitingApproval": [
+    {
+      "scopeKey": "gwangju-direct-initial-20261010",
+      "city": "경기도 광주시",
+      "status": "waiting_service_execution_approval_prepared_source",
+      "owner": {
+        "scheduledRunAt": "2026-10-10T08:00:00Z",
+        "observedExecutionAt": "2026-10-10T08:04:55Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-gwangju-20261010T080000Z",
+        "active": false,
+        "executionState": "waiting_service_execution_approval",
+        "writesStoppedAt": "2026-10-10T08:43:20.470Z"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-gwangju-direct",
+        "root": "site-factory/gwangju-flower",
+        "worker": "gwangju-flower-guide",
+        "hostname": "gwangju.fwith.kr",
+        "externalCreationVerified": false,
+        "sourceBranchCreatedVerified": true
+      },
+      "selection": {
+        "officialCode": "41610",
+        "reason": "Next eligible in published official MOIS municipality code order; Hwaseong already public; Gwangju-si Gyeonggi, not metropolitan Gwangju"
+      },
+      "input": {
+        "controlRevision": "7817ca8f266622a4593059ecc6508aae19b44210",
+        "runtimeSourceRevision": "b41863691a48912b182b915798c93a81d5723e59"
+      },
+      "conflictChecks": {
+        "branchesChecked": 117,
+        "matchingBranch": false,
+        "openMatchingPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "pending_required_before_deploy"
+      },
+      "plan": {
+        "state": "independently_reviewed_25_of_26",
+        "plannedArticleCount": 26,
+        "minimumPassedArticles": 24,
+        "passedArticleCount": 25,
+        "administrativeUnits": 16,
+        "crosswalkRelationships": 27,
+        "partialRelationships": 2,
+        "membershipPath": "docs/direct-regional-release/gwangju/membership.json",
+        "membershipSha256": "39a5542ec28fbd94242df6ead92bc8b3d538145d4c5771534ea9c22083593c6c",
+        "articles": [
+          {
+            "name": "경안동",
+            "slug": "gyeongan-dong",
+            "route": "/regions/gyeongan-dong/",
+            "primaryKeyword": "경기 광주 경안동 개업화환",
+            "title": "경기 광주 경안동 개업화환 | 경안시장 점포 개업",
+            "intent": "경안시장 점포 개업",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "송정동",
+            "slug": "songjeong-dong",
+            "route": "/regions/songjeong-dong/",
+            "primaryKeyword": "경기 광주 송정동 축하화환",
+            "title": "경기 광주 송정동 축하화환 | 광주시문화예술의전당 공연 축하",
+            "intent": "공연단체 초연·정기공연을 축하하는 단체 명의 주문. 실제 초청받은 공연의 홀과 수신자의 화환 수령 의사를 확인한다.",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "탄벌동",
+            "slug": "tanbeol-dong",
+            "route": "/regions/tanbeol-dong/",
+            "primaryKeyword": "경기 광주 탄벌동 개업화환",
+            "title": "경기 광주 탄벌동 개업화환 | 이배재로 기계 전시장 이전 축하",
+            "intent": "이배재로 기계 전시장 이전 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "삼동",
+            "slug": "sam-dong",
+            "route": "/regions/sam-dong/",
+            "primaryKeyword": "경기 광주 삼동 축하화환",
+            "title": "경기 광주 삼동 축하화환 | 제조사업장 기념행사",
+            "intent": "반도체 제조사업장 기념행사",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "직동",
+            "slug": "jik-dong",
+            "route": "/regions/jik-dong/",
+            "primaryKeyword": "경기 광주 직동 축하화환",
+            "title": "경기 광주 직동 축하화환 | 고불로 광주 사무실 이전식",
+            "intent": "고불로 광주 사무실 이전식",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "장지동",
+            "slug": "jangji-dong",
+            "route": "/regions/jangji-dong/",
+            "primaryKeyword": "경기 광주 장지동 축하화환",
+            "title": "경기 광주 장지동 축하화환 | 경충대로 물류기업 창립기념식",
+            "intent": "경충대로 물류기업 창립기념식",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "목동",
+            "slug": "mok-dong",
+            "route": "/regions/mok-dong/",
+            "primaryKeyword": "경기 광주 목동 축하화환",
+            "title": "경기 광주 목동 축하화환 | 진토길 건축자재 기업 확장 축하",
+            "intent": "진토길 건축자재 기업 확장 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "신현동",
+            "slug": "sinhyeon-dong",
+            "route": "/regions/sinhyeon-dong/",
+            "primaryKeyword": "경기 광주 신현동 개업화환",
+            "title": "경기 광주 신현동 개업화환 | 새말길 커피머신 쇼룸 개업",
+            "intent": "새말길 커피머신 쇼룸 개업",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "문형동",
+            "slug": "munhyeong-dong",
+            "route": "/regions/munhyeong-dong/",
+            "primaryKeyword": "경기 광주 문형동 축하화환",
+            "title": "경기 광주 문형동 축하화환 | 오포로 포장재 공장 이전 축하",
+            "intent": "오포로 포장재 공장 이전 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "매산동",
+            "slug": "maesan-dong",
+            "route": "/regions/maesan-dong/",
+            "primaryKeyword": "경기 광주 매산동 개업화환",
+            "title": "경기 광주 매산동 개업화환 | 회안대로 가구 전시장 확장 축하",
+            "intent": "회안대로 가구 전시장 확장 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "초월읍",
+            "slug": "chowol-eup",
+            "route": "/regions/chowol-eup/",
+            "primaryKeyword": "경기 광주 초월읍 근조화환",
+            "title": "경기 광주 초월읍 근조화환 | 지인 장례 조문 준비",
+            "intent": "지인의 장례에 개인 명의로 보내는 조문. 예산과 수신자의 의향으로 근조 상품을 정하고 삼육 등 동명 시설이 있는 경우 부고의 광주시 초월읍 경수길 주소를 대조한다.",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "도척면",
+            "slug": "docheok-myeon",
+            "route": "/regions/docheok-myeon/",
+            "primaryKeyword": "경기 광주 도척면 축하화환",
+            "title": "경기 광주 도척면 축하화환 | 곤지암리조트 기업 기념행사",
+            "intent": "곤지암리조트 기업 기념행사",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "남종면",
+            "slug": "namjong-myeon",
+            "route": "/regions/namjong-myeon/",
+            "primaryKeyword": "경기 광주 남종면 개업화환",
+            "title": "경기 광주 남종면 개업화환 | 분원리 음식점 새출발 축하",
+            "intent": "분원리 음식점 새출발 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "쌍령동",
+            "slug": "ssangnyeong-dong",
+            "route": "/regions/ssangnyeong-dong/",
+            "primaryKeyword": "경기 광주 쌍령동 축하화환",
+            "title": "경기 광주 쌍령동 축하화환 | 영은미술관 전시 개막 축하",
+            "intent": "영은미술관 전시 개막 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "회덕동",
+            "slug": "hoedeok-dong",
+            "route": "/regions/hoedeok-dong/",
+            "primaryKeyword": "경기 광주 회덕동 축하화환",
+            "title": "경기 광주 회덕동 축하화환 | 회덕길 인쇄기업 창립기념식",
+            "intent": "회덕길 인쇄기업 창립기념식",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "목현동",
+            "slug": "mokhyeon-dong",
+            "route": "/regions/mokhyeon-dong/",
+            "primaryKeyword": "경기 광주 목현동 개업화환",
+            "title": "경기 광주 목현동 개업화환 | 이배재로 식품매장 개업",
+            "intent": "이배재로 식품매장 개업",
+            "status": "hold_source_fit",
+            "writerBatch": "b"
+          },
+          {
+            "name": "중대동",
+            "slug": "jungdae-dong",
+            "route": "/regions/jungdae-dong/",
+            "primaryKeyword": "경기 광주 중대동 개업화환",
+            "title": "경기 광주 중대동 개업화환 | 순암로 제조기업 사업장 개업",
+            "intent": "순암로 제조기업 사업장 개업",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "태전동",
+            "slug": "taejeon-dong",
+            "route": "/regions/taejeon-dong/",
+            "primaryKeyword": "경기 광주 태전동 개업화환",
+            "title": "경기 광주 태전동 개업화환 | 고불로 식기 전시판매장 개업",
+            "intent": "고불로 식기 전시판매장 개업",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "역동",
+            "slug": "yeok-dong",
+            "route": "/regions/yeok-dong/",
+            "primaryKeyword": "경기 광주 역동 근조화환",
+            "title": "경기 광주 역동 근조화환 | 회사 명의 조문 주문",
+            "intent": "회사 명의 조문 주문. 법인·부서와 대표자 표기를 정하고 현재 부고에 맞는 수신 장례식장·빈소로 주문한다. 경안이라는 시설명과 법정 역동의 기록상 소재지를 혼동하지 않는다.",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "고산동",
+            "slug": "gosan-dong",
+            "route": "/regions/gosan-dong/",
+            "primaryKeyword": "경기 광주 고산동 개업화환",
+            "title": "경기 광주 고산동 개업화환 | 세피내길 시공업체 사무실 개업",
+            "intent": "세피내길 시공업체 사무실 개업",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "능평동",
+            "slug": "neungpyeong-dong",
+            "route": "/regions/neungpyeong-dong/",
+            "primaryKeyword": "경기 광주 능평동 근조화환",
+            "title": "경기 광주 능평동 근조화환 | 가족 공동 명의 조문",
+            "intent": "가족·친척이 공동 명의로 보내는 조문. 예산·발신 명의를 하나로 합의하고 현재 부고에 적힌 수신 주소를 기준으로 주문한다. 구 오포읍 능평리 공식 기록을 개별 현주소로 자동 변경하지 않는다.",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "추자동",
+            "slug": "chuja-dong",
+            "route": "/regions/chuja-dong/",
+            "primaryKeyword": "경기 광주 추자동 개업화환",
+            "title": "경기 광주 추자동 개업화환 | 오포로 가구 쇼룸 오픈 축하",
+            "intent": "오포로 가구 쇼룸 오픈 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "양벌동",
+            "slug": "yangbeol-dong",
+            "route": "/regions/yangbeol-dong/",
+            "primaryKeyword": "경기 광주 양벌동 축하화환",
+            "title": "경기 광주 양벌동 축하화환 | 광주시민체육관 체육대회 개회식",
+            "intent": "광주시민체육관 체육대회 개회식",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "곤지암읍",
+            "slug": "gonjiam-eup",
+            "route": "/regions/gonjiam-eup/",
+            "primaryKeyword": "경기 광주 곤지암읍 근조화환",
+            "title": "경기 광주 곤지암읍 근조화환 | 거래처 장례 조문",
+            "intent": "거래처의 장례에 협력업체 명의로 보내는 조문. 관계에 맞는 발신 회사명을 정하며 곤지암장례식장과 곤지암농협장례문화원은 기록상 다른 시설이므로 현재 부고의 수신지로 주문한다.",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "퇴촌면",
+            "slug": "toechon-myeon",
+            "route": "/regions/toechon-myeon/",
+            "primaryKeyword": "경기 광주 퇴촌면 개업화환",
+            "title": "경기 광주 퇴촌면 개업화환 | 정영로 한식당 개업 축하",
+            "intent": "정영로 한식당 개업 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "남한산성면",
+            "slug": "namhansanseong-myeon",
+            "route": "/regions/namhansanseong-myeon/",
+            "primaryKeyword": "경기 광주 남한산성면 개업화환",
+            "title": "경기 광주 남한산성면 개업화환 | 산성리 음식점 개업 축하",
+            "intent": "산성리 음식점 개업 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          }
+        ],
+        "deferred": [
+          {
+            "name": "목현동",
+            "slug": "mokhyeon-dong",
+            "primaryKeyword": "경기 광주 목현동 개업화환",
+            "title": "경기 광주 목현동 개업화환 | 이배재로 식품매장 개업",
+            "h1": "목현동 식품매장 개업에 3단 화환을 놓을 수 있을까요?",
+            "intent": "이배재로 식품매장 개업",
+            "sourceUrl": "https://biz.megashow.co.kr/shop/new_detail.php?uid=25598",
+            "sourceName": "메가쇼 꼬마루 수제 육포 참가기업 안내",
+            "verifiedFactsAndLimits": "공식 전시 주최자 참가기업 정보에 꼬마루 수제 육포, 이배재로 323 (목현동)이 표시된다. 2026 시즌1 참가 명단은 식품 사업장 소재 증거이며 현재 개업이나 일반 소매매장 존재·운영 증거가 아니다. 추가 공식 음식점 자료 확인 전 HOLD. 킨텍스 행사장을 목현동 수령지로 바꾸지 않는다.",
+            "family": "congrats",
+            "state": "hold_source_fit",
+            "verificationStatus": "verified_fresh_official_http200",
+            "evidenceKey": "mokhyeon",
+            "distinctBuyerDecision": "식품 매장 개업: 포장·조리 작업 동선과 진열 입구를 구분; 실매장 근거 확인 전 보류",
+            "globalLimits": "주소·업종·시설 성격만 출처 근거. 현재 개업/이전/행사·반입·화환접수·배송시간·재고 보장 없음. 실제 수신인이 행사와 화환 수령을 확인한 구매 상황으로 작성. 실존업체 제휴·배송 실적·추천을 암시하지 않음.",
+            "evidenceFile": "research/purchase-evidence/mokhyeon.json",
+            "writerGroup": "b"
+          }
+        ],
+        "heldArticleCount": 1,
+        "passedRatio": 0.9615384615384616
+      },
+      "lastSuccessfulStage": "exact_remote_source_readback_and_independent_Node22_build",
+      "nextIntent": "Resume exact approved source through official Gwangju direct workflow after required service execution approval; re-read source/main/ownership first.",
+      "pendingExternalAction": {
+        "action": "workflow_dispatch",
+        "workflow": ".github/workflows/gwangju-direct-publish.yml",
+        "ref": "main",
+        "inputs": {
+          "expected_revision": "b6373facad5548f3a4680d8e6eaaa588d5a93682",
+          "indexnow_only": false
+        },
+        "target": "gwangju-flower-guide / gwangju.fwith.kr",
+        "idempotencyKey": "gwangju-direct-initial-20261010:publish:b6373facad5548f3a4680d8e6eaaa588d5a93682",
+        "dispatchAttempted": false,
+        "requires": "Service execution approval for own-cloud browser official GitHub Run workflow path"
+      },
+      "review": {
+        "independentContent": "PASS_EXACT_25_ARTICLES",
+        "visualQa": "DEFERRED_NOT_PERFORMED",
+        "localBuild": "PASS_INDEPENDENT_NODE22_64_SOURCE_34_HELPER_STATIC_GRAPH",
+        "sourceInventorySha256": "0249316733adb0c3af778e00d2bba98f99a3bf7cbb304db95f4dda9cf54f7a90",
+        "controlInventorySha256": "862f6f0ae1a8e2aeb0a581dd3fd136dd1ca595176826af49e61ea89197d81616",
+        "articleDigests": {
+          "a": "31ac5de9e4e01a96d476cc9da4aa247531b0eb3ee6fc727e3f11f1c4c456f3b9",
+          "b": "426a97deba269f4e08351afb9c865b08ea3edade038c5968b989fccd3b71966e"
+        },
+        "remoteSource": "PASS_69_FULL_SOURCE_3_CONTROL_4_ENGINE_BLOBS",
+        "exactSourceBuild": "PASS_NODE22_64_SOURCE_34_HELPER_44_ARTIFACT_FILES",
+        "normalHtmlRoutes": 27,
+        "sitemapUrls": 27,
+        "evidencePath": "docs/direct-regional-release/gwangju/review/independent-runtime/final-source-ready-review.json",
+        "evidenceSha256": "74b23294df79d61ee01926092873901bbb4ed8016bbd06b78852bc55f55d52fe",
+        "imageBodyDigestPath": "docs/direct-regional-release/gwangju/review/independent-runtime/final-image-body-digest-inventory.json",
+        "imageBodyDigestSha256": "0bd6064eee1e0b6d7face49e0b8f739be2920ef96bde9af699937fc1acf58e22"
+      },
+      "deploymentAccessObservation": {
+        "at": "2026-10-10T08:20:59Z",
+        "tool": "own-cloud-browser-selection",
+        "result": "JavaScript execution did not receive approval",
+        "attempts": 2,
+        "authorizationRetry": 1,
+        "dispatchAttempted": false,
+        "requiredApprovalRequestId": null,
+        "causeConfirmed": false
+      },
+      "sourceRevision": "b6373facad5548f3a4680d8e6eaaa588d5a93682",
+      "controlRevision": "20e6658d50b0d55c0e1d403e22c9cdac656a89c5",
+      "approval": {
+        "state": "waiting_service_execution_approval",
+        "ordinaryUserReleaseAuthorization": "already_granted",
+        "exactAction": "Select own-cloud Chrome and use official GitHub Gwangju direct Run workflow",
+        "targetWorkflowUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/workflows/gwangju-direct-publish.yml",
+        "sourceRevision": "b6373facad5548f3a4680d8e6eaaa588d5a93682",
+        "scope": "Only existing reviewed Gwangju direct workflow for fixed source; does not approve credential, permission, security or DNS ownership changes",
+        "reason": "Own-cloud browser selection returned JavaScript execution did not receive approval on initial call and one identical authorized retry.",
+        "pendingRequestId": null,
+        "causeBeyondToolResult": "not_confirmed",
+        "approvedSourceMustMatchReview": true
+      },
+      "publication": {
+        "state": "not_attempted",
+        "intendedUrl": "https://gwangju.fwith.kr",
+        "publicUrl": null,
+        "articleCountPublished": 0,
+        "runId": null
+      },
+      "publicQa": {
+        "state": "not_performed",
+        "http": "not_performed",
+        "desktop": "not_performed_deferred_allowed",
+        "narrow": "not_performed_deferred_allowed"
+      },
+      "indexnow": {
+        "state": "not_submitted",
+        "receipt": null
+      },
+      "gsc": {
+        "state": "not_submitted",
+        "submitResult": null,
+        "listReadback": null
+      },
+      "incompleteStages": [
+        "service_browser_execution_approval",
+        "provider_account_worker_domain_GET_collision_checks",
+        "official_exact_source_workflow_dispatch_and_CI",
+        "live_exact_revision_HTTP_images_CTA_canonical_robots_sitemap_404_links_QA",
+        "IndexNow_durable_receipt",
+        "GSC_submit_and_readback",
+        "deferred_desktop_narrow_visual_QA",
+        "held_mokhyeon_dong_content"
+      ],
+      "pendingVisualRoutes": [
+        "/",
+        "/regions/",
+        "/regions/gyeongan-dong/",
+        "/regions/songjeong-dong/",
+        "/regions/tanbeol-dong/",
+        "/regions/sam-dong/",
+        "/regions/jik-dong/",
+        "/regions/jangji-dong/",
+        "/regions/mok-dong/",
+        "/regions/sinhyeon-dong/",
+        "/regions/munhyeong-dong/",
+        "/regions/maesan-dong/",
+        "/regions/chowol-eup/",
+        "/regions/docheok-myeon/",
+        "/regions/namjong-myeon/",
+        "/regions/ssangnyeong-dong/",
+        "/regions/hoedeok-dong/",
+        "/regions/jungdae-dong/",
+        "/regions/taejeon-dong/",
+        "/regions/yeok-dong/",
+        "/regions/gosan-dong/",
+        "/regions/neungpyeong-dong/",
+        "/regions/chuja-dong/",
+        "/regions/yangbeol-dong/",
+        "/regions/gonjiam-eup/",
+        "/regions/toechon-myeon/",
+        "/regions/namhansanseong-myeon/",
+        "/regions/mokhyeon-dong/",
+        "/__gwangju_qa_missing__/"
+      ]
+    }
+  ],
   "deferredVisualQa": [
     {
       "scopeKey": "hanam-direct-initial-20261010",
