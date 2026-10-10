@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T18:42:46.296Z",
+  "updatedAt": "2026-10-10T18:44:35.792Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,17 +33,19 @@
   "current": {
     "scopeKey": "seoul-seongdong-direct-initial-20261010",
     "city": "서울특별시 성동구",
-    "status": "official_workflow_dispatched",
+    "status": "released_search_submitted_visual_qa_deferred",
     "owner": {
       "scheduledRunAt": "2026-10-10T18:00:00Z",
       "observedExecutionAt": "2026-10-10T18:04:31.491Z",
       "newRegionStartedAt": "2026-10-10T18:04:31.491Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-seoul-seongdong-initial-20261010T180000Z",
-      "active": true,
-      "executionState": "single_writer_active",
+      "active": false,
+      "executionState": "completed_no_further_mutations_after_final_checkpoint",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T17:43:30.404Z",
-      "priorOwnerReadbackConfirmedAt": "2026-10-10T17:43:40.757Z"
+      "priorOwnerReadbackConfirmedAt": "2026-10-10T17:43:40.757Z",
+      "releaseOnSuccessfulFinalRefAndReadback": true,
+      "browserWriteStoppedAt": "2026-10-10T18:44:05.668Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -70,29 +72,20 @@
         37655514711
       ],
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "required_before_mutation",
-      "publicHostObservation": "not_yet_verified"
+      "providerOwnershipCollisionCheck": "PASS_FIXED_HOST_NO_OVERRIDE_AND_BINDING_READBACK",
+      "publicHostObservation": "PASS_INDEPENDENT_PUBLIC_HTTP_EXACT_SOURCE"
     },
     "changeIntent": {
-      "action": "submit_sitemap",
-      "target": "sc-domain:fwith.kr",
-      "sitemapUrl": "https://seoul-seongdong.fwith.kr/sitemap-index.xml",
+      "action": "release_checkpoint_finalize_and_stop",
+      "target": "docs/direct-regional-release/checkpoint.json",
       "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
-      "idempotencyKey": "seoul-seongdong:gsc:sitemap-index:81394c7b05b060db01d3f31d388ec15d9d781efb",
-      "priorListEntryFound": false
+      "idempotencyKey": "seoul-seongdong:released-search-visual-deferred:81394c7b05b060db01d3f31d388ec15d9d781efb",
+      "externalReleaseAndSearchMutationsFinished": true
     },
-    "lastSuccessfulStage": "exact_source_deploy_http_indexnow200_verified",
+    "lastSuccessfulStage": "released_exact_source_independent_http_indexnow200_gsc_submit_and_list_readback",
     "unfinishedStages": [
-      "official_plan",
-      "content",
-      "independent_review",
-      "source_save",
-      "build",
-      "deploy",
-      "http_qa",
-      "indexnow",
-      "gsc",
-      "deferred_visual_qa"
+      "desktop_actual_screen_qa",
+      "narrow_actual_screen_qa"
     ],
     "plan": {
       "state": "frozen_before_authoring_independent_plan_pass",
@@ -111,25 +104,25 @@
           "slug": "sageun-dong-hanyang-hospital-condolence-wreath",
           "title": "한양대학교병원 장례식장 근조화환 주문",
           "primaryKeyword": "한양대학교병원 장례식장 근조화환 주문",
-          "status": "independent_content_pass_source_save_pending"
+          "status": "published_independent_content_pass_visual_qa_deferred"
         },
         {
           "slug": "seongsu1-ga-bottega-maggio-wedding-wreath",
           "title": "보테가마지오 결혼식 축하화환 주문",
           "primaryKeyword": "보테가마지오 결혼식 축하화환 주문",
-          "status": "independent_content_pass_source_save_pending"
+          "status": "published_independent_content_pass_visual_qa_deferred"
         },
         {
           "slug": "seongsu2-ga-sfactory-popup-opening-wreath",
           "title": "성수 에스팩토리 팝업 개막 축하화환 주문",
           "primaryKeyword": "성수 에스팩토리 팝업 개막 축하화환 주문",
-          "status": "independent_content_pass_source_save_pending"
+          "status": "published_independent_content_pass_visual_qa_deferred"
         },
         {
           "slug": "majang-dong-market-opening-wreath",
           "title": "마장축산물시장 거래처 개업화환 주문",
           "primaryKeyword": "마장축산물시장 거래처 개업화환 주문",
-          "status": "independent_content_pass_source_save_pending"
+          "status": "published_independent_content_pass_visual_qa_deferred"
         }
       ],
       "planFreezeRevision": "a57ced22966161e8b1f9485121a555346b39ead1",
@@ -146,7 +139,10 @@
       "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
       "contentRevision": 2,
       "runtimeStatus": "PASS_LOCAL_BUILD_AT_EXACT_SOURCE_REVISION",
-      "runtimeReviewSha256": "6bbfaf4a16bbb6c9b7bb92651bd7358083529099641b5ebe0f625505108f7461"
+      "runtimeReviewSha256": "6bbfaf4a16bbb6c9b7bb92651bd7358083529099641b5ebe0f625505108f7461",
+      "hostedReleaseReviewStatus": "PASS_INDEPENDENT_PUBLIC_HTTP",
+      "hostedReleaseReviewSha256": "53111c6ad2fe94d0d9396e442ef1b2353e40bfd41bca682b82f89e102ec5347d",
+      "hostedReleaseReviewPath": "docs/direct-regional-release/seoul-seongdong/hosted-release-review.json"
     },
     "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
     "validation": {
@@ -164,7 +160,9 @@
       "loopbackHttpCheckedPaths": 20,
       "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
       "remoteReadbackSha256": "cef283e4dcbfc4a153975a71f475e0ba6994a8080c1c30e6f961ca1ce98f4fb4",
-      "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+      "publicProductionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_20_PATHS",
+      "productionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_20_PATHS"
     },
     "controlRevision": "66d02d3dc65cf18555ba788f8584372504137956",
     "run": {
@@ -195,7 +193,218 @@
       "commentId": 6100887080,
       "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6100887080",
       "durableReadbackVerified": true
-    }
+    },
+    "deployment": {
+      "id": 38076544712,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38076544712",
+      "status": "completed",
+      "dispatchCount": 1,
+      "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
+      "controlRevision": "66d02d3dc65cf18555ba788f8584372504137956",
+      "createdAt": "2026-10-10T18:37:45Z",
+      "conclusion": "success",
+      "runAttempt": 1,
+      "completedAt": "2026-10-10T18:39:03Z",
+      "runId": 38076544712,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38076544712",
+      "workflowDispatchCount": 1
+    },
+    "publication": {
+      "url": "https://seoul-seongdong.fwith.kr",
+      "articleCount": 4,
+      "normalHtmlPages": 6,
+      "totalHtmlIncluding404": 7,
+      "sitemapUrls": 6,
+      "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
+      "runId": 38076544712,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38076544712",
+      "publicHttp": {
+        "articleCount": 4,
+        "attempts": 2,
+        "checkedPaths": 20,
+        "htmlRoutes": 6,
+        "noindexHubs": 0,
+        "normalizedCloudflareBeacons": 7,
+        "regionCount": 4,
+        "revision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
+        "sitemapUrls": 6,
+        "state": "public_release_verified",
+        "unknownHttpStatus": 404
+      },
+      "providerBinding": {
+        "accountVerified": true,
+        "dnsState": "not_observed",
+        "hostname": "seoul-seongdong.fwith.kr",
+        "hostnameBindingExists": true,
+        "mutationsPerformed": false,
+        "state": "binding_verified",
+        "worker": "seoul-seongdong-flower-guide",
+        "workerExists": true,
+        "evidence": "Official run GET-only actual binding readback, downloaded and independently reviewed; reviewer performed no provider mutation."
+      },
+      "artifactChain": {
+        "all23CiBuildFilesExactlyMatchIndependentLocalBuild": true,
+        "ciReleaseManifestBoundToExactSourceControlAndRun": true,
+        "ciHttpContractExactlyMatchesIndependentContract": true,
+        "buildArchiveSha256": "efc4f042f66757572be0b50151a4e987c90ac4505971525222a725d9ff434878",
+        "resultArchiveSha256": "5e34042094561358fa27481311499144c7c316ca3b4060a0e5e6b651fde09985",
+        "releaseManifestSha256": "9bad2d04620d0b1a185c33e034a4669145b7b8c4b2f8be5d028f3896a9cb763a"
+      }
+    },
+    "gsc": {
+      "siteUrl": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://seoul-seongdong.fwith.kr/sitemap-index.xml",
+      "status": "submitted_confirmed_processing_pending",
+      "submit": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "attempted": 1,
+        "submitted": 1,
+        "failed": 0,
+        "results": [
+          {
+            "sitemapUrl": "https://seoul-seongdong.fwith.kr/sitemap-index.xml",
+            "accepted": true,
+            "confirmed": true,
+            "lastSubmitted": "2026-10-10T18:43:22.510Z",
+            "isPending": true,
+            "isSitemapsIndex": false,
+            "warnings": "0",
+            "errors": "0"
+          }
+        ],
+        "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+        "actions": [
+          "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+        ]
+      },
+      "listReadback": {
+        "observedAt": "2026-10-10T18:43:29.063Z",
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemaps": [
+          {
+            "path": "https://seoul-seongdong.fwith.kr/sitemap-index.xml",
+            "lastSubmitted": "2026-10-10T18:43:22.510Z",
+            "isPending": true,
+            "isSitemapsIndex": false,
+            "warnings": "0",
+            "errors": "0"
+          }
+        ]
+      },
+      "indexingVerified": false
+    },
+    "completedReleaseSearchAt": "2026-10-10T18:43:29.063Z",
+    "completedIndependentHostedReviewAt": "2026-10-10T18:43:00Z",
+    "elapsedSecondsToReleaseSearch": 2337.572,
+    "qa": {
+      "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
+      "nodeVersion": "22.23.3",
+      "sourceTestsPassed": 68,
+      "publisherTestsPassed": 42,
+      "build": "PASS",
+      "static": "PASS",
+      "graph": "PASS",
+      "artifactFiles": 23,
+      "normalHtmlRoutes": 6,
+      "articleCount": 4,
+      "sitemapUrls": 6,
+      "loopbackHttpCheckedPaths": 20,
+      "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+      "remoteReadbackSha256": "cef283e4dcbfc4a153975a71f475e0ba6994a8080c1c30e6f961ca1ce98f4fb4",
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+      "publicProductionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_20_PATHS",
+      "productionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_20_PATHS",
+      "visual": "DEFERRED_NOT_PASS",
+      "publicHttpEvidence": "docs/direct-regional-release/seoul-seongdong/release-evidence.json"
+    },
+    "pendingVisualRoutes": {
+      "desktop": [
+        "/",
+        "/regions/",
+        "/regions/sageun-dong-hanyang-hospital-condolence-wreath/",
+        "/regions/seongsu1-ga-bottega-maggio-wedding-wreath/",
+        "/regions/seongsu2-ga-sfactory-popup-opening-wreath/",
+        "/regions/majang-dong-market-opening-wreath/",
+        "/404.html"
+      ],
+      "narrow": [
+        "/",
+        "/regions/",
+        "/regions/sageun-dong-hanyang-hospital-condolence-wreath/",
+        "/regions/seongsu1-ga-bottega-maggio-wedding-wreath/",
+        "/regions/seongsu2-ga-sfactory-popup-opening-wreath/",
+        "/regions/majang-dong-market-opening-wreath/",
+        "/404.html"
+      ]
+    },
+    "pendingVisualItems": [
+      "Desktop and narrow real hosted page layout",
+      "H1/title/body readability and overflow",
+      "Actual image rendering, alt and image purpose",
+      "Four matching product cards and prices",
+      "Phone and online order CTA usability",
+      "Home/parent/related link navigation",
+      "404 appearance"
+    ],
+    "bodyAndImageDigests": {
+      "articlesExactFileSha256": "213d175c73a9d52d6025b985b7dcf27cb5dbf838adfcfcfcfb5b3891dff2412f",
+      "independentContentReviewSha256": "59190e5e11af7a8223fea46a8fb9d90462b4bad5140689c91e21edc60173f015",
+      "sourceManifestSha256": "adea9d8e104ba7add8f6847f7584c0bf25b9254880f8eb796d81c00d946972d4",
+      "imageDigests": [
+        {
+          "path": "site-factory/seoul-seongdong-flower/public/images/editorial/opening-wreath-illustration-v1.webp",
+          "sha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+          "gitBlobSha": "8ab5a58eef8b16e2952229bc95c7f063dfef434e"
+        },
+        {
+          "path": "site-factory/seoul-seongdong-flower/public/images/products/congrats-basic.jpg",
+          "sha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+          "gitBlobSha": "019b6987190d1dbd959bad8381a73b001c144c95"
+        },
+        {
+          "path": "site-factory/seoul-seongdong-flower/public/images/products/congrats-large.jpg",
+          "sha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+          "gitBlobSha": "60d737b43f04a2c0f05e4ab91981187cfc9cdc1c"
+        },
+        {
+          "path": "site-factory/seoul-seongdong-flower/public/images/products/congrats-premium.jpg",
+          "sha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+          "gitBlobSha": "d784c6a21676bc5ef659512b30a01d97114c7877"
+        },
+        {
+          "path": "site-factory/seoul-seongdong-flower/public/images/products/congrats-xl.jpg",
+          "sha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+          "gitBlobSha": "5a6f41e37b0137dd48bbcf310c508811fcc4baef"
+        },
+        {
+          "path": "site-factory/seoul-seongdong-flower/public/images/products/funeral-basic.webp",
+          "sha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+          "gitBlobSha": "ff86b334ade08edb840e071802e547ebbba51593"
+        },
+        {
+          "path": "site-factory/seoul-seongdong-flower/public/images/products/funeral-large.webp",
+          "sha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+          "gitBlobSha": "596bd7ec077b8abc09aa3db27218fe4d04ca983d"
+        },
+        {
+          "path": "site-factory/seoul-seongdong-flower/public/images/products/funeral-premium.webp",
+          "sha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+          "gitBlobSha": "1b9608037c14c7c5f371d0bb73a2a62c5bba0d5a"
+        },
+        {
+          "path": "site-factory/seoul-seongdong-flower/public/images/products/funeral-xl.webp",
+          "sha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+          "gitBlobSha": "9900de24565467c66107dc220b527a37bf67d3ed"
+        }
+      ]
+    },
+    "visualObservation": {
+      "status": "not_performed",
+      "reason": "User explicitly deferred real desktop/narrow visual QA to later batch.",
+      "actualVisualErrorObserved": false,
+      "actualCauseDetermined": false
+    },
+    "nextIntent": "No further new region in this invocation. Batch desktop/narrow visual QA later against exact hosted source."
   },
   "history": [
     {
@@ -5716,7 +5925,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Prepare and freeze Seongdong purchase-intent plan before authoring; no other new region in this invocation.",
+  "nextAction": "Next existing invocation: fresh remote owner/checkpoint/run readback, then next unreleased national-plan unit; preserve all visual and approval backlogs.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -11592,6 +11801,382 @@
         "actualCauseDetermined": false
       },
       "elapsedSecondsToReleaseSearch": 2385.869
+    },
+    {
+      "scopeKey": "seoul-seongdong-direct-initial-20261010",
+      "city": "서울특별시 성동구",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "owner": {
+        "scheduledRunAt": "2026-10-10T18:00:00Z",
+        "observedExecutionAt": "2026-10-10T18:04:31.491Z",
+        "newRegionStartedAt": "2026-10-10T18:04:31.491Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-seoul-seongdong-initial-20261010T180000Z",
+        "active": false,
+        "executionState": "completed_no_further_mutations_after_final_checkpoint",
+        "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T17:43:30.404Z",
+        "priorOwnerReadbackConfirmedAt": "2026-10-10T17:43:40.757Z",
+        "releaseOnSuccessfulFinalRefAndReadback": true,
+        "browserWriteStoppedAt": "2026-10-10T18:44:05.668Z"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-seoul-seongdong-direct",
+        "root": "site-factory/seoul-seongdong-flower",
+        "worker": "seoul-seongdong-flower-guide",
+        "hostname": "seoul-seongdong.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true,
+        "sourceBranchBaseRevision": "30a1fd5465a290561ba0e95cd51f81707862c650"
+      },
+      "selection": {
+        "officialCode": "11200",
+        "reason": "Next unreleased autonomous district in remote frozen national official-code order",
+        "nationalPlanDenominator": 230
+      },
+      "conflictChecks": {
+        "branchesChecked": 127,
+        "matchingBranch": false,
+        "openMatchingPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "unrelatedQueuedReadOnlyRuns": [
+          37655516975,
+          37655514711
+        ],
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "PASS_FIXED_HOST_NO_OVERRIDE_AND_BINDING_READBACK",
+        "publicHostObservation": "PASS_INDEPENDENT_PUBLIC_HTTP_EXACT_SOURCE"
+      },
+      "changeIntent": {
+        "action": "release_checkpoint_finalize_and_stop",
+        "target": "docs/direct-regional-release/checkpoint.json",
+        "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
+        "idempotencyKey": "seoul-seongdong:released-search-visual-deferred:81394c7b05b060db01d3f31d388ec15d9d781efb",
+        "externalReleaseAndSearchMutationsFinished": true
+      },
+      "lastSuccessfulStage": "released_exact_source_independent_http_indexnow200_gsc_submit_and_list_readback",
+      "unfinishedStages": [
+        "desktop_actual_screen_qa",
+        "narrow_actual_screen_qa"
+      ],
+      "plan": {
+        "state": "frozen_before_authoring_independent_plan_pass",
+        "plannedArticleCount": 4,
+        "minimumPassedArticles": 4,
+        "legalDongCount": 17,
+        "administrativeDongCount": 17,
+        "relationshipCount": 23,
+        "unassignedLegalUnits": 13,
+        "countIsPageQuota": false,
+        "fixedPlanPath": "docs/direct-regional-release/seoul-seongdong/fixed-plan.json",
+        "fixedPlanSha256": "dfe96adfa74edef943370f6129ebf5460702c461db4901b2c4ed47bd5d57edfc",
+        "frozenAt": "2026-10-10T18:16:10.772098+00:00",
+        "articles": [
+          {
+            "slug": "sageun-dong-hanyang-hospital-condolence-wreath",
+            "title": "한양대학교병원 장례식장 근조화환 주문",
+            "primaryKeyword": "한양대학교병원 장례식장 근조화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "seongsu1-ga-bottega-maggio-wedding-wreath",
+            "title": "보테가마지오 결혼식 축하화환 주문",
+            "primaryKeyword": "보테가마지오 결혼식 축하화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "seongsu2-ga-sfactory-popup-opening-wreath",
+            "title": "성수 에스팩토리 팝업 개막 축하화환 주문",
+            "primaryKeyword": "성수 에스팩토리 팝업 개막 축하화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "majang-dong-market-opening-wreath",
+            "title": "마장축산물시장 거래처 개업화환 주문",
+            "primaryKeyword": "마장축산물시장 거래처 개업화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          }
+        ],
+        "planFreezeRevision": "a57ced22966161e8b1f9485121a555346b39ead1",
+        "approvedArticleCount": 4,
+        "deferredArticleCount": 0
+      },
+      "review": {
+        "screenQa": "DEFERRED_NOT_PASS",
+        "planReviewStatus": "PASS_BEFORE_AUTHORING",
+        "planReviewSha256": "dcdbbcbdf259ec84f05773bd74d786645f9fe4237590d11f2419e3a1f0c748d8",
+        "contentStatus": "PASS",
+        "articlesSha256": "213d175c73a9d52d6025b985b7dcf27cb5dbf838adfcfcfcfb5b3891dff2412f",
+        "independentReviewSha256": "59190e5e11af7a8223fea46a8fb9d90462b4bad5140689c91e21edc60173f015",
+        "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
+        "contentRevision": 2,
+        "runtimeStatus": "PASS_LOCAL_BUILD_AT_EXACT_SOURCE_REVISION",
+        "runtimeReviewSha256": "6bbfaf4a16bbb6c9b7bb92651bd7358083529099641b5ebe0f625505108f7461",
+        "hostedReleaseReviewStatus": "PASS_INDEPENDENT_PUBLIC_HTTP",
+        "hostedReleaseReviewSha256": "53111c6ad2fe94d0d9396e442ef1b2353e40bfd41bca682b82f89e102ec5347d",
+        "hostedReleaseReviewPath": "docs/direct-regional-release/seoul-seongdong/hosted-release-review.json"
+      },
+      "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
+      "validation": {
+        "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
+        "nodeVersion": "22.23.3",
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "artifactFiles": 23,
+        "normalHtmlRoutes": 6,
+        "articleCount": 4,
+        "sitemapUrls": 6,
+        "loopbackHttpCheckedPaths": 20,
+        "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+        "remoteReadbackSha256": "cef283e4dcbfc4a153975a71f475e0ba6994a8080c1c30e6f961ca1ce98f4fb4",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+        "publicProductionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_20_PATHS",
+        "productionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_20_PATHS"
+      },
+      "controlRevision": "66d02d3dc65cf18555ba788f8584372504137956",
+      "run": {
+        "id": 38076544712,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38076544712",
+        "status": "completed",
+        "dispatchCount": 1,
+        "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
+        "controlRevision": "66d02d3dc65cf18555ba788f8584372504137956",
+        "createdAt": "2026-10-10T18:37:45Z",
+        "conclusion": "success",
+        "runAttempt": 1,
+        "completedAt": "2026-10-10T18:39:03Z"
+      },
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "95c30ac8bb96a13f662d00c3893681b41b535e465e6fc16764d49c2b665687e3",
+        "httpStatus": 200,
+        "origin": "https://seoul-seongdong.fwith.kr",
+        "recordedAt": "2026-10-10T18:38:56.014532+00:00",
+        "revision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38076544712",
+        "siteKey": "seoul-seongdong-flower-direct",
+        "state": "received",
+        "urlCount": 6,
+        "urlSetSha256": "82ec9a028684112e712ecbf1ac48ba53d8ea0abaeb24874e2e742d3d94086c09",
+        "commentId": 6100887080,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6100887080",
+        "durableReadbackVerified": true
+      },
+      "deployment": {
+        "id": 38076544712,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38076544712",
+        "status": "completed",
+        "dispatchCount": 1,
+        "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
+        "controlRevision": "66d02d3dc65cf18555ba788f8584372504137956",
+        "createdAt": "2026-10-10T18:37:45Z",
+        "conclusion": "success",
+        "runAttempt": 1,
+        "completedAt": "2026-10-10T18:39:03Z",
+        "runId": 38076544712,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38076544712",
+        "workflowDispatchCount": 1
+      },
+      "publication": {
+        "url": "https://seoul-seongdong.fwith.kr",
+        "articleCount": 4,
+        "normalHtmlPages": 6,
+        "totalHtmlIncluding404": 7,
+        "sitemapUrls": 6,
+        "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
+        "runId": 38076544712,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38076544712",
+        "publicHttp": {
+          "articleCount": 4,
+          "attempts": 2,
+          "checkedPaths": 20,
+          "htmlRoutes": 6,
+          "noindexHubs": 0,
+          "normalizedCloudflareBeacons": 7,
+          "regionCount": 4,
+          "revision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
+          "sitemapUrls": 6,
+          "state": "public_release_verified",
+          "unknownHttpStatus": 404
+        },
+        "providerBinding": {
+          "accountVerified": true,
+          "dnsState": "not_observed",
+          "hostname": "seoul-seongdong.fwith.kr",
+          "hostnameBindingExists": true,
+          "mutationsPerformed": false,
+          "state": "binding_verified",
+          "worker": "seoul-seongdong-flower-guide",
+          "workerExists": true,
+          "evidence": "Official run GET-only actual binding readback, downloaded and independently reviewed; reviewer performed no provider mutation."
+        },
+        "artifactChain": {
+          "all23CiBuildFilesExactlyMatchIndependentLocalBuild": true,
+          "ciReleaseManifestBoundToExactSourceControlAndRun": true,
+          "ciHttpContractExactlyMatchesIndependentContract": true,
+          "buildArchiveSha256": "efc4f042f66757572be0b50151a4e987c90ac4505971525222a725d9ff434878",
+          "resultArchiveSha256": "5e34042094561358fa27481311499144c7c316ca3b4060a0e5e6b651fde09985",
+          "releaseManifestSha256": "9bad2d04620d0b1a185c33e034a4669145b7b8c4b2f8be5d028f3896a9cb763a"
+        }
+      },
+      "gsc": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemapUrl": "https://seoul-seongdong.fwith.kr/sitemap-index.xml",
+        "status": "submitted_confirmed_processing_pending",
+        "submit": {
+          "siteUrl": "sc-domain:fwith.kr",
+          "attempted": 1,
+          "submitted": 1,
+          "failed": 0,
+          "results": [
+            {
+              "sitemapUrl": "https://seoul-seongdong.fwith.kr/sitemap-index.xml",
+              "accepted": true,
+              "confirmed": true,
+              "lastSubmitted": "2026-10-10T18:43:22.510Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+          "actions": [
+            "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+          ]
+        },
+        "listReadback": {
+          "observedAt": "2026-10-10T18:43:29.063Z",
+          "siteUrl": "sc-domain:fwith.kr",
+          "sitemaps": [
+            {
+              "path": "https://seoul-seongdong.fwith.kr/sitemap-index.xml",
+              "lastSubmitted": "2026-10-10T18:43:22.510Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ]
+        },
+        "indexingVerified": false
+      },
+      "completedReleaseSearchAt": "2026-10-10T18:43:29.063Z",
+      "completedIndependentHostedReviewAt": "2026-10-10T18:43:00Z",
+      "elapsedSecondsToReleaseSearch": 2337.572,
+      "qa": {
+        "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
+        "nodeVersion": "22.23.3",
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "artifactFiles": 23,
+        "normalHtmlRoutes": 6,
+        "articleCount": 4,
+        "sitemapUrls": 6,
+        "loopbackHttpCheckedPaths": 20,
+        "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+        "remoteReadbackSha256": "cef283e4dcbfc4a153975a71f475e0ba6994a8080c1c30e6f961ca1ce98f4fb4",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+        "publicProductionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_20_PATHS",
+        "productionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_20_PATHS",
+        "visual": "DEFERRED_NOT_PASS",
+        "publicHttpEvidence": "docs/direct-regional-release/seoul-seongdong/release-evidence.json"
+      },
+      "pendingVisualRoutes": {
+        "desktop": [
+          "/",
+          "/regions/",
+          "/regions/sageun-dong-hanyang-hospital-condolence-wreath/",
+          "/regions/seongsu1-ga-bottega-maggio-wedding-wreath/",
+          "/regions/seongsu2-ga-sfactory-popup-opening-wreath/",
+          "/regions/majang-dong-market-opening-wreath/",
+          "/404.html"
+        ],
+        "narrow": [
+          "/",
+          "/regions/",
+          "/regions/sageun-dong-hanyang-hospital-condolence-wreath/",
+          "/regions/seongsu1-ga-bottega-maggio-wedding-wreath/",
+          "/regions/seongsu2-ga-sfactory-popup-opening-wreath/",
+          "/regions/majang-dong-market-opening-wreath/",
+          "/404.html"
+        ]
+      },
+      "pendingVisualItems": [
+        "Desktop and narrow real hosted page layout",
+        "H1/title/body readability and overflow",
+        "Actual image rendering, alt and image purpose",
+        "Four matching product cards and prices",
+        "Phone and online order CTA usability",
+        "Home/parent/related link navigation",
+        "404 appearance"
+      ],
+      "bodyAndImageDigests": {
+        "articlesExactFileSha256": "213d175c73a9d52d6025b985b7dcf27cb5dbf838adfcfcfcfb5b3891dff2412f",
+        "independentContentReviewSha256": "59190e5e11af7a8223fea46a8fb9d90462b4bad5140689c91e21edc60173f015",
+        "sourceManifestSha256": "adea9d8e104ba7add8f6847f7584c0bf25b9254880f8eb796d81c00d946972d4",
+        "imageDigests": [
+          {
+            "path": "site-factory/seoul-seongdong-flower/public/images/editorial/opening-wreath-illustration-v1.webp",
+            "sha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+            "gitBlobSha": "8ab5a58eef8b16e2952229bc95c7f063dfef434e"
+          },
+          {
+            "path": "site-factory/seoul-seongdong-flower/public/images/products/congrats-basic.jpg",
+            "sha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+            "gitBlobSha": "019b6987190d1dbd959bad8381a73b001c144c95"
+          },
+          {
+            "path": "site-factory/seoul-seongdong-flower/public/images/products/congrats-large.jpg",
+            "sha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+            "gitBlobSha": "60d737b43f04a2c0f05e4ab91981187cfc9cdc1c"
+          },
+          {
+            "path": "site-factory/seoul-seongdong-flower/public/images/products/congrats-premium.jpg",
+            "sha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+            "gitBlobSha": "d784c6a21676bc5ef659512b30a01d97114c7877"
+          },
+          {
+            "path": "site-factory/seoul-seongdong-flower/public/images/products/congrats-xl.jpg",
+            "sha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+            "gitBlobSha": "5a6f41e37b0137dd48bbcf310c508811fcc4baef"
+          },
+          {
+            "path": "site-factory/seoul-seongdong-flower/public/images/products/funeral-basic.webp",
+            "sha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+            "gitBlobSha": "ff86b334ade08edb840e071802e547ebbba51593"
+          },
+          {
+            "path": "site-factory/seoul-seongdong-flower/public/images/products/funeral-large.webp",
+            "sha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+            "gitBlobSha": "596bd7ec077b8abc09aa3db27218fe4d04ca983d"
+          },
+          {
+            "path": "site-factory/seoul-seongdong-flower/public/images/products/funeral-premium.webp",
+            "sha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+            "gitBlobSha": "1b9608037c14c7c5f371d0bb73a2a62c5bba0d5a"
+          },
+          {
+            "path": "site-factory/seoul-seongdong-flower/public/images/products/funeral-xl.webp",
+            "sha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+            "gitBlobSha": "9900de24565467c66107dc220b527a37bf67d3ed"
+          }
+        ]
+      },
+      "visualObservation": {
+        "status": "not_performed",
+        "reason": "User explicitly deferred real desktop/narrow visual QA to later batch.",
+        "actualVisualErrorObserved": false,
+        "actualCauseDetermined": false
+      },
+      "nextIntent": "No further new region in this invocation. Batch desktop/narrow visual QA later against exact hosted source."
     }
   ],
   "releasedKnownHosts": [
@@ -11610,7 +12195,8 @@
     "yangpyeong.fwith.kr",
     "jongno.fwith.kr",
     "seoul-jung.fwith.kr",
-    "seoul-yongsan.fwith.kr"
+    "seoul-yongsan.fwith.kr",
+    "seoul-seongdong.fwith.kr"
   ],
   "nationalPlan": {
     "schemaVersion": 1,
@@ -11630,17 +12216,14 @@
       "Historical visual deferrals and held articles are maintenance backlogs, not erased by geographic release progression.",
       "Reverify official effective changes before choosing later units; do not mutate historical denominator silently."
     ],
-    "nextSelectedUnit": {
-      "code": "11200",
-      "name": "서울특별시 성동구"
-    },
+    "nextSelectedUnit": null,
     "path": "docs/direct-regional-release/national/fixed-plan.json",
     "independentReviewPath": "docs/direct-regional-release/national/independent-review.json",
     "progress": {
-      "releasedRegionCount": 34,
-      "remainingRegionCount": 196,
-      "lastReleasedOfficialCode": "11170",
-      "asOf": "2026-10-10T17:39:37.869Z",
+      "releasedRegionCount": 35,
+      "remainingRegionCount": 195,
+      "lastReleasedOfficialCode": "11200",
+      "asOf": "2026-10-10T18:43:29.063Z",
       "visualQaStillSeparate": true
     }
   }
