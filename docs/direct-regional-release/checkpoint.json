@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T04:25:49.536Z",
+  "updatedAt": "2026-10-10T04:29:33.215Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "paju-direct-initial-20261010",
     "city": "파주시",
-    "status": "approved_release_running",
+    "status": "public_http_indexnow_verified_gsc_intent",
     "owner": {
       "scheduledRunAt": "2026-10-10T04:00:00Z",
       "observedExecutionAt": "2026-10-10T03:58:12Z",
@@ -60,7 +60,7 @@
       "root": "site-factory/paju-flower",
       "worker": "paju-flower-guide",
       "hostname": "paju.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true
     },
     "input": {
@@ -109,18 +109,13 @@
       "membershipPath": "docs/direct-regional-release/paju/membership.json",
       "membershipSha256": "90db2d064691a97acf73a319d621a533de0a28c78baae1f589a851ed237cf897"
     },
-    "lastSuccessfulStage": "independent_remote_source_controls_and_final_sha_build",
+    "lastSuccessfulStage": "public_http_and_indexnow200_verified",
     "nextIntent": "One approved retry of official Run workflow for unchanged exact source",
     "pendingExternalAction": {
-      "action": "workflow_dispatch",
-      "workflow": "paju-direct-publish.yml",
-      "expectedRevision": "4a8011cfaac421aacb6ab4b753ad0a792d11dfc1",
-      "indexnowOnly": false,
-      "hostname": "paju.fwith.kr",
-      "worker": "paju-flower-guide",
-      "noOverrides": true,
-      "idempotencyKey": "paju-direct-release-4a8011cfaac421aacb6ab4b753ad0a792d11dfc1",
-      "controlRevision": "00ba841f885908ceb5f7f03f1da3e0d35d25aa06"
+      "action": "GSC submit_sitemap",
+      "siteUrl": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://paju.fwith.kr/sitemap-index.xml",
+      "idempotencyKey": "gsc-paju-4a8011cfaac421aacb6ab4b753ad0a792d11dfc1"
     },
     "controlRevision": "ac6c401e435e976bf6a74dc61845b560d4bf4590",
     "review": {
@@ -162,7 +157,10 @@
       "resolvedBy": "explicit_exact_pending_target_approval"
     },
     "publicQa": {
-      "status": "not_executed"
+      "status": "PASS_INDEPENDENT_PUBLIC_HTTP_BYTES",
+      "checkedAt": "2026-10-10T04:28:19.558190+00:00",
+      "paths": 53,
+      "visualQa": "deferred_not_pass"
     },
     "indexNowReceipt": null,
     "gsc": {
@@ -181,8 +179,33 @@
       "sourceRevision": "4a8011cfaac421aacb6ab4b753ad0a792d11dfc1",
       "createdAt": "2026-10-10T04:25:11Z",
       "attempt": 1,
-      "status": "in_progress",
-      "dispatchCount": 1
+      "status": "completed",
+      "dispatchCount": 1,
+      "conclusion": "success",
+      "completedAt": "2026-10-10T04:26:34Z"
+    },
+    "publication": {
+      "url": "https://paju.fwith.kr/",
+      "sourceRevision": "4a8011cfaac421aacb6ab4b753ad0a792d11dfc1",
+      "indexNow": {
+        "state": "received",
+        "httpStatus": 200,
+        "attempt": 1,
+        "urlCount": 34,
+        "urlSetSha256": "ee468240e15209636ba95fdcd08452bb27b4dfd558f2d81b737df71af6cd4eb4",
+        "fingerprint": "c0d979970616c331bea60f92dcad406de0fc2bcde51dc31578a276e101b3b157",
+        "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6093752964",
+        "receiptIssue": 266,
+        "getObservations": 76,
+        "submissionObservations": 1,
+        "allGet200AndNoBlockingRobotsOrChallenge": true,
+        "searchIndexing": "not_verified"
+      },
+      "hostedQa": "DEFERRED_NOT_PASS"
+    },
+    "ciVerification": {
+      "status": "PASS_OFFICIAL_CI_ARTIFACT_AND_RECEIPT",
+      "evidencePath": "docs/direct-regional-release/paju/ci-verification.json"
     }
   },
   "history": [
