@@ -7,7 +7,7 @@
   "actualReceivedAt": "2026-10-10T06:36:38Z",
   "actualInvocationId": null,
   "checkpointId": "blog-fwith-daily-20261010-claim",
-  "status": "publish_workflow_running",
+  "status": "published_http_verified_visual_review_running",
   "owner": {
     "task": "publish_daily_blog_batch",
     "state": "active"
@@ -15,9 +15,9 @@
   "baselineSource": "f4b4813ec3b1cbfa9fd8d05895b03ac0db420d6b",
   "controllerRevision": "cffdc7fbcdd6d0c4dc34669f0d338b37348eb782",
   "existingPublishedPostCount": 27,
-  "publishedPostCount": 0,
+  "publishedPostCount": 5,
   "dailyPostsPreviouslyPublished": 0,
-  "remainingDailyQuota": 5,
+  "remainingDailyQuota": 0,
   "initial20ExcludedFromDailyCount": true,
   "slugs": [
     "seoul-asan-funeral-condolence-wreath",
@@ -27,8 +27,8 @@
     "gyeongju-thek-wedding-wreath"
   ],
   "intent": {
-    "action": "observe_build_publish_and_independent_public_qa",
-    "idempotencyKey": "blog-fwith-daily-20261010:fa270d95570a605d1034b9f0571ace9cc310a16c"
+    "action": "finish_independent_visual_review_then_submit_IndexNow_once",
+    "idempotencyKey": "blog-fwith:fa270d95570a605d1034b9f0571ace9cc310a16c"
   },
   "dedupe": {
     "remoteTreeComplete": true,
@@ -38,7 +38,7 @@
   },
   "searchIndexing": "not_verified",
   "ranking": "not_verified",
-  "updatedAt": "2026-10-10T06:51:48.786Z",
+  "updatedAt": "2026-10-10T07:01:03.398Z",
   "review": "daily-20261010.review.json",
   "imageProvenance": "daily-20261010.images.json",
   "approvedPostCount": 5,
@@ -64,7 +64,31 @@
     "sourceRevision": "fa270d95570a605d1034b9f0571ace9cc310a16c",
     "runId": 38032376174,
     "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38032376174",
-    "state": "in_progress",
-    "createdAt": "2026-10-10T06:51:20Z"
+    "state": "success",
+    "createdAt": "2026-10-10T06:51:20Z",
+    "exactHostedRevisionVerified": true,
+    "totalArticles": 32
+  },
+  "httpQa": {
+    "state": "PASS",
+    "htmlCount": 120,
+    "assetCount": 37,
+    "unknown404": "PASS",
+    "reportSha256": "29a2bd109aa34e37458889831f6bb6f94be25cfc726662735317f38d19ef757d"
+  },
+  "visualQa": {
+    "desktop": {
+      "width": 1181,
+      "state": "PASS"
+    },
+    "narrow": {
+      "width": 393,
+      "height": 252,
+      "dpr": 3,
+      "method": "native Chrome normal UI zoom 300%; not device emulation",
+      "state": "independent_review_running"
+    },
+    "invalidCapture": "Tab fullPage screenshot at zoom produced cropped strips; excluded from QA. Native window screenshots used instead.",
+    "normalZoomRestored": true
   }
 }
