@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T06:26:24.118Z",
+  "updatedAt": "2026-10-10T06:29:52.217Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "anseong-direct-initial-20261010",
     "city": "안성시",
-    "status": "official_workflow_running",
+    "status": "published_http_pass_search_submission_intent",
     "owner": {
       "scheduledRunAt": "2026-10-10T06:00:00Z",
       "observedExecutionAt": "2026-10-10T06:01:14.435Z",
@@ -48,7 +48,7 @@
       "root": "site-factory/anseong-flower",
       "worker": "anseong-flower-guide",
       "hostname": "anseong.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true
     },
     "input": {
@@ -65,7 +65,7 @@
       "openMatchingPullRequests": 0,
       "inProgressWorkflows": 0,
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "required_before_deploy_not_assumed_absent"
+      "providerOwnershipCollisionCheck": "PASS_exact_account_worker_domain_no_override"
     },
     "plan": {
       "state": "reviewed_44_of_45",
@@ -410,9 +410,15 @@
         }
       ]
     },
-    "lastSuccessfulStage": "official_dispatch_created_verified",
-    "nextIntent": "Read official run artifacts and actual publicHTTP/IndexNow; no redispatch without outcome recovery",
-    "pendingExternalAction": null,
+    "lastSuccessfulStage": "public_http_and_indexnow200_verified",
+    "nextIntent": "Submit public sitemap once, confirm list_sitemaps readback, preserve deferred visual cases",
+    "pendingExternalAction": {
+      "action": "GSC_submit_sitemap",
+      "target": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://anseong.fwith.kr/sitemap-index.xml",
+      "sourceRevision": "39a23593b6d2134627edccb9a02378dac708e5c4",
+      "idempotencyKey": "anseong-gsc-39a23593b6d2134627edccb9a02378dac708e5c4"
+    },
     "review": {
       "independentContent": "PASS",
       "hostedQa": "not_run",
@@ -444,8 +450,22 @@
       "controlRevision": "8c830d96800277068354d6cda8b7a792fc90b730",
       "createdAt": "2026-10-10T06:25:52Z",
       "dispatchCount": 1,
-      "status": "in_progress",
-      "result": null
+      "status": "completed",
+      "result": "success",
+      "completedAt": "2026-10-10T06:27:21Z"
+    },
+    "publicQa": {
+      "status": "PASS_INDEPENDENT_PUBLIC_HTTP_BYTES",
+      "checkedAt": "2026-10-10T06:29:17.931Z",
+      "paths": 63,
+      "normalHtmlRoutes": 46,
+      "sitemapUrls": 46,
+      "visualQa": "deferred_not_pass"
+    },
+    "ciVerification": {
+      "status": "PASS_OFFICIAL_CI_ARTIFACT_AND_RECEIPT",
+      "evidencePath": "docs/direct-regional-release/anseong/ci-verification.json",
+      "sha256": "545af414d963bfcb8aba9942f478a1b44c25a1fcc5907ae17ff3f46fb8dba7cf"
     }
   },
   "history": [
