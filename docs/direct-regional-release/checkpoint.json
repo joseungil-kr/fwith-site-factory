@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T15:01:55.253Z",
+  "updatedAt": "2026-10-10T15:05:36.054Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -227,9 +227,17 @@
       "controlRevision": "d87a0515e6d62da7dd793dbd9bbfe36326cf4e07"
     },
     "changeIntent": {
-      "action": "diagnose_indexnow_403_without_repeated_POST",
-      "target": "yangpyeong.fwith.kr existing rejected receipt and fixed finalizer",
-      "idempotencyKey": "yangpyeong:diagnose403:bad8ba028abc68c738267622ed7f1508f956bd54:20261010T150000Z"
+      "action": "retain_minimal_Yangpyeong_POST_diagnostics_then_single_verified_indexnow_only_retry",
+      "target": ".github/workflows/yangpyeong-direct-publish.yml",
+      "sourceRevision": "bad8ba028abc68c738267622ed7f1508f956bd54",
+      "idempotencyKey": "yangpyeong:indexnow-recovery-once:bad8ba028abc68c738267622ed7f1508f956bd54:20261010T150000Z",
+      "reason": "Official IndexNow documentation allows verifying a rejected request and resubmitting; 17 fresh existing-client GET checks passed. No documented cache-propagation cause is asserted.",
+      "limits": [
+        "one new indexnow_only dispatch",
+        "same source, endpoint, key, user-agent and journal",
+        "no deployment or GSC resubmission",
+        "no retry after another 403 without new evidence"
+      ]
     },
     "lastSuccessfulStage": "public_HTTP_and_GSC_submit_separate_list_readback",
     "nextIntent": "Diagnose IndexNow provider key-fetch rejection from existing receipt and read-only observations before any retry. No repeated deployment/GSC.",
