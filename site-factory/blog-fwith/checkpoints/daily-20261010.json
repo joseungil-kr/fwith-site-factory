@@ -7,7 +7,7 @@
   "actualReceivedAt": "2026-10-10T06:36:38Z",
   "actualInvocationId": null,
   "checkpointId": "blog-fwith-daily-20261010-claim",
-  "status": "preparing",
+  "status": "content_and_images_independently_approved",
   "owner": {
     "task": "publish_daily_blog_batch",
     "state": "active"
@@ -27,8 +27,8 @@
     "gyeongju-thek-wedding-wreath"
   ],
   "intent": {
-    "action": "prepare_and_independently_review_five_original_articles_and_generated_images",
-    "idempotencyKey": "blog-fwith-daily-20261010"
+    "action": "store_reviewed_source_and_prepared_index",
+    "idempotencyKey": "blog-fwith-daily-20261010-reviewed-source"
   },
   "dedupe": {
     "remoteTreeComplete": true,
@@ -38,5 +38,14 @@
   },
   "searchIndexing": "not_verified",
   "ranking": "not_verified",
-  "updatedAt": "2026-10-10T06:39:54.279Z"
+  "updatedAt": "2026-10-10T06:48:43.755Z",
+  "review": "daily-20261010.review.json",
+  "imageProvenance": "daily-20261010.images.json",
+  "approvedPostCount": 5,
+  "serviceApprovalObservation": {
+    "stage": "GitHub image blob upload",
+    "promptShown": true,
+    "toolSubsequentlySucceeded": true,
+    "userActionIndependentlyConfirmed": false
+  }
 }
