@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T13:56:11.976Z",
+  "updatedAt": "2026-10-10T14:01:33.547Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,17 +33,20 @@
   "current": {
     "scopeKey": "yeoncheon-direct-initial-20261010",
     "city": "연천군",
-    "status": "approved_resume_dispatch_intent",
+    "status": "released_search_submitted_visual_qa_deferred",
     "owner": {
       "scheduledRunAt": "2026-10-10T12:00:00Z",
       "observedExecutionAt": "2026-10-10T12:24:45.477Z",
       "newRegionStartedAt": "2026-10-10T12:24:45.477Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-yeoncheon-20261010T120000Z",
-      "active": true,
-      "executionState": "approved_exact_source_resume",
+      "active": false,
+      "executionState": "final_checkpoint_then_readback_only",
       "pausedAt": "2026-10-10T12:52:14.915Z",
-      "resumedAt": "2026-10-10T13:53:21.337Z"
+      "resumedAt": "2026-10-10T13:53:21.337Z",
+      "finalCheckpointPreparedAt": "2026-10-10T14:01:33.547Z",
+      "writesStoppedAt": null,
+      "stopConfirmation": "Actual write stop is confirmed separately after this final mutation and readback."
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -51,7 +54,7 @@
       "root": "site-factory/yeoncheon-flower",
       "worker": "yeoncheon-flower-guide",
       "hostname": "yeoncheon.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true
     },
     "selection": {
@@ -64,7 +67,7 @@
       "openMatchingPullRequests": 0,
       "inProgressWorkflows": 0,
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "pending_official_provider_GET_before_publish"
+      "providerOwnershipCollisionCheck": "PASS_ACTUAL_PROVIDER_GET_NO_OVERRIDE"
     },
     "input": {
       "controlRevision": "275a5595d596c0cd6b739c00c852b855505770e8",
@@ -183,22 +186,32 @@
       "heldArticleCount": 1,
       "passedRatio": 0.9
     },
-    "lastSuccessfulStage": "official_dispatch_accepted",
-    "nextIntent": "Resume the exact Yeoncheon workflow dispatch only after region-specific approval is verified",
+    "lastSuccessfulStage": "public_HTTP_IndexNow200_GSC_submit_and_list_readback",
+    "nextIntent": "Deferred visual QA and held Jung-myeon content; no repeated deployment or search submission.",
     "changeIntent": {
-      "action": "gsc_submit_sitemap",
-      "target": "https://yeoncheon.fwith.kr/sitemap-index.xml",
-      "idempotencyKey": "yeoncheon:gsc:f02912710d4e127241ae6e72269966d0a906b1b0"
+      "action": "final_evidence_checkpoint_only",
+      "target": "docs/direct-regional-release/checkpoint.json",
+      "idempotencyKey": "yeoncheon:release-search-complete:f02912710d4e127241ae6e72269966d0a906b1b0"
     },
     "idempotencyKey": "yeoncheon-direct-initial-20261010:claim",
     "publication": {
-      "state": "public_http_verified",
+      "state": "published_verified",
       "runId": 38057529483,
       "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38057529483",
       "sourceRevision": "f02912710d4e127241ae6e72269966d0a906b1b0",
       "controlRevision": "e81c40e2968ee826a0ac57aaaf2a344363bb9f72",
       "dispatchedAt": "2026-10-10T13:54:28Z",
-      "verifiedAt": "2026-10-10T13:55:35Z"
+      "verifiedAt": "2026-10-10T13:55:35Z",
+      "url": "https://yeoncheon.fwith.kr",
+      "urlState": "public_exact_source_verified",
+      "runConclusion": "success",
+      "articleCountPublished": 9,
+      "htmlPageCount": 12,
+      "indexableHtmlCount": 11,
+      "sitemapUrlCount": 11,
+      "workflowCompletedAt": "2026-10-10T13:55:47Z",
+      "searchSubmittedAt": "2026-10-10T13:57:20.334Z",
+      "completedAt": "2026-10-10T14:01:33.547Z"
     },
     "review": {
       "content": "PASS_EXACT_9_ARTICLES",
@@ -212,16 +225,11 @@
     },
     "sourceRevision": "f02912710d4e127241ae6e72269966d0a906b1b0",
     "pendingExternalAction": {
-      "action": "workflow_dispatch",
-      "target": ".github/workflows/yeoncheon-direct-publish.yml",
-      "expectedRevision": "f02912710d4e127241ae6e72269966d0a906b1b0",
-      "state": "dispatched_run_verified",
-      "fixedWorker": "yeoncheon-flower-guide",
-      "fixedHostname": "yeoncheon.fwith.kr"
+      "action": "none_release_search_complete"
     },
-    "controlRevision": "ac163b3ecd21c477fa286fd5c80f26e16ad7e509",
+    "controlRevision": "e81c40e2968ee826a0ac57aaaf2a344363bb9f72",
     "approval": {
-      "status": "explicit_user_approved",
+      "status": "consumed_exact_action",
       "action": "workflow_dispatch",
       "workflow": ".github/workflows/yeoncheon-direct-publish.yml",
       "ref": "main",
@@ -235,24 +243,17 @@
       "approvedAt": "2026-10-10T13:52:17Z"
     },
     "unfinishedStages": [
-      "service_approval",
-      "official_credential_free_build",
-      "provider_collision_get",
-      "worker_publish",
-      "hostname_binding",
-      "public_http_qa",
-      "indexnow_receipt",
-      "gsc_submit_readback",
-      "deferred_visual_qa"
+      "deferred_desktop_narrow_visual_qa",
+      "held_jung_myeon_content"
     ],
     "evidence": {
       "sourceCommit": "f02912710d4e127241ae6e72269966d0a906b1b0",
-      "controlCommit": "ac163b3ecd21c477fa286fd5c80f26e16ad7e509",
-      "independentRemoteReview": "docs/direct-regional-release/yeoncheon/remote-source-review.json",
-      "build": "local_static_and_regression_99_pass_official_build_not_started",
-      "hostedQa": "not_performed",
-      "indexNow": "not_submitted",
-      "gsc": "not_submitted",
+      "controlCommit": "e81c40e2968ee826a0ac57aaaf2a344363bb9f72",
+      "runId": 38057529483,
+      "build": "official_Node22_65_tests_34_safety_tests_38_Astro_files_zero_errors",
+      "hostedQa": "CI_and_independent_26_HTTP_paths_PASS",
+      "indexNow": "HTTP200_received",
+      "gsc": "submit_and_separate_list_readback_confirmed",
       "visual": "deferred_not_pass"
     },
     "indexNow": {
@@ -271,10 +272,77 @@
       "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098220673"
     },
     "gsc": {
-      "state": "submit_intent",
-      "siteUrl": "sc-domain:fwith.kr",
-      "sitemapUrl": "https://yeoncheon.fwith.kr/sitemap-index.xml",
-      "existingRegistration": false
+      "state": "submission_confirmed",
+      "property": "sc-domain:fwith.kr",
+      "sitemap": "https://yeoncheon.fwith.kr/sitemap-index.xml",
+      "accepted": true,
+      "confirmed": true,
+      "listReadbackConfirmed": true,
+      "submittedAt": "2026-10-10T13:57:20.334Z",
+      "processingPending": true,
+      "searchIndexing": "not_verified"
+    },
+    "pendingVisualRoutes": [
+      "/",
+      "/regions/",
+      "/regions/yeoncheon-eup/",
+      "/regions/jeongok-eup/",
+      "/regions/gunnam-myeon/",
+      "/regions/cheongsan-myeon/",
+      "/regions/baekhak-myeon/",
+      "/regions/misan-myeon/",
+      "/regions/wangjing-myeon/",
+      "/regions/sinseo-myeon/",
+      "/regions/jangnam-myeon/",
+      "/404.html",
+      "/regions/jung-myeon/"
+    ],
+    "pendingVisualItems": [
+      "desktop_and_narrow_layout",
+      "horizontal_overflow",
+      "text_and_card_legibility",
+      "product_images",
+      "telephone_and_order_CTA",
+      "navigation_and_404"
+    ],
+    "qa": {
+      "officialHttp": {
+        "state": "public_release_verified",
+        "articleCount": 9,
+        "htmlRoutes": 11,
+        "sitemapUrls": 11,
+        "checkedPaths": 26,
+        "attempts": 2,
+        "unknownHttpStatus": 404
+      },
+      "visual": "deferred_not_performed",
+      "separateClientObservation": {
+        "observedAt": "2026-10-10T13:57:08Z",
+        "client": "Python urllib default user agent",
+        "path": "/sitemap-index.xml",
+        "httpStatus": 403,
+        "edgeCode": 1010,
+        "rootCause": "not_established",
+        "securitySettingsChanged": false,
+        "accessRestrictionBypassed": false,
+        "note": "The original fixed QA-client single GET pass completed with 26 responses. Default Python-client 1010 remains a separate access limitation; its exact cause is unconfirmed."
+      },
+      "independentHttp": {
+        "state": "PASS",
+        "requests": 26,
+        "normalHtmlRoutes": 11,
+        "articleCount": 9,
+        "sitemapUrls": 11,
+        "evidencePath": "docs/direct-regional-release/yeoncheon/live-independent-review.json",
+        "observationsPath": "docs/direct-regional-release/yeoncheon/live-http-observations.json",
+        "verifiedAt": "2026-10-10T13:59:30.843800Z"
+      }
+    },
+    "bodyAndImageDigests": {
+      "reviewSha256": "3853ebab7c8d6668bcb4d538ad70e2fa5108ccd63065852b2459dc31c238e636",
+      "articleFileSha256": "8bf08daf15a7085038a057e3c27dd71bcf500908d0a9228ba1ef1399eec3daec",
+      "inventoryPath": "docs/direct-regional-release/yeoncheon/final-file-inventory.json",
+      "releaseEvidencePath": "docs/direct-regional-release/yeoncheon/release-evidence.json"
     }
   },
   "history": [
@@ -3594,7 +3662,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Dispatch specifically approved Yeoncheon exact source once, then public HTTP, IndexNow and GSC.",
+  "nextAction": "Next existing invocation may select the next unopened official-plan region. Preserve Yeoncheon held Jung-myeon article and deferred desktop/narrow review.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -3622,237 +3690,7 @@
       "enabledChanged": false
     }
   },
-  "waitingApproval": [
-    {
-      "scopeKey": "yeoncheon-direct-initial-20261010",
-      "city": "연천군",
-      "status": "approved_resume_in_progress",
-      "owner": {
-        "scheduledRunAt": "2026-10-10T12:00:00Z",
-        "observedExecutionAt": "2026-10-10T12:24:45.477Z",
-        "newRegionStartedAt": "2026-10-10T12:24:45.477Z",
-        "serviceInvocationId": null,
-        "checkpointId": "direct-yeoncheon-20261010T120000Z",
-        "active": false,
-        "executionState": "paused_at_service_approval_no_external_run",
-        "pausedAt": "2026-10-10T12:52:14.915Z"
-      },
-      "identity": {
-        "repository": "joseungil-kr/fwith-site-factory",
-        "branch": "site-factory-yeoncheon-direct",
-        "root": "site-factory/yeoncheon-flower",
-        "worker": "yeoncheon-flower-guide",
-        "hostname": "yeoncheon.fwith.kr",
-        "externalCreationVerified": false,
-        "sourceBranchCreatedVerified": true
-      },
-      "selection": {
-        "officialCode": "41800",
-        "reason": "Official code ascending after released Yeoju41670; no matching branch/manifest/run/owner"
-      },
-      "conflictChecks": {
-        "branchesChecked": 121,
-        "matchingBranch": false,
-        "openMatchingPullRequests": 0,
-        "inProgressWorkflows": 0,
-        "mainMatchingPaths": false,
-        "providerOwnershipCollisionCheck": "pending_official_provider_GET_before_publish"
-      },
-      "input": {
-        "controlRevision": "275a5595d596c0cd6b739c00c852b855505770e8",
-        "runtimeSourceRevision": "8fbcc607193d2ea3c34286519cff7d5f3380479a"
-      },
-      "plan": {
-        "state": "independently_reviewed_9_of_10",
-        "plannedArticleCount": 10,
-        "minimumPassedArticles": 9,
-        "administrativeUnits": 10,
-        "crosswalkRelationships": 10,
-        "partialRelationships": 0,
-        "membershipPath": "docs/direct-regional-release/yeoncheon/membership.json",
-        "articles": [
-          {
-            "slug": "yeoncheon-eup",
-            "name": "연천읍",
-            "title": "연천수레울아트홀 공연 축하화환",
-            "primaryKeyword": "연천수레울아트홀 공연 축하화환",
-            "status": "independent_content_pass"
-          },
-          {
-            "slug": "jeongok-eup",
-            "name": "전곡읍",
-            "title": "전곡읍 연천군장례식장 근조화환",
-            "primaryKeyword": "전곡읍 연천군장례식장 근조화환",
-            "status": "independent_content_pass"
-          },
-          {
-            "slug": "gunnam-myeon",
-            "name": "군남면",
-            "title": "군남면 음식점 개업화환",
-            "primaryKeyword": "군남면 음식점 개업화환",
-            "status": "independent_content_pass"
-          },
-          {
-            "slug": "cheongsan-myeon",
-            "name": "청산면",
-            "title": "청산면 제조업체 이전 축하화환",
-            "primaryKeyword": "청산면 제조업체 이전 축하화환",
-            "status": "independent_content_pass"
-          },
-          {
-            "slug": "baekhak-myeon",
-            "name": "백학면",
-            "title": "백학자유로리조트 연회 축하화환",
-            "primaryKeyword": "백학자유로리조트 연회 축하화환",
-            "status": "independent_content_pass"
-          },
-          {
-            "slug": "misan-myeon",
-            "name": "미산면",
-            "title": "미산면 음식점 개업화환",
-            "primaryKeyword": "미산면 음식점 개업화환",
-            "status": "independent_content_pass"
-          },
-          {
-            "slug": "wangjing-myeon",
-            "name": "왕징면",
-            "title": "왕징면 징파연수원 기념행사 화환",
-            "primaryKeyword": "왕징면 징파연수원 기념행사 화환",
-            "status": "independent_content_pass"
-          },
-          {
-            "slug": "sinseo-myeon",
-            "name": "신서면",
-            "title": "신서면 음식점 개업화환",
-            "primaryKeyword": "신서면 음식점 개업화환",
-            "status": "independent_content_pass"
-          },
-          {
-            "slug": "jung-myeon",
-            "name": "중면",
-            "title": "중면 화환 구매 안내 보류",
-            "primaryKeyword": "중면 화환 구매 안내 보류",
-            "status": "hold_source_fit"
-          },
-          {
-            "slug": "jangnam-myeon",
-            "name": "장남면",
-            "title": "장남면 카페 개업화환",
-            "primaryKeyword": "장남면 카페 개업화환",
-            "status": "independent_content_pass"
-          }
-        ],
-        "deferred": [
-          {
-            "slug": "jung-myeon",
-            "name": "중면",
-            "unitKey": "연천군/면/중면",
-            "title": "중면 화환 구매 안내 보류",
-            "h1": "중면 화환 구매 안내 보류",
-            "primaryKeyword": "중면 화환 구매 안내 보류",
-            "family": "congrats",
-            "state": "hold_source_fit",
-            "context": {
-              "venue_or_business": "DMZ 마루 캠핑",
-              "address": "경기도 연천군 중면 군중로 399",
-              "source_id": "jung-camping"
-            },
-            "source": {
-              "name": "DMZ 마루 캠핑 공식 관광 목록",
-              "url": "https://www.yeoncheon.go.kr/tour/selectTourCntntsWebView.do?ctgry=85&key=4434&pageIndex=1&pageUnit=9&searchCnd=all&sortTy=RECOMEND&tourNo=581",
-              "type": "official",
-              "verifiedAt": "2026-10-10"
-            },
-            "distinctBuyerDecision": null,
-            "holdReason": "중면 관내 사업장 실체는 확인되었으나 구체적인 화환 구매·수령 행사 맥락을 입증하지 못했다. 관광지/캠핑장으로 억지 연결하지 않는다. 군 공식 현황의 민통선 관련 설명도 있어 전지역 배송 보장을 할 수 없다.",
-            "queryEvidence": {
-              "sourceUrl": "https://www.yeoncheon.go.kr/tour/selectTourCntntsWebView.do?ctgry=85&key=4434&pageIndex=1&pageUnit=9&searchCnd=all&sortTy=RECOMEND&tourNo=581",
-              "finding": "중면 군중로 399의 캠핑 사업장 실체는 확인. 화환 수령 행사를 입증하지 못하므로 구매 콘텐츠에 억지 연결하지 않음."
-            }
-          }
-        ],
-        "passedArticleCount": 9,
-        "heldArticleCount": 1,
-        "passedRatio": 0.9
-      },
-      "lastSuccessfulStage": "reviewed_exact_source_saved_and_remote_readback",
-      "nextIntent": "Resume the exact Yeoncheon workflow dispatch only after region-specific approval is verified",
-      "changeIntent": {
-        "action": "publish_fixed_direct_controls_then_exact_dispatch",
-        "target": ".github/workflows/yeoncheon-direct-publish.yml",
-        "idempotencyKey": "yeoncheon-direct-initial-20261010:dispatch:f02912710d4e127241ae6e72269966d0a906b1b0"
-      },
-      "idempotencyKey": "yeoncheon-direct-initial-20261010:claim",
-      "publication": {
-        "state": "not_dispatched",
-        "runId": null,
-        "url": "https://yeoncheon.fwith.kr",
-        "urlState": "target_not_verified_public",
-        "postAttemptReadback": {
-          "checkedAt": "2026-10-10T12:51:42.572Z",
-          "total": 73,
-          "latest": 38050787605,
-          "matching": [],
-          "workflowUiRunCount": 0
-        }
-      },
-      "review": {
-        "content": "PASS_EXACT_9_ARTICLES",
-        "articleFileSha256": "8bf08daf15a7085038a057e3c27dd71bcf500908d0a9228ba1ef1399eec3daec",
-        "images": "PASS_9_EXACT_GIT_BLOBS_8_ACTUAL_PRODUCT_PHOTOS",
-        "runtime": "PASS_INDEPENDENT_NODE22_65_SOURCE_34_HELPER",
-        "visual": "DEFERRED_BY_USER_NOT_PASS",
-        "reviewSha256": "3853ebab7c8d6668bcb4d538ad70e2fa5108ccd63065852b2459dc31c238e636",
-        "evidencePath": "docs/direct-regional-release/yeoncheon/review.json",
-        "remoteSource": "PASS_69_FULL_FILES_EXACT_BLOB_READBACK"
-      },
-      "sourceRevision": "f02912710d4e127241ae6e72269966d0a906b1b0",
-      "pendingExternalAction": {
-        "action": "workflow_dispatch",
-        "target": ".github/workflows/yeoncheon-direct-publish.yml",
-        "expectedRevision": "f02912710d4e127241ae6e72269966d0a906b1b0",
-        "state": "blocked_service_approval",
-        "fixedWorker": "yeoncheon-flower-guide",
-        "fixedHostname": "yeoncheon.fwith.kr"
-      },
-      "controlRevision": "ac163b3ecd21c477fa286fd5c80f26e16ad7e509",
-      "approval": {
-        "status": "explicit_user_approved",
-        "action": "workflow_dispatch",
-        "workflow": ".github/workflows/yeoncheon-direct-publish.yml",
-        "ref": "main",
-        "inputs": {
-          "expected_revision": "f02912710d4e127241ae6e72269966d0a906b1b0",
-          "indexnow_only": false
-        },
-        "scope": "Deploy the reviewed exact source to Worker yeoncheon-flower-guide and connect only yeoncheon.fwith.kr using existing-account collision checks and no override. No credential, permission, security or domain ownership changes are included.",
-        "reason": "Execution approval is required for the fixed Worker deployment and designated hostname binding.",
-        "requestedAt": "2026-10-10T12:51:33Z",
-        "approvedAt": "2026-10-10T13:52:17Z"
-      },
-      "unfinishedStages": [
-        "service_approval",
-        "official_credential_free_build",
-        "provider_collision_get",
-        "worker_publish",
-        "hostname_binding",
-        "public_http_qa",
-        "indexnow_receipt",
-        "gsc_submit_readback",
-        "deferred_visual_qa"
-      ],
-      "evidence": {
-        "sourceCommit": "f02912710d4e127241ae6e72269966d0a906b1b0",
-        "controlCommit": "ac163b3ecd21c477fa286fd5c80f26e16ad7e509",
-        "independentRemoteReview": "docs/direct-regional-release/yeoncheon/remote-source-review.json",
-        "build": "local_static_and_regression_99_pass_official_build_not_started",
-        "hostedQa": "not_performed",
-        "indexNow": "not_submitted",
-        "gsc": "not_submitted",
-        "visual": "deferred_not_pass"
-      }
-    }
-  ],
+  "waitingApproval": [],
   "deferredVisualQa": [
     {
       "scopeKey": "hanam-direct-initial-20261010",
@@ -7875,6 +7713,321 @@
       "incompleteStages": [
         "deferred_desktop_narrow_visual_QA"
       ]
+    },
+    {
+      "scopeKey": "yeoncheon-direct-initial-20261010",
+      "city": "연천군",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "owner": {
+        "scheduledRunAt": "2026-10-10T12:00:00Z",
+        "observedExecutionAt": "2026-10-10T12:24:45.477Z",
+        "newRegionStartedAt": "2026-10-10T12:24:45.477Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-yeoncheon-20261010T120000Z",
+        "active": false,
+        "executionState": "final_checkpoint_then_readback_only",
+        "pausedAt": "2026-10-10T12:52:14.915Z",
+        "resumedAt": "2026-10-10T13:53:21.337Z",
+        "finalCheckpointPreparedAt": "2026-10-10T14:01:33.547Z",
+        "writesStoppedAt": null,
+        "stopConfirmation": "Actual write stop is confirmed separately after this final mutation and readback."
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-yeoncheon-direct",
+        "root": "site-factory/yeoncheon-flower",
+        "worker": "yeoncheon-flower-guide",
+        "hostname": "yeoncheon.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true
+      },
+      "selection": {
+        "officialCode": "41800",
+        "reason": "Official code ascending after released Yeoju41670; no matching branch/manifest/run/owner"
+      },
+      "conflictChecks": {
+        "branchesChecked": 121,
+        "matchingBranch": false,
+        "openMatchingPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "PASS_ACTUAL_PROVIDER_GET_NO_OVERRIDE"
+      },
+      "input": {
+        "controlRevision": "275a5595d596c0cd6b739c00c852b855505770e8",
+        "runtimeSourceRevision": "8fbcc607193d2ea3c34286519cff7d5f3380479a"
+      },
+      "plan": {
+        "state": "independently_reviewed_9_of_10",
+        "plannedArticleCount": 10,
+        "minimumPassedArticles": 9,
+        "administrativeUnits": 10,
+        "crosswalkRelationships": 10,
+        "partialRelationships": 0,
+        "membershipPath": "docs/direct-regional-release/yeoncheon/membership.json",
+        "articles": [
+          {
+            "slug": "yeoncheon-eup",
+            "name": "연천읍",
+            "title": "연천수레울아트홀 공연 축하화환",
+            "primaryKeyword": "연천수레울아트홀 공연 축하화환",
+            "status": "independent_content_pass"
+          },
+          {
+            "slug": "jeongok-eup",
+            "name": "전곡읍",
+            "title": "전곡읍 연천군장례식장 근조화환",
+            "primaryKeyword": "전곡읍 연천군장례식장 근조화환",
+            "status": "independent_content_pass"
+          },
+          {
+            "slug": "gunnam-myeon",
+            "name": "군남면",
+            "title": "군남면 음식점 개업화환",
+            "primaryKeyword": "군남면 음식점 개업화환",
+            "status": "independent_content_pass"
+          },
+          {
+            "slug": "cheongsan-myeon",
+            "name": "청산면",
+            "title": "청산면 제조업체 이전 축하화환",
+            "primaryKeyword": "청산면 제조업체 이전 축하화환",
+            "status": "independent_content_pass"
+          },
+          {
+            "slug": "baekhak-myeon",
+            "name": "백학면",
+            "title": "백학자유로리조트 연회 축하화환",
+            "primaryKeyword": "백학자유로리조트 연회 축하화환",
+            "status": "independent_content_pass"
+          },
+          {
+            "slug": "misan-myeon",
+            "name": "미산면",
+            "title": "미산면 음식점 개업화환",
+            "primaryKeyword": "미산면 음식점 개업화환",
+            "status": "independent_content_pass"
+          },
+          {
+            "slug": "wangjing-myeon",
+            "name": "왕징면",
+            "title": "왕징면 징파연수원 기념행사 화환",
+            "primaryKeyword": "왕징면 징파연수원 기념행사 화환",
+            "status": "independent_content_pass"
+          },
+          {
+            "slug": "sinseo-myeon",
+            "name": "신서면",
+            "title": "신서면 음식점 개업화환",
+            "primaryKeyword": "신서면 음식점 개업화환",
+            "status": "independent_content_pass"
+          },
+          {
+            "slug": "jung-myeon",
+            "name": "중면",
+            "title": "중면 화환 구매 안내 보류",
+            "primaryKeyword": "중면 화환 구매 안내 보류",
+            "status": "hold_source_fit"
+          },
+          {
+            "slug": "jangnam-myeon",
+            "name": "장남면",
+            "title": "장남면 카페 개업화환",
+            "primaryKeyword": "장남면 카페 개업화환",
+            "status": "independent_content_pass"
+          }
+        ],
+        "deferred": [
+          {
+            "slug": "jung-myeon",
+            "name": "중면",
+            "unitKey": "연천군/면/중면",
+            "title": "중면 화환 구매 안내 보류",
+            "h1": "중면 화환 구매 안내 보류",
+            "primaryKeyword": "중면 화환 구매 안내 보류",
+            "family": "congrats",
+            "state": "hold_source_fit",
+            "context": {
+              "venue_or_business": "DMZ 마루 캠핑",
+              "address": "경기도 연천군 중면 군중로 399",
+              "source_id": "jung-camping"
+            },
+            "source": {
+              "name": "DMZ 마루 캠핑 공식 관광 목록",
+              "url": "https://www.yeoncheon.go.kr/tour/selectTourCntntsWebView.do?ctgry=85&key=4434&pageIndex=1&pageUnit=9&searchCnd=all&sortTy=RECOMEND&tourNo=581",
+              "type": "official",
+              "verifiedAt": "2026-10-10"
+            },
+            "distinctBuyerDecision": null,
+            "holdReason": "중면 관내 사업장 실체는 확인되었으나 구체적인 화환 구매·수령 행사 맥락을 입증하지 못했다. 관광지/캠핑장으로 억지 연결하지 않는다. 군 공식 현황의 민통선 관련 설명도 있어 전지역 배송 보장을 할 수 없다.",
+            "queryEvidence": {
+              "sourceUrl": "https://www.yeoncheon.go.kr/tour/selectTourCntntsWebView.do?ctgry=85&key=4434&pageIndex=1&pageUnit=9&searchCnd=all&sortTy=RECOMEND&tourNo=581",
+              "finding": "중면 군중로 399의 캠핑 사업장 실체는 확인. 화환 수령 행사를 입증하지 못하므로 구매 콘텐츠에 억지 연결하지 않음."
+            }
+          }
+        ],
+        "passedArticleCount": 9,
+        "heldArticleCount": 1,
+        "passedRatio": 0.9
+      },
+      "lastSuccessfulStage": "public_HTTP_IndexNow200_GSC_submit_and_list_readback",
+      "nextIntent": "Deferred visual QA and held Jung-myeon content; no repeated deployment or search submission.",
+      "changeIntent": {
+        "action": "final_evidence_checkpoint_only",
+        "target": "docs/direct-regional-release/checkpoint.json",
+        "idempotencyKey": "yeoncheon:release-search-complete:f02912710d4e127241ae6e72269966d0a906b1b0"
+      },
+      "idempotencyKey": "yeoncheon-direct-initial-20261010:claim",
+      "publication": {
+        "state": "published_verified",
+        "runId": 38057529483,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38057529483",
+        "sourceRevision": "f02912710d4e127241ae6e72269966d0a906b1b0",
+        "controlRevision": "e81c40e2968ee826a0ac57aaaf2a344363bb9f72",
+        "dispatchedAt": "2026-10-10T13:54:28Z",
+        "verifiedAt": "2026-10-10T13:55:35Z",
+        "url": "https://yeoncheon.fwith.kr",
+        "urlState": "public_exact_source_verified",
+        "runConclusion": "success",
+        "articleCountPublished": 9,
+        "htmlPageCount": 12,
+        "indexableHtmlCount": 11,
+        "sitemapUrlCount": 11,
+        "workflowCompletedAt": "2026-10-10T13:55:47Z",
+        "searchSubmittedAt": "2026-10-10T13:57:20.334Z",
+        "completedAt": "2026-10-10T14:01:33.547Z"
+      },
+      "review": {
+        "content": "PASS_EXACT_9_ARTICLES",
+        "articleFileSha256": "8bf08daf15a7085038a057e3c27dd71bcf500908d0a9228ba1ef1399eec3daec",
+        "images": "PASS_9_EXACT_GIT_BLOBS_8_ACTUAL_PRODUCT_PHOTOS",
+        "runtime": "PASS_INDEPENDENT_NODE22_65_SOURCE_34_HELPER",
+        "visual": "DEFERRED_BY_USER_NOT_PASS",
+        "reviewSha256": "3853ebab7c8d6668bcb4d538ad70e2fa5108ccd63065852b2459dc31c238e636",
+        "evidencePath": "docs/direct-regional-release/yeoncheon/review.json",
+        "remoteSource": "PASS_69_FULL_FILES_EXACT_BLOB_READBACK"
+      },
+      "sourceRevision": "f02912710d4e127241ae6e72269966d0a906b1b0",
+      "pendingExternalAction": {
+        "action": "none_release_search_complete"
+      },
+      "controlRevision": "e81c40e2968ee826a0ac57aaaf2a344363bb9f72",
+      "approval": {
+        "status": "consumed_exact_action",
+        "action": "workflow_dispatch",
+        "workflow": ".github/workflows/yeoncheon-direct-publish.yml",
+        "ref": "main",
+        "inputs": {
+          "expected_revision": "f02912710d4e127241ae6e72269966d0a906b1b0",
+          "indexnow_only": false
+        },
+        "scope": "Deploy the reviewed exact source to Worker yeoncheon-flower-guide and connect only yeoncheon.fwith.kr using existing-account collision checks and no override. No credential, permission, security or domain ownership changes are included.",
+        "reason": "Execution approval is required for the fixed Worker deployment and designated hostname binding.",
+        "requestedAt": "2026-10-10T12:51:33Z",
+        "approvedAt": "2026-10-10T13:52:17Z"
+      },
+      "unfinishedStages": [
+        "deferred_desktop_narrow_visual_qa",
+        "held_jung_myeon_content"
+      ],
+      "evidence": {
+        "sourceCommit": "f02912710d4e127241ae6e72269966d0a906b1b0",
+        "controlCommit": "e81c40e2968ee826a0ac57aaaf2a344363bb9f72",
+        "runId": 38057529483,
+        "build": "official_Node22_65_tests_34_safety_tests_38_Astro_files_zero_errors",
+        "hostedQa": "CI_and_independent_26_HTTP_paths_PASS",
+        "indexNow": "HTTP200_received",
+        "gsc": "submit_and_separate_list_readback_confirmed",
+        "visual": "deferred_not_pass"
+      },
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "4a5c0a24ae9f9b45f9fa017132a4a05e9ebd9871df65a50a6a9db96765d8103e",
+        "httpStatus": 200,
+        "origin": "https://yeoncheon.fwith.kr",
+        "recordedAt": "2026-10-10T13:55:39.559111+00:00",
+        "revision": "f02912710d4e127241ae6e72269966d0a906b1b0",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38057529483",
+        "siteKey": "yeoncheon-flower-direct",
+        "state": "received",
+        "urlCount": 11,
+        "urlSetSha256": "f0565b4cd647dff6da1420666f2753df4e0ea26235b99d7127779d8cbfd8cc09",
+        "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098220673"
+      },
+      "gsc": {
+        "state": "submission_confirmed",
+        "property": "sc-domain:fwith.kr",
+        "sitemap": "https://yeoncheon.fwith.kr/sitemap-index.xml",
+        "accepted": true,
+        "confirmed": true,
+        "listReadbackConfirmed": true,
+        "submittedAt": "2026-10-10T13:57:20.334Z",
+        "processingPending": true,
+        "searchIndexing": "not_verified"
+      },
+      "pendingVisualRoutes": [
+        "/",
+        "/regions/",
+        "/regions/yeoncheon-eup/",
+        "/regions/jeongok-eup/",
+        "/regions/gunnam-myeon/",
+        "/regions/cheongsan-myeon/",
+        "/regions/baekhak-myeon/",
+        "/regions/misan-myeon/",
+        "/regions/wangjing-myeon/",
+        "/regions/sinseo-myeon/",
+        "/regions/jangnam-myeon/",
+        "/404.html",
+        "/regions/jung-myeon/"
+      ],
+      "pendingVisualItems": [
+        "desktop_and_narrow_layout",
+        "horizontal_overflow",
+        "text_and_card_legibility",
+        "product_images",
+        "telephone_and_order_CTA",
+        "navigation_and_404"
+      ],
+      "qa": {
+        "officialHttp": {
+          "state": "public_release_verified",
+          "articleCount": 9,
+          "htmlRoutes": 11,
+          "sitemapUrls": 11,
+          "checkedPaths": 26,
+          "attempts": 2,
+          "unknownHttpStatus": 404
+        },
+        "visual": "deferred_not_performed",
+        "separateClientObservation": {
+          "observedAt": "2026-10-10T13:57:08Z",
+          "client": "Python urllib default user agent",
+          "path": "/sitemap-index.xml",
+          "httpStatus": 403,
+          "edgeCode": 1010,
+          "rootCause": "not_established",
+          "securitySettingsChanged": false,
+          "accessRestrictionBypassed": false,
+          "note": "The original fixed QA-client single GET pass completed with 26 responses. Default Python-client 1010 remains a separate access limitation; its exact cause is unconfirmed."
+        },
+        "independentHttp": {
+          "state": "PASS",
+          "requests": 26,
+          "normalHtmlRoutes": 11,
+          "articleCount": 9,
+          "sitemapUrls": 11,
+          "evidencePath": "docs/direct-regional-release/yeoncheon/live-independent-review.json",
+          "observationsPath": "docs/direct-regional-release/yeoncheon/live-http-observations.json",
+          "verifiedAt": "2026-10-10T13:59:30.843800Z"
+        }
+      },
+      "bodyAndImageDigests": {
+        "reviewSha256": "3853ebab7c8d6668bcb4d538ad70e2fa5108ccd63065852b2459dc31c238e636",
+        "articleFileSha256": "8bf08daf15a7085038a057e3c27dd71bcf500908d0a9228ba1ef1399eec3daec",
+        "inventoryPath": "docs/direct-regional-release/yeoncheon/final-file-inventory.json",
+        "releaseEvidencePath": "docs/direct-regional-release/yeoncheon/release-evidence.json"
+      }
     }
   ],
   "releasedKnownHosts": [
@@ -7888,6 +8041,7 @@
     "yangju.fwith.kr",
     "pocheon.fwith.kr",
     "yeoju.fwith.kr",
-    "gapyeong.fwith.kr"
+    "gapyeong.fwith.kr",
+    "yeoncheon.fwith.kr"
   ]
 }
