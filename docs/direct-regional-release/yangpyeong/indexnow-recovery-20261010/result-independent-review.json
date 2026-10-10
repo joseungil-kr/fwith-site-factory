@@ -1,0 +1,90 @@
+{
+  "artifactComparison": {
+    "allFileHashesEqualPriorExactSourceBuild": true,
+    "changedManifestFields": [
+      "controlRevision",
+      "runId"
+    ],
+    "fileCount": 30,
+    "priorFilesIndependentlyRehashed": true
+  },
+  "conclusion": "Same-source IndexNow receipt recovery is verified. No deployment occurred in the recovery workflow. Search indexing remains unverified.",
+  "controlRevision": "51b466c53199cbc3db77ae3530d6c4df3997c45e",
+  "evidenceFileSha256": {
+    "artifact-check.json": "ec357347d19239906b7dae39b8e713fe083925f5cba1c5cef079adf092c13368",
+    "http-contract.json": "cb825fea6fb547d1b4072cc34c897976ab93d0bcec24e158e8c4701cc9e37251",
+    "indexnow-http-observations.json": "1126018b52d391f39c9864d8add43fe484d8aacdcd75d91ad2f99e6c406727e0",
+    "indexnow-probe.json": "1dbaeac3b88b3f276f5590efaa7e30b01d7d980730c62fd5774d6a9d6c045d7f",
+    "indexnow-receipt.json": "e7c24c6fdcda5bfe7d84bc0d47b5d220378928ebe35992bbe15fe24b9ef65a3a",
+    "public-http.json": "128f1af2a4e55f9b5e9a0af3a32b306baa1f2d5b12cf7d26ae98a0aeacc48537",
+    "release/release.json": "84fd831a9a7144d5839b19ad0c31b4431092d17b7adb175b7840f653265836aa"
+  },
+  "extractedArchiveFilesVerified": 7,
+  "freshRemoteReadback": {
+    "artifactDigestMatchesLocalArchive": true,
+    "artifactId": 11673532387,
+    "fetchedAt": "2026-10-10T15:11:08.921Z",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "id": 114243128488,
+        "name": "build",
+        "runId": 38062392717,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "id": 114243195030,
+        "name": "finalize_indexnow",
+        "runId": 38062392717,
+        "status": "completed"
+      },
+      {
+        "conclusion": "skipped",
+        "id": 114243196354,
+        "name": "publish",
+        "runId": 38062392717,
+        "status": "completed"
+      }
+    ],
+    "receiptAuthor": "github-actions[bot]",
+    "receiptCommentId": 6098914220,
+    "receiptExactlyMatchesArtifact": true,
+    "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098914220"
+  },
+  "indexNow": {
+    "allGetStatus200": true,
+    "arbitraryResponseBodyRetained": false,
+    "endpoint": "https://searchadvisor.naver.com/indexnow",
+    "fingerprint": "8ee87b73e37d856bf40aa30cc32351349eab131b0fca8d211873f8a72444de55",
+    "fingerprintIndependentlyRecomputed": true,
+    "observedGetCount": 51,
+    "observedPostCount": 1,
+    "postStatus": 200,
+    "responseBodyBytes": 0,
+    "searchIndexing": "not_verified",
+    "state": "received",
+    "urlCount": 13,
+    "urlSetSha256": "b29f2abaddd2d992f5c354f1642a01baf962ed89572aab7a39f402212f9a0187"
+  },
+  "publicHttp": {
+    "articleCount": 11,
+    "attempts": 1,
+    "checkedPaths": 28,
+    "evidence": "Successful workflow public-http.json and exact rebuilt artifact contract; reviewer did not repeat public HTTP calls.",
+    "htmlRoutes": 13,
+    "normalizedCloudflareBeacons": 15,
+    "sitemapUrls": 13,
+    "unknownHttpStatus": 404
+  },
+  "resultArchiveSha256": "de6c4529d0cf95d366a8f4d45bcdee21caa80bd0e0f22d970882040f2b687c54",
+  "reviewedAt": "2026-10-10T15:11:46.501240+00:00",
+  "reviewerIndexNowPosts": 0,
+  "reviewerRemoteMutations": 0,
+  "reviewerRole": "Independent recovery evidence reviewer",
+  "runId": 38062392717,
+  "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38062392717",
+  "schemaVersion": 1,
+  "sourceRevision": "bad8ba028abc68c738267622ed7f1508f956bd54",
+  "verdict": "PASS"
+}

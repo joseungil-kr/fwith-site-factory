@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T15:08:32.167Z",
+  "updatedAt": "2026-10-10T15:10:52.842Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,17 +33,17 @@
   "current": {
     "scopeKey": "yangpyeong-direct-initial-20261010",
     "city": "양평군",
-    "status": "released_gsc_submitted_indexnow_rejected_visual_qa_deferred",
+    "status": "released_search_submitted_visual_qa_deferred",
     "owner": {
       "scheduledRunAt": "2026-10-10T15:00:00Z",
       "observedExecutionAt": "2026-10-10T15:01:55.253Z",
       "newRegionStartedAt": "2026-10-10T14:05:15.376Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-yangpyeong-recovery-20261010T150000Z",
-      "active": true,
-      "executionState": "read_only_diagnosis_then_reviewed_nonsecurity_repair",
+      "active": false,
+      "executionState": "final_checkpoint_then_readback_only",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T15:00:25.185Z",
-      "finalCheckpointPreparedAt": "2026-10-10T14:57:31.621Z",
+      "finalCheckpointPreparedAt": "2026-10-10T15:10:52.842Z",
       "writesStoppedAt": null,
       "stopConfirmation": "Actual write stop is confirmed separately after final mutation and full readback.",
       "priorOwnerReadbackConfirmedAt": "2026-10-10T15:00:28.254Z"
@@ -227,20 +227,12 @@
       "controlRevision": "d87a0515e6d62da7dd793dbd9bbfe36326cf4e07"
     },
     "changeIntent": {
-      "action": "retain_minimal_Yangpyeong_POST_diagnostics_then_single_verified_indexnow_only_retry",
-      "target": ".github/workflows/yangpyeong-direct-publish.yml",
-      "sourceRevision": "bad8ba028abc68c738267622ed7f1508f956bd54",
-      "idempotencyKey": "yangpyeong:indexnow-recovery-once:bad8ba028abc68c738267622ed7f1508f956bd54:20261010T150000Z",
-      "reason": "Official IndexNow documentation allows verifying a rejected request and resubmitting; 17 fresh existing-client GET checks passed. No documented cache-propagation cause is asserted.",
-      "limits": [
-        "one new indexnow_only dispatch",
-        "same source, endpoint, key, user-agent and journal",
-        "no deployment or GSC resubmission",
-        "no retry after another 403 without new evidence"
-      ]
+      "action": "save_verified_IndexNow_recovery_and_release_owner",
+      "target": "docs/direct-regional-release/checkpoint.json",
+      "idempotencyKey": "yangpyeong:received:8ee87b73e37d856bf40aa30cc32351349eab131b0fca8d211873f8a72444de55:6098914220"
     },
-    "lastSuccessfulStage": "public_HTTP_and_GSC_submit_separate_list_readback",
-    "nextIntent": "Diagnose IndexNow provider key-fetch rejection from existing receipt and read-only observations before any retry. No repeated deployment/GSC.",
+    "lastSuccessfulStage": "public_HTTP_IndexNow_received_GSC_submission_confirmed",
+    "nextIntent": "Preserve deferred visual QA and held Cheongun content; select the next unopened official plan unit in a later owned execution.",
     "review": {
       "content": "PASS_EXACT_11_ARTICLES",
       "articleFileSha256": "599b4e1b7f49fbf1c0c4a084b01d44d4893638db71600c3cbeec9d9be95daea0",
@@ -253,8 +245,8 @@
     },
     "sourceRevision": "bad8ba028abc68c738267622ed7f1508f956bd54",
     "pendingExternalAction": {
-      "action": "none_until_IndexNow_403_cause_diagnosed",
-      "reason": "technical_rejection_not_approval_wait"
+      "action": "none_required_for_release_search_submission",
+      "visualQa": "deferred_by_user"
     },
     "controlRevision": "7c9baf3c6b9636d3fd4963bd182cd9a92445e04e",
     "run": {
@@ -283,22 +275,21 @@
       "attempt": 1,
       "endpoint": "https://searchadvisor.naver.com/indexnow",
       "fingerprint": "8ee87b73e37d856bf40aa30cc32351349eab131b0fca8d211873f8a72444de55",
-      "httpStatus": 403,
+      "httpStatus": 200,
       "origin": "https://yangpyeong.fwith.kr",
-      "recordedAt": "2026-10-10T14:51:41.867083+00:00",
+      "recordedAt": "2026-10-10T15:08:59.798784+00:00",
       "revision": "bad8ba028abc68c738267622ed7f1508f956bd54",
-      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38061201258",
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38062392717",
       "siteKey": "yangpyeong-flower-direct",
-      "state": "rejected",
+      "state": "received",
       "urlCount": 13,
       "urlSetSha256": "b29f2abaddd2d992f5c354f1642a01baf962ed89572aab7a39f402212f9a0187",
-      "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098749216",
-      "reason": "indexnow_rejected_http_403",
-      "rootCause": "not_established",
+      "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098914220",
       "fingerprintRecomputedMatches": true,
       "ownershipHttpStatus": 200,
       "keyFileSha256": "deea9b3e824afbdb858729d4ece0dad1bfafc379f695499c8614cd5580a00dc6",
-      "responseBodyRetained": false
+      "searchIndexing": "not_verified",
+      "priorRejectionRootCause": "not_established"
     },
     "gsc": {
       "state": "submission_confirmed",
@@ -323,7 +314,15 @@
         "evidencePath": "docs/direct-regional-release/yangpyeong/live-http-independent-review.json",
         "reportSha256": "f1dd037d393ed6071d10553caa586743f0bf432cc9b571e25fd99b5bcf6f082b"
       },
-      "visual": "deferred_not_performed"
+      "visual": "deferred_not_performed",
+      "recoveryHttp": {
+        "state": "PASS",
+        "checkedPaths": 28,
+        "htmlRoutes": 13,
+        "articleCount": 11,
+        "sitemapUrls": 13,
+        "runId": 38062392717
+      }
     },
     "pendingVisualRoutes": [
       "/",
@@ -356,7 +355,6 @@
       "inventoryPath": "docs/direct-regional-release/yangpyeong/final-file-inventory.json"
     },
     "unfinishedStages": [
-      "indexnow_rejected_http_403_diagnosis",
       "deferred_desktop_narrow_visual_qa",
       "held_cheongun_myeon_content"
     ],
@@ -368,9 +366,39 @@
       "mode": "indexnow_only",
       "dispatchCount": 1,
       "dispatchedVia": "official_github_workflow_dispatch_UI",
-      "observedStatus": "in_progress",
-      "previousRejectedReceipt": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098749216"
-    }
+      "observedStatus": "completed",
+      "previousRejectedReceipt": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098749216",
+      "conclusion": "success",
+      "publishJob": "skipped",
+      "buildJob": "success",
+      "finalizeIndexNowJob": "success",
+      "artifactSha256": "de6c4529d0cf95d366a8f4d45bcdee21caa80bd0e0f22d970882040f2b687c54",
+      "artifactFilesIdenticalToPublishedSource": true
+    },
+    "indexNowHistory": [
+      {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "8ee87b73e37d856bf40aa30cc32351349eab131b0fca8d211873f8a72444de55",
+        "httpStatus": 403,
+        "origin": "https://yangpyeong.fwith.kr",
+        "recordedAt": "2026-10-10T14:51:41.867083+00:00",
+        "revision": "bad8ba028abc68c738267622ed7f1508f956bd54",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38061201258",
+        "siteKey": "yangpyeong-flower-direct",
+        "state": "rejected",
+        "urlCount": 13,
+        "urlSetSha256": "b29f2abaddd2d992f5c354f1642a01baf962ed89572aab7a39f402212f9a0187",
+        "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098749216",
+        "reason": "indexnow_rejected_http_403",
+        "rootCause": "not_established",
+        "fingerprintRecomputedMatches": true,
+        "ownershipHttpStatus": 200,
+        "keyFileSha256": "deea9b3e824afbdb858729d4ece0dad1bfafc379f695499c8614cd5580a00dc6",
+        "responseBodyRetained": false
+      }
+    ],
+    "completedReleaseSearchAt": "2026-10-10T15:09:07Z"
   },
   "history": [
     {
@@ -3968,19 +3996,20 @@
     {
       "scopeKey": "yangpyeong-direct-initial-20261010",
       "city": "양평군",
-      "status": "released_gsc_submitted_indexnow_rejected_visual_qa_deferred",
+      "status": "released_search_submitted_visual_qa_deferred",
       "owner": {
-        "scheduledRunAt": "2026-10-10T14:00:00Z",
-        "observedExecutionAt": "2026-10-10T14:05:15.376Z",
+        "scheduledRunAt": "2026-10-10T15:00:00Z",
+        "observedExecutionAt": "2026-10-10T15:01:55.253Z",
         "newRegionStartedAt": "2026-10-10T14:05:15.376Z",
         "serviceInvocationId": null,
-        "checkpointId": "direct-yangpyeong-20261010T140000Z",
+        "checkpointId": "direct-yangpyeong-recovery-20261010T150000Z",
         "active": false,
         "executionState": "final_checkpoint_then_readback_only",
-        "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T14:02:51.910Z",
-        "finalCheckpointPreparedAt": "2026-10-10T14:57:31.621Z",
+        "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T15:00:25.185Z",
+        "finalCheckpointPreparedAt": "2026-10-10T15:10:52.842Z",
         "writesStoppedAt": null,
-        "stopConfirmation": "Actual write stop is confirmed separately after final mutation and full readback."
+        "stopConfirmation": "Actual write stop is confirmed separately after final mutation and full readback.",
+        "priorOwnerReadbackConfirmedAt": "2026-10-10T15:00:28.254Z"
       },
       "identity": {
         "repository": "joseungil-kr/fwith-site-factory",
@@ -4161,12 +4190,12 @@
         "controlRevision": "d87a0515e6d62da7dd793dbd9bbfe36326cf4e07"
       },
       "changeIntent": {
-        "action": "save_actual_publication_and_search_partial_result",
+        "action": "save_verified_IndexNow_recovery_and_release_owner",
         "target": "docs/direct-regional-release/checkpoint.json",
-        "idempotencyKey": "yangpyeong:published-indexnow-rejected:bad8ba028abc68c738267622ed7f1508f956bd54"
+        "idempotencyKey": "yangpyeong:received:8ee87b73e37d856bf40aa30cc32351349eab131b0fca8d211873f8a72444de55:6098914220"
       },
-      "lastSuccessfulStage": "public_HTTP_and_GSC_submit_separate_list_readback",
-      "nextIntent": "Diagnose IndexNow provider key-fetch rejection from existing receipt and read-only observations before any retry. No repeated deployment/GSC.",
+      "lastSuccessfulStage": "public_HTTP_IndexNow_received_GSC_submission_confirmed",
+      "nextIntent": "Preserve deferred visual QA and held Cheongun content; select the next unopened official plan unit in a later owned execution.",
       "review": {
         "content": "PASS_EXACT_11_ARTICLES",
         "articleFileSha256": "599b4e1b7f49fbf1c0c4a084b01d44d4893638db71600c3cbeec9d9be95daea0",
@@ -4179,8 +4208,8 @@
       },
       "sourceRevision": "bad8ba028abc68c738267622ed7f1508f956bd54",
       "pendingExternalAction": {
-        "action": "none_until_IndexNow_403_cause_diagnosed",
-        "reason": "technical_rejection_not_approval_wait"
+        "action": "none_required_for_release_search_submission",
+        "visualQa": "deferred_by_user"
       },
       "controlRevision": "7c9baf3c6b9636d3fd4963bd182cd9a92445e04e",
       "run": {
@@ -4209,22 +4238,21 @@
         "attempt": 1,
         "endpoint": "https://searchadvisor.naver.com/indexnow",
         "fingerprint": "8ee87b73e37d856bf40aa30cc32351349eab131b0fca8d211873f8a72444de55",
-        "httpStatus": 403,
+        "httpStatus": 200,
         "origin": "https://yangpyeong.fwith.kr",
-        "recordedAt": "2026-10-10T14:51:41.867083+00:00",
+        "recordedAt": "2026-10-10T15:08:59.798784+00:00",
         "revision": "bad8ba028abc68c738267622ed7f1508f956bd54",
-        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38061201258",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38062392717",
         "siteKey": "yangpyeong-flower-direct",
-        "state": "rejected",
+        "state": "received",
         "urlCount": 13,
         "urlSetSha256": "b29f2abaddd2d992f5c354f1642a01baf962ed89572aab7a39f402212f9a0187",
-        "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098749216",
-        "reason": "indexnow_rejected_http_403",
-        "rootCause": "not_established",
+        "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098914220",
         "fingerprintRecomputedMatches": true,
         "ownershipHttpStatus": 200,
         "keyFileSha256": "deea9b3e824afbdb858729d4ece0dad1bfafc379f695499c8614cd5580a00dc6",
-        "responseBodyRetained": false
+        "searchIndexing": "not_verified",
+        "priorRejectionRootCause": "not_established"
       },
       "gsc": {
         "state": "submission_confirmed",
@@ -4249,7 +4277,15 @@
           "evidencePath": "docs/direct-regional-release/yangpyeong/live-http-independent-review.json",
           "reportSha256": "f1dd037d393ed6071d10553caa586743f0bf432cc9b571e25fd99b5bcf6f082b"
         },
-        "visual": "deferred_not_performed"
+        "visual": "deferred_not_performed",
+        "recoveryHttp": {
+          "state": "PASS",
+          "checkedPaths": 28,
+          "htmlRoutes": 13,
+          "articleCount": 11,
+          "sitemapUrls": 13,
+          "runId": 38062392717
+        }
       },
       "pendingVisualRoutes": [
         "/",
@@ -4282,10 +4318,50 @@
         "inventoryPath": "docs/direct-regional-release/yangpyeong/final-file-inventory.json"
       },
       "unfinishedStages": [
-        "indexnow_rejected_http_403_diagnosis",
         "deferred_desktop_narrow_visual_qa",
         "held_cheongun_myeon_content"
-      ]
+      ],
+      "recoveryRun": {
+        "id": 38062392717,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38062392717",
+        "controlRevision": "51b466c53199cbc3db77ae3530d6c4df3997c45e",
+        "sourceRevision": "bad8ba028abc68c738267622ed7f1508f956bd54",
+        "mode": "indexnow_only",
+        "dispatchCount": 1,
+        "dispatchedVia": "official_github_workflow_dispatch_UI",
+        "observedStatus": "completed",
+        "previousRejectedReceipt": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098749216",
+        "conclusion": "success",
+        "publishJob": "skipped",
+        "buildJob": "success",
+        "finalizeIndexNowJob": "success",
+        "artifactSha256": "de6c4529d0cf95d366a8f4d45bcdee21caa80bd0e0f22d970882040f2b687c54",
+        "artifactFilesIdenticalToPublishedSource": true
+      },
+      "indexNowHistory": [
+        {
+          "attempt": 1,
+          "endpoint": "https://searchadvisor.naver.com/indexnow",
+          "fingerprint": "8ee87b73e37d856bf40aa30cc32351349eab131b0fca8d211873f8a72444de55",
+          "httpStatus": 403,
+          "origin": "https://yangpyeong.fwith.kr",
+          "recordedAt": "2026-10-10T14:51:41.867083+00:00",
+          "revision": "bad8ba028abc68c738267622ed7f1508f956bd54",
+          "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38061201258",
+          "siteKey": "yangpyeong-flower-direct",
+          "state": "rejected",
+          "urlCount": 13,
+          "urlSetSha256": "b29f2abaddd2d992f5c354f1642a01baf962ed89572aab7a39f402212f9a0187",
+          "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098749216",
+          "reason": "indexnow_rejected_http_403",
+          "rootCause": "not_established",
+          "fingerprintRecomputedMatches": true,
+          "ownershipHttpStatus": 200,
+          "keyFileSha256": "deea9b3e824afbdb858729d4ece0dad1bfafc379f695499c8614cd5580a00dc6",
+          "responseBodyRetained": false
+        }
+      ],
+      "completedReleaseSearchAt": "2026-10-10T15:09:07Z"
     }
   ],
   "maintenanceBacklog": [
@@ -4326,7 +4402,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Resume Yangpyeong IndexNow403 technical diagnosis; do not treat as approval wait or all regions completed.",
+  "nextAction": "Yangpyeong public HTTP, IndexNow received and GSC submission are confirmed. Preserve visual QA and held-content backlog; choose next unopened official plan unit only after actual owner write-stop confirmation.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -8696,19 +8772,20 @@
     {
       "scopeKey": "yangpyeong-direct-initial-20261010",
       "city": "양평군",
-      "status": "released_gsc_submitted_indexnow_rejected_visual_qa_deferred",
+      "status": "released_search_submitted_visual_qa_deferred",
       "owner": {
-        "scheduledRunAt": "2026-10-10T14:00:00Z",
-        "observedExecutionAt": "2026-10-10T14:05:15.376Z",
+        "scheduledRunAt": "2026-10-10T15:00:00Z",
+        "observedExecutionAt": "2026-10-10T15:01:55.253Z",
         "newRegionStartedAt": "2026-10-10T14:05:15.376Z",
         "serviceInvocationId": null,
-        "checkpointId": "direct-yangpyeong-20261010T140000Z",
+        "checkpointId": "direct-yangpyeong-recovery-20261010T150000Z",
         "active": false,
         "executionState": "final_checkpoint_then_readback_only",
-        "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T14:02:51.910Z",
-        "finalCheckpointPreparedAt": "2026-10-10T14:57:31.621Z",
+        "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T15:00:25.185Z",
+        "finalCheckpointPreparedAt": "2026-10-10T15:10:52.842Z",
         "writesStoppedAt": null,
-        "stopConfirmation": "Actual write stop is confirmed separately after final mutation and full readback."
+        "stopConfirmation": "Actual write stop is confirmed separately after final mutation and full readback.",
+        "priorOwnerReadbackConfirmedAt": "2026-10-10T15:00:28.254Z"
       },
       "identity": {
         "repository": "joseungil-kr/fwith-site-factory",
@@ -8889,12 +8966,12 @@
         "controlRevision": "d87a0515e6d62da7dd793dbd9bbfe36326cf4e07"
       },
       "changeIntent": {
-        "action": "save_actual_publication_and_search_partial_result",
+        "action": "save_verified_IndexNow_recovery_and_release_owner",
         "target": "docs/direct-regional-release/checkpoint.json",
-        "idempotencyKey": "yangpyeong:published-indexnow-rejected:bad8ba028abc68c738267622ed7f1508f956bd54"
+        "idempotencyKey": "yangpyeong:received:8ee87b73e37d856bf40aa30cc32351349eab131b0fca8d211873f8a72444de55:6098914220"
       },
-      "lastSuccessfulStage": "public_HTTP_and_GSC_submit_separate_list_readback",
-      "nextIntent": "Diagnose IndexNow provider key-fetch rejection from existing receipt and read-only observations before any retry. No repeated deployment/GSC.",
+      "lastSuccessfulStage": "public_HTTP_IndexNow_received_GSC_submission_confirmed",
+      "nextIntent": "Preserve deferred visual QA and held Cheongun content; select the next unopened official plan unit in a later owned execution.",
       "review": {
         "content": "PASS_EXACT_11_ARTICLES",
         "articleFileSha256": "599b4e1b7f49fbf1c0c4a084b01d44d4893638db71600c3cbeec9d9be95daea0",
@@ -8907,8 +8984,8 @@
       },
       "sourceRevision": "bad8ba028abc68c738267622ed7f1508f956bd54",
       "pendingExternalAction": {
-        "action": "none_until_IndexNow_403_cause_diagnosed",
-        "reason": "technical_rejection_not_approval_wait"
+        "action": "none_required_for_release_search_submission",
+        "visualQa": "deferred_by_user"
       },
       "controlRevision": "7c9baf3c6b9636d3fd4963bd182cd9a92445e04e",
       "run": {
@@ -8937,22 +9014,21 @@
         "attempt": 1,
         "endpoint": "https://searchadvisor.naver.com/indexnow",
         "fingerprint": "8ee87b73e37d856bf40aa30cc32351349eab131b0fca8d211873f8a72444de55",
-        "httpStatus": 403,
+        "httpStatus": 200,
         "origin": "https://yangpyeong.fwith.kr",
-        "recordedAt": "2026-10-10T14:51:41.867083+00:00",
+        "recordedAt": "2026-10-10T15:08:59.798784+00:00",
         "revision": "bad8ba028abc68c738267622ed7f1508f956bd54",
-        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38061201258",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38062392717",
         "siteKey": "yangpyeong-flower-direct",
-        "state": "rejected",
+        "state": "received",
         "urlCount": 13,
         "urlSetSha256": "b29f2abaddd2d992f5c354f1642a01baf962ed89572aab7a39f402212f9a0187",
-        "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098749216",
-        "reason": "indexnow_rejected_http_403",
-        "rootCause": "not_established",
+        "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098914220",
         "fingerprintRecomputedMatches": true,
         "ownershipHttpStatus": 200,
         "keyFileSha256": "deea9b3e824afbdb858729d4ece0dad1bfafc379f695499c8614cd5580a00dc6",
-        "responseBodyRetained": false
+        "searchIndexing": "not_verified",
+        "priorRejectionRootCause": "not_established"
       },
       "gsc": {
         "state": "submission_confirmed",
@@ -8977,7 +9053,15 @@
           "evidencePath": "docs/direct-regional-release/yangpyeong/live-http-independent-review.json",
           "reportSha256": "f1dd037d393ed6071d10553caa586743f0bf432cc9b571e25fd99b5bcf6f082b"
         },
-        "visual": "deferred_not_performed"
+        "visual": "deferred_not_performed",
+        "recoveryHttp": {
+          "state": "PASS",
+          "checkedPaths": 28,
+          "htmlRoutes": 13,
+          "articleCount": 11,
+          "sitemapUrls": 13,
+          "runId": 38062392717
+        }
       },
       "pendingVisualRoutes": [
         "/",
@@ -9010,10 +9094,50 @@
         "inventoryPath": "docs/direct-regional-release/yangpyeong/final-file-inventory.json"
       },
       "unfinishedStages": [
-        "indexnow_rejected_http_403_diagnosis",
         "deferred_desktop_narrow_visual_qa",
         "held_cheongun_myeon_content"
-      ]
+      ],
+      "recoveryRun": {
+        "id": 38062392717,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38062392717",
+        "controlRevision": "51b466c53199cbc3db77ae3530d6c4df3997c45e",
+        "sourceRevision": "bad8ba028abc68c738267622ed7f1508f956bd54",
+        "mode": "indexnow_only",
+        "dispatchCount": 1,
+        "dispatchedVia": "official_github_workflow_dispatch_UI",
+        "observedStatus": "completed",
+        "previousRejectedReceipt": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098749216",
+        "conclusion": "success",
+        "publishJob": "skipped",
+        "buildJob": "success",
+        "finalizeIndexNowJob": "success",
+        "artifactSha256": "de6c4529d0cf95d366a8f4d45bcdee21caa80bd0e0f22d970882040f2b687c54",
+        "artifactFilesIdenticalToPublishedSource": true
+      },
+      "indexNowHistory": [
+        {
+          "attempt": 1,
+          "endpoint": "https://searchadvisor.naver.com/indexnow",
+          "fingerprint": "8ee87b73e37d856bf40aa30cc32351349eab131b0fca8d211873f8a72444de55",
+          "httpStatus": 403,
+          "origin": "https://yangpyeong.fwith.kr",
+          "recordedAt": "2026-10-10T14:51:41.867083+00:00",
+          "revision": "bad8ba028abc68c738267622ed7f1508f956bd54",
+          "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38061201258",
+          "siteKey": "yangpyeong-flower-direct",
+          "state": "rejected",
+          "urlCount": 13,
+          "urlSetSha256": "b29f2abaddd2d992f5c354f1642a01baf962ed89572aab7a39f402212f9a0187",
+          "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098749216",
+          "reason": "indexnow_rejected_http_403",
+          "rootCause": "not_established",
+          "fingerprintRecomputedMatches": true,
+          "ownershipHttpStatus": 200,
+          "keyFileSha256": "deea9b3e824afbdb858729d4ece0dad1bfafc379f695499c8614cd5580a00dc6",
+          "responseBodyRetained": false
+        }
+      ],
+      "completedReleaseSearchAt": "2026-10-10T15:09:07Z"
     }
   ],
   "releasedKnownHosts": [
