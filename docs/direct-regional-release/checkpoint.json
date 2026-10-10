@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T03:04:24.025Z",
+  "updatedAt": "2026-10-10T03:45:21.051Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "hanam-direct-initial-20261010",
     "city": "하남시",
-    "status": "published_ci_indexnow_verified_hosted_browser_pending",
+    "status": "published_visual_qa_deferred_gsc_pending",
     "owner": {
       "scheduledRunAt": "2026-10-10T03:00:00Z",
       "observedExecutionAt": "2026-10-10T03:03:39Z",
@@ -109,8 +109,13 @@
       }
     },
     "lastSuccessfulStage": "official_publication_static_http_qa_indexnow200",
-    "nextIntent": "Observe existing cloud browser recovery and complete two-width hosted review before GSC",
-    "pendingExternalAction": null,
+    "nextIntent": "Submit verified public sitemap; retain deferred visualQA separately then choose nextregion",
+    "pendingExternalAction": {
+      "action": "submit_sitemap",
+      "property": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://hanam.fwith.kr/sitemap-index.xml",
+      "idempotencyKey": "hanam-gsc-0ac786e59570382c6dbd7872e54cca9cd9b5f778"
+    },
     "controlRevision": "5df1cd730d18f965786e95a0569d8665f7c88dd2",
     "review": {
       "status": "PASS_INDEPENDENT_PRECOMMIT_SOURCE",
@@ -146,7 +151,8 @@
       "remotePublicationAndFinalRevisionBuild": "PASS",
       "hostedBrowserAndHTTP": "pending",
       "finalEvidencePath": "docs/direct-regional-release/hanam/final-predeploy-review.json",
-      "finalEvidenceSha256": "38a78295f36a132d4484348c088bf63d1292c353237858556b5b103fc41e3fa1"
+      "finalEvidenceSha256": "38a78295f36a132d4484348c088bf63d1292c353237858556b5b103fc41e3fa1",
+      "hostedQa": "DEFERRED_NOT_PASS"
     },
     "sourceRevision": "0ac786e59570382c6dbd7872e54cca9cd9b5f778",
     "dispatch": {
@@ -185,11 +191,12 @@
       "evidencePath": "docs/direct-regional-release/hanam/ci-verification.json"
     },
     "blocker": {
-      "type": "technical_cloud_browser_connection",
+      "type": "deferred_cloud_browser_connection",
       "message": "Actual cloud browser returns502 Errno111; independent40-route HTTP and final-byte checks PASS; cause unestablished",
       "lastObservedAt": "2026-10-10T03:02:48Z",
       "evidencePath": "docs/direct-regional-release/hanam/partial-public-review.json",
-      "approvalRequired": false
+      "approvalRequired": false,
+      "blocksNextRegion": false
     }
   },
   "history": [
@@ -1398,6 +1405,16 @@
       "promptReadbackMatched": true,
       "scheduleChanged": false,
       "nameChanged": false,
+      "enabledChanged": false
+    },
+    "visualQaDeferral": {
+      "version": "deferred-visual-qa-v1",
+      "effectiveAt": "2026-10-10T03:43:40Z",
+      "actualScreenPassRequiredForFullQaCompletion": true,
+      "mayProceedWithPublicationAndSearchWhenOtherGatesPass": true,
+      "savedAutomationPromptReadbackMatched": true,
+      "promptUpdatedAt": "2026-10-10T03:45:04.451346+00:00",
+      "scheduleChanged": false,
       "enabledChanged": false
     }
   },
