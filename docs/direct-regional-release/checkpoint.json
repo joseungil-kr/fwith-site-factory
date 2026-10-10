@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T04:21:33.522Z",
+  "updatedAt": "2026-10-10T04:23:44.764Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -30,7 +30,151 @@
   "excludedHosts": [
     "blog.fwith.kr"
   ],
-  "current": null,
+  "current": {
+    "scopeKey": "paju-direct-initial-20261010",
+    "city": "파주시",
+    "status": "approved_exact_source_dispatch_intent",
+    "owner": {
+      "scheduledRunAt": "2026-10-10T04:00:00Z",
+      "observedExecutionAt": "2026-10-10T03:58:12Z",
+      "newRegionStartedAt": "2026-10-10T03:48:56.325Z",
+      "serviceInvocationId": null,
+      "checkpointId": "direct-paju-resume-20261010T040000Z",
+      "active": true,
+      "resumedAt": "2026-10-10T04:23:44.764Z",
+      "previousExecution": {
+        "scheduledRunAt": "2026-10-10T03:00:00Z",
+        "observedExecutionAt": "2026-10-10T03:03:39Z",
+        "newRegionStartedAt": "2026-10-10T03:48:56.325Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-paju-20261010T030000Z",
+        "active": false,
+        "endedAt": "2026-10-10T03:58:47.897Z",
+        "executionState": "continued_serially_by_same_owner"
+      },
+      "executionState": "active_serial_owner"
+    },
+    "identity": {
+      "repository": "joseungil-kr/fwith-site-factory",
+      "branch": "site-factory-paju-direct",
+      "root": "site-factory/paju-flower",
+      "worker": "paju-flower-guide",
+      "hostname": "paju.fwith.kr",
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": true
+    },
+    "input": {
+      "controlRevision": "1f6edfc7b074f15a1c024caaf41f73abe987739a",
+      "runtimeSourceRevision": "0ac786e59570382c6dbd7872e54cca9cd9b5f778"
+    },
+    "selection": {
+      "officialCode": "41480",
+      "reason": "Next eligible official-code municipality; Yongin alreadypublic, Hanamrelease retained with deferredvisualQA, Gwacheonapprovalwaiting"
+    },
+    "conflictChecks": {
+      "branchesChecked": 113,
+      "matchingBranch": false,
+      "registryMatchingSite": false,
+      "openMatchingPullRequests": 0,
+      "inProgressWorkflows": 0,
+      "providerOwnershipCollisionCheck": "pending_before_mutation"
+    },
+    "plan": {
+      "state": "reviewed_32_of_35",
+      "plannedArticleCount": 35,
+      "minimumPassedArticles": 32,
+      "passedArticleCount": 32,
+      "administrativeUnits": 20,
+      "crosswalkRelationships": 52,
+      "deferred": [
+        {
+          "name": "장단면",
+          "slug": "jangdan-myeon",
+          "status": "deferred_quality_hold",
+          "reason": "Insufficient verified distinct receiving-business purchase context; preserve denominator and keep routes unpublished/unlinked"
+        },
+        {
+          "name": "진동면",
+          "slug": "jindong-myeon",
+          "status": "deferred_quality_hold",
+          "reason": "Insufficient verified distinct receiving-business purchase context; preserve denominator and keep routes unpublished/unlinked"
+        },
+        {
+          "name": "진서면",
+          "slug": "jinseo-myeon",
+          "status": "deferred_quality_hold",
+          "reason": "Insufficient verified distinct receiving-business purchase context; preserve denominator and keep routes unpublished/unlinked"
+        }
+      ],
+      "membershipPath": "docs/direct-regional-release/paju/membership.json",
+      "membershipSha256": "90db2d064691a97acf73a319d621a533de0a28c78baae1f589a851ed237cf897"
+    },
+    "lastSuccessfulStage": "independent_remote_source_controls_and_final_sha_build",
+    "nextIntent": "One approved retry of official Run workflow for unchanged exact source",
+    "pendingExternalAction": {
+      "action": "workflow_dispatch",
+      "workflow": "paju-direct-publish.yml",
+      "expectedRevision": "4a8011cfaac421aacb6ab4b753ad0a792d11dfc1",
+      "indexnowOnly": false,
+      "hostname": "paju.fwith.kr",
+      "worker": "paju-flower-guide",
+      "noOverrides": true,
+      "idempotencyKey": "paju-direct-release-4a8011cfaac421aacb6ab4b753ad0a792d11dfc1",
+      "controlRevision": "00ba841f885908ceb5f7f03f1da3e0d35d25aa06"
+    },
+    "controlRevision": "ac6c401e435e976bf6a74dc61845b560d4bf4590",
+    "review": {
+      "independentContent": "PASS",
+      "writerDigests": {
+        "a": "097ac5c571bbe1369d7069fb446dd61ff94ca5f2e42f0d849d8cf8c7a275aa77",
+        "b": "b3422465513e1a86167974f71c175ff1f844b644cd7cf2649a9e533ebc218179",
+        "c": "946f31a6ad3e770d4934685b53785d90a211949348e023746a8ffc48379ee265"
+      },
+      "hostedQa": "deferred_not_pass",
+      "sourceFiles": 69,
+      "sourceFileManifestSha256": "e0421703aa5e8209f4ba37a4894f69c9b8fa7455237532c4f1ff0b8593bd6217",
+      "sourceInventorySha256": "e92b089ba757cc8e0cad7b20703868be3dc88f615af072281638f6d2ece7b65e",
+      "sourceTests": 64,
+      "helperTests": 34,
+      "artifactFiles": 51,
+      "normalHtmlRoutes": 34,
+      "sitemapUrls": 34,
+      "localBuild": "PASS_FINAL_SOURCE_SHA_NODE22",
+      "remoteReadback": "PASS_69_FULL_SOURCE_AND3_CONTROLS",
+      "finalEvidencePath": "docs/direct-regional-release/paju/final-predeploy-review.json",
+      "finalEvidenceSha256": "78676da6b3aef88390febad4dc1ff8608d95630c7a47f2a6eaec6cebef14e78f"
+    },
+    "sourceRevision": "4a8011cfaac421aacb6ab4b753ad0a792d11dfc1",
+    "approvalRequired": {
+      "action": "Attach paju.fwith.kr to paju-flower-guide and deploy reviewed direct static source",
+      "reason": "Mandatory action review requires explicit approval for this specific hostname attachment",
+      "scope": "Existing fwith.kr Cloudflare account only; no overrides, DNS ownership, credential, permission, security or other-site changes"
+    },
+    "executionBlocker": {
+      "stage": "official_run_workflow_click",
+      "attemptedAt": "2026-10-10T04:17:16.039Z",
+      "deniedAt": "2026-10-10T04:17:21Z",
+      "reason": "specific_hostname_attachment_approval_required",
+      "workflowRunCreated": false,
+      "providerMutationExecuted": false,
+      "readbackVerifiedAt": "2026-10-10T04:17:44Z",
+      "retryCount": 0,
+      "resolvedBy": "explicit_exact_pending_target_approval"
+    },
+    "publicQa": {
+      "status": "not_executed"
+    },
+    "indexNowReceipt": null,
+    "gsc": {
+      "status": "not_submitted"
+    },
+    "approval": {
+      "status": "approved",
+      "approvedAt": "2026-10-10T04:22:59Z",
+      "scope": "Exact waiting hostname attachment and reviewed source deployment; existing account no overrides",
+      "sourceRevision": "4a8011cfaac421aacb6ab4b753ad0a792d11dfc1"
+    }
+  },
   "history": [
     {
       "scopeKey": "uijeongbu-direct-initial-20261010",
@@ -1565,145 +1709,12 @@
         "status": "not_submitted"
       },
       "userIntervention": false,
-      "elapsedSecondsFromObservedStart": 1091
-    },
-    {
-      "scopeKey": "paju-direct-initial-20261010",
-      "city": "파주시",
-      "status": "waiting_user_approval_exact_hostname_attachment",
-      "owner": {
-        "scheduledRunAt": "2026-10-10T04:00:00Z",
-        "observedExecutionAt": "2026-10-10T03:58:12Z",
-        "newRegionStartedAt": "2026-10-10T03:48:56.325Z",
-        "serviceInvocationId": null,
-        "checkpointId": "direct-paju-resume-20261010T040000Z",
-        "active": false,
-        "resumedAt": "2026-10-10T03:58:47.897Z",
-        "previousExecution": {
-          "scheduledRunAt": "2026-10-10T03:00:00Z",
-          "observedExecutionAt": "2026-10-10T03:03:39Z",
-          "newRegionStartedAt": "2026-10-10T03:48:56.325Z",
-          "serviceInvocationId": null,
-          "checkpointId": "direct-paju-20261010T030000Z",
-          "active": false,
-          "endedAt": "2026-10-10T03:58:47.897Z",
-          "executionState": "continued_serially_by_same_owner"
-        },
-        "endedAt": "2026-10-10T04:21:33.522Z",
-        "executionState": "ended_with_approval_checkpoint"
-      },
-      "identity": {
-        "repository": "joseungil-kr/fwith-site-factory",
-        "branch": "site-factory-paju-direct",
-        "root": "site-factory/paju-flower",
-        "worker": "paju-flower-guide",
-        "hostname": "paju.fwith.kr",
-        "externalCreationVerified": false,
-        "sourceBranchCreatedVerified": true
-      },
-      "input": {
-        "controlRevision": "1f6edfc7b074f15a1c024caaf41f73abe987739a",
-        "runtimeSourceRevision": "0ac786e59570382c6dbd7872e54cca9cd9b5f778"
-      },
-      "selection": {
-        "officialCode": "41480",
-        "reason": "Next eligible official-code municipality; Yongin alreadypublic, Hanamrelease retained with deferredvisualQA, Gwacheonapprovalwaiting"
-      },
-      "conflictChecks": {
-        "branchesChecked": 113,
-        "matchingBranch": false,
-        "registryMatchingSite": false,
-        "openMatchingPullRequests": 0,
-        "inProgressWorkflows": 0,
-        "providerOwnershipCollisionCheck": "pending_before_mutation"
-      },
-      "plan": {
-        "state": "reviewed_32_of_35",
-        "plannedArticleCount": 35,
-        "minimumPassedArticles": 32,
-        "passedArticleCount": 32,
-        "administrativeUnits": 20,
-        "crosswalkRelationships": 52,
-        "deferred": [
-          {
-            "name": "장단면",
-            "slug": "jangdan-myeon",
-            "status": "deferred_quality_hold",
-            "reason": "Insufficient verified distinct receiving-business purchase context; preserve denominator and keep routes unpublished/unlinked"
-          },
-          {
-            "name": "진동면",
-            "slug": "jindong-myeon",
-            "status": "deferred_quality_hold",
-            "reason": "Insufficient verified distinct receiving-business purchase context; preserve denominator and keep routes unpublished/unlinked"
-          },
-          {
-            "name": "진서면",
-            "slug": "jinseo-myeon",
-            "status": "deferred_quality_hold",
-            "reason": "Insufficient verified distinct receiving-business purchase context; preserve denominator and keep routes unpublished/unlinked"
-          }
-        ],
-        "membershipPath": "docs/direct-regional-release/paju/membership.json",
-        "membershipSha256": "90db2d064691a97acf73a319d621a533de0a28c78baae1f589a851ed237cf897"
-      },
-      "lastSuccessfulStage": "independent_remote_source_controls_and_final_sha_build",
-      "nextIntent": "Resume exact reviewed source after explicit paju.fwith.kr to paju-flower-guide attachment approval; preserve all successful preparation",
-      "pendingExternalAction": {
-        "action": "workflow_dispatch",
-        "workflow": "paju-direct-publish.yml",
-        "expectedRevision": "4a8011cfaac421aacb6ab4b753ad0a792d11dfc1",
-        "indexnowOnly": false,
-        "hostname": "paju.fwith.kr",
-        "worker": "paju-flower-guide",
-        "noOverrides": true,
-        "idempotencyKey": "paju-direct-release-4a8011cfaac421aacb6ab4b753ad0a792d11dfc1",
-        "controlRevision": "00ba841f885908ceb5f7f03f1da3e0d35d25aa06"
-      },
-      "controlRevision": "ac6c401e435e976bf6a74dc61845b560d4bf4590",
-      "review": {
-        "independentContent": "PASS",
-        "writerDigests": {
-          "a": "097ac5c571bbe1369d7069fb446dd61ff94ca5f2e42f0d849d8cf8c7a275aa77",
-          "b": "b3422465513e1a86167974f71c175ff1f844b644cd7cf2649a9e533ebc218179",
-          "c": "946f31a6ad3e770d4934685b53785d90a211949348e023746a8ffc48379ee265"
-        },
-        "hostedQa": "deferred_not_pass",
-        "sourceFiles": 69,
-        "sourceFileManifestSha256": "e0421703aa5e8209f4ba37a4894f69c9b8fa7455237532c4f1ff0b8593bd6217",
-        "sourceInventorySha256": "e92b089ba757cc8e0cad7b20703868be3dc88f615af072281638f6d2ece7b65e",
-        "sourceTests": 64,
-        "helperTests": 34,
-        "artifactFiles": 51,
-        "normalHtmlRoutes": 34,
-        "sitemapUrls": 34,
-        "localBuild": "PASS_FINAL_SOURCE_SHA_NODE22",
-        "remoteReadback": "PASS_69_FULL_SOURCE_AND3_CONTROLS",
-        "finalEvidencePath": "docs/direct-regional-release/paju/final-predeploy-review.json",
-        "finalEvidenceSha256": "78676da6b3aef88390febad4dc1ff8608d95630c7a47f2a6eaec6cebef14e78f"
-      },
-      "sourceRevision": "4a8011cfaac421aacb6ab4b753ad0a792d11dfc1",
-      "approvalRequired": {
-        "action": "Attach paju.fwith.kr to paju-flower-guide and deploy reviewed direct static source",
-        "reason": "Mandatory action review requires explicit approval for this specific hostname attachment",
-        "scope": "Existing fwith.kr Cloudflare account only; no overrides, DNS ownership, credential, permission, security or other-site changes"
-      },
-      "executionBlocker": {
-        "stage": "official_run_workflow_click",
-        "attemptedAt": "2026-10-10T04:17:16.039Z",
-        "deniedAt": "2026-10-10T04:17:21Z",
-        "reason": "specific_hostname_attachment_approval_required",
-        "workflowRunCreated": false,
-        "providerMutationExecuted": false,
-        "readbackVerifiedAt": "2026-10-10T04:17:44Z",
-        "retryCount": 0
-      },
-      "publicQa": {
-        "status": "not_executed"
-      },
-      "indexNowReceipt": null,
-      "gsc": {
-        "status": "not_submitted"
+      "elapsedSecondsFromObservedStart": 1091,
+      "approval": {
+        "status": "approved",
+        "approvedAt": "2026-10-10T04:22:59Z",
+        "scope": "Exact waiting hostname attachment and reviewed source deployment; existing account no overrides",
+        "sourceRevision": "1cf4c2fd922053f5966200c01c331cd1bb6f8a7f"
       }
     }
   ],
