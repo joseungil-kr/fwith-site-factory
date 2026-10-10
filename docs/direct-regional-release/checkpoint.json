@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T15:30:25.318Z",
+  "updatedAt": "2026-10-10T15:54:20Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "jongno-direct-initial-20261010",
     "city": "서울특별시 종로구",
-    "status": "workflow_dispatched_verification_pending",
+    "status": "released_indexnow_received_gsc_pending_visual_qa_deferred",
     "owner": {
       "scheduledRunAt": "2026-10-10T15:00:00Z",
       "observedExecutionAt": "2026-10-10T15:19:58.725474Z",
@@ -41,7 +41,7 @@
       "serviceInvocationId": null,
       "checkpointId": "direct-jongno-initial-20261010T150000Z",
       "active": true,
-      "executionState": "monitor_exact_release_run",
+      "executionState": "submit_verified_sitemap_then_finalize_checkpoint",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T15:12:44.377Z",
       "priorOwnerReadbackConfirmedAt": "2026-10-10T15:12:46.599Z"
     },
@@ -51,7 +51,7 @@
       "root": "site-factory/jongno-flower",
       "worker": "jongno-flower-guide",
       "hostname": "jongno.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true
     },
     "selection": {
@@ -122,19 +122,15 @@
       "deferredArticleCount": 0
     },
     "changeIntent": {
-      "action": "workflow_dispatch_once_exact_source",
-      "target": ".github/workflows/jongno-direct-publish.yml on main",
+      "action": "submit_sitemap_and_list_readback",
+      "target": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://jongno.fwith.kr/sitemap-index.xml",
       "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
-      "worker": "jongno-flower-guide",
-      "hostname": "jongno.fwith.kr",
-      "indexnowOnly": false,
-      "idempotencyKey": "jongno:publish:16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
-      "attempted": true,
-      "runId": 38065314276,
-      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38065314276"
+      "idempotencyKey": "jongno:gsc:16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "attempted": false
     },
-    "lastSuccessfulStage": "official_workflow_dispatch_confirmed",
-    "nextIntent": "Read terminal run/artifacts, provider binding, all public route HTTP, IndexNow receipt; then submit GSC.",
+    "lastSuccessfulStage": "public_exact_http_provider_binding_and_indexnow200_durable_receipt_verified",
+    "nextIntent": "Submit verified sitemap once to GSC and read back registration; preserve actual screen QA for later.",
     "review": {
       "articlesSha256": "341211fee4781e1159f095e99127de789173e27488a34a56b04ff609f00773e9",
       "independentReviewSha256": "f630aff14c6ff8c2089436cf7e8dd1368397c6bd7059b85eb3b1c0383be4ea97",
@@ -171,9 +167,78 @@
       "createdAt": "2026-10-10T15:51:40Z",
       "controlRevision": "d2591a143d4731fd70c1c8ed71e151b790ea5b23",
       "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
-      "status": "in_progress",
+      "status": "completed",
       "runAttempt": 1,
-      "workflowDispatchCount": 1
+      "workflowDispatchCount": 1,
+      "conclusion": "success",
+      "completedAt": "2026-10-10T15:52:52Z"
+    },
+    "controlRevision": "d2591a143d4731fd70c1c8ed71e151b790ea5b23",
+    "publication": {
+      "url": "https://jongno.fwith.kr",
+      "articleCount": 6,
+      "normalHtmlPages": 8,
+      "sitemapUrls": 8,
+      "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "runId": 38065314276,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38065314276",
+      "publicHttp": {
+        "articleCount": 6,
+        "attempts": 3,
+        "checkedPaths": 22,
+        "htmlRoutes": 8,
+        "noindexHubs": 0,
+        "normalizedCloudflareBeacons": 9,
+        "regionCount": 6,
+        "revision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+        "sitemapUrls": 8,
+        "state": "public_release_verified",
+        "unknownHttpStatus": 404
+      },
+      "providerBinding": {
+        "accountVerified": true,
+        "dnsState": "not_observed",
+        "hostname": "jongno.fwith.kr",
+        "hostnameBindingExists": true,
+        "mutationsPerformed": false,
+        "state": "binding_verified",
+        "worker": "jongno-flower-guide",
+        "workerExists": true
+      }
+    },
+    "indexNow": {
+      "attempt": 1,
+      "endpoint": "https://searchadvisor.naver.com/indexnow",
+      "fingerprint": "616f39ad2a87085314336337e6509fc7a7886c5dad3a7fbc99aed8b58107c238",
+      "httpStatus": 200,
+      "origin": "https://jongno.fwith.kr",
+      "recordedAt": "2026-10-10T15:52:45.091531+00:00",
+      "revision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38065314276",
+      "searchIndexing": "not_verified",
+      "siteKey": "jongno-flower-direct",
+      "state": "received",
+      "urlCount": 8,
+      "urlSetSha256": "bd4735048908ab7081b58f1cc7b78dd7abac1fba8ff14054e7c7dc7b21266f2d",
+      "urls": [
+        "https://jongno.fwith.kr/",
+        "https://jongno.fwith.kr/regions/",
+        "https://jongno.fwith.kr/regions/buam-dong-hw-convention-wreath/",
+        "https://jongno.fwith.kr/regions/junghak-dong-apelgamo-gwanghwamun-wreath/",
+        "https://jongno.fwith.kr/regions/myeongnyun3ga-skk-convention-wreath/",
+        "https://jongno.fwith.kr/regions/pyeong-dong-redcross-funeral-wreath/",
+        "https://jongno.fwith.kr/regions/seorin-dong-global-center-event-wreath/",
+        "https://jongno.fwith.kr/regions/yeongeon-dong-snuh-condolence-wreath/"
+      ],
+      "durableReceiptId": 6099349412,
+      "durableReceiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6099349412",
+      "durableReadbackVerified": true
+    },
+    "gsc": {
+      "siteUrl": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://jongno.fwith.kr/sitemap-index.xml",
+      "status": "not_submitted",
+      "priorRegistrationObserved": false
     }
   },
   "history": [
