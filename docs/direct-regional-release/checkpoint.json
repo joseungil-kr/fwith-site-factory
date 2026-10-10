@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T16:38:13.213Z",
+  "updatedAt": "2026-10-10T16:39:40.452Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-jung-direct-initial-20261010",
     "city": "서울특별시 중구",
-    "status": "exact_source_workflow_running",
+    "status": "released_indexnow_received_gsc_pending",
     "owner": {
       "scheduledRunAt": "2026-10-10T16:00:00Z",
       "observedExecutionAt": "2026-10-10T16:02:54.602Z",
@@ -134,16 +134,15 @@
       "deferredArticleCount": 0
     },
     "changeIntent": {
-      "action": "workflow_dispatch_once_exact_reviewed_source",
-      "target": ".github/workflows/seoul-jung-direct-publish.yml",
+      "action": "gsc_submit_sitemap",
+      "target": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://seoul-jung.fwith.kr/sitemap-index.xml",
       "sourceRevision": "07ae85ac13698dc4a0edc7faa00de21379f366fa",
-      "indexnowOnly": false,
-      "idempotencyKey": "seoul-jung:publish:07ae85ac13698dc4a0edc7faa00de21379f366fa",
-      "sourceHeadVerified": true,
-      "mandatoryServiceApproval": "honor_if_requested_at_execution"
+      "idempotencyKey": "seoul-jung:gsc:07ae85ac13698dc4a0edc7faa00de21379f366fa",
+      "existingRegistrationObserved": false
     },
-    "lastSuccessfulStage": "exact_source_workflow_dispatch_confirmed",
-    "nextIntent": "Observe this exact run and live verification; no repeat dispatch.",
+    "lastSuccessfulStage": "public_exact_source_qa_and_indexnow_200_received",
+    "nextIntent": "Submit live sitemap then separate list readback; finish independent hosted review.",
     "review": {
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
       "planReviewSha256": "7daddef0074d717bc376485fe15b45b6f33c250942545d07d9e2bcb4554798b0",
@@ -173,17 +172,35 @@
       "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
       "remoteReadbackSha256": "37f87421cf5454fee441d8338c3e985faeecf3e02e3534e8026a888a60de158f",
       "publicProductionHttp": "NOT_YET_RUN",
-      "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+      "productionHttp": "PASS_WORKFLOW"
     },
     "controlRevision": "1848262401964c443e116c0b6d1000c31a4f2c50",
     "run": {
       "id": 38068446808,
       "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38068446808",
       "createdAt": "2026-10-10T16:37:54Z",
-      "status": "in_progress",
+      "status": "completed",
       "dispatchCount": 1,
       "sourceRevision": "07ae85ac13698dc4a0edc7faa00de21379f366fa",
-      "controlRevision": "1848262401964c443e116c0b6d1000c31a4f2c50"
+      "controlRevision": "1848262401964c443e116c0b6d1000c31a4f2c50",
+      "conclusion": "success"
+    },
+    "indexNow": {
+      "commentId": 6099790885,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6099790885",
+      "attempt": 1,
+      "endpoint": "https://searchadvisor.naver.com/indexnow",
+      "fingerprint": "2d6ab43d40ade1f71f8a4a2a3bb9a7244c1216867af4db9881f22d8a7d04fc33",
+      "httpStatus": 200,
+      "origin": "https://seoul-jung.fwith.kr",
+      "recordedAt": "2026-10-10T16:39:05.444416+00:00",
+      "revision": "07ae85ac13698dc4a0edc7faa00de21379f366fa",
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38068446808",
+      "siteKey": "seoul-jung-flower-direct",
+      "state": "received",
+      "urlCount": 9,
+      "urlSetSha256": "b9f7f06bd9844e01c857ff457508e8c51ef2c6e1f8010c2c1e43e9feb8b99359"
     }
   },
   "history": [
