@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T07:35:23.030Z",
+  "updatedAt": "2026-10-10T07:38:00.987Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "gimpo-direct-initial-20261010",
     "city": "김포시",
-    "status": "official_dispatch_running",
+    "status": "published_search_submission_pending",
     "owner": {
       "scheduledRunAt": "2026-10-10T07:00:00Z",
       "observedExecutionAt": "2026-10-10T07:01:03Z",
@@ -49,7 +49,7 @@
       "root": "site-factory/gimpo-flower",
       "worker": "gimpo-flower-guide",
       "hostname": "gimpo.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true
     },
     "input": {
@@ -248,9 +248,15 @@
       "membershipSha256": "766a49489470ea51e25f6869a61bb602e58ce3a8338b42c0b30ada848b1d776e",
       "heldArticleCount": 1
     },
-    "lastSuccessfulStage": "exact_source_remote_readback_build_and_official_dispatch",
-    "nextIntent": "Read back terminal run, artifact digest, exact hosted HTTP and durable IndexNow receipt; then submit GSC",
-    "pendingExternalAction": null,
+    "lastSuccessfulStage": "official_public_http_and_durable_indexnow_receipt",
+    "nextIntent": "Submit Gimpo sitemap to verified sc-domain:fwith.kr after independent public HTTP sweep",
+    "pendingExternalAction": {
+      "action": "GSC submit_sitemap",
+      "target": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://gimpo.fwith.kr/sitemap-index.xml",
+      "idempotencyKey": "gimpo-b418636-gsc-sitemap-index-first",
+      "precondition": "independent public HTTP sweep PASS; reuse existing sitemap registration if present"
+    },
     "review": {
       "independentContent": "PASS_EXACT_14_ARTICLES",
       "visualQa": "deferred_not_pass",
@@ -266,9 +272,25 @@
       "id": 38034917448,
       "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38034917448",
       "createdAt": "2026-10-10T07:35:01Z",
-      "status": "in_progress",
+      "status": "completed",
       "attempt": 1,
-      "event": "workflow_dispatch"
+      "event": "workflow_dispatch",
+      "conclusion": "success"
+    },
+    "indexnow": {
+      "state": "received",
+      "httpStatus": 200,
+      "attempt": 1,
+      "urlCount": 16,
+      "urlSetSha256": "01dec44be1640d0e7d546060ca11c4943ccc57a4f24ea3160f36a03126f4c78d",
+      "fingerprint": "c032089953a71761f90056ce170d6755f75e21f5cd4e062d645e9c13742823da",
+      "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6095181536",
+      "receiptIssue": 266,
+      "getObservations": 40,
+      "submissionObservations": 1,
+      "allGet200AndNoBlockingRobotsOrChallenge": true,
+      "httpMeaning": "accepted",
+      "searchIndexing": "not_verified"
     }
   },
   "history": [
