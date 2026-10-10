@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T16:17:45.965Z",
+  "updatedAt": "2026-10-10T16:19:30.870Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-jung-direct-initial-20261010",
     "city": "서울특별시 중구",
-    "status": "content_plan_frozen_before_authoring",
+    "status": "authoring_frozen_seven_page_plan",
     "owner": {
       "scheduledRunAt": "2026-10-10T16:00:00Z",
       "observedExecutionAt": "2026-10-10T16:02:54.602Z",
@@ -52,7 +52,8 @@
       "worker": "seoul-jung-flower-guide",
       "hostname": "seoul-jung.fwith.kr",
       "externalCreationVerified": false,
-      "sourceBranchCreatedVerified": false
+      "sourceBranchCreatedVerified": true,
+      "sourceBranchBaseRevision": "4939451f6033a38cf4be2314ad531faee6fd1ef9"
     },
     "selection": {
       "officialCode": "11140",
@@ -136,12 +137,14 @@
       "idempotencyKey": "seoul-jung:author7:20261010T160000Z",
       "expectedBase": "c32ab9c0b3dcbbdecff8b079c02f165a8c5ac448"
     },
-    "lastSuccessfulStage": "frozen_seven_page_plan_remote_full_readback_and_independent_plan_review",
+    "lastSuccessfulStage": "source_branch_created_exact_base_and_readback",
     "nextIntent": "Author seven original articles, independently review and assemble approved source.",
     "review": {
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
       "planReviewSha256": "7daddef0074d717bc376485fe15b45b6f33c250942545d07d9e2bcb4554798b0",
-      "screenQa": "deferred_not_pass"
+      "screenQa": "deferred_not_pass",
+      "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
+      "runtimePreparationStatus": "NODE22_FIXTURE_PASS_NOT_ACTUAL_SOURCE_OR_PUBLISH_PASS"
     }
   },
   "history": [

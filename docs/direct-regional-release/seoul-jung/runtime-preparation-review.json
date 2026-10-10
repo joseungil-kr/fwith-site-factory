@@ -1,0 +1,772 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-10T16:14:54.832933+00:00",
+  "verdict": "PASS_WITHIN_SCOPED_RUNTIME_REVIEW",
+  "canAssembleAfterIndependentContentApproval": true,
+  "canPublish": false,
+  "scope": "Local assembler, pinned shared runtime/control reuse, membership mapping, fixtures and safety contracts only",
+  "independentReviewer": true,
+  "reviewerModifiedAuthorCode": false,
+  "remoteWritesPerformed": false,
+  "browserUsed": false,
+  "codeSha256": {
+    "generate_junggu.py": "46f3eaea52458e9cccccb6164ba64d4f6c2b608c8033d51aa30836839fe71683",
+    "junggu-assembler-adaptation.patch": "492873ce8e1c4b4ba8a785f3679398ea175b0bb7b88793f938e475f9db3ebe99",
+    "test_generate_junggu.py": "b677e70adb2bf1101a271bb1cedfd4f69781b7395bc0316535c3e8628236e463",
+    "direct-source-test-template.mjs": "88d2da34259653c896cebaceaac51fc13235d5b6b9c35c6d773184e813beef38"
+  },
+  "sourcePins": {
+    "runtimeFiles": 69,
+    "controlFiles": 6,
+    "runtimeRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+    "controlRevision": "c1f397b271afabd5aa353547cc96190c4f2e3b8a"
+  },
+  "checks": [
+    {
+      "check": "reviewed code still matches author file generate_junggu.py",
+      "status": "PASS",
+      "sha256": "46f3eaea52458e9cccccb6164ba64d4f6c2b608c8033d51aa30836839fe71683"
+    },
+    {
+      "check": "reviewed code still matches author file junggu-assembler-adaptation.patch",
+      "status": "PASS",
+      "sha256": "492873ce8e1c4b4ba8a785f3679398ea175b0bb7b88793f938e475f9db3ebe99"
+    },
+    {
+      "check": "reviewed code still matches author file test_generate_junggu.py",
+      "status": "PASS",
+      "sha256": "b677e70adb2bf1101a271bb1cedfd4f69781b7395bc0316535c3e8628236e463"
+    },
+    {
+      "check": "reviewed code still matches author file direct-source-test-template.mjs",
+      "status": "PASS",
+      "sha256": "88d2da34259653c896cebaceaac51fc13235d5b6b9c35c6d773184e813beef38"
+    },
+    {
+      "check": "runtime and control tree/blob/digest pins",
+      "status": "PASS",
+      "runtimeFiles": 69,
+      "controlFiles": 6,
+      "runtimeRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "controlRevision": "c1f397b271afabd5aa353547cc96190c4f2e3b8a"
+    },
+    {
+      "check": "stored remote readback base64 bodies match all local pinned files",
+      "status": "PASS",
+      "files": 75,
+      "freshNetworkReadPerformed": false
+    },
+    {
+      "check": "adaptation patch recreates exact assembler",
+      "status": "PASS",
+      "priorAssemblerSha256": "46347957f840b89a82037d298c3258e1f6c87c30a3243a522af969c93d7563fa",
+      "resultSha256": "46f3eaea52458e9cccccb6164ba64d4f6c2b608c8033d51aa30836839fe71683"
+    },
+    {
+      "check": "complete legal and administrative inventory independent of article quota",
+      "status": "PASS",
+      "legal": 74,
+      "administrative": 15,
+      "relations": 92,
+      "partialRelations": 32,
+      "partialLegalUnits": 14,
+      "coverageSha256": "d094febb9a719ea061f600cec7db87ac50bf9b3f84d78b962e58ff1ee491dff8"
+    },
+    {
+      "check": "reused runtime changes limited to reviewed shared labels delivery notice and worker",
+      "status": "PASS",
+      "changedFiles": [
+        "src/components/RegionDirectory.astro",
+        "src/pages/[category]/index.astro",
+        "wrangler.jsonc"
+      ]
+    },
+    {
+      "check": "runtime validators and lockfile unchanged",
+      "status": "PASS"
+    },
+    {
+      "check": "regenerated customer collections never copied",
+      "status": "PASS"
+    },
+    {
+      "check": "eight source photographs exact bytes and measured metadata preserved",
+      "status": "PASS",
+      "images": 8
+    },
+    {
+      "check": "emitted publisher exact original except city identity and frozen route constants",
+      "status": "PASS"
+    },
+    {
+      "check": "emitted workflow exact original except city identity and count label",
+      "status": "PASS"
+    },
+    {
+      "check": "new workflow dispatch only no factory trigger added",
+      "status": "PASS",
+      "globalRepositoryTriggersAudited": false
+    },
+    {
+      "check": "Node22 build source exact and no provider secrets in build",
+      "status": "PASS"
+    },
+    {
+      "check": "403 guard kept exact and connected",
+      "status": "PASS"
+    },
+    {
+      "check": "all three override flags false",
+      "status": "PASS"
+    },
+    {
+      "check": "actual tests run with Node22",
+      "status": "PASS",
+      "version": "v22.23.3",
+      "nodeBinarySha256": "fde6a4bf8d0562f7751d1a2d6cb9b417c4cfe107bbcb0aa3e9a24e125e348f48"
+    },
+    {
+      "check": "independent assembler 18 tests passed",
+      "status": "PASS",
+      "log": "independent-node22-adapter-tests.log"
+    },
+    {
+      "check": "fixture N6 held0 source68 control42",
+      "status": "PASS"
+    },
+    {
+      "check": "fixture N10 held1 source68 control42",
+      "status": "PASS"
+    }
+  ],
+  "tests": [
+    {
+      "planned": 6,
+      "held": 0,
+      "sourceTests": 68,
+      "publisherTests": 42,
+      "nodeVersion": "v22.23.3"
+    },
+    {
+      "planned": 10,
+      "held": 1,
+      "sourceTests": 68,
+      "publisherTests": 42,
+      "nodeVersion": "v22.23.3"
+    }
+  ],
+  "remoteReadbackEvidence": [
+    {
+      "path": "site-factory/jongno-flower/.gitignore",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "6bd40fd273da61bbc6c8ef5c00dfd947ca89e5ce",
+      "sha256": "0a5eef845a42deb1d0b1f0c56b1dffdbd79a29cd1db049a5d4dbbf7a6372cbf3",
+      "bytes": 56,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/.gitignore"
+    },
+    {
+      "path": "site-factory/jongno-flower/README.md",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "cc0d80b8ba36971f2b0c3e9a2cc0b0eea0950b4b",
+      "sha256": "b22d5e4e1d3c832ee7ee306b8d59bfeac099c708fe7554b3f840447f49347b50",
+      "bytes": 2101,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/README.md"
+    },
+    {
+      "path": "site-factory/jongno-flower/astro.config.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "e4c686ed4ee3f1ae7f66daea5e4f7bcee917d0a9",
+      "sha256": "d3f5870839bdd3685e0292df487a2c22008424214db13aee7f992c2b1ccc1109",
+      "bytes": 585,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/astro.config.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/package-lock.json",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "640929d57802c2f534db82da79cb19c36b006df3",
+      "sha256": "247ea260dec6f082770f06215e59854d90d02b1548db41d44bb0453c6a2f62bf",
+      "bytes": 183423,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/package-lock.json"
+    },
+    {
+      "path": "site-factory/jongno-flower/package.json",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "391c3b88aebce59c9c3c0a49e5fd3a88769719d5",
+      "sha256": "48b91c214520401f938676dab0c0ca0789c7c991b945eaf94dafb4b60120f2ab",
+      "bytes": 664,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/package.json"
+    },
+    {
+      "path": "site-factory/jongno-flower/public/7c504238084821a04f464b9936c80343.txt",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "a8b1ac00592cdc19048a5280947a0cb5183d36f5",
+      "sha256": "261e4de68dad18d66d1ab563d2788b2b6cec753af5ec7d4c0066eaf837153db9",
+      "bytes": 33,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/public/7c504238084821a04f464b9936c80343.txt"
+    },
+    {
+      "path": "site-factory/jongno-flower/public/_headers",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "af23a9cc2aca1c815b74c4da87a4191f045f6805",
+      "sha256": "1b27a67288f21cf98b19d15cef8fa084bf7d7ca7a0f89975dd48ba51f90ed015",
+      "bytes": 118,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/public/_headers"
+    },
+    {
+      "path": "site-factory/jongno-flower/public/favicon.svg",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "04825f793dd3f36db0ac15ad82dbf1d954746f8e",
+      "sha256": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+      "bytes": 185,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/public/favicon.svg"
+    },
+    {
+      "path": "site-factory/jongno-flower/public/images/editorial/opening-wreath-illustration-v1.webp",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "8ab5a58eef8b16e2952229bc95c7f063dfef434e",
+      "sha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+      "bytes": 154376,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/public/images/editorial/opening-wreath-illustration-v1.webp"
+    },
+    {
+      "path": "site-factory/jongno-flower/public/images/products/congrats-basic.jpg",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "019b6987190d1dbd959bad8381a73b001c144c95",
+      "sha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+      "bytes": 349863,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/public/images/products/congrats-basic.jpg"
+    },
+    {
+      "path": "site-factory/jongno-flower/public/images/products/congrats-large.jpg",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "60d737b43f04a2c0f05e4ab91981187cfc9cdc1c",
+      "sha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+      "bytes": 361602,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/public/images/products/congrats-large.jpg"
+    },
+    {
+      "path": "site-factory/jongno-flower/public/images/products/congrats-premium.jpg",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "d784c6a21676bc5ef659512b30a01d97114c7877",
+      "sha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+      "bytes": 337911,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/public/images/products/congrats-premium.jpg"
+    },
+    {
+      "path": "site-factory/jongno-flower/public/images/products/congrats-xl.jpg",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "5a6f41e37b0137dd48bbcf310c508811fcc4baef",
+      "sha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+      "bytes": 387349,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/public/images/products/congrats-xl.jpg"
+    },
+    {
+      "path": "site-factory/jongno-flower/public/images/products/funeral-basic.webp",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "ff86b334ade08edb840e071802e547ebbba51593",
+      "sha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+      "bytes": 33514,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/public/images/products/funeral-basic.webp"
+    },
+    {
+      "path": "site-factory/jongno-flower/public/images/products/funeral-large.webp",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "596bd7ec077b8abc09aa3db27218fe4d04ca983d",
+      "sha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+      "bytes": 39576,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/public/images/products/funeral-large.webp"
+    },
+    {
+      "path": "site-factory/jongno-flower/public/images/products/funeral-premium.webp",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "1b9608037c14c7c5f371d0bb73a2a62c5bba0d5a",
+      "sha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+      "bytes": 36334,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/public/images/products/funeral-premium.webp"
+    },
+    {
+      "path": "site-factory/jongno-flower/public/images/products/funeral-xl.webp",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "9900de24565467c66107dc220b527a37bf67d3ed",
+      "sha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+      "bytes": 40258,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/public/images/products/funeral-xl.webp"
+    },
+    {
+      "path": "site-factory/jongno-flower/scripts/assert_preview_boundary.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "ef8bef6aad2103086284800654ff3c45548c9c6f",
+      "sha256": "8d9c7ea611375ffeb1b2fb65b7e0397929b7c6e5020917f7ae1aa2faed1ea56f",
+      "bytes": 250,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/scripts/assert_preview_boundary.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/scripts/qa_bootstrap_or_graph.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "b572b14571480886a529a8dfa30a951bffe5f695",
+      "sha256": "45e205884a3da37eaf768aaa6fb95772e5635a2fa371e263446140a612e9ce84",
+      "bytes": 534,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/scripts/qa_bootstrap_or_graph.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/scripts/qa_graph.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "d3d9e2d747b4e9b276324e7625190aeb513817e8",
+      "sha256": "8fa5d3fd40bb74bbcf1c23ed2dea9a9c49a04c889cdcab31f14637f5a67a3d83",
+      "bytes": 4352,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/scripts/qa_graph.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/scripts/qa_intent.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "b9e851f2818edf2cae6e1836d628bd32b4198624",
+      "sha256": "c1fa7486e7a9e2f1fbe2e56f7e408cb143495541811a3a7c6b9c3fdfac2e6b99",
+      "bytes": 3725,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/scripts/qa_intent.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/scripts/qa_static.py",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "1eb2e612979df66f929550e680ae3629b5dca8c1",
+      "sha256": "7d8e6d04f68e3875f92f31630f092a2147ca71f424efd16db45229a665b704a7",
+      "bytes": 12249,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/scripts/qa_static.py"
+    },
+    {
+      "path": "site-factory/jongno-flower/scripts/write_build_revision.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "7bb6ef97adb52cf3be9ba84c343e5be5df837f8f",
+      "sha256": "7e0de1d50032c7789e05ef25fecfab2a19702cbac6e46fab451c6ae154934278",
+      "bytes": 234,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/scripts/write_build_revision.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/scripts/write_response_headers.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "28fdee0510169d5652b212fcfcc9e03c1510a510",
+      "sha256": "e2bb388129c8e4144cfd880523a45d86ad03b4e7075d9532f0ba825ad65ebc1e",
+      "bytes": 316,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/scripts/write_response_headers.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/components/InlineOrderBanner.astro",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "76d9576e2aee063d86372dde23c3501fc047627a",
+      "sha256": "9c4a05aa806810d5d27a0040e357ccdd89c7d465d9d0d43df0ce48cec8fe33a0",
+      "bytes": 1863,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/components/InlineOrderBanner.astro"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/components/InlineText.astro",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "e65577bc1857c80c807014610d5172272a40807b",
+      "sha256": "ac748bd0e67c41dab43634bbb63a606d2f2124d1f2c089b1266a52795c3ceb0a",
+      "bytes": 291,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/components/InlineText.astro"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/components/MarkdownContent.astro",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "f40b368cd526df837b2a7602d3a48dcc462afd17",
+      "sha256": "664e29b01720f12ac6b479b9fe722907c192f1df44338ba3df9a764ba7e3ac77",
+      "bytes": 514,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/components/MarkdownContent.astro"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/components/ProductCards.astro",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "885072b201f7ef0e13085add8f30b21fb8936315",
+      "sha256": "5f249fb03794c892a727813e326d03f141f086199257620e0ca0f6d6cf993083",
+      "bytes": 698,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/components/ProductCards.astro"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/components/RegionDirectory.astro",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "793053185b5f3b23e52cc541a6aab865d87b36f8",
+      "sha256": "0004ced193506e01fb94776fc9b1964da713d04459993b411fdb0a70ac787b85",
+      "bytes": 3398,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/components/RegionDirectory.astro"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/config/site.ts",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "676ec0f3cb25d5468199aea1cf4e176ae6c8524c",
+      "sha256": "6b9cc94cc48ad3e101be0e57b70153d8a22ce4457a3042f46fb2594f73d7eea5",
+      "bytes": 1365,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/config/site.ts"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/data/architecture.json",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "578093fe993018a21f3b0e73d03c7b81a9e863d5",
+      "sha256": "18e3ca3629de16816cd0b5d6d3202dc9018d0d95499e858b8973c3edd956dce1",
+      "bytes": 13153,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/data/architecture.json"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/data/business-truth.json",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "ae5c8021f0037ee77167a309ca47b0d31139b9eb",
+      "sha256": "4376a0f0472af885958f0402cac6c1cad4a0397a498c8bab51fb750774d460a0",
+      "bytes": 694,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/data/business-truth.json"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/data/direct-checkpoint.json",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "50c2249450a2e13be5dc8f5b6b62aabc700936d9",
+      "sha256": "5ac33207972029df2717816fa03d049d8b51afe3978f19ce81ead517ee8a824b",
+      "bytes": 1436,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/data/direct-checkpoint.json"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/data/editorial-assets.json",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "e1afa985dd826e0b012fa44bc5a737d32ef2f778",
+      "sha256": "00cbe0b89572b78c7694ae100e04a5fa7b3e64295739ae9ee60eee2496b4e1ec",
+      "bytes": 499,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/data/editorial-assets.json"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/data/page-map.json",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "eed94edfdcbfc58709e92393ba72b7395fc9b2c0",
+      "sha256": "656ba7f0136e7d62f5e3c7f7c27a93dfebbfc507a6d7c3aee77d36e358fed54a",
+      "bytes": 10180,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/data/page-map.json"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/data/pages.json",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "010b749eff923dc9bfea064722cd9ac4f5796894",
+      "sha256": "54187170a8d7eaf926d58647369ac3512a146db129b95171fea637c5ff8e3858",
+      "bytes": 45030,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/data/pages.json"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/data/products.json",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "77501b7d34f588c07494a23b9fdc1ddca107aca6",
+      "sha256": "f271c0aa5e4368fbeacd287dc4717f0d5d34d0e7c0f38fb1dcd24305d9772272",
+      "bytes": 5498,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/data/products.json"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/data/publish-manifest.json",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "c61a41cd8ec14bc4c011c9749cc3f42ae7fbdd59",
+      "sha256": "381b853de52eaaa6ea06994061ce8f552846dc8adce6ccd0b9943191f6126e00",
+      "bytes": 13033,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/data/publish-manifest.json"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/data/region-coverage.json",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "0392175eaa1036837740ca9b3fb72417631bf393",
+      "sha256": "7212ec56d81a77549063d2497cdee1adf71e2cf2b88b830b6090f6998f6f9b2f",
+      "bytes": 71213,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/data/region-coverage.json"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/data/region-policy.json",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "29372b612f29d698459ed9d91b24b95c64d8c3ee",
+      "sha256": "9b6801af338e47ca6773154f35e96e0a9a3f8a35dddcbf3e259cf9d96bf371c4",
+      "bytes": 5426,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/data/region-policy.json"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/data/site-config.json",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "ed8d4a3317acf06480f58a05c2525d97d7b6814a",
+      "sha256": "6264abb4888eb00c050177addb9b77f58700c6ac6749ddf5c669d6758eb44ec0",
+      "bytes": 227,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/data/site-config.json"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/data/social-image-provenance.json",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "f8791b0aa6755e57b965b8fd58578dfb0a46a5b3",
+      "sha256": "834f1be33b53c7550bd936cf331d8801d61cd5a4b148121bed43760e710aca91",
+      "bytes": 5216,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/data/social-image-provenance.json"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/layouts/BaseLayout.astro",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "293252262d79f42729f422dd8d6f83cc554c9649",
+      "sha256": "2105979c8ad49708d3780e20f134ca80d1afa77d2547585b11f107345ee89580",
+      "bytes": 3322,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/layouts/BaseLayout.astro"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/lib/catalog.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "266204749651cac33ef53bb9be2a13943da6db3b",
+      "sha256": "c9b9e85db884360669ea7a883e9c2b69073eb9e79e4a43c97af0cff3153b4cec",
+      "bytes": 3161,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/lib/catalog.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/lib/content.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "e03cbe95986bb4502fa3f943f480785d799f352e",
+      "sha256": "13bb46b0945b4b39f31bdc2c171c77ea5943cc16a92c1b91dc5674ed4befbb79",
+      "bytes": 2196,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/lib/content.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/lib/hubs.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "9503ce8dd01257abb7f36c9e55d376601052f5bc",
+      "sha256": "cd3289a46fd77b1d5b32b3a5c5878d95243a6a5224bc8f1ba3095168acf55d2a",
+      "bytes": 4117,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/lib/hubs.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/lib/journey.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "f19efadd9f1f35ada73bf74a2de9ab69ca8d4cdb",
+      "sha256": "c07934204e5ddbd8b9126b715aae569b410dedbbbfe9ff80a1c518fe8be6c400",
+      "bytes": 1469,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/lib/journey.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/lib/regional-runtime.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "b82bc0438946cf1d2cb872a72f534b5e095a57c3",
+      "sha256": "3806324e102a54e6c9c5ea416cce624d1a3351e1a6e1b4a211ab8a2da73e84df",
+      "bytes": 2808,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/lib/regional-runtime.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/lib/regions.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "b6dd5ba14adc69310ed25f1374d5296b88ea5936",
+      "sha256": "59421a639f73ab10da4516ce069c8ab46dfa75ac3ad3a660847b8b647e0ed489",
+      "bytes": 10896,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/lib/regions.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/lib/social-image.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "c7d9f1f647d4de512ff0cb7f06a1b23dc339f8d6",
+      "sha256": "15008f3e008430001e88298858bf4998a7901024623cd9ec8d7da162513ec1a3",
+      "bytes": 1302,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/lib/social-image.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/lib/sources.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "0169fd1710aedcbd81ea8530b3538aad97fd7c1d",
+      "sha256": "0bea1d95eed1c8544baf757baabdd4eaf2827788250575b626c9a0879efd1d9f",
+      "bytes": 1341,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/lib/sources.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/lib/visual.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "19a8c6515a8e3e45f6f60e61c843814e68f6eb08",
+      "sha256": "a0bba0aa048d56f3a323b347a7e0022f39b01029da844dbfd7ed86e9dce6c44e",
+      "bytes": 689,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/lib/visual.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/pages/404.astro",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "481dcb4ad4e6077e03a8ce080c7663ba99717af1",
+      "sha256": "f4497cf673dd7cf0e2d045ec7c8253fb56f20b366689efea473e36c080adae9e",
+      "bytes": 531,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/pages/404.astro"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/pages/[category]/[slug].astro",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "f18e6d75f985eced2245e5a5cf6ed6dbe675df7f",
+      "sha256": "68cc66c5de06096778228c6972c6c7fe33fc98a79ab05a3bc722fe6f05219788",
+      "bytes": 7262,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/pages/[category]/[slug].astro"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/pages/[category]/index.astro",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "c7bbd78fc1dd510fc3850582182f415da98371be",
+      "sha256": "98270bdd63b3c4a545cfd4273a6f97beb395ef8aeeee259f3e0b8b3310377b9e",
+      "bytes": 3660,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/pages/[category]/index.astro"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/pages/index.astro",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "9160bd89691fecb083d5ed5e8670c770ae65f27c",
+      "sha256": "a53f4316970c8ee3823f87e1cc89f800ecdcd2837c100eb9ad76dc5c0d2e3b02",
+      "bytes": 4480,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/pages/index.astro"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/pages/robots.txt.ts",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "34bb350862a1d4f0197dc431e3bdf8955bd69ca4",
+      "sha256": "b7dbb859b51755671b762c0e6d7f9b42cbcfc65e32eb5267cbd27fd4f075a8f7",
+      "bytes": 318,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/pages/robots.txt.ts"
+    },
+    {
+      "path": "site-factory/jongno-flower/src/styles/global.css",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "2d84867cf1cbc65120a7cb92ff4fd12620092c04",
+      "sha256": "903963c83c95f9a42c2fc6c21bb096e457f723ed58c1d5b9fe1195a00105e723",
+      "bytes": 10120,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/src/styles/global.css"
+    },
+    {
+      "path": "site-factory/jongno-flower/tests/answer-opening.test.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "8688d0f85ba4e736577a1fcb2c629e4f88a7e05f",
+      "sha256": "6f726874f40007833011ec3f95dd6cf35cf8effad8870b7317df6cd8b9a8a312",
+      "bytes": 4118,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/tests/answer-opening.test.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/tests/catalog.test.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "a4b0ddfb214a21f67ebaa468b487e00db8408ae0",
+      "sha256": "803b9cdf84cfacea9fd2d8f9c98181fc301f377130005de80c97ca459e963909",
+      "bytes": 1493,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/tests/catalog.test.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/tests/direct-source.test.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "7e691ecf90056b86bb0900fad14dc5376e73ddb9",
+      "sha256": "e61dc3df2b255422d8d03312c5986072cf46a63a69ecbe9dfd243b14dd2cb028",
+      "bytes": 34995,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/tests/direct-source.test.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/tests/journey-contract.test.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "01fafc603fdea3469b04acf4c383141df9d79df5",
+      "sha256": "a9e9defb22a540fa79fa04af55614d0634acb265f78a60a2352aec146d0a3461",
+      "bytes": 1588,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/tests/journey-contract.test.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/tests/purchase-banner-contract.test.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "e1b153ef9aa8de73736cbd1b059e074071849c64",
+      "sha256": "85747a2ac013fbe12a0519b4e1e2d7761da3ebb9dcf137a28cde7f1b5b165c4c",
+      "bytes": 1506,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/tests/purchase-banner-contract.test.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/tests/regions-template.test.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "46283cb708bb8a9b124c917d6138f7953e3f5140",
+      "sha256": "085766ebad57491f3d7d4e8b0a15f4c7d05daf199aeb7816c349cdab5346bbcb",
+      "bytes": 3901,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/tests/regions-template.test.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/tests/social-image.test.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "e97df3de0c49e318b54362f36cbd3e37a53a5ef2",
+      "sha256": "d19b8ac38116cae9c42ca5b264ac0c79d262101bdb00a94eaa84a7369c3ff53f",
+      "bytes": 2345,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/tests/social-image.test.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/tests/sources.test.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "58786f9a415ba3a9f7d957a5a737f95babdab7f6",
+      "sha256": "5eec659e38f74d45a908ab8bef9a11498d6880a3659855c91481387a2bdac987",
+      "bytes": 2928,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/tests/sources.test.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/tests/visual.test.mjs",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "b12200da6ff3798573eddd9a61539ff60eb078ba",
+      "sha256": "9b2afdef5c9c847c7965f362a93effec26b17ed2a801e00379a6682fde258811",
+      "bytes": 1224,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/tests/visual.test.mjs"
+    },
+    {
+      "path": "site-factory/jongno-flower/tsconfig.json",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "bb33be4f1b08c043c088a8db5bb01b0749135947",
+      "sha256": "903f5bd9f78e464bbf03c0d68f91a5d8b76092f9abc22c3dd78d8c2f3f4d8e93",
+      "bytes": 71,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/tsconfig.json"
+    },
+    {
+      "path": "site-factory/jongno-flower/wrangler.jsonc",
+      "ref": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "gitBlobSha": "65b87ee9194ed3ffdeebcde59c165044f2fa2ffa",
+      "sha256": "d1d9b281af8aba7af42673eb1731cccfcc521a560e1a9658ce587290ed197271",
+      "bytes": 225,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b/site-factory/jongno-flower/wrangler.jsonc"
+    },
+    {
+      "path": ".github/workflows/jongno-direct-publish.yml",
+      "ref": "c1f397b271afabd5aa353547cc96190c4f2e3b8a",
+      "gitBlobSha": "337f7cb5256a5f48a0a70cf81da2f8c7eda34461",
+      "sha256": "6d9143c471e546db0548a383be8f63b85c6872d26237f96170e4e21c5e2be780",
+      "bytes": 11235,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/c1f397b271afabd5aa353547cc96190c4f2e3b8a/.github/workflows/jongno-direct-publish.yml"
+    },
+    {
+      "path": "scripts/direct-jongno/publish.py",
+      "ref": "c1f397b271afabd5aa353547cc96190c4f2e3b8a",
+      "gitBlobSha": "f7c8898ea689ee4ec336b89d8b0324fe6efe47dd",
+      "sha256": "dcdc59479e33e4e03d7948a7cc5358e4c493e545f301577cb5bffe400849f287",
+      "bytes": 26324,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/c1f397b271afabd5aa353547cc96190c4f2e3b8a/scripts/direct-jongno/publish.py"
+    },
+    {
+      "path": "scripts/direct-jongno/test_publish.py",
+      "ref": "c1f397b271afabd5aa353547cc96190c4f2e3b8a",
+      "gitBlobSha": "6a4e8c6333344348f841544bcdf0032b5cfb4a13",
+      "sha256": "658fb66768c4047625ddcd9a15b598fd5bf1a6a765d232f6111523d77cca1ec4",
+      "bytes": 27090,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/c1f397b271afabd5aa353547cc96190c4f2e3b8a/scripts/direct-jongno/test_publish.py"
+    },
+    {
+      "path": "site-factory/engine/bucheon_domain_attach.py",
+      "ref": "c1f397b271afabd5aa353547cc96190c4f2e3b8a",
+      "gitBlobSha": "7bec10da685a9884daa9184cf971eeb567ad54ca",
+      "sha256": "a8662dd6ff232c53b6c55f193553f134c7055ec80eca421b65bab9bedd220da3",
+      "bytes": 10759,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/c1f397b271afabd5aa353547cc96190c4f2e3b8a/site-factory/engine/bucheon_domain_attach.py"
+    },
+    {
+      "path": "site-factory/engine/goyang_domain.py",
+      "ref": "c1f397b271afabd5aa353547cc96190c4f2e3b8a",
+      "gitBlobSha": "36500e107aa34397afeb60e55a23b7b82381b8b5",
+      "sha256": "8a30e0ea75758344a5ff92903ec0a9dbd1e4f2bff230cdf603ea871ca1bf9c68",
+      "bytes": 8774,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/c1f397b271afabd5aa353547cc96190c4f2e3b8a/site-factory/engine/goyang_domain.py"
+    },
+    {
+      "path": "site-factory/engine/indexnow_finalize.py",
+      "ref": "c1f397b271afabd5aa353547cc96190c4f2e3b8a",
+      "gitBlobSha": "86b91b3b6c3522c3c7bfe2cae77f2b9bf8c618b1",
+      "sha256": "55f5274d3fcc713e82fd8ce18e280447e68e9e460bc1ff3f9bf5cc683834935f",
+      "bytes": 15633,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/c1f397b271afabd5aa353547cc96190c4f2e3b8a/site-factory/engine/indexnow_finalize.py"
+    }
+  ],
+  "limitations": [
+    "No real frozen article plan or approved article source was reviewed in this stage.",
+    "No actual-source npm ci/build, final artifact checks, live HTTP or provider binding were run in this stage.",
+    "No content quality approval, screen QA, deployment or IndexNow receipt is implied.",
+    "Pinned stored remote response bytes were cross-checked; reviewer did not perform a new remote network read.",
+    "Only emitted workflow trigger behavior was checked; unrelated existing repository workflows were not comprehensively audited."
+  ],
+  "requiredNextGates": [
+    "Independent real content review binding exact plan, article and coverage bytes.",
+    "Re-run against actual source with Node22 npm ci, tests, build and static artifact checks.",
+    "Verify exact source and control commit SHA, CI artifact, provider binding, live HTTP exact content and IndexNow receipt."
+  ]
+}
