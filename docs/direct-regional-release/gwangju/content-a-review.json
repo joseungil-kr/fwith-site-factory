@@ -1,0 +1,688 @@
+{
+  "status": "PASS_TEXT",
+  "inputFile": "content/pages-a.json",
+  "inputSha256": "31ac5de9e4e01a96d476cc9da4aa247531b0eb3ee6fc727e3f11f1c4c456f3b9",
+  "reviewer": "independent content reviewer A",
+  "reviewedAtUtc": "2026-10-10T08:27:53.166853+00:00",
+  "approvedCount": 13,
+  "heldCount": 0,
+  "approvedSlugs": [
+    "gyeongan-dong",
+    "songjeong-dong",
+    "tanbeol-dong",
+    "sam-dong",
+    "jik-dong",
+    "jangji-dong",
+    "mok-dong",
+    "sinhyeon-dong",
+    "munhyeong-dong",
+    "maesan-dong",
+    "chowol-eup",
+    "docheok-myeon",
+    "namjong-myeon"
+  ],
+  "scope": "All actual customer-visible JSON fields for 13 A articles. Text/source/product semantics only; final build, HTTP, deployment, DB and indexing verification remain separate.",
+  "method": "Manual reading of all 13 full articles and metadata, cross-check of supplied official source evidence and actual catalog HTML, re-review of revised 삼동 plus three added pages at final digest, and independent structural aid. Nine unchanged initial articles verified by per-page digest. No writer inputs edited by reviewer.",
+  "sourceAccessLimitations": [
+    "직동, 장지동 and 목동 use fresh first-party indexed content evidence because direct origin GET returned 502/timeout; this review does not claim origin GET200.",
+    "초월읍 historical register confirms recorded identity/address only; census date and present operation remain unverified and are explicitly qualified in article."
+  ],
+  "resolvedIssues": [
+    {
+      "slug": "sam-dong",
+      "issue": "Ambiguous wording could imply semiconductor-chip manufacturing.",
+      "resolution": "Writer changed title/description to 제조사업장 and body to 제조기업; exact final text re-read and passed.",
+      "reviewerEditedInput": false
+    }
+  ],
+  "distinctness": {
+    "manualBuyerDecisionsDistinct": true,
+    "uniqueFieldsChecked": [
+      "title",
+      "h1",
+      "primaryKeyword",
+      "description",
+      "cardSummary",
+      "firstAnswer"
+    ],
+    "maxBody12CharacterShingleJaccard": 0.078485,
+    "maxPair": [
+      "gyeongan-dong",
+      "namjong-myeon"
+    ],
+    "metricOnlySupplementary": true
+  },
+  "catalogReview": {
+    "officialSavedHtmlInspected": 8,
+    "freshVerificationFile": "catalog-revalidation.json",
+    "freshVerifiedAt": "2026-10-10T08:08:51.566862+00:00",
+    "congratsPrices": [
+      59000,
+      79000,
+      99000,
+      149000
+    ],
+    "funeralPrices": [
+      59000,
+      79000,
+      109000,
+      149000
+    ]
+  },
+  "imageReview": {
+    "independentReport": "review/independent-runtime/initial-static-review.json",
+    "status": "PASS_INITIAL_STATIC_REVIEW",
+    "nineImagesPixelInspectedByRuntimeReviewer": true,
+    "textReviewerReadReport": true,
+    "textReviewerAdditionalPixelInspection": "Historical funeral register page 16 to validate source record; product-image pixel review remains attributed to independent runtime reviewer.",
+    "semanticLimit": "Catalog illustrations only, no local installation, delivery record or business partnership proof."
+  },
+  "evidenceSha256": {
+    "catalog-revalidation.json": "925a4bba859723a5d335229db7ea1b870a952954c24a8bd5593f096f062896af",
+    "catalog/official-B060.html": "0f6a4f3d97cfe4774c289d4dc3109b3f230e6048b7fd99d2f5b8d9a5415114cd",
+    "catalog/official-B201.html": "58eb0897730e77b516f4fd1ea91594586b72e5876c572298ea5c991b41e0c74c",
+    "catalog/official-B203.html": "f8d968d446edafb9a1dcaf33a96c75a599315b88fd93618698f9c876e93a09eb",
+    "catalog/official-B205.html": "34ad65c0af230330b86b15994b35d64aaf9a78c2101bf19ef290388e231a9901",
+    "catalog/official-C200.html": "decef616682065de89d9bc267395ddcf6759b3ed9ec43e2cc0cfb242254f041c",
+    "catalog/official-C203.html": "7465c08be85fae9e35a33c746511a4ad85eb656684ff3ad16ee4c066c915bd08",
+    "catalog/official-C204.html": "71261a22d07642d63729385521dee28d2f192d3439f0f58f2adf18402977392e",
+    "catalog/official-C205.html": "c6e24019386c8c2ab4de2ab0cfab5c1cc1a85b082b3e95ee86394542073b0d6d",
+    "research/facility-arthall-directions.txt": "a2ea86bbecc5201369a26ed520d61b8d37c97cbcb5a4d8fb48d49e23e18e2dcc",
+    "research/facility-arthall-facility.txt": "e2f3dd4c769f641dda4d03d7a2a38287ef352901ae80c9dec7a7c85f9f08e252",
+    "research/facility-fetch-1.json": "c49d78de63e954626a74a8c1528c2bf03e7fde1678559a2aab2e43b5f9b10bb1",
+    "research/facility-national-funeral-page16.png": "cab6aa48f38b406931157aa481d180650907840923bdbc67c65b822f20241e8d",
+    "research/facility-national-funeral.txt": "74f194c8c8c76bbaf1d3dde6c4a54877a2622d1b253df5563da055ae1aa60fa9",
+    "research/parent-official-index-evidence-2.json": "a8c41911da939367469ed2a496e7130a5d7e52521d3a75af3dd734cd081c6eb4",
+    "research/parent-official-index-evidence-3.json": "a6509e19f99080473acebb0ec83b463450b2f63b3609c1d12c2f396c5c83a281",
+    "research/parent-official-index-evidence.json": "2ae3027f4d47872b9e635702a12b1244e184fb789a72a060338671a384c57055",
+    "research/purchase-evidence/docheok.json": "c01bc701a55fb2be9c62a9ce376093b2f4730ff2044f4d982a60d6e8bac9d8db",
+    "research/purchase-evidence/gyeongan.json": "f71c30d53496c9648c49332bdcf624c5cffe9ea5805759885e588de316a7159c",
+    "research/purchase-evidence/jangji.json": "04bbacdb57579171e5b094902ef8bc99cbf1127d2d4ada08c84b13d72d053dba",
+    "research/purchase-evidence/jik.json": "5112205e70034bb2c5e3ba7d7141d013ade82f0ee00fa3bdebbcd7ce0722c6c7",
+    "research/purchase-evidence/maesan.json": "8a74cb43ad930a552c9917a32bf7322d4ca21d71518a6f130b163fc06e643769",
+    "research/purchase-evidence/mok.json": "2856ad32584e495d779265c2c5d6fcc8f86d875504c11997533a057def80d9c7",
+    "research/purchase-evidence/munhyeong.json": "43591f9b82f53c5513e77993f78c4881122021866f40cb4c2437ef8c552f4a67",
+    "research/purchase-evidence/restaurants.json": "808a85569a693da852d18b8f1125cee643ed51369cab8fc0e085a470d5a3a52c",
+    "research/purchase-evidence/sam.json": "83927e2bcb22d732370e36bbd2fa7d399f1e57b85beb9cebaaf2971b42f43d14",
+    "research/purchase-evidence/shinhyeon.json": "3dfa4999a126eff3ca3c953491ab5723a0215f0667fc4bafa8333cac660da920",
+    "research/purchase-evidence/tanbeol.json": "d5833a7bacd1f488f3d1118355f8896e16aba58d3969a7ea99e156b8428033d9",
+    "research/query-plan-a.json": "37fcd1c102a6c66a72d428c20193fcd16f6ecb8c7501f7acc50445a1ff9a1b24",
+    "review/a-structural-checks.json": "94a92d7062bc0c55767125606d67a85671ff1f3ecfca87f49e29a04992f32d39",
+    "review/independent-runtime/initial-static-review.json": "3b495698856057927e0b7955ee7417b198f14be6c74e509d43cbcb45a3c6f632",
+    "writer-brief.md": "87fa4c109ebda53fb4978e98c2cc3b2fefc090b75c6a0fdea6ba49116b5c9a2e"
+  },
+  "pages": [
+    {
+      "slug": "gyeongan-dong",
+      "status": "PASS_TEXT",
+      "pageSha256": "2a470ee857d9926bf70ec0b480b7d32605130c82812f62d0285c8b480af9c18b",
+      "title": "경기 광주 경안동 개업화환 | 경안시장 점포 개업",
+      "h1": "경안시장 점포에 보낼 개업화환은 어떻게 고를까요?",
+      "buyerDecision": "Market shop identity and personal versus merchant-association sender identity.",
+      "sourceFaithfulness": "Official city planning evidence places the Gyeongan market planning area at 경안동 33-59 일원. Article correctly distinguishes the planning-area address from a shop delivery address; no current opening asserted.",
+      "evidenceFiles": [
+        "research/purchase-evidence/gyeongan.json"
+      ],
+      "productFamily": "congrats",
+      "productKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sourceUrls": [
+        "https://www.gjcity.go.kr/depart/contents.do?mId=1107020100",
+        "https://fwith.co.kr/shop/item.php?it_id=C200",
+        "https://fwith.co.kr/shop/item.php?it_id=C203",
+        "https://fwith.co.kr/shop/item.php?it_id=C204",
+        "https://fwith.co.kr/shop/item.php?it_id=C205"
+      ],
+      "checks": {
+        "allCustomerVisibleFieldsRead": true,
+        "titleH1FirstAnswerAligned": true,
+        "descriptionAndCardSummaryDistinctAccurate": true,
+        "bodyContainsNoH1": true,
+        "localSourceClaimsFaithful": true,
+        "noInventedCurrentEventOrPartnership": true,
+        "fourCatalogOptionsComparedForBuyerDecision": true,
+        "catalogNamesPricesAndOrderCorrect": true,
+        "noUnsupportedDimensionsFlowerCountMaterialsStockOrAvailability": true,
+        "deliveryAndAcceptanceConditional": true,
+        "photosNotPresentedAsLocalDeliveryOrInstallation": true,
+        "sourcesNamesTypesDatesUrlsReviewed": true,
+        "phoneOnlineAndHoursCorrect": true,
+        "noUnsupportedInternalArticleLinks": true
+      },
+      "issues": []
+    },
+    {
+      "slug": "songjeong-dong",
+      "status": "PASS_TEXT",
+      "pageSha256": "8b7a5d119f72fe4325b47ac7a2fc69579b3d5db7d7f207f7879bdde4ad7d500d",
+      "title": "경기 광주 송정동 축하화환 | 광주시문화예술의전당 공연 축하",
+      "h1": "광주시문화예술의전당 공연단체에 보낼 축하화환은 어떻게 고를까요?",
+      "buyerDecision": "Performance company versus venue, named hall, group sender and permitted handoff time.",
+      "sourceFaithfulness": "Official facility and directions text establish 광주시문화예술의전당, 남한산성홀/맹사성홀 and 회안대로 891 (송정동 340-1). Article does not confuse the hall name with 남한산성면, announce a real performance or infer flower acceptance.",
+      "evidenceFiles": [
+        "research/facility-arthall-facility.txt",
+        "research/facility-arthall-directions.txt",
+        "research/facility-fetch-1.json"
+      ],
+      "productFamily": "congrats",
+      "productKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sourceUrls": [
+        "https://www.nsart.or.kr/content/14.do",
+        "https://www.nsart.or.kr/content/87.do",
+        "https://fwith.co.kr/shop/item.php?it_id=C200",
+        "https://fwith.co.kr/shop/item.php?it_id=C203",
+        "https://fwith.co.kr/shop/item.php?it_id=C204",
+        "https://fwith.co.kr/shop/item.php?it_id=C205"
+      ],
+      "checks": {
+        "allCustomerVisibleFieldsRead": true,
+        "titleH1FirstAnswerAligned": true,
+        "descriptionAndCardSummaryDistinctAccurate": true,
+        "bodyContainsNoH1": true,
+        "localSourceClaimsFaithful": true,
+        "noInventedCurrentEventOrPartnership": true,
+        "fourCatalogOptionsComparedForBuyerDecision": true,
+        "catalogNamesPricesAndOrderCorrect": true,
+        "noUnsupportedDimensionsFlowerCountMaterialsStockOrAvailability": true,
+        "deliveryAndAcceptanceConditional": true,
+        "photosNotPresentedAsLocalDeliveryOrInstallation": true,
+        "sourcesNamesTypesDatesUrlsReviewed": true,
+        "phoneOnlineAndHoursCorrect": true,
+        "noUnsupportedInternalArticleLinks": true
+      },
+      "issues": []
+    },
+    {
+      "slug": "tanbeol-dong",
+      "status": "PASS_TEXT",
+      "pageSha256": "84932d041bbeaf307c147808feaa28626b77eb8fcc2fae28b94838aa7cc233d4",
+      "title": "경기 광주 탄벌동 개업화환 | 이배재로 기계 전시장 이전 축하",
+      "h1": "탄벌동 기계 전시장 이전식 화환은 어디로 보내야 할까요?",
+      "buyerDecision": "Which numbered machinery showroom hosts the invited relocation event.",
+      "sourceFaithfulness": "First-party directions distinguish 제1전시장 at 이배재로 98 (탄벌동) from 제2전시장 at 중대동 28-171. Article uses this only as a branch-confusion example and explicitly disclaims a current relocation ceremony.",
+      "evidenceFiles": [
+        "research/purchase-evidence/tanbeol.json"
+      ],
+      "productFamily": "congrats",
+      "productKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sourceUrls": [
+        "https://hdokpress.co.kr/회사소개/오시는길/",
+        "https://fwith.co.kr/shop/item.php?it_id=C200",
+        "https://fwith.co.kr/shop/item.php?it_id=C203",
+        "https://fwith.co.kr/shop/item.php?it_id=C204",
+        "https://fwith.co.kr/shop/item.php?it_id=C205"
+      ],
+      "checks": {
+        "allCustomerVisibleFieldsRead": true,
+        "titleH1FirstAnswerAligned": true,
+        "descriptionAndCardSummaryDistinctAccurate": true,
+        "bodyContainsNoH1": true,
+        "localSourceClaimsFaithful": true,
+        "noInventedCurrentEventOrPartnership": true,
+        "fourCatalogOptionsComparedForBuyerDecision": true,
+        "catalogNamesPricesAndOrderCorrect": true,
+        "noUnsupportedDimensionsFlowerCountMaterialsStockOrAvailability": true,
+        "deliveryAndAcceptanceConditional": true,
+        "photosNotPresentedAsLocalDeliveryOrInstallation": true,
+        "sourcesNamesTypesDatesUrlsReviewed": true,
+        "phoneOnlineAndHoursCorrect": true,
+        "noUnsupportedInternalArticleLinks": true
+      },
+      "issues": []
+    },
+    {
+      "slug": "sam-dong",
+      "status": "PASS_TEXT",
+      "pageSha256": "0ee893282ffb2a092f66153c314efd19ec7d4a8e63f6d4904fe7cdf78a898f3b",
+      "title": "경기 광주 삼동 축하화환 | 제조사업장 기념행사",
+      "h1": "삼동 제조사업장 행사에 보내는 화환은 무엇을 확인할까요?",
+      "buyerDecision": "Company headquarters recipient versus local factory event and obtaining the absent detailed street address.",
+      "sourceFaithfulness": "Official locations evidence identifies 광주 Factory in 광주시 삼동 and separate 용인시 죽전동 headquarters. Article does not invent a road address, current ceremony, entry route or manufacturing subtype. Reviewer-required semiconductor-fabrication ambiguity removed from title, description and body.",
+      "evidenceFiles": [
+        "research/purchase-evidence/sam.json"
+      ],
+      "productFamily": "congrats",
+      "productKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sourceUrls": [
+        "https://boboohitech.co.kr/company/locations/",
+        "https://fwith.co.kr/shop/item.php?it_id=C200",
+        "https://fwith.co.kr/shop/item.php?it_id=C203",
+        "https://fwith.co.kr/shop/item.php?it_id=C204",
+        "https://fwith.co.kr/shop/item.php?it_id=C205"
+      ],
+      "checks": {
+        "allCustomerVisibleFieldsRead": true,
+        "titleH1FirstAnswerAligned": true,
+        "descriptionAndCardSummaryDistinctAccurate": true,
+        "bodyContainsNoH1": true,
+        "localSourceClaimsFaithful": true,
+        "noInventedCurrentEventOrPartnership": true,
+        "fourCatalogOptionsComparedForBuyerDecision": true,
+        "catalogNamesPricesAndOrderCorrect": true,
+        "noUnsupportedDimensionsFlowerCountMaterialsStockOrAvailability": true,
+        "deliveryAndAcceptanceConditional": true,
+        "photosNotPresentedAsLocalDeliveryOrInstallation": true,
+        "sourcesNamesTypesDatesUrlsReviewed": true,
+        "phoneOnlineAndHoursCorrect": true,
+        "noUnsupportedInternalArticleLinks": true
+      },
+      "issues": []
+    },
+    {
+      "slug": "jik-dong",
+      "status": "PASS_TEXT",
+      "pageSha256": "d0a25854aa80ead9a984be4b8dbf0d81976a38370d853774985d6fd6e94a7bd0",
+      "title": "경기 광주 직동 축하화환 | 고불로 광주 사무실 이전식",
+      "h1": "직동 사무실 이전식 화환, 본사 주소와 어떻게 구분할까요?",
+      "buyerDecision": "Gwangju office celebration versus headquarters relocation; not reusing an old address.",
+      "sourceFaithfulness": "Fresh official indexed history and directions establish 2026 Icheon headquarters move and 광주사무실 at 고불로 377 (직동). Article distinguishes current headquarters from office and historic 중대동 location; no current Jik-dong event asserted. Direct-origin 502/timeout remains a source-access limitation, not relabeled HTTP200.",
+      "evidenceFiles": [
+        "research/purchase-evidence/jik.json",
+        "research/parent-official-index-evidence.json",
+        "research/parent-official-index-evidence-2.json"
+      ],
+      "productFamily": "congrats",
+      "productKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sourceUrls": [
+        "https://www.kdhitech.com/myboard/history",
+        "https://www.kdhitech.com/page/map_01",
+        "https://fwith.co.kr/shop/item.php?it_id=C200",
+        "https://fwith.co.kr/shop/item.php?it_id=C203",
+        "https://fwith.co.kr/shop/item.php?it_id=C204",
+        "https://fwith.co.kr/shop/item.php?it_id=C205"
+      ],
+      "checks": {
+        "allCustomerVisibleFieldsRead": true,
+        "titleH1FirstAnswerAligned": true,
+        "descriptionAndCardSummaryDistinctAccurate": true,
+        "bodyContainsNoH1": true,
+        "localSourceClaimsFaithful": true,
+        "noInventedCurrentEventOrPartnership": true,
+        "fourCatalogOptionsComparedForBuyerDecision": true,
+        "catalogNamesPricesAndOrderCorrect": true,
+        "noUnsupportedDimensionsFlowerCountMaterialsStockOrAvailability": true,
+        "deliveryAndAcceptanceConditional": true,
+        "photosNotPresentedAsLocalDeliveryOrInstallation": true,
+        "sourcesNamesTypesDatesUrlsReviewed": true,
+        "phoneOnlineAndHoursCorrect": true,
+        "noUnsupportedInternalArticleLinks": true
+      },
+      "issues": []
+    },
+    {
+      "slug": "jangji-dong",
+      "status": "PASS_TEXT",
+      "pageSha256": "f22656a908f68166c30a6eb6cea234877a0ed773fbddd9d394b883991873cb55",
+      "title": "경기 광주 장지동 축하화환 | 경충대로 물류기업 창립기념식",
+      "h1": "장지동 물류기업 기념식 화환은 창고로 보내면 될까요?",
+      "buyerDecision": "Anniversary gift handoff versus freight receiving/shipping operations.",
+      "sourceFaithfulness": "Official indexed Samjin homepage establishes 광주 경충대로 1801 (장지동), a separate Busan business location and receiving/shipping context. Article does not infer an anniversary date, loading-bay route or flower intake policy. Direct-origin 502/timeout remains disclosed in evidence.",
+      "evidenceFiles": [
+        "research/purchase-evidence/jangji.json",
+        "research/parent-official-index-evidence-2.json"
+      ],
+      "productFamily": "congrats",
+      "productKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sourceUrls": [
+        "https://samjincs.co.kr/",
+        "https://fwith.co.kr/shop/item.php?it_id=C200",
+        "https://fwith.co.kr/shop/item.php?it_id=C203",
+        "https://fwith.co.kr/shop/item.php?it_id=C204",
+        "https://fwith.co.kr/shop/item.php?it_id=C205"
+      ],
+      "checks": {
+        "allCustomerVisibleFieldsRead": true,
+        "titleH1FirstAnswerAligned": true,
+        "descriptionAndCardSummaryDistinctAccurate": true,
+        "bodyContainsNoH1": true,
+        "localSourceClaimsFaithful": true,
+        "noInventedCurrentEventOrPartnership": true,
+        "fourCatalogOptionsComparedForBuyerDecision": true,
+        "catalogNamesPricesAndOrderCorrect": true,
+        "noUnsupportedDimensionsFlowerCountMaterialsStockOrAvailability": true,
+        "deliveryAndAcceptanceConditional": true,
+        "photosNotPresentedAsLocalDeliveryOrInstallation": true,
+        "sourcesNamesTypesDatesUrlsReviewed": true,
+        "phoneOnlineAndHoursCorrect": true,
+        "noUnsupportedInternalArticleLinks": true
+      },
+      "issues": []
+    },
+    {
+      "slug": "mok-dong",
+      "status": "PASS_TEXT",
+      "pageSha256": "72e3c0faac14439c685f79013d581e97dff0709c18883471e12cf0c10d0bc9c7",
+      "title": "경기 광주 목동 축하화환 | 진토길 건축자재 기업 확장 축하",
+      "h1": "목동 건축자재 기업 확장 행사에는 어떤 화환이 어울릴까요?",
+      "buyerDecision": "Joint collaborator sender naming, shared budget and office versus worksite handoff.",
+      "sourceFaithfulness": "Official indexed introduction establishes architectural thermal-bar extrusion/building-material trade, 목동 134-1 headquarters and 진토길 71. Article treats these as business context only; no current expansion/groundbreaking/ceremony or partnership asserted. 99,000 / 3 = 33,000 and 149,000 - 99,000 = 50,000 are correct. Direct-origin 502/timeout is not represented as HTTP200.",
+      "evidenceFiles": [
+        "research/purchase-evidence/mok.json",
+        "research/parent-official-index-evidence-2.json",
+        "research/parent-official-index-evidence-3.json"
+      ],
+      "productFamily": "congrats",
+      "productKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sourceUrls": [
+        "https://www.dhptec.com/company/introduction/",
+        "https://www.dhptec.com/company/location/",
+        "https://fwith.co.kr/shop/item.php?it_id=C200",
+        "https://fwith.co.kr/shop/item.php?it_id=C203",
+        "https://fwith.co.kr/shop/item.php?it_id=C204",
+        "https://fwith.co.kr/shop/item.php?it_id=C205"
+      ],
+      "checks": {
+        "allCustomerVisibleFieldsRead": true,
+        "titleH1FirstAnswerAligned": true,
+        "descriptionAndCardSummaryDistinctAccurate": true,
+        "bodyContainsNoH1": true,
+        "localSourceClaimsFaithful": true,
+        "noInventedCurrentEventOrPartnership": true,
+        "fourCatalogOptionsComparedForBuyerDecision": true,
+        "catalogNamesPricesAndOrderCorrect": true,
+        "noUnsupportedDimensionsFlowerCountMaterialsStockOrAvailability": true,
+        "deliveryAndAcceptanceConditional": true,
+        "photosNotPresentedAsLocalDeliveryOrInstallation": true,
+        "sourcesNamesTypesDatesUrlsReviewed": true,
+        "phoneOnlineAndHoursCorrect": true,
+        "noUnsupportedInternalArticleLinks": true
+      },
+      "issues": []
+    },
+    {
+      "slug": "sinhyeon-dong",
+      "status": "PASS_TEXT",
+      "pageSha256": "d5f87bc96c1f3437540bcad9f4cbfc1746040468bb2b679e6868c5d9360a0f1c",
+      "title": "경기 광주 신현동 개업화환 | 새말길 커피머신 쇼룸 개업",
+      "h1": "신현동 커피머신 쇼룸 개업화환은 어느 층으로 보낼까요?",
+      "buyerDecision": "Showroom event floor and demonstration staff versus actual wreath receiver.",
+      "sourceFaithfulness": "Official Giesen Korea snapshot lists showroom visit requests and 새말길 92 (신현동), 1층·3층. Article does not assign the showroom to a particular floor, invent a current opening, or infer lift/route/acceptance rules.",
+      "evidenceFiles": [
+        "research/purchase-evidence/shinhyeon.json"
+      ],
+      "productFamily": "congrats",
+      "productKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sourceUrls": [
+        "https://giesenkorea.co.kr/home",
+        "https://fwith.co.kr/shop/item.php?it_id=C200",
+        "https://fwith.co.kr/shop/item.php?it_id=C203",
+        "https://fwith.co.kr/shop/item.php?it_id=C204",
+        "https://fwith.co.kr/shop/item.php?it_id=C205"
+      ],
+      "checks": {
+        "allCustomerVisibleFieldsRead": true,
+        "titleH1FirstAnswerAligned": true,
+        "descriptionAndCardSummaryDistinctAccurate": true,
+        "bodyContainsNoH1": true,
+        "localSourceClaimsFaithful": true,
+        "noInventedCurrentEventOrPartnership": true,
+        "fourCatalogOptionsComparedForBuyerDecision": true,
+        "catalogNamesPricesAndOrderCorrect": true,
+        "noUnsupportedDimensionsFlowerCountMaterialsStockOrAvailability": true,
+        "deliveryAndAcceptanceConditional": true,
+        "photosNotPresentedAsLocalDeliveryOrInstallation": true,
+        "sourcesNamesTypesDatesUrlsReviewed": true,
+        "phoneOnlineAndHoursCorrect": true,
+        "noUnsupportedInternalArticleLinks": true
+      },
+      "issues": []
+    },
+    {
+      "slug": "munhyeong-dong",
+      "status": "PASS_TEXT",
+      "pageSha256": "df518c59e610463d6e670f37d4aa1de0005c767d406fe44285154d3ecfdc4f1e",
+      "title": "경기 광주 문형동 축하화환 | 오포로 포장재 공장 이전 축하",
+      "h1": "문형동 포장재 공장 이전 축하화환, 수신명을 어떻게 정할까요?",
+      "buyerDecision": "Current recipient company naming after a move, old Opo address records and office versus production-area handoff.",
+      "sourceFaithfulness": "First-party Sungdai page establishes corrugated/color box manufacture and 오포로 425-61 (문형동). Article clearly says this does not establish a current factory move or ceremony; old address records and changed company names remain conditional checks.",
+      "evidenceFiles": [
+        "research/purchase-evidence/munhyeong.json"
+      ],
+      "productFamily": "congrats",
+      "productKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sourceUrls": [
+        "https://www.sungdai.co.kr/page/sub_1_1",
+        "https://fwith.co.kr/shop/item.php?it_id=C200",
+        "https://fwith.co.kr/shop/item.php?it_id=C203",
+        "https://fwith.co.kr/shop/item.php?it_id=C204",
+        "https://fwith.co.kr/shop/item.php?it_id=C205"
+      ],
+      "checks": {
+        "allCustomerVisibleFieldsRead": true,
+        "titleH1FirstAnswerAligned": true,
+        "descriptionAndCardSummaryDistinctAccurate": true,
+        "bodyContainsNoH1": true,
+        "localSourceClaimsFaithful": true,
+        "noInventedCurrentEventOrPartnership": true,
+        "fourCatalogOptionsComparedForBuyerDecision": true,
+        "catalogNamesPricesAndOrderCorrect": true,
+        "noUnsupportedDimensionsFlowerCountMaterialsStockOrAvailability": true,
+        "deliveryAndAcceptanceConditional": true,
+        "photosNotPresentedAsLocalDeliveryOrInstallation": true,
+        "sourcesNamesTypesDatesUrlsReviewed": true,
+        "phoneOnlineAndHoursCorrect": true,
+        "noUnsupportedInternalArticleLinks": true
+      },
+      "issues": []
+    },
+    {
+      "slug": "maesan-dong",
+      "status": "PASS_TEXT",
+      "pageSha256": "857f3d4fc0882c76a1110cd89bebe2d096342ff556c2996e4f0894a6267b646b",
+      "title": "경기 광주 매산동 개업화환 | 회안대로 가구 전시장 확장 축하",
+      "h1": "매산동 전시장 확장 축하화환, 일반 영업일에 보내도 될까요?",
+      "buyerDecision": "Undated showroom expansion wording versus a confirmed celebration and ordinary customer opening hours.",
+      "sourceFaithfulness": "Humaru source establishes 회안대로71번길 24 (매산동), in-store experience and an undated expansion notice. Article explicitly refuses to infer current construction/completion/opening dates or wreath permission from customer visit reservations.",
+      "evidenceFiles": [
+        "research/purchase-evidence/maesan.json"
+      ],
+      "productFamily": "congrats",
+      "productKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sourceUrls": [
+        "https://humaru.co.kr/shopinfo/company.html",
+        "https://fwith.co.kr/shop/item.php?it_id=C200",
+        "https://fwith.co.kr/shop/item.php?it_id=C203",
+        "https://fwith.co.kr/shop/item.php?it_id=C204",
+        "https://fwith.co.kr/shop/item.php?it_id=C205"
+      ],
+      "checks": {
+        "allCustomerVisibleFieldsRead": true,
+        "titleH1FirstAnswerAligned": true,
+        "descriptionAndCardSummaryDistinctAccurate": true,
+        "bodyContainsNoH1": true,
+        "localSourceClaimsFaithful": true,
+        "noInventedCurrentEventOrPartnership": true,
+        "fourCatalogOptionsComparedForBuyerDecision": true,
+        "catalogNamesPricesAndOrderCorrect": true,
+        "noUnsupportedDimensionsFlowerCountMaterialsStockOrAvailability": true,
+        "deliveryAndAcceptanceConditional": true,
+        "photosNotPresentedAsLocalDeliveryOrInstallation": true,
+        "sourcesNamesTypesDatesUrlsReviewed": true,
+        "phoneOnlineAndHoursCorrect": true,
+        "noUnsupportedInternalArticleLinks": true
+      },
+      "issues": []
+    },
+    {
+      "slug": "chowol-eup",
+      "status": "PASS_TEXT",
+      "pageSha256": "a2a31e88da85d832c0b651a0df6390a567cd2002341594f01eaf2aa08f605df3",
+      "title": "경기 광주 초월읍 근조화환 | 지인 장례 조문 준비",
+      "h1": "초월읍 지인 장례에 보낼 근조화환은 어떻게 고를까요?",
+      "buyerDecision": "Individual condolence budget, family preferences and current obituary matching for a similar-named facility.",
+      "sourceFaithfulness": "National funeral PDF page 16 establishes recorded 삼육병원장례식장 at 초월읍 경수길 25 (지월리); reviewer inspected the actual page pixels and extracted line. Article identifies the 2025-09-29 URL storage date, 2026-10-10 recheck, unknown census date and unverified current operation, then requires current obituary/family or venue confirmation. No actual obituary or private data copied.",
+      "evidenceFiles": [
+        "research/facility-national-funeral.txt",
+        "research/facility-national-funeral-page16.png",
+        "research/facility-fetch-1.json"
+      ],
+      "productFamily": "funeral",
+      "productKeys": [
+        "funeral-basic",
+        "funeral-premium",
+        "funeral-large",
+        "funeral-xl"
+      ],
+      "sourceUrls": [
+        "https://www.kfcpi.or.kr/link/2025/09/29/831da0f4-5acd-43d4-b0ae-60e6111f33f7.pdf#page=16",
+        "https://fwith.co.kr/shop/item.php?it_id=B201",
+        "https://fwith.co.kr/shop/item.php?it_id=B203",
+        "https://fwith.co.kr/shop/item.php?it_id=B205",
+        "https://fwith.co.kr/shop/item.php?it_id=B060"
+      ],
+      "checks": {
+        "allCustomerVisibleFieldsRead": true,
+        "titleH1FirstAnswerAligned": true,
+        "descriptionAndCardSummaryDistinctAccurate": true,
+        "bodyContainsNoH1": true,
+        "localSourceClaimsFaithful": true,
+        "noInventedCurrentEventOrPartnership": true,
+        "fourCatalogOptionsComparedForBuyerDecision": true,
+        "catalogNamesPricesAndOrderCorrect": true,
+        "noUnsupportedDimensionsFlowerCountMaterialsStockOrAvailability": true,
+        "deliveryAndAcceptanceConditional": true,
+        "photosNotPresentedAsLocalDeliveryOrInstallation": true,
+        "sourcesNamesTypesDatesUrlsReviewed": true,
+        "phoneOnlineAndHoursCorrect": true,
+        "noUnsupportedInternalArticleLinks": true
+      },
+      "issues": []
+    },
+    {
+      "slug": "docheok-myeon",
+      "status": "PASS_TEXT",
+      "pageSha256": "7e74a229543bb605a32f0aef0870d8f45dd3fdd9e7d1c190bf55b28b65a24061",
+      "title": "경기 광주 도척면 축하화환 | 곤지암리조트 기업 기념행사",
+      "h1": "도척면 곤지암리조트 기업행사 화환은 어떻게 보내나요?",
+      "buyerDecision": "Resort brand versus actual myeon, specific banquet room, organizer and guest-room reservation identity.",
+      "sourceFaithfulness": "Official resort group-event source establishes meeting/banquet/outdoor facilities and 도척면 도척윗로 278. Article correctly rejects 곤지암읍 substitution and requires the actual event, room, recipient and intake arrangements.",
+      "evidenceFiles": [
+        "research/purchase-evidence/docheok.json"
+      ],
+      "productFamily": "congrats",
+      "productKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sourceUrls": [
+        "https://m.konjiamresort.co.kr/team/teamList.dev",
+        "https://fwith.co.kr/shop/item.php?it_id=C200",
+        "https://fwith.co.kr/shop/item.php?it_id=C203",
+        "https://fwith.co.kr/shop/item.php?it_id=C204",
+        "https://fwith.co.kr/shop/item.php?it_id=C205"
+      ],
+      "checks": {
+        "allCustomerVisibleFieldsRead": true,
+        "titleH1FirstAnswerAligned": true,
+        "descriptionAndCardSummaryDistinctAccurate": true,
+        "bodyContainsNoH1": true,
+        "localSourceClaimsFaithful": true,
+        "noInventedCurrentEventOrPartnership": true,
+        "fourCatalogOptionsComparedForBuyerDecision": true,
+        "catalogNamesPricesAndOrderCorrect": true,
+        "noUnsupportedDimensionsFlowerCountMaterialsStockOrAvailability": true,
+        "deliveryAndAcceptanceConditional": true,
+        "photosNotPresentedAsLocalDeliveryOrInstallation": true,
+        "sourcesNamesTypesDatesUrlsReviewed": true,
+        "phoneOnlineAndHoursCorrect": true,
+        "noUnsupportedInternalArticleLinks": true
+      },
+      "issues": []
+    },
+    {
+      "slug": "namjong-myeon",
+      "status": "PASS_TEXT",
+      "pageSha256": "3a3c59469a4623e3101ac26da40cd2bcd3da23cedcc7d6a30e86de43385f54bb",
+      "title": "경기 광주 남종면 개업화환 | 분원리 음식점 새출발 축하",
+      "h1": "남종면 분원리 음식점 새출발에 화환을 보내려면?",
+      "buyerDecision": "New restaurant ribbon name versus old navigation name for a recipient-confirmed reopening.",
+      "sourceFaithfulness": "City official restaurant list establishes 수와연 at 남종면 산수로 1680 (분원리 산3). Article expressly says this is location context, not evidence of current reopening or rename, and gives conditional naming/handoff guidance.",
+      "evidenceFiles": [
+        "research/purchase-evidence/restaurants.json"
+      ],
+      "productFamily": "congrats",
+      "productKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sourceUrls": [
+        "https://www.gjcity.go.kr/tour/contents.do?mId=0104020300",
+        "https://fwith.co.kr/shop/item.php?it_id=C200",
+        "https://fwith.co.kr/shop/item.php?it_id=C203",
+        "https://fwith.co.kr/shop/item.php?it_id=C204",
+        "https://fwith.co.kr/shop/item.php?it_id=C205"
+      ],
+      "checks": {
+        "allCustomerVisibleFieldsRead": true,
+        "titleH1FirstAnswerAligned": true,
+        "descriptionAndCardSummaryDistinctAccurate": true,
+        "bodyContainsNoH1": true,
+        "localSourceClaimsFaithful": true,
+        "noInventedCurrentEventOrPartnership": true,
+        "fourCatalogOptionsComparedForBuyerDecision": true,
+        "catalogNamesPricesAndOrderCorrect": true,
+        "noUnsupportedDimensionsFlowerCountMaterialsStockOrAvailability": true,
+        "deliveryAndAcceptanceConditional": true,
+        "photosNotPresentedAsLocalDeliveryOrInstallation": true,
+        "sourcesNamesTypesDatesUrlsReviewed": true,
+        "phoneOnlineAndHoursCorrect": true,
+        "noUnsupportedInternalArticleLinks": true
+      },
+      "issues": []
+    }
+  ],
+  "issues": []
+}
