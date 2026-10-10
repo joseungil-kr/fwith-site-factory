@@ -1,0 +1,262 @@
+name: SeoulYongsan Direct GitHub Static Publish
+on:
+  workflow_dispatch:
+    inputs:
+      expected_revision:
+        description: Exact reviewed 40-character SeoulYongsan source SHA
+        required: true
+        type: string
+      indexnow_only:
+        description: Verify and finalize the existing exact public release without any Cloudflare mutation
+        required: false
+        default: false
+        type: boolean
+permissions:
+  contents: read
+concurrency:
+  group: seoul-yongsan-direct-public-release
+  cancel-in-progress: false
+jobs:
+  build:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      artifact_id: ${{ steps.artifact.outputs.artifact-id }}
+      release_sha256: ${{ steps.package.outputs.release_sha256 }}
+    steps:
+      - name: Authorize exact source and first attempt
+        uses: actions/github-script@v7
+        env:
+          REVISION: ${{ inputs.expected_revision }}
+        with:
+          script: |
+            if (!/^[0-9a-f]{40}$/.test(process.env.REVISION)) throw new Error('Full source SHA required');
+            if (process.env.GITHUB_RUN_ATTEMPT !== '1') throw new Error('Mutation reruns disabled');
+            const owner = context.payload.repository.owner;
+            if (!(owner.type === 'User' && context.actor === owner.login)) {
+              const {data} = await github.rest.repos.getCollaboratorPermissionLevel({...context.repo, username: context.actor});
+              if (!['admin', 'maintain', 'write'].includes(data.permission)) throw new Error('Untrusted actor');
+            }
+            const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/site-factory-seoul-yongsan-direct'});
+            if (data.object.type !== 'commit' || data.object.sha !== process.env.REVISION) throw new Error('Not the exact SeoulYongsan branch head');
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - name: Test fixed publisher safety contracts
+        run: python3 control/scripts/direct-seoul-yongsan/test_publish.py -v
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.expected_revision }}
+          path: target
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify exact source ancestry
+        working-directory: target
+        env:
+          REVISION: ${{ inputs.expected_revision }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$REVISION"
+          git merge-base --is-ancestor "$REVISION" origin/site-factory-seoul-yongsan-direct
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build and test without provider credentials
+        working-directory: target/site-factory/seoul-yongsan-flower
+        env:
+          ASTRO_TELEMETRY_DISABLED: '1'
+          SITE_URL: https://seoul-yongsan.fwith.kr
+          SITE_INDEXABLE: 'true'
+          SITE_FACTORY_REVISION: ${{ inputs.expected_revision }}
+        run: |
+          set -euo pipefail
+          npm ci
+          npm test
+          npm run build
+      - name: Package exact static artifact
+        id: package
+        env:
+          REVISION: ${{ inputs.expected_revision }}
+        run: python3 control/scripts/direct-seoul-yongsan/publish.py package --source target/site-factory/seoul-yongsan-flower --report package-check.json
+      - uses: actions/upload-artifact@v4
+        id: artifact
+        with:
+          name: seoul-yongsan-direct-build-${{ github.run_id }}
+          path: release/
+          include-hidden-files: true
+          if-no-files-found: error
+  publish:
+    if: inputs.indexnow_only != true
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      issues: write
+    env:
+      REVISION: ${{ inputs.expected_revision }}
+    steps:
+      - name: Reject mutation reruns
+        run: test "$GITHUB_RUN_ATTEMPT" = 1
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ needs.build.outputs.artifact_id }}
+          merge-multiple: true
+          path: release
+      - name: Verify exact artifact, 5 of 5 planned articles, 7 sitemap URLs and real 404, SEO, assets and CTAs
+        env:
+          RELEASE_SHA256: ${{ needs.build.outputs.release_sha256 }}
+        run: python3 control/scripts/direct-seoul-yongsan/publish.py artifact --report artifact-check.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Recheck exact branch before publication
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/site-factory-seoul-yongsan-direct'});
+            if (data.object.type !== 'commit' || data.object.sha !== process.env.REVISION) throw new Error('Source branch moved; do not publish stale source');
+      - name: GET-only account, Worker and hostname collision check
+        id: preflight
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 control/scripts/direct-seoul-yongsan/publish.py preflight --report binding-before.json
+      - name: Deploy fixed route-less static assets once
+        id: deploy
+        continue-on-error: true
+        working-directory: release
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_LOG_SANITIZE: 'true'
+          WRANGLER_SEND_METRICS: 'false'
+        run: |
+          if ! npx --yes wrangler@4.148.0 deploy --config wrangler.publish.json > "$RUNNER_TEMP/seoul-yongsan-direct-upload.log" 2>&1; then
+            echo 'Upload failed or uncertain. Inspect GET and HTTP evidence before any recovery.'
+            exit 1
+          fi
+      - name: Attach only the fixed hostname with all overrides disabled
+        id: attach
+        if: steps.deploy.outcome == 'success'
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 control/scripts/direct-seoul-yongsan/publish.py attach --report domain-attach.json
+      - name: GET-only actual hostname binding readback
+        id: binding
+        if: ${{ always() && steps.preflight.outcome == 'success' && (steps.deploy.outcome == 'success' || steps.deploy.outcome == 'failure') }}
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 control/scripts/direct-seoul-yongsan/publish.py readback --report binding-after.json
+      - name: Verify public exact content, assets, SEO and real 404s
+        id: http
+        if: ${{ always() && steps.binding.outcome == 'success' }}
+        continue-on-error: true
+        run: python3 control/scripts/direct-seoul-yongsan/publish.py http --report public-http.json
+      - name: Submit exact verified sitemap once and retain IndexNow receipt
+        id: indexnow
+        if: ${{ always() && steps.deploy.outcome == 'success' && steps.binding.outcome == 'success' && steps.http.outcome == 'success' }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 control/scripts/direct-seoul-yongsan/publish.py indexnow --report indexnow-receipt.json
+      - name: Retain release evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seoul-yongsan-direct-result-${{ github.run_id }}
+          path: |
+            artifact-check.json
+            http-contract.json
+            binding-before.json
+            domain-attach.json
+            binding-after.json
+            public-http.json
+            indexnow-receipt.json
+            indexnow-http-observations.json
+            release/release.json
+            release/wrangler.publish.json
+          if-no-files-found: warn
+      - name: Require independently verified public release and receipt
+        if: always()
+        env:
+          DEPLOY: ${{ steps.deploy.outcome }}
+          BINDING: ${{ steps.binding.outcome }}
+          HTTP: ${{ steps.http.outcome }}
+          INDEXNOW: ${{ steps.indexnow.outcome }}
+        run: test "$DEPLOY" = success && test "$BINDING" = success && test "$HTTP" = success && test "$INDEXNOW" = success
+  finalize_indexnow:
+    if: inputs.indexnow_only == true
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    env:
+      REVISION: ${{ inputs.expected_revision }}
+    steps:
+      - name: Reject mutation reruns
+        run: test "$GITHUB_RUN_ATTEMPT" = 1
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ needs.build.outputs.artifact_id }}
+          merge-multiple: true
+          path: release
+      - name: Recheck exact branch before finalization
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/site-factory-seoul-yongsan-direct'});
+            if (data.object.type !== 'commit' || data.object.sha !== process.env.REVISION) throw new Error('Source branch moved; do not finalize stale source');
+      - name: Verify exact rebuilt static artifact
+        env:
+          RELEASE_SHA256: ${{ needs.build.outputs.release_sha256 }}
+        run: python3 control/scripts/direct-seoul-yongsan/publish.py artifact --report artifact-check.json
+      - name: Verify all live source bytes and real 404s without provider credentials
+        run: python3 control/scripts/direct-seoul-yongsan/publish.py http --report public-http.json
+      - name: Observe exact IndexNow client GET status and robots headers without submitting
+        run: python3 control/scripts/direct-seoul-yongsan/publish.py indexnow-probe --report indexnow-probe.json
+      - name: Finalize exact verified sitemap through the existing idempotent receipt journal
+        id: indexnow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 control/scripts/direct-seoul-yongsan/publish.py indexnow --report indexnow-receipt.json
+      - name: Retain finalization evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seoul-yongsan-indexnow-result-${{ github.run_id }}
+          path: |
+            artifact-check.json
+            http-contract.json
+            public-http.json
+            indexnow-probe.json
+            indexnow-http-observations.json
+            indexnow-receipt.json
+            release/release.json
+          if-no-files-found: warn
+      - name: Require verified IndexNow receipt
+        if: always()
+        env:
+          INDEXNOW: ${{ steps.indexnow.outcome }}
+        run: test "$INDEXNOW" = success
+
+
