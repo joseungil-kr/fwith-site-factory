@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T17:15:38.867375+00:00",
+  "updatedAt": "2026-10-10T17:24:01.269019+00:00",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-yongsan-direct-initial-20261010",
     "city": "서울특별시 용산구",
-    "status": "authoring_fixed_plan_and_preparing_source_branch",
+    "status": "independently_reviewed_source_save_pending",
     "owner": {
       "scheduledRunAt": "2026-10-10T17:00:00Z",
       "observedExecutionAt": "2026-10-10T17:01:55.856Z",
@@ -51,7 +51,9 @@
       "root": "site-factory/seoul-yongsan-flower",
       "worker": "seoul-yongsan-flower-guide",
       "hostname": "seoul-yongsan.fwith.kr",
-      "externalCreationVerified": false
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": true,
+      "sourceBranchBaseRevision": "07ae85ac13698dc4a0edc7faa00de21379f366fa"
     },
     "selection": {
       "officialCode": "11170",
@@ -72,18 +74,24 @@
       "publicHostObservation": "Web could not access hostname; unknown, not proof of absence"
     },
     "changeIntent": {
-      "action": "create_source_branch_from_verified_success_source",
+      "action": "save_reviewed_source_files_nonforce_and_full_readback",
       "target": "refs/heads/site-factory-seoul-yongsan-direct",
-      "baseRevision": "07ae85ac13698dc4a0edc7faa00de21379f366fa",
-      "idempotencyKey": "seoul-yongsan:source-branch:create:07ae85ac13698dc4a0edc7faa00de21379f366fa"
+      "expectedHead": "07ae85ac13698dc4a0edc7faa00de21379f366fa",
+      "sourceFiles": 72,
+      "sourceManifestSha256": "f0fcf92818b9988275d8a1044a673c865df0ff1e80eb24a0f2c86d1ff25b53a7",
+      "idempotencyKey": "seoul-yongsan:reviewed-source:f0fcf92818b9988275d8a1044a673c865df0ff1e80eb24a0f2c86d1ff25b53a7"
     },
-    "lastSuccessfulStage": "independent_fixed_plan_pass",
+    "lastSuccessfulStage": "independent_content_review_and_local_assembly_tests",
     "review": {
       "screenQa": "DEFERRED_NOT_PASS",
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
       "planReviewSha256": "7e61aa58a4994545d079ed7a12aca8d04994380cbe65970e7fdb8e621d4e8665",
       "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
-      "runtimePreparationStatus": "NODE22_FIXTURE_PASS_NOT_ACTUAL_SOURCE_OR_PUBLISH_PASS"
+      "runtimePreparationStatus": "NODE22_FIXTURE_PASS_NOT_ACTUAL_SOURCE_OR_PUBLISH_PASS",
+      "articlesSha256": "b82f82957c175132acb580475e1dbac202da9ca1ed1ae0c12d761fac6e5855b4",
+      "independentReviewSha256": "300b1ddab7c2f9e6ae8cbc90437ccd7a02f544b7706f48ea0b5444683ab9e2b0",
+      "contentStatus": "PASS",
+      "runtimeStatus": "SOURCE_TESTS68_PUBLISHER42_PASS_BUILD_AT_EXACT_SHA_PENDING"
     },
     "unfinishedStages": [
       "plan_freeze",
@@ -114,34 +122,36 @@
           "slug": "hannam-dong-sch-seoul-condolence-wreath",
           "title": "순천향대 서울병원 장례식장 근조화환 주문",
           "primaryKeyword": "순천향대 서울병원 장례식장 근조화환 주문",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_source_save_pending"
         },
         {
           "slug": "hangangno3-ga-seoul-dragon-city-wedding-wreath",
           "title": "서울드래곤시티 결혼식 축하화환 주문",
           "primaryKeyword": "서울드래곤시티 결혼식 축하화환 주문",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_source_save_pending"
         },
         {
           "slug": "hangangno2-ga-seonin-opening-wreath",
           "title": "선인상가 거래처 개업화환 주문",
           "primaryKeyword": "선인상가 거래처 개업화환 주문",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_source_save_pending"
         },
         {
           "slug": "hyochang-dong-kimkoo-convention-event-wreath",
           "title": "백범김구기념관 행사 축하화환 상담",
           "primaryKeyword": "백범김구기념관 행사 축하화환 상담",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_source_save_pending"
         },
         {
           "slug": "yongsan-dong3-ga-mnd-convention-wedding-wreath",
           "title": "국방컨벤션 결혼식 축하화환 주문",
           "primaryKeyword": "국방컨벤션 결혼식 축하화환 주문",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_source_save_pending"
         }
       ],
-      "planFreezeRevision": "2f8058fdf0a226fbae49db511902358b9e94f403"
+      "planFreezeRevision": "2f8058fdf0a226fbae49db511902358b9e94f403",
+      "approvedArticleCount": 5,
+      "deferredArticleCount": 0
     }
   },
   "history": [
