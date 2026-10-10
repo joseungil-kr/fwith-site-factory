@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T18:35:50.662Z",
+  "updatedAt": "2026-10-10T18:37:59.878Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-seongdong-direct-initial-20261010",
     "city": "서울특별시 성동구",
-    "status": "exact_source_verified_pending_official_workflow_dispatch",
+    "status": "official_workflow_dispatched",
     "owner": {
       "scheduledRunAt": "2026-10-10T18:00:00Z",
       "observedExecutionAt": "2026-10-10T18:04:31.491Z",
@@ -74,14 +74,12 @@
       "publicHostObservation": "not_yet_verified"
     },
     "changeIntent": {
-      "action": "official_workflow_dispatch_once",
-      "target": ".github/workflows/seoul-seongdong-direct-publish.yml",
+      "action": "observe_run_and_verify_hosted_exact_source",
+      "target": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38076544712",
       "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
-      "indexnowOnly": false,
-      "idempotencyKey": "seoul-seongdong:dispatch:81394c7b05b060db01d3f31d388ec15d9d781efb",
-      "requiredProviderCheck": "GET identity Worker hostname; no override; do not treat authentication errors as absence"
+      "idempotencyKey": "seoul-seongdong:observe-run:38076544712"
     },
-    "lastSuccessfulStage": "exact_remote_source_and_independent_credentialless_build_artifact_loopback_pass",
+    "lastSuccessfulStage": "official_workflow_dispatch_readback_confirmed",
     "unfinishedStages": [
       "official_plan",
       "content",
@@ -165,6 +163,16 @@
       "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
       "remoteReadbackSha256": "cef283e4dcbfc4a153975a71f475e0ba6994a8080c1c30e6f961ca1ce98f4fb4",
       "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+    },
+    "controlRevision": "66d02d3dc65cf18555ba788f8584372504137956",
+    "run": {
+      "id": 38076544712,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38076544712",
+      "status": "in_progress",
+      "dispatchCount": 1,
+      "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
+      "controlRevision": "66d02d3dc65cf18555ba788f8584372504137956",
+      "createdAt": "2026-10-10T18:37:45Z"
     }
   },
   "history": [
