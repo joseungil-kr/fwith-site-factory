@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T10:38:26.388Z",
+  "updatedAt": "2026-10-10T10:43:58.054Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "gwangju-direct-initial-20261010",
     "city": "경기도 광주시",
-    "status": "approved_release_technical_recovery",
+    "status": "official_workflow_running",
     "owner": {
       "scheduledRunAt": "2026-10-10T10:00:00Z",
       "observedExecutionAt": "2026-10-10T10:04:27Z",
@@ -363,7 +363,7 @@
       "heldArticleCount": 1,
       "passedRatio": 0.9615384615384616
     },
-    "lastSuccessfulStage": "fresh_69_source_7_controls_exact_review_readback_browser_selection_restored",
+    "lastSuccessfulStage": "official_exact_source_dispatch_run_confirmed",
     "nextIntent": "Recover cloud browser and re-read actual runs before any further dispatch; retain exact user-approved source and scope.",
     "pendingExternalAction": {
       "action": "workflow_dispatch",
@@ -378,7 +378,7 @@
       "dispatchAttempted": true,
       "requires": "Restore own-cloud browser renderer; required approval is already granted",
       "dispatchClickRejectedAt": "2026-10-10T10:10:51.277Z",
-      "dispatchConfirmed": false
+      "dispatchConfirmed": true
     },
     "review": {
       "independentContent": "PASS_EXACT_25_ARTICLES",
@@ -427,11 +427,14 @@
       "approvedAt": "2026-10-10T10:23:25Z"
     },
     "publication": {
-      "state": "not_attempted",
+      "state": "workflow_running",
       "intendedUrl": "https://gwangju.fwith.kr",
       "publicUrl": null,
       "articleCountPublished": 0,
-      "runId": null
+      "runId": 38045888959,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38045888959",
+      "controlRevision": "57fccc39ef5ca499167f73447a23f373f14920d2",
+      "startedAt": "2026-10-10T10:43:19Z"
     },
     "publicQa": {
       "state": "not_performed",
@@ -449,7 +452,6 @@
       "listReadback": null
     },
     "incompleteStages": [
-      "cloud_browser_renderer_technical_recovery",
       "provider_account_worker_domain_GET_collision_checks",
       "official_exact_source_workflow_dispatch_and_CI",
       "live_exact_revision_HTTP_images_CTA_canonical_robots_sitemap_404_links_QA",
@@ -3500,7 +3502,7 @@
     {
       "scopeKey": "gwangju-direct-initial-20261010",
       "city": "경기도 광주시",
-      "status": "approved_release_technical_recovery",
+      "status": "official_workflow_running",
       "owner": {
         "scheduledRunAt": "2026-10-10T10:00:00Z",
         "observedExecutionAt": "2026-10-10T10:04:27Z",
@@ -3830,7 +3832,7 @@
         "heldArticleCount": 1,
         "passedRatio": 0.9615384615384616
       },
-      "lastSuccessfulStage": "fresh_69_source_7_controls_exact_review_readback_browser_selection_restored",
+      "lastSuccessfulStage": "official_exact_source_dispatch_run_confirmed",
       "nextIntent": "Recover cloud browser and re-read actual runs before any further dispatch; retain exact user-approved source and scope.",
       "pendingExternalAction": {
         "action": "workflow_dispatch",
@@ -3845,7 +3847,7 @@
         "dispatchAttempted": true,
         "requires": "Restore own-cloud browser renderer; required approval is already granted",
         "dispatchClickRejectedAt": "2026-10-10T10:10:51.277Z",
-        "dispatchConfirmed": false
+        "dispatchConfirmed": true
       },
       "review": {
         "independentContent": "PASS_EXACT_25_ARTICLES",
@@ -3894,11 +3896,14 @@
         "approvedAt": "2026-10-10T10:23:25Z"
       },
       "publication": {
-        "state": "not_attempted",
+        "state": "workflow_running",
         "intendedUrl": "https://gwangju.fwith.kr",
         "publicUrl": null,
         "articleCountPublished": 0,
-        "runId": null
+        "runId": 38045888959,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38045888959",
+        "controlRevision": "57fccc39ef5ca499167f73447a23f373f14920d2",
+        "startedAt": "2026-10-10T10:43:19Z"
       },
       "publicQa": {
         "state": "not_performed",
@@ -3916,7 +3921,6 @@
         "listReadback": null
       },
       "incompleteStages": [
-        "cloud_browser_renderer_technical_recovery",
         "provider_account_worker_domain_GET_collision_checks",
         "official_exact_source_workflow_dispatch_and_CI",
         "live_exact_revision_HTTP_images_CTA_canonical_robots_sitemap_404_links_QA",
@@ -6270,7 +6274,7 @@
       "worker": "pocheon-flower-guide",
       "hostname": "pocheon.fwith.kr",
       "externalCreationVerified": false,
-      "sourceBranchCreatedVerified": false
+      "sourceBranchCreatedVerified": true
     },
     "selection": {
       "officialCode": "41650",
@@ -6460,18 +6464,21 @@
       "batchASha256": "0241d31820987fbf040b2c49e5b6549ecec38af9e0c67e9b62c5a43b742f9dfd",
       "batchBSha256": "54ee29d7e79c27a4759333b557295e25cae0447fa9d7c51183cb91433e2bbc80",
       "images": "PASS_INDEPENDENT_9_IMAGE_BYTES",
-      "runtime": "PENDING_INDEPENDENT_CLEAN_NODE22_BUILD",
-      "visual": "NOT_PERFORMED"
+      "runtime": "PASS_INDEPENDENT_NODE22_64_SOURCE_34_HELPER_STATIC_GRAPH_ARTIFACT",
+      "visual": "NOT_PERFORMED",
+      "exactSourceBuild": "PASS_LOCAL_EXACT_SOURCE_80885f720b382cd71fab0f68228040e7637a8b34",
+      "remoteSource": "pending_independent_full_blob_readback"
     },
     "pendingExternalAction": {
-      "action": "create_reviewed_source_branch",
-      "branch": "site-factory-pocheon-direct",
-      "sourceRoot": "site-factory/pocheon-flower",
-      "baseRevision": "b41863691a48912b182b915798c93a81d5723e59",
-      "sourceManifestFiles": 69,
-      "status": "intent_saved_before_write",
-      "idempotencyKey": "pocheon-direct-initial-20261010:save-reviewed-source-v1",
-      "runtimeGate": "pending_not_publishable"
-    }
+      "action": "save_region_fixed_direct_controls",
+      "paths": [
+        "scripts/direct-pocheon/publish.py",
+        "scripts/direct-pocheon/test_publish.py",
+        ".github/workflows/pocheon-direct-publish.yml"
+      ],
+      "idempotencyKey": "pocheon-direct-initial-20261010:save-controls-v1",
+      "state": "prepared_independently_reviewed_no_dispatch"
+    },
+    "sourceRevision": "80885f720b382cd71fab0f68228040e7637a8b34"
   }
 }
