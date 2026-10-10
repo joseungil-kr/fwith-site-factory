@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T14:05:15.376Z",
+  "updatedAt": "2026-10-10T14:18:49.246Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "yangpyeong-direct-initial-20261010",
     "city": "양평군",
-    "status": "researching_fixed_plan",
+    "status": "plan_revision_before_authoring",
     "owner": {
       "scheduledRunAt": "2026-10-10T14:00:00Z",
       "observedExecutionAt": "2026-10-10T14:05:15.376Z",
@@ -65,19 +65,29 @@
       "providerOwnershipCollisionCheck": "required_before_deployment_not_yet_observed"
     },
     "plan": {
-      "state": "researching_not_frozen",
-      "plannedArticleCount": null
+      "state": "candidate_independent_revise_before_freeze",
+      "plannedArticleCount": 12,
+      "minimumPassedArticles": 11,
+      "administrativeUnits": 12,
+      "crosswalkRelationships": 12,
+      "partialRelationships": 0,
+      "legalRiCount": 110,
+      "membershipPath": "docs/direct-regional-release/yangpyeong/membership.json",
+      "candidatePlanPath": "docs/direct-regional-release/yangpyeong/plan-candidate-v1.json",
+      "passedArticleCount": 0,
+      "heldArticleCount": null,
+      "customerArticlesWritten": 0
     },
     "input": {
       "controlRevision": "d87a0515e6d62da7dd793dbd9bbfe36326cf4e07"
     },
     "changeIntent": {
-      "action": "claim_then_research_prepare_exact_regional_source",
-      "target": "site-factory-yangpyeong-direct / site-factory/yangpyeong-flower",
-      "idempotencyKey": "yangpyeong-direct-initial-20261010:claim"
+      "action": "save_research_and_independent_plan_revision_findings",
+      "target": "docs/direct-regional-release/yangpyeong",
+      "idempotencyKey": "yangpyeong:plan-revise-v1"
     },
-    "lastSuccessfulStage": "fresh_main_checkpoint_branch_workflow_owner_checks",
-    "nextIntent": "Verify official membership and freeze useful purchase-content plan before authoring."
+    "lastSuccessfulStage": "official_membership_crosswalk_and_fresh_catalog_verified",
+    "nextIntent": "Revise independently flagged venue policy and unsupported purchase-context claims, then freeze plan before writing."
   },
   "history": [
     {
