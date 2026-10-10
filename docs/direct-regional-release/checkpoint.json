@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T06:24:18.759Z",
+  "updatedAt": "2026-10-10T06:26:24.118Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "anseong-direct-initial-20261010",
     "city": "안성시",
-    "status": "official_dispatch_intent",
+    "status": "official_workflow_running",
     "owner": {
       "scheduledRunAt": "2026-10-10T06:00:00Z",
       "observedExecutionAt": "2026-10-10T06:01:14.435Z",
@@ -410,17 +410,9 @@
         }
       ]
     },
-    "lastSuccessfulStage": "exact_source_remote_readback_and_independent_node22_pass",
-    "nextIntent": "Dispatch official reviewed direct workflow once for exact source, then recover actual run and receipts",
-    "pendingExternalAction": {
-      "action": "workflow_dispatch",
-      "workflow": ".github/workflows/anseong-direct-publish.yml",
-      "ref": "main",
-      "sourceRevision": "39a23593b6d2134627edccb9a02378dac708e5c4",
-      "indexnowOnly": false,
-      "idempotencyKey": "anseong-direct-39a23593b6d2134627edccb9a02378dac708e5c4-initial-publish",
-      "dispatchCount": 0
-    },
+    "lastSuccessfulStage": "official_dispatch_created_verified",
+    "nextIntent": "Read official run artifacts and actual publicHTTP/IndexNow; no redispatch without outcome recovery",
+    "pendingExternalAction": null,
     "review": {
       "independentContent": "PASS",
       "hostedQa": "not_run",
@@ -444,7 +436,17 @@
       "finalEvidenceSha256": "810fc09a4e4b0f1fc76ce7e0e4ec3986e6d8b0d209c04c13f825aa26b48a8177"
     },
     "sourceRevision": "39a23593b6d2134627edccb9a02378dac708e5c4",
-    "controlRevision": "c3cc536814a2396c76b020dc9dfd048651d3873c"
+    "controlRevision": "c3cc536814a2396c76b020dc9dfd048651d3873c",
+    "actualWorkflow": {
+      "runId": 38030904188,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38030904188",
+      "sourceRevision": "39a23593b6d2134627edccb9a02378dac708e5c4",
+      "controlRevision": "8c830d96800277068354d6cda8b7a792fc90b730",
+      "createdAt": "2026-10-10T06:25:52Z",
+      "dispatchCount": 1,
+      "status": "in_progress",
+      "result": null
+    }
   },
   "history": [
     {
