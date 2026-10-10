@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T11:46:32.501Z",
+  "updatedAt": "2026-10-10T11:48:29.304Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -386,8 +386,15 @@
     },
     "sourceRevision": "b382df7df207f0bb4503c17a5a128dc7c46f1d4c",
     "pendingExternalAction": {
-      "action": "none_until_independent_exact_source_readback_and_build",
-      "sourceRevision": "b382df7df207f0bb4503c17a5a128dc7c46f1d4c"
+      "action": "source_metadata_correction_commit",
+      "branch": "site-factory-yeoju-direct",
+      "expectedRevision": "b382df7df207f0bb4503c17a5a128dc7c46f1d4c",
+      "paths": [
+        "src/data/direct-checkpoint.json",
+        "src/data/publish-manifest.json"
+      ],
+      "reason": "Correct copied newRegionStartedAt to actual Yeoju claim time 2026-10-10T11:00:35.531Z; customer body/image unchanged",
+      "idempotencyKey": "yeoju:correct-startedAt:b382df7df207f0bb4503c17a5a128dc7c46f1d4c"
     }
   },
   "history": [
