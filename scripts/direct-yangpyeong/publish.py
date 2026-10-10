@@ -345,6 +345,24 @@ def indexnow_site():
     return dict(siteKey='yangpyeong-flower-direct', siteUrl=ORIGIN, productionEnabled=True, launchMode='live', indexnowKey=key)
 
 
+def safe_indexnow_response_diagnostic(body):
+    """Retain protocol error classes, never arbitrary upstream text or keys."""
+    allowed = {'InvalidApiKey', 'InvalidRequest', 'InvalidRequestParameters',
+               'InvalidUrl', 'TooManyRequests', 'InternalServerError'}
+    result = dict(bodyBytes=len(body.encode('utf-8')), bodyRetained=False)
+    try:
+        value = json.loads(body)
+    except (ValueError, TypeError, RecursionError):
+        return dict(result, responseFormat='non_json', protocolErrorCode=None)
+    result.update(responseFormat='json', protocolErrorCode=None)
+    if isinstance(value, dict):
+        candidates = [value.get('code'), value.get('errorCode')]
+        if isinstance(value.get('error'), dict):
+            candidates.append(value['error'].get('code'))
+        result['protocolErrorCode'] = next((v for v in candidates if isinstance(v, str) and v in allowed), None)
+    return result
+
+
 def observed_indexnow_request(method, url, payload=None):
     from indexnow_finalize import request, ENDPOINT
     require((method == 'GET' and url.startswith(ORIGIN + '/') and payload is None)
@@ -359,6 +377,8 @@ def observed_indexnow_request(method, url, payload=None):
                       xRobotsTag=headers.get('x-robots-tag', ''),
                       cfMitigated=headers.get('cf-mitigated', ''),
                       bodySha256=sha(body.encode('utf-8')))
+        if method == 'POST':
+            record['responseDiagnostic'] = safe_indexnow_response_diagnostic(body)
         save(path, previous + [record])
         return status, body, headers
     except Exception as error:
@@ -451,5 +471,6 @@ def strip_one_cf_beacon(body,expected_sha):
 
 if __name__ == '__main__':
     raise SystemExit(main())
+
 
 

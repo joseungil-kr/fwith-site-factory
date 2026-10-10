@@ -37,6 +37,21 @@ def binding(host=pub.HOSTNAME, worker=pub.WORKER):
 
 
 class PublishTests(unittest.TestCase):
+    def test_post_diagnostic_retains_only_allowlisted_protocol_error(self):
+        value = pub.safe_indexnow_response_diagnostic('{"code":"InvalidApiKey","message":"private arbitrary echo","key":"secret-example"}')
+        self.assertEqual(value['protocolErrorCode'], 'InvalidApiKey')
+        self.assertEqual(value['responseFormat'], 'json')
+        self.assertFalse(value['bodyRetained'])
+        self.assertNotIn('private', json.dumps(value)); self.assertNotIn('secret', json.dumps(value))
+        self.assertEqual(pub.safe_indexnow_response_diagnostic('{"error":{"code":"TooManyRequests"}}')['protocolErrorCode'], 'TooManyRequests')
+
+    def test_post_diagnostic_rejects_arbitrary_or_malformed_error_body(self):
+        for body in ['{"code":"secret-example"}', '{"code":["InvalidApiKey"]}', '[]', 'null', '<html>private response</html>', '', '[' * 10000 + '0' + ']' * 10000]:
+            value = pub.safe_indexnow_response_diagnostic(body)
+            self.assertIsNone(value['protocolErrorCode'])
+            self.assertFalse(value['bodyRetained'])
+            self.assertNotIn('private', json.dumps(value)); self.assertNotIn('secret', json.dumps(value))
+
     def test_positive_fixed_receipt_journal_is_configured(self):
         from indexnow_finalize import Journal
         self.assertEqual(pub.RECEIPT_ISSUE, 266)
@@ -349,5 +364,6 @@ class ArtifactTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
 
 

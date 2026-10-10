@@ -1,0 +1,50 @@
+{
+  "fileSha256": {
+    "scripts/direct-yangpyeong/publish.py": "d07428a34ac2b1b21683f07a26912f42dc2e021e3ffd7e87b2770434e111c59b",
+    "scripts/direct-yangpyeong/test_publish.py": "db6378b869623d095372b702c1e49335df90e9ee43828b258cf4097430d54a25"
+  },
+  "findings": [
+    "Only safe_indexnow_response_diagnostic and its POST observation field alter production AST.",
+    "Arbitrary upstream response bodies are not retained; only fixed allowlisted codes, format, byte count, false bodyRetained flag, and existing body SHA are retained.",
+    "Endpoint, user agent, retry rules, journal integration, source/build and provider behavior are unchanged.",
+    "RecursionError is caught; final negative fixture is 10,000 levels.",
+    "Journal protections fail closed on uncertain outcomes and write failures."
+  ],
+  "protocolReference": "https://www.indexnow.org/documentation",
+  "remainingRisks": [
+    "Local review does not verify a remote commit, deployed workflow or a live IndexNow receipt.",
+    "HTTP receipt does not establish search indexing."
+  ],
+  "retryGuidance": "Verify the request and public ownership evidence before a bounded resubmission; do not introduce endless 403 retries.",
+  "reviewedAt": "2026-10-10T15:06:54.363997+00:00",
+  "reviewedFilesModifiedByReviewer": false,
+  "reviewerRole": "Independent read-only code and regression reviewer",
+  "schemaVersion": 1,
+  "scope": "Local fixed Yangpyeong publisher diagnostics only; compared with untouched hourly-direct-1400/source baseline.",
+  "verdict": "PASS",
+  "verification": {
+    "actualIndexNowPosts": 0,
+    "astScopeVerified": true,
+    "independentMockedIntegrationCases": {
+      "cases": [
+        "10,000-level JSON with HTTP 200 preserves accepted receipt and blocks replay",
+        "10,000-level JSON with HTTP 202 preserves pending-key receipt and blocks replay",
+        "10,000-level JSON with HTTP 403 preserves rejection and performs one POST",
+        "10,000-level JSON with HTTP 500 preserves uncertainty and blocks replay",
+        "Transport exception retains no arbitrary exception text and blocks replay",
+        "Failed started journal write prevents POST",
+        "Failed receipt journal write leaves started and blocks replay"
+      ],
+      "failed": 0,
+      "passed": 7,
+      "productionSha256": "d07428a34ac2b1b21683f07a26912f42dc2e021e3ffd7e87b2770434e111c59b"
+    },
+    "networkForIntegrationTests": "mocked only",
+    "regressionTests": {
+      "command": "python3 scripts/direct-yangpyeong/test_publish.py -v",
+      "failed": 0,
+      "passed": 36,
+      "rerunAgainstFinalDigests": true
+    }
+  }
+}

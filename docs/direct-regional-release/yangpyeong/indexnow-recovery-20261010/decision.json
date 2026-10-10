@@ -1,0 +1,30 @@
+{
+  "observedAt": "2026-10-10T15:06:38.391346+00:00",
+  "previousRejectedReceipt": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098749216",
+  "sourceRevision": "bad8ba028abc68c738267622ed7f1508f956bd54",
+  "officialReferences": [
+    {
+      "url": "https://www.indexnow.org/documentation",
+      "finding": "For non200 POST results, verify the request and resubmit if everything looks fine; 403 is key not valid. No cache TTL is specified."
+    },
+    {
+      "url": "https://searchadvisor.naver.com/guide/indexnow-api-key",
+      "finding": "UTF8 root-level own-host key8-128 characters from hexadecimal/dash alphabet; actual key32 characters passes."
+    },
+    {
+      "url": "https://searchadvisor.naver.com/guide/indexnow-request",
+      "finding": "403 rejection differs from202 key validation pending."
+    }
+  ],
+  "cause": "not_established",
+  "freshGetVerification": "fresh-indexnow-get-verification.json",
+  "diagnosticChangeScope": "scripts/direct-yangpyeong/publish.py and corresponding tests only; no shared finalizer change",
+  "retryDecision": "One same-endpoint existing indexnow_only workflow after full GET verification, improved safe response diagnostics, exact-source rebuild and idempotent journal; preserve prior rejection. Do not repeat after another403 without new evidence.",
+  "exclusions": [
+    "no redeployment",
+    "no GSC repeat",
+    "no key rotation",
+    "no endpoint/user-agent switch",
+    "no security/DNS/credential change"
+  ]
+}
