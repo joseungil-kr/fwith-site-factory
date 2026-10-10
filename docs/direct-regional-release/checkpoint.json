@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T12:24:45.477Z",
+  "updatedAt": "2026-10-10T12:29:57.768Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -68,16 +68,121 @@
       "runtimeSourceRevision": "8fbcc607193d2ea3c34286519cff7d5f3380479a"
     },
     "plan": {
-      "state": "official_membership_research",
-      "plannedArticleCount": null,
-      "articles": []
+      "state": "fixed_before_authoring",
+      "plannedArticleCount": 10,
+      "minimumPassedArticles": 9,
+      "administrativeUnits": 10,
+      "crosswalkRelationships": 10,
+      "partialRelationships": 0,
+      "membershipPath": "docs/direct-regional-release/yeoncheon/membership.json",
+      "articles": [
+        {
+          "slug": "yeoncheon-eup",
+          "name": "연천읍",
+          "title": "연천수레울아트홀 공연 축하화환",
+          "primaryKeyword": "연천수레울아트홀 공연 축하화환",
+          "status": "planned"
+        },
+        {
+          "slug": "jeongok-eup",
+          "name": "전곡읍",
+          "title": "전곡읍 연천군장례식장 근조화환",
+          "primaryKeyword": "전곡읍 연천군장례식장 근조화환",
+          "status": "planned"
+        },
+        {
+          "slug": "gunnam-myeon",
+          "name": "군남면",
+          "title": "군남면 음식점 개업화환",
+          "primaryKeyword": "군남면 음식점 개업화환",
+          "status": "planned"
+        },
+        {
+          "slug": "cheongsan-myeon",
+          "name": "청산면",
+          "title": "청산면 제조업체 이전 축하화환",
+          "primaryKeyword": "청산면 제조업체 이전 축하화환",
+          "status": "planned"
+        },
+        {
+          "slug": "baekhak-myeon",
+          "name": "백학면",
+          "title": "백학자유로리조트 연회 축하화환",
+          "primaryKeyword": "백학자유로리조트 연회 축하화환",
+          "status": "planned"
+        },
+        {
+          "slug": "misan-myeon",
+          "name": "미산면",
+          "title": "미산면 음식점 개업화환",
+          "primaryKeyword": "미산면 음식점 개업화환",
+          "status": "planned"
+        },
+        {
+          "slug": "wangjing-myeon",
+          "name": "왕징면",
+          "title": "왕징면 징파연수원 기념행사 화환",
+          "primaryKeyword": "왕징면 징파연수원 기념행사 화환",
+          "status": "planned"
+        },
+        {
+          "slug": "sinseo-myeon",
+          "name": "신서면",
+          "title": "신서면 음식점 개업화환",
+          "primaryKeyword": "신서면 음식점 개업화환",
+          "status": "planned"
+        },
+        {
+          "slug": "jung-myeon",
+          "name": "중면",
+          "title": "중면 화환 구매 안내 보류",
+          "primaryKeyword": "중면 화환 구매 안내 보류",
+          "status": "hold_source_fit"
+        },
+        {
+          "slug": "jangnam-myeon",
+          "name": "장남면",
+          "title": "장남면 카페 개업화환",
+          "primaryKeyword": "장남면 카페 개업화환",
+          "status": "planned"
+        }
+      ],
+      "deferred": [
+        {
+          "slug": "jung-myeon",
+          "name": "중면",
+          "unitKey": "연천군/면/중면",
+          "title": "중면 화환 구매 안내 보류",
+          "h1": "중면 화환 구매 안내 보류",
+          "primaryKeyword": "중면 화환 구매 안내 보류",
+          "family": "congrats",
+          "state": "hold_source_fit",
+          "context": {
+            "venue_or_business": "DMZ 마루 캠핑",
+            "address": "경기도 연천군 중면 군중로 399",
+            "source_id": "jung-camping"
+          },
+          "source": {
+            "name": "DMZ 마루 캠핑 공식 관광 목록",
+            "url": "https://www.yeoncheon.go.kr/tour/selectTourCntntsWebView.do?ctgry=85&key=4434&pageIndex=1&pageUnit=9&searchCnd=all&sortTy=RECOMEND&tourNo=581",
+            "type": "official",
+            "verifiedAt": "2026-10-10"
+          },
+          "distinctBuyerDecision": null,
+          "holdReason": "중면 관내 사업장 실체는 확인되었으나 구체적인 화환 구매·수령 행사 맥락을 입증하지 못했다. 관광지/캠핑장으로 억지 연결하지 않는다. 군 공식 현황의 민통선 관련 설명도 있어 전지역 배송 보장을 할 수 없다.",
+          "queryEvidence": {
+            "sourceUrl": "https://www.yeoncheon.go.kr/tour/selectTourCntntsWebView.do?ctgry=85&key=4434&pageIndex=1&pageUnit=9&searchCnd=all&sortTy=RECOMEND&tourNo=581",
+            "finding": "중면 군중로 399의 캠핑 사업장 실체는 확인. 화환 수령 행사를 입증하지 못하므로 구매 콘텐츠에 억지 연결하지 않음."
+          }
+        }
+      ]
     },
-    "lastSuccessfulStage": "remote_preflight_and_previous_owner_write_stop_confirmed",
+    "lastSuccessfulStage": "official_membership_and_purchase_plan_frozen",
     "nextIntent": "Verify official membership and freeze unique purchase-content plan before authoring",
     "changeIntent": {
-      "action": "claim_region_and_prepare",
-      "target": "yeoncheon.fwith.kr",
-      "idempotencyKey": "yeoncheon-direct-initial-20261010:claim"
+      "action": "author_nine_unique_articles_and_hold_jung",
+      "target": "site-factory/yeoncheon-flower",
+      "idempotencyKey": "yeoncheon-direct-initial-20261010:fixed-plan"
     },
     "idempotencyKey": "yeoncheon-direct-initial-20261010:claim",
     "publication": {

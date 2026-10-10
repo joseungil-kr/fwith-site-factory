@@ -1,0 +1,437 @@
+{
+  "schema": "yeoncheon-membership-and-buyer-context-v1",
+  "researched_at_utc": "2026-10-10T12:29:29.967146+00:00",
+  "county_name": "연천군",
+  "county_english": "Yeoncheon-gun",
+  "county_slug": "yeoncheon",
+  "province": "경기도",
+  "sigungu_code": "41800",
+  "legal_county_code": "4180000000",
+  "official_unit_count": 10,
+  "composition": {
+    "eup": 2,
+    "myeon": 8,
+    "dong": 0
+  },
+  "content_ready_count": 9,
+  "content_hold_count": 1,
+  "count_is_page_quota": false,
+  "official_sources": [
+    {
+      "id": "county",
+      "title": "연천군 기본현황",
+      "url": "https://www.yeoncheon.go.kr/www/contents.do?key=3413",
+      "finding": "행정구역 2읍 8면. 행정리는 읍면보다 하위의 조직 단위.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "town-list",
+      "title": "연천군 읍면안내",
+      "url": "https://www.yeoncheon.go.kr/www/contents.do?key=3430",
+      "finding": "연천읍, 전곡읍, 군남면, 청산면, 백학면, 미산면, 왕징면, 신서면, 중면, 장남면 전부 열거.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "english",
+      "title": "Yeoncheon DEPARTMENT",
+      "url": "https://www.yeoncheon.go.kr/eng/contents.do?key=4489",
+      "finding": "모든 10개 읍면 영문명 확인. slug는 공식 영문명을 소문자화.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "mois-current",
+      "title": "행정기관(행정동) 및 관할구역(법정동) 변경내역(2026.9.30. 시행)",
+      "url": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824",
+      "finding": "현재 시행된 최신 주소코드 ZIP. 법정/행정/교차표의 연천군 레코드 독립 추출.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "mois-download",
+      "title": "jscode20260930.zip",
+      "url": "https://www.mois.go.kr/cmm/fms/FileDown.do?atchFileId=FILE_00149355_BR8t5D&fileSn=1",
+      "finding": "KIKcd_B 법정동, KIKcd_H 행정기관, KIKmix 관할관계 원본. 현행(말소 제외) 자료.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "mois-future",
+      "title": "행정기관 변경내역(2026.10.12. 시행)",
+      "url": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+      "finding": "확인일보다 미래 시행. 평택시 관련 변경이며 연천군 대상 아님. 현재 코드로 적용하지 않음.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "civilian-access",
+      "title": "민통선 출입 안내",
+      "url": "https://www.yeoncheon.go.kr/www/contents.do?key=4974",
+      "finding": "민통선 내 방문 절차가 별도로 존재. 배송 가능/시간/출입증 발급을 보장하는 근거로 사용할 수 없음.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "auditorium",
+      "title": "연천군 2025 중대재해 적용시설 자료",
+      "url": "https://www.yeoncheon.go.kr/DATA/download/www/cts5130_file02_2025.pdf",
+      "finding": "연천수레울아트홀의 주소는 연천읍 문화로 150. 문화시설 실체 및 주소에 한정.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "funeral",
+      "title": "연천군보건의료원 일반현황",
+      "url": "https://www.yeoncheon.go.kr/health/contents.do?key=3769",
+      "finding": "의료원 주소 전곡읍 은대성로 95이며 부대시설에 장례식장 명시.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "funeral-location-law",
+      "title": "연천군 장례식장 관리 및 운영조례",
+      "url": "https://www.law.go.kr/ordinSc.do?menuId=3&query=%EC%97%B0%EC%B2%9C%EA%B5%B0+%EC%9E%A5%EB%A1%80%EC%8B%9D%EC%9E%A5+%EA%B4%80%EB%A6%AC+%EB%B0%8F+%EC%9A%B4%EC%98%81%EC%A1%B0%EB%A1%80",
+      "finding": "제2조 장례식장 위치 전곡읍 은대성로 95. 연천읍 소재로 쓰지 말 것.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "river-businesses",
+      "title": "임진적벽길 주변 음식점/숙박업소",
+      "url": "https://www.yeoncheon.go.kr/tour/contents.do?key=3961",
+      "finding": "군남면 임진강언덕너머매운탕(솔너머길 43-21), 장보고(솔너머길 43-75), 왕징면 황해냉면(왕산로 80), 징파연수원(군왕로 170) 명시.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "manufacturers",
+      "title": "관내업체정보(연천군 제조업등록업체)",
+      "url": "https://www.yeoncheon.go.kr/www/selectBbsNttList.do?bbsNo=401&id=&integrDeptCode=&key=5185&pageIndex=18&pageUnit=10&searchCnd=all&searchCtgry=&searchKrwd=",
+      "finding": "청산면 다대산업사 주소 청창로326번길 50, 대진사 학담로69번길 91 등 사업장 실체.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "resort",
+      "title": "백학자유로리조트 소개",
+      "url": "https://tour.yeoncheon.go.kr/tour/selectTourCntntsWebView.do?ctgry=86&key=3999&tourNo=558",
+      "finding": "백학면 노아로491번길 283. 세미나·연회·만찬 시설을 갖춘 리조트로 공식 소개. 개별 반입정책은 없음.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "misan-restaurant",
+      "title": "고려가든 공식 관광 목록",
+      "url": "https://yeoncheon.go.kr/tour/selectTourCntntsWebView.do?ctgry=90&key=4421&tourNo=454",
+      "finding": "미산면 숭의전로 381에 위치한 한식 음식점. 관광 웹페이지 상단 카테고리는 query에 따라 잘못 표시되므로 실제 시설 설명 기준.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "sinseo-restaurant",
+      "title": "할매국수 공식 관광 목록",
+      "url": "https://www.yeoncheon.go.kr/tour/selectTourCntntsWebView.do?ctgry=91&key=4422&tourNo=877",
+      "finding": "신서면 연신로1634번길 27 1층. 음식점 실체/층수 확인. 메뉴경로의 펜션 표제는 카테고리 파라미터 영향.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "jangnam-cafe",
+      "title": "SNS 사진 명소로 급부상한 연천, 인생 사진 명소를 가다!",
+      "url": "https://korean.visitkorea.or.kr/detail/rem_detail.do?cotid=4e13f99e-9cd1-44fd-b7b1-e4cd80f27e3d",
+      "finding": "한국관광공사 2026년 7월 갱신 기사: 카페 고랑포이야기 장남면 장남로 205.",
+      "checked_date_utc": "2026-10-10"
+    },
+    {
+      "id": "jung-camping",
+      "title": "DMZ 마루 캠핑 공식 관광 목록",
+      "url": "https://www.yeoncheon.go.kr/tour/selectTourCntntsWebView.do?ctgry=85&key=4434&pageIndex=1&pageUnit=9&searchCnd=all&sortTy=RECOMEND&tourNo=581",
+      "finding": "중면 군중로 399의 캠핑 사업장 실체는 확인. 화환 수령 행사를 입증하지 못하므로 구매 콘텐츠에 억지 연결하지 않음.",
+      "checked_date_utc": "2026-10-10"
+    }
+  ],
+  "units": [
+    {
+      "name": "연천읍",
+      "english_name": "Yeoncheon-eup",
+      "slug": "yeoncheon-eup",
+      "legal_code": "4180025000",
+      "administrative_code": "4180025000",
+      "type": "eup",
+      "legal_administrative_relation": "same-name same-level 읍면; 법정리와 행정리는 하위 단위",
+      "official_profile_url": "https://www.yeoncheon.go.kr/town/contents.do?key=4112",
+      "status": "ready-for-writing-with-cautions",
+      "proposed_title": "연천읍 공연 축하화환 주문 전 행사명과 수령 위치 확인",
+      "primary_keyword": "연천읍 축하화환",
+      "verified_context": {
+        "venue_or_business": "연천수레울아트홀",
+        "address": "경기도 연천군 연천읍 문화로 150",
+        "source_id": "auditorium"
+      },
+      "unique_buyer_decision": "공연명·공연일·출연자/주최측 수령인을 맞춘 뒤 실제 반입 위치와 시각을 행사 담당자에게 확인한다. 공연장 주소만으로 특정 공연 수령인에게 도착한다고 단정하지 않는다."
+    },
+    {
+      "name": "전곡읍",
+      "english_name": "Jeongok-eup",
+      "slug": "jeongok-eup",
+      "legal_code": "4180025300",
+      "administrative_code": "4180025300",
+      "type": "eup",
+      "legal_administrative_relation": "same-name same-level 읍면; 법정리와 행정리는 하위 단위",
+      "official_profile_url": "https://www.yeoncheon.go.kr/town/contents.do?key=4117",
+      "status": "ready-for-writing-with-cautions",
+      "proposed_title": "전곡읍 연천군장례식장 근조화환 주문 전 빈소와 발인 확인",
+      "primary_keyword": "전곡읍 근조화환",
+      "verified_context": {
+        "venue_or_business": "연천군장례식장(연천군보건의료원)",
+        "address": "경기도 연천군 전곡읍 은대성로 95",
+        "source_id": "funeral"
+      },
+      "unique_buyer_decision": "의료원 진료동과 장례식장 접수 목적지를 구분하고 유가족이 알려준 고인·상주·빈소와 발인일시를 대조한다. 연천읍 주소로 오인하지 않는다."
+    },
+    {
+      "name": "군남면",
+      "english_name": "Gunnam-myeon",
+      "slug": "gunnam-myeon",
+      "legal_code": "4180031000",
+      "administrative_code": "4180031000",
+      "type": "myeon",
+      "legal_administrative_relation": "same-name same-level 읍면; 법정리와 행정리는 하위 단위",
+      "official_profile_url": "https://www.yeoncheon.go.kr/town/contents.do?key=4122",
+      "status": "ready-for-writing-with-cautions",
+      "proposed_title": "군남면 음식점 개업화환, 솔너머길 상호와 번지 대조하기",
+      "primary_keyword": "군남면 개업화환",
+      "verified_context": {
+        "venue_or_business": "임진강언덕너머매운탕 / 장보고",
+        "address": "경기도 연천군 군남면 솔너머길 43-21 / 솔너머길 43-75",
+        "source_id": "river-businesses"
+      },
+      "unique_buyer_decision": "같은 솔너머길에 주소가 다른 두 음식점이 있어 상호·도로명 끝번지·받는 사람을 함께 대조한다. 기존 음식점의 개업 예정이라고 쓰지 않는다."
+    },
+    {
+      "name": "청산면",
+      "english_name": "Cheongsan-myeon",
+      "slug": "cheongsan-myeon",
+      "legal_code": "4180032000",
+      "administrative_code": "4180032000",
+      "type": "myeon",
+      "legal_administrative_relation": "same-name same-level 읍면; 법정리와 행정리는 하위 단위",
+      "official_profile_url": "https://www.yeoncheon.go.kr/town/contents.do?key=4128",
+      "status": "ready-for-writing-with-cautions",
+      "proposed_title": "청산면 사업장 축하화환, 법인명과 현장 수령인 확인",
+      "primary_keyword": "청산면 개업화환",
+      "verified_context": {
+        "venue_or_business": "다대산업사",
+        "address": "경기도 연천군 청산면 청창로326번길 50",
+        "source_id": "manufacturers"
+      },
+      "unique_buyer_decision": "청산면 제조업 사업장으로 보낼 때 주문서 회사명과 간판명을 대조하고 실제 행사가 사무실인지 공장인지, 수령 가능한 담당자가 누구인지 정한다. 등록 업체가 현재 이전·개업 중이라고 주장하지 않는다."
+    },
+    {
+      "name": "백학면",
+      "english_name": "Baekhak-myeon",
+      "slug": "baekhak-myeon",
+      "legal_code": "4180033000",
+      "administrative_code": "4180033000",
+      "type": "myeon",
+      "legal_administrative_relation": "same-name same-level 읍면; 법정리와 행정리는 하위 단위",
+      "official_profile_url": "https://www.yeoncheon.go.kr/town/contents.do?key=4133",
+      "status": "ready-for-writing-with-cautions",
+      "proposed_title": "백학면 연회 축하화환, 리조트 행사장과 주최자 확인",
+      "primary_keyword": "백학면 축하화환",
+      "verified_context": {
+        "venue_or_business": "백학자유로리조트",
+        "address": "경기도 연천군 백학면 노아로491번길 283",
+        "source_id": "resort"
+      },
+      "unique_buyer_decision": "숙박 예약 주소만 넘기지 않고 컨벤션·연회 행사명과 주최자를 확인한 뒤 해당 행사장의 꽃 반입 여부와 전달 지점을 확인한다. 일반 숙박동과 행사장 수령을 구분한다."
+    },
+    {
+      "name": "미산면",
+      "english_name": "Misan-myeon",
+      "slug": "misan-myeon",
+      "legal_code": "4180034000",
+      "administrative_code": "4180034000",
+      "type": "myeon",
+      "legal_administrative_relation": "same-name same-level 읍면; 법정리와 행정리는 하위 단위",
+      "official_profile_url": "https://www.yeoncheon.go.kr/town/contents.do?key=4138",
+      "status": "ready-for-writing-with-cautions",
+      "proposed_title": "미산면 음식점 축하화환, 숭의전 주변 주소 구분하기",
+      "primary_keyword": "미산면 개업화환",
+      "verified_context": {
+        "venue_or_business": "고려가든",
+        "address": "경기도 연천군 미산면 숭의전로 381",
+        "source_id": "misan-restaurant"
+      },
+      "unique_buyer_decision": "숭의전로의 음식점에 보낼 때 관광지 숭의전 주소(382-27) 대신 실제 매장 주소(381)와 상호를 대조한다. 재개업·개업 등 실제 축하 사유와 수령 가능 시각은 받는 사람에게 확인한다."
+    },
+    {
+      "name": "왕징면",
+      "english_name": "Wangjing-myeon",
+      "slug": "wangjing-myeon",
+      "legal_code": "4180035000",
+      "administrative_code": "4180035000",
+      "type": "myeon",
+      "legal_administrative_relation": "same-name same-level 읍면; 법정리와 행정리는 하위 단위",
+      "official_profile_url": "https://www.yeoncheon.go.kr/town/contents.do?key=4143",
+      "status": "ready-for-writing-with-cautions",
+      "proposed_title": "왕징면 연수행사 축하화환, 행사 주최자와 도착지 확인",
+      "primary_keyword": "왕징면 축하화환",
+      "verified_context": {
+        "venue_or_business": "징파연수원(나룻배마을)",
+        "address": "경기도 연천군 왕징면 군왕로 170",
+        "source_id": "river-businesses"
+      },
+      "unique_buyer_decision": "마을 이름만으로 주문하지 않고 연수원 명칭과 행사 주최자, 실제 모이는 건물의 수령인을 함께 정한다. 연수·기념행사 여부 및 화환 수령 가능 여부는 예약 담당자 확인 대상으로 둔다."
+    },
+    {
+      "name": "신서면",
+      "english_name": "Sinseo-myeon",
+      "slug": "sinseo-myeon",
+      "legal_code": "4180036000",
+      "administrative_code": "4180036000",
+      "type": "myeon",
+      "legal_administrative_relation": "same-name same-level 읍면; 법정리와 행정리는 하위 단위",
+      "official_profile_url": "https://www.yeoncheon.go.kr/town/contents.do?key=4148",
+      "status": "ready-for-writing-with-cautions",
+      "proposed_title": "신서면 음식점 개업화환, 같은 주소의 층과 간판 확인",
+      "primary_keyword": "신서면 개업화환",
+      "verified_context": {
+        "venue_or_business": "할매국수",
+        "address": "경기도 연천군 신서면 연신로1634번길 27 1층",
+        "source_id": "sinseo-restaurant"
+      },
+      "unique_buyer_decision": "연신로1634번길 27의 1층 음식점임을 주문서에 넣고 수령인과 간판을 확인한다. 같은 번지의 숙박업소와 혼동하지 않는다. 현재 개업 중이라는 주장은 금지한다."
+    },
+    {
+      "name": "중면",
+      "english_name": "Jung-myeon",
+      "slug": "jung-myeon",
+      "legal_code": "4180037000",
+      "administrative_code": "4180037000",
+      "type": "myeon",
+      "legal_administrative_relation": "same-name same-level 읍면; 법정리와 행정리는 하위 단위",
+      "official_profile_url": "https://www.yeoncheon.go.kr/town/contents.do?key=4153",
+      "status": "hold",
+      "proposed_title": null,
+      "primary_keyword": null,
+      "verified_context": {
+        "venue_or_business": "DMZ 마루 캠핑",
+        "address": "경기도 연천군 중면 군중로 399",
+        "source_id": "jung-camping"
+      },
+      "unique_buyer_decision": null,
+      "hold_reason": "중면 관내 사업장 실체는 확인되었으나 구체적인 화환 구매·수령 행사 맥락을 입증하지 못했다. 관광지/캠핑장으로 억지 연결하지 않는다. 군 공식 현황의 민통선 관련 설명도 있어 전지역 배송 보장을 할 수 없다."
+    },
+    {
+      "name": "장남면",
+      "english_name": "Jangnam-myeon",
+      "slug": "jangnam-myeon",
+      "legal_code": "4180038000",
+      "administrative_code": "4180038000",
+      "type": "myeon",
+      "legal_administrative_relation": "same-name same-level 읍면; 법정리와 행정리는 하위 단위",
+      "official_profile_url": "https://www.yeoncheon.go.kr/town/contents.do?key=4158",
+      "status": "ready-for-writing-with-cautions",
+      "proposed_title": "장남면 카페 개업화환, 고랑포구 주변 실제 매장주소 확인",
+      "primary_keyword": "장남면 개업화환",
+      "verified_context": {
+        "venue_or_business": "카페 고랑포이야기",
+        "address": "경기도 연천군 장남면 장남로 205",
+        "source_id": "jangnam-cafe"
+      },
+      "unique_buyer_decision": "고랑포구라는 주변 지명과 실제 카페 상호를 구분하고 장남로 205의 매장 수령인에게 전달한다. 인근 역사공원 또는 관광시설로 목적지가 바뀌지 않게 주소를 대조한다. 개업 사실은 별도 확인한다."
+    }
+  ],
+  "copy_limits": [
+    "9개 ready는 실체·소재지에 대한 검증이며 사업자가 실제 개업/공연/연회 중이라는 확인이 아니다. 현재 행사를 꾸며 쓰지 말 것.",
+    "주소·명칭 등 사실만 자체 문장으로 정리하고 관광 설명이나 사진을 복제하지 말 것.",
+    "화환 반입 허용, 시간, 비용, 출입구, 주차·배치 정책을 추정하지 말 것.",
+    "민통선/군사시설 보호지역은 절차 확인 사유이며 배송 가능 또는 불가능 전역 단정 근거로 쓰지 말 것.",
+    "관광 상세페이지의 카페/펜션/야영장 등의 표제는 query key와 ctgry에 따라 어긋날 수 있다. 실체는 본문 시설명과 설명으로 확인."
+  ],
+  "boundary_cautions": [
+    "왕징면 공식 현황 법정리 수와 지리 설명의 리 수가 내부적으로 다르다. 그 하위 수치를 읍면 membership N에 섞지 않는다.",
+    "중면 공식 현황의 행정(법정)리 2와 호적관장 16개리, 미수복지 9개리는 서로 정의가 다르다. 생활권 전역 공급처럼 묶지 않는다."
+  ],
+  "verification": {
+    "official_municipal_list": "10 names verified",
+    "official_english_names": "10 names verified",
+    "mois_source_date": "2026-09-30",
+    "code_data_files": [
+      {
+        "file": "KIKcd_B.20260930.yeoncheon.txt",
+        "sha256": "265e96433662f0d6747db62f5f0972a9be770b071aa003d4b08c8d22cd37ebcd",
+        "bytes": 35963
+      },
+      {
+        "file": "KIKcd_H.20260930.yeoncheon.txt",
+        "sha256": "2c668b03ed7c81a1ada35aaa089eb63577e0355b3139cd7fd746f11fe2f0b499",
+        "bytes": 3730
+      },
+      {
+        "file": "KIKmix.20260930.yeoncheon.txt",
+        "sha256": "a79bcb4723c59f3ac9eea7e2bf528dd9a3a22d8dda2ef896bb169ad0b7c660eb",
+        "bytes": 20360
+      },
+      {
+        "file": "jscode20260930.zip",
+        "sha256": "c9c2583919adfff992edc098fe7ea522e625fedabbfefedbd85564942c059d43",
+        "bytes": 2116063
+      }
+    ],
+    "current_future_change_checked": "2026-10-12 applies Pyeongtaek, not Yeoncheon",
+    "legal_inventory_exact_match": true,
+    "administrative_inventory_exact_match": true,
+    "official_crosswalk_exact_same_unit_codes": true,
+    "crosswalk_rows": [
+      [
+        "4180025000",
+        "연천읍",
+        "4180025000",
+        "연천읍"
+      ],
+      [
+        "4180025300",
+        "전곡읍",
+        "4180025300",
+        "전곡읍"
+      ],
+      [
+        "4180031000",
+        "군남면",
+        "4180031000",
+        "군남면"
+      ],
+      [
+        "4180032000",
+        "청산면",
+        "4180032000",
+        "청산면"
+      ],
+      [
+        "4180033000",
+        "백학면",
+        "4180033000",
+        "백학면"
+      ],
+      [
+        "4180034000",
+        "미산면",
+        "4180034000",
+        "미산면"
+      ],
+      [
+        "4180035000",
+        "왕징면",
+        "4180035000",
+        "왕징면"
+      ],
+      [
+        "4180036000",
+        "신서면",
+        "4180036000",
+        "신서면"
+      ],
+      [
+        "4180037000",
+        "중면",
+        "4180037000",
+        "중면"
+      ],
+      [
+        "4180038000",
+        "장남면",
+        "4180038000",
+        "장남면"
+      ]
+    ]
+  }
+}
