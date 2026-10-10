@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T13:40:38.368Z",
+  "updatedAt": "2026-10-10T13:42:23.927Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "gapyeong-direct-initial-20261010",
     "city": "가평군",
-    "status": "public_verified_search_finalization",
+    "status": "search_only_finalization_running",
     "owner": {
       "scheduledRunAt": "2026-10-10T13:00:00Z",
       "observedExecutionAt": "2026-10-10T13:03:27.495Z",
@@ -127,8 +127,8 @@
       "passedArticleCount": 6,
       "heldArticleCount": 0
     },
-    "lastSuccessfulStage": "official_workflow_dispatch_confirmed",
-    "nextIntent": "Use existing search-only finalizer after read-only preflight; submit already public sitemap to GSC once",
+    "lastSuccessfulStage": "public_http_verified_and_gsc_submission_readback_confirmed",
+    "nextIntent": "Observe terminal existing search-only finalizer and same-source durable receipt without deployment repetition",
     "changeIntent": {
       "action": "finalize_verified_release_search_only",
       "workflow": ".github/workflows/gapyeong-direct-publish.yml",
@@ -233,15 +233,47 @@
         "worker": "gapyeong-flower-guide",
         "dnsState": "not_observed"
       },
-      "visual": "deferred_not_pass"
+      "visual": "deferred_not_pass",
+      "independentHttp": {
+        "passed": true,
+        "requests": 24,
+        "normalRoutes": 8,
+        "articleCount": 6,
+        "productCards": 24,
+        "images": 9,
+        "internalLinks": 63,
+        "sitemapUrls": 8,
+        "reportSha256": "aaff036f13f78bbb76780822c37fc17ae7f3c6130027ce52d73503965fa4e359"
+      }
     },
     "indexNow": {
-      "state": "preflight_failed_before_submission",
+      "state": "search_only_finalizer_running",
       "reason": "page_not_http200",
       "journalIssue": 266,
       "matchingRecords": 0,
       "postAttempted": false,
-      "receiptConfirmed": false
+      "receiptConfirmed": false,
+      "getOnlyRecoveryProbe": {
+        "passed": true,
+        "requests": 12,
+        "allHttp200": true,
+        "submissionAttempted": false
+      },
+      "finalizerRunId": 38056728799,
+      "finalizerRunUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38056728799",
+      "finalizerControlRevision": "7a659788b2b2799b26627e2fae2119ef90595490",
+      "finalizerDispatchCount": 1
+    },
+    "gsc": {
+      "state": "submission_confirmed",
+      "property": "sc-domain:fwith.kr",
+      "sitemap": "https://gapyeong.fwith.kr/sitemap-index.xml",
+      "submittedAt": "2026-10-10T13:41:17.522Z",
+      "accepted": true,
+      "confirmed": true,
+      "listReadbackConfirmed": true,
+      "processingPending": true,
+      "searchIndexing": "not_verified"
     }
   },
   "history": [
@@ -3246,7 +3278,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Use existing search-only finalizer after read-only preflight; submit already public sitemap to GSC once",
+  "nextAction": "Observe terminal existing search-only finalizer and same-source durable receipt without deployment repetition",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
