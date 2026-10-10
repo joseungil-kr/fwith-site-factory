@@ -1,0 +1,107 @@
+{
+  "verdict": "PREPARATION_RUNTIME_CODE_SECURITY_PASS",
+  "releaseReady": false,
+  "actualSourceReviewed": false,
+  "actualDeploymentReviewed": false,
+  "publicHttpReviewed": false,
+  "screenQa": "NOT_PERFORMED",
+  "reviewedAt": "2026-10-10T17:14:00Z",
+  "sourceRevision": "07ae85ac13698dc4a0edc7faa00de21379f366fa",
+  "controlRevision": "f3249dc2fc4c8992251dcc857442569ad8dedae9",
+  "exactInputs": {
+    "README-runtime-handoff.md": "858b995e9d29fadd5840965c944367266826a1b2b4e4ac7c5b33a5901791d7f3",
+    "generate_yongsan.py": "3ccf5a530ba05964c6abd549bceaefc37f80152c6fcd237c34c6ec0d223ddfdd",
+    "runtime-diff.patch": "3757ae02a0ae8efbbba733e5047fd1e4eb2edb77637cd2d6a1670308d4474b2e",
+    "yongsan-assembler-adaptation.patch": "cce01113a2b5ef0d5381f3fe63af25d0e5180c25ba6476410236bda2751f1341",
+    "adapter-verification-report.json": "b8e690e2c5271f11c370812538d6c2b17f5caf121e11086a8100ff1ab6d2dd21",
+    "direct-source-test-template.mjs": "506760ac916cb27892ae594d47a3365c2ae8da2ce3676e982e4a34992fbdad02"
+  },
+  "independentRemoteReadback": {
+    "files": 65,
+    "passed": 65,
+    "sourceFiles": 59,
+    "controlFiles": 6,
+    "comparison": "Fresh GitHub path/ref blob SHA and decoded-byte count versus independently calculated local Git blob SHA-1, SHA-256 and byte count. Both exact commits separately fetched."
+  },
+  "runtimeDelta": {
+    "files": 57,
+    "byteIdenticalToPinnedSource": 55,
+    "changedFiles": [
+      "wrangler.jsonc",
+      "src/pages/[category]/index.astro"
+    ],
+    "changes": "Only Worker identity and regional directory wording. No copied previous-region customer collections or ownership proof."
+  },
+  "assemblerAdaptation": "Exact recorded prior assembler SHA-256 and full unified adaptation diff independently reproduced.",
+  "independentTests": {
+    "adapter": 18,
+    "perFixtureSource": 68,
+    "perFixtureControl": 42,
+    "fixtures": [
+      {
+        "planned": 6,
+        "held": 0,
+        "approved": 6,
+        "normalRoutes": 8
+      },
+      {
+        "planned": 10,
+        "held": 1,
+        "approved": 9,
+        "normalRoutes": 11
+      }
+    ],
+    "extraSafety": 5,
+    "allPassed": true
+  },
+  "builds": {
+    "node": "v22.23.3",
+    "freshOfflineNpmCi": true,
+    "bothFixtureBuildsPassed": true,
+    "astroChecks": {
+      "files": 38,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 0
+    },
+    "staticAndGraphQa": true,
+    "productionIndexableFixturesBlocked": true,
+    "fixtureOnly": true
+  },
+  "safetyChecks": {
+    "rejected403SameFingerprint": "Blocks next POST, including when the 403 is older than an unrelated receipt.",
+    "received200and202SameFingerprint": "Reuses accepted receipt; one total POST across two invocations.",
+    "startedOrUnknown": "Blocks re-POST; additionally verified HTTP200 followed by failed receipt persistence leaves started and blocks re-POST.",
+    "journalFailure": "No POST if started record cannot be persisted.",
+    "sourceIdentity": "Workflow checks exact source branch HEAD before checkout/publication/finalization and full 40-character source SHA; control checkout is exact github.sha.",
+    "artifactDigest": "Full release manifest SHA-256, exact identity and per-file inventory checked; independent digest-tamper test rejected.",
+    "credentials": "Node22 source test/build job has no provider secrets; checkout persists no credentials; provider-scoped steps consume static artifact rather than source code.",
+    "providerScopes": "Only fixed account GETs and exact Worker hostname PUT with all three overrides false; other accounts, DNS, security endpoints, methods, zones, origins and extra flags rejected.",
+    "bindingReuse": "Already exact-bound attach path is GET-only; initial publish blocks existing target; readback requires actual exact binding.",
+    "otherDomainsFlags": "Prepared runtime has two scoped changes; no existing domains, flags, registries or helper source modified. Final remote diff still pending."
+  },
+  "blockingFindings": [],
+  "requiredFinalEvidence": [
+    "Final reviewed real source exact SHA and complete remote source readback",
+    "Exact deployed control SHA and remote diff allowlist, including unchanged shared helpers, other domain/registry/feature flags",
+    "Final Node22 source tests, production build, artifact digest and static graph/metadata tests",
+    "Exact Actions run and artifact plus provider GET binding readback",
+    "Public HTTPS exact revision/content/assets/metadata/sitemap/404 readback",
+    "IndexNow receipt fingerprint and diagnostic outcome; visual QA remains unperformed unless separately requested and verified"
+  ],
+  "reviewSideEffects": "GitHub reads and isolated local synthetic tests only. No candidate source changes, GitHub writes, provider network calls, IndexNow POSTs, browser actions or credentials/settings changes.",
+  "evidenceFiles": [
+    "independent-remote-verification.json",
+    "independent-runtime-diff.json",
+    "independent-adapter-tests.log",
+    "independent-extra-safety-tests.log",
+    "independent-fixture-builds.log",
+    "fixture-build-report.json",
+    "adapter-fixture-source-n6-held0.log",
+    "adapter-fixture-source-n10-held1.log",
+    "adapter-fixture-control-n6-held0.log",
+    "adapter-fixture-control-n10-held1.log",
+    "fixture-n6-held0-build-static-graph.log",
+    "fixture-n10-held1-build-static-graph.log"
+  ]
+}

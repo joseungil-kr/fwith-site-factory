@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T17:12:42.138741+00:00",
+  "updatedAt": "2026-10-10T17:15:38.867375+00:00",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-yongsan-direct-initial-20261010",
     "city": "서울특별시 용산구",
-    "status": "plan_frozen_independent_plan_pass_before_authoring",
+    "status": "authoring_fixed_plan_and_preparing_source_branch",
     "owner": {
       "scheduledRunAt": "2026-10-10T17:00:00Z",
       "observedExecutionAt": "2026-10-10T17:01:55.856Z",
@@ -72,15 +72,18 @@
       "publicHostObservation": "Web could not access hostname; unknown, not proof of absence"
     },
     "changeIntent": {
-      "action": "author_five_unique_purchase_articles_after_remote_plan_freeze",
-      "target": "site-factory/seoul-yongsan-flower",
-      "idempotencyKey": "seoul-yongsan:fixed-plan:7926b0bde6faac743639c626a44f8f7608a3a232e1bcf34d4b135623b4d082f8"
+      "action": "create_source_branch_from_verified_success_source",
+      "target": "refs/heads/site-factory-seoul-yongsan-direct",
+      "baseRevision": "07ae85ac13698dc4a0edc7faa00de21379f366fa",
+      "idempotencyKey": "seoul-yongsan:source-branch:create:07ae85ac13698dc4a0edc7faa00de21379f366fa"
     },
     "lastSuccessfulStage": "independent_fixed_plan_pass",
     "review": {
       "screenQa": "DEFERRED_NOT_PASS",
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
-      "planReviewSha256": "7e61aa58a4994545d079ed7a12aca8d04994380cbe65970e7fdb8e621d4e8665"
+      "planReviewSha256": "7e61aa58a4994545d079ed7a12aca8d04994380cbe65970e7fdb8e621d4e8665",
+      "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
+      "runtimePreparationStatus": "NODE22_FIXTURE_PASS_NOT_ACTUAL_SOURCE_OR_PUBLISH_PASS"
     },
     "unfinishedStages": [
       "plan_freeze",
@@ -137,7 +140,8 @@
           "primaryKeyword": "국방컨벤션 결혼식 축하화환 주문",
           "status": "planned_not_authored"
         }
-      ]
+      ],
+      "planFreezeRevision": "2f8058fdf0a226fbae49db511902358b9e94f403"
     }
   },
   "history": [
