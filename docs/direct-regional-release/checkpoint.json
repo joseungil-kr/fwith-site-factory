@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T16:19:30.870Z",
+  "updatedAt": "2026-10-10T16:25:44.542Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-jung-direct-initial-20261010",
     "city": "서울특별시 중구",
-    "status": "authoring_frozen_seven_page_plan",
+    "status": "independent_content_pass_source_assembled",
     "owner": {
       "scheduledRunAt": "2026-10-10T16:00:00Z",
       "observedExecutionAt": "2026-10-10T16:02:54.602Z",
@@ -91,60 +91,65 @@
           "slug": "euljiro6ga-nmc-condolence-wreath",
           "title": "국립중앙의료원 장례식장 근조화환 주문",
           "primaryKeyword": "국립중앙의료원 장례식장 근조화환 주문",
-          "status": "planned_not_authored"
+          "status": "independently_approved_not_published"
         },
         {
           "slug": "jangchung2ga-ambassador-wedding-wreath",
           "title": "앰배서더 서울 풀만 결혼식 축하화환",
           "primaryKeyword": "앰배서더 서울 풀만 결혼식 축하화환",
-          "status": "planned_not_authored"
+          "status": "independently_approved_not_published"
         },
         {
           "slug": "pildong2ga-korea-house-wedding-wreath",
           "title": "한국의집 전통혼례 축하화환 상담",
           "primaryKeyword": "한국의집 전통혼례 축하화환 상담",
-          "status": "planned_not_authored"
+          "status": "independently_approved_not_published"
         },
         {
           "slug": "sindang-ddp-fashion-opening-wreath",
           "title": "DDP패션몰 매장 개업화환 주문",
           "primaryKeyword": "DDP패션몰 매장 개업화환 주문",
-          "status": "planned_not_authored"
+          "status": "independently_approved_not_published"
         },
         {
           "slug": "namchang-namdaemun-opening-wreath",
           "title": "남대문시장 거래처 개업화환 주문",
           "primaryKeyword": "남대문시장 거래처 개업화환 주문",
-          "status": "planned_not_authored"
+          "status": "independently_approved_not_published"
         },
         {
           "slug": "jungnim-lw-convention-event-wreath",
           "title": "서울역 LW컨벤션 행사 축하화환",
           "primaryKeyword": "서울역 LW컨벤션 행사 축하화환",
-          "status": "planned_not_authored"
+          "status": "independently_approved_not_published"
         },
         {
           "slug": "euljiro7ga-ddp-exhibition-wreath",
           "title": "DDP 전시 개막 축하화환 주문",
           "primaryKeyword": "DDP 전시 개막 축하화환 주문",
-          "status": "planned_not_authored"
+          "status": "independently_approved_not_published"
         }
-      ]
+      ],
+      "approvedArticleCount": 7,
+      "deferredArticleCount": 0
     },
     "changeIntent": {
-      "action": "create_source_branch_and_author_seven_frozen_pages",
-      "target": "site-factory-seoul-jung-direct",
-      "idempotencyKey": "seoul-jung:author7:20261010T160000Z",
-      "expectedBase": "c32ab9c0b3dcbbdecff8b079c02f165a8c5ac448"
+      "action": "save_exact_independently_reviewed_source_and_direct_control",
+      "target": "site-factory-seoul-jung-direct/site-factory/seoul-jung-flower",
+      "expectedSourceBranchHead": "4939451f6033a38cf4be2314ad531faee6fd1ef9",
+      "idempotencyKey": "seoul-jung:source:220c6f149147db40fb58aa8a06374b770cf757be93239f8f4ff41a7613e66472"
     },
-    "lastSuccessfulStage": "source_branch_created_exact_base_and_readback",
-    "nextIntent": "Author seven original articles, independently review and assemble approved source.",
+    "lastSuccessfulStage": "independent_content_and_image_review_pass_seven_of_seven",
+    "nextIntent": "Save exact reviewed source/control; verify Node22 full build/static and remote full bytes before dispatch.",
     "review": {
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
       "planReviewSha256": "7daddef0074d717bc376485fe15b45b6f33c250942545d07d9e2bcb4554798b0",
-      "screenQa": "deferred_not_pass",
+      "screenQa": "DEFERRED_NOT_PASS",
       "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
-      "runtimePreparationStatus": "NODE22_FIXTURE_PASS_NOT_ACTUAL_SOURCE_OR_PUBLISH_PASS"
+      "runtimePreparationStatus": "NODE22_FIXTURE_PASS_NOT_ACTUAL_SOURCE_OR_PUBLISH_PASS",
+      "articlesSha256": "220c6f149147db40fb58aa8a06374b770cf757be93239f8f4ff41a7613e66472",
+      "independentReviewSha256": "dc14f3acdb7a511d30892130c9ac00ce5fedbf0f872adf0e917900531f8f070a",
+      "contentStatus": "PASS"
     }
   },
   "history": [
@@ -4517,7 +4522,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Author seven original articles, independently review and assemble approved source.",
+  "nextAction": "Save exact reviewed source/control; verify Node22 full build/static and remote full bytes before dispatch.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
