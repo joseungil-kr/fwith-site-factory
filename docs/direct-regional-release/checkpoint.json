@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T19:04:28.316Z",
+  "updatedAt": "2026-10-10T19:11:26.841Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-gwangjin-direct-initial-20261010",
     "city": "서울특별시 광진구",
-    "status": "researching_plan",
+    "status": "plan_frozen_before_authoring",
     "owner": {
       "scheduledRunAt": "2026-10-10T19:00:00Z",
       "observedExecutionAt": "2026-10-10T19:04:28.316Z",
@@ -51,7 +51,9 @@
       "root": "site-factory/seoul-gwangjin-flower",
       "worker": "seoul-gwangjin-flower-guide",
       "hostname": "seoul-gwangjin.fwith.kr",
-      "externalCreationVerified": false
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": true,
+      "sourceBranchBaseRevision": "fe1676fb50fd448ff1bc0fe3062278b4cee726e9"
     },
     "selection": {
       "officialCode": "11215",
@@ -68,12 +70,17 @@
         37655514711
       ],
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "PENDING_ACTUAL_PROVIDER_GET_BEFORE_PUBLISH"
+      "providerOwnershipCollisionCheck": "PENDING_ACTUAL_PROVIDER_GET_BEFORE_PUBLISH",
+      "publicHostObservation": {
+        "httpStatus": 502,
+        "absenceConfirmed": false,
+        "providerGETStillRequired": true
+      }
     },
     "changeIntent": {
-      "action": "research_freeze_plan_then_prepare_exact_source",
+      "action": "author_original_content_and_prepare_reviewed_source",
       "target": "site-factory-seoul-gwangjin-direct",
-      "idempotencyKey": "seoul-gwangjin:direct-initial:20261010T190000Z"
+      "idempotencyKey": "seoul-gwangjin:plan-frozen:f93fd890372feba394f1b786d16722a2c221490fbb501566238e6f48090b2fbb"
     },
     "unfinishedStages": [
       "plan_freeze",
@@ -86,7 +93,57 @@
       "indexnow",
       "gsc",
       "deferred_visual_qa"
-    ]
+    ],
+    "plan": {
+      "state": "frozen_before_authoring_independent_plan_pass",
+      "plannedArticleCount": 5,
+      "minimumPassedArticles": 5,
+      "legalDongCount": 7,
+      "administrativeDongCount": 15,
+      "relationshipCount": 15,
+      "unassignedLegalUnits": 2,
+      "countIsPageQuota": false,
+      "fixedPlanPath": "docs/direct-regional-release/seoul-gwangjin/fixed-plan.json",
+      "fixedPlanSha256": "f93fd890372feba394f1b786d16722a2c221490fbb501566238e6f48090b2fbb",
+      "frozenAt": "2026-10-10T19:10:18.487974+00:00",
+      "articles": [
+        {
+          "slug": "hwayang-dong-konkuk-hospital-condolence-wreath",
+          "title": "건국대학교병원 장례식장 근조화환 주문",
+          "primaryKeyword": "건국대학교병원 장례식장 근조화환 주문",
+          "status": "planned"
+        },
+        {
+          "slug": "gwangjang-dong-walkerhill-wedding-wreath",
+          "title": "워커힐 결혼식 축하화환 주문",
+          "primaryKeyword": "워커힐 결혼식 축하화환 주문",
+          "status": "planned"
+        },
+        {
+          "slug": "guui-dong-weddingsquare-gangbyeon-wreath",
+          "title": "웨딩스퀘어 강변 결혼식 축하화환 주문",
+          "primaryKeyword": "웨딩스퀘어 강변 결혼식 축하화환 주문",
+          "status": "planned"
+        },
+        {
+          "slug": "junggok-dong-jeil-market-opening-wreath",
+          "title": "중곡제일시장 거래처 개업화환 주문",
+          "primaryKeyword": "중곡제일시장 거래처 개업화환 주문",
+          "status": "planned"
+        },
+        {
+          "slug": "jayang-dong-ku-convention-event-wreath",
+          "title": "KU컨벤션 기업행사 축하화환 주문",
+          "primaryKeyword": "KU컨벤션 기업행사 축하화환 주문",
+          "status": "planned"
+        }
+      ]
+    },
+    "review": {
+      "screenQa": "DEFERRED_NOT_PASS",
+      "planReviewStatus": "PASS_BEFORE_AUTHORING",
+      "planReviewSha256": "75d9ba7df8cb3af30cc1b9c5954e998e22382229d03d3e41baa2356b2ec89f57"
+    }
   },
   "history": [
     {
