@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T06:19:50.853Z",
+  "updatedAt": "2026-10-10T06:23:14.598Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "anseong-direct-initial-20261010",
     "city": "안성시",
-    "status": "reviewed_source_publication_intent",
+    "status": "source_published_remote_verification",
     "owner": {
       "scheduledRunAt": "2026-10-10T06:00:00Z",
       "observedExecutionAt": "2026-10-10T06:01:14.435Z",
@@ -49,7 +49,7 @@
       "worker": "anseong-flower-guide",
       "hostname": "anseong.fwith.kr",
       "externalCreationVerified": false,
-      "sourceBranchCreatedVerified": false
+      "sourceBranchCreatedVerified": true
     },
     "input": {
       "controlRevision": "2ddbc8f28d168088dd684b7b6f0dd8aefad3c128",
@@ -410,14 +410,9 @@
         }
       ]
     },
-    "lastSuccessfulStage": "independent_content_and_local_runtime_pass",
-    "nextIntent": "Publish exact69reviewed files to fixed regional branch; remote fullreadback and finalSHA build before dispatch",
-    "pendingExternalAction": {
-      "action": "create_reviewed_anseong_source_branch",
-      "target": "site-factory-anseong-direct",
-      "sourceInventorySha256": "8428053d15c035a8238869f81ea5ff88ebeb1c3298123228192b7c6f5895197f",
-      "idempotencyKey": "anseong-direct-initial-20261010-source-v1"
-    },
+    "lastSuccessfulStage": "reviewed_source_branch_created_exact69_added",
+    "nextIntent": "Independent full remote readback and exact source build, then official dispatch intent",
+    "pendingExternalAction": null,
     "review": {
       "independentContent": "PASS",
       "hostedQa": "not_run",
@@ -436,7 +431,9 @@
       "localBuild": "PASS_INDEPENDENT_NODE22_PROVISIONAL",
       "sourceFileManifestSha256": "8428053d15c035a8238869f81ea5ff88ebeb1c3298123228192b7c6f5895197f",
       "localReviewSha256": "ac43a0b64b75595d06feaa7c593d5d88b8e935290ae8e3de3eb2dc962bc7e724"
-    }
+    },
+    "sourceRevision": "39a23593b6d2134627edccb9a02378dac708e5c4",
+    "controlRevision": "c3cc536814a2396c76b020dc9dfd048651d3873c"
   },
   "history": [
     {
