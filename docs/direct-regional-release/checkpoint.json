@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T05:13:24.260Z",
+  "updatedAt": "2026-10-10T05:15:37.704Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,14 +33,14 @@
   "current": {
     "scopeKey": "icheon-direct-initial-20261010",
     "city": "이천시",
-    "status": "published_ci_success_independent_http_verification_in_progress",
+    "status": "released_search_submitted_visual_qa_deferred",
     "owner": {
       "scheduledRunAt": "2026-10-10T05:00:00Z",
       "observedExecutionAt": "2026-10-10T05:00:21Z",
       "newRegionStartedAt": "2026-10-10T04:39:29.858Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-icheon-resume-20261010T050000Z",
-      "active": true,
+      "active": false,
       "resumedAt": "2026-10-10T05:00:52.984Z",
       "previousExecution": {
         "scheduledRunAt": "2026-10-10T04:00:00Z",
@@ -51,7 +51,9 @@
         "active": false,
         "endedAt": "2026-10-10T05:00:52.984Z",
         "executionState": "continued_serially_by_same_owner"
-      }
+      },
+      "completedAt": "2026-10-10T05:15:37.704Z",
+      "executionState": "released_with_visual_review_deferred"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -59,7 +61,7 @@
       "root": "site-factory/icheon-flower",
       "worker": "icheon-flower-guide",
       "hostname": "icheon.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true
     },
     "input": {
@@ -77,7 +79,7 @@
       "openMatchingPullRequests": 0,
       "inProgressWorkflows": 0,
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "pending_before_mutation"
+      "providerOwnershipCollisionCheck": "PASS_exact_binding_no_overrides"
     },
     "plan": {
       "state": "reviewed_25_of_25",
@@ -267,15 +269,9 @@
         }
       ]
     },
-    "lastSuccessfulStage": "official_workflow_completed_success",
-    "nextIntent": "Finish independent hosted artifact and HTTP verification, then submit GSC sitemap once",
-    "pendingExternalAction": {
-      "action": "submit_sitemap_after_independent_http_pass",
-      "siteUrl": "sc-domain:fwith.kr",
-      "sitemapUrl": "https://icheon.fwith.kr/sitemap-index.xml",
-      "sourceRevision": "0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920",
-      "idempotencyKey": "icheon-gsc-0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920"
-    },
+    "lastSuccessfulStage": "public_http_indexnow200_gsc_confirmed",
+    "nextIntent": "Deferred batch desktop/narrow visual review; next eligible invocation may select next unbuilt region",
+    "pendingExternalAction": null,
     "review": {
       "independentContent": "PASS",
       "writerDigests": {
@@ -283,7 +279,7 @@
         "b": "3abdb3825d8a5227a77318bce7000cfc6905010bfc21490482fe98caa6fd732f",
         "c": "fa033a8d2ff1e82198f18fa5120c3fd422bb20687d36579e6e9fc4d799574a04"
       },
-      "hostedQa": "deferred_not_pass",
+      "hostedQa": "HTTP_PASS_VISUAL_DEFERRED",
       "sourceTests": 64,
       "helperTests": 34,
       "sourceFiles": 69,
@@ -307,7 +303,81 @@
       "completedAt": "2026-10-10T05:11:02Z",
       "dispatchCount": 1,
       "result": "success"
-    }
+    },
+    "publicQa": {
+      "status": "PASS_INDEPENDENT_PUBLIC_HTTP_BYTES",
+      "checkedAt": "2026-10-10T05:14:31.690292+00:00",
+      "paths": 43,
+      "normalHtmlRoutes": 27,
+      "sitemapUrls": 27,
+      "visualQa": "deferred_not_pass"
+    },
+    "indexNowReceipt": {
+      "state": "received",
+      "httpStatus": 200,
+      "attempt": 1,
+      "urlCount": 27,
+      "urlSetSha256": "2bc13419eaee3948f772aebbfe4ddb949ed84039d4358e3d44d15370d4f40cec",
+      "fingerprint": "f5d71b39eb6ce47d837fd22697ec4c2e9cc70765c99a8796785251ecfb50234a",
+      "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6094085377",
+      "receiptIssue": 266,
+      "getObservations": 62,
+      "submissionObservations": 1,
+      "allGet200AndNoBlockingRobotsOrChallenge": true,
+      "httpMeaning": "accepted",
+      "searchIndexing": "not_verified"
+    },
+    "gsc": {
+      "sitemapUrl": "https://icheon.fwith.kr/sitemap-index.xml",
+      "accepted": true,
+      "confirmed": true,
+      "lastSubmitted": "2026-10-10T05:14:34.715Z",
+      "isPending": true,
+      "isSitemapsIndex": false,
+      "warnings": "0",
+      "errors": "0",
+      "readback": {
+        "path": "https://icheon.fwith.kr/sitemap-index.xml",
+        "lastSubmitted": "2026-10-10T05:14:34.715Z",
+        "isPending": true,
+        "isSitemapsIndex": false,
+        "warnings": "0",
+        "errors": "0"
+      },
+      "lastObservedAt": "2026-10-10T05:15:37.704Z"
+    },
+    "publication": {
+      "url": "https://icheon.fwith.kr/",
+      "sourceRevision": "0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920",
+      "indexNow": {
+        "state": "received",
+        "httpStatus": 200,
+        "attempt": 1,
+        "urlCount": 27,
+        "urlSetSha256": "2bc13419eaee3948f772aebbfe4ddb949ed84039d4358e3d44d15370d4f40cec",
+        "fingerprint": "f5d71b39eb6ce47d837fd22697ec4c2e9cc70765c99a8796785251ecfb50234a",
+        "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6094085377",
+        "receiptIssue": 266,
+        "getObservations": 62,
+        "submissionObservations": 1,
+        "allGet200AndNoBlockingRobotsOrChallenge": true,
+        "httpMeaning": "accepted",
+        "searchIndexing": "not_verified"
+      },
+      "searchIndexing": "not_verified"
+    },
+    "deferredVisualQa": {
+      "status": "deferred_not_pass",
+      "evidencePath": "docs/direct-regional-release/icheon/deferred-visual-qa-handoff.json",
+      "sha256": "f90a98a0c7767e874013be77a099ebfdf3ce9804ae8e6e67329e715296aedd12",
+      "totalRouteWidthObservations": 56
+    },
+    "ciVerification": {
+      "status": "PASS_OFFICIAL_CI_ARTIFACT_AND_RECEIPT",
+      "evidencePath": "docs/direct-regional-release/icheon/ci-verification.json"
+    },
+    "userIntervention": false,
+    "elapsedSecondsFromObservedStart": 2168
   },
   "history": [
     {
@@ -2076,6 +2146,355 @@
         "type": "user_authorized_exact_hostname_attachment",
         "contentOrDeploymentPerformedManuallyByUser": false
       }
+    },
+    {
+      "scopeKey": "icheon-direct-initial-20261010",
+      "city": "이천시",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "owner": {
+        "scheduledRunAt": "2026-10-10T05:00:00Z",
+        "observedExecutionAt": "2026-10-10T05:00:21Z",
+        "newRegionStartedAt": "2026-10-10T04:39:29.858Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-icheon-resume-20261010T050000Z",
+        "active": false,
+        "resumedAt": "2026-10-10T05:00:52.984Z",
+        "previousExecution": {
+          "scheduledRunAt": "2026-10-10T04:00:00Z",
+          "observedExecutionAt": "2026-10-10T03:58:12Z",
+          "newRegionStartedAt": "2026-10-10T04:39:29.858Z",
+          "serviceInvocationId": null,
+          "checkpointId": "direct-icheon-20261010T040000Z",
+          "active": false,
+          "endedAt": "2026-10-10T05:00:52.984Z",
+          "executionState": "continued_serially_by_same_owner"
+        },
+        "completedAt": "2026-10-10T05:15:37.704Z",
+        "executionState": "released_with_visual_review_deferred"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-icheon-direct",
+        "root": "site-factory/icheon-flower",
+        "worker": "icheon-flower-guide",
+        "hostname": "icheon.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true
+      },
+      "input": {
+        "controlRevision": "342c9d14ed96ee06118743813d614c1eb572fa4e",
+        "runtimeSourceRevision": "0ac786e59570382c6dbd7872e54cca9cd9b5f778"
+      },
+      "selection": {
+        "officialCode": "41500",
+        "reason": "Next unbuilt municipality after Paju in official MOIS code order; all earlier completed or released hosts excluded"
+      },
+      "conflictChecks": {
+        "branchesChecked": 114,
+        "matchingBranch": false,
+        "registryMatchingSite": false,
+        "openMatchingPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "PASS_exact_binding_no_overrides"
+      },
+      "plan": {
+        "state": "reviewed_25_of_25",
+        "plannedArticleCount": 25,
+        "minimumPassedArticles": 23,
+        "passedArticleCount": 25,
+        "administrativeUnits": 14,
+        "crosswalkRelationships": 25,
+        "deferred": [],
+        "membershipPath": "docs/direct-regional-release/icheon/membership.json",
+        "membershipSha256": "fc2be9063a4adf664ead16f2dd8a86754c332307fd65a599c7b4a97d3f56476d",
+        "articles": [
+          {
+            "name": "창전동",
+            "slug": "changjeon-dong",
+            "route": "/regions/changjeon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "관고동",
+            "slug": "gwango-dong",
+            "route": "/regions/gwango-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "중리동",
+            "slug": "jungni-dong",
+            "route": "/regions/jungni-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "증일동",
+            "slug": "jeungil-dong",
+            "route": "/regions/jeungil-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "율현동",
+            "slug": "yulhyeon-dong",
+            "route": "/regions/yulhyeon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "진리동",
+            "slug": "jilli-dong",
+            "route": "/regions/jilli-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "안흥동",
+            "slug": "anheung-dong",
+            "route": "/regions/anheung-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "갈산동",
+            "slug": "galsan-dong",
+            "route": "/regions/galsan-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "증포동",
+            "slug": "jeungpo-dong",
+            "route": "/regions/jeungpo-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "송정동",
+            "slug": "songjeong-dong",
+            "route": "/regions/songjeong-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "사음동",
+            "slug": "saeum-dong",
+            "route": "/regions/saeum-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "단월동",
+            "slug": "danwol-dong",
+            "route": "/regions/danwol-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "대포동",
+            "slug": "daepo-dong",
+            "route": "/regions/daepo-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "고담동",
+            "slug": "godam-dong",
+            "route": "/regions/godam-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "장록동",
+            "slug": "jangnok-dong",
+            "route": "/regions/jangnok-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "장호원읍",
+            "slug": "janghowon-eup",
+            "route": "/regions/janghowon-eup/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "부발읍",
+            "slug": "bubal-eup",
+            "route": "/regions/bubal-eup/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "신둔면",
+            "slug": "sindun-myeon",
+            "route": "/regions/sindun-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "백사면",
+            "slug": "baeksa-myeon",
+            "route": "/regions/baeksa-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "호법면",
+            "slug": "hobeop-myeon",
+            "route": "/regions/hobeop-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "마장면",
+            "slug": "majang-myeon",
+            "route": "/regions/majang-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "대월면",
+            "slug": "daewol-myeon",
+            "route": "/regions/daewol-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "모가면",
+            "slug": "moga-myeon",
+            "route": "/regions/moga-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "설성면",
+            "slug": "seolseong-myeon",
+            "route": "/regions/seolseong-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "율면",
+            "slug": "yul-myeon",
+            "route": "/regions/yul-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          }
+        ]
+      },
+      "lastSuccessfulStage": "public_http_indexnow200_gsc_confirmed",
+      "nextIntent": "Deferred batch desktop/narrow visual review; next eligible invocation may select next unbuilt region",
+      "pendingExternalAction": null,
+      "review": {
+        "independentContent": "PASS",
+        "writerDigests": {
+          "a": "b7744c55c3e550e482e0b471ab2b7718f0ffb484120bebf908d99128fb3bfee1",
+          "b": "3abdb3825d8a5227a77318bce7000cfc6905010bfc21490482fe98caa6fd732f",
+          "c": "fa033a8d2ff1e82198f18fa5120c3fd422bb20687d36579e6e9fc4d799574a04"
+        },
+        "hostedQa": "HTTP_PASS_VISUAL_DEFERRED",
+        "sourceTests": 64,
+        "helperTests": 34,
+        "sourceFiles": 69,
+        "sourceFileManifestSha256": "46955158cd7b320c3b294f54277a009cb0a4cfdad54b170a07dd23b9b1cae224",
+        "artifactFiles": 44,
+        "normalHtmlRoutes": 27,
+        "sitemapUrls": 27,
+        "localBuild": "PASS_FINAL_SOURCE_SHA_NODE22",
+        "remoteReadback": "PASS_69_FULL_SOURCE_AND3_CONTROLS_4_ENGINE_MODULES",
+        "finalEvidencePath": "docs/direct-regional-release/icheon/final-release-review.json",
+        "finalEvidenceSha256": "c881cb68f4d11d22c82eb245b55d6922aa7f2ab1d1e23c43076f4e0d8a59e15d"
+      },
+      "sourceRevision": "0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920",
+      "controlRevision": "57c883a97d0e184588a0823aa687e0d771d3a434",
+      "actualWorkflow": {
+        "runId": 38026565910,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38026565910",
+        "sourceRevision": "0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920",
+        "controlRevision": "eef5e5907a2905b50a8acda15ab509652ed5a3b0",
+        "createdAt": "2026-10-10T05:09:50Z",
+        "completedAt": "2026-10-10T05:11:02Z",
+        "dispatchCount": 1,
+        "result": "success"
+      },
+      "publicQa": {
+        "status": "PASS_INDEPENDENT_PUBLIC_HTTP_BYTES",
+        "checkedAt": "2026-10-10T05:14:31.690292+00:00",
+        "paths": 43,
+        "normalHtmlRoutes": 27,
+        "sitemapUrls": 27,
+        "visualQa": "deferred_not_pass"
+      },
+      "indexNowReceipt": {
+        "state": "received",
+        "httpStatus": 200,
+        "attempt": 1,
+        "urlCount": 27,
+        "urlSetSha256": "2bc13419eaee3948f772aebbfe4ddb949ed84039d4358e3d44d15370d4f40cec",
+        "fingerprint": "f5d71b39eb6ce47d837fd22697ec4c2e9cc70765c99a8796785251ecfb50234a",
+        "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6094085377",
+        "receiptIssue": 266,
+        "getObservations": 62,
+        "submissionObservations": 1,
+        "allGet200AndNoBlockingRobotsOrChallenge": true,
+        "httpMeaning": "accepted",
+        "searchIndexing": "not_verified"
+      },
+      "gsc": {
+        "sitemapUrl": "https://icheon.fwith.kr/sitemap-index.xml",
+        "accepted": true,
+        "confirmed": true,
+        "lastSubmitted": "2026-10-10T05:14:34.715Z",
+        "isPending": true,
+        "isSitemapsIndex": false,
+        "warnings": "0",
+        "errors": "0",
+        "readback": {
+          "path": "https://icheon.fwith.kr/sitemap-index.xml",
+          "lastSubmitted": "2026-10-10T05:14:34.715Z",
+          "isPending": true,
+          "isSitemapsIndex": false,
+          "warnings": "0",
+          "errors": "0"
+        },
+        "lastObservedAt": "2026-10-10T05:15:37.704Z"
+      },
+      "publication": {
+        "url": "https://icheon.fwith.kr/",
+        "sourceRevision": "0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920",
+        "indexNow": {
+          "state": "received",
+          "httpStatus": 200,
+          "attempt": 1,
+          "urlCount": 27,
+          "urlSetSha256": "2bc13419eaee3948f772aebbfe4ddb949ed84039d4358e3d44d15370d4f40cec",
+          "fingerprint": "f5d71b39eb6ce47d837fd22697ec4c2e9cc70765c99a8796785251ecfb50234a",
+          "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6094085377",
+          "receiptIssue": 266,
+          "getObservations": 62,
+          "submissionObservations": 1,
+          "allGet200AndNoBlockingRobotsOrChallenge": true,
+          "httpMeaning": "accepted",
+          "searchIndexing": "not_verified"
+        },
+        "searchIndexing": "not_verified"
+      },
+      "deferredVisualQa": {
+        "status": "deferred_not_pass",
+        "evidencePath": "docs/direct-regional-release/icheon/deferred-visual-qa-handoff.json",
+        "sha256": "f90a98a0c7767e874013be77a099ebfdf3ce9804ae8e6e67329e715296aedd12",
+        "totalRouteWidthObservations": 56
+      },
+      "ciVerification": {
+        "status": "PASS_OFFICIAL_CI_ARTIFACT_AND_RECEIPT",
+        "evidencePath": "docs/direct-regional-release/icheon/ci-verification.json"
+      },
+      "userIntervention": false,
+      "elapsedSecondsFromObservedStart": 2168
     }
   ],
   "maintenanceBacklog": [
@@ -2741,11 +3160,361 @@
         "type": "user_authorized_exact_hostname_attachment",
         "contentOrDeploymentPerformedManuallyByUser": false
       }
+    },
+    {
+      "scopeKey": "icheon-direct-initial-20261010",
+      "city": "이천시",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "owner": {
+        "scheduledRunAt": "2026-10-10T05:00:00Z",
+        "observedExecutionAt": "2026-10-10T05:00:21Z",
+        "newRegionStartedAt": "2026-10-10T04:39:29.858Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-icheon-resume-20261010T050000Z",
+        "active": false,
+        "resumedAt": "2026-10-10T05:00:52.984Z",
+        "previousExecution": {
+          "scheduledRunAt": "2026-10-10T04:00:00Z",
+          "observedExecutionAt": "2026-10-10T03:58:12Z",
+          "newRegionStartedAt": "2026-10-10T04:39:29.858Z",
+          "serviceInvocationId": null,
+          "checkpointId": "direct-icheon-20261010T040000Z",
+          "active": false,
+          "endedAt": "2026-10-10T05:00:52.984Z",
+          "executionState": "continued_serially_by_same_owner"
+        },
+        "completedAt": "2026-10-10T05:15:37.704Z",
+        "executionState": "released_with_visual_review_deferred"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-icheon-direct",
+        "root": "site-factory/icheon-flower",
+        "worker": "icheon-flower-guide",
+        "hostname": "icheon.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true
+      },
+      "input": {
+        "controlRevision": "342c9d14ed96ee06118743813d614c1eb572fa4e",
+        "runtimeSourceRevision": "0ac786e59570382c6dbd7872e54cca9cd9b5f778"
+      },
+      "selection": {
+        "officialCode": "41500",
+        "reason": "Next unbuilt municipality after Paju in official MOIS code order; all earlier completed or released hosts excluded"
+      },
+      "conflictChecks": {
+        "branchesChecked": 114,
+        "matchingBranch": false,
+        "registryMatchingSite": false,
+        "openMatchingPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "PASS_exact_binding_no_overrides"
+      },
+      "plan": {
+        "state": "reviewed_25_of_25",
+        "plannedArticleCount": 25,
+        "minimumPassedArticles": 23,
+        "passedArticleCount": 25,
+        "administrativeUnits": 14,
+        "crosswalkRelationships": 25,
+        "deferred": [],
+        "membershipPath": "docs/direct-regional-release/icheon/membership.json",
+        "membershipSha256": "fc2be9063a4adf664ead16f2dd8a86754c332307fd65a599c7b4a97d3f56476d",
+        "articles": [
+          {
+            "name": "창전동",
+            "slug": "changjeon-dong",
+            "route": "/regions/changjeon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "관고동",
+            "slug": "gwango-dong",
+            "route": "/regions/gwango-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "중리동",
+            "slug": "jungni-dong",
+            "route": "/regions/jungni-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "증일동",
+            "slug": "jeungil-dong",
+            "route": "/regions/jeungil-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "율현동",
+            "slug": "yulhyeon-dong",
+            "route": "/regions/yulhyeon-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "진리동",
+            "slug": "jilli-dong",
+            "route": "/regions/jilli-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "안흥동",
+            "slug": "anheung-dong",
+            "route": "/regions/anheung-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "갈산동",
+            "slug": "galsan-dong",
+            "route": "/regions/galsan-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "증포동",
+            "slug": "jeungpo-dong",
+            "route": "/regions/jeungpo-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "송정동",
+            "slug": "songjeong-dong",
+            "route": "/regions/songjeong-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "사음동",
+            "slug": "saeum-dong",
+            "route": "/regions/saeum-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "단월동",
+            "slug": "danwol-dong",
+            "route": "/regions/danwol-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "대포동",
+            "slug": "daepo-dong",
+            "route": "/regions/daepo-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "고담동",
+            "slug": "godam-dong",
+            "route": "/regions/godam-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "장록동",
+            "slug": "jangnok-dong",
+            "route": "/regions/jangnok-dong/",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "장호원읍",
+            "slug": "janghowon-eup",
+            "route": "/regions/janghowon-eup/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "부발읍",
+            "slug": "bubal-eup",
+            "route": "/regions/bubal-eup/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "신둔면",
+            "slug": "sindun-myeon",
+            "route": "/regions/sindun-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "백사면",
+            "slug": "baeksa-myeon",
+            "route": "/regions/baeksa-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "호법면",
+            "slug": "hobeop-myeon",
+            "route": "/regions/hobeop-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "마장면",
+            "slug": "majang-myeon",
+            "route": "/regions/majang-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "대월면",
+            "slug": "daewol-myeon",
+            "route": "/regions/daewol-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "모가면",
+            "slug": "moga-myeon",
+            "route": "/regions/moga-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "설성면",
+            "slug": "seolseong-myeon",
+            "route": "/regions/seolseong-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          },
+          {
+            "name": "율면",
+            "slug": "yul-myeon",
+            "route": "/regions/yul-myeon/",
+            "status": "independent_content_pass",
+            "writerBatch": "c"
+          }
+        ]
+      },
+      "lastSuccessfulStage": "public_http_indexnow200_gsc_confirmed",
+      "nextIntent": "Deferred batch desktop/narrow visual review; next eligible invocation may select next unbuilt region",
+      "pendingExternalAction": null,
+      "review": {
+        "independentContent": "PASS",
+        "writerDigests": {
+          "a": "b7744c55c3e550e482e0b471ab2b7718f0ffb484120bebf908d99128fb3bfee1",
+          "b": "3abdb3825d8a5227a77318bce7000cfc6905010bfc21490482fe98caa6fd732f",
+          "c": "fa033a8d2ff1e82198f18fa5120c3fd422bb20687d36579e6e9fc4d799574a04"
+        },
+        "hostedQa": "HTTP_PASS_VISUAL_DEFERRED",
+        "sourceTests": 64,
+        "helperTests": 34,
+        "sourceFiles": 69,
+        "sourceFileManifestSha256": "46955158cd7b320c3b294f54277a009cb0a4cfdad54b170a07dd23b9b1cae224",
+        "artifactFiles": 44,
+        "normalHtmlRoutes": 27,
+        "sitemapUrls": 27,
+        "localBuild": "PASS_FINAL_SOURCE_SHA_NODE22",
+        "remoteReadback": "PASS_69_FULL_SOURCE_AND3_CONTROLS_4_ENGINE_MODULES",
+        "finalEvidencePath": "docs/direct-regional-release/icheon/final-release-review.json",
+        "finalEvidenceSha256": "c881cb68f4d11d22c82eb245b55d6922aa7f2ab1d1e23c43076f4e0d8a59e15d"
+      },
+      "sourceRevision": "0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920",
+      "controlRevision": "57c883a97d0e184588a0823aa687e0d771d3a434",
+      "actualWorkflow": {
+        "runId": 38026565910,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38026565910",
+        "sourceRevision": "0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920",
+        "controlRevision": "eef5e5907a2905b50a8acda15ab509652ed5a3b0",
+        "createdAt": "2026-10-10T05:09:50Z",
+        "completedAt": "2026-10-10T05:11:02Z",
+        "dispatchCount": 1,
+        "result": "success"
+      },
+      "publicQa": {
+        "status": "PASS_INDEPENDENT_PUBLIC_HTTP_BYTES",
+        "checkedAt": "2026-10-10T05:14:31.690292+00:00",
+        "paths": 43,
+        "normalHtmlRoutes": 27,
+        "sitemapUrls": 27,
+        "visualQa": "deferred_not_pass"
+      },
+      "indexNowReceipt": {
+        "state": "received",
+        "httpStatus": 200,
+        "attempt": 1,
+        "urlCount": 27,
+        "urlSetSha256": "2bc13419eaee3948f772aebbfe4ddb949ed84039d4358e3d44d15370d4f40cec",
+        "fingerprint": "f5d71b39eb6ce47d837fd22697ec4c2e9cc70765c99a8796785251ecfb50234a",
+        "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6094085377",
+        "receiptIssue": 266,
+        "getObservations": 62,
+        "submissionObservations": 1,
+        "allGet200AndNoBlockingRobotsOrChallenge": true,
+        "httpMeaning": "accepted",
+        "searchIndexing": "not_verified"
+      },
+      "gsc": {
+        "sitemapUrl": "https://icheon.fwith.kr/sitemap-index.xml",
+        "accepted": true,
+        "confirmed": true,
+        "lastSubmitted": "2026-10-10T05:14:34.715Z",
+        "isPending": true,
+        "isSitemapsIndex": false,
+        "warnings": "0",
+        "errors": "0",
+        "readback": {
+          "path": "https://icheon.fwith.kr/sitemap-index.xml",
+          "lastSubmitted": "2026-10-10T05:14:34.715Z",
+          "isPending": true,
+          "isSitemapsIndex": false,
+          "warnings": "0",
+          "errors": "0"
+        },
+        "lastObservedAt": "2026-10-10T05:15:37.704Z"
+      },
+      "publication": {
+        "url": "https://icheon.fwith.kr/",
+        "sourceRevision": "0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920",
+        "indexNow": {
+          "state": "received",
+          "httpStatus": 200,
+          "attempt": 1,
+          "urlCount": 27,
+          "urlSetSha256": "2bc13419eaee3948f772aebbfe4ddb949ed84039d4358e3d44d15370d4f40cec",
+          "fingerprint": "f5d71b39eb6ce47d837fd22697ec4c2e9cc70765c99a8796785251ecfb50234a",
+          "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6094085377",
+          "receiptIssue": 266,
+          "getObservations": 62,
+          "submissionObservations": 1,
+          "allGet200AndNoBlockingRobotsOrChallenge": true,
+          "httpMeaning": "accepted",
+          "searchIndexing": "not_verified"
+        },
+        "searchIndexing": "not_verified"
+      },
+      "deferredVisualQa": {
+        "status": "deferred_not_pass",
+        "evidencePath": "docs/direct-regional-release/icheon/deferred-visual-qa-handoff.json",
+        "sha256": "f90a98a0c7767e874013be77a099ebfdf3ce9804ae8e6e67329e715296aedd12",
+        "totalRouteWidthObservations": 56
+      },
+      "ciVerification": {
+        "status": "PASS_OFFICIAL_CI_ARTIFACT_AND_RECEIPT",
+        "evidencePath": "docs/direct-regional-release/icheon/ci-verification.json"
+      },
+      "userIntervention": false,
+      "elapsedSecondsFromObservedStart": 2168
     }
   ],
   "releasedKnownHosts": [
     "hanam.fwith.kr",
     "paju.fwith.kr",
-    "gwacheon.fwith.kr"
+    "gwacheon.fwith.kr",
+    "icheon.fwith.kr"
   ]
 }
