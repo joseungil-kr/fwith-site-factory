@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T14:35:14.648Z",
+  "updatedAt": "2026-10-10T14:45:25.831Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "yangpyeong-direct-initial-20261010",
     "city": "양평군",
-    "status": "independent_content_pass_build_pending",
+    "status": "reviewed_source_saved_ready_for_dispatch",
     "owner": {
       "scheduledRunAt": "2026-10-10T14:00:00Z",
       "observedExecutionAt": "2026-10-10T14:05:15.376Z",
@@ -50,7 +50,8 @@
       "root": "site-factory/yangpyeong-flower",
       "worker": "yangpyeong-flower-guide",
       "hostname": "yangpyeong.fwith.kr",
-      "externalCreationVerified": false
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": true
     },
     "selection": {
       "officialCode": "41830",
@@ -222,20 +223,36 @@
       "controlRevision": "d87a0515e6d62da7dd793dbd9bbfe36326cf4e07"
     },
     "changeIntent": {
-      "action": "save_independent_review_then_create_reviewed_regional_source",
-      "target": "site-factory-yangpyeong-direct / site-factory/yangpyeong-flower",
-      "idempotencyKey": "yangpyeong:source:599b4e1b7f49fbf1c0c4a084b01d44d4893638db71600c3cbeec9d9be95daea0"
+      "action": "publish_fixed_direct_controls_then_dispatch_exact_source_once",
+      "target": ".github/workflows/yangpyeong-direct-publish.yml",
+      "idempotencyKey": "yangpyeong:dispatch:bad8ba028abc68c738267622ed7f1508f956bd54"
     },
-    "lastSuccessfulStage": "independent_exact_11_content_image_and_fresh_catalog_review",
-    "nextIntent": "Credential-free Node22 final assembly/build/tests, remote source save and full blob readback, then exact-source formal dispatch.",
+    "lastSuccessfulStage": "exact_source_saved_full_69_blob_readback_and_Node22_rebuild_pass",
+    "nextIntent": "Fresh control/source readback, official workflow dispatch once, then actual provider and hosted verification; do not infer success from local build.",
     "review": {
       "content": "PASS_EXACT_11_ARTICLES",
       "articleFileSha256": "599b4e1b7f49fbf1c0c4a084b01d44d4893638db71600c3cbeec9d9be95daea0",
       "reviewSha256": "7a593ddf21d5bb9cfc283b417e5930b7d62f75e97543ed6cb41d732187b876f2",
       "images": "PASS_8_ACTUAL_CATALOG_IMAGES_WITH_EXACT_DIGESTS",
       "visual": "DEFERRED_BY_USER_NOT_PASS",
-      "runtime": "FINAL_ASSEMBLY_AND_NODE22_BUILD_PENDING",
-      "evidencePath": "docs/direct-regional-release/yangpyeong/content-review.json"
+      "runtime": "PASS_INDEPENDENT_NODE22_66_SOURCE_34_PUBLISHER",
+      "evidencePath": "docs/direct-regional-release/yangpyeong/content-review.json",
+      "remoteSource": "PASS_60_FULL_UTF8_9_FULL_BINARY_READBACKS"
+    },
+    "sourceRevision": "bad8ba028abc68c738267622ed7f1508f956bd54",
+    "pendingExternalAction": {
+      "action": "workflow_dispatch",
+      "workflow": ".github/workflows/yangpyeong-direct-publish.yml",
+      "ref": "main",
+      "inputs": {
+        "expected_revision": "bad8ba028abc68c738267622ed7f1508f956bd54",
+        "indexnow_only": false
+      },
+      "target": {
+        "worker": "yangpyeong-flower-guide",
+        "hostname": "yangpyeong.fwith.kr"
+      },
+      "providerCollisionCheck": "required_actual_GET_no_override_in_official_workflow"
     }
   },
   "history": [
