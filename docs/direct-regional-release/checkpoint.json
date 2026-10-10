@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T12:29:57.768Z",
+  "updatedAt": "2026-10-10T12:42:10.852Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "yeoncheon-direct-initial-20261010",
     "city": "연천군",
-    "status": "claimed_research",
+    "status": "independently_reviewed_source_save_intent",
     "owner": {
       "scheduledRunAt": "2026-10-10T12:00:00Z",
       "observedExecutionAt": "2026-10-10T12:24:45.477Z",
@@ -68,7 +68,7 @@
       "runtimeSourceRevision": "8fbcc607193d2ea3c34286519cff7d5f3380479a"
     },
     "plan": {
-      "state": "fixed_before_authoring",
+      "state": "independently_reviewed_9_of_10",
       "plannedArticleCount": 10,
       "minimumPassedArticles": 9,
       "administrativeUnits": 10,
@@ -81,56 +81,56 @@
           "name": "연천읍",
           "title": "연천수레울아트홀 공연 축하화환",
           "primaryKeyword": "연천수레울아트홀 공연 축하화환",
-          "status": "planned"
+          "status": "independent_content_pass"
         },
         {
           "slug": "jeongok-eup",
           "name": "전곡읍",
           "title": "전곡읍 연천군장례식장 근조화환",
           "primaryKeyword": "전곡읍 연천군장례식장 근조화환",
-          "status": "planned"
+          "status": "independent_content_pass"
         },
         {
           "slug": "gunnam-myeon",
           "name": "군남면",
           "title": "군남면 음식점 개업화환",
           "primaryKeyword": "군남면 음식점 개업화환",
-          "status": "planned"
+          "status": "independent_content_pass"
         },
         {
           "slug": "cheongsan-myeon",
           "name": "청산면",
           "title": "청산면 제조업체 이전 축하화환",
           "primaryKeyword": "청산면 제조업체 이전 축하화환",
-          "status": "planned"
+          "status": "independent_content_pass"
         },
         {
           "slug": "baekhak-myeon",
           "name": "백학면",
           "title": "백학자유로리조트 연회 축하화환",
           "primaryKeyword": "백학자유로리조트 연회 축하화환",
-          "status": "planned"
+          "status": "independent_content_pass"
         },
         {
           "slug": "misan-myeon",
           "name": "미산면",
           "title": "미산면 음식점 개업화환",
           "primaryKeyword": "미산면 음식점 개업화환",
-          "status": "planned"
+          "status": "independent_content_pass"
         },
         {
           "slug": "wangjing-myeon",
           "name": "왕징면",
           "title": "왕징면 징파연수원 기념행사 화환",
           "primaryKeyword": "왕징면 징파연수원 기념행사 화환",
-          "status": "planned"
+          "status": "independent_content_pass"
         },
         {
           "slug": "sinseo-myeon",
           "name": "신서면",
           "title": "신서면 음식점 개업화환",
           "primaryKeyword": "신서면 음식점 개업화환",
-          "status": "planned"
+          "status": "independent_content_pass"
         },
         {
           "slug": "jung-myeon",
@@ -144,7 +144,7 @@
           "name": "장남면",
           "title": "장남면 카페 개업화환",
           "primaryKeyword": "장남면 카페 개업화환",
-          "status": "planned"
+          "status": "independent_content_pass"
         }
       ],
       "deferred": [
@@ -175,21 +175,31 @@
             "finding": "중면 군중로 399의 캠핑 사업장 실체는 확인. 화환 수령 행사를 입증하지 못하므로 구매 콘텐츠에 억지 연결하지 않음."
           }
         }
-      ]
+      ],
+      "passedArticleCount": 9,
+      "heldArticleCount": 1,
+      "passedRatio": 0.9
     },
-    "lastSuccessfulStage": "official_membership_and_purchase_plan_frozen",
+    "lastSuccessfulStage": "independent_content_and_catalog_image_review",
     "nextIntent": "Verify official membership and freeze unique purchase-content plan before authoring",
     "changeIntent": {
-      "action": "author_nine_unique_articles_and_hold_jung",
-      "target": "site-factory/yeoncheon-flower",
-      "idempotencyKey": "yeoncheon-direct-initial-20261010:fixed-plan"
+      "action": "create_source_branch_and_commit",
+      "target": "site-factory-yeoncheon-direct / site-factory/yeoncheon-flower",
+      "idempotencyKey": "yeoncheon-direct-initial-20261010:save-source:b081651514a807b0ed90386e0b2166f6fdbb630125678247ae6875ce07cb7be7",
+      "inventorySha256": "b081651514a807b0ed90386e0b2166f6fdbb630125678247ae6875ce07cb7be7"
     },
     "idempotencyKey": "yeoncheon-direct-initial-20261010:claim",
     "publication": {
       "state": "not_dispatched"
     },
     "review": {
-      "visual": "NOT_PERFORMED"
+      "content": "PASS_EXACT_9_ARTICLES",
+      "articleFileSha256": "8bf08daf15a7085038a057e3c27dd71bcf500908d0a9228ba1ef1399eec3daec",
+      "images": "PASS_9_EXACT_GIT_BLOBS_8_ACTUAL_PRODUCT_PHOTOS",
+      "runtime": "PASS_INDEPENDENT_NODE22_65_SOURCE_34_HELPER",
+      "visual": "DEFERRED_BY_USER_NOT_PASS",
+      "reviewSha256": "3853ebab7c8d6668bcb4d538ad70e2fa5108ccd63065852b2459dc31c238e636",
+      "evidencePath": "docs/direct-regional-release/yeoncheon/review.json"
     }
   },
   "history": [
