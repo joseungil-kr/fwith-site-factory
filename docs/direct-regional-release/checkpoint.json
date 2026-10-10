@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T14:45:25.831Z",
+  "updatedAt": "2026-10-10T14:50:54.383Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "yangpyeong-direct-initial-20261010",
     "city": "양평군",
-    "status": "reviewed_source_saved_ready_for_dispatch",
+    "status": "official_workflow_running",
     "owner": {
       "scheduledRunAt": "2026-10-10T14:00:00Z",
       "observedExecutionAt": "2026-10-10T14:05:15.376Z",
@@ -41,7 +41,7 @@
       "serviceInvocationId": null,
       "checkpointId": "direct-yangpyeong-20261010T140000Z",
       "active": true,
-      "executionState": "research_and_source_preparation",
+      "executionState": "official_workflow_running",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T14:02:51.910Z"
     },
     "identity": {
@@ -77,7 +77,7 @@
       "candidatePlanPath": "docs/direct-regional-release/yangpyeong/plan-candidate-v1.json",
       "passedArticleCount": 11,
       "heldArticleCount": 1,
-      "customerArticlesWritten": 0,
+      "customerArticlesWritten": 11,
       "frozenAt": "2026-10-10T14:24:03.645102+00:00",
       "fixedPlanPath": "docs/direct-regional-release/yangpyeong/fixed-plan.json",
       "articles": [
@@ -227,8 +227,8 @@
       "target": ".github/workflows/yangpyeong-direct-publish.yml",
       "idempotencyKey": "yangpyeong:dispatch:bad8ba028abc68c738267622ed7f1508f956bd54"
     },
-    "lastSuccessfulStage": "exact_source_saved_full_69_blob_readback_and_Node22_rebuild_pass",
-    "nextIntent": "Fresh control/source readback, official workflow dispatch once, then actual provider and hosted verification; do not infer success from local build.",
+    "lastSuccessfulStage": "official_dispatch_run_created_and_build_started",
+    "nextIntent": "Observe existing run; do not dispatch duplicate.",
     "review": {
       "content": "PASS_EXACT_11_ARTICLES",
       "articleFileSha256": "599b4e1b7f49fbf1c0c4a084b01d44d4893638db71600c3cbeec9d9be95daea0",
@@ -252,7 +252,18 @@
         "worker": "yangpyeong-flower-guide",
         "hostname": "yangpyeong.fwith.kr"
       },
-      "providerCollisionCheck": "required_actual_GET_no_override_in_official_workflow"
+      "providerCollisionCheck": "required_actual_GET_no_override_in_official_workflow",
+      "result": {
+        "runId": 38061201258
+      }
+    },
+    "controlRevision": "7c9baf3c6b9636d3fd4963bd182cd9a92445e04e",
+    "run": {
+      "id": 38061201258,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38061201258",
+      "observedStatus": "in_progress",
+      "dispatchedVia": "official_github_workflow_dispatch_UI",
+      "dispatchCount": 1
     }
   },
   "history": [
