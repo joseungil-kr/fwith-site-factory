@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T04:31:14.620Z",
+  "updatedAt": "2026-10-10T04:33:09.578Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -30,7 +30,136 @@
   "excludedHosts": [
     "blog.fwith.kr"
   ],
-  "current": null,
+  "current": {
+    "scopeKey": "gwacheon-direct-initial-20261010",
+    "city": "과천시",
+    "status": "approved_exact_source_dispatch_intent",
+    "owner": {
+      "scheduledRunAt": "2026-10-10T04:00:00Z",
+      "serviceInvocationId": null,
+      "checkpointId": "direct-gwacheon-resume-20261010T040000Z",
+      "active": true,
+      "resumedAt": "2026-10-10T04:33:09.578Z",
+      "previousExecution": {
+        "scheduledRunAt": "2026-10-09T19:00:00Z",
+        "observedMessageAt": "2026-10-09T18:57:20Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-gwacheon-20261009T190000Z",
+        "active": false,
+        "executionState": "ended_with_approval_checkpoint",
+        "endedAt": "2026-10-09T19:15:30.853Z"
+      }
+    },
+    "identity": {
+      "repository": "joseungil-kr/fwith-site-factory",
+      "branch": "site-factory-gwacheon-direct",
+      "root": "site-factory/gwacheon-flower",
+      "worker": "gwacheon-flower-guide",
+      "hostname": "gwacheon.fwith.kr",
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": true
+    },
+    "input": {
+      "controlRevision": "f01652ae896d3b60eebb9e75d09ff55626914527",
+      "runtimeSourceRevision": "f13a51b75707e5b2e4cfb499da48372faa314858"
+    },
+    "conflictChecks": {
+      "branchesChecked": 106,
+      "matchingBranch": false,
+      "openPullRequests": 0,
+      "mainMatchingPaths": false,
+      "inProgressWorkflows": 0,
+      "providerOwnershipCollisionCheck": "pending_required_before_mutation"
+    },
+    "selection": {
+      "sourceUrl": "https://kosis.kr/visual/eRegionIndex/eRegionCompare.do",
+      "reason": "Next unbuilt Gyeonggi municipality in official code order; earlier Dongducheon,Ansan,Goyang already complete"
+    },
+    "lastSuccessfulStage": "independent_exact_source_control_readback_and_final_sha_build",
+    "nextIntent": "Official reviewed-source dispatch after fresh independent revalidation",
+    "pendingExternalAction": {
+      "action": "workflow_dispatch_with_fixed_hostname_attachment",
+      "workflow": "gwacheon-direct-publish.yml",
+      "controlRevision": "b6141e6d0537a91471ad30535322fa65d17adc3a",
+      "expectedRevision": "1cf4c2fd922053f5966200c01c331cd1bb6f8a7f",
+      "indexnowOnly": false,
+      "hostname": "gwacheon.fwith.kr",
+      "worker": "gwacheon-flower-guide",
+      "existingAccountOnly": true,
+      "noOverrides": true,
+      "idempotencyKey": "gwacheon-direct-release-1cf4c2fd922053f5966200c01c331cd1bb6f8a7f"
+    },
+    "receiptJournal": {
+      "number": 266,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266",
+      "reuseExistingWithoutReopen": true
+    },
+    "plan": {
+      "state": "independent_content_pass_source_review_pending",
+      "plannedArticleCount": 10,
+      "minimumPassedArticles": 9,
+      "membershipPath": "docs/direct-regional-release/gwacheon/membership.json",
+      "membershipSha256": "7ca262a6ab65af337ba86aca3b3751b1f1fe85d25cd8f6c60cbd3afec8f58d8e",
+      "administrativeUnits": 7,
+      "passedArticleCount": 10,
+      "deferred": []
+    },
+    "review": {
+      "independentContent": "PASS",
+      "writerADigest": "c142448200ddae54ceac5cf79d444a1b983be26590117d003b13a5b12e69bdb7",
+      "writerBDigest": "2ebea3edfee338a8d02f46a917418dc18313eb86c9d73432b5851ad27a0cb333",
+      "catalogPrices": "verified2026-10-09T18:59:50Z",
+      "sourceBuild": "PASS_FINAL_SOURCE_SHA_NODE22",
+      "hostedQa": "not_executed",
+      "sourceTests": 64,
+      "publisherTests": 34,
+      "sourceFilesVerified": 69,
+      "exactMatchingProductCards": 40,
+      "normalHtmlRoutes": 12,
+      "sitemapUrls": 12,
+      "sourceInventorySha256": "4851451e3a152fa92fda5544fb9218e126d686e28ec0cbdd2d6c81108be1bba1",
+      "publicationManifestRawSha256": "50c2fb75fd362491f1025344c823aa1c6083cf62ec7fe629ff8cd0afddc1ef00",
+      "remoteReadback": "PASS_69_BLOBS_AND_CONTROL"
+    },
+    "controlRevision": "253a08eb4c0962ca774889608dc73cea057dd6dd",
+    "sourceRevision": "1cf4c2fd922053f5966200c01c331cd1bb6f8a7f",
+    "evidencePath": "docs/direct-regional-release/gwacheon/independent-predeploy-evidence.json",
+    "approvalRequired": {
+      "action": "Attach gwacheon.fwith.kr to gwacheon-flower-guide and deploy reviewed direct static source",
+      "reason": "Mandatory action review requires explicit approval for this specific hostname attachment",
+      "scope": "Existing fwith.kr Cloudflare account, no overrides; no DNS ownership, credential, permission, security or other-site changes"
+    },
+    "executionBlocker": {
+      "stage": "official_run_workflow_click",
+      "deniedAt": "2026-10-09T19:14:42Z",
+      "reason": "specific_hostname_attachment_approval_required",
+      "workflowRunCreated": false,
+      "providerMutationExecuted": false,
+      "readbackVerifiedAt": "2026-10-09T19:15:02Z",
+      "retryCount": 0,
+      "resolvedBy": "explicit_pending_target_approval"
+    },
+    "publicQa": {
+      "status": "not_executed"
+    },
+    "indexNowReceipt": null,
+    "gsc": {
+      "status": "not_submitted"
+    },
+    "userIntervention": false,
+    "elapsedSecondsFromObservedStart": 1091,
+    "approval": {
+      "status": "approved",
+      "approvedAt": "2026-10-10T04:22:59Z",
+      "scope": "Exact waiting hostname attachment and reviewed source deployment; existing account no overrides",
+      "sourceRevision": "1cf4c2fd922053f5966200c01c331cd1bb6f8a7f"
+    },
+    "revalidation": {
+      "status": "READY_FOR_OFFICIAL_DISPATCH",
+      "evidencePath": "docs/direct-regional-release/gwacheon/revalidation-20261010.json",
+      "sha256": "ca97bd989103871435724943cf1323ac1e4a94f523538b71662c06782737537d"
+    }
+  },
   "history": [
     {
       "scopeKey": "uijeongbu-direct-initial-20261010",
@@ -1664,125 +1793,7 @@
       "enabledChanged": false
     }
   },
-  "waitingApproval": [
-    {
-      "scopeKey": "gwacheon-direct-initial-20261010",
-      "city": "과천시",
-      "status": "waiting_user_approval_exact_hostname_attachment",
-      "owner": {
-        "scheduledRunAt": "2026-10-09T19:00:00Z",
-        "observedMessageAt": "2026-10-09T18:57:20Z",
-        "serviceInvocationId": null,
-        "checkpointId": "direct-gwacheon-20261009T190000Z",
-        "active": false,
-        "executionState": "ended_with_approval_checkpoint",
-        "endedAt": "2026-10-09T19:15:30.853Z"
-      },
-      "identity": {
-        "repository": "joseungil-kr/fwith-site-factory",
-        "branch": "site-factory-gwacheon-direct",
-        "root": "site-factory/gwacheon-flower",
-        "worker": "gwacheon-flower-guide",
-        "hostname": "gwacheon.fwith.kr",
-        "externalCreationVerified": false,
-        "sourceBranchCreatedVerified": true
-      },
-      "input": {
-        "controlRevision": "f01652ae896d3b60eebb9e75d09ff55626914527",
-        "runtimeSourceRevision": "f13a51b75707e5b2e4cfb499da48372faa314858"
-      },
-      "conflictChecks": {
-        "branchesChecked": 106,
-        "matchingBranch": false,
-        "openPullRequests": 0,
-        "mainMatchingPaths": false,
-        "inProgressWorkflows": 0,
-        "providerOwnershipCollisionCheck": "pending_required_before_mutation"
-      },
-      "selection": {
-        "sourceUrl": "https://kosis.kr/visual/eRegionIndex/eRegionCompare.do",
-        "reason": "Next unbuilt Gyeonggi municipality in official code order; earlier Dongducheon,Ansan,Goyang already complete"
-      },
-      "lastSuccessfulStage": "independent_exact_source_control_readback_and_final_sha_build",
-      "nextIntent": "After explicit approval of gwacheon.fwith.kr attachment, resume same exact source through official Run workflow; otherwise next hourly invocation may prepare another unbuilt region",
-      "pendingExternalAction": {
-        "action": "workflow_dispatch_with_fixed_hostname_attachment",
-        "workflow": "gwacheon-direct-publish.yml",
-        "controlRevision": "b6141e6d0537a91471ad30535322fa65d17adc3a",
-        "expectedRevision": "1cf4c2fd922053f5966200c01c331cd1bb6f8a7f",
-        "indexnowOnly": false,
-        "hostname": "gwacheon.fwith.kr",
-        "worker": "gwacheon-flower-guide",
-        "existingAccountOnly": true,
-        "noOverrides": true,
-        "idempotencyKey": "gwacheon-direct-release-1cf4c2fd922053f5966200c01c331cd1bb6f8a7f"
-      },
-      "receiptJournal": {
-        "number": 266,
-        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266",
-        "reuseExistingWithoutReopen": true
-      },
-      "plan": {
-        "state": "independent_content_pass_source_review_pending",
-        "plannedArticleCount": 10,
-        "minimumPassedArticles": 9,
-        "membershipPath": "docs/direct-regional-release/gwacheon/membership.json",
-        "membershipSha256": "7ca262a6ab65af337ba86aca3b3751b1f1fe85d25cd8f6c60cbd3afec8f58d8e",
-        "administrativeUnits": 7,
-        "passedArticleCount": 10,
-        "deferred": []
-      },
-      "review": {
-        "independentContent": "PASS",
-        "writerADigest": "c142448200ddae54ceac5cf79d444a1b983be26590117d003b13a5b12e69bdb7",
-        "writerBDigest": "2ebea3edfee338a8d02f46a917418dc18313eb86c9d73432b5851ad27a0cb333",
-        "catalogPrices": "verified2026-10-09T18:59:50Z",
-        "sourceBuild": "PASS_FINAL_SOURCE_SHA_NODE22",
-        "hostedQa": "not_executed",
-        "sourceTests": 64,
-        "publisherTests": 34,
-        "sourceFilesVerified": 69,
-        "exactMatchingProductCards": 40,
-        "normalHtmlRoutes": 12,
-        "sitemapUrls": 12,
-        "sourceInventorySha256": "4851451e3a152fa92fda5544fb9218e126d686e28ec0cbdd2d6c81108be1bba1",
-        "publicationManifestRawSha256": "50c2fb75fd362491f1025344c823aa1c6083cf62ec7fe629ff8cd0afddc1ef00",
-        "remoteReadback": "PASS_69_BLOBS_AND_CONTROL"
-      },
-      "controlRevision": "253a08eb4c0962ca774889608dc73cea057dd6dd",
-      "sourceRevision": "1cf4c2fd922053f5966200c01c331cd1bb6f8a7f",
-      "evidencePath": "docs/direct-regional-release/gwacheon/independent-predeploy-evidence.json",
-      "approvalRequired": {
-        "action": "Attach gwacheon.fwith.kr to gwacheon-flower-guide and deploy reviewed direct static source",
-        "reason": "Mandatory action review requires explicit approval for this specific hostname attachment",
-        "scope": "Existing fwith.kr Cloudflare account, no overrides; no DNS ownership, credential, permission, security or other-site changes"
-      },
-      "executionBlocker": {
-        "stage": "official_run_workflow_click",
-        "deniedAt": "2026-10-09T19:14:42Z",
-        "reason": "specific_hostname_attachment_approval_required",
-        "workflowRunCreated": false,
-        "providerMutationExecuted": false,
-        "readbackVerifiedAt": "2026-10-09T19:15:02Z",
-        "retryCount": 0
-      },
-      "publicQa": {
-        "status": "not_executed"
-      },
-      "indexNowReceipt": null,
-      "gsc": {
-        "status": "not_submitted"
-      },
-      "userIntervention": false,
-      "elapsedSecondsFromObservedStart": 1091,
-      "approval": {
-        "status": "approved",
-        "approvedAt": "2026-10-10T04:22:59Z",
-        "scope": "Exact waiting hostname attachment and reviewed source deployment; existing account no overrides",
-        "sourceRevision": "1cf4c2fd922053f5966200c01c331cd1bb6f8a7f"
-      }
-    }
-  ],
+  "waitingApproval": [],
   "deferredVisualQa": [
     {
       "scopeKey": "hanam-direct-initial-20261010",
