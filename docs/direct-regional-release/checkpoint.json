@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T05:07:36.434Z",
+  "updatedAt": "2026-10-10T05:13:24.260Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "icheon-direct-initial-20261010",
     "city": "이천시",
-    "status": "independent_final_revision_pass_dispatch_intent",
+    "status": "published_ci_success_independent_http_verification_in_progress",
     "owner": {
       "scheduledRunAt": "2026-10-10T05:00:00Z",
       "observedExecutionAt": "2026-10-10T05:00:21Z",
@@ -267,17 +267,14 @@
         }
       ]
     },
-    "lastSuccessfulStage": "independent_remote_source_controls_and_final_sha_build",
-    "nextIntent": "Dispatch fixed Icheon direct workflow once for exact source",
+    "lastSuccessfulStage": "official_workflow_completed_success",
+    "nextIntent": "Finish independent hosted artifact and HTTP verification, then submit GSC sitemap once",
     "pendingExternalAction": {
-      "action": "workflow_dispatch",
-      "workflow": "icheon-direct-publish.yml",
-      "expectedRevision": "0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920",
-      "indexnowOnly": false,
-      "hostname": "icheon.fwith.kr",
-      "worker": "icheon-flower-guide",
-      "noOverrides": true,
-      "idempotencyKey": "icheon-direct-release-0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920"
+      "action": "submit_sitemap_after_independent_http_pass",
+      "siteUrl": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://icheon.fwith.kr/sitemap-index.xml",
+      "sourceRevision": "0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920",
+      "idempotencyKey": "icheon-gsc-0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920"
     },
     "review": {
       "independentContent": "PASS",
@@ -300,7 +297,17 @@
       "finalEvidenceSha256": "c881cb68f4d11d22c82eb245b55d6922aa7f2ab1d1e23c43076f4e0d8a59e15d"
     },
     "sourceRevision": "0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920",
-    "controlRevision": "57c883a97d0e184588a0823aa687e0d771d3a434"
+    "controlRevision": "57c883a97d0e184588a0823aa687e0d771d3a434",
+    "actualWorkflow": {
+      "runId": 38026565910,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38026565910",
+      "sourceRevision": "0b0afbeaedb9197c46ccdf32e71d3c6b46ed1920",
+      "controlRevision": "eef5e5907a2905b50a8acda15ab509652ed5a3b0",
+      "createdAt": "2026-10-10T05:09:50Z",
+      "completedAt": "2026-10-10T05:11:02Z",
+      "dispatchCount": 1,
+      "result": "success"
+    }
   },
   "history": [
     {
