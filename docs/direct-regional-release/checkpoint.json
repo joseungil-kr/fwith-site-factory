@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T00:02:15.454Z",
+  "updatedAt": "2026-10-10T00:11:28.562Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -32,7 +32,7 @@
   "current": {
     "scopeKey": "uiwang-direct-initial-20261010",
     "city": "의왕시",
-    "status": "official_membership_fixed_and_content_preparation",
+    "status": "independent_precommit_review_pass",
     "owner": {
       "scheduledRunAt": "2026-10-10T00:00:00Z",
       "observedExecutionAt": "2026-10-09T23:55:34Z",
@@ -71,16 +71,34 @@
       "state": "fixed_official_membership_before_writing",
       "plannedArticleCount": 11,
       "minimumPassedArticles": 10,
-      "passedArticleCount": 0,
+      "passedArticleCount": 11,
       "administrativeUnits": 6,
       "crosswalkRelationships": 16,
       "deferred": [],
       "membershipPath": "docs/direct-regional-release/uiwang/membership.json",
       "membershipSha256": "c731c3d631682155b0eac7a8ced94fb2f57586435f02e6851759159785488552"
     },
-    "lastSuccessfulStage": "fresh_remote_selection_and_official_membership",
-    "nextIntent": "Prepare original content and independently reviewed direct runtime",
-    "pendingExternalAction": null
+    "lastSuccessfulStage": "independent_content_and_static_build_review",
+    "nextIntent": "Create one exact reviewed source branch commit and verify all remote bytes",
+    "pendingExternalAction": {
+      "action": "create_source_branch_and_commit",
+      "target": "site-factory-uiwang-direct",
+      "idempotencyKey": "uiwang-direct-initial-20261010:91603cd2e3fe9ce6c3793324364c51110504c4705d40cfdeed3662a0c86fd8ad"
+    },
+    "controlRevision": "2bfa98811097ddf4a0e8f4cc8f3bb3195422af9b",
+    "review": {
+      "sourceInventorySha256": "91603cd2e3fe9ce6c3793324364c51110504c4705d40cfdeed3662a0c86fd8ad",
+      "writerDigests": [
+        "d0a86ac85a87b8957ea999090c9b64f71c08ee08723ef37eec0c090f2ecded76",
+        "d28d44acde3932a1db9cc7ee50ad6d471f0188927e1affaa925e5c4335832764"
+      ],
+      "sourceTests": 64,
+      "publisherTests": 34,
+      "htmlRoutes": 13,
+      "sitemapUrls": 13,
+      "hostedQa": "not_yet_deployed",
+      "evidencePath": "docs/direct-regional-release/uiwang/precommit-source-review.json"
+    }
   },
   "history": [
     {
