@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T04:15:50.771Z",
+  "updatedAt": "2026-10-10T04:16:47.253Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "paju-direct-initial-20261010",
     "city": "파주시",
-    "status": "source_saved_final_revision_review",
+    "status": "independent_final_revision_pass_dispatch_intent",
     "owner": {
       "scheduledRunAt": "2026-10-10T04:00:00Z",
       "observedExecutionAt": "2026-10-10T03:58:12Z",
@@ -108,9 +108,18 @@
       "membershipPath": "docs/direct-regional-release/paju/membership.json",
       "membershipSha256": "90db2d064691a97acf73a319d621a533de0a28c78baae1f589a851ed237cf897"
     },
-    "lastSuccessfulStage": "source_branch_created_and69_blob_tree_matched",
-    "nextIntent": "Independent full remote source and exact revision build before dispatch",
-    "pendingExternalAction": null,
+    "lastSuccessfulStage": "independent_remote_source_controls_and_final_sha_build",
+    "nextIntent": "Dispatch fixed Paju direct workflow once for exact source",
+    "pendingExternalAction": {
+      "action": "workflow_dispatch",
+      "workflow": "paju-direct-publish.yml",
+      "expectedRevision": "4a8011cfaac421aacb6ab4b753ad0a792d11dfc1",
+      "indexnowOnly": false,
+      "hostname": "paju.fwith.kr",
+      "worker": "paju-flower-guide",
+      "noOverrides": true,
+      "idempotencyKey": "paju-direct-release-4a8011cfaac421aacb6ab4b753ad0a792d11dfc1"
+    },
     "controlRevision": "b4e29fd5c3e19a3448a3108152b3c9cc5ecfdd71",
     "review": {
       "independentContent": "PASS",
@@ -128,7 +137,10 @@
       "artifactFiles": 51,
       "normalHtmlRoutes": 34,
       "sitemapUrls": 34,
-      "localBuild": "PASS_PROVISIONAL_REVISION_ONLY"
+      "localBuild": "PASS_FINAL_SOURCE_SHA_NODE22",
+      "remoteReadback": "PASS_69_FULL_SOURCE_AND3_CONTROLS",
+      "finalEvidencePath": "docs/direct-regional-release/paju/final-predeploy-review.json",
+      "finalEvidenceSha256": "78676da6b3aef88390febad4dc1ff8608d95630c7a47f2a6eaec6cebef14e78f"
     },
     "sourceRevision": "4a8011cfaac421aacb6ab4b753ad0a792d11dfc1"
   },
