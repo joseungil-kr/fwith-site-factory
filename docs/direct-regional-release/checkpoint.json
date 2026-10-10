@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T15:54:20Z",
+  "updatedAt": "2026-10-10T15:56:55Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,17 +33,19 @@
   "current": {
     "scopeKey": "jongno-direct-initial-20261010",
     "city": "서울특별시 종로구",
-    "status": "released_indexnow_received_gsc_pending_visual_qa_deferred",
+    "status": "released_search_submitted_visual_qa_deferred",
     "owner": {
       "scheduledRunAt": "2026-10-10T15:00:00Z",
       "observedExecutionAt": "2026-10-10T15:19:58.725474Z",
       "newRegionStartedAt": "2026-10-10T15:19:58.725474Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-jongno-initial-20261010T150000Z",
-      "active": true,
-      "executionState": "submit_verified_sitemap_then_finalize_checkpoint",
+      "active": false,
+      "executionState": "completed_no_further_mutations_after_final_checkpoint",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T15:12:44.377Z",
-      "priorOwnerReadbackConfirmedAt": "2026-10-10T15:12:46.599Z"
+      "priorOwnerReadbackConfirmedAt": "2026-10-10T15:12:46.599Z",
+      "releaseOnSuccessfulFinalRefAndReadback": true,
+      "browserWriteStoppedAt": "2026-10-10T15:55:29.133Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -85,52 +87,51 @@
           "slug": "yeongeon-dong-snuh-condolence-wreath",
           "title": "서울대병원 장례식장 근조화환 주문",
           "primaryKeyword": "서울대병원 장례식장 근조화환 주문",
-          "status": "independent_content_pass"
+          "status": "published_independent_content_pass_visual_qa_deferred"
         },
         {
           "slug": "pyeong-dong-redcross-funeral-wreath",
           "title": "서울적십자병원 장례식장 근조화환",
           "primaryKeyword": "서울적십자병원 장례식장 근조화환",
-          "status": "independent_content_pass"
+          "status": "published_independent_content_pass_visual_qa_deferred"
         },
         {
           "slug": "buam-dong-hw-convention-wreath",
           "title": "HW컨벤션 결혼식 축하화환",
           "primaryKeyword": "HW컨벤션 결혼식 축하화환",
-          "status": "independent_content_pass"
+          "status": "published_independent_content_pass_visual_qa_deferred"
         },
         {
           "slug": "myeongnyun3ga-skk-convention-wreath",
           "title": "성균관컨벤션 결혼식 화환 주문",
           "primaryKeyword": "성균관컨벤션 결혼식 화환 주문",
-          "status": "independent_content_pass"
+          "status": "published_independent_content_pass_visual_qa_deferred"
         },
         {
           "slug": "junghak-dong-apelgamo-gwanghwamun-wreath",
           "title": "아펠가모 광화문 축하화환 주문",
           "primaryKeyword": "아펠가모 광화문 축하화환 주문",
-          "status": "independent_content_pass"
+          "status": "published_independent_content_pass_visual_qa_deferred"
         },
         {
           "slug": "seorin-dong-global-center-event-wreath",
           "title": "서울글로벌센터 행사 축하화환",
           "primaryKeyword": "서울글로벌센터 행사 축하화환",
-          "status": "independent_content_pass"
+          "status": "published_independent_content_pass_visual_qa_deferred"
         }
       ],
       "approvedArticleCount": 6,
       "deferredArticleCount": 0
     },
     "changeIntent": {
-      "action": "submit_sitemap_and_list_readback",
-      "target": "sc-domain:fwith.kr",
-      "sitemapUrl": "https://jongno.fwith.kr/sitemap-index.xml",
+      "action": "release_checkpoint_finalize_and_stop",
+      "target": "docs/direct-regional-release/checkpoint.json",
       "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
-      "idempotencyKey": "jongno:gsc:16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
-      "attempted": false
+      "idempotencyKey": "jongno:released-search-visual-deferred:16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "externalReleaseAndSearchMutationsFinished": true
     },
-    "lastSuccessfulStage": "public_exact_http_provider_binding_and_indexnow200_durable_receipt_verified",
-    "nextIntent": "Submit verified sitemap once to GSC and read back registration; preserve actual screen QA for later.",
+    "lastSuccessfulStage": "released_exact_source_http_indexnow200_gsc_submit_and_list_readback",
+    "nextIntent": "No further new region in this invocation. Batch desktop/narrow visual QA later against exact hosted source.",
     "review": {
       "articlesSha256": "341211fee4781e1159f095e99127de789173e27488a34a56b04ff609f00773e9",
       "independentReviewSha256": "f630aff14c6ff8c2089436cf7e8dd1368397c6bd7059b85eb3b1c0383be4ea97",
@@ -138,7 +139,10 @@
       "runtimeStatus": "PASS_EXACT_SOURCE_LOCAL_RUNTIME",
       "screenQa": "deferred_not_pass",
       "authorRevision": 3,
-      "preflightFindingResolved": "Five generic additional-cost caveats now explicitly state delivery fees; independent content rereview passed."
+      "preflightFindingResolved": "Five generic additional-cost caveats now explicitly state delivery fees; independent content rereview passed.",
+      "hostedReleaseReviewSha256": "ae58a1330f789864deab822a9b85930f0cac3af543ade65e4eb027650d571b20",
+      "hostedReleaseReviewPath": "docs/direct-regional-release/jongno/hosted-release-review.json",
+      "hostedReleaseReviewStatus": "PASS_HOSTED_RELEASE_EVIDENCE_WITH_DIRECT_VANTAGE_LIMITATION"
     },
     "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
     "validation": {
@@ -158,7 +162,7 @@
       "loopbackHttpCheckedPaths": 22,
       "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
       "remoteReadbackSha256": "8d9508ba88257f4a88ef6e24d053b0f680991fe2123c9e4d73eaf13abee6d4b0",
-      "publicProductionHttp": "not_yet_verified",
+      "publicProductionHttp": "PASS_FROM_DURABLE_ACTUAL_HOST_HTTP_EVIDENCE",
       "screenQa": "DEFERRED_BY_USER_NOT_PASS"
     },
     "deployment": {
@@ -237,9 +241,162 @@
     "gsc": {
       "siteUrl": "sc-domain:fwith.kr",
       "sitemapUrl": "https://jongno.fwith.kr/sitemap-index.xml",
-      "status": "not_submitted",
-      "priorRegistrationObserved": false
-    }
+      "status": "submitted_confirmed_processing_pending",
+      "submit": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "attempted": 1,
+        "submitted": 1,
+        "failed": 0,
+        "results": [
+          {
+            "sitemapUrl": "https://jongno.fwith.kr/sitemap-index.xml",
+            "accepted": true,
+            "confirmed": true,
+            "lastSubmitted": "2026-10-10T15:55:46.150Z",
+            "isPending": true,
+            "isSitemapsIndex": false,
+            "warnings": "0",
+            "errors": "0"
+          }
+        ],
+        "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+        "actions": [
+          "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+        ]
+      },
+      "listReadback": {
+        "path": "https://jongno.fwith.kr/sitemap-index.xml",
+        "lastSubmitted": "2026-10-10T15:55:46.150Z",
+        "isPending": true,
+        "isSitemapsIndex": false,
+        "warnings": "0",
+        "errors": "0"
+      },
+      "indexingVerified": false
+    },
+    "completedReleaseSearchAt": "2026-10-10T15:55:46.150Z",
+    "qa": {
+      "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "nodeVersion": "22",
+      "sourceTestsPassed": 68,
+      "publisherTestsPassed": 42,
+      "astroErrors": 0,
+      "astroWarnings": 0,
+      "build": "PASS",
+      "static": "PASS",
+      "graph": "PASS",
+      "artifactFiles": 25,
+      "normalHtmlRoutes": 8,
+      "articleCount": 6,
+      "sitemapUrls": 8,
+      "loopbackHttpCheckedPaths": 22,
+      "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+      "remoteReadbackSha256": "8d9508ba88257f4a88ef6e24d053b0f680991fe2123c9e4d73eaf13abee6d4b0",
+      "publicProductionHttp": "PASS_FROM_DURABLE_ACTUAL_HOST_HTTP_EVIDENCE",
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+      "visual": "DEFERRED_NOT_PASS",
+      "publicHttpEvidence": "docs/direct-regional-release/jongno/release-evidence.json",
+      "independentRootObservation": {
+        "observedAt": "2026-10-10T15:52:56.287702Z",
+        "httpStatus": 403,
+        "body": "error code: 1010",
+        "interpretation": "This independent cloud HTTP client could not observe root; not proof of deployment failure and not a screen PASS.",
+        "actualCauseDetermined": false
+      }
+    },
+    "pendingVisualRoutes": {
+      "desktop": [
+        "/",
+        "/regions/",
+        "/regions/yeongeon-dong-snuh-condolence-wreath/",
+        "/regions/pyeong-dong-redcross-funeral-wreath/",
+        "/regions/buam-dong-hw-convention-wreath/",
+        "/regions/myeongnyun3ga-skk-convention-wreath/",
+        "/regions/junghak-dong-apelgamo-gwanghwamun-wreath/",
+        "/regions/seorin-dong-global-center-event-wreath/",
+        "/404.html"
+      ],
+      "narrow": [
+        "/",
+        "/regions/",
+        "/regions/yeongeon-dong-snuh-condolence-wreath/",
+        "/regions/pyeong-dong-redcross-funeral-wreath/",
+        "/regions/buam-dong-hw-convention-wreath/",
+        "/regions/myeongnyun3ga-skk-convention-wreath/",
+        "/regions/junghak-dong-apelgamo-gwanghwamun-wreath/",
+        "/regions/seorin-dong-global-center-event-wreath/",
+        "/404.html"
+      ]
+    },
+    "pendingVisualItems": [
+      "Desktop and narrow real hosted page layout",
+      "H1/title/body readability and overflow",
+      "Actual image rendering, alt and image purpose",
+      "Four matching product cards and prices",
+      "Phone and online order CTA usability",
+      "Home/parent/related link navigation",
+      "404 appearance"
+    ],
+    "bodyAndImageDigests": {
+      "articlesExactFileSha256": "341211fee4781e1159f095e99127de789173e27488a34a56b04ff609f00773e9",
+      "independentContentReviewSha256": "f630aff14c6ff8c2089436cf7e8dd1368397c6bd7059b85eb3b1c0383be4ea97",
+      "sourceManifestSha256": "667811e72a1b4db6c7df6af682d0ab6f0f63a0dce7fccecb08050a6a12e58a5a",
+      "imageDigests": [
+        {
+          "key": "funeral-basic",
+          "localImageSha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+          "officialImageSha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+          "officialSku": "B201"
+        },
+        {
+          "key": "funeral-premium",
+          "localImageSha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+          "officialImageSha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+          "officialSku": "B203"
+        },
+        {
+          "key": "funeral-large",
+          "localImageSha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+          "officialImageSha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+          "officialSku": "B205"
+        },
+        {
+          "key": "funeral-xl",
+          "localImageSha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+          "officialImageSha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+          "officialSku": "B060"
+        },
+        {
+          "key": "congrats-basic",
+          "localImageSha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+          "officialImageSha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+          "officialSku": "C200"
+        },
+        {
+          "key": "congrats-premium",
+          "localImageSha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+          "officialImageSha256": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+          "officialSku": "C203"
+        },
+        {
+          "key": "congrats-large",
+          "localImageSha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+          "officialImageSha256": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+          "officialSku": "C204"
+        },
+        {
+          "key": "congrats-xl",
+          "localImageSha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+          "officialImageSha256": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+          "officialSku": "C205"
+        }
+      ]
+    },
+    "unfinishedStages": [
+      "desktop_actual_screen_qa",
+      "narrow_actual_screen_qa"
+    ],
+    "elapsedSecondsToReleaseSearch": 2147.424526
   },
   "history": [
     {
@@ -4203,6 +4360,374 @@
         }
       ],
       "completedReleaseSearchAt": "2026-10-10T15:09:07Z"
+    },
+    {
+      "scopeKey": "jongno-direct-initial-20261010",
+      "city": "서울특별시 종로구",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "owner": {
+        "scheduledRunAt": "2026-10-10T15:00:00Z",
+        "observedExecutionAt": "2026-10-10T15:19:58.725474Z",
+        "newRegionStartedAt": "2026-10-10T15:19:58.725474Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-jongno-initial-20261010T150000Z",
+        "active": false,
+        "executionState": "completed_no_further_mutations_after_final_checkpoint",
+        "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T15:12:44.377Z",
+        "priorOwnerReadbackConfirmedAt": "2026-10-10T15:12:46.599Z",
+        "releaseOnSuccessfulFinalRefAndReadback": true,
+        "browserWriteStoppedAt": "2026-10-10T15:55:29.133Z"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-jongno-direct",
+        "root": "site-factory/jongno-flower",
+        "worker": "jongno-flower-guide",
+        "hostname": "jongno.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true
+      },
+      "selection": {
+        "officialCode": "11110",
+        "reason": "All 31 Gyeonggi city/county hosts have durable release evidence; next unit in verified effective national official-code ascending plan is Seoul Jongno-gu.",
+        "nationalPlanDenominator": 230
+      },
+      "conflictChecks": {
+        "branchesChecked": 124,
+        "matchingBranch": false,
+        "openMatchingPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "not_yet_run_required_before_deployment",
+        "publicHostObservation": "2026-10-10T15:15Z GET502 is unknown, not proof of absence"
+      },
+      "plan": {
+        "state": "frozen_before_authoring_independent_plan_pass",
+        "plannedArticleCount": 6,
+        "minimumPassedArticles": 6,
+        "legalDongCount": 87,
+        "administrativeDongCount": 17,
+        "relationshipCount": 93,
+        "unassignedLegalUnits": 81,
+        "countIsPageQuota": false,
+        "fixedPlanPath": "docs/direct-regional-release/jongno/fixed-plan.json",
+        "fixedPlanSha256": "bc8a904a6c9c44ba0f77cac1e20135a928ac49c624e36db3d45e504b51ea9c4a",
+        "frozenAt": "2026-10-10T15:27:02.895056+00:00",
+        "articles": [
+          {
+            "slug": "yeongeon-dong-snuh-condolence-wreath",
+            "title": "서울대병원 장례식장 근조화환 주문",
+            "primaryKeyword": "서울대병원 장례식장 근조화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "pyeong-dong-redcross-funeral-wreath",
+            "title": "서울적십자병원 장례식장 근조화환",
+            "primaryKeyword": "서울적십자병원 장례식장 근조화환",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "buam-dong-hw-convention-wreath",
+            "title": "HW컨벤션 결혼식 축하화환",
+            "primaryKeyword": "HW컨벤션 결혼식 축하화환",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "myeongnyun3ga-skk-convention-wreath",
+            "title": "성균관컨벤션 결혼식 화환 주문",
+            "primaryKeyword": "성균관컨벤션 결혼식 화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "junghak-dong-apelgamo-gwanghwamun-wreath",
+            "title": "아펠가모 광화문 축하화환 주문",
+            "primaryKeyword": "아펠가모 광화문 축하화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "seorin-dong-global-center-event-wreath",
+            "title": "서울글로벌센터 행사 축하화환",
+            "primaryKeyword": "서울글로벌센터 행사 축하화환",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          }
+        ],
+        "approvedArticleCount": 6,
+        "deferredArticleCount": 0
+      },
+      "changeIntent": {
+        "action": "release_checkpoint_finalize_and_stop",
+        "target": "docs/direct-regional-release/checkpoint.json",
+        "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+        "idempotencyKey": "jongno:released-search-visual-deferred:16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+        "externalReleaseAndSearchMutationsFinished": true
+      },
+      "lastSuccessfulStage": "released_exact_source_http_indexnow200_gsc_submit_and_list_readback",
+      "nextIntent": "No further new region in this invocation. Batch desktop/narrow visual QA later against exact hosted source.",
+      "review": {
+        "articlesSha256": "341211fee4781e1159f095e99127de789173e27488a34a56b04ff609f00773e9",
+        "independentReviewSha256": "f630aff14c6ff8c2089436cf7e8dd1368397c6bd7059b85eb3b1c0383be4ea97",
+        "runtimeReviewSha256": "3dd764d6ca569572440634cde18067507fae4035c16f51268bf71e50f791ce8f",
+        "runtimeStatus": "PASS_EXACT_SOURCE_LOCAL_RUNTIME",
+        "screenQa": "deferred_not_pass",
+        "authorRevision": 3,
+        "preflightFindingResolved": "Five generic additional-cost caveats now explicitly state delivery fees; independent content rereview passed.",
+        "hostedReleaseReviewSha256": "ae58a1330f789864deab822a9b85930f0cac3af543ade65e4eb027650d571b20",
+        "hostedReleaseReviewPath": "docs/direct-regional-release/jongno/hosted-release-review.json",
+        "hostedReleaseReviewStatus": "PASS_HOSTED_RELEASE_EVIDENCE_WITH_DIRECT_VANTAGE_LIMITATION"
+      },
+      "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "validation": {
+        "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+        "nodeVersion": "22",
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "astroErrors": 0,
+        "astroWarnings": 0,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "artifactFiles": 25,
+        "normalHtmlRoutes": 8,
+        "articleCount": 6,
+        "sitemapUrls": 8,
+        "loopbackHttpCheckedPaths": 22,
+        "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+        "remoteReadbackSha256": "8d9508ba88257f4a88ef6e24d053b0f680991fe2123c9e4d73eaf13abee6d4b0",
+        "publicProductionHttp": "PASS_FROM_DURABLE_ACTUAL_HOST_HTTP_EVIDENCE",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+      },
+      "deployment": {
+        "runId": 38065314276,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38065314276",
+        "createdAt": "2026-10-10T15:51:40Z",
+        "controlRevision": "d2591a143d4731fd70c1c8ed71e151b790ea5b23",
+        "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+        "status": "completed",
+        "runAttempt": 1,
+        "workflowDispatchCount": 1,
+        "conclusion": "success",
+        "completedAt": "2026-10-10T15:52:52Z"
+      },
+      "controlRevision": "d2591a143d4731fd70c1c8ed71e151b790ea5b23",
+      "publication": {
+        "url": "https://jongno.fwith.kr",
+        "articleCount": 6,
+        "normalHtmlPages": 8,
+        "sitemapUrls": 8,
+        "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+        "runId": 38065314276,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38065314276",
+        "publicHttp": {
+          "articleCount": 6,
+          "attempts": 3,
+          "checkedPaths": 22,
+          "htmlRoutes": 8,
+          "noindexHubs": 0,
+          "normalizedCloudflareBeacons": 9,
+          "regionCount": 6,
+          "revision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+          "sitemapUrls": 8,
+          "state": "public_release_verified",
+          "unknownHttpStatus": 404
+        },
+        "providerBinding": {
+          "accountVerified": true,
+          "dnsState": "not_observed",
+          "hostname": "jongno.fwith.kr",
+          "hostnameBindingExists": true,
+          "mutationsPerformed": false,
+          "state": "binding_verified",
+          "worker": "jongno-flower-guide",
+          "workerExists": true
+        }
+      },
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "616f39ad2a87085314336337e6509fc7a7886c5dad3a7fbc99aed8b58107c238",
+        "httpStatus": 200,
+        "origin": "https://jongno.fwith.kr",
+        "recordedAt": "2026-10-10T15:52:45.091531+00:00",
+        "revision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38065314276",
+        "searchIndexing": "not_verified",
+        "siteKey": "jongno-flower-direct",
+        "state": "received",
+        "urlCount": 8,
+        "urlSetSha256": "bd4735048908ab7081b58f1cc7b78dd7abac1fba8ff14054e7c7dc7b21266f2d",
+        "urls": [
+          "https://jongno.fwith.kr/",
+          "https://jongno.fwith.kr/regions/",
+          "https://jongno.fwith.kr/regions/buam-dong-hw-convention-wreath/",
+          "https://jongno.fwith.kr/regions/junghak-dong-apelgamo-gwanghwamun-wreath/",
+          "https://jongno.fwith.kr/regions/myeongnyun3ga-skk-convention-wreath/",
+          "https://jongno.fwith.kr/regions/pyeong-dong-redcross-funeral-wreath/",
+          "https://jongno.fwith.kr/regions/seorin-dong-global-center-event-wreath/",
+          "https://jongno.fwith.kr/regions/yeongeon-dong-snuh-condolence-wreath/"
+        ],
+        "durableReceiptId": 6099349412,
+        "durableReceiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6099349412",
+        "durableReadbackVerified": true
+      },
+      "gsc": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemapUrl": "https://jongno.fwith.kr/sitemap-index.xml",
+        "status": "submitted_confirmed_processing_pending",
+        "submit": {
+          "siteUrl": "sc-domain:fwith.kr",
+          "attempted": 1,
+          "submitted": 1,
+          "failed": 0,
+          "results": [
+            {
+              "sitemapUrl": "https://jongno.fwith.kr/sitemap-index.xml",
+              "accepted": true,
+              "confirmed": true,
+              "lastSubmitted": "2026-10-10T15:55:46.150Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+          "actions": [
+            "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+          ]
+        },
+        "listReadback": {
+          "path": "https://jongno.fwith.kr/sitemap-index.xml",
+          "lastSubmitted": "2026-10-10T15:55:46.150Z",
+          "isPending": true,
+          "isSitemapsIndex": false,
+          "warnings": "0",
+          "errors": "0"
+        },
+        "indexingVerified": false
+      },
+      "completedReleaseSearchAt": "2026-10-10T15:55:46.150Z",
+      "qa": {
+        "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+        "nodeVersion": "22",
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "astroErrors": 0,
+        "astroWarnings": 0,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "artifactFiles": 25,
+        "normalHtmlRoutes": 8,
+        "articleCount": 6,
+        "sitemapUrls": 8,
+        "loopbackHttpCheckedPaths": 22,
+        "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+        "remoteReadbackSha256": "8d9508ba88257f4a88ef6e24d053b0f680991fe2123c9e4d73eaf13abee6d4b0",
+        "publicProductionHttp": "PASS_FROM_DURABLE_ACTUAL_HOST_HTTP_EVIDENCE",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+        "visual": "DEFERRED_NOT_PASS",
+        "publicHttpEvidence": "docs/direct-regional-release/jongno/release-evidence.json",
+        "independentRootObservation": {
+          "observedAt": "2026-10-10T15:52:56.287702Z",
+          "httpStatus": 403,
+          "body": "error code: 1010",
+          "interpretation": "This independent cloud HTTP client could not observe root; not proof of deployment failure and not a screen PASS.",
+          "actualCauseDetermined": false
+        }
+      },
+      "pendingVisualRoutes": {
+        "desktop": [
+          "/",
+          "/regions/",
+          "/regions/yeongeon-dong-snuh-condolence-wreath/",
+          "/regions/pyeong-dong-redcross-funeral-wreath/",
+          "/regions/buam-dong-hw-convention-wreath/",
+          "/regions/myeongnyun3ga-skk-convention-wreath/",
+          "/regions/junghak-dong-apelgamo-gwanghwamun-wreath/",
+          "/regions/seorin-dong-global-center-event-wreath/",
+          "/404.html"
+        ],
+        "narrow": [
+          "/",
+          "/regions/",
+          "/regions/yeongeon-dong-snuh-condolence-wreath/",
+          "/regions/pyeong-dong-redcross-funeral-wreath/",
+          "/regions/buam-dong-hw-convention-wreath/",
+          "/regions/myeongnyun3ga-skk-convention-wreath/",
+          "/regions/junghak-dong-apelgamo-gwanghwamun-wreath/",
+          "/regions/seorin-dong-global-center-event-wreath/",
+          "/404.html"
+        ]
+      },
+      "pendingVisualItems": [
+        "Desktop and narrow real hosted page layout",
+        "H1/title/body readability and overflow",
+        "Actual image rendering, alt and image purpose",
+        "Four matching product cards and prices",
+        "Phone and online order CTA usability",
+        "Home/parent/related link navigation",
+        "404 appearance"
+      ],
+      "bodyAndImageDigests": {
+        "articlesExactFileSha256": "341211fee4781e1159f095e99127de789173e27488a34a56b04ff609f00773e9",
+        "independentContentReviewSha256": "f630aff14c6ff8c2089436cf7e8dd1368397c6bd7059b85eb3b1c0383be4ea97",
+        "sourceManifestSha256": "667811e72a1b4db6c7df6af682d0ab6f0f63a0dce7fccecb08050a6a12e58a5a",
+        "imageDigests": [
+          {
+            "key": "funeral-basic",
+            "localImageSha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+            "officialImageSha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+            "officialSku": "B201"
+          },
+          {
+            "key": "funeral-premium",
+            "localImageSha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+            "officialImageSha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+            "officialSku": "B203"
+          },
+          {
+            "key": "funeral-large",
+            "localImageSha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+            "officialImageSha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+            "officialSku": "B205"
+          },
+          {
+            "key": "funeral-xl",
+            "localImageSha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+            "officialImageSha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+            "officialSku": "B060"
+          },
+          {
+            "key": "congrats-basic",
+            "localImageSha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+            "officialImageSha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+            "officialSku": "C200"
+          },
+          {
+            "key": "congrats-premium",
+            "localImageSha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+            "officialImageSha256": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+            "officialSku": "C203"
+          },
+          {
+            "key": "congrats-large",
+            "localImageSha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+            "officialImageSha256": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+            "officialSku": "C204"
+          },
+          {
+            "key": "congrats-xl",
+            "localImageSha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+            "officialImageSha256": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+            "officialSku": "C205"
+          }
+        ]
+      },
+      "unfinishedStages": [
+        "desktop_actual_screen_qa",
+        "narrow_actual_screen_qa"
+      ],
+      "elapsedSecondsToReleaseSearch": 2147.424526
     }
   ],
   "maintenanceBacklog": [
@@ -4243,7 +4768,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Continue the owned Jongno candidate only; no parallel source or main writers.",
+  "nextAction": "Next scheduled invocation: re-read active ownership and remote plan, then select the next unclaimed national unit. Jongno must not be rebuilt, redeployed or re-submitted solely for deferred visual QA.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -8979,6 +9504,374 @@
         }
       ],
       "completedReleaseSearchAt": "2026-10-10T15:09:07Z"
+    },
+    {
+      "scopeKey": "jongno-direct-initial-20261010",
+      "city": "서울특별시 종로구",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "owner": {
+        "scheduledRunAt": "2026-10-10T15:00:00Z",
+        "observedExecutionAt": "2026-10-10T15:19:58.725474Z",
+        "newRegionStartedAt": "2026-10-10T15:19:58.725474Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-jongno-initial-20261010T150000Z",
+        "active": false,
+        "executionState": "completed_no_further_mutations_after_final_checkpoint",
+        "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T15:12:44.377Z",
+        "priorOwnerReadbackConfirmedAt": "2026-10-10T15:12:46.599Z",
+        "releaseOnSuccessfulFinalRefAndReadback": true,
+        "browserWriteStoppedAt": "2026-10-10T15:55:29.133Z"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-jongno-direct",
+        "root": "site-factory/jongno-flower",
+        "worker": "jongno-flower-guide",
+        "hostname": "jongno.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true
+      },
+      "selection": {
+        "officialCode": "11110",
+        "reason": "All 31 Gyeonggi city/county hosts have durable release evidence; next unit in verified effective national official-code ascending plan is Seoul Jongno-gu.",
+        "nationalPlanDenominator": 230
+      },
+      "conflictChecks": {
+        "branchesChecked": 124,
+        "matchingBranch": false,
+        "openMatchingPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "not_yet_run_required_before_deployment",
+        "publicHostObservation": "2026-10-10T15:15Z GET502 is unknown, not proof of absence"
+      },
+      "plan": {
+        "state": "frozen_before_authoring_independent_plan_pass",
+        "plannedArticleCount": 6,
+        "minimumPassedArticles": 6,
+        "legalDongCount": 87,
+        "administrativeDongCount": 17,
+        "relationshipCount": 93,
+        "unassignedLegalUnits": 81,
+        "countIsPageQuota": false,
+        "fixedPlanPath": "docs/direct-regional-release/jongno/fixed-plan.json",
+        "fixedPlanSha256": "bc8a904a6c9c44ba0f77cac1e20135a928ac49c624e36db3d45e504b51ea9c4a",
+        "frozenAt": "2026-10-10T15:27:02.895056+00:00",
+        "articles": [
+          {
+            "slug": "yeongeon-dong-snuh-condolence-wreath",
+            "title": "서울대병원 장례식장 근조화환 주문",
+            "primaryKeyword": "서울대병원 장례식장 근조화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "pyeong-dong-redcross-funeral-wreath",
+            "title": "서울적십자병원 장례식장 근조화환",
+            "primaryKeyword": "서울적십자병원 장례식장 근조화환",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "buam-dong-hw-convention-wreath",
+            "title": "HW컨벤션 결혼식 축하화환",
+            "primaryKeyword": "HW컨벤션 결혼식 축하화환",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "myeongnyun3ga-skk-convention-wreath",
+            "title": "성균관컨벤션 결혼식 화환 주문",
+            "primaryKeyword": "성균관컨벤션 결혼식 화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "junghak-dong-apelgamo-gwanghwamun-wreath",
+            "title": "아펠가모 광화문 축하화환 주문",
+            "primaryKeyword": "아펠가모 광화문 축하화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "seorin-dong-global-center-event-wreath",
+            "title": "서울글로벌센터 행사 축하화환",
+            "primaryKeyword": "서울글로벌센터 행사 축하화환",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          }
+        ],
+        "approvedArticleCount": 6,
+        "deferredArticleCount": 0
+      },
+      "changeIntent": {
+        "action": "release_checkpoint_finalize_and_stop",
+        "target": "docs/direct-regional-release/checkpoint.json",
+        "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+        "idempotencyKey": "jongno:released-search-visual-deferred:16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+        "externalReleaseAndSearchMutationsFinished": true
+      },
+      "lastSuccessfulStage": "released_exact_source_http_indexnow200_gsc_submit_and_list_readback",
+      "nextIntent": "No further new region in this invocation. Batch desktop/narrow visual QA later against exact hosted source.",
+      "review": {
+        "articlesSha256": "341211fee4781e1159f095e99127de789173e27488a34a56b04ff609f00773e9",
+        "independentReviewSha256": "f630aff14c6ff8c2089436cf7e8dd1368397c6bd7059b85eb3b1c0383be4ea97",
+        "runtimeReviewSha256": "3dd764d6ca569572440634cde18067507fae4035c16f51268bf71e50f791ce8f",
+        "runtimeStatus": "PASS_EXACT_SOURCE_LOCAL_RUNTIME",
+        "screenQa": "deferred_not_pass",
+        "authorRevision": 3,
+        "preflightFindingResolved": "Five generic additional-cost caveats now explicitly state delivery fees; independent content rereview passed.",
+        "hostedReleaseReviewSha256": "ae58a1330f789864deab822a9b85930f0cac3af543ade65e4eb027650d571b20",
+        "hostedReleaseReviewPath": "docs/direct-regional-release/jongno/hosted-release-review.json",
+        "hostedReleaseReviewStatus": "PASS_HOSTED_RELEASE_EVIDENCE_WITH_DIRECT_VANTAGE_LIMITATION"
+      },
+      "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "validation": {
+        "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+        "nodeVersion": "22",
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "astroErrors": 0,
+        "astroWarnings": 0,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "artifactFiles": 25,
+        "normalHtmlRoutes": 8,
+        "articleCount": 6,
+        "sitemapUrls": 8,
+        "loopbackHttpCheckedPaths": 22,
+        "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+        "remoteReadbackSha256": "8d9508ba88257f4a88ef6e24d053b0f680991fe2123c9e4d73eaf13abee6d4b0",
+        "publicProductionHttp": "PASS_FROM_DURABLE_ACTUAL_HOST_HTTP_EVIDENCE",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+      },
+      "deployment": {
+        "runId": 38065314276,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38065314276",
+        "createdAt": "2026-10-10T15:51:40Z",
+        "controlRevision": "d2591a143d4731fd70c1c8ed71e151b790ea5b23",
+        "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+        "status": "completed",
+        "runAttempt": 1,
+        "workflowDispatchCount": 1,
+        "conclusion": "success",
+        "completedAt": "2026-10-10T15:52:52Z"
+      },
+      "controlRevision": "d2591a143d4731fd70c1c8ed71e151b790ea5b23",
+      "publication": {
+        "url": "https://jongno.fwith.kr",
+        "articleCount": 6,
+        "normalHtmlPages": 8,
+        "sitemapUrls": 8,
+        "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+        "runId": 38065314276,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38065314276",
+        "publicHttp": {
+          "articleCount": 6,
+          "attempts": 3,
+          "checkedPaths": 22,
+          "htmlRoutes": 8,
+          "noindexHubs": 0,
+          "normalizedCloudflareBeacons": 9,
+          "regionCount": 6,
+          "revision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+          "sitemapUrls": 8,
+          "state": "public_release_verified",
+          "unknownHttpStatus": 404
+        },
+        "providerBinding": {
+          "accountVerified": true,
+          "dnsState": "not_observed",
+          "hostname": "jongno.fwith.kr",
+          "hostnameBindingExists": true,
+          "mutationsPerformed": false,
+          "state": "binding_verified",
+          "worker": "jongno-flower-guide",
+          "workerExists": true
+        }
+      },
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "616f39ad2a87085314336337e6509fc7a7886c5dad3a7fbc99aed8b58107c238",
+        "httpStatus": 200,
+        "origin": "https://jongno.fwith.kr",
+        "recordedAt": "2026-10-10T15:52:45.091531+00:00",
+        "revision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38065314276",
+        "searchIndexing": "not_verified",
+        "siteKey": "jongno-flower-direct",
+        "state": "received",
+        "urlCount": 8,
+        "urlSetSha256": "bd4735048908ab7081b58f1cc7b78dd7abac1fba8ff14054e7c7dc7b21266f2d",
+        "urls": [
+          "https://jongno.fwith.kr/",
+          "https://jongno.fwith.kr/regions/",
+          "https://jongno.fwith.kr/regions/buam-dong-hw-convention-wreath/",
+          "https://jongno.fwith.kr/regions/junghak-dong-apelgamo-gwanghwamun-wreath/",
+          "https://jongno.fwith.kr/regions/myeongnyun3ga-skk-convention-wreath/",
+          "https://jongno.fwith.kr/regions/pyeong-dong-redcross-funeral-wreath/",
+          "https://jongno.fwith.kr/regions/seorin-dong-global-center-event-wreath/",
+          "https://jongno.fwith.kr/regions/yeongeon-dong-snuh-condolence-wreath/"
+        ],
+        "durableReceiptId": 6099349412,
+        "durableReceiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6099349412",
+        "durableReadbackVerified": true
+      },
+      "gsc": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemapUrl": "https://jongno.fwith.kr/sitemap-index.xml",
+        "status": "submitted_confirmed_processing_pending",
+        "submit": {
+          "siteUrl": "sc-domain:fwith.kr",
+          "attempted": 1,
+          "submitted": 1,
+          "failed": 0,
+          "results": [
+            {
+              "sitemapUrl": "https://jongno.fwith.kr/sitemap-index.xml",
+              "accepted": true,
+              "confirmed": true,
+              "lastSubmitted": "2026-10-10T15:55:46.150Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+          "actions": [
+            "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+          ]
+        },
+        "listReadback": {
+          "path": "https://jongno.fwith.kr/sitemap-index.xml",
+          "lastSubmitted": "2026-10-10T15:55:46.150Z",
+          "isPending": true,
+          "isSitemapsIndex": false,
+          "warnings": "0",
+          "errors": "0"
+        },
+        "indexingVerified": false
+      },
+      "completedReleaseSearchAt": "2026-10-10T15:55:46.150Z",
+      "qa": {
+        "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+        "nodeVersion": "22",
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "astroErrors": 0,
+        "astroWarnings": 0,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "artifactFiles": 25,
+        "normalHtmlRoutes": 8,
+        "articleCount": 6,
+        "sitemapUrls": 8,
+        "loopbackHttpCheckedPaths": 22,
+        "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+        "remoteReadbackSha256": "8d9508ba88257f4a88ef6e24d053b0f680991fe2123c9e4d73eaf13abee6d4b0",
+        "publicProductionHttp": "PASS_FROM_DURABLE_ACTUAL_HOST_HTTP_EVIDENCE",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+        "visual": "DEFERRED_NOT_PASS",
+        "publicHttpEvidence": "docs/direct-regional-release/jongno/release-evidence.json",
+        "independentRootObservation": {
+          "observedAt": "2026-10-10T15:52:56.287702Z",
+          "httpStatus": 403,
+          "body": "error code: 1010",
+          "interpretation": "This independent cloud HTTP client could not observe root; not proof of deployment failure and not a screen PASS.",
+          "actualCauseDetermined": false
+        }
+      },
+      "pendingVisualRoutes": {
+        "desktop": [
+          "/",
+          "/regions/",
+          "/regions/yeongeon-dong-snuh-condolence-wreath/",
+          "/regions/pyeong-dong-redcross-funeral-wreath/",
+          "/regions/buam-dong-hw-convention-wreath/",
+          "/regions/myeongnyun3ga-skk-convention-wreath/",
+          "/regions/junghak-dong-apelgamo-gwanghwamun-wreath/",
+          "/regions/seorin-dong-global-center-event-wreath/",
+          "/404.html"
+        ],
+        "narrow": [
+          "/",
+          "/regions/",
+          "/regions/yeongeon-dong-snuh-condolence-wreath/",
+          "/regions/pyeong-dong-redcross-funeral-wreath/",
+          "/regions/buam-dong-hw-convention-wreath/",
+          "/regions/myeongnyun3ga-skk-convention-wreath/",
+          "/regions/junghak-dong-apelgamo-gwanghwamun-wreath/",
+          "/regions/seorin-dong-global-center-event-wreath/",
+          "/404.html"
+        ]
+      },
+      "pendingVisualItems": [
+        "Desktop and narrow real hosted page layout",
+        "H1/title/body readability and overflow",
+        "Actual image rendering, alt and image purpose",
+        "Four matching product cards and prices",
+        "Phone and online order CTA usability",
+        "Home/parent/related link navigation",
+        "404 appearance"
+      ],
+      "bodyAndImageDigests": {
+        "articlesExactFileSha256": "341211fee4781e1159f095e99127de789173e27488a34a56b04ff609f00773e9",
+        "independentContentReviewSha256": "f630aff14c6ff8c2089436cf7e8dd1368397c6bd7059b85eb3b1c0383be4ea97",
+        "sourceManifestSha256": "667811e72a1b4db6c7df6af682d0ab6f0f63a0dce7fccecb08050a6a12e58a5a",
+        "imageDigests": [
+          {
+            "key": "funeral-basic",
+            "localImageSha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+            "officialImageSha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+            "officialSku": "B201"
+          },
+          {
+            "key": "funeral-premium",
+            "localImageSha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+            "officialImageSha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+            "officialSku": "B203"
+          },
+          {
+            "key": "funeral-large",
+            "localImageSha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+            "officialImageSha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+            "officialSku": "B205"
+          },
+          {
+            "key": "funeral-xl",
+            "localImageSha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+            "officialImageSha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+            "officialSku": "B060"
+          },
+          {
+            "key": "congrats-basic",
+            "localImageSha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+            "officialImageSha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+            "officialSku": "C200"
+          },
+          {
+            "key": "congrats-premium",
+            "localImageSha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+            "officialImageSha256": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+            "officialSku": "C203"
+          },
+          {
+            "key": "congrats-large",
+            "localImageSha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+            "officialImageSha256": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+            "officialSku": "C204"
+          },
+          {
+            "key": "congrats-xl",
+            "localImageSha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+            "officialImageSha256": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+            "officialSku": "C205"
+          }
+        ]
+      },
+      "unfinishedStages": [
+        "desktop_actual_screen_qa",
+        "narrow_actual_screen_qa"
+      ],
+      "elapsedSecondsToReleaseSearch": 2147.424526
     }
   ],
   "releasedKnownHosts": [
@@ -8994,7 +9887,8 @@
     "yeoju.fwith.kr",
     "gapyeong.fwith.kr",
     "yeoncheon.fwith.kr",
-    "yangpyeong.fwith.kr"
+    "yangpyeong.fwith.kr",
+    "jongno.fwith.kr"
   ],
   "nationalPlan": {
     "schemaVersion": 1,
@@ -9016,6 +9910,13 @@
     ],
     "nextSelectedUnit": "11110",
     "path": "docs/direct-regional-release/national/fixed-plan.json",
-    "independentReviewPath": "docs/direct-regional-release/national/independent-review.json"
+    "independentReviewPath": "docs/direct-regional-release/national/independent-review.json",
+    "progress": {
+      "releasedRegionCount": 32,
+      "remainingRegionCount": 198,
+      "lastReleasedOfficialCode": "11110",
+      "asOf": "2026-10-10T15:55:46.150Z",
+      "visualQaStillSeparate": true
+    }
   }
 }
