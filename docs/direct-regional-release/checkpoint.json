@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T17:37:55.319374+00:00",
+  "updatedAt": "2026-10-10T17:40:55.428190+00:00",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,17 +33,19 @@
   "current": {
     "scopeKey": "seoul-yongsan-direct-initial-20261010",
     "city": "서울특별시 용산구",
-    "status": "published_indexnow_received_gsc_pending",
+    "status": "released_search_submitted_visual_qa_deferred",
     "owner": {
       "scheduledRunAt": "2026-10-10T17:00:00Z",
       "observedExecutionAt": "2026-10-10T17:01:55.856Z",
       "newRegionStartedAt": "2026-10-10T17:01:55.856Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-seoul-yongsan-initial-20261010T170000Z",
-      "active": true,
-      "executionState": "single_owner_active",
+      "active": false,
+      "executionState": "completed_no_further_mutations_after_final_checkpoint",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T16:43:16.530Z",
-      "priorOwnerReadbackConfirmedAt": "2026-10-10T16:43:23.855Z"
+      "priorOwnerReadbackConfirmedAt": "2026-10-10T16:43:23.855Z",
+      "releaseOnSuccessfulFinalRefAndReadback": true,
+      "browserWriteStoppedAt": "2026-10-10T17:39:43.622Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -51,7 +53,7 @@
       "root": "site-factory/seoul-yongsan-flower",
       "worker": "seoul-yongsan-flower-guide",
       "hostname": "seoul-yongsan.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true,
       "sourceBranchBaseRevision": "07ae85ac13698dc4a0edc7faa00de21379f366fa"
     },
@@ -70,17 +72,17 @@
         37655514711
       ],
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "pending_credentialed_direct_workflow_GET",
+      "providerOwnershipCollisionCheck": "PASS_FIXED_HOST_NO_OVERRIDE_AND_BINDING_READBACK",
       "publicHostObservation": "Web could not access hostname; unknown, not proof of absence"
     },
     "changeIntent": {
-      "action": "submit_public_sitemap_after_independent_http_pass_then_list_readback",
-      "target": "sc-domain:fwith.kr",
-      "sitemapUrl": "https://seoul-yongsan.fwith.kr/sitemap-index.xml",
+      "action": "release_checkpoint_finalize_and_stop",
+      "target": "docs/direct-regional-release/checkpoint.json",
       "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
-      "idempotencyKey": "seoul-yongsan:gsc-submit:30a1fd5465a290561ba0e95cd51f81707862c650"
+      "idempotencyKey": "seoul-yongsan:released-search-visual-deferred:30a1fd5465a290561ba0e95cd51f81707862c650",
+      "externalReleaseAndSearchMutationsFinished": true
     },
-    "lastSuccessfulStage": "published_exact_source_and_durable_indexnow_http200",
+    "lastSuccessfulStage": "released_exact_source_independent_http_indexnow200_gsc_submit_and_list_readback",
     "review": {
       "screenQa": "DEFERRED_NOT_PASS",
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
@@ -91,17 +93,12 @@
       "independentReviewSha256": "300b1ddab7c2f9e6ae8cbc90437ccd7a02f544b7706f48ea0b5444683ab9e2b0",
       "contentStatus": "PASS",
       "runtimeStatus": "PASS_LOCAL_BUILD_AT_EXACT_SOURCE_REVISION",
-      "runtimeReviewSha256": "b6e4d956f6e96c8c82e7dd117d25ee9bf38da1da2789b3477ea4517eb43e9dae"
+      "runtimeReviewSha256": "b6e4d956f6e96c8c82e7dd117d25ee9bf38da1da2789b3477ea4517eb43e9dae",
+      "hostedReleaseReviewStatus": "PASS_INDEPENDENT_PUBLIC_HTTP",
+      "hostedReleaseReviewSha256": "b0df8a20baa87fbeaf66a02688a5a6f1a4673d042d768e3ca3b9b0549da6c64b",
+      "hostedReleaseReviewPath": "docs/direct-regional-release/seoul-yongsan/hosted-release-review.json"
     },
     "unfinishedStages": [
-      "plan_freeze",
-      "authoring",
-      "independent_review",
-      "source_save_readback",
-      "build_static_http",
-      "publish",
-      "indexnow",
-      "gsc",
       "desktop_actual_screen_qa",
       "narrow_actual_screen_qa"
     ],
@@ -122,31 +119,31 @@
           "slug": "hannam-dong-sch-seoul-condolence-wreath",
           "title": "순천향대 서울병원 장례식장 근조화환 주문",
           "primaryKeyword": "순천향대 서울병원 장례식장 근조화환 주문",
-          "status": "independent_content_pass_source_save_pending"
+          "status": "published_independent_content_pass_visual_qa_deferred"
         },
         {
           "slug": "hangangno3-ga-seoul-dragon-city-wedding-wreath",
           "title": "서울드래곤시티 결혼식 축하화환 주문",
           "primaryKeyword": "서울드래곤시티 결혼식 축하화환 주문",
-          "status": "independent_content_pass_source_save_pending"
+          "status": "published_independent_content_pass_visual_qa_deferred"
         },
         {
           "slug": "hangangno2-ga-seonin-opening-wreath",
           "title": "선인상가 거래처 개업화환 주문",
           "primaryKeyword": "선인상가 거래처 개업화환 주문",
-          "status": "independent_content_pass_source_save_pending"
+          "status": "published_independent_content_pass_visual_qa_deferred"
         },
         {
           "slug": "hyochang-dong-kimkoo-convention-event-wreath",
           "title": "백범김구기념관 행사 축하화환 상담",
           "primaryKeyword": "백범김구기념관 행사 축하화환 상담",
-          "status": "independent_content_pass_source_save_pending"
+          "status": "published_independent_content_pass_visual_qa_deferred"
         },
         {
           "slug": "yongsan-dong3-ga-mnd-convention-wedding-wreath",
           "title": "국방컨벤션 결혼식 축하화환 주문",
           "primaryKeyword": "국방컨벤션 결혼식 축하화환 주문",
-          "status": "independent_content_pass_source_save_pending"
+          "status": "published_independent_content_pass_visual_qa_deferred"
         }
       ],
       "planFreezeRevision": "2f8058fdf0a226fbae49db511902358b9e94f403",
@@ -169,8 +166,9 @@
       "loopbackHttpCheckedPaths": 21,
       "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
       "remoteReadbackSha256": "c6117c409e6dc418d27d6bed629e640cda3605196c6974ed19fc0de0be5dedd9",
-      "publicProductionHttp": "PASS_CI_EXACT_SOURCE_PUBLIC_HTTP_INDEPENDENT_REVIEW_IN_PROGRESS",
-      "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+      "publicProductionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_21_PATHS",
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+      "productionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_21_PATHS"
     },
     "controlRevision": "637d6657e262504e66903663255ae3031fe58371",
     "run": {
@@ -248,7 +246,166 @@
         "worker": "seoul-yongsan-flower-guide",
         "workerExists": true
       }
-    }
+    },
+    "nextIntent": "No further new region in this invocation. Batch desktop/narrow visual QA later against exact hosted source.",
+    "gsc": {
+      "siteUrl": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://seoul-yongsan.fwith.kr/sitemap-index.xml",
+      "status": "submitted_confirmed_processing_pending",
+      "submit": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "attempted": 1,
+        "submitted": 1,
+        "failed": 0,
+        "results": [
+          {
+            "sitemapUrl": "https://seoul-yongsan.fwith.kr/sitemap-index.xml",
+            "accepted": true,
+            "confirmed": true,
+            "lastSubmitted": "2026-10-10T17:39:35.035Z",
+            "isPending": true,
+            "isSitemapsIndex": false,
+            "warnings": "0",
+            "errors": "0"
+          }
+        ],
+        "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+        "actions": [
+          "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+        ]
+      },
+      "listReadback": {
+        "observedAt": "2026-10-10T17:39:37.869Z",
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemaps": [
+          {
+            "path": "https://seoul-yongsan.fwith.kr/sitemap-index.xml",
+            "lastSubmitted": "2026-10-10T17:39:35.035Z",
+            "isPending": true,
+            "isSitemapsIndex": false,
+            "warnings": "0",
+            "errors": "0"
+          }
+        ]
+      },
+      "indexingVerified": false
+    },
+    "completedReleaseSearchAt": "2026-10-10T17:39:37.869Z",
+    "completedIndependentHostedReviewAt": "2026-10-10T17:40:22Z",
+    "qa": {
+      "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+      "nodeVersion": "22.23.3",
+      "sourceTestsPassed": 68,
+      "publisherTestsPassed": 42,
+      "build": "PASS",
+      "static": "PASS",
+      "graph": "PASS",
+      "artifactFiles": 24,
+      "normalHtmlRoutes": 7,
+      "articleCount": 5,
+      "sitemapUrls": 7,
+      "loopbackHttpCheckedPaths": 21,
+      "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+      "remoteReadbackSha256": "c6117c409e6dc418d27d6bed629e640cda3605196c6974ed19fc0de0be5dedd9",
+      "publicProductionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_21_PATHS",
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+      "productionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_21_PATHS",
+      "visual": "DEFERRED_NOT_PASS",
+      "publicHttpEvidence": "docs/direct-regional-release/seoul-yongsan/release-evidence.json"
+    },
+    "pendingVisualRoutes": {
+      "desktop": [
+        "/",
+        "/regions/",
+        "/regions/hannam-dong-sch-seoul-condolence-wreath/",
+        "/regions/hangangno3-ga-seoul-dragon-city-wedding-wreath/",
+        "/regions/hangangno2-ga-seonin-opening-wreath/",
+        "/regions/hyochang-dong-kimkoo-convention-event-wreath/",
+        "/regions/yongsan-dong3-ga-mnd-convention-wedding-wreath/",
+        "/404.html"
+      ],
+      "narrow": [
+        "/",
+        "/regions/",
+        "/regions/hannam-dong-sch-seoul-condolence-wreath/",
+        "/regions/hangangno3-ga-seoul-dragon-city-wedding-wreath/",
+        "/regions/hangangno2-ga-seonin-opening-wreath/",
+        "/regions/hyochang-dong-kimkoo-convention-event-wreath/",
+        "/regions/yongsan-dong3-ga-mnd-convention-wedding-wreath/",
+        "/404.html"
+      ]
+    },
+    "pendingVisualItems": [
+      "Desktop and narrow real hosted page layout",
+      "H1/title/body readability and overflow",
+      "Actual image rendering, alt and image purpose",
+      "Four matching product cards and prices",
+      "Phone and online order CTA usability",
+      "Home/parent/related link navigation",
+      "404 appearance"
+    ],
+    "bodyAndImageDigests": {
+      "articlesExactFileSha256": "b82f82957c175132acb580475e1dbac202da9ca1ed1ae0c12d761fac6e5855b4",
+      "independentContentReviewSha256": "300b1ddab7c2f9e6ae8cbc90437ccd7a02f544b7706f48ea0b5444683ab9e2b0",
+      "sourceManifestSha256": "f0fcf92818b9988275d8a1044a673c865df0ff1e80eb24a0f2c86d1ff25b53a7",
+      "imageDigests": [
+        {
+          "key": "funeral-basic",
+          "sku": "B201",
+          "localImageSha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+          "hostedProductImageSha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b"
+        },
+        {
+          "key": "funeral-premium",
+          "sku": "B203",
+          "localImageSha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+          "hostedProductImageSha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738"
+        },
+        {
+          "key": "funeral-large",
+          "sku": "B205",
+          "localImageSha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+          "hostedProductImageSha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210"
+        },
+        {
+          "key": "funeral-xl",
+          "sku": "B060",
+          "localImageSha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+          "hostedProductImageSha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6"
+        },
+        {
+          "key": "congrats-basic",
+          "sku": "C200",
+          "localImageSha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+          "hostedProductImageSha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6"
+        },
+        {
+          "key": "congrats-premium",
+          "sku": "C203",
+          "localImageSha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+          "hostedProductImageSha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d"
+        },
+        {
+          "key": "congrats-large",
+          "sku": "C204",
+          "localImageSha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+          "hostedProductImageSha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15"
+        },
+        {
+          "key": "congrats-xl",
+          "sku": "C205",
+          "localImageSha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+          "hostedProductImageSha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410"
+        }
+      ]
+    },
+    "visualObservation": {
+      "status": "not_performed",
+      "reason": "User explicitly deferred real desktop/narrow visual QA to later batch.",
+      "actualVisualErrorObserved": false,
+      "actualCauseDetermined": false
+    },
+    "elapsedSecondsToReleaseSearch": 2385.869
   },
   "history": [
     {
@@ -4975,6 +5132,383 @@
         "actualCauseDetermined": false
       },
       "elapsedSecondsToReleaseSearch": 2264.074
+    },
+    {
+      "scopeKey": "seoul-yongsan-direct-initial-20261010",
+      "city": "서울특별시 용산구",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "owner": {
+        "scheduledRunAt": "2026-10-10T17:00:00Z",
+        "observedExecutionAt": "2026-10-10T17:01:55.856Z",
+        "newRegionStartedAt": "2026-10-10T17:01:55.856Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-seoul-yongsan-initial-20261010T170000Z",
+        "active": false,
+        "executionState": "completed_no_further_mutations_after_final_checkpoint",
+        "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T16:43:16.530Z",
+        "priorOwnerReadbackConfirmedAt": "2026-10-10T16:43:23.855Z",
+        "releaseOnSuccessfulFinalRefAndReadback": true,
+        "browserWriteStoppedAt": "2026-10-10T17:39:43.622Z"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-seoul-yongsan-direct",
+        "root": "site-factory/seoul-yongsan-flower",
+        "worker": "seoul-yongsan-flower-guide",
+        "hostname": "seoul-yongsan.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true,
+        "sourceBranchBaseRevision": "07ae85ac13698dc4a0edc7faa00de21379f366fa"
+      },
+      "selection": {
+        "officialCode": "11170",
+        "reason": "Next unreleased autonomous district in remote frozen national official-code order",
+        "nationalPlanDenominator": 230
+      },
+      "conflictChecks": {
+        "branchesChecked": 126,
+        "matchingBranch": false,
+        "openMatchingPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "unrelatedQueuedReadOnlyRuns": [
+          37655516975,
+          37655514711
+        ],
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "PASS_FIXED_HOST_NO_OVERRIDE_AND_BINDING_READBACK",
+        "publicHostObservation": "Web could not access hostname; unknown, not proof of absence"
+      },
+      "changeIntent": {
+        "action": "release_checkpoint_finalize_and_stop",
+        "target": "docs/direct-regional-release/checkpoint.json",
+        "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+        "idempotencyKey": "seoul-yongsan:released-search-visual-deferred:30a1fd5465a290561ba0e95cd51f81707862c650",
+        "externalReleaseAndSearchMutationsFinished": true
+      },
+      "lastSuccessfulStage": "released_exact_source_independent_http_indexnow200_gsc_submit_and_list_readback",
+      "review": {
+        "screenQa": "DEFERRED_NOT_PASS",
+        "planReviewStatus": "PASS_BEFORE_AUTHORING",
+        "planReviewSha256": "7e61aa58a4994545d079ed7a12aca8d04994380cbe65970e7fdb8e621d4e8665",
+        "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
+        "runtimePreparationStatus": "NODE22_FIXTURE_PASS_NOT_ACTUAL_SOURCE_OR_PUBLISH_PASS",
+        "articlesSha256": "b82f82957c175132acb580475e1dbac202da9ca1ed1ae0c12d761fac6e5855b4",
+        "independentReviewSha256": "300b1ddab7c2f9e6ae8cbc90437ccd7a02f544b7706f48ea0b5444683ab9e2b0",
+        "contentStatus": "PASS",
+        "runtimeStatus": "PASS_LOCAL_BUILD_AT_EXACT_SOURCE_REVISION",
+        "runtimeReviewSha256": "b6e4d956f6e96c8c82e7dd117d25ee9bf38da1da2789b3477ea4517eb43e9dae",
+        "hostedReleaseReviewStatus": "PASS_INDEPENDENT_PUBLIC_HTTP",
+        "hostedReleaseReviewSha256": "b0df8a20baa87fbeaf66a02688a5a6f1a4673d042d768e3ca3b9b0549da6c64b",
+        "hostedReleaseReviewPath": "docs/direct-regional-release/seoul-yongsan/hosted-release-review.json"
+      },
+      "unfinishedStages": [
+        "desktop_actual_screen_qa",
+        "narrow_actual_screen_qa"
+      ],
+      "plan": {
+        "state": "frozen_before_authoring_independent_plan_pass",
+        "plannedArticleCount": 5,
+        "minimumPassedArticles": 5,
+        "legalDongCount": 36,
+        "administrativeDongCount": 16,
+        "relationshipCount": 38,
+        "unassignedLegalUnits": 31,
+        "countIsPageQuota": false,
+        "fixedPlanPath": "docs/direct-regional-release/seoul-yongsan/fixed-plan.json",
+        "fixedPlanSha256": "7926b0bde6faac743639c626a44f8f7608a3a232e1bcf34d4b135623b4d082f8",
+        "frozenAt": "2026-10-10T17:10:25.802151+00:00",
+        "articles": [
+          {
+            "slug": "hannam-dong-sch-seoul-condolence-wreath",
+            "title": "순천향대 서울병원 장례식장 근조화환 주문",
+            "primaryKeyword": "순천향대 서울병원 장례식장 근조화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "hangangno3-ga-seoul-dragon-city-wedding-wreath",
+            "title": "서울드래곤시티 결혼식 축하화환 주문",
+            "primaryKeyword": "서울드래곤시티 결혼식 축하화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "hangangno2-ga-seonin-opening-wreath",
+            "title": "선인상가 거래처 개업화환 주문",
+            "primaryKeyword": "선인상가 거래처 개업화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "hyochang-dong-kimkoo-convention-event-wreath",
+            "title": "백범김구기념관 행사 축하화환 상담",
+            "primaryKeyword": "백범김구기념관 행사 축하화환 상담",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "yongsan-dong3-ga-mnd-convention-wedding-wreath",
+            "title": "국방컨벤션 결혼식 축하화환 주문",
+            "primaryKeyword": "국방컨벤션 결혼식 축하화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          }
+        ],
+        "planFreezeRevision": "2f8058fdf0a226fbae49db511902358b9e94f403",
+        "approvedArticleCount": 5,
+        "deferredArticleCount": 0
+      },
+      "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+      "validation": {
+        "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+        "nodeVersion": "22.23.3",
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "artifactFiles": 24,
+        "normalHtmlRoutes": 7,
+        "articleCount": 5,
+        "sitemapUrls": 7,
+        "loopbackHttpCheckedPaths": 21,
+        "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+        "remoteReadbackSha256": "c6117c409e6dc418d27d6bed629e640cda3605196c6974ed19fc0de0be5dedd9",
+        "publicProductionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_21_PATHS",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+        "productionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_21_PATHS"
+      },
+      "controlRevision": "637d6657e262504e66903663255ae3031fe58371",
+      "run": {
+        "id": 38072325986,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
+        "status": "completed",
+        "dispatchCount": 1,
+        "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+        "controlRevision": "637d6657e262504e66903663255ae3031fe58371",
+        "conclusion": "success",
+        "createdAt": "2026-10-10T17:35:00Z",
+        "completedAt": "2026-10-10T17:36:25Z"
+      },
+      "deployment": {
+        "id": 38072325986,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
+        "status": "completed",
+        "dispatchCount": 1,
+        "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+        "controlRevision": "637d6657e262504e66903663255ae3031fe58371",
+        "conclusion": "success",
+        "createdAt": "2026-10-10T17:35:00Z",
+        "completedAt": "2026-10-10T17:36:25Z",
+        "runId": 38072325986,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
+        "runAttempt": 1,
+        "workflowDispatchCount": 1
+      },
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "9d667f416738d68165081bd20938b7dc248140cc1c40a27ae04131372cf67422",
+        "httpStatus": 200,
+        "origin": "https://seoul-yongsan.fwith.kr",
+        "recordedAt": "2026-10-10T17:36:15.123820+00:00",
+        "revision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
+        "siteKey": "seoul-yongsan-flower-direct",
+        "state": "received",
+        "urlCount": 7,
+        "urlSetSha256": "247c9ca24a044b686f3ca1c66f32621d8d7971a91ad4e536dcac8eb6424f0d50",
+        "commentId": 6100324883,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6100324883",
+        "durableReadbackVerified": true
+      },
+      "publication": {
+        "url": "https://seoul-yongsan.fwith.kr",
+        "articleCount": 5,
+        "normalHtmlPages": 7,
+        "totalHtmlIncluding404": 8,
+        "sitemapUrls": 7,
+        "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+        "runId": 38072325986,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
+        "publicHttp": {
+          "articleCount": 5,
+          "attempts": 3,
+          "checkedPaths": 21,
+          "htmlRoutes": 7,
+          "noindexHubs": 0,
+          "normalizedCloudflareBeacons": 8,
+          "regionCount": 5,
+          "revision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+          "sitemapUrls": 7,
+          "state": "public_release_verified",
+          "unknownHttpStatus": 404
+        },
+        "providerBinding": {
+          "accountVerified": true,
+          "dnsState": "not_observed",
+          "hostname": "seoul-yongsan.fwith.kr",
+          "hostnameBindingExists": true,
+          "mutationsPerformed": false,
+          "state": "binding_verified",
+          "worker": "seoul-yongsan-flower-guide",
+          "workerExists": true
+        }
+      },
+      "nextIntent": "No further new region in this invocation. Batch desktop/narrow visual QA later against exact hosted source.",
+      "gsc": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemapUrl": "https://seoul-yongsan.fwith.kr/sitemap-index.xml",
+        "status": "submitted_confirmed_processing_pending",
+        "submit": {
+          "siteUrl": "sc-domain:fwith.kr",
+          "attempted": 1,
+          "submitted": 1,
+          "failed": 0,
+          "results": [
+            {
+              "sitemapUrl": "https://seoul-yongsan.fwith.kr/sitemap-index.xml",
+              "accepted": true,
+              "confirmed": true,
+              "lastSubmitted": "2026-10-10T17:39:35.035Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+          "actions": [
+            "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+          ]
+        },
+        "listReadback": {
+          "observedAt": "2026-10-10T17:39:37.869Z",
+          "siteUrl": "sc-domain:fwith.kr",
+          "sitemaps": [
+            {
+              "path": "https://seoul-yongsan.fwith.kr/sitemap-index.xml",
+              "lastSubmitted": "2026-10-10T17:39:35.035Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ]
+        },
+        "indexingVerified": false
+      },
+      "completedReleaseSearchAt": "2026-10-10T17:39:37.869Z",
+      "completedIndependentHostedReviewAt": "2026-10-10T17:40:22Z",
+      "qa": {
+        "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+        "nodeVersion": "22.23.3",
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "artifactFiles": 24,
+        "normalHtmlRoutes": 7,
+        "articleCount": 5,
+        "sitemapUrls": 7,
+        "loopbackHttpCheckedPaths": 21,
+        "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+        "remoteReadbackSha256": "c6117c409e6dc418d27d6bed629e640cda3605196c6974ed19fc0de0be5dedd9",
+        "publicProductionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_21_PATHS",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+        "productionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_21_PATHS",
+        "visual": "DEFERRED_NOT_PASS",
+        "publicHttpEvidence": "docs/direct-regional-release/seoul-yongsan/release-evidence.json"
+      },
+      "pendingVisualRoutes": {
+        "desktop": [
+          "/",
+          "/regions/",
+          "/regions/hannam-dong-sch-seoul-condolence-wreath/",
+          "/regions/hangangno3-ga-seoul-dragon-city-wedding-wreath/",
+          "/regions/hangangno2-ga-seonin-opening-wreath/",
+          "/regions/hyochang-dong-kimkoo-convention-event-wreath/",
+          "/regions/yongsan-dong3-ga-mnd-convention-wedding-wreath/",
+          "/404.html"
+        ],
+        "narrow": [
+          "/",
+          "/regions/",
+          "/regions/hannam-dong-sch-seoul-condolence-wreath/",
+          "/regions/hangangno3-ga-seoul-dragon-city-wedding-wreath/",
+          "/regions/hangangno2-ga-seonin-opening-wreath/",
+          "/regions/hyochang-dong-kimkoo-convention-event-wreath/",
+          "/regions/yongsan-dong3-ga-mnd-convention-wedding-wreath/",
+          "/404.html"
+        ]
+      },
+      "pendingVisualItems": [
+        "Desktop and narrow real hosted page layout",
+        "H1/title/body readability and overflow",
+        "Actual image rendering, alt and image purpose",
+        "Four matching product cards and prices",
+        "Phone and online order CTA usability",
+        "Home/parent/related link navigation",
+        "404 appearance"
+      ],
+      "bodyAndImageDigests": {
+        "articlesExactFileSha256": "b82f82957c175132acb580475e1dbac202da9ca1ed1ae0c12d761fac6e5855b4",
+        "independentContentReviewSha256": "300b1ddab7c2f9e6ae8cbc90437ccd7a02f544b7706f48ea0b5444683ab9e2b0",
+        "sourceManifestSha256": "f0fcf92818b9988275d8a1044a673c865df0ff1e80eb24a0f2c86d1ff25b53a7",
+        "imageDigests": [
+          {
+            "key": "funeral-basic",
+            "sku": "B201",
+            "localImageSha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+            "hostedProductImageSha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b"
+          },
+          {
+            "key": "funeral-premium",
+            "sku": "B203",
+            "localImageSha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+            "hostedProductImageSha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738"
+          },
+          {
+            "key": "funeral-large",
+            "sku": "B205",
+            "localImageSha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+            "hostedProductImageSha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210"
+          },
+          {
+            "key": "funeral-xl",
+            "sku": "B060",
+            "localImageSha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+            "hostedProductImageSha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6"
+          },
+          {
+            "key": "congrats-basic",
+            "sku": "C200",
+            "localImageSha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+            "hostedProductImageSha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6"
+          },
+          {
+            "key": "congrats-premium",
+            "sku": "C203",
+            "localImageSha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+            "hostedProductImageSha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d"
+          },
+          {
+            "key": "congrats-large",
+            "sku": "C204",
+            "localImageSha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+            "hostedProductImageSha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15"
+          },
+          {
+            "key": "congrats-xl",
+            "sku": "C205",
+            "localImageSha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+            "hostedProductImageSha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410"
+          }
+        ]
+      },
+      "visualObservation": {
+        "status": "not_performed",
+        "reason": "User explicitly deferred real desktop/narrow visual QA to later batch.",
+        "actualVisualErrorObserved": false,
+        "actualCauseDetermined": false
+      },
+      "elapsedSecondsToReleaseSearch": 2385.869
     }
   ],
   "maintenanceBacklog": [
@@ -5015,7 +5549,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Single owner prepares Seoul Yongsan only; complete current source before next regional selection.",
+  "nextAction": "Next scheduled invocation may select the next unreleased official unit. Existing held articles and deferred visual QA remain preserved.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -10514,6 +11048,383 @@
         "actualCauseDetermined": false
       },
       "elapsedSecondsToReleaseSearch": 2264.074
+    },
+    {
+      "scopeKey": "seoul-yongsan-direct-initial-20261010",
+      "city": "서울특별시 용산구",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "owner": {
+        "scheduledRunAt": "2026-10-10T17:00:00Z",
+        "observedExecutionAt": "2026-10-10T17:01:55.856Z",
+        "newRegionStartedAt": "2026-10-10T17:01:55.856Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-seoul-yongsan-initial-20261010T170000Z",
+        "active": false,
+        "executionState": "completed_no_further_mutations_after_final_checkpoint",
+        "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T16:43:16.530Z",
+        "priorOwnerReadbackConfirmedAt": "2026-10-10T16:43:23.855Z",
+        "releaseOnSuccessfulFinalRefAndReadback": true,
+        "browserWriteStoppedAt": "2026-10-10T17:39:43.622Z"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-seoul-yongsan-direct",
+        "root": "site-factory/seoul-yongsan-flower",
+        "worker": "seoul-yongsan-flower-guide",
+        "hostname": "seoul-yongsan.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true,
+        "sourceBranchBaseRevision": "07ae85ac13698dc4a0edc7faa00de21379f366fa"
+      },
+      "selection": {
+        "officialCode": "11170",
+        "reason": "Next unreleased autonomous district in remote frozen national official-code order",
+        "nationalPlanDenominator": 230
+      },
+      "conflictChecks": {
+        "branchesChecked": 126,
+        "matchingBranch": false,
+        "openMatchingPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "unrelatedQueuedReadOnlyRuns": [
+          37655516975,
+          37655514711
+        ],
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "PASS_FIXED_HOST_NO_OVERRIDE_AND_BINDING_READBACK",
+        "publicHostObservation": "Web could not access hostname; unknown, not proof of absence"
+      },
+      "changeIntent": {
+        "action": "release_checkpoint_finalize_and_stop",
+        "target": "docs/direct-regional-release/checkpoint.json",
+        "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+        "idempotencyKey": "seoul-yongsan:released-search-visual-deferred:30a1fd5465a290561ba0e95cd51f81707862c650",
+        "externalReleaseAndSearchMutationsFinished": true
+      },
+      "lastSuccessfulStage": "released_exact_source_independent_http_indexnow200_gsc_submit_and_list_readback",
+      "review": {
+        "screenQa": "DEFERRED_NOT_PASS",
+        "planReviewStatus": "PASS_BEFORE_AUTHORING",
+        "planReviewSha256": "7e61aa58a4994545d079ed7a12aca8d04994380cbe65970e7fdb8e621d4e8665",
+        "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
+        "runtimePreparationStatus": "NODE22_FIXTURE_PASS_NOT_ACTUAL_SOURCE_OR_PUBLISH_PASS",
+        "articlesSha256": "b82f82957c175132acb580475e1dbac202da9ca1ed1ae0c12d761fac6e5855b4",
+        "independentReviewSha256": "300b1ddab7c2f9e6ae8cbc90437ccd7a02f544b7706f48ea0b5444683ab9e2b0",
+        "contentStatus": "PASS",
+        "runtimeStatus": "PASS_LOCAL_BUILD_AT_EXACT_SOURCE_REVISION",
+        "runtimeReviewSha256": "b6e4d956f6e96c8c82e7dd117d25ee9bf38da1da2789b3477ea4517eb43e9dae",
+        "hostedReleaseReviewStatus": "PASS_INDEPENDENT_PUBLIC_HTTP",
+        "hostedReleaseReviewSha256": "b0df8a20baa87fbeaf66a02688a5a6f1a4673d042d768e3ca3b9b0549da6c64b",
+        "hostedReleaseReviewPath": "docs/direct-regional-release/seoul-yongsan/hosted-release-review.json"
+      },
+      "unfinishedStages": [
+        "desktop_actual_screen_qa",
+        "narrow_actual_screen_qa"
+      ],
+      "plan": {
+        "state": "frozen_before_authoring_independent_plan_pass",
+        "plannedArticleCount": 5,
+        "minimumPassedArticles": 5,
+        "legalDongCount": 36,
+        "administrativeDongCount": 16,
+        "relationshipCount": 38,
+        "unassignedLegalUnits": 31,
+        "countIsPageQuota": false,
+        "fixedPlanPath": "docs/direct-regional-release/seoul-yongsan/fixed-plan.json",
+        "fixedPlanSha256": "7926b0bde6faac743639c626a44f8f7608a3a232e1bcf34d4b135623b4d082f8",
+        "frozenAt": "2026-10-10T17:10:25.802151+00:00",
+        "articles": [
+          {
+            "slug": "hannam-dong-sch-seoul-condolence-wreath",
+            "title": "순천향대 서울병원 장례식장 근조화환 주문",
+            "primaryKeyword": "순천향대 서울병원 장례식장 근조화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "hangangno3-ga-seoul-dragon-city-wedding-wreath",
+            "title": "서울드래곤시티 결혼식 축하화환 주문",
+            "primaryKeyword": "서울드래곤시티 결혼식 축하화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "hangangno2-ga-seonin-opening-wreath",
+            "title": "선인상가 거래처 개업화환 주문",
+            "primaryKeyword": "선인상가 거래처 개업화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "hyochang-dong-kimkoo-convention-event-wreath",
+            "title": "백범김구기념관 행사 축하화환 상담",
+            "primaryKeyword": "백범김구기념관 행사 축하화환 상담",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          },
+          {
+            "slug": "yongsan-dong3-ga-mnd-convention-wedding-wreath",
+            "title": "국방컨벤션 결혼식 축하화환 주문",
+            "primaryKeyword": "국방컨벤션 결혼식 축하화환 주문",
+            "status": "published_independent_content_pass_visual_qa_deferred"
+          }
+        ],
+        "planFreezeRevision": "2f8058fdf0a226fbae49db511902358b9e94f403",
+        "approvedArticleCount": 5,
+        "deferredArticleCount": 0
+      },
+      "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+      "validation": {
+        "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+        "nodeVersion": "22.23.3",
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "artifactFiles": 24,
+        "normalHtmlRoutes": 7,
+        "articleCount": 5,
+        "sitemapUrls": 7,
+        "loopbackHttpCheckedPaths": 21,
+        "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+        "remoteReadbackSha256": "c6117c409e6dc418d27d6bed629e640cda3605196c6974ed19fc0de0be5dedd9",
+        "publicProductionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_21_PATHS",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+        "productionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_21_PATHS"
+      },
+      "controlRevision": "637d6657e262504e66903663255ae3031fe58371",
+      "run": {
+        "id": 38072325986,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
+        "status": "completed",
+        "dispatchCount": 1,
+        "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+        "controlRevision": "637d6657e262504e66903663255ae3031fe58371",
+        "conclusion": "success",
+        "createdAt": "2026-10-10T17:35:00Z",
+        "completedAt": "2026-10-10T17:36:25Z"
+      },
+      "deployment": {
+        "id": 38072325986,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
+        "status": "completed",
+        "dispatchCount": 1,
+        "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+        "controlRevision": "637d6657e262504e66903663255ae3031fe58371",
+        "conclusion": "success",
+        "createdAt": "2026-10-10T17:35:00Z",
+        "completedAt": "2026-10-10T17:36:25Z",
+        "runId": 38072325986,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
+        "runAttempt": 1,
+        "workflowDispatchCount": 1
+      },
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "9d667f416738d68165081bd20938b7dc248140cc1c40a27ae04131372cf67422",
+        "httpStatus": 200,
+        "origin": "https://seoul-yongsan.fwith.kr",
+        "recordedAt": "2026-10-10T17:36:15.123820+00:00",
+        "revision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
+        "siteKey": "seoul-yongsan-flower-direct",
+        "state": "received",
+        "urlCount": 7,
+        "urlSetSha256": "247c9ca24a044b686f3ca1c66f32621d8d7971a91ad4e536dcac8eb6424f0d50",
+        "commentId": 6100324883,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6100324883",
+        "durableReadbackVerified": true
+      },
+      "publication": {
+        "url": "https://seoul-yongsan.fwith.kr",
+        "articleCount": 5,
+        "normalHtmlPages": 7,
+        "totalHtmlIncluding404": 8,
+        "sitemapUrls": 7,
+        "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+        "runId": 38072325986,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
+        "publicHttp": {
+          "articleCount": 5,
+          "attempts": 3,
+          "checkedPaths": 21,
+          "htmlRoutes": 7,
+          "noindexHubs": 0,
+          "normalizedCloudflareBeacons": 8,
+          "regionCount": 5,
+          "revision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+          "sitemapUrls": 7,
+          "state": "public_release_verified",
+          "unknownHttpStatus": 404
+        },
+        "providerBinding": {
+          "accountVerified": true,
+          "dnsState": "not_observed",
+          "hostname": "seoul-yongsan.fwith.kr",
+          "hostnameBindingExists": true,
+          "mutationsPerformed": false,
+          "state": "binding_verified",
+          "worker": "seoul-yongsan-flower-guide",
+          "workerExists": true
+        }
+      },
+      "nextIntent": "No further new region in this invocation. Batch desktop/narrow visual QA later against exact hosted source.",
+      "gsc": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemapUrl": "https://seoul-yongsan.fwith.kr/sitemap-index.xml",
+        "status": "submitted_confirmed_processing_pending",
+        "submit": {
+          "siteUrl": "sc-domain:fwith.kr",
+          "attempted": 1,
+          "submitted": 1,
+          "failed": 0,
+          "results": [
+            {
+              "sitemapUrl": "https://seoul-yongsan.fwith.kr/sitemap-index.xml",
+              "accepted": true,
+              "confirmed": true,
+              "lastSubmitted": "2026-10-10T17:39:35.035Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+          "actions": [
+            "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+          ]
+        },
+        "listReadback": {
+          "observedAt": "2026-10-10T17:39:37.869Z",
+          "siteUrl": "sc-domain:fwith.kr",
+          "sitemaps": [
+            {
+              "path": "https://seoul-yongsan.fwith.kr/sitemap-index.xml",
+              "lastSubmitted": "2026-10-10T17:39:35.035Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ]
+        },
+        "indexingVerified": false
+      },
+      "completedReleaseSearchAt": "2026-10-10T17:39:37.869Z",
+      "completedIndependentHostedReviewAt": "2026-10-10T17:40:22Z",
+      "qa": {
+        "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+        "nodeVersion": "22.23.3",
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "artifactFiles": 24,
+        "normalHtmlRoutes": 7,
+        "articleCount": 5,
+        "sitemapUrls": 7,
+        "loopbackHttpCheckedPaths": 21,
+        "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+        "remoteReadbackSha256": "c6117c409e6dc418d27d6bed629e640cda3605196c6974ed19fc0de0be5dedd9",
+        "publicProductionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_21_PATHS",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+        "productionHttp": "PASS_INDEPENDENT_PUBLIC_HTTP_21_PATHS",
+        "visual": "DEFERRED_NOT_PASS",
+        "publicHttpEvidence": "docs/direct-regional-release/seoul-yongsan/release-evidence.json"
+      },
+      "pendingVisualRoutes": {
+        "desktop": [
+          "/",
+          "/regions/",
+          "/regions/hannam-dong-sch-seoul-condolence-wreath/",
+          "/regions/hangangno3-ga-seoul-dragon-city-wedding-wreath/",
+          "/regions/hangangno2-ga-seonin-opening-wreath/",
+          "/regions/hyochang-dong-kimkoo-convention-event-wreath/",
+          "/regions/yongsan-dong3-ga-mnd-convention-wedding-wreath/",
+          "/404.html"
+        ],
+        "narrow": [
+          "/",
+          "/regions/",
+          "/regions/hannam-dong-sch-seoul-condolence-wreath/",
+          "/regions/hangangno3-ga-seoul-dragon-city-wedding-wreath/",
+          "/regions/hangangno2-ga-seonin-opening-wreath/",
+          "/regions/hyochang-dong-kimkoo-convention-event-wreath/",
+          "/regions/yongsan-dong3-ga-mnd-convention-wedding-wreath/",
+          "/404.html"
+        ]
+      },
+      "pendingVisualItems": [
+        "Desktop and narrow real hosted page layout",
+        "H1/title/body readability and overflow",
+        "Actual image rendering, alt and image purpose",
+        "Four matching product cards and prices",
+        "Phone and online order CTA usability",
+        "Home/parent/related link navigation",
+        "404 appearance"
+      ],
+      "bodyAndImageDigests": {
+        "articlesExactFileSha256": "b82f82957c175132acb580475e1dbac202da9ca1ed1ae0c12d761fac6e5855b4",
+        "independentContentReviewSha256": "300b1ddab7c2f9e6ae8cbc90437ccd7a02f544b7706f48ea0b5444683ab9e2b0",
+        "sourceManifestSha256": "f0fcf92818b9988275d8a1044a673c865df0ff1e80eb24a0f2c86d1ff25b53a7",
+        "imageDigests": [
+          {
+            "key": "funeral-basic",
+            "sku": "B201",
+            "localImageSha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+            "hostedProductImageSha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b"
+          },
+          {
+            "key": "funeral-premium",
+            "sku": "B203",
+            "localImageSha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+            "hostedProductImageSha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738"
+          },
+          {
+            "key": "funeral-large",
+            "sku": "B205",
+            "localImageSha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+            "hostedProductImageSha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210"
+          },
+          {
+            "key": "funeral-xl",
+            "sku": "B060",
+            "localImageSha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+            "hostedProductImageSha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6"
+          },
+          {
+            "key": "congrats-basic",
+            "sku": "C200",
+            "localImageSha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+            "hostedProductImageSha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6"
+          },
+          {
+            "key": "congrats-premium",
+            "sku": "C203",
+            "localImageSha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+            "hostedProductImageSha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d"
+          },
+          {
+            "key": "congrats-large",
+            "sku": "C204",
+            "localImageSha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+            "hostedProductImageSha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15"
+          },
+          {
+            "key": "congrats-xl",
+            "sku": "C205",
+            "localImageSha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+            "hostedProductImageSha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410"
+          }
+        ]
+      },
+      "visualObservation": {
+        "status": "not_performed",
+        "reason": "User explicitly deferred real desktop/narrow visual QA to later batch.",
+        "actualVisualErrorObserved": false,
+        "actualCauseDetermined": false
+      },
+      "elapsedSecondsToReleaseSearch": 2385.869
     }
   ],
   "releasedKnownHosts": [
@@ -10531,7 +11442,8 @@
     "yeoncheon.fwith.kr",
     "yangpyeong.fwith.kr",
     "jongno.fwith.kr",
-    "seoul-jung.fwith.kr"
+    "seoul-jung.fwith.kr",
+    "seoul-yongsan.fwith.kr"
   ],
   "nationalPlan": {
     "schemaVersion": 1,
@@ -10551,17 +11463,14 @@
       "Historical visual deferrals and held articles are maintenance backlogs, not erased by geographic release progression.",
       "Reverify official effective changes before choosing later units; do not mutate historical denominator silently."
     ],
-    "nextSelectedUnit": {
-      "code": "11170",
-      "full_name": "서울특별시 용산구"
-    },
+    "nextSelectedUnit": null,
     "path": "docs/direct-regional-release/national/fixed-plan.json",
     "independentReviewPath": "docs/direct-regional-release/national/independent-review.json",
     "progress": {
-      "releasedRegionCount": 33,
-      "remainingRegionCount": 197,
-      "lastReleasedOfficialCode": "11140",
-      "asOf": "2026-10-10T16:40:38.676Z",
+      "releasedRegionCount": 34,
+      "remainingRegionCount": 196,
+      "lastReleasedOfficialCode": "11170",
+      "asOf": "2026-10-10T17:39:37.869Z",
       "visualQaStillSeparate": true
     }
   }
