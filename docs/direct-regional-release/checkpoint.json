@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T02:22:00.460Z",
+  "updatedAt": "2026-10-10T02:23:41.001Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "hanam-direct-initial-20261010",
     "city": "하남시",
-    "status": "source_saved_final_revision_review",
+    "status": "final_review_pass_dispatch_intent",
     "owner": {
       "scheduledRunAt": "2026-10-10T02:00:00Z",
       "observedExecutionAt": "2026-10-10T01:59:07Z",
@@ -97,9 +97,18 @@
         "checkedAt": "2026-10-10T02:04:13.143Z"
       }
     },
-    "lastSuccessfulStage": "remote_source_branch_created_69_blob_tree_match",
-    "nextIntent": "Finish independent full-byte readback and final source SHA build before dispatch",
-    "pendingExternalAction": null,
+    "lastSuccessfulStage": "independent_full_remote_source_control_and_final_sha_build",
+    "nextIntent": "Dispatch existing Hanam direct workflow once for exact reviewed source",
+    "pendingExternalAction": {
+      "action": "workflow_dispatch",
+      "workflow": "hanam-direct-publish.yml",
+      "expectedRevision": "0ac786e59570382c6dbd7872e54cca9cd9b5f778",
+      "indexnowOnly": false,
+      "hostname": "hanam.fwith.kr",
+      "worker": "hanam-flower-guide",
+      "noOverrides": true,
+      "idempotencyKey": "hanam-direct-release-0ac786e59570382c6dbd7872e54cca9cd9b5f778"
+    },
     "controlRevision": "5df1cd730d18f965786e95a0569d8665f7c88dd2",
     "review": {
       "status": "PASS_INDEPENDENT_PRECOMMIT_SOURCE",
@@ -132,8 +141,10 @@
         "/regions/dangjeong-dong/"
       ],
       "unavailableDirectoryLabel": "Verified exact component diff: noninteractive span labels deferred member; no inbound link or sitemap route, retains32 official relations.",
-      "remotePublicationAndFinalRevisionBuild": "pending",
-      "hostedBrowserAndHTTP": "pending"
+      "remotePublicationAndFinalRevisionBuild": "PASS",
+      "hostedBrowserAndHTTP": "pending",
+      "finalEvidencePath": "docs/direct-regional-release/hanam/final-predeploy-review.json",
+      "finalEvidenceSha256": "38a78295f36a132d4484348c088bf63d1292c353237858556b5b103fc41e3fa1"
     },
     "sourceRevision": "0ac786e59570382c6dbd7872e54cca9cd9b5f778"
   },
