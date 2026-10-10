@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T10:47:55.138Z",
+  "updatedAt": "2026-10-10T10:49:59.881Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -6341,7 +6341,7 @@
   "activePreparation": {
     "scopeKey": "pocheon-direct-initial-20261010",
     "city": "포천시",
-    "status": "researching_fixed_membership",
+    "status": "prepared_exact_source_ready",
     "owner": {
       "scheduledRunAt": "2026-10-10T10:00:00Z",
       "observedExecutionAt": "2026-10-10T10:04:27Z",
@@ -6376,7 +6376,7 @@
       "controlRevision": "9d4ee747f8794d2fd7c76d90bba9e0bb9aa1e3dc",
       "runtimeSourceRevision": "b41863691a48912b182b915798c93a81d5723e59"
     },
-    "lastSuccessfulStage": "fixed_official_membership_and_original_18_query_plan",
+    "lastSuccessfulStage": "independent_remote_full_bytes_and_exact_source_build_pass",
     "nextIntent": "Write original customer articles using frozen plans, independently review exact text/images",
     "plan": {
       "state": "independent_content_review_pass_runtime_verification_pending",
@@ -6550,19 +6550,27 @@
       "images": "PASS_INDEPENDENT_9_IMAGE_BYTES",
       "runtime": "PASS_INDEPENDENT_NODE22_64_SOURCE_34_HELPER_STATIC_GRAPH_ARTIFACT",
       "visual": "NOT_PERFORMED",
-      "exactSourceBuild": "PASS_LOCAL_EXACT_SOURCE_80885f720b382cd71fab0f68228040e7637a8b34",
-      "remoteSource": "pending_independent_full_blob_readback"
+      "exactSourceBuild": "PASS_INDEPENDENT_EXACT_SOURCE_NODE22_64_SOURCE_34_HELPER_STATIC_GRAPH_ARTIFACT",
+      "remoteSource": "PASS_69_FULL_SOURCE_3_CONTROL_4_ENGINE_BLOBS",
+      "evidencePath": "docs/direct-regional-release/pocheon/review/independent-runtime/exact-source/exact-source-review.json",
+      "evidenceSha256": "4810f1c95eea7aa2de06abef2799ddd1fa5febc41e7c00d325428f75f8835e2f",
+      "imageBodyDigestPath": "docs/direct-regional-release/pocheon/review/independent-runtime/remote-body-and-image-digests.json",
+      "imageBodyDigestSha256": "eb6b38d9f3a1848974bc6c97966e973ed19c844a83195ba8d29396e49f1f863d"
     },
     "pendingExternalAction": {
-      "action": "save_region_fixed_direct_controls",
-      "paths": [
-        "scripts/direct-pocheon/publish.py",
-        "scripts/direct-pocheon/test_publish.py",
-        ".github/workflows/pocheon-direct-publish.yml"
-      ],
-      "idempotencyKey": "pocheon-direct-initial-20261010:save-controls-v1",
-      "state": "prepared_independently_reviewed_no_dispatch"
+      "action": "workflow_dispatch",
+      "workflow": ".github/workflows/pocheon-direct-publish.yml",
+      "ref": "main",
+      "inputs": {
+        "expected_revision": "80885f720b382cd71fab0f68228040e7637a8b34",
+        "indexnow_only": false
+      },
+      "target": "pocheon-flower-guide / pocheon.fwith.kr",
+      "idempotencyKey": "pocheon-direct-initial-20261010:publish:80885f720b382cd71fab0f68228040e7637a8b34",
+      "dispatchAttempted": false,
+      "mandatoryGates": "provider account/Worker/hostname GET and no override; honor any required service execution approval"
     },
-    "sourceRevision": "80885f720b382cd71fab0f68228040e7637a8b34"
+    "sourceRevision": "80885f720b382cd71fab0f68228040e7637a8b34",
+    "controlRevision": "25a4313914c9d602abcf4565ef23dd23d678afe0"
   }
 }
