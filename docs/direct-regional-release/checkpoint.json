@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T09:06:42.787Z",
+  "updatedAt": "2026-10-10T09:11:55.494Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "yangju-direct-initial-20261010",
     "city": "양주시",
-    "status": "researching_membership",
+    "status": "membership_fixed_purchase_research",
     "owner": {
       "scheduledRunAt": "2026-10-10T09:00:00Z",
       "observedExecutionAt": "2026-10-10T09:05:03Z",
@@ -69,15 +69,155 @@
       "providerOwnershipCollisionCheck": "pending_required_before_deploy"
     },
     "plan": {
-      "state": "official_membership_research_before_fixed_purchase_plan",
-      "plannedArticleCount": null
+      "state": "canonical_denominator_fixed_before_authoring",
+      "plannedArticleCount": 22,
+      "minimumPassedArticles": 20,
+      "administrativeUnits": 12,
+      "crosswalkRelationships": 24,
+      "partialRelationships": 4,
+      "membershipPath": "docs/direct-regional-release/yangju/membership.json",
+      "membershipSha256": "3f8f16bd0e032d57b79a931a65ef928e2ceb97ca2d6eb34f415d464c3c624f00",
+      "articles": [
+        {
+          "name": "유양동",
+          "slug": "yuyang-dong",
+          "route": "/regions/yuyang-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "어둔동",
+          "slug": "eodun-dong",
+          "route": "/regions/eodun-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "남방동",
+          "slug": "nambang-dong",
+          "route": "/regions/nambang-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "마전동",
+          "slug": "majeon-dong",
+          "route": "/regions/majeon-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "산북동",
+          "slug": "sanbuk-dong",
+          "route": "/regions/sanbuk-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "광사동",
+          "slug": "gwangsa-dong",
+          "route": "/regions/gwangsa-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "만송동",
+          "slug": "mansong-dong",
+          "route": "/regions/mansong-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "삼숭동",
+          "slug": "samsung-dong",
+          "route": "/regions/samsung-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "고읍동",
+          "slug": "goeup-dong",
+          "route": "/regions/goeup-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "덕정동",
+          "slug": "deokjeong-dong",
+          "route": "/regions/deokjeong-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "봉양동",
+          "slug": "bongyang-dong",
+          "route": "/regions/bongyang-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "회암동",
+          "slug": "hoeam-dong",
+          "route": "/regions/hoeam-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "율정동",
+          "slug": "yuljeong-dong",
+          "route": "/regions/yuljeong-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "옥정동",
+          "slug": "okjeong-dong",
+          "route": "/regions/okjeong-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "고암동",
+          "slug": "goam-dong",
+          "route": "/regions/goam-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "덕계동",
+          "slug": "deokgye-dong",
+          "route": "/regions/deokgye-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "회정동",
+          "slug": "hoejeong-dong",
+          "route": "/regions/hoejeong-dong/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "백석읍",
+          "slug": "baekseok-eup",
+          "route": "/regions/baekseok-eup/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "은현면",
+          "slug": "eunhyeon-myeon",
+          "route": "/regions/eunhyeon-myeon/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "남면",
+          "slug": "nam-myeon",
+          "route": "/regions/nam-myeon/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "광적면",
+          "slug": "gwangjeok-myeon",
+          "route": "/regions/gwangjeok-myeon/",
+          "status": "purchase_research_pending"
+        },
+        {
+          "name": "장흥면",
+          "slug": "jangheung-myeon",
+          "route": "/regions/jangheung-myeon/",
+          "status": "purchase_research_pending"
+        }
+      ]
     },
-    "lastSuccessfulStage": "remote_state_and_trigger_conflicts_checked",
+    "lastSuccessfulStage": "independent_official_membership_review",
     "nextIntent": "Fix independently verified official membership and distinct purchase plan before authoring",
     "pendingExternalAction": {
-      "action": "claim_checkpoint",
-      "target": "refs/heads/main",
-      "idempotencyKey": "direct-yangju-20261010T090000Z-claim"
+      "action": "save_official_membership_and_independent_review",
+      "target": "main docs/direct-regional-release/yangju",
+      "idempotencyKey": "yangju-membership-3f8f16bd0e032d57b79a931a65ef928e2ceb97ca2d6eb34f415d464c3c624f00"
     }
   },
   "history": [
