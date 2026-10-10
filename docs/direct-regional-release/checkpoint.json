@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "jongno-direct-initial-20261010",
     "city": "서울특별시 종로구",
-    "status": "source_saved_exact_build_and_remote_readback_pending",
+    "status": "reviewed_exact_source_ready_for_dispatch",
     "owner": {
       "scheduledRunAt": "2026-10-10T15:00:00Z",
       "observedExecutionAt": "2026-10-10T15:19:58.725474Z",
@@ -41,7 +41,7 @@
       "serviceInvocationId": null,
       "checkpointId": "direct-jongno-initial-20261010T150000Z",
       "active": true,
-      "executionState": "verify_exact_source_then_publish_controls",
+      "executionState": "publish_fixed_controls_and_dispatch_exact_source",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T15:12:44.377Z",
       "priorOwnerReadbackConfirmedAt": "2026-10-10T15:12:46.599Z"
     },
@@ -122,30 +122,46 @@
       "deferredArticleCount": 0
     },
     "changeIntent": {
-      "action": "save_jongno_fixed_dispatch_controls_after_independent_exact_source_checks",
-      "target": ".github/workflows/jongno-direct-publish.yml and scripts/direct-jongno/{publish.py,test_publish.py} on main",
+      "action": "workflow_dispatch_once_exact_source",
+      "target": ".github/workflows/jongno-direct-publish.yml on main",
       "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
-      "idempotencyKey": "jongno:controls:16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b"
+      "worker": "jongno-flower-guide",
+      "hostname": "jongno.fwith.kr",
+      "indexnowOnly": false,
+      "idempotencyKey": "jongno:publish:16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "attempted": false
     },
-    "lastSuccessfulStage": "reviewed_source_branch_created_and_exact_head_readback",
-    "nextIntent": "Finish exact-source Node22 build and remote byte readback; save reviewed fixed dispatch controls on main; then record dispatch intent.",
+    "lastSuccessfulStage": "exact_source_full_remote_readback_node22_build_static_graph_independent_pass",
+    "nextIntent": "Read back fixed main control files, then invoke official Run workflow once; enforce provider GET collision checks and no overrides.",
     "review": {
       "articlesSha256": "341211fee4781e1159f095e99127de789173e27488a34a56b04ff609f00773e9",
       "independentReviewSha256": "f630aff14c6ff8c2089436cf7e8dd1368397c6bd7059b85eb3b1c0383be4ea97",
-      "runtimeReviewSha256": "67d59ea2c79b369ec8a666d4ca384ddb31e1a889871248c1642b46f29f3a5f70",
-      "runtimeStatus": "fixture_safety_pass_exact_source_node22_build_pending",
+      "runtimeReviewSha256": "3dd764d6ca569572440634cde18067507fae4035c16f51268bf71e50f791ce8f",
+      "runtimeStatus": "PASS_EXACT_SOURCE_LOCAL_RUNTIME",
       "screenQa": "deferred_not_pass",
       "authorRevision": 3,
       "preflightFindingResolved": "Five generic additional-cost caveats now explicitly state delivery fees; independent content rereview passed."
     },
     "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
     "validation": {
+      "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
       "nodeVersion": "22",
       "sourceTestsPassed": 68,
       "publisherTestsPassed": 42,
-      "build": "pending_exact_source",
-      "remoteFullReadback": "pending",
-      "screenQa": "deferred_not_pass"
+      "astroErrors": 0,
+      "astroWarnings": 0,
+      "build": "PASS",
+      "static": "PASS",
+      "graph": "PASS",
+      "artifactFiles": 25,
+      "normalHtmlRoutes": 8,
+      "articleCount": 6,
+      "sitemapUrls": 8,
+      "loopbackHttpCheckedPaths": 22,
+      "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+      "remoteReadbackSha256": "8d9508ba88257f4a88ef6e24d053b0f680991fe2123c9e4d73eaf13abee6d4b0",
+      "publicProductionHttp": "not_yet_verified",
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS"
     }
   },
   "history": [

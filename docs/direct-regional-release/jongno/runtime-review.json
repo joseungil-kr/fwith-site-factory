@@ -1,11 +1,11 @@
 {
-  "reviewedAt": "2026-10-10T15:38:02.613799+00:00",
+  "reviewedAt": "2026-10-10T15:48:41.097511+00:00",
   "reviewer": "independent runtime safety reviewer; no source edits or Git writes",
-  "phase": "pre-assembly code and synthetic fixture review",
-  "verdict": "PASS_PREASSEMBLY_CODE_AND_FIXTURES",
+  "phase": "real exact-source Node 22 build, static artifact and loopback HTTP review",
+  "verdict": "PASS_EXACT_SOURCE_LOCAL_RUNTIME",
   "canRelease": false,
-  "canClaimRealBuildPassed": false,
-  "sourceExists": false,
+  "canClaimRealBuildPassed": true,
+  "sourceExists": true,
   "runtimeSourceRevision": "bad8ba028abc68c738267622ed7f1508f956bd54",
   "controlSourceRevision": "6ab91963b8bfdab8481e5ffee47cb994875567aa",
   "digests": [
@@ -138,6 +138,86 @@
       "path": "review/runtime-independent-indexnow-guard-recheck.json",
       "sha256": "15c6458841091f11639538449e431d1b640096ac7b89401a572bf400efbd02d3",
       "bytes": 6053
+    },
+    {
+      "path": "review/runtime-independent-real-source-initial-audit.json",
+      "sha256": "27a04066450bb79c71c645bab9ac5fe80c72343e5b50398552868381fcb05f5e",
+      "bytes": 14075
+    },
+    {
+      "path": "review/runtime-independent-npm-ci.log",
+      "sha256": "973402628f5b0882b558891a50b054aa06fdf914066aa7644cc43147a2b0a19b",
+      "bytes": 26
+    },
+    {
+      "path": "review/runtime-independent-real-source-node22-tests.log",
+      "sha256": "3b1f65052104a834bb812597f57401478c51635181a7c1e33840c5f85d8ba471",
+      "bytes": 22596
+    },
+    {
+      "path": "review/runtime-independent-real-control-tests.log",
+      "sha256": "21af995ec80aa8ee74b68ef96a53e149779e2c66edb8cc2f7616a106cd214de2",
+      "bytes": 5470
+    },
+    {
+      "path": "review/runtime-independent-real-source-audit.py",
+      "sha256": "b421e4a1b2574000edd12aa2edf532fee71c74566e2f7d2936deb6fa50047dc6",
+      "bytes": 4177
+    },
+    {
+      "path": "review/runtime-independent-real-source-v3-audit.json",
+      "sha256": "e7a31089c8b36678d8696ca3905a79832efee3a0b780f7f7b6d7346eacffd5e2",
+      "bytes": 20732
+    },
+    {
+      "path": "review/runtime-independent-npm-ci-v3.log",
+      "sha256": "973402628f5b0882b558891a50b054aa06fdf914066aa7644cc43147a2b0a19b",
+      "bytes": 26
+    },
+    {
+      "path": "review/runtime-independent-real-source-node22-tests-v3.log",
+      "sha256": "1ee1b1f6ce5c73bef93ce5dd47738aa28f3a8d172d4ed78ff427d36bca978df8",
+      "bytes": 14466
+    },
+    {
+      "path": "review/runtime-independent-real-control-tests-v3.log",
+      "sha256": "381fe17a0e9aba48824201f14d3e7bcb317ebd76c728257ea09627bb5edcaed6",
+      "bytes": 5470
+    },
+    {
+      "path": "review/runtime-independent-production-build.log",
+      "sha256": "b7428c6126df51a8d73b74e85819b54687180f3daa832430fcecc6ea66f3767b",
+      "bytes": 1987
+    },
+    {
+      "path": "review/runtime-independent-artifact-check.py",
+      "sha256": "62915014a41e5d3fc238780666e67c0847faeeb0d3f30facf9b1969cffa1ec2e",
+      "bytes": 4142
+    },
+    {
+      "path": "review/runtime-independent-built-artifact-report.json",
+      "sha256": "6aa997f30aa10053b7b8724c042366f09283f543785a7d2fc1158bbfa6e1d65c",
+      "bytes": 8309
+    },
+    {
+      "path": "review/runtime-independent-postbuild-source-audit.log",
+      "sha256": "d3333172be5be12945ced8f5f174dd463d337a6bf00d2718090fbab27eb65034",
+      "bytes": 1037
+    },
+    {
+      "path": "release-meta.json",
+      "sha256": "1f043dc99b2cc43dfbb982933b491a935c7730304320ec9b759e7205f110dc8d",
+      "bytes": 4471
+    },
+    {
+      "path": "articles-author.json",
+      "sha256": "341211fee4781e1159f095e99127de789173e27488a34a56b04ff609f00773e9",
+      "bytes": 35174
+    },
+    {
+      "path": "review/articles-independent-review.json",
+      "sha256": "f630aff14c6ff8c2089436cf7e8dd1368397c6bd7059b85eb3b1c0383be4ea97",
+      "bytes": 18519
     }
   ],
   "independentlyVerified": {
@@ -209,13 +289,14 @@
       "collisionAndIncompleteInventoryFailClosed": true
     },
     "artifactAndHTTP": {
-      "status": "PASS_CODE_AND_SYNTHETIC_TESTS",
+      "status": "PASS_EXACT_REAL_BUILD_AND_LOOPBACK_HTTP",
       "manifestIdentityAndFullFileInventorySha256": true,
       "exactFrozenHtmlAndSitemapRouteSet": true,
       "revisionCanonicalRobotsCtaImagesAndAssets": true,
       "real404ForUnknownAndHeld": true,
       "narrowSingleCloudflareBeaconNormalization": true,
-      "realProductionHttpNotRun": true
+      "realProductionHttpNotRun": true,
+      "realLocalArtifactVerified": true
     },
     "indexnow": {
       "status": "PASS_SCOPED_GUARD_AND_INDEPENDENT_MOCKS",
@@ -232,6 +313,23 @@
       "timeoutBlocksReplay": true,
       "journalReadAndWriteFailuresBlockBeforePost": true,
       "exactSourceChangeBlocksBeforePost": true
+    },
+    "realAssembledSourceInitial": {
+      "contentReviewPlanCoverageArticleDigests": "PASS",
+      "allCustomerFieldsMatchReviewedAuthorInput": "PASS",
+      "allEightImageBytesAndProofDigests": "PASS",
+      "regionsValidatorUnchanged": "PASS",
+      "uploadFileCount": 72
+    },
+    "realAssembledSourceFinal": {
+      "contentReviewPlanCoverageArticleDigests": "PASS",
+      "allCustomerFieldsMatchReviewedAuthorInput": "PASS",
+      "allEightImageBytesDimensionsMimeProofDigests": "PASS",
+      "regionsValidatorUnchanged": "PASS",
+      "uploadFileCount": 72,
+      "sourceInventoryUnchangedAfterBuild": true,
+      "sourceInventorySha256": "0a0b576e5fbaa3c0977e64175252b7b43d624777eec0ed7e071efaeb9b174e84",
+      "generatedBuildRevisionExcludedFromSourceInventory": true
     }
   },
   "testRuns": {
@@ -274,11 +372,54 @@
       }
     ],
     "fixtureNodeVersion": "v24.19.0",
-    "productionNode22Build": "NOT_RUN_WAITING_PARENT_AUTHORIZATION",
+    "productionNode22Build": {
+      "status": "PASS",
+      "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "credentialFreeEnvironment": true,
+      "astroCheckedFiles": 38,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 0,
+      "articleCount": 6,
+      "normalHtmlRouteCount": 8,
+      "separate404": true,
+      "sitemapUrlCount": 8,
+      "staticQa": "PASS",
+      "graphQa": "PASS",
+      "log": "review/runtime-independent-production-build.log"
+    },
     "independentIndexNowMocks": {
       "passed": 9,
       "failed": 0,
       "evidence": "review/runtime-independent-indexnow-guard-recheck.json"
+    },
+    "realSourceNode22": {
+      "nodeVersion": "v22.23.3",
+      "npmCi": "PASS_OFFLINE_283_PACKAGES",
+      "passed": 68,
+      "failed": 0,
+      "log": "review/runtime-independent-real-source-node22-tests-v3.log"
+    },
+    "realControls": {
+      "passed": 42,
+      "failed": 0,
+      "log": "review/runtime-independent-real-control-tests-v3.log"
+    },
+    "artifact": {
+      "status": "PASS",
+      "files": 25,
+      "releaseManifestSha256": "a3444795e86b752381dc2e8a62c0934e71b81a654acaf6c9260eed4e988d96c1",
+      "httpContractSha256": "b674f1875397ef85c64a209158510c0ced526fac35dbcde66e1c47dc765f2467"
+    },
+    "loopbackHttp": {
+      "status": "PASS_LOCAL_ONLY",
+      "checkedPaths": 22,
+      "htmlRoutes": 8,
+      "articleRoutes": 6,
+      "sitemapUrls": 8,
+      "unknownStatus": 404,
+      "canonicalRevisionRobotsCtaAssetDigest": "PASS",
+      "externalProductionHttpNotTested": true
     }
   },
   "findings": [
@@ -292,19 +433,36 @@
       "status": "RESOLVED_FOR_JONGNO",
       "resolution": "Author added a Jongno-only DiagnosticReviewJournal wrapper that checks exact fingerprint prior rejected HTTP 403 before writing started. Independent mocks verified no second POST; shared engine is untouched. Existing Yangpyeong diagnostic retry semantics are not judged or modified.",
       "resolvedGeneratorSha256": "46347957f840b89a82037d298c3258e1f6c87c30a3243a522af969c93d7563fa"
+    },
+    {
+      "id": "RUNTIME-EXPLICIT-DELIVERY-FEE",
+      "severity": "resolved",
+      "status": "RESOLVED_BY_AUTHOR_AND_INDEPENDENT_CONTENT_REVIEW",
+      "description": "Five of six reviewed article bodies mention generic additional costs but not delivery charges explicitly; the existing direct-source contract fails. Do not weaken the test or change review-bound source from this reviewer.",
+      "affectedSlugs": [
+        "yeongeon-dong-snuh-condolence-wreath",
+        "pyeong-dong-redcross-funeral-wreath",
+        "buam-dong-hw-convention-wreath",
+        "myeongnyun3ga-skk-convention-wreath",
+        "seorin-dong-global-center-event-wreath"
+      ],
+      "requiredResolution": "Author clarifies actual-address additional delivery charges, independent content reviewer rechecks revised exact bytes, then parent reassembles and reviewer reruns tests/build.",
+      "resolution": "Author revision 3 clarifies additional delivery charges. New independent review binds all six articles; Node 22 68/68 tests pass after reassembly.",
+      "resolvedArticlesSha256": "341211fee4781e1159f095e99127de789173e27488a34a56b04ff609f00773e9",
+      "resolvedContentReviewSha256": "f630aff14c6ff8c2089436cf7e8dd1368397c6bd7059b85eb3b1c0383be4ea97"
     }
   ],
   "notYetVerified": [
-    "Real assembled source exact bytes",
-    "Node 22 dependency install, source tests, type check and production build",
-    "Real generated artifact package and route/asset tests",
-    "Actual remote commit and branch lease",
-    "GitHub Actions and deployment",
-    "Provider live readback",
-    "Public HTTPS route/asset checks",
+    "Independent remote 72-file readback (parent delegated separately)",
+    "Main control commit and GitHub Actions for exact source",
+    "Provider live hostname/Worker readback",
+    "Public production HTTPS bytes, all routes and real 404",
     "Real IndexNow receipt",
-    "Screenshots"
+    "Screenshots deferred by user; not a PASS"
   ],
-  "nextStep": "Await reviewed real assembled source and parent authorization before sequential Node 22 tests/build. Code PASS is not content review, production build or release approval.",
-  "canAssembleAfterContentReview": true
+  "nextStep": "Parent completes independent remote readback, actual main control/Actions, authorized provider and public HTTP gates, and IndexNow receipt. This review permits proceeding to those gates but is not a live-release success claim.",
+  "canAssembleAfterContentReview": true,
+  "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+  "sourceInventorySha256": "0a0b576e5fbaa3c0977e64175252b7b43d624777eec0ed7e071efaeb9b174e84",
+  "canProceedToPublicationGates": true
 }
