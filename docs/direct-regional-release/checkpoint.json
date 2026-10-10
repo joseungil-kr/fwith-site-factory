@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T00:18:41.121Z",
+  "updatedAt": "2026-10-10T00:20:05.584Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -32,7 +32,7 @@
   "current": {
     "scopeKey": "uiwang-direct-initial-20261010",
     "city": "의왕시",
-    "status": "approved_exact_target_resume",
+    "status": "publishing_exact_source",
     "owner": {
       "scheduledRunAt": "2026-10-10T00:00:00Z",
       "observedExecutionAt": "2026-10-09T23:55:34Z",
@@ -79,20 +79,9 @@
       "membershipPath": "docs/direct-regional-release/uiwang/membership.json",
       "membershipSha256": "c731c3d631682155b0eac7a8ced94fb2f57586435f02e6851759159785488552"
     },
-    "lastSuccessfulStage": "independent_exact_remote_source_and_final_build",
-    "nextIntent": "After exact target approval, fresh-read source, ownership and run state, then retry the same official workflow action once",
-    "pendingExternalAction": {
-      "action": "workflow_dispatch",
-      "workflow": ".github/workflows/uiwang-direct-publish.yml",
-      "ref": "main",
-      "expected_revision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
-      "indexnow_only": false,
-      "hostname": "uiwang.fwith.kr",
-      "worker": "uiwang-flower-guide",
-      "idempotencyKey": "uiwang-direct-publish:559669d44ed6a4dc3d2c5a2fef760ca5f53f9412:initial",
-      "requiredServiceApproval": "honor_at_execution",
-      "state": "approved_resume"
-    },
+    "lastSuccessfulStage": "approved_workflow_dispatch_accepted",
+    "nextIntent": "Track exact run, artifact, hosted QA, durable receipt and GSC",
+    "pendingExternalAction": null,
     "controlRevision": "2bfa98811097ddf4a0e8f4cc8f3bb3195422af9b",
     "review": {
       "sourceInventorySha256": "91603cd2e3fe9ce6c3793324364c51110504c4705d40cfdeed3662a0c86fd8ad",
@@ -122,8 +111,13 @@
       "scope": "Only this hostname and reviewed source; no overrides, ownership transfer, credentials or security changes."
     },
     "dispatch": {
-      "status": "intent_to_retry_same_official_action_after_approval",
-      "runId": null
+      "status": "in_progress",
+      "runId": 38008562918,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38008562918",
+      "controlRevision": "8adceeab84caa276efdfe0890a0ce94843f2f119",
+      "createdAt": "2026-10-10T00:19:43Z",
+      "sourceRevision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
+      "attempt": 1
     },
     "publication": {
       "status": "not_executed",
