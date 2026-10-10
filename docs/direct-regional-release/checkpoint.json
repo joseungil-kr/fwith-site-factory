@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T18:37:59.878Z",
+  "updatedAt": "2026-10-10T18:42:46.296Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -51,7 +51,7 @@
       "root": "site-factory/seoul-seongdong-flower",
       "worker": "seoul-seongdong-flower-guide",
       "hostname": "seoul-seongdong.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true,
       "sourceBranchBaseRevision": "30a1fd5465a290561ba0e95cd51f81707862c650"
     },
@@ -74,12 +74,14 @@
       "publicHostObservation": "not_yet_verified"
     },
     "changeIntent": {
-      "action": "observe_run_and_verify_hosted_exact_source",
-      "target": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38076544712",
+      "action": "submit_sitemap",
+      "target": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://seoul-seongdong.fwith.kr/sitemap-index.xml",
       "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
-      "idempotencyKey": "seoul-seongdong:observe-run:38076544712"
+      "idempotencyKey": "seoul-seongdong:gsc:sitemap-index:81394c7b05b060db01d3f31d388ec15d9d781efb",
+      "priorListEntryFound": false
     },
-    "lastSuccessfulStage": "official_workflow_dispatch_readback_confirmed",
+    "lastSuccessfulStage": "exact_source_deploy_http_indexnow200_verified",
     "unfinishedStages": [
       "official_plan",
       "content",
@@ -168,11 +170,31 @@
     "run": {
       "id": 38076544712,
       "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38076544712",
-      "status": "in_progress",
+      "status": "completed",
       "dispatchCount": 1,
       "sourceRevision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
       "controlRevision": "66d02d3dc65cf18555ba788f8584372504137956",
-      "createdAt": "2026-10-10T18:37:45Z"
+      "createdAt": "2026-10-10T18:37:45Z",
+      "conclusion": "success",
+      "runAttempt": 1,
+      "completedAt": "2026-10-10T18:39:03Z"
+    },
+    "indexNow": {
+      "attempt": 1,
+      "endpoint": "https://searchadvisor.naver.com/indexnow",
+      "fingerprint": "95c30ac8bb96a13f662d00c3893681b41b535e465e6fc16764d49c2b665687e3",
+      "httpStatus": 200,
+      "origin": "https://seoul-seongdong.fwith.kr",
+      "recordedAt": "2026-10-10T18:38:56.014532+00:00",
+      "revision": "81394c7b05b060db01d3f31d388ec15d9d781efb",
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38076544712",
+      "siteKey": "seoul-seongdong-flower-direct",
+      "state": "received",
+      "urlCount": 6,
+      "urlSetSha256": "82ec9a028684112e712ecbf1ac48ba53d8ea0abaeb24874e2e742d3d94086c09",
+      "commentId": 6100887080,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6100887080",
+      "durableReadbackVerified": true
     }
   },
   "history": [
