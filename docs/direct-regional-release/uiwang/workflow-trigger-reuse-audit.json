@@ -1,0 +1,569 @@
+{
+  "status": "PASS_CURRENT_REMOTE_WORKFLOW_TRIGGER_AUDIT",
+  "mainSha": "02777593468f41c51c33d8c1b2bb82e82fc42e58",
+  "workflowCount": 29,
+  "rows": [
+    {
+      "path": "airtable-fix-test.yml",
+      "triggers": {
+        "issues": {
+          "types": [
+            "opened"
+          ]
+        }
+      }
+    },
+    {
+      "path": "airtable-publish-test.yml",
+      "triggers": {
+        "issues": {
+          "types": [
+            "opened"
+          ]
+        }
+      }
+    },
+    {
+      "path": "ansan-cloudflare-live-test.yml",
+      "triggers": {
+        "issues": {
+          "types": [
+            "opened"
+          ]
+        }
+      }
+    },
+    {
+      "path": "ansan-indexnow-production.yml",
+      "triggers": {
+        "push": {
+          "branches": [
+            "site-factory-ansan-v1"
+          ]
+        },
+        "workflow_dispatch": ""
+      }
+    },
+    {
+      "path": "ansan-live-qa.yml",
+      "triggers": {
+        "push": {
+          "branches": [
+            "site-factory-ansan-v1"
+          ]
+        },
+        "workflow_dispatch": ""
+      }
+    },
+    {
+      "path": "anyang-direct-publish.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Anyang source SHA",
+              "required": "true",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "blog-assets-publish.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character blog source SHA",
+              "required": "true",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "blog-domain-preview.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact tested 40-character blog source SHA",
+              "required": "true",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "dongducheon-direct-publish.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Dongducheon source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "goyang-canonical-noindex-deploy.yml",
+      "triggers": {
+        "workflow_dispatch": ""
+      }
+    },
+    {
+      "path": "goyang-cloudflare-token-identity.yml",
+      "triggers": {
+        "workflow_dispatch": ""
+      }
+    },
+    {
+      "path": "goyang-domain-attach.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "confirm_unused": {
+              "description": "I confirm goyang.fwith.kr is unused and authorize attaching it to the existing QA Worker without asset deployment.",
+              "required": "true",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "goyang-noindex-domain.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "apply": {
+              "description": "Reserved for separately reviewed binding implementation; leave false.",
+              "required": "true",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "goyang-robots-bic.yml",
+      "triggers": {
+        "workflow_dispatch": ""
+      }
+    },
+    {
+      "path": "goyang-staging-qa.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "mode": {
+              "description": "Fixed historical HTTP QA or GET-only preview capability observation",
+              "required": "true",
+              "default": "fixed-http",
+              "type": "choice",
+              "options": [
+                "fixed-http",
+                "preview-capabilities"
+              ]
+            },
+            "scope_key": {
+              "description": "Exact registered scope for capability observation",
+              "required": "false",
+              "type": "string"
+            },
+            "expected_revision": {
+              "description": "Exact registered reviewed source reference",
+              "required": "false",
+              "type": "string"
+            }
+          }
+        },
+        "issues": {
+          "types": [
+            "opened",
+            "reopened"
+          ]
+        }
+      }
+    },
+    {
+      "path": "gunpo-direct-publish.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Gunpo source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "guri-direct-publish.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Guri source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "gwacheon-direct-publish.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Gwacheon source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "gwangmyeong-direct-publish.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Gwangmyeong source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "namyangju-production-gate-check.yml",
+      "triggers": {
+        "push": {
+          "branches": [
+            "codex/namyangju-production-gate"
+          ]
+        },
+        "pull_request": {
+          "paths": [
+            ".github/site-factory-sites.json",
+            "site-factory/engine/**",
+            "site-factory/releases/namyangju-flower-v2-initial-20261005/**"
+          ]
+        }
+      }
+    },
+    {
+      "path": "osan-direct-publish.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Osan source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "pyeongtaek-direct-publish.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Pyeongtaek source SHA",
+              "required": "true",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "seongnam-worker-preflight.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "site_key": {
+              "description": "Exact supported region to inspect",
+              "required": "true",
+              "default": "seongnam-flower-v2",
+              "type": "choice",
+              "options": [
+                "seongnam-flower-v2",
+                "bucheon-flower-v2",
+                "namyangju-flower-v2",
+                "pyeongtaek-flower-v2",
+                "anyang-flower-v2",
+                "blog-fwith"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "siheung-direct-publish.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Siheung source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "site-factory-controller.yml",
+      "triggers": {
+        "workflow_dispatch": ""
+      }
+    },
+    {
+      "path": "site-production-deploy.yml",
+      "triggers": {
+        "workflow_call": {
+          "inputs": {
+            "site_key": {
+              "required": "true",
+              "type": "string"
+            },
+            "launch_key": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            },
+            "scope_key": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            },
+            "expected_revision": {
+              "required": "true",
+              "type": "string"
+            },
+            "source_snapshot_issue": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            }
+          },
+          "secrets": {
+            "CLOUDFLARE_API_TOKEN": {
+              "required": "true"
+            },
+            "CLOUDFLARE_ACCOUNT_ID": {
+              "required": "true"
+            }
+          }
+        },
+        "workflow_dispatch": {
+          "inputs": {
+            "site_key": {
+              "description": "Registered site key",
+              "required": "true",
+              "type": "string"
+            },
+            "launch_key": {
+              "description": "Exact registered launch for scoped coverage",
+              "required": "false",
+              "type": "string"
+            },
+            "scope_key": {
+              "description": "Exact registered scope for scoped coverage",
+              "required": "false",
+              "type": "string"
+            },
+            "expected_revision": {
+              "description": "Full independently approved target commit SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "source_snapshot_issue": {
+              "description": "Existing request issue for durable production receipts",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and submit the already public revision without deploying",
+              "required": "false",
+              "type": "boolean",
+              "default": "false"
+            }
+          }
+        },
+        "issues": {
+          "types": [
+            "opened",
+            "reopened"
+          ]
+        }
+      }
+    },
+    {
+      "path": "site-snapshot-publish-test.yml",
+      "triggers": {
+        "issues": {
+          "types": [
+            "opened",
+            "reopened"
+          ]
+        }
+      }
+    },
+    {
+      "path": "site-staging-deploy.yml",
+      "triggers": {
+        "workflow_call": {
+          "inputs": {
+            "site_key": {
+              "required": "true",
+              "type": "string"
+            },
+            "launch_key": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            },
+            "scope_key": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            },
+            "expected_revision": {
+              "required": "true",
+              "type": "string"
+            },
+            "source_snapshot_issue": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            }
+          },
+          "secrets": {
+            "CLOUDFLARE_API_TOKEN": {
+              "required": "true"
+            },
+            "CLOUDFLARE_ACCOUNT_ID": {
+              "required": "true"
+            }
+          }
+        },
+        "workflow_dispatch": {
+          "inputs": {
+            "site_key": {
+              "description": "Registered site key",
+              "required": "true",
+              "type": "string"
+            },
+            "launch_key": {
+              "description": "Exact registered launch for Goyang coverage only",
+              "required": "false",
+              "type": "string"
+            },
+            "scope_key": {
+              "description": "Exact registered scope for Goyang coverage only",
+              "required": "false",
+              "type": "string"
+            },
+            "expected_revision": {
+              "description": "Full preview source commit SHA",
+              "required": "true",
+              "type": "string"
+            }
+          }
+        },
+        "issues": {
+          "types": [
+            "opened",
+            "reopened"
+          ]
+        }
+      }
+    },
+    {
+      "path": "uijeongbu-direct-publish.yml",
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Uijeongbu source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mainPushTriggersOldFactory": false,
+  "uiwangSourcePushTriggersOldFactory": false,
+  "receiptCommentTriggersOldFactory": false
+}

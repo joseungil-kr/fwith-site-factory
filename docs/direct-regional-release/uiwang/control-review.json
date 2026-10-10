@@ -1,0 +1,30 @@
+{
+  "status": "PASS_INDEPENDENT_FIXED_CONTROL_REVIEW",
+  "checkedAt": "2026-10-10T00:05:03.048923+00:00",
+  "baselineMain": "02777593468f41c51c33d8c1b2bb82e82fc42e58",
+  "baselineSource": "1d440850fc4ca039abcaacc8a5f3a866ba9c8b12",
+  "helperTests": 34,
+  "findings": [
+    "Identity and 11 routes explicitly pinned; no registry, Airtable, Factory dispatch or paid AI",
+    "Exact source-head check, source build without provider credentials, hash-bound immutable artifact, static-only asset whitelist",
+    "GET-only collision preflight, fixed worker/hostname, three overrides false, no DNS ownership/security/credential changes",
+    "No mutation reruns, exact readback, public content digests, sitemap and unknown 404 checks before durable idempotent IndexNow receipt",
+    "IndexNow-only mode has no provider credentials or deployment step",
+    "29 existing remote workflows contain no main/source push or issue-comment trigger into Factory"
+  ],
+  "files": [
+    {
+      "path": ".github/workflows/uiwang-direct-publish.yml",
+      "sha256": "ce43454a4a559131cf2c63be0489b7afa42115ec262c680f3df2e6f0819d28c6"
+    },
+    {
+      "path": "scripts/direct-uiwang/publish.py",
+      "sha256": "a77a555d63851c60141b3cb84f1fab5e4fdb6e84f0810533c7cc4554b0221684"
+    },
+    {
+      "path": "scripts/direct-uiwang/test_publish.py",
+      "sha256": "afde23be0b3c0121d6a06fb6fdfeb5e4f4b491a523cbe34b58e5c1042a03f22a"
+    }
+  ],
+  "limitation": "Source-content, final integration, final remote readback and hosted UI review remain required."
+}
