@@ -7,10 +7,10 @@
   "actualReceivedAt": "2026-10-10T06:36:38Z",
   "actualInvocationId": null,
   "checkpointId": "blog-fwith-daily-20261010-claim",
-  "status": "public_and_visual_qa_passed_indexnow_intent",
+  "status": "published_verified_indexnow_received",
   "owner": {
     "task": "publish_daily_blog_batch",
-    "state": "active"
+    "state": "released_after_completion"
   },
   "baselineSource": "f4b4813ec3b1cbfa9fd8d05895b03ac0db420d6b",
   "controllerRevision": "cffdc7fbcdd6d0c4dc34669f0d338b37348eb782",
@@ -27,9 +27,8 @@
     "gyeongju-thek-wedding-wreath"
   ],
   "intent": {
-    "action": "create_official_IndexNow_issue_once",
-    "target": "[SITE-INDEXNOW] blog-fwith fa270d95570a605d1034b9f0571ace9cc310a16c",
-    "idempotencyKey": "blog-fwith:fa270d95570a605d1034b9f0571ace9cc310a16c"
+    "action": "none",
+    "idempotencyKey": "blog-fwith:fa270d95570a605d1034b9f0571ace9cc310a16c:received"
   },
   "dedupe": {
     "remoteTreeComplete": true,
@@ -39,7 +38,7 @@
   },
   "searchIndexing": "not_verified",
   "ranking": "not_verified",
-  "updatedAt": "2026-10-10T07:04:18.086Z",
+  "updatedAt": "2026-10-10T07:08:26.255Z",
   "review": "daily-20261010.review.json",
   "imageProvenance": "daily-20261010.images.json",
   "approvedPostCount": 5,
@@ -92,12 +91,41 @@
     "invalidCapture": "Tab fullPage screenshot at zoom produced cropped strips; excluded from QA. Native window screenshots used instead.",
     "normalZoomRestored": true,
     "independentReport": "daily-20261010.visual-review.json",
-    "parentDiscovery": "All5newpostlinks observed on narrow home; width393 scrollWidth388"
+    "parentDiscovery": "All5newpostlinks observed on narrow home; width393 scrollWidth388",
+    "independentReportSha256": "2457ad0135f4ddc8e40d62e7aefa3a6e2bd7d3fd95c35694ee80f8c41c113a84"
   },
   "indexNow": {
-    "state": "not_requested",
+    "state": "received",
     "sameSourceIssueSearch": "none",
     "registryOptInVerified": true,
-    "ownershipDirectObservation": "Cloud GET403 and browser ERR_BLOCKED_BY_CLIENT; not proof of absence. Existing finalizer must verify ownership before POST."
-  }
+    "ownershipDirectObservation": "Cloud GET403 and browser ERR_BLOCKED_BY_CLIENT; not proof of absence. Existing finalizer must verify ownership before POST.",
+    "issueNumber": 267,
+    "issueUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/267",
+    "runId": 38033170455,
+    "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38033170455",
+    "attempt": 1,
+    "endpoint": "https://searchadvisor.naver.com/indexnow",
+    "fingerprint": "cf528de216b64dd2ed1dd353f0927a7ab6027e821638f5a0938f5bb37bce5f1d",
+    "httpStatus": 200,
+    "origin": "https://blog.fwith.kr",
+    "recordedAt": "2026-10-10T07:05:49.390617+00:00",
+    "revision": "fa270d95570a605d1034b9f0571ace9cc310a16c",
+    "siteKey": "blog-fwith",
+    "urlCount": 118,
+    "urlSetSha256": "422ba86e6263549f73baf68bdf7cab2870b91c3b58e65eba9ec3589f6d7459ea",
+    "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/267#issuecomment-6094946481",
+    "ownershipVerifiedByExistingFinalizer": true,
+    "runConclusion": "success",
+    "artifact": {
+      "id": 11663337058,
+      "digest": "sha256:6bca756c10ba5c5164a3304979db8503348bfbe17a0549045f8088814f6b9f3e"
+    },
+    "independentVerificationSha256": "edad7468e7d21da77df312e52a145192516f375657aa1650d5f2d831ac55ae4a",
+    "fingerprintIndependentlyRecomputed": true,
+    "exactSitemapSetIndependentlyMatched": true
+  },
+  "completedAt": "2026-10-10T07:05:49.390617Z",
+  "durationSecondsToReceipt": 1751.390617,
+  "metadataCommit": "b4bbdb479ed5bc704c1d4f09f4fc4df10598be74",
+  "metadataOnlyDiffVerified": true
 }
