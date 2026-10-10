@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T13:35:55.856Z",
+  "updatedAt": "2026-10-10T13:40:38.368Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "gapyeong-direct-initial-20261010",
     "city": "가평군",
-    "status": "official_dispatch_running",
+    "status": "public_verified_search_finalization",
     "owner": {
       "scheduledRunAt": "2026-10-10T13:00:00Z",
       "observedExecutionAt": "2026-10-10T13:03:27.495Z",
@@ -128,21 +128,24 @@
       "heldArticleCount": 0
     },
     "lastSuccessfulStage": "official_workflow_dispatch_confirmed",
-    "nextIntent": "Observe official build, provider GET collision checks and terminal publication evidence before any retries",
+    "nextIntent": "Use existing search-only finalizer after read-only preflight; submit already public sitemap to GSC once",
     "changeIntent": {
-      "action": "workflow_dispatch",
-      "target": ".github/workflows/gapyeong-direct-publish.yml",
+      "action": "finalize_verified_release_search_only",
+      "workflow": ".github/workflows/gapyeong-direct-publish.yml",
       "ref": "main",
       "inputs": {
         "expected_revision": "2b214219e78d722d32dbbd9957a1f9b33ca771c4",
-        "indexnow_only": false
+        "indexnow_only": true
       },
-      "worker": "gapyeong-flower-guide",
-      "hostname": "gapyeong.fwith.kr",
-      "idempotencyKey": "gapyeong-direct-initial-20261010:publish:2b214219e78d722d32dbbd9957a1f9b33ca771c4"
+      "gsc": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemapUrl": "https://gapyeong.fwith.kr/sitemap-index.xml"
+      },
+      "idempotencyKey": "gapyeong-direct-initial-20261010:search-finalize:2b214219e78d722d32dbbd9957a1f9b33ca771c4",
+      "precondition": "same IndexNow GET client full preflight succeeds and no existing receipt or uncertain POST"
     },
     "publication": {
-      "state": "in_progress",
+      "state": "public_release_verified_indexnow_preflight_failed",
       "runId": 38056313315,
       "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38056313315",
       "createdAt": "2026-10-10T13:35:36Z",
@@ -150,7 +153,10 @@
       "sourceRevision": "2b214219e78d722d32dbbd9957a1f9b33ca771c4",
       "controlRevision": "f7150c50921d7e4a050a9a4bc65429266b967c34",
       "url": "https://gapyeong.fwith.kr",
-      "urlState": "target_publication_unverified"
+      "urlState": "public_exact_source_verified",
+      "runConclusion": "failure",
+      "failureStage": "indexnow_GET_before_POST",
+      "failureCode": "page_not_http200"
     },
     "review": {
       "articlesSha256": "e120d7e097c7b152c0a955ed4ddcadc77609a8fe8eff55e49629b1a3ca70f621",
@@ -205,6 +211,37 @@
     "finalCodeReview": {
       "passed": true,
       "sha256": "3d8e0d16b39ea051132b4e32df02f7e4ab73bb959d531dbfb5675d3c00e5bb1b"
+    },
+    "qa": {
+      "officialHttp": {
+        "runId": 38056313315,
+        "state": "public_release_verified",
+        "revision": "2b214219e78d722d32dbbd9957a1f9b33ca771c4",
+        "articleCount": 6,
+        "htmlRoutes": 8,
+        "sitemapUrls": 8,
+        "checkedPaths": 22,
+        "attempts": 5,
+        "unknownHttpStatus": 404,
+        "normalizedCloudflareBeacons": 9
+      },
+      "provider": {
+        "accountVerified": true,
+        "hostnameBindingExists": true,
+        "workerExists": true,
+        "hostname": "gapyeong.fwith.kr",
+        "worker": "gapyeong-flower-guide",
+        "dnsState": "not_observed"
+      },
+      "visual": "deferred_not_pass"
+    },
+    "indexNow": {
+      "state": "preflight_failed_before_submission",
+      "reason": "page_not_http200",
+      "journalIssue": 266,
+      "matchingRecords": 0,
+      "postAttempted": false,
+      "receiptConfirmed": false
     }
   },
   "history": [
@@ -3209,7 +3246,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Observe official build, provider GET collision checks and terminal publication evidence before any retries",
+  "nextAction": "Use existing search-only finalizer after read-only preflight; submit already public sitemap to GSC once",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
