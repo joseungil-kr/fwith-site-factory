@@ -1,0 +1,97 @@
+{
+  "verdict": "PREPUBLICATION_EXACT_SOURCE_RUNTIME_PASS",
+  "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+  "sourceBranch": "site-factory-seoul-yongsan-direct",
+  "branchHeadIndependentReadback": "identical",
+  "remoteFilesCompared": 72,
+  "remoteFilesPassed": 72,
+  "sourceRemoteDiff": "One commit from pinned base 07ae85ac13698dc4a0edc7faa00de21379f366fa; exactly the 72 reviewed new Yongsan files were added. No pre-existing path was modified.",
+  "sourceTests": 68,
+  "controlTests": 42,
+  "npmCi": "fresh offline lockfile install PASS",
+  "nodeVersion": "v22.23.3",
+  "productionBuild": {
+    "siteUrl": "https://seoul-yongsan.fwith.kr",
+    "siteIndexable": true,
+    "revision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+    "astroCheck": {
+      "files": 38,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 0
+    },
+    "staticQa": "PASS",
+    "graphQa": "PASS"
+  },
+  "counts": {
+    "plannedOriginal": 5,
+    "approvedOriginal": 5,
+    "deferred": 0,
+    "normalHtmlRoutes": 7,
+    "sitemapUrls": 7,
+    "htmlFilesIncluding404": 8,
+    "allArtifactFiles": 24
+  },
+  "localArtifactPublisherGate": {
+    "articleCount": 5,
+    "files": 24,
+    "htmlRoutes": 7,
+    "noindexHubs": 0,
+    "regionCount": 5,
+    "revision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+    "sitemapUrls": 7,
+    "state": "artifact_verified"
+  },
+  "loopback": {
+    "server": "Actual Astro programmatic preview, same process lifetime as HTTP client",
+    "contractPathsChecked": 21,
+    "publicArtifactFilesHashedOverHttp": 23,
+    "unknownStatus": 404,
+    "allExact": true,
+    "reservedHeadersFile": "_headers hash inspected locally; URL returns404 in preview. Actual Cloudflare headers remain pending."
+  },
+  "customerDomReview": {
+    "path": "/workspace/shared/yongsan-content-review-20261010/rendered-html-independent-review.json",
+    "sha256": "054044e1e0a178aa73881f18d4a9fb229c01c215600fc820a1036ee72c5d7cce",
+    "reviewerVerdict": "PASS",
+    "binding": "Exact same dist files; loopback HTTP was byte-identical",
+    "ogAltNote": "Rendered OG alt uses productSocialImage brand + exact product name, not the unused pageData ogImageAlt field. Independently reviewed as correct."
+  },
+  "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+  "liveReleaseVerified": false,
+  "pending": [
+    "Exact main control revision and unchanged shared helper readback",
+    "Exact successful Actions run and build/result artifacts",
+    "Provider account/hostname/Worker GET binding readback",
+    "Live HTTPS revision/content/assets/SEO/sitemap/404 hashes and Cloudflare response headers",
+    "IndexNow receipt and fingerprint outcome"
+  ],
+  "blockingFindings": [],
+  "evidenceFiles": {
+    "actual-source-remote-readback.json": "bbba693724b2a0115b0c74e44e1024f91871979f8917633441e9ad1558dab28a",
+    "actual-branch-head-readback.json": "5a8a8fa0922ea25bee86ee836b7b8a318fe6367dd165d17d5ef98eb65ee7445a",
+    "actual-source-contract-review.json": "5f1e263bb2db1f6ec360912f42c7c8c27b6b3172087c606186604644caf2aaf1",
+    "actual-source-tests.log": "31a0593f761bab1b5c1a8a4acac5d528c7c3eccbc537b47388d2803b494ea653",
+    "actual-control-tests.log": "9cd2b29944a9ef654a88e8a2792080e00d9db023b8877af350ac37fb1f5903ab",
+    "actual-npm-ci.log": "5f6a17560eb55f2a89bc5a9f0ddcefe3a09c373b66221d8720cd6ee069923b86",
+    "actual-production-build.log": "600636a070c3ecab2d088a62416f8a2e4a35726e6290de78b6c913ad76de99c1",
+    "actual-loopback-http-review.json": "ae379c7dfed8bcaad8d292b6ffbe21dd6b93a170f564a78acd1edda6733cbbc6",
+    "local-artifact-review/artifact-check.json": "93e06108925e7aa7b4b39e55cf4d0ae4fe1b4e8613a0d566799ae0c347190e18",
+    "local-artifact-review/http-contract.json": "a255916f3614c01760b95c29e019c3da43d488edbd1806a974be525f829fff03",
+    "local-artifact-review/package-check.json": "b01538ea350a6718c9de54827f57a4e63e524e26f7d8ef13a9f27d9cf996a061"
+  },
+  "schemaVersion": 1,
+  "reviewKind": "independent_exact_source_runtime_prepublication",
+  "reviewedAt": "2026-10-10T17:31:58Z",
+  "reviewStatus": "INDEPENDENT_RUNTIME_REVIEW_PASS",
+  "sourceFilesStillExactAfterBuild": 72,
+  "customerDomReviewFilesExact": 5,
+  "packageCheck": {
+    "files": 24,
+    "releaseSha256": "fe81a05edfaeb417b2e1a82e9944989c17e805a2283beed3c7e43569e994226b",
+    "revision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+    "state": "packaged"
+  },
+  "sourceUploadManifestSha256": "f0fcf92818b9988275d8a1044a673c865df0ff1e80eb24a0f2c86d1ff25b53a7",
+  "mainControlPosting": "PENDING. The three source-approved workflow/publisher/test files must retain exact source blobs. Shared helpers must remain at approved fixed blobs; final main revision and remote diff readback remain separate gates."
+}

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T17:24:01.269019+00:00",
+  "updatedAt": "2026-10-10T17:32:30.813011+00:00",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-yongsan-direct-initial-20261010",
     "city": "서울특별시 용산구",
-    "status": "independently_reviewed_source_save_pending",
+    "status": "exact_source_verified_preparing_formal_dispatch",
     "owner": {
       "scheduledRunAt": "2026-10-10T17:00:00Z",
       "observedExecutionAt": "2026-10-10T17:01:55.856Z",
@@ -74,14 +74,14 @@
       "publicHostObservation": "Web could not access hostname; unknown, not proof of absence"
     },
     "changeIntent": {
-      "action": "save_reviewed_source_files_nonforce_and_full_readback",
-      "target": "refs/heads/site-factory-seoul-yongsan-direct",
-      "expectedHead": "07ae85ac13698dc4a0edc7faa00de21379f366fa",
-      "sourceFiles": 72,
-      "sourceManifestSha256": "f0fcf92818b9988275d8a1044a673c865df0ff1e80eb24a0f2c86d1ff25b53a7",
-      "idempotencyKey": "seoul-yongsan:reviewed-source:f0fcf92818b9988275d8a1044a673c865df0ff1e80eb24a0f2c86d1ff25b53a7"
+      "action": "publish_fixed_direct_workflow_then_dispatch_exact_source_once",
+      "target": ".github/workflows/seoul-yongsan-direct-publish.yml",
+      "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+      "idempotencyKey": "seoul-yongsan:workflow-dispatch:30a1fd5465a290561ba0e95cd51f81707862c650",
+      "dispatchCount": 0,
+      "providerPreflightRequired": "GET account worker hostname and no-override ownership collision checks before mutations"
     },
-    "lastSuccessfulStage": "independent_content_review_and_local_assembly_tests",
+    "lastSuccessfulStage": "exact_source_remote_readback_independent_node22_build_static_graph_and_loopback_http",
     "review": {
       "screenQa": "DEFERRED_NOT_PASS",
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
@@ -91,7 +91,8 @@
       "articlesSha256": "b82f82957c175132acb580475e1dbac202da9ca1ed1ae0c12d761fac6e5855b4",
       "independentReviewSha256": "300b1ddab7c2f9e6ae8cbc90437ccd7a02f544b7706f48ea0b5444683ab9e2b0",
       "contentStatus": "PASS",
-      "runtimeStatus": "SOURCE_TESTS68_PUBLISHER42_PASS_BUILD_AT_EXACT_SHA_PENDING"
+      "runtimeStatus": "PASS_LOCAL_BUILD_AT_EXACT_SOURCE_REVISION",
+      "runtimeReviewSha256": "b6e4d956f6e96c8c82e7dd117d25ee9bf38da1da2789b3477ea4517eb43e9dae"
     },
     "unfinishedStages": [
       "plan_freeze",
@@ -152,6 +153,25 @@
       "planFreezeRevision": "2f8058fdf0a226fbae49db511902358b9e94f403",
       "approvedArticleCount": 5,
       "deferredArticleCount": 0
+    },
+    "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+    "validation": {
+      "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+      "nodeVersion": "22.23.3",
+      "sourceTestsPassed": 68,
+      "publisherTestsPassed": 42,
+      "build": "PASS",
+      "static": "PASS",
+      "graph": "PASS",
+      "artifactFiles": 24,
+      "normalHtmlRoutes": 7,
+      "articleCount": 5,
+      "sitemapUrls": 7,
+      "loopbackHttpCheckedPaths": 21,
+      "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+      "remoteReadbackSha256": "c6117c409e6dc418d27d6bed629e640cda3605196c6974ed19fc0de0be5dedd9",
+      "publicProductionHttp": "NOT_YET_RUN",
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS"
     }
   },
   "history": [
