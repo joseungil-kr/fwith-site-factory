@@ -7,7 +7,7 @@
   "actualReceivedAt": "2026-10-10T06:36:38Z",
   "actualInvocationId": null,
   "checkpointId": "blog-fwith-daily-20261010-claim",
-  "status": "published_http_verified_visual_review_running",
+  "status": "public_and_visual_qa_passed_indexnow_intent",
   "owner": {
     "task": "publish_daily_blog_batch",
     "state": "active"
@@ -27,7 +27,8 @@
     "gyeongju-thek-wedding-wreath"
   ],
   "intent": {
-    "action": "finish_independent_visual_review_then_submit_IndexNow_once",
+    "action": "create_official_IndexNow_issue_once",
+    "target": "[SITE-INDEXNOW] blog-fwith fa270d95570a605d1034b9f0571ace9cc310a16c",
     "idempotencyKey": "blog-fwith:fa270d95570a605d1034b9f0571ace9cc310a16c"
   },
   "dedupe": {
@@ -38,7 +39,7 @@
   },
   "searchIndexing": "not_verified",
   "ranking": "not_verified",
-  "updatedAt": "2026-10-10T07:01:03.398Z",
+  "updatedAt": "2026-10-10T07:04:18.086Z",
   "review": "daily-20261010.review.json",
   "imageProvenance": "daily-20261010.images.json",
   "approvedPostCount": 5,
@@ -86,9 +87,17 @@
       "height": 252,
       "dpr": 3,
       "method": "native Chrome normal UI zoom 300%; not device emulation",
-      "state": "independent_review_running"
+      "state": "PASS"
     },
     "invalidCapture": "Tab fullPage screenshot at zoom produced cropped strips; excluded from QA. Native window screenshots used instead.",
-    "normalZoomRestored": true
+    "normalZoomRestored": true,
+    "independentReport": "daily-20261010.visual-review.json",
+    "parentDiscovery": "All5newpostlinks observed on narrow home; width393 scrollWidth388"
+  },
+  "indexNow": {
+    "state": "not_requested",
+    "sameSourceIssueSearch": "none",
+    "registryOptInVerified": true,
+    "ownershipDirectObservation": "Cloud GET403 and browser ERR_BLOCKED_BY_CLIENT; not proof of absence. Existing finalizer must verify ownership before POST."
   }
 }
