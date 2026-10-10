@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T08:06:38.845Z",
+  "updatedAt": "2026-10-10T08:12:45.398Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -67,14 +67,22 @@
       "providerOwnershipCollisionCheck": "pending_required_before_deploy"
     },
     "plan": {
-      "state": "research_not_frozen"
+      "state": "membership_frozen_query_research",
+      "plannedArticleCount": 26,
+      "minimumPassedArticles": 24,
+      "passedArticleCount": 0,
+      "administrativeUnits": 16,
+      "crosswalkRelationships": 27,
+      "partialRelationships": 2,
+      "membershipPath": "docs/direct-regional-release/gwangju/membership.json",
+      "membershipSha256": "39a5542ec28fbd94242df6ead92bc8b3d538145d4c5771534ea9c22083593c6c"
     },
-    "lastSuccessfulStage": "fresh_remote_ownership_and_trigger_readback",
+    "lastSuccessfulStage": "official_membership_researched_and_fixed",
     "nextIntent": "Research official membership and freeze unique purchase content plan before writing",
     "pendingExternalAction": {
-      "action": "claim_region_checkpoint",
-      "target": "main:docs/direct-regional-release/checkpoint.json",
-      "idempotencyKey": "gwangju-direct-initial-20261010:claim:0800"
+      "action": "save_membership_and_prepare_query_plan",
+      "target": "docs/direct-regional-release/gwangju",
+      "idempotencyKey": "gwangju-direct-initial-20261010:membership-v1"
     }
   },
   "history": [
