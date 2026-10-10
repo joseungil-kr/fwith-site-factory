@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T18:16:54.107Z",
+  "updatedAt": "2026-10-10T18:26:07.984Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-seongdong-direct-initial-20261010",
     "city": "서울특별시 성동구",
-    "status": "plan_frozen_independent_review_pass",
+    "status": "content_review_pass_source_save_pending",
     "owner": {
       "scheduledRunAt": "2026-10-10T18:00:00Z",
       "observedExecutionAt": "2026-10-10T18:04:31.491Z",
@@ -51,7 +51,9 @@
       "root": "site-factory/seoul-seongdong-flower",
       "worker": "seoul-seongdong-flower-guide",
       "hostname": "seoul-seongdong.fwith.kr",
-      "externalCreationVerified": false
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": true,
+      "sourceBranchBaseRevision": "30a1fd5465a290561ba0e95cd51f81707862c650"
     },
     "selection": {
       "officialCode": "11200",
@@ -72,12 +74,12 @@
       "publicHostObservation": "not_yet_verified"
     },
     "changeIntent": {
-      "action": "create_source_branch_and_author_frozen_plan",
-      "target": "site-factory-seoul-seongdong-direct",
-      "baseRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
-      "idempotencyKey": "seoul-seongdong:source-branch:20261010T180000Z"
+      "action": "save_reviewed_source_and_minimal_fixed_region_controls",
+      "target": "site-factory-seoul-seongdong-direct:site-factory/seoul-seongdong-flower",
+      "reviewedArticlesSha256": "4164aea80c7d19787210c150af7415c5d0eec75d768e09c57ce973a87287e603",
+      "idempotencyKey": "seoul-seongdong:reviewed-source:4164aea80c7d19787210c150af7415c5d0eec75d768e09c57ce973a87287e603"
     },
-    "lastSuccessfulStage": "official_plan_independent_review_pass",
+    "lastSuccessfulStage": "independent_content_original_images_catalog_review_pass",
     "unfinishedStages": [
       "official_plan",
       "content",
@@ -107,32 +109,39 @@
           "slug": "sageun-dong-hanyang-hospital-condolence-wreath",
           "title": "한양대학교병원 장례식장 근조화환 주문",
           "primaryKeyword": "한양대학교병원 장례식장 근조화환 주문",
-          "status": "planned"
+          "status": "independent_content_pass_source_save_pending"
         },
         {
           "slug": "seongsu1-ga-bottega-maggio-wedding-wreath",
           "title": "보테가마지오 결혼식 축하화환 주문",
           "primaryKeyword": "보테가마지오 결혼식 축하화환 주문",
-          "status": "planned"
+          "status": "independent_content_pass_source_save_pending"
         },
         {
           "slug": "seongsu2-ga-sfactory-popup-opening-wreath",
           "title": "성수 에스팩토리 팝업 개막 축하화환 주문",
           "primaryKeyword": "성수 에스팩토리 팝업 개막 축하화환 주문",
-          "status": "planned"
+          "status": "independent_content_pass_source_save_pending"
         },
         {
           "slug": "majang-dong-market-opening-wreath",
           "title": "마장축산물시장 거래처 개업화환 주문",
           "primaryKeyword": "마장축산물시장 거래처 개업화환 주문",
-          "status": "planned"
+          "status": "independent_content_pass_source_save_pending"
         }
-      ]
+      ],
+      "planFreezeRevision": "a57ced22966161e8b1f9485121a555346b39ead1",
+      "approvedArticleCount": 4,
+      "deferredArticleCount": 0
     },
     "review": {
       "screenQa": "DEFERRED_NOT_PASS",
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
-      "planReviewSha256": "dcdbbcbdf259ec84f05773bd74d786645f9fe4237590d11f2419e3a1f0c748d8"
+      "planReviewSha256": "dcdbbcbdf259ec84f05773bd74d786645f9fe4237590d11f2419e3a1f0c748d8",
+      "contentStatus": "PASS",
+      "articlesSha256": "4164aea80c7d19787210c150af7415c5d0eec75d768e09c57ce973a87287e603",
+      "independentReviewSha256": "13f9755aeb24b4f64a199aa7b7d8d4a1ea1c121f6faf81c95c4c7d87463efd1f",
+      "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS"
     }
   },
   "history": [
