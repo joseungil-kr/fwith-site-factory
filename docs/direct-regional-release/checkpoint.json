@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T13:53:21.337Z",
+  "updatedAt": "2026-10-10T13:55:03.917Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -183,7 +183,7 @@
       "heldArticleCount": 1,
       "passedRatio": 0.9
     },
-    "lastSuccessfulStage": "reviewed_exact_source_saved_and_remote_readback",
+    "lastSuccessfulStage": "official_dispatch_accepted",
     "nextIntent": "Resume the exact Yeoncheon workflow dispatch only after region-specific approval is verified",
     "changeIntent": {
       "action": "publish_fixed_direct_controls_then_exact_dispatch",
@@ -192,17 +192,12 @@
     },
     "idempotencyKey": "yeoncheon-direct-initial-20261010:claim",
     "publication": {
-      "state": "not_dispatched",
-      "runId": null,
-      "url": "https://yeoncheon.fwith.kr",
-      "urlState": "target_not_verified_public",
-      "postAttemptReadback": {
-        "checkedAt": "2026-10-10T12:51:42.572Z",
-        "total": 73,
-        "latest": 38050787605,
-        "matching": [],
-        "workflowUiRunCount": 0
-      }
+      "state": "workflow_in_progress",
+      "runId": 38057529483,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38057529483",
+      "sourceRevision": "f02912710d4e127241ae6e72269966d0a906b1b0",
+      "controlRevision": "e81c40e2968ee826a0ac57aaaf2a344363bb9f72",
+      "dispatchedAt": "2026-10-10T13:54:28Z"
     },
     "review": {
       "content": "PASS_EXACT_9_ARTICLES",
@@ -219,7 +214,7 @@
       "action": "workflow_dispatch",
       "target": ".github/workflows/yeoncheon-direct-publish.yml",
       "expectedRevision": "f02912710d4e127241ae6e72269966d0a906b1b0",
-      "state": "approved_retry_pending",
+      "state": "dispatched_run_verified",
       "fixedWorker": "yeoncheon-flower-guide",
       "fixedHostname": "yeoncheon.fwith.kr"
     },
