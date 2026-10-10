@@ -1,0 +1,1154 @@
+{
+  "status": "PASS_FRESH_MAIN_WORKFLOW_TRIGGER_AUDIT",
+  "checkedAt": "2026-10-10T07:10:27.616987+00:00",
+  "repository": "joseungil-kr/fwith-site-factory",
+  "revision": "08571361567796d95c28f4e40e2b054778fd2d4c",
+  "workflowCount": 34,
+  "allBlobsExact": true,
+  "scope": "Static trigger inspection at the pinned main tree; not a deployment or execution claim.",
+  "testedActions": [
+    "ordinary push to main",
+    "ordinary push to site-factory-gimpo-direct",
+    "comment on existing receipt issue 266",
+    "workflow completion notification"
+  ],
+  "result": "No audited workflow is triggered by these ordinary pushes, issue comments, or workflow-completion events.",
+  "controller": "workflow_dispatch only; no schedule, push, issue_comment, or completion trigger",
+  "blog": "blog-assets-publish and blog-domain-preview remain workflow_dispatch only",
+  "otherPushBranches": [
+    "codex/namyangju-production-gate",
+    "site-factory-ansan-v1"
+  ],
+  "issueEvents": "Existing issue-open/reopen workflows remain; do not open or reopen old Factory command issues. An ordinary comment does not match issues opened/reopened.",
+  "caveats": [
+    "A later main revision requires a fresh workflow-tree/hash audit before relying on this result.",
+    "The audit covers repository workflow YAML, not independent organization-level webhooks or external services."
+  ],
+  "forbiddenMatches": [],
+  "eventIndex": {
+    "issues": [
+      ".github/workflows/airtable-fix-test.yml",
+      ".github/workflows/airtable-publish-test.yml",
+      ".github/workflows/ansan-cloudflare-live-test.yml",
+      ".github/workflows/goyang-staging-qa.yml",
+      ".github/workflows/site-production-deploy.yml",
+      ".github/workflows/site-snapshot-publish-test.yml",
+      ".github/workflows/site-staging-deploy.yml"
+    ],
+    "push": [
+      ".github/workflows/ansan-indexnow-production.yml",
+      ".github/workflows/ansan-live-qa.yml",
+      ".github/workflows/namyangju-production-gate-check.yml"
+    ],
+    "workflow_dispatch": [
+      ".github/workflows/ansan-indexnow-production.yml",
+      ".github/workflows/ansan-live-qa.yml",
+      ".github/workflows/anseong-direct-publish.yml",
+      ".github/workflows/anyang-direct-publish.yml",
+      ".github/workflows/blog-assets-publish.yml",
+      ".github/workflows/blog-domain-preview.yml",
+      ".github/workflows/dongducheon-direct-publish.yml",
+      ".github/workflows/goyang-canonical-noindex-deploy.yml",
+      ".github/workflows/goyang-cloudflare-token-identity.yml",
+      ".github/workflows/goyang-domain-attach.yml",
+      ".github/workflows/goyang-noindex-domain.yml",
+      ".github/workflows/goyang-robots-bic.yml",
+      ".github/workflows/goyang-staging-qa.yml",
+      ".github/workflows/gunpo-direct-publish.yml",
+      ".github/workflows/guri-direct-publish.yml",
+      ".github/workflows/gwacheon-direct-publish.yml",
+      ".github/workflows/gwangmyeong-direct-publish.yml",
+      ".github/workflows/hanam-direct-publish.yml",
+      ".github/workflows/icheon-direct-publish.yml",
+      ".github/workflows/osan-direct-publish.yml",
+      ".github/workflows/paju-direct-publish.yml",
+      ".github/workflows/pyeongtaek-direct-publish.yml",
+      ".github/workflows/seongnam-worker-preflight.yml",
+      ".github/workflows/siheung-direct-publish.yml",
+      ".github/workflows/site-factory-controller.yml",
+      ".github/workflows/site-production-deploy.yml",
+      ".github/workflows/site-staging-deploy.yml",
+      ".github/workflows/uijeongbu-direct-publish.yml",
+      ".github/workflows/uiwang-direct-publish.yml"
+    ],
+    "pull_request": [
+      ".github/workflows/namyangju-production-gate-check.yml"
+    ],
+    "workflow_call": [
+      ".github/workflows/site-production-deploy.yml",
+      ".github/workflows/site-staging-deploy.yml"
+    ]
+  },
+  "workflows": [
+    {
+      "path": ".github/workflows/airtable-fix-test.yml",
+      "gitBlobSha": "bc666020387bbeb13ba73534d7928ccf495a6e74",
+      "sha256": "adecc93974acd33894d869889d60af55716643cb5a7e38e5bb7261c0fbd37eec",
+      "bytes": 4545,
+      "name": "Airtable Fix Test",
+      "events": {
+        "issues": {
+          "types": [
+            "opened"
+          ]
+        }
+      },
+      "triggerText": "on:\n  issues:\n    types: [opened]\n",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "repair": "startsWith(github.event.issue.title, '[AIRTABLE-FIX]')"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/airtable-publish-test.yml",
+      "gitBlobSha": "27c3edbf22893409c01439d5a30ba6fcfd26a3c0",
+      "sha256": "c6c5fb637d2e4b8c2051006b51342a93ba5669ca795b5df7a69fa0377a0f72df",
+      "bytes": 3233,
+      "name": "Airtable Publish Test",
+      "events": {
+        "issues": {
+          "types": [
+            "opened"
+          ]
+        }
+      },
+      "triggerText": "on:\n  issues:\n    types: [opened]\n",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "publish": "startsWith(github.event.issue.title, '[AIRTABLE-PUBLISH]')"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/ansan-cloudflare-live-test.yml",
+      "gitBlobSha": "9c047cd37130d1f1e56e278ccf9db983d834a543",
+      "sha256": "6ff6a5956cbc2320e53e918fd1fd47db2b252fafdc3bd91d8b7c44ca17217339",
+      "bytes": 3360,
+      "name": "Ansan Cloudflare Live Test",
+      "events": {
+        "issues": {
+          "types": [
+            "opened"
+          ]
+        }
+      },
+      "triggerText": "on:\n  issues:\n    types: [opened]\n",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "deploy": "startsWith(github.event.issue.title, '[SITE-DEPLOY-TEST]')"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/ansan-indexnow-production.yml",
+      "gitBlobSha": "f0091a7283943203aef354da4dbc130ffb858ab3",
+      "sha256": "7d43b778ea1b4775f38139c3baeb82c7c2f44e18050093f23b5e634a1a86ec94",
+      "bytes": 2409,
+      "name": "Ansan Production IndexNow",
+      "events": {
+        "push": {
+          "branches": [
+            "site-factory-ansan-v1"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "triggerText": "on:\n  push:\n    branches:\n      - site-factory-ansan-v1\n  workflow_dispatch:\n",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "indexnow": null
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/ansan-live-qa.yml",
+      "gitBlobSha": "2699177a9bd018e9dc2a01104ca1a4e7059d8c51",
+      "sha256": "e667d06c60915eb58a4c80ab22bb63fe3481281bbcd0a7c8ab74d2f048f26ee6",
+      "bytes": 6701,
+      "name": "Ansan Live QA",
+      "events": {
+        "push": {
+          "branches": [
+            "site-factory-ansan-v1"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "triggerText": "on:\n  push:\n    branches:\n      - site-factory-ansan-v1\n  workflow_dispatch:\n",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "live-qa": null
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/anseong-direct-publish.yml",
+      "gitBlobSha": "6ec2b5683f8f986c3677a523916fb351bb6449de",
+      "sha256": "3aa334511afb7314f7efd97483ba90f60170a46fb45faa6871ea4a2671bb7b57",
+      "bytes": 11265,
+      "name": "Anseong Direct GitHub Static Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Anseong source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Anseong source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/anyang-direct-publish.yml",
+      "gitBlobSha": "903bd61a48a9e71d2632ed9d52eaa9d0cd38966e",
+      "sha256": "216578bef80343c72e9db0f73a80ccf741c4df428e98034493b381c3a2d63ca3",
+      "bytes": 8357,
+      "name": "Anyang Direct GitHub Static Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Anyang source SHA",
+              "required": "true",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Anyang source SHA\n        required: true\n        type: string",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": null
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/blog-assets-publish.yml",
+      "gitBlobSha": "8244fcfe3f993ef0feaae3aa7a70f16bdd66f1f0",
+      "sha256": "9b7852b4336b892864b5e7710c3a5731805ed26ab829093895b57d7ad681daba",
+      "bytes": 25239,
+      "name": "Blog Manual Static Assets Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character blog source SHA",
+              "required": "true",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character blog source SHA\n        required: true\n        type: string",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": null
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/blog-domain-preview.yml",
+      "gitBlobSha": "93947e767b58d20c26dbffdd751204228362defc",
+      "sha256": "be4adc71d118cfbcb3a14b52031a0df7969d46c657b7f8b46627694742512d21",
+      "bytes": 9269,
+      "name": "Blog Custom Domain Noindex Preview",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact tested 40-character blog source SHA",
+              "required": "true",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact tested 40-character blog source SHA\n        required: true\n        type: string",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "initial-domain": null
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/dongducheon-direct-publish.yml",
+      "gitBlobSha": "70c3d242d2347ee6d036b3fa14902c32e5928663",
+      "sha256": "13684a5bf1102a6c34685a69c4df2abd47ca255a5004b28334f7aadbe5b215ae",
+      "bytes": 11373,
+      "name": "Dongducheon Direct GitHub Static Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Dongducheon source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Dongducheon source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/goyang-canonical-noindex-deploy.yml",
+      "gitBlobSha": "999b0b85e3b3f2c31177d5306221b00ac2770dd3",
+      "sha256": "9c0cf9fa283ea1197d8c27aae4bd523aa9e2c207f796d93100040b9fc61ad76d",
+      "bytes": 5097,
+      "name": "Goyang Fixed Canonical Noindex Redeploy",
+      "events": {
+        "workflow_dispatch": ""
+      },
+      "triggerText": "on:\n  workflow_dispatch:",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "canonical-noindex": null
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/goyang-cloudflare-token-identity.yml",
+      "gitBlobSha": "95b2978d53b5bb79d13bef4ab0e148234ba6ccd1",
+      "sha256": "401b4c35d2240acc99b31e92689b2f739baa2f7424b583860aa0a5d6d395893c",
+      "bytes": 2371,
+      "name": "Goyang Existing Cloudflare Token Identity",
+      "events": {
+        "workflow_dispatch": ""
+      },
+      "triggerText": "on:\n  workflow_dispatch:",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "token-identity": "github.ref == 'refs/heads/main'"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/goyang-domain-attach.yml",
+      "gitBlobSha": "61da04aab04d5527d82723bd90bb7f2c542bb3f8",
+      "sha256": "bdc52cdd199ddc840d7771755ea789eecc2128ae9c26de181b142accb378f76f",
+      "bytes": 2020,
+      "name": "Goyang Existing Worker Domain Attach",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "confirm_unused": {
+              "description": "I confirm goyang.fwith.kr is unused and authorize attaching it to the existing QA Worker without asset deployment.",
+              "required": "true",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      confirm_unused:\n        description: I confirm goyang.fwith.kr is unused and authorize attaching it to the existing QA Worker without asset deployment.\n        required: true\n        default: false\n        type: boolean",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "attach": null
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/goyang-noindex-domain.yml",
+      "gitBlobSha": "bb1ed135a6b78661a9b8bbab6a2fab72efc93527",
+      "sha256": "62375c6a425e9aa3bdefd87dfed375867e05aac0813f152bcc7cdf314edf3cfc",
+      "bytes": 2300,
+      "name": "Goyang Noindex Domain Inspection",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "apply": {
+              "description": "Reserved for separately reviewed binding implementation; leave false.",
+              "required": "true",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      apply:\n        description: Reserved for separately reviewed binding implementation; leave false.\n        required: true\n        default: false\n        type: boolean",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "inspect": "inputs.apply == false",
+        "apply-not-implemented": "inputs.apply == true"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/goyang-robots-bic.yml",
+      "gitBlobSha": "201ae6105b42cbbd54aad65cd80806ba27f9ffcd",
+      "sha256": "182690217e75b56834cedd6e624b99b41090459809dd6a5c9aca6620232c30de",
+      "bytes": 1234,
+      "name": "Goyang Robots Only BIC Exception",
+      "events": {
+        "workflow_dispatch": ""
+      },
+      "triggerText": "on:\n  workflow_dispatch:",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "robots-bic": null
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/goyang-staging-qa.yml",
+      "gitBlobSha": "0c64cdcc9b8cc8516d6b84d9e3c4c7d2937e34c9",
+      "sha256": "8803f02e5ba57ddb4fd83c1138004a8e12b7765a929bd02e11ec5e19924f2e47",
+      "bytes": 6013,
+      "name": "Goyang Staging HTTP QA",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "mode": {
+              "description": "Fixed historical HTTP QA or GET-only preview capability observation",
+              "required": "true",
+              "default": "fixed-http",
+              "type": "choice",
+              "options": [
+                "fixed-http",
+                "preview-capabilities"
+              ]
+            },
+            "scope_key": {
+              "description": "Exact registered scope for capability observation",
+              "required": "false",
+              "type": "string"
+            },
+            "expected_revision": {
+              "description": "Exact registered reviewed source reference",
+              "required": "false",
+              "type": "string"
+            }
+          }
+        },
+        "issues": {
+          "types": [
+            "opened",
+            "reopened"
+          ]
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      mode:\n        description: Fixed historical HTTP QA or GET-only preview capability observation\n        required: true\n        default: fixed-http\n        type: choice\n        options: [fixed-http, preview-capabilities]\n      scope_key: {description: Exact registered scope for capability observation, required: false, type: string}\n      expected_revision: {description: Exact registered reviewed source reference, required: false, type: string}\n  issues:\n    types: [opened, reopened]\n",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "goyang-staging-qa": "github.event_name == 'workflow_dispatch' && inputs.mode != 'preview-capabilities'",
+        "preview-capabilities": "github.ref == 'refs/heads/main' && (inputs.mode == 'preview-capabilities' || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[GOYANG-PREVIEW-INSPECT]')))"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/gunpo-direct-publish.yml",
+      "gitBlobSha": "b66f245af45c86ec0319a34681deef681c080487",
+      "sha256": "5fc584f4a7f7ae4c715b0bbfacdf4b756135675a4929b96ea103349a9e2fa307",
+      "bytes": 11209,
+      "name": "Gunpo Direct GitHub Static Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Gunpo source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Gunpo source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/guri-direct-publish.yml",
+      "gitBlobSha": "e4fc9aba232049ccba8d2ea77e8a0a5b119bcd36",
+      "sha256": "6c2ba06fe61c805af9e404e64c7fb12d7211acf0e1a581915417d9fea0de8a3e",
+      "bytes": 11181,
+      "name": "Guri Direct GitHub Static Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Guri source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Guri source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/gwacheon-direct-publish.yml",
+      "gitBlobSha": "63c2e8663bf5460ff25fafe2634d8e8379aadb30",
+      "sha256": "dae02e9db15f109b0fe28e55eff354e3c71f675c9cab5d0ba2cb7edd940bb699",
+      "bytes": 11292,
+      "name": "Gwacheon Direct GitHub Static Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Gwacheon source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Gwacheon source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/gwangmyeong-direct-publish.yml",
+      "gitBlobSha": "88f965a2a6ad90124b9c2c062e190adb52e59642",
+      "sha256": "af94cd058611a6600dd1e7192687943599689a3285d212126203dc793885ba28",
+      "bytes": 11370,
+      "name": "Gwangmyeong Direct GitHub Static Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Gwangmyeong source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Gwangmyeong source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/hanam-direct-publish.yml",
+      "gitBlobSha": "1c21a640d6fadf9231e00ca9833d33d10741cae6",
+      "sha256": "50b27b1f3b3bb0dc94178fcfe50fcee9ca6561f8f48565fd8ac3f23d7df39bf9",
+      "bytes": 11211,
+      "name": "Hanam Direct GitHub Static Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Hanam source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Hanam source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/icheon-direct-publish.yml",
+      "gitBlobSha": "3c5e0d4a6de654cdbd4bbcc1078efdb463604363",
+      "sha256": "018e88db2c06fa337990f7e80b5796b74a180cff7d4a62da81a6aa85864b7b6b",
+      "bytes": 11238,
+      "name": "Icheon Direct GitHub Static Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Icheon source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Icheon source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/namyangju-production-gate-check.yml",
+      "gitBlobSha": "eb23ab627751bea0e3aed48441f29fa0ed4aec11",
+      "sha256": "3677bb725ab2d7ff2dec4c91d5761d8da9d05ae717b7daf58af6483e527bbffb",
+      "bytes": 1770,
+      "name": "Namyangju historical exact20 initial-release regression",
+      "events": {
+        "push": {
+          "branches": [
+            "codex/namyangju-production-gate"
+          ]
+        },
+        "pull_request": {
+          "paths": [
+            ".github/site-factory-sites.json",
+            "site-factory/engine/**",
+            "site-factory/releases/namyangju-flower-v2-initial-20261005/**"
+          ]
+        }
+      },
+      "triggerText": "on:\n  push:\n    branches: [codex/namyangju-production-gate]\n  pull_request:\n    paths:\n      - .github/site-factory-sites.json\n      - site-factory/engine/**\n      - site-factory/releases/namyangju-flower-v2-initial-20261005/**",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "verify": null
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/osan-direct-publish.yml",
+      "gitBlobSha": "f203e18aad7b1934eb9e2976be9cbe588a1429b1",
+      "sha256": "060681b7a74c8be41511599d6e340d3256fee5104403617c929708a0ac24e414",
+      "bytes": 11184,
+      "name": "Osan Direct GitHub Static Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Osan source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Osan source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/paju-direct-publish.yml",
+      "gitBlobSha": "ad73eea8c0507a6fe45346a1b401d22849e7f4e0",
+      "sha256": "e4619de7ce9eac5d3afcfcda1298677fd774e015c31240693037da46121a5ea5",
+      "bytes": 11184,
+      "name": "Paju Direct GitHub Static Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Paju source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Paju source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/pyeongtaek-direct-publish.yml",
+      "gitBlobSha": "25987e47dc57fe328318d90a8ac339ac7bdaaac8",
+      "sha256": "3f5c89350550044074d47daea7da115bdbd0a767116c765556e82d81411319c1",
+      "bytes": 8410,
+      "name": "Pyeongtaek Direct GitHub Static Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Pyeongtaek source SHA",
+              "required": "true",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Pyeongtaek source SHA\n        required: true\n        type: string",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": null
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/seongnam-worker-preflight.yml",
+      "gitBlobSha": "8d28aac4d6d38de8f5ca1f036f9d6cb97265a601",
+      "sha256": "e6d0416d908860619369b4e79443cc9f588db1b38d2672ced3cb2f0cf120d2e7",
+      "bytes": 7480,
+      "name": "Seongnam Worker Read-only Preflight",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "site_key": {
+              "description": "Exact supported region to inspect",
+              "required": "true",
+              "default": "seongnam-flower-v2",
+              "type": "choice",
+              "options": [
+                "seongnam-flower-v2",
+                "bucheon-flower-v2",
+                "namyangju-flower-v2",
+                "pyeongtaek-flower-v2",
+                "anyang-flower-v2",
+                "blog-fwith"
+              ]
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      site_key:\n        description: Exact supported region to inspect\n        required: true\n        default: seongnam-flower-v2\n        type: choice\n        options: [seongnam-flower-v2, bucheon-flower-v2, namyangju-flower-v2, pyeongtaek-flower-v2, anyang-flower-v2, blog-fwith]",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "inspect": "github.ref == 'refs/heads/main'"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/siheung-direct-publish.yml",
+      "gitBlobSha": "4457fd2a0f010d134bf1a67a8b7b4feabba347c0",
+      "sha256": "7112e9775d5ab82cbd68bae599bbb478a5241080403e3648c8801a173dffefcb",
+      "bytes": 11265,
+      "name": "Siheung Direct GitHub Static Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Siheung source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Siheung source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/site-factory-controller.yml",
+      "gitBlobSha": "c5fdc122f010ed86d54dc73d0bcd6b14ce65f8c9",
+      "sha256": "ede8644d1589fd5216eed9671975b599c66712f0199d77dc073634ac32019acd",
+      "bytes": 1204,
+      "name": "Site Factory v2 controller",
+      "events": {
+        "workflow_dispatch": ""
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "controller": null
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/site-production-deploy.yml",
+      "gitBlobSha": "ac6c550733fa12c80acec1caa56552136f3f483b",
+      "sha256": "7b347f089037f832a754b71ce79318b91aeb40ff2010a47023fc05d7318608c1",
+      "bytes": 41909,
+      "name": "Site Factory Production Deploy",
+      "events": {
+        "workflow_call": {
+          "inputs": {
+            "site_key": {
+              "required": "true",
+              "type": "string"
+            },
+            "launch_key": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            },
+            "scope_key": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            },
+            "expected_revision": {
+              "required": "true",
+              "type": "string"
+            },
+            "source_snapshot_issue": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            }
+          },
+          "secrets": {
+            "CLOUDFLARE_API_TOKEN": {
+              "required": "true"
+            },
+            "CLOUDFLARE_ACCOUNT_ID": {
+              "required": "true"
+            }
+          }
+        },
+        "workflow_dispatch": {
+          "inputs": {
+            "site_key": {
+              "description": "Registered site key",
+              "required": "true",
+              "type": "string"
+            },
+            "launch_key": {
+              "description": "Exact registered launch for scoped coverage",
+              "required": "false",
+              "type": "string"
+            },
+            "scope_key": {
+              "description": "Exact registered scope for scoped coverage",
+              "required": "false",
+              "type": "string"
+            },
+            "expected_revision": {
+              "description": "Full independently approved target commit SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "source_snapshot_issue": {
+              "description": "Existing request issue for durable production receipts",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and submit the already public revision without deploying",
+              "required": "false",
+              "type": "boolean",
+              "default": "false"
+            }
+          }
+        },
+        "issues": {
+          "types": [
+            "opened",
+            "reopened"
+          ]
+        }
+      },
+      "triggerText": "on:\n  workflow_call:\n    inputs:\n      site_key: {required: true, type: string}\n      launch_key: {required: false, type: string, default: ''}\n      scope_key: {required: false, type: string, default: ''}\n      expected_revision: {required: true, type: string}\n      source_snapshot_issue: {required: false, type: string, default: ''}\n    secrets:\n      CLOUDFLARE_API_TOKEN: {required: true}\n      CLOUDFLARE_ACCOUNT_ID: {required: true}\n  workflow_dispatch:\n    inputs:\n      site_key: {description: Registered site key, required: true, type: string}\n      launch_key: {description: Exact registered launch for scoped coverage, required: false, type: string}\n      scope_key: {description: Exact registered scope for scoped coverage, required: false, type: string}\n      expected_revision: {description: Full independently approved target commit SHA, required: true, type: string}\n      source_snapshot_issue: {description: Existing request issue for durable production receipts, required: true, type: string}\n      indexnow_only: {description: Verify and submit the already public revision without deploying, required: false, type: boolean, default: false}\n  issues:\n    types: [opened, reopened]",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "deploy-and-verify": "${{ inputs.indexnow_only != true && (inputs.site_key != '' || github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[SITE-PRODUCTION-DEPLOY]')) }}",
+        "finalize-existing-public": "inputs.indexnow_only == true || startsWith(github.event.issue.title, '[SITE-INDEXNOW]')"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/site-snapshot-publish-test.yml",
+      "gitBlobSha": "7eebd408e7610195473bf87a695a147a36958d6c",
+      "sha256": "4fd8674d4d7dc83f5430a39934153549ebfd758a48a142039b49a6a49dfd9cc4",
+      "bytes": 9426,
+      "name": "Site Factory Snapshot Publish",
+      "events": {
+        "issues": {
+          "types": [
+            "opened",
+            "reopened"
+          ]
+        }
+      },
+      "triggerText": "on:\n  issues:\n    types: [opened, reopened]",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "snapshot": "startsWith(github.event.issue.title, '[SITE-SNAPSHOT]')",
+        "deploy-approved-snapshot": "needs.snapshot.outputs.auto_deploy == 'true' && needs.snapshot.outputs.publication_approved == 'true'"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/site-staging-deploy.yml",
+      "gitBlobSha": "e01d28267aeed7a4ec006b5d04511bbec55844ab",
+      "sha256": "701b13e5964b1e07352a28bf98c9d2e1f6c37d66199447be4ed617b8558dd5e3",
+      "bytes": 25735,
+      "name": "Site Factory Isolated Staging Preview",
+      "events": {
+        "workflow_call": {
+          "inputs": {
+            "site_key": {
+              "required": "true",
+              "type": "string"
+            },
+            "launch_key": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            },
+            "scope_key": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            },
+            "expected_revision": {
+              "required": "true",
+              "type": "string"
+            },
+            "source_snapshot_issue": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            }
+          },
+          "secrets": {
+            "CLOUDFLARE_API_TOKEN": {
+              "required": "true"
+            },
+            "CLOUDFLARE_ACCOUNT_ID": {
+              "required": "true"
+            }
+          }
+        },
+        "workflow_dispatch": {
+          "inputs": {
+            "site_key": {
+              "description": "Registered site key",
+              "required": "true",
+              "type": "string"
+            },
+            "launch_key": {
+              "description": "Exact registered launch for Goyang coverage only",
+              "required": "false",
+              "type": "string"
+            },
+            "scope_key": {
+              "description": "Exact registered scope for Goyang coverage only",
+              "required": "false",
+              "type": "string"
+            },
+            "expected_revision": {
+              "description": "Full preview source commit SHA",
+              "required": "true",
+              "type": "string"
+            }
+          }
+        },
+        "issues": {
+          "types": [
+            "opened",
+            "reopened"
+          ]
+        }
+      },
+      "triggerText": "on:\n  workflow_call:\n    inputs:\n      site_key: {required: true, type: string}\n      launch_key: {required: false, type: string, default: ''}\n      scope_key: {required: false, type: string, default: ''}\n      expected_revision: {required: true, type: string}\n      source_snapshot_issue: {required: false, type: string, default: ''}\n    secrets:\n      CLOUDFLARE_API_TOKEN: {required: true}\n      CLOUDFLARE_ACCOUNT_ID: {required: true}\n  workflow_dispatch:\n    inputs:\n      site_key: {description: Registered site key, required: true, type: string}\n      launch_key: {description: Exact registered launch for Goyang coverage only, required: false, type: string}\n      scope_key: {description: Exact registered scope for Goyang coverage only, required: false, type: string}\n      expected_revision: {description: Full preview source commit SHA, required: true, type: string}\n  issues:\n    types: [opened, reopened]",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "preview": "inputs.site_key != '' || github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[SITE-STAGING-DEPLOY]')"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/uijeongbu-direct-publish.yml",
+      "gitBlobSha": "d34cca2c5f804eb0839b6ad38109ed727e70fcb7",
+      "sha256": "d84306f378ebda9979f09abd15e6ff0228ca0ccd7299362de38bf30c3d7cca8e",
+      "bytes": 11321,
+      "name": "Uijeongbu Direct GitHub Static Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Uijeongbu source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Uijeongbu source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    },
+    {
+      "path": ".github/workflows/uiwang-direct-publish.yml",
+      "gitBlobSha": "6f0093db782b0685e4c759851e084e6b185e2b5b",
+      "sha256": "ce43454a4a559131cf2c63be0489b7afa42115ec262c680f3df2e6f0819d28c6",
+      "bytes": 11238,
+      "name": "Uiwang Direct GitHub Static Publish",
+      "events": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Uiwang source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "triggerText": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Uiwang source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+      "targetPushMatches": [],
+      "jobConditions": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      },
+      "localReusableCalls": [],
+      "verifiedFromPinnedRemoteTree": true
+    }
+  ],
+  "previousAuditRevision": "adc85e5436e0d778e82a2c0824c8133772bd0fb0",
+  "freshMainAllWorkflowBlobsUnchanged": true,
+  "freshMainTreeSha256": "18e7b5c8dc7dc25ee8675598749ef3889d9c33a7ae948d3bedd0e752ba3ff04d"
+}
