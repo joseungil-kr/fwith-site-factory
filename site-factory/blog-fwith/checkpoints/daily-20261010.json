@@ -7,17 +7,17 @@
   "actualReceivedAt": "2026-10-10T06:36:38Z",
   "actualInvocationId": null,
   "checkpointId": "blog-fwith-daily-20261010-claim",
-  "status": "content_and_images_independently_approved",
+  "status": "published_verified_indexnow_received",
   "owner": {
     "task": "publish_daily_blog_batch",
-    "state": "active"
+    "state": "completed"
   },
   "baselineSource": "f4b4813ec3b1cbfa9fd8d05895b03ac0db420d6b",
   "controllerRevision": "cffdc7fbcdd6d0c4dc34669f0d338b37348eb782",
   "existingPublishedPostCount": 27,
-  "publishedPostCount": 0,
+  "publishedPostCount": 5,
   "dailyPostsPreviouslyPublished": 0,
-  "remainingDailyQuota": 5,
+  "remainingDailyQuota": 0,
   "initial20ExcludedFromDailyCount": true,
   "slugs": [
     "seoul-asan-funeral-condolence-wreath",
@@ -27,8 +27,8 @@
     "gyeongju-thek-wedding-wreath"
   ],
   "intent": {
-    "action": "store_reviewed_source_and_prepared_index",
-    "idempotencyKey": "blog-fwith-daily-20261010-reviewed-source"
+    "action": "none",
+    "idempotencyKey": "blog-fwith:fa270d95570a605d1034b9f0571ace9cc310a16c:received"
   },
   "dedupe": {
     "remoteTreeComplete": true,
@@ -38,7 +38,7 @@
   },
   "searchIndexing": "not_verified",
   "ranking": "not_verified",
-  "updatedAt": "2026-10-10T06:48:43.755Z",
+  "updatedAt": "2026-10-10T07:06:18.297Z",
   "review": "daily-20261010.review.json",
   "imageProvenance": "daily-20261010.images.json",
   "approvedPostCount": 5,
@@ -47,5 +47,75 @@
     "promptShown": true,
     "toolSubsequentlySucceeded": true,
     "userActionIndependentlyConfirmed": false
-  }
+  },
+  "sourceRevision": "fa270d95570a605d1034b9f0571ace9cc310a16c",
+  "sourceRemoteReadback": {
+    "textFiles": 9,
+    "images": 5,
+    "imageHashesVerified": true,
+    "onlyExpected14FilesChanged": true
+  },
+  "localBuild": {
+    "state": "blocked_on_og_font_fetch",
+    "reason": "font fetch returned nonfont upstream response in this cloud execution environment; official isolated CI build remains mandatory",
+    "codeModified": false
+  },
+  "publication": {
+    "sourceRevision": "fa270d95570a605d1034b9f0571ace9cc310a16c",
+    "runId": 38032376174,
+    "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38032376174",
+    "state": "success",
+    "createdAt": "2026-10-10T06:51:20Z",
+    "exactHostedRevisionVerified": true,
+    "totalArticles": 32
+  },
+  "httpQa": {
+    "state": "PASS",
+    "htmlCount": 120,
+    "assetCount": 37,
+    "unknown404": "PASS",
+    "reportSha256": "29a2bd109aa34e37458889831f6bb6f94be25cfc726662735317f38d19ef757d"
+  },
+  "visualQa": {
+    "desktop": {
+      "width": 1181,
+      "state": "PASS"
+    },
+    "narrow": {
+      "width": 393,
+      "height": 252,
+      "dpr": 3,
+      "method": "native Chrome normal UI zoom 300%; not device emulation",
+      "state": "PASS"
+    },
+    "invalidCapture": "Tab fullPage screenshot at zoom produced cropped strips; excluded from QA. Native window screenshots used instead.",
+    "normalZoomRestored": true,
+    "independentReport": "daily-20261010.visual-review.json",
+    "parentDiscovery": "All5newpostlinks observed on narrow home; width393 scrollWidth388",
+    "independentReportSha256": "2457ad0135f4ddc8e40d62e7aefa3a6e2bd7d3fd95c35694ee80f8c41c113a84"
+  },
+  "indexNow": {
+    "state": "received",
+    "sameSourceIssueSearch": "none",
+    "registryOptInVerified": true,
+    "ownershipDirectObservation": "Cloud GET403 and browser ERR_BLOCKED_BY_CLIENT; not proof of absence. Existing finalizer must verify ownership before POST.",
+    "issueNumber": 267,
+    "issueUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/267",
+    "runId": 38033170455,
+    "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38033170455",
+    "attempt": 1,
+    "endpoint": "https://searchadvisor.naver.com/indexnow",
+    "fingerprint": "cf528de216b64dd2ed1dd353f0927a7ab6027e821638f5a0938f5bb37bce5f1d",
+    "httpStatus": 200,
+    "origin": "https://blog.fwith.kr",
+    "recordedAt": "2026-10-10T07:05:49.390617+00:00",
+    "revision": "fa270d95570a605d1034b9f0571ace9cc310a16c",
+    "siteKey": "blog-fwith",
+    "urlCount": 118,
+    "urlSetSha256": "422ba86e6263549f73baf68bdf7cab2870b91c3b58e65eba9ec3589f6d7459ea",
+    "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/267#issuecomment-6094946481",
+    "ownershipVerifiedByExistingFinalizer": true
+  },
+  "completedAt": "2026-10-10T07:05:49.390617Z",
+  "durationSecondsToReceipt": 1751.390617
 }
