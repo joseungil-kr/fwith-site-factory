@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T17:01:55.856Z",
+  "updatedAt": "2026-10-10T17:12:42.138741+00:00",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-yongsan-direct-initial-20261010",
     "city": "서울특별시 용산구",
-    "status": "researching_plan_not_yet_frozen",
+    "status": "plan_frozen_independent_plan_pass_before_authoring",
     "owner": {
       "scheduledRunAt": "2026-10-10T17:00:00Z",
       "observedExecutionAt": "2026-10-10T17:01:55.856Z",
@@ -72,13 +72,15 @@
       "publicHostObservation": "Web could not access hostname; unknown, not proof of absence"
     },
     "changeIntent": {
-      "action": "research_verify_membership_and_prepare_fixed_plan",
-      "target": "seoul-yongsan",
-      "idempotencyKey": "seoul-yongsan:initial:20261010:research"
+      "action": "author_five_unique_purchase_articles_after_remote_plan_freeze",
+      "target": "site-factory/seoul-yongsan-flower",
+      "idempotencyKey": "seoul-yongsan:fixed-plan:7926b0bde6faac743639c626a44f8f7608a3a232e1bcf34d4b135623b4d082f8"
     },
-    "lastSuccessfulStage": "remote_plan_and_ownership_conflict_readback",
+    "lastSuccessfulStage": "independent_fixed_plan_pass",
     "review": {
-      "screenQa": "DEFERRED_NOT_PASS"
+      "screenQa": "DEFERRED_NOT_PASS",
+      "planReviewStatus": "PASS_BEFORE_AUTHORING",
+      "planReviewSha256": "7e61aa58a4994545d079ed7a12aca8d04994380cbe65970e7fdb8e621d4e8665"
     },
     "unfinishedStages": [
       "plan_freeze",
@@ -91,7 +93,52 @@
       "gsc",
       "desktop_actual_screen_qa",
       "narrow_actual_screen_qa"
-    ]
+    ],
+    "plan": {
+      "state": "frozen_before_authoring_independent_plan_pass",
+      "plannedArticleCount": 5,
+      "minimumPassedArticles": 5,
+      "legalDongCount": 36,
+      "administrativeDongCount": 16,
+      "relationshipCount": 38,
+      "unassignedLegalUnits": 31,
+      "countIsPageQuota": false,
+      "fixedPlanPath": "docs/direct-regional-release/seoul-yongsan/fixed-plan.json",
+      "fixedPlanSha256": "7926b0bde6faac743639c626a44f8f7608a3a232e1bcf34d4b135623b4d082f8",
+      "frozenAt": "2026-10-10T17:10:25.802151+00:00",
+      "articles": [
+        {
+          "slug": "hannam-dong-sch-seoul-condolence-wreath",
+          "title": "순천향대 서울병원 장례식장 근조화환 주문",
+          "primaryKeyword": "순천향대 서울병원 장례식장 근조화환 주문",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "hangangno3-ga-seoul-dragon-city-wedding-wreath",
+          "title": "서울드래곤시티 결혼식 축하화환 주문",
+          "primaryKeyword": "서울드래곤시티 결혼식 축하화환 주문",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "hangangno2-ga-seonin-opening-wreath",
+          "title": "선인상가 거래처 개업화환 주문",
+          "primaryKeyword": "선인상가 거래처 개업화환 주문",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "hyochang-dong-kimkoo-convention-event-wreath",
+          "title": "백범김구기념관 행사 축하화환 상담",
+          "primaryKeyword": "백범김구기념관 행사 축하화환 상담",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "yongsan-dong3-ga-mnd-convention-wedding-wreath",
+          "title": "국방컨벤션 결혼식 축하화환 주문",
+          "primaryKeyword": "국방컨벤션 결혼식 축하화환 주문",
+          "status": "planned_not_authored"
+        }
+      ]
+    }
   },
   "history": [
     {

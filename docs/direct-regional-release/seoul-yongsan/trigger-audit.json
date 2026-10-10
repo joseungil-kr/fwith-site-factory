@@ -1,0 +1,266 @@
+[
+  {
+    "path": ".github/workflows/airtable-fix-test.yml",
+    "sha": "bc666020387bbeb13ba73534d7928ccf495a6e74",
+    "triggerBlock": "on:\n  issues:\n    types: [opened]\n",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/airtable-publish-test.yml",
+    "sha": "27c3edbf22893409c01439d5a30ba6fcfd26a3c0",
+    "triggerBlock": "on:\n  issues:\n    types: [opened]\n",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/ansan-cloudflare-live-test.yml",
+    "sha": "9c047cd37130d1f1e56e278ccf9db983d834a543",
+    "triggerBlock": "on:\n  issues:\n    types: [opened]\n",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/ansan-indexnow-production.yml",
+    "sha": "f0091a7283943203aef354da4dbc130ffb858ab3",
+    "triggerBlock": "on:\n  push:\n    branches:\n      - site-factory-ansan-v1\n  workflow_dispatch:\n",
+    "hasPush": true
+  },
+  {
+    "path": ".github/workflows/ansan-live-qa.yml",
+    "sha": "2699177a9bd018e9dc2a01104ca1a4e7059d8c51",
+    "triggerBlock": "on:\n  push:\n    branches:\n      - site-factory-ansan-v1\n  workflow_dispatch:\n",
+    "hasPush": true
+  },
+  {
+    "path": ".github/workflows/anseong-direct-publish.yml",
+    "sha": "6ec2b5683f8f986c3677a523916fb351bb6449de",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Anseong source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/anyang-direct-publish.yml",
+    "sha": "903bd61a48a9e71d2632ed9d52eaa9d0cd38966e",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Anyang source SHA\n        required: true\n        type: string",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/blog-assets-publish.yml",
+    "sha": "8244fcfe3f993ef0feaae3aa7a70f16bdd66f1f0",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character blog source SHA\n        required: true\n        type: string",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/blog-domain-preview.yml",
+    "sha": "93947e767b58d20c26dbffdd751204228362defc",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact tested 40-character blog source SHA\n        required: true\n        type: string",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/dongducheon-direct-publish.yml",
+    "sha": "70c3d242d2347ee6d036b3fa14902c32e5928663",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Dongducheon source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/gapyeong-direct-publish.yml",
+    "sha": "cdd969a2d6615591659791856b6befd192a9a792",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Gapyeong source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/gimpo-direct-publish.yml",
+    "sha": "18912bf64a8309d3acdd3293239297134ef043f3",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Gimpo source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/goyang-canonical-noindex-deploy.yml",
+    "sha": "999b0b85e3b3f2c31177d5306221b00ac2770dd3",
+    "triggerBlock": "on:\n  workflow_dispatch:",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/goyang-cloudflare-token-identity.yml",
+    "sha": "95b2978d53b5bb79d13bef4ab0e148234ba6ccd1",
+    "triggerBlock": "on:\n  workflow_dispatch:",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/goyang-domain-attach.yml",
+    "sha": "61da04aab04d5527d82723bd90bb7f2c542bb3f8",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      confirm_unused:\n        description: I confirm goyang.fwith.kr is unused and authorize attaching it to the existing QA Worker without asset deployment.\n        required: true\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/goyang-noindex-domain.yml",
+    "sha": "bb1ed135a6b78661a9b8bbab6a2fab72efc93527",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      apply:\n        description: Reserved for separately reviewed binding implementation; leave false.\n        required: true\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/goyang-robots-bic.yml",
+    "sha": "201ae6105b42cbbd54aad65cd80806ba27f9ffcd",
+    "triggerBlock": "on:\n  workflow_dispatch:",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/goyang-staging-qa.yml",
+    "sha": "0c64cdcc9b8cc8516d6b84d9e3c4c7d2937e34c9",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      mode:\n        description: Fixed historical HTTP QA or GET-only preview capability observation\n        required: true\n        default: fixed-http\n        type: choice\n        options: [fixed-http, preview-capabilities]\n      scope_key: {description: Exact registered scope for capability observation, required: false, type: string}\n      expected_revision: {description: Exact registered reviewed source reference, required: false, type: string}\n  issues:\n    types: [opened, reopened]\n",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/gunpo-direct-publish.yml",
+    "sha": "b66f245af45c86ec0319a34681deef681c080487",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Gunpo source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/guri-direct-publish.yml",
+    "sha": "e4fc9aba232049ccba8d2ea77e8a0a5b119bcd36",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Guri source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/gwacheon-direct-publish.yml",
+    "sha": "63c2e8663bf5460ff25fafe2634d8e8379aadb30",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Gwacheon source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/gwangju-direct-publish.yml",
+    "sha": "952c64641c6aa55f46c2df91581c47b32564f9e7",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Gwangju source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/gwangmyeong-direct-publish.yml",
+    "sha": "88f965a2a6ad90124b9c2c062e190adb52e59642",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Gwangmyeong source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/hanam-direct-publish.yml",
+    "sha": "1c21a640d6fadf9231e00ca9833d33d10741cae6",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Hanam source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/icheon-direct-publish.yml",
+    "sha": "3c5e0d4a6de654cdbd4bbcc1078efdb463604363",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Icheon source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/jongno-direct-publish.yml",
+    "sha": "337f7cb5256a5f48a0a70cf81da2f8c7eda34461",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Jongno source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/namyangju-production-gate-check.yml",
+    "sha": "eb23ab627751bea0e3aed48441f29fa0ed4aec11",
+    "triggerBlock": "on:\n  push:\n    branches: [codex/namyangju-production-gate]\n  pull_request:\n    paths:\n      - .github/site-factory-sites.json\n      - site-factory/engine/**\n      - site-factory/releases/namyangju-flower-v2-initial-20261005/**",
+    "hasPush": true
+  },
+  {
+    "path": ".github/workflows/osan-direct-publish.yml",
+    "sha": "f203e18aad7b1934eb9e2976be9cbe588a1429b1",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Osan source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/paju-direct-publish.yml",
+    "sha": "ad73eea8c0507a6fe45346a1b401d22849e7f4e0",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Paju source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/pocheon-direct-publish.yml",
+    "sha": "6838d89f28d52957aa1e6356f6c89b4f9552b0ee",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Pocheon source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/pyeongtaek-direct-publish.yml",
+    "sha": "25987e47dc57fe328318d90a8ac339ac7bdaaac8",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Pyeongtaek source SHA\n        required: true\n        type: string",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/seongnam-worker-preflight.yml",
+    "sha": "8d28aac4d6d38de8f5ca1f036f9d6cb97265a601",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      site_key:\n        description: Exact supported region to inspect\n        required: true\n        default: seongnam-flower-v2\n        type: choice\n        options: [seongnam-flower-v2, bucheon-flower-v2, namyangju-flower-v2, pyeongtaek-flower-v2, anyang-flower-v2, blog-fwith]",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/seoul-jung-direct-publish.yml",
+    "sha": "3251b73bf4e3b7e330a9db89f4a74ba706aaf855",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character SeoulJung source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/siheung-direct-publish.yml",
+    "sha": "4457fd2a0f010d134bf1a67a8b7b4feabba347c0",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Siheung source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/site-factory-controller.yml",
+    "sha": "c5fdc122f010ed86d54dc73d0bcd6b14ce65f8c9",
+    "triggerBlock": "on:\n  workflow_dispatch:\n",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/site-production-deploy.yml",
+    "sha": "ac6c550733fa12c80acec1caa56552136f3f483b",
+    "triggerBlock": "on:\n  workflow_call:\n    inputs:\n      site_key: {required: true, type: string}\n      launch_key: {required: false, type: string, default: ''}\n      scope_key: {required: false, type: string, default: ''}\n      expected_revision: {required: true, type: string}\n      source_snapshot_issue: {required: false, type: string, default: ''}\n    secrets:\n      CLOUDFLARE_API_TOKEN: {required: true}\n      CLOUDFLARE_ACCOUNT_ID: {required: true}\n  workflow_dispatch:\n    inputs:\n      site_key: {description: Registered site key, required: true, type: string}\n      launch_key: {description: Exact registered launch for scoped coverage, required: false, type: string}\n      scope_key: {description: Exact registered scope for scoped coverage, required: false, type: string}\n      expected_revision: {description: Full independently approved target commit SHA, required: true, type: string}\n      source_snapshot_issue: {description: Existing request issue for durable production receipts, required: true, type: string}\n      indexnow_only: {description: Verify and submit the already public revision without deploying, required: false, type: boolean, default: false}\n  issues:\n    types: [opened, reopened]",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/site-snapshot-publish-test.yml",
+    "sha": "7eebd408e7610195473bf87a695a147a36958d6c",
+    "triggerBlock": "on:\n  issues:\n    types: [opened, reopened]",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/site-staging-deploy.yml",
+    "sha": "e01d28267aeed7a4ec006b5d04511bbec55844ab",
+    "triggerBlock": "on:\n  workflow_call:\n    inputs:\n      site_key: {required: true, type: string}\n      launch_key: {required: false, type: string, default: ''}\n      scope_key: {required: false, type: string, default: ''}\n      expected_revision: {required: true, type: string}\n      source_snapshot_issue: {required: false, type: string, default: ''}\n    secrets:\n      CLOUDFLARE_API_TOKEN: {required: true}\n      CLOUDFLARE_ACCOUNT_ID: {required: true}\n  workflow_dispatch:\n    inputs:\n      site_key: {description: Registered site key, required: true, type: string}\n      launch_key: {description: Exact registered launch for Goyang coverage only, required: false, type: string}\n      scope_key: {description: Exact registered scope for Goyang coverage only, required: false, type: string}\n      expected_revision: {description: Full preview source commit SHA, required: true, type: string}\n  issues:\n    types: [opened, reopened]",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/uijeongbu-direct-publish.yml",
+    "sha": "d34cca2c5f804eb0839b6ad38109ed727e70fcb7",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Uijeongbu source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/uiwang-direct-publish.yml",
+    "sha": "6f0093db782b0685e4c759851e084e6b185e2b5b",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Uiwang source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/yangju-direct-publish.yml",
+    "sha": "29a930082aa83660922540656ca5200dafbb88c0",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Yangju source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/yangpyeong-direct-publish.yml",
+    "sha": "328f578b555605333fd775acbc6aa72f4136fec8",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Yangpyeong source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/yeoju-direct-publish.yml",
+    "sha": "ff8191c70b99d40f068e3b21041276de2a3ab2d5",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Yeoju source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  },
+  {
+    "path": ".github/workflows/yeoncheon-direct-publish.yml",
+    "sha": "f260f50261eaa5068ff244f4af05403f23606b8f",
+    "triggerBlock": "on:\n  workflow_dispatch:\n    inputs:\n      expected_revision:\n        description: Exact reviewed 40-character Yeoncheon source SHA\n        required: true\n        type: string\n      indexnow_only:\n        description: Verify and finalize the existing exact public release without any Cloudflare mutation\n        required: false\n        default: false\n        type: boolean",
+    "hasPush": false
+  }
+]
