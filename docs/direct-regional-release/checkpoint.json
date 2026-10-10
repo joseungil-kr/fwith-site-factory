@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T19:17:38.877Z",
+  "updatedAt": "2026-10-10T19:22:17.834Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-gwangjin-direct-initial-20261010",
     "city": "서울특별시 광진구",
-    "status": "content_reviewed_building",
+    "status": "source_saved_exact_remote_validation_in_progress",
     "owner": {
       "scheduledRunAt": "2026-10-10T19:00:00Z",
       "observedExecutionAt": "2026-10-10T19:04:28.316Z",
@@ -78,10 +78,10 @@
       }
     },
     "changeIntent": {
-      "action": "save_independently_reviewed_source_then_validate_exact_remote_revision",
-      "target": "site-factory-seoul-gwangjin-direct",
-      "idempotencyKey": "seoul-gwangjin:source-save:3c89244c5ef639632cbf83d404f4f1bd9ccd6bef2fcf4e33a5da20ebbb2c071c",
-      "expectedSourceBranchHead": "fe1676fb50fd448ff1bc0fe3062278b4cee726e9"
+      "action": "publish_fixed_gwangjin_control_then_wait_exact_source_validation_before_dispatch",
+      "target": ".github/workflows/seoul-gwangjin-direct-publish.yml",
+      "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
+      "idempotencyKey": "seoul-gwangjin:control-prepare:296e47b384bfc36e0dfa6e7a4586d41220c93587"
     },
     "unfinishedStages": [
       "plan_freeze",
@@ -152,7 +152,8 @@
       "independentReviewSha256": "7bfc782f49421b4002fae1af56d2c5a02c9d523a398267f91f86ed2fc5b364e9",
       "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
       "contentRevision": 1
-    }
+    },
+    "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587"
   },
   "history": [
     {
