@@ -1,0 +1,884 @@
+{
+  "status": "PASS_INDEPENDENT_31_FULL_WORKFLOW_BLOBS",
+  "remoteRevision": "0afd16304f4fc500700ee81db2c411d15d8c2687",
+  "checkedAtUtc": "2026-10-10T03:55:14.809295+00:00",
+  "workflowCount": 31,
+  "method": "Independently fetched current Git tree, verified every local full-byte workflow as its Git blob, parsed all triggers and job conditions. No push events select main or site-factory-paju-direct.",
+  "rows": [
+    {
+      "path": ".github/workflows/airtable-fix-test.yml",
+      "gitBlobSha": "bc666020387bbeb13ba73534d7928ccf495a6e74",
+      "on": {
+        "issues": {
+          "types": [
+            "opened"
+          ]
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "repair": "startsWith(github.event.issue.title, '[AIRTABLE-FIX]')"
+      }
+    },
+    {
+      "path": ".github/workflows/airtable-publish-test.yml",
+      "gitBlobSha": "27c3edbf22893409c01439d5a30ba6fcfd26a3c0",
+      "on": {
+        "issues": {
+          "types": [
+            "opened"
+          ]
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "publish": "startsWith(github.event.issue.title, '[AIRTABLE-PUBLISH]')"
+      }
+    },
+    {
+      "path": ".github/workflows/ansan-cloudflare-live-test.yml",
+      "gitBlobSha": "9c047cd37130d1f1e56e278ccf9db983d834a543",
+      "on": {
+        "issues": {
+          "types": [
+            "opened"
+          ]
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "deploy": "startsWith(github.event.issue.title, '[SITE-DEPLOY-TEST]')"
+      }
+    },
+    {
+      "path": ".github/workflows/ansan-indexnow-production.yml",
+      "gitBlobSha": "f0091a7283943203aef354da4dbc130ffb858ab3",
+      "on": {
+        "push": {
+          "branches": [
+            "site-factory-ansan-v1"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "indexnow": null
+      }
+    },
+    {
+      "path": ".github/workflows/ansan-live-qa.yml",
+      "gitBlobSha": "2699177a9bd018e9dc2a01104ca1a4e7059d8c51",
+      "on": {
+        "push": {
+          "branches": [
+            "site-factory-ansan-v1"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "live-qa": null
+      }
+    },
+    {
+      "path": ".github/workflows/anyang-direct-publish.yml",
+      "gitBlobSha": "903bd61a48a9e71d2632ed9d52eaa9d0cd38966e",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Anyang source SHA",
+              "required": "true",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": null
+      }
+    },
+    {
+      "path": ".github/workflows/blog-assets-publish.yml",
+      "gitBlobSha": "8244fcfe3f993ef0feaae3aa7a70f16bdd66f1f0",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character blog source SHA",
+              "required": "true",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": null
+      }
+    },
+    {
+      "path": ".github/workflows/blog-domain-preview.yml",
+      "gitBlobSha": "93947e767b58d20c26dbffdd751204228362defc",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact tested 40-character blog source SHA",
+              "required": "true",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "initial-domain": null
+      }
+    },
+    {
+      "path": ".github/workflows/dongducheon-direct-publish.yml",
+      "gitBlobSha": "70c3d242d2347ee6d036b3fa14902c32e5928663",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Dongducheon source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      }
+    },
+    {
+      "path": ".github/workflows/goyang-canonical-noindex-deploy.yml",
+      "gitBlobSha": "999b0b85e3b3f2c31177d5306221b00ac2770dd3",
+      "on": {
+        "workflow_dispatch": ""
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "canonical-noindex": null
+      }
+    },
+    {
+      "path": ".github/workflows/goyang-cloudflare-token-identity.yml",
+      "gitBlobSha": "95b2978d53b5bb79d13bef4ab0e148234ba6ccd1",
+      "on": {
+        "workflow_dispatch": ""
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "token-identity": "github.ref == 'refs/heads/main'"
+      }
+    },
+    {
+      "path": ".github/workflows/goyang-domain-attach.yml",
+      "gitBlobSha": "61da04aab04d5527d82723bd90bb7f2c542bb3f8",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "confirm_unused": {
+              "description": "I confirm goyang.fwith.kr is unused and authorize attaching it to the existing QA Worker without asset deployment.",
+              "required": "true",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "attach": null
+      }
+    },
+    {
+      "path": ".github/workflows/goyang-noindex-domain.yml",
+      "gitBlobSha": "bb1ed135a6b78661a9b8bbab6a2fab72efc93527",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "apply": {
+              "description": "Reserved for separately reviewed binding implementation; leave false.",
+              "required": "true",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "inspect": "inputs.apply == false",
+        "apply-not-implemented": "inputs.apply == true"
+      }
+    },
+    {
+      "path": ".github/workflows/goyang-robots-bic.yml",
+      "gitBlobSha": "201ae6105b42cbbd54aad65cd80806ba27f9ffcd",
+      "on": {
+        "workflow_dispatch": ""
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "robots-bic": null
+      }
+    },
+    {
+      "path": ".github/workflows/goyang-staging-qa.yml",
+      "gitBlobSha": "0c64cdcc9b8cc8516d6b84d9e3c4c7d2937e34c9",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "mode": {
+              "description": "Fixed historical HTTP QA or GET-only preview capability observation",
+              "required": "true",
+              "default": "fixed-http",
+              "type": "choice",
+              "options": [
+                "fixed-http",
+                "preview-capabilities"
+              ]
+            },
+            "scope_key": {
+              "description": "Exact registered scope for capability observation",
+              "required": "false",
+              "type": "string"
+            },
+            "expected_revision": {
+              "description": "Exact registered reviewed source reference",
+              "required": "false",
+              "type": "string"
+            }
+          }
+        },
+        "issues": {
+          "types": [
+            "opened",
+            "reopened"
+          ]
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "goyang-staging-qa": "github.event_name == 'workflow_dispatch' && inputs.mode != 'preview-capabilities'",
+        "preview-capabilities": "github.ref == 'refs/heads/main' && (inputs.mode == 'preview-capabilities' || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[GOYANG-PREVIEW-INSPECT]')))"
+      }
+    },
+    {
+      "path": ".github/workflows/gunpo-direct-publish.yml",
+      "gitBlobSha": "b66f245af45c86ec0319a34681deef681c080487",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Gunpo source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      }
+    },
+    {
+      "path": ".github/workflows/guri-direct-publish.yml",
+      "gitBlobSha": "e4fc9aba232049ccba8d2ea77e8a0a5b119bcd36",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Guri source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      }
+    },
+    {
+      "path": ".github/workflows/gwacheon-direct-publish.yml",
+      "gitBlobSha": "63c2e8663bf5460ff25fafe2634d8e8379aadb30",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Gwacheon source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      }
+    },
+    {
+      "path": ".github/workflows/gwangmyeong-direct-publish.yml",
+      "gitBlobSha": "88f965a2a6ad90124b9c2c062e190adb52e59642",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Gwangmyeong source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      }
+    },
+    {
+      "path": ".github/workflows/hanam-direct-publish.yml",
+      "gitBlobSha": "1c21a640d6fadf9231e00ca9833d33d10741cae6",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Hanam source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      }
+    },
+    {
+      "path": ".github/workflows/namyangju-production-gate-check.yml",
+      "gitBlobSha": "eb23ab627751bea0e3aed48441f29fa0ed4aec11",
+      "on": {
+        "push": {
+          "branches": [
+            "codex/namyangju-production-gate"
+          ]
+        },
+        "pull_request": {
+          "paths": [
+            ".github/site-factory-sites.json",
+            "site-factory/engine/**",
+            "site-factory/releases/namyangju-flower-v2-initial-20261005/**"
+          ]
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "verify": null
+      }
+    },
+    {
+      "path": ".github/workflows/osan-direct-publish.yml",
+      "gitBlobSha": "f203e18aad7b1934eb9e2976be9cbe588a1429b1",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Osan source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      }
+    },
+    {
+      "path": ".github/workflows/pyeongtaek-direct-publish.yml",
+      "gitBlobSha": "25987e47dc57fe328318d90a8ac339ac7bdaaac8",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Pyeongtaek source SHA",
+              "required": "true",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": null
+      }
+    },
+    {
+      "path": ".github/workflows/seongnam-worker-preflight.yml",
+      "gitBlobSha": "8d28aac4d6d38de8f5ca1f036f9d6cb97265a601",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "site_key": {
+              "description": "Exact supported region to inspect",
+              "required": "true",
+              "default": "seongnam-flower-v2",
+              "type": "choice",
+              "options": [
+                "seongnam-flower-v2",
+                "bucheon-flower-v2",
+                "namyangju-flower-v2",
+                "pyeongtaek-flower-v2",
+                "anyang-flower-v2",
+                "blog-fwith"
+              ]
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "inspect": "github.ref == 'refs/heads/main'"
+      }
+    },
+    {
+      "path": ".github/workflows/siheung-direct-publish.yml",
+      "gitBlobSha": "4457fd2a0f010d134bf1a67a8b7b4feabba347c0",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Siheung source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      }
+    },
+    {
+      "path": ".github/workflows/site-factory-controller.yml",
+      "gitBlobSha": "c5fdc122f010ed86d54dc73d0bcd6b14ce65f8c9",
+      "on": {
+        "workflow_dispatch": ""
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "controller": null
+      }
+    },
+    {
+      "path": ".github/workflows/site-production-deploy.yml",
+      "gitBlobSha": "ac6c550733fa12c80acec1caa56552136f3f483b",
+      "on": {
+        "workflow_call": {
+          "inputs": {
+            "site_key": {
+              "required": "true",
+              "type": "string"
+            },
+            "launch_key": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            },
+            "scope_key": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            },
+            "expected_revision": {
+              "required": "true",
+              "type": "string"
+            },
+            "source_snapshot_issue": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            }
+          },
+          "secrets": {
+            "CLOUDFLARE_API_TOKEN": {
+              "required": "true"
+            },
+            "CLOUDFLARE_ACCOUNT_ID": {
+              "required": "true"
+            }
+          }
+        },
+        "workflow_dispatch": {
+          "inputs": {
+            "site_key": {
+              "description": "Registered site key",
+              "required": "true",
+              "type": "string"
+            },
+            "launch_key": {
+              "description": "Exact registered launch for scoped coverage",
+              "required": "false",
+              "type": "string"
+            },
+            "scope_key": {
+              "description": "Exact registered scope for scoped coverage",
+              "required": "false",
+              "type": "string"
+            },
+            "expected_revision": {
+              "description": "Full independently approved target commit SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "source_snapshot_issue": {
+              "description": "Existing request issue for durable production receipts",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and submit the already public revision without deploying",
+              "required": "false",
+              "type": "boolean",
+              "default": "false"
+            }
+          }
+        },
+        "issues": {
+          "types": [
+            "opened",
+            "reopened"
+          ]
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "deploy-and-verify": "${{ inputs.indexnow_only != true && (inputs.site_key != '' || github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[SITE-PRODUCTION-DEPLOY]')) }}",
+        "finalize-existing-public": "inputs.indexnow_only == true || startsWith(github.event.issue.title, '[SITE-INDEXNOW]')"
+      }
+    },
+    {
+      "path": ".github/workflows/site-snapshot-publish-test.yml",
+      "gitBlobSha": "7eebd408e7610195473bf87a695a147a36958d6c",
+      "on": {
+        "issues": {
+          "types": [
+            "opened",
+            "reopened"
+          ]
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "snapshot": "startsWith(github.event.issue.title, '[SITE-SNAPSHOT]')",
+        "deploy-approved-snapshot": "needs.snapshot.outputs.auto_deploy == 'true' && needs.snapshot.outputs.publication_approved == 'true'"
+      }
+    },
+    {
+      "path": ".github/workflows/site-staging-deploy.yml",
+      "gitBlobSha": "e01d28267aeed7a4ec006b5d04511bbec55844ab",
+      "on": {
+        "workflow_call": {
+          "inputs": {
+            "site_key": {
+              "required": "true",
+              "type": "string"
+            },
+            "launch_key": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            },
+            "scope_key": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            },
+            "expected_revision": {
+              "required": "true",
+              "type": "string"
+            },
+            "source_snapshot_issue": {
+              "required": "false",
+              "type": "string",
+              "default": ""
+            }
+          },
+          "secrets": {
+            "CLOUDFLARE_API_TOKEN": {
+              "required": "true"
+            },
+            "CLOUDFLARE_ACCOUNT_ID": {
+              "required": "true"
+            }
+          }
+        },
+        "workflow_dispatch": {
+          "inputs": {
+            "site_key": {
+              "description": "Registered site key",
+              "required": "true",
+              "type": "string"
+            },
+            "launch_key": {
+              "description": "Exact registered launch for Goyang coverage only",
+              "required": "false",
+              "type": "string"
+            },
+            "scope_key": {
+              "description": "Exact registered scope for Goyang coverage only",
+              "required": "false",
+              "type": "string"
+            },
+            "expected_revision": {
+              "description": "Full preview source commit SHA",
+              "required": "true",
+              "type": "string"
+            }
+          }
+        },
+        "issues": {
+          "types": [
+            "opened",
+            "reopened"
+          ]
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "preview": "inputs.site_key != '' || github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[SITE-STAGING-DEPLOY]')"
+      }
+    },
+    {
+      "path": ".github/workflows/uijeongbu-direct-publish.yml",
+      "gitBlobSha": "d34cca2c5f804eb0839b6ad38109ed727e70fcb7",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Uijeongbu source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      }
+    },
+    {
+      "path": ".github/workflows/uiwang-direct-publish.yml",
+      "gitBlobSha": "6f0093db782b0685e4c759851e084e6b185e2b5b",
+      "on": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_revision": {
+              "description": "Exact reviewed 40-character Uiwang source SHA",
+              "required": "true",
+              "type": "string"
+            },
+            "indexnow_only": {
+              "description": "Verify and finalize the existing exact public release without any Cloudflare mutation",
+              "required": "false",
+              "default": "false",
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "pushWouldTrigger": {
+        "main": false,
+        "site-factory-paju-direct": false
+      },
+      "jobs": {
+        "build": "github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'",
+        "publish": "inputs.indexnow_only != true",
+        "finalize_indexnow": "inputs.indexnow_only == true"
+      }
+    }
+  ]
+}
