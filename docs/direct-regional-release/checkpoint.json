@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T11:41:54.999Z",
+  "updatedAt": "2026-10-10T11:45:03.767Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "yeoju-direct-initial-20261010",
     "city": "여주시",
-    "status": "reviewed_source_saving",
+    "status": "saved_source_remote_exact_review_pending",
     "owner": {
       "scheduledRunAt": "2026-10-10T11:00:00Z",
       "observedExecutionAt": "2026-10-10T10:58:49Z",
@@ -49,7 +49,8 @@
       "root": "site-factory/yeoju-flower",
       "worker": "yeoju-flower-guide",
       "hostname": "yeoju.fwith.kr",
-      "externalCreationVerified": false
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": true
     },
     "selection": {
       "officialCode": "41670",
@@ -354,7 +355,7 @@
       "heldArticleCount": 2,
       "passedRatio": 0.9375
     },
-    "lastSuccessfulStage": "independent_content_image_and_local_runtime_review_pass",
+    "lastSuccessfulStage": "reviewed_69_file_source_saved_and_branch_ref_readback",
     "nextIntent": "Yeoju source save paused briefly to resume specifically approved Pocheon serially; local exact reviewed source remains preserved",
     "idempotencyKey": "yeoju-direct-initial-20261010:claim",
     "publication": {
@@ -382,6 +383,11 @@
       "target": "site-factory-yeoju-direct / site-factory/yeoju-flower",
       "idempotencyKey": "yeoju-direct-initial-20261010:save-source:fd7ce2bbfd56f1f602e2803a1ff1af5147112453903a7dba6c0ce05bf3ff73c3",
       "sourceInventorySha256": "fd7ce2bbfd56f1f602e2803a1ff1af5147112453903a7dba6c0ce05bf3ff73c3"
+    },
+    "sourceRevision": "b382df7df207f0bb4503c17a5a128dc7c46f1d4c",
+    "pendingExternalAction": {
+      "action": "none_until_independent_exact_source_readback_and_build",
+      "sourceRevision": "b382df7df207f0bb4503c17a5a128dc7c46f1d4c"
     }
   },
   "history": [
@@ -3666,9 +3672,11 @@
         "preDispatchPocheonRecords": 0
       },
       "gsc": {
-        "state": "not_submitted",
-        "submitResult": null,
-        "listReadback": null
+        "state": "intent_saved_wait_public_HTTP_QA",
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemapUrl": "https://pocheon.fwith.kr/sitemap-index.xml",
+        "existingReadback": "absent",
+        "idempotencyKey": "pocheon:gsc:80885f720b382cd71fab0f68228040e7637a8b34"
       },
       "pendingVisualRoutes": [
         "/",
