@@ -1,0 +1,109 @@
+{
+  "scopeKey": "uiwang-direct-initial-20261010",
+  "city": "의왕시",
+  "status": "waiting_required_target_approval",
+  "owner": {
+    "scheduledRunAt": "2026-10-10T00:00:00Z",
+    "observedExecutionAt": "2026-10-09T23:55:34Z",
+    "predecessorCompletionPriority": "Gunpo approved release completed before new city claim",
+    "newRegionStartedAt": "2026-10-10T00:01:05Z",
+    "serviceInvocationId": null,
+    "checkpointId": "direct-uiwang-20261010T000000Z",
+    "active": false,
+    "endedAt": "2026-10-10T00:16:10.220Z"
+  },
+  "identity": {
+    "repository": "joseungil-kr/fwith-site-factory",
+    "branch": "site-factory-uiwang-direct",
+    "root": "site-factory/uiwang-flower",
+    "worker": "uiwang-flower-guide",
+    "hostname": "uiwang.fwith.kr",
+    "externalCreationVerified": false,
+    "sourceBranchCreatedVerified": true
+  },
+  "input": {
+    "controlRevision": "02777593468f41c51c33d8c1b2bb82e82fc42e58",
+    "runtimeSourceRevision": "1d440850fc4ca039abcaacc8a5f3a866ba9c8b12"
+  },
+  "selection": {
+    "officialCode": "41430",
+    "reason": "Next eligible municipality after completed Gunpo in official code order; approval-waiting Gwacheon excluded"
+  },
+  "conflictChecks": {
+    "branchesChecked": 111,
+    "matchingBranch": false,
+    "openPullRequests": 0,
+    "inProgressWorkflows": 0,
+    "mainMatchingPaths": false,
+    "providerOwnershipCollisionCheck": "pending_before_mutation"
+  },
+  "plan": {
+    "state": "fixed_official_membership_before_writing",
+    "plannedArticleCount": 11,
+    "minimumPassedArticles": 10,
+    "passedArticleCount": 11,
+    "administrativeUnits": 6,
+    "crosswalkRelationships": 16,
+    "deferred": [],
+    "membershipPath": "docs/direct-regional-release/uiwang/membership.json",
+    "membershipSha256": "c731c3d631682155b0eac7a8ced94fb2f57586435f02e6851759159785488552"
+  },
+  "lastSuccessfulStage": "independent_exact_remote_source_and_final_build",
+  "nextIntent": "After exact target approval, fresh-read source, ownership and run state, then retry the same official workflow action once",
+  "pendingExternalAction": {
+    "action": "workflow_dispatch",
+    "workflow": ".github/workflows/uiwang-direct-publish.yml",
+    "ref": "main",
+    "expected_revision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
+    "indexnow_only": false,
+    "hostname": "uiwang.fwith.kr",
+    "worker": "uiwang-flower-guide",
+    "idempotencyKey": "uiwang-direct-publish:559669d44ed6a4dc3d2c5a2fef760ca5f53f9412:initial",
+    "requiredServiceApproval": "honor_at_execution",
+    "state": "waiting_exact_target_approval"
+  },
+  "controlRevision": "2bfa98811097ddf4a0e8f4cc8f3bb3195422af9b",
+  "review": {
+    "sourceInventorySha256": "91603cd2e3fe9ce6c3793324364c51110504c4705d40cfdeed3662a0c86fd8ad",
+    "writerDigests": [
+      "d0a86ac85a87b8957ea999090c9b64f71c08ee08723ef37eec0c090f2ecded76",
+      "d28d44acde3932a1db9cc7ee50ad6d471f0188927e1affaa925e5c4335832764"
+    ],
+    "sourceTests": 64,
+    "publisherTests": 34,
+    "htmlRoutes": 13,
+    "sitemapUrls": 13,
+    "hostedQa": "not_yet_deployed",
+    "evidencePath": "docs/direct-regional-release/uiwang/precommit-source-review.json",
+    "finalEvidencePath": "docs/direct-regional-release/uiwang/final-predeploy-review.json",
+    "finalArtifactSha256": "6a410416be2b3aaa2ff75aa684f2cf1e569059ad66dec937fe32cf0b4c7a0757"
+  },
+  "sourceRevision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
+  "requiredApproval": {
+    "action": "Run the existing Uiwang direct publication workflow, including attaching uiwang.fwith.kr to uiwang-flower-guide in the existing Cloudflare account and publishing the reviewed exact source",
+    "target": {
+      "hostname": "uiwang.fwith.kr",
+      "worker": "uiwang-flower-guide",
+      "workflow": ".github/workflows/uiwang-direct-publish.yml",
+      "sourceRevision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412"
+    },
+    "reason": "Action-time safety review requires explicit approval for this exact custom hostname attachment.",
+    "scope": "Only this hostname and reviewed source; no overrides, ownership transfer, credentials or security changes."
+  },
+  "dispatch": {
+    "status": "rejected_before_execution",
+    "controlRevision": "5c490bba60ab347c6690e4033d1e2a96882ff127",
+    "attemptedAt": "2026-10-10T00:14:59.072Z",
+    "verifiedAt": "2026-10-10T00:16:10.220Z",
+    "runId": null,
+    "globalLatest100Matches": 0,
+    "workflowUiRunCount": 0
+  },
+  "publication": {
+    "status": "not_executed",
+    "url": "https://uiwang.fwith.kr/",
+    "hostedQa": "NOT_RUN",
+    "indexNow": "NOT_SUBMITTED_NO_RECEIPT",
+    "gsc": "NOT_SUBMITTED_CONFIRMED_ABSENT"
+  }
+}
