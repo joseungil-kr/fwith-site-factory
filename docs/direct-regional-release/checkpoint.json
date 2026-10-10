@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T12:04:54.046Z",
+  "updatedAt": "2026-10-10T12:07:27.126Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "yeoju-direct-initial-20261010",
     "city": "여주시",
-    "status": "official_exact_source_CI_gate_pending",
+    "status": "official_exact_source_CI_running",
     "owner": {
       "scheduledRunAt": "2026-10-10T11:00:00Z",
       "observedExecutionAt": "2026-10-10T10:58:49Z",
@@ -41,7 +41,7 @@
       "serviceInvocationId": null,
       "checkpointId": "direct-yeoju-20261010T110000Z",
       "active": true,
-      "executionState": "official_exact_source_CI_gate_pending"
+      "executionState": "official_exact_source_CI_running"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -355,12 +355,17 @@
       "heldArticleCount": 2,
       "passedRatio": 0.9375
     },
-    "lastSuccessfulStage": "corrected_source_69_files_7_controls_remote_independent_readback_pass",
+    "lastSuccessfulStage": "official_exact_source_workflow_dispatch_confirmed",
     "nextIntent": "Use existing official credential-free CI as exact-source build gate; no local final build/artifact PASS claimed. Verify actual artifacts and public HTTP before completion.",
     "idempotencyKey": "yeoju-direct-initial-20261010:claim",
     "publication": {
-      "state": "not_published",
-      "intendedUrl": "https://yeoju.fwith.kr"
+      "state": "workflow_running_not_yet_verified",
+      "intendedUrl": "https://yeoju.fwith.kr",
+      "publicUrl": null,
+      "runId": 38050787605,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38050787605",
+      "controlRevision": "5932ad9989f51bac3931073c14287d2e66a8fc6b",
+      "articleCountPublished": 0
     },
     "indexnow": {
       "state": "not_submitted"
@@ -401,9 +406,11 @@
       },
       "target": "yeoju-flower-guide / yeoju.fwith.kr",
       "idempotencyKey": "yeoju-direct-initial-20261010:publish:8fbcc607193d2ea3c34286519cff7d5f3380479a",
-      "dispatchAttempted": false,
-      "dispatchConfirmed": false,
-      "requiredGates": "Official credential-free exact-source Node22 source64/helper34/build/static/graph/package must pass before publish job via needs:build; artifact verified before provider GET; no override; honor service execution approval"
+      "dispatchAttempted": true,
+      "dispatchConfirmed": true,
+      "requiredGates": "Official credential-free exact-source Node22 source64/helper34/build/static/graph/package must pass before publish job via needs:build; artifact verified before provider GET; no override; honor service execution approval",
+      "runId": 38050787605,
+      "dispatchedAt": "2026-10-10T12:06:54Z"
     }
   },
   "history": [
