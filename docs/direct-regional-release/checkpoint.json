@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "jongno-direct-initial-20261010",
     "city": "서울특별시 종로구",
-    "status": "independent_content_pass_source_save_pending",
+    "status": "source_saved_exact_build_and_remote_readback_pending",
     "owner": {
       "scheduledRunAt": "2026-10-10T15:00:00Z",
       "observedExecutionAt": "2026-10-10T15:19:58.725474Z",
@@ -41,7 +41,7 @@
       "serviceInvocationId": null,
       "checkpointId": "direct-jongno-initial-20261010T150000Z",
       "active": true,
-      "executionState": "save_reviewed_source_then_node22_build",
+      "executionState": "verify_exact_source_then_publish_controls",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T15:12:44.377Z",
       "priorOwnerReadbackConfirmedAt": "2026-10-10T15:12:46.599Z"
     },
@@ -52,7 +52,7 @@
       "worker": "jongno-flower-guide",
       "hostname": "jongno.fwith.kr",
       "externalCreationVerified": false,
-      "sourceBranchCreatedVerified": false
+      "sourceBranchCreatedVerified": true
     },
     "selection": {
       "officialCode": "11110",
@@ -122,13 +122,13 @@
       "deferredArticleCount": 0
     },
     "changeIntent": {
-      "action": "create_exact_reviewed_jongno_source_branch",
-      "target": "site-factory-jongno-direct",
-      "root": "site-factory/jongno-flower",
-      "idempotencyKey": "jongno:source:341211fee4781e1159f095e99127de789173e27488a34a56b04ff609f00773e9"
+      "action": "save_jongno_fixed_dispatch_controls_after_independent_exact_source_checks",
+      "target": ".github/workflows/jongno-direct-publish.yml and scripts/direct-jongno/{publish.py,test_publish.py} on main",
+      "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "idempotencyKey": "jongno:controls:16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b"
     },
-    "lastSuccessfulStage": "six_articles_and_eight_product_images_independent_review_pass",
-    "nextIntent": "Save exact source, independently build and test using Node22, then publish controls and request official workflow execution.",
+    "lastSuccessfulStage": "reviewed_source_branch_created_and_exact_head_readback",
+    "nextIntent": "Finish exact-source Node22 build and remote byte readback; save reviewed fixed dispatch controls on main; then record dispatch intent.",
     "review": {
       "articlesSha256": "341211fee4781e1159f095e99127de789173e27488a34a56b04ff609f00773e9",
       "independentReviewSha256": "f630aff14c6ff8c2089436cf7e8dd1368397c6bd7059b85eb3b1c0383be4ea97",
@@ -137,6 +137,15 @@
       "screenQa": "deferred_not_pass",
       "authorRevision": 3,
       "preflightFindingResolved": "Five generic additional-cost caveats now explicitly state delivery fees; independent content rereview passed."
+    },
+    "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+    "validation": {
+      "nodeVersion": "22",
+      "sourceTestsPassed": 68,
+      "publisherTestsPassed": 42,
+      "build": "pending_exact_source",
+      "remoteFullReadback": "pending",
+      "screenQa": "deferred_not_pass"
     }
   },
   "history": [
