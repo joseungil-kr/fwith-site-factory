@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent-plan-reviewer",
+  "reviewKind": "independent_official_source_membership_purchase_intent_plan_review",
+  "reviewedAt": "2026-10-10T18:16:36.613576+00:00",
+  "status": "PASS",
+  "passed": true,
+  "subject": "docs/direct-regional-release/seoul-seongdong/fixed-plan.json",
+  "subject_sha256": "dfe96adfa74edef943370f6129ebf5460702c461db4901b2c4ed47bd5d57edfc",
+  "fixedPlanSha256": "dfe96adfa74edef943370f6129ebf5460702c461db4901b2c4ed47bd5d57edfc",
+  "coverageInputSha256": "c5fcbb32ce4b216ee3899ec96ac614afbfb58832219f3854904026a7df6821c3",
+  "candidatePlanSha256": "aded73789c1fd5b3c0b8f7231c0136516f145745498717884293169804424c13",
+  "membershipInputSha256": "31b46ca5812dd1aad113e307af40ae59f2dc52ec176dbb2706778e929e804b83",
+  "checks": {
+    "exactlyFourUniqueLegalUnitsAndSlugs": true,
+    "fixedDenominatorRequiresFourPasses": true,
+    "oneFuneralThreeCongratulations": true,
+    "fourDifferentBuyerIntents": true,
+    "purchaseFocusedTitleH1KeywordEqual": true,
+    "coverage17Legal17Admin23Pairs": true,
+    "coverageLegalCodesAndNamesExact": true,
+    "coverageAdminCodesAndNamesExact": true,
+    "coverageRelationshipPairsExact": true,
+    "coverageMultipleAdminFlagsExact": true,
+    "coverageRelationScopesPreserveMultipleMemberships": true,
+    "officialMembershipIndependentlyPassed": true,
+    "membershipHashBound": true,
+    "fullMembershipNotPageQuotaOrDeliveryPromise": true,
+    "allPlannedUnitsInCoverage": true,
+    "noArticleBodiesOrAssignedProductsInPlan": true,
+    "outsideWreathAdmissionExplicitlyUnconfirmed": true,
+    "noInventedSearchVolume": true,
+    "firstAnswerHasMatchingPurposeAndLocalDecision": true,
+    "officialFacilityAndLegalMappingsVerified": true,
+    "majangLatestOfficialAddressVariationReconciled": true,
+    "candidateFirstAnswersPreserved": true
+  },
+  "plannedArticleCount": 4,
+  "minimumPassedArticles": 4,
+  "items": [
+    {
+      "slug": "sageun-dong-hanyang-hospital-condolence-wreath",
+      "status": "PASS",
+      "basis": "Official current hospital map directly fetched with 서관1층 and 왕십리로222-1; municipality same-building notice locates it in사근동. First answer matches condolence order and exact ward/funeral distinction.",
+      "requiredCaveat": "Historical construction notice is geography evidence only; external floral admission and current room/receipt data remain unconfirmed."
+    },
+    {
+      "slug": "seongsu1-ga-bottega-maggio-wedding-wreath",
+      "status": "PASS",
+      "basis": "Official location indexed text independently confirms 갤러리아포레G층(B2). Same building legal동 confirmed through Seoul licensing data and municipality map. Wedding order first answer prevents wrong tenant/floor routing.",
+      "requiredCaveat": "Current official/hall names can be contextual, but actual invitation and receiving point govern; no external admission inference."
+    },
+    {
+      "slug": "seongsu2-ga-sfactory-popup-opening-wreath",
+      "status": "PASS",
+      "basis": "Direct operator pages confirm event/pop-up use, D동1F/3F and business-address B동 distinction. First answer matches opening-order decision rather than generic geographic label.",
+      "requiredCaveat": "Rental or general operation hours are not flower receipt hours; event organizer must confirm building, setup receipt, placement and collection."
+    },
+    {
+      "slug": "majang-dong-market-opening-wreath",
+      "status": "PASS",
+      "basis": "Both current official market-reference locations are now preserved and clearly separated from the actual business receiving address. Purchase intent asks for sales/workshop/office receipt point without inventing operational rules.",
+      "requiredCaveat": "Do not claim every market business has separate sales/workshop/office premises. These are questions to confirm, not asserted facilities."
+    }
+  ],
+  "issues": [],
+  "baselineDuplicationReview": {
+    "baselines": [
+      {
+        "subject": "junggu-research-20261010/plan-candidate.json",
+        "sha256": "91d20ef92b7134cffdec5f7e2d2dea8773575904a9a28f05bb065df5b9e33133",
+        "pageCount": 7
+      },
+      {
+        "subject": "yongsan-research-20261010/plan-candidate.json",
+        "sha256": "c4bba2c12af9c759c04ca0c4d203499738454cfaa556496513cafb4829f5d458",
+        "pageCount": 5
+      },
+      {
+        "subject": "jongno-research/plan-candidate.json",
+        "sha256": "64d059f36c9066830f170ed886e0a40264473b7e12d93d1990a63f105befcafd",
+        "pageCount": 6
+      }
+    ],
+    "facilityOrLegalUnitDuplicateFound": false,
+    "review": "Facility-specific plans are distinct from prior districts. Majang generic market text was refined to the correct business receiving point; final body comparison is still required. Funeral/wedding/event purposes recur legitimately but copied prose and regional name swaps are not approved.",
+    "bodySimilarityCheckPending": true
+  },
+  "sourceLimitations": [
+    "Bottega operator403 and municipality502 limited direct retrieval; independently retrieved official indexed text is identified as such. No bypass of a security warning.",
+    "Hospital current map directHTTP200; municipality historical notice establishes matching west-building geography only.",
+    "Full legal/administrative mappings come from independently downloaded MOIS20260930 archive. Future20261012Pyeongtaek notice does not supersede it on20261010.",
+    "No parcel-boundary geometry, exterior wreath admission, seller delivery capacity, current stock, arrival time, or service guarantee was verified."
+  ],
+  "articleBodyReviewed": false,
+  "catalogReviewed": false,
+  "notReleaseApproval": true,
+  "approvalScope": "Plan freeze and article authoring only. No article-body, catalog, runtime, deployment or release approval.",
+  "resolvedFindings": [
+    {
+      "id": "MAJANG_CURRENT_ADDRESS_CONTEXT",
+      "resolution": "Source-specific district market-area and newer city registry locations added; neither auto-selects a flower receipt address.",
+      "previousFixedPlanSha256": "c3260b9072b0a13dca9fb071a1071e9fc86dcd1fce3f46ae939ea81d76a575a3"
+    }
+  ],
+  "authoringRequirements": [
+    "Keep facility-specific buying decisions in each first answer and body; compare final articles against prior districts for copied templates and city-name replacement.",
+    "Hanyang: separate current funeral west-building1F from main hospital and historical construction notice; do not publish current bereavement personal details or inferred room information.",
+    "Bottega: use official G층(B2) address, actual invitation/receipt instructions and no unverified exterior flower access.",
+    "Sfactory: distinguish footerB동 business address from actual event building/floor; no24-hour receipt inference from rental contract unit.",
+    "Majang: preserve two official reference addresses and confirm actual store receiving point; no invented common receiving policy or universal sales/workshop/office layout.",
+    "All4 exterior wreath acceptance, actual delivery availability, installation/collection and arrival times remain unverified.",
+    "Exact4-product catalog and price/photo comparison require separate verification.",
+    "All4 articles must pass final review to meet minimum4 of fixed denominator4."
+  ]
+}

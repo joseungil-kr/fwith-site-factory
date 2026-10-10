@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "reviewKind": "independent_runtime_adapter_preparation_review",
+  "reviewerRole": "Independent runtime reviewer",
+  "reviewedAt": "2026-10-10T18:13:10Z",
+  "verdict": "PREPARATION_AND_SYNTHETIC_FIXTURES_PASS",
+  "canPublishActualRelease": false,
+  "runtimeSourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+  "controlSourceRevision": "075c84d0d136aaf1382a5b153298d0210c3d9e2a",
+  "target": {
+    "repository": "joseungil-kr/fwith-site-factory",
+    "branch": "site-factory-seoul-seongdong-direct",
+    "sourceRoot": "site-factory/seoul-seongdong-flower",
+    "worker": "seoul-seongdong-flower-guide",
+    "origin": "https://seoul-seongdong.fwith.kr"
+  },
+  "pins": {
+    "freshIndependentGitHubCommitReadback": true,
+    "freshIndependentGitHubRecursiveTreeReadback": true,
+    "remoteTreesTruncated": false,
+    "runtimeBlobAndSizeMatches": 57,
+    "controlHelperBlobAndSizeMatches": 6,
+    "localManifestSha256AndSizeChecks": "PASS",
+    "runtimeByteIdenticalFiles": 55,
+    "runtimeModifiedFiles": [
+      "src/pages/[category]/index.astro",
+      "wrangler.jsonc"
+    ],
+    "runtimeDiffScope": "Regional directory description and fixed Worker name only. Dependencies, shared regional validator and publication safety implementation retained."
+  },
+  "adapterInputs": {
+    "generatorSha256": "f3afd99082e426434e5eda4c14875819a912a9492d56453c0d67de1005d4a90a",
+    "testsSha256": "4762e5c28867863eac545a29fcf824cd3b53b9c9cc8e08adc670381ef85a607b",
+    "coverageSha256": "c5fcbb32ce4b216ee3899ec96ac614afbfb58832219f3854904026a7df6821c3",
+    "membershipSha256": "31b46ca5812dd1aad113e307af40ae59f2dc52ec176dbb2706778e929e804b83",
+    "membershipCounts": {
+      "legal": 17,
+      "administrative": 17,
+      "relations": 23,
+      "partialRelations": 11
+    },
+    "membershipIsNotArticleQuota": true,
+    "actualPlanArticleCount": "Not approved or selected by this runtime review"
+  },
+  "independentExecution": {
+    "nodeVersion": "22.23.3",
+    "adapterTestsPassed": 18,
+    "fixtures": [
+      {
+        "frozenN": 4,
+        "held": 0,
+        "approved": 4,
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "offlineLockedNpmCi": "PASS",
+        "astroCheck": {
+          "files": 38,
+          "errors": 0,
+          "warnings": 0,
+          "hints": 0
+        },
+        "build": "PASS",
+        "staticMetadataSitemapSnapshotsAssetsCta": "PASS",
+        "graph": "PASS",
+        "normalRoutes": 6,
+        "real404Separate": true,
+        "indexable": false,
+        "productionIndexableBuildBlocked": true
+      },
+      {
+        "frozenN": 6,
+        "held": 0,
+        "approved": 6,
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "offlineLockedNpmCi": "PASS",
+        "astroCheck": {
+          "files": 38,
+          "errors": 0,
+          "warnings": 0,
+          "hints": 0
+        },
+        "build": "PASS",
+        "staticMetadataSitemapSnapshotsAssetsCta": "PASS",
+        "graph": "PASS",
+        "normalRoutes": 8,
+        "real404Separate": true,
+        "indexable": false,
+        "productionIndexableBuildBlocked": true
+      },
+      {
+        "frozenN": 10,
+        "held": 1,
+        "approved": 9,
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "offlineLockedNpmCi": "PASS",
+        "astroCheck": {
+          "files": 38,
+          "errors": 0,
+          "warnings": 0,
+          "hints": 0
+        },
+        "build": "PASS",
+        "staticMetadataSitemapSnapshotsAssetsCta": "PASS",
+        "graph": "PASS",
+        "normalRoutes": 11,
+        "real404Separate": true,
+        "indexable": false,
+        "productionIndexableBuildBlocked": true
+      }
+    ],
+    "executionIsolation": "Copies and generated test outputs confined to reviewer workspace; author files unchanged."
+  },
+  "guardsReviewed": {
+    "exactSource": "Full 40-character source revision, exact named branch head check before build and before publish/finalize, ancestry check, artifact identity/digest verification and exact live HTML/assets revision and SHA-256 verification retained.",
+    "credentiallessBuild": "Separate build and publish jobs retained. No provider secrets in build or finalization-only job, and source checkout does not persist credentials.",
+    "providerReadback": "Only fixed account, Worker inventory and domains inventory GETs permitted for preflight/readback. Initial target must be absent; ambiguous, incomplete, foreign and colliding inventories fail closed.",
+    "noOverride": "Only fixed hostname attachment PUT is allowed, with override_scope, override_existing_origin and override_existing_dns_record all false; other DNS/security/provider mutations are blocked.",
+    "http403": "IndexNow 403 is journaled as rejected. Same-fingerprint re-entry is blocked by indexnow_403_diagnostic_review_required and performs no second POST.",
+    "unknownTerminal": "Uncertain timeout, started or unknown receipt outcomes block a second POST. Accepted 200/202 receipts are reused, preserving pending-validation distinction.",
+    "exactLiveBeforeSubmission": "Full public verification and unchanged sitemap are required before journal start and each POST; changed public source submits zero requests.",
+    "approvedOnlyAssembly": "Exact article, frozen-plan and coverage hashes bind independent content review; approved/deferred partition and >=90%/minimum-three thresholds enforced; synthetic review cannot invoke production assembler.",
+    "geographicSeparation": "Full official membership retained separately from unique one-unit-per-page frozen purchase-intent plan; held routes remain reserved and unrepresented units are not fabricated.",
+    "safeOutput": "Production assembler refuses existing source output, rejects synthetic-only review, creates output atomically and retains fresh customer snapshots and new ownership/provenance."
+  },
+  "blockingFindings": [],
+  "limitations": [
+    "Actual customer source was not assembled at this review checkpoint.",
+    "Synthetic fixture success does not approve the purchase-intent plan, authored content, real source SHA, Actions run, deployment, provider binding, public HTTP, IndexNow receipt or search indexing.",
+    "Actual source needs a new exact-file/revision review, production build, static/graph checks and local artifact/HTTP review before publication.",
+    "Hosted release needs separate exact Actions/artifact/source linkage, provider GET readback, live HTTPS bytes and IndexNow receipt verification.",
+    "Browser/screen QA was not performed and is not a pass."
+  ],
+  "reviewerActions": {
+    "github": "Read-only commit/tree GETs",
+    "local": "Isolated verification, fixture generation and tests/builds",
+    "externalWrites": false,
+    "providerMutation": false,
+    "indexnowPost": false,
+    "browserOrUserComputer": false,
+    "authorFileEdits": false
+  },
+  "evidence": {
+    "fresh-remote-pin-verification.json": "cc6b2de41df8c9542078d67e1455a81748bcb14c71bd69d46ce3b7ffe63a7a86",
+    "independent-local-integrity.json": "affccfe8728d82b2d69a296435203fb53c893ba416716d7bde705c9bf96d1540",
+    "independent-adapter-tests.log": "8b811667681f380165b326ffbbd8906b3ddf115335443b32d8092485477df47c",
+    "independent-fixture-builds.log": "e25bd3d0d0fbce0573d7518cce004aed16934f93c987fa70fb5205dbd057848f",
+    "fixture-recheck/fixture-build-report.json": "7c85f10a823629d256de51b79b79705f0ccaa504aa459ce700d9e7ec16eb53a3"
+  }
+}

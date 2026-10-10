@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T18:04:31.491Z",
+  "updatedAt": "2026-10-10T18:16:54.107Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-seongdong-direct-initial-20261010",
     "city": "서울특별시 성동구",
-    "status": "researching_official_membership_and_purchase_plan",
+    "status": "plan_frozen_independent_review_pass",
     "owner": {
       "scheduledRunAt": "2026-10-10T18:00:00Z",
       "observedExecutionAt": "2026-10-10T18:04:31.491Z",
@@ -72,11 +72,12 @@
       "publicHostObservation": "not_yet_verified"
     },
     "changeIntent": {
-      "action": "claim_single_writer_and_prepare_frozen_plan",
-      "target": "docs/direct-regional-release/checkpoint.json",
-      "idempotencyKey": "seoul-seongdong:initial:20261010T180000Z"
+      "action": "create_source_branch_and_author_frozen_plan",
+      "target": "site-factory-seoul-seongdong-direct",
+      "baseRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+      "idempotencyKey": "seoul-seongdong:source-branch:20261010T180000Z"
     },
-    "lastSuccessfulStage": "fresh_remote_plan_and_ownership_readback",
+    "lastSuccessfulStage": "official_plan_independent_review_pass",
     "unfinishedStages": [
       "official_plan",
       "content",
@@ -88,7 +89,51 @@
       "indexnow",
       "gsc",
       "deferred_visual_qa"
-    ]
+    ],
+    "plan": {
+      "state": "frozen_before_authoring_independent_plan_pass",
+      "plannedArticleCount": 4,
+      "minimumPassedArticles": 4,
+      "legalDongCount": 17,
+      "administrativeDongCount": 17,
+      "relationshipCount": 23,
+      "unassignedLegalUnits": 13,
+      "countIsPageQuota": false,
+      "fixedPlanPath": "docs/direct-regional-release/seoul-seongdong/fixed-plan.json",
+      "fixedPlanSha256": "dfe96adfa74edef943370f6129ebf5460702c461db4901b2c4ed47bd5d57edfc",
+      "frozenAt": "2026-10-10T18:16:10.772098+00:00",
+      "articles": [
+        {
+          "slug": "sageun-dong-hanyang-hospital-condolence-wreath",
+          "title": "한양대학교병원 장례식장 근조화환 주문",
+          "primaryKeyword": "한양대학교병원 장례식장 근조화환 주문",
+          "status": "planned"
+        },
+        {
+          "slug": "seongsu1-ga-bottega-maggio-wedding-wreath",
+          "title": "보테가마지오 결혼식 축하화환 주문",
+          "primaryKeyword": "보테가마지오 결혼식 축하화환 주문",
+          "status": "planned"
+        },
+        {
+          "slug": "seongsu2-ga-sfactory-popup-opening-wreath",
+          "title": "성수 에스팩토리 팝업 개막 축하화환 주문",
+          "primaryKeyword": "성수 에스팩토리 팝업 개막 축하화환 주문",
+          "status": "planned"
+        },
+        {
+          "slug": "majang-dong-market-opening-wreath",
+          "title": "마장축산물시장 거래처 개업화환 주문",
+          "primaryKeyword": "마장축산물시장 거래처 개업화환 주문",
+          "status": "planned"
+        }
+      ]
+    },
+    "review": {
+      "screenQa": "DEFERRED_NOT_PASS",
+      "planReviewStatus": "PASS_BEFORE_AUTHORING",
+      "planReviewSha256": "dcdbbcbdf259ec84f05773bd74d786645f9fe4237590d11f2419e3a1f0c748d8"
+    }
   },
   "history": [
     {
