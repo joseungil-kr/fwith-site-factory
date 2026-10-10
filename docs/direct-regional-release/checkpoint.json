@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T17:32:30.813011+00:00",
+  "updatedAt": "2026-10-10T17:35:16.910017+00:00",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-yongsan-direct-initial-20261010",
     "city": "서울특별시 용산구",
-    "status": "exact_source_verified_preparing_formal_dispatch",
+    "status": "formal_publish_workflow_dispatched",
     "owner": {
       "scheduledRunAt": "2026-10-10T17:00:00Z",
       "observedExecutionAt": "2026-10-10T17:01:55.856Z",
@@ -78,10 +78,11 @@
       "target": ".github/workflows/seoul-yongsan-direct-publish.yml",
       "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
       "idempotencyKey": "seoul-yongsan:workflow-dispatch:30a1fd5465a290561ba0e95cd51f81707862c650",
-      "dispatchCount": 0,
-      "providerPreflightRequired": "GET account worker hostname and no-override ownership collision checks before mutations"
+      "dispatchCount": 1,
+      "providerPreflightRequired": "GET account worker hostname and no-override ownership collision checks before mutations",
+      "actualRunId": 38072325986
     },
-    "lastSuccessfulStage": "exact_source_remote_readback_independent_node22_build_static_graph_and_loopback_http",
+    "lastSuccessfulStage": "formal_exact_source_workflow_dispatch_and_run_readback",
     "review": {
       "screenQa": "DEFERRED_NOT_PASS",
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
@@ -172,6 +173,15 @@
       "remoteReadbackSha256": "c6117c409e6dc418d27d6bed629e640cda3605196c6974ed19fc0de0be5dedd9",
       "publicProductionHttp": "NOT_YET_RUN",
       "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+    },
+    "controlRevision": "637d6657e262504e66903663255ae3031fe58371",
+    "run": {
+      "id": 38072325986,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38072325986",
+      "status": "queued",
+      "dispatchCount": 1,
+      "sourceRevision": "30a1fd5465a290561ba0e95cd51f81707862c650",
+      "controlRevision": "637d6657e262504e66903663255ae3031fe58371"
     }
   },
   "history": [
