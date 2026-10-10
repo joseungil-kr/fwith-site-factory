@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T13:55:03.917Z",
+  "updatedAt": "2026-10-10T13:56:11.976Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -186,18 +186,19 @@
     "lastSuccessfulStage": "official_dispatch_accepted",
     "nextIntent": "Resume the exact Yeoncheon workflow dispatch only after region-specific approval is verified",
     "changeIntent": {
-      "action": "publish_fixed_direct_controls_then_exact_dispatch",
-      "target": ".github/workflows/yeoncheon-direct-publish.yml",
-      "idempotencyKey": "yeoncheon-direct-initial-20261010:dispatch:f02912710d4e127241ae6e72269966d0a906b1b0"
+      "action": "gsc_submit_sitemap",
+      "target": "https://yeoncheon.fwith.kr/sitemap-index.xml",
+      "idempotencyKey": "yeoncheon:gsc:f02912710d4e127241ae6e72269966d0a906b1b0"
     },
     "idempotencyKey": "yeoncheon-direct-initial-20261010:claim",
     "publication": {
-      "state": "workflow_in_progress",
+      "state": "public_http_verified",
       "runId": 38057529483,
       "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38057529483",
       "sourceRevision": "f02912710d4e127241ae6e72269966d0a906b1b0",
       "controlRevision": "e81c40e2968ee826a0ac57aaaf2a344363bb9f72",
-      "dispatchedAt": "2026-10-10T13:54:28Z"
+      "dispatchedAt": "2026-10-10T13:54:28Z",
+      "verifiedAt": "2026-10-10T13:55:35Z"
     },
     "review": {
       "content": "PASS_EXACT_9_ARTICLES",
@@ -253,6 +254,27 @@
       "indexNow": "not_submitted",
       "gsc": "not_submitted",
       "visual": "deferred_not_pass"
+    },
+    "indexNow": {
+      "attempt": 1,
+      "endpoint": "https://searchadvisor.naver.com/indexnow",
+      "fingerprint": "4a5c0a24ae9f9b45f9fa017132a4a05e9ebd9871df65a50a6a9db96765d8103e",
+      "httpStatus": 200,
+      "origin": "https://yeoncheon.fwith.kr",
+      "recordedAt": "2026-10-10T13:55:39.559111+00:00",
+      "revision": "f02912710d4e127241ae6e72269966d0a906b1b0",
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38057529483",
+      "siteKey": "yeoncheon-flower-direct",
+      "state": "received",
+      "urlCount": 11,
+      "urlSetSha256": "f0565b4cd647dff6da1420666f2753df4e0ea26235b99d7127779d8cbfd8cc09",
+      "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6098220673"
+    },
+    "gsc": {
+      "state": "submit_intent",
+      "siteUrl": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://yeoncheon.fwith.kr/sitemap-index.xml",
+      "existingRegistration": false
     }
   },
   "history": [
