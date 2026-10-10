@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T19:25:35.937Z",
+  "updatedAt": "2026-10-10T19:27:27.747Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-gwangjin-direct-initial-20261010",
     "city": "서울특별시 광진구",
-    "status": "ready_to_dispatch",
+    "status": "dispatched",
     "owner": {
       "scheduledRunAt": "2026-10-10T19:00:00Z",
       "observedExecutionAt": "2026-10-10T19:04:28.316Z",
@@ -78,21 +78,9 @@
       }
     },
     "changeIntent": {
-      "action": "workflow_dispatch_once",
-      "target": ".github/workflows/seoul-gwangjin-direct-publish.yml",
-      "ref": "main",
-      "inputs": {
-        "expected_revision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
-        "indexnow_only": false
-      },
-      "idempotencyKey": "seoul-gwangjin:publish:296e47b384bfc36e0dfa6e7a4586d41220c93587",
-      "scope": {
-        "worker": "seoul-gwangjin-flower-guide",
-        "hostname": "seoul-gwangjin.fwith.kr",
-        "existingOwnedFwithAccountOnly": true,
-        "noOverride": true
-      },
-      "preconditions": "Exact remote source build and independent content/runtime reviews PASS. Actual provider collision GET in fixed official workflow before mutation."
+      "action": "observe_existing_run_and_verify_hosted_exact_source_before_search",
+      "target": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38079835650",
+      "idempotencyKey": "seoul-gwangjin:observe-run:38079835650"
     },
     "unfinishedStages": [
       "plan_freeze",
@@ -182,6 +170,16 @@
       "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
       "remoteReadbackSha256": "7faaf37be893a1c433ddf403c2d01ce93ebc7ed139a9c66b24cacf493e87ba8e",
       "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+    },
+    "controlRevision": "190da58d4ebe522c68630e6933a8fb30c1006979",
+    "run": {
+      "id": 38079835650,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38079835650",
+      "status": "queued",
+      "dispatchCount": 1,
+      "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
+      "controlRevision": "190da58d4ebe522c68630e6933a8fb30c1006979",
+      "createdAt": "2026-10-10T19:26:56Z"
     }
   },
   "history": [
