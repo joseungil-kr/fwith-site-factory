@@ -1,0 +1,85 @@
+{
+  "retrieved_date_utc": "2026-10-10",
+  "as_of": "2026-10-10",
+  "sources": [
+    {
+      "id": "latest_effective",
+      "publisher": "행정안전부 주민과",
+      "title": "행정기관(행정동) 및 관할구역(법정동) 변경내역(2026.9.30. 시행)",
+      "url": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824",
+      "published_date": "2026-09-29",
+      "effective_date": "2026-09-30",
+      "local_evidence": "mois-20260930.html",
+      "purpose": "Current complete KIK legal, administrative and relationship code package; latest effective package as of 2026-10-10."
+    },
+    {
+      "id": "current_code_zip",
+      "publisher": "행정안전부 주민과",
+      "title": "jscode20260930.zip",
+      "url": "https://www.mois.go.kr/cmm/fms/FileDown.do?atchFileId=FILE_00149355_BR8t5D&fileSn=1",
+      "effective_date": "2026-09-30",
+      "local_evidence": "jscode20260930.zip",
+      "sha256": "c9c2583919adfff992edc098fe7ea522e625fedabbfefedbd85564942c059d43",
+      "purpose": "Primary authoritative complete data. Fresh independent download matches parent-provided known SHA256."
+    },
+    {
+      "id": "code_changes_index",
+      "publisher": "행정안전부",
+      "url": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardList.do?bbsId=BBSMSTR_000000000052",
+      "local_evidence": "mois-code-changes-list.html",
+      "purpose": "Shows latest posted October 12 package is future-effective; September 30 is latest already effective."
+    },
+    {
+      "id": "future_not_applied",
+      "publisher": "행정안전부 주민과",
+      "title": "행정기관(행정동) 및 관할구역(법정동) 변경내역(2026.10.12. 시행)",
+      "url": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+      "published_date": "2026-10-08",
+      "effective_date": "2026-10-12",
+      "local_evidence": "mois-20261012.html",
+      "purpose": "Not applied. Pyeongtaek Godeok-dong split into Godeok1/2; jurisdiction adjustment. Legal dong codes unchanged; no national release-unit denominator impact stated."
+    },
+    {
+      "id": "july_reorganization",
+      "publisher": "행정안전부 주민과",
+      "url": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=127039",
+      "effective_date": "2026-07-01",
+      "local_evidence": "mois-20260701.html",
+      "purpose": "Jeonnam/Gwangju integrated special city and Incheon code changes. Complete July ZIP and September package independently contain new code names."
+    },
+    {
+      "id": "jongno_official_code_browser",
+      "publisher": "행정표준코드관리시스템",
+      "url": "https://www.code.go.kr/stdcode/regCodeL.do?menuNo=101010100010",
+      "local_evidence": "code-current.html",
+      "purpose": "Independent official web display verifies Seoul 1100000000 followed by Jongno 1111000000."
+    },
+    {
+      "id": "municipality_count_corroboration",
+      "publisher": "자치법규정보시스템",
+      "url": "https://www.elis.go.kr/sysinfo/locgovAlrStatList",
+      "purpose": "Official page separately displays 16 top-level and 227 lower-level governments. Secondary corroboration only; page heading has half-year/June timing, so current-code ZIP remains primary."
+    },
+    {
+      "id": "integrated_city_launch",
+      "publisher": "행정안전부",
+      "url": "https://www.mois.go.kr/frt/bbs/type010/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000008&nttId=126845",
+      "published_date": "2026-06-15",
+      "purpose": "Official launch notice states July 1 combination of former Jeollanam-do and Gwangju into Jeonnam Gwangju Integrated Special City."
+    }
+  ],
+  "method": {
+    "primary_file": "KIKcd_B.20260930",
+    "independent_cross_check_file": "KIKcd_H.20260930",
+    "parsing": "CP949 fixed-width bytes. code[0:10], sido[11:41], sigungu[42:72], eupmyeondong[73:103]. Legal ri[104:134], created[135:143], abolished[144:152].",
+    "selection": "Among code suffix 00000 rows, include direct city/county/autonomous-district children; exclude top-level province rows, branch offices, and multi-token sigungu names representing general districts. Explicitly include Sejong 3611000000 and Jeju City/Seogwipo. Sort numeric first-five-digit code ascending.",
+    "counts": "230 = 227 autonomous city/county/district governments + Sejong 1 + Jeju administrative cities 2. 291 source level rows minus 16 top-level rows minus 6 branch rows minus 39 general districts = 230."
+  },
+  "caveats": [
+    "Gyeonggi 31 released status is supplied by parent task context, not independently deployment-verified in this research. Denominator and 31 Gyeonggi unit membership are independently verified from official source.",
+    "As-of date controls effective package. Do not apply future 2026-10-12 package on 2026-10-10.",
+    "Legal dong and administrative dong are different entities; Jongno has 87 legal dongs, 17 administrative dongs, and 93 official administrative/legal relationship rows. Do not duplicate pages for mapping overlaps.",
+    "Ascending official-code order places integrated special city code 12 (27 units) directly after Seoul code 11 and before Busan code 26. Legacy province ordering is obsolete.",
+    "Release denominator excludes 39 general districts, including Hwaseong 4; excludes 6 branch offices even when their codes look like district-level codes."
+  ]
+}

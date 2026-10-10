@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent_gyeonggi_and_national_auditor",
+  "reviewedAt": "2026-10-10T15:20:57.243265+00:00",
+  "verdict": "PASS",
+  "reviewedExactSha256": {
+    "nationwide-release-units.json": "84d0e80c443dc6ca6c4ded207b3cffded14a48f1015cd777f26c626f68891a06",
+    "source-evidence.json": "cc3e82ce0b58cc6871936d0b2cba02eccb125ed84d809b5b7249a6ca134916e0",
+    "verification.json": "fa8eec8f24e362e8e721447b35454e6c807bc5d830f27983d2b9a00cbe851224",
+    "derive_plan.py": "d0c85d5acdbbb5d1bab4eeed531e645ea385a2db7a770662fae2361c8f3395f6",
+    "excluded-level-records.json": "6afb8836b6dc821dc9a8a3185546ddb285cc510af0ee5df94a813e478a32def8",
+    "summary.json": "5ed7b179eb165c370dfcfb4e3047f1da57d07843291f0bb66c2a84ae65efc256",
+    "jscode20260930.zip": "c9c2583919adfff992edc098fe7ea522e625fedabbfefedbd85564942c059d43",
+    "KIKcd_B.20260930": "e81ded8b09c3c90de45c9c486fc289c11caf0a39d7cb8662ac5a8b59b233ddd4",
+    "KIKcd_H.20260930": "327d980f4558664f48de6b82372d794955eaf19f0fa05f6f40ef6d8fc1de5a84",
+    "KIKmix.20260930": "7b717f117c81f157d474f6fe3bb5f819297cc75fe6c921b7f9aa66128f5bd748",
+    "mois-20260930.html": "07c4d2a73e67395a903002c935962ed8ddc78db5a73f0406b326bcc34477de27",
+    "mois-20260701.html": "126f97f2e35cc30b3e44f5865f080540a9fc928d2348ebef8c8db071516d6800",
+    "mois-20261012.html": "9e9a546cc6bf958febaf1bc11eec07612d41f0d22a93ccd7036afc329855d033",
+    "mois-code-changes-list.html": "93b128a97a5bd23792549431de7f518a8398576316d31fb19a71ed09fba390d7"
+  },
+  "checks": {
+    "official_zip_sha_matches_source_evidence": true,
+    "archive_text_files_equal_local_inputs": true,
+    "author_verification_hashes_match_read_bytes": true,
+    "xlsx_legal_exact_release_set_matches_plan": true,
+    "xlsx_administrative_exact_release_set_matches_plan": true,
+    "every_plan_row_exact_name_kind_created_and_line_match_xlsx": true,
+    "national_release_count_230": true,
+    "gyeonggi_count_31": true,
+    "remaining_count_199": true,
+    "release_flags_only_gyeonggi": true,
+    "first_pending_is_jongno_11110": true,
+    "ascending_codes_and_contiguous_orders": true,
+    "excluded_39_general_districts": true,
+    "excluded_6_branch_offices": true,
+    "excluded_16_province_rows": true,
+    "no_unexpected_exclusions": true,
+    "sejong_once": true,
+    "jeju_two_administrative_cities": true,
+    "16_current_sido": true,
+    "integrated_jeonnam_gwangju_code_12_27_units": true,
+    "incheon_current_11": true,
+    "current_release_rows_no_abolished_or_future": true,
+    "jongno_87_legal_17_administrative": true,
+    "excluded_records_exact_set_and_reason": true,
+    "gyeonggi_names_match_independent_official_county_audit": true,
+    "reviewed_input_files_unchanged_during_review": true
+  },
+  "summary": {
+    "nationalReleaseUnits": 230,
+    "gyeonggiExcludedAsAlreadyReleased": 31,
+    "remaining": 199,
+    "firstPending": {
+      "code": "11110",
+      "name": "서울특별시 종로구"
+    },
+    "sidoCount": 16,
+    "countsBySido": {
+      "서울특별시": 25,
+      "전남광주통합특별시": 27,
+      "부산광역시": 16,
+      "대구광역시": 9,
+      "인천광역시": 11,
+      "대전광역시": 5,
+      "울산광역시": 5,
+      "세종특별자치시": 1,
+      "경기도": 31,
+      "충청북도": 11,
+      "충청남도": 15,
+      "경상북도": 22,
+      "경상남도": 18,
+      "제주특별자치도": 2,
+      "강원특별자치도": 18,
+      "전북특별자치도": 14
+    },
+    "excludedCounts": {
+      "province_level": 16,
+      "branch_office": 6,
+      "nonautonomous_general_district": 39
+    },
+    "equation": "291 level rows - 16 province rows - 39 general districts - 6 branch offices = 230 release units; 230 - 31 Gyeonggi = 199"
+  },
+  "method": "Read legal and administrative XLSX XML directly inside original official ZIP without executing or importing derive_plan.py; compare all selected names, codes, kinds, created dates, and source row numbers against the plan; check original archive text-entry digests and every claimed verification SHA; independently re-open current MOIS September notice and integration launch notice and ELIS official count page.",
+  "officialWebCrossChecks": [
+    {
+      "url": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824",
+      "observed": "MOIS page title says effective 2026-09-30, registration 2026-09-29 and lists jscode20260930.zip."
+    },
+    {
+      "url": "https://www.mois.go.kr/frt/bbs/type010/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000008&nttId=126845",
+      "observed": "Official launch notice exists with title identifying Jeonnam-Gwangju Integrated Special City."
+    },
+    {
+      "url": "https://www.elis.go.kr/sysinfo/locgovAlrStatList",
+      "observed": "Official page displays 16 metropolitan/province governments and 227 lower governments; used as secondary count corroboration only because heading is first-half/June 2026."
+    }
+  ],
+  "notes": [
+    "PASS applies to reviewed exact bytes and 2026-10-10 effective-date snapshot. Revalidate future effective administrative-code changes before release.",
+    "Selection script lacks a general abolished/future-date filter, but independent checks establish that the selected exact input set has no such records. Reusing it with different input requires these checks again.",
+    "230 is a website release-unit denominator, including Sejong and Jeju administrative cities; it is not a claim of 230 autonomous lower governments.",
+    "Already-released flags describe initial host coverage only; 13 visual deferrals and 16 held articles remain in the separate Gyeonggi audit.",
+    "This review does not authorize publication, certify commercial content, or establish live HTTP passes."
+  ],
+  "requiredCorrections": [],
+  "mutations": "Only this new review script/report were written; original plan, sources and author verification were not modified."
+}
