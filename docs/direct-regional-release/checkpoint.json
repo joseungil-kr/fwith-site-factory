@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T02:25:24.339Z",
+  "updatedAt": "2026-10-10T02:27:56.984Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "hanam-direct-initial-20261010",
     "city": "하남시",
-    "status": "official_workflow_running",
+    "status": "published_ci_indexnow_verified_hosted_browser_pending",
     "owner": {
       "scheduledRunAt": "2026-10-10T02:00:00Z",
       "observedExecutionAt": "2026-10-10T01:59:07Z",
@@ -48,7 +48,7 @@
       "root": "site-factory/hanam-flower",
       "worker": "hanam-flower-guide",
       "hostname": "hanam.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true
     },
     "input": {
@@ -66,7 +66,7 @@
       "openPullRequests": 0,
       "inProgressWorkflows": 0,
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "pending_before_mutation"
+      "providerOwnershipCollisionCheck": "PASS_actual_run_38016876637"
     },
     "plan": {
       "state": "reviewed_23_of_24",
@@ -97,8 +97,8 @@
         "checkedAt": "2026-10-10T02:04:13.143Z"
       }
     },
-    "lastSuccessfulStage": "official_workflow_dispatch_verified",
-    "nextIntent": "Dispatch existing Hanam direct workflow once for exact reviewed source",
+    "lastSuccessfulStage": "official_publication_static_http_qa_indexnow200",
+    "nextIntent": "Complete actual desktop/narrow hosted QA then GSC submission",
     "pendingExternalAction": null,
     "controlRevision": "5df1cd730d18f965786e95a0569d8665f7c88dd2",
     "review": {
@@ -145,8 +145,32 @@
       "sourceRevision": "0ac786e59570382c6dbd7872e54cca9cd9b5f778",
       "createdAt": "2026-10-10T02:24:58Z",
       "attempt": 1,
-      "status": "in_progress",
-      "dispatchCount": 1
+      "status": "completed",
+      "dispatchCount": 1,
+      "conclusion": "success"
+    },
+    "publication": {
+      "url": "https://hanam.fwith.kr/",
+      "sourceRevision": "0ac786e59570382c6dbd7872e54cca9cd9b5f778",
+      "hostedQa": "pending_actual_browser",
+      "indexNow": {
+        "state": "received",
+        "httpStatus": 200,
+        "attempt": 1,
+        "urlCount": 25,
+        "urlSetSha256": "9cc5baf4c4be98fecffaeac6780391eee59a1f1e453ed21cf7d2d5e2c173020a",
+        "fingerprint": "8646a35fa3086a85337e4cdceeb0d487045ba828851efc928e178b5b32c96e84",
+        "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6092714195",
+        "getObservations": 58,
+        "submissionObservations": 1,
+        "allGet200AndNoBlockingRobotsOrChallenge": true,
+        "searchIndexing": "not_verified"
+      },
+      "gsc": "not_submitted"
+    },
+    "ciVerification": {
+      "status": "PASS_OFFICIAL_CI_ARTIFACT_AND_RECEIPT",
+      "evidencePath": "docs/direct-regional-release/hanam/ci-verification.json"
     }
   },
   "history": [
