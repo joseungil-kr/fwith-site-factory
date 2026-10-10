@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T19:22:17.834Z",
+  "updatedAt": "2026-10-10T19:25:35.937Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-gwangjin-direct-initial-20261010",
     "city": "서울특별시 광진구",
-    "status": "source_saved_exact_remote_validation_in_progress",
+    "status": "ready_to_dispatch",
     "owner": {
       "scheduledRunAt": "2026-10-10T19:00:00Z",
       "observedExecutionAt": "2026-10-10T19:04:28.316Z",
@@ -78,10 +78,21 @@
       }
     },
     "changeIntent": {
-      "action": "publish_fixed_gwangjin_control_then_wait_exact_source_validation_before_dispatch",
+      "action": "workflow_dispatch_once",
       "target": ".github/workflows/seoul-gwangjin-direct-publish.yml",
-      "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
-      "idempotencyKey": "seoul-gwangjin:control-prepare:296e47b384bfc36e0dfa6e7a4586d41220c93587"
+      "ref": "main",
+      "inputs": {
+        "expected_revision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
+        "indexnow_only": false
+      },
+      "idempotencyKey": "seoul-gwangjin:publish:296e47b384bfc36e0dfa6e7a4586d41220c93587",
+      "scope": {
+        "worker": "seoul-gwangjin-flower-guide",
+        "hostname": "seoul-gwangjin.fwith.kr",
+        "existingOwnedFwithAccountOnly": true,
+        "noOverride": true
+      },
+      "preconditions": "Exact remote source build and independent content/runtime reviews PASS. Actual provider collision GET in fixed official workflow before mutation."
     },
     "unfinishedStages": [
       "plan_freeze",
@@ -151,9 +162,27 @@
       "articlesSha256": "3c89244c5ef639632cbf83d404f4f1bd9ccd6bef2fcf4e33a5da20ebbb2c071c",
       "independentReviewSha256": "7bfc782f49421b4002fae1af56d2c5a02c9d523a398267f91f86ed2fc5b364e9",
       "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
-      "contentRevision": 1
+      "contentRevision": 1,
+      "runtimeStatus": "PASS_EXACT_SOURCE_PREPUBLICATION",
+      "runtimeReviewSha256": "6f24e79b51c63656821708a55abc0ffc4aa2a838203574669fb1b63c18ecc9d2"
     },
-    "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587"
+    "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
+    "validation": {
+      "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
+      "nodeVersion": "22.23.3",
+      "sourceTestsPassed": 68,
+      "publisherTestsPassed": 42,
+      "build": "PASS",
+      "static": "PASS",
+      "graph": "PASS",
+      "artifactFiles": 24,
+      "normalHtmlRoutes": 7,
+      "articleCount": 5,
+      "sitemapUrls": 7,
+      "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+      "remoteReadbackSha256": "7faaf37be893a1c433ddf403c2d01ce93ebc7ed139a9c66b24cacf493e87ba8e",
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+    }
   },
   "history": [
     {
