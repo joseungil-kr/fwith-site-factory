@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T13:26:52.686Z",
+  "updatedAt": "2026-10-10T13:31:22.835Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "gapyeong-direct-initial-20261010",
     "city": "가평군",
-    "status": "content_review_passed_assembling",
+    "status": "source_saved_controls_preparing",
     "owner": {
       "scheduledRunAt": "2026-10-10T13:00:00Z",
       "observedExecutionAt": "2026-10-10T13:03:27.495Z",
@@ -50,7 +50,7 @@
       "worker": "gapyeong-flower-guide",
       "hostname": "gapyeong.fwith.kr",
       "externalCreationVerified": false,
-      "sourceBranchCreatedVerified": false
+      "sourceBranchCreatedVerified": true
     },
     "selection": {
       "officialCode": "41820",
@@ -127,12 +127,16 @@
       "passedArticleCount": 6,
       "heldArticleCount": 0
     },
-    "lastSuccessfulStage": "independent_original_content_and_image_review",
-    "nextIntent": "Assemble and independently test fixed source, then create Gapyeong branch without modifying other customer sites",
+    "lastSuccessfulStage": "source_branch_created_and_tree_diff_verified",
+    "nextIntent": "Save and independently read back fixed direct workflow/helper, then record exact dispatch intent",
     "changeIntent": {
-      "action": "prepare_reviewed_gapyeong_source_branch",
-      "target": "site-factory-gapyeong-direct:site-factory/gapyeong-flower",
-      "idempotencyKey": "gapyeong-direct-initial-20261010:source:e120d7e097c7b152c0a955ed4ddcadc77609a8fe8eff55e49629b1a3ca70f621"
+      "action": "publish_fixed_gapyeong_direct_workflow_and_helper",
+      "targets": [
+        ".github/workflows/gapyeong-direct-publish.yml",
+        "scripts/direct-gapyeong/publish.py",
+        "scripts/direct-gapyeong/test_publish.py"
+      ],
+      "idempotencyKey": "gapyeong-direct-initial-20261010:controls:2b214219e78d722d32dbbd9957a1f9b33ca771c4"
     },
     "publication": {
       "state": "not_dispatched",
@@ -146,6 +150,37 @@
       "reportSha256": "3953a1392a2caf5ef2e4d3183fdef993070c634e8de235d4fb662c725d07b68f",
       "passed": 6,
       "planned": 6,
+      "visualQa": "not_performed_deferred_by_user"
+    },
+    "sourceRevision": "2b214219e78d722d32dbbd9957a1f9b33ca771c4",
+    "sourceReadback": {
+      "headVerified": true,
+      "treeBlobMatches": 69,
+      "diffAddedFilesOnly": 69,
+      "fullTextIndependentReadback": "in_progress"
+    },
+    "validation": {
+      "node22Tests": {
+        "passed": 66,
+        "failed": 0
+      },
+      "publisherSafetyTests": {
+        "passed": 34,
+        "failed": 0
+      },
+      "graph": {
+        "pages": 6,
+        "hubs": 1,
+        "passed": true
+      },
+      "credentialFreeLocalBuild": {
+        "passed": true,
+        "node": "22",
+        "normalHtmlRoutes": 8,
+        "htmlIncluding404": 9,
+        "localRevision": "0000000000000000000000000000000000000000",
+        "notDeploymentEvidence": true
+      },
       "visualQa": "not_performed_deferred_by_user"
     }
   },
