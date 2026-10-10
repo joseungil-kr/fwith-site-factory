@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T00:11:28.562Z",
+  "updatedAt": "2026-10-10T00:14:10.867Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -32,7 +32,7 @@
   "current": {
     "scopeKey": "uiwang-direct-initial-20261010",
     "city": "의왕시",
-    "status": "independent_precommit_review_pass",
+    "status": "reviewed_exact_source_ready_for_dispatch",
     "owner": {
       "scheduledRunAt": "2026-10-10T00:00:00Z",
       "observedExecutionAt": "2026-10-09T23:55:34Z",
@@ -49,7 +49,7 @@
       "worker": "uiwang-flower-guide",
       "hostname": "uiwang.fwith.kr",
       "externalCreationVerified": false,
-      "sourceBranchCreatedVerified": false
+      "sourceBranchCreatedVerified": true
     },
     "input": {
       "controlRevision": "02777593468f41c51c33d8c1b2bb82e82fc42e58",
@@ -78,12 +78,18 @@
       "membershipPath": "docs/direct-regional-release/uiwang/membership.json",
       "membershipSha256": "c731c3d631682155b0eac7a8ced94fb2f57586435f02e6851759159785488552"
     },
-    "lastSuccessfulStage": "independent_content_and_static_build_review",
-    "nextIntent": "Create one exact reviewed source branch commit and verify all remote bytes",
+    "lastSuccessfulStage": "independent_exact_remote_source_and_final_build",
+    "nextIntent": "Dispatch reviewed direct publication workflow once",
     "pendingExternalAction": {
-      "action": "create_source_branch_and_commit",
-      "target": "site-factory-uiwang-direct",
-      "idempotencyKey": "uiwang-direct-initial-20261010:91603cd2e3fe9ce6c3793324364c51110504c4705d40cfdeed3662a0c86fd8ad"
+      "action": "workflow_dispatch",
+      "workflow": ".github/workflows/uiwang-direct-publish.yml",
+      "ref": "main",
+      "expected_revision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
+      "indexnow_only": false,
+      "hostname": "uiwang.fwith.kr",
+      "worker": "uiwang-flower-guide",
+      "idempotencyKey": "uiwang-direct-publish:559669d44ed6a4dc3d2c5a2fef760ca5f53f9412:initial",
+      "requiredServiceApproval": "honor_at_execution"
     },
     "controlRevision": "2bfa98811097ddf4a0e8f4cc8f3bb3195422af9b",
     "review": {
@@ -97,8 +103,11 @@
       "htmlRoutes": 13,
       "sitemapUrls": 13,
       "hostedQa": "not_yet_deployed",
-      "evidencePath": "docs/direct-regional-release/uiwang/precommit-source-review.json"
-    }
+      "evidencePath": "docs/direct-regional-release/uiwang/precommit-source-review.json",
+      "finalEvidencePath": "docs/direct-regional-release/uiwang/final-predeploy-review.json",
+      "finalArtifactSha256": "6a410416be2b3aaa2ff75aa684f2cf1e569059ad66dec937fe32cf0b4c7a0757"
+    },
+    "sourceRevision": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412"
   },
   "history": [
     {
