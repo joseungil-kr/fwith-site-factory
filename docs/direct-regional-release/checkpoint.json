@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T14:57:31.621Z",
+  "updatedAt": "2026-10-10T15:01:55.253Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -35,17 +35,18 @@
     "city": "양평군",
     "status": "released_gsc_submitted_indexnow_rejected_visual_qa_deferred",
     "owner": {
-      "scheduledRunAt": "2026-10-10T14:00:00Z",
-      "observedExecutionAt": "2026-10-10T14:05:15.376Z",
+      "scheduledRunAt": "2026-10-10T15:00:00Z",
+      "observedExecutionAt": "2026-10-10T15:01:55.253Z",
       "newRegionStartedAt": "2026-10-10T14:05:15.376Z",
       "serviceInvocationId": null,
-      "checkpointId": "direct-yangpyeong-20261010T140000Z",
-      "active": false,
-      "executionState": "final_checkpoint_then_readback_only",
-      "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T14:02:51.910Z",
+      "checkpointId": "direct-yangpyeong-recovery-20261010T150000Z",
+      "active": true,
+      "executionState": "read_only_diagnosis_then_reviewed_nonsecurity_repair",
+      "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T15:00:25.185Z",
       "finalCheckpointPreparedAt": "2026-10-10T14:57:31.621Z",
       "writesStoppedAt": null,
-      "stopConfirmation": "Actual write stop is confirmed separately after final mutation and full readback."
+      "stopConfirmation": "Actual write stop is confirmed separately after final mutation and full readback.",
+      "priorOwnerReadbackConfirmedAt": "2026-10-10T15:00:28.254Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -226,9 +227,9 @@
       "controlRevision": "d87a0515e6d62da7dd793dbd9bbfe36326cf4e07"
     },
     "changeIntent": {
-      "action": "save_actual_publication_and_search_partial_result",
-      "target": "docs/direct-regional-release/checkpoint.json",
-      "idempotencyKey": "yangpyeong:published-indexnow-rejected:bad8ba028abc68c738267622ed7f1508f956bd54"
+      "action": "diagnose_indexnow_403_without_repeated_POST",
+      "target": "yangpyeong.fwith.kr existing rejected receipt and fixed finalizer",
+      "idempotencyKey": "yangpyeong:diagnose403:bad8ba028abc68c738267622ed7f1508f956bd54:20261010T150000Z"
     },
     "lastSuccessfulStage": "public_HTTP_and_GSC_submit_separate_list_readback",
     "nextIntent": "Diagnose IndexNow provider key-fetch rejection from existing receipt and read-only observations before any retry. No repeated deployment/GSC.",
