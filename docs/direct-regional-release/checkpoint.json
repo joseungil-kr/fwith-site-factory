@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "jongno-direct-initial-20261010",
     "city": "서울특별시 종로구",
-    "status": "reviewed_exact_source_ready_for_dispatch",
+    "status": "workflow_dispatched_verification_pending",
     "owner": {
       "scheduledRunAt": "2026-10-10T15:00:00Z",
       "observedExecutionAt": "2026-10-10T15:19:58.725474Z",
@@ -41,7 +41,7 @@
       "serviceInvocationId": null,
       "checkpointId": "direct-jongno-initial-20261010T150000Z",
       "active": true,
-      "executionState": "publish_fixed_controls_and_dispatch_exact_source",
+      "executionState": "monitor_exact_release_run",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T15:12:44.377Z",
       "priorOwnerReadbackConfirmedAt": "2026-10-10T15:12:46.599Z"
     },
@@ -129,10 +129,12 @@
       "hostname": "jongno.fwith.kr",
       "indexnowOnly": false,
       "idempotencyKey": "jongno:publish:16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
-      "attempted": false
+      "attempted": true,
+      "runId": 38065314276,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38065314276"
     },
-    "lastSuccessfulStage": "exact_source_full_remote_readback_node22_build_static_graph_independent_pass",
-    "nextIntent": "Read back fixed main control files, then invoke official Run workflow once; enforce provider GET collision checks and no overrides.",
+    "lastSuccessfulStage": "official_workflow_dispatch_confirmed",
+    "nextIntent": "Read terminal run/artifacts, provider binding, all public route HTTP, IndexNow receipt; then submit GSC.",
     "review": {
       "articlesSha256": "341211fee4781e1159f095e99127de789173e27488a34a56b04ff609f00773e9",
       "independentReviewSha256": "f630aff14c6ff8c2089436cf7e8dd1368397c6bd7059b85eb3b1c0383be4ea97",
@@ -162,6 +164,16 @@
       "remoteReadbackSha256": "8d9508ba88257f4a88ef6e24d053b0f680991fe2123c9e4d73eaf13abee6d4b0",
       "publicProductionHttp": "not_yet_verified",
       "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+    },
+    "deployment": {
+      "runId": 38065314276,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38065314276",
+      "createdAt": "2026-10-10T15:51:40Z",
+      "controlRevision": "d2591a143d4731fd70c1c8ed71e151b790ea5b23",
+      "sourceRevision": "16236a5bb2cf1e0d5ca6b7b901d329ec7a20727b",
+      "status": "in_progress",
+      "runAttempt": 1,
+      "workflowDispatchCount": 1
     }
   },
   "history": [
