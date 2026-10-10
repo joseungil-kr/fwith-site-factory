@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T04:34:38.628Z",
+  "updatedAt": "2026-10-10T04:37:42.634Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "gwacheon-direct-initial-20261010",
     "city": "과천시",
-    "status": "approved_release_running",
+    "status": "ci_public_contract_indexnow_pass_independent_http_in_progress",
     "owner": {
       "scheduledRunAt": "2026-10-10T04:00:00Z",
       "serviceInvocationId": null,
@@ -56,7 +56,7 @@
       "root": "site-factory/gwacheon-flower",
       "worker": "gwacheon-flower-guide",
       "hostname": "gwacheon.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true
     },
     "input": {
@@ -78,16 +78,10 @@
     "lastSuccessfulStage": "independent_exact_source_control_readback_and_final_sha_build",
     "nextIntent": "Official reviewed-source dispatch after fresh independent revalidation",
     "pendingExternalAction": {
-      "action": "workflow_dispatch_with_fixed_hostname_attachment",
-      "workflow": "gwacheon-direct-publish.yml",
-      "controlRevision": "b6141e6d0537a91471ad30535322fa65d17adc3a",
-      "expectedRevision": "1cf4c2fd922053f5966200c01c331cd1bb6f8a7f",
-      "indexnowOnly": false,
-      "hostname": "gwacheon.fwith.kr",
-      "worker": "gwacheon-flower-guide",
-      "existingAccountOnly": true,
-      "noOverrides": true,
-      "idempotencyKey": "gwacheon-direct-release-1cf4c2fd922053f5966200c01c331cd1bb6f8a7f"
+      "action": "GSC submit_sitemap_after_independent_HTTP_pass",
+      "siteUrl": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://gwacheon.fwith.kr/sitemap-index.xml",
+      "idempotencyKey": "gsc-gwacheon-1cf4c2fd922053f5966200c01c331cd1bb6f8a7f"
     },
     "receiptJournal": {
       "number": 266,
@@ -165,9 +159,34 @@
       "controlRevision": "27eefb230c4e5254a2a98ee0866e3df3bc7e842d",
       "sourceRevision": "1cf4c2fd922053f5966200c01c331cd1bb6f8a7f",
       "createdAt": "2026-10-10T04:34:16Z",
-      "status": "in_progress",
+      "status": "completed",
       "attempt": 1,
-      "dispatchCount": 1
+      "dispatchCount": 1,
+      "conclusion": "success",
+      "completedAt": "2026-10-10T04:35:42Z"
+    },
+    "publication": {
+      "url": "https://gwacheon.fwith.kr/",
+      "sourceRevision": "1cf4c2fd922053f5966200c01c331cd1bb6f8a7f",
+      "hostedQa": "DEFERRED_NOT_PASS",
+      "indexNow": {
+        "state": "received",
+        "httpStatus": 200,
+        "attempt": 1,
+        "urlCount": 12,
+        "urlSetSha256": "5ff1935f81c1ea409c8198a21a6e54cfbd7802a9c026407cf1edd324b3c608ab",
+        "fingerprint": "83450e2d1fc73598f46839de47f2ea406401a2fa58bd8eb27a5ea65d0d22e7c8",
+        "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6093820867",
+        "receiptIssue": 266,
+        "getObservations": 32,
+        "submissionObservations": 1,
+        "allGet200AndNoBlockingRobotsOrChallenge": true,
+        "searchIndexing": "not_verified"
+      }
+    },
+    "ciVerification": {
+      "status": "PASS_OFFICIAL_CI_ARTIFACT_AND_RECEIPT",
+      "evidencePath": "docs/direct-regional-release/gwacheon/ci-verification.json"
     }
   },
   "history": [
