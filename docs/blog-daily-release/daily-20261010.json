@@ -7,7 +7,7 @@
   "actualReceivedAt": "2026-10-10T06:36:38Z",
   "actualInvocationId": null,
   "checkpointId": "blog-fwith-daily-20261010-claim",
-  "status": "source_stored_build_pending",
+  "status": "publish_workflow_running",
   "owner": {
     "task": "publish_daily_blog_batch",
     "state": "active"
@@ -27,9 +27,7 @@
     "gyeongju-thek-wedding-wreath"
   ],
   "intent": {
-    "action": "workflow_dispatch",
-    "target": ".github/workflows/blog-assets-publish.yml",
-    "expectedRevision": "fa270d95570a605d1034b9f0571ace9cc310a16c",
+    "action": "observe_build_publish_and_independent_public_qa",
     "idempotencyKey": "blog-fwith-daily-20261010:fa270d95570a605d1034b9f0571ace9cc310a16c"
   },
   "dedupe": {
@@ -40,7 +38,7 @@
   },
   "searchIndexing": "not_verified",
   "ranking": "not_verified",
-  "updatedAt": "2026-10-10T06:50:10.146Z",
+  "updatedAt": "2026-10-10T06:51:48.786Z",
   "review": "daily-20261010.review.json",
   "imageProvenance": "daily-20261010.images.json",
   "approvedPostCount": 5,
@@ -61,5 +59,12 @@
     "state": "blocked_on_og_font_fetch",
     "reason": "font fetch returned nonfont upstream response in this cloud execution environment; official isolated CI build remains mandatory",
     "codeModified": false
+  },
+  "publication": {
+    "sourceRevision": "fa270d95570a605d1034b9f0571ace9cc310a16c",
+    "runId": 38032376174,
+    "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38032376174",
+    "state": "in_progress",
+    "createdAt": "2026-10-10T06:51:20Z"
   }
 }
