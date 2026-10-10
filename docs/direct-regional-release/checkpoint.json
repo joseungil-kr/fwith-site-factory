@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T12:21:41.477Z",
+  "updatedAt": "2026-10-10T12:24:45.477Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -31,498 +31,60 @@
     "blog.fwith.kr"
   ],
   "current": {
-    "scopeKey": "yeoju-direct-initial-20261010",
-    "city": "여주시",
-    "status": "released_search_submitted_visual_qa_deferred",
+    "scopeKey": "yeoncheon-direct-initial-20261010",
+    "city": "연천군",
+    "status": "claimed_research",
     "owner": {
-      "scheduledRunAt": "2026-10-10T11:00:00Z",
-      "observedExecutionAt": "2026-10-10T10:58:49Z",
-      "newRegionStartedAt": "2026-10-10T11:00:35.531Z",
+      "scheduledRunAt": "2026-10-10T12:00:00Z",
+      "observedExecutionAt": "2026-10-10T12:24:45.477Z",
+      "newRegionStartedAt": "2026-10-10T12:24:45.477Z",
       "serviceInvocationId": null,
-      "checkpointId": "direct-yeoju-20261010T110000Z",
-      "active": false,
-      "executionState": "final_checkpoint_then_readback_only",
-      "finalCheckpointPreparedAt": "2026-10-10T12:21:41.477Z",
-      "writesStoppedAt": null,
-      "stopConfirmation": "This final checkpoint write is the last planned mutation; parent will receive explicit actual write-stop confirmation after remote readback."
+      "checkpointId": "direct-yeoncheon-20261010T120000Z",
+      "active": true,
+      "executionState": "research_and_source_preparation"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
-      "branch": "site-factory-yeoju-direct",
-      "root": "site-factory/yeoju-flower",
-      "worker": "yeoju-flower-guide",
-      "hostname": "yeoju.fwith.kr",
-      "externalCreationVerified": true,
-      "sourceBranchCreatedVerified": true
+      "branch": "site-factory-yeoncheon-direct",
+      "root": "site-factory/yeoncheon-flower",
+      "worker": "yeoncheon-flower-guide",
+      "hostname": "yeoncheon.fwith.kr",
+      "externalCreationVerified": false
     },
     "selection": {
-      "officialCode": "41670",
-      "reason": "Official code ascending after Pocheon; prior writer stopped and Pocheon approval-only item preserved separately"
+      "officialCode": "41800",
+      "reason": "Official code ascending after released Yeoju41670; no matching branch/manifest/run/owner"
     },
     "conflictChecks": {
-      "branchesChecked": 120,
+      "branchesChecked": 121,
       "matchingBranch": false,
       "openMatchingPullRequests": 0,
       "inProgressWorkflows": 0,
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "PASS_ACTUAL_OFFICIAL_PROVIDER_GET_NO_OVERRIDE"
+      "providerOwnershipCollisionCheck": "pending_official_provider_GET_before_publish"
     },
     "input": {
-      "controlRevision": "d22abce602fcd301c7ed75c6e8b8ac249be91d10",
-      "runtimeSourceRevision": "b41863691a48912b182b915798c93a81d5723e59"
+      "controlRevision": "275a5595d596c0cd6b739c00c852b855505770e8",
+      "runtimeSourceRevision": "8fbcc607193d2ea3c34286519cff7d5f3380479a"
     },
     "plan": {
-      "state": "independently_reviewed_30_of_32",
-      "plannedArticleCount": 32,
-      "minimumPassedArticles": 29,
-      "administrativeUnits": 12,
-      "crosswalkRelationships": 32,
-      "partialRelationships": 0,
-      "membershipPath": "docs/direct-regional-release/yeoju/membership.json",
-      "membershipSha256": "85b1254a9bcd25b00ad62e7fe08be704e710b712f1dc7a0b6683a52fde6d908a",
-      "articles": [
-        {
-          "slug": "sang-dong",
-          "name": "상동",
-          "title": "여주시민장례문화원 근조화환",
-          "primaryKeyword": "여주시민장례문화원 근조화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "hongmun-dong",
-          "name": "홍문동",
-          "title": "홍문동 뷰티숍 개업화환",
-          "primaryKeyword": "홍문동 뷰티숍 개업화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "chang-dong",
-          "name": "창동",
-          "title": "여주한글시장 개업화환",
-          "primaryKeyword": "여주한글시장 개업화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "uman-dong",
-          "name": "우만동",
-          "title": "우만동 화환 구매 안내 보류",
-          "primaryKeyword": "우만동 화환",
-          "status": "hold_source_fit"
-        },
-        {
-          "slug": "danhyeon-dong",
-          "name": "단현동",
-          "title": "한강문화관 전시 축하화환",
-          "primaryKeyword": "한강문화관 전시 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "sinjin-dong",
-          "name": "신진동",
-          "title": "신진동 화환 구매 안내 보류",
-          "primaryKeyword": "신진동 화환",
-          "status": "hold_source_fit"
-        },
-        {
-          "slug": "ha-dong",
-          "name": "하동",
-          "title": "세종여주병원 장례식장 근조화환",
-          "primaryKeyword": "세종여주병원 장례식장 근조화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "gyo-dong",
-          "name": "교동",
-          "title": "여주대학교 학과 행사 축하화환",
-          "primaryKeyword": "여주대학교 학과 행사 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "wolsong-dong",
-          "name": "월송동",
-          "title": "월송동 정비소 이전 축하화환",
-          "primaryKeyword": "월송동 정비소 이전 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "gaeop-dong",
-          "name": "가업동",
-          "title": "가업동 카페 개업화환",
-          "primaryKeyword": "가업동 카페 개업화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "yeonra-dong",
-          "name": "연라동",
-          "title": "해슬리 나인브릿지 행사 축하화환",
-          "primaryKeyword": "해슬리 나인브릿지 행사 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "sanggeo-dong",
-          "name": "상거동",
-          "title": "여주 프리미엄 빌리지 개업화환",
-          "primaryKeyword": "여주 프리미엄 빌리지 개업화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "hageo-dong",
-          "name": "하거동",
-          "title": "남여주골프클럽 모임 축하화환",
-          "primaryKeyword": "남여주골프클럽 모임 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "samgyo-dong",
-          "name": "삼교동",
-          "title": "삼교동 공장 기념식 축하화환",
-          "primaryKeyword": "삼교동 공장 기념식 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "jeombong-dong",
-          "name": "점봉동",
-          "title": "점봉동 체육관 개관화환",
-          "primaryKeyword": "점봉동 체육관 개관화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "neunghyeon-dong",
-          "name": "능현동",
-          "title": "능현동 식품기업 축하화환",
-          "primaryKeyword": "능현동 식품기업 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "myeokgok-dong",
-          "name": "멱곡동",
-          "title": "멱곡동 에어코리아 창립기념 축하화환 주문",
-          "primaryKeyword": "멱곡동 에어코리아 창립기념 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "yeonyang-dong",
-          "name": "연양동",
-          "title": "연양동 썬밸리호텔 결혼식 축하화환 주문",
-          "primaryKeyword": "연양동 썬밸리호텔 결혼식 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "maeryong-dong",
-          "name": "매룡동",
-          "title": "매룡동 에버텍 승진 축하화환 주문",
-          "primaryKeyword": "매룡동 에버텍 승진 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "cheonsong-dong",
-          "name": "천송동",
-          "title": "천송동 다피 개업·이전 축하화환 주문",
-          "primaryKeyword": "천송동 다피 개업·이전 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "ohak-dong",
-          "name": "오학동",
-          "title": "오학동 해성도자기 개업 축하화환 주문",
-          "primaryKeyword": "오학동 해성도자기 개업 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "hyeonam-dong",
-          "name": "현암동",
-          "title": "현암동 지오디에스 본사 이전 축하화환 주문",
-          "primaryKeyword": "현암동 지오디에스 본사 이전 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "ogeum-dong",
-          "name": "오금동",
-          "title": "오금동 씰리 신공장 준공 축하화환 주문",
-          "primaryKeyword": "오금동 씰리 신공장 준공 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "ganam-eup",
-          "name": "가남읍",
-          "title": "가남읍 오스틴제약 물류본부 기념 축하화환 주문",
-          "primaryKeyword": "가남읍 오스틴제약 물류본부 기념 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "jeomdong-myeon",
-          "name": "점동면",
-          "title": "점동면 유진건철 여주공장 축하화환 주문",
-          "primaryKeyword": "점동면 유진건철 여주공장 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "heungcheon-myeon",
-          "name": "흥천면",
-          "title": "흥천면 애니스톤바이오 창립기념 축하화환 주문",
-          "primaryKeyword": "흥천면 애니스톤바이오 창립기념 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "geumsa-myeon",
-          "name": "금사면",
-          "title": "금사면 고은매공방 개업·이전 축하화환 주문",
-          "primaryKeyword": "금사면 고은매공방 개업·이전 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "sejongdaewang-myeon",
-          "name": "세종대왕면",
-          "title": "세종대왕면 에너토크 취임 축하화환 주문",
-          "primaryKeyword": "세종대왕면 에너토크 취임 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "daesin-myeon",
-          "name": "대신면",
-          "title": "대신면 엔세라텍 공장 기념 축하화환 주문",
-          "primaryKeyword": "대신면 엔세라텍 공장 기념 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "bungnae-myeon",
-          "name": "북내면",
-          "title": "북내면 스카이밸리 연회 축하화환 주문",
-          "primaryKeyword": "북내면 스카이밸리 연회 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "gangcheon-myeon",
-          "name": "강천면",
-          "title": "강천면 360CC 골프모임 축하화환 주문",
-          "primaryKeyword": "강천면 360CC 골프모임 축하화환",
-          "status": "independent_content_pass"
-        },
-        {
-          "slug": "sanbuk-myeon",
-          "name": "산북면",
-          "title": "산북면 수연목서 전시 축하화환 주문",
-          "primaryKeyword": "산북면 수연목서 전시 축하화환",
-          "status": "independent_content_pass"
-        }
-      ],
-      "deferred": [
-        {
-          "name": "우만동",
-          "slug": "uman-dong",
-          "primaryKeyword": "우만동 화환",
-          "title": "우만동 화환 구매 안내 보류",
-          "h1": "우만동 화환 구매 안내 보류",
-          "intent": "지역명만 치환한 판매 문서를 만들지 않고 공식 구매 맥락 추가 조사 전까지 보류한다.",
-          "sourceUrl": "https://www.yeoju.go.kr/town/contents.do?key=1218",
-          "sourceName": "여주시 여흥동 일반현황: 행정관할 확인에만 사용",
-          "verifiedFactsAndLimits": "법정동과 행정 관할만 확인되며 화환 구매를 연결할 신뢰 가능한 사업장·시설 근거는 미확보.",
-          "family": "congrats",
-          "state": "hold_source_fit",
-          "verificationStatus": "hold_insufficient_official_purchase_context",
-          "distinctBuyerDecision": "발행하지 않음. 실제 수신인과 적합한 시설 소스 추가 확보가 필요하다.",
-          "globalLimits": "이 자료는 사업장·시설의 명칭, 소재와 확인된 시설 성격을 뒷받침한다. 실제 개업·이전·기념행사·전시·부고가 현재 진행된다고 쓰지 않는다. 구매자가 실제 수신인·일정과 화환 수령 가능 여부를 확인한 경우의 조건부 구매 안내만 작성한다. 현지 납품실적·제휴·반입허가·즉시배송·고정 도착시각·상품 재고를 암시하지 않는다. 지역 출처 사진은 재사용하지 않으며 상품카드는 확인된 축하 또는 근조 화환 네 종만 사용한다.",
-          "evidenceFile": "research/purchase-a/uman-dong-hold.json",
-          "writerGroup": "a",
-          "checkedAt": "2026-10-10",
-          "holdReason": "공식 소재·사업장 성격·독립 구매 맥락 근거 부족",
-          "additionalSources": [],
-          "evidenceDigest": "8a32a634b19763f6dc864d4a458d250001022a203184a6c827530d22dfa70385",
-          "planFrozenAt": "2026-10-10T11:14:34Z"
-        },
-        {
-          "name": "신진동",
-          "slug": "sinjin-dong",
-          "primaryKeyword": "신진동 화환",
-          "title": "신진동 화환 구매 안내 보류",
-          "h1": "신진동 화환 구매 안내 보류",
-          "intent": "지역명만 치환한 판매 문서를 만들지 않고 공식 구매 맥락 추가 조사 전까지 보류한다.",
-          "sourceUrl": "https://www.yeoju.go.kr/town/contents.do?key=1218",
-          "sourceName": "여주시 여흥동 일반현황: 행정관할 확인에만 사용",
-          "verifiedFactsAndLimits": "법정동과 행정 관할만 확인되며 화환 구매를 연결할 신뢰 가능한 사업장·시설 근거는 미확보.",
-          "family": "congrats",
-          "state": "hold_source_fit",
-          "verificationStatus": "hold_insufficient_official_purchase_context",
-          "distinctBuyerDecision": "발행하지 않음. 실제 수신인과 적합한 시설 소스 추가 확보가 필요하다.",
-          "globalLimits": "이 자료는 사업장·시설의 명칭, 소재와 확인된 시설 성격을 뒷받침한다. 실제 개업·이전·기념행사·전시·부고가 현재 진행된다고 쓰지 않는다. 구매자가 실제 수신인·일정과 화환 수령 가능 여부를 확인한 경우의 조건부 구매 안내만 작성한다. 현지 납품실적·제휴·반입허가·즉시배송·고정 도착시각·상품 재고를 암시하지 않는다. 지역 출처 사진은 재사용하지 않으며 상품카드는 확인된 축하 또는 근조 화환 네 종만 사용한다.",
-          "evidenceFile": "research/purchase-a/sinjin-dong-hold.json",
-          "writerGroup": "a",
-          "checkedAt": "2026-10-10",
-          "holdReason": "공식 소재·사업장 성격·독립 구매 맥락 근거 부족",
-          "additionalSources": [],
-          "evidenceDigest": "50caa390556f93b47ef8060015cd95df0bd416e157f8ab9b9d903d79b419c60c",
-          "planFrozenAt": "2026-10-10T11:14:34Z"
-        }
-      ],
-      "passedArticleCount": 30,
-      "heldArticleCount": 2,
-      "passedRatio": 0.9375
+      "state": "official_membership_research",
+      "plannedArticleCount": null,
+      "articles": []
     },
-    "lastSuccessfulStage": "public_HTTP_IndexNow200_GSC_submit_and_list_readback",
-    "nextIntent": "Deferred desktop/narrow QA at verified hosted revision; retain two held articles; next invocation may choose next unbuilt official region.",
-    "idempotencyKey": "yeoju-direct-initial-20261010:claim",
+    "lastSuccessfulStage": "remote_preflight_and_previous_owner_write_stop_confirmed",
+    "nextIntent": "Verify official membership and freeze unique purchase-content plan before authoring",
+    "changeIntent": {
+      "action": "claim_region_and_prepare",
+      "target": "yeoncheon.fwith.kr",
+      "idempotencyKey": "yeoncheon-direct-initial-20261010:claim"
+    },
+    "idempotencyKey": "yeoncheon-direct-initial-20261010:claim",
     "publication": {
-      "state": "published_verified",
-      "intendedUrl": "https://yeoju.fwith.kr",
-      "publicUrl": "https://yeoju.fwith.kr",
-      "runId": 38050787605,
-      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38050787605",
-      "controlRevision": "5932ad9989f51bac3931073c14287d2e66a8fc6b",
-      "articleCountPublished": 30,
-      "htmlPageCount": 33,
-      "indexableHtmlCount": 32,
-      "startedAt": "2026-10-10T12:06:54Z",
-      "workflowCompletedAt": "2026-10-10T12:08:19Z",
-      "workflowDurationSeconds": 85,
-      "searchSubmittedAt": "2026-10-10T12:12:31.388Z",
-      "completedAt": "2026-10-10T12:12:31.388Z"
-    },
-    "indexnow": {
-      "attempt": 1,
-      "endpoint": "https://searchadvisor.naver.com/indexnow",
-      "fingerprint": "397218b56d7a1e36918eff2174257b0f75ee7e89913255b0b4182c3db74c5d3c",
-      "httpStatus": 200,
-      "origin": "https://yeoju.fwith.kr",
-      "recordedAt": "2026-10-10T12:08:13.885460+00:00",
-      "revision": "8fbcc607193d2ea3c34286519cff7d5f3380479a",
-      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38050787605",
-      "siteKey": "yeoju-flower-direct",
-      "state": "received",
-      "urlCount": 32,
-      "urlSetSha256": "a00d086ba2a3ca7b617324247145a959460a015ddd7927017fb3993667ed88b3",
-      "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6097326155",
-      "searchIndexing": "not_verified"
-    },
-    "gsc": {
-      "state": "submitted_confirmed",
-      "submitResult": {
-        "siteUrl": "sc-domain:fwith.kr",
-        "attempted": 1,
-        "submitted": 1,
-        "failed": 0,
-        "results": [
-          {
-            "sitemapUrl": "https://yeoju.fwith.kr/sitemap-index.xml",
-            "accepted": true,
-            "confirmed": true,
-            "lastSubmitted": "2026-10-10T12:12:31.388Z",
-            "isPending": true,
-            "isSitemapsIndex": false,
-            "warnings": "0",
-            "errors": "0"
-          }
-        ],
-        "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
-        "actions": [
-          "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
-        ]
-      },
-      "listReadback": [
-        {
-          "path": "https://yeoju.fwith.kr/sitemap-index.xml",
-          "lastSubmitted": "2026-10-10T12:12:31.388Z",
-          "isPending": true,
-          "isSitemapsIndex": false,
-          "warnings": "0",
-          "errors": "0"
-        }
-      ],
-      "processing": "pending_not_indexing_success"
+      "state": "not_dispatched"
     },
     "review": {
-      "content": "PASS_EXACT_30_ARTICLES",
-      "batchASha256": "b9f1fdba538de63411040da91915966ab5f1caf883f250b87a05ee0709935755",
-      "batchBSha256": "459036a87edb8dccaed418575b9cafdcaf617fbdf90a155ad388d1e81563f8dd",
-      "images": "PASS_INDEPENDENT_9_IMAGE_BYTES",
-      "runtime": "PASS_INDEPENDENT_NODE22_64_SOURCE_34_HELPER_STATIC_GRAPH_ARTIFACT",
-      "visual": "NOT_PERFORMED",
-      "evidencePath": "docs/direct-regional-release/yeoju/review/runtime-review.json",
-      "evidenceSha256": "f2403c8122caf7839711d9058b15bc3d70e3dfcf99978c9099f762bdf5942d10",
-      "remoteSource": "PASS_69_FULL_SOURCE_3_CONTROL_4_ENGINE_BLOBS_EXACT_CORRECTED_SOURCE",
-      "exactSourceBuild": "PASS_OFFICIAL_CREDENTIAL_FREE_CI_NODE22_64_SOURCE_34_HELPER_STATIC_GRAPH_ARTIFACT",
-      "exactSourceReviewPath": "docs/direct-regional-release/yeoju/review/exact-source-review.json",
-      "exactSourceReviewSha256": "75829c8c77995ce48cda77163ed036d2ffffdc49ed4f97d9fc5cf4b35b9838ed",
-      "imageBodyDigestPath": "docs/direct-regional-release/yeoju/review/independent-runtime/remote-body-and-image-digests-v2.json",
-      "imageBodyDigestSha256": "4bab8be4adb2aa87df454609a24b239bdba29fec99a5ae5deb57c4f8b8d21c45",
-      "localExactSourceBuild": "EXIT137_TIMEOUT_NOT_PASS_PRESERVED",
-      "dependencyAudit": "HIGH_GHSA-ch52-4w7c-c8xp_IDENTIFIED; STATIC_ASSET_RUNTIME_EXPOSURE_NOT_DEMONSTRATED; NO_VERIFIED_PATCH",
-      "dependencyAuditPath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json",
-      "dependencyAuditSha256": "51949e82610d9fe37cc94ec24ea7f16360321b66825e90997a7271c6a0c8f955"
-    },
-    "changeIntent": {
-      "action": "create_source_branch_and_commit",
-      "target": "site-factory-yeoju-direct / site-factory/yeoju-flower",
-      "idempotencyKey": "yeoju-direct-initial-20261010:save-source:fd7ce2bbfd56f1f602e2803a1ff1af5147112453903a7dba6c0ce05bf3ff73c3",
-      "sourceInventorySha256": "fd7ce2bbfd56f1f602e2803a1ff1af5147112453903a7dba6c0ce05bf3ff73c3"
-    },
-    "sourceRevision": "8fbcc607193d2ea3c34286519cff7d5f3380479a",
-    "pendingExternalAction": {
-      "action": "none_release_search_complete",
-      "completedRunId": 38050787605,
-      "sourceRevision": "8fbcc607193d2ea3c34286519cff7d5f3380479a"
-    },
-    "publicQa": {
-      "http": {
-        "state": "PASS_INDEPENDENT_PUBLIC_HTTP_BYTES",
-        "checkedAtUtc": "2026-10-10T12:10:34.731520+00:00",
-        "checkedPaths": 50,
-        "indexableHtmlRoutes": 32,
-        "heldRoutesReal404": 2,
-        "unknownRouteReal404": true,
-        "imagePaths": 9,
-        "normalizedCloudflareBeacons": 35,
-        "requiredResponseHeadersVerified": true,
-        "fullManifestPublicFilesChecked": true
-      },
-      "desktop": "deferred_not_performed",
-      "narrow": "deferred_not_performed",
-      "pendingVisualCases": 70
-    },
-    "pendingVisualRoutes": [
-      "/",
-      "/regions/",
-      "/regions/sang-dong/",
-      "/regions/hongmun-dong/",
-      "/regions/chang-dong/",
-      "/regions/uman-dong/",
-      "/regions/danhyeon-dong/",
-      "/regions/sinjin-dong/",
-      "/regions/ha-dong/",
-      "/regions/gyo-dong/",
-      "/regions/wolsong-dong/",
-      "/regions/gaeop-dong/",
-      "/regions/yeonra-dong/",
-      "/regions/sanggeo-dong/",
-      "/regions/hageo-dong/",
-      "/regions/samgyo-dong/",
-      "/regions/jeombong-dong/",
-      "/regions/neunghyeon-dong/",
-      "/regions/myeokgok-dong/",
-      "/regions/yeonyang-dong/",
-      "/regions/maeryong-dong/",
-      "/regions/cheonsong-dong/",
-      "/regions/ohak-dong/",
-      "/regions/hyeonam-dong/",
-      "/regions/ogeum-dong/",
-      "/regions/ganam-eup/",
-      "/regions/jeomdong-myeon/",
-      "/regions/heungcheon-myeon/",
-      "/regions/geumsa-myeon/",
-      "/regions/sejongdaewang-myeon/",
-      "/regions/daesin-myeon/",
-      "/regions/bungnae-myeon/",
-      "/regions/gangcheon-myeon/",
-      "/regions/sanbuk-myeon/",
-      "/__yeoju_qa_missing__/"
-    ],
-    "incompleteStages": [
-      "deferred_desktop_narrow_visual_QA",
-      "held_uman_dong_and_sinjin_dong_content"
-    ],
-    "evidence": {
-      "path": "docs/direct-regional-release/yeoju/release/verification-summary.json",
-      "fingerprintReviewPath": "docs/direct-regional-release/yeoju/release/fingerprint-review.json",
-      "releaseEvidenceCommit": "b748555fb572539fa09a7ac10f09c9075c11e7f9"
+      "visual": "NOT_PERFORMED"
     }
   },
   "history": [
