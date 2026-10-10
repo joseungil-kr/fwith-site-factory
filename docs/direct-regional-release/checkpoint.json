@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T15:19:58.725474Z",
+  "updatedAt": "2026-10-10T15:30:25.318Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -69,20 +69,63 @@
       "publicHostObservation": "2026-10-10T15:15Z GET502 is unknown, not proof of absence"
     },
     "plan": {
-      "state": "membership_verified_purchase_query_plan_not_yet_frozen",
-      "plannedArticleCount": null,
+      "state": "frozen_before_authoring_independent_plan_pass",
+      "plannedArticleCount": 6,
+      "minimumPassedArticles": 6,
       "legalDongCount": 87,
       "administrativeDongCount": 17,
       "relationshipCount": 93,
-      "countIsPageQuota": false
+      "unassignedLegalUnits": 81,
+      "countIsPageQuota": false,
+      "fixedPlanPath": "docs/direct-regional-release/jongno/fixed-plan.json",
+      "fixedPlanSha256": "bc8a904a6c9c44ba0f77cac1e20135a928ac49c624e36db3d45e504b51ea9c4a",
+      "frozenAt": "2026-10-10T15:27:02.895056+00:00",
+      "articles": [
+        {
+          "slug": "yeongeon-dong-snuh-condolence-wreath",
+          "title": "서울대병원 장례식장 근조화환 주문",
+          "primaryKeyword": "서울대병원 장례식장 근조화환 주문",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "pyeong-dong-redcross-funeral-wreath",
+          "title": "서울적십자병원 장례식장 근조화환",
+          "primaryKeyword": "서울적십자병원 장례식장 근조화환",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "buam-dong-hw-convention-wreath",
+          "title": "HW컨벤션 결혼식 축하화환",
+          "primaryKeyword": "HW컨벤션 결혼식 축하화환",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "myeongnyun3ga-skk-convention-wreath",
+          "title": "성균관컨벤션 결혼식 화환 주문",
+          "primaryKeyword": "성균관컨벤션 결혼식 화환 주문",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "junghak-dong-apelgamo-gwanghwamun-wreath",
+          "title": "아펠가모 광화문 축하화환 주문",
+          "primaryKeyword": "아펠가모 광화문 축하화환 주문",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "seorin-dong-global-center-event-wreath",
+          "title": "서울글로벌센터 행사 축하화환",
+          "primaryKeyword": "서울글로벌센터 행사 축하화환",
+          "status": "planned_not_authored"
+        }
+      ]
     },
     "changeIntent": {
-      "action": "claim_single_owner_and_freeze_official_national_plan",
-      "target": "main docs/direct-regional-release/checkpoint.json and national fixed plan",
-      "idempotencyKey": "jongno:11110:initial:20261010T150000Z"
+      "action": "freeze_six_unique_purchase_intents_then_author_new_content",
+      "target": "site-factory-jongno-direct / site-factory/jongno-flower",
+      "idempotencyKey": "jongno:plan:bc8a904a6c9c44ba0f77cac1e20135a928ac49c624e36db3d45e504b51ea9c4a"
     },
-    "lastSuccessfulStage": "remote_prior_release_and_ownership_readback",
-    "nextIntent": "Freeze unique purchase-intent article plan before authoring; preserve all 87 legal and 17 administrative memberships separately."
+    "lastSuccessfulStage": "official_membership_catalog_images_and_fixed_plan_independently_verified",
+    "nextIntent": "Author the exact six planned articles, then independent content review; all six must pass."
   },
   "history": [
     {
