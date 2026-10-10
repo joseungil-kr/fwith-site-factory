@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "review_gapyeong_fixed_inputs",
+  "reviewedAt": "2026-10-10T13:16:23.974395+00:00",
+  "scope": "pre-writing fixed-input freeze suitability only",
+  "verdict": "PASS",
+  "canFreezePlan": true,
+  "candidateExactSha256": "e2c77b777e329386291425cc9a016096c044456583a0040af96e376aa7cf81d1",
+  "membershipExactSha256": "0410925f3642a366e68becbcc7e1e130d85c54607dee307faa6b155cb733c755",
+  "sourceAttachmentExactSha256": "c9c2583919adfff992edc098fe7ea522e625fedabbfefedbd85564942c059d43",
+  "N": 6,
+  "plannedArticleCount": 6,
+  "minimumPassedArticles": 6,
+  "hubCountIncluded": 0,
+  "allOriginalInputsLeftUnmodified": true,
+  "browserControlUsed": false,
+  "remoteWritesPerformed": false,
+  "checks": [
+    {
+      "id": "membership-original-zip",
+      "status": "PASS",
+      "finding": "Read the original active MOIS ZIP, not merely the researcher extraction. Independently joined KIKcd_B, KIKcd_H and KIKmix. County code 41820; county aggregate 4182000000; 1 eup and 5 myeon; 61 legal ri. All legal-ri names and codes exactly match both membership and proposed input.",
+      "evidence": "review/membership-independent-audit.json"
+    },
+    {
+      "id": "whole-administrative-relations",
+      "status": "PASS",
+      "finding": "Six administrative eup/myeon aliases each join one complete legal eup/myeon and all its legal-ri records. Each whole relation has matching code/name and complete child membership. 68 legal rows = 1 county + 6 units + 61 ri; 7 administrative rows = 1 county + 6 units; 68 mix rows."
+    },
+    {
+      "id": "effective-source-date",
+      "status": "PASS",
+      "finding": "MOIS notice 129824 and ZIP members are effective 2026-09-30. Independent MOIS current board list places 2026-10-12 as the next notice; its future effective date must not replace the currently effective source on 2026-10-10.",
+      "sources": [
+        "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824",
+        "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardList.do?bbsId=BBSMSTR_000000000052&pageIndex=1",
+        "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
+      ]
+    },
+    {
+      "id": "municipal-corroboration",
+      "status": "PASS",
+      "finding": "Original county HTML explicitly has basis end of July 2026 and modified 2026-09-11. Independent extraction confirms 1 eup / 5 myeon, legal-ri counts 14+15+7+10+7+8=61, administrative-ri counts 32+32+23+14+17+13=131. 131 administrative ri is not administrative-unit N.",
+      "source": "https://www.gp.go.kr/portal/contents.do?key=750"
+    },
+    {
+      "id": "plan-count-and-hub-separation",
+      "status": "PASS",
+      "finding": "Six distinct planned body articles map exactly once to all six official eup/myeon. minimumPassedArticles=6 and plannedArticleCount=6. No county hub or legal-ri count is counted as an article or administrative unit. N is membership cardinality, not automatic content quality approval."
+    },
+    {
+      "id": "draft-state",
+      "status": "PASS",
+      "finding": "Candidate frozenAt is null; planStatus=candidate_not_frozen; all pages planned. This is pre-writing input review only, not manuscript acceptance."
+    },
+    {
+      "id": "geographic-contamination",
+      "status": "PASS",
+      "finding": "Six facilities have addresses within the matching Gapyeong eup/myeon. Specific traps checked: funeral center address is Gyeongchun-ro 1775, not Nonghyup headquarters Bonap-ro 20; Kensington Gapyeong is in Sang-myeon despite Cheongpyeong associations; Midas is the hotel on Bukhangang-ro 2245; Buk-myeon is Gapyeong, not a homonymous district."
+    },
+    {
+      "id": "admission-policy",
+      "status": "PASS",
+      "finding": "All six explicitly mark outside-wreath permission unverified. V2 narrows Jojong installation/display attribution to the soccer-field listing and disclaims automatic application to other performance spaces or wreaths. Exact listing text independently verified via official web read L165/L200-201/L356-357; no outside-wreath permission inferred."
+    },
+    {
+      "id": "delivery-surcharges",
+      "status": "PASS",
+      "finding": "Independent fresh HTTP 200 read of the official shop B200 page confirms the section is additional shipping charges: Gapyeong county KRW 10,000 and Seorak-myeon KRW 20,000 in separate rows. These are not the total flower price, must not be summed to KRW 30,000, and do not prove free delivery or delivery availability. Candidate contains the necessary separate-charge/final-confirmation caveats.",
+      "source": "https://fwith.co.kr/shop/item.php?it_id=B200",
+      "evidence": "review/independent-snapshots/fwith-shipping-live.html"
+    }
+  ],
+  "venues": [
+    {
+      "slug": "gapyeong-eup",
+      "status": "PASS",
+      "address": "경기도 가평군 가평읍 경춘로 1775",
+      "verifiedContext": "Official operator describes funeral service and mourning-room preparation. Funeral-wreath purchase checks are logically relevant. This does not identify a current funeral or prove permission.",
+      "source": "https://gpn.nonghyup.com/gpn/71736/subview.do",
+      "evidenceMode": "Independent web open successful; separate raw GET 502. Body address is distinct from headquarters footer."
+    },
+    {
+      "slug": "seorak-myeon",
+      "status": "PASS",
+      "address": "경기도 가평군 설악면 한서로268번길 157",
+      "verifiedContext": "Current official wedding menu advertises Wild Garden concept weddings and planning consultation. The garden/photoshoot distinction and outside-wreath permission caveat are appropriate. General garden prohibitions do not themselves govern wreaths.",
+      "source": "https://www.thestayhealingpark.com/wedding/index",
+      "evidence": "research/official-source-snapshots/seorak-wedding-current.html"
+    },
+    {
+      "slug": "cheongpyeong-myeon",
+      "status": "PASS",
+      "address": "경기도 가평군 청평면 북한강로 2245",
+      "verifiedContext": "Official wedding page names Zeus Hall on 2F (lobby floor), separately from outdoor terrace/garden weddings. Official directions confirm road address and Samhoe-ri 74-1. Must not invent an active booking.",
+      "source": "https://www.midashotel.co.kr/view/viewLink.do?page=homepage/KOR/banquet/wedding",
+      "evidence": "research/official-source-snapshots/cheongpyeong-wedding.html"
+    },
+    {
+      "slug": "sang-myeon",
+      "status": "PASS",
+      "address": "경기도 가평군 상면 청군로 430",
+      "verifiedContext": "Official package page describes group seminars and named banquet halls, with reservation period through 2026-11-30. A group congratulatory-order scenario is supported as conditional guidance; no named corporate anniversary/award/event is proved.",
+      "source": "https://www.kensington.co.kr/rcp/promotion/package_view?seq=H1766725509",
+      "evidence": "research/official-source-snapshots/sang-banquet.html"
+    },
+    {
+      "slug": "jojong-myeon",
+      "status": "PASS",
+      "address": "경기도 가평군 조종면 조종희망로26번길 16",
+      "verifiedContext": "Independent sports-association and county sports-event pages verify exact address. Music1939 notice proves a 2025-10-04 concert history only, not a current or upcoming 2026 event. Outside-wreath transfer and installation remain unverified.",
+      "sources": [
+        "https://www.gpsports.or.kr/ksc/about/facilities",
+        "https://gpsports.gp.go.kr/athletic/guide/schedule",
+        "https://music1939.gp.go.kr/board-view.php?code=event&page=1&sq=3275"
+      ],
+      "evidence": "review/independent-snapshots/jojong-sports-facilities.html",
+      "scopedPolicyVerification": "Official Gyeonggi Share soccer-field listing L356-357 verified independently. V2 scope language accepted; performance-specific/wreath-specific acceptance still unverified.",
+      "policyEvidence": "review/jojong-rules-independent-web-response.json"
+    },
+    {
+      "slug": "buk-myeon",
+      "status": "PASS",
+      "address": "경기도 가평군 북면 백둔로 322",
+      "verifiedContext": "Korea Tourism Organization page describes exhibition function and this address; modified 2026-09-10. Exhibition-opening purchase advice is conditional. No current exhibition, artist, opening date, or wreath acceptance was independently established.",
+      "source": "https://access.visitkorea.or.kr/ms/detail.do?cotId=58b18fcf-5092-4509-ad12-ea68bb18c54e",
+      "evidence": "research/official-source-snapshots/buk-exhibition.html"
+    }
+  ],
+  "blockingRevisions": [],
+  "notYetReviewed": [
+    "Full manuscripts, originality and duplication",
+    "Exact rendered four-product cards per body and family matching",
+    "Final CTA behavior and deployment HTTP/readback",
+    "Images provenance/pixel equality and asset delivery",
+    "Remote fixed plan persistence and hash"
+  ],
+  "fileSha256": {
+    "research/membership.json": "0410925f3642a366e68becbcc7e1e130d85c54607dee307faa6b155cb733c755",
+    "research/coverage-input.proposed.json": "0410925f3642a366e68becbcc7e1e130d85c54607dee307faa6b155cb733c755",
+    "research/coverage-input.json": "e9146c8e0323ed6c02a2fa0968838519db900f3dce66ea8a3254ca92fa1ba967",
+    "research/fixed-plan-candidate.json": "e2c77b777e329386291425cc9a016096c044456583a0040af96e376aa7cf81d1",
+    "research/source-admission-review.json": "eb1e07668b559bec093ea2d4b226d3749f3bcdb1b12f28f29b7586fdccc44c6d",
+    "research/official-source-http-readback.json": "7c20d30c948a85ba702a1bd974818ffc3cbcbb97b1b95a987f7cca4722c32e5e",
+    "research/extra-http-readback.json": "b439a5232cdcab5f7c252422929e4955f0630029eede96eab2e9bb1170323b13",
+    "review/membership-independent-audit.json": "2282f062dad6273718323bdfef206a3d743cb7b36c3746845801ab0f6a9b3687",
+    "review/independent-http-readback.json": "a211fb4605995bfaa42e5e79d3f45c8bfc413aa3a6f0cfdd29a260cd11ce0134",
+    "research/official-source-snapshots/buk-exhibition.html": "934a39bcee65f9a1e9ee1cd188484377f6b5b272caa465c101be8840f07b76df",
+    "research/official-source-snapshots/cheongpyeong-location.html": "f5ed63f52b03207c3c5117532c9451534360e4d7be3b5be2953fa9024e792dd0",
+    "research/official-source-snapshots/cheongpyeong-wedding.html": "dde4efea032f74b22a9d7af56e791db2b4b11e697178c450c8bde104924d0d08",
+    "research/official-source-snapshots/county.html": "29dcea8f32dcb8c0259c0f7197174dfac76097421aff140e63a1a9ca18b5bbae",
+    "research/official-source-snapshots/fwith-shipping.html": "d62c789c71f7ee003d3324344cbf5fab0fa28ac136c364ad4f02995645ed98ec",
+    "research/official-source-snapshots/jojong-concert-history.html": "0dba403816fc032ded5edb5fc02b75097fecd8e3121951169cd4c8edbdef8016",
+    "research/official-source-snapshots/mois-129824.html": "af031ccd8afaa43e7577ab3b3f590f653180b1f5db37d7ce608eb0bd01fd1274",
+    "research/official-source-snapshots/mois-current-zip.zip": "c9c2583919adfff992edc098fe7ea522e625fedabbfefedbd85564942c059d43",
+    "research/official-source-snapshots/sang-banquet.html": "57e233195ba40899e470b0a159f58965e298e88af8abcdf6fe40e036038ec19b",
+    "research/official-source-snapshots/seorak-garden-rules.html": "6b8ff8a9efcc356215d0107f3aff1a78addb1380d3dec93cdb6c555d5363c62b",
+    "research/official-source-snapshots/seorak-garden-wedding.html": "ecffdfeef3af24ff90017c70a4639e45af737947732b1c4174d733212dd7ee4f",
+    "research/official-source-snapshots/seorak-notices.html": "bb027a94632bc827b9e7f0d8d2638f762390058936a420d33d50dd5ed2fd5804",
+    "research/official-source-snapshots/seorak-venue.html": "dd59c5071ab4ff41e440444adcb7e93b1f2600505f3bdf10a46ef99f5468a0a3",
+    "research/official-source-snapshots/seorak-wedding-current.html": "3a2ae889bacec39b685c268cf3fc45a4ee0b2d59a28c2e2f0fda7bd5b339f33f",
+    "review/independent-snapshots/fwith-shipping-live.html": "45bdcd05756174603e299aa787a8c10777d2fd9b64de8928769c9cd601660ba9",
+    "review/independent-snapshots/jojong-county-event-schedule.html": "bb166acea54374e64080e0fe04a9e786a1f42ab76981e6a889ed7f03fd758892",
+    "review/independent-snapshots/jojong-sports-facilities.html": "1b3c400719177fe09023df971649b2037c5c341cb45caa301009a8cb7268947b",
+    "research/fixed-plan-candidate-v1.json": "664073c35f09f92ac321dc2496a5bf65c4251c96211f5579eea4422674af4b29",
+    "research/fixed-plan-candidate-v2.json": "e2c77b777e329386291425cc9a016096c044456583a0040af96e376aa7cf81d1",
+    "research/jojong-rules-web-response.json": "445fc26e7e2a6875000e749fcc2fd5ebbb347c5f21933ceebbe30bd6bdbcb20f",
+    "review/jojong-rules-independent-web-response.json": "54c6a183948f34069ca07aa0679d2e32fe6715d6f7f10089360a2b3939d62722",
+    "review/fixed-input-review-v1-revise.json": "b70f09cb0a01d3f9f6294654ee07e18bc6d8c19f041c0839ac25da4319dfd9b9"
+  },
+  "candidateFile": "research/fixed-plan-candidate-v2.json",
+  "resolvedRevisions": [
+    {
+      "id": "R1",
+      "initialCandidateSha256": "664073c35f09f92ac321dc2496a5bf65c4251c96211f5579eea4422674af4b29",
+      "revisedCandidateSha256": "e2c77b777e329386291425cc9a016096c044456583a0040af96e376aa7cf81d1",
+      "result": "PASS",
+      "resolution": "V2 explicitly attributes installation/display clauses to the soccer-field listing and disclaims automatic applicability to other performance spaces or wreaths in both decision and query evidence. Reviewer independently reread the official page at line 313 and verified facility identity at L165, address at L200-201, installation/display clauses at L356-357. This proves listed clauses, not outside-wreath acceptance.",
+      "evidence": "review/jojong-rules-independent-web-response.json"
+    }
+  ]
+}

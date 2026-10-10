@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T13:03:27.495Z",
+  "updatedAt": "2026-10-10T13:17:10.900Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "gapyeong-direct-initial-20261010",
     "city": "가평군",
-    "status": "researching_fixed_plan",
+    "status": "fixed_plan_content_authoring",
     "owner": {
       "scheduledRunAt": "2026-10-10T13:00:00Z",
       "observedExecutionAt": "2026-10-10T13:03:27.495Z",
@@ -70,15 +70,67 @@
       "runtimeSourceRevision": "8fbcc607193d2ea3c34286519cff7d5f3380479a"
     },
     "plan": {
-      "state": "research_before_freeze",
-      "plannedArticleCount": null
+      "state": "frozen_before_writing",
+      "plannedArticleCount": 6,
+      "minimumPassedArticles": 6,
+      "administrativeUnits": 6,
+      "legalRiCount": 61,
+      "crosswalkRelationships": 6,
+      "partialRelationships": 0,
+      "frozenAt": "2026-10-10T13:16:51.425700+00:00",
+      "membershipPath": "docs/direct-regional-release/gapyeong/membership.json",
+      "articles": [
+        {
+          "slug": "gapyeong-eup",
+          "name": "가평읍",
+          "title": "가평군농협 효문화센터 근조화환",
+          "primaryKeyword": "가평군농협 효문화센터 근조화환",
+          "status": "planned"
+        },
+        {
+          "slug": "seorak-myeon",
+          "name": "설악면",
+          "title": "설악면 더스테이힐링파크 가든웨딩 화환",
+          "primaryKeyword": "설악면 더스테이힐링파크 가든웨딩 화환",
+          "status": "planned"
+        },
+        {
+          "slug": "cheongpyeong-myeon",
+          "name": "청평면",
+          "title": "청평면 마이다스호텔 제우스홀 결혼식 화환",
+          "primaryKeyword": "청평면 마이다스호텔 제우스홀 결혼식 화환",
+          "status": "planned"
+        },
+        {
+          "slug": "sang-myeon",
+          "name": "상면",
+          "title": "상면 켄싱턴리조트 단체연회 축하화환",
+          "primaryKeyword": "상면 켄싱턴리조트 단체연회 축하화환",
+          "status": "planned"
+        },
+        {
+          "slug": "jojong-myeon",
+          "name": "조종면",
+          "title": "조종생활체육공원 야외공연 축하화환",
+          "primaryKeyword": "조종생활체육공원 야외공연 축하화환",
+          "status": "planned"
+        },
+        {
+          "slug": "buk-myeon",
+          "name": "북면",
+          "title": "북면 남송미술관 전시 개막 축하화환",
+          "primaryKeyword": "북면 남송미술관 전시 개막 축하화환",
+          "status": "planned"
+        }
+      ],
+      "deferred": []
     },
-    "lastSuccessfulStage": "remote_checkpoint_full_read_and_exclusive_owner_verified",
-    "nextIntent": "Verify official membership and commercial query plan before any customer writing",
+    "lastSuccessfulStage": "independent_official_membership_and_query_plan_review",
+    "nextIntent": "Write six original customer articles against frozen plan, then independent exact-content and image review",
     "changeIntent": {
-      "action": "claim_single_region_research",
-      "target": "gapyeong-direct-initial-20261010",
-      "idempotencyKey": "gapyeong-direct-initial-20261010:claim"
+      "action": "freeze_reviewed_plan_before_writing",
+      "target": "docs/direct-regional-release/gapyeong/fixed-plan.json",
+      "idempotencyKey": "gapyeong-direct-initial-20261010:freeze-plan:e2c77b777e329386291425cc9a016096c044456583a0040af96e376aa7cf81d1"
     },
     "publication": {
       "state": "not_dispatched",
