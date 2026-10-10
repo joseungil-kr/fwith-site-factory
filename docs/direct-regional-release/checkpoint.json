@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T05:00:52.984Z",
+  "updatedAt": "2026-10-10T05:02:35.461Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "icheon-direct-initial-20261010",
     "city": "이천시",
-    "status": "independent_content_pass_source_build_pending",
+    "status": "independent_local_source_build_pass_controls_save_intent",
     "owner": {
       "scheduledRunAt": "2026-10-10T05:00:00Z",
       "observedExecutionAt": "2026-10-10T05:00:21Z",
@@ -270,8 +270,10 @@
     "lastSuccessfulStage": "independent_content_source_catalog_review",
     "nextIntent": "Resume already-reviewed Icheon source integration and exact-source direct publication; no duplicate bootstrap",
     "pendingExternalAction": {
-      "action": "save_icheon_direct_source_and_controls_after_independent_review",
-      "idempotencyKey": "icheon-direct-initial-20261010"
+      "action": "save_reviewed_icheon_source_branch",
+      "branch": "site-factory-icheon-direct",
+      "expectedBranchHead": null,
+      "idempotencyKey": "icheon-source-inventory-46955158cd7b320c3b294f54277a009cb0a4cfdad54b170a07dd23b9b1cae224"
     },
     "review": {
       "independentContent": "PASS",
@@ -280,7 +282,16 @@
         "b": "3abdb3825d8a5227a77318bce7000cfc6905010bfc21490482fe98caa6fd732f",
         "c": "fa033a8d2ff1e82198f18fa5120c3fd422bb20687d36579e6e9fc4d799574a04"
       },
-      "hostedQa": "deferred_not_pass"
+      "hostedQa": "deferred_not_pass",
+      "sourceTests": 64,
+      "helperTests": 34,
+      "sourceFiles": 69,
+      "sourceFileManifestSha256": "46955158cd7b320c3b294f54277a009cb0a4cfdad54b170a07dd23b9b1cae224",
+      "artifactFiles": 44,
+      "normalHtmlRoutes": 27,
+      "sitemapUrls": 27,
+      "localBuild": "PASS_NODE22_INDEPENDENT_LOCAL_CANDIDATE",
+      "remoteReadback": "pending_source_publication"
     }
   },
   "history": [
