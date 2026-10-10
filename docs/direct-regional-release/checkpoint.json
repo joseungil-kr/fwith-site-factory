@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T11:35:37.732Z",
+  "updatedAt": "2026-10-10T11:41:54.999Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -3394,7 +3394,7 @@
     {
       "scopeKey": "pocheon-direct-initial-20261010",
       "city": "포천시",
-      "status": "approved_resuming_readback",
+      "status": "approved_release_running",
       "owner": {
         "scheduledRunAt": "2026-10-10T10:00:00Z",
         "observedExecutionAt": "2026-10-10T10:04:27Z",
@@ -3432,7 +3432,7 @@
         "controlRevision": "9d4ee747f8794d2fd7c76d90bba9e0bb9aa1e3dc",
         "runtimeSourceRevision": "b41863691a48912b182b915798c93a81d5723e59"
       },
-      "lastSuccessfulStage": "69_source_7_controls_full_remote_readback_independent_exact_source_Node22_QA_pass",
+      "lastSuccessfulStage": "official_exact_source_workflow_dispatch_confirmed",
       "nextIntent": "After explicit Pocheon service execution approval, re-read unchanged source, current main controls and actual runs; resume same official exact-source Run workflow once.",
       "plan": {
         "state": "independent_content_review_pass_runtime_verification_pending",
@@ -3623,11 +3623,13 @@
         },
         "target": "pocheon-flower-guide / pocheon.fwith.kr",
         "idempotencyKey": "pocheon-direct-initial-20261010:publish:80885f720b382cd71fab0f68228040e7637a8b34",
-        "dispatchAttempted": false,
+        "dispatchAttempted": true,
         "mandatoryGates": "provider account/Worker/hostname GET and no override; honor any required service execution approval",
         "dispatchClickRejectedAt": "2026-10-10T10:55:10Z",
-        "dispatchConfirmed": false,
-        "requires": "Specific user approval received; unchanged exact source and provider GET/no-override gates remain required"
+        "dispatchConfirmed": true,
+        "requires": "Specific user approval received; unchanged exact source and provider GET/no-override gates remain required",
+        "runId": 38049308939,
+        "dispatchedAt": "2026-10-10T11:41:38Z"
       },
       "sourceRevision": "80885f720b382cd71fab0f68228040e7637a8b34",
       "controlRevision": "25a4313914c9d602abcf4565ef23dd23d678afe0",
@@ -3644,11 +3646,13 @@
         "sourceRevision": "80885f720b382cd71fab0f68228040e7637a8b34"
       },
       "publication": {
-        "state": "not_published",
+        "state": "workflow_running_not_yet_public_verified",
         "intendedUrl": "https://pocheon.fwith.kr",
         "publicUrl": null,
-        "runId": null,
-        "articleCountPublished": 0
+        "runId": 38049308939,
+        "articleCountPublished": 0,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38049308939",
+        "controlRevision": "01afaadfe96351003d67bb6de5fb7dd89cdbce7e"
       },
       "publicQa": {
         "state": "not_performed",
@@ -3690,7 +3694,6 @@
         "/__pocheon_qa_missing__/"
       ],
       "incompleteStages": [
-        "service_execution_approval",
         "provider_account_worker_domain_GET_collision_checks",
         "official_exact_source_workflow_dispatch_and_CI",
         "live_exact_revision_HTTP_images_CTA_canonical_robots_sitemap_404_links_QA",
