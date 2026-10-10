@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T07:28:10.826Z",
+  "updatedAt": "2026-10-10T07:33:25.488Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "gimpo-direct-initial-20261010",
     "city": "김포시",
-    "status": "reviewed_source_ready_for_remote_save",
+    "status": "source_saved_remote_verification",
     "owner": {
       "scheduledRunAt": "2026-10-10T07:00:00Z",
       "observedExecutionAt": "2026-10-10T07:01:03Z",
@@ -50,7 +50,7 @@
       "worker": "gimpo-flower-guide",
       "hostname": "gimpo.fwith.kr",
       "externalCreationVerified": false,
-      "sourceBranchCreatedVerified": false
+      "sourceBranchCreatedVerified": true
     },
     "input": {
       "controlRevision": "08571361567796d95c28f4e40e2b054778fd2d4c",
@@ -248,12 +248,17 @@
       "membershipSha256": "766a49489470ea51e25f6869a61bb602e58ce3a8338b42c0b30ada848b1d776e",
       "heldArticleCount": 1
     },
-    "lastSuccessfulStage": "independent_local_release_review",
-    "nextIntent": "Save exact reviewed source into new Gimpo branch and read back all files before formal dispatch",
+    "lastSuccessfulStage": "exact_reviewed_source_commit_and_branch_readback",
+    "nextIntent": "Independently read back immutable source and rebuild exact SHA, then dispatch once",
     "pendingExternalAction": {
-      "action": "create_exact_reviewed_gimpo_source_branch",
-      "target": "joseungil-kr/fwith-site-factory:site-factory-gimpo-direct",
-      "idempotencyKey": "gimpo-direct-initial-20261010-source-inventory-308736a8"
+      "action": "workflow_dispatch",
+      "target": ".github/workflows/gimpo-direct-publish.yml@main",
+      "inputs": {
+        "expected_revision": "b41863691a48912b182b915798c93a81d5723e59",
+        "indexnow_only": false
+      },
+      "idempotencyKey": "gimpo-direct-b41863691a48912b182b915798c93a81d5723e59-first-dispatch",
+      "precondition": "independent remote full readback and exact-SHA build PASS"
     },
     "review": {
       "independentContent": "PASS_EXACT_14_ARTICLES",
@@ -261,7 +266,9 @@
       "localBuild": "PASS_64_SOURCE_34_HELPER_NODE22_STATIC_GRAPH",
       "sourceInventorySha256": "308736a8ee9b5b0d0ec84a1e67d49882ce8e3ceefc9869cac34e99c206007ffa",
       "controlInventorySha256": "791a22b940147f37745302237f46a9455320cdc5a6dc9e0bf668f0f18e097c26"
-    }
+    },
+    "sourceRevision": "b41863691a48912b182b915798c93a81d5723e59",
+    "controlRevision": "acd8e15f2fa9e82eb739bf474be752b7969eb918"
   },
   "history": [
     {
