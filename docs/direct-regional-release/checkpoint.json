@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T07:33:25.488Z",
+  "updatedAt": "2026-10-10T07:35:23.030Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "gimpo-direct-initial-20261010",
     "city": "김포시",
-    "status": "source_saved_remote_verification",
+    "status": "official_dispatch_running",
     "owner": {
       "scheduledRunAt": "2026-10-10T07:00:00Z",
       "observedExecutionAt": "2026-10-10T07:01:03Z",
@@ -248,27 +248,28 @@
       "membershipSha256": "766a49489470ea51e25f6869a61bb602e58ce3a8338b42c0b30ada848b1d776e",
       "heldArticleCount": 1
     },
-    "lastSuccessfulStage": "exact_reviewed_source_commit_and_branch_readback",
-    "nextIntent": "Independently read back immutable source and rebuild exact SHA, then dispatch once",
-    "pendingExternalAction": {
-      "action": "workflow_dispatch",
-      "target": ".github/workflows/gimpo-direct-publish.yml@main",
-      "inputs": {
-        "expected_revision": "b41863691a48912b182b915798c93a81d5723e59",
-        "indexnow_only": false
-      },
-      "idempotencyKey": "gimpo-direct-b41863691a48912b182b915798c93a81d5723e59-first-dispatch",
-      "precondition": "independent remote full readback and exact-SHA build PASS"
-    },
+    "lastSuccessfulStage": "exact_source_remote_readback_build_and_official_dispatch",
+    "nextIntent": "Read back terminal run, artifact digest, exact hosted HTTP and durable IndexNow receipt; then submit GSC",
+    "pendingExternalAction": null,
     "review": {
       "independentContent": "PASS_EXACT_14_ARTICLES",
       "visualQa": "deferred_not_pass",
       "localBuild": "PASS_64_SOURCE_34_HELPER_NODE22_STATIC_GRAPH",
       "sourceInventorySha256": "308736a8ee9b5b0d0ec84a1e67d49882ce8e3ceefc9869cac34e99c206007ffa",
-      "controlInventorySha256": "791a22b940147f37745302237f46a9455320cdc5a6dc9e0bf668f0f18e097c26"
+      "controlInventorySha256": "791a22b940147f37745302237f46a9455320cdc5a6dc9e0bf668f0f18e097c26",
+      "remoteSource": "PASS_69_FULL_FILES_EXACT_BLOBS",
+      "exactSourceBuild": "PASS_NODE22_64_SOURCE_34_HELPER_33_ARTIFACT_FILES"
     },
     "sourceRevision": "b41863691a48912b182b915798c93a81d5723e59",
-    "controlRevision": "acd8e15f2fa9e82eb739bf474be752b7969eb918"
+    "controlRevision": "73977fd6d99b26969da6e66b83f3c5c74b21c15e",
+    "run": {
+      "id": 38034917448,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38034917448",
+      "createdAt": "2026-10-10T07:35:01Z",
+      "status": "in_progress",
+      "attempt": 1,
+      "event": "workflow_dispatch"
+    }
   },
   "history": [
     {
