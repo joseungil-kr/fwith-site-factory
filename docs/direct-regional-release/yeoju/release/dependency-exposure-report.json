@@ -1,0 +1,108 @@
+{
+  "status": "READ_ONLY_FINDING_IDENTIFIED_EXPOSURE_ASSESSED_NO_REMEDIATION",
+  "checkedAtUtc": "2026-10-10T12:17:21.046719+00:00",
+  "sourceRevision": "8fbcc607193d2ea3c34286519cff7d5f3380479a",
+  "ciRunId": 38050787605,
+  "package": "http-cache-semantics",
+  "installedVersion": "4.2.0",
+  "dependencyChain": [
+    "flower-local-v2-template",
+    "astro@7.3.5",
+    "http-cache-semantics@4.2.0"
+  ],
+  "npmDependencyClassification": "Transitive production dependency (dev flag absent), even though this deployment uses Astro as a static build tool.",
+  "advisory": {
+    "id": "GHSA-ch52-4w7c-c8xp",
+    "cve": "CVE-2026-93748",
+    "url": "https://github.com/advisories/GHSA-ch52-4w7c-c8xp",
+    "severity": "high",
+    "npmCvss31": 7.5,
+    "githubCvss40": 8.7,
+    "affectedRange": "<=4.2.0",
+    "officialFirstPatchedVersion": null,
+    "officialWithdrawnAt": null,
+    "summary": "Reported shared-cache cross-user disclosure when a client max-stale directive permits reuse of a response carrying another user’s Set-Cookie."
+  },
+  "fixStatus": {
+    "npmAuditFixAvailable": true,
+    "npmLatest": "4.3.0",
+    "latestPublishedAt": "2026-10-04T02:56:05.593Z",
+    "versionOutsideCurrentAuditRange": "4.3.0",
+    "compatibleWithAstroDeclaredRange": true,
+    "verifiedSecurityPatch": false,
+    "note": "4.3.0 is outside the current audit range and satisfies Astro ^4.2.0, but the official advisory has no first patched version. Clearing this audit warning is not evidence the disputed behavior was fixed. No dependency update was attempted."
+  },
+  "dispute": {
+    "maintainerIssueUrl": "https://github.com/kornelski/http-cache-semantics/issues/56",
+    "maintainerPosition": "Maintainer disputes the Set-Cookie-based claim and closed the report as not planned on 2026-10-04.",
+    "withdrawalRequestUrl": "https://github.com/github/advisory-database/issues/10139",
+    "withdrawalRequestState": "open",
+    "relatedRevalidationPullRequest": "https://github.com/kornelski/http-cache-semantics/pull/63",
+    "relatedPullRequestState": "open",
+    "relatedPullRequestMerged": false,
+    "caution": "The advisory remains active. A separate discussion identifies revalidation-directive concerns; no patch or blanket false-positive conclusion is claimed here."
+  },
+  "exactSourceEvidence": [
+    {
+      "path": "astro.config.mjs",
+      "blobSha": "e4c686ed4ee3f1ae7f66daea5e4f7bcee917d0a9",
+      "content": "import {defineConfig} from 'astro/config';\nimport sitemap from '@astrojs/sitemap';\nimport config from './src/data/site-config.json' with {type:'json'};\nimport architecture from './src/data/architecture.json' with {type:'json'};\nconst site = process.env.SITE_URL || config.previewUrl;\nconst thinHubs=new Set(architecture.hubs.filter(h=>h.children<3).map(h=>h.url));\nexport default defineConfig({site, output:'static', trailingSlash:'always', integrations:[sitemap({filter: page => {\n  const path=new URL(page).pathname;\n  return !path.startsWith('/404') && !thinHubs.has(path);\n}})]});\n",
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/8fbcc607193d2ea3c34286519cff7d5f3380479a/site-factory/yeoju-flower/astro.config.mjs"
+    },
+    {
+      "path": "wrangler.jsonc",
+      "blobSha": "9596a74ba8a01744ea87a431d5043465fa23d92e",
+      "content": "{\n  \"name\": \"yeoju-flower-guide\",\n  \"compatibility_date\": \"2026-10-09\",\n  \"workers_dev\": false,\n  \"assets\": {\n    \"directory\": \"./dist\",\n    \"not_found_handling\": \"404-page\",\n    \"html_handling\": \"auto-trailing-slash\"\n  }\n}\n",
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/8fbcc607193d2ea3c34286519cff7d5f3380479a/site-factory/yeoju-flower/wrangler.jsonc"
+    },
+    {
+      "path": "package-lock.json",
+      "blobSha": "640929d57802c2f534db82da79cb19c36b006df3",
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/8fbcc607193d2ea3c34286519cff7d5f3380479a/site-factory/yeoju-flower/package-lock.json",
+      "lockVersion": "4.2.0"
+    }
+  ],
+  "exposureAssessment": {
+    "classification": "BUILD_TOOLCHAIN_DEPENDENCY; DEPLOYED_STATIC_ASSET_HTTP_PATH_NOT_SHOWN_TO_USE_LIBRARY",
+    "observed": [
+      "Exact-source astro.config.mjs sets output: static and has no SSR adapter.",
+      "Exact-source wrangler.jsonc has only an assets directory and no main script entry.",
+      "Exact-source package-lock blob matches the audited immutable lockfile."
+    ],
+    "inference": "For this asset-only deployment, Astro and this Node dependency are build tooling rather than request-handling code in the deployed Worker. The reported shared Node cache/session-reuse path is therefore not indicated by the inspected deployment configuration.",
+    "uncertainty": "This audit did not re-download the deployed artifact, inspect Cloudflare platform internals, or reproduce an exploit. It does not certify the entire site or build environment as vulnerability-free. A future SSR, proxy or shared application cache would require a new exposure assessment."
+  },
+  "actionsTaken": [
+    "Read immutable GitHub source/config/lock files.",
+    "Run npm audit --package-lock-only --ignore-scripts --json on exact copied inputs.",
+    "Read official npm registry and GitHub advisory/maintainer records."
+  ],
+  "notPerformed": [
+    "Dependency or lockfile update",
+    "npm audit fix",
+    "Dependency installation",
+    "Local build",
+    "Credential or security setting change",
+    "Source or remote write"
+  ],
+  "workspaceNote": "Executor transport interruption restored an older workspace and removed the prior release directory. Only dependency-audit inputs/evidence were recreated from immutable GitHub blobs; original local source was not recreated or edited.",
+  "inputSha256": {
+    "package.json": "48b91c214520401f938676dab0c0ca0789c7c991b945eaf94dafb4b60120f2ab",
+    "package-lock.json": "247ea260dec6f082770f06215e59854d90d02b1548db41d44bb0453c6a2f62bf"
+  },
+  "evidenceSha256": {
+    "npm-audit.json": "5f7a81779fca70ed23a6aa7ab4461fcd6c5aa9bc8064d74007a38f90f4d80fd0",
+    "withdrawal-issue-10139.json": "762112185943d357382c11363d24e45c367f6cacb0961b41a763701eebd1f684",
+    "upstream-pull-63.json": "c94dc3d39f2fc9c81234834adfe368c3da652cb431ce7c7e17ae0ffec29db19e",
+    "npm-current-versions.stderr.log": "7125f194612fcff2f454c05d848e7cb71facc1967b4d5017e25b34fdee3ba74f",
+    "input-evidence.json": "764eb9d4e667747a33dfb5a83b9a68919c4744d27afe58a9346f45d729adb8a1",
+    "exact-source-evidence.json": "5464fe58c10e9e17bd8fb09d49d3bf29bb03447e819ed9f0f3ec583d7b948aa2",
+    "registry-package.json": "80d047081285fcc7b46d40f2526e1d123fa3b2c02c0d4bb4d718cb678a80e623",
+    "npm-current-versions.json": "6b6d760a05756708ba32a0a2cb6053d06dd090f6721e8eef21962836388522a7",
+    "npm-audit.exitcode": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "maintainer-comments-56.json": "63ffff1b226f878f07c5df6b7e717e5289635963537aba0c6cc4d9a07d20075b",
+    "maintainer-issue-56.json": "09ecc05acba4b4b7eab0dec885813304feef27cc4fbf8d95d1e7bbd527cc1815",
+    "npm-audit.stderr.log": "7d61cb2e2deb776dfec4d6f54693f9edeed0af5c4da52f091c53c995d862fb65",
+    "github-advisory.json": "add51c3b2a7eb164e075b145f72e8902264bb474a8098617d90f5aabd1ab36bf"
+  }
+}
