@@ -1,0 +1,47 @@
+{
+  "reviewer": "independent-gimpo-release-review",
+  "checkedAtUtc": "2026-10-10T07:28:22.520965+00:00",
+  "status": "PASS_CONTROLS_ONLY",
+  "notContentApproval": true,
+  "plannedN": 15,
+  "minimumPass": 14,
+  "currentlyConfiguredArticleCount": 14,
+  "controls": [
+    {
+      "path": "scripts/direct-gimpo/publish.py",
+      "sha": "f400004a68e9ed9018f246096a4f8696c8d56c29",
+      "sha256": "4dd0224f5e5843ec743c69f1cd8598dba28ef2f5cec767f859716e106a7ad08f"
+    },
+    {
+      "path": "scripts/direct-gimpo/test_publish.py",
+      "sha": "dd16791c4082b28f47c3800e60b472a8023635e3",
+      "sha256": "629bb76c14516c5c1341464594e51a389c5fb4b4a589a87094296d9821e05a32"
+    },
+    {
+      "path": ".github/workflows/gimpo-direct-publish.yml",
+      "sha": "18912bf64a8309d3acdd3293239297134ef043f3",
+      "sha256": "37e4a03afcec7a85cd61bce0a4e30ef48cf51fc762bc4ca664c63caae8929124"
+    }
+  ],
+  "controlInventorySha256": "791a22b940147f37745302237f46a9455320cdc5a6dc9e0bf668f0f18e097c26",
+  "independentHelperTests": {
+    "passed": 34,
+    "logSha256": "31a4e4d041f4ebc2eacf6441941906c57940263b7d57555e6b43502730cbd799"
+  },
+  "donorInputsRehashed": 76,
+  "securityReview": [
+    "Dispatch-only main workflow with trusted actor and exact 40-character source branch head checks before build and publication.",
+    "Source npm build has no provider credentials; trusted control packages only static artifact and verifies exact manifest hash, routes, source revision, local assets, SEO and CTAs.",
+    "All provider operations are fixed-identity; account/worker/hostname collision readbacks precede no-override native binding. No new credential or permission change introduced by this adaptation.",
+    "Unknown deployment/binding outcome does not trigger a blind mutation retry; HTTP readback and durable IndexNow journal remain present.",
+    "IndexNow-only mode contains no provider credential or mutation; it rebuilds and byte-verifies the exact public source before journaled finalization."
+  ],
+  "diffReview": "Read complete baseline publisher/workflow and final Gimpo adaptation including tests. Diff contains only city identity, exact 15 canonical slug set, held Haseong route and resulting14article/16route counts. No guard weakening. All76donor blobs independently rehashed.",
+  "sourceRuntimeReview": "All 69 final source files rehashed and independently built in separate working copy. Exactly 57 unchanged donor blobs and 12 city/content/manifest/test/ownership files. All 14 authored articles match original customer fields exactly; legal N15 and all 17 relations preserved with four partial scopes. Source64/helper34/static/graph/typecheck passed.",
+  "actualScreenQa": "DEFERRED_NOT_PASS",
+  "remoteGimpoReadback": "PENDING",
+  "previousControlInventorySha256": "c4892bee1da4389f436c9bf485768f47d5ca9d1b7009107dc50123b61ace786f",
+  "heldSlugs": [
+    "haseong-myeon"
+  ]
+}

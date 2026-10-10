@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T07:38:00.987Z",
+  "updatedAt": "2026-10-10T07:39:08.946Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,15 +33,16 @@
   "current": {
     "scopeKey": "gimpo-direct-initial-20261010",
     "city": "김포시",
-    "status": "published_search_submission_pending",
+    "status": "released_search_submitted_visual_qa_deferred",
     "owner": {
       "scheduledRunAt": "2026-10-10T07:00:00Z",
       "observedExecutionAt": "2026-10-10T07:01:03Z",
       "newRegionStartedAt": "2026-10-10T07:11:09.529Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-gimpo-20261010T070000Z",
-      "active": true,
-      "executionState": "active_serial_single_writer"
+      "active": false,
+      "executionState": "released_with_visual_review_deferred",
+      "completedAt": "2026-10-10T07:39:08.946Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -66,10 +67,10 @@
       "openMatchingPullRequests": 0,
       "inProgressWorkflows": 0,
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "pending_actual_GET_before_no_override_deployment"
+      "providerOwnershipCollisionCheck": "PASS_exact_account_worker_domain_no_override"
     },
     "plan": {
-      "state": "fixed_purchase_intents_before_writing",
+      "state": "reviewed_14_of_15",
       "plannedArticleCount": 15,
       "minimumPassedArticles": 14,
       "passedArticleCount": 14,
@@ -246,25 +247,22 @@
       ],
       "membershipPath": "docs/direct-regional-release/gimpo/membership.json",
       "membershipSha256": "766a49489470ea51e25f6869a61bb602e58ce3a8338b42c0b30ada848b1d776e",
-      "heldArticleCount": 1
+      "heldArticleCount": 1,
+      "passedRatio": 0.9333333333333333
     },
-    "lastSuccessfulStage": "official_public_http_and_durable_indexnow_receipt",
-    "nextIntent": "Submit Gimpo sitemap to verified sc-domain:fwith.kr after independent public HTTP sweep",
-    "pendingExternalAction": {
-      "action": "GSC submit_sitemap",
-      "target": "sc-domain:fwith.kr",
-      "sitemapUrl": "https://gimpo.fwith.kr/sitemap-index.xml",
-      "idempotencyKey": "gimpo-b418636-gsc-sitemap-index-first",
-      "precondition": "independent public HTTP sweep PASS; reuse existing sitemap registration if present"
-    },
+    "lastSuccessfulStage": "independent_public_http_IndexNow200_and_GSC_submit_readback",
+    "nextIntent": "Deferred batch actual screen QA; preserve Haseong held article for later useful purchase research",
+    "pendingExternalAction": null,
     "review": {
       "independentContent": "PASS_EXACT_14_ARTICLES",
-      "visualQa": "deferred_not_pass",
+      "visualQa": "DEFERRED_NOT_PERFORMED",
       "localBuild": "PASS_64_SOURCE_34_HELPER_NODE22_STATIC_GRAPH",
       "sourceInventorySha256": "308736a8ee9b5b0d0ec84a1e67d49882ce8e3ceefc9869cac34e99c206007ffa",
       "controlInventorySha256": "791a22b940147f37745302237f46a9455320cdc5a6dc9e0bf668f0f18e097c26",
       "remoteSource": "PASS_69_FULL_FILES_EXACT_BLOBS",
-      "exactSourceBuild": "PASS_NODE22_64_SOURCE_34_HELPER_33_ARTIFACT_FILES"
+      "exactSourceBuild": "PASS_NODE22_64_SOURCE_34_HELPER_33_ARTIFACT_FILES",
+      "actualScreenCasesPending": 36,
+      "evidencePath": "docs/direct-regional-release/gimpo/deferred-visual-qa-handoff.json"
     },
     "sourceRevision": "b41863691a48912b182b915798c93a81d5723e59",
     "controlRevision": "73977fd6d99b26969da6e66b83f3c5c74b21c15e",
@@ -291,6 +289,64 @@
       "allGet200AndNoBlockingRobotsOrChallenge": true,
       "httpMeaning": "accepted",
       "searchIndexing": "not_verified"
+    },
+    "publication": {
+      "url": "https://gimpo.fwith.kr",
+      "sourceRevision": "b41863691a48912b182b915798c93a81d5723e59",
+      "runId": 38034917448,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38034917448",
+      "articleCount": 14,
+      "normalHtmlRoutes": 16,
+      "sitemapUrls": 16,
+      "independentPublicHttp": "PASS_33_GET_PATHS_EXACT_BYTES",
+      "internalLinks": 124,
+      "catalogCards": 64,
+      "images": 9
+    },
+    "gsc": {
+      "checkedAt": "2026-10-10T07:39:07.906Z",
+      "siteUrl": "sc-domain:fwith.kr",
+      "sourceRevision": "b41863691a48912b182b915798c93a81d5723e59",
+      "submit": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "attempted": 1,
+        "submitted": 1,
+        "failed": 0,
+        "results": [
+          {
+            "sitemapUrl": "https://gimpo.fwith.kr/sitemap-index.xml",
+            "accepted": true,
+            "confirmed": true,
+            "lastSubmitted": "2026-10-10T07:38:43.200Z",
+            "isPending": true,
+            "isSitemapsIndex": false,
+            "warnings": "0",
+            "errors": "0"
+          }
+        ],
+        "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+        "actions": [
+          "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+        ]
+      },
+      "listReadback": [
+        {
+          "path": "https://gimpo.fwith.kr/sitemap-index.xml",
+          "lastSubmitted": "2026-10-10T07:38:43.200Z",
+          "isPending": true,
+          "isSitemapsIndex": false,
+          "warnings": "0",
+          "errors": "0"
+        }
+      ],
+      "searchIndexing": "not_verified"
+    },
+    "evidence": {
+      "verificationSummary": "docs/direct-regional-release/gimpo/verification-summary.json",
+      "verificationSummarySha256": "b5c8e98ea3d765880569ce91971a4af56a9fc9486d975d8e03c9159dfc391006",
+      "publicHttp": "docs/direct-regional-release/gimpo/independent-http-readback.json",
+      "publicHttpSha256": "af5c08bf4398134cb783b265888699cc6ec50c66a2fe2442d240a7e4ad861ece",
+      "deferredVisualSha256": "ea168be78ac8fe5b156a71f23e7d950393df147635247d48068693948c16e626"
     }
   },
   "history": [
@@ -2908,6 +2964,325 @@
       },
       "userIntervention": false,
       "elapsedSecondsFromObservedStart": 1819
+    },
+    {
+      "scopeKey": "gimpo-direct-initial-20261010",
+      "city": "김포시",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "owner": {
+        "scheduledRunAt": "2026-10-10T07:00:00Z",
+        "observedExecutionAt": "2026-10-10T07:01:03Z",
+        "newRegionStartedAt": "2026-10-10T07:11:09.529Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-gimpo-20261010T070000Z",
+        "active": false,
+        "executionState": "released_with_visual_review_deferred",
+        "completedAt": "2026-10-10T07:39:08.946Z"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-gimpo-direct",
+        "root": "site-factory/gimpo-flower",
+        "worker": "gimpo-flower-guide",
+        "hostname": "gimpo.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true
+      },
+      "input": {
+        "controlRevision": "08571361567796d95c28f4e40e2b054778fd2d4c",
+        "runtimeSourceRevision": "39a23593b6d2134627edccb9a02378dac708e5c4"
+      },
+      "selection": {
+        "officialCode": "41570",
+        "reason": "Next unbuilt municipality after Anseong in remote official MOIS code order; completed, released and active-owned hosts excluded"
+      },
+      "conflictChecks": {
+        "branchesChecked": 116,
+        "matchingBranch": false,
+        "openMatchingPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "PASS_exact_account_worker_domain_no_override"
+      },
+      "plan": {
+        "state": "reviewed_14_of_15",
+        "plannedArticleCount": 15,
+        "minimumPassedArticles": 14,
+        "passedArticleCount": 14,
+        "administrativeUnits": 14,
+        "crosswalkRelationships": 17,
+        "partialRelationships": 4,
+        "articles": [
+          {
+            "name": "북변동",
+            "slug": "bukbyeon-dong",
+            "route": "/regions/bukbyeon-dong/",
+            "primaryKeyword": "김포 북변동 개업화환",
+            "title": "김포 북변동 개업화환 | 김포중앙시장 새 점포 개업",
+            "intent": "김포중앙시장 새 점포 개업",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "걸포동",
+            "slug": "geolpo-dong",
+            "route": "/regions/geolpo-dong/",
+            "primaryKeyword": "김포 걸포동 근조화환",
+            "title": "김포 걸포동 근조화환 | 김포우리병원 장례식장 조문",
+            "intent": "김포우리병원 장례식장 조문",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "운양동",
+            "slug": "unyang-dong",
+            "route": "/regions/unyang-dong/",
+            "primaryKeyword": "김포 운양동 축하화환",
+            "title": "김포 운양동 축하화환 | 김포아트빌리지 전시 개막",
+            "intent": "김포아트빌리지 전시 개막",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "장기동",
+            "slug": "janggi-dong",
+            "route": "/regions/janggi-dong/",
+            "primaryKeyword": "김포 장기동 근조화환",
+            "title": "김포 장기동 근조화환 | 뉴고려병원 장례식장 회사 명의 조문",
+            "intent": "뉴고려병원 장례식장 회사 명의 조문",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "감정동",
+            "slug": "gamjeong-dong",
+            "route": "/regions/gamjeong-dong/",
+            "primaryKeyword": "김포 감정동 결혼화환",
+            "title": "김포 감정동 결혼화환 | 스페이스566 웨딩컨벤션센터 결혼 축하",
+            "intent": "스페이스566 웨딩컨벤션센터 결혼 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "사우동",
+            "slug": "sau-dong",
+            "route": "/regions/sau-dong/",
+            "primaryKeyword": "김포 사우동 축하화환",
+            "title": "김포 사우동 축하화환 | 김포아트홀 공연단체 축하",
+            "intent": "김포아트홀 공연단체 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "풍무동",
+            "slug": "pungmu-dong",
+            "route": "/regions/pungmu-dong/",
+            "primaryKeyword": "김포 풍무동 근조화환",
+            "title": "김포 풍무동 근조화환 | 쉴낙원 김포장례식장 가족장 조문",
+            "intent": "쉴낙원 김포장례식장 가족장 조문",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "마산동",
+            "slug": "masan-dong",
+            "route": "/regions/masan-dong/",
+            "primaryKeyword": "김포 마산동 축하화환",
+            "title": "김포 마산동 축하화환 | 김포생활체육관 체육단체 행사",
+            "intent": "김포생활체육관 체육단체 행사",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "구래동",
+            "slug": "gurae-dong",
+            "route": "/regions/gurae-dong/",
+            "primaryKeyword": "김포 구래동 개업화환",
+            "title": "김포 구래동 개업화환 | 문화의 거리 음식점 개업",
+            "intent": "문화의 거리 음식점 개업",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "통진읍",
+            "slug": "tongjin-eup",
+            "route": "/regions/tongjin-eup/",
+            "primaryKeyword": "김포 통진읍 개업화환",
+            "title": "김포 통진읍 개업화환 | 통진일반산업단지 사업장 개업",
+            "intent": "통진일반산업단지 사업장 개업",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "고촌읍",
+            "slug": "gochon-eup",
+            "route": "/regions/gochon-eup/",
+            "primaryKeyword": "김포 고촌읍 축하화환",
+            "title": "김포 고촌읍 축하화환 | 호텔 마리나베이서울 기업 기념행사",
+            "intent": "호텔 마리나베이서울 기업 기념행사",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "양촌읍",
+            "slug": "yangchon-eup",
+            "route": "/regions/yangchon-eup/",
+            "primaryKeyword": "김포 양촌읍 개업화환",
+            "title": "김포 양촌읍 개업화환 | 양촌일반산업단지 제조기업 이전 축하",
+            "intent": "양촌일반산업단지 제조기업 이전 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "대곶면",
+            "slug": "daegot-myeon",
+            "route": "/regions/daegot-myeon/",
+            "primaryKeyword": "김포 대곶면 개업화환",
+            "title": "김포 대곶면 개업화환 | 대명항 수산물 판매점 개업",
+            "intent": "대명항 수산물 판매점 개업",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "월곶면",
+            "slug": "wolgot-myeon",
+            "route": "/regions/wolgot-myeon/",
+            "primaryKeyword": "김포 월곶면 축하화환",
+            "title": "김포 월곶면 축하화환 | 월곶생활문화센터 문화동호회 발표 축하",
+            "intent": "월곶생활문화센터 문화동호회 발표 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "하성면",
+            "slug": "haseong-myeon",
+            "route": "/regions/haseong-myeon/",
+            "primaryKeyword": "김포 하성면 축하화환",
+            "title": "김포 하성면 축하화환 | 하성면 학습모임 감사",
+            "intent": "하성면 학습모임 감사",
+            "status": "hold_purchase_fit",
+            "writerBatch": "b"
+          }
+        ],
+        "deferred": [
+          {
+            "name": "하성면",
+            "slug": "haseong-myeon",
+            "primaryKeyword": "김포 하성면 축하화환",
+            "title": "김포 하성면 축하화환 | 하성면 학습모임 감사",
+            "h1": "김포 하성면 축하화환",
+            "intent": "하성면 학습모임 감사",
+            "sourceUrl": "https://gimpo.gseek.kr/user/course/offline/view?s_sbjct_cycl_sn=1&s_sbjct_sn=56070",
+            "sourceName": "하성면 가까이배움터 / 복지문화센터",
+            "verifiedFactsAndLimits": "경기 김포시 하성면 애기봉로 845; Hold for this 3-tier-wreath-only release: learning thanks is not a well-supported large standing-wreath purchase intent. Address verified only; no upcoming ceremony or flower-acceptance policy claimed.",
+            "family": "congrats",
+            "state": "hold_purchase_fit",
+            "verificationStatus": "address_verified_content_hold"
+          }
+        ],
+        "membershipPath": "docs/direct-regional-release/gimpo/membership.json",
+        "membershipSha256": "766a49489470ea51e25f6869a61bb602e58ce3a8338b42c0b30ada848b1d776e",
+        "heldArticleCount": 1,
+        "passedRatio": 0.9333333333333333
+      },
+      "lastSuccessfulStage": "independent_public_http_IndexNow200_and_GSC_submit_readback",
+      "nextIntent": "Deferred batch actual screen QA; preserve Haseong held article for later useful purchase research",
+      "pendingExternalAction": null,
+      "review": {
+        "independentContent": "PASS_EXACT_14_ARTICLES",
+        "visualQa": "DEFERRED_NOT_PERFORMED",
+        "localBuild": "PASS_64_SOURCE_34_HELPER_NODE22_STATIC_GRAPH",
+        "sourceInventorySha256": "308736a8ee9b5b0d0ec84a1e67d49882ce8e3ceefc9869cac34e99c206007ffa",
+        "controlInventorySha256": "791a22b940147f37745302237f46a9455320cdc5a6dc9e0bf668f0f18e097c26",
+        "remoteSource": "PASS_69_FULL_FILES_EXACT_BLOBS",
+        "exactSourceBuild": "PASS_NODE22_64_SOURCE_34_HELPER_33_ARTIFACT_FILES",
+        "actualScreenCasesPending": 36,
+        "evidencePath": "docs/direct-regional-release/gimpo/deferred-visual-qa-handoff.json"
+      },
+      "sourceRevision": "b41863691a48912b182b915798c93a81d5723e59",
+      "controlRevision": "73977fd6d99b26969da6e66b83f3c5c74b21c15e",
+      "run": {
+        "id": 38034917448,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38034917448",
+        "createdAt": "2026-10-10T07:35:01Z",
+        "status": "completed",
+        "attempt": 1,
+        "event": "workflow_dispatch",
+        "conclusion": "success"
+      },
+      "indexnow": {
+        "state": "received",
+        "httpStatus": 200,
+        "attempt": 1,
+        "urlCount": 16,
+        "urlSetSha256": "01dec44be1640d0e7d546060ca11c4943ccc57a4f24ea3160f36a03126f4c78d",
+        "fingerprint": "c032089953a71761f90056ce170d6755f75e21f5cd4e062d645e9c13742823da",
+        "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6095181536",
+        "receiptIssue": 266,
+        "getObservations": 40,
+        "submissionObservations": 1,
+        "allGet200AndNoBlockingRobotsOrChallenge": true,
+        "httpMeaning": "accepted",
+        "searchIndexing": "not_verified"
+      },
+      "publication": {
+        "url": "https://gimpo.fwith.kr",
+        "sourceRevision": "b41863691a48912b182b915798c93a81d5723e59",
+        "runId": 38034917448,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38034917448",
+        "articleCount": 14,
+        "normalHtmlRoutes": 16,
+        "sitemapUrls": 16,
+        "independentPublicHttp": "PASS_33_GET_PATHS_EXACT_BYTES",
+        "internalLinks": 124,
+        "catalogCards": 64,
+        "images": 9
+      },
+      "gsc": {
+        "checkedAt": "2026-10-10T07:39:07.906Z",
+        "siteUrl": "sc-domain:fwith.kr",
+        "sourceRevision": "b41863691a48912b182b915798c93a81d5723e59",
+        "submit": {
+          "siteUrl": "sc-domain:fwith.kr",
+          "attempted": 1,
+          "submitted": 1,
+          "failed": 0,
+          "results": [
+            {
+              "sitemapUrl": "https://gimpo.fwith.kr/sitemap-index.xml",
+              "accepted": true,
+              "confirmed": true,
+              "lastSubmitted": "2026-10-10T07:38:43.200Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+          "actions": [
+            "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+          ]
+        },
+        "listReadback": [
+          {
+            "path": "https://gimpo.fwith.kr/sitemap-index.xml",
+            "lastSubmitted": "2026-10-10T07:38:43.200Z",
+            "isPending": true,
+            "isSitemapsIndex": false,
+            "warnings": "0",
+            "errors": "0"
+          }
+        ],
+        "searchIndexing": "not_verified"
+      },
+      "evidence": {
+        "verificationSummary": "docs/direct-regional-release/gimpo/verification-summary.json",
+        "verificationSummarySha256": "b5c8e98ea3d765880569ce91971a4af56a9fc9486d975d8e03c9159dfc391006",
+        "publicHttp": "docs/direct-regional-release/gimpo/independent-http-readback.json",
+        "publicHttpSha256": "af5c08bf4398134cb783b265888699cc6ec50c66a2fe2442d240a7e4ad861ece",
+        "deferredVisualSha256": "ea168be78ac8fe5b156a71f23e7d950393df147635247d48068693948c16e626"
+      }
     }
   ],
   "maintenanceBacklog": [
@@ -2938,7 +3313,7 @@
       ]
     }
   ],
-  "nextAction": "Next invocation: verify remote ownership and select next unbuilt official-code municipality; preserve all visual QA deferrals and held articles.",
+  "nextAction": "On next invocation resume explicitly approved incomplete work first, otherwise select next unbuilt region from official remote plan; Gimpo release/search submission done with screen QA deferred",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -4421,6 +4796,325 @@
       },
       "userIntervention": false,
       "elapsedSecondsFromObservedStart": 1819
+    },
+    {
+      "scopeKey": "gimpo-direct-initial-20261010",
+      "city": "김포시",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "owner": {
+        "scheduledRunAt": "2026-10-10T07:00:00Z",
+        "observedExecutionAt": "2026-10-10T07:01:03Z",
+        "newRegionStartedAt": "2026-10-10T07:11:09.529Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-gimpo-20261010T070000Z",
+        "active": false,
+        "executionState": "released_with_visual_review_deferred",
+        "completedAt": "2026-10-10T07:39:08.946Z"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-gimpo-direct",
+        "root": "site-factory/gimpo-flower",
+        "worker": "gimpo-flower-guide",
+        "hostname": "gimpo.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true
+      },
+      "input": {
+        "controlRevision": "08571361567796d95c28f4e40e2b054778fd2d4c",
+        "runtimeSourceRevision": "39a23593b6d2134627edccb9a02378dac708e5c4"
+      },
+      "selection": {
+        "officialCode": "41570",
+        "reason": "Next unbuilt municipality after Anseong in remote official MOIS code order; completed, released and active-owned hosts excluded"
+      },
+      "conflictChecks": {
+        "branchesChecked": 116,
+        "matchingBranch": false,
+        "openMatchingPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "PASS_exact_account_worker_domain_no_override"
+      },
+      "plan": {
+        "state": "reviewed_14_of_15",
+        "plannedArticleCount": 15,
+        "minimumPassedArticles": 14,
+        "passedArticleCount": 14,
+        "administrativeUnits": 14,
+        "crosswalkRelationships": 17,
+        "partialRelationships": 4,
+        "articles": [
+          {
+            "name": "북변동",
+            "slug": "bukbyeon-dong",
+            "route": "/regions/bukbyeon-dong/",
+            "primaryKeyword": "김포 북변동 개업화환",
+            "title": "김포 북변동 개업화환 | 김포중앙시장 새 점포 개업",
+            "intent": "김포중앙시장 새 점포 개업",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "걸포동",
+            "slug": "geolpo-dong",
+            "route": "/regions/geolpo-dong/",
+            "primaryKeyword": "김포 걸포동 근조화환",
+            "title": "김포 걸포동 근조화환 | 김포우리병원 장례식장 조문",
+            "intent": "김포우리병원 장례식장 조문",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "운양동",
+            "slug": "unyang-dong",
+            "route": "/regions/unyang-dong/",
+            "primaryKeyword": "김포 운양동 축하화환",
+            "title": "김포 운양동 축하화환 | 김포아트빌리지 전시 개막",
+            "intent": "김포아트빌리지 전시 개막",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "장기동",
+            "slug": "janggi-dong",
+            "route": "/regions/janggi-dong/",
+            "primaryKeyword": "김포 장기동 근조화환",
+            "title": "김포 장기동 근조화환 | 뉴고려병원 장례식장 회사 명의 조문",
+            "intent": "뉴고려병원 장례식장 회사 명의 조문",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "감정동",
+            "slug": "gamjeong-dong",
+            "route": "/regions/gamjeong-dong/",
+            "primaryKeyword": "김포 감정동 결혼화환",
+            "title": "김포 감정동 결혼화환 | 스페이스566 웨딩컨벤션센터 결혼 축하",
+            "intent": "스페이스566 웨딩컨벤션센터 결혼 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "사우동",
+            "slug": "sau-dong",
+            "route": "/regions/sau-dong/",
+            "primaryKeyword": "김포 사우동 축하화환",
+            "title": "김포 사우동 축하화환 | 김포아트홀 공연단체 축하",
+            "intent": "김포아트홀 공연단체 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "풍무동",
+            "slug": "pungmu-dong",
+            "route": "/regions/pungmu-dong/",
+            "primaryKeyword": "김포 풍무동 근조화환",
+            "title": "김포 풍무동 근조화환 | 쉴낙원 김포장례식장 가족장 조문",
+            "intent": "쉴낙원 김포장례식장 가족장 조문",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "마산동",
+            "slug": "masan-dong",
+            "route": "/regions/masan-dong/",
+            "primaryKeyword": "김포 마산동 축하화환",
+            "title": "김포 마산동 축하화환 | 김포생활체육관 체육단체 행사",
+            "intent": "김포생활체육관 체육단체 행사",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "구래동",
+            "slug": "gurae-dong",
+            "route": "/regions/gurae-dong/",
+            "primaryKeyword": "김포 구래동 개업화환",
+            "title": "김포 구래동 개업화환 | 문화의 거리 음식점 개업",
+            "intent": "문화의 거리 음식점 개업",
+            "status": "independent_content_pass",
+            "writerBatch": "a"
+          },
+          {
+            "name": "통진읍",
+            "slug": "tongjin-eup",
+            "route": "/regions/tongjin-eup/",
+            "primaryKeyword": "김포 통진읍 개업화환",
+            "title": "김포 통진읍 개업화환 | 통진일반산업단지 사업장 개업",
+            "intent": "통진일반산업단지 사업장 개업",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "고촌읍",
+            "slug": "gochon-eup",
+            "route": "/regions/gochon-eup/",
+            "primaryKeyword": "김포 고촌읍 축하화환",
+            "title": "김포 고촌읍 축하화환 | 호텔 마리나베이서울 기업 기념행사",
+            "intent": "호텔 마리나베이서울 기업 기념행사",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "양촌읍",
+            "slug": "yangchon-eup",
+            "route": "/regions/yangchon-eup/",
+            "primaryKeyword": "김포 양촌읍 개업화환",
+            "title": "김포 양촌읍 개업화환 | 양촌일반산업단지 제조기업 이전 축하",
+            "intent": "양촌일반산업단지 제조기업 이전 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "대곶면",
+            "slug": "daegot-myeon",
+            "route": "/regions/daegot-myeon/",
+            "primaryKeyword": "김포 대곶면 개업화환",
+            "title": "김포 대곶면 개업화환 | 대명항 수산물 판매점 개업",
+            "intent": "대명항 수산물 판매점 개업",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "월곶면",
+            "slug": "wolgot-myeon",
+            "route": "/regions/wolgot-myeon/",
+            "primaryKeyword": "김포 월곶면 축하화환",
+            "title": "김포 월곶면 축하화환 | 월곶생활문화센터 문화동호회 발표 축하",
+            "intent": "월곶생활문화센터 문화동호회 발표 축하",
+            "status": "independent_content_pass",
+            "writerBatch": "b"
+          },
+          {
+            "name": "하성면",
+            "slug": "haseong-myeon",
+            "route": "/regions/haseong-myeon/",
+            "primaryKeyword": "김포 하성면 축하화환",
+            "title": "김포 하성면 축하화환 | 하성면 학습모임 감사",
+            "intent": "하성면 학습모임 감사",
+            "status": "hold_purchase_fit",
+            "writerBatch": "b"
+          }
+        ],
+        "deferred": [
+          {
+            "name": "하성면",
+            "slug": "haseong-myeon",
+            "primaryKeyword": "김포 하성면 축하화환",
+            "title": "김포 하성면 축하화환 | 하성면 학습모임 감사",
+            "h1": "김포 하성면 축하화환",
+            "intent": "하성면 학습모임 감사",
+            "sourceUrl": "https://gimpo.gseek.kr/user/course/offline/view?s_sbjct_cycl_sn=1&s_sbjct_sn=56070",
+            "sourceName": "하성면 가까이배움터 / 복지문화센터",
+            "verifiedFactsAndLimits": "경기 김포시 하성면 애기봉로 845; Hold for this 3-tier-wreath-only release: learning thanks is not a well-supported large standing-wreath purchase intent. Address verified only; no upcoming ceremony or flower-acceptance policy claimed.",
+            "family": "congrats",
+            "state": "hold_purchase_fit",
+            "verificationStatus": "address_verified_content_hold"
+          }
+        ],
+        "membershipPath": "docs/direct-regional-release/gimpo/membership.json",
+        "membershipSha256": "766a49489470ea51e25f6869a61bb602e58ce3a8338b42c0b30ada848b1d776e",
+        "heldArticleCount": 1,
+        "passedRatio": 0.9333333333333333
+      },
+      "lastSuccessfulStage": "independent_public_http_IndexNow200_and_GSC_submit_readback",
+      "nextIntent": "Deferred batch actual screen QA; preserve Haseong held article for later useful purchase research",
+      "pendingExternalAction": null,
+      "review": {
+        "independentContent": "PASS_EXACT_14_ARTICLES",
+        "visualQa": "DEFERRED_NOT_PERFORMED",
+        "localBuild": "PASS_64_SOURCE_34_HELPER_NODE22_STATIC_GRAPH",
+        "sourceInventorySha256": "308736a8ee9b5b0d0ec84a1e67d49882ce8e3ceefc9869cac34e99c206007ffa",
+        "controlInventorySha256": "791a22b940147f37745302237f46a9455320cdc5a6dc9e0bf668f0f18e097c26",
+        "remoteSource": "PASS_69_FULL_FILES_EXACT_BLOBS",
+        "exactSourceBuild": "PASS_NODE22_64_SOURCE_34_HELPER_33_ARTIFACT_FILES",
+        "actualScreenCasesPending": 36,
+        "evidencePath": "docs/direct-regional-release/gimpo/deferred-visual-qa-handoff.json"
+      },
+      "sourceRevision": "b41863691a48912b182b915798c93a81d5723e59",
+      "controlRevision": "73977fd6d99b26969da6e66b83f3c5c74b21c15e",
+      "run": {
+        "id": 38034917448,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38034917448",
+        "createdAt": "2026-10-10T07:35:01Z",
+        "status": "completed",
+        "attempt": 1,
+        "event": "workflow_dispatch",
+        "conclusion": "success"
+      },
+      "indexnow": {
+        "state": "received",
+        "httpStatus": 200,
+        "attempt": 1,
+        "urlCount": 16,
+        "urlSetSha256": "01dec44be1640d0e7d546060ca11c4943ccc57a4f24ea3160f36a03126f4c78d",
+        "fingerprint": "c032089953a71761f90056ce170d6755f75e21f5cd4e062d645e9c13742823da",
+        "receiptJournalUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6095181536",
+        "receiptIssue": 266,
+        "getObservations": 40,
+        "submissionObservations": 1,
+        "allGet200AndNoBlockingRobotsOrChallenge": true,
+        "httpMeaning": "accepted",
+        "searchIndexing": "not_verified"
+      },
+      "publication": {
+        "url": "https://gimpo.fwith.kr",
+        "sourceRevision": "b41863691a48912b182b915798c93a81d5723e59",
+        "runId": 38034917448,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38034917448",
+        "articleCount": 14,
+        "normalHtmlRoutes": 16,
+        "sitemapUrls": 16,
+        "independentPublicHttp": "PASS_33_GET_PATHS_EXACT_BYTES",
+        "internalLinks": 124,
+        "catalogCards": 64,
+        "images": 9
+      },
+      "gsc": {
+        "checkedAt": "2026-10-10T07:39:07.906Z",
+        "siteUrl": "sc-domain:fwith.kr",
+        "sourceRevision": "b41863691a48912b182b915798c93a81d5723e59",
+        "submit": {
+          "siteUrl": "sc-domain:fwith.kr",
+          "attempted": 1,
+          "submitted": 1,
+          "failed": 0,
+          "results": [
+            {
+              "sitemapUrl": "https://gimpo.fwith.kr/sitemap-index.xml",
+              "accepted": true,
+              "confirmed": true,
+              "lastSubmitted": "2026-10-10T07:38:43.200Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+          "actions": [
+            "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+          ]
+        },
+        "listReadback": [
+          {
+            "path": "https://gimpo.fwith.kr/sitemap-index.xml",
+            "lastSubmitted": "2026-10-10T07:38:43.200Z",
+            "isPending": true,
+            "isSitemapsIndex": false,
+            "warnings": "0",
+            "errors": "0"
+          }
+        ],
+        "searchIndexing": "not_verified"
+      },
+      "evidence": {
+        "verificationSummary": "docs/direct-regional-release/gimpo/verification-summary.json",
+        "verificationSummarySha256": "b5c8e98ea3d765880569ce91971a4af56a9fc9486d975d8e03c9159dfc391006",
+        "publicHttp": "docs/direct-regional-release/gimpo/independent-http-readback.json",
+        "publicHttpSha256": "af5c08bf4398134cb783b265888699cc6ec50c66a2fe2442d240a7e4ad861ece",
+        "deferredVisualSha256": "ea168be78ac8fe5b156a71f23e7d950393df147635247d48068693948c16e626"
+      }
     }
   ],
   "releasedKnownHosts": [
@@ -4428,6 +5122,7 @@
     "paju.fwith.kr",
     "gwacheon.fwith.kr",
     "icheon.fwith.kr",
-    "anseong.fwith.kr"
+    "anseong.fwith.kr",
+    "gimpo.fwith.kr"
   ]
 }
