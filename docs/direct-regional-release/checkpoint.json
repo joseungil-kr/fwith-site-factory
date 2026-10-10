@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T13:17:10.900Z",
+  "updatedAt": "2026-10-10T13:26:52.686Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "gapyeong-direct-initial-20261010",
     "city": "가평군",
-    "status": "fixed_plan_content_authoring",
+    "status": "content_review_passed_assembling",
     "owner": {
       "scheduledRunAt": "2026-10-10T13:00:00Z",
       "observedExecutionAt": "2026-10-10T13:03:27.495Z",
@@ -85,58 +85,68 @@
           "name": "가평읍",
           "title": "가평군농협 효문화센터 근조화환",
           "primaryKeyword": "가평군농협 효문화센터 근조화환",
-          "status": "planned"
+          "status": "independent_content_pass"
         },
         {
           "slug": "seorak-myeon",
           "name": "설악면",
           "title": "설악면 더스테이힐링파크 가든웨딩 화환",
           "primaryKeyword": "설악면 더스테이힐링파크 가든웨딩 화환",
-          "status": "planned"
+          "status": "independent_content_pass"
         },
         {
           "slug": "cheongpyeong-myeon",
           "name": "청평면",
           "title": "청평면 마이다스호텔 제우스홀 결혼식 화환",
           "primaryKeyword": "청평면 마이다스호텔 제우스홀 결혼식 화환",
-          "status": "planned"
+          "status": "independent_content_pass"
         },
         {
           "slug": "sang-myeon",
           "name": "상면",
           "title": "상면 켄싱턴리조트 단체연회 축하화환",
           "primaryKeyword": "상면 켄싱턴리조트 단체연회 축하화환",
-          "status": "planned"
+          "status": "independent_content_pass"
         },
         {
           "slug": "jojong-myeon",
           "name": "조종면",
           "title": "조종생활체육공원 야외공연 축하화환",
           "primaryKeyword": "조종생활체육공원 야외공연 축하화환",
-          "status": "planned"
+          "status": "independent_content_pass"
         },
         {
           "slug": "buk-myeon",
           "name": "북면",
           "title": "북면 남송미술관 전시 개막 축하화환",
           "primaryKeyword": "북면 남송미술관 전시 개막 축하화환",
-          "status": "planned"
+          "status": "independent_content_pass"
         }
       ],
-      "deferred": []
+      "deferred": [],
+      "passedArticleCount": 6,
+      "heldArticleCount": 0
     },
-    "lastSuccessfulStage": "independent_official_membership_and_query_plan_review",
-    "nextIntent": "Write six original customer articles against frozen plan, then independent exact-content and image review",
+    "lastSuccessfulStage": "independent_original_content_and_image_review",
+    "nextIntent": "Assemble and independently test fixed source, then create Gapyeong branch without modifying other customer sites",
     "changeIntent": {
-      "action": "freeze_reviewed_plan_before_writing",
-      "target": "docs/direct-regional-release/gapyeong/fixed-plan.json",
-      "idempotencyKey": "gapyeong-direct-initial-20261010:freeze-plan:e2c77b777e329386291425cc9a016096c044456583a0040af96e376aa7cf81d1"
+      "action": "prepare_reviewed_gapyeong_source_branch",
+      "target": "site-factory-gapyeong-direct:site-factory/gapyeong-flower",
+      "idempotencyKey": "gapyeong-direct-initial-20261010:source:e120d7e097c7b152c0a955ed4ddcadc77609a8fe8eff55e49629b1a3ca70f621"
     },
     "publication": {
       "state": "not_dispatched",
       "runId": null,
       "url": "https://gapyeong.fwith.kr",
       "urlState": "target_not_verified_public"
+    },
+    "review": {
+      "articlesSha256": "e120d7e097c7b152c0a955ed4ddcadc77609a8fe8eff55e49629b1a3ca70f621",
+      "reportPath": "docs/direct-regional-release/gapyeong/content-review.json",
+      "reportSha256": "3953a1392a2caf5ef2e4d3183fdef993070c634e8de235d4fb662c725d07b68f",
+      "passed": 6,
+      "planned": 6,
+      "visualQa": "not_performed_deferred_by_user"
     }
   },
   "history": [
@@ -3141,7 +3151,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Complete Gapyeong research and fixed plan; preserve Yeoncheon waitingApproval without retry until separately approved.",
+  "nextAction": "Assemble and independently test fixed source, then create Gapyeong branch without modifying other customer sites",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
