@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T20:10:35.475Z",
+  "updatedAt": "2026-10-11T20:17:02.819Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -19161,10 +19161,10 @@
     ],
     "sourceSaveProgress": {
       "articleDenominator": 829,
-      "savedAndReadbackVerifiedArticles": 723,
+      "savedAndReadbackVerifiedArticles": 829,
       "publishedCorrectionArticles": 0,
-      "at": "2026-10-11T20:02:15.806Z",
-      "scope": "existing regional article correction source saving, not final all-quality approval; excludes initial Nowon and Eunpyeong"
+      "at": "2026-10-11T20:17:02.819Z",
+      "scope": "829 existing article correction sources saved; residual common notices and targeted follow-up revisions remain; not all-quality completion"
     },
     "fourCountySourceSaveIntent": {
       "state": "all_four_sources_saved_readback_verified",
@@ -24997,7 +24997,7 @@
       }
     ],
     "remainingCommonNoticeReview": {
-      "status": "FOLLOWUP_IN_PROGRESS",
+      "status": "EXACT_HTML_FOLLOWUP_IN_PROGRESS",
       "observedLocalDuplicateNoticeRegions": [
         "uiwang",
         "jungnang",
@@ -25009,10 +25009,16 @@
       ],
       "knownLocalArticleCount": 99,
       "limitation": "Latest hosted state not inferred; source saves remain valid, final correction publication requires remaining common-output checks",
-      "action": "Preserve reviewed text and necessary product-side notice; independently review exact follow-up revisions before publishing"
+      "action": "Preserve reviewed text and necessary product-side notice; independently review exact follow-up revisions before publishing",
+      "additionalSavedRegions": 25,
+      "additionalArticleRoutesWithWholeNoticeDuplication": 426,
+      "additionalPricedRoutes": 473,
+      "exactInventorySha256": "44e565abfe6a022fd5c197d12b4dac2b4a66b3239cf6fc24a604d83d00f3f623",
+      "otherLegacyOutputReview": "IN_PROGRESS",
+      "specificCopyFollowup": "Gwangmyeong-dong retained a patronizing price-versus-congratulations sentence; author revising"
     },
     "four2010SourceSaveIntent": {
-      "status": "INTENT_RECORDED",
+      "status": "SOURCE_SAVED_FULL_READBACK_VERIFIED_NOT_DISPATCHED",
       "checkpointId": "four-copy-source-20261011T2010Z",
       "serviceInvocationId": null,
       "owner": "single root writer",
@@ -26259,7 +26265,65 @@
           "visualQa": "DEFERRED_NOT_PASS"
         }
       ]
-    }
+    },
+    "four2016SourceSavedRevisions": [
+      {
+        "region": "gwangju",
+        "branch": "site-factory-gwangju-direct",
+        "root": "site-factory/gwangju-flower",
+        "parent": "b6373facad5548f3a4680d8e6eaaa588d5a93682",
+        "sha": "eeeda10ff3968022fce4efde6e395daaf2d8ee23",
+        "tree": "bf084d205d56917618b7647e1733e37ae1d929c4",
+        "articles": 25,
+        "files": 72,
+        "fullTextReadbacks": 19,
+        "wholeTreeVerified": true,
+        "savedAt": "2026-10-11T20:12:55.445Z",
+        "publication": "NOT_ATTEMPTED"
+      },
+      {
+        "region": "dongdaemun",
+        "branch": "site-factory-seoul-dongdaemun-direct",
+        "root": "site-factory/seoul-dongdaemun-flower",
+        "parent": "c7950231a67ff2494f0c37298029343456089b39",
+        "sha": "9090525f9888d7ebdafe4891bef77cf93a1236a7",
+        "tree": "0fc918fd548df8a67b42a20e060fc3ca3a2f6204",
+        "articles": 5,
+        "files": 72,
+        "fullTextReadbacks": 19,
+        "wholeTreeVerified": true,
+        "savedAt": "2026-10-11T20:13:35.789Z",
+        "publication": "NOT_ATTEMPTED"
+      },
+      {
+        "region": "paju",
+        "branch": "site-factory-paju-direct",
+        "root": "site-factory/paju-flower",
+        "parent": "4a8011cfaac421aacb6ab4b753ad0a792d11dfc1",
+        "sha": "0671e3f98dac74e4328df41e1c17a92b3a12b6e5",
+        "tree": "93a77278b345f729d2171345cfc595f72d42e121",
+        "articles": 32,
+        "files": 72,
+        "fullTextReadbacks": 18,
+        "wholeTreeVerified": true,
+        "savedAt": "2026-10-11T20:14:43.489Z",
+        "publication": "NOT_ATTEMPTED"
+      },
+      {
+        "region": "anseong",
+        "branch": "site-factory-anseong-direct",
+        "root": "site-factory/anseong-flower",
+        "parent": "39a23593b6d2134627edccb9a02378dac708e5c4",
+        "sha": "398c8517a5346a31e48dd13db12e099482eaa9d6",
+        "tree": "fe8066af775d879c19abac5f0936a658bc15bdcc",
+        "articles": 44,
+        "files": 72,
+        "fullTextReadbacks": 18,
+        "wholeTreeVerified": true,
+        "savedAt": "2026-10-11T20:15:59.920Z",
+        "publication": "NOT_ATTEMPTED"
+      }
+    ]
   },
   "independentPreparations": [
     {
@@ -27930,7 +27994,9 @@
         "sharedHelperFilesUnchanged": 3,
         "independentPublisherTests": 42,
         "independentReviewSha256": "922b854298a61ddb03184bca66d9b8bea1f72495a782958c190d0a7079fed9cc",
-        "status": "PREPARED_THIS_COMMIT_READBACK_REQUIRED"
+        "status": "SAVED_FULL_READBACK_VERIFIED",
+        "commit": "380dc7492f15838cf3f00226c3e6a22c73821014",
+        "wholeTreeDiffExactlyThreeControlsPlusCheckpoint": true
       },
       "dispatchBlocker": {
         "kind": "CONNECTION_TOOL_CAPABILITY",
@@ -27941,7 +28007,771 @@
         "reason": "No workflow_dispatch tool; cloud browser reported Chromium not running and no windows; official Run workflow UI could not be used",
         "attempted": false,
         "userApprovalIsNotMissing": true
+      },
+      "exactSourceLocalProduction": {
+        "sourceRevision": "cbc33f79d437dd813f8319a4b192641bbc8eda86",
+        "verificationSha256": "d7bb1c4af47d60dd3bb13a0f94e1b9ccc5b12079d207eb7d8cf4d0a63ad6d070",
+        "independentReviewSha256": "e9b5f217ddbcda90474b1b1dfd5f0bca8043c8fc39b8be3d2157e3c77cd55e4a",
+        "scope": "credential-free local production-mode build only; hosted QA not performed",
+        "sourceFilesUnchanged": 70,
+        "fullCheckFiles": 39,
+        "artifactFiles": 23,
+        "normalHtml": 6,
+        "errorHtml": 1,
+        "sitemapUrls": 6,
+        "detailArticles": 4,
+        "productCards": 16
       }
+    },
+    {
+      "regionKey": "seoul-seodaemun",
+      "status": "FIXED_PLAN_N4_AUTHORING_CLAIMED_NOT_PUBLISHED",
+      "scope": "서울특별시 서대문구 자치구",
+      "officialCode": "11410",
+      "repository": "joseungil-kr/fwith-site-factory",
+      "branch": "site-factory-seoul-seodaemun-direct",
+      "root": "site-factory/seoul-seodaemun-flower",
+      "worker": "seoul-seodaemun-flower-guide",
+      "hostname": "seoul-seodaemun.fwith.kr",
+      "url": "https://seoul-seodaemun.fwith.kr/",
+      "checkpointId": "seodaemun-direct-20261011T2000Z",
+      "serviceInvocationId": null,
+      "providedRunTime": "2026-10-11T20:00:00+00:00",
+      "owner": {
+        "active": true,
+        "startedAt": "2026-10-11T20:17:02.819Z",
+        "executionState": "single author with serialized root external writer",
+        "sourceWritingStarted": false
+      },
+      "intent": "Prepare maximum one newly selected region for this hourly scope; exact frozen plan before customer writing",
+      "originalPlanN": 4,
+      "minimumApprovedForPublication": 4,
+      "approvedArticles": 0,
+      "heldArticles": 0,
+      "sourceRevision": null,
+      "sourceReviewDigest": null,
+      "sourceBranchCreated": false,
+      "planCandidateSha256": "b9423519bd7879c106e21a86b29456217cbf78599c48877e625aa0c9c196b8d3",
+      "planReviewSha256": "28a12ea3c6761789261f682b43179b29eead796d8aba2867f7f4f8d1b2896a50",
+      "frozenAt": "2026-10-11T20:17:02.819Z",
+      "fixedPlan": [
+        {
+          "slug": "sinchon-dong-yonsei-funeral-wreath",
+          "title": "신촌 세브란스 장례식장 근조화환 주문",
+          "legalDong": "신촌동",
+          "legalCode": "1141011400",
+          "facilityKey": "yonsei-sinchon-funeral",
+          "purchaseIntent": "funeral-condolence-wreath",
+          "facilityName": "연세대학교 신촌장례식장",
+          "address": "서울특별시 서대문구 연세로 50 (신촌동 134)",
+          "sources": [
+            {
+              "name": "funeral-location",
+              "url": "https://www.yonseifuneral.com/am/am_3.asp",
+              "type": "official",
+              "evidenceSha256": "9780c86105767de2863719c7acd1a729db6e5dc452cd3766dc1d14bdaba5e726",
+              "verifiedAt": "2026-10-12"
+            },
+            {
+              "name": "funeral-use",
+              "url": "https://www.yonseifuneral.com/am/am_2.asp",
+              "type": "official",
+              "evidenceSha256": "3bb5400e60404fe7c7892e8e32a70f2850dbb7a965fc7151f503c4a8f6fc5103",
+              "verifiedAt": "2026-10-12"
+            },
+            {
+              "name": "hospital",
+              "url": "https://www.severance.healthcare/sev/patient-carer/guide/number.do",
+              "type": "official",
+              "evidenceSha256": "76317e6e3c547dc1f6b6f40717fb4a63ab17257109dbd145a04bfa048f145018",
+              "verifiedAt": "2026-10-12"
+            }
+          ],
+          "buyingDecision": "유가족에게 전할 위로를 담아 실제 근조4종 사진의 색·배치와 정한 예산을 함께 비교한다. 참석하지 못하는 조문객도 현재 빈소와 전달 일정을 한 번에 상담할 수 있도록 한다.",
+          "limitations": [
+            "장례식장 자체 오시는길은 연세로50, 병원 일반footer는50-1로 다르므로 시설별 공식주소를 그대로 구별한다. 고객에게 주소 오류를 훈계하지 않는다.",
+            "빈소 실시간 고인·상주명 또는 민감한 부고정보 수집·게시 금지.",
+            "외부화환 허용·수거·발인후폐기 정책은 확인되지 않았다. 보장 금지."
+          ],
+          "h1": "신촌 세브란스 장례식장 근조화환 주문",
+          "primaryKeyword": "신촌 세브란스 장례식장 근조화환 주문",
+          "status": "PLANNED_NOT_AUTHORED",
+          "regionalProductKeys": [
+            "funeral-basic",
+            "funeral-premium",
+            "funeral-large",
+            "funeral-xl"
+          ]
+        },
+        {
+          "slug": "yeongcheon-dong-market-opening-wreath",
+          "title": "영천시장 개업 축하화환 주문",
+          "legalDong": "영천동",
+          "legalCode": "1141010800",
+          "facilityKey": "yeongcheon-market",
+          "purchaseIntent": "opening-congrats-wreath",
+          "facilityName": "영천시장",
+          "address": "서울특별시 서대문구 영천시장길 27",
+          "sources": [
+            {
+              "name": "market-state",
+              "url": "https://www.sdm.go.kr/genre/economic/traditional/state.do",
+              "type": "official",
+              "evidenceSha256": "d44633e51afceac3a7c4ccb5163b0ecaa167eb77b59d218ec07161eac5d5a632",
+              "verifiedAt": "2026-10-12"
+            },
+            {
+              "name": "market-tourism",
+              "url": "https://www.sdm.go.kr/culture/attraction/sub2080.do",
+              "type": "official",
+              "evidenceSha256": "6a95488a39912559c9291e285aad2114e3adf3bdc8da954cdfcf29827c5a91e1",
+              "verifiedAt": "2026-10-12"
+            }
+          ],
+          "buyingDecision": "처음 가게 문을 여는 지인의 시작을 응원하는 선물. 축하4종의 실제 꽃색과 매장에 둘 자리에 맞는 실제규격 상담을 연결한다.",
+          "limitations": [
+            "공식시장이 표시한 대표주소를 모든 점포 수령주소로 단정하지 않는다. 개별점포명은 상담에서 받는다.",
+            "상인회 판매제휴·배송실적·통로크기·반입보장 발명 금지."
+          ],
+          "h1": "영천시장 개업 축하화환 주문",
+          "primaryKeyword": "영천시장 개업 축하화환 주문",
+          "status": "PLANNED_NOT_AUTHORED",
+          "regionalProductKeys": [
+            "congrats-basic",
+            "congrats-premium",
+            "congrats-large",
+            "congrats-xl"
+          ]
+        },
+        {
+          "slug": "hongeun-dong-seodaemun-arts-performance-wreath",
+          "title": "서대문문화체육회관 공연 축하화환 주문",
+          "legalDong": "홍은동",
+          "legalCode": "1141011800",
+          "facilityKey": "seodaemun-culture-sports-center",
+          "purchaseIntent": "event-congrats-wreath",
+          "facilityName": "서대문문화체육회관",
+          "address": "서울특별시 서대문구 백련사길 39 (홍은동 산26-155)",
+          "sources": [
+            {
+              "name": "arts",
+              "url": "https://cs.sscmc.or.kr/sdmcs/29",
+              "type": "official",
+              "evidenceSha256": "fa156be48594dbc847182e481a8d63fa1aebd63bdd175324306031be29b3dd9f",
+              "verifiedAt": "2026-10-12"
+            },
+            {
+              "name": "arts-use",
+              "url": "https://cs.sscmc.or.kr/sdmcs/28",
+              "type": "official",
+              "evidenceSha256": "6e459ee8f90e873bb78b9a6e618baaa6b18bf726e0c96527b927206242cc90ce",
+              "verifiedAt": "2026-10-12"
+            },
+            {
+              "name": "arts-municipal",
+              "url": "https://www.sdm.go.kr/culture/culture/sub4030.do",
+              "type": "official",
+              "evidenceSha256": "b36d64f2b68302428b9a36e65c77f565454ef811934257bd8421e7271a419753",
+              "verifiedAt": "2026-10-12"
+            }
+          ],
+          "buyingDecision": "무대에 오르기까지 함께한 준비를 응원하는 단체의 축하 선물. 실제 축하4종 사진의 선호 분위기를 고르고 공연 주최측의 허용 수령 공간과 행사후 처리 일정은 짧게 확인한다.",
+          "limitations": [
+            "공식정책의 음식물금지는 꽃금지로 확대하지 않는다.",
+            "행사 종료 후 시설 정리와 폐기물 수거 의무는 보존한다.",
+            "현수막 규정을 화환 규격·높이 제한으로 전환하지 않는다.",
+            "공연주최측 수령 동의는 미확인, 외부화환 허용 단정 금지."
+          ],
+          "h1": "서대문문화체육회관 공연 축하화환 주문",
+          "primaryKeyword": "서대문문화체육회관 공연 축하화환 주문",
+          "status": "PLANNED_NOT_AUTHORED",
+          "regionalProductKeys": [
+            "congrats-basic",
+            "congrats-premium",
+            "congrats-large",
+            "congrats-xl"
+          ]
+        },
+        {
+          "slug": "sinchon-dong-yonsei-alumni-wedding-wreath",
+          "title": "연세대학교 동문회관 결혼 축하화환 주문",
+          "legalDong": "신촌동",
+          "legalCode": "1141011400",
+          "facilityKey": "yonsei-alumni-building",
+          "purchaseIntent": "wedding-congrats-wreath",
+          "facilityName": "연세대학교 동문회관",
+          "address": "서울특별시 서대문구 연세로 50 (신촌동 134)",
+          "sources": [
+            {
+              "name": "yonsei",
+              "url": "https://www.ysab.co.kr/index.php",
+              "type": "official",
+              "evidenceSha256": "96100a3cac3e30e2ea7d8efe3e50fec6d4fece1b23dc369ef0b064d43b191112",
+              "verifiedAt": "2026-10-12"
+            },
+            {
+              "name": "wedding",
+              "url": "https://www.ysab.co.kr/wedding.php?mid=m02_02",
+              "type": "official",
+              "evidenceSha256": "b3d556ededdddca5fa5c23f6ef33e3b3a25127fcbef431c0a69028fbeeb26178",
+              "verifiedAt": "2026-10-12"
+            },
+            {
+              "name": "wedding-flower-notice",
+              "url": "https://www.ysab.co.kr/news.php?act=view&mid=m05_01&uid=50",
+              "type": "official",
+              "evidenceSha256": "4221bcaa5ed3fee91b347c84d31bdf06c1ba7b13c3ea04d70bbea816b469fc0b",
+              "verifiedAt": "2026-10-12"
+            }
+          ],
+          "buyingDecision": "두 사람의 새로운 일상을 축복하는 동문·친구의 선물. 실제 축하4종의 꽃색을 함께 고르고 예식 일정에 맞춰 상담한다. 장례식장과 같은 법정동·번지여도 완전히 다른 시설과 구매목적이므로 별개 문서다.",
+          "limitations": [
+            "총장명의 동문 경조사 서비스 안내는 별도기관 자체서비스이며 꽃이랑 상품·권한·제휴로 전사하지 않는다.",
+            "2020년 공지의 타사금액은 꽃이랑 비교가격으로 쓰지 않는다.",
+            "자체화환서비스존재는 외부업체 반입허가를 뜻하지 않는다."
+          ],
+          "h1": "연세대학교 동문회관 결혼 축하화환 주문",
+          "primaryKeyword": "연세대학교 동문회관 결혼 축하화환 주문",
+          "status": "PLANNED_NOT_AUTHORED",
+          "regionalProductKeys": [
+            "congrats-basic",
+            "congrats-premium",
+            "congrats-large",
+            "congrats-xl"
+          ]
+        }
+      ],
+      "membership": {
+        "legal": [
+          [
+            "1141010100",
+            "서울특별시",
+            "서대문구",
+            "충정로2가",
+            "19880423"
+          ],
+          [
+            "1141010200",
+            "서울특별시",
+            "서대문구",
+            "충정로3가",
+            "19880423"
+          ],
+          [
+            "1141010300",
+            "서울특별시",
+            "서대문구",
+            "합동",
+            "19880423"
+          ],
+          [
+            "1141010400",
+            "서울특별시",
+            "서대문구",
+            "미근동",
+            "19880423"
+          ],
+          [
+            "1141010500",
+            "서울특별시",
+            "서대문구",
+            "냉천동",
+            "19880423"
+          ],
+          [
+            "1141010600",
+            "서울특별시",
+            "서대문구",
+            "천연동",
+            "19880423"
+          ],
+          [
+            "1141010700",
+            "서울특별시",
+            "서대문구",
+            "옥천동",
+            "19880423"
+          ],
+          [
+            "1141010800",
+            "서울특별시",
+            "서대문구",
+            "영천동",
+            "19880423"
+          ],
+          [
+            "1141010900",
+            "서울특별시",
+            "서대문구",
+            "현저동",
+            "19981001"
+          ],
+          [
+            "1141011000",
+            "서울특별시",
+            "서대문구",
+            "북아현동",
+            "19880423"
+          ],
+          [
+            "1141011100",
+            "서울특별시",
+            "서대문구",
+            "홍제동",
+            "19880423"
+          ],
+          [
+            "1141011200",
+            "서울특별시",
+            "서대문구",
+            "대현동",
+            "19880423"
+          ],
+          [
+            "1141011300",
+            "서울특별시",
+            "서대문구",
+            "대신동",
+            "19880423"
+          ],
+          [
+            "1141011400",
+            "서울특별시",
+            "서대문구",
+            "신촌동",
+            "19880423"
+          ],
+          [
+            "1141011500",
+            "서울특별시",
+            "서대문구",
+            "봉원동",
+            "19880423"
+          ],
+          [
+            "1141011600",
+            "서울특별시",
+            "서대문구",
+            "창천동",
+            "19880423"
+          ],
+          [
+            "1141011700",
+            "서울특별시",
+            "서대문구",
+            "연희동",
+            "19880423"
+          ],
+          [
+            "1141011800",
+            "서울특별시",
+            "서대문구",
+            "홍은동",
+            "19880423"
+          ],
+          [
+            "1141011900",
+            "서울특별시",
+            "서대문구",
+            "북가좌동",
+            "19880423"
+          ],
+          [
+            "1141012000",
+            "서울특별시",
+            "서대문구",
+            "남가좌동",
+            "19880423"
+          ]
+        ],
+        "administrative": [
+          [
+            "1141052000",
+            "서울특별시",
+            "서대문구",
+            "천연동",
+            "19981001"
+          ],
+          [
+            "1141055500",
+            "서울특별시",
+            "서대문구",
+            "북아현동",
+            "20080506"
+          ],
+          [
+            "1141056500",
+            "서울특별시",
+            "서대문구",
+            "충현동",
+            "20080506"
+          ],
+          [
+            "1141058500",
+            "서울특별시",
+            "서대문구",
+            "신촌동",
+            "20080506"
+          ],
+          [
+            "1141061500",
+            "서울특별시",
+            "서대문구",
+            "연희동",
+            "20080506"
+          ],
+          [
+            "1141062000",
+            "서울특별시",
+            "서대문구",
+            "홍제제1동",
+            "19880423"
+          ],
+          [
+            "1141064000",
+            "서울특별시",
+            "서대문구",
+            "홍제제3동",
+            "19880423"
+          ],
+          [
+            "1141065500",
+            "서울특별시",
+            "서대문구",
+            "홍제제2동",
+            "20080506"
+          ],
+          [
+            "1141066000",
+            "서울특별시",
+            "서대문구",
+            "홍은제1동",
+            "19880423"
+          ],
+          [
+            "1141068500",
+            "서울특별시",
+            "서대문구",
+            "홍은제2동",
+            "20080506"
+          ],
+          [
+            "1141069000",
+            "서울특별시",
+            "서대문구",
+            "남가좌제1동",
+            "19880423"
+          ],
+          [
+            "1141070000",
+            "서울특별시",
+            "서대문구",
+            "남가좌제2동",
+            "19880423"
+          ],
+          [
+            "1141071000",
+            "서울특별시",
+            "서대문구",
+            "북가좌제1동",
+            "19880423"
+          ],
+          [
+            "1141072000",
+            "서울특별시",
+            "서대문구",
+            "북가좌제2동",
+            "19880423"
+          ]
+        ],
+        "relationships": [
+          [
+            "1141052000",
+            "서울특별시",
+            "서대문구",
+            "천연동",
+            "1141010500",
+            "냉천동",
+            "19880423"
+          ],
+          [
+            "1141052000",
+            "서울특별시",
+            "서대문구",
+            "천연동",
+            "1141010600",
+            "천연동",
+            "19880423"
+          ],
+          [
+            "1141052000",
+            "서울특별시",
+            "서대문구",
+            "천연동",
+            "1141010700",
+            "옥천동",
+            "19880423"
+          ],
+          [
+            "1141052000",
+            "서울특별시",
+            "서대문구",
+            "천연동",
+            "1141010800",
+            "영천동",
+            "19880423"
+          ],
+          [
+            "1141052000",
+            "서울특별시",
+            "서대문구",
+            "천연동",
+            "1141010900",
+            "현저동",
+            "19981001"
+          ],
+          [
+            "1141055500",
+            "서울특별시",
+            "서대문구",
+            "북아현동",
+            "1141011000",
+            "북아현동",
+            "20080506"
+          ],
+          [
+            "1141055500",
+            "서울특별시",
+            "서대문구",
+            "북아현동",
+            "1141011200",
+            "대현동",
+            "20161109"
+          ],
+          [
+            "1141056500",
+            "서울특별시",
+            "서대문구",
+            "충현동",
+            "1141010100",
+            "충정로2가",
+            "20080506"
+          ],
+          [
+            "1141056500",
+            "서울특별시",
+            "서대문구",
+            "충현동",
+            "1141010200",
+            "충정로3가",
+            "20080506"
+          ],
+          [
+            "1141056500",
+            "서울특별시",
+            "서대문구",
+            "충현동",
+            "1141010300",
+            "합동",
+            "20080506"
+          ],
+          [
+            "1141056500",
+            "서울특별시",
+            "서대문구",
+            "충현동",
+            "1141010400",
+            "미근동",
+            "20080506"
+          ],
+          [
+            "1141056500",
+            "서울특별시",
+            "서대문구",
+            "충현동",
+            "1141011000",
+            "북아현동",
+            "20080506"
+          ],
+          [
+            "1141058500",
+            "서울특별시",
+            "서대문구",
+            "신촌동",
+            "1141011200",
+            "대현동",
+            "20080506"
+          ],
+          [
+            "1141058500",
+            "서울특별시",
+            "서대문구",
+            "신촌동",
+            "1141011300",
+            "대신동",
+            "20080506"
+          ],
+          [
+            "1141058500",
+            "서울특별시",
+            "서대문구",
+            "신촌동",
+            "1141011400",
+            "신촌동",
+            "20080506"
+          ],
+          [
+            "1141058500",
+            "서울특별시",
+            "서대문구",
+            "신촌동",
+            "1141011500",
+            "봉원동",
+            "20080506"
+          ],
+          [
+            "1141058500",
+            "서울특별시",
+            "서대문구",
+            "신촌동",
+            "1141011600",
+            "창천동",
+            "20080506"
+          ],
+          [
+            "1141061500",
+            "서울특별시",
+            "서대문구",
+            "연희동",
+            "1141011700",
+            "연희동",
+            "20080506"
+          ],
+          [
+            "1141062000",
+            "서울특별시",
+            "서대문구",
+            "홍제제1동",
+            "1141011100",
+            "홍제동",
+            "19880423"
+          ],
+          [
+            "1141064000",
+            "서울특별시",
+            "서대문구",
+            "홍제제3동",
+            "1141011100",
+            "홍제동",
+            "19880423"
+          ],
+          [
+            "1141065500",
+            "서울특별시",
+            "서대문구",
+            "홍제제2동",
+            "1141011100",
+            "홍제동",
+            "20080506"
+          ],
+          [
+            "1141066000",
+            "서울특별시",
+            "서대문구",
+            "홍은제1동",
+            "1141011800",
+            "홍은동",
+            "19880423"
+          ],
+          [
+            "1141068500",
+            "서울특별시",
+            "서대문구",
+            "홍은제2동",
+            "1141011800",
+            "홍은동",
+            "20080506"
+          ],
+          [
+            "1141069000",
+            "서울특별시",
+            "서대문구",
+            "남가좌제1동",
+            "1141012000",
+            "남가좌동",
+            "19880423"
+          ],
+          [
+            "1141070000",
+            "서울특별시",
+            "서대문구",
+            "남가좌제2동",
+            "1141012000",
+            "남가좌동",
+            "19880423"
+          ],
+          [
+            "1141071000",
+            "서울특별시",
+            "서대문구",
+            "북가좌제1동",
+            "1141011900",
+            "북가좌동",
+            "19880423"
+          ],
+          [
+            "1141072000",
+            "서울특별시",
+            "서대문구",
+            "북가좌제2동",
+            "1141011900",
+            "북가좌동",
+            "19880423"
+          ]
+        ],
+        "sourceUrl": "https://www.mois.go.kr/cmm/fms/FileDown.do?atchFileId=FILE_0014963057q_I4g&fileSn=1",
+        "sourceSha256": "3702ee001f131968983fbba1e08c6bffc89f6ee4377de327e5eff6946b1098d7",
+        "effectiveDate": "2026-10-12",
+        "timezone": "Asia/Seoul",
+        "municipalSecondaryUrl": "https://www.sdm.go.kr/wesdm/general/administration.do?sdmBoardSeq=118",
+        "secondaryDifference": "Municipal summary omits legal Daehyeon-dong partial membership under administrative Bukahyeon-dong. Current MOIS KIKmix includes both Bukahyeon/Daehyeon and Sinchon/Daehyeon; retain all27 pairs, not26.",
+        "counts": {
+          "legal": 20,
+          "administrative": 14,
+          "relationships": 27
+        },
+        "sha256": "d58518d5c5d35b768c0daea48b748549109a8546e9678ec3f770b0c838312405"
+      },
+      "nationalPlan": {
+        "officialUnit": "11410",
+        "order": 13,
+        "originalRegionDenominator": 230,
+        "representedLegalUnits": 3,
+        "fullLegalUnits": 20,
+        "notAnArticleQuota": true
+      },
+      "collisionEvidence": {
+        "freshMain": "96b462f7ea47deebe6f896cd069fb0603a8f3326",
+        "matchingBranches": [],
+        "openPullRequests": [],
+        "activeRuns": 0,
+        "knownOwnerCollision": false,
+        "hostObservation": "502_NOT_ABSENCE",
+        "providerAccountWorkerDomain": "NOT_VERIFIED_REQUIRED_BEFORE_PUBLICATION"
+      },
+      "authoringRequirements": [
+        "warm distinct purchase purpose first",
+        "do not clone other regions customer prose",
+        "same legal Sinchon permits distinct funeral and wedding facility intents",
+        "exact four real matching product cards with current prices/photos",
+        "no invented delivery/admission/affiliation",
+        "one necessary product-side notice without repetitive lectures",
+        "independent exact source review"
+      ],
+      "publication": "NOT_ATTEMPTED",
+      "indexNow": "NOT_SUBMITTED",
+      "gsc": "NOT_SUBMITTED",
+      "visualQa": "DEFERRED_NOT_PASS"
     }
   ]
 }
