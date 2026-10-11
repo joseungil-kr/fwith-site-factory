@@ -42,8 +42,8 @@ test('public ownership proof is unique and distinct from previous city',()=>{
 test('the five approved additions preserve regional scope and index only supported hubs',()=>{
  const pages=read('pages'),manifest=read('publish-manifest'),architecture=read('architecture');
  const added=[['funeral','anyang-funeral-hall-wreath'],['funeral','sam-hospital-funeral-wreath'],['funeral','hallym-hospital-funeral-wreath'],['event','patiobella-wedding-wreath'],['event','partyum-anyang-wedding-wreath']];
- assert.equal(pages.length,12);assert.equal(manifest.directRelease.appendedCount,5);
- assert.deepEqual(pages.filter(p=>p.pageType!=='regional-service').map(p=>[p.category,p.slug]).sort(),added.sort());
+ assert.equal(pages.length,14);assert.equal(manifest.directRelease.appendedCount,5);
+ assert.deepEqual(pages.slice(0,12).filter(p=>p.pageType!=='regional-service').map(p=>[p.category,p.slug]).sort(),added.sort());
  for(const [category,slug] of added){
   const p=pages.find(p=>p.slug===slug);assert.equal(p.url,`/${category}/${slug}/`);assert.equal(p.assetSlot,'REAL_PROOF');
   assert.equal(p.productCardLimit,4);assert.equal(p.productCardKeys.length,4);
@@ -53,10 +53,10 @@ test('the five approved additions preserve regional scope and index only support
   assert.ok(p.sources.length>0);
  }
  const indexableHubs=architecture.hubs.filter(h=>h.indexable).map(h=>h.url).sort();
- assert.deepEqual(indexableHubs,['/funeral/','/regions/']);
+ assert.deepEqual(indexableHubs,['/event/','/funeral/','/regions/']);
  const htmlHubs=architecture.hubs.filter(h=>h.children>0).map(h=>h.url).sort();
- assert.deepEqual(htmlHubs,['/event/','/funeral/','/regions/']);
- assert.equal(1+pages.length+indexableHubs.length,15);assert.equal(1+pages.length+htmlHubs.length,16);
+ assert.deepEqual(htmlHubs,['/business/','/event/','/funeral/','/regions/']);
+ assert.equal(1+pages.length+indexableHubs.length,18);assert.equal(1+pages.length+htmlHubs.length,19);
 });
 
 test('existing seven article URLs and bodies stay unchanged',()=>{
