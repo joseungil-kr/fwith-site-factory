@@ -19161,19 +19161,20 @@
     ],
     "sourceSaveProgress": {
       "articleDenominator": 829,
-      "savedAndReadbackVerifiedArticles": 112,
+      "savedAndReadbackVerifiedArticles": 151,
       "publishedCorrectionArticles": 0,
-      "at": "2026-10-11T17:17:29.146Z",
+      "at": "2026-10-11T18:16:15.468Z",
       "scope": "existing regional article correction; excludes new Nowon four"
     },
     "fourCountySourceSaveIntent": {
-      "state": "intent_before_serial_source_writes",
+      "state": "partially_saved_remaining_copy_followup",
       "at": "2026-10-11T18:06:15.875Z",
       "owner": {
         "checkpointId": "regional-copy-four-20261011T1806Z",
-        "active": true,
+        "active": false,
         "serviceInvocationId": null,
-        "scope": "serial_source_save"
+        "scope": "serial_source_save",
+        "writesStoppedAt": "2026-10-11T18:16:15.467Z"
       },
       "articles": 56,
       "originalPlanForFour": 60,
@@ -19218,7 +19219,42 @@
         }
       ],
       "matchingPushTriggers": 0,
-      "actualDispatch": false
-    }
+      "actualDispatch": false,
+      "remainingRegions": [
+        "gapyeong",
+        "yangpyeong"
+      ],
+      "remainingReason": "Minimal customer-friendly delivery notice successor under review/build; original plan denominator and previous source preserved."
+    },
+    "fourCountySourceSavedRevisions": [
+      {
+        "region": "yeoncheon",
+        "branch": "site-factory-yeoncheon-direct",
+        "parent": "f02912710d4e127241ae6e72269966d0a906b1b0",
+        "tree": "ba6f9d0d30753b5a80d9d536e4bf227c45c1aa0d",
+        "sha": "2a0127c67529d791d3752f8477193fcde9df6b55",
+        "articles": 9,
+        "originalPlan": 10,
+        "heldCount": 1,
+        "fullChangedFileReadback": 18,
+        "status": "reviewed_source_saved_readback_verified_not_dispatched",
+        "actualDispatch": false,
+        "publicVerified": false
+      },
+      {
+        "region": "yeoju",
+        "branch": "site-factory-yeoju-direct",
+        "parent": "8fbcc607193d2ea3c34286519cff7d5f3380479a",
+        "tree": "a66e2e2b8ad993a14565a5f8c65f6265c2fe268c",
+        "sha": "d2339d09972469628bc5a1489a9668b378ffcb22",
+        "articles": 30,
+        "originalPlan": 32,
+        "heldCount": 2,
+        "fullChangedFileReadback": 19,
+        "status": "reviewed_source_saved_readback_verified_not_dispatched",
+        "actualDispatch": false,
+        "publicVerified": false
+      }
+    ]
   }
 }
