@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T12:43:42.116Z",
+  "updatedAt": "2026-10-11T12:48:27.467Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -42,8 +42,10 @@
       "serviceInvocationId": null,
       "checkpointId": "direct-seoul-nowon-20261011T120000Z",
       "active": true,
-      "executionState": "claiming_reviewed_purchase_plan_before_authoring",
-      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T12:33:50.987Z"
+      "executionState": "local_authoring_active_main_write_yielded",
+      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T12:33:50.987Z",
+      "mainWriteActive": false,
+      "actualMainWriteStopConfirmedAt": "2026-10-11T12:45:17Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -16158,6 +16160,261 @@
       "screenFailureObserved": false,
       "visualRootCauseUnconfirmed": true,
       "followupStatus": "pending_batched_visual_review"
+    },
+    {
+      "scopeKey": "gwangmyeong-additions-20261011",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-gwangmyeong-direct",
+        "root": "site-factory/gwangmyeong-flower",
+        "worker": "gwangmyeong-flower-guide",
+        "hostname": "gwangmyeong.fwith.kr"
+      },
+      "sourceRevision": "97d8174867b3f7889d7c1a9f1e352fa7570e08e6",
+      "controlRevision": "3c0bb5c0f2ce1f74a4d314f7c6a1549e9cc85175",
+      "originalPlannedN": 8,
+      "originalHeld": 0,
+      "additivePlannedN": 1,
+      "qualityPassed": 1,
+      "heldAdditions": 0,
+      "run": {
+        "id": 38139721106,
+        "html_url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38139721106",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T12:33:34Z",
+        "updated_at": "2026-10-11T12:34:47Z",
+        "run_attempt": 1,
+        "head_sha": "3c0bb5c0f2ce1f74a4d314f7c6a1549e9cc85175"
+      },
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "6ddedf4b5b2d2ca72d42df880a9fc1912d1e19b6c83dc48920f51ad3c323867f",
+        "httpStatus": 200,
+        "origin": "https://gwangmyeong.fwith.kr",
+        "recordedAt": "2026-10-11T12:34:39.831508+00:00",
+        "revision": "97d8174867b3f7889d7c1a9f1e352fa7570e08e6",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38139721106",
+        "searchIndexing": "not_verified",
+        "siteKey": "gwangmyeong-flower-direct",
+        "state": "received",
+        "urlCount": 11,
+        "urlSetSha256": "9a017bff7fa442f2d47f2eeabdbc44ff9d4a88a87fda82528f71b1d053cff09e",
+        "urls": [
+          "https://gwangmyeong.fwith.kr/",
+          "https://gwangmyeong.fwith.kr/event/gwangmyeong-lapoete-wedding-wreath/",
+          "https://gwangmyeong.fwith.kr/regions/",
+          "https://gwangmyeong.fwith.kr/regions/cheolsan-dong/",
+          "https://gwangmyeong.fwith.kr/regions/gahak-dong/",
+          "https://gwangmyeong.fwith.kr/regions/gwangmyeong-dong/",
+          "https://gwangmyeong.fwith.kr/regions/haan-dong/",
+          "https://gwangmyeong.fwith.kr/regions/iljik-dong/",
+          "https://gwangmyeong.fwith.kr/regions/noonsa-dong/",
+          "https://gwangmyeong.fwith.kr/regions/okgil-dong/",
+          "https://gwangmyeong.fwith.kr/regions/soha-dong/"
+        ],
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6109072947",
+        "commentId": 6109072947,
+        "durableReadbackVerified": true
+      },
+      "gsc": {
+        "observedAt": "2026-10-11T12:36:27.854Z",
+        "siteUrl": "sc-domain:fwith.kr",
+        "status": "existing_registered_sitemap_reused",
+        "submissionPerformed": false,
+        "sitemaps": [
+          {
+            "path": "https://gwangmyeong.fwith.kr/sitemap-index.xml",
+            "lastSubmitted": "2026-10-09T16:17:53.604Z",
+            "isPending": false,
+            "isSitemapsIndex": true,
+            "lastDownloaded": "2026-10-09T16:44:24.711Z",
+            "warnings": "0",
+            "errors": "0"
+          }
+        ],
+        "indexingVerified": false
+      },
+      "uncheckedDesktopRoutes": [
+        "/event/gwangmyeong-lapoete-wedding-wreath/",
+        "/event/",
+        "/",
+        "/regions/cheolsan-dong/",
+        "/regions/gahak-dong/",
+        "/regions/gwangmyeong-dong/",
+        "/regions/haan-dong/",
+        "/regions/iljik-dong/",
+        "/regions/",
+        "/regions/noonsa-dong/",
+        "/regions/okgil-dong/",
+        "/regions/soha-dong/"
+      ],
+      "uncheckedNarrowRoutes": [
+        "/event/gwangmyeong-lapoete-wedding-wreath/",
+        "/event/",
+        "/",
+        "/regions/cheolsan-dong/",
+        "/regions/gahak-dong/",
+        "/regions/gwangmyeong-dong/",
+        "/regions/haan-dong/",
+        "/regions/iljik-dong/",
+        "/regions/",
+        "/regions/noonsa-dong/",
+        "/regions/okgil-dong/",
+        "/regions/soha-dong/"
+      ],
+      "city": "광명시",
+      "originalPublished": 8,
+      "publicUrl": "https://gwangmyeong.fwith.kr",
+      "publicHttp": {
+        "state": "public_release_verified",
+        "revision": "97d8174867b3f7889d7c1a9f1e352fa7570e08e6",
+        "regionCount": 8,
+        "articleCount": 9,
+        "htmlRoutes": 12,
+        "noindexHubs": 1,
+        "sitemapUrls": 11,
+        "checkedPaths": 26,
+        "normalizedCloudflareBeacons": 13,
+        "unknownHttpStatus": 404
+      },
+      "articles": [
+        {
+          "path": "/regions/gwangmyeong-dong/",
+          "pageKey": "gwangmyeong-flower-direct-region-gwangmyeong-dong",
+          "snapshotId": "direct-content-gwangmyeong-dong-909e96cde4662408",
+          "bodySha256": "0f629999e39f4ee333e127a9b722d769c593064dd57e5629fbbb6994c91e1a8b",
+          "publicSourceHash": "909e96cde4662408ac4bd33c3bde5a35db1b248f0900010f49e309b63d37ac3b",
+          "allBodyLinesPresent": 15,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "8f7b7656d8d837b7452833cb591f5e25c2373d93d2097edadee851696ac2792b"
+        },
+        {
+          "path": "/regions/cheolsan-dong/",
+          "pageKey": "gwangmyeong-flower-direct-region-cheolsan-dong",
+          "snapshotId": "direct-content-cheolsan-dong-c1fef2a137a8cc3c",
+          "bodySha256": "04c9891c428c0b819e362f7e35d96e3c94f77c159fdd28e1602b07edd7f81711",
+          "publicSourceHash": "c1fef2a137a8cc3c6a2e9e9b591a328f8799c8603f948c12b33ff26351bb95ff",
+          "allBodyLinesPresent": 12,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "49bd5f8cd3ba5d3d7941335ab30c71b79697e367bec30de219c1618041a9688b"
+        },
+        {
+          "path": "/regions/haan-dong/",
+          "pageKey": "gwangmyeong-flower-direct-region-haan-dong",
+          "snapshotId": "direct-content-haan-dong-69027047061ceb3b",
+          "bodySha256": "bd431dfb40c708e1de8a9f132d75b5ac25b0542867b7ed7906055829dd3bf128",
+          "publicSourceHash": "69027047061ceb3b914696ff9587e4a670e25fdc18bf25fdee619bd10b9964f5",
+          "allBodyLinesPresent": 12,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "a2bbd2e7977f3000cac6e9f2c5dfab0b54ce45d454cce082d6de81ab2ff23342"
+        },
+        {
+          "path": "/regions/soha-dong/",
+          "pageKey": "gwangmyeong-flower-direct-region-soha-dong",
+          "snapshotId": "direct-content-soha-dong-4a33aa81134c3206",
+          "bodySha256": "6b5b457207000ac07dd5d6bd8c2a76d2f8fab7a52edd25294a7267eb419da403",
+          "publicSourceHash": "4a33aa81134c32063ef174eb86c3a695387dcc72f144a3b268a2ca447dc0f0e1",
+          "allBodyLinesPresent": 12,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "db04c2cddc50955fc072c3f481644ab8943f18b9b908cdd0557dc43bc3f710d2"
+        },
+        {
+          "path": "/regions/iljik-dong/",
+          "pageKey": "gwangmyeong-flower-direct-region-iljik-dong",
+          "snapshotId": "direct-content-iljik-dong-a7bcf1e8aa97923d",
+          "bodySha256": "eb88a2a42ebe547315e03ede4b9d806d89c9aca3f064a26679824ed2150e4de7",
+          "publicSourceHash": "a7bcf1e8aa97923d01ede0cf61872f88a142649fdaf169f55af92e2033435428",
+          "allBodyLinesPresent": 19,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "e8d8a578f6b452516b8f9001d4f054c9107bac8e1f3c4e6db9b3914af02fad70"
+        },
+        {
+          "path": "/regions/noonsa-dong/",
+          "pageKey": "gwangmyeong-flower-direct-region-noonsa-dong",
+          "snapshotId": "direct-content-noonsa-dong-19869d86a23bfd76",
+          "bodySha256": "0e4b7ecf20925421ec43d0c0fc7f13a94fd880cffc0bf6380c54d651f464b0f2",
+          "publicSourceHash": "19869d86a23bfd76e134fd1f0dd24f1d54df770b45479a23b8c5933ff5eeac1a",
+          "allBodyLinesPresent": 19,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "c50adb8cb0cd5d694e6ba104b946ffead2c95d610e868459e420e0474e9951dd"
+        },
+        {
+          "path": "/regions/gahak-dong/",
+          "pageKey": "gwangmyeong-flower-direct-region-gahak-dong",
+          "snapshotId": "direct-content-gahak-dong-bec1b2e9e3046225",
+          "bodySha256": "a0965e1b6e6d6c867725969218fa1a82b29608889cb32d41613ae436c7e3f25a",
+          "publicSourceHash": "bec1b2e9e3046225e42de8d48109847bf87a52cd85f7ad77866443dac6f54f1d",
+          "allBodyLinesPresent": 20,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "f45ae104e87c59269b0090e15ff3a0fc20a024a4c3cbf280f40fee540fa56e3a"
+        },
+        {
+          "path": "/regions/okgil-dong/",
+          "pageKey": "gwangmyeong-flower-direct-region-okgil-dong",
+          "snapshotId": "direct-content-okgil-dong-25dd1ffd0a44479f",
+          "bodySha256": "2dfeac01d31491561a04e93ded83ca203e449108e0ede74443949ba997493a93",
+          "publicSourceHash": "25dd1ffd0a44479f95ce5497d6f5739fd3ebd47c09763e916233e5267be967bd",
+          "allBodyLinesPresent": 20,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "cbdab598dfdc23d658bdb4c8dbfe2a8e49e1fddd50629c983e492ec2616cf206"
+        },
+        {
+          "path": "/event/gwangmyeong-lapoete-wedding-wreath/",
+          "pageKey": "gwangmyeong-flower-direct-event-gwangmyeong-lapoete-wedding-wreath",
+          "snapshotId": "direct-content-gwangmyeong-lapoete-wedding-wreath-d867b85d75155b57",
+          "bodySha256": "e88ed95437d9659c2bd8a20c001a8b2e2eba099f0cef4447f87359634a4604e4",
+          "publicSourceHash": "d867b85d75155b57b0b5c58b39fc92e29f5a0e818f53bcb28e9c0b82d252e5d1",
+          "allBodyLinesPresent": 17,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "33bc3cbd755a6be9dba2efff0ceeed3af1020dc15f85f527d44a421efe7dafce"
+        }
+      ],
+      "imageDigests": {
+        "images/editorial/opening-wreath-illustration-v1.webp": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+        "images/products/funeral-xl.webp": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+        "images/products/congrats-xl.jpg": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+        "images/products/congrats-basic.jpg": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+        "images/products/congrats-large.jpg": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+        "images/products/funeral-basic.webp": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+        "images/products/funeral-large.webp": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+        "images/products/funeral-premium.webp": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+        "images/products/congrats-premium.jpg": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d"
+      },
+      "uncheckedItems": [
+        "layout",
+        "mobile text legibility",
+        "image rendering and crop",
+        "banner and CTA placement",
+        "horizontal overflow",
+        "visual product comparison"
+      ],
+      "lastObservation": "HTTP full-route and exact artifact/source byte checks passed; desktop and narrow viewport screenshots have not been inspected.",
+      "visualErrorObserved": false,
+      "actualVisualRootCauseDetermined": false,
+      "followupStatus": "pending_batch_visual_review",
+      "requiresExactHostedSourceRecomparison": true,
+      "independentReleaseReviewSha256": "ceaf41d6c23f81b2ce7d6162a438f916e3d7e76b0a231d2c4b141d2ad233ad3e"
     }
   ],
   "releasedKnownHosts": [
@@ -16259,101 +16516,43 @@
       "seoul-jungnang.fwith.kr"
     ],
     "owner": {
-      "checkpointId": "regional-additions-20261011-owner-1229",
+      "checkpointId": "regional-additions-20261011-owner-1248",
       "serviceInvocationId": null,
-      "active": false,
-      "startedAt": "2026-10-11T12:30:07.118Z",
-      "priorOwnerActualStopConfirmedAt": "2026-10-11T12:28:31.912Z",
-      "executionState": "yielded_after_gwangmyeong_dispatch_readonly_qa",
-      "actualWriteStopConfirmedAt": "2026-10-11T12:33:50.987Z"
+      "active": true,
+      "startedAt": "2026-10-11T12:48:27.467Z",
+      "priorOwnerActualStopConfirmedAt": "2026-10-11T12:45:17Z",
+      "executionState": "saving_reviewed_dongducheon_addition"
     },
     "current": {
-      "region": "gwangmyeong",
-      "branch": "site-factory-gwangmyeong-direct",
-      "root": "site-factory/gwangmyeong-flower",
-      "worker": "gwangmyeong-flower-guide",
-      "hostname": "gwangmyeong.fwith.kr",
-      "baselineSource": "9eea3825094c17689936987319e7b5e026f6b7bf",
-      "originalPlannedN": 8,
-      "originalPublished": 8,
-      "originalHeld": 0,
+      "region": "dongducheon",
+      "branch": "site-factory-dongducheon-direct",
+      "root": "site-factory/dongducheon-flower",
+      "worker": "dongducheon-flower-guide",
+      "hostname": "dongducheon.fwith.kr",
+      "baselineSource": "f13a51b75707e5b2e4cfb499da48372faa314858",
+      "originalPlannedN": 12,
+      "originalPublished": 11,
+      "originalHeld": 1,
       "additivePlannedN": 1,
       "qualityPassed": 1,
-      "status": "exact_source_saved_control_dispatch_intent",
-      "sourceManifestSha256": "4e5ebb3ba7183ab694b8217d1b2c7e73b1f4efbc7e88d37d218586a3034ab3ff",
-      "controlManifestSha256": "a66455959e5ec08a89a3af13971ac04fefccb2580501a5e10fb466a348706a25",
+      "status": "reviewed_source_save_intent",
+      "sourceManifestSha256": "6bf41ebafaec73089111dc374540a4d0ae04f198d40655d166074de3d0377509",
+      "controlManifestSha256": "7effcf5ee5abe7046335e0513626d8f9d6f19d8992eb7578accb6a0e137a0278",
       "intent": {
-        "action": "save_exact_reviewed_gwangmyeong_addition_and_minimal_update_controls",
-        "idempotencyKey": "gwangmyeong:additions:20261011:9eea3825094c17689936987319e7b5e026f6b7bf"
+        "action": "save_exact_reviewed_dongducheon_addition_and_minimal_update_controls",
+        "idempotencyKey": "dongducheon:additions:20261011:f13a51b75707e5b2e4cfb499da48372faa314858"
       },
       "reviews": {
-        "plan": "ff90072b78602b0c79914729da6534210ab811f5ae70fa9088596bb1bb0bf63e",
-        "content": "e6219f6f1110552fcc0430e0674c1ea409f786c643ca6ce8e2f6eeebdf2bd577",
-        "code": "09c4085701cd04c27548400234f58bcd8e172ef83c0926e235c467e081146a70",
-        "providerUpdate": "3148670a26b93c0423e3850a942b6c02c01c7b7f6afbbabcb7e5f25e6b0b0a4a",
+        "plan": "de32e0eb79c3e5047c4dd412037ec4c4deb0bfd002849898c34f2a1baa52e8e6",
+        "content": "a625063c5d8dc13c90f0973ac662c0606e48d3710c135e43df08cb0736232007",
+        "code": "4dc77207d0109d2930fd682182ddbe2b75e660ea217447600ef160ad8e521a3f",
+        "providerUpdate": "090408d6a9747ff6dee52a2e72da5cfed61bbcade3d8a12cac339ac688cfc080",
         "baselineCorrection": "014d80c912c7d808638b8a87619aa88ef82d418710a04c42c2876355286decf0"
       },
-      "resultingArticles": 9,
-      "resultingNormalHtml": 12,
-      "resultingSitemapUrls": 11,
-      "visualQa": "deferred_not_pass",
-      "sourceRevision": "97d8174867b3f7889d7c1a9f1e352fa7570e08e6",
-      "sourceFullChangedBlobReadback": [
-        {
-          "path": "site-factory/gwangmyeong-flower/src/data/architecture.json",
-          "sha": "142238115832914ddd8e1d97179f261132fa7c65",
-          "fullTextMatches": true
-        },
-        {
-          "path": "site-factory/gwangmyeong-flower/src/data/publish-manifest.json",
-          "sha": "b6d69a962f1b4985f1d6e638cb49d3d223496d1e",
-          "fullTextMatches": true
-        },
-        {
-          "path": "site-factory/gwangmyeong-flower/src/data/page-map.json",
-          "sha": "6200059b313db74b7ef812af0b87881095d5ae89",
-          "fullTextMatches": true
-        },
-        {
-          "path": "site-factory/gwangmyeong-flower/src/data/pages.json",
-          "sha": "c31192809c8c67cce809e8c319ec5ca2cd5520b2",
-          "fullTextMatches": true
-        },
-        {
-          "path": "site-factory/gwangmyeong-flower/src/lib/hubs.mjs",
-          "sha": "d10a08d43a5be90aedbc285e98802c12eaae6e3b",
-          "fullTextMatches": true
-        },
-        {
-          "path": "site-factory/gwangmyeong-flower/tests/direct-source.test.mjs",
-          "sha": "49c782ed8512006474682832f6bb18034efbaaf5",
-          "fullTextMatches": true
-        },
-        {
-          "path": "site-factory/gwangmyeong-flower/tests/additive-20261011.test.mjs",
-          "sha": "3f2cda9619e14f0aff9ede367a6be1b21e27415d",
-          "fullTextMatches": true
-        }
-      ],
-      "controlFullChangedBlobReadback": [
-        {
-          "path": "scripts/direct-gwangmyeong/publish.py",
-          "sha": "366b5f15ec37127a8bcf00b9ad0599202864b261",
-          "fullTextMatches": true
-        },
-        {
-          "path": "scripts/direct-gwangmyeong/test_publish.py",
-          "sha": "d8e60a0c174f06e2482750737fe940463381113d",
-          "fullTextMatches": true
-        }
-      ],
-      "dispatchIntent": {
-        "workflow": ".github/workflows/gwangmyeong-direct-publish.yml",
-        "ref": "main",
-        "expected_revision": "97d8174867b3f7889d7c1a9f1e352fa7570e08e6",
-        "indexnow_only": false,
-        "idempotencyKey": "gwangmyeong:additions:publish:97d8174867b3f7889d7c1a9f1e352fa7570e08e6"
-      }
+      "resultingArticles": 12,
+      "resultingNormalHtml": 15,
+      "resultingSitemapUrls": 14,
+      "visualQa": "deferred_not_pass"
     },
     "completed": [
       {
@@ -16894,6 +17093,178 @@
         "contentReviewSha256": "a48cdf36c492e0bd832ab4a184d7b8fee3bcd3ffc5dc7bba6f55cd99bcf273b8",
         "originalInitialPlanAndHeldPreserved": true,
         "independentReleaseReviewSha256": "d29a3040e37f83d48b28ed9dbba5e6daf512b3cf9877b60c7ac7d17293403742"
+      },
+      {
+        "scopeKey": "gwangmyeong-additions-20261011",
+        "region": "gwangmyeong",
+        "status": "released_search_submitted_visual_qa_deferred",
+        "identity": {
+          "repository": "joseungil-kr/fwith-site-factory",
+          "branch": "site-factory-gwangmyeong-direct",
+          "root": "site-factory/gwangmyeong-flower",
+          "worker": "gwangmyeong-flower-guide",
+          "hostname": "gwangmyeong.fwith.kr"
+        },
+        "previousSource": "9eea3825094c17689936987319e7b5e026f6b7bf",
+        "sourceRevision": "97d8174867b3f7889d7c1a9f1e352fa7570e08e6",
+        "controlRevision": "3c0bb5c0f2ce1f74a4d314f7c6a1549e9cc85175",
+        "additivePlannedN": 1,
+        "qualityPassed": 1,
+        "heldAdditions": 0,
+        "originalPublishedPagesPreserved": 8,
+        "originalPlannedN": 8,
+        "originalHeld": 0,
+        "articles": [
+          {
+            "route": "/event/gwangmyeong-lapoete-wedding-wreath/",
+            "status": "published_http_verified"
+          }
+        ],
+        "resultingArticleCount": 9,
+        "normalHtmlRoutes": 12,
+        "sitemapUrls": 11,
+        "separate404": 1,
+        "run": {
+          "id": 38139721106,
+          "html_url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38139721106",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-11T12:33:34Z",
+          "updated_at": "2026-10-11T12:34:47Z",
+          "run_attempt": 1,
+          "head_sha": "3c0bb5c0f2ce1f74a4d314f7c6a1549e9cc85175"
+        },
+        "http": {
+          "state": "public_release_verified",
+          "revision": "97d8174867b3f7889d7c1a9f1e352fa7570e08e6",
+          "regionCount": 8,
+          "articleCount": 9,
+          "htmlRoutes": 12,
+          "noindexHubs": 1,
+          "sitemapUrls": 11,
+          "checkedPaths": 26,
+          "normalizedCloudflareBeacons": 13,
+          "unknownHttpStatus": 404
+        },
+        "indexNow": {
+          "attempt": 1,
+          "endpoint": "https://searchadvisor.naver.com/indexnow",
+          "fingerprint": "6ddedf4b5b2d2ca72d42df880a9fc1912d1e19b6c83dc48920f51ad3c323867f",
+          "httpStatus": 200,
+          "origin": "https://gwangmyeong.fwith.kr",
+          "recordedAt": "2026-10-11T12:34:39.831508+00:00",
+          "revision": "97d8174867b3f7889d7c1a9f1e352fa7570e08e6",
+          "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38139721106",
+          "searchIndexing": "not_verified",
+          "siteKey": "gwangmyeong-flower-direct",
+          "state": "received",
+          "urlCount": 11,
+          "urlSetSha256": "9a017bff7fa442f2d47f2eeabdbc44ff9d4a88a87fda82528f71b1d053cff09e",
+          "urls": [
+            "https://gwangmyeong.fwith.kr/",
+            "https://gwangmyeong.fwith.kr/event/gwangmyeong-lapoete-wedding-wreath/",
+            "https://gwangmyeong.fwith.kr/regions/",
+            "https://gwangmyeong.fwith.kr/regions/cheolsan-dong/",
+            "https://gwangmyeong.fwith.kr/regions/gahak-dong/",
+            "https://gwangmyeong.fwith.kr/regions/gwangmyeong-dong/",
+            "https://gwangmyeong.fwith.kr/regions/haan-dong/",
+            "https://gwangmyeong.fwith.kr/regions/iljik-dong/",
+            "https://gwangmyeong.fwith.kr/regions/noonsa-dong/",
+            "https://gwangmyeong.fwith.kr/regions/okgil-dong/",
+            "https://gwangmyeong.fwith.kr/regions/soha-dong/"
+          ],
+          "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6109072947",
+          "commentId": 6109072947,
+          "durableReadbackVerified": true
+        },
+        "gsc": {
+          "observedAt": "2026-10-11T12:36:27.854Z",
+          "siteUrl": "sc-domain:fwith.kr",
+          "status": "existing_registered_sitemap_reused",
+          "submissionPerformed": false,
+          "sitemaps": [
+            {
+              "path": "https://gwangmyeong.fwith.kr/sitemap-index.xml",
+              "lastSubmitted": "2026-10-09T16:17:53.604Z",
+              "isPending": false,
+              "isSitemapsIndex": true,
+              "lastDownloaded": "2026-10-09T16:44:24.711Z",
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "indexingVerified": false
+        },
+        "providerBindingReuse": {
+          "before": {
+            "accountVerified": true,
+            "dnsState": "not_observed",
+            "hostname": "gwangmyeong.fwith.kr",
+            "hostnameBindingExists": true,
+            "mutationsPerformed": false,
+            "state": "binding_verified",
+            "worker": "gwangmyeong-flower-guide",
+            "workerExists": true
+          },
+          "attach": {
+            "accountVerified": true,
+            "dnsState": "not_observed",
+            "hostname": "gwangmyeong.fwith.kr",
+            "hostnameBindingExists": true,
+            "mutationsPerformed": false,
+            "state": "binding_verified",
+            "worker": "gwangmyeong-flower-guide",
+            "workerExists": true
+          },
+          "after": {
+            "accountVerified": true,
+            "dnsState": "not_observed",
+            "hostname": "gwangmyeong.fwith.kr",
+            "hostnameBindingExists": true,
+            "mutationsPerformed": false,
+            "state": "binding_verified",
+            "worker": "gwangmyeong-flower-guide",
+            "workerExists": true
+          }
+        },
+        "reviewReadbackDigest": "142f169353afb0b72194f9e627de42f0b82fbe484d8af226336325c787f90ecc",
+        "visualQa": "deferred_not_pass",
+        "uncheckedDesktopRoutes": [
+          "/event/gwangmyeong-lapoete-wedding-wreath/",
+          "/event/",
+          "/",
+          "/regions/cheolsan-dong/",
+          "/regions/gahak-dong/",
+          "/regions/gwangmyeong-dong/",
+          "/regions/haan-dong/",
+          "/regions/iljik-dong/",
+          "/regions/",
+          "/regions/noonsa-dong/",
+          "/regions/okgil-dong/",
+          "/regions/soha-dong/"
+        ],
+        "uncheckedNarrowRoutes": [
+          "/event/gwangmyeong-lapoete-wedding-wreath/",
+          "/event/",
+          "/",
+          "/regions/cheolsan-dong/",
+          "/regions/gahak-dong/",
+          "/regions/gwangmyeong-dong/",
+          "/regions/haan-dong/",
+          "/regions/iljik-dong/",
+          "/regions/",
+          "/regions/noonsa-dong/",
+          "/regions/okgil-dong/",
+          "/regions/soha-dong/"
+        ],
+        "publicVerifiedBy": "2026-10-11T12:34:39.831508+00:00",
+        "httpVerifiedAt": "2026-10-11T12:39:26.293139+00:00",
+        "completedVerificationAt": "2026-10-11T12:43:31.843704+00:00",
+        "providerFixIndependentReviewSha256": "3148670a26b93c0423e3850a942b6c02c01c7b7f6afbbabcb7e5f25e6b0b0a4a",
+        "sourceManifestSha256": "4e5ebb3ba7183ab694b8217d1b2c7e73b1f4efbc7e88d37d218586a3034ab3ff",
+        "contentReviewSha256": "e6219f6f1110552fcc0430e0674c1ea409f786c643ca6ce8e2f6eeebdf2bd577",
+        "originalInitialPlanAndHeldPreserved": true,
+        "independentReleaseReviewSha256": "ceaf41d6c23f81b2ce7d6162a438f916e3d7e76b0a231d2c4b141d2ad233ad3e"
       }
     ],
     "triggerSafety": {
