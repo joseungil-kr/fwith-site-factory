@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T04:01:31.706Z",
+  "updatedAt": "2026-10-11T04:03:29.382Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,15 +33,15 @@
   "current": {
     "scopeKey": "seoul-gwangjin-direct-initial-20261010",
     "city": "서울특별시 광진구",
-    "status": "released_http_indexnow_verified_gsc_not_submitted",
+    "status": "released_search_submitted_visual_qa_deferred",
     "owner": {
       "scheduledRunAt": "2026-10-11T04:00:00Z",
       "observedExecutionAt": "2026-10-11T04:01:31.706Z",
       "newRegionStartedAt": "2026-10-10T19:04:28.316Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-gwangjin-gsc-resume-20261011T040000Z",
-      "active": true,
-      "executionState": "resuming_gsc_submission",
+      "active": false,
+      "executionState": "gsc_complete_serial_handoff_to_next_region",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T01:37:21.860Z",
       "priorOwnerReadbackConfirmedAt": "2026-10-10T18:45:52.506Z",
       "actualWriteStopConfirmedAt": "2026-10-10T19:58:31.784488+00:00",
@@ -80,14 +80,10 @@
       }
     },
     "changeIntent": {
-      "action": "submit_existing_verified_public_sitemap_to_gsc_then_readback",
-      "target": "sc-domain:fwith.kr https://seoul-gwangjin.fwith.kr/sitemap-index.xml",
-      "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
-      "idempotencyKey": "seoul-gwangjin:gsc:296e47b384bfc36e0dfa6e7a4586d41220c93587",
-      "noDeployOrIndexNowRepeat": true
+      "action": "preserve_completed_search_receipt_and_continue_next_region",
+      "idempotencyKey": "seoul-gwangjin:search-complete:296e47b384bfc36e0dfa6e7a4586d41220c93587"
     },
     "unfinishedStages": [
-      "gsc",
       "deferred_visual_qa",
       "official_artifact_zip_download_verification"
     ],
@@ -294,12 +290,42 @@
     "gsc": {
       "siteUrl": "sc-domain:fwith.kr",
       "sitemapUrl": "https://seoul-gwangjin.fwith.kr/sitemap-index.xml",
-      "status": "not_submitted",
-      "submitAttempted": false,
+      "status": "submitted_confirmed_processing_pending",
+      "submit": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "attempted": 1,
+        "submitted": 1,
+        "failed": 0,
+        "results": [
+          {
+            "sitemapUrl": "https://seoul-gwangjin.fwith.kr/sitemap-index.xml",
+            "accepted": true,
+            "confirmed": true,
+            "lastSubmitted": "2026-10-11T04:02:59.254Z",
+            "isPending": true,
+            "isSitemapsIndex": false,
+            "warnings": "0",
+            "errors": "0"
+          }
+        ],
+        "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+        "actions": [
+          "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+        ]
+      },
       "listReadback": {
-        "observedAt": "2026-10-11T01:36:10.551Z",
-        "listed": false,
-        "sitemaps": []
+        "observedAt": "2026-10-11T04:03:29.382Z",
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemaps": [
+          {
+            "path": "https://seoul-gwangjin.fwith.kr/sitemap-index.xml",
+            "lastSubmitted": "2026-10-11T04:02:59.254Z",
+            "isPending": true,
+            "isSitemapsIndex": false,
+            "warnings": "0",
+            "errors": "0"
+          }
+        ]
       },
       "indexingVerified": false
     },
@@ -310,7 +336,8 @@
       "sourceUnchanged": true,
       "priorApprovalRequestState": "no_longer_pending_or_unavailable_observed_20261011T013353Z",
       "evidencePath": "docs/direct-regional-release/seoul-gwangjin/release-evidence.json"
-    }
+    },
+    "completedReleaseSearchAt": "2026-10-11T04:03:29.382Z"
   },
   "history": [
     {
@@ -6178,6 +6205,54 @@
       "indexNowReceiptId": 6101325704,
       "gscSubmitted": false,
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T19:58:31.784488+00:00"
+    },
+    {
+      "at": "2026-10-11T04:03:29.382Z",
+      "scopeKey": "seoul-gwangjin-direct-initial-20261010",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
+      "gsc": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemapUrl": "https://seoul-gwangjin.fwith.kr/sitemap-index.xml",
+        "status": "submitted_confirmed_processing_pending",
+        "submit": {
+          "siteUrl": "sc-domain:fwith.kr",
+          "attempted": 1,
+          "submitted": 1,
+          "failed": 0,
+          "results": [
+            {
+              "sitemapUrl": "https://seoul-gwangjin.fwith.kr/sitemap-index.xml",
+              "accepted": true,
+              "confirmed": true,
+              "lastSubmitted": "2026-10-11T04:02:59.254Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+          "actions": [
+            "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+          ]
+        },
+        "listReadback": {
+          "observedAt": "2026-10-11T04:03:29.382Z",
+          "siteUrl": "sc-domain:fwith.kr",
+          "sitemaps": [
+            {
+              "path": "https://seoul-gwangjin.fwith.kr/sitemap-index.xml",
+              "lastSubmitted": "2026-10-11T04:02:59.254Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ]
+        },
+        "indexingVerified": false
+      }
     }
   ],
   "maintenanceBacklog": [
@@ -6218,7 +6293,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Resume Gwangjin GSC submission after fresh source, receipt and sitemap readback.",
+  "nextAction": "Gwangjin release and search verified; preserve deferred visual QA and explicit artifact archive verification limit. Select at most one next national-plan unit.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -12485,7 +12560,7 @@
         "sourceBranchBaseRevision": "fe1676fb50fd448ff1bc0fe3062278b4cee726e9"
       },
       "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
-      "status": "visual_qa_deferred_search_submission_incomplete",
+      "status": "released_search_submitted_visual_qa_deferred",
       "originalPlannedArticles": 5,
       "approvedArticles": 5,
       "deferredArticles": 0,
@@ -12523,12 +12598,42 @@
       "gsc": {
         "siteUrl": "sc-domain:fwith.kr",
         "sitemapUrl": "https://seoul-gwangjin.fwith.kr/sitemap-index.xml",
-        "status": "not_submitted",
-        "submitAttempted": false,
+        "status": "submitted_confirmed_processing_pending",
+        "submit": {
+          "siteUrl": "sc-domain:fwith.kr",
+          "attempted": 1,
+          "submitted": 1,
+          "failed": 0,
+          "results": [
+            {
+              "sitemapUrl": "https://seoul-gwangjin.fwith.kr/sitemap-index.xml",
+              "accepted": true,
+              "confirmed": true,
+              "lastSubmitted": "2026-10-11T04:02:59.254Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+          "actions": [
+            "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+          ]
+        },
         "listReadback": {
-          "observedAt": "2026-10-11T01:36:10.551Z",
-          "listed": false,
-          "sitemaps": []
+          "observedAt": "2026-10-11T04:03:29.382Z",
+          "siteUrl": "sc-domain:fwith.kr",
+          "sitemaps": [
+            {
+              "path": "https://seoul-gwangjin.fwith.kr/sitemap-index.xml",
+              "lastSubmitted": "2026-10-11T04:02:59.254Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ]
         },
         "indexingVerified": false
       },
@@ -12689,7 +12794,8 @@
     "jongno.fwith.kr",
     "seoul-jung.fwith.kr",
     "seoul-yongsan.fwith.kr",
-    "seoul-seongdong.fwith.kr"
+    "seoul-seongdong.fwith.kr",
+    "seoul-gwangjin.fwith.kr"
   ],
   "nationalPlan": {
     "schemaVersion": 1,
@@ -12713,10 +12819,10 @@
     "path": "docs/direct-regional-release/national/fixed-plan.json",
     "independentReviewPath": "docs/direct-regional-release/national/independent-review.json",
     "progress": {
-      "releasedRegionCount": 35,
-      "remainingRegionCount": 195,
-      "lastReleasedOfficialCode": "11200",
-      "asOf": "2026-10-10T18:43:29.063Z",
+      "releasedRegionCount": 36,
+      "remainingRegionCount": 194,
+      "lastReleasedOfficialCode": "11215",
+      "asOf": "2026-10-11T04:03:29.382Z",
       "visualQaStillSeparate": true
     }
   }
