@@ -8,7 +8,7 @@ const sha=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 const canonical=v=>JSON.stringify(v,(_,x)=>x&&typeof x==='object'&&!Array.isArray(x)?Object.fromEntries(Object.entries(x).sort(([a],[b])=>a<b?-1:a>b?1:0)):x);
 const slugs=["songnae-dong", "jihaeng-dong", "saengyeon-dong", "gwangam-dong", "geolsan-dong", "bosan-dong", "dongducheon-dong", "anheung-dong", "sangbongam-dong", "habongam-dong", "tapdong-dong", "sangpae-dong"];
 test('Dongducheon initial scope is exactly 12 legal units and 8 current administrative units without duplicate canonical aliases',()=>{
- const pages=read('pages'),coverage=read('region-coverage');
+ const pages=read('pages').filter(p=>p.category==='regions'),coverage=read('region-coverage');
  assert.deepEqual(pages.map(p=>p.slug),["songnae-dong", "jihaeng-dong", "saengyeon-dong", "gwangam-dong", "bosan-dong", "dongducheon-dong", "anheung-dong", "sangbongam-dong", "habongam-dong", "tapdong-dong", "sangpae-dong"]);assert.equal(coverage.units.length,12);assert.equal(coverage.administrativeCrosswalk.length,8);
  assert.equal(new Set(coverage.administrativeCrosswalk.map(a=>a.aliasKey)).size,8);
  assert.equal(coverage.districts.length,1);assert.equal(coverage.districts[0].name,'동두천시');assert.equal(coverage.representatives.length,11);
@@ -44,11 +44,11 @@ test('public ownership proof is unique and separate from prior sites',()=>{
  assert.equal(fs.readFileSync(new URL(matches[0],root),'utf8').trim(),matches[0].slice(0,-4));
  assert.ok(!['e30c4e1232b8f7c0e411afe25741fdb4.txt','3b41d9e91f04c1390fb4967e99f41bc6.txt'].includes(matches[0]));
 });
-test('only regional hub is emitted and all 13 normal routes are indexable',()=>{
+test('original regional hub remains indexed and additive event hub stays thin',()=>{
  const pages=read('pages'),a=read('architecture'),m=read('publish-manifest');
  assert.deepEqual(a.hubs.filter(h=>h.indexable).map(h=>h.url),['/regions/']);
- assert.deepEqual(a.hubs.filter(h=>h.children>0).map(h=>h.url),['/regions/']);
- assert.equal(1+pages.length+a.hubs.filter(h=>h.children>0).length,13);
+ assert.deepEqual(a.hubs.filter(h=>h.children>0).map(h=>h.url).sort(),['/event/','/regions/']);
+ assert.equal(1+pages.length+a.hubs.filter(h=>h.children>0).length,15);
  assert.equal(m.directRelease.publicationState,'source-reviewed-deployment-pending');
  assert.deepEqual(m.directRelease.deferredRoutes,["/regions/geolsan-dong/"]);assert.deepEqual(m.directRelease.publishedCoverage,{"numerator": 11, "denominator": 12, "percent": 91.67});
 });
