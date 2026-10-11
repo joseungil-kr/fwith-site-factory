@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T16:24:08.893Z",
+  "updatedAt": "2026-10-11T16:32:52.520Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -34,19 +34,16 @@
   "current": {
     "scopeKey": "seoul-nowon-direct-initial-20261011",
     "city": "서울특별시 노원구",
-    "status": "prepared_unpublished_paused_for_full_customer_copy_revision",
+    "status": "reviewed_revision6_source_save_pending_final_build",
     "owner": {
-      "scheduledRunAt": "2026-10-11T12:00:00Z",
-      "observedExecutionAt": "2026-10-11T12:43:42.116Z",
-      "newRegionStartedAt": "2026-10-11T12:43:42.116Z",
+      "checkpointId": "direct-seoul-nowon-copy-resume-20261011T1632Z",
       "serviceInvocationId": null,
-      "checkpointId": "direct-seoul-nowon-20261011T120000Z",
-      "active": false,
-      "executionState": "writing_stopped_prepared_source_preserved",
-      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T12:33:50.987Z",
-      "mainWriteActive": false,
-      "actualMainWriteStopConfirmedAt": "2026-10-11T12:45:17Z",
-      "actualWriteStopConfirmedAt": "2026-10-11T13:34:59Z"
+      "scheduledRunAt": "2026-10-11T16:00:00Z",
+      "active": true,
+      "executionState": "reviewed_source_save_intent_no_dispatch",
+      "startedAt": "2026-10-11T16:32:52.520Z",
+      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T13:34:59Z",
+      "mainWriteActive": true
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -55,7 +52,8 @@
       "worker": "seoul-nowon-flower-guide",
       "hostname": "seoul-nowon.fwith.kr",
       "externalCreationVerified": false,
-      "sourceBranchCreatedVerified": false
+      "sourceBranchCreatedVerified": true,
+      "sourceBranchReadback": "e48c9db89451a5b150190b97d5237ec1649f5e65"
     },
     "selection": {
       "officialCode": "11350",
@@ -164,7 +162,55 @@
       "contentReviewSha256": "4db24049ad924b09480615adde8f4c80b2e0775536e7ffd2f65b375d087c2d01",
       "sourceReviewSha256": "970777566de695506cc7c9e711f310f9d9a45a06389be3b69019db8efba602be",
       "releaseVerified": false,
-      "externalPendingActionsAtStop": 0
+      "externalPendingActionsAtStop": 0,
+      "revision6": {
+        "plannedN": 4,
+        "reviewedArticles": 4,
+        "held": 0,
+        "files": 73,
+        "sourceFiles": 70,
+        "controlFiles": 3,
+        "articlesSha256": "e027aae03b709b8bbe08fe12f7c3a5cbe577b57aa4114252a428196b1bb44ef1",
+        "contentReviewSha256": "1370c1c6bb7027880bc59eb9e555dbdbc0c33bbae462c52e1b0e001436996c26",
+        "commonReviewSha256": "f2b8cc6a541e4fda9e1bd16d5bbe51300fc975537cddf14a072080434b9336d5",
+        "sourceManifestSha256": "64bb44c1b968d9374ceb84c61d047dceaf8fecf084a4f614a6a8c0687cc57cb3",
+        "sourceReviewSha256": "3bfa99f61c03ea1f9090035699f6e7f83109498cb756d3f20edc458f24cbe0c4",
+        "node22IndependentTests": 98,
+        "finalBuildVerified": false,
+        "remoteSourceUploaded": false,
+        "publicVerified": false
+      }
+    },
+    "ownerHistory": [
+      {
+        "scheduledRunAt": "2026-10-11T12:00:00Z",
+        "observedExecutionAt": "2026-10-11T12:43:42.116Z",
+        "newRegionStartedAt": "2026-10-11T12:43:42.116Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-seoul-nowon-20261011T120000Z",
+        "active": false,
+        "executionState": "writing_stopped_prepared_source_preserved",
+        "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T12:33:50.987Z",
+        "mainWriteActive": false,
+        "actualMainWriteStopConfirmedAt": "2026-10-11T12:45:17Z",
+        "actualWriteStopConfirmedAt": "2026-10-11T13:34:59Z"
+      }
+    ],
+    "sourceSaveIntent": {
+      "action": "save_exact_reviewed_seoul_nowon_source_and_separate_direct_controls",
+      "expectedSourceHead": "e48c9db89451a5b150190b97d5237ec1649f5e65",
+      "sourcePathsRoot": "site-factory/seoul-nowon-flower",
+      "controlPaths": [
+        ".github/workflows/seoul-nowon-direct-publish.yml",
+        "scripts/direct-seoul-nowon/publish.py",
+        "scripts/direct-seoul-nowon/test_publish.py"
+      ],
+      "idempotencyKey": "seoul-nowon:revision6:64bb44c1b968d9374ceb84c61d047dceaf8fecf084a4f614a6a8c0687cc57cb3",
+      "activeRuns": 0,
+      "queuedRuns": 0,
+      "matchingPushTriggers": 0,
+      "actualDispatch": false,
+      "providerMutation": false
     }
   },
   "history": [
