@@ -27378,7 +27378,35 @@
         "role": "single-root-git-writer",
         "active": true
       },
-      "publicDeployment": "NOT_ATTEMPTED"
+      "publicDeployment": "NOT_ATTEMPTED",
+      "additionalProtectedMirrorReview": {
+        "sha256": "4bafffdedb619070cc878c036db77b0b309c50531a9e62edf87bfd13cfbf8641",
+        "passRegions": [
+          "anyang",
+          "gimpo",
+          "gunpo",
+          "guri",
+          "gwangmyeong",
+          "hanam",
+          "jongno",
+          "osan",
+          "seoul-gwangjin",
+          "seoul-jung",
+          "seoul-seongbuk",
+          "seoul-seongdong",
+          "seoul-yongsan"
+        ],
+        "reviseRegions": [
+          "pocheon"
+        ],
+        "reason": "Pocheon 17 architecture status fields changed outside intended scope; restore original primary values before any source save. Other 13 protected mirror fields are unchanged.",
+        "affectedRemoteWrite": false,
+        "hanamCommitApproval": {
+          "initialOutcome": "rejected_due_to_potential_cross_region_status_mutation",
+          "resolution": "actual remote tree three full mirrors/69 rows independently compared; all protected fields including status unchanged; same create_commit retry approved",
+          "commit": "34e03110ab47a185fd78a89f5c12054d85a1fba4"
+        }
+      }
     },
     "fourteen2038SavedRevisions": [
       {
@@ -27452,6 +27480,44 @@
         "sourceProgressIncrement": 0,
         "publicDeployment": "NOT_ATTEMPTED",
         "savedAt": "2026-10-11T20:42:42.532Z"
+      },
+      {
+        "region": "gwangmyeong",
+        "branch": "site-factory-gwangmyeong-direct",
+        "root": "site-factory/gwangmyeong-flower",
+        "sha": "fa4063415e4956d45e8f33cec5f0e925a9c00328",
+        "parent": "e55ff0a918044356cf6deb6002fe4af57930cddc",
+        "files": 75,
+        "changedFiles": 10,
+        "articles": 9,
+        "sourceManifestSha256": "eb2dfc4df7de11dfe96d2d733a6ba7fe82bfc20bab6753e6715eaa23be2bdaed",
+        "independentReviewSha256": "f18a204d755e75f0a77154bf8b7efd5a8edd9ca207b15aac3760a449aed76fc5",
+        "wholeTreeVerified": true,
+        "allChangedFullTextReadbacks": true,
+        "originalDenominatorsHeldPreserved": true,
+        "sourceProgressIncrement": 0,
+        "publicDeployment": "NOT_ATTEMPTED",
+        "savedAt": "2026-10-11T20:47:56.322Z"
+      },
+      {
+        "region": "hanam",
+        "branch": "site-factory-hanam-direct",
+        "root": "site-factory/hanam-flower",
+        "sha": "34e03110ab47a185fd78a89f5c12054d85a1fba4",
+        "parent": "c51dcfb0544f0677b54e5a41afb66e214a6a0428",
+        "files": 72,
+        "changedFiles": 9,
+        "articles": 23,
+        "sourceManifestSha256": "59c143d7c2897ff38104c23bff5ab1cff414c8857fc6cb43f06a0fb082ecbf82",
+        "independentReviewSha256": "f18a204d755e75f0a77154bf8b7efd5a8edd9ca207b15aac3760a449aed76fc5",
+        "additionalProtectedMirrorReviewSha256": "4bafffdedb619070cc878c036db77b0b309c50531a9e62edf87bfd13cfbf8641",
+        "remoteProtectedMirrorRows": 69,
+        "wholeTreeVerified": true,
+        "allChangedFullTextReadbacks": true,
+        "originalDenominatorsHeldPreserved": true,
+        "sourceProgressIncrement": 0,
+        "publicDeployment": "NOT_ATTEMPTED",
+        "savedAt": "2026-10-11T20:50:38.308Z"
       }
     ]
   },
@@ -30005,8 +30071,9 @@
             "blobSha": "09bf6a0f4f06906da4c1c5fc358b1f95e1b67524"
           }
         ],
-        "status": "SAVED_IN_THIS_MAIN_COMMIT_READBACK_REQUIRED",
-        "sharedHelpersChanged": false
+        "status": "SAVED_FULL_READBACK_VERIFIED",
+        "sharedHelpersChanged": false,
+        "commit": "c6df994a01d13592fbf87886700cc6328ad54230"
       }
     }
   ]
