@@ -3,17 +3,29 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 const read=n=>JSON.parse(fs.readFileSync(new URL('../src/data/'+n+'.json',import.meta.url),'utf8'));
-const canonical=v=>JSON.stringify(v,(_,x)=>x&&typeof x==='object'&&!Array.isArray(x)?Object.fromEntries(Object.entries(x).sort(([a],[b])=>a<b?-1:a>b?1:0)):x);
+const history=JSON.parse(fs.readFileSync(new URL('../docs/customer-copy-history-20261011.json',import.meta.url),'utf8'));
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
-const original={"gwangmyeong-flower-direct-region-gwangmyeong-dong": "4e516157c68345cb2d76eabba1fd1b6e822a622a17723a34774ad3a1a4473b3e", "gwangmyeong-flower-direct-region-cheolsan-dong": "23f93f0191d8c8172e8baeb77136e74573a0dc94b9afdaea272ba123c55cffac", "gwangmyeong-flower-direct-region-haan-dong": "b8a6c6fd0991bc9a39bac0cde41522e6b450fdd8563d66a92588e3b13557da8e", "gwangmyeong-flower-direct-region-soha-dong": "09d03d3391be886e8a2f41f9a5733f31ec3fe7ac7d6a96757f98d77b8b581009", "gwangmyeong-flower-direct-region-iljik-dong": "54e2f111d1eec7d2e076ec2cee457ac9590f80e01ba9c87274bd856da3d85073", "gwangmyeong-flower-direct-region-noonsa-dong": "9e431a6847e036867b13b4246d40c7a6dbbbb792b40727004536ab8c53d3c021", "gwangmyeong-flower-direct-region-gahak-dong": "71222446fa160b9afd0ec9075187f7a99a0d31f06155b1ac011454c0302a6940", "gwangmyeong-flower-direct-region-okgil-dong": "9b1c532e2773eeedc142c2b364fb5549d3a3d93fe610574d8a86f8e7f3059a3d"};
-test('copy revision preserves eight original articles and all original and additive denominators',()=>{
- const p=read('pages'),m=read('publish-manifest');assert.equal(p.length,9);
- for(const [key,digest] of Object.entries(original))assert.equal(sha(canonical(p.find(x=>x.pageKey===key))),digest);
- assert.equal(m.directRelease.plannedOriginalCount,8);assert.equal(m.directRelease.reviewedArticleCount,8);
- assert.equal(m.additiveBatches[0].plannedOriginalCount,1);assert.equal(m.additiveBatches[0].resultingArticleCount,9);
+const expected={"gwangmyeong-flower-direct-region-gwangmyeong-dong": {"snapshot": "0ea9cba9ba80789b08aeb2487f918aea47aa4ca924c4dab206a8ff9fe857f519", "body": "52490743019d34ec84ca59e025de8612d18140ff35b8a292350f3fd01cd40942"}, "gwangmyeong-flower-direct-region-cheolsan-dong": {"snapshot": "457249b63fb556a685aded2bf03bb685e1cc057776bf81a2b7a65f392a217323", "body": "c6371725fdb8c11483ef5b8a941c8321ab6919ba75d3a397de199f0358f7e5c2"}, "gwangmyeong-flower-direct-region-haan-dong": {"snapshot": "72042e7848912d435b5730d4de0f2eb6dd7daf6c224599f64036f4a9068992ca", "body": "f05281414dac5a7edd7f821a40b4e36c7a8b7a9b66df41e6ba9e3dcc9da2c063"}, "gwangmyeong-flower-direct-region-soha-dong": {"snapshot": "5add20da8181d907592ab42ffe18da79864e08d891af4b15803c812206eb906c", "body": "b16b75acd294f5fc47906dad55bdc4f1e439218189061136bedc1282b80624ac"}, "gwangmyeong-flower-direct-region-iljik-dong": {"snapshot": "e9b635e29220a50fa9d822f319475c868bf5daa4b8e7d37d27afdd97a1750cbd", "body": "71f5d7e1e3ff5e8650b82f5b1f1ba71d3bad191bde3b8160acc80fe80d08fd5a"}, "gwangmyeong-flower-direct-region-noonsa-dong": {"snapshot": "265e27fe5d5d10a4b240231c6cd35ce75ed8361d5afe3313156f52759472d4fb", "body": "e0303fe2f5d0a289859f983a9d36f1227767ddaf62d164889b32fe2d7c285862"}, "gwangmyeong-flower-direct-region-gahak-dong": {"snapshot": "0b51300018a70dcd11eff8925c1e4d5c81a615934c5445be22622d967fd49f4f", "body": "754bfe03a69430fa711867ac1a4f47d254a5df2d4c30b3ce4821ed1cc740e9d9"}, "gwangmyeong-flower-direct-region-okgil-dong": {"snapshot": "e504abb00ab4a8bfa8e196b4af4b4b2473457fd0e05f49b1ab8a8bcb21dfa411", "body": "60449472770e05ea54bb2a47e57b59a04f38f1288608c4633cb14c5f955bc2aa"}, "gwangmyeong-flower-direct-event-gwangmyeong-lapoete-wedding-wreath": {"snapshot": "2c5900e42c0e8eb1db96ada5ca1ee25475028283a790cc7cc7dc5cc1a382aee1", "body": "7122e63e53f37184da62cfc8c310aa2dee9ab39e32c46a49e800492e35d5a9d7"}};
+const expectedReviews={"independentRegionalCopyReviewSha256": "8fbda6461545bf2a81b80613ff9635a62265449b4ab7a8b6c8ad4331e21b89fc", "independentVenueCopyReviewSha256": "aa59eeee5e88a5fb6a10b6040a352b82823cc3fafa3c713d52b7a3c3e3a31428", "independentSurfaceCopyReviewSha256": "8fbda6461545bf2a81b80613ff9635a62265449b4ab7a8b6c8ad4331e21b89fc"};
+const allowed=new Set(['description','cardSummary','firstAnswer','contentMarkdown','buyerQuestion','uniqueLocalDecision','sources','source','snapshotId','snapshotHash']);
+test('all nine reviewed articles keep every non-copy field and original denominator',()=>{
+ const p=read('pages'),m=read('publish-manifest');assert.equal(p.length,9);assert.equal(history.publicPages.length,9);
+ for(const old of history.publicPages){const a=p.find(x=>x.pageKey===old.pageKey);assert.ok(a);for(const key of new Set([...Object.keys(old),...Object.keys(a)]))if(!allowed.has(key))assert.deepEqual(a[key],old[key],old.slug+':'+key);}
+ assert.equal(m.directRelease.plannedOriginalCount,8);assert.equal(m.directRelease.reviewedArticleCount,8);assert.deepEqual(m.directRelease.deferredRoutes,[]);assert.equal(m.additiveBatches[0].plannedOriginalCount,1);assert.equal(m.additiveBatches[0].resultingArticleCount,9);
 });
-test('revised customer copy binds the independent review without internal investigation notes',()=>{
- const p=read('pages').find(x=>x.pageKey==="gwangmyeong-flower-direct-event-gwangmyeong-lapoete-wedding-wreath");assert.equal(p.snapshotHash,'c54ac59b1b2e5b99687171973c601af6ad364e48543e999fbbda0217f4a4d040');
- assert.equal(sha(p.contentMarkdown),'d76e809b549711bb56098cca8ef93b7dbb9df25f4d7c3787d9ec85cdec23e05e');assert.doesNotMatch(p.contentMarkdown,/접속.*제한|검색 공개문|추정하지|가정하지|보장하지|검수|검증 도구/);
- assert.equal(read('publish-manifest').copyRevisions.at(-1).independentCopyReviewSha256,'9e0737893f6849f0c281908b5b446bcdad14e512f131354aaeab673dd837f5fa');
+test('all nine current bodies and snapshots equal independently reviewed revisions',()=>{
+ const p=read('pages');assert.deepEqual(p.map(x=>x.pageKey).sort(),Object.keys(expected).sort());
+ for(const a of p){assert.equal(a.snapshotHash,expected[a.pageKey].snapshot);assert.equal(sha(a.contentMarkdown),expected[a.pageKey].body);assert.notEqual(a.cardSummary,a.firstAnswer);assert.doesNotMatch(a.contentMarkdown,/드림어스|811·812|주차장 안내|추정하지|가정하지|검증 도구|검색 공개문/);}
+ const revision=read('publish-manifest').copyRevisions.at(-1);
+ assert.equal(revision.changedExistingArticleCount,9);
+ for(const [key,digest] of Object.entries(expectedReviews))assert.equal(revision[key],digest);
+});
+test('product identities, photos, prices, and factual delivery notices remain intact',()=>{
+ const p=read('products');assert.equal(p.length,history.previousProducts.length);
+ for(const old of history.previousProducts){const a=p.find(x=>x.key===old.key);for(const k of new Set([...Object.keys(old),...Object.keys(a)]))if(k!=='desc')assert.deepEqual(a[k],old[k]);}
+ const truth=read('business-truth');assert.match(truth.deliveryNotice,/추가 배송비/);assert.match(truth.productVariationNotice,/지역 및 계절/);
+});
+test('actual facility restriction remains while repeated source-card warnings are removed',()=>{
+ const a=read('pages').find(x=>x.slug==='iljik-dong');assert.match(a.contentMarkdown,/통로가 아닌 분향소 안/);
+ const detail=fs.readFileSync(new URL('../src/pages/[category]/[slug].astro',import.meta.url),'utf8');assert.doesNotMatch(detail,/확인한 출처입니다\. 상품 구성/);assert.ok(detail.includes('source.verifiedAt'));
 });

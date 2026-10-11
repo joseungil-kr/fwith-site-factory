@@ -6,7 +6,10 @@ test('purchase banner consumes current Truth/config and never hardcodes a region
  const component=read('src/components/InlineOrderBanner.astro');
  for(const key of ['site.brand','site.region','site.phoneHref','site.orderUrl','site.phoneOrderHours'])assert.ok(component.includes(key));
  assert.doesNotMatch(component,/다른지역|예시지역|1844|59,?000|꽃이랑 온라인 주문/);
- assert.ok(component.includes('접수시간은 배송시간을 보장하지 않습니다'));
+ assert.ok(component.includes('전달 가능 일정을 상담'));
+ assert.ok(read('src/components/ProductCards.astro').includes('site.deliveryNotice'));
+ assert.ok(read('src/components/ProductCards.astro').includes('site.productVariationNotice'));
+ assert.doesNotMatch(component,/도착 보장|무료배송|즉시 배송/);
 });
 test('home, hub and detail render a component outside frozen raw Markdown',()=>{
  for(const page of ['src/pages/index.astro','src/pages/[category]/index.astro','src/pages/[category]/[slug].astro']){
