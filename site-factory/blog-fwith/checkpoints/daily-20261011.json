@@ -6,7 +6,7 @@
   "scheduledRun": "2026-10-11T06:40:00Z",
   "actualInvocationId": null,
   "checkpointId": "blog-fwith-daily-20261011-claim",
-  "status": "researching",
+  "status": "prepared_review_pass",
   "owner": {
     "task": "publish_blog_daily_1011",
     "state": "active"
@@ -17,9 +17,15 @@
   "publishedPostCount": 0,
   "dailyPostsPreviouslyPublished": 0,
   "remainingDailyQuota": 5,
-  "slugs": [],
+  "slugs": [
+    "busan-bexco-corporate-event-flowers",
+    "daejeon-kaist-professor-orchid",
+    "songdo-startuppark-office-opening-plant",
+    "sinchon-severance-funeral-wreath",
+    "daegu-interburgo-wedding-wreath"
+  ],
   "intent": {
-    "action": "prepare five unique facility purchase-intent posts with generated images",
+    "action": "commit five independently reviewed posts and images, then existing exact-source blog assets publication",
     "idempotencyKey": "blog-fwith-daily-20261011"
   },
   "dedupe": {
@@ -27,5 +33,12 @@
     "noActiveBlogPublishRunFound": true,
     "remoteTreeComplete": true
   },
-  "updatedAt": "2026-10-11T06:44:49.082Z"
+  "updatedAt": "2026-10-11T09:37:29.362Z",
+  "approvedPostCount": 5,
+  "review": "daily-20261011.review.json",
+  "imageProvenance": "daily-20261011.images.json",
+  "localBuild": {
+    "state": "blocked_on_og_font_fetch",
+    "reason": "Current cloud font response not valid font; unchanged successful baseline also fails; official isolated CI build mandatory"
+  }
 }
