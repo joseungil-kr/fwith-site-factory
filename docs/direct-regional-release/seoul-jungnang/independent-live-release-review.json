@@ -1,0 +1,164 @@
+{
+  "verdict": "PASS_INDEPENDENT_LIVE_RELEASE_AND_INDEXNOW_RECEIPT",
+  "reviewedAt": "2026-10-11T06:13:33.506460+00:00",
+  "sourceRevision": "73d92b941fcb3025321adc88f82179c914086551",
+  "origin": "https://seoul-jungnang.fwith.kr",
+  "initialDeployRun": {
+    "id": 38116543792,
+    "controlRevision": "f19fc2b71b7ad63530dfd1c49c120fce0cf7d3db",
+    "conclusion": "failure",
+    "attempt": 1,
+    "deploymentAndBindingSucceeded": true,
+    "publicHttpSucceeded": true,
+    "onlyFailure": "HTTP500 Green Hospital page during second IndexNow pre-POST GET; zero POST",
+    "providerGetBinding": {
+      "accountVerified": true,
+      "dnsState": "not_observed",
+      "hostname": "seoul-jungnang.fwith.kr",
+      "hostnameBindingExists": true,
+      "mutationsPerformed": false,
+      "state": "binding_verified",
+      "worker": "seoul-jungnang-flower-guide",
+      "workerExists": true
+    }
+  },
+  "recoveryRun": {
+    "id": 38117066118,
+    "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38117066118",
+    "controlRevision": "9d9976b2a13005812ef24b0bb6b706206f59edd1",
+    "conclusion": "success",
+    "attempt": 1,
+    "jobs": {
+      "build": "success",
+      "publish": "skipped",
+      "finalize_indexnow": "success"
+    },
+    "providerRedeploy": false,
+    "finalizerObservedGets": 27,
+    "finalizerObservedPosts": 1
+  },
+  "officialArtifacts": [
+    {
+      "name": "official-build",
+      "zipSha256": "c9393d3f794b579bb27927e4ddc2d1221ad97919ec9a64c1ded4dbf3f9a2ed60",
+      "bytes": 835660
+    },
+    {
+      "name": "official-result",
+      "zipSha256": "4f81fb736b5c519fa0f6fa0bff80935535676ad4824c7116ffe39c3540175d37",
+      "bytes": 6219
+    },
+    {
+      "name": "recovery-build",
+      "zipSha256": "066913b657a2cb0338e3a211bf2947e86b02f66511af5e7d0e3f22537df0b9dd",
+      "bytes": 835662
+    },
+    {
+      "name": "recovery-result",
+      "zipSha256": "47f6e28a7c4203adb9c48598af9bdeb4b87eb7bc02996e07b2a1843d6683a6c9",
+      "bytes": 5957
+    }
+  ],
+  "officialInitialReleaseSha256": "f11612320b505b5abce40f34891bc0acaff599292e8f0b4f3f64b5597baeef22",
+  "officialRecoveryReleaseSha256": "68254aa93cca3718d9ba7e82ddfa352e4cbe7c002819fcbb3046576a1b555d78",
+  "all22FilesByteIdenticalAcrossOfficialDeployArtifactIndependentExactBuildAndRecoveryBuild": true,
+  "hostedIndependentReviewSha256": "75d7de440b5c3caa055bfa4cfac34b756b1241bff912d225ba3643cb4a45d949",
+  "hostedChecks": {
+    "normalRoutes": 5,
+    "sitemapUrls": 5,
+    "articles": 3,
+    "allEightProductImageBytesDimensionsVerified": true,
+    "publicStaticFiles": 15,
+    "exactCanonicalH1TitleAndApprovedCustomerBodies": true,
+    "ctaAndInternalLinksVerified": true,
+    "robotsIndexable": true,
+    "real404": true,
+    "cloudflareBeaconNormalization": "Existing strict single-beacon normalizer only; six HTML responses normalized"
+  },
+  "durableIndexNowReceipt": {
+    "commentId": 6106108743,
+    "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6106108743",
+    "author": "github-actions[bot]",
+    "state": "received",
+    "httpStatus": 200,
+    "fingerprint": "8a0a54ff23512ec549b2267396fd3c62f2e256ec6356ffcc2cb1d33c75d96016",
+    "fingerprintRecomputedFromExactRevisionOriginUrlSetAndOwnershipProof": true,
+    "urlSetSha256": "626e03ae9263bafdae9fb1c4a3a488ad6a66693b2d3e518322061a11e275c383",
+    "urlCount": 5,
+    "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38117066118",
+    "attempt": 1
+  },
+  "evidence": [
+    {
+      "path": "/workspace/shared/jungnang-runtime-review-20261011/live-review/run-terminal.json",
+      "sha256": "e4e7f922a4d7b5658b6be97c58f508ae202829a956ba7ee6f612af37b84ad939"
+    },
+    {
+      "path": "/workspace/shared/jungnang-runtime-review-20261011/live-review/recovery-run.json",
+      "sha256": "fff6d4a5a62ea3ab6ebb2026f9f77cf99f1d69f3ca2ac5a79202c26d93906ade"
+    },
+    {
+      "path": "/workspace/shared/jungnang-runtime-review-20261011/live-review/recovery-jobs.json",
+      "sha256": "92ef1c3774c77b745abcb3925d9e68de671cd7aec3398893e829c75c2962807e"
+    },
+    {
+      "path": "/workspace/shared/jungnang-runtime-review-20261011/live-review/durable-receipt.json",
+      "sha256": "a306f0916ea31c0cdd9547466215495ce21106e700e83cf97382d2bc958d0c3a"
+    },
+    {
+      "path": "/workspace/shared/jungnang-runtime-review-20261011/live-review/hosted-http-review.json",
+      "sha256": "75d7de440b5c3caa055bfa4cfac34b756b1241bff912d225ba3643cb4a45d949"
+    },
+    {
+      "path": "/workspace/shared/jungnang-runtime-review-20261011/live-review/independent-indexnow-get-observations.json",
+      "sha256": "333dbd0223811910cd3a1e7fab0953865b279e0cc833114ef1866bfbf82dffec"
+    },
+    {
+      "path": "/workspace/shared/jungnang-runtime-review-20261011/live-review/indexnow-pre-post-failure-proof.json",
+      "sha256": "9e714e38210c61c2808256b9b394d4c5f028acaa5d318738d1a900e914d94f61"
+    },
+    {
+      "path": "/workspace/shared/jungnang-runtime-review-20261011/live-review/build-job.log",
+      "sha256": "a42cbdd1028749e8238d8efc97c49dbb81a01f664f28981fbc186588db40a0af"
+    },
+    {
+      "path": "/workspace/shared/jungnang-runtime-review-20261011/live-review/publish-job.log",
+      "sha256": "58fc6b82d12ff75ebca1f20f15346ff82804bd7a2abc15854679c00d56a9a634"
+    },
+    {
+      "path": "/workspace/shared/jungnang-runtime-review-20261011/live-review/recovery-finalizer.log",
+      "sha256": "eb56074b7c0b5d1873b3b43e3a922a65f2a1366c9e3a92e5f2429a5c0dd9700a"
+    },
+    {
+      "path": "/workspace/shared/jungnang-runtime-review-20261011/live-review/official-result/binding-before.json",
+      "sha256": "d6a6eb4ccdcbb6b9349e7dd36cfedb7a2816d7ddcce25f21b13de016c51965f4"
+    },
+    {
+      "path": "/workspace/shared/jungnang-runtime-review-20261011/live-review/official-result/binding-after.json",
+      "sha256": "3eb876bd5b8611093cc377d6753d55c8897ec5abf5ae53814be06a2b6e1a9d11"
+    },
+    {
+      "path": "/workspace/shared/jungnang-runtime-review-20261011/live-review/official-result/domain-attach.json",
+      "sha256": "814080b0086035791aaf8f1329fe6bcb39a312eddb3ca1310d58b3aa591901de"
+    },
+    {
+      "path": "/workspace/shared/jungnang-runtime-review-20261011/live-review/recovery-result/indexnow-receipt.json",
+      "sha256": "e309a7c911d5cb330293e67e85ff0c6e61d05cd36b67c8143bf5f13dd43ab637"
+    },
+    {
+      "path": "/workspace/shared/jungnang-runtime-review-20261011/live-review/recovery-result/indexnow-http-observations.json",
+      "sha256": "4efe45c34c78db3fe650f20c0d90bb2690c221f71bbed483217c9a19e21cc3d8"
+    }
+  ],
+  "reviewerActions": {
+    "readOnly": true,
+    "httpGetOnly": true,
+    "indexnowPost": false,
+    "githubWrites": false,
+    "cloudflareMutations": false,
+    "browserUse": false
+  },
+  "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+  "gsc": "Outside this reviewer scope; parent separately handles it.",
+  "searchIndexing": "not_verified"
+}

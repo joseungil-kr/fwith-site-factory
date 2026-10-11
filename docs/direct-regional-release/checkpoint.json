@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T06:02:39.094Z",
+  "updatedAt": "2026-10-11T06:12:39.358Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,17 +33,21 @@
   "current": {
     "scopeKey": "seoul-jungnang-direct-initial-20261011",
     "city": "서울특별시 중랑구",
-    "status": "public_release_verified_indexnow_preflight_transient_failure",
+    "status": "released_search_submitted_visual_qa_deferred",
     "owner": {
       "scheduledRunAt": "2026-10-11T05:00:00Z",
       "observedExecutionAt": "2026-10-11T05:07:43.970Z",
       "newRegionStartedAt": "2026-10-11T05:07:43.970Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-seoul-jungnang-20261011T050000Z",
-      "active": true,
-      "executionState": "researching",
+      "active": false,
+      "executionState": "completed_no_further_source_or_deployment_writes",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T05:00:47.630Z",
-      "priorOwnerReadbackConfirmedAt": "2026-10-11T05:01:02.110Z"
+      "priorOwnerReadbackConfirmedAt": "2026-10-11T05:01:02.110Z",
+      "sourceAndDeploymentWritesStoppedAt": "2026-10-11T06:08:52Z",
+      "browserOperationsStopped": true,
+      "finalCheckpointWritePending": false,
+      "completedEvidenceVerifiedAt": "2026-10-11T06:14:04.539Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -51,7 +55,7 @@
       "root": "site-factory/seoul-jungnang-flower",
       "worker": "seoul-jungnang-flower-guide",
       "hostname": "seoul-jungnang.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true,
       "sourceBranchBaseRevision": "aa30430e2135ef2be8036d4215425ce4547fe772"
     },
@@ -70,7 +74,7 @@
         37655514711
       ],
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "REQUIRED_BEFORE_PUBLICATION",
+      "providerOwnershipCollisionCheck": "PASS_OFFICIAL_ACCOUNT_WORKER_DOMAIN_GET_NO_OVERRIDE",
       "triggerSafety": {
         "allCurrentWorkflowFilesRead": 48,
         "mainPushAndTargetBranchDoNotMatchPushTriggers": true,
@@ -78,19 +82,10 @@
       }
     },
     "changeIntent": {
-      "action": "after_fresh_public_http_pass_dispatch_existing_indexnow_only_and_submit_gsc",
-      "idempotencyKey": "seoul-jungnang:search-only:73d92b941fcb3025321adc88f82179c914086551",
-      "sourceRevision": "73d92b941fcb3025321adc88f82179c914086551",
-      "workflow": ".github/workflows/seoul-jungnang-direct-publish.yml",
-      "indexnowOnly": true,
-      "gscProperty": "sc-domain:fwith.kr",
-      "sitemap": "https://seoul-jungnang.fwith.kr/sitemap-index.xml",
-      "duplicateGuard": "No IndexNow POST was made; no matching receipt; recheck before retry"
+      "action": "preserve_verified_release_search_receipts_deferred_screen_qa_and_release_owner",
+      "idempotencyKey": "seoul-jungnang:complete:73d92b941fcb3025321adc88f82179c914086551"
     },
     "unfinishedStages": [
-      "independent_live_http_qa",
-      "indexnow",
-      "gsc",
       "deferred_visual_qa"
     ],
     "review": {
@@ -104,7 +99,9 @@
       "independentReviewSha256": "dcd4fce8a747ba4e3c66bc7a45ca67dec64c7e7ac3bccfd3d11ad1ea9b9f004a",
       "runtimeStatus": "PASS_EXACT_LOCAL_SOURCE_PREPUBLICATION",
       "runtimeReviewSha256": "f2f21646f9f43ae1e95e5a8155d4dae32f0cf3742312893c61c67fc621530ef6",
-      "exactRemoteReviewSha256": "25bbc2330c47ae00c658358d53b27c6dc51a943a0b6f3c50d4293325f35c81b8"
+      "exactRemoteReviewSha256": "25bbc2330c47ae00c658358d53b27c6dc51a943a0b6f3c50d4293325f35c81b8",
+      "liveReleaseReviewSha256": "e09914578770f6108d276348d0b26ea20bf4b08456a60d46c8e81aa940a21f48",
+      "liveReleaseStatus": "PASS_INDEPENDENT_ARTIFACT_HOSTED_HTTP_OWNERSHIP_AND_DURABLE_RECEIPT"
     },
     "plan": {
       "state": "frozen_before_authoring_independent_plan_pass",
@@ -123,19 +120,19 @@
           "slug": "sinnae-dong-seoul-medical-center-funeral-wreath",
           "title": "서울의료원 장례식장 근조화환 주문",
           "primaryKeyword": "서울의료원 장례식장 근조화환 주문",
-          "status": "independent_content_pass_not_published"
+          "status": "independent_content_pass_published_http_verified"
         },
         {
           "slug": "myeonmok-dong-green-hospital-funeral-wreath",
           "title": "녹색병원 장례식장 근조화환 주문",
           "primaryKeyword": "녹색병원 장례식장 근조화환 주문",
-          "status": "independent_content_pass_not_published"
+          "status": "independent_content_pass_published_http_verified"
         },
         {
           "slug": "sangbong-dong-dongbu-mideurang-opening-wreath",
           "title": "동부시장 미드랑길 개업 축하화환 주문",
           "primaryKeyword": "동부시장 미드랑길 개업 축하화환 주문",
-          "status": "independent_content_pass_not_published"
+          "status": "independent_content_pass_published_http_verified"
         }
       ],
       "planFreezeRevision": "e668ea5fcae3fa7d3b27d6d9cf293c3750eb2d2c",
@@ -155,34 +152,128 @@
       "localLoopback": "PASS",
       "remoteFullReadback": "72/72 exact bytes and Git blob SHA verified",
       "screenQa": "DEFERRED_BY_USER_NOT_PASS",
-      "remoteReadbackSha256": "cb710bd47d08d1c8f9659f691d7a324d20cffd21071d812d70afeb0b95280480"
+      "remoteReadbackSha256": "cb710bd47d08d1c8f9659f691d7a324d20cffd21071d812d70afeb0b95280480",
+      "hostedHttp": "PASS",
+      "hostedHttpReviewSha256": "75d7de440b5c3caa055bfa4cfac34b756b1241bff912d225ba3643cb4a45d949"
     },
-    "lastSuccessfulStage": "exact_source_published_binding_and_ci_public_http_verified",
+    "lastSuccessfulStage": "public_http_qa_indexnow_durable_receipt_gsc_submit_and_list_readback",
     "sourceRevision": "73d92b941fcb3025321adc88f82179c914086551",
     "controlRevision": "f2de6d9b361f39964de418b51a6fcd6cd0ce3357",
     "publication": {
-      "status": "published_search_pending",
+      "status": "released_search_submitted_visual_qa_deferred",
       "dispatchAcceptedCount": 1,
       "runId": 38116543792,
       "url": "https://seoul-jungnang.fwith.kr",
-      "indexNow": "NOT_SUBMITTED_PRE_POST_HTTP500",
-      "gsc": "NOT_SUBMITTED",
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "8a0a54ff23512ec549b2267396fd3c62f2e256ec6356ffcc2cb1d33c75d96016",
+        "httpStatus": 200,
+        "origin": "https://seoul-jungnang.fwith.kr",
+        "recordedAt": "2026-10-11T06:08:44.936678+00:00",
+        "revision": "73d92b941fcb3025321adc88f82179c914086551",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38117066118",
+        "siteKey": "seoul-jungnang-flower-direct",
+        "state": "received",
+        "urlCount": 5,
+        "urlSetSha256": "626e03ae9263bafdae9fb1c4a3a488ad6a66693b2d3e518322061a11e275c383",
+        "commentId": 6106108743,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6106108743",
+        "durableReadbackVerified": true,
+        "lastReadbackAt": "2026-10-11T06:12:39.358Z"
+      },
+      "gsc": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemapUrl": "https://seoul-jungnang.fwith.kr/sitemap-index.xml",
+        "status": "submitted_confirmed_processing_pending",
+        "submit": {
+          "siteUrl": "sc-domain:fwith.kr",
+          "attempted": 1,
+          "submitted": 1,
+          "failed": 0,
+          "results": [
+            {
+              "sitemapUrl": "https://seoul-jungnang.fwith.kr/sitemap-index.xml",
+              "accepted": true,
+              "confirmed": true,
+              "lastSubmitted": "2026-10-11T06:08:25.661Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+          "actions": [
+            "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+          ]
+        },
+        "listReadback": {
+          "observedAt": "2026-10-11T06:08:30.016Z",
+          "siteUrl": "sc-domain:fwith.kr",
+          "sitemaps": [
+            {
+              "path": "https://seoul-jungnang.fwith.kr/sitemap-index.xml",
+              "lastSubmitted": "2026-10-11T06:08:25.661Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ]
+        },
+        "indexingVerified": false
+      },
       "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38116543792",
       "runConclusion": "failure_indexnow_preflight_only",
       "deploy": "success",
       "hostnameBinding": "GET_verified",
       "publicReleaseVerified": true,
-      "httpQa": "CI_PASS_INDEPENDENT_READBACK_IN_PROGRESS",
-      "publishedAt": "2026-10-11T06:00:14.9894441Z"
+      "httpQa": "PASS_INDEPENDENT_EXACT_HOSTED_BYTES",
+      "publishedAt": "2026-10-11T06:00:14.9894441Z",
+      "articleCount": 3,
+      "normalHtmlPages": 5,
+      "totalHtmlIncluding404": 6,
+      "sitemapUrls": 5,
+      "completedAt": "2026-10-11T06:08:52Z",
+      "receiptFingerprintVerified": true
     },
     "recovery": {
-      "status": "safe_search_only_recovery_pending_fresh_http",
+      "status": "resolved_search_only_no_redeploy",
       "reason": "Second pre-POST IndexNow GET validation observed HTTP500 on green-hospital article; official artifact has only GET observations, no POST; no matching durable journal entry.",
       "failingPath": "/regions/myeonmok-dong-green-hospital-funeral-wreath/",
       "observedAt": "2026-10-11T06:00:17Z",
       "originalArtifactId": 11693069928,
       "originalArtifactZipSha256": "4f81fb736b5c519fa0f6fa0bff80935535676ad4824c7116ffe39c3540175d37",
-      "noRedeployRequired": true
+      "noRedeployRequired": true,
+      "runId": 38117066118,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38117066118",
+      "controlRevision": "9d9976b2a13005812ef24b0bb6b706206f59edd1",
+      "conclusion": "success",
+      "build": "success",
+      "publish": "skipped",
+      "finalizeIndexNow": "success",
+      "completedAt": "2026-10-11T06:08:52Z",
+      "jobs": [
+        {
+          "id": 114403955839,
+          "name": "build",
+          "conclusion": "success",
+          "completedAt": "2026-10-11T06:08:33Z"
+        },
+        {
+          "id": 114404022791,
+          "name": "finalize_indexnow",
+          "conclusion": "success",
+          "completedAt": "2026-10-11T06:08:51Z"
+        },
+        {
+          "id": 114404023511,
+          "name": "publish",
+          "conclusion": "skipped",
+          "completedAt": "2026-10-11T06:08:33Z"
+        }
+      ]
     }
   },
   "history": [
@@ -6533,7 +6624,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Prepare Seoul Jungnang only; preserve exact Dongdaemun waiting approval",
+  "nextAction": "Fresh-read ownership and remote plan in next invocation; preserve Dongdaemun waitingApproval; batch visual QA later.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -13190,6 +13281,580 @@
         "actualCauseDetermined": false,
         "lastObservedAt": "2026-10-11T01:36:10.551Z"
       }
+    },
+    {
+      "city": "서울특별시 중랑구",
+      "scopeKey": "seoul-jungnang-direct-initial-20261011",
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-seoul-jungnang-direct",
+        "root": "site-factory/seoul-jungnang-flower",
+        "worker": "seoul-jungnang-flower-guide",
+        "hostname": "seoul-jungnang.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true,
+        "sourceBranchBaseRevision": "aa30430e2135ef2be8036d4215425ce4547fe772"
+      },
+      "sourceRevision": "73d92b941fcb3025321adc88f82179c914086551",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "originalPlannedArticles": 3,
+      "approvedArticles": 3,
+      "deferredArticles": 0,
+      "publicUrl": "https://seoul-jungnang.fwith.kr",
+      "run": {
+        "id": 38116543792,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38116543792",
+        "conclusion": "failure_indexnow_preflight_only",
+        "deploy": "success"
+      },
+      "recovery": {
+        "status": "resolved_search_only_no_redeploy",
+        "reason": "Second pre-POST IndexNow GET validation observed HTTP500 on green-hospital article; official artifact has only GET observations, no POST; no matching durable journal entry.",
+        "failingPath": "/regions/myeonmok-dong-green-hospital-funeral-wreath/",
+        "observedAt": "2026-10-11T06:00:17Z",
+        "originalArtifactId": 11693069928,
+        "originalArtifactZipSha256": "4f81fb736b5c519fa0f6fa0bff80935535676ad4824c7116ffe39c3540175d37",
+        "noRedeployRequired": true,
+        "runId": 38117066118,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38117066118",
+        "controlRevision": "9d9976b2a13005812ef24b0bb6b706206f59edd1",
+        "conclusion": "success",
+        "build": "success",
+        "publish": "skipped",
+        "finalizeIndexNow": "success",
+        "completedAt": "2026-10-11T06:08:52Z"
+      },
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "8a0a54ff23512ec549b2267396fd3c62f2e256ec6356ffcc2cb1d33c75d96016",
+        "httpStatus": 200,
+        "origin": "https://seoul-jungnang.fwith.kr",
+        "recordedAt": "2026-10-11T06:08:44.936678+00:00",
+        "revision": "73d92b941fcb3025321adc88f82179c914086551",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38117066118",
+        "siteKey": "seoul-jungnang-flower-direct",
+        "state": "received",
+        "urlCount": 5,
+        "urlSetSha256": "626e03ae9263bafdae9fb1c4a3a488ad6a66693b2d3e518322061a11e275c383",
+        "commentId": 6106108743,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6106108743",
+        "durableReadbackVerified": true,
+        "lastReadbackAt": "2026-10-11T06:12:39.358Z"
+      },
+      "gsc": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemapUrl": "https://seoul-jungnang.fwith.kr/sitemap-index.xml",
+        "status": "submitted_confirmed_processing_pending",
+        "submit": {
+          "siteUrl": "sc-domain:fwith.kr",
+          "attempted": 1,
+          "submitted": 1,
+          "failed": 0,
+          "results": [
+            {
+              "sitemapUrl": "https://seoul-jungnang.fwith.kr/sitemap-index.xml",
+              "accepted": true,
+              "confirmed": true,
+              "lastSubmitted": "2026-10-11T06:08:25.661Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+          "actions": [
+            "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+          ]
+        },
+        "listReadback": {
+          "observedAt": "2026-10-11T06:08:30.016Z",
+          "siteUrl": "sc-domain:fwith.kr",
+          "sitemaps": [
+            {
+              "path": "https://seoul-jungnang.fwith.kr/sitemap-index.xml",
+              "lastSubmitted": "2026-10-11T06:08:25.661Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ]
+        },
+        "indexingVerified": false
+      },
+      "qa": {
+        "nodeVersion": "22.23.3",
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "normalHtmlRoutes": 5,
+        "articleCount": 3,
+        "sitemapUrls": 5,
+        "localLoopback": "PASS",
+        "remoteFullReadback": "72/72 exact bytes and Git blob SHA verified",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+        "remoteReadbackSha256": "cb710bd47d08d1c8f9659f691d7a324d20cffd21071d812d70afeb0b95280480",
+        "hostedHttp": "PASS",
+        "hostedHttpReviewSha256": "75d7de440b5c3caa055bfa4cfac34b756b1241bff912d225ba3643cb4a45d949"
+      },
+      "publicHttp": {
+        "verdict": "PASS_INDEPENDENT_HOSTED_HTTP_AND_TWO_GET_ONLY_INDEXNOW_PREFLIGHTS",
+        "checkedAt": "2026-10-11T06:07:30.200936+00:00",
+        "sourceRevision": "73d92b941fcb3025321adc88f82179c914086551",
+        "officialRunId": 38116543792,
+        "officialArtifactZipSha256": "c9393d3f794b579bb27927e4ddc2d1221ad97919ec9a64c1ded4dbf3f9a2ed60",
+        "officialReleaseManifestSha256": "f11612320b505b5abce40f34891bc0acaff599292e8f0b4f3f64b5597baeef22",
+        "official22ArtifactFilesExactlyMatchIndependentBuild": true,
+        "publisherFixedHttpResult": {
+          "state": "public_release_verified",
+          "revision": "73d92b941fcb3025321adc88f82179c914086551",
+          "regionCount": 3,
+          "articleCount": 3,
+          "htmlRoutes": 5,
+          "noindexHubs": 0,
+          "sitemapUrls": 5,
+          "checkedPaths": 19,
+          "normalizedCloudflareBeacons": 6,
+          "unknownHttpStatus": 404
+        },
+        "normalRoutes": 5,
+        "sitemapUrls": 5,
+        "articles": 3,
+        "allEightProductImageBytesAndJpegDimensionsVerified": true,
+        "publicStaticFilesVerified": 15,
+        "unknownRouteActual404": true,
+        "internalRouteLinks": [
+          "/",
+          "/regions/",
+          "/regions/myeonmok-dong-green-hospital-funeral-wreath/",
+          "/regions/sangbong-dong-dongbu-mideurang-opening-wreath/",
+          "/regions/sinnae-dong-seoul-medical-center-funeral-wreath/"
+        ],
+        "customerHtml": [
+          {
+            "path": "/",
+            "h1": "서울 중랑구 꽃배달,근조·축하화환을 고르세요",
+            "title": "서울 중랑구 꽃배달 | 근조·축하화환 꽃이랑",
+            "canonical": "https://seoul-jungnang.fwith.kr/",
+            "exactApprovedCustomerBody": true,
+            "ctaAndProductLinksCorrect": true,
+            "sha256": "c68233dca4440ff8e55d0f82a4a19ec3f75749f70779fabfb9beb743d98578cd"
+          },
+          {
+            "path": "/regions/",
+            "h1": "서울 중랑구 지역별 꽃배달 안내",
+            "title": "서울 중랑구 지역별 안내 꽃배달 | 꽃이랑",
+            "canonical": "https://seoul-jungnang.fwith.kr/regions/",
+            "exactApprovedCustomerBody": true,
+            "ctaAndProductLinksCorrect": true,
+            "sha256": "3ea32d4933c34f5da8e3d04042116becbf699c693de33a2e44967c9822438154"
+          },
+          {
+            "path": "/regions/myeonmok-dong-green-hospital-funeral-wreath/",
+            "h1": "녹색병원 장례식장 근조화환 주문",
+            "title": "녹색병원 장례식장 근조화환 주문",
+            "canonical": "https://seoul-jungnang.fwith.kr/regions/myeonmok-dong-green-hospital-funeral-wreath/",
+            "exactApprovedCustomerBody": true,
+            "ctaAndProductLinksCorrect": true,
+            "sha256": "594c39ba4d6965ca191cd94e974b1f4cd2dda7fb862bdaa7e7f0b87729bc8c9c"
+          },
+          {
+            "path": "/regions/sangbong-dong-dongbu-mideurang-opening-wreath/",
+            "h1": "동부시장 미드랑길 개업 축하화환 주문",
+            "title": "동부시장 미드랑길 개업 축하화환 주문",
+            "canonical": "https://seoul-jungnang.fwith.kr/regions/sangbong-dong-dongbu-mideurang-opening-wreath/",
+            "exactApprovedCustomerBody": true,
+            "ctaAndProductLinksCorrect": true,
+            "sha256": "d93d1df69724460d5df4401c73727397a05f258360ad29e82e2f46365dd1672c"
+          },
+          {
+            "path": "/regions/sinnae-dong-seoul-medical-center-funeral-wreath/",
+            "h1": "서울의료원 장례식장 근조화환 주문",
+            "title": "서울의료원 장례식장 근조화환 주문",
+            "canonical": "https://seoul-jungnang.fwith.kr/regions/sinnae-dong-seoul-medical-center-funeral-wreath/",
+            "exactApprovedCustomerBody": true,
+            "ctaAndProductLinksCorrect": true,
+            "sha256": "9a8864abe8bbc36e9cf6263b0cdb97a3cb478e7f65c4047da0b5e84b13d44fe8"
+          }
+        ],
+        "staticAssets": [
+          {
+            "path": "/_astro/BaseLayout.MRzcX74D.css",
+            "sha256": "1d272ba03de0b407c46bf1dc6c1c07059011ece39837a18dc349f273084f880b",
+            "bytes": 9821
+          },
+          {
+            "path": "/dc766c6c4235b6ffe33d9f7efebc9a77.txt",
+            "sha256": "42e475d40875e5ee41a9e93a9b43af39f243a3c70697b1cc544e50105798e51d",
+            "bytes": 33
+          },
+          {
+            "path": "/favicon.svg",
+            "sha256": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+            "bytes": 185
+          },
+          {
+            "path": "/images/editorial/opening-wreath-illustration-v1.webp",
+            "sha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+            "bytes": 154376
+          },
+          {
+            "path": "/images/products/congrats-basic.jpg",
+            "sha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+            "bytes": 77336
+          },
+          {
+            "path": "/images/products/congrats-large.jpg",
+            "sha256": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+            "bytes": 83318
+          },
+          {
+            "path": "/images/products/congrats-premium.jpg",
+            "sha256": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+            "bytes": 77920
+          },
+          {
+            "path": "/images/products/congrats-xl.jpg",
+            "sha256": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+            "bytes": 85391
+          },
+          {
+            "path": "/images/products/funeral-basic.jpg",
+            "sha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+            "bytes": 75206
+          },
+          {
+            "path": "/images/products/funeral-large.jpg",
+            "sha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+            "bytes": 86279
+          },
+          {
+            "path": "/images/products/funeral-premium.jpg",
+            "sha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+            "bytes": 79304
+          },
+          {
+            "path": "/images/products/funeral-xl.jpg",
+            "sha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+            "bytes": 84178
+          },
+          {
+            "path": "/robots.txt",
+            "sha256": "4d9227d8995646c294f434a051157403ee608bb84ab79e851fce784d604e264e",
+            "bytes": 82
+          },
+          {
+            "path": "/sitemap-0.xml",
+            "sha256": "67b860f0d53cdcc35a480de1d9911d8325803a44233ccf9ad7e00f0bda894ed0",
+            "bytes": 774
+          },
+          {
+            "path": "/sitemap-index.xml",
+            "sha256": "e3371a845fd9f6f2107cad29ada09281d8744cab225c84735cdab60432197362",
+            "bytes": 194
+          }
+        ],
+        "observations": [
+          {
+            "path": "/",
+            "httpStatus": 200,
+            "rawSha256": "660052885d771dfbba8996b275bb61f5042d5dbf31dbf310d5a0771ffb4a39cd",
+            "contentType": "text/html",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "c68233dca4440ff8e55d0f82a4a19ec3f75749f70779fabfb9beb743d98578cd",
+            "normalizedSha256": "c68233dca4440ff8e55d0f82a4a19ec3f75749f70779fabfb9beb743d98578cd",
+            "cloudflareBeaconNormalized": true
+          },
+          {
+            "path": "/regions/",
+            "httpStatus": 200,
+            "rawSha256": "37f33a130cb7f144ebb90cf0ce8026ca662d5ffa9fe8d7b87fa0dd54941e6911",
+            "contentType": "text/html",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "3ea32d4933c34f5da8e3d04042116becbf699c693de33a2e44967c9822438154",
+            "normalizedSha256": "3ea32d4933c34f5da8e3d04042116becbf699c693de33a2e44967c9822438154",
+            "cloudflareBeaconNormalized": true
+          },
+          {
+            "path": "/regions/myeonmok-dong-green-hospital-funeral-wreath/",
+            "httpStatus": 200,
+            "rawSha256": "baf98f16ff64b363f83b94e7fc1ac1136c2d8482c0c6a2810906bf5e4ad32756",
+            "contentType": "text/html",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "594c39ba4d6965ca191cd94e974b1f4cd2dda7fb862bdaa7e7f0b87729bc8c9c",
+            "normalizedSha256": "594c39ba4d6965ca191cd94e974b1f4cd2dda7fb862bdaa7e7f0b87729bc8c9c",
+            "cloudflareBeaconNormalized": true
+          },
+          {
+            "path": "/regions/sangbong-dong-dongbu-mideurang-opening-wreath/",
+            "httpStatus": 200,
+            "rawSha256": "7b3310720a45aee015b219c60a0694861a1b9e6f99ca195fb9888cf53e9f064a",
+            "contentType": "text/html",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "d93d1df69724460d5df4401c73727397a05f258360ad29e82e2f46365dd1672c",
+            "normalizedSha256": "d93d1df69724460d5df4401c73727397a05f258360ad29e82e2f46365dd1672c",
+            "cloudflareBeaconNormalized": true
+          },
+          {
+            "path": "/regions/sinnae-dong-seoul-medical-center-funeral-wreath/",
+            "httpStatus": 200,
+            "rawSha256": "cb8a0418242b4fcab60fcc316872e160a16d1389b3f9bdb03837c9676b356083",
+            "contentType": "text/html",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "9a8864abe8bbc36e9cf6263b0cdb97a3cb478e7f65c4047da0b5e84b13d44fe8",
+            "normalizedSha256": "9a8864abe8bbc36e9cf6263b0cdb97a3cb478e7f65c4047da0b5e84b13d44fe8",
+            "cloudflareBeaconNormalized": true
+          },
+          {
+            "path": "/_astro/BaseLayout.MRzcX74D.css",
+            "httpStatus": 200,
+            "rawSha256": "1d272ba03de0b407c46bf1dc6c1c07059011ece39837a18dc349f273084f880b",
+            "contentType": "text/css",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "1d272ba03de0b407c46bf1dc6c1c07059011ece39837a18dc349f273084f880b"
+          },
+          {
+            "path": "/dc766c6c4235b6ffe33d9f7efebc9a77.txt",
+            "httpStatus": 200,
+            "rawSha256": "42e475d40875e5ee41a9e93a9b43af39f243a3c70697b1cc544e50105798e51d",
+            "contentType": "text/plain",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "42e475d40875e5ee41a9e93a9b43af39f243a3c70697b1cc544e50105798e51d"
+          },
+          {
+            "path": "/favicon.svg",
+            "httpStatus": 200,
+            "rawSha256": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+            "contentType": "image/svg+xml",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4"
+          },
+          {
+            "path": "/images/editorial/opening-wreath-illustration-v1.webp",
+            "httpStatus": 200,
+            "rawSha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+            "contentType": "image/webp",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8"
+          },
+          {
+            "path": "/images/products/congrats-basic.jpg",
+            "httpStatus": 200,
+            "rawSha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+            "contentType": "image/jpeg",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905"
+          },
+          {
+            "path": "/images/products/congrats-large.jpg",
+            "httpStatus": 200,
+            "rawSha256": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+            "contentType": "image/jpeg",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d"
+          },
+          {
+            "path": "/images/products/congrats-premium.jpg",
+            "httpStatus": 200,
+            "rawSha256": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+            "contentType": "image/jpeg",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a"
+          },
+          {
+            "path": "/images/products/congrats-xl.jpg",
+            "httpStatus": 200,
+            "rawSha256": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+            "contentType": "image/jpeg",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9"
+          },
+          {
+            "path": "/images/products/funeral-basic.jpg",
+            "httpStatus": 200,
+            "rawSha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+            "contentType": "image/jpeg",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3"
+          },
+          {
+            "path": "/images/products/funeral-large.jpg",
+            "httpStatus": 200,
+            "rawSha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+            "contentType": "image/jpeg",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e"
+          },
+          {
+            "path": "/images/products/funeral-premium.jpg",
+            "httpStatus": 200,
+            "rawSha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+            "contentType": "image/jpeg",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114"
+          },
+          {
+            "path": "/images/products/funeral-xl.jpg",
+            "httpStatus": 200,
+            "rawSha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+            "contentType": "image/jpeg",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3"
+          },
+          {
+            "path": "/robots.txt",
+            "httpStatus": 200,
+            "rawSha256": "4d9227d8995646c294f434a051157403ee608bb84ab79e851fce784d604e264e",
+            "contentType": "text/plain",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "4d9227d8995646c294f434a051157403ee608bb84ab79e851fce784d604e264e"
+          },
+          {
+            "path": "/sitemap-0.xml",
+            "httpStatus": 200,
+            "rawSha256": "67b860f0d53cdcc35a480de1d9911d8325803a44233ccf9ad7e00f0bda894ed0",
+            "contentType": "application/xml",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "67b860f0d53cdcc35a480de1d9911d8325803a44233ccf9ad7e00f0bda894ed0"
+          },
+          {
+            "path": "/sitemap-index.xml",
+            "httpStatus": 200,
+            "rawSha256": "e3371a845fd9f6f2107cad29ada09281d8744cab225c84735cdab60432197362",
+            "contentType": "application/xml",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "e3371a845fd9f6f2107cad29ada09281d8744cab225c84735cdab60432197362"
+          },
+          {
+            "path": "/.independent-review-missing-73d92b941fcb3025321adc88f82179c914086551/",
+            "httpStatus": 404,
+            "rawSha256": "6b06c5b6089e27698d0ab54591244bb39f041d0f8885b6237cf866bf5fe2d01c",
+            "contentType": "text/html",
+            "xRobotsTag": "",
+            "cfMitigated": "",
+            "expectedSha256": "1c1d5e3b6c2e456be57f7f82607a916b37a4511d8ea8cfa7c295ae4a464a7e13",
+            "normalizedSha256": "1c1d5e3b6c2e456be57f7f82607a916b37a4511d8ea8cfa7c295ae4a464a7e13",
+            "cloudflareBeaconNormalized": true
+          }
+        ],
+        "indexnowGetOnlyConsecutivePasses": 2,
+        "indexnowGetOnlyObservationCount": 18,
+        "indexnowPostAttempted": false,
+        "indexnowJournalReadOrWrite": false,
+        "providerMutation": false,
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+      },
+      "pendingVisualRoutes": {
+        "desktop": [
+          "/",
+          "/regions/",
+          "/regions/myeonmok-dong-green-hospital-funeral-wreath/",
+          "/regions/sangbong-dong-dongbu-mideurang-opening-wreath/",
+          "/regions/sinnae-dong-seoul-medical-center-funeral-wreath/",
+          "/404.html"
+        ],
+        "narrow": [
+          "/",
+          "/regions/",
+          "/regions/myeonmok-dong-green-hospital-funeral-wreath/",
+          "/regions/sangbong-dong-dongbu-mideurang-opening-wreath/",
+          "/regions/sinnae-dong-seoul-medical-center-funeral-wreath/",
+          "/404.html"
+        ]
+      },
+      "pendingVisualItems": [
+        "Real layout and overflow",
+        "Body and H1 readability",
+        "Image rendering and alt",
+        "Product cards and prices",
+        "Phone and online order CTA",
+        "Internal navigation",
+        "404 appearance"
+      ],
+      "bodyAndImageDigests": {
+        "articlesExactFileSha256": "633ffcd363afe9c04c180e86d2dd4307832badf14e6aa268326fa7c6b9f9d5c1",
+        "independentContentReviewSha256": "dcd4fce8a747ba4e3c66bc7a45ca67dec64c7e7ac3bccfd3d11ad1ea9b9f004a",
+        "imageReviewSha256": "e3fa23d7d53bb1effdf2790706ead3b58098c0cb28234c79c16d1a4177192199",
+        "imageDigests": [
+          {
+            "path": "/images/editorial/opening-wreath-illustration-v1.webp",
+            "sha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+            "bytes": 154376
+          },
+          {
+            "path": "/images/products/congrats-basic.jpg",
+            "sha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+            "bytes": 77336
+          },
+          {
+            "path": "/images/products/congrats-large.jpg",
+            "sha256": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+            "bytes": 83318
+          },
+          {
+            "path": "/images/products/congrats-premium.jpg",
+            "sha256": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+            "bytes": 77920
+          },
+          {
+            "path": "/images/products/congrats-xl.jpg",
+            "sha256": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+            "bytes": 85391
+          },
+          {
+            "path": "/images/products/funeral-basic.jpg",
+            "sha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+            "bytes": 75206
+          },
+          {
+            "path": "/images/products/funeral-large.jpg",
+            "sha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+            "bytes": 86279
+          },
+          {
+            "path": "/images/products/funeral-premium.jpg",
+            "sha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+            "bytes": 79304
+          },
+          {
+            "path": "/images/products/funeral-xl.jpg",
+            "sha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+            "bytes": 84178
+          }
+        ]
+      },
+      "visualObservation": {
+        "status": "not_performed",
+        "reason": "User deferred desktop and narrow visual QA to later batch.",
+        "actualVisualErrorObserved": false,
+        "actualCauseDetermined": false,
+        "lastObservedAt": "2026-10-11T06:12:39.358Z"
+      },
+      "independentLiveReviewSha256": "e09914578770f6108d276348d0b26ea20bf4b08456a60d46c8e81aa940a21f48"
     }
   ],
   "releasedKnownHosts": [
@@ -13210,7 +13875,8 @@
     "seoul-jung.fwith.kr",
     "seoul-yongsan.fwith.kr",
     "seoul-seongdong.fwith.kr",
-    "seoul-gwangjin.fwith.kr"
+    "seoul-gwangjin.fwith.kr",
+    "seoul-jungnang.fwith.kr"
   ],
   "nationalPlan": {
     "schemaVersion": 1,
@@ -13234,10 +13900,10 @@
     "path": "docs/direct-regional-release/national/fixed-plan.json",
     "independentReviewPath": "docs/direct-regional-release/national/independent-review.json",
     "progress": {
-      "releasedRegionCount": 36,
-      "remainingRegionCount": 194,
-      "lastReleasedOfficialCode": "11215",
-      "asOf": "2026-10-11T04:03:29.382Z",
+      "releasedRegionCount": 37,
+      "remainingRegionCount": 193,
+      "lastReleasedOfficialCode": "11260",
+      "asOf": "2026-10-11T06:12:39.358Z",
       "visualQaStillSeparate": true
     }
   }
