@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T01:36:10.551Z",
+  "updatedAt": "2026-10-11T04:01:31.706Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -35,14 +35,14 @@
     "city": "서울특별시 광진구",
     "status": "released_http_indexnow_verified_gsc_not_submitted",
     "owner": {
-      "scheduledRunAt": "2026-10-10T19:00:00Z",
-      "observedExecutionAt": "2026-10-10T19:04:28.316Z",
+      "scheduledRunAt": "2026-10-11T04:00:00Z",
+      "observedExecutionAt": "2026-10-11T04:01:31.706Z",
       "newRegionStartedAt": "2026-10-10T19:04:28.316Z",
       "serviceInvocationId": null,
-      "checkpointId": "direct-seoul-gwangjin-initial-20261010T190000Z",
-      "active": false,
-      "executionState": "stopped_after_verified_publication_search_incomplete",
-      "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T18:45:50.892Z",
+      "checkpointId": "direct-gwangjin-gsc-resume-20261011T040000Z",
+      "active": true,
+      "executionState": "resuming_gsc_submission",
+      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T01:37:21.860Z",
       "priorOwnerReadbackConfirmedAt": "2026-10-10T18:45:52.506Z",
       "actualWriteStopConfirmedAt": "2026-10-10T19:58:31.784488+00:00",
       "browserOperationsStopped": true
@@ -80,10 +80,11 @@
       }
     },
     "changeIntent": {
-      "action": "recover_verified_release_records_only_then_stop",
-      "target": "main:docs/direct-regional-release/checkpoint.json",
-      "idempotencyKey": "seoul-gwangjin:recover-records:296e47b384bfc36e0dfa6e7a4586d41220c93587:6101325704",
-      "gscSubmitAuthorizedInThisRecovery": false
+      "action": "submit_existing_verified_public_sitemap_to_gsc_then_readback",
+      "target": "sc-domain:fwith.kr https://seoul-gwangjin.fwith.kr/sitemap-index.xml",
+      "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
+      "idempotencyKey": "seoul-gwangjin:gsc:296e47b384bfc36e0dfa6e7a4586d41220c93587",
+      "noDeployOrIndexNowRepeat": true
     },
     "unfinishedStages": [
       "gsc",
@@ -6217,7 +6218,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Paused after record recovery. Gwangjin remains GSC-not-submitted, visual QA deferred and official artifact ZIP unverified. Do not redeploy or repeat IndexNow.",
+  "nextAction": "Resume Gwangjin GSC submission after fresh source, receipt and sitemap readback.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
