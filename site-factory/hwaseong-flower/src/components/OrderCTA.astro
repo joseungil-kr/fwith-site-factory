@@ -1,0 +1,28 @@
+---
+import business from '../data/business-truth.json';
+
+interface Props {
+  compact?: boolean;
+  heading?: string;
+}
+
+const { compact = false, heading = '전하고 싶은 마음을 들려주세요' } = Astro.props;
+---
+<section class:list={['order-cta', compact && 'order-cta-compact']} aria-label="주문 안내">
+  <div>
+    <span class="order-kicker">꽃으로 전하는 마음</span>
+    <h2>{heading}</h2>
+    <p>
+      전화주문은 {business.phoneOrderHours}, 온라인 주문은 {business.onlineOrderHours} 접수합니다.
+      {business.deliveryArea}이며 상품과 예산에 맞춰 상담하실 수 있습니다. 지역별 추가배송비를 포함한 금액과 시설의 수령 조건도 함께 안내받으세요.
+    </p>
+  </div>
+  <div class="order-actions">
+    <a class="btn btn-primary order-phone" href={business.phoneHref} aria-label={`${business.phone} 전화주문`}>
+      전화주문 {business.phone}
+    </a>
+    <a class="btn btn-ghost" href={business.onlineOrderUrl} rel="noopener">
+      온라인 주문
+    </a>
+  </div>
+</section>

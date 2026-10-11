@@ -1,0 +1,15 @@
+---
+import {getCollection} from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RegionDirectory from './RegionDirectory.astro';
+import OrderCTA from './OrderCTA.astro';
+import {siteConfig} from '../config/site';
+import {regionalPages,assertRegionalInput} from '../lib/regional-runtime.mjs';
+const articles=await getCollection('articles');assertRegionalInput(articles.map(a=>a.data));
+const items=regionalPages.map((p:any)=>({...p,cardSummary:articles.find(a=>a.data.pageKey===p.pageKey)?.data.cardSummary}));
+if(!items.length)throw new Error('Empty regional hub cannot render');
+---
+<BaseLayout title={`${siteConfig.region} 지역별 꽃배달 | ${siteConfig.brand}`} description="소중한 분께 전할 축하와 위로의 꽃을 지역별로 살펴보세요." robotsOverride={siteConfig.indexable && items.length<3 ? 'noindex,follow,max-image-preview:large' : undefined}>
+<section class="page-hero"><div class="container"><span class="eyebrow">지역별 안내</span><h1>{siteConfig.region} 지역별 꽃배달 안내</h1><p>개업의 설렘과 결혼의 기쁨, 조문의 위로까지. 꽃을 전할 곳에 맞는 이야기를 살펴보고 마음에 드는 선물을 골라 보세요.</p></div></section>
+<section class="section"><div class="container"><RegionDirectory pages={items}/><OrderCTA/></div></section>
+</BaseLayout>
