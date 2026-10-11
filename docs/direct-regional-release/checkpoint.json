@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T05:19:45.255214+00:00",
+  "updatedAt": "2026-10-11T05:51:48.252395+00:00",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-jungnang-direct-initial-20261011",
     "city": "서울특별시 중랑구",
-    "status": "plan_frozen_before_authoring",
+    "status": "reviewed_built_source_save_intent",
     "owner": {
       "scheduledRunAt": "2026-10-11T05:00:00Z",
       "observedExecutionAt": "2026-10-11T05:07:43.970Z",
@@ -78,8 +78,10 @@
       }
     },
     "changeIntent": {
-      "action": "author_exact_fixed_purchase_plan_and_prepare_runtime",
-      "idempotencyKey": "seoul-jungnang:fixed-plan:1f963a29a01a3bcfbdbd8f0f6f7949ccb153302adb22fd513164e3f1b1fafc7a"
+      "action": "save_exact_reviewed_jungnang_source_and_minimal_direct_control_then_formal_publish",
+      "idempotencyKey": "seoul-jungnang:source-upload:d984aafa91ad02c33c9eb08123173278c4954b05c4dbbff4107eb8c7ef7d3419",
+      "sourceBranchExpectedSha": "aa30430e2135ef2be8036d4215425ce4547fe772",
+      "reviewedUploadManifestSha256": "d984aafa91ad02c33c9eb08123173278c4954b05c4dbbff4107eb8c7ef7d3419"
     },
     "unfinishedStages": [
       "official_membership",
@@ -99,7 +101,12 @@
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
       "planReviewSha256": "f27cb9d937d001b3a75cec58ee359e8863e414c34e318d0d647c8ee7481799d3",
       "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
-      "imageReviewSha256": "e3fa23d7d53bb1effdf2790706ead3b58098c0cb28234c79c16d1a4177192199"
+      "imageReviewSha256": "e3fa23d7d53bb1effdf2790706ead3b58098c0cb28234c79c16d1a4177192199",
+      "contentStatus": "PASS",
+      "articlesSha256": "633ffcd363afe9c04c180e86d2dd4307832badf14e6aa268326fa7c6b9f9d5c1",
+      "independentReviewSha256": "dcd4fce8a747ba4e3c66bc7a45ca67dec64c7e7ac3bccfd3d11ad1ea9b9f004a",
+      "runtimeStatus": "PASS_EXACT_LOCAL_SOURCE_PREPUBLICATION",
+      "runtimeReviewSha256": "f2f21646f9f43ae1e95e5a8155d4dae32f0cf3742312893c61c67fc621530ef6"
     },
     "plan": {
       "state": "frozen_before_authoring_independent_plan_pass",
@@ -118,22 +125,40 @@
           "slug": "sinnae-dong-seoul-medical-center-funeral-wreath",
           "title": "서울의료원 장례식장 근조화환 주문",
           "primaryKeyword": "서울의료원 장례식장 근조화환 주문",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_not_published"
         },
         {
           "slug": "myeonmok-dong-green-hospital-funeral-wreath",
           "title": "녹색병원 장례식장 근조화환 주문",
           "primaryKeyword": "녹색병원 장례식장 근조화환 주문",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_not_published"
         },
         {
           "slug": "sangbong-dong-dongbu-mideurang-opening-wreath",
           "title": "동부시장 미드랑길 개업 축하화환 주문",
           "primaryKeyword": "동부시장 미드랑길 개업 축하화환 주문",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_not_published"
         }
-      ]
-    }
+      ],
+      "planFreezeRevision": "e668ea5fcae3fa7d3b27d6d9cf293c3750eb2d2c",
+      "approvedArticleCount": 3,
+      "deferredArticleCount": 0
+    },
+    "validation": {
+      "nodeVersion": "22.23.3",
+      "sourceTestsPassed": 68,
+      "publisherTestsPassed": 42,
+      "build": "PASS",
+      "static": "PASS",
+      "graph": "PASS",
+      "normalHtmlRoutes": 5,
+      "articleCount": 3,
+      "sitemapUrls": 5,
+      "localLoopback": "PASS",
+      "remoteFullReadback": "NOT_YET_SAVED",
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+    },
+    "lastSuccessfulStage": "independent_content_and_actual_runtime_build_review"
   },
   "history": [
     {
