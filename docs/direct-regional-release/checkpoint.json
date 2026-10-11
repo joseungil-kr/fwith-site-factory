@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T21:02:29.719Z",
+  "updatedAt": "2026-10-11T21:05:04.417Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -27843,7 +27843,7 @@
       }
     ],
     "six2102ControlIntent": {
-      "status": "INTENT",
+      "status": "SAVED_FULL_READBACK_VERIFIED",
       "idempotencyKey": "six-update-control-10bec64802af50a8",
       "expectedMain": "61e360778ace1a6de91f53a87ce4b0339843708f",
       "regions": [
@@ -27919,7 +27919,250 @@
       "independentReviewSha256": "ccf3c8dcfad0d6b5a82ff5a802a820bf2c4b2e9021b6a039d7a223036086a25f",
       "testsPassed": 240,
       "serviceState": "NOT_OBSERVED",
-      "scope": "Reuse existing exact verified account/Worker/hostname binding; no-override and collision guards retained; no credential, DNS ownership or permission changes."
+      "scope": "Reuse existing exact verified account/Worker/hostname binding; no-override and collision guards retained; no credential, DNS ownership or permission changes.",
+      "result": {
+        "commit": "8bf6e162d4584d1b3b47952db43c44d579d958c1",
+        "wholeTreeVerified": true,
+        "fullChangedFilesReadback": 12,
+        "actualDeployment": false
+      }
+    },
+    "twentyTwo2104ControlIntent": {
+      "status": "INTENT",
+      "idempotencyKey": "twentytwo-update-controls-8c386e3839e5a280",
+      "expectedMain": "8bf6e162d4584d1b3b47952db43c44d579d958c1",
+      "changes": [
+        {
+          "path": "scripts/direct-anseong/publish.py",
+          "oldBlob": "144e5b1b9ba758a89a5174109dab80d2eba71166",
+          "newBlob": "c5833867a621a35f69f9cf5bb1061413235eb203"
+        },
+        {
+          "path": "scripts/direct-anseong/test_publish.py",
+          "oldBlob": "3bc037a9a5aacc15e4e60ada230d27e4ecb8ca09",
+          "newBlob": "4a5d4b1922dde2a1b408e4411ab340d41b34281c"
+        },
+        {
+          "path": "scripts/direct-gapyeong/publish.py",
+          "oldBlob": "f84f561c1099ae4c5dd36036f0e9819009a28708",
+          "newBlob": "68f476a9996ecba05b875633693b67a4f6e8bfc2"
+        },
+        {
+          "path": "scripts/direct-gapyeong/test_publish.py",
+          "oldBlob": "defb452c49e59b912d3874441a6907892b13cf1b",
+          "newBlob": "bc57fe4f3a09acd4efe5d628a56f3282685c299d"
+        },
+        {
+          "path": "scripts/direct-gimpo/publish.py",
+          "oldBlob": "f400004a68e9ed9018f246096a4f8696c8d56c29",
+          "newBlob": "b3b6cb35368c7e6067753544e127e05eed136d2c"
+        },
+        {
+          "path": "scripts/direct-gimpo/test_publish.py",
+          "oldBlob": "dd16791c4082b28f47c3800e60b472a8023635e3",
+          "newBlob": "54e3bd40a786da13dc5d10814c015b490a5ac01b"
+        },
+        {
+          "path": "scripts/direct-gunpo/publish.py",
+          "oldBlob": "14a87114e062f7374a6202cc6b9217e11537c7f4",
+          "newBlob": "47c5be3960f640a4a9844505a2de0c7032b8c092"
+        },
+        {
+          "path": "scripts/direct-gunpo/test_publish.py",
+          "oldBlob": "2c7ac0bb6053cdfb2d599c25739dffe61c03826c",
+          "newBlob": "1d3379d9cbb96f5795bccbdf8461c1f3261ed5cc"
+        },
+        {
+          "path": "scripts/direct-guri/publish.py",
+          "oldBlob": "f043dcd6b913e9b7dfdabc9ecfddeb5099a9352a",
+          "newBlob": "1fd5d8bc06a4445a3f7950f3aae566a8293bd8ea"
+        },
+        {
+          "path": "scripts/direct-guri/test_publish.py",
+          "oldBlob": "fa1f3e915154584b5d542ce8fafcffcdb533a178",
+          "newBlob": "2a0eb0eb38bc4441c8767295f476e96c8f097b20"
+        },
+        {
+          "path": "scripts/direct-gwacheon/publish.py",
+          "oldBlob": "96c52b229c176b948d18e7d2a525f57f552eab13",
+          "newBlob": "697778d6743d6b72b766bcee6c879a38b33fa179"
+        },
+        {
+          "path": "scripts/direct-gwacheon/test_publish.py",
+          "oldBlob": "1bb4474de4b76ff2d1c2af18bbb3ac9f32d3c33e",
+          "newBlob": "2cd0147b77e238484a7b7a76ce59f6984e56b922"
+        },
+        {
+          "path": "scripts/direct-gwangju/publish.py",
+          "oldBlob": "1c357f2b67df182cf565c98de279e0b67bb9b126",
+          "newBlob": "968c1381d46eb5ab30467b34bb1f40b62987495d"
+        },
+        {
+          "path": "scripts/direct-gwangju/test_publish.py",
+          "oldBlob": "37a8a9fe55410060bafb2665ab8d5f2b6a0b006a",
+          "newBlob": "a4cafda761ce26bbdb7f7f03641b53b741cef399"
+        },
+        {
+          "path": "scripts/direct-hanam/publish.py",
+          "oldBlob": "72d4ab212bb8afc66c0dd7c98b9e4b65cb5b7c0d",
+          "newBlob": "97606cd8f6da5870a236b074d640351ac010d8cf"
+        },
+        {
+          "path": "scripts/direct-hanam/test_publish.py",
+          "oldBlob": "2ececcd02bbfb4fa75582df12cd1aabc476bfdd5",
+          "newBlob": "78d2d6271f0e1f8e145e0924f3bc96976ac0b321"
+        },
+        {
+          "path": "scripts/direct-icheon/publish.py",
+          "oldBlob": "b672f61faf52a98d3540f1a45c9edab46efe3a87",
+          "newBlob": "2adf6b1a49b3bd2d0cd19edeb363720dde7e0c9c"
+        },
+        {
+          "path": "scripts/direct-icheon/test_publish.py",
+          "oldBlob": "431ac9f4f7cc3ddc71f5133402537e018b10e151",
+          "newBlob": "00b2d4699cea46dcf8ecc1c3c3d416a9fdf88ec0"
+        },
+        {
+          "path": "scripts/direct-jongno/publish.py",
+          "oldBlob": "f7c8898ea689ee4ec336b89d8b0324fe6efe47dd",
+          "newBlob": "af3b089102e728fce63cca5c1ee0e5d8740a989f"
+        },
+        {
+          "path": "scripts/direct-jongno/test_publish.py",
+          "oldBlob": "6a4e8c6333344348f841544bcdf0032b5cfb4a13",
+          "newBlob": "492da42da2665fe99b134df58d1a2d4447ba0e32"
+        },
+        {
+          "path": "scripts/direct-osan/publish.py",
+          "oldBlob": "59381a1522a8319b04151ccfe6a7d04d9f76b1b0",
+          "newBlob": "9110f31b013ea3e65e0548eb8282cf05f4b2e85f"
+        },
+        {
+          "path": "scripts/direct-osan/test_publish.py",
+          "oldBlob": "5840abbbe6f2675f4953b92856e70c2ca3bf4004",
+          "newBlob": "5bc37ac3b3efcd24784173cab4c0520d42c1adb6"
+        },
+        {
+          "path": "scripts/direct-paju/publish.py",
+          "oldBlob": "f70461b34e4d755ccc6c8936e644c3fb1aa73691",
+          "newBlob": "ee725a32de8c4023db0ee34768447df26a38e682"
+        },
+        {
+          "path": "scripts/direct-paju/test_publish.py",
+          "oldBlob": "7975fb34735b5164c322e7ae782e0e62ec500b1f",
+          "newBlob": "59b26eb96db4c1f048fd1e4ce8f4d8db70e6512b"
+        },
+        {
+          "path": "scripts/direct-pocheon/publish.py",
+          "oldBlob": "21fe9eea5b8d5a79afd04e29398a47e18ce0f206",
+          "newBlob": "ffa3f3699bf2d78fe35b927522e6f3c5a8969c20"
+        },
+        {
+          "path": "scripts/direct-pocheon/test_publish.py",
+          "oldBlob": "a271674ba779da69bac6b43564cdbd479b77b47b",
+          "newBlob": "b960573da270341938271afb5264a021ec154cb9"
+        },
+        {
+          "path": "scripts/direct-seoul-dongdaemun/publish.py",
+          "oldBlob": "dd4e1580ebbfdc3b14be7761c77719e5f323dcf0",
+          "newBlob": "144b3d7b24fdf4db119a34495dfe20eb97179fbf"
+        },
+        {
+          "path": "scripts/direct-seoul-dongdaemun/test_publish.py",
+          "oldBlob": "bd40a4917b5f79241d31369a92a8ee30451ff5e0",
+          "newBlob": "d94aa00e46b7d2053871e6479a7350d7c05cc7c4"
+        },
+        {
+          "path": "scripts/direct-seoul-gwangjin/publish.py",
+          "oldBlob": "592a6e42c3f3fe7fdd7c909e944511cf5bc62ebd",
+          "newBlob": "ce175380cf8a3937c56fefdfc4c47aee3b24535b"
+        },
+        {
+          "path": "scripts/direct-seoul-gwangjin/test_publish.py",
+          "oldBlob": "210236e7d87b3e962eb6eef5afab147690964c9f",
+          "newBlob": "969fbee02206ceb4b00a54cce0cb2404f5635f97"
+        },
+        {
+          "path": "scripts/direct-seoul-jung/publish.py",
+          "oldBlob": "02271fbc0370d41c86b135949f701248c56a0e32",
+          "newBlob": "1700df0f72205da38a158ed10f4f4c01b36685cd"
+        },
+        {
+          "path": "scripts/direct-seoul-jung/test_publish.py",
+          "oldBlob": "d8449a55ad32b02c222cff8067cef1c9c2378571",
+          "newBlob": "2103d01ca2d2705e578b8a4f22dbc9f8fe0399ae"
+        },
+        {
+          "path": "scripts/direct-seoul-seongbuk/publish.py",
+          "oldBlob": "061f3fef4d3497ccd0e69a99012bf93e38288eed",
+          "newBlob": "fdbb3ca1b04ee602c752885353edae0cfd584363"
+        },
+        {
+          "path": "scripts/direct-seoul-seongbuk/test_publish.py",
+          "oldBlob": "9103cf4bfce298a1c095bef71908856b66f9dc40",
+          "newBlob": "7c89bddaf23523bfa30c18942371971a0ba939fb"
+        },
+        {
+          "path": "scripts/direct-seoul-seongdong/publish.py",
+          "oldBlob": "3eb18fd05b5b8292eeb1c8084ffac75dd7c5882a",
+          "newBlob": "c6d2f6a29fa8c294b0b98d7e27bdbeac9daa670b"
+        },
+        {
+          "path": "scripts/direct-seoul-seongdong/test_publish.py",
+          "oldBlob": "fa7b8f8a9d0b77802894e31da77a06da6eb0f058",
+          "newBlob": "d075e09875f52e0fcf89e0c21a2d869ff6ddb994"
+        },
+        {
+          "path": "scripts/direct-seoul-yongsan/publish.py",
+          "oldBlob": "4dc85ac2a6f755524a72c44014822b5d78aac189",
+          "newBlob": "61c8864aae315c16638845dd3a476a1429328da4"
+        },
+        {
+          "path": "scripts/direct-seoul-yongsan/test_publish.py",
+          "oldBlob": "384f52c603c3a8f97483ef2a7e9831774f5fdffa",
+          "newBlob": "430705ea187cf4b316940cfb1e59cf43fd2d9200"
+        },
+        {
+          "path": "scripts/direct-yangpyeong/publish.py",
+          "oldBlob": "e16f16c366765821c6d8484c7e847ba30381cca6",
+          "newBlob": "432f0e0dca3bec1e0bb0d9fb38d51e54c985f468"
+        },
+        {
+          "path": "scripts/direct-yangpyeong/test_publish.py",
+          "oldBlob": "ecd83ee708b47e165fa469110ab24c8db4618275",
+          "newBlob": "d4c55b7c13eec3b52afc66b129ea51fc9a5b5319"
+        },
+        {
+          "path": "scripts/direct-yeoju/publish.py",
+          "oldBlob": "08bf2f4ae814bb6a6b9ca47e1f2c419ff754b53b",
+          "newBlob": "c6ab641898288d1b94b0de57846410bab5b7112a"
+        },
+        {
+          "path": "scripts/direct-yeoju/test_publish.py",
+          "oldBlob": "6bd5c1193d71611258ad9d68167beec78558c7a8",
+          "newBlob": "a199113646aa09e9adae68e4ccfcf634673dcaba"
+        },
+        {
+          "path": "scripts/direct-yeoncheon/publish.py",
+          "oldBlob": "691b81e31aa974cf62ec22415d6489347508dff5",
+          "newBlob": "96673296f19f7acdb69239e956c24039ccbc01bd"
+        },
+        {
+          "path": "scripts/direct-yeoncheon/test_publish.py",
+          "oldBlob": "ff86a6483d30239dfed268428d8408d8435e17be",
+          "newBlob": "ba535562e82b51505371e7e630694172ed109f72"
+        },
+        {
+          "path": ".github/workflows/anyang-direct-publish.yml",
+          "oldBlob": "903bd61a48a9e71d2632ed9d52eaa9d0cd38966e",
+          "newBlob": "80af1adeae29d55c1041c3a99a6693369db51213"
+        }
+      ],
+      "reviewSha256": "4bc569dc78b7b1d05004c65a58af6adef394a3616c74cd853b7e0a26f1c9972d",
+      "tests": 850,
+      "additionalProviderCases": 374,
+      "actualProviderState": "NOT_OBSERVED",
+      "securityAndNoOverrideGuardsPreserved": true
     }
   },
   "independentPreparations": [
