@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T16:53:55.732Z",
+  "updatedAt": "2026-10-11T17:03:03.469Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -34,16 +34,17 @@
   "current": {
     "scopeKey": "seoul-nowon-direct-initial-20261011",
     "city": "서울특별시 노원구",
-    "status": "reviewed_source_saved_local_build_pass_dispatch_pending",
+    "status": "source_controls_saved_build_verified_dispatch_unavailable",
     "owner": {
       "checkpointId": "direct-seoul-nowon-copy-resume-20261011T1632Z",
       "serviceInvocationId": null,
       "scheduledRunAt": "2026-10-11T16:00:00Z",
-      "active": true,
-      "executionState": "prepared_source_and_controls_saved_dispatch_not_attempted",
+      "active": false,
+      "executionState": "actual_writes_stopped_source_and_controls_saved",
       "startedAt": "2026-10-11T16:32:52.520Z",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T13:34:59Z",
-      "mainWriteActive": false
+      "mainWriteActive": false,
+      "actualWriteStopConfirmedAt": "2026-10-11T17:03:03.469Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -264,6 +265,14 @@
         "controlCommit": "7fd328633df095795189f71d391d79178edf3736",
         "controlReadbackVerified": true
       }
+    },
+    "lastObservation": {
+      "scheduledRunAt": "2026-10-11T17:00:00Z",
+      "serviceInvocationId": null,
+      "sourceUnchanged": "69adc8e884ece6137a354be615c225a3b2f6fba6",
+      "dispatchPerformed": false,
+      "blockerSameAs": "regionalCopyImprovements.publicationIntent.blocker",
+      "noNewRegionClaimed": true
     }
   },
   "history": [
@@ -18973,6 +18982,35 @@
         ],
         "savedAt": "2026-10-11T16:24:08.893Z"
       }
-    ]
+    ],
+    "publicationIntent": {
+      "region": "gwangmyeong",
+      "action": "workflow_dispatch",
+      "workflow": ".github/workflows/gwangmyeong-direct-publish.yml",
+      "ref": "main",
+      "expected_revision": "e55ff0a918044356cf6deb6002fe4af57930cddc",
+      "indexnow_only": false,
+      "idempotencyKey": "gwangmyeong:copy-revision:e55ff0a918044356cf6deb6002fe4af57930cddc:initial-dispatch",
+      "state": "not_dispatched_cloud_execution_unavailable",
+      "writtenAt": "2026-10-11T17:00:13.842Z",
+      "sourceReadbackMatched": true,
+      "matchingActiveRuns": 0,
+      "matchingQueuedRuns": 0,
+      "lastExistingRun": 38139721106,
+      "lastExistingRunCreatedAt": "2026-10-11T12:33:34Z",
+      "authoritativeInputs": "Exact independently reviewed nine-article source; full source readback and local build/DOM checks retained.",
+      "visualQa": "DEFERRED_NOT_PASS",
+      "dispatchResult": null,
+      "publicationVerified": false,
+      "blocker": {
+        "observedAt": "2026-10-11T17:03:03.469Z",
+        "action": "new_workflow_dispatch",
+        "target": ".github/workflows/gwangmyeong-direct-publish.yml",
+        "reason": "Connected GitHub connector has no new dispatch action; cloud browser failed to create a tab and native Chromium terminated during navigation, failed to relaunch. No usable saved cloud coding environment or documented authenticated CLI dispatch route.",
+        "diagnosisSha256": "447a64652eefa54b1785561d5db4797b2abe36b2cc96bbb43533c16dd2d50ade",
+        "userApprovalMissing": false,
+        "actualDispatch": false
+      }
+    }
   }
 }
