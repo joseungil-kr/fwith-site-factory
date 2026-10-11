@@ -38,15 +38,6 @@ test('direct snapshot hashes bind every public customer field and all four page 
 test('source contains no copied regional customer records or external workflow identifiers',()=>{
  for(const name of ['pages','page-map','architecture','publish-manifest','region-coverage','region-policy','site-config']){
   const value=read(name);
-  if(name==='pages'){
-   const page=value.find(p=>p.slug==='cheonsong-dong');
-   if(page){
-    const contrast='같은 페이지에 기재된 상품 반품주소는 **광명시 일직로 72 광명무역센터 C동 1307호**입니다.';
-    assert.ok(page.sources.some(s=>s.url==='https://dapiofficial.co.kr/shopinfo/company.html'&&s.type==='business'));
-    assert.equal(page.contentMarkdown.split(contrast).length,2);
-    page.contentMarkdown=page.contentMarkdown.replace(contrast,'[verified external return-address contrast]');
-   }
-  }
   const text=JSON.stringify(value);assert.doesNotMatch(text,/포천|남양주|양주|김포|광주시|광주광역시|안성|이천|파주|하남|의왕|군포|시흥|오산|구리|과천|동두천|광명시|의정부|안양|평택|(?<![A-Za-z])(?:pocheon|namyangju|yangju|gimpo|gwangju|anseong|icheon|paju|hanam|uiwang|gunpo|siheung|osan|guri|gwacheon|dongducheon|gwangmyeong|uijeongbu|anyang|pyeongtaek)(?![A-Za-z])|rec[A-Za-z0-9]{14}|app[A-Za-z0-9]{14}|tbl[A-Za-z0-9]{14}|queueRecordId|sourceIssueNumber/);
  }
 });

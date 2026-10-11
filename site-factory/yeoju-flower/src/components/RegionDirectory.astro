@@ -15,7 +15,7 @@ const published=new Map<string,RegionEntry>(districts.flatMap(d=>d.items).flatMa
 <section class="category-hero">
   <span class="eyebrow">{site.brand} {site.region}</span>
   <h1>{site.region} 지역별 꽃배달 안내</h1>
-  <p>{site.region}의 법정동·읍·면별 주문 안내입니다. 행정구역 이름으로 찾을 때는 아래 관할 안내를 확인하세요. 배송 주소는 도로명주소와 건물명·층·호수까지 준비해 주세요.</p>
+  <p>그랜드볼룸에서 시작할 두 사람의 앞날, 한강문화관에서 작품을 선보이는 작가의 설렘을 꽃으로 축하해 보세요. {site.region}의 동·읍·면별 안내에서 상황에 맞는 축하화환과 조문의 근조화환을 고르실 수 있습니다.</p>
   <div class="actions"><a class="btn primary" href={site.phoneHref}>전화 상담·주문</a><a class="btn dark" href={site.orderUrl}>온라인 주문</a></div>
 </section>
 <nav class="actions" aria-label="지역 안내">{districts.map(d=><a class="btn light" href={`#${d.key}`}>{d.name}</a>)}</nav>
