@@ -1,0 +1,43 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import crypto from 'node:crypto';
+import {selectProducts} from '../src/lib/catalog.mjs';import {validateGraph,loadGraph} from '../scripts/qa_graph.mjs';
+const read=n=>JSON.parse(fs.readFileSync(new URL('../src/data/'+n+'.json',import.meta.url),'utf8'));
+const history=JSON.parse(fs.readFileSync(new URL('../docs/customer-copy-history-20261011.json',import.meta.url),'utf8'));
+const evidence=JSON.parse(fs.readFileSync(new URL('../docs/customer-copy-review-evidence-20261011.json',import.meta.url),'utf8'));
+const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
+const canonical=v=>JSON.stringify(v,(_,x)=>x&&typeof x==='object'&&!Array.isArray(x)?Object.fromEntries(Object.entries(x).sort(([a],[b])=>a<b?-1:a>b?1:0)):x);
+const copyFields=["title", "h1", "primaryKeyword", "description", "cardSummary", "firstAnswer", "contentMarkdown", "sections", "faq", "sources", "source"];
+const omitted=new Set(['approvalVerified','status','file','order','sourceMode','snapshotId','snapshotHash']);
+const expectedHistory="b90ab6454f67ec936f54356ba49aa86a0afb48e82c42ad0ab9c743123e112832",expectedEvidence="a189bfcf6282aad36425bc763ee75d6aaf0648d2c89530153662756e9cc514b5";
+test('exact original history and independent copy evidence are retained',()=>{
+ assert.equal(sha(fs.readFileSync(new URL('../docs/customer-copy-history-20261011.json',import.meta.url))),expectedHistory);
+ assert.equal(sha(fs.readFileSync(new URL('../docs/customer-copy-review-evidence-20261011.json',import.meta.url))),expectedEvidence);
+});
+for(const old of history.pages)test(old.url+' exact approved copy, new snapshot, protected original fields and four cards',()=>{
+ const p=read('pages').find(x=>x.pageKey===old.pageKey),a=evidence.approvedAuthor.find(x=>x.pageKey===old.pageKey);assert(p&&a);
+ for(const k of copyFields)assert.deepEqual(p[k],a[k],k);
+ const allowed=new Set([...copyFields,'snapshotId','snapshotHash']);for(const k of new Set([...Object.keys(old),...Object.keys(p)]))if(!allowed.has(k))assert.deepEqual(p[k],old[k],k);
+ const digest=sha(canonical(Object.fromEntries(Object.entries(p).filter(([k])=>!omitted.has(k)))));assert.equal(p.snapshotHash,digest);assert.equal(p.snapshotId,'direct-content-'+p.slug+'-'+digest.slice(0,16));
+ for(const n of ['page-map','architecture','publish-manifest']){const m=read(n).pages.find(x=>x.pageKey===p.pageKey);assert.equal(m.snapshotHash,digest);assert.equal(m.snapshotId,p.snapshotId);for(const k of copyFields)if(k in m)assert.deepEqual(m[k],p[k],k);}
+ assert.deepEqual(selectProducts(p,read('products'),p.productCardLimit).map(x=>x.key),old.productCardKeys);assert.equal(p.productCardLimit,old.productCardLimit);
+});
+test('original planned denominator and held routes are not reduced or published',()=>{
+ const m=read('publish-manifest'),d=m.directRelease,old=history.directRelease,pages=read('pages');assert.deepEqual(pages.map(x=>x.url),history.pages.map(x=>x.url));
+ for(const k of Object.keys(old))if(k!=='contentHashes')assert.deepEqual(d[k],old[k],k);
+ assert.equal(d.plannedOriginalCount,old.plannedOriginalCount);assert.equal(d.reviewedArticleCount,old.reviewedArticleCount);assert.equal(pages.filter(p=>p.pageType==='regional-service').length,d.reviewedArticleCount);assert.equal(pages.length,25);assert.equal(pages.filter(p=>p.pageType!=='regional-service').length,0);assert(d.reviewedArticleCount*10>=d.plannedOriginalCount*9);assert.deepEqual(m.additiveBatches??[],history.additiveBatches);
+ for(const url of d.deferredRoutes)assert(!pages.some(x=>x.url===url));assert.deepEqual(m.snapshotLedger,{});
+ const revision=m.copyRevisions.at(-1);assert.equal(revision.newArticleCount,0);assert.equal(revision.changedExistingArticleCount,pages.length);assert.equal(revision.articleAuthorSha256,evidence.approvedAuthorSha256);assert.equal(revision.independentArticleCopyReviewSha256,evidence.independentArticleReviewSha256);assert.equal(revision.independentCommonCopyReviewSha256,evidence.independentCommonReviewSha256);
+});
+test('all eight common files equal independently reviewed exact bytes',()=>{assert.equal(evidence.commonFiles.length,8);for(const f of evidence.commonFiles)assert.equal(sha(fs.readFileSync(new URL('../'+f.path,import.meta.url))),f.sha256,f.path);});
+test('all product facts except reviewed descriptions remain exact',()=>{for(const p of read('products')){const old=history.products.find(x=>x.key===p.key);for(const k of Object.keys(old))if(k!=='desc')assert.deepEqual(p[k],old[k],p.key+':'+k);}});
+test('reviewed full graph passes unchanged validator',()=>assert.equal(validateGraph(loadGraph()).pages,history.pages.length));
+test('snapshot mismatch and missing route cannot pass graph parity',()=>{const d=loadGraph();d.pages[0].snapshotId='tampered';assert.throws(()=>validateGraph(d),/Registry parity/);const e=loadGraph();e.pages.pop();assert.throws(()=>validateGraph(e),/Registry count mismatch|Invalid related key|Stale hub/);});
+
+test('current checkpoint separates original regional25of25 without additions from current copy',()=>{
+ const c=read('direct-checkpoint'),q=c.currentCopyReview;assert.deepEqual(c.historicalInitialRelease.record,history.directCheckpoint);for(const[k,v]of Object.entries(history.directCheckpoint))assert.deepEqual(c[k],v,k);assert.equal(q.articleCount,25);assert.equal(q.originalRegionalPlan,25);assert.equal(q.qualifiedRegionalArticles,25);assert.equal(q.existingAdditionalArticles,0);assert.deepEqual(q.heldRoutes,[]);assert.deepEqual(q.contentHashes,read('publish-manifest').directRelease.contentHashes);assert.deepEqual(q.currentCommonFiles,evidence.commonFiles);assert.equal(q.reviewEvidenceSha256,expectedEvidence);assert.equal(q.followupReviewSha256,evidence.independentFollowupReviewSha256);assert.equal(q.articleInputSha256,evidence.approvedAuthorSha256);assert.equal(q.priorArticleInputSha256,evidence.priorApprovedAuthorSha256);assert.equal(q.articleReviewSha256,evidence.independentArticleReviewSha256);assert.equal(q.commonReviewSha256,evidence.independentCommonReviewSha256);assert.equal(q.baselineSource,history.baselineSourceRevision);assert.equal(q.scopeKey,read('publish-manifest').copyRevisions.at(-1).scopeKey);assert.equal(q.state,'independently_reviewed_customer_copy_publication_pending');assert.deepEqual(q.contentHashes,read('pages').map(p=>({pageKey:p.pageKey,publicSourceSha256:p.snapshotHash,bodySha256:sha(p.contentMarkdown)})));assert.equal(q.publicSourceRevision,null);for(const k of ['dispatch','publicVerification','searchSubmission'])assert.equal(q[k],'not_performed_for_this_copy_revision');assert.equal(q.visualQa,'DEFERRED_NOT_PASS');
+});
+test('scene revision changes only independently reviewed body/first-answer and Danwol metadata fields from the prior integrated copy',()=>{
+ let bodies=0,firsts=0,descriptions=0,summaries=0;for(const p of evidence.approvedAuthor){const prior=evidence.previousIntegratedAuthor.find(x=>x.pageKey===p.pageKey),expected=structuredClone(prior);for(const d of evidence.currentRevisionFieldDiff.filter(x=>x.slug===p.slug)){assert(['contentMarkdown','firstAnswer','description','cardSummary'].includes(d.field));assert.equal(expected[d.field],d.before);expected[d.field]=d.after;if(d.field==='contentMarkdown')bodies++;else if(d.field==='firstAnswer')firsts++;else if(d.field==='description')descriptions++;else summaries++;}assert.deepEqual(p,expected);}assert.equal(bodies,25);assert.equal(firsts,2);assert.equal(descriptions,1);assert.equal(summaries,1);
+});
+test('all eight visually inspected source photos remain exact',()=>{assert.equal(evidence.pinnedProductImages.length,8);for(const f of evidence.pinnedProductImages)assert.equal(sha(fs.readFileSync(new URL('../'+f.path,import.meta.url))),f.sha256);});
+test('all existing hero prices disclose basic price without changing price expressions',()=>{for(const rel of ['src/pages/index.astro','src/pages/[category]/[slug].astro','src/pages/[category]/index.astro']){const t=fs.readFileSync(new URL('../'+rel,import.meta.url),'utf8');assert(t.includes('기본가 {'));}});
+test('identical approved ribbon sentence is once outside card map and basic price label stays in Truth once',()=>{const t=fs.readFileSync(new URL('../src/components/ProductCards.astro',import.meta.url),'utf8');assert.equal(t.split('사진 속 리본은 예시입니다. 전하고 싶은 문구는 주문할 때 함께 정해 주세요').length,2);assert(t.includes("products.some((p:any)=>p.family==='congrats')"));assert(!t.includes("{p.family==='congrats'"));assert(!t.includes('표시가격은 상품 기본가격입니다.'));assert.equal(read('business-truth').deliveryNotice.split('표시가격은 상품 기본가격입니다.').length,2);});
