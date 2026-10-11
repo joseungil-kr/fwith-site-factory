@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T19:07:11.039Z",
+  "updatedAt": "2026-10-11T19:10:14.861Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -19940,7 +19940,7 @@
       }
     ],
     "goyangProviderProbeCodeIntent": {
-      "status": "INTENT_RECORDED",
+      "status": "CODE_SAVED_READBACK_VERIFIED_NOT_DISPATCHED",
       "checkpointId": "goyang-probe-code-20261011T1906Z",
       "owner": "single root writer",
       "invocationId": null,
@@ -19956,7 +19956,245 @@
       "independentReviewDigest": "7c1085392a6933644b4c78d9c7f819c502358e65fc05ceaacec2770203bfc954",
       "rootReviewDigest": "fe94db42c828add789c12376d689614ea4f29e238d2c5b8dcc886ef63aea2d15",
       "tests": "51+51 offline tests passed, zero skips; actual immutable reviewed artifact fixture",
-      "dispatch": "NOT_INVOKED"
+      "dispatch": "NOT_INVOKED",
+      "codeCommit": "e1cf5fbaecb2527930c08cf33111c3111a7ef546"
+    },
+    "three1910SourceSaveIntent": {
+      "checkpointId": "copy-three-source-20261011T1910Z",
+      "invocationId": null,
+      "status": "intent_recorded",
+      "owner": "single root writer",
+      "regions": [
+        {
+          "region": "dongducheon",
+          "branch": "site-factory-dongducheon-direct",
+          "root": "site-factory/dongducheon-flower",
+          "expectedHead": "ad83ea44ab1e8f87b871c9ea9ab2f2e29c7ce7a9",
+          "articles": 12,
+          "changeFiles": [
+            {
+              "path": "site-factory/dongducheon-flower/docs/customer-copy-history-20261011.json",
+              "blobSha": "15fbb78f6cbb2f3690851c4dc80ad52673c10da2"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/docs/customer-copy-review-evidence-20261011.json",
+              "blobSha": "f3b6065b145e0c981d8472c8475b98865d37dd5c"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/components/InlineOrderBanner.astro",
+              "blobSha": "8d85fe8705f3db79aa4311b520ba9bde0f44b63d"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/components/ProductCards.astro",
+              "blobSha": "235f87b44066a6a91f1bc34e211dd946bd515d68"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/components/RegionDirectory.astro",
+              "blobSha": "858f78bfb7e9abc17655377559de008ec5ec8b52"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/data/architecture.json",
+              "blobSha": "7e4626b78174269fcafc03dca431c1d6e9ad681e"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/data/direct-checkpoint.json",
+              "blobSha": "7cdc92151ca5dddbb2a8da3e543c2cb6080ba676"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/data/page-map.json",
+              "blobSha": "2f41f4bffa8f8c76c9162d2d5574f0f87b690942"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/data/pages.json",
+              "blobSha": "ba8197cccd569a4c445889ec082e9dfc20ec298b"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/data/products.json",
+              "blobSha": "6c80785c744738b946b3175f0525354fd0fdee00"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/data/publish-manifest.json",
+              "blobSha": "92c8e617fd1bc722ba1579aac346efe646686b0e"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/lib/hubs.mjs",
+              "blobSha": "480f7c598711dfdaedb986ec8422bbc930a69b47"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/pages/[category]/[slug].astro",
+              "blobSha": "2ebf45581b29974b72f94fe1b122dcb85954121e"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/pages/[category]/index.astro",
+              "blobSha": "c26f1321e53c1b515c1fd59272c24bceca2ef5d9"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/pages/index.astro",
+              "blobSha": "4c959be8cbfdbe441efc8765bbde688ec3c51ea7"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/tests/additive-20261011.test.mjs",
+              "blobSha": "85dbd152e421641564f88f6046e7c2365d64fe34"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/tests/customer-copy-20261011.test.mjs",
+              "blobSha": "70c7e44f62dc65527d0fce59170b1f3ce153b079"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/tests/purchase-banner-contract.test.mjs",
+              "blobSha": "a5414e153fa50dc81d9f53df4c724347fa0aee06"
+            }
+          ],
+          "independentReviewDigest": "34a666bbaf3fb3a35452aa01bdd2d23c7376c20cc0ca96e9c7142e80472bd96d"
+        },
+        {
+          "region": "hanam",
+          "branch": "site-factory-hanam-direct",
+          "root": "site-factory/hanam-flower",
+          "expectedHead": "0ac786e59570382c6dbd7872e54cca9cd9b5f778",
+          "articles": 23,
+          "changeFiles": [
+            {
+              "path": "site-factory/hanam-flower/src/components/InlineOrderBanner.astro",
+              "blobSha": "eeb3efbc14d02295a2f48f43dc49dc8fae34e808"
+            },
+            {
+              "path": "site-factory/hanam-flower/src/data/direct-checkpoint.json",
+              "blobSha": "f63ebc673be332a727c011efd615ea6da681d285"
+            },
+            {
+              "path": "site-factory/hanam-flower/src/components/RegionDirectory.astro",
+              "blobSha": "c8f563a308dde8c146516ce638984ae50f6b7c5d"
+            },
+            {
+              "path": "site-factory/hanam-flower/src/components/ProductCards.astro",
+              "blobSha": "235f87b44066a6a91f1bc34e211dd946bd515d68"
+            },
+            {
+              "path": "site-factory/hanam-flower/src/data/architecture.json",
+              "blobSha": "57f176c197e2bf833777ad5a8472f2586973b2cd"
+            },
+            {
+              "path": "site-factory/hanam-flower/src/data/page-map.json",
+              "blobSha": "56fa4be2f69c0d056020d903cf2c7547c28dcd79"
+            },
+            {
+              "path": "site-factory/hanam-flower/src/data/products.json",
+              "blobSha": "d0a99d6ffb1788f35c31451fa255c3b51364278f"
+            },
+            {
+              "path": "site-factory/hanam-flower/src/data/pages.json",
+              "blobSha": "84548ee0cb6d937a68784216a27db8f235179639"
+            },
+            {
+              "path": "site-factory/hanam-flower/src/data/publish-manifest.json",
+              "blobSha": "abea415f3bd9204d9b9d2392d84cabcf7700e0d2"
+            },
+            {
+              "path": "site-factory/hanam-flower/src/pages/index.astro",
+              "blobSha": "9edfdb985d74c56a72cf836efe102870b3e6a440"
+            },
+            {
+              "path": "site-factory/hanam-flower/src/pages/[category]/index.astro",
+              "blobSha": "85e62c9ca7bf9ca7a1e7a0fb8c94fc1c3580518f"
+            },
+            {
+              "path": "site-factory/hanam-flower/src/pages/[category]/[slug].astro",
+              "blobSha": "6422898f96e3fadcdce854af7dee70ef42ddc45f"
+            },
+            {
+              "path": "site-factory/hanam-flower/src/lib/sources.mjs",
+              "blobSha": "c77dd74e784b51c79146300d223c9c0ba124d63f"
+            },
+            {
+              "path": "site-factory/hanam-flower/tests/purchase-banner-contract.test.mjs",
+              "blobSha": "0bf05b022ade8e38e77c766674c4402a858e6c79"
+            }
+          ],
+          "independentReviewDigest": "e3ba9dfa5f412516b00aab55d41cc0af7a4b9fd69f72b06d34cebb046f0b36bb"
+        },
+        {
+          "region": "siheung",
+          "branch": "site-factory-siheung-direct",
+          "root": "site-factory/siheung-flower",
+          "expectedHead": "25608a70c4abfe992a7a0eb4fd8fc1365402a683",
+          "articles": 31,
+          "changeFiles": [
+            {
+              "path": "site-factory/siheung-flower/docs/customer-copy-history-20261011.json",
+              "blobSha": "397c7902bd1ff2cc60dd669d3946158964fa84e8"
+            },
+            {
+              "path": "site-factory/siheung-flower/src/components/InlineOrderBanner.astro",
+              "blobSha": "eeb3efbc14d02295a2f48f43dc49dc8fae34e808"
+            },
+            {
+              "path": "site-factory/siheung-flower/src/components/ProductCards.astro",
+              "blobSha": "235f87b44066a6a91f1bc34e211dd946bd515d68"
+            },
+            {
+              "path": "site-factory/siheung-flower/src/components/RegionDirectory.astro",
+              "blobSha": "e8bef64d86d19f40745303aa8870fb61f1324f45"
+            },
+            {
+              "path": "site-factory/siheung-flower/src/data/architecture.json",
+              "blobSha": "5f8c282697d7c270ed38a0cd8fc0926ed00a280f"
+            },
+            {
+              "path": "site-factory/siheung-flower/src/data/business-truth.json",
+              "blobSha": "ea3d02ff537381ac7434bd89cf6542c564d7c716"
+            },
+            {
+              "path": "site-factory/siheung-flower/src/data/customer-copy-review-20261011.json",
+              "blobSha": "56005695b11923fa947ea82e2ee4f02573a4809a"
+            },
+            {
+              "path": "site-factory/siheung-flower/src/data/page-map.json",
+              "blobSha": "f333963c15f4a098a8fcf3163b0a81efee26d88f"
+            },
+            {
+              "path": "site-factory/siheung-flower/src/data/pages.json",
+              "blobSha": "54aceff5d6d11eb7524fe67b0b5746754480c1dd"
+            },
+            {
+              "path": "site-factory/siheung-flower/src/data/products.json",
+              "blobSha": "4668834c075810587e01c51b98d66ca4b73e856f"
+            },
+            {
+              "path": "site-factory/siheung-flower/src/data/publish-manifest.json",
+              "blobSha": "33649ef38f2ff805d0e8f6f2b3e3c73beb4274e7"
+            },
+            {
+              "path": "site-factory/siheung-flower/src/lib/sources.mjs",
+              "blobSha": "c77dd74e784b51c79146300d223c9c0ba124d63f"
+            },
+            {
+              "path": "site-factory/siheung-flower/src/pages/[category]/[slug].astro",
+              "blobSha": "6422898f96e3fadcdce854af7dee70ef42ddc45f"
+            },
+            {
+              "path": "site-factory/siheung-flower/src/pages/[category]/index.astro",
+              "blobSha": "7057168774a407b8541ec8a1433a096e9e85b7e7"
+            },
+            {
+              "path": "site-factory/siheung-flower/src/pages/index.astro",
+              "blobSha": "25b3cbd9c26870cf97f214299d1e26d23a538382"
+            },
+            {
+              "path": "site-factory/siheung-flower/tests/customer-copy-20261011.test.mjs",
+              "blobSha": "80b56e868e383a14d4b2d829fb4e1fbfeb5181a9"
+            },
+            {
+              "path": "site-factory/siheung-flower/tests/purchase-banner-contract.test.mjs",
+              "blobSha": "c39ed554ef373d2d2fe1df79a7b51e5842ece068"
+            }
+          ],
+          "independentReviewDigest": "43b7a318e5bebea2523c187f37065db546c2dc7abf10c93fa347b37be895d7ef"
+        }
+      ],
+      "triggerReview": "Exact branch workflow trees reviewed; only unrelated exact-branch push triggers; no matching push/workflow_run",
+      "publication": "not invoked",
+      "visualQa": "DEFERRED_NOT_PASS"
     }
   }
 }
