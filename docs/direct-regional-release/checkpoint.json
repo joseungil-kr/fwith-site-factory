@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T10:00:52.408Z",
+  "updatedAt": "2026-10-11T10:05:26.297Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-dongdaemun-direct-initial-20261011",
     "city": "서울특별시 동대문구",
-    "status": "approved_exact_source_dispatch_intent",
+    "status": "released_http_independent_review_in_progress",
     "owner": {
       "scheduledRunAt": "2026-10-11T10:00:00Z",
       "observedExecutionAt": "2026-10-11T04:06:56.054Z",
@@ -41,7 +41,7 @@
       "serviceInvocationId": null,
       "checkpointId": "direct-seoul-dongdaemun-resume-20261011T100000Z",
       "active": true,
-      "executionState": "approved_exact_source_dispatch",
+      "executionState": "public_http_review_and_search_submission",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T09:59:16.118Z",
       "priorOwnerReadbackConfirmedAt": "2026-10-11T09:59:25.117Z",
       "browserOperationsStoppedAt": "2026-10-11T04:38:31.532Z",
@@ -73,7 +73,7 @@
       "openMatchingPullRequests": 0,
       "inProgressWorkflows": 0,
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "REQUIRED_BEFORE_PUBLICATION",
+      "providerOwnershipCollisionCheck": "PASS_OFFICIAL_ACCOUNT_WORKER_DOMAIN_GET_NO_OVERRIDE",
       "publicHostObservation": {
         "absenceConfirmed": false,
         "observation": "web tool inaccessible, not proof of absent hostname"
@@ -85,8 +85,10 @@
       }
     },
     "changeIntent": {
-      "action": "official_workflow_dispatch_exact_source_once_after_approval",
-      "idempotencyKey": "seoul-dongdaemun:publish:c7950231a67ff2494f0c37298029343456089b39"
+      "action": "after_independent_http_pass_submit_published_sitemap_to_gsc_then_list_readback",
+      "target": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://seoul-dongdaemun.fwith.kr/sitemap-index.xml",
+      "idempotencyKey": "seoul-dongdaemun:gsc:c7950231a67ff2494f0c37298029343456089b39"
     },
     "unfinishedStages": [
       "formal_publish",
@@ -195,16 +197,34 @@
       "nonSensitiveReference": "Explicit approval of pending Dongdaemun deployment; exact reviewed source and designated Worker/hostname unchanged."
     },
     "publication": {
-      "status": "not_dispatched_approval_gate",
-      "runId": null,
+      "status": "published_ci_verified",
+      "runId": 38130542218,
       "url": "https://seoul-dongdaemun.fwith.kr",
-      "publicReleaseVerified": false,
-      "httpQa": "NOT_RUN",
-      "indexNow": "NOT_SUBMITTED",
+      "publicReleaseVerified": true,
+      "httpQa": "CI_PASS_INDEPENDENT_PENDING",
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "11e84c2cb7e3896046ecd6b64faa84bcfd49c4387a041b43c0070015fdaa306a",
+        "httpStatus": 200,
+        "origin": "https://seoul-dongdaemun.fwith.kr",
+        "recordedAt": "2026-10-11T10:03:56.276300+00:00",
+        "revision": "c7950231a67ff2494f0c37298029343456089b39",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38130542218",
+        "searchIndexing": "not_verified",
+        "siteKey": "seoul-dongdaemun-flower-direct",
+        "state": "received",
+        "urlCount": 7,
+        "urlSetSha256": "63dc136e75efd1e601596bc57d59ace1c0899f2e08f9c3eb1ecac198004e7bca"
+      },
       "gsc": "NOT_SUBMITTED",
-      "dispatchAcceptedCount": 0,
+      "dispatchAcceptedCount": 1,
       "latestRunsReadbackAt": "2026-10-11T04:38:31.532Z",
-      "latestRepositoryRunObserved": 38079835650
+      "latestRepositoryRunObserved": 38079835650,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38130542218",
+      "runConclusion": "success",
+      "publishedAt": "2026-10-11T10:03:43.938200Z",
+      "hostnameBinding": "GET_verified"
     }
   },
   "history": [
@@ -7201,7 +7221,7 @@
     {
       "scopeKey": "seoul-dongdaemun-direct-initial-20261011",
       "city": "서울특별시 동대문구",
-      "status": "approved_exact_source_dispatch_intent",
+      "status": "released_http_independent_review_in_progress",
       "owner": {
         "scheduledRunAt": "2026-10-11T10:00:00Z",
         "observedExecutionAt": "2026-10-11T04:06:56.054Z",
@@ -7209,7 +7229,7 @@
         "serviceInvocationId": null,
         "checkpointId": "direct-seoul-dongdaemun-resume-20261011T100000Z",
         "active": true,
-        "executionState": "approved_exact_source_dispatch",
+        "executionState": "public_http_review_and_search_submission",
         "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T09:59:16.118Z",
         "priorOwnerReadbackConfirmedAt": "2026-10-11T09:59:25.117Z",
         "browserOperationsStoppedAt": "2026-10-11T04:38:31.532Z",
@@ -7241,7 +7261,7 @@
         "openMatchingPullRequests": 0,
         "inProgressWorkflows": 0,
         "mainMatchingPaths": false,
-        "providerOwnershipCollisionCheck": "REQUIRED_BEFORE_PUBLICATION",
+        "providerOwnershipCollisionCheck": "PASS_OFFICIAL_ACCOUNT_WORKER_DOMAIN_GET_NO_OVERRIDE",
         "publicHostObservation": {
           "absenceConfirmed": false,
           "observation": "web tool inaccessible, not proof of absent hostname"
@@ -7253,8 +7273,10 @@
         }
       },
       "changeIntent": {
-        "action": "official_workflow_dispatch_exact_source_once_after_approval",
-        "idempotencyKey": "seoul-dongdaemun:publish:c7950231a67ff2494f0c37298029343456089b39"
+        "action": "after_independent_http_pass_submit_published_sitemap_to_gsc_then_list_readback",
+        "target": "sc-domain:fwith.kr",
+        "sitemapUrl": "https://seoul-dongdaemun.fwith.kr/sitemap-index.xml",
+        "idempotencyKey": "seoul-dongdaemun:gsc:c7950231a67ff2494f0c37298029343456089b39"
       },
       "unfinishedStages": [
         "formal_publish",
@@ -7363,16 +7385,34 @@
         "nonSensitiveReference": "Explicit approval of pending Dongdaemun deployment; exact reviewed source and designated Worker/hostname unchanged."
       },
       "publication": {
-        "status": "not_dispatched_approval_gate",
-        "runId": null,
+        "status": "published_ci_verified",
+        "runId": 38130542218,
         "url": "https://seoul-dongdaemun.fwith.kr",
-        "publicReleaseVerified": false,
-        "httpQa": "NOT_RUN",
-        "indexNow": "NOT_SUBMITTED",
+        "publicReleaseVerified": true,
+        "httpQa": "CI_PASS_INDEPENDENT_PENDING",
+        "indexNow": {
+          "attempt": 1,
+          "endpoint": "https://searchadvisor.naver.com/indexnow",
+          "fingerprint": "11e84c2cb7e3896046ecd6b64faa84bcfd49c4387a041b43c0070015fdaa306a",
+          "httpStatus": 200,
+          "origin": "https://seoul-dongdaemun.fwith.kr",
+          "recordedAt": "2026-10-11T10:03:56.276300+00:00",
+          "revision": "c7950231a67ff2494f0c37298029343456089b39",
+          "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38130542218",
+          "searchIndexing": "not_verified",
+          "siteKey": "seoul-dongdaemun-flower-direct",
+          "state": "received",
+          "urlCount": 7,
+          "urlSetSha256": "63dc136e75efd1e601596bc57d59ace1c0899f2e08f9c3eb1ecac198004e7bca"
+        },
         "gsc": "NOT_SUBMITTED",
-        "dispatchAcceptedCount": 0,
+        "dispatchAcceptedCount": 1,
         "latestRunsReadbackAt": "2026-10-11T04:38:31.532Z",
-        "latestRepositoryRunObserved": 38079835650
+        "latestRepositoryRunObserved": 38079835650,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38130542218",
+        "runConclusion": "success",
+        "publishedAt": "2026-10-11T10:03:43.938200Z",
+        "hostnameBinding": "GET_verified"
       }
     }
   ],
