@@ -15,7 +15,7 @@ const published=new Map<string,RegionEntry>(districts.flatMap(d=>d.items).flatMa
 <section class="category-hero">
   <span class="eyebrow">{site.brand} {site.region}</span>
   <h1>{site.region} 지역별 꽃배달 안내</h1>
-  <p>{site.region}의 법정동별 주문 안내입니다. 행정동 이름으로 찾을 때는 아래 관할 안내를 확인하세요. 배송 주소는 도로명주소와 건물명·층·호수까지 준비해 주세요.</p>
+  <p>새 가게의 출발을 함께 기뻐하고, 슬픈 날에는 위로를 전해 보세요. {site.region}에서 꽃을 보낼 지역을 선택하시면 상품과 주문 상담을 안내합니다.</p>
   <div class="actions"><a class="btn primary" href={site.phoneHref}>전화 상담·주문</a><a class="btn dark" href={site.orderUrl}>온라인 주문</a></div>
 </section>
 <nav class="actions" aria-label="지역 안내">{districts.map(d=><a class="btn light" href={`#${d.key}`}>{d.name}</a>)}</nav>
