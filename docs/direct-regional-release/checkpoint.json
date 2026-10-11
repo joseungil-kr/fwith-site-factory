@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T16:32:52.520Z",
+  "updatedAt": "2026-10-11T16:46:32.386Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -34,13 +34,13 @@
   "current": {
     "scopeKey": "seoul-nowon-direct-initial-20261011",
     "city": "서울특별시 노원구",
-    "status": "reviewed_revision6_source_save_pending_final_build",
+    "status": "reviewed_source_saved_local_build_pass_dispatch_pending",
     "owner": {
       "checkpointId": "direct-seoul-nowon-copy-resume-20261011T1632Z",
       "serviceInvocationId": null,
       "scheduledRunAt": "2026-10-11T16:00:00Z",
       "active": true,
-      "executionState": "reviewed_source_save_intent_no_dispatch",
+      "executionState": "source_saved_control_save_in_progress_no_dispatch",
       "startedAt": "2026-10-11T16:32:52.520Z",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T13:34:59Z",
       "mainWriteActive": true
@@ -53,7 +53,7 @@
       "hostname": "seoul-nowon.fwith.kr",
       "externalCreationVerified": false,
       "sourceBranchCreatedVerified": true,
-      "sourceBranchReadback": "e48c9db89451a5b150190b97d5237ec1649f5e65"
+      "sourceBranchReadback": "69adc8e884ece6137a354be615c225a3b2f6fba6"
     },
     "selection": {
       "officialCode": "11350",
@@ -101,7 +101,8 @@
           "unitKey": "노원구/법정동/하계동",
           "facilityKey": "nowon-eulji-hospital-funeral",
           "originalPurchaseIntentKey": "funeral-condolence-wreath",
-          "status": "planned_not_authored"
+          "status": "copy_reviewed_source_saved",
+          "sourceCommit": "69adc8e884ece6137a354be615c225a3b2f6fba6"
         },
         {
           "slug": "gongneung-dong-dokkaebi-market-opening-wreath",
@@ -110,7 +111,8 @@
           "unitKey": "노원구/법정동/공릉동",
           "facilityKey": "gongneung-dokkaebi-market",
           "originalPurchaseIntentKey": "shop-opening-congrats-wreath",
-          "status": "planned_not_authored"
+          "status": "copy_reviewed_source_saved",
+          "sourceCommit": "69adc8e884ece6137a354be615c225a3b2f6fba6"
         },
         {
           "slug": "gongneung-dong-seoul-techno-park-office-move-wreath",
@@ -119,7 +121,8 @@
           "unitKey": "노원구/법정동/공릉동",
           "facilityKey": "seoul-techno-park",
           "originalPurchaseIntentKey": "office-relocation-congrats-wreath",
-          "status": "planned_not_authored"
+          "status": "copy_reviewed_source_saved",
+          "sourceCommit": "69adc8e884ece6137a354be615c225a3b2f6fba6"
         },
         {
           "slug": "junggye-dong-nowon-arts-performance-wreath",
@@ -128,7 +131,8 @@
           "unitKey": "노원구/법정동/중계동",
           "facilityKey": "nowon-culture-arts-center",
           "originalPurchaseIntentKey": "performance-congrats-wreath-permission-first",
-          "status": "planned_not_authored"
+          "status": "copy_reviewed_source_saved",
+          "sourceCommit": "69adc8e884ece6137a354be615c225a3b2f6fba6"
         }
       ],
       "runtimeProjectionStatus": "pending_exact_derivation_review_no_change_to_purchase_plan"
@@ -136,31 +140,30 @@
     "review": {
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
       "planReviewSha256": "27f4ac99c0eb2aed08077dedbbc2b3d063e2086c28047dc1ac87c9f774700592",
-      "contentStatus": "NOT_AUTHORED",
-      "screenQa": "DEFERRED_NOT_PASS"
+      "contentStatus": "PASS_EXACT_REVISION6",
+      "screenQa": "DEFERRED_NOT_PASS",
+      "contentReviewSha256": "1370c1c6bb7027880bc59eb9e555dbdbc0c33bbae462c52e1b0e001436996c26"
     },
     "unfinishedStages": [
-      "authoring",
-      "independent_content_review",
-      "runtime_preparation_review",
-      "exact_source_save_build",
+      "workflow_dispatch",
+      "provider_collision_check",
       "publication",
       "public_http_qa",
       "IndexNow_receipt",
       "GSC_submit_readback",
       "deferred_visual_qa"
     ],
-    "lastSuccessfulStage": "official_research_and_independent_purchase_plan_review",
-    "sourceBranchHead": "e48c9db89451a5b150190b97d5237ec1649f5e65",
+    "lastSuccessfulStage": "exact_reviewed_source_saved_and_local_build_verified",
+    "sourceBranchHead": "69adc8e884ece6137a354be615c225a3b2f6fba6",
     "preparedSource": {
-      "remoteSourceUploaded": false,
+      "remoteSourceUploaded": true,
       "plannedN": 4,
       "reviewedArticles": 4,
       "held": 0,
       "reviewedFileCount": 73,
-      "bodySha256": "ea4395b70d24a06281b20a6691351a483db8c3ff7367af312e57e6eb9914961b",
-      "contentReviewSha256": "4db24049ad924b09480615adde8f4c80b2e0775536e7ffd2f65b375d087c2d01",
-      "sourceReviewSha256": "970777566de695506cc7c9e711f310f9d9a45a06389be3b69019db8efba602be",
+      "bodySha256": "e027aae03b709b8bbe08fe12f7c3a5cbe577b57aa4114252a428196b1bb44ef1",
+      "contentReviewSha256": "1370c1c6bb7027880bc59eb9e555dbdbc0c33bbae462c52e1b0e001436996c26",
+      "sourceReviewSha256": "3bfa99f61c03ea1f9090035699f6e7f83109498cb756d3f20edc458f24cbe0c4",
       "releaseVerified": false,
       "externalPendingActionsAtStop": 0,
       "revision6": {
@@ -176,9 +179,32 @@
         "sourceManifestSha256": "64bb44c1b968d9374ceb84c61d047dceaf8fecf084a4f614a6a8c0687cc57cb3",
         "sourceReviewSha256": "3bfa99f61c03ea1f9090035699f6e7f83109498cb756d3f20edc458f24cbe0c4",
         "node22IndependentTests": 98,
-        "finalBuildVerified": false,
-        "remoteSourceUploaded": false,
-        "publicVerified": false
+        "finalBuildVerified": true,
+        "remoteSourceUploaded": true,
+        "publicVerified": false,
+        "sourceCommit": "69adc8e884ece6137a354be615c225a3b2f6fba6",
+        "remoteFilesVerified": 70,
+        "technicalHandoffSha256": "f24ca2be6a9e586238a7a7f2efc213c5a1f35b5aa9cd01d0c47b7e7d5e2a681a",
+        "verificationResultSha256": "8d8653ffad18f908d99732963a3dfd3f5f51ca4efc622b8af96f256c210b7d66",
+        "localBuild": {
+          "nodeMajor": 22,
+          "sourceTests": 98,
+          "publisherTests": 42,
+          "preparationTests": 78,
+          "normalHtml": 6,
+          "errorHtml": 1,
+          "articles": 4,
+          "productCards": 16,
+          "sourceCards": 21,
+          "images": 8,
+          "sourceRevisionPlaceholder": true,
+          "hostedVerification": false
+        }
+      },
+      "previousRevision": {
+        "bodySha256": "ea4395b70d24a06281b20a6691351a483db8c3ff7367af312e57e6eb9914961b",
+        "contentReviewSha256": "4db24049ad924b09480615adde8f4c80b2e0775536e7ffd2f65b375d087c2d01",
+        "sourceReviewSha256": "970777566de695506cc7c9e711f310f9d9a45a06389be3b69019db8efba602be"
       }
     },
     "ownerHistory": [
@@ -210,7 +236,32 @@
       "queuedRuns": 0,
       "matchingPushTriggers": 0,
       "actualDispatch": false,
-      "providerMutation": false
+      "providerMutation": false,
+      "result": {
+        "sourceCommit": "69adc8e884ece6137a354be615c225a3b2f6fba6",
+        "fullReadbackFiles": 70,
+        "controlFiles": [
+          {
+            "path": ".github/workflows/seoul-nowon-direct-publish.yml",
+            "sha": "80d88c1c24a334159733ec33b76aad11b54f0b39",
+            "sha256": "030d6e2ce811a3529701320b3af6f12460a7f16b6d2036fb160afc215bad53f5",
+            "fullTextMatched": true
+          },
+          {
+            "path": "scripts/direct-seoul-nowon/publish.py",
+            "sha": "bed0f15ca625f8c6de4a5fede0b02c250b86f20d",
+            "sha256": "e1e9cd7b2011d0571e3fde47e33b25482a06f2d60802262de8de8693727c2367",
+            "fullTextMatched": true
+          },
+          {
+            "path": "scripts/direct-seoul-nowon/test_publish.py",
+            "sha": "685c392aef1c7e5f6a167798452503fe8b030e81",
+            "sha256": "041a0fc6acc52551d78e173f7756372b2bd4d377fba2c9fdb33f471dcfafde17",
+            "fullTextMatched": true
+          }
+        ],
+        "actualDispatch": false
+      }
     }
   },
   "history": [
