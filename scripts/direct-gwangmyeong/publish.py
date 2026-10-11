@@ -30,11 +30,11 @@ RECEIPT_ISSUE = 266
 SLUGS = ['gwangmyeong-dong', 'cheolsan-dong', 'haan-dong', 'soha-dong', 'iljik-dong', 'noonsa-dong', 'gahak-dong', 'okgil-dong']
 DEFERRED_SLUGS = set()
 REGION_ROUTES = {'/regions/' + slug + '/' for slug in SLUGS if slug not in DEFERRED_SLUGS}
-ADDED_ROUTES = set()
-ARTICLE_ROUTES = REGION_ROUTES
-THIN_HUB_ROUTES = set()
+ADDED_ROUTES = {'/event/gwangmyeong-lapoete-wedding-wreath/'}
+ARTICLE_ROUTES = REGION_ROUTES | ADDED_ROUTES
+THIN_HUB_ROUTES = {'/event/'}
 SITEMAP_ROUTES = {'/', '/regions/'} | ARTICLE_ROUTES
-ROUTES = SITEMAP_ROUTES
+ROUTES = SITEMAP_ROUTES | THIN_HUB_ROUTES
 
 
 def expected_robots(route):
@@ -251,7 +251,7 @@ def inspect_provider(account, transport, stage):
     exists = WORKER in names
     require(not bound or exists, 'binding_without_worker')
     if stage == 'preflight':
-        require(not matches and not exists, 'initial_target_must_be_absent')
+        require(bound or not exists, 'unbound_existing_worker_requires_review')
     else:
         require(exists, 'deployed_worker_not_observed')
     if stage == 'readback':
@@ -450,4 +450,5 @@ def strip_one_cf_beacon(body,expected_sha):
 
 if __name__ == '__main__':
     raise SystemExit(main())
+
 

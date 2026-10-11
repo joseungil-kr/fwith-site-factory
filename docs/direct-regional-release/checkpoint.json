@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T12:30:07.118Z",
+  "updatedAt": "2026-10-11T12:31:57.095Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -16011,7 +16011,7 @@
       "originalHeld": 0,
       "additivePlannedN": 1,
       "qualityPassed": 1,
-      "status": "reviewed_source_and_control_save_intent",
+      "status": "exact_source_saved_control_dispatch_intent",
       "sourceManifestSha256": "4e5ebb3ba7183ab694b8217d1b2c7e73b1f4efbc7e88d37d218586a3034ab3ff",
       "controlManifestSha256": "a66455959e5ec08a89a3af13971ac04fefccb2580501a5e10fb466a348706a25",
       "intent": {
@@ -16028,7 +16028,64 @@
       "resultingArticles": 9,
       "resultingNormalHtml": 12,
       "resultingSitemapUrls": 11,
-      "visualQa": "deferred_not_pass"
+      "visualQa": "deferred_not_pass",
+      "sourceRevision": "97d8174867b3f7889d7c1a9f1e352fa7570e08e6",
+      "sourceFullChangedBlobReadback": [
+        {
+          "path": "site-factory/gwangmyeong-flower/src/data/architecture.json",
+          "sha": "142238115832914ddd8e1d97179f261132fa7c65",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/gwangmyeong-flower/src/data/publish-manifest.json",
+          "sha": "b6d69a962f1b4985f1d6e638cb49d3d223496d1e",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/gwangmyeong-flower/src/data/page-map.json",
+          "sha": "6200059b313db74b7ef812af0b87881095d5ae89",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/gwangmyeong-flower/src/data/pages.json",
+          "sha": "c31192809c8c67cce809e8c319ec5ca2cd5520b2",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/gwangmyeong-flower/src/lib/hubs.mjs",
+          "sha": "d10a08d43a5be90aedbc285e98802c12eaae6e3b",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/gwangmyeong-flower/tests/direct-source.test.mjs",
+          "sha": "49c782ed8512006474682832f6bb18034efbaaf5",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/gwangmyeong-flower/tests/additive-20261011.test.mjs",
+          "sha": "3f2cda9619e14f0aff9ede367a6be1b21e27415d",
+          "fullTextMatches": true
+        }
+      ],
+      "controlFullChangedBlobReadback": [
+        {
+          "path": "scripts/direct-gwangmyeong/publish.py",
+          "sha": "366b5f15ec37127a8bcf00b9ad0599202864b261",
+          "fullTextMatches": true
+        },
+        {
+          "path": "scripts/direct-gwangmyeong/test_publish.py",
+          "sha": "d8e60a0c174f06e2482750737fe940463381113d",
+          "fullTextMatches": true
+        }
+      ],
+      "dispatchIntent": {
+        "workflow": ".github/workflows/gwangmyeong-direct-publish.yml",
+        "ref": "main",
+        "expected_revision": "97d8174867b3f7889d7c1a9f1e352fa7570e08e6",
+        "indexnow_only": false,
+        "idempotencyKey": "gwangmyeong:additions:publish:97d8174867b3f7889d7c1a9f1e352fa7570e08e6"
+      }
     },
     "completed": [
       {

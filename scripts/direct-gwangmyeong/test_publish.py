@@ -115,20 +115,22 @@ class PublishTests(unittest.TestCase):
         self.assertEqual(pub.HOSTNAME, 'gwangmyeong.fwith.kr')
         self.assertEqual(pub.WORKER, 'gwangmyeong-flower-guide')
         self.assertEqual(pub.SLUGS, ['gwangmyeong-dong', 'cheolsan-dong', 'haan-dong', 'soha-dong', 'iljik-dong', 'noonsa-dong', 'gahak-dong', 'okgil-dong'])
-        self.assertEqual(pub.ROUTES, {'/', '/regions/'} | {'/regions/' + s + '/' for s in pub.SLUGS})
+        self.assertEqual(pub.ROUTES, {'/', '/regions/', '/event/', '/event/gwangmyeong-lapoete-wedding-wreath/'} | {'/regions/' + s + '/' for s in pub.SLUGS})
         self.assertEqual(pub.indexnow_site.__code__.co_consts.count('gwangmyeong-flower-direct'), 1)
 
     def test_fixed_route_set(self):
         self.assertEqual(len(pub.SLUGS), 8)
         self.assertEqual(pub.DEFERRED_SLUGS, set())
         self.assertEqual(pub.DEFERRED, [])
-        self.assertEqual(len(pub.ARTICLE_ROUTES), 8)
-        self.assertEqual(len(pub.ROUTES), 10)
-        self.assertEqual(len(pub.SITEMAP_ROUTES), 10)
-        self.assertEqual(pub.THIN_HUB_ROUTES, set())
+        self.assertEqual(len(pub.ARTICLE_ROUTES), 9)
+        self.assertEqual(len(pub.ROUTES), 12)
+        self.assertEqual(len(pub.SITEMAP_ROUTES), 11)
+        self.assertEqual(pub.THIN_HUB_ROUTES, {'/event/'})
         self.assertEqual(pub.ROUTES - pub.SITEMAP_ROUTES, pub.THIN_HUB_ROUTES)
         self.assertTrue(pub.REGION_ROUTES <= pub.SITEMAP_ROUTES)
         self.assertTrue(pub.ADDED_ROUTES <= pub.SITEMAP_ROUTES)
+        self.assertEqual(pub.ADDED_ROUTES, {'/event/gwangmyeong-lapoete-wedding-wreath/'})
+        self.assertEqual(len(pub.REGION_ROUTES),8)
         self.assertFalse(set(pub.DEFERRED) & pub.ROUTES)
 
     def test_explicit_thin_hub_robots_only(self):
@@ -138,8 +140,10 @@ class PublishTests(unittest.TestCase):
 
     def test_bound_update_attach_is_get_only(self):
         p = Provider([pub.WORKER], [binding()])
-        with patch.object(pub, 'provider_transport', return_value=(ACCOUNT, p)):
+        native, _ = pub.helpers()
+        with patch.object(pub, 'provider_transport', return_value=(ACCOUNT, p)), patch.object(native, 'attach') as attach:
             result = pub.provider('attach')
+            attach.assert_not_called()
         self.assertEqual(result['state'], 'binding_verified')
         self.assertFalse(result['mutationsPerformed'])
         self.assertTrue(all(method == 'GET' and body is None for method, path, body in p.calls))
@@ -155,10 +159,10 @@ class PublishTests(unittest.TestCase):
         self.assertEqual(r['state'], 'target_absent_verified')
         self.assertTrue(all(c[0] == 'GET' and c[2] is None for c in p.calls))
 
-    def test_existing_exact_binding_blocks_initial_publish_but_readback_is_allowed(self):
+    def test_existing_exact_binding_allows_get_only_update_and_readback(self):
         p = Provider([pub.WORKER], [binding()])
-        with self.assertRaisesRegex(ValueError, 'initial_target_must_be_absent'):
-            pub.inspect_provider(ACCOUNT, p, 'preflight')
+        self.assertEqual(pub.inspect_provider(ACCOUNT, p, 'preflight')['state'], 'binding_verified')
+        self.assertTrue(all(method == 'GET' and body is None for method, path, body in p.calls))
         self.assertEqual(pub.inspect_provider(ACCOUNT, p, 'readback')['state'], 'binding_verified')
 
     def test_hostname_other_worker_collision(self):
@@ -170,8 +174,26 @@ class PublishTests(unittest.TestCase):
             pub.inspect_provider(ACCOUNT, Provider([pub.WORKER], [binding(host='other.fwith.kr')]), 'preflight')
 
     def test_unbound_existing_worker_blocked(self):
-        with self.assertRaisesRegex(ValueError, 'initial_target_must_be_absent'):
+        with self.assertRaisesRegex(ValueError, 'unbound_existing_worker_requires_review'):
             pub.inspect_provider(ACCOUNT, Provider([pub.WORKER]), 'preflight')
+
+    def test_provider_http_403_and_uncertain_success_fail_closed(self):
+        from urllib.error import HTTPError
+        from unittest.mock import MagicMock
+        with patch.dict(os.environ, {'CLOUDFLARE_ACCOUNT_ID': ACCOUNT, 'CLOUDFLARE_API_TOKEN': 'fixture-token-not-real'}):
+            opener = MagicMock()
+            with patch.object(pub, 'build_opener', return_value=opener):
+                account, transport = pub.provider_transport()
+                opener.open.side_effect = HTTPError('https://api.cloudflare.com/', 403, 'Forbidden', {}, None)
+                with self.assertRaises(HTTPError):
+                    pub.inspect_provider(account, transport, 'preflight')
+                opener.open.side_effect = None
+                response = opener.open.return_value.__enter__.return_value
+                for status, data in [(200, {'success': False, 'errors': []}), (403, {'success': True, 'errors': []}), (200, {'success': True, 'errors': [{'code': 10000}]})]:
+                    response.status = status
+                    response.read.return_value = json.dumps(data).encode()
+                    with self.assertRaisesRegex(ValueError, 'provider_response_unverified'):
+                        pub.inspect_provider(account, transport, 'preflight')
 
     def test_wrong_account_blocked(self):
         with self.assertRaisesRegex(ValueError, 'account_identity_mismatch'):
@@ -275,16 +297,17 @@ class ArtifactTests(unittest.TestCase):
 
     def test_exact_fixed_artifact_and_http_counts(self):
         result = pub.artifact()
-        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (8, 10, 10))
+        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (9, 11, 12))
         contract = json.loads(Path('http-contract.json').read_text())
-        self.assertTrue(all(p['robots'] == ['follow', 'index'] for p in contract['pages']))
+        self.assertTrue(all(set(p['robots']) == pub.expected_robots(p['path']) for p in contract['pages']))
+        self.assertEqual(next(p['robots'] for p in contract['pages'] if p['path']=='/event/'), ['follow','noindex'])
         def fixture_get(path, status=200):
             headers = Message(); headers['Content-Type'] = 'text/html'
             file = '404.html' if status == 404 else (path.lstrip('/') + 'index.html' if path.endswith('/') else path.lstrip('/'))
             return (self.root / file).read_bytes(), headers
         with patch.object(pub, 'get', side_effect=fixture_get):
             result = pub.http_once(contract)
-        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (8, 10, 10))
+        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (9, 11, 12))
 
     def test_missing_article_is_blocked(self):
         (self.root / 'regions/gwangmyeong-dong/index.html').unlink(); self.seal()
@@ -309,7 +332,7 @@ class ArtifactTests(unittest.TestCase):
             return 200, file.read_text(), {}
         with patch.object(engine, 'request', side_effect=transport), patch.object(engine, 'Journal', side_effect=AssertionError('probe must not journal')):
             result = pub.indexnow_probe()
-        self.assertEqual(result['sitemapUrls'], 10); self.assertFalse(result['submissionAttempted'])
+        self.assertEqual(result['sitemapUrls'], 11); self.assertFalse(result['submissionAttempted'])
         self.assertTrue(all(method == 'GET' and payload is None for method, url, payload in calls))
 
     def test_unreviewed_customer_link_is_blocked(self):
@@ -330,17 +353,23 @@ class ArtifactTests(unittest.TestCase):
         self.assertIn(('/.direct-release-missing-' + 'a' * 40 + '/', 404), calls)
         self.assertNotIn(('/regions/jail-dong/', 200), calls)
 
+    def test_indexed_thin_hub_is_blocked(self):
+        file=self.root/'event/index.html'
+        file.write_text(file.read_text().replace('follow,noindex','follow,index')); self.seal()
+        with self.assertRaisesRegex(ValueError,'robots_meta_mismatch'): pub.artifact()
+
     def test_unreviewed_hub_is_blocked(self):
-        file = self.root / 'event/index.html'
+        file = self.root / 'funeral/index.html'
         file.parent.mkdir(parents=True); file.write_text('Unreviewed hub'); self.seal()
         with self.assertRaisesRegex(ValueError, 'exact_reviewed_routes_mismatch'): pub.artifact()
 
     def test_extra_hub_in_sitemap_is_blocked(self):
         file = self.root / 'sitemap-0.xml'
-        file.write_text(file.read_text().replace('</urlset>', '<url><loc>' + pub.ORIGIN + '/event/</loc></url></urlset>')); self.seal()
+        file.write_text(file.read_text().replace('</urlset>', '<url><loc>' + pub.ORIGIN + '/funeral/</loc></url></urlset>')); self.seal()
         with self.assertRaisesRegex(ValueError, 'sitemap_exact_reviewed_urls_mismatch'): pub.artifact()
 
 
 if __name__ == '__main__':
     unittest.main()
+
 
