@@ -2,8 +2,8 @@
 /** @type {Record<string, {intro:string, decision:string[], families:string[], heading:string, cta:string}>} */
 export const hubGuides = {
   funeral: {
-    intro: '빈소에 조의를 전할 근조화환을 고른 뒤 장례식장·빈소·상주명과 보내는 분 표기를 준비하세요.',
-    decision: ['기본·고급·특대 중 예산에 맞는 크기 선택', '병원 본관 주소와 장례식장·빈소를 구분', '위로 문구와 개인·회사·단체 발신자 표기 확인'],
+    intro: '고인을 추모하고 유가족께 전할 위로의 마음을 근조화환에 담아 보세요. 사진과 가격으로 준비하신 예산에 맞춰 고르실 수 있습니다.',
+    decision: ['근조화환 사진과 가격으로 예산에 맞는 상품 선택', '부고의 빈소와 발인 일정에 맞춰 주문상담', '정중한 조의 문구와 보내는 분의 이름 준비'],
     families: ['funeral'], heading: '조의를 전하는 근조화환', cta: '근조화환 상품 확인'
   },
   business: {
