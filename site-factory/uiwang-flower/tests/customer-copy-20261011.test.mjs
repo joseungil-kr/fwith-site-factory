@@ -40,3 +40,55 @@ test('initial evidence stays historical and revised snapshots cannot reuse old c
  assert.equal(proof.externalWrites,0);
  assert.equal(proof.releaseId,'uiwang-customer-copy-20261011');
 });
+
+// Exact independently reviewed bytes; independent data pins and pending-state invariants.
+const evidencePins={
+  "docs/customer-copy-history-20261011.json": "8fb76cbc88da4b5c49a122e08e02995e45201cd6b490187bcb54d8b323c412f6",
+  "src/data/customer-copy-review-20261011.json": "fd74fd2e189a2b26403d9b3ded73b5c350643a5c87cc6771e4eb0a1508eb094b",
+  "src/data/direct-checkpoint.json": "d118061f0730fffac6c9832115ecf2b0dc1f5e78e715d1af9816b4acfb1af715"
+};
+const finalCommonPins={
+  "src/components/InlineOrderBanner.astro": "99484d4dd1d755a54fedcd2a2d1c27b8983cd5d3391e64190d4635e751c866ee",
+  "src/components/InlineText.astro": "ac748bd0e67c41dab43634bbb63a606d2f2124d1f2c089b1266a52795c3ceb0a",
+  "src/components/MarkdownContent.astro": "664e29b01720f12ac6b479b9fe722907c192f1df44338ba3df9a764ba7e3ac77",
+  "src/components/ProductCards.astro": "c5748db96cebcb8ee26b19e551a5dcdbd3a5157f502607dd4fa1dc5031422107",
+  "src/components/RegionDirectory.astro": "ce32ec98d3b19b69b1adf97e2d732d0a0de9b0055773532fe5302af4905cfffb",
+  "src/data/business-truth.json": "2284855a674c3a63930f751f4fbea376cd0b776c169633dcff2b9502096874a6",
+  "src/data/products.json": "9f9470505da88ec2aab9ca86290014024e79c5730a7d4e82ce9478a6164b9e6d",
+  "src/layouts/BaseLayout.astro": "cb0eadcc8d98bb3a61256d4efba40fb5c16370e5d0ba6189ed63531f9a437fa1",
+  "src/lib/sources.mjs": "0bea1d95eed1c8544baf757baabdd4eaf2827788250575b626c9a0879efd1d9f",
+  "src/pages/404.astro": "f4497cf673dd7cf0e2d045ec7c8253fb56f20b366689efea473e36c080adae9e",
+  "src/pages/[category]/[slug].astro": "1d348bc64a8e2dcb77b8c5520823cd9a70956abf82d710a6ac0ffd52733599c9",
+  "src/pages/[category]/index.astro": "ed373458aad28a9f6a188d2642dd31c0eda20a2bdcad24daaf735b5ec5f06b6b",
+  "src/pages/index.astro": "f70f904d287b86ccb9876f435ef73bc3ea7369d61a3474b9644975cfa494f059"
+};
+const allowedCopyCheckpoint={
+  "releaseId": "uiwang-customer-copy-20261011",
+  "baselineSource": "559669d44ed6a4dc3d2c5a2fef760ca5f53f9412",
+  "originalPlanN": 11,
+  "existingArticles": 11,
+  "newArticles": 0,
+  "heldRoutes": [],
+  "initialHistory": "docs/customer-copy-history-20261011.json",
+  "copyReview": "src/data/customer-copy-review-20261011.json",
+  "state": "local-integrated-source-pending-independent-code-review"
+};
+const bytes=p=>fs.readFileSync(new URL('../'+p,import.meta.url));
+const validatePinned=(values,pins)=>{for(const [p,expected] of Object.entries(pins))assert.equal(hash(values[p]),expected,p);};
+const validateCheckpoint=x=>assert.deepEqual(x,allowedCopyCheckpoint,'copy checkpoint must retain exact pending state and allowed fields');
+test('proof, original history and initial checkpoint are pinned to independently reviewed bytes',()=>{
+ validatePinned(Object.fromEntries(Object.keys(evidencePins).map(p=>[p,bytes(p)])),evidencePins);
+});
+test('all final customer common surfaces remain bound to reviewed bytes',()=>{
+ validatePinned(Object.fromEntries(Object.keys(finalCommonPins).map(p=>[p,bytes(p)])),finalCommonPins);
+});
+test('local copy state cannot become false hosted or visual completion',()=>{
+ validateCheckpoint(read('src/data/publish-manifest.json').customerCopyRevision);
+});
+test('negative evidence, common copy and false completion fixtures fail closed',()=>{
+ const e=Object.fromEntries(Object.keys(evidencePins).map(p=>[p,bytes(p)]));
+ for(const path of Object.keys(evidencePins)){const changed={...e,[path]:Buffer.concat([e[path],Buffer.from(' ')] )};assert.throws(()=>validatePinned(changed,evidencePins));}
+ const c=Object.fromEntries(Object.keys(finalCommonPins).map(p=>[p,bytes(p)]));
+ for(const path of Object.keys(finalCommonPins)){const changed={...c,[path]:Buffer.concat([c[path],Buffer.from('<!-- changed -->')])};assert.throws(()=>validatePinned(changed,finalCommonPins));}
+ for(const fields of [{state:'published',publicComplete:true},{visualQa:'PASS'},{indexnow:'received'},{integrationReview:'PASS'}])assert.throws(()=>validateCheckpoint({...allowedCopyCheckpoint,...fields}));
+});
