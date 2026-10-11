@@ -1,0 +1,200 @@
+{
+  "checked_at_utc": "2026-10-11T04:08:40Z",
+  "scope": "서울특별시 동대문구의 법정동별 화환 구매의도 콘텐츠를 위한 공식 시설 근거. 기사 본문 아님.",
+  "recommendation": {
+    "primary_facility_ids": ["hoegi_khmc_funeral", "hwigyeong_bellaluce", "jeonnong_l65", "jegi_kyungdong", "sinseol_pungmul"],
+    "conditional_sixth": "dapsimni_film_art",
+    "one_primary_per_legal_dong": true,
+    "conditional_sixth_reason": "답십리 시설의 장소·층·행사 용도는 공식 확인되지만 화환 구매의도는 장례식장·예식장보다 약함. 행사 관계자 선물 안내가 실제 콘텐츠 목적과 맞을 때만 선택.",
+    "future_same_dong_ids": ["hwigyeong_samyook_funeral", "jeonnong_uos_jajakmaru"]
+  },
+  "global_guardrails": [
+    "시설 존재, 주소, 층과 홀을 확인한 것이 외부 화환 접수나 설치 허용을 의미하지 않는다.",
+    "배송 시간·무료주차·반입 동선·설치 위치·공식 제휴·거래 경험·즉시 배송을 추정하지 않는다.",
+    "L65 외에는 화환 반입 정책을 공식 확인하지 못했다. L65 정책도 공식 PDF의 검색 인덱스 텍스트이며 직접 PDF 열기와 화면 확인은 실패했다.",
+    "구매자가 확인할 정보는 편집상 제안이며 시설이 명시한 접수 절차로 표현하지 않는다.",
+    "실시간 부고에서 고인·상주 이름을 수집하거나 기사에 인용하지 않는다.",
+    "행정동과 법정동을 혼동하지 않는다. 부모 작업자가 확인한 현행 행정동 신설동을 용신동으로 되돌리지 않는다."
+  ],
+  "facilities": [
+    {
+      "id": "hoegi_khmc_funeral",
+      "official_name": "경희의료원 장례식장",
+      "legal_dong": "회기동",
+      "road_address": "서울특별시 동대문구 경희대로 23",
+      "parcel_address": null,
+      "primary": true,
+      "purchase_context": "근조화환 주문 시 병원 지점과 빈소 호실을 구별하는 맥락",
+      "differentiating_facts": [
+        "같은 공식 사이트에 동대문구 경희의료원과 강동구 강동경희대학교병원 장례식장이 함께 안내된다.",
+        "의료원 빈소 안내의 1층은 101·102호, 2층은 201·202·203호로 구분된다.",
+        "경희의료원 운영사무실과 화원은 2층으로 표시되어 있다. 이것은 외부 화환의 인수 위치를 뜻하지 않는다."
+      ],
+      "recommended_order_checks_inference": ["경희의료원인지 강동경희대학교병원인지", "빈소 번호", "부고에 기재된 수취인과 발인 일정"],
+      "sources": [
+        {"url": "https://funeral.khuhs.or.kr/10/1010.do", "publisher": "경희대학교의료원 장례식장", "supports": "경희의료원 공식명·도로명주소, 운영사무실과 화원 2층, 두 장례식장 주소 구별", "access": "opened official HTML"},
+        {"url": "https://funeral.khuhs.or.kr/10/1030.do", "publisher": "경희대학교의료원 장례식장", "supports": "1층 101·102호, 2층 201·202·203호", "access": "opened official HTML"},
+        {"url": "https://www.ddm.go.kr/www/selectBbsNttView.do?bbsNo=209&integrDeptCode=&key=975&nttNo=181652&pageIndex=3&searchCnd=all&searchCtgry=&searchKrwd=", "publisher": "동대문구", "supports": "경희대로 23의 법정동 회기동", "access": "official search result text"}
+      ],
+      "avoid": ["강동 장례식장 빈소 11·12·21호 등의 정보를 경희의료원으로 전용", "2층 화원을 외부 화환 접수처라고 단정"]
+    },
+    {
+      "id": "hwigyeong_bellaluce",
+      "official_name": "벨라루체웨딩홀 서울점",
+      "legal_dong": "휘경동",
+      "road_address": "서울특별시 동대문구 망우로 61",
+      "parcel_address": "서울특별시 동대문구 휘경동 267-9",
+      "primary": true,
+      "purchase_context": "축하화환 주문 시 현재 예식장명과 홀·층을 확인하는 맥락",
+      "differentiating_facts": [
+        "현재 공식 사이트는 망우로 61의 시설을 벨라루체웨딩홀 서울점으로 표기한다.",
+        "2층 벨라홀, 3층 루체홀, 7층 플로체홀이 각각 안내된다.",
+        "공식 사이트는 90분 예식 간격을 안내한다. 이를 화환 배송·반입 가능 시간으로 해석하면 안 된다."
+      ],
+      "recommended_order_checks_inference": ["서울점이라는 지점명", "2층·3층·7층 중 정확한 홀", "예식 시간", "받는 사람과 리본 문구"],
+      "sources": [
+        {"url": "https://www.bellaluceseoul.co.kr/", "publisher": "벨라루체웨딩홀 서울점", "supports": "현재 공식명, 도로명·지번주소, 2F 벨라·3F 루체·7F 플로체, 예식 간격", "access": "official search-indexed page; direct open returned timeout"},
+        {"url": "https://bellaluceseoul.co.kr/view/floce", "publisher": "벨라루체웨딩홀 서울점", "supports": "동일 공식 홀 이름·층 구분 재확인", "access": "official search-indexed page"}
+      ],
+      "avoid": ["과거 웨딩헤너스를 현재 시설명으로 사용", "과거 그랜드·아이리스·씨엘로홀을 현재 홀 이름으로 사용", "리뉴얼 안내를 실제 준공·완료 현장 확인으로 표현"]
+    },
+    {
+      "id": "jeonnong_l65",
+      "official_name": "L65호텔웨딩컨벤션",
+      "legal_dong": "전농동",
+      "road_address": "서울특별시 동대문구 왕산로 200 청량리역 롯데캐슬스카이-L65 타워동 6층",
+      "parcel_address": "서울특별시 동대문구 전농동 620-69",
+      "primary": true,
+      "purchase_context": "청량리역권 축하화환 주문에서 전농동·타워동 6층·홀 이름·반입 시점을 구별하는 맥락",
+      "differentiating_facts": [
+        "공식 주소는 전농동 620-69 및 왕산로 200 타워동 6층이다.",
+        "가든홀과 컨벤션홀이 별도로 안내된다.",
+        "공식 FAQ는 두 홀의 기본 예식 간격을 2시간으로 안내하며 조건에 따라 조정될 수 있다고 밝힌다.",
+        "공식 약도 PDF의 검색 인덱스 텍스트에는 예식 2시간 전부터 화환 반입 가능하며 그 이전에는 불가하다는 안내가 있다."
+      ],
+      "wreath_policy": {"summary": "화환은 예식 2시간 전부터 반입 가능, 그보다 이른 반입 불가", "verification_level": "official PDF search extraction only; live PDF fetch and screenshot failed", "caution": "발행 전에 직접 PDF 접근이 가능한 다른 검증 경로가 있으면 재확인. 이 문구로 물류 보장이나 꽃집 정책을 만들지 말 것."},
+      "recommended_order_checks_inference": ["가든홀 또는 컨벤션홀", "타워동 6층", "예식시각과 공식 반입 안내", "청량리역권이라는 통칭과 법정동 전농동 구별"],
+      "sources": [
+        {"url": "https://l65hotelwedding.co.kr/", "publisher": "L65호텔웨딩컨벤션", "supports": "공식명·도로명·지번·타워동 6층·가든홀·컨벤션홀", "access": "official search-indexed page"},
+        {"url": "https://www.l65hotelwedding.co.kr/reservation/faq/", "publisher": "L65호텔웨딩컨벤션", "supports": "가든홀·컨벤션홀 기본 2시간 예식간격 및 조건별 조정", "access": "official search-indexed page"},
+        {"url": "https://www.l65hotelwedding.co.kr/location/L65%ED%98%B8%ED%85%94%EC%9B%A8%EB%94%A9%EC%BB%A8%EB%B2%A4%EC%85%98_%EC%95%BD%EB%8F%84.pdf", "publisher": "L65호텔웨딩컨벤션", "supports": "화환 예식 2시간 전 반입 및 그 이전 불가; 타워동 6층 주소", "access": "official PDF search extraction; direct open failed"}
+      ],
+      "avoid": ["법정동 청량리동이라고 표기", "숙박호텔의 객실·프런트 접수로 취급", "모든 시간 반입 가능", "예식 2시간보다 일찍 도착을 권장"]
+    },
+    {
+      "id": "jegi_kyungdong",
+      "official_name": "경동시장",
+      "legal_dong": "제기동",
+      "road_address": "서울특별시 동대문구 고산자로36길 3 일대",
+      "parcel_address": null,
+      "primary": true,
+      "purchase_context": "시장 점포 개업·이전 축하용 꽃을 주문할 때 시장 대표주소만 쓰지 않고 점포 위치를 구체화하는 맥락",
+      "differentiating_facts": [
+        "동대문구 관광 안내는 고산자로36길 3 (제기동) 일대로 표시한다.",
+        "동대문구 행사달력은 시장 아케이드를 별도 행사 장소로 표시한다.",
+        "구의 2019년 청년몰 개장 공지는 신관 3층을 명시한다. 역사적 공간 구분 근거일 뿐 현재 점포 구성으로 재사용하면 안 된다.",
+        "2026년 구 복지포털 안내에는 경동시장 신관 2층 씽글벙글사랑방 이음마루가 행사 장소로 표기된다."
+      ],
+      "recommended_order_checks_inference": ["정확한 상호와 점포 호수", "아케이드인지 신관인지", "층", "실제 인수인과 점포 연락처"],
+      "sources": [
+        {"url": "https://www.ddm.go.kr/tour/selectTourCntntsWebView.do?key=1488&pageIndex=1&pageUnit=12&searchClNo=8&searchCnd=all&tourNo=32", "publisher": "동대문구 문화관광", "supports": "시장명·고산자로36길 3 일대·제기동", "access": "official search-indexed page"},
+        {"url": "https://www.ddm.go.kr/www/selectSchdulWebView.do?key=3896&schdulNo=11219&searchDay=05&searchMonth=10&searchYear=2026", "publisher": "동대문구", "supports": "경동시장 아케이드 내 행사 공간", "access": "official search-indexed page"},
+        {"url": "https://nurinet.ddm.go.kr/eventSchdul/view.do?eventSn=507&key=2209222383011", "publisher": "동대문구 복지누리넷", "supports": "2026년 행사 안내의 경동시장 신관 2층 공간", "access": "official search-indexed page"},
+        {"url": "https://www.ddm.go.kr/www/selectBbsNttView.do?bbsNo=38&integrDeptCode=&key=3073&nttNo=59874&pageIndex=264&searchCnd=all&searchCtgry=&searchKrwd=", "publisher": "동대문구", "supports": "2019년 신관 3층 청년몰 개장 공지, 역사적 공간 구분", "access": "official search-indexed page"}
+      ],
+      "avoid": ["시장 대표주소를 모든 점포의 정확한 배송주소로 단정", "2019년 점포 구성을 현행으로 단정", "시장 관리사무소가 꽃을 대신 받아준다고 단정"]
+    },
+    {
+      "id": "sinseol_pungmul",
+      "official_name": "서울풍물시장",
+      "legal_dong": "신설동",
+      "road_address": "서울특별시 동대문구 천호대로4길 21",
+      "parcel_address": "서울특별시 동대문구 신설동 109-5",
+      "primary": true,
+      "purchase_context": "시장 점포 축하 꽃 주문에서 색상별 구역·층·상호를 확인하는 맥락",
+      "differentiating_facts": [
+        "서울시 공식 안내 주소는 천호대로4길 21이다.",
+        "서울관광재단 공식 안내는 건물이 2개 층이고 빨강·주황·노랑·초록·파랑·남색·보라 구역으로 구분됨을 설명한다.",
+        "서울시 공식 관광 안내 주소는 신설동을 명시한다."
+      ],
+      "recommended_order_checks_inference": ["상호", "층과 색상 구역", "점포 호수", "인수인", "당일 영업 여부"],
+      "sources": [
+        {"url": "https://news.seoul.go.kr/economy/pungmul-time", "publisher": "서울특별시", "supports": "도로명주소·현행 시장 안내", "access": "official search-indexed page; modified 2026-03-25"},
+        {"url": "https://korean.visitseoul.net/Tourist-Attractions-list1/%EC%84%9C%EC%9A%B8%ED%92%8D%EB%AC%BC%EC%8B%9C%EC%9E%A5/KOP001600", "publisher": "서울관광재단 Visit Seoul", "supports": "신설동 주소, 2층 건물, 무지개 색상 구역", "access": "official search-indexed page; modified 2026-05-04"},
+        {"url": "https://mediahub.seoul.go.kr/archives/1279761", "publisher": "서울특별시 내 손안에 서울", "supports": "신설동 109-5 지번의 역사적 주소 교차확인", "access": "official 2020 article; use only stable address, not outdated closure schedule"}
+      ],
+      "avoid": ["황학동 또는 중구 소재로 표기", "예전 월 2회 휴장 정보를 현행으로 사용", "색상 구역만으로 정확한 점포 위치가 충분하다고 단정"]
+    },
+    {
+      "id": "dapsimni_film_art",
+      "official_name": "답십리영화미디어아트센터",
+      "legal_dong": "답십리동",
+      "road_address": "서울특별시 동대문구 답십리로 210-9",
+      "parcel_address": "서울특별시 동대문구 답십리동 산 2-121",
+      "primary": false,
+      "conditional_primary": true,
+      "purchase_context": "상영회·강연·행사 축하 꽃을 준비할 때 행사가 열리는 정확한 공간과 주최측 인수 여부를 먼저 확인하는 맥락",
+      "differentiating_facts": [
+        "센터 공식 공간안내는 1층 영화상영관을 77석 규모로 설명하며 영화상영·강연·행사 용도를 밝힌다.",
+        "2층은 시네마 스튜디오와 가상 스튜디오, 3층에는 라디오 스튜디오 등 별도 공간이 있다.",
+        "동대문구 시설 목록은 도로명주소와 답십리동 산 2-121 지번을 함께 명시한다."
+      ],
+      "recommended_order_checks_inference": ["공식 행사명과 주최자", "1층 영화상영관인지 다른 공간인지", "주최측의 꽃 인수 여부", "설치 허용 위치와 인수 시각을 사전에 확인"],
+      "sources": [
+        {"url": "https://www.dsnfilmart.or.kr/sub01/sub08.php", "publisher": "답십리영화미디어아트센터", "supports": "1층 77석 영화상영관의 행사 용도와 층별 공간 구분", "access": "opened official HTML"},
+        {"url": "https://www.ddm.go.kr/www/contents.do?key=846", "publisher": "동대문구", "supports": "도로명·지번주소·층별 시설", "access": "official search-indexed page"},
+        {"url": "https://www.ddm.go.kr/tour/selectTourCntntsWebView.do?key=1477&pageIndex=1&pageUnit=12&searchClNo=19&searchCnd=all&tourNo=246", "publisher": "동대문구 문화관광", "supports": "답십리동 소재 확인과 시설 성격", "access": "official search-indexed page"}
+      ],
+      "avoid": ["센터가 화환을 상시 받는다고 단정", "특정 행사에 화환이 필요하다고 단정", "공간을 채우기 위한 억지 지역 콘텐츠"]
+    },
+    {
+      "id": "hwigyeong_samyook_funeral",
+      "official_name": "삼육서울병원 추모관(장례예식장)",
+      "legal_dong": "휘경동",
+      "road_address": "서울특별시 동대문구 망우로 82",
+      "parcel_address": null,
+      "primary": false,
+      "future_same_dong_as": "hwigyeong_bellaluce",
+      "purchase_context": "근조화환 주문 시 추모관과 병원 본관을 구별하고 빈소의 층·번호를 확인하는 맥락",
+      "differentiating_facts": [
+        "공식 추모관 시설현황은 지하1층 01호 VIP·02·03·05·06·07·08호, 1층 11·12·13·14·15호를 안내한다.",
+        "삼육서울병원 공식 사이트가 이 추모관 공식 도메인으로 연결한다.",
+        "동대문구 기록은 삼육서울병원이 휘경동에 소재함을 확인한다."
+      ],
+      "recommended_order_checks_inference": ["삼육서울병원 추모관이라는 전체 시설명", "지하1층인지 1층인지", "빈소 호수", "수취인과 발인 일정"],
+      "sources": [
+        {"url": "https://www.memorial-hall.co.kr/service/facility", "publisher": "삼육서울병원 추모관", "supports": "빈소 층·번호와 공식명·도로명주소", "access": "official search-indexed page; direct HTML returned no extracted text"},
+        {"url": "https://www.symcs.co.kr/footer/sitemap.do", "publisher": "삼육서울병원", "supports": "공식 추모관 도메인 연결 검증", "access": "opened official HTML"},
+        {"url": "https://memory.ddm.go.kr/items/show/78", "publisher": "동대문구 기억여행", "supports": "휘경동 소재 확인", "access": "official search-indexed page"}
+      ],
+      "avoid": ["지하1층 04호를 추정해 추가", "추모관 4층 은행을 장례 접수처로 혼동", "외부 화환 반입 허용을 단정"]
+    },
+    {
+      "id": "jeonnong_uos_jajakmaru",
+      "official_name": "서울시립대 자작마루",
+      "legal_dong": "전농동",
+      "road_address": "서울특별시 동대문구 서울시립대로 163",
+      "parcel_address": "서울특별시 동대문구 전농동 90 (대학 대표주소)",
+      "primary": false,
+      "future_same_dong_as": "jeonnong_l65",
+      "purchase_context": "야외 공공예식 축하 꽃 준비 시 일반 교내 행사와 예식 장소를 구별하고 전담업체와 실제 인수 조건을 확인하는 맥락",
+      "differentiating_facts": [
+        "현행 서울시 공공예식 안내는 자작마루를 야외 예식장으로 분류한다.",
+        "대학 학사일정이 대관일보다 우선한다고 밝힌다.",
+        "실내는 원칙적으로 사용 불가이며 우천 때도 실내 전시회가 없는 경우에만 임시 개방 가능하다고 명시한다.",
+        "대학 공식 주소는 서울시립대로 163(전농동 90)이다. 대학 내 일부 다른 건물의 휘경동 지번을 자작마루에 전용하면 안 된다."
+      ],
+      "recommended_order_checks_inference": ["자작마루라는 예식 장소명", "주최측 또는 예식 전담업체", "야외 설치 조건", "우천 시 실제 행사계획"],
+      "sources": [
+        {"url": "https://wedding.seoulwomen.or.kr/facilities/486", "publisher": "서울시 더 아름다운 결혼식", "supports": "야외 예식장, 주소, 학사일정 우선, 제한적인 우천 실내 사용", "access": "opened official HTML"},
+        {"url": "https://klcp.uos.ac.kr/klcp/html/intro/location.do?identified=anonymous&lang=jp", "publisher": "서울시립대학교 한국어교육센터", "supports": "대학 도로명주소와 전농동 90 대표 지번", "access": "official university search-indexed page"}
+      ],
+      "avoid": ["옛 실내 강당 예식 안내를 현행 방식으로 사용", "우천 때 항상 실내 예식 가능", "일반 교내 부서가 화환을 인수한다고 단정"]
+    }
+  ],
+  "not_selected": [
+    {"candidate": "장안동 웨딩홀", "reason": "이번 조사 범위에서 현행 공식 시설명·주소·홀 구분의 충분한 근거를 확보하지 못함. 오래된 경남호텔 등 추측으로 추가하지 않음."},
+    {"candidate": "웨딩그룹위더스 중랑 등 관외 예식장", "reason": "동대문구 소재 공식 확인이 없는 시설은 범위에 포함하지 않음."},
+    {"candidate": "이문동 추가 시설", "reason": "할당량을 채우기 위해 구매 맥락이 약한 시설을 추가하지 않음."}
+  ]
+}

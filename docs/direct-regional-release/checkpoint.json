@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T04:06:56.054Z",
+  "updatedAt": "2026-10-11T04:17:03.188Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-dongdaemun-direct-initial-20261011",
     "city": "서울특별시 동대문구",
-    "status": "researching_plan_not_frozen",
+    "status": "fixed_plan_independent_pass_before_authoring",
     "owner": {
       "scheduledRunAt": "2026-10-11T04:00:00Z",
       "observedExecutionAt": "2026-10-11T04:06:56.054Z",
@@ -51,7 +51,9 @@
       "root": "site-factory/seoul-dongdaemun-flower",
       "worker": "seoul-dongdaemun-flower-guide",
       "hostname": "seoul-dongdaemun.fwith.kr",
-      "externalCreationVerified": false
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": true,
+      "sourceBranchBaseRevision": "0357f18138aa13bade74bf4ac2bbca3559d5c828"
     },
     "selection": {
       "officialCode": "11230",
@@ -76,8 +78,8 @@
       }
     },
     "changeIntent": {
-      "action": "claim_single_region_and_prepare_source_branch",
-      "idempotencyKey": "seoul-dongdaemun:11230:initial:20261011"
+      "action": "author_original_articles_against_frozen_plan",
+      "idempotencyKey": "seoul-dongdaemun:author:412fc3e7c898ff170df77017c3fc7da2d4fd8a5b17e0cf06ac7c5b67d053445c"
     },
     "unfinishedStages": [
       "official_research",
@@ -93,11 +95,54 @@
       "deferred_visual_qa"
     ],
     "plan": {
-      "state": "not_frozen",
-      "plannedArticleCount": null
+      "state": "frozen_before_authoring_independent_plan_pass",
+      "plannedArticleCount": 5,
+      "minimumPassedArticles": 5,
+      "legalDongCount": 10,
+      "administrativeDongCount": 15,
+      "relationshipCount": 16,
+      "unassignedLegalUnits": 5,
+      "countIsPageQuota": false,
+      "fixedPlanPath": "docs/direct-regional-release/seoul-dongdaemun/fixed-plan.json",
+      "fixedPlanSha256": "412fc3e7c898ff170df77017c3fc7da2d4fd8a5b17e0cf06ac7c5b67d053445c",
+      "frozenAt": "2026-10-11T04:13:44.430710+00:00",
+      "articles": [
+        {
+          "slug": "hoegi-dong-khmc-funeral-wreath",
+          "title": "경희의료원 장례식장 근조화환 주문",
+          "primaryKeyword": "경희의료원 장례식장 근조화환 주문",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "hwigyeong-dong-bellaluce-seoul-wedding-wreath",
+          "title": "벨라루체 서울점 결혼식 축하화환 주문",
+          "primaryKeyword": "벨라루체 서울점 결혼식 축하화환 주문",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "jeonnong-dong-l65-wedding-wreath",
+          "title": "L65호텔웨딩컨벤션 결혼식 축하화환 주문",
+          "primaryKeyword": "L65호텔웨딩컨벤션 결혼식 축하화환 주문",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "jegi-dong-kyungdong-market-opening-wreath",
+          "title": "경동시장 거래처 개업화환 주문",
+          "primaryKeyword": "경동시장 거래처 개업화환 주문",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "sinseol-dong-seoul-pungmul-market-opening-wreath",
+          "title": "서울풍물시장 점포 이전·개업화환 주문",
+          "primaryKeyword": "서울풍물시장 점포 이전·개업화환 주문",
+          "status": "planned_not_authored"
+        }
+      ]
     },
     "review": {
-      "screenQa": "DEFERRED_NOT_PASS"
+      "screenQa": "DEFERRED_NOT_PASS",
+      "planReviewStatus": "PASS_BEFORE_AUTHORING",
+      "planReviewSha256": "5fc4c15d97553c9dbfd54ff309b4a7a3f5e7ab45bee1614941373243a98a121d"
     }
   },
   "history": [
