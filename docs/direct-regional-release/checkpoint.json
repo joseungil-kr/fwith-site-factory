@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T13:06:39.264Z",
+  "updatedAt": "2026-10-11T13:08:32.000Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -18068,7 +18068,7 @@
       "worker": "gwangmyeong-flower-guide",
       "hostname": "gwangmyeong.fwith.kr",
       "baselineSource": "97d8174867b3f7889d7c1a9f1e352fa7570e08e6",
-      "status": "reviewed_copy_revision_save_intent",
+      "status": "exact_source_saved_dispatch_intent",
       "changedExistingArticles": 1,
       "newArticles": 0,
       "originalPlannedN": 8,
@@ -18088,6 +18088,41 @@
       "intent": {
         "action": "save_and_publish_reviewed_existing_gwangmyeong_article_copy_revision",
         "idempotencyKey": "gwangmyeong:copy-revision:20261011:c54ac59b1b2e5b99687171973c601af6ad364e48543e999fbbda0217f4a4d040"
+      },
+      "sourceRevision": "7ad2c164083f02ceda3c7d95adb1f6c838a2a13c",
+      "sourceFullChangedBlobReadback": [
+        {
+          "path": "site-factory/gwangmyeong-flower/src/data/architecture.json",
+          "sha": "5ac77c57090934b5b18a8969b8aa8eb34b3d4d22",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/gwangmyeong-flower/src/data/page-map.json",
+          "sha": "238edfc240dc22f481da37256e102943250676e2",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/gwangmyeong-flower/src/data/pages.json",
+          "sha": "b3c342b11d18bd7320e312d7860dc443fc43fad0",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/gwangmyeong-flower/src/data/publish-manifest.json",
+          "sha": "0c4083faf4cc0aef56da0df37ca0ed80879f7aad",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/gwangmyeong-flower/tests/copy-revision-20261011.test.mjs",
+          "sha": "00b18e43547c573c0814f5d73c63d4e1c8865012",
+          "fullTextMatches": true
+        }
+      ],
+      "dispatchIntent": {
+        "workflow": ".github/workflows/gwangmyeong-direct-publish.yml",
+        "ref": "main",
+        "expected_revision": "7ad2c164083f02ceda3c7d95adb1f6c838a2a13c",
+        "indexnow_only": false,
+        "idempotencyKey": "gwangmyeong:copy-revision:publish:7ad2c164083f02ceda3c7d95adb1f6c838a2a13c"
       }
     },
     "completed": [],
