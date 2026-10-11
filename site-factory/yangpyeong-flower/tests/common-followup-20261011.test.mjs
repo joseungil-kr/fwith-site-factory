@@ -1,0 +1,26 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import crypto from 'node:crypto';
+const read=p=>fs.readFileSync(new URL('../'+p,import.meta.url));const json=p=>JSON.parse(read(p));const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
+const proofPath='docs/common-followup-revision-20261011.json',proof=json(proofPath),checkpoint=json('src/data/direct-checkpoint.json'),manifest=json('src/data/publish-manifest.json'),pages=json('src/data/pages.json');
+const expectedProof="f4de17220eff3e570fdd24773ffadd66246e02ff799c5172031760e439654dc3",expectedReview="badea3d08bfebc866af8ce13a8923047eee8e9ffe9d28ec8688b341bca21b1cf";
+const canon=v=>JSON.stringify(v,(_,x)=>x&&typeof x==='object'&&!Array.isArray(x)?Object.fromEntries(Object.entries(x).sort(([a],[b])=>a<b?-1:a>b?1:0)):x);
+const omitted=new Set(['approvalVerified','status','file','order','sourceMode','snapshotId','snapshotHash']);
+function validate(c=structuredClone(checkpoint),bytes=read(proof.reviewedFile.path)){
+ assert.equal(sha(read(proofPath)),expectedProof);assert.equal(proof.independentReviewSha256,expectedReview);
+ assert.equal(sha(bytes),proof.reviewedFile.afterSha256);assert.equal(sha(proof.reviewedFile.approvedUtf8),proof.reviewedFile.afterSha256);assert.equal(sha(proof.reviewedFile.beforeUtf8),proof.reviewedFile.beforeSha256);
+ const prior=c.historicalInitialRelease.record;for(const[k,v]of Object.entries(prior))assert.deepEqual(c[k],v,k);
+ const q=c.currentCopyReview;assert.equal(q.scopeKey,proof.revisionId);assert.equal(q.commonFollowupReviewSha256,expectedReview);assert.equal(q.currentSourceReviewSha256,expectedReview);assert.equal(q.commonFollowupEvidenceSha256,expectedProof);assert.equal(q.reviewedSourceManifestSha256,proof.reviewedCopyOnlyManifestSha256);assert.equal(q.priorReviewedSourceManifestSha256,proof.priorSourceManifestSha256);
+ assert.deepEqual(q.commonFollowupFiles,[{path:proof.reviewedFile.path,sha256:proof.reviewedFile.afterSha256}]);
+ for(const f of q.currentCommonFiles)assert.equal(sha(read(f.path)),f.sha256,f.path);
+ assert.equal(q.articleCount,pages.length);assert.equal(q.originalPlannedCount,manifest.directRelease.plannedOriginalCount);assert.deepEqual(q.heldRoutes,manifest.directRelease.deferredRoutes);
+ const content=pages.map(p=>({pageKey:p.pageKey,publicSourceSha256:sha(canon(Object.fromEntries(Object.entries(p).filter(([k])=>!omitted.has(k))))),bodySha256:sha(p.contentMarkdown)}));assert.deepEqual(q.contentHashes,content);assert.deepEqual(q.contentHashes,manifest.directRelease.contentHashes);
+ assert.equal(q.publicSourceRevision,null);for(const k of ['dispatch','publicVerification','searchSubmission'])assert.equal(q[k],'not_performed_for_this_copy_revision');assert.equal(q.visualQa,'DEFERRED_NOT_PASS');assert.deepEqual(q.pendingVisualChecks,['desktop-actual-screen','narrow-actual-screen']);
+}
+test('rev3 exact independent followup and current checkpoint remain bound',()=>validate());
+test('arbitrary common-file byte drift is rejected',()=>assert.throws(()=>validate(undefined,Buffer.concat([read(proof.reviewedFile.path),Buffer.from('drift')]))));
+for(const field of ['commonFollowupReviewSha256','commonFollowupEvidenceSha256','currentSourceReviewSha256','reviewedSourceManifestSha256'])test(field+' drift is rejected',()=>{const c=structuredClone(checkpoint);c.currentCopyReview[field]='0'.repeat(64);assert.throws(()=>validate(c));});
+test('current body and common digests cannot drift',()=>{for(const field of ['body','common']){const c=structuredClone(checkpoint);if(field==='body')c.currentCopyReview.contentHashes[0].bodySha256='0'.repeat(64);else c.currentCopyReview.currentCommonFiles[0].sha256='0'.repeat(64);assert.throws(()=>validate(c));}});
+test('historical fields and unperformed release/visual status cannot be promoted',()=>{for(const field of ['status','visual','public']){const c=structuredClone(checkpoint);if(field==='status')c.status='new-release-approved';else if(field==='visual')c.currentCopyReview.visualQa='PASS';else c.currentCopyReview.publicSourceRevision='0'.repeat(40);assert.throws(()=>validate(c));}});
+test('approved followup is the only truth or product-card delta',()=>{
+ if(proof.reviewedFile.path.endsWith('business-truth.json')){const a=JSON.parse(proof.reviewedFile.beforeUtf8),b=JSON.parse(proof.reviewedFile.approvedUtf8);delete a.deliveryNotice;delete b.deliveryNotice;assert.deepEqual(a,b);assert.doesNotMatch(JSON.parse(proof.reviewedFile.approvedUtf8).deliveryNotice,/하지 마세요|확인하세요|계산하지 말고|단정하지/);}
+ else{const sentence='사진 속 리본은 예시이며, 보내실 축하 인사로 주문 상담하실 수 있습니다.',inline="{p.family==='congrats' && <p class=\"product-notice\">"+sentence+'</p>}',group="{products.some((p:any)=>p.family==='congrats') && <p class=\"product-notice\">"+sentence+'</p>}';assert.equal(proof.reviewedFile.approvedUtf8.split(sentence).length,2);assert.equal(proof.reviewedFile.approvedUtf8.replace(group+'\n','').replace('<a href={p.orderUrl || site.orderUrl}>',inline+'<a href={p.orderUrl || site.orderUrl}>'),proof.reviewedFile.beforeUtf8);}
+});

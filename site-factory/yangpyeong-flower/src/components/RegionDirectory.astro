@@ -15,7 +15,7 @@ const published=new Map<string,RegionEntry>(districts.flatMap(d=>d.items).flatMa
 <section class="category-hero">
   <span class="eyebrow">{site.brand} {site.region}</span>
   <h1>{site.region} 지역별 꽃배달 안내</h1>
-  <p>{site.region}의 읍·면별 주문 안내입니다. 주소에 적힌 읍·면 이름으로 아래 안내를 찾아보세요. 배송 주소는 도로명주소와 건물명·층·호수까지 준비해 주세요.</p>
+  <p>정원 예식에서 나누는 축복과 시장 가게의 새 출발을 응원하는 마음. 양평의 기쁜 소식에 어울리는 꽃선물을 찾아보세요. 슬픈 날에 위로를 전할 근조화환도 함께 준비하실 수 있습니다.</p>
   <div class="actions"><a class="btn primary" href={site.phoneHref}>전화 상담·주문</a><a class="btn dark" href={site.orderUrl}>온라인 주문</a></div>
 </section>
 <nav class="actions" aria-label="지역 안내">{districts.map(d=><a class="btn light" href={`#${d.key}`}>{d.name}</a>)}</nav>
@@ -24,7 +24,7 @@ const published=new Map<string,RegionEntry>(districts.flatMap(d=>d.items).flatMa
   <div class="card-grid big">{district.items.map(({representative,page})=><a class="page-card" href={page.url} data-region-unit={representative.unitKeys.join('|')}><strong>{page.primaryKeyword}</strong><span>{page.cardSummary}</span><em>주문 안내 보기 →</em></a>)}</div>
   {index===Math.floor((districts.length-1)/2) && <InlineOrderBanner/>}
   <details class="content-card"><summary>행정구역 이름으로 찾기</summary>
-    <p>양평군 공식 읍·면 관할 안내를 바탕으로 정리했습니다. 리 이름은 상세 주소 확인에 사용하며, 이 목록에서 별도 지역 페이지로 세지 않습니다.</p>
+    <p>양평군 공식 읍·면 관할 안내입니다. 지역 이름을 누르면 해당 꽃선물 안내로 이동합니다.</p>
     <ul class="decision-list">{coverage.administrativeCrosswalk.filter(a=>a.districtKey===district.key).map(admin=><li data-administrative-unit={admin.aliasKey}><strong>{admin.name}</strong>: {admin.relations.map((relation,index)=>{
       const unit=coverage.units.find(unit=>unit.unitKey===relation.unitKey);
       const entry=published.get(relation.unitKey);

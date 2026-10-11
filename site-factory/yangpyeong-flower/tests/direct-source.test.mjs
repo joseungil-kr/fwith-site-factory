@@ -70,7 +70,8 @@ test('only approved articles and the regional hub are normal indexable routes',(
 test('every reviewed comparison renders four exact family products and truthful delivery surcharge',()=>{
  const products=read('products');
  assert.match(read('business-truth').deliveryNotice,/양평군 단월면·양서면 10,000원/);
- assert.match(read('business-truth').deliveryNotice,/전 지역에 적용하거나.*무료라고 단정하지 마세요.*최종 결제금액.*확인/);
+ assert.equal(read('business-truth').deliveryNotice,"공식몰 추가 배송비 표에는 양평군 단월면·양서면 10,000원이 안내되어 있습니다. 다른 읍·면은 표에 금액이 따로 기재되어 있지 않습니다. 실제 주소에 적용되는 추가 배송비와 최종 결제금액, 배송·반입 가능 여부와 희망 시간은 주문 상담에서 안내받으실 수 있습니다.");
+ assert.match(read('business-truth').deliveryNotice,/추가 배송비.*최종 결제금액.*배송·반입 가능 여부.*희망 시간.*상담/);
  for(const p of read('pages')){
   assert.equal(p.productCardLimit,4);assert.equal(p.productCardKeys.length,4);
   assert.deepEqual(selectProducts(p,products,p.productCardLimit).map(x=>x.key),p.productCardKeys);
