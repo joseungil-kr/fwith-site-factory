@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T12:31:57.095Z",
+  "updatedAt": "2026-10-11T12:43:42.116Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -25,42 +25,40 @@
     "osan.fwith.kr",
     "siheung.fwith.kr",
     "gunpo.fwith.kr",
-    "uiwang.fwith.kr"
+    "uiwang.fwith.kr",
+    "seoul-dobong.fwith.kr"
   ],
   "excludedHosts": [
     "blog.fwith.kr"
   ],
   "current": {
-    "scopeKey": "seoul-dobong-direct-initial-20261011",
-    "city": "서울특별시 도봉구",
-    "status": "waitingApproval",
+    "scopeKey": "seoul-nowon-direct-initial-20261011",
+    "city": "서울특별시 노원구",
+    "status": "plan_frozen",
     "owner": {
-      "scheduledRunAt": "2026-10-11T11:00:00Z",
-      "observedExecutionAt": "2026-10-11T11:42:51.328Z",
-      "newRegionStartedAt": "2026-10-11T11:42:51.328Z",
+      "scheduledRunAt": "2026-10-11T12:00:00Z",
+      "observedExecutionAt": "2026-10-11T12:43:42.116Z",
+      "newRegionStartedAt": "2026-10-11T12:43:42.116Z",
       "serviceInvocationId": null,
-      "checkpointId": "direct-seoul-dobong-20261011T110000Z",
-      "active": false,
-      "executionState": "waiting_service_approval_no_external_write_after_checkpoint",
-      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T11:47:35Z",
-      "actualWriteStopConfirmedAt": "2026-10-11T11:43:46.578Z"
+      "checkpointId": "direct-seoul-nowon-20261011T120000Z",
+      "active": true,
+      "executionState": "claiming_reviewed_purchase_plan_before_authoring",
+      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T12:33:50.987Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
-      "branch": "site-factory-seoul-dobong-direct",
-      "root": "site-factory/seoul-dobong-flower",
-      "worker": "seoul-dobong-flower-guide",
-      "hostname": "seoul-dobong.fwith.kr",
+      "branch": "site-factory-seoul-nowon-direct",
+      "root": "site-factory/seoul-nowon-flower",
+      "worker": "seoul-nowon-flower-guide",
+      "hostname": "seoul-nowon.fwith.kr",
       "externalCreationVerified": false,
-      "sourceBranchCreatedVerified": true,
-      "sourceBranchBaseRevision": "9badfbf6a04a8b94892c4dc1e936e546ca15320b"
+      "sourceBranchCreatedVerified": false
     },
     "selection": {
-      "officialCode": "11320",
-      "nationalOrder": 10,
+      "officialCode": "11350",
+      "nationalOrder": 11,
       "scheduledInvocationNewRegionCount": 1,
-      "nationalPlanDenominator": 230,
-      "priorGangbukReleasedSearchSubmittedScreensDeferred": true
+      "nationalPlanDenominator": 230
     },
     "conflictChecks": {
       "matchingSourceBranch": false,
@@ -68,146 +66,90 @@
       "mainMatchingPaths": false,
       "providerOwnershipCollisionCheck": "REQUIRED_BEFORE_PUBLICATION",
       "triggerSafety": {
-        "verifiedAt": "2026-10-11T11:42:13.116Z",
-        "workflowFiles": 51,
-        "unchangedVerifiedFulltext": 50,
+        "workflowFiles": 52,
+        "unchangedPreviouslyVerifiedFulltext": 51,
         "changedFulltextRead": [
-          ".github/workflows/seoul-gangbuk-direct-publish.yml"
+          ".github/workflows/seoul-dobong-direct-publish.yml"
         ],
-        "mainAndDobongPushNotTriggered": true,
-        "issuesNotCreated": true
+        "mainAndNowonPushNotTriggered": true
       }
     },
     "changeIntent": {
-      "action": "await_exact_fixed_provider_publication_approval",
-      "idempotencyKey": "seoul-dobong:publish:14d2c27f04c6c3139ba027af33f988244375b91f",
-      "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f"
+      "action": "freeze_exact_reviewed_purchase_plan_and_create_isolated_source_branch",
+      "target": "site-factory-seoul-nowon-direct",
+      "idempotencyKey": "seoul-nowon:claim:20261011T120000Z:3dfb4de549604990a7d2c5758f50dffc080de257c43f90785e38d14698e0c04c"
     },
     "plan": {
-      "state": "frozen_before_authoring_independent_plan_pass",
+      "state": "frozen_exact_reviewed_purchase_candidate_before_authoring",
       "plannedArticleCount": 4,
       "minimumPassedArticles": 4,
-      "legalDongCount": 4,
-      "administrativeDongCount": 14,
-      "relationshipCount": 14,
-      "representedLegalUnits": 4,
-      "unassignedLegalUnits": 0,
+      "legalDongCount": 5,
+      "administrativeDongCount": 19,
+      "relationshipCount": 20,
+      "representedLegalUnits": 3,
+      "unassignedLegalUnits": 2,
       "countIsPageQuota": false,
-      "fixedPlanPath": "docs/direct-regional-release/seoul-dobong/fixed-plan.json",
-      "fixedPlanSha256": "9def6130fa1c0c2b50d858196daa8b88f067165b5b4615efe768aaa057ee3d1b",
-      "frozenAt": "2026-10-11T11:42:24.821Z",
+      "fixedPlanPath": "docs/direct-regional-release/seoul-nowon/fixed-purchase-plan.json",
+      "fixedPlanSha256": "3dfb4de549604990a7d2c5758f50dffc080de257c43f90785e38d14698e0c04c",
+      "frozenAt": "2026-10-11T12:43:42.116Z",
       "articles": [
         {
-          "slug": "ssangmun-dong-hanil-hospital-funeral-wreath",
-          "title": "한일병원 장례식장 근조화환 주문",
-          "primaryKeyword": "한일병원 장례식장 근조화환 주문",
-          "unitKey": "도봉구/법정동/쌍문동",
-          "facilityKey": "hanil-hospital-funeral",
-          "purchaseIntentKey": "funeral-condolence-wreath",
-          "status": "independent_content_pass_not_published"
+          "slug": "hagye-dong-nowon-eulji-funeral-wreath",
+          "title": "노원을지대학교병원 장례식장 근조화환 주문",
+          "primaryKeyword": "노원을지대학교병원 장례식장 근조화환 주문",
+          "unitKey": "노원구/법정동/하계동",
+          "facilityKey": "nowon-eulji-hospital-funeral",
+          "originalPurchaseIntentKey": "funeral-condolence-wreath",
+          "status": "planned_not_authored"
         },
         {
-          "slug": "banghak-dong-dokkaebi-market-opening-wreath",
-          "title": "방학동도깨비시장 점포 개업화환 주문",
-          "primaryKeyword": "방학동도깨비시장 점포 개업화환 주문",
-          "unitKey": "도봉구/법정동/방학동",
-          "facilityKey": "banghak-dokkaebi-market",
-          "purchaseIntentKey": "opening-congrats-wreath",
-          "status": "independent_content_pass_not_published"
+          "slug": "gongneung-dong-dokkaebi-market-opening-wreath",
+          "title": "공릉동도깨비시장 점포 개업화환 주문",
+          "primaryKeyword": "공릉동도깨비시장 점포 개업화환 주문",
+          "unitKey": "노원구/법정동/공릉동",
+          "facilityKey": "gongneung-dokkaebi-market",
+          "originalPurchaseIntentKey": "shop-opening-congrats-wreath",
+          "status": "planned_not_authored"
         },
         {
-          "slug": "chang-dong-dobong-harmony-hall-congrats-wreath",
-          "title": "도봉구민회관 하모니홀 공연 축하화환 주문",
-          "primaryKeyword": "도봉구민회관 하모니홀 공연 축하화환 주문",
-          "unitKey": "도봉구/법정동/창동",
-          "facilityKey": "dobong-civic-harmony-hall",
-          "purchaseIntentKey": "event-congrats-wreath",
-          "status": "independent_content_pass_not_published"
+          "slug": "gongneung-dong-seoul-techno-park-office-move-wreath",
+          "title": "서울테크노파크 사무실 이전 축하화환 주문",
+          "primaryKeyword": "서울테크노파크 사무실 이전 축하화환 주문",
+          "unitKey": "노원구/법정동/공릉동",
+          "facilityKey": "seoul-techno-park",
+          "originalPurchaseIntentKey": "office-relocation-congrats-wreath",
+          "status": "planned_not_authored"
         },
         {
-          "slug": "dobong-dong-peace-culture-bunker-exhibition-wreath",
-          "title": "평화문화진지 전시 개막 축하화환 주문",
-          "primaryKeyword": "평화문화진지 전시 개막 축하화환 주문",
-          "unitKey": "도봉구/법정동/도봉동",
-          "facilityKey": "peace-culture-bunker",
-          "purchaseIntentKey": "event-congrats-wreath",
-          "status": "independent_content_pass_not_published"
+          "slug": "junggye-dong-nowon-arts-performance-wreath",
+          "title": "노원문화예술회관 공연 축하화환 주문",
+          "primaryKeyword": "노원문화예술회관 공연 축하화환 주문",
+          "unitKey": "노원구/법정동/중계동",
+          "facilityKey": "nowon-culture-arts-center",
+          "originalPurchaseIntentKey": "performance-congrats-wreath-permission-first",
+          "status": "planned_not_authored"
         }
       ],
-      "planFreezeRevision": "9badfbf6a04a8b94892c4dc1e936e546ca15320b",
-      "approvedArticleCount": 4,
-      "deferredArticleCount": 0
+      "runtimeProjectionStatus": "pending_exact_derivation_review_no_change_to_purchase_plan"
     },
     "review": {
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
-      "planReviewSha256": "840910788eb38002f3c8d442d44feef219b4a0d24823388cd189bbc1ec3d5831",
-      "screenQa": "DEFERRED_NOT_PASS",
-      "contentStatus": "PASS",
-      "contentRevision": 2,
-      "articlesSha256": "9f10e463b10c45522f6bdc009a34debbf67b914f8072b144d5d05fb74ad4e20d",
-      "independentContentReviewSha256": "df830e0be242c37b8faaeb8ba034f2e0616e0b44030cfcc9f54ca6244bad40f1",
-      "runtimeReviewSha256": "f88737900868ba6ec9875431f18b5324da819247180f0836980b5eb3fa0a4df3",
-      "imageReviewSha256": "f1601a1f929e5e5f5a1c740d318b63e0a9efbef5ad21034061fdc42d70f0de10",
-      "assetManifestSha256": "34ceabd6872c6774b4de7c48efa633c5099d57491a6b5e763ed5e4d108c457bc",
-      "sourceUploadManifestSha256": "ba35a7ab5943e0f663160752fec09e079e8728ce8eb8fc2adb299f26d825e2b8",
-      "actualSourceIndependentReview": "PASS_LOCAL_ACTUAL_SOURCE_AND_CONTROL",
-      "actualSourceReviewSha256": "56a1644d125bde1b88b3f504a88595bf49971d39bc8bb39b0470b28fafeea130"
+      "planReviewSha256": "27f4ac99c0eb2aed08077dedbbc2b3d063e2086c28047dc1ac87c9f774700592",
+      "contentStatus": "NOT_AUTHORED",
+      "screenQa": "DEFERRED_NOT_PASS"
     },
     "unfinishedStages": [
-      "approved_exact_source_dispatch",
+      "authoring",
+      "independent_content_review",
+      "runtime_preparation_review",
+      "exact_source_save_build",
+      "publication",
       "public_http_qa",
       "IndexNow_receipt",
-      "GSC_submission",
-      "deferred_desktop_narrow_visual_qa"
+      "GSC_submit_readback",
+      "deferred_visual_qa"
     ],
-    "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
-    "searchSubmissionIntent": {
-      "action": "submit_sitemap_after_verified_public_release_and_durable_IndexNow_receipt",
-      "siteUrl": "sc-domain:fwith.kr",
-      "sitemapUrl": "https://seoul-dobong.fwith.kr/sitemap-index.xml",
-      "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
-      "idempotencyKey": "seoul-dobong:gsc:14d2c27f04c6c3139ba027af33f988244375b91f",
-      "reuseExistingNormalSubmission": true
-    },
-    "validation": {
-      "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
-      "nodeVersion": "22.23.3",
-      "sourceTestsPassed": 70,
-      "publisherTestsPassed": 42,
-      "readbackHelperTestsPassed": 7,
-      "build": "PASS",
-      "static": "PASS",
-      "graph": "PASS",
-      "normalHtmlRoutes": 6,
-      "articleCount": 4,
-      "sitemapUrls": 6,
-      "remoteFullReadback": "72/72 full bytes and Git blob SHA verified via official connected fetch_file base64",
-      "remoteReadbackSha256": "ed73fc7783e931ef6f7ecaac5a8a68088180fa36754c05aef9f213cd52c23e88",
-      "exactSourceVerificationSha256": "36114e08ea1eea14b1aea1f49b08574982c63ff6f9475bb4eae54480c2c50297",
-      "screenQa": "DEFERRED_BY_USER_NOT_PASS"
-    },
-    "lastSuccessfulStage": "exact_source_remote_readback_build_and_control_saved",
-    "controlRevision": "7f4f8784de7584266dd8c9be4437d8015d66bbd4",
-    "approval": {
-      "state": "required",
-      "action": "Run workflow for exact reviewed Dobong initial publication with indexnow_only=false",
-      "target": {
-        "workflow": ".github/workflows/seoul-dobong-direct-publish.yml",
-        "ref": "main",
-        "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
-        "worker": "seoul-dobong-flower-guide",
-        "hostname": "seoul-dobong.fwith.kr"
-      },
-      "reason": "Service action review requires explicit approval for the fixed provider publication step.",
-      "scope": "Publish reviewed static bytes using existing configured credentials and fixed hostname no-override path; no credential, permission, security, DNS ownership, payment or contract changes.",
-      "observedAt": "2026-10-11T12:28:00.634Z",
-      "runCreated": false,
-      "runReadback": {
-        "uiWorkflowRunCount": 0,
-        "recent30MatchingRuns": 0
-      },
-      "resumeAction": "Revalidate exact source and reviewed controls, then retry the same official final Run workflow click once after authorization evidence; do not select indexnow_only as a workaround."
-    }
+    "lastSuccessfulStage": "official_research_and_independent_purchase_plan_review"
   },
   "history": [
     {
@@ -7426,6 +7368,423 @@
         "sha256": "d849f6b507c5d9b33a831f32f71a12774682de53270cb46ba273fa8b86421562",
         "verdict": "PASS_WITH_VISUAL_QA_DEFERRED"
       }
+    },
+    {
+      "scopeKey": "seoul-dobong-direct-initial-20261011",
+      "city": "서울특별시 도봉구",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "owner": {
+        "scheduledRunAt": "2026-10-11T11:00:00Z",
+        "observedExecutionAt": "2026-10-11T11:42:51.328Z",
+        "newRegionStartedAt": "2026-10-11T11:42:51.328Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-seoul-dobong-20261011T110000Z",
+        "active": false,
+        "executionState": "completed_release_no_source_mutations_pending",
+        "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T11:47:35Z",
+        "actualWriteStopConfirmedAt": "2026-10-11T12:28:31.912Z"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-seoul-dobong-direct",
+        "root": "site-factory/seoul-dobong-flower",
+        "worker": "seoul-dobong-flower-guide",
+        "hostname": "seoul-dobong.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true,
+        "sourceBranchBaseRevision": "9badfbf6a04a8b94892c4dc1e936e546ca15320b"
+      },
+      "selection": {
+        "officialCode": "11320",
+        "nationalOrder": 10,
+        "scheduledInvocationNewRegionCount": 1,
+        "nationalPlanDenominator": 230,
+        "priorGangbukReleasedSearchSubmittedScreensDeferred": true
+      },
+      "conflictChecks": {
+        "matchingSourceBranch": false,
+        "openMatchingPullRequests": 0,
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": {
+          "status": "PASS",
+          "before": {
+            "accountVerified": true,
+            "dnsState": "not_observed",
+            "hostname": "seoul-dobong.fwith.kr",
+            "hostnameBindingExists": false,
+            "mutationsPerformed": false,
+            "state": "target_absent_verified",
+            "worker": "seoul-dobong-flower-guide",
+            "workerExists": false
+          },
+          "after": {
+            "accountVerified": true,
+            "dnsState": "not_observed",
+            "hostname": "seoul-dobong.fwith.kr",
+            "hostnameBindingExists": true,
+            "mutationsPerformed": false,
+            "state": "binding_verified",
+            "worker": "seoul-dobong-flower-guide",
+            "workerExists": true
+          }
+        },
+        "triggerSafety": {
+          "verifiedAt": "2026-10-11T11:42:13.116Z",
+          "workflowFiles": 51,
+          "unchangedVerifiedFulltext": 50,
+          "changedFulltextRead": [
+            ".github/workflows/seoul-gangbuk-direct-publish.yml"
+          ],
+          "mainAndDobongPushNotTriggered": true,
+          "issuesNotCreated": true
+        }
+      },
+      "changeIntent": {
+        "action": "release_and_search_submission_complete_visual_qa_deferred",
+        "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f"
+      },
+      "plan": {
+        "state": "frozen_before_authoring_independent_plan_pass",
+        "plannedArticleCount": 4,
+        "minimumPassedArticles": 4,
+        "legalDongCount": 4,
+        "administrativeDongCount": 14,
+        "relationshipCount": 14,
+        "representedLegalUnits": 4,
+        "unassignedLegalUnits": 0,
+        "countIsPageQuota": false,
+        "fixedPlanPath": "docs/direct-regional-release/seoul-dobong/fixed-plan.json",
+        "fixedPlanSha256": "9def6130fa1c0c2b50d858196daa8b88f067165b5b4615efe768aaa057ee3d1b",
+        "frozenAt": "2026-10-11T11:42:24.821Z",
+        "articles": [
+          {
+            "slug": "ssangmun-dong-hanil-hospital-funeral-wreath",
+            "title": "한일병원 장례식장 근조화환 주문",
+            "primaryKeyword": "한일병원 장례식장 근조화환 주문",
+            "unitKey": "도봉구/법정동/쌍문동",
+            "facilityKey": "hanil-hospital-funeral",
+            "purchaseIntentKey": "funeral-condolence-wreath",
+            "status": "published_content_http_pass_visual_deferred"
+          },
+          {
+            "slug": "banghak-dong-dokkaebi-market-opening-wreath",
+            "title": "방학동도깨비시장 점포 개업화환 주문",
+            "primaryKeyword": "방학동도깨비시장 점포 개업화환 주문",
+            "unitKey": "도봉구/법정동/방학동",
+            "facilityKey": "banghak-dokkaebi-market",
+            "purchaseIntentKey": "opening-congrats-wreath",
+            "status": "published_content_http_pass_visual_deferred"
+          },
+          {
+            "slug": "chang-dong-dobong-harmony-hall-congrats-wreath",
+            "title": "도봉구민회관 하모니홀 공연 축하화환 주문",
+            "primaryKeyword": "도봉구민회관 하모니홀 공연 축하화환 주문",
+            "unitKey": "도봉구/법정동/창동",
+            "facilityKey": "dobong-civic-harmony-hall",
+            "purchaseIntentKey": "event-congrats-wreath",
+            "status": "published_content_http_pass_visual_deferred"
+          },
+          {
+            "slug": "dobong-dong-peace-culture-bunker-exhibition-wreath",
+            "title": "평화문화진지 전시 개막 축하화환 주문",
+            "primaryKeyword": "평화문화진지 전시 개막 축하화환 주문",
+            "unitKey": "도봉구/법정동/도봉동",
+            "facilityKey": "peace-culture-bunker",
+            "purchaseIntentKey": "event-congrats-wreath",
+            "status": "published_content_http_pass_visual_deferred"
+          }
+        ],
+        "planFreezeRevision": "9badfbf6a04a8b94892c4dc1e936e546ca15320b",
+        "approvedArticleCount": 4,
+        "deferredArticleCount": 0
+      },
+      "review": {
+        "planReviewStatus": "PASS_BEFORE_AUTHORING",
+        "planReviewSha256": "840910788eb38002f3c8d442d44feef219b4a0d24823388cd189bbc1ec3d5831",
+        "screenQa": "DEFERRED_NOT_PASS",
+        "contentStatus": "PASS",
+        "contentRevision": 2,
+        "articlesSha256": "9f10e463b10c45522f6bdc009a34debbf67b914f8072b144d5d05fb74ad4e20d",
+        "independentContentReviewSha256": "df830e0be242c37b8faaeb8ba034f2e0616e0b44030cfcc9f54ca6244bad40f1",
+        "runtimeReviewSha256": "f88737900868ba6ec9875431f18b5324da819247180f0836980b5eb3fa0a4df3",
+        "imageReviewSha256": "f1601a1f929e5e5f5a1c740d318b63e0a9efbef5ad21034061fdc42d70f0de10",
+        "assetManifestSha256": "34ceabd6872c6774b4de7c48efa633c5099d57491a6b5e763ed5e4d108c457bc",
+        "sourceUploadManifestSha256": "ba35a7ab5943e0f663160752fec09e079e8728ce8eb8fc2adb299f26d825e2b8",
+        "actualSourceIndependentReview": "PASS_LOCAL_ACTUAL_SOURCE_AND_CONTROL",
+        "actualSourceReviewSha256": "56a1644d125bde1b88b3f504a88595bf49971d39bc8bb39b0470b28fafeea130"
+      },
+      "unfinishedStages": [
+        "deferred_visual_qa_desktop_narrow"
+      ],
+      "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+      "searchSubmissionIntent": {
+        "action": "submit_sitemap_after_verified_public_release_and_durable_IndexNow_receipt",
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemapUrl": "https://seoul-dobong.fwith.kr/sitemap-index.xml",
+        "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+        "idempotencyKey": "seoul-dobong:gsc:14d2c27f04c6c3139ba027af33f988244375b91f",
+        "reuseExistingNormalSubmission": true
+      },
+      "validation": {
+        "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+        "nodeVersion": "22.23.3",
+        "sourceTestsPassed": 70,
+        "publisherTestsPassed": 42,
+        "readbackHelperTestsPassed": 7,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "normalHtmlRoutes": 6,
+        "articleCount": 4,
+        "sitemapUrls": 6,
+        "remoteFullReadback": "72/72 full bytes and Git blob SHA verified via official connected fetch_file base64",
+        "remoteReadbackSha256": "ed73fc7783e931ef6f7ecaac5a8a68088180fa36754c05aef9f213cd52c23e88",
+        "exactSourceVerificationSha256": "36114e08ea1eea14b1aea1f49b08574982c63ff6f9475bb4eae54480c2c50297",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+        "publicHttp": "PASS",
+        "officialArtifactChain": "PASS",
+        "indexNowDurableReceipt": "HTTP200_received",
+        "gscSubmission": "accepted_confirmed_separate_list_readback"
+      },
+      "lastSuccessfulStage": "public_http_and_IndexNow_durable_receipt_and_GSC_submit_list_readback_verified",
+      "controlRevision": "3c0bb5c0f2ce1f74a4d314f7c6a1549e9cc85175",
+      "approval": {
+        "state": "required",
+        "action": "Run workflow for exact reviewed Dobong initial publication with indexnow_only=false",
+        "target": {
+          "workflow": ".github/workflows/seoul-dobong-direct-publish.yml",
+          "ref": "main",
+          "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+          "worker": "seoul-dobong-flower-guide",
+          "hostname": "seoul-dobong.fwith.kr"
+        },
+        "reason": "Service action review requires explicit approval for the fixed provider publication step.",
+        "scope": "Publish reviewed static bytes using existing configured credentials and fixed hostname no-override path; no credential, permission, security, DNS ownership, payment or contract changes.",
+        "observedAt": "2026-10-11T12:28:00.634Z",
+        "runCreated": false,
+        "runReadback": {
+          "uiWorkflowRunCount": 0,
+          "recent30MatchingRuns": 0
+        },
+        "resumeAction": "Revalidate exact source and reviewed controls, then retry the same official final Run workflow click once after authorization evidence; do not select indexnow_only as a workaround.",
+        "status": "authorized_retry_executed_successfully"
+      },
+      "release": {
+        "runId": 38139787860,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38139787860",
+        "url": "https://seoul-dobong.fwith.kr",
+        "runConclusion": "success",
+        "runCompletedAt": "2026-10-11T12:35:44Z",
+        "http": {
+          "articleCount": 4,
+          "attempts": 2,
+          "checkedPaths": 20,
+          "htmlRoutes": 6,
+          "noindexHubs": 0,
+          "normalizedCloudflareBeacons": 7,
+          "regionCount": 4,
+          "revision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+          "sitemapUrls": 6,
+          "state": "public_release_verified",
+          "unknownHttpStatus": 404
+        },
+        "independentHttpReviewSha256": "38891e550c032d7adb74148d5b0139eab2c11e8caf986b804c72bc90a03b31cb",
+        "independentHttpReview": {
+          "verdict": "PASS_INDEPENDENT_HOSTED_SOURCE_HTTP_AND_DURABLE_RECEIPT",
+          "verifiedAt": "2026-10-11T12:39:16.837011+00:00",
+          "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+          "controlRevision": "3c0bb5c0f2ce1f74a4d314f7c6a1549e9cc85175",
+          "runId": 38139787860,
+          "normalRoutes": 6,
+          "articles": [
+            {
+              "slug": "banghak-dong-dokkaebi-market-opening-wreath",
+              "title": "방학동도깨비시장 점포 개업화환 주문",
+              "h1": "방학동도깨비시장 점포 개업화환 주문",
+              "bodyExact": true,
+              "firstAnswerOnce": true,
+              "productCards": [
+                "congrats-basic",
+                "congrats-premium",
+                "congrats-large",
+                "congrats-xl"
+              ],
+              "ogExact": true,
+              "phoneOnlineCTA": true
+            },
+            {
+              "slug": "chang-dong-dobong-harmony-hall-congrats-wreath",
+              "title": "도봉구민회관 하모니홀 공연 축하화환 주문",
+              "h1": "도봉구민회관 하모니홀 공연 축하화환 주문",
+              "bodyExact": true,
+              "firstAnswerOnce": true,
+              "productCards": [
+                "congrats-basic",
+                "congrats-premium",
+                "congrats-large",
+                "congrats-xl"
+              ],
+              "ogExact": true,
+              "phoneOnlineCTA": true
+            },
+            {
+              "slug": "dobong-dong-peace-culture-bunker-exhibition-wreath",
+              "title": "평화문화진지 전시 개막 축하화환 주문",
+              "h1": "평화문화진지 전시 개막 축하화환 주문",
+              "bodyExact": true,
+              "firstAnswerOnce": true,
+              "productCards": [
+                "congrats-basic",
+                "congrats-premium",
+                "congrats-large",
+                "congrats-xl"
+              ],
+              "ogExact": true,
+              "phoneOnlineCTA": true
+            },
+            {
+              "slug": "ssangmun-dong-hanil-hospital-funeral-wreath",
+              "title": "한일병원 장례식장 근조화환 주문",
+              "h1": "한일병원 장례식장 근조화환 주문",
+              "bodyExact": true,
+              "firstAnswerOnce": true,
+              "productCards": [
+                "funeral-basic",
+                "funeral-premium",
+                "funeral-large",
+                "funeral-xl"
+              ],
+              "ogExact": true,
+              "phoneOnlineCTA": true
+            }
+          ],
+          "sitemapUrls": 6,
+          "publicFilesChecked": 22,
+          "real404": true,
+          "rawExactFiles": 15,
+          "cloudflareBeaconNormalizedFiles": 7,
+          "localAssetsChecked": 9,
+          "internalLinksChecked": 6,
+          "responseSecurityHeadersVerified": true,
+          "ownershipVerified": true,
+          "indexNowFingerprint": "eca96476c1d6c186c0f9ef5ccece9a4c83fee0e6c7710e1249fc1cf32e6bc7f1",
+          "urlSetSha256": "a647a3ccadac22180b1478424b47705a79cf2caf331fa17bedcbb79a886e6d0f",
+          "receipt": {
+            "commentId": 6109080923,
+            "commentUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6109080923",
+            "createdAt": "2026-10-11T12:35:40Z",
+            "record": {
+              "attempt": 1,
+              "endpoint": "https://searchadvisor.naver.com/indexnow",
+              "fingerprint": "eca96476c1d6c186c0f9ef5ccece9a4c83fee0e6c7710e1249fc1cf32e6bc7f1",
+              "httpStatus": 200,
+              "origin": "https://seoul-dobong.fwith.kr",
+              "recordedAt": "2026-10-11T12:35:36.292784+00:00",
+              "revision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+              "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38139787860",
+              "siteKey": "seoul-dobong-flower-direct",
+              "state": "received",
+              "urlCount": 6,
+              "urlSetSha256": "a647a3ccadac22180b1478424b47705a79cf2caf331fa17bedcbb79a886e6d0f"
+            }
+          },
+          "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+          "browserUsed": false,
+          "searchIndexing": "not_verified",
+          "officialArtifactChain": "PASS_SEPARATE_FINAL_REVIEW_BOUND"
+        }
+      },
+      "indexnow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "eca96476c1d6c186c0f9ef5ccece9a4c83fee0e6c7710e1249fc1cf32e6bc7f1",
+        "httpStatus": 200,
+        "origin": "https://seoul-dobong.fwith.kr",
+        "recordedAt": "2026-10-11T12:35:36.292784+00:00",
+        "revision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38139787860",
+        "searchIndexing": "not_verified",
+        "siteKey": "seoul-dobong-flower-direct",
+        "state": "received",
+        "urlCount": 6,
+        "urlSetSha256": "a647a3ccadac22180b1478424b47705a79cf2caf331fa17bedcbb79a886e6d0f",
+        "urls": [
+          "https://seoul-dobong.fwith.kr/",
+          "https://seoul-dobong.fwith.kr/regions/",
+          "https://seoul-dobong.fwith.kr/regions/banghak-dong-dokkaebi-market-opening-wreath/",
+          "https://seoul-dobong.fwith.kr/regions/chang-dong-dobong-harmony-hall-congrats-wreath/",
+          "https://seoul-dobong.fwith.kr/regions/dobong-dong-peace-culture-bunker-exhibition-wreath/",
+          "https://seoul-dobong.fwith.kr/regions/ssangmun-dong-hanil-hospital-funeral-wreath/"
+        ],
+        "durableReceiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6109080923"
+      },
+      "gsc": {
+        "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+        "submit": {
+          "siteUrl": "sc-domain:fwith.kr",
+          "attempted": 1,
+          "submitted": 1,
+          "failed": 0,
+          "results": [
+            {
+              "sitemapUrl": "https://seoul-dobong.fwith.kr/sitemap-index.xml",
+              "accepted": true,
+              "confirmed": true,
+              "lastSubmitted": "2026-10-11T12:39:48.361Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+          "actions": [
+            "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+          ]
+        },
+        "submitObservedAt": "2026-10-11T12:39:48.556Z",
+        "readbackObservedAt": "2026-10-11T12:39:56.526Z",
+        "listReadback": [
+          {
+            "path": "https://seoul-dobong.fwith.kr/sitemap-index.xml",
+            "lastSubmitted": "2026-10-11T12:39:48.361Z",
+            "isPending": true,
+            "isSitemapsIndex": false,
+            "warnings": "0",
+            "errors": "0"
+          }
+        ]
+      },
+      "completedAt": "2026-10-11T12:39:56.526Z",
+      "finalArtifactChainReview": {
+        "verdict": "PASS_INDEPENDENT_RELEASE_SOURCE_ARTIFACT_HOSTED_RECEIPT_WITH_LOCAL_REBUILD_LIMIT",
+        "sha256": "2042102dce21cd17d4d7b34a0f84416876e68c7a219a48ba62678c5fd311a334",
+        "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+        "runId": 38139787860,
+        "officialArchives": [
+          {
+            "kind": "build",
+            "artifactId": 11702855259,
+            "zipSha256": "a6832d72bfd567877516b18f25216149a2d8f1bca6f350cade3a52712d263366",
+            "zipBytes": 837567,
+            "safeEntries": 24
+          },
+          {
+            "kind": "result",
+            "artifactId": 11701414629,
+            "zipSha256": "c7ff649d0d51a8cd044ca01a1c897bf1041320a7d05bb30ea7db5735937f1660",
+            "zipBytes": 7024,
+            "safeEntries": 10
+          }
+        ],
+        "releaseManifestSha256": "abdc739c3b3dd8e8f392c3385742e47317b9f322658c82e0920a316162a9203b",
+        "staticFilesMatchedVerifiedExactSourceBuild": 23,
+        "hostedFilesVerified": 22,
+        "extraIndependentLocalAstroBuild": "NOT_COMPLETED_EXIT137",
+        "existingExactSourceBuild": "PASS_BY_PREVIOUS_VERIFICATION_WITH_ALL_HANDOFF_PROOFS_INDEPENDENTLY_REHASHED",
+        "officialExactSourceBuild": "PASS_INDEPENDENT_OFFICIAL_JOB_LOG_AND_ARTIFACT_VERIFICATION"
+      },
+      "publicUrl": "https://seoul-dobong.fwith.kr"
     }
   ],
   "maintenanceBacklog": [
@@ -7466,7 +7825,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Resume Dobong exact-source official publication after required service approval. Preserve fixed N4 and all reviews; do not infer publication or switch to an already-public-only mode.",
+  "nextAction": "Complete sole new Nowon region from frozen N4 purchase plan; preserve prior release evidence and visual QA backlog.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -7494,187 +7853,7 @@
       "enabledChanged": false
     }
   },
-  "waitingApproval": [
-    {
-      "scopeKey": "seoul-dobong-direct-initial-20261011",
-      "city": "서울특별시 도봉구",
-      "status": "waitingApproval",
-      "owner": {
-        "scheduledRunAt": "2026-10-11T11:00:00Z",
-        "observedExecutionAt": "2026-10-11T11:42:51.328Z",
-        "newRegionStartedAt": "2026-10-11T11:42:51.328Z",
-        "serviceInvocationId": null,
-        "checkpointId": "direct-seoul-dobong-20261011T110000Z",
-        "active": false,
-        "executionState": "waiting_service_approval_no_external_write_after_checkpoint",
-        "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T11:47:35Z",
-        "actualWriteStopConfirmedAt": "2026-10-11T11:43:46.578Z"
-      },
-      "identity": {
-        "repository": "joseungil-kr/fwith-site-factory",
-        "branch": "site-factory-seoul-dobong-direct",
-        "root": "site-factory/seoul-dobong-flower",
-        "worker": "seoul-dobong-flower-guide",
-        "hostname": "seoul-dobong.fwith.kr",
-        "externalCreationVerified": false,
-        "sourceBranchCreatedVerified": true,
-        "sourceBranchBaseRevision": "9badfbf6a04a8b94892c4dc1e936e546ca15320b"
-      },
-      "selection": {
-        "officialCode": "11320",
-        "nationalOrder": 10,
-        "scheduledInvocationNewRegionCount": 1,
-        "nationalPlanDenominator": 230,
-        "priorGangbukReleasedSearchSubmittedScreensDeferred": true
-      },
-      "conflictChecks": {
-        "matchingSourceBranch": false,
-        "openMatchingPullRequests": 0,
-        "mainMatchingPaths": false,
-        "providerOwnershipCollisionCheck": "REQUIRED_BEFORE_PUBLICATION",
-        "triggerSafety": {
-          "verifiedAt": "2026-10-11T11:42:13.116Z",
-          "workflowFiles": 51,
-          "unchangedVerifiedFulltext": 50,
-          "changedFulltextRead": [
-            ".github/workflows/seoul-gangbuk-direct-publish.yml"
-          ],
-          "mainAndDobongPushNotTriggered": true,
-          "issuesNotCreated": true
-        }
-      },
-      "changeIntent": {
-        "action": "await_exact_fixed_provider_publication_approval",
-        "idempotencyKey": "seoul-dobong:publish:14d2c27f04c6c3139ba027af33f988244375b91f",
-        "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f"
-      },
-      "plan": {
-        "state": "frozen_before_authoring_independent_plan_pass",
-        "plannedArticleCount": 4,
-        "minimumPassedArticles": 4,
-        "legalDongCount": 4,
-        "administrativeDongCount": 14,
-        "relationshipCount": 14,
-        "representedLegalUnits": 4,
-        "unassignedLegalUnits": 0,
-        "countIsPageQuota": false,
-        "fixedPlanPath": "docs/direct-regional-release/seoul-dobong/fixed-plan.json",
-        "fixedPlanSha256": "9def6130fa1c0c2b50d858196daa8b88f067165b5b4615efe768aaa057ee3d1b",
-        "frozenAt": "2026-10-11T11:42:24.821Z",
-        "articles": [
-          {
-            "slug": "ssangmun-dong-hanil-hospital-funeral-wreath",
-            "title": "한일병원 장례식장 근조화환 주문",
-            "primaryKeyword": "한일병원 장례식장 근조화환 주문",
-            "unitKey": "도봉구/법정동/쌍문동",
-            "facilityKey": "hanil-hospital-funeral",
-            "purchaseIntentKey": "funeral-condolence-wreath",
-            "status": "independent_content_pass_not_published"
-          },
-          {
-            "slug": "banghak-dong-dokkaebi-market-opening-wreath",
-            "title": "방학동도깨비시장 점포 개업화환 주문",
-            "primaryKeyword": "방학동도깨비시장 점포 개업화환 주문",
-            "unitKey": "도봉구/법정동/방학동",
-            "facilityKey": "banghak-dokkaebi-market",
-            "purchaseIntentKey": "opening-congrats-wreath",
-            "status": "independent_content_pass_not_published"
-          },
-          {
-            "slug": "chang-dong-dobong-harmony-hall-congrats-wreath",
-            "title": "도봉구민회관 하모니홀 공연 축하화환 주문",
-            "primaryKeyword": "도봉구민회관 하모니홀 공연 축하화환 주문",
-            "unitKey": "도봉구/법정동/창동",
-            "facilityKey": "dobong-civic-harmony-hall",
-            "purchaseIntentKey": "event-congrats-wreath",
-            "status": "independent_content_pass_not_published"
-          },
-          {
-            "slug": "dobong-dong-peace-culture-bunker-exhibition-wreath",
-            "title": "평화문화진지 전시 개막 축하화환 주문",
-            "primaryKeyword": "평화문화진지 전시 개막 축하화환 주문",
-            "unitKey": "도봉구/법정동/도봉동",
-            "facilityKey": "peace-culture-bunker",
-            "purchaseIntentKey": "event-congrats-wreath",
-            "status": "independent_content_pass_not_published"
-          }
-        ],
-        "planFreezeRevision": "9badfbf6a04a8b94892c4dc1e936e546ca15320b",
-        "approvedArticleCount": 4,
-        "deferredArticleCount": 0
-      },
-      "review": {
-        "planReviewStatus": "PASS_BEFORE_AUTHORING",
-        "planReviewSha256": "840910788eb38002f3c8d442d44feef219b4a0d24823388cd189bbc1ec3d5831",
-        "screenQa": "DEFERRED_NOT_PASS",
-        "contentStatus": "PASS",
-        "contentRevision": 2,
-        "articlesSha256": "9f10e463b10c45522f6bdc009a34debbf67b914f8072b144d5d05fb74ad4e20d",
-        "independentContentReviewSha256": "df830e0be242c37b8faaeb8ba034f2e0616e0b44030cfcc9f54ca6244bad40f1",
-        "runtimeReviewSha256": "f88737900868ba6ec9875431f18b5324da819247180f0836980b5eb3fa0a4df3",
-        "imageReviewSha256": "f1601a1f929e5e5f5a1c740d318b63e0a9efbef5ad21034061fdc42d70f0de10",
-        "assetManifestSha256": "34ceabd6872c6774b4de7c48efa633c5099d57491a6b5e763ed5e4d108c457bc",
-        "sourceUploadManifestSha256": "ba35a7ab5943e0f663160752fec09e079e8728ce8eb8fc2adb299f26d825e2b8",
-        "actualSourceIndependentReview": "PASS_LOCAL_ACTUAL_SOURCE_AND_CONTROL",
-        "actualSourceReviewSha256": "56a1644d125bde1b88b3f504a88595bf49971d39bc8bb39b0470b28fafeea130"
-      },
-      "unfinishedStages": [
-        "approved_exact_source_dispatch",
-        "public_http_qa",
-        "IndexNow_receipt",
-        "GSC_submission",
-        "deferred_desktop_narrow_visual_qa"
-      ],
-      "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
-      "searchSubmissionIntent": {
-        "action": "submit_sitemap_after_verified_public_release_and_durable_IndexNow_receipt",
-        "siteUrl": "sc-domain:fwith.kr",
-        "sitemapUrl": "https://seoul-dobong.fwith.kr/sitemap-index.xml",
-        "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
-        "idempotencyKey": "seoul-dobong:gsc:14d2c27f04c6c3139ba027af33f988244375b91f",
-        "reuseExistingNormalSubmission": true
-      },
-      "validation": {
-        "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
-        "nodeVersion": "22.23.3",
-        "sourceTestsPassed": 70,
-        "publisherTestsPassed": 42,
-        "readbackHelperTestsPassed": 7,
-        "build": "PASS",
-        "static": "PASS",
-        "graph": "PASS",
-        "normalHtmlRoutes": 6,
-        "articleCount": 4,
-        "sitemapUrls": 6,
-        "remoteFullReadback": "72/72 full bytes and Git blob SHA verified via official connected fetch_file base64",
-        "remoteReadbackSha256": "ed73fc7783e931ef6f7ecaac5a8a68088180fa36754c05aef9f213cd52c23e88",
-        "exactSourceVerificationSha256": "36114e08ea1eea14b1aea1f49b08574982c63ff6f9475bb4eae54480c2c50297",
-        "screenQa": "DEFERRED_BY_USER_NOT_PASS"
-      },
-      "lastSuccessfulStage": "exact_source_remote_readback_build_and_control_saved",
-      "controlRevision": "7f4f8784de7584266dd8c9be4437d8015d66bbd4",
-      "approval": {
-        "state": "required",
-        "action": "Run workflow for exact reviewed Dobong initial publication with indexnow_only=false",
-        "target": {
-          "workflow": ".github/workflows/seoul-dobong-direct-publish.yml",
-          "ref": "main",
-          "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
-          "worker": "seoul-dobong-flower-guide",
-          "hostname": "seoul-dobong.fwith.kr"
-        },
-        "reason": "Service action review requires explicit approval for the fixed provider publication step.",
-        "scope": "Publish reviewed static bytes using existing configured credentials and fixed hostname no-override path; no credential, permission, security, DNS ownership, payment or contract changes.",
-        "observedAt": "2026-10-11T12:28:00.634Z",
-        "runCreated": false,
-        "runReadback": {
-          "uiWorkflowRunCount": 0,
-          "recent30MatchingRuns": 0
-        },
-        "resumeAction": "Revalidate exact source and reviewed controls, then retry the same official final Run workflow click once after authorization evidence; do not select indexnow_only as a workaround."
-      }
-    }
-  ],
+  "waitingApproval": [],
   "deferredVisualQa": [
     {
       "scopeKey": "hanam-direct-initial-20261010",
@@ -15892,6 +16071,93 @@
       "followupStatus": "pending_batch_visual_review",
       "requiresExactHostedSourceRecomparison": true,
       "independentReleaseReviewSha256": "d29a3040e37f83d48b28ed9dbba5e6daf512b3cf9877b60c7ac7d17293403742"
+    },
+    {
+      "scopeKey": "seoul-dobong-direct-initial-20261011",
+      "city": "서울특별시 도봉구",
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-seoul-dobong-direct",
+        "root": "site-factory/seoul-dobong-flower",
+        "worker": "seoul-dobong-flower-guide",
+        "hostname": "seoul-dobong.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true,
+        "sourceBranchBaseRevision": "9badfbf6a04a8b94892c4dc1e936e546ca15320b"
+      },
+      "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+      "controlRevision": "3c0bb5c0f2ce1f74a4d314f7c6a1549e9cc85175",
+      "articleOriginalN": 4,
+      "approvedArticleCount": 4,
+      "deferredArticleCount": 0,
+      "runId": 38139787860,
+      "publicUrl": "https://seoul-dobong.fwith.kr",
+      "status": "DEFERRED_BY_USER_NOT_PASS",
+      "desktopWidth": 1181,
+      "narrowWidth": 400,
+      "routesNotYetViewed": [
+        "https://seoul-dobong.fwith.kr/",
+        "https://seoul-dobong.fwith.kr/regions/",
+        "https://seoul-dobong.fwith.kr/regions/banghak-dong-dokkaebi-market-opening-wreath/",
+        "https://seoul-dobong.fwith.kr/regions/chang-dong-dobong-harmony-hall-congrats-wreath/",
+        "https://seoul-dobong.fwith.kr/regions/dobong-dong-peace-culture-bunker-exhibition-wreath/",
+        "https://seoul-dobong.fwith.kr/regions/ssangmun-dong-hanil-hospital-funeral-wreath/",
+        "https://seoul-dobong.fwith.kr/404/"
+      ],
+      "itemsNotYetVerified": [
+        "layout",
+        "overflow",
+        "text wrapping",
+        "image presentation",
+        "CTA clickability at desktop and narrow widths"
+      ],
+      "sourceAndImageDigests": {
+        "articles": "9f10e463b10c45522f6bdc009a34debbf67b914f8072b144d5d05fb74ad4e20d",
+        "imageManifest": "34ceabd6872c6774b4de7c48efa633c5099d57491a6b5e763ed5e4d108c457bc"
+      },
+      "http": "PASS",
+      "indexnowReceipt": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6109080923",
+      "gsc": {
+        "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+        "submit": {
+          "siteUrl": "sc-domain:fwith.kr",
+          "attempted": 1,
+          "submitted": 1,
+          "failed": 0,
+          "results": [
+            {
+              "sitemapUrl": "https://seoul-dobong.fwith.kr/sitemap-index.xml",
+              "accepted": true,
+              "confirmed": true,
+              "lastSubmitted": "2026-10-11T12:39:48.361Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+          "actions": [
+            "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+          ]
+        },
+        "submitObservedAt": "2026-10-11T12:39:48.556Z",
+        "readbackObservedAt": "2026-10-11T12:39:56.526Z",
+        "listReadback": [
+          {
+            "path": "https://seoul-dobong.fwith.kr/sitemap-index.xml",
+            "lastSubmitted": "2026-10-11T12:39:48.361Z",
+            "isPending": true,
+            "isSitemapsIndex": false,
+            "warnings": "0",
+            "errors": "0"
+          }
+        ]
+      },
+      "lastObservedAt": "2026-10-11T12:39:56.526Z",
+      "screenFailureObserved": false,
+      "visualRootCauseUnconfirmed": true,
+      "followupStatus": "pending_batched_visual_review"
     }
   ],
   "releasedKnownHosts": [
@@ -15916,7 +16182,8 @@
     "seoul-jungnang.fwith.kr",
     "seoul-seongbuk.fwith.kr",
     "seoul-dongdaemun.fwith.kr",
-    "seoul-gangbuk.fwith.kr"
+    "seoul-gangbuk.fwith.kr",
+    "seoul-dobong.fwith.kr"
   ],
   "nationalPlan": {
     "schemaVersion": 1,
@@ -15936,14 +16203,14 @@
       "Historical visual deferrals and held articles are maintenance backlogs, not erased by geographic release progression.",
       "Reverify official effective changes before choosing later units; do not mutate historical denominator silently."
     ],
-    "nextSelectedUnit": "11320",
+    "nextSelectedUnit": "11350",
     "path": "docs/direct-regional-release/national/fixed-plan.json",
     "independentReviewPath": "docs/direct-regional-release/national/independent-review.json",
     "progress": {
-      "releasedRegionCount": 40,
-      "remainingRegionCount": 190,
-      "lastReleasedOfficialCode": "11305",
-      "asOf": "2026-10-11T11:38:40.687Z",
+      "releasedRegionCount": 41,
+      "remainingRegionCount": 189,
+      "lastReleasedOfficialCode": "11320",
+      "asOf": "2026-10-11T12:43:42.116Z",
       "visualQaStillSeparate": true
     }
   },
@@ -15994,10 +16261,11 @@
     "owner": {
       "checkpointId": "regional-additions-20261011-owner-1229",
       "serviceInvocationId": null,
-      "active": true,
+      "active": false,
       "startedAt": "2026-10-11T12:30:07.118Z",
       "priorOwnerActualStopConfirmedAt": "2026-10-11T12:28:31.912Z",
-      "executionState": "gwangmyeong_reviewed_addition_save_and_publish"
+      "executionState": "yielded_after_gwangmyeong_dispatch_readonly_qa",
+      "actualWriteStopConfirmedAt": "2026-10-11T12:33:50.987Z"
     },
     "current": {
       "region": "gwangmyeong",
