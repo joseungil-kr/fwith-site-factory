@@ -1,0 +1,359 @@
+{
+  "verdict": "PASS_LOCAL_RUNTIME_GUARDS_ONLY",
+  "reviewedAt": "2026-10-11T06:27:55.527879+00:00",
+  "reviewerScope": "Independent code, exact baseline readback, digest, regression, synthetic build and fail-closed checks; not actual content, screen, remote-source or live-release approval.",
+  "sourceBaseline": {
+    "runtimeFiles": 57,
+    "controlFiles": 6,
+    "runtimeRevision": "73d92b941fcb3025321adc88f82179c914086551",
+    "controlRevision": "55c16c0d4c445470251c804e4f9c49183df39b9d"
+  },
+  "freshBaselineChecks": [
+    {
+      "label": "source",
+      "revision": "73d92b941fcb3025321adc88f82179c914086551",
+      "files": 57,
+      "freshConnectorTreeSha256": "7cea9701c50a7f038ec552ec8be385aac809679f97b7d3d27691088229d00396"
+    },
+    {
+      "label": "control",
+      "revision": "55c16c0d4c445470251c804e4f9c49183df39b9d",
+      "files": 6,
+      "freshConnectorTreeSha256": "14d75947ff39d25c7ae216869d92aa51b3d06e77a76f39d9abf4dc48e96487bb"
+    }
+  ],
+  "authorCoreFiles": [
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/generate_seongbuk.py",
+      "sha256": "a48709f6bb2ce92241b69dc0c49a415acfcd1d47e94419bceb7f88d81b7a8960",
+      "bytes": 40478
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/product_asset_substitution.py",
+      "sha256": "3cbf5e950584c3a2b5e46c6118638b3909ad0df4cbce22d1ea80c887aa67ab32",
+      "bytes": 6077
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/direct-source-test-template.mjs",
+      "sha256": "7f51e780b423febfb9eec02e585748875b0bb0775d92dca8267ba44cab2e8369",
+      "bytes": 11777
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/test_generate_seongbuk.py",
+      "sha256": "a290b8cf0b2833d14b44c425f659397ab0c41e631f109a1c6459cddee8f72b25",
+      "bytes": 18684
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/test_product_asset_substitution.py",
+      "sha256": "885a81e17aa0d3d0b45bd09a4467f00a949f80006c0b0bbf2b40ea26130ab47f",
+      "bytes": 5436
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/test_readback_helpers.py",
+      "sha256": "596c36e9bbd0c19e3e3cd4fd97764436f659b5b07a308c654612b116ce73adca",
+      "bytes": 4775
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/test_official_membership.py",
+      "sha256": "5797c953b9307263f7e358bb452228b3e3d68ac3a62d4a13a1889a75b414577a",
+      "bytes": 2391
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/run_fixture_builds.py",
+      "sha256": "7c5f5729c4ac9b407d680c92aa10538a36bf9f560719f3a29814991d56ee0af1",
+      "bytes": 3204
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/prepare_release_meta.py",
+      "sha256": "84c4589b79ffb35c60a616b25998a72bda3b0470709c3210015987673036389d",
+      "bytes": 4283
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/verify_actual_source.py",
+      "sha256": "68add33ab379440118f069650f32fde926e1cac594d4eda264acd67e72a51589",
+      "bytes": 3571
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/verify_loopback.py",
+      "sha256": "1322f97314f4187f209c26114c59ddb2eb52ac6ca5b74a7c115cede5d174c623",
+      "bytes": 5321
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/verify_remote_exact_source.py",
+      "sha256": "3acc29ba6ce411141d771b2a3ba97c5de2ae3dbe45afe63c6ea67f2dc4a1efcb",
+      "bytes": 2615
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/verify_remote_readback.py",
+      "sha256": "259d991410eac9845be890909248bf8be46f35a368e2ab78a867ade1f9d6faed",
+      "bytes": 2985
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/readback_all_blobs.py",
+      "sha256": "bd7627fe06c579f87344cefad38a29b8bda818001399185397081bd050008c3d",
+      "bytes": 3592
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/readback_binary_blobs.py",
+      "sha256": "a4c5fa296d50125799ea7ce1da8b0b98f6a549defa01c3530bec70d8c305718b",
+      "bytes": 1029
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/fixture_membership.py",
+      "sha256": "5dffa5e64be15d87755a1782410bf6010cbd9c32862a374f6fc08fbba70dfada",
+      "bytes": 1516
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/coverage-input.json",
+      "sha256": "224d6a9e6fb07cad71baa125996eb3ad1a936e08d4a96eb3b0dcbec2367a08a2",
+      "bytes": 38561
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/article-assembly-contract.json",
+      "sha256": "c57c141bcb4b3010bc9575331134a3612bdd91866212244ab3c7e58b5819866e",
+      "bytes": 4599
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/catalog-fresh-observations.json",
+      "sha256": "8400e72008d81eb03b30ee8205e92dab4e636edc3ad3245d8f3073bfab7f8af4",
+      "bytes": 6931
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/catalog-meta-input.json",
+      "sha256": "06d0d82f8d972977166e79b1270d7348e4391342383c6a57e8df675c9888c0f2",
+      "bytes": 3028
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/product-image-readback.json",
+      "sha256": "865cdb41e39e9e3f438e1a4559de958fc9bf8ffbe09edea4a278976ec9fe4241",
+      "bytes": 20749
+    },
+    {
+      "path": "/workspace/shared/seongbuk-build-20261011/product-image-substitution-manifest.json",
+      "sha256": "1a9d694f01edab91b6d378ed18e4edc1e7f65828431e474ed03a66f6f8e076d2",
+      "bytes": 8680
+    }
+  ],
+  "authorCoreManifestSha256": "ccff06da40c54dd37f8e3631cdbff4fca0ceb57b1803b54384e5628d7b649475",
+  "directSourceOriginalBlob": "b9ff97ff547f323ec5a614e9d3f99e2b2cd55bca",
+  "directSourceRegressionPatchSha256": "3093cb3744c78396acaeea037f9c6eb205425e86119d659222d4bfa87ade208d",
+  "noSourceTestRemoved": true,
+  "sharedRuntimeByteIdenticalFiles": [
+    ".gitignore",
+    "package.json",
+    "package-lock.json",
+    "astro.config.mjs",
+    "tsconfig.json",
+    "scripts/qa_static.py",
+    "scripts/assert_preview_boundary.mjs",
+    "scripts/write_response_headers.mjs",
+    "scripts/write_build_revision.mjs",
+    "scripts/qa_graph.mjs",
+    "scripts/qa_bootstrap_or_graph.mjs",
+    "scripts/qa_intent.mjs",
+    "public/_headers",
+    "public/favicon.svg",
+    "tests/social-image.test.mjs",
+    "tests/journey-contract.test.mjs",
+    "tests/regions-template.test.mjs",
+    "tests/visual.test.mjs",
+    "tests/purchase-banner-contract.test.mjs",
+    "tests/answer-opening.test.mjs",
+    "tests/sources.test.mjs",
+    "tests/catalog.test.mjs",
+    "src/lib/hubs.mjs",
+    "src/lib/social-image.mjs",
+    "src/lib/regional-runtime.mjs",
+    "src/lib/catalog.mjs",
+    "src/lib/sources.mjs",
+    "src/lib/journey.mjs",
+    "src/lib/content.mjs",
+    "src/lib/regions.mjs",
+    "src/lib/visual.mjs",
+    "src/layouts/BaseLayout.astro",
+    "src/data/business-truth.json",
+    "src/data/editorial-assets.json",
+    "src/data/products.json",
+    "src/components/RegionDirectory.astro",
+    "src/components/ProductCards.astro",
+    "src/components/InlineText.astro",
+    "src/components/InlineOrderBanner.astro",
+    "src/components/MarkdownContent.astro",
+    "src/styles/global.css",
+    "src/config/site.ts",
+    "src/pages/404.astro",
+    "src/pages/robots.txt.ts",
+    "src/pages/index.astro",
+    "src/pages/[category]/[slug].astro",
+    "public/images/editorial/opening-wreath-illustration-v1.webp",
+    "public/images/products/congrats-xl.jpg",
+    "public/images/products/funeral-large.jpg",
+    "public/images/products/funeral-premium.jpg",
+    "public/images/products/congrats-basic.jpg",
+    "public/images/products/congrats-large.jpg",
+    "public/images/products/funeral-basic.jpg",
+    "public/images/products/funeral-xl.jpg",
+    "public/images/products/congrats-premium.jpg"
+  ],
+  "changedRuntimeFiles": [
+    "wrangler.jsonc",
+    "src/pages/[category]/index.astro"
+  ],
+  "regressions": {
+    "pythonTests": 44,
+    "additionalIndependentAssetCases": 24,
+    "sourceTestsPerFixture": 68,
+    "publisherTestsPerFixture": 42
+  },
+  "fixtures": [
+    {
+      "fixtureOnly": true,
+      "n": 3,
+      "held": 0,
+      "approved": 3,
+      "normalRoutes": 5,
+      "output": "/workspace/shared/seongbuk-runtime-review-20261011/snapshot/fixtures-final/n3-held0",
+      "checks": [
+        {
+          "check": "npm-ci",
+          "exitCode": 0,
+          "log": "/workspace/shared/seongbuk-runtime-review-20261011/snapshot/fixture-final-n3-held0-npm-ci.log"
+        },
+        {
+          "check": "source-tests",
+          "exitCode": 0,
+          "log": "/workspace/shared/seongbuk-runtime-review-20261011/snapshot/fixture-final-n3-held0-source-tests.log"
+        },
+        {
+          "check": "build-static-graph",
+          "exitCode": 0,
+          "log": "/workspace/shared/seongbuk-runtime-review-20261011/snapshot/fixture-final-n3-held0-build-static-graph.log"
+        }
+      ],
+      "productionIndexableBuildBlocked": true
+    },
+    {
+      "fixtureOnly": true,
+      "n": 6,
+      "held": 0,
+      "approved": 6,
+      "normalRoutes": 8,
+      "output": "/workspace/shared/seongbuk-runtime-review-20261011/snapshot/fixtures-final/n6-held0",
+      "checks": [
+        {
+          "check": "npm-ci",
+          "exitCode": 0,
+          "log": "/workspace/shared/seongbuk-runtime-review-20261011/snapshot/fixture-final-n6-held0-npm-ci.log"
+        },
+        {
+          "check": "source-tests",
+          "exitCode": 0,
+          "log": "/workspace/shared/seongbuk-runtime-review-20261011/snapshot/fixture-final-n6-held0-source-tests.log"
+        },
+        {
+          "check": "build-static-graph",
+          "exitCode": 0,
+          "log": "/workspace/shared/seongbuk-runtime-review-20261011/snapshot/fixture-final-n6-held0-build-static-graph.log"
+        }
+      ],
+      "productionIndexableBuildBlocked": true
+    },
+    {
+      "fixtureOnly": true,
+      "n": 10,
+      "held": 1,
+      "approved": 9,
+      "normalRoutes": 11,
+      "output": "/workspace/shared/seongbuk-runtime-review-20261011/snapshot/fixtures-final/n10-held1",
+      "checks": [
+        {
+          "check": "npm-ci",
+          "exitCode": 0,
+          "log": "/workspace/shared/seongbuk-runtime-review-20261011/snapshot/fixture-final-n10-held1-npm-ci.log"
+        },
+        {
+          "check": "source-tests",
+          "exitCode": 0,
+          "log": "/workspace/shared/seongbuk-runtime-review-20261011/snapshot/fixture-final-n10-held1-source-tests.log"
+        },
+        {
+          "check": "build-static-graph",
+          "exitCode": 0,
+          "log": "/workspace/shared/seongbuk-runtime-review-20261011/snapshot/fixture-final-n10-held1-build-static-graph.log"
+        }
+      ],
+      "productionIndexableBuildBlocked": true
+    }
+  ],
+  "publisherChecks": [
+    {
+      "n": 3,
+      "held": 0,
+      "tests": 42,
+      "exitCode": 0,
+      "log": "/workspace/shared/seongbuk-runtime-review-20261011/independent-publisher-final-n3-held0.log",
+      "logSha256": "8c3a55923519aa8b4a4d22385dd86bc479322d6d46581322dac0cfd18f85efcd",
+      "workflowOnlyNameAndCountChanges": true,
+      "publisherOnlyNameAndRouteChanges": true,
+      "allOriginalTestsRetained": true
+    },
+    {
+      "n": 6,
+      "held": 0,
+      "tests": 42,
+      "exitCode": 0,
+      "log": "/workspace/shared/seongbuk-runtime-review-20261011/independent-publisher-final-n6-held0.log",
+      "logSha256": "3454ace5df41a4138d9ddf17e3f5de6a3c6bd9d9ef0ae81cc91566817ae1c43e",
+      "workflowOnlyNameAndCountChanges": true,
+      "publisherOnlyNameAndRouteChanges": true,
+      "allOriginalTestsRetained": true
+    },
+    {
+      "n": 10,
+      "held": 1,
+      "tests": 42,
+      "exitCode": 0,
+      "log": "/workspace/shared/seongbuk-runtime-review-20261011/independent-publisher-final-n10-held1.log",
+      "logSha256": "76e29d391ba04214d2e2c3b6d21355aa6e4f1941b0766f51460ee65e1c01542b",
+      "workflowOnlyNameAndCountChanges": true,
+      "publisherOnlyNameAndRouteChanges": true,
+      "allOriginalTestsRetained": true
+    }
+  ],
+  "officialMembership": {
+    "legalUnits": 39,
+    "administrativeUnits": 20,
+    "relations": 53,
+    "partialRelations": 19,
+    "countIsPageQuota": false
+  },
+  "imageInputChecks": {
+    "products": 8,
+    "freshManifestSha256": "1a9d694f01edab91b6d378ed18e4edc1e7f65828431e474ed03a66f6f8e076d2",
+    "freshReadbackSha256": "865cdb41e39e9e3f438e1a4559de958fc9bf8ffbe09edea4a278976ec9fe4241",
+    "sameSkuSourceAssociationAndBytesValidated": true,
+    "pinnedPreviousBytesMatchFreshOfficialPhotos": true,
+    "independentPixelApprovalRequiredBeforeActualAssembly": true
+  },
+  "safety": {
+    "credentialFreeOfflineNode22Builds": true,
+    "syntheticMembershipAndReviewBlockedForProduction": true,
+    "syntheticIndexableBuildBlocked": true,
+    "priorCustomerCollectionsNotCopied": true,
+    "exactBranchAndArtifactDigestGuards": true,
+    "providerPreflightReadbackGetOnly": true,
+    "fixedHostnameAttachOverridesAllFalse": true,
+    "receipt200And202ReuseGuard": true,
+    "unknownOutcomeBlocksSecondPost": true,
+    "sameFingerprint403BlocksSecondPost": true,
+    "dispatchOnlyNoStoppedFactoryTrigger": true,
+    "externalWritesPerformed": false
+  },
+  "findings": [],
+  "remainingGates": [
+    "Reviewed actual plan/articles/image metadata assembly",
+    "Independent exact actual-source production build/package/loopback",
+    "Fresh exact remote source/control blob readback before dispatch",
+    "Live provider/HTTP/revision/assets/real 404 and IndexNow receipt review"
+  ]
+}

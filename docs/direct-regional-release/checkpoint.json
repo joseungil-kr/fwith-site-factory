@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T06:34:53.438Z",
+  "updatedAt": "2026-10-11T09:46:54.542Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-seongbuk-direct-initial-20261011",
     "city": "서울특별시 성북구",
-    "status": "fixed_plan_reviewed_before_authoring",
+    "status": "reviewed_source_saved_remote_verification_in_progress",
     "owner": {
       "scheduledRunAt": "2026-10-11T06:00:00Z",
       "observedExecutionAt": "2026-10-11T06:17:17.505Z",
@@ -51,7 +51,9 @@
       "root": "site-factory/seoul-seongbuk-flower",
       "worker": "seoul-seongbuk-flower-guide",
       "hostname": "seoul-seongbuk.fwith.kr",
-      "externalCreationVerified": false
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": true,
+      "sourceBranchBaseRevision": "b9f1db6241aec100b0987987b4a6d35ab5729934"
     },
     "selection": {
       "officialCode": "11290",
@@ -72,16 +74,11 @@
       }
     },
     "changeIntent": {
-      "action": "save_frozen_plan_then_create_separate_source_branch_and_author_reviewed_content",
-      "idempotencyKey": "seoul-seongbuk:freeze:6bf4b15b14c0ef31c63738e40197b49b559580422132334b21c05ce79d89f89b"
+      "action": "install_fixed_direct_workflow_then_dispatch_once_exact_reviewed_source_after_remote_integrity_gate",
+      "idempotencyKey": "seoul-seongbuk:publish:66fa85dcd7696b66a85abec1d9496a92e3c9ed17"
     },
     "unfinishedStages": [
-      "official_research",
-      "fixed_plan",
-      "authored_content",
-      "independent_review",
-      "source_save",
-      "build",
+      "remote_integrity_gate",
       "deploy",
       "http",
       "indexnow",
@@ -93,7 +90,12 @@
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
       "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
       "imageReviewSha256": "067dcbf8baf68f6716ff1554bf9b8bc36f711c53e25b54d5477a5c58906a3e3a",
-      "planReviewSha256": "441cba1d85de5257090b73c7baf3559816210835b1d66ca653864679a6559d45"
+      "planReviewSha256": "441cba1d85de5257090b73c7baf3559816210835b1d66ca653864679a6559d45",
+      "contentStatus": "PASS",
+      "articlesSha256": "19178fe56df7f2597877b5a3bfa5a3af690baf756436c6036deb0780d560860b",
+      "independentReviewSha256": "6db8c2c6fff004f577082d5410ef865bc980d464f7a317ec98d96941d24caa99",
+      "runtimeStatus": "PASS_LOCAL_ACTUAL_BUILD_REMOTE_READBACK_PENDING",
+      "runtimeReviewSha256": "ce7a07912620e2b10e9c9443593dc65da8bea4587a0a3fd6aae4d8da57853dd3"
     },
     "plan": {
       "state": "frozen_before_authoring_independent_plan_pass",
@@ -112,21 +114,44 @@
           "slug": "anam-dong-5ga-korea-anam-funeral-wreath",
           "title": "고려대학교 안암병원 장례식장 근조화환 주문",
           "primaryKeyword": "고려대학교 안암병원 장례식장 근조화환 주문",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass"
         },
         {
           "slug": "seongbuk-dong-samcheonggak-wedding-wreath",
           "title": "삼청각 전통혼례 축하화환 주문",
           "primaryKeyword": "삼청각 전통혼례 축하화환 주문",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass"
         },
         {
           "slug": "dongsomun-dong-5ga-donam-market-opening-wreath",
           "title": "돈암시장 개업 축하화환 주문",
           "primaryKeyword": "돈암시장 개업 축하화환 주문",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass"
         }
-      ]
+      ],
+      "planFreezeRevision": "52c339003aef4a952012b44666ec7b3ac015d166",
+      "approvedArticleCount": 3,
+      "deferredArticleCount": 0
+    },
+    "sourceRevision": "66fa85dcd7696b66a85abec1d9496a92e3c9ed17",
+    "validation": {
+      "nodeVersion": "22.23.3",
+      "sourceTestsPassed": 68,
+      "publisherTestsPassed": 42,
+      "build": "PASS",
+      "static": "PASS",
+      "graph": "PASS",
+      "normalHtmlRoutes": 5,
+      "articleCount": 3,
+      "sitemapUrls": 5,
+      "localLoopback": "PASS",
+      "remoteFullReadback": "PENDING",
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+    },
+    "publication": {
+      "status": "not_dispatched",
+      "dispatchAcceptedCount": 0,
+      "url": "https://seoul-seongbuk.fwith.kr"
     }
   },
   "history": [
@@ -6723,7 +6748,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Complete official Seongbuk research and freeze independently reviewed unique purchase-intent plan before authoring.",
+  "nextAction": "Finish exact remote byte readback and credentialless exact source build, then official fixed direct workflow once.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
