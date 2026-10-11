@@ -1,0 +1,33 @@
+{
+  "scopeKey": "seoul-gangbuk-direct-initial-20261011",
+  "representativeAssignment": "facility-purchase-context-v1",
+  "baseRuntimeRevision": "66fa85dcd7696b66a85abec1d9496a92e3c9ed17",
+  "pristineRegionsSha256": "59421a639f73ab10da4516ce069c8ab46dfa75ac3ad3a660847b8b647e0ed489",
+  "implementationSha256": {
+    "generate_gangbuk.py": "7727c2f6470aa45f0eb55f573ad8abdfd83e397ac08292e0eb32089c5fb77017",
+    "prepare_release_meta.py": "b42e9c9c3d481886e176e0004e311d72ca85ad2e614cc5f4065df02cd7f74409",
+    "test_generate_gangbuk.py": "15a71558c6d3dc6f913820da98deca736c52f354e9258eb7c4313b7e61a754ae",
+    "facility_context_contract.py": "b531c973401236577e5b27f4cdd58c10bbb9ac8df62400432be4c9c6f7a9e21e",
+    "direct-source-test-template.mjs": "5b8142a2933e547dc04588ce8501012ba9554d71a26fc741f1f6e203b733a7c0",
+    "runtime-overrides/regions.mjs": "83468ad9954362247054fd35013d8eee5fec260998e3d89c33d323f66736e321",
+    "runtime-overrides/facility-context.test.mjs": "1aded51605b80ea38e8f48da8e22560992f49a49c4c07ff58a061ef1fa1f46a7",
+    "test_facility_context_contract.py": "f72d9f222a1d1a75d990c2f4c1d840065e79a1d638f171f4cff121d014acd277"
+  },
+  "verdict": "PASS",
+  "canUseRuntimeContract": true,
+  "reviewer": "root-independent-non-author",
+  "reviewedAt": "2026-10-11T11:07:16.437317+00:00",
+  "fixtureOnly": false,
+  "implementationManifestSha256": "34a57c09aebf98f4f4b10d26838d5c91abf1b21075046036a30b1300fa1ff65b",
+  "checks": [
+    "Read strict facility source/address identity and canonical context validator",
+    "Read pristine-to-Gangbuk regional validator full diff; opt-in exactscope and defaultlegacy guard retained",
+    "Read assembler review/source/plan/product binding and release metadata gates",
+    "Independently reran Python context+imported baseline35 tests PASS and Node22 context25 PASS",
+    "Inspected synthetic N5/N10-held1 build reports; fixtures cannot authorize production"
+  ],
+  "remaining": [
+    "Real source build/static/graph regression and exact remote readback still required",
+    "Provider collision/nooverride and live QA/receipt remain mandatory"
+  ]
+}

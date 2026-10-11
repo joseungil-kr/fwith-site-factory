@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T11:01:08.609Z",
+  "updatedAt": "2026-10-11T11:08:06.594Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-gangbuk-direct-initial-20261011",
     "city": "서울특별시 강북구",
-    "status": "fixed_plan_before_authoring",
+    "status": "reviewed_content_actual_assembly_and_source_save_intent",
     "owner": {
       "scheduledRunAt": "2026-10-11T10:00:00Z",
       "observedExecutionAt": "2026-10-11T10:48:09.269Z",
@@ -50,7 +50,9 @@
       "root": "site-factory/seoul-gangbuk-flower",
       "worker": "seoul-gangbuk-flower-guide",
       "hostname": "seoul-gangbuk.fwith.kr",
-      "externalCreationVerified": false
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": true,
+      "sourceBranchBaseRevision": "3f5485cccfa253c0855bbdb6505245a5ccdc0e20"
     },
     "selection": {
       "officialCode": "11305",
@@ -78,8 +80,10 @@
       }
     },
     "changeIntent": {
-      "action": "freeze_plan_before_authoring_then_create_fixed_source_branch",
-      "idempotencyKey": "seoul-gangbuk:plan:ba508ecf992014057692011fa5b6b4afc17d2c746aaf841c37bf1a38f6adacd0"
+      "action": "assemble_test_and_save_exact_reviewed_gangbuk_source_without_force",
+      "targetBranch": "site-factory-seoul-gangbuk-direct",
+      "expectedBranchHead": "3f5485cccfa253c0855bbdb6505245a5ccdc0e20",
+      "idempotencyKey": "seoul-gangbuk:source:ef77d4d011c6180c7003d6d5efd5fcc77c9f688ec69f903997dc976215388aa2"
     },
     "plan": {
       "state": "frozen_before_authoring_independent_plan_pass",
@@ -103,7 +107,7 @@
           "unitKey": "강북구/법정동/수유동",
           "facilityKey": "daehan-hospital-funeral",
           "purchaseIntentKey": "funeral-condolence-wreath",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_not_published"
         },
         {
           "slug": "mia-dong-the-victoria-wedding-wreath",
@@ -112,7 +116,7 @@
           "unitKey": "강북구/법정동/미아동",
           "facilityKey": "the-victoria-wedding-party",
           "purchaseIntentKey": "wedding-congrats-wreath",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_not_published"
         },
         {
           "slug": "ui-dong-anto-wedding-wreath",
@@ -121,7 +125,7 @@
           "unitKey": "강북구/법정동/우이동",
           "facilityKey": "anto-resort",
           "purchaseIntentKey": "wedding-congrats-wreath",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_not_published"
         },
         {
           "slug": "suyu-dong-suyu-market-opening-wreath",
@@ -130,7 +134,7 @@
           "unitKey": "강북구/법정동/수유동",
           "facilityKey": "suyu-market",
           "purchaseIntentKey": "opening-congrats-wreath",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_not_published"
         },
         {
           "slug": "suyu-dong-gangbuk-arts-congratulation-wreath",
@@ -139,15 +143,14 @@
           "unitKey": "강북구/법정동/수유동",
           "facilityKey": "gangbuk-culture-arts-center",
           "purchaseIntentKey": "event-congrats-wreath",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_not_published"
         }
-      ]
+      ],
+      "planFreezeRevision": "3f5485cccfa253c0855bbdb6505245a5ccdc0e20",
+      "approvedArticleCount": 5,
+      "deferredArticleCount": 0
     },
     "unfinishedStages": [
-      "official_research",
-      "fixed_plan",
-      "original_authoring",
-      "independent_review",
       "source_save",
       "build_static_graph",
       "formal_publish",
@@ -160,7 +163,14 @@
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
       "planReviewSha256": "649d5608070907807b02712c79c366aac31a6b7f40ff2dad27e166b380e20d7f",
       "imageReviewSha256": "d8f8731f283ce3acb2d333ab5d303ebb016a501e6def04f6955ebcb3914290e6",
-      "screenQa": "DEFERRED_NOT_PASS"
+      "screenQa": "DEFERRED_NOT_PASS",
+      "contentStatus": "PASS",
+      "articlesSha256": "ef77d4d011c6180c7003d6d5efd5fcc77c9f688ec69f903997dc976215388aa2",
+      "independentReviewSha256": "9c4aa3bc1d101e81fb3410a624076d064821e73a1d87d152a4de5e39ee5aa04c",
+      "contentRevision": 2,
+      "runtimeContractStatus": "PASS_INDEPENDENT_IMPLEMENTATION_REVIEW",
+      "runtimeContractReviewSha256": "ac690bdcbaa331ab7d5a5e07e9f53ced719de8bee8ec9461aa227cd9e47a7fec",
+      "runtimeContractImplementationSha256": "34a57c09aebf98f4f4b10d26838d5c91abf1b21075046036a30b1300fa1ff65b"
     }
   },
   "history": [
