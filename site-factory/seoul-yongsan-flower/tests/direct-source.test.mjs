@@ -58,7 +58,7 @@ test('directory links only reviewed planned articles and retains an honest unwri
  assert.equal(new Set(entries.flatMap(e=>e.representative.unitKeys)).size,expected.approved.length);
  for(const entry of entries)assert.deepEqual(entry.page.regionUnitKeys,entry.representative.unitKeys);
  const source=fs.readFileSync(new URL('../src/components/RegionDirectory.astro',import.meta.url),'utf8');
- assert.match(source,/개별 안내 준비 중/);assert.match(source,/관할 목록과 개별 주문 안내의 범위는 다릅니다/);
+ assert.match(source,/개별 안내 준비 중/);assert.match(source,/장소별 안내가 없는 곳은/);assert.match(source,/실제 전달 가능 여부는 주문하실 주소와 일정에 따라 상담/);
  assert.match(source,/법정동 \{coverage.units.length\}개와 행정동 \{coverage.administrativeCrosswalk.length\}개/);assert.match(source,/relation.scope==='partial'/);
  assert.doesNotMatch(source,/양평|읍·면별/);
 });
