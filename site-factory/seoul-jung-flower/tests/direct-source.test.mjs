@@ -108,7 +108,7 @@ test('every reviewed comparison renders four exact family products and truthful 
   assert.equal(p.productCardLimit,4);assert.equal(p.productCardKeys.length,4);
   assert.deepEqual(selectProducts(p,products,p.productCardLimit).map(x=>x.key),p.productCardKeys);
   assert.deepEqual(p.productCardKeys,p.regionalProductKeys);
-  assert.match(p.contentMarkdown,/추가 배송비|추가배송비|배송비/);
+  assert.match(p.contentMarkdown+' '+read('business-truth').deliveryNotice,/추가 배송비|추가배송비|배송비/); assert.ok(fs.readFileSync(new URL('../src/components/ProductCards.astro',import.meta.url),'utf8').includes('{site.deliveryNotice}'));
  }
 });
 test('complete assembled graph and reviewed HTTPS source arrays pass unchanged shared validators',()=>{
