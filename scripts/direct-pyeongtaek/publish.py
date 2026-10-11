@@ -27,7 +27,17 @@ HOSTNAME = 'pyeongtaek.fwith.kr'
 ORIGIN = 'https://' + HOSTNAME
 WORKER = 'pyeongtaek-flower-prod-disabled'
 SLUGS = '''anjung-eup bijeon-dong cheongbuk-eup cheongnyong-dong chilgoe-dong doil-dong dokgok-dong dongsak-dong gajae-dong godeok-dong godeok-myeon gunmun-dong hapjeong-dong hyeondeok-myeon ichung-dong jangan-dong jangdang-dong jije-dong jinwi-myeon jisan-dong jukbaek-dong mogok-dong oseong-myeon paengseong-eup poseung-eup pyeongtaek-dong segyo-dong seojeong-dong seotan-myeon sindae-dong sinjang-dong sosa-dong tongbok-dong yongi-dong yucheon-dong'''.split()
-ROUTES = {'/', '/regions/'} | {'/regions/' + slug + '/' for slug in SLUGS}
+REGION_ROUTES = {'/regions/' + slug + '/' for slug in SLUGS}
+UPDATE_ROUTES = {'/event/pyeongtaek-art-center-performance-wreath/'}
+ARTICLE_ROUTES = REGION_ROUTES | UPDATE_ROUTES
+SITEMAP_ROUTES = {'/', '/regions/'} | ARTICLE_ROUTES
+THIN_HUB_ROUTES = {'/event/'}
+ROUTES = SITEMAP_ROUTES | THIN_HUB_ROUTES
+
+def expected_robots(route):
+    if route == '/404.html':
+        return {'noindex', 'nofollow', 'noarchive'}
+    return {'noindex', 'follow'} if route in THIN_HUB_ROUTES else {'index', 'follow'}
 DEFERRED = ['/regions/chilwon-dong/', '/regions/wolgok-dong/']
 LIMIT = 20 * 1024 * 1024
 
@@ -128,15 +138,15 @@ def artifact():
     manifest = json.loads(raw)
     require(manifest == dict(**identity(), files=inventory(root)), 'artifact_identity_or_digest_mismatch')
     files = manifest['files']; pages = []; assets = set()
-    expected_files = {'index.html', 'regions/index.html', '404.html'} | {'regions/' + s + '/index.html' for s in SLUGS}
-    require({p for p in files if p.endswith('.html')} == expected_files, 'exact_35_routes_mismatch')
+    expected_files = {'404.html'} | {route.lstrip('/') + 'index.html' for route in ROUTES}
+    require({p for p in files if p.endswith('.html')} == expected_files, 'exact_reviewed_routes_mismatch')
     for file in sorted(expected_files):
         p = Page((root / file).read_text())
         require(p.meta.get('site-factory-revision') == revision(), 'revision_mismatch')
         require(len(p.canon) == (0 if file == '404.html' else 1), 'canonical_count')
         route = '/' if file == 'index.html' else '/' + file.removesuffix('index.html')
-        expected_robots = {'noindex', 'nofollow', 'noarchive'} if file == '404.html' else {'index', 'follow'}
-        require(set(re.split(r'\s*,\s*', p.meta.get('robots', '').lower())) == expected_robots, 'robots_meta_mismatch')
+        robots = expected_robots('/404.html' if file == '404.html' else route)
+        require(set(re.split(r'\s*,\s*', p.meta.get('robots', '').lower())) == robots, 'robots_meta_mismatch')
         if file != '404.html':
             require(local_path(p.canon[0]) == route and route in ROUTES, 'canonical_mismatch')
             require('tel:18440644' in p.links and 'https://fwith.co.kr' in p.links, 'cta_mismatch')
@@ -147,7 +157,7 @@ def artifact():
                     require(path not in DEFERRED, 'deferred_link_published')
                     if not urlsplit(href).fragment and path.endswith('/'):
                         require(path in ROUTES, 'broken_internal_route')
-            pages.append(dict(file=file, path=route, url=p.canon[0]))
+            pages.append(dict(file=file, path=route, url=p.canon[0], robots=sorted(robots)))
         for asset in p.assets:
             require(asset.startswith('/') and not asset.startswith('//'), 'nonlocal_page_asset')
             path = local_path(ORIGIN + asset)
@@ -166,17 +176,17 @@ def artifact():
         doc = ET.fromstring((root / path.lstrip('/')).read_bytes())
         require(doc.tag.split('}')[-1] == 'urlset', 'wrong_sitemap_kind')
         urls.extend(n.text for n in doc.iter() if n.tag.split('}')[-1] == 'loc')
-    require(len(urls) == len(set(urls)) and {local_path(u) for u in urls} == ROUTES, 'sitemap_exact_37_urls_mismatch')
+    require(len(urls) == len(set(urls)) and {local_path(u) for u in urls} == SITEMAP_ROUTES, 'sitemap_exact_reviewed_urls_mismatch')
     ownership = [p for p in root.glob('*.txt') if re.fullmatch(r'[A-Za-z0-9-]{8,128}', p.stem)
                  and p.read_text().strip() == p.stem]
     require(len(ownership) == 1, 'ownership_file_missing_or_ambiguous')
     for parent in [release.resolve(), *release.resolve().parents]:
         require(not (parent / '.wrangler/deploy/config.json').exists(), 'wrangler_config_redirect')
     save('http-contract.json', dict(origin=ORIGIN, revision=revision(), pages=pages, assets=sorted(assets),
-                                   sitemaps=['/sitemap-index.xml', *maps], ownershipFile=ownership[0].name, files=files))
+                                   sitemapUrls=urls, sitemaps=['/sitemap-index.xml', *maps], ownershipFile=ownership[0].name, files=files))
     save(release / 'wrangler.publish.json', dict(name=WORKER, compatibility_date='2026-10-09', workers_dev=False,
          assets=dict(directory='./dist/', not_found_handling='404-page', html_handling='auto-trailing-slash')))
-    return dict(state='artifact_verified', revision=revision(), files=len(files), regionCount=35, sitemapUrls=len(urls))
+    return dict(state='artifact_verified', revision=revision(), files=len(files), regionCount=len(REGION_ROUTES), articleCount=len(ARTICLE_ROUTES), htmlRoutes=len(ROUTES), sitemapUrls=len(urls))
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -275,12 +285,17 @@ def get(path, status=200):
 
 def http_once(contract):
     checked = 0; normalized = 0
+    require(len(contract['pages']) == len(ROUTES) and {item['path'] for item in contract['pages']} == ROUTES,
+            'http_contract_routes_mismatch')
+    require(len(contract['sitemapUrls']) == len(SITEMAP_ROUTES) and
+            {local_path(url) for url in contract['sitemapUrls']} == SITEMAP_ROUTES, 'http_contract_sitemap_mismatch')
     for item in contract['pages']:
         body, headers = get(item['path'])
         require(headers.get('Content-Type', '').lower().startswith('text/html'), 'html_content_type')
         p = Page(body.decode('utf-8'))
         require(p.meta.get('site-factory-revision') == revision() and p.canon == [item['url']], 'live_revision_or_canonical_mismatch')
-        require(set(re.split(r'\s*,\s*', p.meta.get('robots', '').lower())) == {'index', 'follow'}, 'live_meta_not_indexable')
+        require(set(item['robots']) == expected_robots(item['path']) and
+                set(re.split(r'\s*,\s*', p.meta.get('robots', '').lower())) == expected_robots(item['path']), 'live_meta_robots_mismatch')
         require(not re.search(r'\b(noindex|nofollow|none)\b', ','.join(headers.get_all('X-Robots-Tag', [])), re.I), 'live_header_not_indexable')
         require('tel:18440644' in p.links and 'https://fwith.co.kr' in p.links, 'live_cta_mismatch')
         if sha(body) != contract['files'][item['file']]:
@@ -301,7 +316,8 @@ def http_once(contract):
             body = strip_one_cf_beacon(body, contract['files']['404.html']); normalized += 1
         require(sha(body) == contract['files']['404.html'], 'live_404_digest_mismatch')
         checked += 1
-    return dict(state='public_release_verified', revision=revision(), regionCount=35, sitemapUrls=37,
+    return dict(state='public_release_verified', revision=revision(), regionCount=len(REGION_ROUTES), articleCount=len(ARTICLE_ROUTES), htmlRoutes=len(ROUTES),
+                noindexHubs=len(THIN_HUB_ROUTES), sitemapUrls=len(SITEMAP_ROUTES),
                 checkedPaths=checked, normalizedCloudflareBeacons=normalized, deferredHttpStatus=404, unknownHttpStatus=404)
 
 
@@ -393,3 +409,4 @@ def strip_one_cf_beacon(body,expected_sha):
 
 if __name__ == '__main__':
     raise SystemExit(main())
+

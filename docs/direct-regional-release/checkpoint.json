@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T10:42:41.661Z",
+  "updatedAt": "2026-10-11T10:44:26.340Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -14979,13 +14979,22 @@
       "baselineSource": "de67be7764eecd2ef96136d99574b54f4e6abd1b",
       "additivePlannedN": 1,
       "qualityPassed": 1,
-      "status": "reviewed_local_ready",
+      "status": "source_saved_control_prepared",
       "sourceManifestSha256": "71ee4d4bc440c078145c85597593e9d8e4c482254c286c04ea3999bd60266d7d",
       "controlManifestSha256": "db1f62379aec5eba7f249e55ed1a905880e405232738d589e21ec326cb0dd545",
       "intent": {
-        "action": "save_reviewed_additive_source_and_minimal_exact_route_controls",
-        "idempotencyKey": "pyeongtaek:additions:20261011:71ee4d4bc440c078145c85597593e9d8e4c482254c286c04ea3999bd60266d7d"
-      }
+        "action": "save_minimal_controls_and_dispatch_existing_pyeongtaek_workflow_once",
+        "workflow": ".github/workflows/pyeongtaek-direct-publish.yml",
+        "expectedRevision": "7f4538d12218978ff2532509d0c67252e0a516c6",
+        "idempotencyKey": "pyeongtaek:additions:dispatch:7f4538d12218978ff2532509d0c67252e0a516c6"
+      },
+      "sourceRevision": "7f4538d12218978ff2532509d0c67252e0a516c6",
+      "sourceSaveVerified": true,
+      "remoteChangedFileReadback": "9/9 exact blob bytes verified, including2 control blobs",
+      "resultingArticles": 36,
+      "resultingNormalHtml": 39,
+      "resultingSitemapUrls": 38,
+      "visualQa": "deferred_not_pass"
     },
     "completed": [
       {
