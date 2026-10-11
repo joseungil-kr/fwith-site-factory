@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T11:08:06.594Z",
+  "updatedAt": "2026-10-11T11:16:37.646Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-gangbuk-direct-initial-20261011",
     "city": "서울특별시 강북구",
-    "status": "reviewed_content_actual_assembly_and_source_save_intent",
+    "status": "ready_for_exact_source_dispatch",
     "owner": {
       "scheduledRunAt": "2026-10-11T10:00:00Z",
       "observedExecutionAt": "2026-10-11T10:48:09.269Z",
@@ -41,7 +41,7 @@
       "serviceInvocationId": null,
       "checkpointId": "direct-seoul-gangbuk-20261011T100000Z",
       "active": true,
-      "executionState": "fixed_plan_and_original_content_preparation",
+      "executionState": "exact_source_publication",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T10:46:30.399Z"
     },
     "identity": {
@@ -80,10 +80,13 @@
       }
     },
     "changeIntent": {
-      "action": "assemble_test_and_save_exact_reviewed_gangbuk_source_without_force",
-      "targetBranch": "site-factory-seoul-gangbuk-direct",
-      "expectedBranchHead": "3f5485cccfa253c0855bbdb6505245a5ccdc0e20",
-      "idempotencyKey": "seoul-gangbuk:source:ef77d4d011c6180c7003d6d5efd5fcc77c9f688ec69f903997dc976215388aa2"
+      "action": "publish_fixed_direct_workflow_once_for_exact_source_after_full_remote_readback",
+      "workflow": ".github/workflows/seoul-gangbuk-direct-publish.yml",
+      "sourceRevision": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
+      "worker": "seoul-gangbuk-flower-guide",
+      "hostname": "seoul-gangbuk.fwith.kr",
+      "noOverride": true,
+      "idempotencyKey": "seoul-gangbuk:publish:292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2"
     },
     "plan": {
       "state": "frozen_before_authoring_independent_plan_pass",
@@ -151,8 +154,6 @@
       "deferredArticleCount": 0
     },
     "unfinishedStages": [
-      "source_save",
-      "build_static_graph",
       "formal_publish",
       "http_qa",
       "indexnow",
@@ -170,7 +171,27 @@
       "contentRevision": 2,
       "runtimeContractStatus": "PASS_INDEPENDENT_IMPLEMENTATION_REVIEW",
       "runtimeContractReviewSha256": "ac690bdcbaa331ab7d5a5e07e9f53ced719de8bee8ec9461aa227cd9e47a7fec",
-      "runtimeContractImplementationSha256": "34a57c09aebf98f4f4b10d26838d5c91abf1b21075046036a30b1300fa1ff65b"
+      "runtimeContractImplementationSha256": "34a57c09aebf98f4f4b10d26838d5c91abf1b21075046036a30b1300fa1ff65b",
+      "actualSourceStatus": "PASS_INDEPENDENT_LOCAL_ACTUAL_SOURCE_CONTROL_AND_EXACT_REMOTE_VERIFICATION",
+      "actualSourceReviewSha256": "ae3bfac687626fe1eeb3e9144b357e047cc8484afe057078c4bb00569ba256ff"
+    },
+    "sourceRevision": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
+    "validation": {
+      "sourceRevision": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
+      "nodeVersion": "22.23.3",
+      "sourceTestsPassed": 94,
+      "publisherTestsPassed": 42,
+      "readbackHelperTestsPassed": 7,
+      "build": "PASS",
+      "static": "PASS",
+      "graph": "PASS",
+      "normalHtmlRoutes": 7,
+      "articleCount": 5,
+      "sitemapUrls": 7,
+      "remoteFullReadback": "73/73 full bytes and Git blob SHA verified",
+      "remoteReadbackSha256": "4ab65642cc42fd297afadd1175fa75a422dd4058a5d8d952153f2b0a0664519e",
+      "exactSourceVerificationSha256": "73765a012d6d4ba5f2de963e80a692ce4f58bb2eeadd2dde3138ee2fef542391",
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS"
     }
   },
   "history": [
