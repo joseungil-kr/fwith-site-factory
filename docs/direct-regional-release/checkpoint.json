@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-10T19:27:27.747Z",
+  "updatedAt": "2026-10-11T01:36:10.551Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,17 +33,19 @@
   "current": {
     "scopeKey": "seoul-gwangjin-direct-initial-20261010",
     "city": "서울특별시 광진구",
-    "status": "dispatched",
+    "status": "released_http_indexnow_verified_gsc_not_submitted",
     "owner": {
       "scheduledRunAt": "2026-10-10T19:00:00Z",
       "observedExecutionAt": "2026-10-10T19:04:28.316Z",
       "newRegionStartedAt": "2026-10-10T19:04:28.316Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-seoul-gwangjin-initial-20261010T190000Z",
-      "active": true,
-      "executionState": "active_single_owner",
+      "active": false,
+      "executionState": "stopped_after_verified_publication_search_incomplete",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T18:45:50.892Z",
-      "priorOwnerReadbackConfirmedAt": "2026-10-10T18:45:52.506Z"
+      "priorOwnerReadbackConfirmedAt": "2026-10-10T18:45:52.506Z",
+      "actualWriteStopConfirmedAt": "2026-10-10T19:58:31.784488+00:00",
+      "browserOperationsStopped": true
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -51,7 +53,7 @@
       "root": "site-factory/seoul-gwangjin-flower",
       "worker": "seoul-gwangjin-flower-guide",
       "hostname": "seoul-gwangjin.fwith.kr",
-      "externalCreationVerified": false,
+      "externalCreationVerified": true,
       "sourceBranchCreatedVerified": true,
       "sourceBranchBaseRevision": "fe1676fb50fd448ff1bc0fe3062278b4cee726e9"
     },
@@ -70,7 +72,7 @@
         37655514711
       ],
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "PENDING_ACTUAL_PROVIDER_GET_BEFORE_PUBLISH",
+      "providerOwnershipCollisionCheck": "PASS_OFFICIAL_RUN_PROVIDER_GET_NO_OVERRIDE",
       "publicHostObservation": {
         "httpStatus": 502,
         "absenceConfirmed": false,
@@ -78,21 +80,15 @@
       }
     },
     "changeIntent": {
-      "action": "observe_existing_run_and_verify_hosted_exact_source_before_search",
-      "target": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38079835650",
-      "idempotencyKey": "seoul-gwangjin:observe-run:38079835650"
+      "action": "recover_verified_release_records_only_then_stop",
+      "target": "main:docs/direct-regional-release/checkpoint.json",
+      "idempotencyKey": "seoul-gwangjin:recover-records:296e47b384bfc36e0dfa6e7a4586d41220c93587:6101325704",
+      "gscSubmitAuthorizedInThisRecovery": false
     },
     "unfinishedStages": [
-      "plan_freeze",
-      "content",
-      "independent_review",
-      "build",
-      "source_save",
-      "publish",
-      "public_http",
-      "indexnow",
       "gsc",
-      "deferred_visual_qa"
+      "deferred_visual_qa",
+      "official_artifact_zip_download_verification"
     ],
     "plan": {
       "state": "frozen_before_authoring_independent_plan_pass",
@@ -111,31 +107,31 @@
           "slug": "hwayang-dong-konkuk-hospital-condolence-wreath",
           "title": "건국대학교병원 장례식장 근조화환 주문",
           "primaryKeyword": "건국대학교병원 장례식장 근조화환 주문",
-          "status": "independent_content_pass_pending_publication"
+          "status": "independent_content_pass_published_http_verified"
         },
         {
           "slug": "gwangjang-dong-walkerhill-wedding-wreath",
           "title": "워커힐 결혼식 축하화환 주문",
           "primaryKeyword": "워커힐 결혼식 축하화환 주문",
-          "status": "independent_content_pass_pending_publication"
+          "status": "independent_content_pass_published_http_verified"
         },
         {
           "slug": "guui-dong-weddingsquare-gangbyeon-wreath",
           "title": "웨딩스퀘어 강변 결혼식 축하화환 주문",
           "primaryKeyword": "웨딩스퀘어 강변 결혼식 축하화환 주문",
-          "status": "independent_content_pass_pending_publication"
+          "status": "independent_content_pass_published_http_verified"
         },
         {
           "slug": "junggok-dong-jeil-market-opening-wreath",
           "title": "중곡제일시장 거래처 개업화환 주문",
           "primaryKeyword": "중곡제일시장 거래처 개업화환 주문",
-          "status": "independent_content_pass_pending_publication"
+          "status": "independent_content_pass_published_http_verified"
         },
         {
           "slug": "jayang-dong-ku-convention-event-wreath",
           "title": "KU컨벤션 기업행사 축하화환 주문",
           "primaryKeyword": "KU컨벤션 기업행사 축하화환 주문",
-          "status": "independent_content_pass_pending_publication"
+          "status": "independent_content_pass_published_http_verified"
         }
       ],
       "planFreezeRevision": "22a948adb84edc50926d411f17ef71f25805ba3e",
@@ -152,7 +148,9 @@
       "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
       "contentRevision": 1,
       "runtimeStatus": "PASS_EXACT_SOURCE_PREPUBLICATION",
-      "runtimeReviewSha256": "6f24e79b51c63656821708a55abc0ffc4aa2a838203574669fb1b63c18ecc9d2"
+      "runtimeReviewSha256": "6f24e79b51c63656821708a55abc0ffc4aa2a838203574669fb1b63c18ecc9d2",
+      "hostedStatus": "PASS_PUBLIC_SOURCE_HTTP_AND_TERMINAL_RECEIPT_WITH_ARCHIVE_VERIFICATION_LIMIT",
+      "hostedReviewSha256": "f0c7d56df886a3fa565809c9600ccd48c7382c184a876b1de75b0b11bb2c74ee"
     },
     "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
     "validation": {
@@ -175,11 +173,142 @@
     "run": {
       "id": 38079835650,
       "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38079835650",
-      "status": "queued",
+      "status": "completed",
       "dispatchCount": 1,
       "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
       "controlRevision": "190da58d4ebe522c68630e6933a8fb30c1006979",
-      "createdAt": "2026-10-10T19:26:56Z"
+      "createdAt": "2026-10-10T19:26:56Z",
+      "conclusion": "success",
+      "runAttempt": 1,
+      "completedAt": "2026-10-10T19:28:12Z"
+    },
+    "indexNow": {
+      "attempt": 1,
+      "endpoint": "https://searchadvisor.naver.com/indexnow",
+      "fingerprint": "33d4fa2439077a7f6952ce31c3db531030f9eb6c343d063495a285db51c502ea",
+      "httpStatus": 200,
+      "origin": "https://seoul-gwangjin.fwith.kr",
+      "recordedAt": "2026-10-10T19:28:04.041141+00:00",
+      "revision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38079835650",
+      "siteKey": "seoul-gwangjin-flower-direct",
+      "state": "received",
+      "urlCount": 7,
+      "urlSetSha256": "3708073047cb206a13b045487736cf922de55604a05c7d12c5f60aa1ed501f68",
+      "commentId": 6101325704,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6101325704",
+      "durableReadbackVerified": true,
+      "lastReadbackAt": "2026-10-11T01:36:10.551Z"
+    },
+    "publication": {
+      "url": "https://seoul-gwangjin.fwith.kr",
+      "articleCount": 5,
+      "normalHtmlPages": 7,
+      "totalHtmlIncluding404": 8,
+      "sitemapUrls": 7,
+      "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
+      "runId": 38079835650,
+      "publicHttp": {
+        "verdict": "PASS",
+        "origin": "https://seoul-gwangjin.fwith.kr",
+        "articles": 5,
+        "normalRoutes": 7,
+        "sitemapUrls": 7,
+        "originalContractPathsVerified": 21,
+        "additionalPublicAssetPathsVerified": 2,
+        "totalUniquePublicBodiesVerified": 23,
+        "allPublicArtifactFilesByteVerified": true,
+        "privateProviderConfigFileExcluded": "_headers is provider configuration, not an independently downloaded public body.",
+        "checks": [
+          "all seven normal routes HTTP200",
+          "all nine deployed image assets plus stylesheet and favicon exact bytes",
+          "canonical and source revision metadata",
+          "indexable robots and sitemap exact seven URLs",
+          "all seven internal navigation targets and phone/order CTAs",
+          "ownership proof exact bytes",
+          "unknown route real HTTP404 and exact non-indexable built 404 body"
+        ],
+        "cloudflareBeaconNormalizedHtmlBodies": 8,
+        "normalization": "Only one recognized empty external Cloudflare beacon script, removed only when resulting bytes exactly equal independent build hash; no arbitrary body normalization."
+      },
+      "providerBinding": {
+        "status": "VERIFIED_FROM_OFFICIAL_GET_ONLY_READBACK_JOB_LOG",
+        "hostname": "seoul-gwangjin.fwith.kr",
+        "worker": "seoul-gwangjin-flower-guide",
+        "accountVerified": true,
+        "workerExists": true,
+        "hostnameBindingExists": true,
+        "initialTargetAbsentVerified": true,
+        "dnsState": "not_observed",
+        "overrideFlags": {
+          "scope": false,
+          "existingOrigin": false,
+          "existingDnsRecord": false
+        },
+        "reviewerDirectAuthenticatedProviderRequest": false,
+        "downloadedResultJson": "NOT_DOWNLOADED_UNVERIFIED"
+      },
+      "artifactChain": {
+        "verdict": "PASS_RECONSTRUCTED_MANIFEST_DIGEST_MATCHES_OFFICIAL_BUILD_LOG",
+        "officialRunId": 38079835650,
+        "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
+        "controlRevision": "190da58d4ebe522c68630e6933a8fb30c1006979",
+        "manifestSha256": "6360b797bf9bb3427f6939e58f5f18dc648b7c06f213f06b5b7c5e77cb72c5fd",
+        "files": 24,
+        "basis": "Complete independent exact-remote-source Node22 build inventory plus official control/run identity serialized by reviewed publisher function",
+        "archiveDownloaded": false,
+        "archiveFileEqualityVerified": false
+      },
+      "officialArtifacts": [
+        {
+          "id": 11679796245,
+          "name": "seoul-gwangjin-direct-build-38079835650",
+          "bytes": 1778327,
+          "reportedSha256": "88b1a8eb9f484c69eee441e4792b7e78429180a155eafd0313f6f3b6f8df1b3a",
+          "officialMetadataRunId": 38079835650,
+          "officialMetadataControlSha": "190da58d4ebe522c68630e6933a8fb30c1006979",
+          "archiveBytes": "NOT_DOWNLOADED_UNVERIFIED"
+        },
+        {
+          "id": 11678989951,
+          "name": "seoul-gwangjin-direct-result-38079835650",
+          "bytes": 7221,
+          "reportedSha256": "3a0eb1f1f1d1c40fdc13b3697e971831b7f3129121a6cf5416de6f8cfa70489e",
+          "officialMetadataRunId": 38079835650,
+          "officialMetadataControlSha": "190da58d4ebe522c68630e6933a8fb30c1006979",
+          "archiveBytes": "NOT_DOWNLOADED_UNVERIFIED"
+        }
+      ],
+      "artifactArchiveLimit": {
+        "status": "NOT_DOWNLOADED_UNVERIFIED",
+        "reason": "Parent reports official GitHub UI download and documented download helper timed out; no local ZIP was obtained. API archive fetch tool does not support that endpoint. No alternate restricted route was attempted by reviewer.",
+        "verifiedInstead": "Official artifact metadata IDs/digests, official upload/download job log digests, exact reconstructed full 24-file release-manifest digest, and independent HTTPS byte checks of all 23 public artifact bodies.",
+        "notClaimed": [
+          "Downloaded official ZIP checksum equality",
+          "Full extracted official ZIP file-by-file equality",
+          "Downloaded provider result JSON equality"
+        ]
+      }
+    },
+    "gsc": {
+      "siteUrl": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://seoul-gwangjin.fwith.kr/sitemap-index.xml",
+      "status": "not_submitted",
+      "submitAttempted": false,
+      "listReadback": {
+        "observedAt": "2026-10-11T01:36:10.551Z",
+        "listed": false,
+        "sitemaps": []
+      },
+      "indexingVerified": false
+    },
+    "recovery": {
+      "observedAt": "2026-10-11T01:36:10.551Z",
+      "baseMain": "5028319713bf45b66927867ee7798733352ddcc3",
+      "scope": "Record recovery only; no deploy, source change, search submission, new region or schedule change.",
+      "sourceUnchanged": true,
+      "priorApprovalRequestState": "no_longer_pending_or_unavailable_observed_20261011T013353Z",
+      "evidencePath": "docs/direct-regional-release/seoul-gwangjin/release-evidence.json"
     }
   },
   "history": [
@@ -6037,6 +6166,17 @@
         "actualCauseDetermined": false
       },
       "nextIntent": "No further new region in this invocation. Batch desktop/narrow visual QA later against exact hosted source."
+    },
+    {
+      "at": "2026-10-11T01:36:10.551Z",
+      "scopeKey": "seoul-gwangjin-direct-initial-20261010",
+      "status": "released_http_indexnow_verified_gsc_not_submitted",
+      "action": "recover_verified_publication_and_indexnow_evidence",
+      "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
+      "runId": 38079835650,
+      "indexNowReceiptId": 6101325704,
+      "gscSubmitted": false,
+      "priorOwnerActualWriteStopConfirmedAt": "2026-10-10T19:58:31.784488+00:00"
     }
   ],
   "maintenanceBacklog": [
@@ -6077,7 +6217,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Complete Gwangjin direct release without parallel region writes",
+  "nextAction": "Paused after record recovery. Gwangjin remains GSC-not-submitted, visual QA deferred and official artifact ZIP unverified. Do not redeploy or repeat IndexNow.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -12329,6 +12469,206 @@
         "actualCauseDetermined": false
       },
       "nextIntent": "No further new region in this invocation. Batch desktop/narrow visual QA later against exact hosted source."
+    },
+    {
+      "city": "서울특별시 광진구",
+      "scopeKey": "seoul-gwangjin-direct-initial-20261010",
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-seoul-gwangjin-direct",
+        "root": "site-factory/seoul-gwangjin-flower",
+        "worker": "seoul-gwangjin-flower-guide",
+        "hostname": "seoul-gwangjin.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true,
+        "sourceBranchBaseRevision": "fe1676fb50fd448ff1bc0fe3062278b4cee726e9"
+      },
+      "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
+      "status": "visual_qa_deferred_search_submission_incomplete",
+      "originalPlannedArticles": 5,
+      "approvedArticles": 5,
+      "deferredArticles": 0,
+      "publicUrl": "https://seoul-gwangjin.fwith.kr",
+      "run": {
+        "id": 38079835650,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38079835650",
+        "status": "completed",
+        "dispatchCount": 1,
+        "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
+        "controlRevision": "190da58d4ebe522c68630e6933a8fb30c1006979",
+        "createdAt": "2026-10-10T19:26:56Z",
+        "conclusion": "success",
+        "runAttempt": 1,
+        "completedAt": "2026-10-10T19:28:12Z"
+      },
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "33d4fa2439077a7f6952ce31c3db531030f9eb6c343d063495a285db51c502ea",
+        "httpStatus": 200,
+        "origin": "https://seoul-gwangjin.fwith.kr",
+        "recordedAt": "2026-10-10T19:28:04.041141+00:00",
+        "revision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38079835650",
+        "siteKey": "seoul-gwangjin-flower-direct",
+        "state": "received",
+        "urlCount": 7,
+        "urlSetSha256": "3708073047cb206a13b045487736cf922de55604a05c7d12c5f60aa1ed501f68",
+        "commentId": 6101325704,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6101325704",
+        "durableReadbackVerified": true,
+        "lastReadbackAt": "2026-10-11T01:36:10.551Z"
+      },
+      "gsc": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemapUrl": "https://seoul-gwangjin.fwith.kr/sitemap-index.xml",
+        "status": "not_submitted",
+        "submitAttempted": false,
+        "listReadback": {
+          "observedAt": "2026-10-11T01:36:10.551Z",
+          "listed": false,
+          "sitemaps": []
+        },
+        "indexingVerified": false
+      },
+      "qa": {
+        "sourceRevision": "296e47b384bfc36e0dfa6e7a4586d41220c93587",
+        "nodeVersion": "22.23.3",
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "artifactFiles": 24,
+        "normalHtmlRoutes": 7,
+        "articleCount": 5,
+        "sitemapUrls": 7,
+        "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+        "remoteReadbackSha256": "7faaf37be893a1c433ddf403c2d01ce93ebc7ed139a9c66b24cacf493e87ba8e",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+      },
+      "publicHttp": {
+        "verdict": "PASS",
+        "origin": "https://seoul-gwangjin.fwith.kr",
+        "articles": 5,
+        "normalRoutes": 7,
+        "sitemapUrls": 7,
+        "originalContractPathsVerified": 21,
+        "additionalPublicAssetPathsVerified": 2,
+        "totalUniquePublicBodiesVerified": 23,
+        "allPublicArtifactFilesByteVerified": true,
+        "privateProviderConfigFileExcluded": "_headers is provider configuration, not an independently downloaded public body.",
+        "checks": [
+          "all seven normal routes HTTP200",
+          "all nine deployed image assets plus stylesheet and favicon exact bytes",
+          "canonical and source revision metadata",
+          "indexable robots and sitemap exact seven URLs",
+          "all seven internal navigation targets and phone/order CTAs",
+          "ownership proof exact bytes",
+          "unknown route real HTTP404 and exact non-indexable built 404 body"
+        ],
+        "cloudflareBeaconNormalizedHtmlBodies": 8,
+        "normalization": "Only one recognized empty external Cloudflare beacon script, removed only when resulting bytes exactly equal independent build hash; no arbitrary body normalization."
+      },
+      "pendingVisualRoutes": {
+        "desktop": [
+          "/",
+          "/regions/",
+          "/regions/hwayang-dong-konkuk-hospital-condolence-wreath/",
+          "/regions/gwangjang-dong-walkerhill-wedding-wreath/",
+          "/regions/guui-dong-weddingsquare-gangbyeon-wreath/",
+          "/regions/junggok-dong-jeil-market-opening-wreath/",
+          "/regions/jayang-dong-ku-convention-event-wreath/",
+          "/404.html"
+        ],
+        "narrow": [
+          "/",
+          "/regions/",
+          "/regions/hwayang-dong-konkuk-hospital-condolence-wreath/",
+          "/regions/gwangjang-dong-walkerhill-wedding-wreath/",
+          "/regions/guui-dong-weddingsquare-gangbyeon-wreath/",
+          "/regions/junggok-dong-jeil-market-opening-wreath/",
+          "/regions/jayang-dong-ku-convention-event-wreath/",
+          "/404.html"
+        ]
+      },
+      "pendingVisualItems": [
+        "Real layout and overflow",
+        "Body and H1 readability",
+        "Image rendering and alt",
+        "Product cards and prices",
+        "Phone and online order CTA",
+        "Internal navigation",
+        "404 appearance"
+      ],
+      "bodyAndImageDigests": {
+        "articlesExactFileSha256": "3c89244c5ef639632cbf83d404f4f1bd9ccd6bef2fcf4e33a5da20ebbb2c071c",
+        "independentContentReviewSha256": "7bfc782f49421b4002fae1af56d2c5a02c9d523a398267f91f86ed2fc5b364e9",
+        "sourceManifestSha256": "bdde9d1d4d1b75671e93430a42de3be7dca572fdc9636141f2c5c99f31e1ecdd",
+        "imageDigests": [
+          {
+            "path": "site-factory/seoul-gwangjin-flower/public/images/editorial/opening-wreath-illustration-v1.webp",
+            "bytes": 154376,
+            "sha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+            "blobSha": "8ab5a58eef8b16e2952229bc95c7f063dfef434e"
+          },
+          {
+            "path": "site-factory/seoul-gwangjin-flower/public/images/products/congrats-basic.jpg",
+            "bytes": 349863,
+            "sha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+            "blobSha": "019b6987190d1dbd959bad8381a73b001c144c95"
+          },
+          {
+            "path": "site-factory/seoul-gwangjin-flower/public/images/products/congrats-large.jpg",
+            "bytes": 361602,
+            "sha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+            "blobSha": "60d737b43f04a2c0f05e4ab91981187cfc9cdc1c"
+          },
+          {
+            "path": "site-factory/seoul-gwangjin-flower/public/images/products/congrats-premium.jpg",
+            "bytes": 337911,
+            "sha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+            "blobSha": "d784c6a21676bc5ef659512b30a01d97114c7877"
+          },
+          {
+            "path": "site-factory/seoul-gwangjin-flower/public/images/products/congrats-xl.jpg",
+            "bytes": 387349,
+            "sha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+            "blobSha": "5a6f41e37b0137dd48bbcf310c508811fcc4baef"
+          },
+          {
+            "path": "site-factory/seoul-gwangjin-flower/public/images/products/funeral-basic.webp",
+            "bytes": 33514,
+            "sha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+            "blobSha": "ff86b334ade08edb840e071802e547ebbba51593"
+          },
+          {
+            "path": "site-factory/seoul-gwangjin-flower/public/images/products/funeral-large.webp",
+            "bytes": 39576,
+            "sha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+            "blobSha": "596bd7ec077b8abc09aa3db27218fe4d04ca983d"
+          },
+          {
+            "path": "site-factory/seoul-gwangjin-flower/public/images/products/funeral-premium.webp",
+            "bytes": 36334,
+            "sha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+            "blobSha": "1b9608037c14c7c5f371d0bb73a2a62c5bba0d5a"
+          },
+          {
+            "path": "site-factory/seoul-gwangjin-flower/public/images/products/funeral-xl.webp",
+            "bytes": 40258,
+            "sha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+            "blobSha": "9900de24565467c66107dc220b527a37bf67d3ed"
+          }
+        ]
+      },
+      "visualObservation": {
+        "status": "not_performed",
+        "reason": "User deferred desktop and narrow visual QA to later batch.",
+        "actualVisualErrorObserved": false,
+        "actualCauseDetermined": false,
+        "lastObservedAt": "2026-10-11T01:36:10.551Z"
+      }
     }
   ],
   "releasedKnownHosts": [
