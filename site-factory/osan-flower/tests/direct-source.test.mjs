@@ -22,7 +22,7 @@ test('Osan frozen official legal and administrative membership has no duplicate 
 });
 test('direct snapshot hashes bind every public customer field and all four page collections',()=>{
  const pages=read('pages'),manifest=read('publish-manifest');
- assert.equal(manifest.directRelease.sourceMode,'direct-git');assert.deepEqual(manifest.snapshotLedger,{});
+ assert.equal(manifest.directRelease.sourceMode,'direct-git');assert.deepEqual(manifest.snapshotLedger,Object.fromEntries(pages.map(p=>[p.snapshotId,{pageKey:p.pageKey,snapshotHash:p.snapshotHash}])));
  assert.equal(manifest.directRelease.plannedOriginalCount,24);assert.equal(manifest.directRelease.reviewedArticleCount,24);
  for(const p of pages){
   const omit=new Set(['approvalVerified','status','file','order','sourceMode','snapshotId','snapshotHash']);
