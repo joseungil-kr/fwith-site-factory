@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T06:17:17.505Z",
+  "updatedAt": "2026-10-11T06:34:53.438Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-seongbuk-direct-initial-20261011",
     "city": "서울특별시 성북구",
-    "status": "research_and_fixed_plan_preparation",
+    "status": "fixed_plan_reviewed_before_authoring",
     "owner": {
       "scheduledRunAt": "2026-10-11T06:00:00Z",
       "observedExecutionAt": "2026-10-11T06:17:17.505Z",
@@ -41,7 +41,7 @@
       "serviceInvocationId": null,
       "checkpointId": "direct-seoul-seongbuk-20261011T060000Z",
       "active": true,
-      "executionState": "research_and_plan_preparation",
+      "executionState": "preparing_reviewed_source",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T06:14:36.575Z",
       "priorOwnerReadbackConfirmedAt": "2026-10-11T06:14:51.791Z"
     },
@@ -72,8 +72,8 @@
       }
     },
     "changeIntent": {
-      "action": "claim_single_next_region_research_and_freeze_plan_before_authoring",
-      "idempotencyKey": "seoul-seongbuk:claim:20261011T060000Z"
+      "action": "save_frozen_plan_then_create_separate_source_branch_and_author_reviewed_content",
+      "idempotencyKey": "seoul-seongbuk:freeze:6bf4b15b14c0ef31c63738e40197b49b559580422132334b21c05ce79d89f89b"
     },
     "unfinishedStages": [
       "official_research",
@@ -89,7 +89,44 @@
       "deferred_visual_qa"
     ],
     "review": {
-      "screenQa": "DEFERRED_NOT_PASS"
+      "screenQa": "DEFERRED_NOT_PASS",
+      "planReviewStatus": "PASS_BEFORE_AUTHORING",
+      "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
+      "imageReviewSha256": "067dcbf8baf68f6716ff1554bf9b8bc36f711c53e25b54d5477a5c58906a3e3a",
+      "planReviewSha256": "441cba1d85de5257090b73c7baf3559816210835b1d66ca653864679a6559d45"
+    },
+    "plan": {
+      "state": "frozen_before_authoring_independent_plan_pass",
+      "plannedArticleCount": 3,
+      "minimumPassedArticles": 3,
+      "legalDongCount": 39,
+      "administrativeDongCount": 20,
+      "relationshipCount": 53,
+      "unassignedLegalUnits": 36,
+      "countIsPageQuota": false,
+      "fixedPlanPath": "docs/direct-regional-release/seoul-seongbuk/fixed-plan.json",
+      "fixedPlanSha256": "6bf4b15b14c0ef31c63738e40197b49b559580422132334b21c05ce79d89f89b",
+      "frozenAt": "2026-10-11T06:33:57.542125+00:00",
+      "articles": [
+        {
+          "slug": "anam-dong-5ga-korea-anam-funeral-wreath",
+          "title": "고려대학교 안암병원 장례식장 근조화환 주문",
+          "primaryKeyword": "고려대학교 안암병원 장례식장 근조화환 주문",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "seongbuk-dong-samcheonggak-wedding-wreath",
+          "title": "삼청각 전통혼례 축하화환 주문",
+          "primaryKeyword": "삼청각 전통혼례 축하화환 주문",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "dongsomun-dong-5ga-donam-market-opening-wreath",
+          "title": "돈암시장 개업 축하화환 주문",
+          "primaryKeyword": "돈암시장 개업 축하화환 주문",
+          "status": "planned_not_authored"
+        }
+      ]
     }
   },
   "history": [

@@ -1,0 +1,112 @@
+{
+  "retrievedAtUtc": "2026-10-11T06:32:15.089877+00:00",
+  "district": "11290",
+  "membership": {
+    "path": "/workspace/shared/seongbuk-research-20261011/research/seongbuk-membership.json",
+    "sha256": "e7ac2a6862b2a4d2d46fd58d4258ddcf12f8af4bdc5f33ae86fbd6db922fa593",
+    "counts": {
+      "legal_dongs": 39,
+      "administrative_dongs": 20,
+      "membership_pairs": 53
+    }
+  },
+  "coverage": {
+    "path": "/workspace/shared/seongbuk-build-20261011/coverage-input.json",
+    "sha256": "224d6a9e6fb07cad71baa125996eb3ad1a936e08d4a96eb3b0dcbec2367a08a2"
+  },
+  "candidatePlan": {
+    "path": "/workspace/shared/seongbuk-research-20261011/research/fixed-plan-candidate.json",
+    "sha256": "711cbd1897c317bc10d0099ed18adfca82a16c091371c866ec2c5e99bb4c687f",
+    "N": 3,
+    "status": "awaiting review and parent freeze"
+  },
+  "facilityReport": {
+    "path": "/workspace/shared/seongbuk-research-20261011/facility-research/facility-report.json",
+    "sha256": "3fe8402434efa1fb81877e2a69f0ce3820331e8de3f97384ba7fc7a3ae35d08e"
+  },
+  "sources": {
+    "https://www.kuf.or.kr/board/view/board_id/notice/p_menu_group/400/p_menu_id_sel/notice/board_no/79": {
+      "name": "학교법인 고려중앙학원 안암병원 장례식장 식당 위탁운영업체 선정 입찰공고",
+      "url": "https://www.kuf.or.kr/board/view/board_id/notice/p_menu_group/400/p_menu_id_sel/notice/board_no/79",
+      "type": "official",
+      "verifiedAt": "2026-10-11",
+      "supports": [
+        "2026-09-10 게시된 식당 위탁운영업체 선정 입찰공고가 입찰 대상 시설의 주소를 서울 성북구 고려대로 73으로 명시한다. 주소 교차 확인 자료이며 장례식장 운영자 선정이나 외부 화환 수령 정책의 증거가 아니다."
+      ],
+      "verificationMethod": "Fresh direct public GET HTTP 200; raw HTML and parsed text preserved",
+      "evidencePath": "source-evidence/kuf-anam-notice.html",
+      "evidenceSha256": "70efce67727f3896242bebf9486d7ce40a49e4eb1650c04a3434ddcd028d2209"
+    },
+    "https://anamrefer.kumc.or.kr/about/intro": {
+      "name": "고려대학교 안암병원 진료협력센터 공식 주소",
+      "url": "https://anamrefer.kumc.or.kr/about/intro",
+      "type": "official",
+      "verifiedAt": "2026-10-11",
+      "supports": [
+        "고려대로 73의 법정동을 안암동5가로 명시한다. 이 페이지의 진료협력센터 업무시간을 장례식장 또는 화환 인수시간으로 전용하지 않는다."
+      ],
+      "verificationMethod": "Fresh direct public GET HTTP 200; raw HTML and parsed text preserved",
+      "evidencePath": "source-evidence/anam-hospital-address.html",
+      "evidenceSha256": "b050b1f0beaeea6f487711f17613275c5d12e3791102ed241327cd7262edb2c8"
+    },
+    "https://www.kfcpi.or.kr/link/2025/09/29/831da0f4-5acd-43d4-b0ae-60e6111f33f7.pdf": {
+      "name": "한국장례문화진흥원 전국 장례식장 현황 PDF",
+      "url": "https://www.kfcpi.or.kr/link/2025/09/29/831da0f4-5acd-43d4-b0ae-60e6111f33f7.pdf",
+      "type": "official",
+      "verifiedAt": "2026-10-11",
+      "supports": [
+        "1쪽 성북구 행: 고려대학교안암병원 장례식장=안암동5가 126-1, 뉴타운장례식장=종암로 199(하월곡동). 2025 경로 자료이므로 현행 운영자 페이지와 결합해 주소만 교차 확인한다."
+      ],
+      "verificationMethod": "Fresh HTTPS GET HTTP 200; first-page PDF rendering visually inspected; address cross-check only, not standalone current-operation proof",
+      "evidencePath": "source-evidence/kfcpi-national-funeral-register-20250929.pdf",
+      "evidenceSha256": "b0e8b636e44decb6a875403d7f08f52617d68cedb5e81f5e82e61f65bd99822a"
+    },
+    "https://funeral.or.kr/35": {
+      "name": "고려대학교의료원 장례식장 위치 및 문의",
+      "url": "https://funeral.or.kr/35",
+      "type": "official",
+      "verifiedAt": "2026-10-11",
+      "supports": [
+        "공식 검색색인은 안암=성북구 고려대로 73, 구로=구로구 구로동로 148, 안산=단원구 적금로 123으로 세 시설을 구분한다."
+      ],
+      "verificationMethod": "Official search-index result retrieved fresh; direct web open returns HTTP403, so not labeled live HTTP200. Address/current funeral existence separately verified by operator notice.",
+      "evidencePath": "source-evidence/anam-branch-facts.json",
+      "evidenceSha256": "417af016b02d174b51dd22d58f31bd011a2ca56e9f3340a98939bd6239a2f6b9"
+    },
+    "https://www.samcheonggak.or.kr/traditional/": {
+      "name": "삼청각 공식 전통혼례 안내",
+      "url": "https://www.samcheonggak.or.kr/traditional/",
+      "type": "official",
+      "verifiedAt": "2026-10-11",
+      "supports": [
+        "공식 전통혼례 안내는 일화당 분리예식과 청천당 동시예식을 구분한다.",
+        "주소는 서울특별시 성북구 대사관로 3, 성북동 330-115로 명시한다.",
+        "외부 축하화환 허용·반입 위치·인수시각·회수는 이 페이지에서 확인되지 않는다."
+      ],
+      "verificationMethod": "web.run open of exact official HTTPS page returned full 153-line page, crawled today; raw tool response preserved. Direct urllib GET failed HTTP502; no direct HTTP200 claim.",
+      "evidencePath": "source-evidence/samcheonggak-primary-web.json",
+      "evidenceSha256": "8cb0f62da0d3f5127787f64c18a453368d117ac8f53c92360bd3c9bdf9170a6e"
+    },
+    "https://news.seoul.go.kr/economy/archives/574563": {
+      "name": "서울시 전통시장 현황(2026.8.28. 기준)",
+      "url": "https://news.seoul.go.kr/economy/archives/574563",
+      "type": "official",
+      "verifiedAt": "2026-10-11",
+      "supports": [
+        "돈암시장은 대표 도로명주소 동소문로18길 18, 지번 동소문동5가 59-2의 인정시장·골목형으로 등록돼 있다. 시장 명칭만으로 법정동 돈암동을 붙이면 틀린다."
+      ],
+      "verificationMethod": "Fresh direct public GET HTTP 200; raw HTML and parsed text preserved",
+      "evidencePath": "source-evidence/markets-official.html",
+      "evidenceSha256": "dc1d9bf0ab14d61d2ded95537c1f33f0042dfefa236a18f665173a2837a94f61"
+    }
+  },
+  "pdfVisualCheck": {
+    "path": "source-evidence/kfcpi-national-funeral-register-page1.png",
+    "sha256": "ef79b70722bb4c2bad53c918ca4643383454346b7d1b7202d250034ceef4424e",
+    "page": 1,
+    "verifiedFacts": [
+      "안암병원 장례식장 안암동5가126-1",
+      "뉴타운장례식장 종암로199(하월곡동)"
+    ]
+  }
+}
