@@ -1,5 +1,5 @@
 export const sourceTypeLabels = Object.freeze({
-  official: '공공·기관', business: '사업자', facility: '시설',
+  official: '공식 출처', business: '사업자', facility: '시설',
   education: '교육기관', professional: '전문자료', reference: '참고자료',
 });
 
