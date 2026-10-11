@@ -1,0 +1,602 @@
+{
+  "schemaVersion": 1,
+  "region": {
+    "sigunguCode": "11305",
+    "name": "서울특별시 강북구"
+  },
+  "researchedAt": "2026-10-11T10:49:00Z",
+  "scope": "Read-only public facility candidate verification. No article bodies, remote writes, browser tabs, facility photos, ownership claim, plan freeze or release.",
+  "priorResearch": "/workspace/shared/gangbuk-readonly-20261011/research-proposal.md",
+  "recommendation": {
+    "candidateCount": 5,
+    "status": "retain_five_distinct_intents_subject_to_parent_review",
+    "reason": "장례, 도심 복수 예식홀, 리브랜딩된 리조트의 실내/야외 예식, 세 시장의 실제 점포, 공연·전시 행사 수령은 서로 다른 주문 판단이다. 법정동 숫자에 맞춘 할당이 아니다."
+  },
+  "globalLimitations": [
+    "시설 존재와 주소 검증은 외부 화환 반입·배송·직원 수령·설치 허용의 증거가 아니다. 모든 후보의 acceptancePolicyVerified=false.",
+    "2026-10-11 조회 시점에 반환된 공식 페이지 또는 공식 도메인 검색 색인만 근거로 사용했다. 검색 색인은 실시간 영업상태나 현장 수령 가능성을 보증하지 않는다.",
+    "운영자 공식 사이트 직접 열람이 실패한 경우 HTTP403/timeout/internal error와 검색 색인 확인을 구분했다. 실패를 폐업으로 해석하지 않는다.",
+    "사진·약도·홍보문 복제 및 재사용을 승인받지 않았다. 시설 사진은 사용하지 않는다. 특히 강북구 시장 소개는 공공누리4유형(상업이용·변경금지) 표기가 있어 기본 사실만 자체 문장으로 요약해야 한다.",
+    "시장·문화시설·장례시설의 지번을 배송 세부지점으로 간주하지 않는다. 도로명 주소 뒤에 빈소/홀/실점포/행사 공간을 별도로 확정해야 한다.",
+    "부모의 별도 최신 KIKmix20260930 검증에 따르면 강북구는4법정동/13행정동/14관계이며 행정 우이동은 법정 수유동과 우이동에 걸친다. 구청 요약표만으로 전체 법정-행정 관계를 확정하지 않는다. 이 파일은 해당 원본을 직접 읽지는 않았다."
+  ],
+  "sources": [
+    {
+      "id": "F01",
+      "url": "https://www.kfcpi.or.kr/link/2025/09/29/831da0f4-5acd-43d4-b0ae-60e6111f33f7.pdf",
+      "title": "전국 장례식장 현황",
+      "publisher": "한국장례문화진흥원",
+      "type": "공공기관 전국 시설목록 PDF",
+      "sourceDate": null,
+      "dateNote": "경로2025/09/29. 문서 자체 기준일은 확인하지 못했으므로 발행일로 단정하지 않음.",
+      "access": "PDF extracted text, page1/line41 read",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "대한병원장례식장",
+        "서울특별시 강북구 도봉로 301(수유동)",
+        "02-992-4444"
+      ],
+      "limitations": [
+        "장례식장 등록 목록이지 실시간 빈소나 당일 영업·반입 보증이 아님"
+      ]
+    },
+    {
+      "id": "F02",
+      "url": "https://www.hira.or.kr/ra/hosp/hospInfoAjax.do?ykiho=11101156",
+      "title": "의료법인성화의료재단 대한병원 — 병원 기본정보",
+      "publisher": "건강보험심사평가원",
+      "type": "공공기관 병원 기본정보",
+      "sourceDate": null,
+      "dateNote": "페이지에 별도 수정일 확인 안 됨",
+      "access": "body_read",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "(01081)서울특별시 강북구 도봉로 301(수유동,대한병원)"
+      ],
+      "limitations": [
+        "병원 정보로 장례식장 빈소·운영규칙까지 검증하지 않음"
+      ]
+    },
+    {
+      "id": "F03",
+      "url": "https://thevictoria.co.kr/About",
+      "title": "더빅토리아웨딩파티 소개",
+      "publisher": "더빅토리아웨딩파티",
+      "type": "운영자 공식 시설 소개",
+      "sourceDate": null,
+      "dateNote": "게시·수정일 미표시, 검색색인3주 전 수집",
+      "access": "official_search_index_only; direct403",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "더빅토리아웨딩파티",
+        "서울특별시 강북구 도봉로 16",
+        "사이트는 송중동 42-8번지로 표기",
+        "02-985-2003"
+      ],
+      "limitations": [
+        "송중동은 행정동 이름이며 법정동으로 추가하면 안 됨",
+        "실시간 웹 본문 readback 아님"
+      ]
+    },
+    {
+      "id": "F04",
+      "url": "https://thevictoria.co.kr/Victoriahall",
+      "title": "빅토리아홀",
+      "publisher": "더빅토리아웨딩파티",
+      "type": "운영자 공식 예식홀 소개",
+      "sourceDate": null,
+      "dateNote": "게시·수정일 미표시, 검색색인2주 전 수집",
+      "access": "official_search_index_only; direct403",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "6층 빅토리아홀",
+        "같은 시설의 하늘정원홀과 구분"
+      ],
+      "limitations": [
+        "공식 검색색인에6층은 확인됐지만 층수 없이도 주문맥락을 설명 가능",
+        "기본 홀 꽃장식은 외부 축하화환 반입 정책과 별개"
+      ]
+    },
+    {
+      "id": "F05",
+      "url": "https://thevictoria.co.kr/1482005440",
+      "title": "하늘정원홀 신부대기실",
+      "publisher": "더빅토리아웨딩파티",
+      "type": "운영자 공식 부대공간 소개",
+      "sourceDate": null,
+      "dateNote": "게시·수정일 미표시, 검색색인3개월 전 수집",
+      "access": "official_search_index_only",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "9층 하늘정원홀 신부대기실"
+      ],
+      "limitations": [
+        "신부대기실 페이지다. 외부 화환 수령처가9층 신부대기실이라는 근거로 사용하지 않음"
+      ]
+    },
+    {
+      "id": "F06",
+      "url": "https://data.seoul.go.kr/dataList/OA-17410/S/1/datasetView.do",
+      "title": "서울시 강북구 관광숙박업 인허가 정보",
+      "publisher": "서울열린데이터광장",
+      "type": "공공 인허가 데이터셋",
+      "sourceDate": "2026-04-01",
+      "dateNote": "검색색인의 해당 레코드 데이터갱신일2026-04-01. 페이지 전체 기준일로 단정하지 않음.",
+      "access": "dataset_landing_body_read; individual_rows_official_search_index",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "호텔 빅토리아 건물: 미아동 42-8 / 도봉로 16(미아동)",
+        "안토: 우이동 346 / 삼양로 689(우이동), 관광숙박업 영업중 레코드"
+      ],
+      "limitations": [
+        "호텔 빅토리아의 관광숙박업 휴업기간2025-01-01~2026-12-31 표시는 웨딩홀의 휴업·폐업을 증명하지 않음",
+        "안토 지번은 다른 주소자료에서 산14-3 등 옛 표기가 보여 도로명 우선 사용",
+        "검색색인 데이터레코드는 실시간 API readback이 아님"
+      ]
+    },
+    {
+      "id": "F07",
+      "url": "https://antoresort.co.kr/information/30201030300",
+      "title": "EVENT 2026 하반기 잔여타임 스페셜 프로모션",
+      "publisher": "안토 리조트",
+      "type": "운영자 공식 현행 웨딩 안내",
+      "sourceDate": null,
+      "dateNote": "적용기간2026-12-31까지(웨딩일 기준), 게시일 미표시",
+      "access": "official_search_index_only; direct_internal_error",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "현행 브랜드 안토",
+        "루프탑(야외)와 그랜드볼룸(실내) 두 예식 베뉴",
+        "웨딩 문의 대표02-3408-5000 ARS7"
+      ],
+      "limitations": [
+        "프로모션 가격·혜택은 꽃 주문 페이지에 옮기지 않음",
+        "동·층·루프탑 위치·반입동선·악천후 시 대체공간은 검증하지 않음"
+      ]
+    },
+    {
+      "id": "F08",
+      "url": "https://antoresort.co.kr/reservation/search",
+      "title": "안토 리조트",
+      "publisher": "안토 리조트",
+      "type": "운영자 공식 사이트 주소 푸터",
+      "sourceDate": null,
+      "dateNote": "게시·수정일 미표시",
+      "access": "official_search_index_only; direct_timeout",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "서울특별시 강북구 삼양로 689(우이동)",
+        "현행 표기ANTO"
+      ],
+      "limitations": [
+        "객실예약 페이지를 웨딩 화환 수령주소·정책으로 쓰지 않음"
+      ]
+    },
+    {
+      "id": "F09",
+      "url": "https://www.hwrc.co.kr/hwrc/news_room/news_room_view.do?news_room_seq=106&num=84",
+      "title": "파라스파라 서울, 하이앤드 브랜드 안토로 재탄생",
+      "publisher": "한화호텔앤드리조트",
+      "type": "운영사 공식 뉴스룸",
+      "sourceDate": "2025-08-13",
+      "dateNote": "등록일",
+      "access": "official_search_index_only; direct_internal_error",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "구 파라스파라 서울의 현재 브랜드 안토(ANTO)"
+      ],
+      "limitations": [
+        "인수거래 금액·법률·재무 정보는 이번 구매맥락에 불필요하므로 사용하지 않음"
+      ]
+    },
+    {
+      "id": "F10",
+      "url": "https://www.hwrc.co.kr/hwrc/news_room/news_room_view.do?news_room_seq=134&num=111&num=57&num=63",
+      "title": "안토, ‘미니멀 오리엔탈 웨딩’ 쇼케이스 개최",
+      "publisher": "한화호텔앤드리조트",
+      "type": "운영사 공식 웨딩 보도자료",
+      "sourceDate": "2026-04-09",
+      "dateNote": "등록일; 행사2026-04-08",
+      "access": "official_search_index_only; direct_internal_error",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "2026년 안토 웨딩 운영 맥락",
+        "안토 그랜드볼룸 예식"
+      ],
+      "limitations": [
+        "쇼케이스 꽃연출은 외부 화환 반입 승인이 아님"
+      ]
+    },
+    {
+      "id": "F11",
+      "url": "https://news.seoul.go.kr/economy/archives/571689",
+      "title": "서울시 전통시장 현황(2026.1.31. 기준)",
+      "publisher": "서울특별시 민생노동국 상권활성화과",
+      "type": "공식 전통시장 목록",
+      "sourceDate": "2026-05-12",
+      "dateNote": "페이지 수정일2026-05-12, 통계기준일2026-01-31",
+      "access": "body_read, rows223/225/226",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "수유시장: 도봉로67길 18 / 수유동 54-5 / 등록시장·건물형",
+        "수유재래시장: 도봉로71길 일대 / 수유동 53·53·54 일대 / 인정시장·골목형",
+        "수유전통시장: 도봉로67길 일대 / 수유동 53·54 일대 / 인정시장·골목형"
+      ],
+      "limitations": [
+        "재래시장 구주소는 공식 원문에53·53·54로 중복 표기; 임의 정정하지 않음",
+        "시장 대표주소는 개별 점포의 최종 배송주소가 아님"
+      ]
+    },
+    {
+      "id": "F12",
+      "url": "https://child.gangbuk.go.kr/portal/bbs/B0000180/view.do?menuNo=200243&nttId=82922&pageIndex=",
+      "title": "강북구 전통시장 — 수유시장",
+      "publisher": "강북구청 지역경제과",
+      "type": "공식 시장 소개",
+      "sourceDate": "2026-08-18",
+      "dateNote": "최종수정일2026-08-18, 작성일2024-05-29",
+      "access": "body_read",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "수유시장·수유전통(골목)시장 통합 소개",
+        "도로명 도봉로67길 18(수유동)"
+      ],
+      "limitations": [
+        "이 통합 소개의 대표주소를 세 시장의 동일 주소라는 의미로 확장하지 않음",
+        "공공누리4유형. 사진·홍보문 상업복제 금지"
+      ]
+    },
+    {
+      "id": "F13",
+      "url": "https://www.gbcf.or.kr/load.asp?subPage=210",
+      "title": "강북문화재단 — 대관안내",
+      "publisher": "강북문화재단",
+      "type": "운영기관 공식 대관 안내",
+      "sourceDate": null,
+      "dateNote": "게시·수정일 미표시",
+      "access": "body_read",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "대공연장 강북소나무홀",
+        "소공연장 강북진달래홀",
+        "전시실 강북진달래홀 갤러리",
+        "강북문화예술회관 도로명 삼각산로 85"
+      ],
+      "limitations": [
+        "푸터3층은 재단 사무실 주소이며 행사·화환 수령층을 뜻하지 않음"
+      ]
+    },
+    {
+      "id": "F14",
+      "url": "https://www.gbcf.or.kr/load.asp?cate=%EA%B3%B5%EA%B3%A0&idx=1716&subPage=510.view",
+      "title": "2026년 강북문화예술회관 하반기 정기대관 공고(~4/9 17:00까지)",
+      "publisher": "강북문화재단",
+      "type": "운영기관 공식 대관 공고",
+      "sourceDate": "2026-03-26",
+      "dateNote": "게시일",
+      "access": "body_read",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "2026년 하반기 강북소나무홀·강북진달래홀 공연장 대관",
+        "무대·조명·음향·하우스관리 및 안내 인력을 지원하지 않음"
+      ],
+      "limitations": [
+        "공연인력 미지원은 꽃 수령 거절 정책과 동일하지 않지만 직원 자동 수령·배치를 추정할 근거도 없음"
+      ]
+    },
+    {
+      "id": "F15",
+      "url": "https://child.gangbuk.go.kr/portal/bbs/B0000182/list.do?menuNo=200444",
+      "title": "문화시설 — 강북문화예술회관",
+      "publisher": "강북구청",
+      "type": "공식 관내시설 목록",
+      "sourceDate": null,
+      "dateNote": "개별 시설 정보의 게시·수정일 확인 안 됨",
+      "access": "body_read_and_official_search_index",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "서울특별시 강북구 삼각산로 85(수유동)"
+      ],
+      "limitations": [
+        "일반 운영시간·체육시설 휴관은 개별 공연·전시 화환 반입시간을 뜻하지 않음"
+      ]
+    },
+    {
+      "id": "F16",
+      "url": "https://www.gbculture.or.kr/main/main.php?categoryid=02&groupid=00&menuid=09",
+      "title": "강북문화원 — 찾아오시는 길",
+      "publisher": "강북문화원",
+      "type": "입주기관 공식 오시는 길",
+      "sourceDate": null,
+      "dateNote": "게시·수정일 미표시",
+      "access": "body_read",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "삼각산로 85(수유동 360-12), 강북문화예술회관 본관3층"
+      ],
+      "limitations": [
+        "강북문화원 주소이지 공연장 수령처가 아님",
+        "회관 조례·주소자료의 수유동 360-10과 상이해 이번 후보 주소에서는 지번 생략"
+      ]
+    },
+    {
+      "id": "F17",
+      "url": "https://child.gangbuk.go.kr/portal/bbs/B0000087/list.do?menuNo=200264&nttId=85387",
+      "title": "자전거 — 자전거 공기주입기 설치 장소",
+      "publisher": "강북구청",
+      "type": "공식 교통시설 목록",
+      "sourceDate": null,
+      "dateNote": "해당 표 기준일은 확인하지 않음",
+      "access": "body_read_and_official_search_index",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "대한병원 주차장 컨테이너의 주소 도봉로 301(수유동 45-10), 동명 인수동으로 기재"
+      ],
+      "limitations": [
+        "부속 교통시설표의 행정동 열은 주소 경계의 최종 증빙으로 부족하다. 장례식장 페이지에서 행정동 표기는 생략 가능"
+      ]
+    },
+    {
+      "id": "F18",
+      "url": "https://child.gangbuk.go.kr/dong/main/contents.do?dongCd=09&menuNo=600155",
+      "title": "수유1동 — 우리동소개 — 동현황",
+      "publisher": "강북구 수유1동",
+      "type": "공식 지역특성 안내",
+      "sourceDate": "2026-02-04",
+      "dateNote": "최종수정일",
+      "access": "body_read",
+      "checkedAt": "2026-10-11",
+      "supports": [
+        "수유1동 지역특성에 수유시장 주변 상업지역 기재"
+      ],
+      "limitations": [
+        "전체 법정·행정관계표는 최신 KIKmix와 대조 필요; 행정우이동의 법정수유동 중복 관계가 요약표에서 누락",
+        "개별 점포 경계를 확정하는 지적도는 아님"
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "id": "daehan_funeral",
+      "name": "대한병원장례식장",
+      "proposedSlug": "suyu-dong-daehan-funeral-wreath",
+      "intent": "근조화환 주문",
+      "decision": "retain",
+      "address": {
+        "road": "서울특별시 강북구 도봉로 301(수유동)",
+        "legalDong": "수유동",
+        "legalDongCode": "1130510300",
+        "legalEvidence": [
+          "F01",
+          "F02"
+        ],
+        "adminDong": null,
+        "adminEvidenceNote": "F17의 인수동 표기는 별도 주소경계 최종검증 전 공개필드로 채택하지 않음"
+      },
+      "supportedContext": [
+        "공공 장례식장 목록에서 해당 시설과 병원 도로명 주소가 확인됨",
+        "병원 일반 진료부서와 장례식장 목적지를 구별해야 함"
+      ],
+      "receivingQuestions": [
+        "고인명·상주명·빈소",
+        "발인 및 수령가능 시점",
+        "장례식장 수령담당과 화환 반입·설치위치"
+      ],
+      "distinctiveProblem": "병원명만 받은 경우 정확한 장례식장·빈소 수령처를 확정하는 구매 판단",
+      "sources": [
+        "F01",
+        "F02",
+        "F17"
+      ],
+      "acceptancePolicyVerified": false,
+      "doNotClaim": [
+        "실시간 빈소·층수·빈소 개수",
+        "병원 직원 자동전달",
+        "당일·몇시간 배송보장",
+        "반입 가능시간·외부화환 무조건 허용"
+      ]
+    },
+    {
+      "id": "victoria_wedding",
+      "name": "더빅토리아웨딩파티",
+      "proposedSlug": "mia-dong-the-victoria-wedding-wreath",
+      "intent": "결혼식 축하화환 주문",
+      "decision": "retain_with_search_index_limitation",
+      "address": {
+        "road": "서울특별시 강북구 도봉로 16(미아동)",
+        "legalDong": "미아동",
+        "legalDongCode": "1130510100",
+        "legalEvidence": [
+          "F06"
+        ],
+        "adminDong": "송중동",
+        "adminStatus": "operator_label_corroborates; not_cadastral_boundary_certification",
+        "adminEvidence": [
+          "F03"
+        ]
+      },
+      "supportedContext": [
+        "운영자 사이트는 빅토리아홀과 하늘정원홀을 나눔",
+        "6층 빅토리아홀은 공식 검색색인에 명시됨"
+      ],
+      "receivingQuestions": [
+        "홀 이름과 예식 날짜·시간",
+        "외부 축하화환 반입 허용 여부",
+        "홀별 지정 수령·설치·회수 위치"
+      ],
+      "distinctiveProblem": "같은 도로명 건물 안 복수 예식홀과 예식시간을 함께 확인하는 주문 판단",
+      "sources": [
+        "F03",
+        "F04",
+        "F05",
+        "F06"
+      ],
+      "acceptancePolicyVerified": false,
+      "doNotClaim": [
+        "검색색인만으로 당일 영업 및 수령 확정",
+        "호텔빅토리아 숙박업 휴업을 웨딩홀 휴업으로 해석",
+        "성북구 시설로 배정",
+        "송중동을 법정동으로 저장",
+        "홀 자체 생화장식과 외부 축하화환 동일시"
+      ]
+    },
+    {
+      "id": "anto_wedding",
+      "name": "안토 리조트",
+      "proposedSlug": "ui-dong-anto-wedding-wreath",
+      "intent": "리조트 웨딩 축하화환 주문",
+      "decision": "retain_with_search_index_limitation",
+      "address": {
+        "road": "서울특별시 강북구 삼양로 689(우이동)",
+        "legalDong": "우이동",
+        "legalDongCode": "1130510400",
+        "legalEvidence": [
+          "F06",
+          "F08"
+        ],
+        "adminDong": "우이동",
+        "adminStatus": "legal_ui_is_within_admin_ui_per_parent_verified_KIKmix; local_source_not_reread"
+      },
+      "currentName": "안토(ANTO)",
+      "formerName": "파라스파라 서울",
+      "supportedContext": [
+        "운영사2025-08-13 명칭변경 발표",
+        "2026년 웨딩 운영 및 연말까지 적용되는 프로모션",
+        "루프탑(야외)와 그랜드볼룸(실내) 베뉴 구분"
+      ],
+      "receivingQuestions": [
+        "실내 그랜드볼룸인지 야외 루프탑인지",
+        "담당자가 지정한 동·층·진입지점",
+        "행사일 반입·설치·회수 가능시간과 외부화환 허용 여부"
+      ],
+      "distinctiveProblem": "옛 명칭·리조트 대표주소만으로 끝내지 않고 실제 실내/야외 행사 수령점을 확정하는 구매 판단",
+      "sources": [
+        "F06",
+        "F07",
+        "F08",
+        "F09",
+        "F10"
+      ],
+      "acceptancePolicyVerified": false,
+      "doNotClaim": [
+        "파라스파라를 현재 공식명칭처럼 제목에 사용",
+        "M동G층·114동6층 등 미검증 웨딩 층수",
+        "로비나 객실 직원의 자동수령",
+        "야외 설치·기상변경·진입허용 보장",
+        "프로모션가격을 화환가격처럼 표시"
+      ]
+    },
+    {
+      "id": "suyu_markets_opening",
+      "name": "수유시장·수유전통시장·수유재래시장",
+      "proposedSlug": "suyu-dong-suyu-market-opening-wreath",
+      "intent": "거래처 개업화환 주문",
+      "decision": "retain_as_one_useful_candidate",
+      "address": {
+        "road": null,
+        "legalDong": "수유동",
+        "legalDongCode": "1130510300",
+        "legalEvidence": [
+          "F11",
+          "F12"
+        ],
+        "adminDong": "수유1동",
+        "adminStatus": "official_neighborhood_context; individual_shop_boundary_not_certified",
+        "adminEvidence": [
+          "F18"
+        ],
+        "locations": [
+          {
+            "name": "수유시장",
+            "road": "서울특별시 강북구 도봉로67길 18",
+            "jibun": "수유동 54-5",
+            "form": "건물형"
+          },
+          {
+            "name": "수유전통시장",
+            "road": "서울특별시 강북구 도봉로67길 일대",
+            "jibun": "수유동 53·54 일대",
+            "form": "골목형"
+          },
+          {
+            "name": "수유재래시장",
+            "road": "서울특별시 강북구 도봉로71길 일대",
+            "jibun": "수유동 53·53·54 일대",
+            "jibunNote": "공식원문 중복을 그대로 보존; 발행문에는 도로명만 사용 권장",
+            "form": "골목형"
+          }
+        ]
+      },
+      "supportedContext": [
+        "공식 현황에서 세 시장을 서로 다른 항목·주소·형태로 관리",
+        "구청 통합 소개의 대표주소는 건물형 수유시장 주소"
+      ],
+      "receivingQuestions": [
+        "정확한 시장명과 받는 거래처 상호",
+        "점포 도로명·층·호 또는 확인 가능한 입구",
+        "수령담당 및 점포가 승인한 전시크기·설치위치"
+      ],
+      "distinctiveProblem": "유사한 시장명에서 실제 점포 배송지를 확정하고 건물형과 골목형 수령을 구분하는 구매 판단",
+      "sources": [
+        "F11",
+        "F12",
+        "F18"
+      ],
+      "acceptancePolicyVerified": false,
+      "doNotClaim": [
+        "세 시장이 동일한 주소라는 주장",
+        "상인회나 시장 대표주소로 보내면 점포에 자동전달",
+        "통로상 화환설치 허용",
+        "한시 명절 주차허용을 상시배송권한처럼 표시"
+      ],
+      "consolidationReason": "시장별 이름만 바꾼세글은 피하고 실점포 주소확인이라는 한구매문제를 해결한다."
+    },
+    {
+      "id": "gangbuk_arts",
+      "name": "강북문화예술회관",
+      "proposedSlug": "suyu-dong-gangbuk-arts-congratulation-wreath",
+      "intent": "공연·전시 축하화환 주문",
+      "decision": "retain",
+      "address": {
+        "road": "서울특별시 강북구 삼각산로 85(수유동)",
+        "legalDong": "수유동",
+        "legalDongCode": "1130510300",
+        "legalEvidence": [
+          "F15",
+          "F16"
+        ],
+        "adminDong": null,
+        "adminEvidenceNote": "인수동 행사·인근기관 문맥만으로 정확한 경계 확정하지 않음. 발행은 법정 수유동과 도로명만 사용 가능.",
+        "jibun": null,
+        "jibunConflict": "문화원 공식 입주기관 주소360-12와 회관 조례 인용·주소자료360-10이 달라 지번 생략"
+      },
+      "supportedContext": [
+        "대공연장 강북소나무홀",
+        "소공연장 강북진달래홀",
+        "전시실 강북진달래홀 갤러리",
+        "2026년 하반기 공식 대관공고"
+      ],
+      "receivingQuestions": [
+        "공연·전시 행사명과 실제 사용홀/갤러리",
+        "주최측 수령담당",
+        "화환 반입승인·설치지점·행사종료 회수시간"
+      ],
+      "distinctiveProblem": "기관 사무실과 실제 행사 공간·주최자를 구별하고 반입/회수 시점을 조정하는 구매 판단",
+      "sources": [
+        "F13",
+        "F14",
+        "F15",
+        "F16"
+      ],
+      "acceptancePolicyVerified": false,
+      "doNotClaim": [
+        "재단 사무실3층을 행사화환 수령처로 확정",
+        "재단직원이 화환을 자동수령·배치",
+        "상시 로비설치·반입보장",
+        "불명확한 지번을 단일정답으로 제시",
+        "기관공식 제휴"
+      ],
+      "productScopeNote": "축하화환을 위한 후보다. 꽃다발·꽃바구니 판매 여부는 별도 카탈로그 검증 없이는 추가하지 않는다."
+    }
+  ]
+}

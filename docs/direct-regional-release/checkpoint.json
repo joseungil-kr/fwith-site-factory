@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T10:48:09.269Z",
+  "updatedAt": "2026-10-11T11:01:08.609Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-gangbuk-direct-initial-20261011",
     "city": "서울특별시 강북구",
-    "status": "research_and_plan_preparation",
+    "status": "fixed_plan_before_authoring",
     "owner": {
       "scheduledRunAt": "2026-10-11T10:00:00Z",
       "observedExecutionAt": "2026-10-11T10:48:09.269Z",
@@ -41,7 +41,7 @@
       "serviceInvocationId": null,
       "checkpointId": "direct-seoul-gangbuk-20261011T100000Z",
       "active": true,
-      "executionState": "research_and_plan_preparation",
+      "executionState": "fixed_plan_and_original_content_preparation",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T10:46:30.399Z"
     },
     "identity": {
@@ -78,18 +78,70 @@
       }
     },
     "changeIntent": {
-      "action": "claim_one_new_region_and_prepare_official_plan_before_authoring",
-      "idempotencyKey": "seoul-gangbuk:claim:20261011T100000Z"
+      "action": "freeze_plan_before_authoring_then_create_fixed_source_branch",
+      "idempotencyKey": "seoul-gangbuk:plan:ba508ecf992014057692011fa5b6b4afc17d2c746aaf841c37bf1a38f6adacd0"
     },
     "plan": {
-      "state": "research_not_frozen",
-      "plannedArticleCount": null,
-      "membershipProvisional": {
-        "legalDongCount": 4,
-        "administrativeDongCount": 13,
-        "relationshipCount": 14
-      },
-      "countIsPageQuota": false
+      "state": "frozen_before_authoring_independent_plan_pass",
+      "plannedArticleCount": 5,
+      "minimumPassedArticles": 5,
+      "legalDongCount": 4,
+      "administrativeDongCount": 13,
+      "relationshipCount": 14,
+      "representedLegalUnits": 3,
+      "unassignedLegalUnits": 1,
+      "countIsPageQuota": false,
+      "fixedPlanPath": "docs/direct-regional-release/seoul-gangbuk/fixed-plan.json",
+      "fixedPlanSha256": "ba508ecf992014057692011fa5b6b4afc17d2c746aaf841c37bf1a38f6adacd0",
+      "frozenAt": "2026-10-11T11:00:23.520092+00:00",
+      "representativeAssignment": "facility-purchase-context-v1",
+      "articles": [
+        {
+          "slug": "suyu-dong-daehan-funeral-wreath",
+          "title": "대한병원장례식장 근조화환 주문",
+          "primaryKeyword": "대한병원장례식장 근조화환 주문",
+          "unitKey": "강북구/법정동/수유동",
+          "facilityKey": "daehan-hospital-funeral",
+          "purchaseIntentKey": "funeral-condolence-wreath",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "mia-dong-the-victoria-wedding-wreath",
+          "title": "더빅토리아웨딩파티 결혼식 축하화환 주문",
+          "primaryKeyword": "더빅토리아웨딩파티 결혼식 축하화환 주문",
+          "unitKey": "강북구/법정동/미아동",
+          "facilityKey": "the-victoria-wedding-party",
+          "purchaseIntentKey": "wedding-congrats-wreath",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "ui-dong-anto-wedding-wreath",
+          "title": "안토 리조트 웨딩 축하화환 주문",
+          "primaryKeyword": "안토 리조트 웨딩 축하화환 주문",
+          "unitKey": "강북구/법정동/우이동",
+          "facilityKey": "anto-resort",
+          "purchaseIntentKey": "wedding-congrats-wreath",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "suyu-dong-suyu-market-opening-wreath",
+          "title": "수유시장 점포 개업화환 주문",
+          "primaryKeyword": "수유시장 점포 개업화환 주문",
+          "unitKey": "강북구/법정동/수유동",
+          "facilityKey": "suyu-market",
+          "purchaseIntentKey": "opening-congrats-wreath",
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "suyu-dong-gangbuk-arts-congratulation-wreath",
+          "title": "강북문화예술회관 공연·전시 축하화환 주문",
+          "primaryKeyword": "강북문화예술회관 공연·전시 축하화환 주문",
+          "unitKey": "강북구/법정동/수유동",
+          "facilityKey": "gangbuk-culture-arts-center",
+          "purchaseIntentKey": "event-congrats-wreath",
+          "status": "planned_not_authored"
+        }
+      ]
     },
     "unfinishedStages": [
       "official_research",
@@ -103,7 +155,13 @@
       "indexnow",
       "gsc",
       "deferred_visual_qa"
-    ]
+    ],
+    "review": {
+      "planReviewStatus": "PASS_BEFORE_AUTHORING",
+      "planReviewSha256": "649d5608070907807b02712c79c366aac31a6b7f40ff2dad27e166b380e20d7f",
+      "imageReviewSha256": "d8f8731f283ce3acb2d333ab5d303ebb016a501e6def04f6955ebcb3914290e6",
+      "screenQa": "DEFERRED_NOT_PASS"
+    }
   },
   "history": [
     {
@@ -14676,6 +14734,176 @@
       ],
       "status": "deferred_by_user_not_pass",
       "lastObservedAt": "2026-10-11T10:42:41.661Z"
+    },
+    {
+      "scopeKey": "pyeongtaek-additions-20261011",
+      "city": "경기도 평택시 추가 콘텐츠",
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-pyeongtaek-v2",
+        "root": "site-factory/pyeongtaek-flower",
+        "worker": "pyeongtaek-flower-prod-disabled",
+        "hostname": "pyeongtaek.fwith.kr"
+      },
+      "sourceRevision": "7f4538d12218978ff2532509d0c67252e0a516c6",
+      "controlRevision": "f24f05e917cf25897c48e8c642fd9f2b43abe270",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "originalPlannedArticles": 1,
+      "approvedArticles": 1,
+      "deferredArticles": 0,
+      "originalInitialPlanAndHistoryPreserved": true,
+      "publicUrl": "https://pyeongtaek.fwith.kr",
+      "run": {
+        "id": 38133140488,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38133140488",
+        "status": "completed",
+        "conclusion": "success",
+        "runAttempt": 1
+      },
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "7e985c7783b9ad3f31b568b801241dd8f38df75831ab04ffb1363b7c7c30088f",
+        "httpStatus": 200,
+        "origin": "https://pyeongtaek.fwith.kr",
+        "recordedAt": "2026-10-11T10:47:30.845487+00:00",
+        "revision": "7f4538d12218978ff2532509d0c67252e0a516c6",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38133140488",
+        "searchIndexing": "not_verified",
+        "siteKey": "pyeongtaek-flower-v2",
+        "state": "received",
+        "urlCount": 38,
+        "urlSetSha256": "3f24573f8abdb6a8e9aaa76f89c18b1a29862eb9800ae0375ae97a34a7778223",
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/259#issuecomment-6108222298",
+        "commentId": 6108222298,
+        "durableReadbackVerified": true
+      },
+      "gsc": {
+        "observedAt": "2026-10-11T10:49:04.101Z",
+        "siteUrl": "sc-domain:fwith.kr",
+        "status": "existing_registered_sitemap_reused",
+        "submissionPerformed": false,
+        "sitemaps": [
+          {
+            "path": "https://pyeongtaek.fwith.kr/sitemap-index.xml",
+            "lastSubmitted": "2026-10-09T13:11:31.948Z",
+            "isPending": false,
+            "isSitemapsIndex": true,
+            "lastDownloaded": "2026-10-09T13:41:12.813Z",
+            "warnings": "0",
+            "errors": "0"
+          }
+        ],
+        "indexingVerified": false
+      },
+      "publicHttp": {
+        "state": "public_release_verified",
+        "revision": "7f4538d12218978ff2532509d0c67252e0a516c6",
+        "regionCount": 35,
+        "articleCount": 36,
+        "htmlRoutes": 39,
+        "noindexHubs": 1,
+        "sitemapUrls": 38,
+        "checkedPaths": 55,
+        "normalizedCloudflareBeacons": 42,
+        "deferredHttpStatus": 404,
+        "unknownHttpStatus": 404
+      },
+      "pendingVisualRoutes": {
+        "desktop": [
+          "/event/",
+          "/event/pyeongtaek-art-center-performance-wreath/",
+          "/",
+          "/regions/anjung-eup/",
+          "/regions/bijeon-dong/",
+          "/regions/cheongbuk-eup/",
+          "/regions/cheongnyong-dong/",
+          "/regions/chilgoe-dong/",
+          "/regions/doil-dong/",
+          "/regions/dokgok-dong/",
+          "/regions/dongsak-dong/",
+          "/regions/gajae-dong/",
+          "/regions/godeok-dong/",
+          "/regions/godeok-myeon/",
+          "/regions/gunmun-dong/",
+          "/regions/hapjeong-dong/",
+          "/regions/hyeondeok-myeon/",
+          "/regions/ichung-dong/",
+          "/regions/",
+          "/regions/jangan-dong/",
+          "/regions/jangdang-dong/",
+          "/regions/jije-dong/",
+          "/regions/jinwi-myeon/",
+          "/regions/jisan-dong/",
+          "/regions/jukbaek-dong/",
+          "/regions/mogok-dong/",
+          "/regions/oseong-myeon/",
+          "/regions/paengseong-eup/",
+          "/regions/poseung-eup/",
+          "/regions/pyeongtaek-dong/",
+          "/regions/segyo-dong/",
+          "/regions/seojeong-dong/",
+          "/regions/seotan-myeon/",
+          "/regions/sindae-dong/",
+          "/regions/sinjang-dong/",
+          "/regions/sosa-dong/",
+          "/regions/tongbok-dong/",
+          "/regions/yongi-dong/",
+          "/regions/yucheon-dong/"
+        ],
+        "narrow": [
+          "/event/",
+          "/event/pyeongtaek-art-center-performance-wreath/",
+          "/",
+          "/regions/anjung-eup/",
+          "/regions/bijeon-dong/",
+          "/regions/cheongbuk-eup/",
+          "/regions/cheongnyong-dong/",
+          "/regions/chilgoe-dong/",
+          "/regions/doil-dong/",
+          "/regions/dokgok-dong/",
+          "/regions/dongsak-dong/",
+          "/regions/gajae-dong/",
+          "/regions/godeok-dong/",
+          "/regions/godeok-myeon/",
+          "/regions/gunmun-dong/",
+          "/regions/hapjeong-dong/",
+          "/regions/hyeondeok-myeon/",
+          "/regions/ichung-dong/",
+          "/regions/",
+          "/regions/jangan-dong/",
+          "/regions/jangdang-dong/",
+          "/regions/jije-dong/",
+          "/regions/jinwi-myeon/",
+          "/regions/jisan-dong/",
+          "/regions/jukbaek-dong/",
+          "/regions/mogok-dong/",
+          "/regions/oseong-myeon/",
+          "/regions/paengseong-eup/",
+          "/regions/poseung-eup/",
+          "/regions/pyeongtaek-dong/",
+          "/regions/segyo-dong/",
+          "/regions/seojeong-dong/",
+          "/regions/seotan-myeon/",
+          "/regions/sindae-dong/",
+          "/regions/sinjang-dong/",
+          "/regions/sosa-dong/",
+          "/regions/tongbok-dong/",
+          "/regions/yongi-dong/",
+          "/regions/yucheon-dong/"
+        ]
+      },
+      "pendingVisualItems": [
+        "layout",
+        "responsive overflow",
+        "product presentation",
+        "CTA visibility"
+      ],
+      "reviewReadbackDigest": "7b4f4e19caf7643b5b58b6a9df6a20d9880bd7a64e3e0732dc7a2e91b07e3341",
+      "visualObservation": {
+        "status": "DEFERRED_BY_USER_NOT_PASS",
+        "cause": "Later batch visual QA requested; no desktop/narrow PASS inferred from HTTP checks."
+      }
     }
   ],
   "releasedKnownHosts": [
@@ -14794,7 +15022,7 @@
       "baselineSource": "de67be7764eecd2ef96136d99574b54f4e6abd1b",
       "additivePlannedN": 1,
       "qualityPassed": 1,
-      "status": "source_saved_control_prepared",
+      "status": "released_search_submitted_visual_qa_deferred",
       "sourceManifestSha256": "71ee4d4bc440c078145c85597593e9d8e4c482254c286c04ea3999bd60266d7d",
       "controlManifestSha256": "db1f62379aec5eba7f249e55ed1a905880e405232738d589e21ec326cb0dd545",
       "intent": {
@@ -14809,7 +15037,50 @@
       "resultingArticles": 36,
       "resultingNormalHtml": 39,
       "resultingSitemapUrls": 38,
-      "visualQa": "deferred_not_pass"
+      "visualQa": "deferred_not_pass",
+      "run": {
+        "id": 38133140488,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38133140488",
+        "status": "completed",
+        "conclusion": "success",
+        "runAttempt": 1
+      },
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "7e985c7783b9ad3f31b568b801241dd8f38df75831ab04ffb1363b7c7c30088f",
+        "httpStatus": 200,
+        "origin": "https://pyeongtaek.fwith.kr",
+        "recordedAt": "2026-10-11T10:47:30.845487+00:00",
+        "revision": "7f4538d12218978ff2532509d0c67252e0a516c6",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38133140488",
+        "searchIndexing": "not_verified",
+        "siteKey": "pyeongtaek-flower-v2",
+        "state": "received",
+        "urlCount": 38,
+        "urlSetSha256": "3f24573f8abdb6a8e9aaa76f89c18b1a29862eb9800ae0375ae97a34a7778223",
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/259#issuecomment-6108222298",
+        "commentId": 6108222298,
+        "durableReadbackVerified": true
+      },
+      "gsc": {
+        "observedAt": "2026-10-11T10:49:04.101Z",
+        "siteUrl": "sc-domain:fwith.kr",
+        "status": "existing_registered_sitemap_reused",
+        "submissionPerformed": false,
+        "sitemaps": [
+          {
+            "path": "https://pyeongtaek.fwith.kr/sitemap-index.xml",
+            "lastSubmitted": "2026-10-09T13:11:31.948Z",
+            "isPending": false,
+            "isSitemapsIndex": true,
+            "lastDownloaded": "2026-10-09T13:41:12.813Z",
+            "warnings": "0",
+            "errors": "0"
+          }
+        ],
+        "indexingVerified": false
+      }
     },
     "completed": [
       {
@@ -14912,6 +15183,183 @@
         "visualQa": "deferred_not_pass",
         "originalInitialPlanAndHistoryPreserved": true,
         "publicVerifiedBy": "2026-10-11T10:35:22.246939Z"
+      },
+      {
+        "scopeKey": "pyeongtaek-additions-20261011",
+        "region": "pyeongtaek",
+        "status": "released_search_submitted_visual_qa_deferred",
+        "identity": {
+          "repository": "joseungil-kr/fwith-site-factory",
+          "branch": "site-factory-pyeongtaek-v2",
+          "root": "site-factory/pyeongtaek-flower",
+          "worker": "pyeongtaek-flower-prod-disabled",
+          "hostname": "pyeongtaek.fwith.kr"
+        },
+        "previousSource": "de67be7764eecd2ef96136d99574b54f4e6abd1b",
+        "sourceRevision": "7f4538d12218978ff2532509d0c67252e0a516c6",
+        "controlRevision": "f24f05e917cf25897c48e8c642fd9f2b43abe270",
+        "additivePlannedN": 1,
+        "qualityPassed": 1,
+        "heldAdditions": 0,
+        "originalPublishedPagesPreserved": 35,
+        "originalInitialPlanAndHeldPreserved": true,
+        "articles": [
+          {
+            "route": "/event/pyeongtaek-art-center-performance-wreath/",
+            "status": "published_http_verified"
+          }
+        ],
+        "resultingArticleCount": 36,
+        "normalHtmlRoutes": 39,
+        "sitemapUrls": 38,
+        "separate404": 1,
+        "run": {
+          "id": 38133140488,
+          "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38133140488",
+          "status": "completed",
+          "conclusion": "success",
+          "runAttempt": 1
+        },
+        "http": {
+          "state": "public_release_verified",
+          "revision": "7f4538d12218978ff2532509d0c67252e0a516c6",
+          "regionCount": 35,
+          "articleCount": 36,
+          "htmlRoutes": 39,
+          "noindexHubs": 1,
+          "sitemapUrls": 38,
+          "checkedPaths": 55,
+          "normalizedCloudflareBeacons": 42,
+          "deferredHttpStatus": 404,
+          "unknownHttpStatus": 404
+        },
+        "indexNow": {
+          "attempt": 1,
+          "endpoint": "https://searchadvisor.naver.com/indexnow",
+          "fingerprint": "7e985c7783b9ad3f31b568b801241dd8f38df75831ab04ffb1363b7c7c30088f",
+          "httpStatus": 200,
+          "origin": "https://pyeongtaek.fwith.kr",
+          "recordedAt": "2026-10-11T10:47:30.845487+00:00",
+          "revision": "7f4538d12218978ff2532509d0c67252e0a516c6",
+          "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38133140488",
+          "searchIndexing": "not_verified",
+          "siteKey": "pyeongtaek-flower-v2",
+          "state": "received",
+          "urlCount": 38,
+          "urlSetSha256": "3f24573f8abdb6a8e9aaa76f89c18b1a29862eb9800ae0375ae97a34a7778223",
+          "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/259#issuecomment-6108222298",
+          "commentId": 6108222298,
+          "durableReadbackVerified": true
+        },
+        "gsc": {
+          "observedAt": "2026-10-11T10:49:04.101Z",
+          "siteUrl": "sc-domain:fwith.kr",
+          "status": "existing_registered_sitemap_reused",
+          "submissionPerformed": false,
+          "sitemaps": [
+            {
+              "path": "https://pyeongtaek.fwith.kr/sitemap-index.xml",
+              "lastSubmitted": "2026-10-09T13:11:31.948Z",
+              "isPending": false,
+              "isSitemapsIndex": true,
+              "lastDownloaded": "2026-10-09T13:41:12.813Z",
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "indexingVerified": false
+        },
+        "reviewReadbackDigest": "7b4f4e19caf7643b5b58b6a9df6a20d9880bd7a64e3e0732dc7a2e91b07e3341",
+        "visualQa": "deferred_not_pass",
+        "publicVerifiedBy": "2026-10-11T10:47:30.845487Z",
+        "httpVerifiedAt": "2026-10-11T10:51:55.510348+00:00",
+        "uncheckedDesktopRoutes": [
+          "/event/",
+          "/event/pyeongtaek-art-center-performance-wreath/",
+          "/",
+          "/regions/anjung-eup/",
+          "/regions/bijeon-dong/",
+          "/regions/cheongbuk-eup/",
+          "/regions/cheongnyong-dong/",
+          "/regions/chilgoe-dong/",
+          "/regions/doil-dong/",
+          "/regions/dokgok-dong/",
+          "/regions/dongsak-dong/",
+          "/regions/gajae-dong/",
+          "/regions/godeok-dong/",
+          "/regions/godeok-myeon/",
+          "/regions/gunmun-dong/",
+          "/regions/hapjeong-dong/",
+          "/regions/hyeondeok-myeon/",
+          "/regions/ichung-dong/",
+          "/regions/",
+          "/regions/jangan-dong/",
+          "/regions/jangdang-dong/",
+          "/regions/jije-dong/",
+          "/regions/jinwi-myeon/",
+          "/regions/jisan-dong/",
+          "/regions/jukbaek-dong/",
+          "/regions/mogok-dong/",
+          "/regions/oseong-myeon/",
+          "/regions/paengseong-eup/",
+          "/regions/poseung-eup/",
+          "/regions/pyeongtaek-dong/",
+          "/regions/segyo-dong/",
+          "/regions/seojeong-dong/",
+          "/regions/seotan-myeon/",
+          "/regions/sindae-dong/",
+          "/regions/sinjang-dong/",
+          "/regions/sosa-dong/",
+          "/regions/tongbok-dong/",
+          "/regions/yongi-dong/",
+          "/regions/yucheon-dong/"
+        ],
+        "uncheckedNarrowRoutes": [
+          "/event/",
+          "/event/pyeongtaek-art-center-performance-wreath/",
+          "/",
+          "/regions/anjung-eup/",
+          "/regions/bijeon-dong/",
+          "/regions/cheongbuk-eup/",
+          "/regions/cheongnyong-dong/",
+          "/regions/chilgoe-dong/",
+          "/regions/doil-dong/",
+          "/regions/dokgok-dong/",
+          "/regions/dongsak-dong/",
+          "/regions/gajae-dong/",
+          "/regions/godeok-dong/",
+          "/regions/godeok-myeon/",
+          "/regions/gunmun-dong/",
+          "/regions/hapjeong-dong/",
+          "/regions/hyeondeok-myeon/",
+          "/regions/ichung-dong/",
+          "/regions/",
+          "/regions/jangan-dong/",
+          "/regions/jangdang-dong/",
+          "/regions/jije-dong/",
+          "/regions/jinwi-myeon/",
+          "/regions/jisan-dong/",
+          "/regions/jukbaek-dong/",
+          "/regions/mogok-dong/",
+          "/regions/oseong-myeon/",
+          "/regions/paengseong-eup/",
+          "/regions/poseung-eup/",
+          "/regions/pyeongtaek-dong/",
+          "/regions/segyo-dong/",
+          "/regions/seojeong-dong/",
+          "/regions/seotan-myeon/",
+          "/regions/sindae-dong/",
+          "/regions/sinjang-dong/",
+          "/regions/sosa-dong/",
+          "/regions/tongbok-dong/",
+          "/regions/yongi-dong/",
+          "/regions/yucheon-dong/"
+        ],
+        "independentReview": {
+          "verdict": "PASS_WITH_VISUAL_QA_DEFERRED",
+          "sha256": "d35990d32723111be235db0a0d3bfe38e25633a1ef3f4af35df2852959174d2a",
+          "scope": "Root independently verified official run, durable receipt, GSC registration, artifact ZIP digests and added route; existing full-route author evidence inspected, not falsely repeated as independent all-route verification."
+        }
       }
     ],
     "triggerSafety": {
