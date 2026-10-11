@@ -130,8 +130,10 @@ class PublishTests(unittest.TestCase):
 
     def test_bound_update_attach_is_get_only(self):
         p = Provider([pub.WORKER], [binding()])
-        with patch.object(pub, 'provider_transport', return_value=(ACCOUNT, p)):
+        native, _ = pub.helpers()
+        with patch.object(pub, 'provider_transport', return_value=(ACCOUNT, p)), patch.object(native, 'attach') as attach:
             result = pub.provider('attach')
+            attach.assert_not_called()
         self.assertEqual(result['state'], 'binding_verified')
         self.assertFalse(result['mutationsPerformed'])
         self.assertTrue(all(method == 'GET' and body is None for method, path, body in p.calls))
@@ -147,10 +149,10 @@ class PublishTests(unittest.TestCase):
         self.assertEqual(r['state'], 'target_absent_verified')
         self.assertTrue(all(c[0] == 'GET' and c[2] is None for c in p.calls))
 
-    def test_existing_exact_binding_blocks_initial_publish_but_readback_is_allowed(self):
+    def test_existing_exact_binding_allows_get_only_update_and_readback(self):
         p = Provider([pub.WORKER], [binding()])
-        with self.assertRaisesRegex(ValueError, 'initial_target_must_be_absent'):
-            pub.inspect_provider(ACCOUNT, p, 'preflight')
+        self.assertEqual(pub.inspect_provider(ACCOUNT, p, 'preflight')['state'], 'binding_verified')
+        self.assertTrue(all(method == 'GET' and body is None for method, path, body in p.calls))
         self.assertEqual(pub.inspect_provider(ACCOUNT, p, 'readback')['state'], 'binding_verified')
 
     def test_hostname_other_worker_collision(self):
@@ -162,8 +164,26 @@ class PublishTests(unittest.TestCase):
             pub.inspect_provider(ACCOUNT, Provider([pub.WORKER], [binding(host='other.fwith.kr')]), 'preflight')
 
     def test_unbound_existing_worker_blocked(self):
-        with self.assertRaisesRegex(ValueError, 'initial_target_must_be_absent'):
+        with self.assertRaisesRegex(ValueError, 'unbound_existing_worker_requires_review'):
             pub.inspect_provider(ACCOUNT, Provider([pub.WORKER]), 'preflight')
+
+    def test_provider_http_403_and_uncertain_success_fail_closed(self):
+        from urllib.error import HTTPError
+        from unittest.mock import MagicMock
+        with patch.dict(os.environ, {'CLOUDFLARE_ACCOUNT_ID': ACCOUNT, 'CLOUDFLARE_API_TOKEN': 'fixture-token-not-real'}):
+            opener = MagicMock()
+            with patch.object(pub, 'build_opener', return_value=opener):
+                account, transport = pub.provider_transport()
+                opener.open.side_effect = HTTPError('https://api.cloudflare.com/', 403, 'Forbidden', {}, None)
+                with self.assertRaises(HTTPError):
+                    pub.inspect_provider(account, transport, 'preflight')
+                opener.open.side_effect = None
+                response = opener.open.return_value.__enter__.return_value
+                for status, data in [(200, {'success': False, 'errors': []}), (403, {'success': True, 'errors': []}), (200, {'success': True, 'errors': [{'code': 10000}]})]:
+                    response.status = status
+                    response.read.return_value = json.dumps(data).encode()
+                    with self.assertRaisesRegex(ValueError, 'provider_response_unverified'):
+                        pub.inspect_provider(account, transport, 'preflight')
 
     def test_wrong_account_blocked(self):
         with self.assertRaisesRegex(ValueError, 'account_identity_mismatch'):

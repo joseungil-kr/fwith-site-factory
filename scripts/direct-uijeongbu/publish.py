@@ -251,7 +251,7 @@ def inspect_provider(account, transport, stage):
     exists = WORKER in names
     require(not bound or exists, 'binding_without_worker')
     if stage == 'preflight':
-        require(not matches and not exists, 'initial_target_must_be_absent')
+        require(bound or not exists, 'unbound_existing_worker_requires_review')
     else:
         require(exists, 'deployed_worker_not_observed')
     if stage == 'readback':

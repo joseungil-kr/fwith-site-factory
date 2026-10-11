@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T11:42:51.328Z",
+  "updatedAt": "2026-10-11T11:45:08.202Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -40,9 +40,11 @@
       "newRegionStartedAt": "2026-10-11T11:42:51.328Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-seoul-dobong-20261011T110000Z",
-      "active": true,
-      "executionState": "claimed_and_plan_frozen_before_authoring",
-      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T11:40:28Z"
+      "active": false,
+      "executionState": "local_authoring_git_writes_yielded",
+      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T11:40:28Z",
+      "actualWriteStopConfirmedAt": "2026-10-11T11:43:46.578Z",
+      "yieldedTo": "regional-additions-20261011-owner-1144"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -15457,15 +15459,12 @@
       "seoul-jungnang.fwith.kr"
     ],
     "owner": {
-      "checkpointId": "regional-additions-20261011-owner-1126",
+      "checkpointId": "regional-additions-20261011-owner-1144",
       "serviceInvocationId": null,
-      "active": false,
-      "startedAt": "2026-10-11T11:26:58.658Z",
-      "priorOwnerActualStopConfirmedAt": "2026-10-11T11:21:55Z",
-      "priorOwnerRunVerifiedCompleted": 38135282606,
-      "executionState": "external_write_stopped_read_only_uijeongbu_diagnosis",
-      "actualWriteStopConfirmedAt": "2026-10-11T11:40:28Z",
-      "yieldedTo": "direct-seoul-dobong-20261011T110000Z"
+      "active": true,
+      "startedAt": "2026-10-11T11:45:08.202Z",
+      "priorOwnerActualStopConfirmedAt": "2026-10-11T11:43:46.578Z",
+      "executionState": "uijeongbu_minimal_existing_binding_update_recovery"
     },
     "current": {
       "region": "uijeongbu",
@@ -15479,7 +15478,7 @@
       "originalHeld": 1,
       "additivePlannedN": 1,
       "qualityPassed": 1,
-      "status": "source_saved_control_and_dispatch_intent",
+      "status": "reviewed_control_recovery_dispatch_intent",
       "sourceManifestSha256": "0e26a14390cc27ced5361e9de04927b5cfd156db316bba9c949dbe8bcedaeaa5",
       "controlManifestSha256": "ff452bc2e8b7fb9e9b14aad0470bdf6ff4d13b7b3bd2103229fc55c91c82631d",
       "intent": {
@@ -15544,7 +15543,26 @@
         "ref": "main",
         "expected_revision": "cb1e9b6ea170b4a09509be0218b56c9a4adec231",
         "indexnow_only": false,
-        "idempotencyKey": "uijeongbu:additions:dispatch:cb1e9b6ea170b4a09509be0218b56c9a4adec231"
+        "idempotencyKey": "uijeongbu:additions:provider-update-fix:cb1e9b6ea170b4a09509be0218b56c9a4adec231"
+      },
+      "failedAttempts": [
+        {
+          "runId": 38136421831,
+          "sourceRevision": "cb1e9b6ea170b4a09509be0218b56c9a4adec231",
+          "controlRevision": "18823489c03ffc36c7672cb95e393d9bd9e9d728",
+          "build": "PASS",
+          "artifact": "PASS_13_ARTICLES_16_HTML_15_SITEMAP",
+          "failureCode": "initial_target_must_be_absent",
+          "providerMutation": "SKIPPED",
+          "indexNow": "SKIPPED"
+        }
+      ],
+      "providerUpdateFix": {
+        "reviewSha256": "dd757ce6251da4cdcd96b1c4fc03ca3314dbeb52d78074f06b0ec713dd42dbe8",
+        "manifestSha256": "0cae1fba4932f69ec07fc573b08e12adf80f8bb582b6c9295ab852dafe98a9d5",
+        "testsPassed": 33,
+        "sourceUnchanged": true,
+        "rule": "Reuse only exact existing Worker and hostname binding; collisions, unbound existing worker, ambiguous/failed GET remain blocked; existing attach is GET-only."
       }
     },
     "completed": [
