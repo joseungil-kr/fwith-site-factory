@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T05:51:48.252395+00:00",
+  "updatedAt": "2026-10-11T05:54:07.162Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-jungnang-direct-initial-20261011",
     "city": "서울특별시 중랑구",
-    "status": "reviewed_built_source_save_intent",
+    "status": "exact_source_remote_verification_in_progress",
     "owner": {
       "scheduledRunAt": "2026-10-11T05:00:00Z",
       "observedExecutionAt": "2026-10-11T05:07:43.970Z",
@@ -78,10 +78,13 @@
       }
     },
     "changeIntent": {
-      "action": "save_exact_reviewed_jungnang_source_and_minimal_direct_control_then_formal_publish",
-      "idempotencyKey": "seoul-jungnang:source-upload:d984aafa91ad02c33c9eb08123173278c4954b05c4dbbff4107eb8c7ef7d3419",
-      "sourceBranchExpectedSha": "aa30430e2135ef2be8036d4215425ce4547fe772",
-      "reviewedUploadManifestSha256": "d984aafa91ad02c33c9eb08123173278c4954b05c4dbbff4107eb8c7ef7d3419"
+      "action": "verify_exact_source_remote_bytes_then_dispatch_formal_direct_publish_once",
+      "idempotencyKey": "seoul-jungnang:publish:73d92b941fcb3025321adc88f82179c914086551",
+      "sourceRevision": "73d92b941fcb3025321adc88f82179c914086551",
+      "workflow": ".github/workflows/seoul-jungnang-direct-publish.yml",
+      "worker": "seoul-jungnang-flower-guide",
+      "hostname": "seoul-jungnang.fwith.kr",
+      "dispatchRequiresFullReadbackPass": true
     },
     "unfinishedStages": [
       "official_membership",
@@ -158,7 +161,17 @@
       "remoteFullReadback": "NOT_YET_SAVED",
       "screenQa": "DEFERRED_BY_USER_NOT_PASS"
     },
-    "lastSuccessfulStage": "independent_content_and_actual_runtime_build_review"
+    "lastSuccessfulStage": "independent_content_and_actual_runtime_build_review",
+    "sourceRevision": "73d92b941fcb3025321adc88f82179c914086551",
+    "controlRevision": "f2de6d9b361f39964de418b51a6fcd6cd0ce3357",
+    "publication": {
+      "status": "not_dispatched",
+      "dispatchAcceptedCount": 0,
+      "runId": null,
+      "url": "https://seoul-jungnang.fwith.kr",
+      "indexNow": "NOT_SUBMITTED",
+      "gsc": "NOT_SUBMITTED"
+    }
   },
   "history": [
     {
