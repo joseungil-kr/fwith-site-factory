@@ -1,0 +1,334 @@
+---
+import { getVisibleArticles as getCollection, isArticleVisible } from '../lib/all-articles';
+import { removeRepeatedOpeningParagraph } from '../lib/article-opening.mjs';
+import BaseLayout from './BaseLayout.astro';
+import ProductShowcase from '../components/ProductShowcase.astro';
+import { pageProductKeys } from '../lib/site-catalog.mjs';
+import {manualPages} from '../lib/manual-runtime.mjs';
+import { selectRelatedArticles } from '../lib/related-articles.mjs';
+import { regionalPages } from '../lib/regional-runtime.mjs';
+import { siteConfig } from '../config/site';
+import architecture from '../lib/all-architecture.mjs';
+import '../styles/article.css';
+
+type ArchitectureEntry = {
+  pageKey: string;
+  url: string;
+  pageRole?: string;
+  parentHub?: string;
+  primaryKeyword?: string;
+  intentKey?: string;
+  pageType?: string;
+  contentRole?: string;
+  localizationPolicy?: string;
+  sitemapIndexable?: boolean;
+  status?: string;
+  canonicalUrl?: string;
+};
+
+type SourceRef = {
+  name: string;
+  url: string;
+  type?: 'official' | 'facility' | 'education' | 'professional' | 'business' | 'reference';
+  verifiedAt?: Date;
+};
+
+interface Props {
+  pageKey: string;
+  title: string;
+  description: string;
+  h1?: string;
+  firstAnswer?: string;
+  queryClass?: string;
+  visualIntent?: string;
+  assetSlot?: string;
+  category: string;
+  structureType: string;
+  pageType?: string;
+  contentRole?: string;
+  localizationPolicy?: string;
+  region: string;
+  snapshotId?: string;
+  manualPageId?: string;
+  slug: string;
+  routeType: 'top_level' | 'category';
+  sourceUrls?: string[];
+  sources?: SourceRef[];
+  relatedPageKeys?: string[];
+  verifiedAt?: Date;
+  publishedAt?: Date;
+  updatedAt?: Date;
+  ogImage?: string;
+  ogImageAlt?: string;
+}
+
+const {
+  pageKey,
+  title,
+  description,
+  h1,
+  firstAnswer,
+  queryClass,
+  visualIntent,
+  assetSlot,
+  category,
+  structureType,
+  pageType = 'general-guide',
+  contentRole = 'question-answer',
+  localizationPolicy = 'local-optional',
+  region,
+  snapshotId,
+  manualPageId,
+  slug,
+  routeType,
+  sourceUrls = [],
+  sources = [],
+  relatedPageKeys = [],
+  verifiedAt,
+  publishedAt,
+  updatedAt,
+  ogImage,
+  ogImageAlt,
+} = Astro.props;
+
+const categoryLabel: Record<string, string> = {
+  regions: '지역별',
+  guide: '꽃 선택',
+  funeral: '장례식장',
+  places: '장소별',
+  occasions: '상황별',
+  'flower-knowledge': '꽃 관리',
+  'order-help': '주문 도움',
+};
+
+const architecturePages = (architecture.pages || []) as ArchitectureEntry[];
+const architectureEntry = architecturePages.find((page) => page.pageKey === pageKey);
+const effectivePageRole = architectureEntry?.pageRole ?? 'INFORMATION_GUIDE';
+const effectivePrimaryKeyword = architectureEntry?.primaryKeyword ?? '';
+const effectiveIntentKey = architectureEntry?.intentKey ?? '';
+const effectiveParentHub = architectureEntry?.parentHub ?? `/${category}/`;
+const effectivePageType = architectureEntry?.pageType ?? pageType;
+const effectiveLocalizationPolicy = architectureEntry?.localizationPolicy ?? localizationPolicy;
+const architectureIndexable = architectureEntry?.sitemapIndexable !== false && architectureEntry?.status !== 'merged';
+const canonicalPath = architectureEntry?.canonicalUrl ?? Astro.url.pathname;
+
+const categoryHref = `/${category}/`;
+const regionLandingHref = `/${siteConfig.primaryLandingSlug}/`;
+const isPrimaryLanding = routeType === 'top_level' && slug === siteConfig.primaryLandingSlug;
+const effectiveContentRole = isPrimaryLanding ? 'informational-pillar' : (architectureEntry?.contentRole ?? contentRole);
+const displayTitle = h1 || (isPrimaryLanding ? `${siteConfig.region} 꽃배달 이용 가이드` : title);
+const seoTitle = isPrimaryLanding && !h1
+  ? `${siteConfig.region} 꽃배달 이용 가이드 | 장소·상황·주문 준비 | ${siteConfig.brand}`
+  : `${title} | ${siteConfig.brand}`;
+
+const activePageKeys = new Set(
+  architecturePages
+    .filter((page) => page.sitemapIndexable !== false && page.status !== 'merged')
+    .map((page) => page.pageKey)
+);
+const allArticles = await getCollection(
+  'articles',
+  ({ data }) =>
+    ('publicationMode' in data ? data.publicationMode === 'manual-user-request' : (data.draftStatus === 'approved' || data.draftStatus === 'published')) &&
+    activePageKeys.has(data.pageKey)
+);
+const detailCategoryCounts = allArticles
+  .filter((article) => article.data.routeType === 'category')
+  .reduce<Record<string, number>>((acc, article) => {
+    acc[article.data.category] = (acc[article.data.category] ?? 0) + 1;
+    return acc;
+  }, {});
+const primaryQuickLinks = [
+  { href: '/funeral/', category: 'funeral', no: '01', title: '장례식장에 보내는 꽃이라면', body: '고인을 추모하고 위로를 전할 근조화환을 살펴보세요.' },
+  { href: '/places/', category: 'places', no: '02', title: '장소가 정해졌다면', body: '졸업과 약속, 행사에 꽃으로 마음을 전하는 이야기를 만나 보세요.' },
+  { href: '/occasions/', category: 'occasions', no: '03', title: '보내는 이유가 정해졌다면', body: '기쁜 시작을 함께 축하할 꽃선물을 찾아보세요.' },
+  { href: '/order-help/', category: 'order-help', no: '04', title: '주문 직전이라면', body: '꽃에 담을 인사와 원하는 일정의 주문 상담을 안내합니다.' },
+  { href: '/flower-knowledge/', category: 'flower-knowledge', no: '05', title: '꽃 선택과 관리가 궁금하다면', body: '선물할 형태를 비교하고 받은 꽃을 즐기는 방법을 읽어 보세요.' },
+  { href: '/guide/', category: 'guide', no: '06', title: '무엇부터 고를지 고민이라면', body: '받는 분과 나누고 싶은 마음에 맞는 꽃을 살펴보세요.' },
+].filter((item) => (detailCategoryCounts[item.category] ?? 0) > 0);
+const hrefFor = (article: (typeof allArticles)[number]) =>
+  article.data.routeType === 'top_level'
+    ? `/${article.data.slug}/`
+    : `/${article.data.category}/${article.data.slug}/`;
+
+const related = selectRelatedArticles({
+  articles: allArticles,
+  architecturePages,
+  current: { pageKey, category, pageType: effectivePageType, title, h1 },
+  relatedPageKeys,
+});
+
+const formatDate = (date?: Date) =>
+  date ? new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' }).format(date) : null;
+
+const inferSource = (url: string) => {
+  const host = new URL(url).hostname.replace(/^www\./, '');
+  if (host.endsWith('suwon.go.kr')) return { name: '수원특례시', type: '공식기관' };
+  if (host.endsWith('ansan.go.kr')) return { name: '안산시', type: '공식기관' };
+  if (host === 'rhs.org.uk' || host.endsWith('.rhs.org.uk')) return { name: 'Royal Horticultural Society (RHS)', type: '전문기관' };
+  if (host.endsWith('.go.kr')) return { name: host, type: '공식기관' };
+  if (host.endsWith('.ac.kr') || host.endsWith('.edu')) return { name: host, type: '교육기관' };
+  return { name: host, type: '참고자료' };
+};
+
+const normalizedSources = sources.length
+  ? sources.map((source) => ({
+      name: source.name,
+      url: source.url,
+      typeLabel: {
+        business: '업체 공식자료',
+        official: '공식기관',
+        facility: '시설 공식자료',
+        education: '교육기관',
+        professional: '전문기관',
+        reference: '참고자료',
+      }[source.type ?? 'reference'],
+      verifiedAt: source.verifiedAt ?? verifiedAt,
+    }))
+  : sourceUrls.map((url) => {
+      const inferred = inferSource(url);
+      return { name: inferred.name, url, typeLabel: inferred.type, verifiedAt };
+    });
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: displayTitle,
+  description,
+  inLanguage: 'ko-KR',
+  about: [region, '꽃배달', categoryLabel[category] ?? category],
+  datePublished: publishedAt?.toISOString(),
+  dateModified: (updatedAt ?? verifiedAt)?.toISOString(),
+  isPartOf: {
+    '@type': 'WebSite',
+    name: siteConfig.brand,
+    url: Astro.site?.toString() ?? Astro.url.origin,
+  },
+};
+
+const breadcrumbItems = isPrimaryLanding
+  ? [
+      { '@type': 'ListItem', position: 1, name: '홈', item: new URL('/', Astro.site ?? Astro.url.origin).toString() },
+      { '@type': 'ListItem', position: 2, name: `${siteConfig.region} 꽃배달`, item: Astro.url.toString() },
+    ]
+  : [
+      { '@type': 'ListItem', position: 1, name: '홈', item: new URL('/', Astro.site ?? Astro.url.origin).toString() },
+      { '@type': 'ListItem', position: 2, name: `${siteConfig.region} 꽃배달`, item: new URL(regionLandingHref, Astro.site ?? Astro.url.origin).toString() },
+      { '@type': 'ListItem', position: 3, name: categoryLabel[category] ?? category, item: new URL(categoryHref, Astro.site ?? Astro.url.origin).toString() },
+      { '@type': 'ListItem', position: 4, name: displayTitle, item: Astro.url.toString() },
+    ];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbItems,
+};
+const regionalPage=regionalPages.find((page: {pageKey:string;regionalPurchaseMode?:string;regionalProductKeys:string[]})=>page.pageKey===pageKey);
+const manualPage=manualPages.find((p: {pageKey:string;productKeys:string[]})=>p.pageKey===pageKey);
+const selectedProductKeys=manualPage ? manualPage.productKeys : regionalPage?.regionalPurchaseMode==='catalog' ? regionalPage.regionalProductKeys : pageProductKeys(process.cwd(),siteConfig.siteKey,pageKey);
+const articleContent=removeRepeatedOpeningParagraph(await Astro.slots.render('default'),firstAnswer);
+---
+<BaseLayout title={seoTitle} description={description} canonicalPath={canonicalPath} robotsOverride={!architectureIndexable ? "noindex,follow,max-image-preview:large" : undefined} ogType="article" ogImage={ogImage} ogImageAlt={ogImageAlt}>
+  <script type="application/ld+json" set:html={JSON.stringify(webPageSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <section
+    class:list={['article-shell', isPrimaryLanding && 'primary-landing']}
+    data-snapshot-id={snapshotId}
+    data-manual-page={manualPageId}
+    data-query-class={queryClass || undefined}
+    data-visual-intent={visualIntent || undefined}
+    data-asset-slot={assetSlot || undefined}
+    data-content-role={effectiveContentRole}
+    data-page-type={effectivePageType}
+    data-localization-policy={effectiveLocalizationPolicy}
+    data-page-role={effectivePageRole}
+    data-primary-keyword={effectivePrimaryKeyword}
+    data-intent-key={effectiveIntentKey}
+    data-parent-hub={effectiveParentHub}
+  >
+    <div class="container">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">홈</a><span>›</span>
+        {isPrimaryLanding ? (
+          <span>{siteConfig.region} 꽃배달</span>
+        ) : (
+          <>
+            <a href={regionLandingHref}>{siteConfig.region} 꽃배달</a><span>›</span>
+            <a href={categoryHref}>{categoryLabel[category] ?? category}</a><span>›</span>
+            <span>현재 글</span>
+          </>
+        )}
+      </nav>
+
+      {architectureEntry?.status === 'merged' && architectureEntry?.canonicalUrl && (
+        <aside class="merged-page-notice" aria-label="통합 페이지 안내">
+          관련 내용을 한곳에 모았습니다. <a href={architectureEntry.canonicalUrl}>통합된 최신 페이지 보기 →</a>
+        </aside>
+      )}
+
+      <header class="article-header">
+        <span class="eyebrow">{isPrimaryLanding ? `${siteConfig.region} 꽃배달 이용 안내` : categoryLabel[category] ?? category}</span>
+        <h1>{displayTitle}</h1>
+        <p>{firstAnswer || description}</p>
+        <div class="article-meta">
+          <span>{region}</span>
+          <span>{categoryLabel[category] ?? category}</span>
+          {verifiedAt && <span>정보 확인일: {formatDate(verifiedAt)}</span>}
+        </div>
+      </header>
+
+      {isPrimaryLanding && primaryQuickLinks.length > 0 && (
+        <div class="landing-quick" aria-label={`${siteConfig.region} 꽃배달 이용 가이드 빠른 탐색`}>
+          {primaryQuickLinks.map((item) => (
+            <a href={item.href}><span>{item.no}</span><strong>{item.title}</strong><small>{item.body}</small></a>
+          ))}
+        </div>
+      )}
+
+      <div class="article-grid article-grid-single">
+        <article class="prose">
+          <Fragment set:html={articleContent} />
+          {normalizedSources.length > 0 && (
+            <section class="source-list" aria-labelledby="source-title">
+              <div class="source-list-head">
+                <h2 id="source-title">정보 출처</h2>
+                {verifiedAt && <span>자료 확인일: {formatDate(verifiedAt)}</span>}
+              </div>
+              <ul>
+                {normalizedSources.map((source) => (
+                  <li>
+                    <div><strong>{source.name}</strong><span>{source.typeLabel}</span></div>
+                    <a href={source.url} rel="nofollow noopener noreferrer">원문 보기 →</a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </article>
+      </div>
+
+      {selectedProductKeys.length > 0 && <div class="article-products"><ProductShowcase productKeys={selectedProductKeys} /></div>}
+
+      {related.length > 0 && (
+        <section class="related-questions" aria-labelledby="related-title">
+          <div class="related-questions-head">
+            <span class="eyebrow">함께 읽어 보세요</span>
+            <h2 id="related-title">마음에 맞는 꽃선물 이야기</h2>
+            <p>꽃을 전할 다른 상황과 상품 선택 이야기도 살펴보세요.</p>
+          </div>
+          <div class="related-question-grid">
+            {related.map((article) => (
+              <a href={hrefFor(article)} class="related-question-card">
+                <span>{categoryLabel[article.data.category] ?? article.data.category}</span>
+                <strong>{article.data.title}</strong>
+                <p>{article.data.cardSummary || article.data.description}</p>
+                <b>읽어 보기 →</b>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  </section>
+</BaseLayout>

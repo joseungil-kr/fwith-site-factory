@@ -1,0 +1,15 @@
+---
+import {getVisibleArticles as getCollection} from '../lib/all-articles';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RegionDirectory from './RegionDirectory.astro';
+import OrderCTA from './OrderCTA.astro';
+import {siteConfig} from '../config/site';
+import {regionalPages,assertRegionalInput} from '../lib/regional-runtime.mjs';
+const articles=await getCollection('articles');assertRegionalInput(articles.map(a=>a.data));
+const items=regionalPages.map((p:any)=>({...p,cardSummary:articles.find(a=>a.data.pageKey===p.pageKey)?.data.cardSummary}));
+if(!items.length)throw new Error('Empty regional hub cannot render');
+---
+<BaseLayout title={`${siteConfig.region} 지역별 꽃배달 | ${siteConfig.brand}`} description="안산의 소중한 분께 전할 꽃선물을 지역별로 살펴보세요." robotsOverride={siteConfig.indexable && items.length<3 ? 'noindex,follow,max-image-preview:large' : undefined}>
+<section class="page-hero"><div class="container"><span class="eyebrow">지역별 안내</span><h1>{siteConfig.region} 지역별 꽃배달 안내</h1><p>가족에게 감사한 마음을, 친구의 새 출발에는 축하를 전해 보세요. 꽃을 받을 지역의 안내를 찾아보실 수 있습니다.</p></div></section>
+<section class="section"><div class="container"><RegionDirectory pages={items}/><OrderCTA/></div></section>
+</BaseLayout>

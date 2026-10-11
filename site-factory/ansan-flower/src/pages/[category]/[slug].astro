@@ -1,0 +1,58 @@
+---
+import { render } from 'astro:content';
+import {getVisibleArticles as getCollection,isArticleVisible,type SiteArticle} from '../../lib/all-articles';
+import {assertRegionalInput} from '../../lib/regional-runtime.mjs';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+
+type Article = SiteArticle;
+
+export async function getStaticPaths() {
+  const articles = await getCollection(
+    'articles',
+    ({ data }) =>
+      isArticleVisible(data) &&
+      data.routeType === 'category'
+  );
+  assertRegionalInput(articles.map(article=>article.data));
+  return articles.map((article) => ({
+    params: {
+      category: article.data.category,
+      slug: article.data.slug,
+    },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props as { article: Article };
+const { Content } = await render(article);
+---
+<ArticleLayout
+  pageKey={article.data.pageKey}
+  title={article.data.title}
+  description={article.data.description}
+  h1={article.data.h1}
+  firstAnswer={article.data.firstAnswer}
+  queryClass={article.data.queryClass}
+  visualIntent={article.data.visualIntent}
+  assetSlot={article.data.assetSlot}
+  category={article.data.category}
+  structureType={article.data.structureType}
+  pageType={article.data.pageType}
+  contentRole={article.data.contentRole}
+  localizationPolicy={article.data.localizationPolicy}
+  region={article.data.region}
+  snapshotId={'snapshotId' in article.data ? article.data.snapshotId : undefined}
+  manualPageId={'manualPageId' in article.data ? article.data.manualPageId : undefined}
+  slug={article.data.slug}
+  routeType={article.data.routeType}
+  sourceUrls={article.data.sourceUrls}
+  sources={article.data.sources}
+  relatedPageKeys={article.data.relatedPageKeys}
+  verifiedAt={article.data.verifiedAt}
+  publishedAt={article.data.publishedAt}
+  updatedAt={article.data.updatedAt}
+  ogImage={article.data.ogImage}
+  ogImageAlt={article.data.ogImageAlt}
+>
+  <Content />
+</ArticleLayout>

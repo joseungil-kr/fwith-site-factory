@@ -1,0 +1,78 @@
+---
+import { getVisibleArticles as getCollection, isArticleVisible } from '../../lib/all-articles';
+import RegionalHub from '../../components/RegionalHub.astro';
+import {regionalPages} from '../../lib/regional-runtime.mjs';
+import HubIndex from '../../components/HubIndex.astro';
+import architecture from '../../lib/all-architecture.mjs';
+import { siteConfig } from '../../config/site';
+
+const categoryMeta = {
+  guide: {
+    eyebrow: '꽃 선택',
+    title: `${siteConfig.region} 꽃 선택·이용 가이드`,
+    intro: '꽃을 받을 분과 나누고 싶은 마음을 떠올리며 선물할 형태를 골라 보세요.',
+    description: `${siteConfig.region}의 기념일과 축하에 어울리는 꽃선물 이야기를 살펴보세요.`,
+  },
+  funeral: {
+    eyebrow: '장례식장',
+    title: `${siteConfig.region} 장례식장 근조화환 안내`,
+    intro: '슬픈 소식 앞에서 전하고 싶은 위로를 꽃에 담아 보세요. 장례식장별 근조화환을 차분히 상담하실 수 있습니다.',
+    description: `${siteConfig.region} 장례식장에 전할 근조화환 상품과 조문 주문 상담을 안내합니다.`,
+  },
+  places: {
+    eyebrow: '장소별',
+    title: `${siteConfig.region} 장소별 꽃배달 안내`,
+    intro: '졸업하는 가족, 결혼하는 동료, 공연을 마친 친구에게 전할 꽃을 찾아보세요.',
+    description: `${siteConfig.region}의 대학·예식장·행사장과 약속 장소에 전할 꽃선물을 안내합니다.`,
+  },
+  occasions: {
+    eyebrow: '상황별',
+    title: `${siteConfig.region} 상황별 축하꽃·꽃배달 안내`,
+    intro: '새로운 출발과 오래 기다린 기쁨을 꽃으로 함께 축하해 주세요.',
+    description: `${siteConfig.region} 개업·이전·졸업·행사의 축하꽃과 주문 상담을 안내합니다.`,
+  },
+  'flower-knowledge': {
+    eyebrow: '꽃 관리',
+    title: '꽃 선택과 관리 가이드',
+    intro: '직접 건네는 꽃다발과 곁에 둘 꽃바구니를 비교하고, 선물받은 꽃을 즐기는 방법을 살펴보세요.',
+    description: '꽃 형태별 선택과 이동, 보관, 계절별 관리에 필요한 실용 정보를 안내합니다.',
+  },
+  'order-help': {
+    eyebrow: '주문 도움',
+    title: `${siteConfig.region} 꽃배달 주문 준비 가이드`,
+    intro: '꽃과 함께 전할 따뜻한 인사, 원하는 날짜에 준비할 꽃의 상담 방법을 만나 보세요.',
+    description: `${siteConfig.region} 꽃선물의 인사말과 희망 일정에 맞는 주문 상담을 안내합니다.`,
+  },
+} as const;
+
+type Category = keyof typeof categoryMeta | 'regions';
+
+export async function getStaticPaths() {
+  const activePageKeys = new Set(
+    (architecture.pages || [])
+      .filter((page) => page.sitemapIndexable !== false && page.status !== 'merged')
+      .map((page) => page.pageKey)
+  );
+  const articles = await getCollection(
+    'articles',
+    ({ data }) =>
+      isArticleVisible(data) &&
+      data.routeType === 'category' &&
+      activePageKeys.has(data.pageKey)
+  );
+  const allowedCategories = new Set(['guide', 'funeral', 'places', 'occasions', 'flower-knowledge', 'order-help']);
+  const categories = [...new Set(articles.map((article) => article.data.category))]
+    .filter((category) => allowedCategories.has(category)) as Category[];
+  return [...categories, ...(regionalPages.length ? ['regions'] : [])].map((category) => ({ params: { category }, props: { category } }));
+}
+
+const { category } = Astro.props as { category: Category };
+const meta = category==='regions' ? null : categoryMeta[category];
+---
+{category==='regions' ? <RegionalHub/> : <HubIndex
+  category={category}
+  eyebrow={meta!.eyebrow}
+  title={meta!.title}
+  intro={meta!.intro}
+  description={meta!.description}
+/>}
