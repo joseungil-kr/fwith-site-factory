@@ -6,13 +6,13 @@
   "scheduledRun": "2026-10-11T06:40:00Z",
   "actualInvocationId": null,
   "checkpointId": "blog-fwith-daily-20261011-claim",
-  "status": "published_visual_correction_prepared",
+  "status": "completed",
   "owner": {
     "task": "publish_blog_daily_1011",
-    "state": "active"
+    "state": "completed"
   },
   "baselineSource": "b4bbdb479ed5bc704c1d4f09f4fc4df10598be74",
-  "controllerRevision": "b9f1db6241aec100b0987987b4a6d35ab5729934",
+  "controllerRevision": "52c339003aef4a952012b44666ec7b3ac015d166",
   "existingPublishedPostCount": 32,
   "publishedPostCount": 5,
   "dailyPostsPreviouslyPublished": 0,
@@ -25,7 +25,7 @@
     "daegu-interburgo-wedding-wreath"
   ],
   "intent": {
-    "action": "publish reviewed Markdown-only correction; no additional articles",
+    "action": "record actual public success, visual QA and original terminal IndexNow receipt after readback",
     "idempotencyKey": "blog-fwith-daily-20261011"
   },
   "dedupe": {
@@ -33,7 +33,7 @@
     "noActiveBlogPublishRunFound": true,
     "remoteTreeComplete": true
   },
-  "updatedAt": "2026-10-11T09:37:29.362Z",
+  "updatedAt": "2026-10-11T09:57:54.003Z",
   "approvedPostCount": 5,
   "review": "daily-20261011.review.json",
   "imageProvenance": "daily-20261011.images.json",
@@ -41,22 +41,49 @@
     "state": "blocked_on_og_font_fetch",
     "reason": "Current cloud font response not valid font; unchanged successful baseline also fails; official isolated CI build mandatory"
   },
-  "sourceRevision": "83e4470a1989236e8fc2e77e3c9e337931ac9f7c",
+  "sourceRevision": "9a5bf137c0d9e276592a925c4cac98be0c52f0a2",
   "publication": {
-    "sourceRevision": "83e4470a1989236e8fc2e77e3c9e337931ac9f7c",
-    "runId": 38129184593,
+    "sourceRevision": "9a5bf137c0d9e276592a925c4cac98be0c52f0a2",
+    "runId": 38129601406,
     "state": "success",
     "exactHostedRevisionVerified": true,
-    "totalArticles": 37
+    "totalArticles": 37,
+    "previousRunId": 38129184593,
+    "previousSourceRevision": "83e4470a1989236e8fc2e77e3c9e337931ac9f7c"
   },
   "httpQa": {
     "state": "PASS",
     "checkedRoutes": 186,
-    "unknown404": "PASS"
+    "unknown404": "PASS",
+    "report": "daily-20261011.public-http.json",
+    "publishArtifactId": 11698276959,
+    "publishArtifactZipSha256": "b6c9fa9c84bbdd211093e2a1b875b7120ed98bd699f95f513b0cd3c9eaf45a76"
   },
   "visualQa": {
-    "state": "REVISE",
-    "reason": "literal markdown delimiters in two address paragraphs",
-    "correction": "remove only four asterisks each; independent delta review PASS"
+    "state": "PASS",
+    "desktopCssWidth": 1180,
+    "narrowCssWidth": 393,
+    "report": "daily-20261011.visual-qa.json",
+    "note": "Narrow screens captured with native Chromium at 300% zoom; no mobile device emulation claim. Address Markdown delimiter rendering fixed and independent delta review passed."
+  },
+  "indexnow": {
+    "attempt": 1,
+    "endpoint": "https://searchadvisor.naver.com/indexnow",
+    "fingerprint": "60ba0933fd987e646c4de2661fdec7fed2957af2dd9e9b8005e653f2aaf5bcff",
+    "httpStatus": 200,
+    "origin": "https://blog.fwith.kr",
+    "recordedAt": "2026-10-11T09:56:51.080954+00:00",
+    "revision": "9a5bf137c0d9e276592a925c4cac98be0c52f0a2",
+    "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38130081300",
+    "siteKey": "blog-fwith",
+    "state": "received",
+    "urlCount": 142,
+    "urlSetSha256": "87cdb0bbfb210d02c66f822906e6adf924399915ac40c397b5da033b41a02b86",
+    "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/268#issuecomment-6107800713"
+  },
+  "completedAt": "2026-10-11T09:56:54Z",
+  "reviewDigests": {
+    "original": "adee692c9e88955f7a6af24499f9e456232c5f73ceeaffff5f17d15747152aa8",
+    "markdownDelta": "90349285cac587e4ba04cc006953067fc999d7105ec6a4d6ff8929b230de2ccc"
   }
 }
