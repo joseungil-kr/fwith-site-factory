@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T06:12:39.358Z",
+  "updatedAt": "2026-10-11T06:17:17.505Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -31,249 +31,65 @@
     "blog.fwith.kr"
   ],
   "current": {
-    "scopeKey": "seoul-jungnang-direct-initial-20261011",
-    "city": "서울특별시 중랑구",
-    "status": "released_search_submitted_visual_qa_deferred",
+    "scopeKey": "seoul-seongbuk-direct-initial-20261011",
+    "city": "서울특별시 성북구",
+    "status": "research_and_fixed_plan_preparation",
     "owner": {
-      "scheduledRunAt": "2026-10-11T05:00:00Z",
-      "observedExecutionAt": "2026-10-11T05:07:43.970Z",
-      "newRegionStartedAt": "2026-10-11T05:07:43.970Z",
+      "scheduledRunAt": "2026-10-11T06:00:00Z",
+      "observedExecutionAt": "2026-10-11T06:17:17.505Z",
+      "newRegionStartedAt": "2026-10-11T06:17:17.505Z",
       "serviceInvocationId": null,
-      "checkpointId": "direct-seoul-jungnang-20261011T050000Z",
-      "active": false,
-      "executionState": "completed_no_further_source_or_deployment_writes",
-      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T05:00:47.630Z",
-      "priorOwnerReadbackConfirmedAt": "2026-10-11T05:01:02.110Z",
-      "sourceAndDeploymentWritesStoppedAt": "2026-10-11T06:08:52Z",
-      "browserOperationsStopped": true,
-      "finalCheckpointWritePending": false,
-      "completedEvidenceVerifiedAt": "2026-10-11T06:14:04.539Z"
+      "checkpointId": "direct-seoul-seongbuk-20261011T060000Z",
+      "active": true,
+      "executionState": "research_and_plan_preparation",
+      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T06:14:36.575Z",
+      "priorOwnerReadbackConfirmedAt": "2026-10-11T06:14:51.791Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
-      "branch": "site-factory-seoul-jungnang-direct",
-      "root": "site-factory/seoul-jungnang-flower",
-      "worker": "seoul-jungnang-flower-guide",
-      "hostname": "seoul-jungnang.fwith.kr",
-      "externalCreationVerified": true,
-      "sourceBranchCreatedVerified": true,
-      "sourceBranchBaseRevision": "aa30430e2135ef2be8036d4215425ce4547fe772"
+      "branch": "site-factory-seoul-seongbuk-direct",
+      "root": "site-factory/seoul-seongbuk-flower",
+      "worker": "seoul-seongbuk-flower-guide",
+      "hostname": "seoul-seongbuk.fwith.kr",
+      "externalCreationVerified": false
     },
     "selection": {
-      "officialCode": "11260",
-      "reason": "Next eligible autonomous district in remote frozen national order; previous Dongdaemun preserved awaiting exact deployment approval",
+      "officialCode": "11290",
+      "reason": "Next eligible autonomous district in remote frozen national order; Dongdaemun exact deployment approval pending",
       "nationalPlanDenominator": 230
     },
     "conflictChecks": {
-      "branchesChecked": 130,
+      "branchesChecked": 131,
       "matchingBranch": false,
       "openMatchingPullRequests": 0,
       "inProgressWorkflows": 0,
-      "unrelatedQueuedWorkflows": [
-        37655516975,
-        37655514711
-      ],
       "mainMatchingPaths": false,
-      "providerOwnershipCollisionCheck": "PASS_OFFICIAL_ACCOUNT_WORKER_DOMAIN_GET_NO_OVERRIDE",
+      "providerOwnershipCollisionCheck": "PENDING_MANDATORY_OFFICIAL_GET_BEFORE_DEPLOY",
       "triggerSafety": {
-        "allCurrentWorkflowFilesRead": 48,
+        "allCurrentWorkflowFilesRead": 49,
         "mainPushAndTargetBranchDoNotMatchPushTriggers": true,
         "stoppedFactoryNotInvoked": true
       }
     },
     "changeIntent": {
-      "action": "preserve_verified_release_search_receipts_deferred_screen_qa_and_release_owner",
-      "idempotencyKey": "seoul-jungnang:complete:73d92b941fcb3025321adc88f82179c914086551"
+      "action": "claim_single_next_region_research_and_freeze_plan_before_authoring",
+      "idempotencyKey": "seoul-seongbuk:claim:20261011T060000Z"
     },
     "unfinishedStages": [
+      "official_research",
+      "fixed_plan",
+      "authored_content",
+      "independent_review",
+      "source_save",
+      "build",
+      "deploy",
+      "http",
+      "indexnow",
+      "gsc",
       "deferred_visual_qa"
     ],
     "review": {
-      "screenQa": "DEFERRED_NOT_PASS",
-      "planReviewStatus": "PASS_BEFORE_AUTHORING",
-      "planReviewSha256": "f27cb9d937d001b3a75cec58ee359e8863e414c34e318d0d647c8ee7481799d3",
-      "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
-      "imageReviewSha256": "e3fa23d7d53bb1effdf2790706ead3b58098c0cb28234c79c16d1a4177192199",
-      "contentStatus": "PASS",
-      "articlesSha256": "633ffcd363afe9c04c180e86d2dd4307832badf14e6aa268326fa7c6b9f9d5c1",
-      "independentReviewSha256": "dcd4fce8a747ba4e3c66bc7a45ca67dec64c7e7ac3bccfd3d11ad1ea9b9f004a",
-      "runtimeStatus": "PASS_EXACT_LOCAL_SOURCE_PREPUBLICATION",
-      "runtimeReviewSha256": "f2f21646f9f43ae1e95e5a8155d4dae32f0cf3742312893c61c67fc621530ef6",
-      "exactRemoteReviewSha256": "25bbc2330c47ae00c658358d53b27c6dc51a943a0b6f3c50d4293325f35c81b8",
-      "liveReleaseReviewSha256": "e09914578770f6108d276348d0b26ea20bf4b08456a60d46c8e81aa940a21f48",
-      "liveReleaseStatus": "PASS_INDEPENDENT_ARTIFACT_HOSTED_HTTP_OWNERSHIP_AND_DURABLE_RECEIPT"
-    },
-    "plan": {
-      "state": "frozen_before_authoring_independent_plan_pass",
-      "plannedArticleCount": 3,
-      "minimumPassedArticles": 3,
-      "legalDongCount": 6,
-      "administrativeDongCount": 16,
-      "relationshipCount": 16,
-      "unassignedLegalUnits": 3,
-      "countIsPageQuota": false,
-      "fixedPlanPath": "docs/direct-regional-release/seoul-jungnang/fixed-plan.json",
-      "fixedPlanSha256": "1f963a29a01a3bcfbdbd8f0f6f7949ccb153302adb22fd513164e3f1b1fafc7a",
-      "frozenAt": "2026-10-11T05:17:49.548943+00:00",
-      "articles": [
-        {
-          "slug": "sinnae-dong-seoul-medical-center-funeral-wreath",
-          "title": "서울의료원 장례식장 근조화환 주문",
-          "primaryKeyword": "서울의료원 장례식장 근조화환 주문",
-          "status": "independent_content_pass_published_http_verified"
-        },
-        {
-          "slug": "myeonmok-dong-green-hospital-funeral-wreath",
-          "title": "녹색병원 장례식장 근조화환 주문",
-          "primaryKeyword": "녹색병원 장례식장 근조화환 주문",
-          "status": "independent_content_pass_published_http_verified"
-        },
-        {
-          "slug": "sangbong-dong-dongbu-mideurang-opening-wreath",
-          "title": "동부시장 미드랑길 개업 축하화환 주문",
-          "primaryKeyword": "동부시장 미드랑길 개업 축하화환 주문",
-          "status": "independent_content_pass_published_http_verified"
-        }
-      ],
-      "planFreezeRevision": "e668ea5fcae3fa7d3b27d6d9cf293c3750eb2d2c",
-      "approvedArticleCount": 3,
-      "deferredArticleCount": 0
-    },
-    "validation": {
-      "nodeVersion": "22.23.3",
-      "sourceTestsPassed": 68,
-      "publisherTestsPassed": 42,
-      "build": "PASS",
-      "static": "PASS",
-      "graph": "PASS",
-      "normalHtmlRoutes": 5,
-      "articleCount": 3,
-      "sitemapUrls": 5,
-      "localLoopback": "PASS",
-      "remoteFullReadback": "72/72 exact bytes and Git blob SHA verified",
-      "screenQa": "DEFERRED_BY_USER_NOT_PASS",
-      "remoteReadbackSha256": "cb710bd47d08d1c8f9659f691d7a324d20cffd21071d812d70afeb0b95280480",
-      "hostedHttp": "PASS",
-      "hostedHttpReviewSha256": "75d7de440b5c3caa055bfa4cfac34b756b1241bff912d225ba3643cb4a45d949"
-    },
-    "lastSuccessfulStage": "public_http_qa_indexnow_durable_receipt_gsc_submit_and_list_readback",
-    "sourceRevision": "73d92b941fcb3025321adc88f82179c914086551",
-    "controlRevision": "f2de6d9b361f39964de418b51a6fcd6cd0ce3357",
-    "publication": {
-      "status": "released_search_submitted_visual_qa_deferred",
-      "dispatchAcceptedCount": 1,
-      "runId": 38116543792,
-      "url": "https://seoul-jungnang.fwith.kr",
-      "indexNow": {
-        "attempt": 1,
-        "endpoint": "https://searchadvisor.naver.com/indexnow",
-        "fingerprint": "8a0a54ff23512ec549b2267396fd3c62f2e256ec6356ffcc2cb1d33c75d96016",
-        "httpStatus": 200,
-        "origin": "https://seoul-jungnang.fwith.kr",
-        "recordedAt": "2026-10-11T06:08:44.936678+00:00",
-        "revision": "73d92b941fcb3025321adc88f82179c914086551",
-        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38117066118",
-        "siteKey": "seoul-jungnang-flower-direct",
-        "state": "received",
-        "urlCount": 5,
-        "urlSetSha256": "626e03ae9263bafdae9fb1c4a3a488ad6a66693b2d3e518322061a11e275c383",
-        "commentId": 6106108743,
-        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6106108743",
-        "durableReadbackVerified": true,
-        "lastReadbackAt": "2026-10-11T06:12:39.358Z"
-      },
-      "gsc": {
-        "siteUrl": "sc-domain:fwith.kr",
-        "sitemapUrl": "https://seoul-jungnang.fwith.kr/sitemap-index.xml",
-        "status": "submitted_confirmed_processing_pending",
-        "submit": {
-          "siteUrl": "sc-domain:fwith.kr",
-          "attempted": 1,
-          "submitted": 1,
-          "failed": 0,
-          "results": [
-            {
-              "sitemapUrl": "https://seoul-jungnang.fwith.kr/sitemap-index.xml",
-              "accepted": true,
-              "confirmed": true,
-              "lastSubmitted": "2026-10-11T06:08:25.661Z",
-              "isPending": true,
-              "isSitemapsIndex": false,
-              "warnings": "0",
-              "errors": "0"
-            }
-          ],
-          "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
-          "actions": [
-            "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
-          ]
-        },
-        "listReadback": {
-          "observedAt": "2026-10-11T06:08:30.016Z",
-          "siteUrl": "sc-domain:fwith.kr",
-          "sitemaps": [
-            {
-              "path": "https://seoul-jungnang.fwith.kr/sitemap-index.xml",
-              "lastSubmitted": "2026-10-11T06:08:25.661Z",
-              "isPending": true,
-              "isSitemapsIndex": false,
-              "warnings": "0",
-              "errors": "0"
-            }
-          ]
-        },
-        "indexingVerified": false
-      },
-      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38116543792",
-      "runConclusion": "failure_indexnow_preflight_only",
-      "deploy": "success",
-      "hostnameBinding": "GET_verified",
-      "publicReleaseVerified": true,
-      "httpQa": "PASS_INDEPENDENT_EXACT_HOSTED_BYTES",
-      "publishedAt": "2026-10-11T06:00:14.9894441Z",
-      "articleCount": 3,
-      "normalHtmlPages": 5,
-      "totalHtmlIncluding404": 6,
-      "sitemapUrls": 5,
-      "completedAt": "2026-10-11T06:08:52Z",
-      "receiptFingerprintVerified": true
-    },
-    "recovery": {
-      "status": "resolved_search_only_no_redeploy",
-      "reason": "Second pre-POST IndexNow GET validation observed HTTP500 on green-hospital article; official artifact has only GET observations, no POST; no matching durable journal entry.",
-      "failingPath": "/regions/myeonmok-dong-green-hospital-funeral-wreath/",
-      "observedAt": "2026-10-11T06:00:17Z",
-      "originalArtifactId": 11693069928,
-      "originalArtifactZipSha256": "4f81fb736b5c519fa0f6fa0bff80935535676ad4824c7116ffe39c3540175d37",
-      "noRedeployRequired": true,
-      "runId": 38117066118,
-      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38117066118",
-      "controlRevision": "9d9976b2a13005812ef24b0bb6b706206f59edd1",
-      "conclusion": "success",
-      "build": "success",
-      "publish": "skipped",
-      "finalizeIndexNow": "success",
-      "completedAt": "2026-10-11T06:08:52Z",
-      "jobs": [
-        {
-          "id": 114403955839,
-          "name": "build",
-          "conclusion": "success",
-          "completedAt": "2026-10-11T06:08:33Z"
-        },
-        {
-          "id": 114404022791,
-          "name": "finalize_indexnow",
-          "conclusion": "success",
-          "completedAt": "2026-10-11T06:08:51Z"
-        },
-        {
-          "id": 114404023511,
-          "name": "publish",
-          "conclusion": "skipped",
-          "completedAt": "2026-10-11T06:08:33Z"
-        }
-      ]
+      "screenQa": "DEFERRED_NOT_PASS"
     }
   },
   "history": [
@@ -6584,6 +6400,252 @@
       },
       "archivedAs": "preserved_in_waitingApproval_before_next_region",
       "archivedAt": "2026-10-11T05:07:43.970Z"
+    },
+    {
+      "scopeKey": "seoul-jungnang-direct-initial-20261011",
+      "city": "서울특별시 중랑구",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "owner": {
+        "scheduledRunAt": "2026-10-11T05:00:00Z",
+        "observedExecutionAt": "2026-10-11T05:07:43.970Z",
+        "newRegionStartedAt": "2026-10-11T05:07:43.970Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-seoul-jungnang-20261011T050000Z",
+        "active": false,
+        "executionState": "completed_no_further_source_or_deployment_writes",
+        "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T05:00:47.630Z",
+        "priorOwnerReadbackConfirmedAt": "2026-10-11T05:01:02.110Z",
+        "sourceAndDeploymentWritesStoppedAt": "2026-10-11T06:08:52Z",
+        "browserOperationsStopped": true,
+        "finalCheckpointWritePending": false,
+        "completedEvidenceVerifiedAt": "2026-10-11T06:14:04.539Z"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-seoul-jungnang-direct",
+        "root": "site-factory/seoul-jungnang-flower",
+        "worker": "seoul-jungnang-flower-guide",
+        "hostname": "seoul-jungnang.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true,
+        "sourceBranchBaseRevision": "aa30430e2135ef2be8036d4215425ce4547fe772"
+      },
+      "selection": {
+        "officialCode": "11260",
+        "reason": "Next eligible autonomous district in remote frozen national order; previous Dongdaemun preserved awaiting exact deployment approval",
+        "nationalPlanDenominator": 230
+      },
+      "conflictChecks": {
+        "branchesChecked": 130,
+        "matchingBranch": false,
+        "openMatchingPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "unrelatedQueuedWorkflows": [
+          37655516975,
+          37655514711
+        ],
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "PASS_OFFICIAL_ACCOUNT_WORKER_DOMAIN_GET_NO_OVERRIDE",
+        "triggerSafety": {
+          "allCurrentWorkflowFilesRead": 48,
+          "mainPushAndTargetBranchDoNotMatchPushTriggers": true,
+          "stoppedFactoryNotInvoked": true
+        }
+      },
+      "changeIntent": {
+        "action": "preserve_verified_release_search_receipts_deferred_screen_qa_and_release_owner",
+        "idempotencyKey": "seoul-jungnang:complete:73d92b941fcb3025321adc88f82179c914086551"
+      },
+      "unfinishedStages": [
+        "deferred_visual_qa"
+      ],
+      "review": {
+        "screenQa": "DEFERRED_NOT_PASS",
+        "planReviewStatus": "PASS_BEFORE_AUTHORING",
+        "planReviewSha256": "f27cb9d937d001b3a75cec58ee359e8863e414c34e318d0d647c8ee7481799d3",
+        "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
+        "imageReviewSha256": "e3fa23d7d53bb1effdf2790706ead3b58098c0cb28234c79c16d1a4177192199",
+        "contentStatus": "PASS",
+        "articlesSha256": "633ffcd363afe9c04c180e86d2dd4307832badf14e6aa268326fa7c6b9f9d5c1",
+        "independentReviewSha256": "dcd4fce8a747ba4e3c66bc7a45ca67dec64c7e7ac3bccfd3d11ad1ea9b9f004a",
+        "runtimeStatus": "PASS_EXACT_LOCAL_SOURCE_PREPUBLICATION",
+        "runtimeReviewSha256": "f2f21646f9f43ae1e95e5a8155d4dae32f0cf3742312893c61c67fc621530ef6",
+        "exactRemoteReviewSha256": "25bbc2330c47ae00c658358d53b27c6dc51a943a0b6f3c50d4293325f35c81b8",
+        "liveReleaseReviewSha256": "e09914578770f6108d276348d0b26ea20bf4b08456a60d46c8e81aa940a21f48",
+        "liveReleaseStatus": "PASS_INDEPENDENT_ARTIFACT_HOSTED_HTTP_OWNERSHIP_AND_DURABLE_RECEIPT"
+      },
+      "plan": {
+        "state": "frozen_before_authoring_independent_plan_pass",
+        "plannedArticleCount": 3,
+        "minimumPassedArticles": 3,
+        "legalDongCount": 6,
+        "administrativeDongCount": 16,
+        "relationshipCount": 16,
+        "unassignedLegalUnits": 3,
+        "countIsPageQuota": false,
+        "fixedPlanPath": "docs/direct-regional-release/seoul-jungnang/fixed-plan.json",
+        "fixedPlanSha256": "1f963a29a01a3bcfbdbd8f0f6f7949ccb153302adb22fd513164e3f1b1fafc7a",
+        "frozenAt": "2026-10-11T05:17:49.548943+00:00",
+        "articles": [
+          {
+            "slug": "sinnae-dong-seoul-medical-center-funeral-wreath",
+            "title": "서울의료원 장례식장 근조화환 주문",
+            "primaryKeyword": "서울의료원 장례식장 근조화환 주문",
+            "status": "independent_content_pass_published_http_verified"
+          },
+          {
+            "slug": "myeonmok-dong-green-hospital-funeral-wreath",
+            "title": "녹색병원 장례식장 근조화환 주문",
+            "primaryKeyword": "녹색병원 장례식장 근조화환 주문",
+            "status": "independent_content_pass_published_http_verified"
+          },
+          {
+            "slug": "sangbong-dong-dongbu-mideurang-opening-wreath",
+            "title": "동부시장 미드랑길 개업 축하화환 주문",
+            "primaryKeyword": "동부시장 미드랑길 개업 축하화환 주문",
+            "status": "independent_content_pass_published_http_verified"
+          }
+        ],
+        "planFreezeRevision": "e668ea5fcae3fa7d3b27d6d9cf293c3750eb2d2c",
+        "approvedArticleCount": 3,
+        "deferredArticleCount": 0
+      },
+      "validation": {
+        "nodeVersion": "22.23.3",
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "normalHtmlRoutes": 5,
+        "articleCount": 3,
+        "sitemapUrls": 5,
+        "localLoopback": "PASS",
+        "remoteFullReadback": "72/72 exact bytes and Git blob SHA verified",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+        "remoteReadbackSha256": "cb710bd47d08d1c8f9659f691d7a324d20cffd21071d812d70afeb0b95280480",
+        "hostedHttp": "PASS",
+        "hostedHttpReviewSha256": "75d7de440b5c3caa055bfa4cfac34b756b1241bff912d225ba3643cb4a45d949"
+      },
+      "lastSuccessfulStage": "public_http_qa_indexnow_durable_receipt_gsc_submit_and_list_readback",
+      "sourceRevision": "73d92b941fcb3025321adc88f82179c914086551",
+      "controlRevision": "f2de6d9b361f39964de418b51a6fcd6cd0ce3357",
+      "publication": {
+        "status": "released_search_submitted_visual_qa_deferred",
+        "dispatchAcceptedCount": 1,
+        "runId": 38116543792,
+        "url": "https://seoul-jungnang.fwith.kr",
+        "indexNow": {
+          "attempt": 1,
+          "endpoint": "https://searchadvisor.naver.com/indexnow",
+          "fingerprint": "8a0a54ff23512ec549b2267396fd3c62f2e256ec6356ffcc2cb1d33c75d96016",
+          "httpStatus": 200,
+          "origin": "https://seoul-jungnang.fwith.kr",
+          "recordedAt": "2026-10-11T06:08:44.936678+00:00",
+          "revision": "73d92b941fcb3025321adc88f82179c914086551",
+          "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38117066118",
+          "siteKey": "seoul-jungnang-flower-direct",
+          "state": "received",
+          "urlCount": 5,
+          "urlSetSha256": "626e03ae9263bafdae9fb1c4a3a488ad6a66693b2d3e518322061a11e275c383",
+          "commentId": 6106108743,
+          "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6106108743",
+          "durableReadbackVerified": true,
+          "lastReadbackAt": "2026-10-11T06:12:39.358Z"
+        },
+        "gsc": {
+          "siteUrl": "sc-domain:fwith.kr",
+          "sitemapUrl": "https://seoul-jungnang.fwith.kr/sitemap-index.xml",
+          "status": "submitted_confirmed_processing_pending",
+          "submit": {
+            "siteUrl": "sc-domain:fwith.kr",
+            "attempted": 1,
+            "submitted": 1,
+            "failed": 0,
+            "results": [
+              {
+                "sitemapUrl": "https://seoul-jungnang.fwith.kr/sitemap-index.xml",
+                "accepted": true,
+                "confirmed": true,
+                "lastSubmitted": "2026-10-11T06:08:25.661Z",
+                "isPending": true,
+                "isSitemapsIndex": false,
+                "warnings": "0",
+                "errors": "0"
+              }
+            ],
+            "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+            "actions": [
+              "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+            ]
+          },
+          "listReadback": {
+            "observedAt": "2026-10-11T06:08:30.016Z",
+            "siteUrl": "sc-domain:fwith.kr",
+            "sitemaps": [
+              {
+                "path": "https://seoul-jungnang.fwith.kr/sitemap-index.xml",
+                "lastSubmitted": "2026-10-11T06:08:25.661Z",
+                "isPending": true,
+                "isSitemapsIndex": false,
+                "warnings": "0",
+                "errors": "0"
+              }
+            ]
+          },
+          "indexingVerified": false
+        },
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38116543792",
+        "runConclusion": "failure_indexnow_preflight_only",
+        "deploy": "success",
+        "hostnameBinding": "GET_verified",
+        "publicReleaseVerified": true,
+        "httpQa": "PASS_INDEPENDENT_EXACT_HOSTED_BYTES",
+        "publishedAt": "2026-10-11T06:00:14.9894441Z",
+        "articleCount": 3,
+        "normalHtmlPages": 5,
+        "totalHtmlIncluding404": 6,
+        "sitemapUrls": 5,
+        "completedAt": "2026-10-11T06:08:52Z",
+        "receiptFingerprintVerified": true
+      },
+      "recovery": {
+        "status": "resolved_search_only_no_redeploy",
+        "reason": "Second pre-POST IndexNow GET validation observed HTTP500 on green-hospital article; official artifact has only GET observations, no POST; no matching durable journal entry.",
+        "failingPath": "/regions/myeonmok-dong-green-hospital-funeral-wreath/",
+        "observedAt": "2026-10-11T06:00:17Z",
+        "originalArtifactId": 11693069928,
+        "originalArtifactZipSha256": "4f81fb736b5c519fa0f6fa0bff80935535676ad4824c7116ffe39c3540175d37",
+        "noRedeployRequired": true,
+        "runId": 38117066118,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38117066118",
+        "controlRevision": "9d9976b2a13005812ef24b0bb6b706206f59edd1",
+        "conclusion": "success",
+        "build": "success",
+        "publish": "skipped",
+        "finalizeIndexNow": "success",
+        "completedAt": "2026-10-11T06:08:52Z",
+        "jobs": [
+          {
+            "id": 114403955839,
+            "name": "build",
+            "conclusion": "success",
+            "completedAt": "2026-10-11T06:08:33Z"
+          },
+          {
+            "id": 114404022791,
+            "name": "finalize_indexnow",
+            "conclusion": "success",
+            "completedAt": "2026-10-11T06:08:51Z"
+          },
+          {
+            "id": 114404023511,
+            "name": "publish",
+            "conclusion": "skipped",
+            "completedAt": "2026-10-11T06:08:33Z"
+          }
+        ]
+      }
     }
   ],
   "maintenanceBacklog": [
@@ -6624,7 +6686,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Fresh-read ownership and remote plan in next invocation; preserve Dongdaemun waitingApproval; batch visual QA later.",
+  "nextAction": "Complete official Seongbuk research and freeze independently reviewed unique purchase-intent plan before authoring.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -13896,7 +13958,7 @@
       "Historical visual deferrals and held articles are maintenance backlogs, not erased by geographic release progression.",
       "Reverify official effective changes before choosing later units; do not mutate historical denominator silently."
     ],
-    "nextSelectedUnit": "11260",
+    "nextSelectedUnit": "11290",
     "path": "docs/direct-regional-release/national/fixed-plan.json",
     "independentReviewPath": "docs/direct-regional-release/national/independent-review.json",
     "progress": {
