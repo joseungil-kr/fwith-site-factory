@@ -1,0 +1,651 @@
+{
+  "scope": "seoul-yongsan-notice-followon-20261011",
+  "baselineSource": "67962804231a160761c65929c41c8456ca555410",
+  "author": "/root/plan_existing_region_updates",
+  "independentCopyReviewer": "/root/audit_regional_sales_copy",
+  "commonProposal": {
+    "sha256": "f47a42e0d3606d4b339a1aff190741b19953967ba4a10c7b59e7bd04e0ae634f",
+    "utf8Content": "{\n  \"status\": \"AUTHOR_MINIMAL_NOTICE_PROPOSAL_PENDING_INDEPENDENT_COPY_REVIEW\",\n  \"region\": \"seoul-yongsan\",\n  \"baselineSource\": \"67962804231a160761c65929c41c8456ca555410\",\n  \"branch\": \"site-factory-seoul-yongsan-direct\",\n  \"root\": \"site-factory/seoul-yongsan-flower\",\n  \"articles\": 5,\n  \"newArticles\": 0,\n  \"files\": [\n    {\n      \"path\": \"src/layouts/BaseLayout.astro\",\n      \"oldPath\": \"/tmp/thirteen-notice-followons-20261011/seoul-yongsan/baseline/src/layouts/BaseLayout.astro\",\n      \"oldSha256\": \"2105979c8ad49708d3780e20f134ca80d1afa77d2547585b11f107345ee89580\",\n      \"newPath\": \"/tmp/thirteen-notice-followons-20261011/seoul-yongsan/common-proposal/src/layouts/BaseLayout.astro\",\n      \"newSha256\": \"cb0eadcc8d98bb3a61256d4efba40fb5c16370e5d0ba6189ed63531f9a437fa1\",\n      \"operations\": [\n        {\n          \"old\": \"<small>{site.deliveryNotice}</small>\",\n          \"new\": \"\"\n        }\n      ],\n      \"diff\": \"/tmp/thirteen-notice-followons-20261011/seoul-yongsan/common-proposal/BaseLayout.astro.diff\"\n    },\n    {\n      \"path\": \"src/components/ProductCards.astro\",\n      \"oldPath\": \"/tmp/thirteen-notice-followons-20261011/seoul-yongsan/baseline/src/components/ProductCards.astro\",\n      \"oldSha256\": \"d26eefffb698baceaa06d30a1f40c8d7c576d02f47e76db107f0084dd589605c\",\n      \"newPath\": \"/tmp/thirteen-notice-followons-20261011/seoul-yongsan/common-proposal/src/components/ProductCards.astro\",\n      \"newSha256\": \"c3aded0c4cfd21c2ab0406048856cd8f7e9057dcdac9528125f98a2130030714\",\n      \"operations\": [\n        {\n          \"old\": \"표시금액은 상품 기본가격입니다. \",\n          \"new\": \"\"\n        }\n      ],\n      \"diff\": \"/tmp/thirteen-notice-followons-20261011/seoul-yongsan/common-proposal/ProductCards.astro.diff\"\n    }\n  ],\n  \"businessTruth\": {\n    \"path\": \"/tmp/thirteen-notice-followons-20261011/seoul-yongsan/baseline/src/data/business-truth.json\",\n    \"sha256\": \"4376a0f0472af885958f0402cac6c1cad4a0397a498c8bab51fb750774d460a0\"\n  },\n  \"scope\": [\n    \"Remove duplicated footer delivery notice only.\",\n    \"For central4 remove extra basic-price sentence since truth already contains it.\",\n    \"For Guri/Anyang/Osan/Gwangmyeong move actual existing ribbon example wording from each card to one conditional group note; retain conditional meaning and add explicit basic-price label at prices, because truth lacks it.\"\n  ],\n  \"bodyChanges\": \"NONE_YET_CONTEXTUAL_REVIEW_PENDING\",\n  \"protected\": \"All product identities/prices/images/card order/CTA/phone/SEO/truth text preserved.\"\n}\n"
+  },
+  "commonReview": {
+    "sha256": "4f3c1dbdc96f1e8363b0d81b8286b90c4917e615f61f9eae4dbc6d1e3bda57bf",
+    "utf8Content": "{\n  \"reviewedAt\": \"2026-10-11T20:21:10.044347+00:00\",\n  \"reviewer\": \"/root/audit_regional_sales_copy\",\n  \"author\": \"/root/plan_existing_region_updates\",\n  \"decision\": \"COPY_PASS_EXACT_COMMON_NOTICE_PROPOSAL\",\n  \"region\": \"seoul-yongsan\",\n  \"proposalSha256\": \"f47a42e0d3606d4b339a1aff190741b19953967ba4a10c7b59e7bd04e0ae634f\",\n  \"baselineSource\": \"67962804231a160761c65929c41c8456ca555410\",\n  \"files\": [\n    {\n      \"path\": \"src/layouts/BaseLayout.astro\",\n      \"oldSha256\": \"2105979c8ad49708d3780e20f134ca80d1afa77d2547585b11f107345ee89580\",\n      \"newSha256\": \"cb0eadcc8d98bb3a61256d4efba40fb5c16370e5d0ba6189ed63531f9a437fa1\",\n      \"operationsReplayed\": 1,\n      \"originalRemoteBlobDirectlyMatched\": true\n    },\n    {\n      \"path\": \"src/components/ProductCards.astro\",\n      \"oldSha256\": \"d26eefffb698baceaa06d30a1f40c8d7c576d02f47e76db107f0084dd589605c\",\n      \"newSha256\": \"c3aded0c4cfd21c2ab0406048856cd8f7e9057dcdac9528125f98a2130030714\",\n      \"operationsReplayed\": 1,\n      \"originalRemoteBlobDirectlyMatched\": true\n    }\n  ],\n  \"businessTruthSha256\": \"4376a0f0472af885958f0402cac6c1cad4a0397a498c8bab51fb750774d460a0\",\n  \"findings\": [\n    \"Footer duplicate only removed; phone/hours/CTA/SEO unchanged.\",\n    \"Exactly one price-group basic-price statement remains. Delivery and composition-variation facts remain near prices.\",\n    \"For four original per-card ribbon renderers, same wording is emitted once only when at least one congrats product is present; products/order/image/price expressions unchanged.\",\n    \"Central-four redundant first basic-price statement removed only because their retained deliveryNotice already contains that fact.\"\n  ],\n  \"bodyProposalApproval\": false,\n  \"runtimeBuildDomApproval\": false,\n  \"externalWrites\": 0\n}\n"
+  },
+  "approvedCustomerPages": [
+    {
+      "slug": "hannam-dong-sch-seoul-condolence-wreath",
+      "title": "순천향대 서울병원 장례식장 근조화환 주문",
+      "h1": "순천향대 서울병원 장례식장 근조화환 주문",
+      "primaryKeyword": "순천향대 서울병원 장례식장 근조화환 주문",
+      "description": "순천향대 서울병원 장례식장으로 전할 조의를 꽃이랑 근조화환에 담아보세요. 개인과 동료들의 예산에 맞는 네 상품과 주문 상담을 안내합니다.",
+      "cardSummary": "함께하는 이들의 위로를 모아 보내는 꽃. 정해진 조문 예산과 전하고 싶은 말부터 상담하세요.",
+      "firstAnswer": "동료나 가까운 분의 가족상 소식을 들으면 조심스러운 위로를 전하고 싶어지지요. 순천향대 서울병원 장례식장에 보낼 근조화환을 꽃이랑에서 준비해 보세요. 개인의 조의와 함께 모은 마음을 예산에 맞춰 상담하실 수 있습니다.",
+      "contentMarkdown": "## 함께하는 이들의 위로를 전하고 싶을 때\n\n매일 함께 일하는 동료가 슬픔을 겪고 있다면 긴 말보다 곁에서 마음을 함께한다는 뜻을 전하고 싶어집니다. 가까운 지인이나 거래처의 부고에도 고인을 기리고 유가족을 위로하는 정중한 인사가 필요하지요.\n\n근조화환에 보내시는 분들의 조의를 담아보세요. 부서나 모임에서 예산을 정했다면 그 금액부터, 개인적으로 보내신다면 마음에 드는 상품 사진부터 살펴보셔도 좋습니다. 조문 문구는 유가족의 뜻이나 종교에 맞는 표현이 있다면 함께 말씀해 주세요.\n\n## 근조 상품 네 가지를 부담 없이 비교하세요\n\n근조 3단 화환 **59,000원**, 근조 고급 3단 화환 **79,000원**, 근조 특대 3단 화환 **109,000원**, 근조 특특대 3단 화환 **149,000원**을 비교하실 수 있습니다.\n\n기본형과 고급형의 기본가격 차이는 20,000원입니다. 두 상품의 사진을 보며 예산에 맞춰 고르거나, 생각하신 상품이 있다면 실제 구성과 크기를 상담해 보세요.\n\n## 한남동 서울병원 빈소로 보내는 주문\n\n순천향대 서울병원 장례식장은 **서울 용산구 대사관로 59**에 있습니다. [공식 장례식장 안내](https://www.schmc.ac.kr/seoul/fnrl/fnrlInfo.do?key=356)에는 일반 호실과 특실·VIP가 구분되어 있습니다. 부고에 적힌 현재 빈소와 보내는 분의 이름을 알려 주세요.\n\n유가족의 화환 수령 의사와 발인 전 인수 가능한 일정을 바탕으로 상품 준비·전달 가능 여부를 상담하실 수 있습니다. 빈소의 수령 장소에 관한 안내를 받으셨다면 함께 전해 주세요. 시설에 문의하실 일은 장례식장 **02-797-4444·02-792-6232**에서 안내받을 수 있습니다.\n\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\n\n[근조화환과 문구 상담](tel:18440644) · [꽃이랑 공식몰 상품 보기](https://fwith.co.kr/)",
+      "visualIntent": "funeral_wreath",
+      "regionalProductKeys": [
+        "funeral-basic",
+        "funeral-premium",
+        "funeral-large",
+        "funeral-xl"
+      ],
+      "sources": [
+        {
+          "name": "순천향대학교 부속 서울병원 장례식장 안내",
+          "url": "https://www.schmc.ac.kr/seoul/fnrl/fnrlInfo.do?key=356",
+          "type": "official",
+          "verifiedAt": "2026-10-10"
+        },
+        {
+          "name": "순천향대학교 부속 서울병원 병원개요",
+          "url": "https://www.schmc.ac.kr/seoul/contents.do?key=370",
+          "type": "official",
+          "verifiedAt": "2026-10-10"
+        },
+        {
+          "name": "꽃이랑 근조 3단 화환 (B201)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B201",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 근조 고급 3단 화환 (B203)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B203",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 근조 특대 3단 화환 (B205)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B205",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 근조 특특대 3단 화환 (B060)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B060",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        }
+      ],
+      "sections": [
+        [
+          "함께하는 이들의 위로를 전하고 싶을 때",
+          "매일 함께 일하는 동료가 슬픔을 겪고 있다면 긴 말보다 곁에서 마음을 함께한다는 뜻을 전하고 싶어집니다. 가까운 지인이나 거래처의 부고에도 고인을 기리고 유가족을 위로하는 정중한 인사가 필요하지요.\n\n근조화환에 보내시는 분들의 조의를 담아보세요. 부서나 모임에서 예산을 정했다면 그 금액부터, 개인적으로 보내신다면 마음에 드는 상품 사진부터 살펴보셔도 좋습니다. 조문 문구는 유가족의 뜻이나 종교에 맞는 표현이 있다면 함께 말씀해 주세요."
+        ],
+        [
+          "근조 상품 네 가지를 부담 없이 비교하세요",
+          "근조 3단 화환 **59,000원**, 근조 고급 3단 화환 **79,000원**, 근조 특대 3단 화환 **109,000원**, 근조 특특대 3단 화환 **149,000원**을 비교하실 수 있습니다.\n\n기본형과 고급형의 기본가격 차이는 20,000원입니다. 두 상품의 사진을 보며 예산에 맞춰 고르거나, 생각하신 상품이 있다면 실제 구성과 크기를 상담해 보세요. 사진은 공식 카탈로그 예시입니다. 배송지에 따라 추가 배송비가 있을 수 있으니 상품 기본가격에 더해 최종금액도 함께 안내받으세요."
+        ],
+        [
+          "한남동 서울병원 빈소로 보내는 주문",
+          "순천향대 서울병원 장례식장은 **서울 용산구 대사관로 59**에 있습니다. [공식 장례식장 안내](https://www.schmc.ac.kr/seoul/fnrl/fnrlInfo.do?key=356)에는 일반 호실과 특실·VIP가 구분되어 있습니다. 부고에 적힌 현재 빈소와 보내는 분의 이름을 알려 주세요.\n\n유가족의 화환 수령 의사와 발인 전 인수 가능한 일정을 바탕으로 상품 준비·전달 가능 여부를 상담하실 수 있습니다. 빈소의 수령 장소에 관한 안내를 받으셨다면 함께 전해 주세요. 시설에 문의하실 일은 장례식장 **02-797-4444·02-792-6232**에서 안내받을 수 있습니다.\n\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\n\n[근조화환과 문구 상담](tel:18440644) · [꽃이랑 공식몰 상품 보기](https://fwith.co.kr/)"
+        ]
+      ],
+      "faq": [
+        [
+          "부서에서 정한 예산으로 상담해도 될까요?",
+          "정해 둔 예산과 보내는 분의 명의를 말씀해 주세요. 네 상품의 사진을 비교하고 배송비를 포함한 최종금액을 안내받으실 수 있습니다."
+        ],
+        [
+          "발인이 가까우면 무엇부터 문의하면 될까요?",
+          "현재 빈소에서 받을 수 있는 시간을 알려 주세요. 발인 전 인수 일정과 상품 준비·전달 가능 여부부터 상담하시면 됩니다."
+        ]
+      ],
+      "relatedKeys": [],
+      "pageKey": "seoul-yongsan-flower-direct-region-hannam-dong-sch-seoul-condolence-wreath",
+      "category": "regions",
+      "routeType": "category",
+      "url": "/regions/hannam-dong-sch-seoul-condolence-wreath/",
+      "pageType": "regional-service",
+      "status": "approved",
+      "file": "src/data/pages.json",
+      "order": 1,
+      "approvalVerified": true,
+      "sourceMode": "direct-git",
+      "queryClass": "local-commercial",
+      "assetSlot": "REAL_PROOF",
+      "source": {
+        "name": "순천향대학교 부속 서울병원 장례식장 안내",
+        "url": "https://www.schmc.ac.kr/seoul/fnrl/fnrlInfo.do?key=356",
+        "type": "official",
+        "verifiedAt": "2026-10-10"
+      },
+      "productCardLimit": 4,
+      "productCardKeys": [
+        "funeral-basic",
+        "funeral-premium",
+        "funeral-large",
+        "funeral-xl"
+      ],
+      "scopeKey": "seoul-yongsan-direct-initial-20261010",
+      "regionUnitKeys": [
+        "용산구/법정동/한남동"
+      ],
+      "regionalPurchaseMode": "catalog",
+      "regionalProductFamilies": [
+        "funeral"
+      ],
+      "ogImage": "/images/products/funeral-basic.webp",
+      "ogImageAlt": "근조 3단 화환 공식 상품 사진",
+      "ogImageSha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+      "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B201",
+      "ogImageWidth": 480,
+      "ogImageHeight": 480,
+      "ogImageType": "image/webp",
+      "snapshotId": "direct-content-hannam-dong-sch-seoul-condolence-wreath-dbd0fd4a5e1019b8",
+      "snapshotHash": "dbd0fd4a5e1019b80ab62e11b7766e97af216a55e4a34281eb334509108cff63"
+    },
+    {
+      "slug": "hangangno3-ga-seoul-dragon-city-wedding-wreath",
+      "title": "서울드래곤시티 결혼식 축하화환 주문",
+      "h1": "서울드래곤시티 결혼식 축하화환 주문",
+      "primaryKeyword": "서울드래곤시티 결혼식 축하화환 주문",
+      "description": "서울드래곤시티 결혼식에 소중한 두 분을 위한 축하화환을 준비하세요. 꽃이랑 네 상품의 사진과 기본가격을 비교하고 홀별 수령 일정으로 상담하세요.",
+      "cardSummary": "오래 응원해 온 두 분의 행복한 출발에. 축하화환 사진을 보며 예산에 맞춰 고르세요.",
+      "firstAnswer": "소중한 사람이 새로운 가족을 이루는 날, 앞으로의 행복을 응원하는 꽃을 전해 보세요. 서울드래곤시티 결혼식 축하화환은 꽃이랑에서 네 상품의 사진과 가격을 비교하며 고르실 수 있습니다. 예식에 전할 문구와 일정도 편하게 상담하세요.",
+      "contentMarkdown": "## 함께 기뻐하고 싶은 결혼 소식\n\n오래 지켜본 후배나 가까운 친척의 결혼 소식은 더욱 반갑게 다가오지요. 서로를 의지하며 새로운 가정을 꾸릴 두 사람에게 따뜻한 응원을 전해 보세요. 식장에서 직접 인사를 나눌 때도, 멀리서 축하를 보내야 할 때도 꽃에 마음을 담을 수 있습니다.\n\n서울드래곤시티에서 맞는 두 분의 결혼식에 어떤 인사를 전하고 싶으신가요? “앞으로의 모든 날을 응원합니다”처럼 평소 전하고 싶던 마음을 떠올리며 사진을 살펴보세요. 상품이 고민되시면 예산부터 이야기하며 상담하실 수 있습니다.\n\n## 실제 가격차를 보며 선택하세요\n\n꽃이랑 축하 3단 화환 **59,000원**, 축하 고급 3단 화환 **79,000원**, 축하 특대 3단 화환 **99,000원**, 축하 특특대 3단 화환 **149,000원**이 있습니다.\n\n59,000원 상품을 기준으로 고급 상품은 20,000원, 특대 상품은 40,000원 높은 기본가격입니다. 정해 둔 예산 안에서 사진을 비교해 보시고, 원하는 구성이 있다면 상담할 때 말씀해 주세요.\n\n## 청첩장의 예식홀에 맞춰 준비하세요\n\n호텔 주소는 **서울 용산구 청파로20길 95**입니다. [공식 웨딩 안내](https://www.seouldragoncity.com/web/kr/wedding.asp)는 그랜드 볼룸 한라, 르 시엘 31, 랑데부를 소개합니다. 한라는 컨벤션 타워 3층, 르 시엘 31은 스카이킹덤 31층으로 안내되어 있습니다.\n\n청첩장의 홀과 예식 날짜·시간, 신랑신부 이름을 알려 주세요. 해당 예식에서 외부 화환을 받을 수 있는지와 실제 인수 장소·시간을 확인해 주시면 전달 가능 일정을 상담하실 수 있습니다. 호텔 웨딩 문의는 **02-2223-7070**입니다.\n\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\n\n[결혼 축하화환 전화 상담](tel:18440644) · [공식몰에서 사진 비교하기](https://fwith.co.kr/)",
+      "visualIntent": "congrats_wreath",
+      "regionalProductKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sources": [
+        {
+          "name": "서울드래곤시티 웨딩",
+          "url": "https://www.seouldragoncity.com/web/kr/wedding.asp",
+          "type": "official",
+          "verifiedAt": "2026-10-10"
+        },
+        {
+          "name": "서울드래곤시티 그랜드 볼룸 한라",
+          "url": "https://www.seouldragoncity.com/web/kr/convention_view.asp?idx=1",
+          "type": "official",
+          "verifiedAt": "2026-10-10"
+        },
+        {
+          "name": "서울드래곤시티 오시는 길",
+          "url": "https://www.seouldragoncity.com/web/kr/location.asp",
+          "type": "official",
+          "verifiedAt": "2026-10-10"
+        },
+        {
+          "name": "꽃이랑 축하 3단 화환 (C200)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C200",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 고급 3단 화환 (C203)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C203",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 특대 3단 화환 (C204)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C204",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 특특대 3단 화환 (C205)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C205",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        }
+      ],
+      "sections": [
+        [
+          "함께 기뻐하고 싶은 결혼 소식",
+          "오래 지켜본 후배나 가까운 친척의 결혼 소식은 더욱 반갑게 다가오지요. 서로를 의지하며 새로운 가정을 꾸릴 두 사람에게 따뜻한 응원을 전해 보세요. 식장에서 직접 인사를 나눌 때도, 멀리서 축하를 보내야 할 때도 꽃에 마음을 담을 수 있습니다.\n\n서울드래곤시티에서 맞는 두 분의 결혼식에 어떤 인사를 전하고 싶으신가요? “앞으로의 모든 날을 응원합니다”처럼 평소 전하고 싶던 마음을 떠올리며 사진을 살펴보세요. 상품이 고민되시면 예산부터 이야기하며 상담하실 수 있습니다."
+        ],
+        [
+          "실제 가격차를 보며 선택하세요",
+          "꽃이랑 축하 3단 화환 **59,000원**, 축하 고급 3단 화환 **79,000원**, 축하 특대 3단 화환 **99,000원**, 축하 특특대 3단 화환 **149,000원**이 있습니다.\n\n59,000원 상품을 기준으로 고급 상품은 20,000원, 특대 상품은 40,000원 높은 기본가격입니다. 정해 둔 예산 안에서 사진을 비교해 보시고, 원하는 구성이 있다면 상담할 때 말씀해 주세요. 사진은 공식 카탈로그 예시이며 기본가격 외에 배송지에 따른 추가 배송비가 있을 수 있습니다. 최종금액과 준비 가능한 구성은 주문 시 안내받으실 수 있습니다."
+        ],
+        [
+          "청첩장의 예식홀에 맞춰 준비하세요",
+          "호텔 주소는 **서울 용산구 청파로20길 95**입니다. [공식 웨딩 안내](https://www.seouldragoncity.com/web/kr/wedding.asp)는 그랜드 볼룸 한라, 르 시엘 31, 랑데부를 소개합니다. 한라는 컨벤션 타워 3층, 르 시엘 31은 스카이킹덤 31층으로 안내되어 있습니다.\n\n청첩장의 홀과 예식 날짜·시간, 신랑신부 이름을 알려 주세요. 해당 예식에서 외부 화환을 받을 수 있는지와 실제 인수 장소·시간을 확인해 주시면 전달 가능 일정을 상담하실 수 있습니다. 호텔 웨딩 문의는 **02-2223-7070**입니다.\n\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\n\n[결혼 축하화환 전화 상담](tel:18440644) · [공식몰에서 사진 비교하기](https://fwith.co.kr/)"
+        ]
+      ],
+      "faq": [
+        [
+          "예산은 정했는데 상품을 고르기 어려워요.",
+          "생각하신 예산과 마음에 드는 사진을 말씀해 주세요. 공식 상품의 가격과 준비 가능한 구성을 살펴보며 주문을 상담하실 수 있습니다."
+        ],
+        [
+          "예식장에 문의할 연락처가 있을까요?",
+          "서울드래곤시티 웨딩 문의는 02-2223-7070입니다. 이번 예식의 외부 화환 수령 장소·시간을 안내받아 꽃이랑 상담 때 함께 전해 주세요."
+        ]
+      ],
+      "relatedKeys": [
+        "seoul-yongsan-flower-direct-region-yongsan-dong3-ga-mnd-convention-wedding-wreath"
+      ],
+      "pageKey": "seoul-yongsan-flower-direct-region-hangangno3-ga-seoul-dragon-city-wedding-wreath",
+      "category": "regions",
+      "routeType": "category",
+      "url": "/regions/hangangno3-ga-seoul-dragon-city-wedding-wreath/",
+      "pageType": "regional-service",
+      "status": "approved",
+      "file": "src/data/pages.json",
+      "order": 2,
+      "approvalVerified": true,
+      "sourceMode": "direct-git",
+      "queryClass": "local-commercial",
+      "assetSlot": "REAL_PROOF",
+      "source": {
+        "name": "서울드래곤시티 웨딩",
+        "url": "https://www.seouldragoncity.com/web/kr/wedding.asp",
+        "type": "official",
+        "verifiedAt": "2026-10-10"
+      },
+      "productCardLimit": 4,
+      "productCardKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "scopeKey": "seoul-yongsan-direct-initial-20261010",
+      "regionUnitKeys": [
+        "용산구/법정동/한강로3가"
+      ],
+      "regionalPurchaseMode": "catalog",
+      "regionalProductFamilies": [
+        "congrats"
+      ],
+      "ogImage": "/images/products/congrats-basic.jpg",
+      "ogImageAlt": "축하 3단 화환 공식 상품 사진",
+      "ogImageSha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+      "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=C200",
+      "ogImageWidth": 1000,
+      "ogImageHeight": 1000,
+      "ogImageType": "image/jpeg",
+      "snapshotId": "direct-content-hangangno3-ga-seoul-dragon-city-wedding-wreath-6cb1a21e6306f34c",
+      "snapshotHash": "6cb1a21e6306f34c62c0fab900308765a101aca92b35cd78e6683f036625ead9"
+    },
+    {
+      "slug": "hangangno2-ga-seonin-opening-wreath",
+      "title": "선인상가 거래처 개업화환 주문",
+      "h1": "선인상가 거래처 개업화환 주문",
+      "primaryKeyword": "선인상가 거래처 개업화환 주문",
+      "description": "선인상가 거래처의 개업과 이전을 응원하는 축하화환을 골라보세요. 꽃이랑 상품 네 가지와 기본가격, 새 매장에 전할 문구를 상담하실 수 있습니다.",
+      "cardSummary": "거래처의 다음 걸음을 응원하는 개업 선물. 새 매장과 준비하신 예산에 맞춰 꽃을 골라보세요.",
+      "firstAnswer": "오랫동안 함께 거래한 곳이 새 매장을 열거나 자리를 옮긴다면 반가운 응원을 전하고 싶지요. 선인상가 개업화환으로 준비의 수고를 격려하고 앞으로의 번창을 축하해 보세요. 꽃이랑에서 사진과 선물예산에 맞춰 상담하실 수 있습니다.",
+      "contentMarkdown": "## 거래처의 다음 걸음에 보내는 응원\n\n새 매장을 준비하는 일에는 기대만큼 손이 많이 갑니다. 진열을 새로 꾸미고 손님을 맞을 준비를 하는 거래처에 “새로운 자리에서도 잘되시길 바랍니다”라는 축하를 전해 보세요.\n\n처음 문을 여는 가게라면 설레는 시작을, 이전하는 거래처라면 그동안의 수고와 앞으로의 도약을 응원할 수 있습니다. 선인상가에 보낼 개업화환을 고르며 어떤 마음을 전하고 싶은지 편하게 이야기해 주세요.\n\n## 선물예산에 맞는 축하화환 선택\n\n축하 3단 화환은 **59,000원**, 축하 고급 3단 화환은 **79,000원**, 축하 특대 3단 화환은 **99,000원**, 축하 특특대 3단 화환은 **149,000원**입니다. 아래 공식 상품 사진을 보며 비교하실 수 있습니다.\n\n회사에서 정한 거래처 선물예산으로 준비하셔도 좋습니다. 새 매장에 놓을 공간이 정해져 있다면 실제 상품 크기와 구성도 상담해 보세요.\n\n“개업을 축하합니다”, “이전개업을 축하합니다”처럼 이번 소식에 맞는 인사와 보내는 회사·개인 이름을 주문 상담에서 말씀하실 수 있습니다.\n\n## 새 매장에서 받을 수 있는 일정으로\n\n선인상가의 받는 점포가 알려 준 주소와 동·층·호수, 상호를 전해 주세요. 개업 준비로 바쁜 날에는 받으실 분과 수령 가능한 시간대를 함께 알려 주시면 상담이 한결 수월합니다.\n\n외부 화환을 둘 수 있는 위치는 점포 측 안내에 맞춰 준비합니다. 원하는 상품이나 예산을 함께 말씀해 주시면 공간에 맞는 크기와 전달 가능 일정을 상담하실 수 있습니다.\n\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\n\n[거래처 개업화환 상담](tel:18440644) · [꽃이랑 공식몰에서 고르기](https://fwith.co.kr/)",
+      "visualIntent": "congrats_wreath",
+      "regionalProductKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sources": [
+        {
+          "name": "꽃이랑 축하 3단 화환 (C200)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C200",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 고급 3단 화환 (C203)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C203",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 특대 3단 화환 (C204)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C204",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 특특대 3단 화환 (C205)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C205",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        }
+      ],
+      "sections": [
+        [
+          "거래처의 다음 걸음에 보내는 응원",
+          "새 매장을 준비하는 일에는 기대만큼 손이 많이 갑니다. 진열을 새로 꾸미고 손님을 맞을 준비를 하는 거래처에 “새로운 자리에서도 잘되시길 바랍니다”라는 축하를 전해 보세요.\n\n처음 문을 여는 가게라면 설레는 시작을, 이전하는 거래처라면 그동안의 수고와 앞으로의 도약을 응원할 수 있습니다. 선인상가에 보낼 개업화환을 고르며 어떤 마음을 전하고 싶은지 편하게 이야기해 주세요."
+        ],
+        [
+          "선물예산에 맞는 축하화환 선택",
+          "축하 3단 화환은 **59,000원**, 축하 고급 3단 화환은 **79,000원**, 축하 특대 3단 화환은 **99,000원**, 축하 특특대 3단 화환은 **149,000원**입니다. 아래 공식 상품 사진을 보며 비교하실 수 있습니다.\n\n회사에서 정한 거래처 선물예산으로 준비하셔도 좋습니다. 새 매장에 놓을 공간이 정해져 있다면 실제 상품 크기와 구성도 상담해 보세요. 표시금액은 상품 기본가격이며, 배송지에 따라 추가 배송비가 있을 수 있습니다. 최종금액은 주문 시 안내받으세요.\n\n사진 속 리본은 카탈로그 예시입니다. “개업을 축하합니다”, “이전개업을 축하합니다”처럼 이번 소식에 맞는 인사와 보내는 회사·개인 이름을 주문 상담에서 말씀하실 수 있습니다."
+        ],
+        [
+          "새 매장에서 받을 수 있는 일정으로",
+          "선인상가의 받는 점포가 알려 준 주소와 동·층·호수, 상호를 전해 주세요. 개업 준비로 바쁜 날에는 받으실 분과 수령 가능한 시간대를 함께 알려 주시면 상담이 한결 수월합니다.\n\n외부 화환을 둘 수 있는 위치는 점포 측 안내에 맞춰 준비합니다. 원하는 상품이나 예산을 함께 말씀해 주시면 공간에 맞는 크기와 전달 가능 일정을 상담하실 수 있습니다.\n\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\n\n[거래처 개업화환 상담](tel:18440644) · [꽃이랑 공식몰에서 고르기](https://fwith.co.kr/)"
+        ]
+      ],
+      "faq": [
+        [
+          "거래처가 이전하는 날에도 축하화환을 보내고 싶어요.",
+          "이전개업을 축하하는 뜻을 담아 준비하실 수 있습니다. 새 매장의 주소와 수령 일정, 원하시는 문구를 말씀해 주세요."
+        ],
+        [
+          "작은 매장에 맞는 상품을 고를 수 있을까요?",
+          "점포에서 화환을 둘 위치와 사용할 수 있는 공간을 알려 주시면 희망 상품의 실제 크기와 준비 가능한 구성을 상담하실 수 있습니다."
+        ]
+      ],
+      "relatedKeys": [
+        "seoul-yongsan-flower-direct-region-hyochang-dong-kimkoo-convention-event-wreath"
+      ],
+      "pageKey": "seoul-yongsan-flower-direct-region-hangangno2-ga-seonin-opening-wreath",
+      "category": "regions",
+      "routeType": "category",
+      "url": "/regions/hangangno2-ga-seonin-opening-wreath/",
+      "pageType": "regional-service",
+      "status": "approved",
+      "file": "src/data/pages.json",
+      "order": 3,
+      "approvalVerified": true,
+      "sourceMode": "direct-git",
+      "queryClass": "local-commercial",
+      "assetSlot": "REAL_PROOF",
+      "source": {
+        "name": "꽃이랑 축하 3단 화환 (C200)",
+        "url": "https://fwith.co.kr/shop/item.php?it_id=C200",
+        "type": "official",
+        "verifiedAt": "2026-10-11"
+      },
+      "productCardLimit": 4,
+      "productCardKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "scopeKey": "seoul-yongsan-direct-initial-20261010",
+      "regionUnitKeys": [
+        "용산구/법정동/한강로2가"
+      ],
+      "regionalPurchaseMode": "catalog",
+      "regionalProductFamilies": [
+        "congrats"
+      ],
+      "ogImage": "/images/products/congrats-basic.jpg",
+      "ogImageAlt": "축하 3단 화환 공식 상품 사진",
+      "ogImageSha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+      "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=C200",
+      "ogImageWidth": 1000,
+      "ogImageHeight": 1000,
+      "ogImageType": "image/jpeg",
+      "snapshotId": "direct-content-hangangno2-ga-seonin-opening-wreath-b97b5100499e17c1",
+      "snapshotHash": "b97b5100499e17c194706b172dc3fe6f80aa14321e5a73535ede65ca32526cd6"
+    },
+    {
+      "slug": "hyochang-dong-kimkoo-convention-event-wreath",
+      "title": "백범김구기념관 행사 축하화환 상담",
+      "h1": "백범김구기념관 행사 축하화환 상담",
+      "primaryKeyword": "백범김구기념관 행사 축하화환 상담",
+      "description": "백범김구기념관에서 열리는 축하 행사에 정중한 응원을 전하세요. 주최 측의 꽃 수령 뜻과 대관 조건을 바탕으로 꽃이랑 상품과 예산을 상담하세요.",
+      "cardSummary": "뜻깊은 기념일과 새로운 출발을 축하하는 꽃. 행사 취지와 주최 측의 뜻에 맞춰 준비하세요.",
+      "firstAnswer": "뜻을 모아 걸어온 시간을 기념하거나 새로운 출발을 알리는 자리에는 정중한 축하를 전하고 싶어집니다. 백범김구기념관에서 열리는 축하 행사에 보낼 화환을 꽃이랑에서 상담해 보세요. 추모·헌화 행사에는 주최 측이 원하는 꽃의 종류를 먼저 문의해 주세요.",
+      "contentMarkdown": "## 뜻깊은 자리에 어울리는 정중한 축하\n\n한 단체가 기념할 날을 맞거나 함께 이룬 성취를 나누는 자리에는 그 시간을 지켜본 이들의 인사가 더해지지요. 행사 주인공에게 존경과 응원을 전하고, 함께 준비한 분들의 수고를 격려하는 꽃을 생각해 보세요.\n\n백범김구기념관 행사에 보내실 때에는 이번 행사가 전하려는 뜻을 함께 알려 주세요. 주최 측이 축하화환을 받는 행사라면 기관·회사·모임에서 준비하신 예산에 맞춰 상품을 고르실 수 있습니다.\n\n## 행사예산과 사진으로 비교하는 네 상품\n\n축하 3단 화환 **59,000원**, 축하 고급 3단 화환 **79,000원**, 축하 특대 3단 화환 **99,000원**, 축하 특특대 3단 화환 **149,000원**을 살펴보세요.\n\n마음에 드는 사진과 준비하신 예산을 말씀해 주시면 주문 상담을 시작하실 수 있습니다.\n\n## 행사 공간과 정리 일정에 맞춰 상담하세요\n\n[백범김구기념관](https://www.kimkoomuseum.org/main/)은 **서울 용산구 임정로 26**에 있으며 컨벤션홀·대회의실 등 대관 공간이 나뉘어 있습니다. 행사명과 실제 대관실, 주최 측 담당자와 인수 가능한 시간을 알려 주세요. 대관 문의는 **02-799-3424**입니다.\n\n기념관은 허가받은 공간 사용과 행사 후 원상복구를 안내합니다. 화환을 둘 자리와 종료 후 정리 담당자를 주최 측과 정해 주시고, 별도 회수가 필요하면 가능한 범위와 비용도 상담해 주세요. 실제 반입 일정은 주최 측이 승인받은 준비대관 시간에 맞춰 확인합니다.\n\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\n\n[행사 목적에 맞는 화환 상담](tel:18440644) · [공식몰 상품 살펴보기](https://fwith.co.kr/)",
+      "visualIntent": "congrats_wreath",
+      "regionalProductKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sources": [
+        {
+          "name": "백범김구기념관 공식 홈페이지",
+          "url": "https://www.kimkoomuseum.org/main/",
+          "type": "official",
+          "verifiedAt": "2026-10-10"
+        },
+        {
+          "name": "백범김구기념관 시설 및 대관료",
+          "url": "https://www.kimkoomuseum.org/cor_new/cor_1_1.asp",
+          "type": "official",
+          "verifiedAt": "2026-10-10"
+        },
+        {
+          "name": "백범김구기념관 대관 규정",
+          "url": "https://www.kimkoomuseum.org/cor_new/cor_7_1.asp",
+          "type": "official",
+          "verifiedAt": "2026-10-10"
+        },
+        {
+          "name": "백범김구기념관 준비대관 FAQ",
+          "url": "https://www.kimkoomuseum.org/cor_new/cor_5_view.asp?BoardDiv=RentalFaq&Idx=4398",
+          "type": "official",
+          "verifiedAt": "2026-10-10"
+        },
+        {
+          "name": "꽃이랑 축하 3단 화환 (C200)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C200",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 고급 3단 화환 (C203)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C203",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 특대 3단 화환 (C204)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C204",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 특특대 3단 화환 (C205)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C205",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        }
+      ],
+      "sections": [
+        [
+          "뜻깊은 자리에 어울리는 정중한 축하",
+          "한 단체가 기념할 날을 맞거나 함께 이룬 성취를 나누는 자리에는 그 시간을 지켜본 이들의 인사가 더해지지요. 행사 주인공에게 존경과 응원을 전하고, 함께 준비한 분들의 수고를 격려하는 꽃을 생각해 보세요.\n\n백범김구기념관 행사에 보내실 때에는 이번 행사가 전하려는 뜻을 함께 알려 주세요. 주최 측이 축하화환을 받는 행사라면 기관·회사·모임에서 준비하신 예산에 맞춰 상품을 고르실 수 있습니다."
+        ],
+        [
+          "행사예산과 사진으로 비교하는 네 상품",
+          "축하 3단 화환 **59,000원**, 축하 고급 3단 화환 **79,000원**, 축하 특대 3단 화환 **99,000원**, 축하 특특대 3단 화환 **149,000원**을 살펴보세요.\n\n마음에 드는 사진과 준비하신 예산을 말씀해 주시면 주문 상담을 시작하실 수 있습니다. 사진 속 리본은 공식 카탈로그 예시이며, 실제 행사명과 전하고 싶은 축하 문구는 별도로 상담하세요. 표시금액은 상품 기본가격으로 배송지에 따라 추가 배송비가 있을 수 있습니다. 구성과 최종금액을 안내받은 뒤 선택하시면 됩니다."
+        ],
+        [
+          "행사 공간과 정리 일정에 맞춰 상담하세요",
+          "[백범김구기념관](https://www.kimkoomuseum.org/main/)은 **서울 용산구 임정로 26**에 있으며 컨벤션홀·대회의실 등 대관 공간이 나뉘어 있습니다. 행사명과 실제 대관실, 주최 측 담당자와 인수 가능한 시간을 알려 주세요. 대관 문의는 **02-799-3424**입니다.\n\n기념관은 허가받은 공간 사용과 행사 후 원상복구를 안내합니다. 화환을 둘 자리와 종료 후 정리 담당자를 주최 측과 정해 주시고, 별도 회수가 필요하면 가능한 범위와 비용도 상담해 주세요. 실제 반입 일정은 주최 측이 승인받은 준비대관 시간에 맞춰 확인합니다.\n\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\n\n[행사 목적에 맞는 화환 상담](tel:18440644) · [공식몰 상품 살펴보기](https://fwith.co.kr/)"
+        ]
+      ],
+      "faq": [
+        [
+          "행사 취지에 맞는 꽃부터 상담하고 싶어요.",
+          "행사명과 어떤 뜻을 전하는 자리인지, 주최 측이 받고자 하는 꽃의 종류를 알려 주세요. 이 페이지의 축하화환은 축하를 받는 행사에 맞춰 상담하실 수 있습니다."
+        ],
+        [
+          "행사가 끝난 뒤 회수도 문의할 수 있나요?",
+          "필요한 회수 일정과 주최 측 정리 계획을 말씀해 주세요. 회수 가능 여부와 비용은 상품 주문과 함께 별도로 안내받으실 수 있습니다."
+        ]
+      ],
+      "relatedKeys": [
+        "seoul-yongsan-flower-direct-region-hangangno2-ga-seonin-opening-wreath"
+      ],
+      "pageKey": "seoul-yongsan-flower-direct-region-hyochang-dong-kimkoo-convention-event-wreath",
+      "category": "regions",
+      "routeType": "category",
+      "url": "/regions/hyochang-dong-kimkoo-convention-event-wreath/",
+      "pageType": "regional-service",
+      "status": "approved",
+      "file": "src/data/pages.json",
+      "order": 4,
+      "approvalVerified": true,
+      "sourceMode": "direct-git",
+      "queryClass": "local-commercial",
+      "assetSlot": "REAL_PROOF",
+      "source": {
+        "name": "백범김구기념관 공식 홈페이지",
+        "url": "https://www.kimkoomuseum.org/main/",
+        "type": "official",
+        "verifiedAt": "2026-10-10"
+      },
+      "productCardLimit": 4,
+      "productCardKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "scopeKey": "seoul-yongsan-direct-initial-20261010",
+      "regionUnitKeys": [
+        "용산구/법정동/효창동"
+      ],
+      "regionalPurchaseMode": "catalog",
+      "regionalProductFamilies": [
+        "congrats"
+      ],
+      "ogImage": "/images/products/congrats-basic.jpg",
+      "ogImageAlt": "축하 3단 화환 공식 상품 사진",
+      "ogImageSha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+      "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=C200",
+      "ogImageWidth": 1000,
+      "ogImageHeight": 1000,
+      "ogImageType": "image/jpeg",
+      "snapshotId": "direct-content-hyochang-dong-kimkoo-convention-event-wreath-8f6c2f8e1f96de09",
+      "snapshotHash": "8f6c2f8e1f96de09fc6bb3ac44e2abc6681295e2ad9456673f58a24cfa17b250"
+    },
+    {
+      "slug": "yongsan-dong3-ga-mnd-convention-wedding-wreath",
+      "title": "국방컨벤션 결혼식 축하화환 주문",
+      "h1": "국방컨벤션 결혼식 축하화환 주문",
+      "primaryKeyword": "국방컨벤션 결혼식 축하화환 주문",
+      "description": "국방컨벤션 결혼식에 두 분의 앞날을 축복하는 화환을 준비하세요. 꽃이랑 상품 네 가지를 비교하고 예산과 예식 일정에 맞춰 편하게 상담하세요.",
+      "cardSummary": "존중하는 선후배와 동료의 기쁜 날에 보내는 축복. 준비하신 경조사예산으로 상품을 비교해 보세요.",
+      "firstAnswer": "함께 일한 선후배나 동료의 결혼 소식을 들으면 정중한 인사에 따뜻한 응원을 더하고 싶지요. 국방컨벤션 결혼식에 보낼 축하화환을 꽃이랑에서 골라보세요. 두 분의 앞날을 축복하는 마음과 준비하신 예산에 맞춰 상담하실 수 있습니다.",
+      "contentMarkdown": "## 가까운 인연의 기쁜 날을 함께 축하하세요\n\n일하며 쌓아 온 인연에도 결혼 소식은 반가운 이야기입니다. 늘 도움을 주던 선배에게, 함께 힘을 모은 동료에게 두 분의 행복한 앞날을 바라는 인사를 전해 보세요.\n\n국방컨벤션에서 열리는 결혼식에 개인적으로 보내셔도 좋고 부서나 모임의 축하를 함께 담으셔도 좋습니다. “두 분의 새 출발을 축복합니다”라는 마음으로 사진을 살펴보며 어떤 꽃을 전할지 골라보세요.\n\n## 준비하신 경조사예산에 맞춰 선택하세요\n\n꽃이랑 축하 3단 화환의 기본가격은 **59,000원**, 축하 고급 3단 화환은 **79,000원**, 축하 특대 3단 화환은 **99,000원**, 축하 특특대 3단 화환은 **149,000원**입니다.\n\n예산이 정해져 있다면 그 범위에서 사진과 상품명을 비교해 보세요. 아직 상품을 정하지 못하셨어도 보내실 명의와 예산부터 말씀하시면 됩니다.\n\n## 청첩장의 예식 일정으로 준비하세요\n\n[국방컨벤션 공식 웨딩홀 안내](https://www.mndconvention.co.kr/kor/wedding/gallery.php?param=1)는 **서울 용산구 이태원로 22, 1층 에메랄드홀**을 소개합니다. 청첩장에 적힌 날짜·예식시간과 신랑신부 이름을 알려 주세요. 피로연 시간은 예식시간과 별도로 안내됩니다.\n\n이번 예식에서 외부 화환을 받을 수 있는지와 인수 장소·시간을 확인해 주시면 그 일정에 맞춰 전달 가능 여부를 상담하실 수 있습니다. 시설 문의는 **02-748-0707·02-748-0709**, 상품 주문 상담은 아래 꽃이랑 번호를 이용해 주세요.\n\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\n\n[결혼 축하화환 상담](tel:18440644) · [꽃이랑 공식몰 상품 비교](https://fwith.co.kr/)",
+      "visualIntent": "congrats_wreath",
+      "regionalProductKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sources": [
+        {
+          "name": "국방컨벤션 웨딩홀",
+          "url": "https://www.mndconvention.co.kr/kor/wedding/gallery.php?param=1",
+          "type": "official",
+          "verifiedAt": "2026-10-10"
+        },
+        {
+          "name": "국방컨벤션 웨딩안내",
+          "url": "https://www.mndconvention.co.kr/kor/wedding/index.php",
+          "type": "official",
+          "verifiedAt": "2026-10-10"
+        },
+        {
+          "name": "꽃이랑 축하 3단 화환 (C200)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C200",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 고급 3단 화환 (C203)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C203",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 특대 3단 화환 (C204)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C204",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 특특대 3단 화환 (C205)",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C205",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        }
+      ],
+      "sections": [
+        [
+          "가까운 인연의 기쁜 날을 함께 축하하세요",
+          "일하며 쌓아 온 인연에도 결혼 소식은 반가운 이야기입니다. 늘 도움을 주던 선배에게, 함께 힘을 모은 동료에게 두 분의 행복한 앞날을 바라는 인사를 전해 보세요.\n\n국방컨벤션에서 열리는 결혼식에 개인적으로 보내셔도 좋고 부서나 모임의 축하를 함께 담으셔도 좋습니다. “두 분의 새 출발을 축복합니다”라는 마음으로 사진을 살펴보며 어떤 꽃을 전할지 골라보세요."
+        ],
+        [
+          "준비하신 경조사예산에 맞춰 선택하세요",
+          "꽃이랑 축하 3단 화환의 기본가격은 **59,000원**, 축하 고급 3단 화환은 **79,000원**, 축하 특대 3단 화환은 **99,000원**, 축하 특특대 3단 화환은 **149,000원**입니다.\n\n예산이 정해져 있다면 그 범위에서 사진과 상품명을 비교해 보세요. 아직 상품을 정하지 못하셨어도 보내실 명의와 예산부터 말씀하시면 됩니다. 사진은 공식 카탈로그 예시이며, 실제 구성과 배송지에 따른 추가 배송비·최종금액은 주문할 때 안내받으실 수 있습니다."
+        ],
+        [
+          "청첩장의 예식 일정으로 준비하세요",
+          "[국방컨벤션 공식 웨딩홀 안내](https://www.mndconvention.co.kr/kor/wedding/gallery.php?param=1)는 **서울 용산구 이태원로 22, 1층 에메랄드홀**을 소개합니다. 청첩장에 적힌 날짜·예식시간과 신랑신부 이름을 알려 주세요. 피로연 시간은 예식시간과 별도로 안내됩니다.\n\n이번 예식에서 외부 화환을 받을 수 있는지와 인수 장소·시간을 확인해 주시면 그 일정에 맞춰 전달 가능 여부를 상담하실 수 있습니다. 시설 문의는 **02-748-0707·02-748-0709**, 상품 주문 상담은 아래 꽃이랑 번호를 이용해 주세요.\n\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\n\n[결혼 축하화환 상담](tel:18440644) · [꽃이랑 공식몰 상품 비교](https://fwith.co.kr/)"
+        ]
+      ],
+      "faq": [
+        [
+          "회사 경조사예산으로 준비하려고 해요.",
+          "예산과 보내는 회사·부서 명의를 알려 주세요. 네 축하화환의 사진을 비교하고 배송비를 포함한 최종금액을 상담하실 수 있습니다."
+        ],
+        [
+          "예식 일정과 화환 수령은 어디에 문의하면 될까요?",
+          "국방컨벤션 02-748-0707 또는 02-748-0709에서 해당 예식의 수령 장소·시간을 안내받을 수 있습니다. 확인하신 일정으로 꽃이랑에 전달 가능 여부를 상담해 주세요."
+        ]
+      ],
+      "relatedKeys": [
+        "seoul-yongsan-flower-direct-region-hangangno3-ga-seoul-dragon-city-wedding-wreath"
+      ],
+      "pageKey": "seoul-yongsan-flower-direct-region-yongsan-dong3-ga-mnd-convention-wedding-wreath",
+      "category": "regions",
+      "routeType": "category",
+      "url": "/regions/yongsan-dong3-ga-mnd-convention-wedding-wreath/",
+      "pageType": "regional-service",
+      "status": "approved",
+      "file": "src/data/pages.json",
+      "order": 5,
+      "approvalVerified": true,
+      "sourceMode": "direct-git",
+      "queryClass": "local-commercial",
+      "assetSlot": "REAL_PROOF",
+      "source": {
+        "name": "국방컨벤션 웨딩홀",
+        "url": "https://www.mndconvention.co.kr/kor/wedding/gallery.php?param=1",
+        "type": "official",
+        "verifiedAt": "2026-10-10"
+      },
+      "productCardLimit": 4,
+      "productCardKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "scopeKey": "seoul-yongsan-direct-initial-20261010",
+      "regionUnitKeys": [
+        "용산구/법정동/용산동3가"
+      ],
+      "regionalPurchaseMode": "catalog",
+      "regionalProductFamilies": [
+        "congrats"
+      ],
+      "ogImage": "/images/products/congrats-basic.jpg",
+      "ogImageAlt": "축하 3단 화환 공식 상품 사진",
+      "ogImageSha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+      "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=C200",
+      "ogImageWidth": 1000,
+      "ogImageHeight": 1000,
+      "ogImageType": "image/jpeg",
+      "snapshotId": "direct-content-yongsan-dong3-ga-mnd-convention-wedding-wreath-bc6a5e8c23eeb8d4",
+      "snapshotHash": "bc6a5e8c23eeb8d4b10a733c2333e799b29431096f8edd8d42dc2ff3a7f60fb3"
+    }
+  ],
+  "bodyProposal": {
+    "sha256": "66870ecf93bd0f4c146e61282b47a7966b37aef2b1a30f29dc4f9fc6adc398ce",
+    "utf8Content": "{\n  \"status\": \"AUTHOR_EXACT_BODY_NOTICE_PROPOSAL_PENDING_COPY_REVIEW\",\n  \"region\": \"seoul-yongsan\",\n  \"originalFile\": \"/tmp/thirteen-notice-followons-20261011/seoul-yongsan/baseline/src/data/pages.json\",\n  \"originalSha256\": \"36c7a47196cf28f8b56277745a566ee7d8d9ac7948d3b75178a4a0bb05d014dd\",\n  \"proposalFile\": \"/tmp/thirteen-notice-followons-20261011/seoul-yongsan/body-proposal/pages.json\",\n  \"proposalSha256\": \"0ce91009172e16cfb52717951f590f019b1173ff74af6efaaba4a8c8156ff80b\",\n  \"totalArticles\": 5,\n  \"changedBodies\": 5,\n  \"changes\": [\n    {\n      \"slug\": \"hannam-dong-sch-seoul-condolence-wreath\",\n      \"url\": \"/regions/hannam-dong-sch-seoul-condolence-wreath/\",\n      \"field\": \"contentMarkdown\",\n      \"operations\": [\n        {\n          \"old\": \"기본형과 고급형의 기본가격 차이는 20,000원입니다. 두 상품의 사진을 보며 예산에 맞춰 고르거나, 생각하신 상품이 있다면 실제 구성과 크기를 상담해 보세요. 사진은 공식 카탈로그 예시입니다. 배송지에 따라 추가 배송비가 있을 수 있으니 상품 기본가격에 더해 최종금액도 함께 안내받으세요.\",\n          \"new\": \"기본형과 고급형의 기본가격 차이는 20,000원입니다. 두 상품의 사진을 보며 예산에 맞춰 고르거나, 생각하신 상품이 있다면 실제 구성과 크기를 상담해 보세요.\"\n        }\n      ],\n      \"oldBody\": \"## 함께하는 이들의 위로를 전하고 싶을 때\\n\\n매일 함께 일하는 동료가 슬픔을 겪고 있다면 긴 말보다 곁에서 마음을 함께한다는 뜻을 전하고 싶어집니다. 가까운 지인이나 거래처의 부고에도 고인을 기리고 유가족을 위로하는 정중한 인사가 필요하지요.\\n\\n근조화환에 보내시는 분들의 조의를 담아보세요. 부서나 모임에서 예산을 정했다면 그 금액부터, 개인적으로 보내신다면 마음에 드는 상품 사진부터 살펴보셔도 좋습니다. 조문 문구는 유가족의 뜻이나 종교에 맞는 표현이 있다면 함께 말씀해 주세요.\\n\\n## 근조 상품 네 가지를 부담 없이 비교하세요\\n\\n근조 3단 화환 **59,000원**, 근조 고급 3단 화환 **79,000원**, 근조 특대 3단 화환 **109,000원**, 근조 특특대 3단 화환 **149,000원**을 비교하실 수 있습니다.\\n\\n기본형과 고급형의 기본가격 차이는 20,000원입니다. 두 상품의 사진을 보며 예산에 맞춰 고르거나, 생각하신 상품이 있다면 실제 구성과 크기를 상담해 보세요. 사진은 공식 카탈로그 예시입니다. 배송지에 따라 추가 배송비가 있을 수 있으니 상품 기본가격에 더해 최종금액도 함께 안내받으세요.\\n\\n## 한남동 서울병원 빈소로 보내는 주문\\n\\n순천향대 서울병원 장례식장은 **서울 용산구 대사관로 59**에 있습니다. [공식 장례식장 안내](https://www.schmc.ac.kr/seoul/fnrl/fnrlInfo.do?key=356)에는 일반 호실과 특실·VIP가 구분되어 있습니다. 부고에 적힌 현재 빈소와 보내는 분의 이름을 알려 주세요.\\n\\n유가족의 화환 수령 의사와 발인 전 인수 가능한 일정을 바탕으로 상품 준비·전달 가능 여부를 상담하실 수 있습니다. 빈소의 수령 장소에 관한 안내를 받으셨다면 함께 전해 주세요. 시설에 문의하실 일은 장례식장 **02-797-4444·02-792-6232**에서 안내받을 수 있습니다.\\n\\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\\n\\n[근조화환과 문구 상담](tel:18440644) · [꽃이랑 공식몰 상품 보기](https://fwith.co.kr/)\",\n      \"newBody\": \"## 함께하는 이들의 위로를 전하고 싶을 때\\n\\n매일 함께 일하는 동료가 슬픔을 겪고 있다면 긴 말보다 곁에서 마음을 함께한다는 뜻을 전하고 싶어집니다. 가까운 지인이나 거래처의 부고에도 고인을 기리고 유가족을 위로하는 정중한 인사가 필요하지요.\\n\\n근조화환에 보내시는 분들의 조의를 담아보세요. 부서나 모임에서 예산을 정했다면 그 금액부터, 개인적으로 보내신다면 마음에 드는 상품 사진부터 살펴보셔도 좋습니다. 조문 문구는 유가족의 뜻이나 종교에 맞는 표현이 있다면 함께 말씀해 주세요.\\n\\n## 근조 상품 네 가지를 부담 없이 비교하세요\\n\\n근조 3단 화환 **59,000원**, 근조 고급 3단 화환 **79,000원**, 근조 특대 3단 화환 **109,000원**, 근조 특특대 3단 화환 **149,000원**을 비교하실 수 있습니다.\\n\\n기본형과 고급형의 기본가격 차이는 20,000원입니다. 두 상품의 사진을 보며 예산에 맞춰 고르거나, 생각하신 상품이 있다면 실제 구성과 크기를 상담해 보세요.\\n\\n## 한남동 서울병원 빈소로 보내는 주문\\n\\n순천향대 서울병원 장례식장은 **서울 용산구 대사관로 59**에 있습니다. [공식 장례식장 안내](https://www.schmc.ac.kr/seoul/fnrl/fnrlInfo.do?key=356)에는 일반 호실과 특실·VIP가 구분되어 있습니다. 부고에 적힌 현재 빈소와 보내는 분의 이름을 알려 주세요.\\n\\n유가족의 화환 수령 의사와 발인 전 인수 가능한 일정을 바탕으로 상품 준비·전달 가능 여부를 상담하실 수 있습니다. 빈소의 수령 장소에 관한 안내를 받으셨다면 함께 전해 주세요. 시설에 문의하실 일은 장례식장 **02-797-4444·02-792-6232**에서 안내받을 수 있습니다.\\n\\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\\n\\n[근조화환과 문구 상담](tel:18440644) · [꽃이랑 공식몰 상품 보기](https://fwith.co.kr/)\",\n      \"oldBodySha256\": \"0c3cda4d1f57c4351e62952c47089c1af81c3a84cc56c65578f67e2e82de217e\",\n      \"newBodySha256\": \"557aeb501d5e48e846e138bdbf9c66a54dba35924cc382459927d8706e84f121\"\n    },\n    {\n      \"slug\": \"hangangno3-ga-seoul-dragon-city-wedding-wreath\",\n      \"url\": \"/regions/hangangno3-ga-seoul-dragon-city-wedding-wreath/\",\n      \"field\": \"contentMarkdown\",\n      \"operations\": [\n        {\n          \"old\": \"59,000원 상품을 기준으로 고급 상품은 20,000원, 특대 상품은 40,000원 높은 기본가격입니다. 정해 둔 예산 안에서 사진을 비교해 보시고, 원하는 구성이 있다면 상담할 때 말씀해 주세요. 사진은 공식 카탈로그 예시이며 기본가격 외에 배송지에 따른 추가 배송비가 있을 수 있습니다. 최종금액과 준비 가능한 구성은 주문 시 안내받으실 수 있습니다.\",\n          \"new\": \"59,000원 상품을 기준으로 고급 상품은 20,000원, 특대 상품은 40,000원 높은 기본가격입니다. 정해 둔 예산 안에서 사진을 비교해 보시고, 원하는 구성이 있다면 상담할 때 말씀해 주세요.\"\n        }\n      ],\n      \"oldBody\": \"## 함께 기뻐하고 싶은 결혼 소식\\n\\n오래 지켜본 후배나 가까운 친척의 결혼 소식은 더욱 반갑게 다가오지요. 서로를 의지하며 새로운 가정을 꾸릴 두 사람에게 따뜻한 응원을 전해 보세요. 식장에서 직접 인사를 나눌 때도, 멀리서 축하를 보내야 할 때도 꽃에 마음을 담을 수 있습니다.\\n\\n서울드래곤시티에서 맞는 두 분의 결혼식에 어떤 인사를 전하고 싶으신가요? “앞으로의 모든 날을 응원합니다”처럼 평소 전하고 싶던 마음을 떠올리며 사진을 살펴보세요. 상품이 고민되시면 예산부터 이야기하며 상담하실 수 있습니다.\\n\\n## 실제 가격차를 보며 선택하세요\\n\\n꽃이랑 축하 3단 화환 **59,000원**, 축하 고급 3단 화환 **79,000원**, 축하 특대 3단 화환 **99,000원**, 축하 특특대 3단 화환 **149,000원**이 있습니다.\\n\\n59,000원 상품을 기준으로 고급 상품은 20,000원, 특대 상품은 40,000원 높은 기본가격입니다. 정해 둔 예산 안에서 사진을 비교해 보시고, 원하는 구성이 있다면 상담할 때 말씀해 주세요. 사진은 공식 카탈로그 예시이며 기본가격 외에 배송지에 따른 추가 배송비가 있을 수 있습니다. 최종금액과 준비 가능한 구성은 주문 시 안내받으실 수 있습니다.\\n\\n## 청첩장의 예식홀에 맞춰 준비하세요\\n\\n호텔 주소는 **서울 용산구 청파로20길 95**입니다. [공식 웨딩 안내](https://www.seouldragoncity.com/web/kr/wedding.asp)는 그랜드 볼룸 한라, 르 시엘 31, 랑데부를 소개합니다. 한라는 컨벤션 타워 3층, 르 시엘 31은 스카이킹덤 31층으로 안내되어 있습니다.\\n\\n청첩장의 홀과 예식 날짜·시간, 신랑신부 이름을 알려 주세요. 해당 예식에서 외부 화환을 받을 수 있는지와 실제 인수 장소·시간을 확인해 주시면 전달 가능 일정을 상담하실 수 있습니다. 호텔 웨딩 문의는 **02-2223-7070**입니다.\\n\\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\\n\\n[결혼 축하화환 전화 상담](tel:18440644) · [공식몰에서 사진 비교하기](https://fwith.co.kr/)\",\n      \"newBody\": \"## 함께 기뻐하고 싶은 결혼 소식\\n\\n오래 지켜본 후배나 가까운 친척의 결혼 소식은 더욱 반갑게 다가오지요. 서로를 의지하며 새로운 가정을 꾸릴 두 사람에게 따뜻한 응원을 전해 보세요. 식장에서 직접 인사를 나눌 때도, 멀리서 축하를 보내야 할 때도 꽃에 마음을 담을 수 있습니다.\\n\\n서울드래곤시티에서 맞는 두 분의 결혼식에 어떤 인사를 전하고 싶으신가요? “앞으로의 모든 날을 응원합니다”처럼 평소 전하고 싶던 마음을 떠올리며 사진을 살펴보세요. 상품이 고민되시면 예산부터 이야기하며 상담하실 수 있습니다.\\n\\n## 실제 가격차를 보며 선택하세요\\n\\n꽃이랑 축하 3단 화환 **59,000원**, 축하 고급 3단 화환 **79,000원**, 축하 특대 3단 화환 **99,000원**, 축하 특특대 3단 화환 **149,000원**이 있습니다.\\n\\n59,000원 상품을 기준으로 고급 상품은 20,000원, 특대 상품은 40,000원 높은 기본가격입니다. 정해 둔 예산 안에서 사진을 비교해 보시고, 원하는 구성이 있다면 상담할 때 말씀해 주세요.\\n\\n## 청첩장의 예식홀에 맞춰 준비하세요\\n\\n호텔 주소는 **서울 용산구 청파로20길 95**입니다. [공식 웨딩 안내](https://www.seouldragoncity.com/web/kr/wedding.asp)는 그랜드 볼룸 한라, 르 시엘 31, 랑데부를 소개합니다. 한라는 컨벤션 타워 3층, 르 시엘 31은 스카이킹덤 31층으로 안내되어 있습니다.\\n\\n청첩장의 홀과 예식 날짜·시간, 신랑신부 이름을 알려 주세요. 해당 예식에서 외부 화환을 받을 수 있는지와 실제 인수 장소·시간을 확인해 주시면 전달 가능 일정을 상담하실 수 있습니다. 호텔 웨딩 문의는 **02-2223-7070**입니다.\\n\\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\\n\\n[결혼 축하화환 전화 상담](tel:18440644) · [공식몰에서 사진 비교하기](https://fwith.co.kr/)\",\n      \"oldBodySha256\": \"cb7d60f3fb305dc53d4b9a9d1189e3a0df3da37d77d85fb458d14f5813049b4a\",\n      \"newBodySha256\": \"ff9cd172444f025ddf93b32ff089b183b787e0ba617c7f11a0061944b8d62036\"\n    },\n    {\n      \"slug\": \"hangangno2-ga-seonin-opening-wreath\",\n      \"url\": \"/regions/hangangno2-ga-seonin-opening-wreath/\",\n      \"field\": \"contentMarkdown\",\n      \"operations\": [\n        {\n          \"old\": \"회사에서 정한 거래처 선물예산으로 준비하셔도 좋습니다. 새 매장에 놓을 공간이 정해져 있다면 실제 상품 크기와 구성도 상담해 보세요. 표시금액은 상품 기본가격이며, 배송지에 따라 추가 배송비가 있을 수 있습니다. 최종금액은 주문 시 안내받으세요.\",\n          \"new\": \"회사에서 정한 거래처 선물예산으로 준비하셔도 좋습니다. 새 매장에 놓을 공간이 정해져 있다면 실제 상품 크기와 구성도 상담해 보세요.\"\n        },\n        {\n          \"old\": \"사진 속 리본은 카탈로그 예시입니다. \",\n          \"new\": \"\"\n        }\n      ],\n      \"oldBody\": \"## 거래처의 다음 걸음에 보내는 응원\\n\\n새 매장을 준비하는 일에는 기대만큼 손이 많이 갑니다. 진열을 새로 꾸미고 손님을 맞을 준비를 하는 거래처에 “새로운 자리에서도 잘되시길 바랍니다”라는 축하를 전해 보세요.\\n\\n처음 문을 여는 가게라면 설레는 시작을, 이전하는 거래처라면 그동안의 수고와 앞으로의 도약을 응원할 수 있습니다. 선인상가에 보낼 개업화환을 고르며 어떤 마음을 전하고 싶은지 편하게 이야기해 주세요.\\n\\n## 선물예산에 맞는 축하화환 선택\\n\\n축하 3단 화환은 **59,000원**, 축하 고급 3단 화환은 **79,000원**, 축하 특대 3단 화환은 **99,000원**, 축하 특특대 3단 화환은 **149,000원**입니다. 아래 공식 상품 사진을 보며 비교하실 수 있습니다.\\n\\n회사에서 정한 거래처 선물예산으로 준비하셔도 좋습니다. 새 매장에 놓을 공간이 정해져 있다면 실제 상품 크기와 구성도 상담해 보세요. 표시금액은 상품 기본가격이며, 배송지에 따라 추가 배송비가 있을 수 있습니다. 최종금액은 주문 시 안내받으세요.\\n\\n사진 속 리본은 카탈로그 예시입니다. “개업을 축하합니다”, “이전개업을 축하합니다”처럼 이번 소식에 맞는 인사와 보내는 회사·개인 이름을 주문 상담에서 말씀하실 수 있습니다.\\n\\n## 새 매장에서 받을 수 있는 일정으로\\n\\n선인상가의 받는 점포가 알려 준 주소와 동·층·호수, 상호를 전해 주세요. 개업 준비로 바쁜 날에는 받으실 분과 수령 가능한 시간대를 함께 알려 주시면 상담이 한결 수월합니다.\\n\\n외부 화환을 둘 수 있는 위치는 점포 측 안내에 맞춰 준비합니다. 원하는 상품이나 예산을 함께 말씀해 주시면 공간에 맞는 크기와 전달 가능 일정을 상담하실 수 있습니다.\\n\\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\\n\\n[거래처 개업화환 상담](tel:18440644) · [꽃이랑 공식몰에서 고르기](https://fwith.co.kr/)\",\n      \"newBody\": \"## 거래처의 다음 걸음에 보내는 응원\\n\\n새 매장을 준비하는 일에는 기대만큼 손이 많이 갑니다. 진열을 새로 꾸미고 손님을 맞을 준비를 하는 거래처에 “새로운 자리에서도 잘되시길 바랍니다”라는 축하를 전해 보세요.\\n\\n처음 문을 여는 가게라면 설레는 시작을, 이전하는 거래처라면 그동안의 수고와 앞으로의 도약을 응원할 수 있습니다. 선인상가에 보낼 개업화환을 고르며 어떤 마음을 전하고 싶은지 편하게 이야기해 주세요.\\n\\n## 선물예산에 맞는 축하화환 선택\\n\\n축하 3단 화환은 **59,000원**, 축하 고급 3단 화환은 **79,000원**, 축하 특대 3단 화환은 **99,000원**, 축하 특특대 3단 화환은 **149,000원**입니다. 아래 공식 상품 사진을 보며 비교하실 수 있습니다.\\n\\n회사에서 정한 거래처 선물예산으로 준비하셔도 좋습니다. 새 매장에 놓을 공간이 정해져 있다면 실제 상품 크기와 구성도 상담해 보세요.\\n\\n“개업을 축하합니다”, “이전개업을 축하합니다”처럼 이번 소식에 맞는 인사와 보내는 회사·개인 이름을 주문 상담에서 말씀하실 수 있습니다.\\n\\n## 새 매장에서 받을 수 있는 일정으로\\n\\n선인상가의 받는 점포가 알려 준 주소와 동·층·호수, 상호를 전해 주세요. 개업 준비로 바쁜 날에는 받으실 분과 수령 가능한 시간대를 함께 알려 주시면 상담이 한결 수월합니다.\\n\\n외부 화환을 둘 수 있는 위치는 점포 측 안내에 맞춰 준비합니다. 원하는 상품이나 예산을 함께 말씀해 주시면 공간에 맞는 크기와 전달 가능 일정을 상담하실 수 있습니다.\\n\\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\\n\\n[거래처 개업화환 상담](tel:18440644) · [꽃이랑 공식몰에서 고르기](https://fwith.co.kr/)\",\n      \"oldBodySha256\": \"7a7cb11baf290c96a9577f0ecc8f97faedb7d1d2677c0637a4d740b4a0eb0504\",\n      \"newBodySha256\": \"b49d1c199b82f4a6ee21142e06e0b28474aafd2d9a818d789735fd1d7727cfaa\"\n    },\n    {\n      \"slug\": \"hyochang-dong-kimkoo-convention-event-wreath\",\n      \"url\": \"/regions/hyochang-dong-kimkoo-convention-event-wreath/\",\n      \"field\": \"contentMarkdown\",\n      \"operations\": [\n        {\n          \"old\": \"마음에 드는 사진과 준비하신 예산을 말씀해 주시면 주문 상담을 시작하실 수 있습니다. 사진 속 리본은 공식 카탈로그 예시이며, 실제 행사명과 전하고 싶은 축하 문구는 별도로 상담하세요. 표시금액은 상품 기본가격으로 배송지에 따라 추가 배송비가 있을 수 있습니다. 구성과 최종금액을 안내받은 뒤 선택하시면 됩니다.\",\n          \"new\": \"마음에 드는 사진과 준비하신 예산을 말씀해 주시면 주문 상담을 시작하실 수 있습니다.\"\n        }\n      ],\n      \"oldBody\": \"## 뜻깊은 자리에 어울리는 정중한 축하\\n\\n한 단체가 기념할 날을 맞거나 함께 이룬 성취를 나누는 자리에는 그 시간을 지켜본 이들의 인사가 더해지지요. 행사 주인공에게 존경과 응원을 전하고, 함께 준비한 분들의 수고를 격려하는 꽃을 생각해 보세요.\\n\\n백범김구기념관 행사에 보내실 때에는 이번 행사가 전하려는 뜻을 함께 알려 주세요. 주최 측이 축하화환을 받는 행사라면 기관·회사·모임에서 준비하신 예산에 맞춰 상품을 고르실 수 있습니다.\\n\\n## 행사예산과 사진으로 비교하는 네 상품\\n\\n축하 3단 화환 **59,000원**, 축하 고급 3단 화환 **79,000원**, 축하 특대 3단 화환 **99,000원**, 축하 특특대 3단 화환 **149,000원**을 살펴보세요.\\n\\n마음에 드는 사진과 준비하신 예산을 말씀해 주시면 주문 상담을 시작하실 수 있습니다. 사진 속 리본은 공식 카탈로그 예시이며, 실제 행사명과 전하고 싶은 축하 문구는 별도로 상담하세요. 표시금액은 상품 기본가격으로 배송지에 따라 추가 배송비가 있을 수 있습니다. 구성과 최종금액을 안내받은 뒤 선택하시면 됩니다.\\n\\n## 행사 공간과 정리 일정에 맞춰 상담하세요\\n\\n[백범김구기념관](https://www.kimkoomuseum.org/main/)은 **서울 용산구 임정로 26**에 있으며 컨벤션홀·대회의실 등 대관 공간이 나뉘어 있습니다. 행사명과 실제 대관실, 주최 측 담당자와 인수 가능한 시간을 알려 주세요. 대관 문의는 **02-799-3424**입니다.\\n\\n기념관은 허가받은 공간 사용과 행사 후 원상복구를 안내합니다. 화환을 둘 자리와 종료 후 정리 담당자를 주최 측과 정해 주시고, 별도 회수가 필요하면 가능한 범위와 비용도 상담해 주세요. 실제 반입 일정은 주최 측이 승인받은 준비대관 시간에 맞춰 확인합니다.\\n\\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\\n\\n[행사 목적에 맞는 화환 상담](tel:18440644) · [공식몰 상품 살펴보기](https://fwith.co.kr/)\",\n      \"newBody\": \"## 뜻깊은 자리에 어울리는 정중한 축하\\n\\n한 단체가 기념할 날을 맞거나 함께 이룬 성취를 나누는 자리에는 그 시간을 지켜본 이들의 인사가 더해지지요. 행사 주인공에게 존경과 응원을 전하고, 함께 준비한 분들의 수고를 격려하는 꽃을 생각해 보세요.\\n\\n백범김구기념관 행사에 보내실 때에는 이번 행사가 전하려는 뜻을 함께 알려 주세요. 주최 측이 축하화환을 받는 행사라면 기관·회사·모임에서 준비하신 예산에 맞춰 상품을 고르실 수 있습니다.\\n\\n## 행사예산과 사진으로 비교하는 네 상품\\n\\n축하 3단 화환 **59,000원**, 축하 고급 3단 화환 **79,000원**, 축하 특대 3단 화환 **99,000원**, 축하 특특대 3단 화환 **149,000원**을 살펴보세요.\\n\\n마음에 드는 사진과 준비하신 예산을 말씀해 주시면 주문 상담을 시작하실 수 있습니다.\\n\\n## 행사 공간과 정리 일정에 맞춰 상담하세요\\n\\n[백범김구기념관](https://www.kimkoomuseum.org/main/)은 **서울 용산구 임정로 26**에 있으며 컨벤션홀·대회의실 등 대관 공간이 나뉘어 있습니다. 행사명과 실제 대관실, 주최 측 담당자와 인수 가능한 시간을 알려 주세요. 대관 문의는 **02-799-3424**입니다.\\n\\n기념관은 허가받은 공간 사용과 행사 후 원상복구를 안내합니다. 화환을 둘 자리와 종료 후 정리 담당자를 주최 측과 정해 주시고, 별도 회수가 필요하면 가능한 범위와 비용도 상담해 주세요. 실제 반입 일정은 주최 측이 승인받은 준비대관 시간에 맞춰 확인합니다.\\n\\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\\n\\n[행사 목적에 맞는 화환 상담](tel:18440644) · [공식몰 상품 살펴보기](https://fwith.co.kr/)\",\n      \"oldBodySha256\": \"760034bd2cd171b660f6faa57cd3f417193fe2f2b841703893a4101adf66eac3\",\n      \"newBodySha256\": \"79ea6fd00b09702be4f2d7c2dc9b5707264ec6b62f8480c39c237ce2ac3a835b\"\n    },\n    {\n      \"slug\": \"yongsan-dong3-ga-mnd-convention-wedding-wreath\",\n      \"url\": \"/regions/yongsan-dong3-ga-mnd-convention-wedding-wreath/\",\n      \"field\": \"contentMarkdown\",\n      \"operations\": [\n        {\n          \"old\": \"예산이 정해져 있다면 그 범위에서 사진과 상품명을 비교해 보세요. 아직 상품을 정하지 못하셨어도 보내실 명의와 예산부터 말씀하시면 됩니다. 사진은 공식 카탈로그 예시이며, 실제 구성과 배송지에 따른 추가 배송비·최종금액은 주문할 때 안내받으실 수 있습니다.\",\n          \"new\": \"예산이 정해져 있다면 그 범위에서 사진과 상품명을 비교해 보세요. 아직 상품을 정하지 못하셨어도 보내실 명의와 예산부터 말씀하시면 됩니다.\"\n        }\n      ],\n      \"oldBody\": \"## 가까운 인연의 기쁜 날을 함께 축하하세요\\n\\n일하며 쌓아 온 인연에도 결혼 소식은 반가운 이야기입니다. 늘 도움을 주던 선배에게, 함께 힘을 모은 동료에게 두 분의 행복한 앞날을 바라는 인사를 전해 보세요.\\n\\n국방컨벤션에서 열리는 결혼식에 개인적으로 보내셔도 좋고 부서나 모임의 축하를 함께 담으셔도 좋습니다. “두 분의 새 출발을 축복합니다”라는 마음으로 사진을 살펴보며 어떤 꽃을 전할지 골라보세요.\\n\\n## 준비하신 경조사예산에 맞춰 선택하세요\\n\\n꽃이랑 축하 3단 화환의 기본가격은 **59,000원**, 축하 고급 3단 화환은 **79,000원**, 축하 특대 3단 화환은 **99,000원**, 축하 특특대 3단 화환은 **149,000원**입니다.\\n\\n예산이 정해져 있다면 그 범위에서 사진과 상품명을 비교해 보세요. 아직 상품을 정하지 못하셨어도 보내실 명의와 예산부터 말씀하시면 됩니다. 사진은 공식 카탈로그 예시이며, 실제 구성과 배송지에 따른 추가 배송비·최종금액은 주문할 때 안내받으실 수 있습니다.\\n\\n## 청첩장의 예식 일정으로 준비하세요\\n\\n[국방컨벤션 공식 웨딩홀 안내](https://www.mndconvention.co.kr/kor/wedding/gallery.php?param=1)는 **서울 용산구 이태원로 22, 1층 에메랄드홀**을 소개합니다. 청첩장에 적힌 날짜·예식시간과 신랑신부 이름을 알려 주세요. 피로연 시간은 예식시간과 별도로 안내됩니다.\\n\\n이번 예식에서 외부 화환을 받을 수 있는지와 인수 장소·시간을 확인해 주시면 그 일정에 맞춰 전달 가능 여부를 상담하실 수 있습니다. 시설 문의는 **02-748-0707·02-748-0709**, 상품 주문 상담은 아래 꽃이랑 번호를 이용해 주세요.\\n\\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\\n\\n[결혼 축하화환 상담](tel:18440644) · [꽃이랑 공식몰 상품 비교](https://fwith.co.kr/)\",\n      \"newBody\": \"## 가까운 인연의 기쁜 날을 함께 축하하세요\\n\\n일하며 쌓아 온 인연에도 결혼 소식은 반가운 이야기입니다. 늘 도움을 주던 선배에게, 함께 힘을 모은 동료에게 두 분의 행복한 앞날을 바라는 인사를 전해 보세요.\\n\\n국방컨벤션에서 열리는 결혼식에 개인적으로 보내셔도 좋고 부서나 모임의 축하를 함께 담으셔도 좋습니다. “두 분의 새 출발을 축복합니다”라는 마음으로 사진을 살펴보며 어떤 꽃을 전할지 골라보세요.\\n\\n## 준비하신 경조사예산에 맞춰 선택하세요\\n\\n꽃이랑 축하 3단 화환의 기본가격은 **59,000원**, 축하 고급 3단 화환은 **79,000원**, 축하 특대 3단 화환은 **99,000원**, 축하 특특대 3단 화환은 **149,000원**입니다.\\n\\n예산이 정해져 있다면 그 범위에서 사진과 상품명을 비교해 보세요. 아직 상품을 정하지 못하셨어도 보내실 명의와 예산부터 말씀하시면 됩니다.\\n\\n## 청첩장의 예식 일정으로 준비하세요\\n\\n[국방컨벤션 공식 웨딩홀 안내](https://www.mndconvention.co.kr/kor/wedding/gallery.php?param=1)는 **서울 용산구 이태원로 22, 1층 에메랄드홀**을 소개합니다. 청첩장에 적힌 날짜·예식시간과 신랑신부 이름을 알려 주세요. 피로연 시간은 예식시간과 별도로 안내됩니다.\\n\\n이번 예식에서 외부 화환을 받을 수 있는지와 인수 장소·시간을 확인해 주시면 그 일정에 맞춰 전달 가능 여부를 상담하실 수 있습니다. 시설 문의는 **02-748-0707·02-748-0709**, 상품 주문 상담은 아래 꽃이랑 번호를 이용해 주세요.\\n\\n**꽃이랑 1844-0644 · 상담원 연결 08:00~23:00**\\n\\n[결혼 축하화환 상담](tel:18440644) · [꽃이랑 공식몰 상품 비교](https://fwith.co.kr/)\",\n      \"oldBodySha256\": \"7d7847af35304d09bdd877476138726c373eaae436e21e13930ae37dbcf2ded9\",\n      \"newBodySha256\": \"6bf0c666b587a1e92676addcf2a7f9bbaa7dd05051136982b685b399405c399a\"\n    }\n  ],\n  \"protected\": \"All non-body fields, product names/prices, actual facility constraints, CTA and substantive choices retained. General repeated delivery/configuration/ribbon notices remain once at cards.\"\n}\n"
+  },
+  "bodyReview": {
+    "sha256": "0e7fd2474f9dedc1adc292b27c9030f3c84ce3f097485bfaad5dea01409de9d7",
+    "utf8Content": "{\n  \"reviewedAt\": \"2026-10-11T20:22:26.782700+00:00\",\n  \"reviewer\": \"/root/audit_regional_sales_copy\",\n  \"author\": \"/root/plan_existing_region_updates\",\n  \"decision\": \"COPY_PASS_EXACT_BODY_NOTICE_FOLLOWUP\",\n  \"region\": \"seoul-yongsan\",\n  \"proposalSha256\": \"66870ecf93bd0f4c146e61282b47a7966b37aef2b1a30f29dc4f9fc6adc398ce\",\n  \"originalArticlesSha256\": \"36c7a47196cf28f8b56277745a566ee7d8d9ac7948d3b75178a4a0bb05d014dd\",\n  \"articlesExactFileSha256\": \"0ce91009172e16cfb52717951f590f019b1173ff74af6efaaba4a8c8156ff80b\",\n  \"totalArticles\": 5,\n  \"changedArticles\": 5,\n  \"unchangedObjects\": 0,\n  \"articleComparisons\": [\n    {\n      \"slug\": \"hannam-dong-sch-seoul-condolence-wreath\",\n      \"url\": \"/regions/hannam-dong-sch-seoul-condolence-wreath/\",\n      \"beforeBodySha256\": \"0c3cda4d1f57c4351e62952c47089c1af81c3a84cc56c65578f67e2e82de217e\",\n      \"afterBodySha256\": \"557aeb501d5e48e846e138bdbf9c66a54dba35924cc382459927d8706e84f121\",\n      \"operationsReplayed\": 1,\n      \"otherFieldsExact\": true,\n      \"priceAmountsAndLinksExact\": true\n    },\n    {\n      \"slug\": \"hangangno3-ga-seoul-dragon-city-wedding-wreath\",\n      \"url\": \"/regions/hangangno3-ga-seoul-dragon-city-wedding-wreath/\",\n      \"beforeBodySha256\": \"cb7d60f3fb305dc53d4b9a9d1189e3a0df3da37d77d85fb458d14f5813049b4a\",\n      \"afterBodySha256\": \"ff9cd172444f025ddf93b32ff089b183b787e0ba617c7f11a0061944b8d62036\",\n      \"operationsReplayed\": 1,\n      \"otherFieldsExact\": true,\n      \"priceAmountsAndLinksExact\": true\n    },\n    {\n      \"slug\": \"hangangno2-ga-seonin-opening-wreath\",\n      \"url\": \"/regions/hangangno2-ga-seonin-opening-wreath/\",\n      \"beforeBodySha256\": \"7a7cb11baf290c96a9577f0ecc8f97faedb7d1d2677c0637a4d740b4a0eb0504\",\n      \"afterBodySha256\": \"b49d1c199b82f4a6ee21142e06e0b28474aafd2d9a818d789735fd1d7727cfaa\",\n      \"operationsReplayed\": 2,\n      \"otherFieldsExact\": true,\n      \"priceAmountsAndLinksExact\": true\n    },\n    {\n      \"slug\": \"hyochang-dong-kimkoo-convention-event-wreath\",\n      \"url\": \"/regions/hyochang-dong-kimkoo-convention-event-wreath/\",\n      \"beforeBodySha256\": \"760034bd2cd171b660f6faa57cd3f417193fe2f2b841703893a4101adf66eac3\",\n      \"afterBodySha256\": \"79ea6fd00b09702be4f2d7c2dc9b5707264ec6b62f8480c39c237ce2ac3a835b\",\n      \"operationsReplayed\": 1,\n      \"otherFieldsExact\": true,\n      \"priceAmountsAndLinksExact\": true\n    },\n    {\n      \"slug\": \"yongsan-dong3-ga-mnd-convention-wedding-wreath\",\n      \"url\": \"/regions/yongsan-dong3-ga-mnd-convention-wedding-wreath/\",\n      \"beforeBodySha256\": \"7d7847af35304d09bdd877476138726c373eaae436e21e13930ae37dbcf2ded9\",\n      \"afterBodySha256\": \"6bf0c666b587a1e92676addcf2a7f9bbaa7dd05051136982b685b399405c399a\",\n      \"operationsReplayed\": 1,\n      \"otherFieldsExact\": true,\n      \"priceAmountsAndLinksExact\": true\n    }\n  ],\n  \"boundCommonReview\": {\n    \"path\": \"/tmp/thirteen-notice-followons-20261011/seoul-yongsan/common-proposal/independent-copy-review.json\",\n    \"sha256\": \"4f3c1dbdc96f1e8363b0d81b8286b90c4917e615f61f9eae4dbc6d1e3bda57bf\"\n  },\n  \"reviewScope\": \"Narrow follow-on: manually read all changed old/new passages and surrounding relevant preserved selection/receipt context from the saved-source DOM audit; all complete JSON objects were compared. Existing complete independent article reviews remain in force for unchanged text.\",\n  \"findings\": [\n    \"Only individually specified general notice tails or stand-alone duplicate notice paragraphs are removed; Guri Sano and Gwangmyeong-dong additionally remove the exact price-equals-sincerity sentence.\",\n    \"Product basic prices, all original article metadata, sources, product selections, images, routes and CTA links are unchanged.\",\n    \"The bound common proposal retains basic-price, delivery-fee, variation and final-amount information once near prices.\",\n    \"Facility-specific receipt, visiting/funeral or wedding schedules, size/space questions and actual purchase context outside the exact operations remain byte identical.\"\n  ],\n  \"snapshotRecalculation\": \"PENDING_TECHNICAL_INTEGRATION_NOT_AUTHOR_COPY_EDIT\",\n  \"buildDom\": \"PENDING_NEW_INTEGRATION\",\n  \"externalWrites\": 0\n}\n"
+  },
+  "state": "copy-reviewed-local-integration-pending-independent-code-review",
+  "publicComplete": false,
+  "visualQa": "not_performed"
+}
