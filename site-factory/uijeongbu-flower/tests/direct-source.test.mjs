@@ -9,10 +9,10 @@ const canonical=v=>JSON.stringify(v,(_,x)=>x&&typeof x==='object'&&!Array.isArra
 const slugs=['uijeongbu-dong','howon-dong','jangam-dong','singok-dong','yonghyeon-dong','millak-dong','nakyang-dong','jail-dong','geumo-dong','ganeung-dong','nogyang-dong','gosan-dong','sangok-dong'];
 test('Uijeongbu initial scope is 13 legal units, 15 current administrative units and no duplicate canonical aliases',()=>{
  const pages=read('pages'),coverage=read('region-coverage');
- assert.deepEqual(pages.map(p=>p.slug),slugs.filter(s=>s!=='jail-dong'));assert.equal(coverage.units.length,13);assert.equal(coverage.administrativeCrosswalk.length,15);
+ assert.deepEqual(pages.filter(p=>p.pageType==='regional-service').map(p=>p.slug),slugs.filter(s=>s!=='jail-dong'));assert.equal(coverage.units.length,13);assert.equal(coverage.administrativeCrosswalk.length,15);
  assert.equal(new Set(coverage.administrativeCrosswalk.map(a=>a.aliasKey)).size,15);
  assert.equal(coverage.districts.length,1);assert.equal(coverage.districts[0].name,'의정부시');assert.equal(coverage.representatives.length,13);
- for(const p of pages){assert.equal(p.category,'regions');assert.equal(p.pageType,'regional-service');assert.equal(p.url,`/regions/${p.slug}/`);}
+ for(const p of pages.filter(p=>p.pageType==='regional-service')){assert.equal(p.category,'regions');assert.equal(p.pageType,'regional-service');assert.equal(p.url,`/regions/${p.slug}/`);}
  const names=alias=>coverage.administrativeCrosswalk.find(a=>a.name===alias).relations.map(r=>coverage.units.find(u=>u.unitKey===r.unitKey).name).sort();
  assert.deepEqual(names('고산동'),['고산동','산곡동']);assert.deepEqual(names('송산1동'),['용현동']);
  assert.deepEqual(names('의정부1동'),['가능동','의정부동','호원동']);assert.deepEqual(names('자금동'),['금오동','녹양동','자일동']);
@@ -40,17 +40,17 @@ test('public ownership proof is unique and separate from prior site',()=>{
  assert.equal(fs.readFileSync(new URL(matches[0],root),'utf8').trim(),matches[0].slice(0,-4));
  assert.notEqual(matches[0],'3b41d9e91f04c1390fb4967e99f41bc6.txt');
 });
-test('only regional hub is emitted and all 14 normal routes are indexable',()=>{
+test('regional hub and thirteen articles are indexable while the new funeral hub is thin',()=>{
  const pages=read('pages'),a=read('architecture');
  assert.deepEqual(a.hubs.filter(h=>h.indexable).map(h=>h.url),['/regions/']);
- assert.deepEqual(a.hubs.filter(h=>h.children>0).map(h=>h.url),['/regions/']);
- assert.equal(1+pages.length+a.hubs.filter(h=>h.children>0).length,14);
+ assert.deepEqual(a.hubs.filter(h=>h.children>0).map(h=>h.url),['/funeral/','/regions/']);
+ assert.equal(1+pages.length+a.hubs.filter(h=>h.children>0).length,16);
  assert.equal(read('publish-manifest').directRelease.publicationState,'source-reviewed-deployment-pending');
 });
 
 test('every reviewed four-variant comparison renders all four exact family products',()=>{
  const products=read('products');
- for(const p of read('pages')){
+ for(const p of read('pages').filter(p=>p.pageType==='regional-service')){
   assert.equal(p.productCardLimit,4);assert.equal(p.productCardKeys.length,4);
   assert.deepEqual(selectProducts(p,products,p.productCardLimit).map(x=>x.key),p.productCardKeys);
   assert.deepEqual(p.productCardKeys,p.regionalProductKeys);
@@ -59,7 +59,7 @@ test('every reviewed four-variant comparison renders all four exact family produ
 
 test('deferred Jail retains the original denominator and cannot become a customer route',()=>{
  const c=read('region-coverage'),m=read('publish-manifest'),p=read('pages');
- assert.equal(c.units.length,13);assert.equal(p.length,12);assert.equal(m.directRelease.plannedOriginalCount,13);
+ assert.equal(c.units.length,13);assert.equal(p.filter(x=>x.pageType==='regional-service').length,12);assert.equal(m.directRelease.plannedOriginalCount,13);
  assert.deepEqual(m.directRelease.deferredRoutes,['/regions/jail-dong/']);
  assert.equal(c.representatives.find(r=>r.slug==='jail-dong').status,'reserved');
  assert.ok(!p.some(p=>p.slug==='jail-dong'));assert.ok(p.every(p=>!p.relatedKeys.includes('uijeongbu-flower-direct-region-jail-dong')));
