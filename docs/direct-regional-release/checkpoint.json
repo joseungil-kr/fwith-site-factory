@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T21:05:04.417Z",
+  "updatedAt": "2026-10-11T21:10:42.847Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -27928,7 +27928,7 @@
       }
     },
     "twentyTwo2104ControlIntent": {
-      "status": "INTENT",
+      "status": "SAVED_FULL_READBACK_VERIFIED",
       "idempotencyKey": "twentytwo-update-controls-8c386e3839e5a280",
       "expectedMain": "8bf6e162d4584d1b3b47952db43c44d579d958c1",
       "changes": [
@@ -28162,7 +28162,368 @@
       "tests": 850,
       "additionalProviderCases": 374,
       "actualProviderState": "NOT_OBSERVED",
-      "securityAndNoOverrideGuardsPreserved": true
+      "securityAndNoOverrideGuardsPreserved": true,
+      "result": {
+        "commit": "8f321f94ede3a809418d0f7582bae7e5a0356fdb",
+        "changedFiles": 45,
+        "wholeTreeVerified": true,
+        "allChangedFullTextReadbacks": true,
+        "actualDeployment": false
+      }
+    },
+    "six2109NoticeIntent": {
+      "status": "INTENT",
+      "idempotencyKey": "six-notice-896e093a8033c3b7",
+      "reviewSha256": "8f603b8c18e65e0cce7b417978a627bb0399f800601507f7025f94f701dd9b2c",
+      "protectedFieldReviewSha256": "bb7032851ce34fcffe459d0e81ef5946c79b131b9bd0751a1dd02e77a1ca420b",
+      "sourceProgressIncrement": 0,
+      "articles": 77,
+      "regions": [
+        {
+          "region": "gapyeong",
+          "branch": "site-factory-gapyeong-direct",
+          "root": "site-factory/gapyeong-flower",
+          "expectedSource": "41d147ce9917e9e60f302a5128b6932a1c7d37db",
+          "articleCount": 6,
+          "sourceManifestSha256": "74829cc4a07559596d0ada7c69daeb0ea0a4fd95b13e9d710f5ba2f25460a334",
+          "reviewSha256": "f959e8bf9e30fd984313e5c6a0a742e2cd695b928ecdbd98f5b9352a67e6630e",
+          "changes": [
+            {
+              "path": "site-factory/gapyeong-flower/docs/notice-followon-history-20261011.json",
+              "blobSha": "bf8518d806809909752b9f8c191ed61f7bb3f547"
+            },
+            {
+              "path": "site-factory/gapyeong-flower/src/data/architecture.json",
+              "blobSha": "3cd133c45cfb2d67a90ddf9ad9f02b6662bb4ec6"
+            },
+            {
+              "path": "site-factory/gapyeong-flower/src/data/direct-checkpoint.json",
+              "blobSha": "afec4a7b2cd3a09108ea51790bdc8a8c8795a70b"
+            },
+            {
+              "path": "site-factory/gapyeong-flower/src/data/notice-followon-review-20261011.json",
+              "blobSha": "42e13aadc643862344a326cd2aba4f6e1703cb1c"
+            },
+            {
+              "path": "site-factory/gapyeong-flower/src/data/page-map.json",
+              "blobSha": "8cc5ee3ca1d91ad559d6e09fd51f9e18b95efd39"
+            },
+            {
+              "path": "site-factory/gapyeong-flower/src/data/pages.json",
+              "blobSha": "62f191249fef08c2944db698bfe8f47b2f9d01c0"
+            },
+            {
+              "path": "site-factory/gapyeong-flower/src/data/publish-manifest.json",
+              "blobSha": "a9f9cac54a4abe201a99a917f339e19af6d9b4df"
+            },
+            {
+              "path": "site-factory/gapyeong-flower/src/layouts/BaseLayout.astro",
+              "blobSha": "30f3fc553d666051fcdad23d9e38a57e38b6e6ad"
+            },
+            {
+              "path": "site-factory/gapyeong-flower/tests/common-followup-20261011.test.mjs",
+              "blobSha": "32f1108075fbb21c48fa7351fd6d7adfbb8030b5"
+            },
+            {
+              "path": "site-factory/gapyeong-flower/tests/customer-copy-20261011.test.mjs",
+              "blobSha": "b13609b3798c72d29c2fe64cc1095154bb22f473"
+            },
+            {
+              "path": "site-factory/gapyeong-flower/tests/direct-source.test.mjs",
+              "blobSha": "db5f9809010e25705cd1b4569c18cddfd86dfb49"
+            },
+            {
+              "path": "site-factory/gapyeong-flower/tests/notice-followon-20261011.test.mjs",
+              "blobSha": "55627a0f1726e8716363efb971d18a61d531d5bd"
+            }
+          ]
+        },
+        {
+          "region": "yangpyeong",
+          "branch": "site-factory-yangpyeong-direct",
+          "root": "site-factory/yangpyeong-flower",
+          "expectedSource": "6d3ce7b7ca954dbac0ba5d229e3cb971ae8ad902",
+          "articleCount": 11,
+          "sourceManifestSha256": "e154b2a525397133de8110b469174f99a6da25a9df1083a286c8c064752674b0",
+          "reviewSha256": "6eb7c6a20e96964db8d53056c62b414170d96ec467880f777fabf9d125052016",
+          "changes": [
+            {
+              "path": "site-factory/yangpyeong-flower/docs/notice-followon-history-20261011.json",
+              "blobSha": "e85b46467d056f745ad1b0e0426e63baa30b5d2f"
+            },
+            {
+              "path": "site-factory/yangpyeong-flower/src/data/architecture.json",
+              "blobSha": "9ec34a40a076ad9ddc474ac26c64828c4b536358"
+            },
+            {
+              "path": "site-factory/yangpyeong-flower/src/data/direct-checkpoint.json",
+              "blobSha": "6235c00e2dfb904407f749906f0d7ba0f976f292"
+            },
+            {
+              "path": "site-factory/yangpyeong-flower/src/data/notice-followon-review-20261011.json",
+              "blobSha": "4e13420fc38d6889e3ba18ea108d217993cec752"
+            },
+            {
+              "path": "site-factory/yangpyeong-flower/src/data/page-map.json",
+              "blobSha": "333f50f929fbfa07caa20cda98e0516d7587f6fd"
+            },
+            {
+              "path": "site-factory/yangpyeong-flower/src/data/pages.json",
+              "blobSha": "36675ba39cdd3bd6124e9c82113c0d982b1e841d"
+            },
+            {
+              "path": "site-factory/yangpyeong-flower/src/data/publish-manifest.json",
+              "blobSha": "c8115853f11e3eb2a2706f51e2352291c78b6479"
+            },
+            {
+              "path": "site-factory/yangpyeong-flower/src/layouts/BaseLayout.astro",
+              "blobSha": "30f3fc553d666051fcdad23d9e38a57e38b6e6ad"
+            },
+            {
+              "path": "site-factory/yangpyeong-flower/tests/common-followup-20261011.test.mjs",
+              "blobSha": "5bfb3b6c2bc1752ca4d0abc554cb1f01cc1dd75a"
+            },
+            {
+              "path": "site-factory/yangpyeong-flower/tests/customer-copy-20261011.test.mjs",
+              "blobSha": "ba7aed473a96637a1b390d51d119f28914688b17"
+            },
+            {
+              "path": "site-factory/yangpyeong-flower/tests/direct-source.test.mjs",
+              "blobSha": "fc856175466221cdedb2057a72228e84041e9576"
+            },
+            {
+              "path": "site-factory/yangpyeong-flower/tests/notice-followon-20261011.test.mjs",
+              "blobSha": "48d4f8bd118e775e84ca2d3be95dd2e98c4aaec6"
+            }
+          ]
+        },
+        {
+          "region": "gwacheon",
+          "branch": "site-factory-gwacheon-direct",
+          "root": "site-factory/gwacheon-flower",
+          "expectedSource": "bc3218434110c319e42194993040f3f3e487eb69",
+          "articleCount": 10,
+          "sourceManifestSha256": "126054b6e425ddb7144f44d54be320a2f3e3c714d1b201cb2c65140c8f7ce92c",
+          "reviewSha256": "f5c8e2f6a6e509279bd58e55c6425f9d968e59324df9fbd80dfd330791ff1999",
+          "changes": [
+            {
+              "path": "site-factory/gwacheon-flower/docs/notice-followon-history-20261011.json",
+              "blobSha": "f6196eb98576a5bb36114406e71db1094e352916"
+            },
+            {
+              "path": "site-factory/gwacheon-flower/src/components/ProductCards.astro",
+              "blobSha": "098def4daf611ee4e338ad09cd82333734d89b7c"
+            },
+            {
+              "path": "site-factory/gwacheon-flower/src/data/architecture.json",
+              "blobSha": "386ffb7e7bd850c9f94ef1e7484d40b0b9c1c348"
+            },
+            {
+              "path": "site-factory/gwacheon-flower/src/data/direct-checkpoint.json",
+              "blobSha": "8582e070eb5b126442ba21bf0b1bc600ae595297"
+            },
+            {
+              "path": "site-factory/gwacheon-flower/src/data/notice-followon-review-20261011.json",
+              "blobSha": "f3ba68c93129873811f32eefc7400caba2a19b32"
+            },
+            {
+              "path": "site-factory/gwacheon-flower/src/data/page-map.json",
+              "blobSha": "834b83ccf6b751b76682352a3d1c6afb67026e80"
+            },
+            {
+              "path": "site-factory/gwacheon-flower/src/data/pages.json",
+              "blobSha": "af41fce888a4ef8613f5741960ba1bd902807d99"
+            },
+            {
+              "path": "site-factory/gwacheon-flower/src/data/publish-manifest.json",
+              "blobSha": "9ab2b2b42f0df653fc788afbc8094a0355068cdb"
+            },
+            {
+              "path": "site-factory/gwacheon-flower/src/layouts/BaseLayout.astro",
+              "blobSha": "30f3fc553d666051fcdad23d9e38a57e38b6e6ad"
+            },
+            {
+              "path": "site-factory/gwacheon-flower/tests/common-followup-20261011.test.mjs",
+              "blobSha": "0746cc4ae6ac87fac86149d15f35e3cb9dcd6280"
+            },
+            {
+              "path": "site-factory/gwacheon-flower/tests/customer-copy-20261011.test.mjs",
+              "blobSha": "f5a94666bd8a50787602b69ca5eff0ef7b996696"
+            },
+            {
+              "path": "site-factory/gwacheon-flower/tests/notice-followon-20261011.test.mjs",
+              "blobSha": "4f449e06994434bd3ab729e72f84290ef858c83d"
+            }
+          ]
+        },
+        {
+          "region": "icheon",
+          "branch": "site-factory-icheon-direct",
+          "root": "site-factory/icheon-flower",
+          "expectedSource": "a8c8d517c5baf5b485605b78a30b71ffb50ce9bd",
+          "articleCount": 25,
+          "sourceManifestSha256": "8078f77bb5af6172badbc363e916d087118e8adebdaa7a804d10d62ec599adb1",
+          "reviewSha256": "d7cf3508cf905ca76b52f6e9b9a7fc4c3b377daac21a213f0a63778417524815",
+          "changes": [
+            {
+              "path": "site-factory/icheon-flower/docs/notice-followon-history-20261011.json",
+              "blobSha": "559b27ec0e71efb8a11b160f889afbf487b72ac6"
+            },
+            {
+              "path": "site-factory/icheon-flower/src/data/architecture.json",
+              "blobSha": "729875566d3a09afe3b7d0ae1cda87a38f4ab5a3"
+            },
+            {
+              "path": "site-factory/icheon-flower/src/data/direct-checkpoint.json",
+              "blobSha": "7e21570c3cd3ddf79f8b050a99f566193f9491a4"
+            },
+            {
+              "path": "site-factory/icheon-flower/src/data/notice-followon-review-20261011.json",
+              "blobSha": "3cd1fcc67c898a430fe2dcb02600853c90c7b40c"
+            },
+            {
+              "path": "site-factory/icheon-flower/src/data/page-map.json",
+              "blobSha": "c42cf9c04fb730c6268e174bc968da7822428fff"
+            },
+            {
+              "path": "site-factory/icheon-flower/src/data/pages.json",
+              "blobSha": "c59ec58ddf1c0ae505e418aed60368bb5e007aeb"
+            },
+            {
+              "path": "site-factory/icheon-flower/src/data/publish-manifest.json",
+              "blobSha": "57c2b96995ec188261dd5defa418eb903ab625ea"
+            },
+            {
+              "path": "site-factory/icheon-flower/src/layouts/BaseLayout.astro",
+              "blobSha": "30f3fc553d666051fcdad23d9e38a57e38b6e6ad"
+            },
+            {
+              "path": "site-factory/icheon-flower/tests/customer-copy-20261011.test.mjs",
+              "blobSha": "0fd013ea5a4ad2b9d609419b7ad62f109d8012f4"
+            },
+            {
+              "path": "site-factory/icheon-flower/tests/notice-followon-20261011.test.mjs",
+              "blobSha": "0a88550ace6422d77b4f487949da18d4e66ab157"
+            }
+          ]
+        },
+        {
+          "region": "uijeongbu",
+          "branch": "site-factory-uijeongbu-direct",
+          "root": "site-factory/uijeongbu-flower",
+          "expectedSource": "1e9dc67a24d6120e2f79d50c8c2eb215e4eadf7d",
+          "articleCount": 13,
+          "sourceManifestSha256": "78fa6cf298509b71e03c147916b4f7f6b4eb609a60227ad877b5b74feefcbba6",
+          "reviewSha256": "a1a741c594e2167694be62cb69d3fae8a26cf942019a7c8f41d1a3781eafd7ab",
+          "changes": [
+            {
+              "path": "site-factory/uijeongbu-flower/docs/notice-followon-history-20261011.json",
+              "blobSha": "288b0f36dbf6492b863bbafe197febf17352b48b"
+            },
+            {
+              "path": "site-factory/uijeongbu-flower/src/components/ProductCards.astro",
+              "blobSha": "d3475156dc7d21e0deb12018d4f46b6abadc288b"
+            },
+            {
+              "path": "site-factory/uijeongbu-flower/src/data/architecture.json",
+              "blobSha": "57d75f2ba68a42fc7d48696c501ec3bee2df31d2"
+            },
+            {
+              "path": "site-factory/uijeongbu-flower/src/data/direct-checkpoint.json",
+              "blobSha": "136d7c6bc8583182feb61e4926076443c41442ff"
+            },
+            {
+              "path": "site-factory/uijeongbu-flower/src/data/notice-followon-review-20261011.json",
+              "blobSha": "690eb27d46740e0ac1a56b206e1119084833d8b4"
+            },
+            {
+              "path": "site-factory/uijeongbu-flower/src/data/page-map.json",
+              "blobSha": "3b0a67f9eeb586adfb8ae70b09163d3ee5be92a6"
+            },
+            {
+              "path": "site-factory/uijeongbu-flower/src/data/pages.json",
+              "blobSha": "feaaa21b79623fb9d7ad8f33559f6bb20e6f4840"
+            },
+            {
+              "path": "site-factory/uijeongbu-flower/src/data/publish-manifest.json",
+              "blobSha": "fe55114fe37697fc152f5dd1a12d29b5f050ae62"
+            },
+            {
+              "path": "site-factory/uijeongbu-flower/src/layouts/BaseLayout.astro",
+              "blobSha": "30f3fc553d666051fcdad23d9e38a57e38b6e6ad"
+            },
+            {
+              "path": "site-factory/uijeongbu-flower/tests/customer-copy-20261011.test.mjs",
+              "blobSha": "d488b237b4b710c6f5aa4ae23b8f6a32c48466e4"
+            },
+            {
+              "path": "site-factory/uijeongbu-flower/tests/notice-followon-20261011.test.mjs",
+              "blobSha": "05cee9317f902b1641d1773296a6cdb439f34380"
+            }
+          ]
+        },
+        {
+          "region": "dongducheon",
+          "branch": "site-factory-dongducheon-direct",
+          "root": "site-factory/dongducheon-flower",
+          "expectedSource": "df8e39538d8b5e930ecb1e2d83875d16d62a7d87",
+          "articleCount": 12,
+          "sourceManifestSha256": "ba9407ab97e2ab8e43b52901ab90ee178f4826e3d2300e7cbad7532c0327e8be",
+          "reviewSha256": "1dc37613af426e4eb17665516b5a96184d6dabda98705705d83cf6c30cb8020a",
+          "changes": [
+            {
+              "path": "site-factory/dongducheon-flower/docs/notice-followon-history-20261011.json",
+              "blobSha": "d85a7e37e1f3186e50a780c5708984e12e566cea"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/components/ProductCards.astro",
+              "blobSha": "d3475156dc7d21e0deb12018d4f46b6abadc288b"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/data/architecture.json",
+              "blobSha": "2576631aea1700466489da486058889ce6072bfc"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/data/direct-checkpoint.json",
+              "blobSha": "b9e5a94a1d02943994e3fddba116d15be9db1cc3"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/data/notice-followon-review-20261011.json",
+              "blobSha": "dc397adeab8888f5bd7d5cb50ee741e44200e8ba"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/data/page-map.json",
+              "blobSha": "2aec136c91bb55343eadd1fc1f460d820db1ab7d"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/data/pages.json",
+              "blobSha": "447f2ac6cb26b2e4bab78b551349c9279e63ceda"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/data/publish-manifest.json",
+              "blobSha": "82deee75d88e5ccfe19f70f65fcf4b525a443336"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/src/layouts/BaseLayout.astro",
+              "blobSha": "30f3fc553d666051fcdad23d9e38a57e38b6e6ad"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/tests/customer-copy-20261011.test.mjs",
+              "blobSha": "faf7b8142912adcc676ccc04d08259d07505cede"
+            },
+            {
+              "path": "site-factory/dongducheon-flower/tests/notice-followon-20261011.test.mjs",
+              "blobSha": "ae5890cd9c7feeeb9aad5012ddf1328c1d852c30"
+            }
+          ]
+        }
+      ],
+      "originalPlansAndHeldPreserved": true,
+      "owner": {
+        "role": "single-root-git-writer",
+        "active": true
+      },
+      "actualDispatch": false
     }
   },
   "independentPreparations": [
