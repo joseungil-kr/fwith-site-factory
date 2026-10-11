@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T13:08:32.000Z",
+  "updatedAt": "2026-10-11T15:15:02.479Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -34,18 +34,19 @@
   "current": {
     "scopeKey": "seoul-nowon-direct-initial-20261011",
     "city": "서울특별시 노원구",
-    "status": "plan_frozen",
+    "status": "prepared_unpublished_paused_for_full_customer_copy_revision",
     "owner": {
       "scheduledRunAt": "2026-10-11T12:00:00Z",
       "observedExecutionAt": "2026-10-11T12:43:42.116Z",
       "newRegionStartedAt": "2026-10-11T12:43:42.116Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-seoul-nowon-20261011T120000Z",
-      "active": true,
-      "executionState": "local_authoring_active_main_write_yielded",
+      "active": false,
+      "executionState": "writing_stopped_prepared_source_preserved",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T12:33:50.987Z",
       "mainWriteActive": false,
-      "actualMainWriteStopConfirmedAt": "2026-10-11T12:45:17Z"
+      "actualMainWriteStopConfirmedAt": "2026-10-11T12:45:17Z",
+      "actualWriteStopConfirmedAt": "2026-10-11T13:34:59Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -151,7 +152,20 @@
       "GSC_submit_readback",
       "deferred_visual_qa"
     ],
-    "lastSuccessfulStage": "official_research_and_independent_purchase_plan_review"
+    "lastSuccessfulStage": "official_research_and_independent_purchase_plan_review",
+    "sourceBranchHead": "e48c9db89451a5b150190b97d5237ec1649f5e65",
+    "preparedSource": {
+      "remoteSourceUploaded": false,
+      "plannedN": 4,
+      "reviewedArticles": 4,
+      "held": 0,
+      "reviewedFileCount": 73,
+      "bodySha256": "ea4395b70d24a06281b20a6691351a483db8c3ff7367af312e57e6eb9914961b",
+      "contentReviewSha256": "4db24049ad924b09480615adde8f4c80b2e0775536e7ffd2f65b375d087c2d01",
+      "sourceReviewSha256": "970777566de695506cc7c9e711f310f9d9a45a06389be3b69019db8efba602be",
+      "releaseVerified": false,
+      "externalPendingActionsAtStop": 0
+    }
   },
   "history": [
     {
@@ -7827,7 +7841,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Complete sole new Nowon region from frozen N4 purchase plan; preserve prior release evidence and visual QA backlog.",
+  "nextAction": "Continue full existing-customer-page copy correction and independent review. Preserve prepared Nowon N4 source and all prior release evidence; scheduled task settings unchanged.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -18004,7 +18018,7 @@
   "regionalCopyImprovements": {
     "scopeKey": "regional-copy-revision-20261011",
     "requestedAt": "2026-10-11T12:55:56Z",
-    "status": "in_progress",
+    "status": "full_scope_original_and_revised_copy_review_in_progress",
     "scopeHosts": [
       "ansan.fwith.kr",
       "suwon.fwith.kr",
@@ -18049,7 +18063,7 @@
       "seoul-dobong.fwith.kr"
     ],
     "scopeHostCount": 41,
-    "articleDenominatorState": "fresh_source_and_public_sitemap_inventory_in_progress_no_reduction",
+    "articleDenominatorState": "source_and_public_sitemap_verified",
     "acceptanceStandard": {
       "path": "docs/direct-regional-release/SALES_COPY_ACCEPTANCE.md",
       "sha256": "05b9a7c09279b7fbf3a21711cadc7e32958946726efa34d6a570bbbb853af2c1"
@@ -18059,7 +18073,13 @@
       "serviceInvocationId": null,
       "active": true,
       "startedAt": "2026-10-11T13:06:39.264Z",
-      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T12:45:17Z"
+      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T12:45:17Z",
+      "executionState": "local_full_scope_authoring_and_independent_review",
+      "mainWriteIntent": {
+        "action": "reconcile_non_sensitive_operational_state_only",
+        "expectedMainSha": "0233b62f8327cf6404e1bc25f6db085cc3bf0cb4",
+        "idempotencyKey": "copy-review:operational-readback:20261011T1514Z"
+      }
     },
     "current": {
       "region": "gwangmyeong",
@@ -18068,7 +18088,7 @@
       "worker": "gwangmyeong-flower-guide",
       "hostname": "gwangmyeong.fwith.kr",
       "baselineSource": "97d8174867b3f7889d7c1a9f1e352fa7570e08e6",
-      "status": "exact_source_saved_dispatch_intent",
+      "status": "prior_single_article_dispatch_intent_superseded_by_full_scope_review",
       "changedExistingArticles": 1,
       "newArticles": 0,
       "originalPlannedN": 8,
@@ -18122,10 +18142,27 @@
         "ref": "main",
         "expected_revision": "7ad2c164083f02ceda3c7d95adb1f6c838a2a13c",
         "indexnow_only": false,
-        "idempotencyKey": "gwangmyeong:copy-revision:publish:7ad2c164083f02ceda3c7d95adb1f6c838a2a13c"
+        "idempotencyKey": "gwangmyeong:copy-revision:publish:7ad2c164083f02ceda3c7d95adb1f6c838a2a13c",
+        "superseded": true,
+        "actualDispatchVerified": false,
+        "reason": "Full existing-page review and correction takes priority; do not dispatch this old revision."
       }
     },
     "completed": [],
-    "originalPlansHeldSourcesAndRoutesPreserved": true
+    "originalPlansHeldSourcesAndRoutesPreserved": true,
+    "articleDenominator": 829,
+    "indexableNonArticleCount": 111,
+    "additionalKnownNoindexCustomerRoutes": 10,
+    "allCustomerRouteInventoryComplete": false,
+    "sourceScopeInventorySha256": "879a4a1bb50ffab73814c7b5cd39fc97b1731358af05cd4251f6dda0ba107e78",
+    "partialCopyReview": {
+      "articlesWithReconciledIndependentCopyReview": 525,
+      "scopeReconciliationComplete": false,
+      "ledgerSha256": "163cdeb2fa6d3aaa9aae04e68c8f028b93c3f4d922f5f46b009aa21ade588a88",
+      "publicCorrectionsVerified": 0,
+      "buildAndHostedApproval": false,
+      "observedAt": "2026-10-11T15:08:53Z",
+      "note": "Prepared copy-only evidence is not a published source or build/HTTP QA result; other completed reviews still await reconciliation."
+    }
   }
 }
