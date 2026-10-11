@@ -267,7 +267,7 @@
       }
     },
     "lastObservation": {
-      "scheduledRunAt": "2026-10-11T17:00:00Z",
+      "scheduledRunAt": "2026-10-11T18:00:00Z",
       "serviceInvocationId": null,
       "sourceUnchanged": "69adc8e884ece6137a354be615c225a3b2f6fba6",
       "dispatchPerformed": false,
@@ -19165,6 +19165,60 @@
       "publishedCorrectionArticles": 0,
       "at": "2026-10-11T17:17:29.146Z",
       "scope": "existing regional article correction; excludes new Nowon four"
+    },
+    "fourCountySourceSaveIntent": {
+      "state": "intent_before_serial_source_writes",
+      "at": "2026-10-11T18:06:15.875Z",
+      "owner": {
+        "checkpointId": "regional-copy-four-20261011T1806Z",
+        "active": true,
+        "serviceInvocationId": null,
+        "scope": "serial_source_save"
+      },
+      "articles": 56,
+      "originalPlanForFour": 60,
+      "heldCount": 4,
+      "wholeFiveOriginalPlan": 70,
+      "remainingReviewedGwacheonArticles": 10,
+      "metadataReviewSha256": "7d5aeae8040195a1acc0083bf7a45a7ed4b12f3d049ce978832d57b3ee5c1a95",
+      "sourceReviewSha256": "60c17cdaed077d5d6c81ebe360858012e885e9ce8a15037e2bf7d99c7c283534",
+      "buildEvidenceSha256": "65a0f9e94d86d71fb1feb0df9af8c8219071d3c8fe940efe97842504eae499a4",
+      "regions": [
+        {
+          "region": "gapyeong",
+          "branch": "site-factory-gapyeong-direct",
+          "root": "site-factory/gapyeong-flower",
+          "expectedSourceHead": "2b214219e78d722d32dbbd9957a1f9b33ca771c4",
+          "changedFiles": 18,
+          "idempotencyKey": "gapyeong:copy-rev2-plus-current-review:2b214219e78d722d32dbbd9957a1f9b33ca771c4"
+        },
+        {
+          "region": "yeoncheon",
+          "branch": "site-factory-yeoncheon-direct",
+          "root": "site-factory/yeoncheon-flower",
+          "expectedSourceHead": "f02912710d4e127241ae6e72269966d0a906b1b0",
+          "changedFiles": 18,
+          "idempotencyKey": "yeoncheon:copy-rev2-plus-current-review:f02912710d4e127241ae6e72269966d0a906b1b0"
+        },
+        {
+          "region": "yangpyeong",
+          "branch": "site-factory-yangpyeong-direct",
+          "root": "site-factory/yangpyeong-flower",
+          "expectedSourceHead": "bad8ba028abc68c738267622ed7f1508f956bd54",
+          "changedFiles": 18,
+          "idempotencyKey": "yangpyeong:copy-rev2-plus-current-review:bad8ba028abc68c738267622ed7f1508f956bd54"
+        },
+        {
+          "region": "yeoju",
+          "branch": "site-factory-yeoju-direct",
+          "root": "site-factory/yeoju-flower",
+          "expectedSourceHead": "8fbcc607193d2ea3c34286519cff7d5f3380479a",
+          "changedFiles": 19,
+          "idempotencyKey": "yeoju:copy-rev2-plus-current-review:8fbcc607193d2ea3c34286519cff7d5f3380479a"
+        }
+      ],
+      "matchingPushTriggers": 0,
+      "actualDispatch": false
     }
   }
 }
