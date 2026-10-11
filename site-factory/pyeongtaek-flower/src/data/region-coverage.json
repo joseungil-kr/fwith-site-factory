@@ -2,11 +2,11 @@
   "schemaVersion": 2,
   "siteKey": "pyeongtaek-flower-v2",
   "scopeKey": "pyeongtaek-flower-v2-dong-coverage-20261009",
-  "membershipSourceSha256": "1d9880f65cdef4b07316e0d0e63dfc0daf64502d856a23a9681e87e1703f4ec7",
+  "membershipSourceSha256": "dfc9c35542ebbdd230980b3950f1b4619572233563377349d9c36d06698f81ee",
   "unitBasis": "legal-dong-plus-eup-myeon",
   "countIsPageQuota": false,
-  "verifiedAt": "2026-10-09",
-  "sourceBasisDate": "MOIS current legal/admin code2026-09-30; ordinance2655 current boundaries effective2026-08-31; 고덕 split2026-10-12 held as future only; checked2026-10-09",
+  "verifiedAt": "2026-10-12",
+  "sourceBasisDate": "MOIS current code package 2026-10-12; ordinance2655 general boundary changes effective2026-08-31 retained; only Godeok administrative split effective2026-10-12 applied; legal units unchanged.",
   "officialSourceUrls": [
     "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824",
     "https://www.mois.go.kr/cmm/fms/FileDown.do?atchFileId=FILE_00149355_BR8t5D&fileSn=1",
@@ -18,7 +18,8 @@
     "https://www.elis.go.kr/allalr/attListDown?alrNo=41220104208034&histNo=032&attlistSn=001",
     "https://www.elis.go.kr/allalr/attListDown?alrNo=41220104208034&histNo=032&attlistSn=002",
     "https://www.law.go.kr/LSW/flDownload.do?gubun=ELIS&flSeq=168983265&flNm=%5B%EB%B3%84%ED%91%9C%5D+%ED%8F%89%ED%83%9D%EC%8B%9C+%ED%96%89%EC%A0%95%EC%9A%B4%EC%98%81%EB%8F%99%EC%9D%98+%EB%AA%85%EC%B9%AD%2C+%EA%B4%80%ED%95%A0%EA%B5%AC%EC%97%AD+%EB%B0%8F+%EB%8F%99%EC%9E%A5%EC%A0%95%EC%88%98",
-    "https://www.elis.go.kr/alrpop/locgovAlrPopup?ctpvCd=41&sggCd=220"
+    "https://www.elis.go.kr/alrpop/locgovAlrPopup?ctpvCd=41&sggCd=220",
+    "https://www.mois.go.kr/cmm/fms/FileDown.do?atchFileId=FILE_0014963057q_I4g&fileSn=1"
   ],
   "districts": [
     {
@@ -2518,20 +2519,41 @@
       ]
     },
     {
-      "aliasKey": "평택시/행정/고덕동",
-      "name": "고덕동",
+      "aliasKey": "평택시/행정/고덕1동",
+      "name": "고덕1동",
       "districtKey": "pyeongtaek",
       "relations": [
         {
           "unitKey": "평택시/법정동/고덕동",
-          "scope": "whole"
+          "scope": "partial"
         }
       ],
       "source_ids": [
-        "mois-20260930-codes",
-        "mois-change-attachment",
-        "mois-ordinance-attachment"
+        "mois-20261012-codes",
+        "mois-ordinance2655-godeok-effective-20261012"
+      ]
+    },
+    {
+      "aliasKey": "평택시/행정/고덕2동",
+      "name": "고덕2동",
+      "districtKey": "pyeongtaek",
+      "relations": [
+        {
+          "unitKey": "평택시/법정동/고덕동",
+          "scope": "partial"
+        }
+      ],
+      "source_ids": [
+        "mois-20261012-codes",
+        "mois-ordinance2655-godeok-effective-20261012"
       ]
     }
-  ]
+  ],
+  "membershipRevision": {
+    "id": "pyeongtaek-godeok-administrative-alias-20261012-r1",
+    "sourceFile": "docs/region-membership-source-20261012.json",
+    "historyFile": "docs/region-membership-history-20261012.json",
+    "historySha256": "e932941500c1149250c40043de9e841027220b157fec31d9a0472a901ec9b789",
+    "customerCopyRevisedArticles": 0
+  }
 }
