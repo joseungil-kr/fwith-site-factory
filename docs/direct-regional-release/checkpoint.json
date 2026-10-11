@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T05:54:07.162Z",
+  "updatedAt": "2026-10-11T06:02:39.094Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-jungnang-direct-initial-20261011",
     "city": "서울특별시 중랑구",
-    "status": "exact_source_remote_verification_in_progress",
+    "status": "public_release_verified_indexnow_preflight_transient_failure",
     "owner": {
       "scheduledRunAt": "2026-10-11T05:00:00Z",
       "observedExecutionAt": "2026-10-11T05:07:43.970Z",
@@ -78,23 +78,17 @@
       }
     },
     "changeIntent": {
-      "action": "verify_exact_source_remote_bytes_then_dispatch_formal_direct_publish_once",
-      "idempotencyKey": "seoul-jungnang:publish:73d92b941fcb3025321adc88f82179c914086551",
+      "action": "after_fresh_public_http_pass_dispatch_existing_indexnow_only_and_submit_gsc",
+      "idempotencyKey": "seoul-jungnang:search-only:73d92b941fcb3025321adc88f82179c914086551",
       "sourceRevision": "73d92b941fcb3025321adc88f82179c914086551",
       "workflow": ".github/workflows/seoul-jungnang-direct-publish.yml",
-      "worker": "seoul-jungnang-flower-guide",
-      "hostname": "seoul-jungnang.fwith.kr",
-      "dispatchRequiresFullReadbackPass": true
+      "indexnowOnly": true,
+      "gscProperty": "sc-domain:fwith.kr",
+      "sitemap": "https://seoul-jungnang.fwith.kr/sitemap-index.xml",
+      "duplicateGuard": "No IndexNow POST was made; no matching receipt; recheck before retry"
     },
     "unfinishedStages": [
-      "official_membership",
-      "fixed_plan",
-      "authoring",
-      "independent_review",
-      "build",
-      "source_save",
-      "formal_publish",
-      "http_qa",
+      "independent_live_http_qa",
       "indexnow",
       "gsc",
       "deferred_visual_qa"
@@ -109,7 +103,8 @@
       "articlesSha256": "633ffcd363afe9c04c180e86d2dd4307832badf14e6aa268326fa7c6b9f9d5c1",
       "independentReviewSha256": "dcd4fce8a747ba4e3c66bc7a45ca67dec64c7e7ac3bccfd3d11ad1ea9b9f004a",
       "runtimeStatus": "PASS_EXACT_LOCAL_SOURCE_PREPUBLICATION",
-      "runtimeReviewSha256": "f2f21646f9f43ae1e95e5a8155d4dae32f0cf3742312893c61c67fc621530ef6"
+      "runtimeReviewSha256": "f2f21646f9f43ae1e95e5a8155d4dae32f0cf3742312893c61c67fc621530ef6",
+      "exactRemoteReviewSha256": "25bbc2330c47ae00c658358d53b27c6dc51a943a0b6f3c50d4293325f35c81b8"
     },
     "plan": {
       "state": "frozen_before_authoring_independent_plan_pass",
@@ -158,19 +153,36 @@
       "articleCount": 3,
       "sitemapUrls": 5,
       "localLoopback": "PASS",
-      "remoteFullReadback": "NOT_YET_SAVED",
-      "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+      "remoteFullReadback": "72/72 exact bytes and Git blob SHA verified",
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+      "remoteReadbackSha256": "cb710bd47d08d1c8f9659f691d7a324d20cffd21071d812d70afeb0b95280480"
     },
-    "lastSuccessfulStage": "independent_content_and_actual_runtime_build_review",
+    "lastSuccessfulStage": "exact_source_published_binding_and_ci_public_http_verified",
     "sourceRevision": "73d92b941fcb3025321adc88f82179c914086551",
     "controlRevision": "f2de6d9b361f39964de418b51a6fcd6cd0ce3357",
     "publication": {
-      "status": "not_dispatched",
-      "dispatchAcceptedCount": 0,
-      "runId": null,
+      "status": "published_search_pending",
+      "dispatchAcceptedCount": 1,
+      "runId": 38116543792,
       "url": "https://seoul-jungnang.fwith.kr",
-      "indexNow": "NOT_SUBMITTED",
-      "gsc": "NOT_SUBMITTED"
+      "indexNow": "NOT_SUBMITTED_PRE_POST_HTTP500",
+      "gsc": "NOT_SUBMITTED",
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38116543792",
+      "runConclusion": "failure_indexnow_preflight_only",
+      "deploy": "success",
+      "hostnameBinding": "GET_verified",
+      "publicReleaseVerified": true,
+      "httpQa": "CI_PASS_INDEPENDENT_READBACK_IN_PROGRESS",
+      "publishedAt": "2026-10-11T06:00:14.9894441Z"
+    },
+    "recovery": {
+      "status": "safe_search_only_recovery_pending_fresh_http",
+      "reason": "Second pre-POST IndexNow GET validation observed HTTP500 on green-hospital article; official artifact has only GET observations, no POST; no matching durable journal entry.",
+      "failingPath": "/regions/myeonmok-dong-green-hospital-funeral-wreath/",
+      "observedAt": "2026-10-11T06:00:17Z",
+      "originalArtifactId": 11693069928,
+      "originalArtifactZipSha256": "4f81fb736b5c519fa0f6fa0bff80935535676ad4824c7116ffe39c3540175d37",
+      "noRedeployRequired": true
     }
   },
   "history": [
