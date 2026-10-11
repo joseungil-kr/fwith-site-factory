@@ -1,0 +1,336 @@
+{
+  "releaseId": "jungnang-customer-copy-20261011",
+  "baselineSource": "73d92b941fcb3025321adc88f82179c914086551",
+  "scope": "Existing3 approved copy; independent source integration and hosted release are separate",
+  "approvalBasis": {
+    "originalCopyHandoff": {
+      "fileName": "author-handoff.rev2.json",
+      "sha256": "4796e94729b1b25f890e5083ea6111fe1aefa3f17e86ca8b077e715b67fcc5dc",
+      "utf8Content": "{\n  \"role\": \"AUTHOR_HANDOFF_PENDING_INDEPENDENT_REVIEW\",\n  \"city\": \"jungnang\",\n  \"sourceRevision\": \"73d92b941fcb3025321adc88f82179c914086551\",\n  \"originalN\": 3,\n  \"articleCount\": 3,\n  \"revisedArticles\": 3,\n  \"unchangedArticles\": 0,\n  \"titleH1KeywordRetained\": 3,\n  \"emptyStructuredFaqSectionsRetained\": true,\n  \"commonChangedFiles\": 8,\n  \"commonSurfaceDecisions\": [\n    {\n      \"surface\": \"home\",\n      \"routes\": [\n        \"/\"\n      ],\n      \"decision\": \"REVISE\",\n      \"detail\": \"보내는 마음과 상품 선택 중심으로 수정; 상품/CTA/가격/route/SEO 로직 유지.\"\n    },\n    {\n      \"surface\": \"regions directory\",\n      \"routes\": [\n        \"/regions/\"\n      ],\n      \"decision\": \"REVISE\",\n      \"detail\": \"고객 선택 중심 도입으로 수정; 법정/행정 전체 목록·일부 표시·준비중 표시와 링크 로직 보존.\"\n    },\n    {\n      \"surface\": \"article common renderer\",\n      \"routes\": \"every retained article\",\n      \"decision\": \"REVISE\",\n      \"detail\": \"출처 카드의 반복 경고 및 CTA 앞 조건부 문구 축약. 출처 URL/날짜·SEO/이미지/네 카드/본문 renderer 로직 유지.\"\n    },\n    {\n      \"surface\": \"inline banner\",\n      \"routes\": \"home+regions+every retained article\",\n      \"decision\": \"REVISE\",\n      \"detail\": \"편한 상담 안내와 상담시간/실제전달시간 차이, 반입·추가비용 확인 의미 유지.\"\n    },\n    {\n      \"surface\": \"product descriptions\",\n      \"productCount\": 8,\n      \"decision\": \"REVISE\",\n      \"detail\": \"각 카드에 사진·예산 선택의 짧은 한 문장만 유지. 반복 상담 안내 제거; SKU/이름/가격/이미지/주문URL 불변.\"\n    },\n    {\n      \"surface\": \"product ribbon notice\",\n      \"decision\": \"REVISE\",\n      \"detail\": \"예시 사진 문구와 주문 문구 구분을 친절하게 표현.\"\n    },\n    {\n      \"surface\": \"footer delivery notice\",\n      \"decision\": \"REVISE_VIA_BUSINESS_TRUTH\",\n      \"detail\": \"기본가격/추가배송비/최종금액/배송반입/요청시간/주문전 안내 유지.\"\n    },\n    {\n      \"surface\": \"header/navigation/mobile CTA/layout\",\n      \"decision\": \"KEEP\",\n      \"detail\": \"현재 기능성 문구가 간결하고 적절함. 실제 파일 전체 검토; 연결 URL과 연락처 유지.\"\n    },\n    {\n      \"surface\": \"404\",\n      \"routes\": [\n        \"/404.html\",\n        \"all unmatched routes\"\n      ],\n      \"decision\": \"KEEP\",\n      \"detail\": \"다시 홈으로 이동하도록 간결히 안내함; noindex true, canonical false, schema false 유지.\"\n    },\n    {\n      \"surface\": \"privacy/order/business/funeral/gift/school/event standalone routes\",\n      \"decision\": \"NOT_GENERATED_BY_FIXED_SOURCE\",\n      \"detail\": \"getStaticPaths는 site.groups, site.groups는 pages에 실제 category가 있는 허브만 사용. 25개 전체 category=regions; 해당 별도 경로 없음. 비공개 페이지로 분모에서 숨긴 것이 아님.\"\n    },\n    {\n      \"surface\": \"robots/sitemap\",\n      \"decision\": \"KEEP\",\n      \"detail\": \"판매문구 수정 대상 아님. 사이트 공개/인덱싱 정책 보존.\"\n    },\n    {\n      \"surface\": \"business truth/product variation/contact hours\",\n      \"decision\": \"KEEP_EXCEPT_DELIVERY_NOTICE\",\n      \"detail\": \"기존 확인 사업정보, 모든 연락처 및 상담시간, 상품변동조건 보존.\"\n    },\n    {\n      \"surface\": \"inactive shared hub guide branches\",\n      \"decision\": \"KEEP_NOT_RENDERED\",\n      \"detail\": \"현재 허브 경로 없음. 미노출 공통 분기를 새 페이지로 만들거나 노출하지 않음.\"\n    }\n  ],\n  \"checkedAt\": \"2026-10-11T13:54:29.539042+00:00\",\n  \"criteriaSha256\": \"3b599a38e633634599bd7907f2a41ac010dfb2736874b68d17f0734684661acc\",\n  \"files\": {\n    \"pages.author.rev2.json\": \"94caf44516eaffb79d74a9fdef7306c77f9c0e0199aa79eea15f8ae9ad6444d6\",\n    \"articles-author.rev2.json\": \"7e26c2bd4b4d7be727d8254e7d503e0649e7efd4bb1b1947b762fbc978631bab\",\n    \"article-field-diff.rev1.json\": \"b6fd3f6a6ac95cc1c78bcc4f8cadf8070f1b9c2d0a5fcc90626a4d57595e1e8f\",\n    \"source-field-diff.rev2.json\": \"e05de20c88d61802e6d5cc83eeb4d73785bef88f32156ca239ca143deee8e3f2\",\n    \"source-card-review.author.rev2.json\": \"ded106472a014f1490bf29f05f61b69da2bdbb29449a866f3ed8aa4ad87e888b\",\n    \"common-field-diff.rev2.json\": \"0a220d6a8b3c4a5a801c2ad2e81d9a11a575840aa64d24753cdb47350331435b\",\n    \"common-surface-review.author.rev2.json\": \"57c7bd83f9543733f1aace25fe527ac35172cace6fc570751357977544a37010\",\n    \"original-manifest.json\": \"3cc54260dfe6c0affa50d9b6ec912994ce6d946d07678998de3f84d96b73410a\",\n    \"denominator.json\": \"b5ce00c094f0be65824eb8f7b836c086f20af8b73b4ef84918bdcdcff4aced9a\",\n    \"article-review-list.author.json\": \"89b6f60d0929cff68eb5775c856c4ca4985fb06dd2382ab43a464c485e821d2f\",\n    \"common-draft/src/pages/index.astro\": \"c5476b61b4c54e0000cd887d8e0d385a2a1d9246c4b868295e7c467192131082\",\n    \"common-draft/src/pages/[category]/index.astro\": \"a96bf9335870b43847b376579427c8c60ddd3c2e6a27f91093aa01bbad00a620\",\n    \"common-draft/src/components/RegionDirectory.astro\": \"56ced6b6514d4bb27672921ebf63989d70850c3a8570a168ee400098c00f41d0\",\n    \"common-draft/src/components/InlineOrderBanner.astro\": \"1dc7a9149f1f1f3fbea6c80de149da09955a9ac2b7939eaf7e04777f3b683202\",\n    \"common-draft/src/pages/[category]/[slug].astro\": \"046a1a6cd7f9fe835949853b6210daa50140f0ca9950b453d47922866f4c84df\",\n    \"common-draft/src/components/ProductCards.astro\": \"3b05836fe80ec7be81efc359b9642c303623c02a1c50e673ec9e738f061652b0\",\n    \"common-draft/src/data/business-truth.json\": \"f4c6ba8b636a739a40edbb85982a23c00b28a09f43685393afb80a431514153b\",\n    \"common-draft/src/data/products.json\": \"93f0e8c35a4b07bf4d02d18f056d196db6e38cb3b79bf216c710f191b67613d7\"\n  },\n  \"checks\": [\n    {\n      \"slug\": \"sinnae-dong-seoul-medical-center-funeral-wreath\",\n      \"url\": \"/regions/sinnae-dong-seoul-medical-center-funeral-wreath/\",\n      \"copyDecision\": \"REVISE\",\n      \"copyChangedFields\": [\n        \"description\",\n        \"cardSummary\",\n        \"firstAnswer\",\n        \"contentMarkdown\"\n      ],\n      \"maintainedTitleH1Keyword\": true,\n      \"fixedTechnicalAndProductFieldsUnchanged\": true,\n      \"sourceCardsOnlyExplicitlyRemoved\": true,\n      \"customerOriginalsRead\": true\n    },\n    {\n      \"slug\": \"myeonmok-dong-green-hospital-funeral-wreath\",\n      \"url\": \"/regions/myeonmok-dong-green-hospital-funeral-wreath/\",\n      \"copyDecision\": \"REVISE\",\n      \"copyChangedFields\": [\n        \"description\",\n        \"cardSummary\",\n        \"firstAnswer\",\n        \"contentMarkdown\"\n      ],\n      \"maintainedTitleH1Keyword\": true,\n      \"fixedTechnicalAndProductFieldsUnchanged\": true,\n      \"sourceCardsOnlyExplicitlyRemoved\": true,\n      \"customerOriginalsRead\": true\n    },\n    {\n      \"slug\": \"sangbong-dong-dongbu-mideurang-opening-wreath\",\n      \"url\": \"/regions/sangbong-dong-dongbu-mideurang-opening-wreath/\",\n      \"copyDecision\": \"REVISE\",\n      \"copyChangedFields\": [\n        \"description\",\n        \"cardSummary\",\n        \"firstAnswer\",\n        \"contentMarkdown\"\n      ],\n      \"maintainedTitleH1Keyword\": true,\n      \"fixedTechnicalAndProductFieldsUnchanged\": true,\n      \"sourceCardsOnlyExplicitlyRemoved\": true,\n      \"customerOriginalsRead\": true\n    }\n  ],\n  \"technicalStatus\": \"Authored copy only. Old snapshot/review metadata retained for exact diff, not publication approval. Integrator must regenerate provenance and run full regression.\",\n  \"externalWrites\": 0\n}\n"
+    },
+    "originalCommonHandoff": {
+      "fileName": "common-surface-review.author.rev2.json",
+      "sha256": "57c7bd83f9543733f1aace25fe527ac35172cace6fc570751357977544a37010",
+      "utf8Content": "{\n  \"role\": \"AUTHOR_NOT_INDEPENDENT_REVIEWER\",\n  \"sourceRevision\": \"73d92b941fcb3025321adc88f82179c914086551\",\n  \"allAstroTemplatesRead\": true,\n  \"templatesCrossComparedAcrossSixRegions\": true,\n  \"privacyRoutePresence\": \"absent in exact source renderer\",\n  \"publicScopeReadback\": \"home/sitemap existing receipt checked; non-sitemap route live status not freshly probed in this author task\",\n  \"extraCustomerReadback\": \"existing extra-customer-route-readback has no entries for these six hosts; not treated as proof of absence\",\n  \"changedFiles\": [\n    {\n      \"path\": \"src/pages/index.astro\",\n      \"sha256\": \"c5476b61b4c54e0000cd887d8e0d385a2a1d9246c4b868295e7c467192131082\"\n    },\n    {\n      \"path\": \"src/pages/[category]/index.astro\",\n      \"sha256\": \"a96bf9335870b43847b376579427c8c60ddd3c2e6a27f91093aa01bbad00a620\"\n    },\n    {\n      \"path\": \"src/components/RegionDirectory.astro\",\n      \"sha256\": \"56ced6b6514d4bb27672921ebf63989d70850c3a8570a168ee400098c00f41d0\"\n    },\n    {\n      \"path\": \"src/components/InlineOrderBanner.astro\",\n      \"sha256\": \"1dc7a9149f1f1f3fbea6c80de149da09955a9ac2b7939eaf7e04777f3b683202\"\n    },\n    {\n      \"path\": \"src/pages/[category]/[slug].astro\",\n      \"sha256\": \"046a1a6cd7f9fe835949853b6210daa50140f0ca9950b453d47922866f4c84df\"\n    },\n    {\n      \"path\": \"src/components/ProductCards.astro\",\n      \"sha256\": \"3b05836fe80ec7be81efc359b9642c303623c02a1c50e673ec9e738f061652b0\"\n    },\n    {\n      \"path\": \"src/data/business-truth.json\",\n      \"sha256\": \"f4c6ba8b636a739a40edbb85982a23c00b28a09f43685393afb80a431514153b\"\n    },\n    {\n      \"path\": \"src/data/products.json\",\n      \"sha256\": \"93f0e8c35a4b07bf4d02d18f056d196db6e38cb3b79bf216c710f191b67613d7\"\n    }\n  ],\n  \"reviews\": [\n    {\n      \"surface\": \"home\",\n      \"routes\": [\n        \"/\"\n      ],\n      \"decision\": \"REVISE\",\n      \"detail\": \"보내는 마음과 상품 선택 중심으로 수정; 상품/CTA/가격/route/SEO 로직 유지.\"\n    },\n    {\n      \"surface\": \"regions directory\",\n      \"routes\": [\n        \"/regions/\"\n      ],\n      \"decision\": \"REVISE\",\n      \"detail\": \"고객 선택 중심 도입으로 수정; 법정/행정 전체 목록·일부 표시·준비중 표시와 링크 로직 보존.\"\n    },\n    {\n      \"surface\": \"article common renderer\",\n      \"routes\": \"every retained article\",\n      \"decision\": \"REVISE\",\n      \"detail\": \"출처 카드의 반복 경고 및 CTA 앞 조건부 문구 축약. 출처 URL/날짜·SEO/이미지/네 카드/본문 renderer 로직 유지.\"\n    },\n    {\n      \"surface\": \"inline banner\",\n      \"routes\": \"home+regions+every retained article\",\n      \"decision\": \"REVISE\",\n      \"detail\": \"편한 상담 안내와 상담시간/실제전달시간 차이, 반입·추가비용 확인 의미 유지.\"\n    },\n    {\n      \"surface\": \"product descriptions\",\n      \"productCount\": 8,\n      \"decision\": \"REVISE\",\n      \"detail\": \"각 카드에 사진·예산 선택의 짧은 한 문장만 유지. 반복 상담 안내 제거; SKU/이름/가격/이미지/주문URL 불변.\"\n    },\n    {\n      \"surface\": \"product ribbon notice\",\n      \"decision\": \"REVISE\",\n      \"detail\": \"예시 사진 문구와 주문 문구 구분을 친절하게 표현.\"\n    },\n    {\n      \"surface\": \"footer delivery notice\",\n      \"decision\": \"REVISE_VIA_BUSINESS_TRUTH\",\n      \"detail\": \"기본가격/추가배송비/최종금액/배송반입/요청시간/주문전 안내 유지.\"\n    },\n    {\n      \"surface\": \"header/navigation/mobile CTA/layout\",\n      \"decision\": \"KEEP\",\n      \"detail\": \"현재 기능성 문구가 간결하고 적절함. 실제 파일 전체 검토; 연결 URL과 연락처 유지.\"\n    },\n    {\n      \"surface\": \"404\",\n      \"routes\": [\n        \"/404.html\",\n        \"all unmatched routes\"\n      ],\n      \"decision\": \"KEEP\",\n      \"detail\": \"다시 홈으로 이동하도록 간결히 안내함; noindex true, canonical false, schema false 유지.\"\n    },\n    {\n      \"surface\": \"privacy/order/business/funeral/gift/school/event standalone routes\",\n      \"decision\": \"NOT_GENERATED_BY_FIXED_SOURCE\",\n      \"detail\": \"getStaticPaths는 site.groups, site.groups는 pages에 실제 category가 있는 허브만 사용. 25개 전체 category=regions; 해당 별도 경로 없음. 비공개 페이지로 분모에서 숨긴 것이 아님.\"\n    },\n    {\n      \"surface\": \"robots/sitemap\",\n      \"decision\": \"KEEP\",\n      \"detail\": \"판매문구 수정 대상 아님. 사이트 공개/인덱싱 정책 보존.\"\n    },\n    {\n      \"surface\": \"business truth/product variation/contact hours\",\n      \"decision\": \"KEEP_EXCEPT_DELIVERY_NOTICE\",\n      \"detail\": \"기존 확인 사업정보, 모든 연락처 및 상담시간, 상품변동조건 보존.\"\n    },\n    {\n      \"surface\": \"inactive shared hub guide branches\",\n      \"decision\": \"KEEP_NOT_RENDERED\",\n      \"detail\": \"현재 허브 경로 없음. 미노출 공통 분기를 새 페이지로 만들거나 노출하지 않음.\"\n    }\n  ],\n  \"independentReview\": \"PENDING\",\n  \"technicalIntegrationAndRegressionRequired\": true,\n  \"revision\": 2,\n  \"priorRevisionPreserved\": \"/workspace/shared/regional-copy-revision-20261011/drafts-seoul-six/jungnang/common-history/rev1\",\n  \"revisionReason\": \"Reviewer requested one short photo/budget choice sentence per product; remove repeated consultation sentences.\",\n  \"previousToCurrentProductDescriptionChanges\": 8\n}\n"
+    },
+    "originalCommonReview": {
+      "fileName": "independent-common-copy-review.rev2.json",
+      "sha256": "03d3ccd531398a992a86e7cbb4748d102751f55847a375916541efc014b88c2d",
+      "utf8Content": "{\n  \"reviewer\": \"publish_dongdaemun_direct\",\n  \"author\": \"prepare_dongdaemun_runtime\",\n  \"verdict\": \"PASS_COMMON_COPY_ONLY\",\n  \"sourceRevision\": \"73d92b941fcb3025321adc88f82179c914086551\",\n  \"files\": [\n    {\n      \"path\": \"src/pages/index.astro\",\n      \"originalSha256\": \"a53f4316970c8ee3823f87e1cc89f800ecdcd2837c100eb9ad76dc5c0d2e3b02\",\n      \"originalGitBlobSha\": \"9160bd89691fecb083d5ed5e8670c770ae65f27c\",\n      \"candidateSha256\": \"c5476b61b4c54e0000cd887d8e0d385a2a1d9246c4b868295e7c467192131082\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    },\n    {\n      \"path\": \"src/pages/[category]/index.astro\",\n      \"originalSha256\": \"3a2cdbea5ebff8fa373a6530dd3e3bddd7ce67ccab602cac1cfce0e103ddc63f\",\n      \"originalGitBlobSha\": \"519bfaa9177cc8e37799aac1ae0f366a83c4756a\",\n      \"candidateSha256\": \"a96bf9335870b43847b376579427c8c60ddd3c2e6a27f91093aa01bbad00a620\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    },\n    {\n      \"path\": \"src/components/RegionDirectory.astro\",\n      \"originalSha256\": \"9407a7c1a7008d09805731d6d288973ca67d1aa38f82d52012455d34c2b3b3b3\",\n      \"originalGitBlobSha\": \"78999e8bcbc6796b1f8d75f10c7b2d98a000ee0c\",\n      \"candidateSha256\": \"56ced6b6514d4bb27672921ebf63989d70850c3a8570a168ee400098c00f41d0\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    },\n    {\n      \"path\": \"src/components/InlineOrderBanner.astro\",\n      \"originalSha256\": \"9c4a05aa806810d5d27a0040e357ccdd89c7d465d9d0d43df0ce48cec8fe33a0\",\n      \"originalGitBlobSha\": \"76d9576e2aee063d86372dde23c3501fc047627a\",\n      \"candidateSha256\": \"1dc7a9149f1f1f3fbea6c80de149da09955a9ac2b7939eaf7e04777f3b683202\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    },\n    {\n      \"path\": \"src/pages/[category]/[slug].astro\",\n      \"originalSha256\": \"68cc66c5de06096778228c6972c6c7fe33fc98a79ab05a3bc722fe6f05219788\",\n      \"originalGitBlobSha\": \"f18e6d75f985eced2245e5a5cf6ed6dbe675df7f\",\n      \"candidateSha256\": \"046a1a6cd7f9fe835949853b6210daa50140f0ca9950b453d47922866f4c84df\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    },\n    {\n      \"path\": \"src/components/ProductCards.astro\",\n      \"originalSha256\": \"5f249fb03794c892a727813e326d03f141f086199257620e0ca0f6d6cf993083\",\n      \"originalGitBlobSha\": \"885072b201f7ef0e13085add8f30b21fb8936315\",\n      \"candidateSha256\": \"3b05836fe80ec7be81efc359b9642c303623c02a1c50e673ec9e738f061652b0\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    },\n    {\n      \"path\": \"src/data/business-truth.json\",\n      \"originalSha256\": \"4376a0f0472af885958f0402cac6c1cad4a0397a498c8bab51fb750774d460a0\",\n      \"originalGitBlobSha\": \"ae5c8021f0037ee77167a309ca47b0d31139b9eb\",\n      \"candidateSha256\": \"f4c6ba8b636a739a40edbb85982a23c00b28a09f43685393afb80a431514153b\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    },\n    {\n      \"path\": \"src/data/products.json\",\n      \"originalSha256\": \"fb0337ce4239c1ca94493b92500e23d789f4685eaee389778cdbf01d2eef6be5\",\n      \"originalGitBlobSha\": \"24ec7c56de038eaa853368f73b055949330c6ed0\",\n      \"candidateSha256\": \"93f0e8c35a4b07bf4d02d18f056d196db6e38cb3b79bf216c710f191b67613d7\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    }\n  ],\n  \"exactDiffSha256\": \"0a220d6a8b3c4a5a801c2ad2e81d9a11a575840aa64d24753cdb47350331435b\",\n  \"manualObservations\": [\n    \"All changed customer copy read; each region-specific navigation description and original product description variation checked.\",\n    \"Home, navigation and detail call-to-action invite occasion-appropriate flower selection and convenient consultation.\",\n    \"Contact hours remain distinct from delivery time; price/possible additional fees, intake conditions and photo/ribbon example caveats remain in shared notices.\",\n    \"Independent reconstruction of six Astro text changes is byte-identical; two JSON payloads differ only in declared deliveryNotice/eight product desc fields.\",\n    \"Routing, product selection, images, prices, SKU, phone, order CTA, opening hours and SEO behavior unchanged.\"\n  ],\n  \"limitations\": [\n    \"No integrated snapshot update/build/render/hosted publication certified.\"\n  ],\n  \"requiredRevisions\": []\n}\n"
+    },
+    "originalArticleReview": {
+      "fileName": "independent-article-review.final.rev2.json",
+      "sha256": "db70d4522c9c5ac09f0159f91011ca32dd586912f723715ae490b95f0356bc87",
+      "utf8Content": "{\n  \"reviewer\": \"publish_dongdaemun_direct\",\n  \"author\": \"prepare_dongdaemun_runtime\",\n  \"verdict\": \"PASS_ARTICLE_COPY_AND_CUSTOMER_SOURCE_SELECTION_ONLY\",\n  \"reviewedAt\": \"2026-10-11T13:59:31.508557+00:00\",\n  \"articleCount\": 3,\n  \"canUseRevisedArticleFields\": true,\n  \"originalSource\": \"73d92b941fcb3025321adc88f82179c914086551\",\n  \"originalPagesSha256\": \"78e984f4d69e49677d912da74657399bd714d383b955f6ecc3689b27461feaac\",\n  \"articlesSha256\": \"7e26c2bd4b4d7be727d8254e7d503e0649e7efd4bb1b1947b762fbc978631bab\",\n  \"pagesSha256\": \"94caf44516eaffb79d74a9fdef7306c77f9c0e0199aa79eea15f8ae9ad6444d6\",\n  \"sourceDiffSha256\": \"e05de20c88d61802e6d5cc83eeb4d73785bef88f32156ca239ca143deee8e3f2\",\n  \"acceptanceSha256\": \"3b599a38e633634599bd7907f2a41ac010dfb2736874b68d17f0734684661acc\",\n  \"manualObservations\": [\n    \"Three full original and revised articles previously read. Seoul Medical Center and Green Hospital condolence and Dongbu market opening retain separate factual contexts.\",\n    \"Green Hospital 24-hour facility information is not confused with flower consultation hours. Redundant HIRA source removal retains direct facility evidence.\"\n  ],\n  \"articles\": [\n    {\n      \"slug\": \"sinnae-dong-seoul-medical-center-funeral-wreath\",\n      \"verdict\": \"PASS\",\n      \"fullOriginalAndRevisionRead\": true,\n      \"changedFields\": [\n        \"cardSummary\",\n        \"contentMarkdown\",\n        \"description\",\n        \"firstAnswer\",\n        \"sources\"\n      ],\n      \"fourOriginalProductKeysAndCardLimitPreserved\": true,\n      \"retainedSourceRecordsAreExactOriginalSubset\": true\n    },\n    {\n      \"slug\": \"myeonmok-dong-green-hospital-funeral-wreath\",\n      \"verdict\": \"PASS\",\n      \"fullOriginalAndRevisionRead\": true,\n      \"changedFields\": [\n        \"cardSummary\",\n        \"contentMarkdown\",\n        \"description\",\n        \"firstAnswer\"\n      ],\n      \"fourOriginalProductKeysAndCardLimitPreserved\": true,\n      \"retainedSourceRecordsAreExactOriginalSubset\": true\n    },\n    {\n      \"slug\": \"sangbong-dong-dongbu-mideurang-opening-wreath\",\n      \"verdict\": \"PASS\",\n      \"fullOriginalAndRevisionRead\": true,\n      \"changedFields\": [\n        \"cardSummary\",\n        \"contentMarkdown\",\n        \"description\",\n        \"firstAnswer\"\n      ],\n      \"fourOriginalProductKeysAndCardLimitPreserved\": true,\n      \"retainedSourceRecordsAreExactOriginalSubset\": true\n    }\n  ],\n  \"requiredRevisions\": [],\n  \"limitations\": [\n    \"Common-surface approval is separate.\",\n    \"No snapshot rebuild, integrated build, actual render or publication is certified.\",\n    \"Source records and existing verification dates are preserved; this review does not claim fresh facility or price GETs.\"\n  ]\n}\n"
+    },
+    "choiceCommonManifest": {
+      "fileName": "choice-and-common-author-manifest.json",
+      "sha256": "0d8aa2e0d5e245dc20ead12579f649bbe0b26f36ac34f1a8f93398bd6f142412",
+      "utf8Content": "{\n  \"createdAt\": \"2026-10-11T18:19:00.936351+00:00\",\n  \"state\": \"AUTHOR_PROPOSAL_AWAITING_INDEPENDENT_REVIEW\",\n  \"baselineSource\": \"73d92b941fcb3025321adc88f82179c914086551\",\n  \"originalPages\": \"/workspace/shared/regional-copy-revision-20261011/drafts-seoul-six/jungnang/pages.author.rev2.json\",\n  \"originalPagesSha256\": \"94caf44516eaffb79d74a9fdef7306c77f9c0e0199aa79eea15f8ae9ad6444d6\",\n  \"proposalPages\": \"/workspace/shared/jungnang-copy-revision-20261011/pages.author.choice-revision.json\",\n  \"proposalPagesSha256\": \"42985b6e4209f7c29112a5323f09b3297b021d12a4f4fe36f0d0939a945568ba\",\n  \"articleChanges\": [\n    {\n      \"pageKey\": \"seoul-jungnang-flower-direct-region-sinnae-dong-seoul-medical-center-funeral-wreath\",\n      \"slug\": \"sinnae-dong-seoul-medical-center-funeral-wreath\",\n      \"literalBefore\": \"공식 사진을 보며 원하는 모습을 골라보세요. 기본형과 고급형은 기본가격이 20,000원 차이 나며, 특대·특특대 상품도 함께 비교하실 수 있습니다. 가격이나 이름만으로 결정하기 어렵다면 실제 크기와 준비 가능한 꽃 구성을 상담해 주세요.\",\n      \"literalAfter\": \"조용한 위로를 어떤 모습으로 전할지 사진을 나란히 살펴보세요. B201은 흰 꽃 가운데 노란 꽃이 모여 있고, B205는 바깥 둘레에도 노란 꽃이 이어집니다. 동료들과 함께 준비하신다면 마음에 드는 배치와 모임에서 정한 예산을 함께 말씀해 주세요. 선택한 사진을 바탕으로 현재 가능한 꽃 구성과 실제 규격을 상담하실 수 있습니다.\",\n      \"bodySha256\": \"4ccadc9f86a5c169226e6bfc5ca2458cc717ff69fdac65e973df33f6f87d4028\"\n    },\n    {\n      \"pageKey\": \"seoul-jungnang-flower-direct-region-myeonmok-dong-green-hospital-funeral-wreath\",\n      \"slug\": \"myeonmok-dong-green-hospital-funeral-wreath\",\n      \"literalBefore\": \"급한 마음에 큰 상품을 고르기보다 원하는 예산과 전달 일정을 함께 상담하셔도 좋습니다.\",\n      \"literalAfter\": \"마음이 분주한 때에는 원하는 예산과 전달 일정을 말씀하시고, 상담을 통해 준비할 상품을 차근차근 정하셔도 좋습니다.\",\n      \"bodySha256\": \"dec761279b11e44fa81954ad5a8d4900e93fd95de1110bc18e2691e6728b4767\"\n    },\n    {\n      \"pageKey\": \"seoul-jungnang-flower-direct-region-sangbong-dong-dongbu-mideurang-opening-wreath\",\n      \"slug\": \"sangbong-dong-dongbu-mideurang-opening-wreath\",\n      \"literalBefore\": \"공식 사진에서 마음에 드는 화환을 찾아보세요. 기본형과 고급형은 20,000원, 고급형과 특대형도 20,000원의 기본가격 차이가 있습니다. 실제 크기와 준비 가능한 꽃 구성은 상담에서 확인해 정하실 수 있습니다.\",\n      \"literalAfter\": \"오래 준비한 가게 앞에 놓일 꽃이라면 주인공이 좋아하는 색부터 떠올려 보세요. C203 사진은 크림빛 윗장식 아래 노란 꽃이 눈에 들어오고, C205 사진은 분홍 장식과 노랑·분홍·흰색 꽃이 어우러져 있습니다. 마음에 드는 색 배치와 가게에 둘 자리를 함께 말씀하시면 현재 가능한 구성과 실제 규격을 상담하며 선택하실 수 있습니다.\",\n      \"bodySha256\": \"6f6357e07757ebd81d3db164b4fb27549f241d7291fd40090f1e34c529f843f9\"\n    }\n  ],\n  \"commonChanges\": [\n    {\n      \"path\": \"src/components/ProductCards.astro\",\n      \"originalApprovedPath\": \"/workspace/shared/regional-copy-revision-20261011/drafts-seoul-six/jungnang/common-draft/src/components/ProductCards.astro\",\n      \"originalApprovedSha256\": \"3b05836fe80ec7be81efc359b9642c303623c02a1c50e673ec9e738f061652b0\",\n      \"proposalPath\": \"/workspace/shared/jungnang-copy-revision-20261011/common-choice-proposal/src/components/ProductCards.astro\",\n      \"proposalSha256\": \"77ab69e0b60c08c57849a99de125b8ce370fde2b2d14929416838f6b798ff880\",\n      \"literalReplacements\": [\n        [\n          \"{p.family==='congrats' && <p class=\\\"product-notice\\\">사진 속 리본은 예시입니다. 전하고 싶은 문구는 주문할 때 함께 정해 주세요</p>}\",\n          \"\"\n        ],\n        [\n          \"<p class=\\\"product-notice\\\">{site.productVariationNotice} {site.deliveryNotice}</p>\",\n          \"<p class=\\\"product-notice\\\">{site.productVariationNotice} {site.deliveryNotice}</p>\\n{products.some((p:any)=>p.family==='congrats') && <p class=\\\"product-notice\\\">사진 속 리본은 예시입니다. 이번 개업이나 축하 자리의 인사를 담아 상담하세요.</p>}\"\n        ]\n      ],\n      \"diffPath\": \"/workspace/shared/jungnang-copy-revision-20261011/src__components__ProductCards.astro.diff\"\n    },\n    {\n      \"path\": \"src/pages/index.astro\",\n      \"originalApprovedPath\": \"/workspace/shared/regional-copy-revision-20261011/drafts-seoul-six/jungnang/common-draft/src/pages/index.astro\",\n      \"originalApprovedSha256\": \"c5476b61b4c54e0000cd887d8e0d385a2a1d9246c4b868295e7c467192131082\",\n      \"proposalPath\": \"/workspace/shared/jungnang-copy-revision-20261011/common-choice-proposal/src/pages/index.astro\",\n      \"proposalSha256\": \"6b301ce1c7392b97d8d44cd9d3587ad53414b130df8802f97a010c1f5f2f3114\",\n      \"literalReplacements\": [\n        [\n          \"기쁜 소식에는 따뜻한 축하를, 힘든 순간에는 차분한 위로를 전해보세요. 근조·축하화환의 사진과 기본가격을 살펴보고 전할 마음과 예산에 맞는 상품을 골라보실 수 있습니다.\",\n          \"미드랑길에 첫 가게를 여는 이웃에게는 시작을 응원하는 축하를, 서울의료원과 녹색병원에서 조문을 맞는 지인에게는 차분한 위로를 전해 보세요. 소중한 인연을 생각하며 상품사진을 살펴보고 마음과 예산에 맞는 화환을 상담하실 수 있습니다.\"\n        ],\n        [\n          \"<strong>{p.price.toLocaleString()}원</strong>\",\n          \"<strong>{p.price.toLocaleString()}원 · 상품 기본가격</strong>\"\n        ]\n      ],\n      \"diffPath\": \"/workspace/shared/jungnang-copy-revision-20261011/src__pages__index.astro.diff\"\n    },\n    {\n      \"path\": \"src/pages/[category]/[slug].astro\",\n      \"originalApprovedPath\": \"/workspace/shared/regional-copy-revision-20261011/drafts-seoul-six/jungnang/common-draft/src/pages/[category]/[slug].astro\",\n      \"originalApprovedSha256\": \"046a1a6cd7f9fe835949853b6210daa50140f0ca9950b453d47922866f4c84df\",\n      \"proposalPath\": \"/workspace/shared/jungnang-copy-revision-20261011/common-choice-proposal/src/pages/[category]/[slug].astro\",\n      \"proposalSha256\": \"d8a0b2be0215d73b28ed45637baebc852d3a044fe958947c8e27cafe5a8c8ff2\",\n      \"literalReplacements\": [\n        [\n          \"<span>{hero.price.toLocaleString()}원</span>\",\n          \"<span>{hero.price.toLocaleString()}원 · 상품 기본가격</span>\"\n        ]\n      ],\n      \"diffPath\": \"/workspace/shared/jungnang-copy-revision-20261011/src__pages__[category]__[slug].astro.diff\"\n    },\n    {\n      \"path\": \"src/data/products.json\",\n      \"originalApprovedPath\": \"/workspace/shared/regional-copy-revision-20261011/drafts-seoul-six/jungnang/common-draft/src/data/products.json\",\n      \"originalApprovedSha256\": \"93f0e8c35a4b07bf4d02d18f056d196db6e38cb3b79bf216c710f191b67613d7\",\n      \"proposalPath\": \"/workspace/shared/jungnang-copy-revision-20261011/common-choice-proposal/src/data/products.json\",\n      \"proposalSha256\": \"ef1e505337590f4cb80e0ff770de13487324d0a7f5d867354ef5fd3d8fa9d97c\",\n      \"literalReplacements\": [],\n      \"diffPath\": \"/workspace/shared/jungnang-copy-revision-20261011/src__data__products.json.diff\"\n    }\n  ],\n  \"scope\": \"Three existing articles: two concrete product-choice paragraphs, one non-patronizing sentence; four common follow-ons. All other copy and metadata preserved.\",\n  \"externalWrites\": 0\n}\n"
+    },
+    "choiceCommonReview": {
+      "fileName": "review.json",
+      "sha256": "547530874023a610613bb0822dd9503a21474928be3982635f72e0fb0037c083",
+      "utf8Content": "{\n  \"schema\": \"independent-jungnang-choice-common-copy-review/v1\",\n  \"reviewer\": \"/root/plan_existing_region_updates/review_uiwang_copy_integration\",\n  \"author\": \"/root/plan_existing_region_updates\",\n  \"reviewedAt\": \"2026-10-11T18:25:51.991530+00:00\",\n  \"decision\": \"COPY_PASS_THREE_ARTICLES_AND_FOUR_COMMON_FOLLOWONS\",\n  \"requiredRevisions\": [],\n  \"baselineSource\": \"73d92b941fcb3025321adc88f82179c914086551\",\n  \"acceptancePath\": \"/workspace/shared/regional-copy-revision-20261011/SALES_COPY_ACCEPTANCE.md\",\n  \"acceptanceSha256\": \"3b599a38e633634599bd7907f2a41ac010dfb2736874b68d17f0734684661acc\",\n  \"authorManifestSha256\": \"0d8aa2e0d5e245dc20ead12579f649bbe0b26f36ac34f1a8f93398bd6f142412\",\n  \"originalPagesSha256\": \"94caf44516eaffb79d74a9fdef7306c77f9c0e0199aa79eea15f8ae9ad6444d6\",\n  \"proposalPagesSha256\": \"42985b6e4209f7c29112a5323f09b3297b021d12a4f4fe36f0d0939a945568ba\",\n  \"originalN\": 3,\n  \"existingArticles\": 3,\n  \"held\": 0,\n  \"newArticles\": 0,\n  \"articles\": [\n    {\n      \"pageKey\": \"seoul-jungnang-flower-direct-region-sinnae-dong-seoul-medical-center-funeral-wreath\",\n      \"slug\": \"sinnae-dong-seoul-medical-center-funeral-wreath\",\n      \"oldBodySha256\": \"c1a3d3755e84345d21912b6e59df5b292c79b4cb2b4c921e8e1e6f6f679497b1\",\n      \"newBodySha256\": \"4ccadc9f86a5c169226e6bfc5ca2458cc717ff69fdac65e973df33f6f87d4028\",\n      \"changedFields\": [\n        \"contentMarkdown\"\n      ],\n      \"literalOccurrenceCount\": 1,\n      \"decision\": \"PASS\",\n      \"label\": \"서울의료원\",\n      \"fullBaselinePriorAndNewBodyRead\": true,\n      \"manualFinding\": \"B201의 흰 꽃 속 중앙 노란 꽃과 B205의 둘레까지 이어지는 노란 꽃은 실제 JPG와 일치한다. 동료들이 정한 예산과 배치 선호를 함께 비교하므로 단순 가격 차이 나열보다 선택에 도움이 된다. 실제 규격과 현재 꽃 구성은 상담 대상으로 남겨 과장하지 않는다. 신내로 156·지하 2층 빈소·발인/수령 의사는 기존 승인문 그대로 유지된다.\"\n    },\n    {\n      \"pageKey\": \"seoul-jungnang-flower-direct-region-myeonmok-dong-green-hospital-funeral-wreath\",\n      \"slug\": \"myeonmok-dong-green-hospital-funeral-wreath\",\n      \"oldBodySha256\": \"3787c1c6257d7c816a6b8bd96f0481cc42cf7dda4e38f2ec90d71e4a0dff2b88\",\n      \"newBodySha256\": \"dec761279b11e44fa81954ad5a8d4900e93fd95de1110bc18e2691e6728b4767\",\n      \"changedFields\": [\n        \"contentMarkdown\"\n      ],\n      \"literalOccurrenceCount\": 1,\n      \"decision\": \"PASS\",\n      \"label\": \"녹색병원\",\n      \"fullBaselinePriorAndNewBodyRead\": true,\n      \"manualFinding\": \"큰 상품 선택을 경계하던 문장을 삭제하고 분주한 때의 예산·일정 상담으로 자연스럽게 연결한다. 늦은 부고라는 고유 상황을 유지하며 장례식장 24시간 운영과 꽃이랑 08:00~23:00 상담을 분명히 구별한다. 사가정로49길 53·지하 2층 빈소·장례 전화 02-493-4444·야간 수령 확인 조건은 그대로다.\"\n    },\n    {\n      \"pageKey\": \"seoul-jungnang-flower-direct-region-sangbong-dong-dongbu-mideurang-opening-wreath\",\n      \"slug\": \"sangbong-dong-dongbu-mideurang-opening-wreath\",\n      \"oldBodySha256\": \"506e404fc05ed13f9b5daaf7e2a9cfa28b56ac78540ebe9bd80a265852c47a2c\",\n      \"newBodySha256\": \"6f6357e07757ebd81d3db164b4fb27549f241d7291fd40090f1e34c529f843f9\",\n      \"changedFields\": [\n        \"contentMarkdown\"\n      ],\n      \"literalOccurrenceCount\": 1,\n      \"decision\": \"PASS\",\n      \"label\": \"동부시장 미드랑길\",\n      \"fullBaselinePriorAndNewBodyRead\": true,\n      \"manualFinding\": \"C203의 크림빛 윗장식/노란 꽃과 C205의 분홍 장식 및 노랑·분홍·흰색 꽃은 실제 JPG와 일치한다. 가게 주인의 취향과 놓을 자리를 상품 선택에 연결하면서 실제 구성·규격은 상담으로 남긴다. 특정 점포의 개업이나 설치/회수 서비스를 보장하지 않고, 상봉동 미드랑길이라는 기존 확인 사실과 주문 조건을 유지한다.\"\n    }\n  ],\n  \"commonFiles\": [\n    {\n      \"path\": \"src/components/ProductCards.astro\",\n      \"originalApprovedSha256\": \"3b05836fe80ec7be81efc359b9642c303623c02a1c50e673ec9e738f061652b0\",\n      \"proposalSha256\": \"77ab69e0b60c08c57849a99de125b8ce370fde2b2d14929416838f6b798ff880\",\n      \"diffSha256\": \"f378a9cdc19c3fe23610b1ff578820d19b7ca4e2da79a42e2183ee246f30a37e\",\n      \"exactDeclaredChangeReplay\": true,\n      \"decision\": \"PASS\"\n    },\n    {\n      \"path\": \"src/pages/index.astro\",\n      \"originalApprovedSha256\": \"c5476b61b4c54e0000cd887d8e0d385a2a1d9246c4b868295e7c467192131082\",\n      \"proposalSha256\": \"6b301ce1c7392b97d8d44cd9d3587ad53414b130df8802f97a010c1f5f2f3114\",\n      \"diffSha256\": \"54f22729ae3506e4f56c770785a0544eb7bc5e1875c5a93fa874ea47852c72a2\",\n      \"exactDeclaredChangeReplay\": true,\n      \"decision\": \"PASS\"\n    },\n    {\n      \"path\": \"src/pages/[category]/[slug].astro\",\n      \"originalApprovedSha256\": \"046a1a6cd7f9fe835949853b6210daa50140f0ca9950b453d47922866f4c84df\",\n      \"proposalSha256\": \"d8a0b2be0215d73b28ed45637baebc852d3a044fe958947c8e27cafe5a8c8ff2\",\n      \"diffSha256\": \"80c8c6959611e8466b709447f90bc628da767a395e712b050e4998751e31c7d5\",\n      \"exactDeclaredChangeReplay\": true,\n      \"decision\": \"PASS\"\n    },\n    {\n      \"path\": \"src/data/products.json\",\n      \"originalApprovedSha256\": \"93f0e8c35a4b07bf4d02d18f056d196db6e38cb3b79bf216c710f191b67613d7\",\n      \"proposalSha256\": \"ef1e505337590f4cb80e0ff770de13487324d0a7f5d867354ef5fd3d8fa9d97c\",\n      \"diffSha256\": \"ea94440ac6258a8e02766d442a2fc9ba37d7fb3b0f4b76c1db5878c1eac3cae2\",\n      \"exactDeclaredChangeReplay\": true,\n      \"decision\": \"PASS\"\n    }\n  ],\n  \"commonManualFindings\": [\n    \"중랑 홈은 미드랑길의 첫 가게와 서울의료원·녹색병원 조문이라는 실제 세 글의 서로 다른 상황으로 연결된다. 구체적인 납품·제휴·도착 실적이나 새로운 서비스를 만들지 않는다.\",\n    \"홈/상세 hero의 상품 기본가격 표시는 실제 가격을 변경하지 않는다. 기존 business-truth의 추가 배송비/최종금액/배송·반입 가능/요청시간 상담 안내가 유지된다.\",\n    \"축하 상품별 네 번 반복하던 리본 예시 안내를 products.some 조건으로 상품 묶음당 한 번 옮겼다. 상품·CTA·사진·선택 로직은 그대로이며 기본가격 문장을 중복 추가하지 않았다.\",\n    \"실제 500px JPG 8장을 모두 직접 열어 새 description의 색/배치를 확인했다. B203의 흰 윗장식 아래 초록 줄기와 작은 분홍꽃, B060의 중앙 연두빛/바깥 줄기/분홍꽃을 포함해 사진과 일치한다. 크기·수명·품질·꽃 수량 우월성을 발명하지 않는다.\"\n  ],\n  \"images\": [\n    {\n      \"productKey\": \"funeral-basic\",\n      \"officialSku\": \"B201\",\n      \"path\": \"/tmp/jungnang-copy-integration-20261011/baseline/site-factory/seoul-jungnang-flower/public/images/products/funeral-basic.jpg\",\n      \"sha256\": \"7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3\",\n      \"gitBlobSha\": \"52f55c45c05a9a31488b8ac03a39975fba93c601\",\n      \"desc\": \"흰 꽃 가운데 노란 꽃이 모여 있습니다. 중앙에 색이 더해진 차분한 배치를 살펴보세요.\",\n      \"actualPixelsPersonallyViewed\": true\n    },\n    {\n      \"productKey\": \"funeral-premium\",\n      \"officialSku\": \"B203\",\n      \"path\": \"/tmp/jungnang-copy-integration-20261011/baseline/site-factory/seoul-jungnang-flower/public/images/products/funeral-premium.jpg\",\n      \"sha256\": \"0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114\",\n      \"gitBlobSha\": \"566809de3fd7367a506e267f8ecbf1b81207cdca\",\n      \"desc\": \"흰 장식 아래 초록 줄기와 작은 분홍빛 꽃이 보입니다. 좋아하는 부분을 말씀해 현재 구성을 상담하세요.\",\n      \"actualPixelsPersonallyViewed\": true\n    },\n    {\n      \"productKey\": \"funeral-large\",\n      \"officialSku\": \"B205\",\n      \"path\": \"/tmp/jungnang-copy-integration-20261011/baseline/site-factory/seoul-jungnang-flower/public/images/products/funeral-large.jpg\",\n      \"sha256\": \"1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e\",\n      \"gitBlobSha\": \"ab914ee924fd0bf0e39a2061cf74e2ef550186b9\",\n      \"desc\": \"노란 윗장식과 바깥 둘레의 노란 꽃이 이어집니다. 중앙에 색이 모인 사진과 함께 비교해 보세요.\",\n      \"actualPixelsPersonallyViewed\": true\n    },\n    {\n      \"productKey\": \"funeral-xl\",\n      \"officialSku\": \"B060\",\n      \"path\": \"/tmp/jungnang-copy-integration-20261011/baseline/site-factory/seoul-jungnang-flower/public/images/products/funeral-xl.jpg\",\n      \"sha256\": \"a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3\",\n      \"gitBlobSha\": \"24a9c466cfb2116b6432389c6bbb1c226c9ce4ca\",\n      \"desc\": \"중앙의 연두빛 꽃과 바깥으로 뻗은 줄기, 분홍빛 꽃이 보입니다. 사진의 색 배치를 기준으로 상담하실 수 있습니다.\",\n      \"actualPixelsPersonallyViewed\": true\n    },\n    {\n      \"productKey\": \"congrats-basic\",\n      \"officialSku\": \"C200\",\n      \"path\": \"/tmp/jungnang-copy-integration-20261011/baseline/site-factory/seoul-jungnang-flower/public/images/products/congrats-basic.jpg\",\n      \"sha256\": \"0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905\",\n      \"gitBlobSha\": \"f142abff10936c47f30b96ab37e79c6224bc1527\",\n      \"desc\": \"분홍 윗장식과 중앙의 분홍 꽃이 눈에 들어옵니다. 분홍 계열을 좋아하는 분께 전할 선물로 살펴보세요.\",\n      \"actualPixelsPersonallyViewed\": true\n    },\n    {\n      \"productKey\": \"congrats-premium\",\n      \"officialSku\": \"C203\",\n      \"path\": \"/tmp/jungnang-copy-integration-20261011/baseline/site-factory/seoul-jungnang-flower/public/images/products/congrats-premium.jpg\",\n      \"sha256\": \"d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a\",\n      \"gitBlobSha\": \"7c6289c4db4ffd91ac034ecd7a9e288add7ba0c7\",\n      \"desc\": \"크림빛 윗장식 아래 노란 꽃이 이어집니다. 가게 분위기와 어울릴 색감을 고를 때 비교해 보세요.\",\n      \"actualPixelsPersonallyViewed\": true\n    },\n    {\n      \"productKey\": \"congrats-large\",\n      \"officialSku\": \"C204\",\n      \"path\": \"/tmp/jungnang-copy-integration-20261011/baseline/site-factory/seoul-jungnang-flower/public/images/products/congrats-large.jpg\",\n      \"sha256\": \"05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d\",\n      \"gitBlobSha\": \"9c7f02a1a4dc526d84c91d6fd75640e1800bb0fd\",\n      \"desc\": \"중앙과 가장자리의 노란 꽃 사이로 분홍 꽃이 더해져 있습니다. 원하는 배치와 실제 준비 구성을 상담하세요.\",\n      \"actualPixelsPersonallyViewed\": true\n    },\n    {\n      \"productKey\": \"congrats-xl\",\n      \"officialSku\": \"C205\",\n      \"path\": \"/tmp/jungnang-copy-integration-20261011/baseline/site-factory/seoul-jungnang-flower/public/images/products/congrats-xl.jpg\",\n      \"sha256\": \"b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9\",\n      \"gitBlobSha\": \"00df190b6f62e702c45de1d97148003b9ab7943f\",\n      \"desc\": \"분홍 장식 아래 노랑·분홍·흰색 꽃이 어우러집니다. 여러 색이 담긴 축하 선물을 찾을 때 살펴보세요.\",\n      \"actualPixelsPersonallyViewed\": true\n    }\n  ],\n  \"integrity\": {\n    \"reportPath\": \"/workspace/shared/jungnang-copy-revision-20261011/independent-review/integrity.json\",\n    \"reportSha256\": \"2da8971e43a4a6bad2dff18654cb16a61fd5cea79a381a5e80248cf893a95c48\",\n    \"verifierPath\": \"/workspace/shared/jungnang-copy-revision-20261011/independent-review/verify_choice_common.py\",\n    \"verifierSha256\": \"e682bf6c8e4c86c574707db6ed1dccc0910919eec10fe749b44159cccf906c10\",\n    \"baselineGitBlobsRecomputed\": 69,\n    \"priorApprovalBytesBound\": true,\n    \"threeExactBodyReplacementsReplayed\": true,\n    \"fourCommonDiffsRecomputed\": true,\n    \"otherArticleFieldsUnchanged\": true,\n    \"productIdentityPriceSourceDateAndOrderTargetUnchanged\": true,\n    \"undeclaredCommonProposalFiles\": 0,\n    \"sourceSelectionCheck\": \"/workspace/shared/jungnang-copy-revision-20261011/independent-review/catalog-selection.log\",\n    \"sourceSelectionCheckSha256\": \"808f3e8d6420e1fe630101f7d932b28fef2a9a18ae54ba5466d94939076505ff\",\n    \"sourceSelectionResult\": \"Three exact four-product sets; this is not a rendered-card check\"\n  },\n  \"integrationRequirements\": [\n    \"Treat retained approved/status/snapshot fields as original comparison metadata only. Recalculate customer snapshots/provenance and bind the actual independent review bytes during integration.\",\n    \"Run exact-source unit/full check/build/static/graph and actual three-route body/four-card checks after integration. This copy-only review is not build or DOM evidence.\",\n    \"Preserve original N=3 and source facts/history; later remote publication and live HTTP evidence remain separate. Existing historical handoff narrative incorrectly says 25 pages in one inactive-route note; actual files/denominator are 3 and this review does not rely on that note.\"\n  ],\n  \"limits\": {\n    \"sourceIntegration\": \"NOT_RUN\",\n    \"unitOrFullBuild\": \"NOT_RUN\",\n    \"actualRenderedDom\": \"NOT_RUN\",\n    \"hostedQa\": \"NOT_RUN\",\n    \"screenVisualQa\": \"NOT_RUN\",\n    \"freshPriceOrFacilityRequests\": \"NOT_REPEATED; approved facts and verification dates preserved\",\n    \"sourceOrPriorReceiptEdits\": 0,\n    \"externalWrites\": 0,\n    \"heavyBuilds\": 0\n  },\n  \"canIntegrateForBuild\": true,\n  \"publicationApproval\": false,\n  \"publicCompletion\": false\n}\n"
+    }
+  },
+  "approvedCustomerPages": [
+    {
+      "slug": "sinnae-dong-seoul-medical-center-funeral-wreath",
+      "title": "서울의료원 장례식장 근조화환 주문",
+      "h1": "서울의료원 장례식장 근조화환 주문",
+      "primaryKeyword": "서울의료원 장례식장 근조화환 주문",
+      "description": "서울의료원 장례식장에 보낼 근조화환으로 조문의 마음을 전하세요. 공식 상품 네 가지의 사진과 기본가격을 비교하고 빈소와 발인 일정에 맞춰 상담하실 수 있습니다.",
+      "cardSummary": "서울의료원에 전할 차분한 위로, 개인·동료 공동 명의에 맞는 근조화환을 준비합니다.",
+      "firstAnswer": "서울의료원 장례식장으로 조문의 마음을 전하려면, 먼저 편한 예산에서 근조화환 사진을 살펴보세요. 개인이나 동료들과 함께 보내는 인사를 담으실 수 있습니다. 신내로 156의 장례식장과 부고에 적힌 빈소·발인 일정을 알려주시면 주문을 상담하기 좋습니다.",
+      "contentMarkdown": "## 동료들과 함께 전하는 조문의 마음\n누군가의 슬픔 앞에서는 긴 말보다 차분한 위로를 전하고 싶을 때가 있습니다. 서울의료원 장례식장에 보내는 근조화환을 고르신다면, 개인의 마음으로 또는 동료들과 함께 모은 뜻으로 준비해 보세요. 상품 선택이 낯설어도 예산과 보내는 이름부터 편하게 말씀하실 수 있습니다.\n\n## 근조화환 네 가지를 비교해 보세요\n- 근조 3단 화환 B201: 기본가격 59,000원\n- 근조 고급 3단 화환 B203: 기본가격 79,000원\n- 근조 특대 3단 화환 B205: 기본가격 109,000원\n- 근조 특특대 3단 화환 B060: 기본가격 149,000원\n\n조용한 위로를 어떤 모습으로 전할지 사진을 나란히 살펴보세요. B201은 흰 꽃 가운데 노란 꽃이 모여 있고, B205는 바깥 둘레에도 노란 꽃이 이어집니다. 동료들과 함께 준비하신다면 마음에 드는 배치와 모임에서 정한 예산을 함께 말씀해 주세요. 선택한 사진을 바탕으로 현재 가능한 꽃 구성과 실제 규격을 상담하실 수 있습니다.\n\n## 서울의료원 장례식장 안내\n장례식장은 **중랑구 신내로 156**에 있으며 공식 시설안내에는 **지하 2층의 빈소**가 소개되어 있습니다. 부고의 빈소 호실과 발인 일정, 유족의 화환 수령 의사를 준비해 주세요. 이번 장례에서 인계할 장소와 가능한 시간은 빈소 측 안내에 맞춰 상담하시면 됩니다.\n\n회사나 모임에서 함께 보내실 때는 리본에 넣을 이름을 정해 주세요. 조문 인사는 ‘삼가 고인의 명복을 빕니다’처럼 준비하거나 종교와 유족의 뜻에 맞는 표현을 선택하실 수 있습니다.\n\n표시가격은 상품 기본가격입니다. 실제 배송지에 따라 추가 배송비가 생길 수 있어 최종 결제금액과 요청 일정, 배송·반입 가능 여부는 주문 전에 함께 상담해 주세요.\n\n꽃이랑 **1844-0644**에서 상품과 조문 문구를 상담해 보세요. 상담원 연결은 **08:00~23:00**, 온라인 상품 확인과 주문은 [꽃이랑 공식몰](https://fwith.co.kr/)에서 가능합니다.",
+      "visualIntent": "신내동 배송 실적처럼 보이지 않도록 공식 근조 카탈로그 4종만 비교한다. 첫 구매 판단은 서울의료원 B1 출입구·B2 빈소 구분과 실제 호실·인수 장소 확인이다. 시설 사진이나 배송 완료 사진으로 표현하지 않는다.",
+      "regionalProductKeys": [
+        "funeral-basic",
+        "funeral-premium",
+        "funeral-large",
+        "funeral-xl"
+      ],
+      "sources": [
+        {
+          "name": "서울시 서울의료원 장례식장 안내",
+          "url": "https://news.seoul.go.kr/welfare/archives/256653",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "서울의료원 장례식장 시설안내",
+          "url": "https://as.seoulmc.or.kr/funeral/page/use/use_01.asp",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 근조 3단 화환 공식 상품 안내",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B201",
+          "type": "business",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 근조 고급 3단 화환 공식 상품 안내",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B203",
+          "type": "business",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 근조 특대 3단 화환 공식 상품 안내",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B205",
+          "type": "business",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 근조 특특대 3단 화환 공식 상품 안내",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B060",
+          "type": "business",
+          "verifiedAt": "2026-10-11"
+        }
+      ],
+      "sections": [],
+      "faq": [],
+      "relatedKeys": [],
+      "pageKey": "seoul-jungnang-flower-direct-region-sinnae-dong-seoul-medical-center-funeral-wreath",
+      "category": "regions",
+      "routeType": "category",
+      "url": "/regions/sinnae-dong-seoul-medical-center-funeral-wreath/",
+      "pageType": "regional-service",
+      "status": "approved",
+      "file": "src/data/pages.json",
+      "order": 1,
+      "approvalVerified": true,
+      "sourceMode": "direct-git",
+      "queryClass": "local-commercial",
+      "assetSlot": "REAL_PROOF",
+      "source": {
+        "name": "서울시 서울의료원 장례식장 안내",
+        "url": "https://news.seoul.go.kr/welfare/archives/256653",
+        "type": "official",
+        "verifiedAt": "2026-10-11"
+      },
+      "productCardLimit": 4,
+      "productCardKeys": [
+        "funeral-basic",
+        "funeral-premium",
+        "funeral-large",
+        "funeral-xl"
+      ],
+      "scopeKey": "seoul-jungnang-direct-initial-20261011",
+      "regionUnitKeys": [
+        "중랑구/법정동/신내동"
+      ],
+      "regionalPurchaseMode": "catalog",
+      "regionalProductFamilies": [
+        "funeral"
+      ],
+      "ogImage": "/images/products/funeral-basic.jpg",
+      "ogImageAlt": "근조 3단 화환 공식 상품 사진",
+      "ogImageSha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+      "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B201",
+      "ogImageWidth": 500,
+      "ogImageHeight": 500,
+      "ogImageType": "image/jpeg",
+      "snapshotId": "direct-content-sinnae-dong-seoul-medical-center-funeral-wreath-9d30afafcb0fee0b",
+      "snapshotHash": "9d30afafcb0fee0bfa54fa34f70934fad52e5733cf438812351ef39e486ffc31"
+    },
+    {
+      "slug": "myeonmok-dong-green-hospital-funeral-wreath",
+      "title": "녹색병원 장례식장 근조화환 주문",
+      "h1": "녹색병원 장례식장 근조화환 주문",
+      "primaryKeyword": "녹색병원 장례식장 근조화환 주문",
+      "description": "늦은 시간에 받은 부고에도 조문의 마음을 차분히 준비하세요. 녹색병원 장례식장에 보낼 근조화환 네 가지를 살펴보고 수령 일정과 상품을 상담하실 수 있습니다.",
+      "cardSummary": "늦게 접한 부고에 전할 위로를 준비하며, 녹색병원의 수령 일정에 맞는 근조화환을 상담합니다.",
+      "firstAnswer": "늦은 시간 녹색병원 장례식장 부고를 받으셨나요? 마음을 전할 근조화환과 조문 문구부터 차분히 살펴보세요. 장례식장은 24시간 운영하지만 화환을 받을 시간과 제작·배송 일정은 별도 상담이 필요합니다. 꽃이랑 상담원 연결은 08:00~23:00입니다.",
+      "contentMarkdown": "## 늦게 접한 부고에도 마음은 차분히 준비하세요\n하루를 마무리하다 부고를 받으면 바로 찾아뵙지 못해 마음이 쓰일 수 있습니다. 녹색병원 장례식장으로 위로를 전하고 싶다면, 근조화환 사진을 보며 어떤 인사를 담을지 먼저 생각해 보세요. 마음이 분주한 때에는 원하는 예산과 전달 일정을 말씀하시고, 상담을 통해 준비할 상품을 차근차근 정하셔도 좋습니다.\n\n## 면목동 녹색병원의 수령 일정\n장례식장은 **중랑구 사가정로49길 53, 지하 2층 빈소**를 안내합니다. 시설의 장례 상담전화는 **02-493-4444**이며 연중무휴 24시간 운영을 안내하고 있습니다. 화환의 야간 수령은 별도로 문의해 주세요.\n\n꽃이랑의 상품 상담은 **1844-0644, 08:00~23:00**입니다. 부고의 빈소와 발인 일정을 준비해 원하시는 전달 시각을 말씀해 주세요. 야간 전달이 어렵다면 수령 가능한 다음 시간과 발인 일정을 함께 살펴보며 주문 가능 여부를 상담하실 수 있습니다.\n\n## 마음과 예산에 맞는 근조화환\n- 근조 3단 화환 B201: 기본가격 59,000원\n- 근조 고급 3단 화환 B203: 기본가격 79,000원\n- 근조 특대 3단 화환 B205: 기본가격 109,000원\n- 근조 특특대 3단 화환 B060: 기본가격 149,000원\n\n네 가지 공식 상품 사진과 기본가격을 비교해 보세요. 상품별 실제 크기와 현재 준비 가능한 꽃 구성은 주문할 때 안내를 받으실 수 있습니다. 리본은 종교와 유족의 뜻에 맞는 조문 문구, 보내는 개인·회사 이름으로 준비해 주세요.\n\n표시가격은 상품 기본가격입니다. 실제 배송지에 따라 추가 배송비가 생길 수 있어 최종 결제금액과 요청 일정, 배송·반입 가능 여부는 주문 전에 함께 상담해 주세요.\n\n혼자 결정하기 어려운 부분은 상담 때 편하게 말씀해 주세요. 상품 확인과 온라인 주문은 [꽃이랑 공식몰](https://fwith.co.kr/)에서도 가능합니다.",
+      "visualIntent": "녹색병원 24시간 장례 운영과 꽃 주문 상담·야간 인수를 구분하는 시간 판단을 앞세운다. 근조 공식 카탈로그 4종을 비교하되 현장 납품·야간 배송 증빙으로 표현하지 않는다.",
+      "regionalProductKeys": [
+        "funeral-basic",
+        "funeral-premium",
+        "funeral-large",
+        "funeral-xl"
+      ],
+      "sources": [
+        {
+          "name": "녹색병원 장례식장 전용 안내",
+          "url": "https://www.greenhospital.co.kr/sub08/sub10.php",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "녹색병원 찾아오시는 길",
+          "url": "https://www.greenhospital.co.kr/sub08/sub01.php",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 근조 3단 화환 공식 상품 안내",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B201",
+          "type": "business",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 근조 고급 3단 화환 공식 상품 안내",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B203",
+          "type": "business",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 근조 특대 3단 화환 공식 상품 안내",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B205",
+          "type": "business",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 근조 특특대 3단 화환 공식 상품 안내",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B060",
+          "type": "business",
+          "verifiedAt": "2026-10-11"
+        }
+      ],
+      "sections": [],
+      "faq": [],
+      "relatedKeys": [],
+      "pageKey": "seoul-jungnang-flower-direct-region-myeonmok-dong-green-hospital-funeral-wreath",
+      "category": "regions",
+      "routeType": "category",
+      "url": "/regions/myeonmok-dong-green-hospital-funeral-wreath/",
+      "pageType": "regional-service",
+      "status": "approved",
+      "file": "src/data/pages.json",
+      "order": 2,
+      "approvalVerified": true,
+      "sourceMode": "direct-git",
+      "queryClass": "local-commercial",
+      "assetSlot": "REAL_PROOF",
+      "source": {
+        "name": "녹색병원 장례식장 전용 안내",
+        "url": "https://www.greenhospital.co.kr/sub08/sub10.php",
+        "type": "official",
+        "verifiedAt": "2026-10-11"
+      },
+      "productCardLimit": 4,
+      "productCardKeys": [
+        "funeral-basic",
+        "funeral-premium",
+        "funeral-large",
+        "funeral-xl"
+      ],
+      "scopeKey": "seoul-jungnang-direct-initial-20261011",
+      "regionUnitKeys": [
+        "중랑구/법정동/면목동"
+      ],
+      "regionalPurchaseMode": "catalog",
+      "regionalProductFamilies": [
+        "funeral"
+      ],
+      "ogImage": "/images/products/funeral-basic.jpg",
+      "ogImageAlt": "근조 3단 화환 공식 상품 사진",
+      "ogImageSha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+      "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B201",
+      "ogImageWidth": 500,
+      "ogImageHeight": 500,
+      "ogImageType": "image/jpeg",
+      "snapshotId": "direct-content-myeonmok-dong-green-hospital-funeral-wreath-f97c66e5a3f9c052",
+      "snapshotHash": "f97c66e5a3f9c052feaa9f112fee94aff1e44e3e1835b8e1e9189f0aed51d1ed"
+    },
+    {
+      "slug": "sangbong-dong-dongbu-mideurang-opening-wreath",
+      "title": "동부시장 미드랑길 개업 축하화환 주문",
+      "h1": "동부시장 미드랑길 개업 축하화환 주문",
+      "primaryKeyword": "동부시장 미드랑길 개업 축하화환 주문",
+      "description": "동부시장 미드랑길의 새 가게에 개업 축하화환으로 응원을 전하세요. 공식 상품 네 가지의 사진·기본가격과 개업 리본 문구를 살펴보실 수 있습니다.",
+      "cardSummary": "미드랑길의 새로운 시작에 전할 축하 인사와 개업화환을 예산에 맞춰 준비합니다.",
+      "firstAnswer": "동부시장 미드랑길에 새 가게를 연 분께 ‘새로운 시작을 응원합니다’라는 인사를 전해보세요. 축하화환 네 가지를 사진과 기본가격으로 비교할 수 있습니다. 가게의 상호와 실제 주소, 꽃을 받기 편한 일정을 알려주시면 개업 문구와 함께 상담하실 수 있습니다.",
+      "contentMarkdown": "## 가게의 첫걸음을 응원하는 선물\n새로 문을 여는 가게에는 준비해 온 시간과 앞으로의 기대가 함께 담겨 있지요. 동부시장 미드랑길의 지인이나 거래처에 축하화환을 보내며 그 시작을 응원해 보세요. ‘개업을 축하드립니다’, ‘새로운 시작을 응원합니다’처럼 짧은 인사에도 축하의 뜻을 담으실 수 있습니다.\n\n## 개업 예산에 맞춰 살펴볼 네 가지\n- 축하 3단 화환 C200: 기본가격 59,000원\n- 축하 고급 3단 화환 C203: 기본가격 79,000원\n- 축하 특대 3단 화환 C204: 기본가격 99,000원\n- 축하 특특대 3단 화환 C205: 기본가격 149,000원\n\n오래 준비한 가게 앞에 놓일 꽃이라면 주인공이 좋아하는 색부터 떠올려 보세요. C203 사진은 크림빛 윗장식 아래 노란 꽃이 눈에 들어오고, C205 사진은 분홍 장식과 노랑·분홍·흰색 꽃이 어우러져 있습니다. 마음에 드는 색 배치와 가게에 둘 자리를 함께 말씀하시면 현재 가능한 구성과 실제 규격을 상담하며 선택하실 수 있습니다.\n\n사진의 리본 문구는 예시입니다. 개업용 인사와 보내는 개인·회사 이름은 주문할 때 함께 지정해 주세요.\n\n## 상봉동 미드랑길의 점포로 보내기\n서울시 전통시장 현황에는 **상봉동 동부시장 미드랑길 골목형상점가**가 소개되어 있습니다. 배송지는 받는 가게의 상호와 실제 점포 주소로 알려주시면 됩니다.\n\n개업 당일 또는 준비일 가운데 가게에서 편하게 받을 수 있는 때를 상의해 보세요. 화환을 놓을 자리와 수령 담당자를 정해 두면 상품 크기와 전달 일정을 상담하기 좋습니다. 회수가 필요하면 가능 여부와 비용도 주문 때 함께 문의해 주세요.\n\n표시가격은 상품 기본가격입니다. 실제 배송지에 따라 추가 배송비가 생길 수 있어 최종 결제금액과 요청 일정, 배송·반입 가능 여부는 주문 전에 함께 상담해 주세요.\n\n첫 개업 선물이어서 상품이나 문구가 고민되시나요? 꽃이랑 **1844-0644**에서 편하게 상담해 보세요. 상담원 연결은 **08:00~23:00**이며 [꽃이랑 공식몰](https://fwith.co.kr/)에서도 상품을 보고 주문하실 수 있습니다.",
+      "visualIntent": "상봉동 미드랑길의 실제 점포 식별과 개업 수령 일정·공간 결정을 돕는다. 축하 공식 카탈로그 4종은 외형 비교로만 사용하고 사진의 결혼 축하 리본은 개업용 문구로 별도 지정·확인해야 함을 명시한다. 시장 납품 실적 이미지로 표현하지 않는다.",
+      "regionalProductKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sources": [
+        {
+          "name": "서울시 전통시장 현황(2026.8.28. 기준)",
+          "url": "https://news.seoul.go.kr/economy/archives/574563",
+          "type": "official",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 3단 화환 공식 상품 안내",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C200",
+          "type": "business",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 고급 3단 화환 공식 상품 안내",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C203",
+          "type": "business",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 특대 3단 화환 공식 상품 안내",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C204",
+          "type": "business",
+          "verifiedAt": "2026-10-11"
+        },
+        {
+          "name": "꽃이랑 축하 특특대 3단 화환 공식 상품 안내",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=C205",
+          "type": "business",
+          "verifiedAt": "2026-10-11"
+        }
+      ],
+      "sections": [],
+      "faq": [],
+      "relatedKeys": [],
+      "pageKey": "seoul-jungnang-flower-direct-region-sangbong-dong-dongbu-mideurang-opening-wreath",
+      "category": "regions",
+      "routeType": "category",
+      "url": "/regions/sangbong-dong-dongbu-mideurang-opening-wreath/",
+      "pageType": "regional-service",
+      "status": "approved",
+      "file": "src/data/pages.json",
+      "order": 3,
+      "approvalVerified": true,
+      "sourceMode": "direct-git",
+      "queryClass": "local-commercial",
+      "assetSlot": "REAL_PROOF",
+      "source": {
+        "name": "서울시 전통시장 현황(2026.8.28. 기준)",
+        "url": "https://news.seoul.go.kr/economy/archives/574563",
+        "type": "official",
+        "verifiedAt": "2026-10-11"
+      },
+      "productCardLimit": 4,
+      "productCardKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "scopeKey": "seoul-jungnang-direct-initial-20261011",
+      "regionUnitKeys": [
+        "중랑구/법정동/상봉동"
+      ],
+      "regionalPurchaseMode": "catalog",
+      "regionalProductFamilies": [
+        "congrats"
+      ],
+      "ogImage": "/images/products/congrats-basic.jpg",
+      "ogImageAlt": "축하 3단 화환 공식 상품 사진",
+      "ogImageSha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+      "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=C200",
+      "ogImageWidth": 500,
+      "ogImageHeight": 500,
+      "ogImageType": "image/jpeg",
+      "snapshotId": "direct-content-sangbong-dong-dongbu-mideurang-opening-wreath-4ba045af34a8606b",
+      "snapshotHash": "4ba045af34a8606b516a3f365adc585b64acc3df60f481b0aeb1be18efa67fcf"
+    }
+  ],
+  "copyInputHash": "42985b6e4209f7c29112a5323f09b3297b021d12a4f4fe36f0d0939a945568ba",
+  "integrationReview": "pending",
+  "externalWrites": 0
+}
