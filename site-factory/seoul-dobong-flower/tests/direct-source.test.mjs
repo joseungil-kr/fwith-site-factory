@@ -62,7 +62,7 @@ test('directory links only reviewed planned articles and retains an honest unwri
  assert.equal(new Set(entries.flatMap(e=>e.representative.unitKeys)).size,expected.approvedDistinctUnitCount);
  for(const entry of entries)assert.deepEqual(entry.page.regionUnitKeys,entry.representative.unitKeys);
  const source=fs.readFileSync(new URL('../src/components/RegionDirectory.astro',import.meta.url),'utf8');
- assert.match(source,/개별 안내 준비 중/);assert.match(source,/관할 목록과 개별 주문 안내의 범위는 다릅니다/);
+ assert.match(source,/개별 안내 준비 중/);assert.match(source,/개별 주문 안내는 준비된 곳만 연결/);
  assert.match(source,/법정동 \{coverage.units.length\}개와 행정동 \{coverage.administrativeCrosswalk.length\}개/);assert.match(source,/relation.scope==='partial'/);
  assert.doesNotMatch(source,/양평|읍·면별/);
 });
@@ -124,9 +124,12 @@ test('every reviewed comparison renders four exact family products and truthful 
   assert.equal(sha(fs.readFileSync(new URL('../public'+asset.imagePath,import.meta.url))),asset.imageSha256);
   assert.equal(row.image.sha256,asset.imageSha256);assert.equal(row.sourceImageUrl,asset.sourceImageUrl);assert.equal(row.sourceImageHttpStatus,200);
   assert.deepEqual(row.image.dimensions,asset.dimensions);assert.equal(row.image.type,asset.mimeType);assert.equal(row.previousImageSha256,asset.previousImageSha256);
-  assert.match(p.desc,/공식 상품 예시.*리본 문구.*구성.*추가 배송비.*주문 전에 확인/);
+  const reviewed=JSON.parse(read('customer-copy-review-20261011').approvalBasis.choiceCommonManifest.utf8Content);
+  assert.equal(sha(fs.readFileSync(new URL('../src/data/products.json',import.meta.url))),reviewed.commonChanges.find(r=>r.path==='src/data/products.json').proposalSha256);
+  const cards=fs.readFileSync(new URL('../src/components/ProductCards.astro',import.meta.url),'utf8');
+  assert.match(cards,/사진 속 리본은 예시/);assert.match(cards,/site.productVariationNotice/);assert.match(cards,/site.deliveryNotice/);
  }
- assert.match(read('business-truth').deliveryNotice,/실제 배송지 주소.*추가 배송비.*최종 결제금액.*주문 전에.*확인/);
+ assert.match(read('business-truth').deliveryNotice,/상품 기본가격.*실제 배송지.*추가 배송비.*최종 결제금액.*주문 전에.*상담/);
  assert.doesNotMatch(read('business-truth').deliveryNotice,/양평|단월|양서|10,000원|무료/);
  for(const p of read('pages')){
   assert.equal(p.productCardLimit,4);assert.equal(p.productCardKeys.length,4);
