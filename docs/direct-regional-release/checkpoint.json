@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T09:46:54.542Z",
+  "updatedAt": "2026-10-11T09:52:19.372Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-seongbuk-direct-initial-20261011",
     "city": "서울특별시 성북구",
-    "status": "reviewed_source_saved_remote_verification_in_progress",
+    "status": "public_release_indexnow_received_gsc_pending",
     "owner": {
       "scheduledRunAt": "2026-10-11T06:00:00Z",
       "observedExecutionAt": "2026-10-11T06:17:17.505Z",
@@ -74,14 +74,10 @@
       }
     },
     "changeIntent": {
-      "action": "install_fixed_direct_workflow_then_dispatch_once_exact_reviewed_source_after_remote_integrity_gate",
-      "idempotencyKey": "seoul-seongbuk:publish:66fa85dcd7696b66a85abec1d9496a92e3c9ed17"
+      "action": "submit_verified_live_sitemap_to_gsc_once_then_separate_list_readback",
+      "idempotencyKey": "seoul-seongbuk:gsc:66fa85dcd7696b66a85abec1d9496a92e3c9ed17"
     },
     "unfinishedStages": [
-      "remote_integrity_gate",
-      "deploy",
-      "http",
-      "indexnow",
       "gsc",
       "deferred_visual_qa"
     ],
@@ -95,7 +91,7 @@
       "articlesSha256": "19178fe56df7f2597877b5a3bfa5a3af690baf756436c6036deb0780d560860b",
       "independentReviewSha256": "6db8c2c6fff004f577082d5410ef865bc980d464f7a317ec98d96941d24caa99",
       "runtimeStatus": "PASS_LOCAL_ACTUAL_BUILD_REMOTE_READBACK_PENDING",
-      "runtimeReviewSha256": "ce7a07912620e2b10e9c9443593dc65da8bea4587a0a3fd6aae4d8da57853dd3"
+      "runtimeReviewSha256": "d50b34fa1f1f238bd01a5e489ffce40889d0188251cbaee5e6ae2ab07a372667"
     },
     "plan": {
       "state": "frozen_before_authoring_independent_plan_pass",
@@ -145,14 +141,53 @@
       "articleCount": 3,
       "sitemapUrls": 5,
       "localLoopback": "PASS",
-      "remoteFullReadback": "PENDING",
-      "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+      "remoteFullReadback": "72/72 exact bytes and Git blob SHA verified",
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+      "remoteReadbackSha256": "d3fd8cc5eb95de8be7f6770a7bc073ac732feca8702a3040bc342c1abfb66f61",
+      "exactSourceBuild": "PASS",
+      "hostedHttp": "PASS_OFFICIAL_FIXED_CONTRACT_FRESH_INDEPENDENT_CHECK_IN_PROGRESS"
     },
     "publication": {
-      "status": "not_dispatched",
-      "dispatchAcceptedCount": 0,
-      "url": "https://seoul-seongbuk.fwith.kr"
-    }
+      "status": "public_release_search_partial",
+      "dispatchAcceptedCount": 1,
+      "url": "https://seoul-seongbuk.fwith.kr",
+      "runId": 38129753213,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38129753213",
+      "runConclusion": "success",
+      "deploy": "success",
+      "hostnameBinding": "GET_verified",
+      "publicReleaseVerified": true,
+      "httpQa": "PASS_OFFICIAL_FIXED_CONTRACT",
+      "articleCount": 3,
+      "normalHtmlPages": 5,
+      "totalHtmlIncluding404": 6,
+      "sitemapUrls": 5,
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "af76a742277fc1f97dab1e148ba0a4ef729e496edc4603a366bd40f17f4c6f0c",
+        "httpStatus": 200,
+        "origin": "https://seoul-seongbuk.fwith.kr",
+        "recordedAt": "2026-10-11T09:50:43.589102+00:00",
+        "revision": "66fa85dcd7696b66a85abec1d9496a92e3c9ed17",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38129753213",
+        "siteKey": "seoul-seongbuk-flower-direct",
+        "state": "received",
+        "urlCount": 5,
+        "urlSetSha256": "bf8dfa8746c60cc9235ecb8567f2aa640ce4f0d8b019efed88e0be48609c6e3d",
+        "commentId": 6107754048,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6107754048",
+        "durableReadbackVerified": true
+      },
+      "gsc": {
+        "status": "not_submitted",
+        "siteUrl": "sc-domain:fwith.kr",
+        "sitemapUrl": "https://seoul-seongbuk.fwith.kr/sitemap-index.xml",
+        "priorListReadbackMatched": false
+      }
+    },
+    "controlRevision": "5708ffa8cd62b82fbe079a98a17432c1deb8c21e",
+    "lastSuccessfulStage": "public_qa_and_durable_indexnow_http200"
   },
   "history": [
     {
