@@ -1,0 +1,454 @@
+{
+  "releaseId": "gangbuk-customer-copy-20261011",
+  "baselineSource": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
+  "scope": "Existing5 approved copy; independent source integration and hosted release are separate",
+  "approvalBasis": {
+    "originalCopyHandoff": {
+      "fileName": "author-handoff.rev2.json",
+      "sha256": "16b6ce61e730494d92c00b08fae578ce4ba33841729ad699daf9e2d4d11e861d",
+      "utf8Content": "{\n  \"role\": \"AUTHOR_HANDOFF_PENDING_INDEPENDENT_REVIEW\",\n  \"city\": \"gangbuk\",\n  \"sourceRevision\": \"292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2\",\n  \"originalN\": 5,\n  \"articleCount\": 5,\n  \"revisedArticles\": 5,\n  \"unchangedArticles\": 0,\n  \"titleH1KeywordRetained\": 5,\n  \"emptyStructuredFaqSectionsRetained\": true,\n  \"commonChangedFiles\": 8,\n  \"commonSurfaceDecisions\": [\n    {\n      \"surface\": \"home\",\n      \"routes\": [\n        \"/\"\n      ],\n      \"decision\": \"REVISE\",\n      \"detail\": \"보내는 마음과 상품 선택 중심으로 수정; 상품/CTA/가격/route/SEO 로직 유지.\"\n    },\n    {\n      \"surface\": \"regions directory\",\n      \"routes\": [\n        \"/regions/\"\n      ],\n      \"decision\": \"REVISE\",\n      \"detail\": \"고객 선택 중심 도입으로 수정; 법정/행정 전체 목록·일부 표시·준비중 표시와 링크 로직 보존.\"\n    },\n    {\n      \"surface\": \"article common renderer\",\n      \"routes\": \"every retained article\",\n      \"decision\": \"REVISE\",\n      \"detail\": \"출처 카드의 반복 경고 및 CTA 앞 조건부 문구 축약. 출처 URL/날짜·SEO/이미지/네 카드/본문 renderer 로직 유지.\"\n    },\n    {\n      \"surface\": \"inline banner\",\n      \"routes\": \"home+regions+every retained article\",\n      \"decision\": \"REVISE\",\n      \"detail\": \"편한 상담 안내와 상담시간/실제전달시간 차이, 반입·추가비용 확인 의미 유지.\"\n    },\n    {\n      \"surface\": \"product descriptions\",\n      \"productCount\": 8,\n      \"decision\": \"REVISE\",\n      \"detail\": \"각 카드에 사진·예산 선택의 짧은 한 문장만 유지. 반복 상담 안내 제거; SKU/이름/가격/이미지/주문URL 불변.\"\n    },\n    {\n      \"surface\": \"product ribbon notice\",\n      \"decision\": \"REVISE\",\n      \"detail\": \"예시 사진 문구와 주문 문구 구분을 친절하게 표현.\"\n    },\n    {\n      \"surface\": \"footer delivery notice\",\n      \"decision\": \"REVISE_VIA_BUSINESS_TRUTH\",\n      \"detail\": \"기본가격/추가배송비/최종금액/배송반입/요청시간/주문전 안내 유지.\"\n    },\n    {\n      \"surface\": \"header/navigation/mobile CTA/layout\",\n      \"decision\": \"KEEP\",\n      \"detail\": \"현재 기능성 문구가 간결하고 적절함. 실제 파일 전체 검토; 연결 URL과 연락처 유지.\"\n    },\n    {\n      \"surface\": \"404\",\n      \"routes\": [\n        \"/404.html\",\n        \"all unmatched routes\"\n      ],\n      \"decision\": \"KEEP\",\n      \"detail\": \"다시 홈으로 이동하도록 간결히 안내함; noindex true, canonical false, schema false 유지.\"\n    },\n    {\n      \"surface\": \"privacy/order/business/funeral/gift/school/event standalone routes\",\n      \"decision\": \"NOT_GENERATED_BY_FIXED_SOURCE\",\n      \"detail\": \"getStaticPaths는 site.groups, site.groups는 pages에 실제 category가 있는 허브만 사용. 25개 전체 category=regions; 해당 별도 경로 없음. 비공개 페이지로 분모에서 숨긴 것이 아님.\"\n    },\n    {\n      \"surface\": \"robots/sitemap\",\n      \"decision\": \"KEEP\",\n      \"detail\": \"판매문구 수정 대상 아님. 사이트 공개/인덱싱 정책 보존.\"\n    },\n    {\n      \"surface\": \"business truth/product variation/contact hours\",\n      \"decision\": \"KEEP_EXCEPT_DELIVERY_NOTICE\",\n      \"detail\": \"기존 확인 사업정보, 모든 연락처 및 상담시간, 상품변동조건 보존.\"\n    },\n    {\n      \"surface\": \"inactive shared hub guide branches\",\n      \"decision\": \"KEEP_NOT_RENDERED\",\n      \"detail\": \"현재 허브 경로 없음. 미노출 공통 분기를 새 페이지로 만들거나 노출하지 않음.\"\n    }\n  ],\n  \"checkedAt\": \"2026-10-11T13:54:29.548746+00:00\",\n  \"criteriaSha256\": \"3b599a38e633634599bd7907f2a41ac010dfb2736874b68d17f0734684661acc\",\n  \"files\": {\n    \"pages.author.rev2.json\": \"09f895a0adc249bbe8f88d798be9001c13f4a0c58ea36a06d706acb2162f9a8d\",\n    \"articles-author.rev2.json\": \"23aef462e008b3abdcb25dfe79d460900c63bbfffdc433106e1a284235271fad\",\n    \"article-field-diff.rev1.json\": \"d55fa2eaa061231de75266fbd24df416e1f760c75ec54a9f4dd08880b3edb5ea\",\n    \"source-field-diff.rev2.json\": \"419b6538e2320dbd886b0046e1519155c4f93a1401c7dc72ea0e7591e3a3bdaf\",\n    \"source-card-review.author.rev2.json\": \"33a44453a5345b7ead5e347699b76932d5124e7ef859a4a2850b8b015d8283c3\",\n    \"common-field-diff.rev2.json\": \"c70ecaaec96db9397ecd44ad6368391b819ec6e8a1afe06d9958d66ff58cf42b\",\n    \"common-surface-review.author.rev2.json\": \"7371da6037b63a7f0bc77aa6a3049de39538349fe646e9fb7557f300c6932f0c\",\n    \"original-manifest.json\": \"b059f2db9fcdecfcf90abe0bcbc89532bbc7ab221ab890decf47285acb2feb90\",\n    \"denominator.json\": \"86d443499f21364cac4704d015b30e66adb48dcc39542126c390800ff6906baf\",\n    \"article-review-list.author.json\": \"bfd73f5bdeca77df3e411cc8222a55c7aff42cad554ed864be6e981f36787698\",\n    \"common-draft/src/pages/index.astro\": \"c5476b61b4c54e0000cd887d8e0d385a2a1d9246c4b868295e7c467192131082\",\n    \"common-draft/src/pages/[category]/index.astro\": \"bb7e4bbb0e9d43212f391a89788e163d38f4629d9fa7b41856f56e6c01dd70d3\",\n    \"common-draft/src/components/RegionDirectory.astro\": \"56ced6b6514d4bb27672921ebf63989d70850c3a8570a168ee400098c00f41d0\",\n    \"common-draft/src/components/InlineOrderBanner.astro\": \"1dc7a9149f1f1f3fbea6c80de149da09955a9ac2b7939eaf7e04777f3b683202\",\n    \"common-draft/src/pages/[category]/[slug].astro\": \"046a1a6cd7f9fe835949853b6210daa50140f0ca9950b453d47922866f4c84df\",\n    \"common-draft/src/components/ProductCards.astro\": \"3b05836fe80ec7be81efc359b9642c303623c02a1c50e673ec9e738f061652b0\",\n    \"common-draft/src/data/business-truth.json\": \"f4c6ba8b636a739a40edbb85982a23c00b28a09f43685393afb80a431514153b\",\n    \"common-draft/src/data/products.json\": \"93f0e8c35a4b07bf4d02d18f056d196db6e38cb3b79bf216c710f191b67613d7\"\n  },\n  \"checks\": [\n    {\n      \"slug\": \"suyu-dong-daehan-funeral-wreath\",\n      \"url\": \"/regions/suyu-dong-daehan-funeral-wreath/\",\n      \"copyDecision\": \"REVISE\",\n      \"copyChangedFields\": [\n        \"description\",\n        \"cardSummary\",\n        \"firstAnswer\",\n        \"contentMarkdown\"\n      ],\n      \"maintainedTitleH1Keyword\": true,\n      \"fixedTechnicalAndProductFieldsUnchanged\": true,\n      \"sourceCardsOnlyExplicitlyRemoved\": true,\n      \"customerOriginalsRead\": true\n    },\n    {\n      \"slug\": \"mia-dong-the-victoria-wedding-wreath\",\n      \"url\": \"/regions/mia-dong-the-victoria-wedding-wreath/\",\n      \"copyDecision\": \"REVISE\",\n      \"copyChangedFields\": [\n        \"description\",\n        \"cardSummary\",\n        \"firstAnswer\",\n        \"contentMarkdown\"\n      ],\n      \"maintainedTitleH1Keyword\": true,\n      \"fixedTechnicalAndProductFieldsUnchanged\": true,\n      \"sourceCardsOnlyExplicitlyRemoved\": true,\n      \"customerOriginalsRead\": true\n    },\n    {\n      \"slug\": \"ui-dong-anto-wedding-wreath\",\n      \"url\": \"/regions/ui-dong-anto-wedding-wreath/\",\n      \"copyDecision\": \"REVISE\",\n      \"copyChangedFields\": [\n        \"description\",\n        \"cardSummary\",\n        \"firstAnswer\",\n        \"contentMarkdown\"\n      ],\n      \"maintainedTitleH1Keyword\": true,\n      \"fixedTechnicalAndProductFieldsUnchanged\": true,\n      \"sourceCardsOnlyExplicitlyRemoved\": true,\n      \"customerOriginalsRead\": true\n    },\n    {\n      \"slug\": \"suyu-dong-suyu-market-opening-wreath\",\n      \"url\": \"/regions/suyu-dong-suyu-market-opening-wreath/\",\n      \"copyDecision\": \"REVISE\",\n      \"copyChangedFields\": [\n        \"description\",\n        \"cardSummary\",\n        \"firstAnswer\",\n        \"contentMarkdown\"\n      ],\n      \"maintainedTitleH1Keyword\": true,\n      \"fixedTechnicalAndProductFieldsUnchanged\": true,\n      \"sourceCardsOnlyExplicitlyRemoved\": true,\n      \"customerOriginalsRead\": true\n    },\n    {\n      \"slug\": \"suyu-dong-gangbuk-arts-congratulation-wreath\",\n      \"url\": \"/regions/suyu-dong-gangbuk-arts-congratulation-wreath/\",\n      \"copyDecision\": \"REVISE\",\n      \"copyChangedFields\": [\n        \"description\",\n        \"cardSummary\",\n        \"firstAnswer\",\n        \"contentMarkdown\"\n      ],\n      \"maintainedTitleH1Keyword\": true,\n      \"fixedTechnicalAndProductFieldsUnchanged\": true,\n      \"sourceCardsOnlyExplicitlyRemoved\": true,\n      \"customerOriginalsRead\": true\n    }\n  ],\n  \"technicalStatus\": \"Authored copy only. Old snapshot/review metadata retained for exact diff, not publication approval. Integrator must regenerate provenance and run full regression.\",\n  \"externalWrites\": 0\n}\n"
+    },
+    "originalCommonHandoff": {
+      "fileName": "common-surface-review.author.rev2.json",
+      "sha256": "7371da6037b63a7f0bc77aa6a3049de39538349fe646e9fb7557f300c6932f0c",
+      "utf8Content": "{\n  \"role\": \"AUTHOR_NOT_INDEPENDENT_REVIEWER\",\n  \"sourceRevision\": \"292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2\",\n  \"allAstroTemplatesRead\": true,\n  \"templatesCrossComparedAcrossSixRegions\": true,\n  \"privacyRoutePresence\": \"absent in exact source renderer\",\n  \"publicScopeReadback\": \"home/sitemap existing receipt checked; non-sitemap route live status not freshly probed in this author task\",\n  \"extraCustomerReadback\": \"existing extra-customer-route-readback has no entries for these six hosts; not treated as proof of absence\",\n  \"changedFiles\": [\n    {\n      \"path\": \"src/pages/index.astro\",\n      \"sha256\": \"c5476b61b4c54e0000cd887d8e0d385a2a1d9246c4b868295e7c467192131082\"\n    },\n    {\n      \"path\": \"src/pages/[category]/index.astro\",\n      \"sha256\": \"bb7e4bbb0e9d43212f391a89788e163d38f4629d9fa7b41856f56e6c01dd70d3\"\n    },\n    {\n      \"path\": \"src/components/RegionDirectory.astro\",\n      \"sha256\": \"56ced6b6514d4bb27672921ebf63989d70850c3a8570a168ee400098c00f41d0\"\n    },\n    {\n      \"path\": \"src/components/InlineOrderBanner.astro\",\n      \"sha256\": \"1dc7a9149f1f1f3fbea6c80de149da09955a9ac2b7939eaf7e04777f3b683202\"\n    },\n    {\n      \"path\": \"src/pages/[category]/[slug].astro\",\n      \"sha256\": \"046a1a6cd7f9fe835949853b6210daa50140f0ca9950b453d47922866f4c84df\"\n    },\n    {\n      \"path\": \"src/components/ProductCards.astro\",\n      \"sha256\": \"3b05836fe80ec7be81efc359b9642c303623c02a1c50e673ec9e738f061652b0\"\n    },\n    {\n      \"path\": \"src/data/business-truth.json\",\n      \"sha256\": \"f4c6ba8b636a739a40edbb85982a23c00b28a09f43685393afb80a431514153b\"\n    },\n    {\n      \"path\": \"src/data/products.json\",\n      \"sha256\": \"93f0e8c35a4b07bf4d02d18f056d196db6e38cb3b79bf216c710f191b67613d7\"\n    }\n  ],\n  \"reviews\": [\n    {\n      \"surface\": \"home\",\n      \"routes\": [\n        \"/\"\n      ],\n      \"decision\": \"REVISE\",\n      \"detail\": \"보내는 마음과 상품 선택 중심으로 수정; 상품/CTA/가격/route/SEO 로직 유지.\"\n    },\n    {\n      \"surface\": \"regions directory\",\n      \"routes\": [\n        \"/regions/\"\n      ],\n      \"decision\": \"REVISE\",\n      \"detail\": \"고객 선택 중심 도입으로 수정; 법정/행정 전체 목록·일부 표시·준비중 표시와 링크 로직 보존.\"\n    },\n    {\n      \"surface\": \"article common renderer\",\n      \"routes\": \"every retained article\",\n      \"decision\": \"REVISE\",\n      \"detail\": \"출처 카드의 반복 경고 및 CTA 앞 조건부 문구 축약. 출처 URL/날짜·SEO/이미지/네 카드/본문 renderer 로직 유지.\"\n    },\n    {\n      \"surface\": \"inline banner\",\n      \"routes\": \"home+regions+every retained article\",\n      \"decision\": \"REVISE\",\n      \"detail\": \"편한 상담 안내와 상담시간/실제전달시간 차이, 반입·추가비용 확인 의미 유지.\"\n    },\n    {\n      \"surface\": \"product descriptions\",\n      \"productCount\": 8,\n      \"decision\": \"REVISE\",\n      \"detail\": \"각 카드에 사진·예산 선택의 짧은 한 문장만 유지. 반복 상담 안내 제거; SKU/이름/가격/이미지/주문URL 불변.\"\n    },\n    {\n      \"surface\": \"product ribbon notice\",\n      \"decision\": \"REVISE\",\n      \"detail\": \"예시 사진 문구와 주문 문구 구분을 친절하게 표현.\"\n    },\n    {\n      \"surface\": \"footer delivery notice\",\n      \"decision\": \"REVISE_VIA_BUSINESS_TRUTH\",\n      \"detail\": \"기본가격/추가배송비/최종금액/배송반입/요청시간/주문전 안내 유지.\"\n    },\n    {\n      \"surface\": \"header/navigation/mobile CTA/layout\",\n      \"decision\": \"KEEP\",\n      \"detail\": \"현재 기능성 문구가 간결하고 적절함. 실제 파일 전체 검토; 연결 URL과 연락처 유지.\"\n    },\n    {\n      \"surface\": \"404\",\n      \"routes\": [\n        \"/404.html\",\n        \"all unmatched routes\"\n      ],\n      \"decision\": \"KEEP\",\n      \"detail\": \"다시 홈으로 이동하도록 간결히 안내함; noindex true, canonical false, schema false 유지.\"\n    },\n    {\n      \"surface\": \"privacy/order/business/funeral/gift/school/event standalone routes\",\n      \"decision\": \"NOT_GENERATED_BY_FIXED_SOURCE\",\n      \"detail\": \"getStaticPaths는 site.groups, site.groups는 pages에 실제 category가 있는 허브만 사용. 25개 전체 category=regions; 해당 별도 경로 없음. 비공개 페이지로 분모에서 숨긴 것이 아님.\"\n    },\n    {\n      \"surface\": \"robots/sitemap\",\n      \"decision\": \"KEEP\",\n      \"detail\": \"판매문구 수정 대상 아님. 사이트 공개/인덱싱 정책 보존.\"\n    },\n    {\n      \"surface\": \"business truth/product variation/contact hours\",\n      \"decision\": \"KEEP_EXCEPT_DELIVERY_NOTICE\",\n      \"detail\": \"기존 확인 사업정보, 모든 연락처 및 상담시간, 상품변동조건 보존.\"\n    },\n    {\n      \"surface\": \"inactive shared hub guide branches\",\n      \"decision\": \"KEEP_NOT_RENDERED\",\n      \"detail\": \"현재 허브 경로 없음. 미노출 공통 분기를 새 페이지로 만들거나 노출하지 않음.\"\n    }\n  ],\n  \"independentReview\": \"PENDING\",\n  \"technicalIntegrationAndRegressionRequired\": true,\n  \"revision\": 2,\n  \"priorRevisionPreserved\": \"/workspace/shared/regional-copy-revision-20261011/drafts-seoul-six/gangbuk/common-history/rev1\",\n  \"revisionReason\": \"Reviewer requested one short photo/budget choice sentence per product; remove repeated consultation sentences.\",\n  \"previousToCurrentProductDescriptionChanges\": 8\n}\n"
+    },
+    "originalCommonReview": {
+      "fileName": "independent-common-copy-review.rev2.json",
+      "sha256": "5682cb076bb24dca474d52fb4abc21dd4689df023cb3a1c4673f1b7bac052d79",
+      "utf8Content": "{\n  \"reviewer\": \"publish_dongdaemun_direct\",\n  \"author\": \"prepare_dongdaemun_runtime\",\n  \"verdict\": \"PASS_COMMON_COPY_ONLY\",\n  \"sourceRevision\": \"292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2\",\n  \"files\": [\n    {\n      \"path\": \"src/pages/index.astro\",\n      \"originalSha256\": \"a53f4316970c8ee3823f87e1cc89f800ecdcd2837c100eb9ad76dc5c0d2e3b02\",\n      \"originalGitBlobSha\": \"9160bd89691fecb083d5ed5e8670c770ae65f27c\",\n      \"candidateSha256\": \"c5476b61b4c54e0000cd887d8e0d385a2a1d9246c4b868295e7c467192131082\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    },\n    {\n      \"path\": \"src/pages/[category]/index.astro\",\n      \"originalSha256\": \"e7358674294714ab531c6aab3758a3c5649d6d61c7ee37c89d43f9417956983e\",\n      \"originalGitBlobSha\": \"811aaccac0214e061c0232e3105cbebd2faa7799\",\n      \"candidateSha256\": \"bb7e4bbb0e9d43212f391a89788e163d38f4629d9fa7b41856f56e6c01dd70d3\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    },\n    {\n      \"path\": \"src/components/RegionDirectory.astro\",\n      \"originalSha256\": \"9407a7c1a7008d09805731d6d288973ca67d1aa38f82d52012455d34c2b3b3b3\",\n      \"originalGitBlobSha\": \"78999e8bcbc6796b1f8d75f10c7b2d98a000ee0c\",\n      \"candidateSha256\": \"56ced6b6514d4bb27672921ebf63989d70850c3a8570a168ee400098c00f41d0\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    },\n    {\n      \"path\": \"src/components/InlineOrderBanner.astro\",\n      \"originalSha256\": \"9c4a05aa806810d5d27a0040e357ccdd89c7d465d9d0d43df0ce48cec8fe33a0\",\n      \"originalGitBlobSha\": \"76d9576e2aee063d86372dde23c3501fc047627a\",\n      \"candidateSha256\": \"1dc7a9149f1f1f3fbea6c80de149da09955a9ac2b7939eaf7e04777f3b683202\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    },\n    {\n      \"path\": \"src/pages/[category]/[slug].astro\",\n      \"originalSha256\": \"68cc66c5de06096778228c6972c6c7fe33fc98a79ab05a3bc722fe6f05219788\",\n      \"originalGitBlobSha\": \"f18e6d75f985eced2245e5a5cf6ed6dbe675df7f\",\n      \"candidateSha256\": \"046a1a6cd7f9fe835949853b6210daa50140f0ca9950b453d47922866f4c84df\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    },\n    {\n      \"path\": \"src/components/ProductCards.astro\",\n      \"originalSha256\": \"5f249fb03794c892a727813e326d03f141f086199257620e0ca0f6d6cf993083\",\n      \"originalGitBlobSha\": \"885072b201f7ef0e13085add8f30b21fb8936315\",\n      \"candidateSha256\": \"3b05836fe80ec7be81efc359b9642c303623c02a1c50e673ec9e738f061652b0\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    },\n    {\n      \"path\": \"src/data/business-truth.json\",\n      \"originalSha256\": \"4376a0f0472af885958f0402cac6c1cad4a0397a498c8bab51fb750774d460a0\",\n      \"originalGitBlobSha\": \"ae5c8021f0037ee77167a309ca47b0d31139b9eb\",\n      \"candidateSha256\": \"f4c6ba8b636a739a40edbb85982a23c00b28a09f43685393afb80a431514153b\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    },\n    {\n      \"path\": \"src/data/products.json\",\n      \"originalSha256\": \"fb0337ce4239c1ca94493b92500e23d789f4685eaee389778cdbf01d2eef6be5\",\n      \"originalGitBlobSha\": \"24ec7c56de038eaa853368f73b055949330c6ed0\",\n      \"candidateSha256\": \"93f0e8c35a4b07bf4d02d18f056d196db6e38cb3b79bf216c710f191b67613d7\",\n      \"onlyDeclaredCustomerCopyChanged\": true\n    }\n  ],\n  \"exactDiffSha256\": \"c70ecaaec96db9397ecd44ad6368391b819ec6e8a1afe06d9958d66ff58cf42b\",\n  \"manualObservations\": [\n    \"All changed customer copy read; each region-specific navigation description and original product description variation checked.\",\n    \"Home, navigation and detail call-to-action invite occasion-appropriate flower selection and convenient consultation.\",\n    \"Contact hours remain distinct from delivery time; price/possible additional fees, intake conditions and photo/ribbon example caveats remain in shared notices.\",\n    \"Independent reconstruction of six Astro text changes is byte-identical; two JSON payloads differ only in declared deliveryNotice/eight product desc fields.\",\n    \"Routing, product selection, images, prices, SKU, phone, order CTA, opening hours and SEO behavior unchanged.\"\n  ],\n  \"limitations\": [\n    \"No integrated snapshot update/build/render/hosted publication certified.\"\n  ],\n  \"requiredRevisions\": []\n}\n"
+    },
+    "originalArticleReview": {
+      "fileName": "independent-article-review.final.rev2.json",
+      "sha256": "f70cb2f733188864978db735eb533a198ec59d72d3b0517ad9ce99482fc9b68f",
+      "utf8Content": "{\n  \"reviewer\": \"publish_dongdaemun_direct\",\n  \"author\": \"prepare_dongdaemun_runtime\",\n  \"verdict\": \"PASS_ARTICLE_COPY_AND_CUSTOMER_SOURCE_SELECTION_ONLY\",\n  \"reviewedAt\": \"2026-10-11T13:59:31.512151+00:00\",\n  \"articleCount\": 5,\n  \"canUseRevisedArticleFields\": true,\n  \"originalSource\": \"292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2\",\n  \"originalPagesSha256\": \"79b1e8c91606d66455ae530f4add00b99d0a95a9111148a235eebd4a3e88dad8\",\n  \"articlesSha256\": \"23aef462e008b3abdcb25dfe79d460900c63bbfffdc433106e1a284235271fad\",\n  \"pagesSha256\": \"09f895a0adc249bbe8f88d798be9001c13f4a0c58ea36a06d706acb2162f9a8d\",\n  \"sourceDiffSha256\": \"419b6538e2320dbd886b0046e1519155c4f93a1401c7dc72ea0e7591e3a3bdaf\",\n  \"acceptanceSha256\": \"3b599a38e633634599bd7907f2a41ac010dfb2736874b68d17f0734684661acc\",\n  \"manualObservations\": [\n    \"All five full originals and revised texts read. Daehan hospital, Victoria, Anto, three Suyu market names and arts spaces retain distinct occasion-specific advice.\",\n    \"Anto indoor/outdoor spaces do not imply external wreath acceptance. Arts intake/cleanup conditions remain. Removed air-pump/licensing/rebranding/old-rental/admin sources do not support current retained purchase facts.\"\n  ],\n  \"articles\": [\n    {\n      \"slug\": \"suyu-dong-daehan-funeral-wreath\",\n      \"verdict\": \"PASS\",\n      \"fullOriginalAndRevisionRead\": true,\n      \"changedFields\": [\n        \"cardSummary\",\n        \"contentMarkdown\",\n        \"description\",\n        \"firstAnswer\",\n        \"sources\"\n      ],\n      \"fourOriginalProductKeysAndCardLimitPreserved\": true,\n      \"retainedSourceRecordsAreExactOriginalSubset\": true\n    },\n    {\n      \"slug\": \"mia-dong-the-victoria-wedding-wreath\",\n      \"verdict\": \"PASS\",\n      \"fullOriginalAndRevisionRead\": true,\n      \"changedFields\": [\n        \"cardSummary\",\n        \"contentMarkdown\",\n        \"description\",\n        \"firstAnswer\",\n        \"sources\"\n      ],\n      \"fourOriginalProductKeysAndCardLimitPreserved\": true,\n      \"retainedSourceRecordsAreExactOriginalSubset\": true\n    },\n    {\n      \"slug\": \"ui-dong-anto-wedding-wreath\",\n      \"verdict\": \"PASS\",\n      \"fullOriginalAndRevisionRead\": true,\n      \"changedFields\": [\n        \"cardSummary\",\n        \"contentMarkdown\",\n        \"description\",\n        \"firstAnswer\",\n        \"source\",\n        \"sources\"\n      ],\n      \"fourOriginalProductKeysAndCardLimitPreserved\": true,\n      \"retainedSourceRecordsAreExactOriginalSubset\": true\n    },\n    {\n      \"slug\": \"suyu-dong-suyu-market-opening-wreath\",\n      \"verdict\": \"PASS\",\n      \"fullOriginalAndRevisionRead\": true,\n      \"changedFields\": [\n        \"cardSummary\",\n        \"contentMarkdown\",\n        \"description\",\n        \"firstAnswer\",\n        \"sources\"\n      ],\n      \"fourOriginalProductKeysAndCardLimitPreserved\": true,\n      \"retainedSourceRecordsAreExactOriginalSubset\": true\n    },\n    {\n      \"slug\": \"suyu-dong-gangbuk-arts-congratulation-wreath\",\n      \"verdict\": \"PASS\",\n      \"fullOriginalAndRevisionRead\": true,\n      \"changedFields\": [\n        \"cardSummary\",\n        \"contentMarkdown\",\n        \"description\",\n        \"firstAnswer\",\n        \"sources\"\n      ],\n      \"fourOriginalProductKeysAndCardLimitPreserved\": true,\n      \"retainedSourceRecordsAreExactOriginalSubset\": true\n    }\n  ],\n  \"requiredRevisions\": [],\n  \"limitations\": [\n    \"Common-surface approval is separate.\",\n    \"No snapshot rebuild, integrated build, actual render or publication is certified.\",\n    \"Source records and existing verification dates are preserved; this review does not claim fresh facility or price GETs.\"\n  ]\n}\n"
+    },
+    "choiceCommonManifest": {
+      "fileName": "choice-and-common-author-manifest.json",
+      "sha256": "50fb10f23c76330ed159935be6f9143e6efe505c55b0ca3b88f2b53e113677f1",
+      "utf8Content": "{\n  \"createdAt\": \"2026-10-11T18:43:57.855567+00:00\",\n  \"state\": \"AUTHOR_PROPOSAL_AWAITING_INDEPENDENT_REVIEW\",\n  \"baselineSource\": \"292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2\",\n  \"originalPages\": \"/workspace/shared/regional-copy-revision-20261011/drafts-seoul-six/gangbuk/pages.author.rev2.json\",\n  \"originalPagesSha256\": \"09f895a0adc249bbe8f88d798be9001c13f4a0c58ea36a06d706acb2162f9a8d\",\n  \"proposalPages\": \"/workspace/shared/gangbuk-copy-revision-20261011/pages.author.choice-revision.json\",\n  \"proposalPagesSha256\": \"fd0eb566a5c69405d6e4b0c714889c82254f64c0cd5e3802aaffbd456ce76cc3\",\n  \"articleChanges\": [\n    {\n      \"pageKey\": \"seoul-gangbuk-flower-direct-region-suyu-dong-daehan-funeral-wreath\",\n      \"slug\": \"suyu-dong-daehan-funeral-wreath\",\n      \"literalBefore\": \"공식 상품 사진을 보며 원하는 모습을 골라보세요. 실제 크기와 준비 가능한 꽃 구성은 주문할 때 상담하실 수 있습니다. 조문 문구는 종교와 유족의 뜻에 맞춰 정하고 리본에 들어갈 보내는 이름을 알려 주세요.\",\n      \"literalAfter\": \"회사의 조문 선물을 맡으셨다면 사내에서 정한 예산과 필요한 증빙을 상품 선택과 함께 말씀해 보세요. 마음에 드는 사진을 고른 뒤 해당 빈소까지 배송비가 더해지는지와 총액을 한 번에 상담하면 결제 준비도 수월합니다. 증빙 발급 방식은 주문할 때 문의하실 수 있습니다. 조문 문구는 종교와 유족의 뜻에 맞춰 전할 위로를 담아주세요.\",\n      \"bodySha256\": \"ec09147153caede9e4cf6cbdc652e66c1acfa836f7305a4aae81810b14a245fc\"\n    },\n    {\n      \"pageKey\": \"seoul-gangbuk-flower-direct-region-mia-dong-the-victoria-wedding-wreath\",\n      \"slug\": \"mia-dong-the-victoria-wedding-wreath\",\n      \"literalBefore\": \"네 가지의 기본가격과 사진을 비교하고, 정해 둔 예산에 맞는 상품을 골라보세요. 특정한 꽃색이나 장식을 원하시면 현재 준비 가능한 구성과 함께 상담하시면 됩니다. 사진 속 리본은 예시이므로 두 분께 전할 문구는 따로 알려 주세요.\",\n      \"literalAfter\": \"친구가 평소 좋아하던 색이나 청첩장의 분위기를 떠올리며 꽃을 골라보셔도 좋습니다. C200 사진은 분홍 윗장식과 중앙의 분홍 꽃이, C205 사진은 노랑·분홍·흰색 꽃의 어울림이 눈에 들어옵니다. 선물에 담고 싶은 색감과 예산을 함께 말씀해 현재 가능한 구성을 상담하세요. 사진 속 리본은 예시이므로 두 분께 전할 문구는 따로 준비하실 수 있습니다.\",\n      \"bodySha256\": \"5e036777a6f7860250081fbfcaafc7ea23aba30850932f3edf81f6cbf785bc6f\"\n    },\n    {\n      \"pageKey\": \"seoul-gangbuk-flower-direct-region-ui-dong-anto-wedding-wreath\",\n      \"slug\": \"ui-dong-anto-wedding-wreath\",\n      \"literalBefore\": \"공식 사진을 보며 마음에 드는 모습을 고르고 실제 크기와 준비 가능한 꽃 구성은 상담으로 정해 보세요. 리본에는 결혼 축하 인사와 보내는 이름을 담으실 수 있습니다.\",\n      \"literalAfter\": \"실내 그랜드볼룸과 야외 루프탑 가운데 이번 예식이 열리는 공간을 떠올리며 선물을 고르세요. 행사 담당자가 안내한 화환 자리의 여유와 배치 모습을 알면 원하는 상품의 실제 폭과 높이를 구체적으로 상담하실 수 있습니다. 야외 예식도 설치·전달 가능한 조건을 함께 살핀 뒤, 마음에 드는 사진과 예산으로 두 분께 전할 꽃을 정해 보세요.\",\n      \"bodySha256\": \"b35a0b98ee76a03dc653287cbb7f07d7a3337bf6160b9dde220ea699c8759ee6\"\n    },\n    {\n      \"pageKey\": \"seoul-gangbuk-flower-direct-region-suyu-dong-suyu-market-opening-wreath\",\n      \"slug\": \"suyu-dong-suyu-market-opening-wreath\",\n      \"literalBefore\": \"공식 사진에서 원하는 모습을 살펴보고 상품의 기본가격을 비교해 보세요. 사진 속 리본은 예시이므로 개업 문구와 보내는 이름은 따로 지정하시면 됩니다. 실제 크기와 현재 준비 가능한 꽃 구성도 함께 상담하실 수 있습니다.\",\n      \"literalAfter\": \"가게에 찾아가 건넬 인사와 꽃 선물을 함께 준비하고 계신가요? 방문하기 전 미리 화환을 보내 첫날의 가게를 축하할지, 직접 인사하는 날에 맞춰 전할지 받는 분의 일정에 맞춰 골라보세요. 선택한 날짜에 준비할 수 있는 상품을 사진과 예산으로 상담하실 수 있습니다. 사진 속 리본은 예시이며 가게 주인에게 전하고 싶은 개업 인사를 담으실 수 있습니다.\",\n      \"bodySha256\": \"7fccddbb5f042f7100e9a7972f2ced1863a28972de15fcdd455aa9a556231a2d\"\n    },\n    {\n      \"pageKey\": \"seoul-gangbuk-flower-direct-region-suyu-dong-gangbuk-arts-congratulation-wreath\",\n      \"slug\": \"suyu-dong-gangbuk-arts-congratulation-wreath\",\n      \"literalBefore\": \"공식 사진과 기본가격으로 예산에 맞는 상품을 골라보세요. 리본에는 공연이나 전시 이름에 어울리는 축하 인사와 보내는 개인·단체 이름을 담을 수 있습니다. 사진의 문구는 예시이며 실제 크기·꽃 구성과 함께 주문 시 상담하시면 됩니다.\",\n      \"literalAfter\": \"작품과 무대의 분위기에 어울릴 꽃을 찾으신다면 주최 측이 정한 화환 자리를 생각하며 사진을 살펴보세요. C203 사진은 크림빛 윗장식 아래 노란 꽃이, C204 사진은 분홍 장식과 바깥 둘레의 노란 꽃이 보입니다. 포스터와 함께 좋아하는 색 배치를 말씀하면 준비 가능한 구성을 상담하기 편합니다. 사진의 리본 문구는 이번 공연·전시의 축하 인사로 상의하실 수 있습니다.\",\n      \"bodySha256\": \"de9a2746b5c893e3c5542c8888a17c1f29bf95e6bac7d84471b3736370ed353a\"\n    }\n  ],\n  \"commonChanges\": [\n    {\n      \"path\": \"src/components/ProductCards.astro\",\n      \"originalApprovedPath\": \"/workspace/shared/regional-copy-revision-20261011/drafts-seoul-six/gangbuk/common-draft/src/components/ProductCards.astro\",\n      \"originalApprovedSha256\": \"3b05836fe80ec7be81efc359b9642c303623c02a1c50e673ec9e738f061652b0\",\n      \"proposalPath\": \"/workspace/shared/gangbuk-copy-revision-20261011/common-choice-proposal/src/components/ProductCards.astro\",\n      \"proposalSha256\": \"5febb0edfaa1b1825fb7783957e7ec0a7373329bd85200e076daafe157ac7c6e\",\n      \"literalReplacements\": [\n        [\n          \"{p.family==='congrats' && <p class=\\\"product-notice\\\">사진 속 리본은 예시입니다. 전하고 싶은 문구는 주문할 때 함께 정해 주세요</p>}\",\n          \"\"\n        ],\n        [\n          \"<p class=\\\"product-notice\\\">{site.productVariationNotice} {site.deliveryNotice}</p>\",\n          \"<p class=\\\"product-notice\\\">{site.productVariationNotice} {site.deliveryNotice}</p>\\n{products.some((p:any)=>p.family==='congrats') && <p class=\\\"product-notice\\\">사진 속 리본은 예시입니다. 이번 축하 자리에 전할 인사로 상담하세요.</p>}\"\n        ]\n      ],\n      \"diffPath\": \"/workspace/shared/gangbuk-copy-revision-20261011/src__components__ProductCards.astro.diff\"\n    },\n    {\n      \"path\": \"src/pages/index.astro\",\n      \"originalApprovedPath\": \"/workspace/shared/regional-copy-revision-20261011/drafts-seoul-six/gangbuk/common-draft/src/pages/index.astro\",\n      \"originalApprovedSha256\": \"c5476b61b4c54e0000cd887d8e0d385a2a1d9246c4b868295e7c467192131082\",\n      \"proposalPath\": \"/workspace/shared/gangbuk-copy-revision-20261011/common-choice-proposal/src/pages/index.astro\",\n      \"proposalSha256\": \"1e1ad7a6f54a2877b658affd137e4cda9a3b417a687bd8a969639776c3ec0801\",\n      \"literalReplacements\": [\n        [\n          \"기쁜 소식에는 따뜻한 축하를, 힘든 순간에는 차분한 위로를 전해보세요. 근조·축하화환의 사진과 기본가격을 살펴보고 전할 마음과 예산에 맞는 상품을 골라보실 수 있습니다.\",\n          \"미아동과 우이동에서 시작하는 두 분의 결혼생활, 수유시장의 새 가게, 강북문화예술회관의 발표 무대에 꽃으로 응원을 전해 보세요. 대한병원장례식장으로 마음을 보낼 때에는 고인을 기억하고 유족을 위로하는 인사를 담으실 수 있습니다. 사진과 예산을 보며 편하게 상담하세요.\"\n        ],\n        [\n          \"<strong>{p.price.toLocaleString()}원</strong>\",\n          \"<strong>{p.price.toLocaleString()}원 · 상품 기본가격</strong>\"\n        ]\n      ],\n      \"diffPath\": \"/workspace/shared/gangbuk-copy-revision-20261011/src__pages__index.astro.diff\"\n    },\n    {\n      \"path\": \"src/pages/[category]/[slug].astro\",\n      \"originalApprovedPath\": \"/workspace/shared/regional-copy-revision-20261011/drafts-seoul-six/gangbuk/common-draft/src/pages/[category]/[slug].astro\",\n      \"originalApprovedSha256\": \"046a1a6cd7f9fe835949853b6210daa50140f0ca9950b453d47922866f4c84df\",\n      \"proposalPath\": \"/workspace/shared/gangbuk-copy-revision-20261011/common-choice-proposal/src/pages/[category]/[slug].astro\",\n      \"proposalSha256\": \"d8a0b2be0215d73b28ed45637baebc852d3a044fe958947c8e27cafe5a8c8ff2\",\n      \"literalReplacements\": [\n        [\n          \"<span>{hero.price.toLocaleString()}원</span>\",\n          \"<span>{hero.price.toLocaleString()}원 · 상품 기본가격</span>\"\n        ]\n      ],\n      \"diffPath\": \"/workspace/shared/gangbuk-copy-revision-20261011/src__pages__[category]__[slug].astro.diff\"\n    },\n    {\n      \"path\": \"src/data/products.json\",\n      \"originalApprovedPath\": \"/workspace/shared/regional-copy-revision-20261011/drafts-seoul-six/gangbuk/common-draft/src/data/products.json\",\n      \"originalApprovedSha256\": \"93f0e8c35a4b07bf4d02d18f056d196db6e38cb3b79bf216c710f191b67613d7\",\n      \"proposalPath\": \"/workspace/shared/gangbuk-copy-revision-20261011/common-choice-proposal/src/data/products.json\",\n      \"proposalSha256\": \"ef1e505337590f4cb80e0ff770de13487324d0a7f5d867354ef5fd3d8fa9d97c\",\n      \"literalReplacements\": [],\n      \"diffPath\": \"/workspace/shared/gangbuk-copy-revision-20261011/src__data__products.json.diff\"\n    }\n  ],\n  \"scope\": \"Five existing articles: concrete buying-choice paragraphs. Four common refinements. All other copy, actual facility restrictions and metadata preserved.\",\n  \"imageBinding\": \"/tmp/gangbuk-copy-integration-20261011/image-binding.author.json\",\n  \"catalogDescriptionReuse\": \"Same exact8product image bytes, names, SKU and prices as independently reviewed Jungnang factual catalog descriptions; no regional body copied\",\n  \"externalWrites\": 0\n}\n"
+    },
+    "choiceCommonReview": {
+      "fileName": "review.json",
+      "sha256": "edd4eaffe7786438029ab0b955627ba9f404d6fa8a1dd36180977a51dc1db9fa",
+      "utf8Content": "{\n  \"schema\": \"independent-gangbuk-choice-common-copy-review/v1\",\n  \"reviewer\": \"/root/plan_existing_region_updates/review_uiwang_copy_integration\",\n  \"author\": \"/root/plan_existing_region_updates\",\n  \"reviewedAt\": \"2026-10-11T18:48:29.246204+00:00\",\n  \"decision\": \"COPY_PASS_FIVE_ARTICLES_AND_FOUR_COMMON_FOLLOWONS\",\n  \"requiredRevisions\": [],\n  \"baselineSource\": \"292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2\",\n  \"acceptancePath\": \"/workspace/shared/regional-copy-revision-20261011/SALES_COPY_ACCEPTANCE.md\",\n  \"acceptanceSha256\": \"3b599a38e633634599bd7907f2a41ac010dfb2736874b68d17f0734684661acc\",\n  \"authorManifestSha256\": \"50fb10f23c76330ed159935be6f9143e6efe505c55b0ca3b88f2b53e113677f1\",\n  \"originalPagesSha256\": \"09f895a0adc249bbe8f88d798be9001c13f4a0c58ea36a06d706acb2162f9a8d\",\n  \"proposalPagesSha256\": \"fd0eb566a5c69405d6e4b0c714889c82254f64c0cd5e3802aaffbd456ce76cc3\",\n  \"originalN\": 5,\n  \"existingArticles\": 5,\n  \"held\": 0,\n  \"newArticles\": 0,\n  \"articles\": [\n    {\n      \"pageKey\": \"seoul-gangbuk-flower-direct-region-suyu-dong-daehan-funeral-wreath\",\n      \"slug\": \"suyu-dong-daehan-funeral-wreath\",\n      \"oldBodySha256\": \"73955a7b5fefe2acc388d758fa86d4d53e9bed3064899af1ce26975cbd8d7a98\",\n      \"newBodySha256\": \"ec09147153caede9e4cf6cbdc652e66c1acfa836f7305a4aae81810b14a245fc\",\n      \"changedFields\": [\n        \"contentMarkdown\"\n      ],\n      \"literalOccurrenceCount\": 1,\n      \"decision\": \"PASS\",\n      \"label\": \"대한병원장례식장\",\n      \"fullBaselinePriorApprovedAndNewBodyRead\": true,\n      \"manualFinding\": \"회사 조문을 맡은 구매자가 사내 예산과 필요한 증빙을 총금액 상담에 묶어 물어볼 수 있도록 돕는다. 특정 증빙 발급·결제방식을 제공한다고 약속하지 않으며 발급 방식은 문의 대상으로 남긴다. 배송비 무료·고가 우월성·금액을 올리라는 압박이 없다. 차분한 추모 인사와 빈소·발인·수령 의사·별도 회수 문의 조건은 유지된다.\"\n    },\n    {\n      \"pageKey\": \"seoul-gangbuk-flower-direct-region-mia-dong-the-victoria-wedding-wreath\",\n      \"slug\": \"mia-dong-the-victoria-wedding-wreath\",\n      \"oldBodySha256\": \"c6d813e062d0ce4059daf3821309eabeeb3b3b2f69bc46d759c7d6547abe2322\",\n      \"newBodySha256\": \"5e036777a6f7860250081fbfcaafc7ea23aba30850932f3edf81f6cbf785bc6f\",\n      \"changedFields\": [\n        \"contentMarkdown\"\n      ],\n      \"literalOccurrenceCount\": 1,\n      \"decision\": \"PASS\",\n      \"label\": \"더빅토리아웨딩파티\",\n      \"fullBaselinePriorApprovedAndNewBodyRead\": true,\n      \"manualFinding\": \"친구의 취향과 청첩장 분위기에 맞춘 선택을 C200 분홍 윗장식/중앙 분홍 꽃, C205 노랑·분홍·흰색 조합의 실제 사진에 연결한다. 실제 Gangbuk JPG 네 장을 다시 열어 확인했다. 색 맞춤 제작이나 특정 구성 확보를 약속하지 않으며 현재 가능한 구성을 상담하도록 한다. 빅토리아홀/하늘정원홀과 외부 화환 인계 조건은 유지된다.\"\n    },\n    {\n      \"pageKey\": \"seoul-gangbuk-flower-direct-region-ui-dong-anto-wedding-wreath\",\n      \"slug\": \"ui-dong-anto-wedding-wreath\",\n      \"oldBodySha256\": \"8c1a484ccab00e270fd78e119d0748d2d3d0616bfc2f35b718e85a5f907ba1d2\",\n      \"newBodySha256\": \"b35a0b98ee76a03dc653287cbb7f07d7a3337bf6160b9dde220ea699c8759ee6\",\n      \"changedFields\": [\n        \"contentMarkdown\"\n      ],\n      \"literalOccurrenceCount\": 1,\n      \"decision\": \"PASS\",\n      \"label\": \"안토 리조트\",\n      \"fullBaselinePriorApprovedAndNewBodyRead\": true,\n      \"manualFinding\": \"실내 그랜드볼룸/야외 루프탑이라는 실제 예식 공간에 맞춰 행사 측이 알려준 화환 자리와 상품의 실제 폭·높이를 상담하도록 한다. 단순 주소 대조가 아니라 선택 가능한 상품 규격을 정하는 데 필요한 정보다. 야외 설치를 해준다는 약속이나 자동 반입 승인이 없고, 날씨에 따른 장소 변경·수령·회수 가능 여부 조건도 그대로다.\"\n    },\n    {\n      \"pageKey\": \"seoul-gangbuk-flower-direct-region-suyu-dong-suyu-market-opening-wreath\",\n      \"slug\": \"suyu-dong-suyu-market-opening-wreath\",\n      \"oldBodySha256\": \"e5d447d4e42fa7fa69df99265aebe2ef2879bbabdcb65c2a46cd135c68a034c9\",\n      \"newBodySha256\": \"7fccddbb5f042f7100e9a7972f2ced1863a28972de15fcdd455aa9a556231a2d\",\n      \"changedFields\": [\n        \"contentMarkdown\"\n      ],\n      \"literalOccurrenceCount\": 1,\n      \"decision\": \"PASS\",\n      \"label\": \"수유시장\",\n      \"fullBaselinePriorApprovedAndNewBodyRead\": true,\n      \"manualFinding\": \"선물하는 사람의 방문 전 또는 직접 인사하는 날이라는 서로 다른 전달 의도를 받는 사람의 일정과 연결한다. 별도 날짜의 준비 가능 상품은 상담 대상으로 남아 정시 도착·재고 확보를 약속하지 않는다. 시설 구분/점포 주소와 점주 배치 조건은 짧게 유지되며, 날짜·수령 안내가 약간 이어지지만 오류를 가정한 훈계나 무관한 명의·수량 채우기로 흐르지 않는다.\"\n    },\n    {\n      \"pageKey\": \"seoul-gangbuk-flower-direct-region-suyu-dong-gangbuk-arts-congratulation-wreath\",\n      \"slug\": \"suyu-dong-gangbuk-arts-congratulation-wreath\",\n      \"oldBodySha256\": \"bb8da2969f6b0516dd4951d1b213df2a4e46f8182c1e122401184ad0319a708a\",\n      \"newBodySha256\": \"de9a2746b5c893e3c5542c8888a17c1f29bf95e6bac7d84471b3736370ed353a\",\n      \"changedFields\": [\n        \"contentMarkdown\"\n      ],\n      \"literalOccurrenceCount\": 1,\n      \"decision\": \"PASS\",\n      \"label\": \"강북문화예술회관\",\n      \"fullBaselinePriorApprovedAndNewBodyRead\": true,\n      \"manualFinding\": \"공연·전시의 분위기와 포스터를 사진 색 배치 선택에 연결한다. C203 크림빛 윗장식 아래 노란 꽃, C204 분홍 장식과 바깥 노란 꽃은 직접 확인한 JPG와 일치한다. 공간에 어울리는 선물을 상담하는 문장이고 행사장 장식/맞춤 색을 보장하지 않는다. 주최 측 외부 화환 수령 여부를 상품 비교 전에 남기고 종료 후 정리·회수 담당도 보존한다.\"\n    }\n  ],\n  \"commonFiles\": [\n    {\n      \"path\": \"src/components/ProductCards.astro\",\n      \"originalApprovedSha256\": \"3b05836fe80ec7be81efc359b9642c303623c02a1c50e673ec9e738f061652b0\",\n      \"proposalSha256\": \"5febb0edfaa1b1825fb7783957e7ec0a7373329bd85200e076daafe157ac7c6e\",\n      \"diffSha256\": \"316546562d4c3c824e21ed09e10953dd2d1660742a7fcabd4c1a93d97d758318\",\n      \"exactDeclaredChangeReplay\": true,\n      \"decision\": \"PASS\"\n    },\n    {\n      \"path\": \"src/pages/index.astro\",\n      \"originalApprovedSha256\": \"c5476b61b4c54e0000cd887d8e0d385a2a1d9246c4b868295e7c467192131082\",\n      \"proposalSha256\": \"1e1ad7a6f54a2877b658affd137e4cda9a3b417a687bd8a969639776c3ec0801\",\n      \"diffSha256\": \"4afa84bb25889426d32adac7b04ea8d2abfb0c4428d86ea0b73a6c63cb1f2cc4\",\n      \"exactDeclaredChangeReplay\": true,\n      \"decision\": \"PASS\"\n    },\n    {\n      \"path\": \"src/pages/[category]/[slug].astro\",\n      \"originalApprovedSha256\": \"046a1a6cd7f9fe835949853b6210daa50140f0ca9950b453d47922866f4c84df\",\n      \"proposalSha256\": \"d8a0b2be0215d73b28ed45637baebc852d3a044fe958947c8e27cafe5a8c8ff2\",\n      \"diffSha256\": \"80c8c6959611e8466b709447f90bc628da767a395e712b050e4998751e31c7d5\",\n      \"exactDeclaredChangeReplay\": true,\n      \"decision\": \"PASS\"\n    },\n    {\n      \"path\": \"src/data/products.json\",\n      \"originalApprovedSha256\": \"93f0e8c35a4b07bf4d02d18f056d196db6e38cb3b79bf216c710f191b67613d7\",\n      \"proposalSha256\": \"ef1e505337590f4cb80e0ff770de13487324d0a7f5d867354ef5fd3d8fa9d97c\",\n      \"diffSha256\": \"ea94440ac6258a8e02766d442a2fc9ba37d7fb3b0f4b76c1db5878c1eac3cae2\",\n      \"exactDeclaredChangeReplay\": true,\n      \"decision\": \"PASS\"\n    }\n  ],\n  \"commonManualFindings\": [\n    \"홈은 미아동·우이동 예식, 수유시장 개업, 문화예술회관 무대, 대한병원 조문을 해당 지역의 실제 다섯 본문과 연결한다. 서로 다른 구매 상황을 제시하며 예정 행사나 납품실적·제휴를 발명하지 않는다.\",\n    \"홈/상세 hero 기본가격 표기를 더하지만 금액·상품선택·CTA·이미지 로직은 바뀌지 않는다. 본문과 공통 truth의 추가 배송비·최종금액·현장 조건·구성변동 안내를 유지한다.\",\n    \"축하 카드마다 반복하던 리본 예시 설명을 해당 family가 있는 상품 묶음 뒤에 한 번 제시한다. 이미 business-truth에 존재하는 기본가격 설명을 ProductCards에 다시 중복하지 않는다.\",\n    \"카탈로그의 객관적 사진 설명 8개만 중랑 승인 payload에서 재사용한다. 실제 8 JPG 바이트와 상품명·SKU·기본가격·이미지 경로·주문/출처 항목이 모두 동일함을 독립 확인했다. 지역 본문은 기존 강북 승인본에서 각각 명시된 한 단락만 변경됐으며 다섯 다른 판단 맥락으로 서술되어 지명만 바꾼 복제가 아니다.\"\n  ],\n  \"images\": [\n    {\n      \"productKey\": \"funeral-basic\",\n      \"officialSku\": \"B201\",\n      \"path\": \"/tmp/gangbuk-copy-integration-20261011/baseline/site-factory/seoul-gangbuk-flower/public/images/products/funeral-basic.jpg\",\n      \"sha256\": \"7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3\",\n      \"gitBlobSha\": \"52f55c45c05a9a31488b8ac03a39975fba93c601\",\n      \"desc\": \"흰 꽃 가운데 노란 꽃이 모여 있습니다. 중앙에 색이 더해진 차분한 배치를 살펴보세요.\",\n      \"actualPixelsPersonallyViewed\": true,\n      \"pixelReviewMethod\": \"All eight exact bytes match Jungnang files personally viewed in this same session; Gangbuk C200/C203/C204/C205 also reopened directly.\"\n    },\n    {\n      \"productKey\": \"funeral-premium\",\n      \"officialSku\": \"B203\",\n      \"path\": \"/tmp/gangbuk-copy-integration-20261011/baseline/site-factory/seoul-gangbuk-flower/public/images/products/funeral-premium.jpg\",\n      \"sha256\": \"0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114\",\n      \"gitBlobSha\": \"566809de3fd7367a506e267f8ecbf1b81207cdca\",\n      \"desc\": \"흰 장식 아래 초록 줄기와 작은 분홍빛 꽃이 보입니다. 좋아하는 부분을 말씀해 현재 구성을 상담하세요.\",\n      \"actualPixelsPersonallyViewed\": true,\n      \"pixelReviewMethod\": \"All eight exact bytes match Jungnang files personally viewed in this same session; Gangbuk C200/C203/C204/C205 also reopened directly.\"\n    },\n    {\n      \"productKey\": \"funeral-large\",\n      \"officialSku\": \"B205\",\n      \"path\": \"/tmp/gangbuk-copy-integration-20261011/baseline/site-factory/seoul-gangbuk-flower/public/images/products/funeral-large.jpg\",\n      \"sha256\": \"1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e\",\n      \"gitBlobSha\": \"ab914ee924fd0bf0e39a2061cf74e2ef550186b9\",\n      \"desc\": \"노란 윗장식과 바깥 둘레의 노란 꽃이 이어집니다. 중앙에 색이 모인 사진과 함께 비교해 보세요.\",\n      \"actualPixelsPersonallyViewed\": true,\n      \"pixelReviewMethod\": \"All eight exact bytes match Jungnang files personally viewed in this same session; Gangbuk C200/C203/C204/C205 also reopened directly.\"\n    },\n    {\n      \"productKey\": \"funeral-xl\",\n      \"officialSku\": \"B060\",\n      \"path\": \"/tmp/gangbuk-copy-integration-20261011/baseline/site-factory/seoul-gangbuk-flower/public/images/products/funeral-xl.jpg\",\n      \"sha256\": \"a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3\",\n      \"gitBlobSha\": \"24a9c466cfb2116b6432389c6bbb1c226c9ce4ca\",\n      \"desc\": \"중앙의 연두빛 꽃과 바깥으로 뻗은 줄기, 분홍빛 꽃이 보입니다. 사진의 색 배치를 기준으로 상담하실 수 있습니다.\",\n      \"actualPixelsPersonallyViewed\": true,\n      \"pixelReviewMethod\": \"All eight exact bytes match Jungnang files personally viewed in this same session; Gangbuk C200/C203/C204/C205 also reopened directly.\"\n    },\n    {\n      \"productKey\": \"congrats-basic\",\n      \"officialSku\": \"C200\",\n      \"path\": \"/tmp/gangbuk-copy-integration-20261011/baseline/site-factory/seoul-gangbuk-flower/public/images/products/congrats-basic.jpg\",\n      \"sha256\": \"0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905\",\n      \"gitBlobSha\": \"f142abff10936c47f30b96ab37e79c6224bc1527\",\n      \"desc\": \"분홍 윗장식과 중앙의 분홍 꽃이 눈에 들어옵니다. 분홍 계열을 좋아하는 분께 전할 선물로 살펴보세요.\",\n      \"actualPixelsPersonallyViewed\": true,\n      \"pixelReviewMethod\": \"All eight exact bytes match Jungnang files personally viewed in this same session; Gangbuk C200/C203/C204/C205 also reopened directly.\"\n    },\n    {\n      \"productKey\": \"congrats-premium\",\n      \"officialSku\": \"C203\",\n      \"path\": \"/tmp/gangbuk-copy-integration-20261011/baseline/site-factory/seoul-gangbuk-flower/public/images/products/congrats-premium.jpg\",\n      \"sha256\": \"d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a\",\n      \"gitBlobSha\": \"7c6289c4db4ffd91ac034ecd7a9e288add7ba0c7\",\n      \"desc\": \"크림빛 윗장식 아래 노란 꽃이 이어집니다. 가게 분위기와 어울릴 색감을 고를 때 비교해 보세요.\",\n      \"actualPixelsPersonallyViewed\": true,\n      \"pixelReviewMethod\": \"All eight exact bytes match Jungnang files personally viewed in this same session; Gangbuk C200/C203/C204/C205 also reopened directly.\"\n    },\n    {\n      \"productKey\": \"congrats-large\",\n      \"officialSku\": \"C204\",\n      \"path\": \"/tmp/gangbuk-copy-integration-20261011/baseline/site-factory/seoul-gangbuk-flower/public/images/products/congrats-large.jpg\",\n      \"sha256\": \"05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d\",\n      \"gitBlobSha\": \"9c7f02a1a4dc526d84c91d6fd75640e1800bb0fd\",\n      \"desc\": \"중앙과 가장자리의 노란 꽃 사이로 분홍 꽃이 더해져 있습니다. 원하는 배치와 실제 준비 구성을 상담하세요.\",\n      \"actualPixelsPersonallyViewed\": true,\n      \"pixelReviewMethod\": \"All eight exact bytes match Jungnang files personally viewed in this same session; Gangbuk C200/C203/C204/C205 also reopened directly.\"\n    },\n    {\n      \"productKey\": \"congrats-xl\",\n      \"officialSku\": \"C205\",\n      \"path\": \"/tmp/gangbuk-copy-integration-20261011/baseline/site-factory/seoul-gangbuk-flower/public/images/products/congrats-xl.jpg\",\n      \"sha256\": \"b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9\",\n      \"gitBlobSha\": \"00df190b6f62e702c45de1d97148003b9ab7943f\",\n      \"desc\": \"분홍 장식 아래 노랑·분홍·흰색 꽃이 어우러집니다. 여러 색이 담긴 축하 선물을 찾을 때 살펴보세요.\",\n      \"actualPixelsPersonallyViewed\": true,\n      \"pixelReviewMethod\": \"All eight exact bytes match Jungnang files personally viewed in this same session; Gangbuk C200/C203/C204/C205 also reopened directly.\"\n    }\n  ],\n  \"imageBindingSha256\": \"deccad28dab110a3e920a4cc0c0a0c3b9fb89d4aee76c6fa5fff60569250ceb7\",\n  \"pixelReview\": \"All eight exact bytes match Jungnang images personally viewed earlier in this same session. Gangbuk C200/C203/C204/C205 also directly reopened for these article comparisons.\",\n  \"integrity\": {\n    \"reportPath\": \"/workspace/shared/gangbuk-copy-revision-20261011/independent-review/integrity.json\",\n    \"reportSha256\": \"071d17c2f73fdc1774598e67255e1e380074fc1e537bab634ca029860e99b8e1\",\n    \"verifierPath\": \"/workspace/shared/gangbuk-copy-revision-20261011/independent-review/verify_choice_common.py\",\n    \"verifierSha256\": \"4302faf708fc887bc95914d62dc065a1419d254d6fd17ee6bb5f62a5253f3690\",\n    \"baselineBlobsRecomputed\": 70,\n    \"fiveExactBodyReplacementsReplayed\": true,\n    \"allFourCommonDiffsRegenerated\": true,\n    \"allOtherArticleFieldsUnchanged\": true,\n    \"essentialFacilityRestrictionsUnchanged\": true,\n    \"allEightCatalogIdentitiesAndImageBytesVerified\": true,\n    \"undeclaredCommonProposalFiles\": 0,\n    \"sourceSelectionLog\": \"/workspace/shared/gangbuk-copy-revision-20261011/independent-review/catalog-selection.log\",\n    \"sourceSelectionLogSha256\": \"e193fac5b7ecf4e9f57e6d1072d3acbd9a2564fdc5f6ee8ab580526b6036a3e3\",\n    \"sourceSelectionResult\": \"Five exact four-product sets; no actual rendered-card claim\"\n  },\n  \"integrationRequirements\": [\n    \"Original status/approval/snapshot fields remain comparison metadata only; bind this exact review and recalculate current public-content snapshots on integration.\",\n    \"Run exact-source unit/full check/build/static/graph and actual five-route body/four-card checks. Preserve original N5, held0, new0 and original historical facts/records.\",\n    \"Remote commit/CI, hosted HTTP and browser visual QA are separate evidence.\"\n  ],\n  \"limits\": {\n    \"sourceIntegration\": \"NOT_RUN\",\n    \"unitOrFullBuild\": \"NOT_RUN\",\n    \"actualRenderedDom\": \"NOT_RUN\",\n    \"hostedHttpQa\": \"NOT_RUN\",\n    \"screenVisualQa\": \"NOT_RUN\",\n    \"freshFacilityOrPriceRequests\": \"NOT_REPEATED; approved facts/prices and existing verification dates preserved\",\n    \"sourceOrPriorReceiptEdits\": 0,\n    \"externalWrites\": 0,\n    \"heavyBuilds\": 0\n  },\n  \"canIntegrateForBuild\": true,\n  \"publicationApproval\": false,\n  \"publicCompletion\": false\n}\n"
+    }
+  },
+  "approvedCustomerPages": [
+    {
+      "slug": "suyu-dong-daehan-funeral-wreath",
+      "title": "대한병원장례식장 근조화환 주문",
+      "h1": "대한병원장례식장 근조화환 주문",
+      "primaryKeyword": "대한병원장례식장 근조화환 주문",
+      "description": "대한병원장례식장에 보낼 근조화환으로 추모와 위로의 마음을 전하세요. 네 가지 공식 상품 사진과 기본가격을 보고 빈소 일정에 맞춰 상담하실 수 있습니다.",
+      "cardSummary": "고인을 기억하는 마음과 유족에게 전할 위로를 담아 대한병원장례식장 근조화환을 준비합니다.",
+      "firstAnswer": "대한병원장례식장에 조문의 마음을 전하려 하시나요? 근조화환 네 가지를 사진과 기본가격으로 살펴보고 개인이나 회사의 이름으로 위로를 담아보세요. 도봉로 301의 장례식장과 부고의 빈소·발인 일정을 알려주시면 주문을 상담하실 수 있습니다.",
+      "contentMarkdown": "## 추모의 마음을 어떤 말로 전할지 고민될 때\n장례 소식을 들으면 하고 싶은 말이 쉽게 정리되지 않을 수 있습니다. 대한병원장례식장으로 보내는 근조화환에는 고인을 추모하고 유족을 위로하는 짧은 인사를 담아보세요. 개인의 조문에도, 회사나 모임에서 함께 보내는 위로에도 편한 예산으로 준비하실 수 있습니다.\n\n## 근조화환 네 가지를 살펴보세요\n- 근조 3단 화환 B201: 기본가격 59,000원\n- 근조 고급 3단 화환 B203: 기본가격 79,000원\n- 근조 특대 3단 화환 B205: 기본가격 109,000원\n- 근조 특특대 3단 화환 B060: 기본가격 149,000원\n\n회사의 조문 선물을 맡으셨다면 사내에서 정한 예산과 필요한 증빙을 상품 선택과 함께 말씀해 보세요. 마음에 드는 사진을 고른 뒤 해당 빈소까지 배송비가 더해지는지와 총액을 한 번에 상담하면 결제 준비도 수월합니다. 증빙 발급 방식은 주문할 때 문의하실 수 있습니다. 조문 문구는 종교와 유족의 뜻에 맞춰 전할 위로를 담아주세요.\n\n## 수유동 대한병원장례식장 안내\n공식 시설목록의 주소는 **강북구 도봉로 301, 수유동**입니다. 부고에 적힌 빈소와 발인 일정, 유족이 화환을 받는지를 준비해 주세요. 빈소 측이 안내한 인계 장소와 수령 가능한 시간에 맞춰 주문 일정을 상담하시면 됩니다. 별도 회수가 필요한 경우에는 가능한 범위와 비용을 함께 문의해 주세요.\n\n표시가격은 상품 기본가격입니다. 실제 배송지에 따라 추가 배송비가 생길 수 있어 최종 결제금액과 요청 일정, 배송·반입 가능 여부는 주문 전에 함께 상담해 주세요.\n\n꽃이랑 **1844-0644**에서 상품과 조문 인사를 차분히 상담해 보세요. 상담원 연결은 **08:00~23:00**, 상품 확인과 온라인 주문은 [꽃이랑 공식몰](https://fwith.co.kr/)에서 가능합니다.",
+      "visualIntent": "공식 동일 SKU 상품 예시 사진. 시설 사진이나 실제 납품 증거가 아니며 B060 하단 잘림은 전체 크기 근거가 아님.",
+      "regionalProductKeys": [
+        "funeral-basic",
+        "funeral-premium",
+        "funeral-large",
+        "funeral-xl"
+      ],
+      "sources": [
+        {
+          "name": "전국 장례식장 현황",
+          "url": "https://www.kfcpi.or.kr/link/2025/09/29/831da0f4-5acd-43d4-b0ae-60e6111f33f7.pdf",
+          "verifiedAt": "2026-10-11",
+          "type": "official"
+        },
+        {
+          "name": "의료법인성화의료재단 대한병원 — 병원 기본정보",
+          "url": "https://www.hira.or.kr/ra/hosp/hospInfoAjax.do?ykiho=11101156",
+          "verifiedAt": "2026-10-11",
+          "type": "official"
+        }
+      ],
+      "sections": [],
+      "faq": [],
+      "relatedKeys": [],
+      "pageKey": "seoul-gangbuk-flower-direct-region-suyu-dong-daehan-funeral-wreath",
+      "category": "regions",
+      "routeType": "category",
+      "url": "/regions/suyu-dong-daehan-funeral-wreath/",
+      "pageType": "regional-service",
+      "status": "approved",
+      "file": "src/data/pages.json",
+      "order": 1,
+      "approvalVerified": true,
+      "sourceMode": "direct-git",
+      "queryClass": "local-commercial",
+      "assetSlot": "REAL_PROOF",
+      "source": {
+        "name": "전국 장례식장 현황",
+        "url": "https://www.kfcpi.or.kr/link/2025/09/29/831da0f4-5acd-43d4-b0ae-60e6111f33f7.pdf",
+        "verifiedAt": "2026-10-11",
+        "type": "official"
+      },
+      "productCardLimit": 4,
+      "productCardKeys": [
+        "funeral-basic",
+        "funeral-premium",
+        "funeral-large",
+        "funeral-xl"
+      ],
+      "scopeKey": "seoul-gangbuk-direct-initial-20261011",
+      "regionUnitKeys": [
+        "강북구/법정동/수유동"
+      ],
+      "regionalPurchaseMode": "catalog",
+      "regionalProductFamilies": [
+        "funeral"
+      ],
+      "ogImage": "/images/products/funeral-basic.jpg",
+      "ogImageAlt": "근조 3단 화환 공식 상품 사진",
+      "ogImageSha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+      "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B201",
+      "ogImageWidth": 500,
+      "ogImageHeight": 500,
+      "ogImageType": "image/jpeg",
+      "facilityKey": "daehan-hospital-funeral",
+      "purchaseIntentKey": "funeral-condolence-wreath",
+      "contextKey": "daehan-hospital-funeral|funeral-condolence-wreath",
+      "intentKey": "seoul-gangbuk|daehan-hospital-funeral|funeral-condolence-wreath",
+      "snapshotId": "direct-content-suyu-dong-daehan-funeral-wreath-ea9a4db7478496bc",
+      "snapshotHash": "ea9a4db7478496bc9cff05c95eab90bf5a5eb008cfa833f532a837eeb6a04906"
+    },
+    {
+      "slug": "mia-dong-the-victoria-wedding-wreath",
+      "title": "더빅토리아웨딩파티 결혼식 축하화환 주문",
+      "h1": "더빅토리아웨딩파티 결혼식 축하화환 주문",
+      "primaryKeyword": "더빅토리아웨딩파티 결혼식 축하화환 주문",
+      "description": "더빅토리아웨딩파티에서 결혼하는 두 분께 축하화환을 준비하세요. 공식 사진과 네 가지 기본가격을 비교하고 예식에 맞는 인사를 담으실 수 있습니다.",
+      "cardSummary": "기쁜 결혼 소식에 전할 인사를 더빅토리아웨딩파티 축하화환으로 준비합니다.",
+      "firstAnswer": "더빅토리아웨딩파티에서 결혼하는 두 분께 기쁜 마음을 전해보세요. 친구·가족·회사의 이름으로 보낼 축하화환 네 가지를 예산에 맞춰 비교하실 수 있습니다. 청첩장의 빅토리아홀 또는 하늘정원홀과 예식일시를 알려주시면 상담하기 좋습니다.",
+      "contentMarkdown": "## 함께 축하하고 싶은 결혼식에\n가까운 사람의 결혼 소식은 지난 추억과 앞으로의 기대를 함께 떠올리게 하지요. 더빅토리아웨딩파티에 보내는 화환에 두 분의 새 생활을 응원하는 인사를 담아보세요. ‘결혼을 축하합니다’라는 간결한 문구에 보내는 이름을 더해 준비하실 수 있습니다.\n\n## 공식 상품 사진에서 원하는 모습을 찾아보세요\n- 축하 3단 화환 C200: 기본가격 59,000원\n- 축하 고급 3단 화환 C203: 기본가격 79,000원\n- 축하 특대 3단 화환 C204: 기본가격 99,000원\n- 축하 특특대 3단 화환 C205: 기본가격 149,000원\n\n친구가 평소 좋아하던 색이나 청첩장의 분위기를 떠올리며 꽃을 골라보셔도 좋습니다. C200 사진은 분홍 윗장식과 중앙의 분홍 꽃이, C205 사진은 노랑·분홍·흰색 꽃의 어울림이 눈에 들어옵니다. 선물에 담고 싶은 색감과 예산을 함께 말씀해 현재 가능한 구성을 상담하세요. 사진 속 리본은 예시이므로 두 분께 전할 문구는 따로 준비하실 수 있습니다.\n\n## 더빅토리아웨딩파티 예식 안내\n예식장 주소는 **강북구 도봉로 16**이며, 공식 안내에는 **빅토리아홀과 하늘정원홀**이 소개되어 있습니다. 청첩장의 홀과 신랑·신부명, 날짜·시간을 준비해 주세요.\n\n외부 화환을 받는지와 인계할 장소·시간은 해당 예식 담당자에게 안내받아 알려 주세요. 별도 설치나 회수가 필요한 경우에는 주문 상담에서 가능 여부를 함께 문의하시면 됩니다.\n\n표시가격은 상품 기본가격입니다. 실제 배송지에 따라 추가 배송비가 생길 수 있어 최종 결제금액과 요청 일정, 배송·반입 가능 여부는 주문 전에 함께 상담해 주세요.\n\n꽃이랑 **1844-0644**에서 축하의 마음에 맞는 상품을 편하게 상담해 보세요. 상담원 연결은 **08:00~23:00**, 온라인 주문은 [꽃이랑 공식몰](https://fwith.co.kr/)에서 가능합니다.",
+      "visualIntent": "공식 동일 SKU 축하 상품 예시 사진. 결혼 예시 리본이며 행사에 맞는 문구는 별도 지정·확인. 지역 행사 실배송 증거가 아님.",
+      "regionalProductKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sources": [
+        {
+          "name": "더빅토리아웨딩파티 소개",
+          "url": "https://thevictoria.co.kr/About",
+          "verifiedAt": "2026-10-11",
+          "type": "official"
+        },
+        {
+          "name": "빅토리아홀",
+          "url": "https://thevictoria.co.kr/Victoriahall",
+          "verifiedAt": "2026-10-11",
+          "type": "official"
+        },
+        {
+          "name": "하늘정원홀 신부대기실",
+          "url": "https://thevictoria.co.kr/1482005440",
+          "verifiedAt": "2026-10-11",
+          "type": "official"
+        }
+      ],
+      "sections": [],
+      "faq": [],
+      "relatedKeys": [],
+      "pageKey": "seoul-gangbuk-flower-direct-region-mia-dong-the-victoria-wedding-wreath",
+      "category": "regions",
+      "routeType": "category",
+      "url": "/regions/mia-dong-the-victoria-wedding-wreath/",
+      "pageType": "regional-service",
+      "status": "approved",
+      "file": "src/data/pages.json",
+      "order": 2,
+      "approvalVerified": true,
+      "sourceMode": "direct-git",
+      "queryClass": "local-commercial",
+      "assetSlot": "REAL_PROOF",
+      "source": {
+        "name": "더빅토리아웨딩파티 소개",
+        "url": "https://thevictoria.co.kr/About",
+        "verifiedAt": "2026-10-11",
+        "type": "official"
+      },
+      "productCardLimit": 4,
+      "productCardKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "scopeKey": "seoul-gangbuk-direct-initial-20261011",
+      "regionUnitKeys": [
+        "강북구/법정동/미아동"
+      ],
+      "regionalPurchaseMode": "catalog",
+      "regionalProductFamilies": [
+        "congrats"
+      ],
+      "ogImage": "/images/products/congrats-basic.jpg",
+      "ogImageAlt": "축하 3단 화환 공식 상품 사진",
+      "ogImageSha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+      "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=C200",
+      "ogImageWidth": 500,
+      "ogImageHeight": 500,
+      "ogImageType": "image/jpeg",
+      "facilityKey": "the-victoria-wedding-party",
+      "purchaseIntentKey": "wedding-congrats-wreath",
+      "contextKey": "the-victoria-wedding-party|wedding-congrats-wreath",
+      "intentKey": "seoul-gangbuk|the-victoria-wedding-party|wedding-congrats-wreath",
+      "snapshotId": "direct-content-mia-dong-the-victoria-wedding-wreath-1ace622d97b9cb6f",
+      "snapshotHash": "1ace622d97b9cb6f6223adb858219647194258a231b95cb16c1fee23aab09798"
+    },
+    {
+      "slug": "ui-dong-anto-wedding-wreath",
+      "title": "안토 리조트 웨딩 축하화환 주문",
+      "h1": "안토 리조트 웨딩 축하화환 주문",
+      "primaryKeyword": "안토 리조트 웨딩 축하화환 주문",
+      "description": "안토 리조트 웨딩에 전할 축하 인사를 준비하세요. 실내·야외 예식의 수령 조건에 맞춰 공식 축하화환 네 가지와 리본 문구를 상담하실 수 있습니다.",
+      "cardSummary": "안토에서 시작하는 두 분의 새로운 여정을 축하하며 예식에 보낼 화환을 고릅니다.",
+      "firstAnswer": "안토 리조트에서 새 출발을 하는 두 분께 축복의 마음을 꽃으로 전해보세요. 네 가지 축하화환을 사진과 기본가격으로 비교하실 수 있습니다. 그랜드볼룸 또는 루프탑 등 청첩장의 예식 장소와 일정을 알려주시면 행사 조건에 맞춰 상담하기 좋습니다.",
+      "contentMarkdown": "## 두 분의 새로운 여정에 보내는 축복\n소중한 사람의 결혼식에 오래 기억하고 싶은 축하의 말을 전하고 싶으신가요? 안토 리조트 웨딩에 보내는 화환에는 두 사람이 함께 걸어갈 날들을 응원하는 인사를 담아보세요. 개인이나 회사의 이름으로, 원하는 예산에 맞춰 준비하실 수 있습니다.\n\n## 축하화환 네 가지를 비교하는 시간\n- 축하 3단 화환 C200: 기본가격 59,000원\n- 축하 고급 3단 화환 C203: 기본가격 79,000원\n- 축하 특대 3단 화환 C204: 기본가격 99,000원\n- 축하 특특대 3단 화환 C205: 기본가격 149,000원\n\n실내 그랜드볼룸과 야외 루프탑 가운데 이번 예식이 열리는 공간을 떠올리며 선물을 고르세요. 행사 담당자가 안내한 화환 자리의 여유와 배치 모습을 알면 원하는 상품의 실제 폭과 높이를 구체적으로 상담하실 수 있습니다. 야외 예식도 설치·전달 가능한 조건을 함께 살핀 뒤, 마음에 드는 사진과 예산으로 두 분께 전할 꽃을 정해 보세요.\n\n## 안토의 실내·야외 예식 안내\n안토 리조트의 주소는 **강북구 삼양로 689**입니다. 공식 웨딩 안내에는 **실내 그랜드볼룸과 야외 루프탑**이 소개되어 있습니다. 현재 청첩장의 장소와 예식일시, 외부 화환 수령 여부를 알려 주세요.\n\n야외 예식이라면 날씨에 따른 행사 장소 변경 안내도 함께 살펴봐 주세요. 행사 담당자가 안내하는 인계 장소와 수령 시간, 화환 배치 조건에 맞춰 가능한 상품과 일정을 상담하시면 됩니다. 회수가 필요하면 가능 여부와 비용도 함께 문의해 주세요.\n\n표시가격은 상품 기본가격입니다. 실제 배송지에 따라 추가 배송비가 생길 수 있어 최종 결제금액과 요청 일정, 배송·반입 가능 여부는 주문 전에 함께 상담해 주세요.\n\n꽃이랑 **1844-0644**에서 두 분께 전할 인사와 상품을 편하게 상담해 보세요. 상담원 연결은 **08:00~23:00**, 온라인 상품 확인과 주문은 [꽃이랑 공식몰](https://fwith.co.kr/)에서 가능합니다.",
+      "visualIntent": "공식 동일 SKU 축하 상품 예시 사진. 결혼 예시 리본이며 행사에 맞는 문구는 별도 지정·확인. 지역 행사 실배송 증거가 아님.",
+      "regionalProductKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sources": [
+        {
+          "name": "EVENT 2026 하반기 잔여타임 스페셜 프로모션",
+          "url": "https://antoresort.co.kr/information/30201030300",
+          "verifiedAt": "2026-10-11",
+          "type": "official"
+        },
+        {
+          "name": "안토 리조트",
+          "url": "https://antoresort.co.kr/reservation/search",
+          "verifiedAt": "2026-10-11",
+          "type": "official"
+        },
+        {
+          "name": "안토, ‘미니멀 오리엔탈 웨딩’ 쇼케이스 개최",
+          "url": "https://www.hwrc.co.kr/hwrc/news_room/news_room_view.do?news_room_seq=134&num=111&num=57&num=63",
+          "verifiedAt": "2026-10-11",
+          "type": "official"
+        }
+      ],
+      "sections": [],
+      "faq": [],
+      "relatedKeys": [],
+      "pageKey": "seoul-gangbuk-flower-direct-region-ui-dong-anto-wedding-wreath",
+      "category": "regions",
+      "routeType": "category",
+      "url": "/regions/ui-dong-anto-wedding-wreath/",
+      "pageType": "regional-service",
+      "status": "approved",
+      "file": "src/data/pages.json",
+      "order": 3,
+      "approvalVerified": true,
+      "sourceMode": "direct-git",
+      "queryClass": "local-commercial",
+      "assetSlot": "REAL_PROOF",
+      "source": {
+        "name": "EVENT 2026 하반기 잔여타임 스페셜 프로모션",
+        "url": "https://antoresort.co.kr/information/30201030300",
+        "verifiedAt": "2026-10-11",
+        "type": "official"
+      },
+      "productCardLimit": 4,
+      "productCardKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "scopeKey": "seoul-gangbuk-direct-initial-20261011",
+      "regionUnitKeys": [
+        "강북구/법정동/우이동"
+      ],
+      "regionalPurchaseMode": "catalog",
+      "regionalProductFamilies": [
+        "congrats"
+      ],
+      "ogImage": "/images/products/congrats-basic.jpg",
+      "ogImageAlt": "축하 3단 화환 공식 상품 사진",
+      "ogImageSha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+      "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=C200",
+      "ogImageWidth": 500,
+      "ogImageHeight": 500,
+      "ogImageType": "image/jpeg",
+      "facilityKey": "anto-resort",
+      "purchaseIntentKey": "wedding-congrats-wreath",
+      "contextKey": "anto-resort|wedding-congrats-wreath",
+      "intentKey": "seoul-gangbuk|anto-resort|wedding-congrats-wreath",
+      "snapshotId": "direct-content-ui-dong-anto-wedding-wreath-3e530cd506bcdfd2",
+      "snapshotHash": "3e530cd506bcdfd25ea4b54bbfa33ed035b5e2a1fe9bb0a90fca23e53809960f"
+    },
+    {
+      "slug": "suyu-dong-suyu-market-opening-wreath",
+      "title": "수유시장 점포 개업화환 주문",
+      "h1": "수유시장 점포 개업화환 주문",
+      "primaryKeyword": "수유시장 점포 개업화환 주문",
+      "description": "수유시장 점포의 새 출발을 개업화환으로 축하하세요. 공식 상품 네 가지의 사진과 기본가격을 살펴보고 가게에 전할 응원 문구를 정하실 수 있습니다.",
+      "cardSummary": "수유시장에 새 문을 여는 가게를 응원하며, 개업화환과 축하 인사를 준비합니다.",
+      "firstAnswer": "수유시장에 새 가게를 여는 분께 장사를 향한 응원의 마음을 전해보세요. 공식 축하화환 네 가지를 예산에 맞춰 고르고 개업 인사를 담으실 수 있습니다. 가게의 상호와 실제 주소, 받기 편한 날짜를 알려주시면 상품과 일정을 함께 상담할 수 있습니다.",
+      "contentMarkdown": "## 새 가게에 힘이 되어줄 축하 인사\n준비해 온 가게가 문을 여는 날, 가까운 사람의 응원을 전하고 싶을 때가 있습니다. 수유시장 점포에 보내는 개업화환에는 ‘개업을 축하드립니다’, ‘앞으로의 날들을 응원합니다’처럼 새 출발에 맞는 인사를 담아보세요.\n\n## 예산에 맞는 개업화환 선택\n- 축하 3단 화환 C200: 기본가격 59,000원\n- 축하 고급 3단 화환 C203: 기본가격 79,000원\n- 축하 특대 3단 화환 C204: 기본가격 99,000원\n- 축하 특특대 3단 화환 C205: 기본가격 149,000원\n\n가게에 찾아가 건넬 인사와 꽃 선물을 함께 준비하고 계신가요? 방문하기 전 미리 화환을 보내 첫날의 가게를 축하할지, 직접 인사하는 날에 맞춰 전할지 받는 분의 일정에 맞춰 골라보세요. 선택한 날짜에 준비할 수 있는 상품을 사진과 예산으로 상담하실 수 있습니다. 사진 속 리본은 예시이며 가게 주인에게 전하고 싶은 개업 인사를 담으실 수 있습니다.\n\n## 수유시장 가게에 보내는 준비\n서울시 현황에는 **건물형 수유시장과 골목형 수유전통시장·수유재래시장**이 각각 소개되어 있습니다. 주문에는 받는 가게가 알려준 상호와 실제 점포 주소를 준비해 주세요.\n\n개업 준비일과 영업을 시작하는 날 가운데 꽃을 받기 편한 때를 상의해 보세요. 점포나 관리주체가 안내한 배치 공간 조건이 있다면 상품 상담에 함께 알려주시면 됩니다.\n\n표시가격은 상품 기본가격입니다. 실제 배송지에 따라 추가 배송비가 생길 수 있어 최종 결제금액과 요청 일정, 배송·반입 가능 여부는 주문 전에 함께 상담해 주세요.\n\n꽃이랑 **1844-0644**에서 가게의 시작을 축하할 상품과 문구를 편하게 상담해 보세요. 상담원 연결은 **08:00~23:00**, 온라인 주문과 상품 확인은 [꽃이랑 공식몰](https://fwith.co.kr/)에서 가능합니다.",
+      "visualIntent": "공식 동일 SKU 축하 상품 예시 사진. 결혼 예시 리본이며 행사에 맞는 문구는 별도 지정·확인. 지역 행사 실배송 증거가 아님.",
+      "regionalProductKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sources": [
+        {
+          "name": "서울시 전통시장 현황(2026.1.31. 기준)",
+          "url": "https://news.seoul.go.kr/economy/archives/571689",
+          "verifiedAt": "2026-10-11",
+          "type": "official"
+        },
+        {
+          "name": "강북구 전통시장 — 수유시장",
+          "url": "https://child.gangbuk.go.kr/portal/bbs/B0000180/view.do?menuNo=200243&nttId=82922&pageIndex=",
+          "verifiedAt": "2026-10-11",
+          "type": "official"
+        }
+      ],
+      "sections": [],
+      "faq": [],
+      "relatedKeys": [],
+      "pageKey": "seoul-gangbuk-flower-direct-region-suyu-dong-suyu-market-opening-wreath",
+      "category": "regions",
+      "routeType": "category",
+      "url": "/regions/suyu-dong-suyu-market-opening-wreath/",
+      "pageType": "regional-service",
+      "status": "approved",
+      "file": "src/data/pages.json",
+      "order": 4,
+      "approvalVerified": true,
+      "sourceMode": "direct-git",
+      "queryClass": "local-commercial",
+      "assetSlot": "REAL_PROOF",
+      "source": {
+        "name": "서울시 전통시장 현황(2026.1.31. 기준)",
+        "url": "https://news.seoul.go.kr/economy/archives/571689",
+        "verifiedAt": "2026-10-11",
+        "type": "official"
+      },
+      "productCardLimit": 4,
+      "productCardKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "scopeKey": "seoul-gangbuk-direct-initial-20261011",
+      "regionUnitKeys": [
+        "강북구/법정동/수유동"
+      ],
+      "regionalPurchaseMode": "catalog",
+      "regionalProductFamilies": [
+        "congrats"
+      ],
+      "ogImage": "/images/products/congrats-basic.jpg",
+      "ogImageAlt": "축하 3단 화환 공식 상품 사진",
+      "ogImageSha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+      "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=C200",
+      "ogImageWidth": 500,
+      "ogImageHeight": 500,
+      "ogImageType": "image/jpeg",
+      "facilityKey": "suyu-market",
+      "purchaseIntentKey": "opening-congrats-wreath",
+      "contextKey": "suyu-market|opening-congrats-wreath",
+      "intentKey": "seoul-gangbuk|suyu-market|opening-congrats-wreath",
+      "snapshotId": "direct-content-suyu-dong-suyu-market-opening-wreath-d18b2ae624523f24",
+      "snapshotHash": "d18b2ae624523f24f37a02b3abacab5bf08005753ca64ec5bf4fb46106b38e2b"
+    },
+    {
+      "slug": "suyu-dong-gangbuk-arts-congratulation-wreath",
+      "title": "강북문화예술회관 공연·전시 축하화환 주문",
+      "h1": "강북문화예술회관 공연·전시 축하화환 주문",
+      "primaryKeyword": "강북문화예술회관 공연·전시 축하화환 주문",
+      "description": "강북문화예술회관의 공연과 전시를 축하화환으로 응원하세요. 무대와 작품을 준비한 분께 전할 인사와 공식 상품 네 가지를 살펴보실 수 있습니다.",
+      "cardSummary": "무대와 전시를 준비한 시간에 박수를 보내며, 강북문화예술회관 행사 축하화환을 준비합니다.",
+      "firstAnswer": "강북문화예술회관에서 공연이나 전시를 여는 분께 응원의 꽃을 보내보세요. 준비해 온 시간에 박수를 전하는 문구와 함께 축하화환 네 가지를 비교하실 수 있습니다. 주최 측이 외부 화환을 받는지, 어느 공간과 시간에 받을 수 있는지 알려주시면 상담하기 좋습니다.",
+      "contentMarkdown": "## 무대와 작품 뒤의 시간에 보내는 박수\n공연을 준비한 연주자나 전시를 여는 작가에게 ‘멋진 무대를 응원합니다’, ‘전시 개막을 축하합니다’라는 인사를 전하고 싶으신가요? 강북문화예술회관에 보내는 화환으로 그동안의 준비와 새로운 발표를 함께 축하해 보세요.\n\n공연·전시는 주최 측의 공간 사용 계획에 따라 외부 화환 수령이 달라질 수 있습니다. 해당 행사에서 화환을 받는지와 수령 시간·장소를 먼저 짧게 문의해 주세요.\n\n## 행사에 전할 축하 상품 네 가지\n- 축하 3단 화환 C200: 기본가격 59,000원\n- 축하 고급 3단 화환 C203: 기본가격 79,000원\n- 축하 특대 3단 화환 C204: 기본가격 99,000원\n- 축하 특특대 3단 화환 C205: 기본가격 149,000원\n\n작품과 무대의 분위기에 어울릴 꽃을 찾으신다면 주최 측이 정한 화환 자리를 생각하며 사진을 살펴보세요. C203 사진은 크림빛 윗장식 아래 노란 꽃이, C204 사진은 분홍 장식과 바깥 둘레의 노란 꽃이 보입니다. 포스터와 함께 좋아하는 색 배치를 말씀하면 준비 가능한 구성을 상담하기 편합니다. 사진의 리본 문구는 이번 공연·전시의 축하 인사로 상의하실 수 있습니다.\n\n## 강북문화예술회관 공간 안내\n주소는 **강북구 삼각산로 85**입니다. 공식 대관안내에는 **강북소나무홀, 강북진달래홀, 강북진달래홀 갤러리**가 소개되어 있습니다. 행사 포스터의 공연·전시명과 실제 공간을 알려 주세요.\n\n공연 당일이나 전시 개막일 가운데 주최 측이 꽃을 받기 편한 일정을 상의해 보세요. 화환의 배치 조건과 행사 종료 후 정리·회수 담당도 함께 정해 두시면 됩니다.\n\n표시가격은 상품 기본가격입니다. 실제 배송지에 따라 추가 배송비가 생길 수 있어 최종 결제금액과 요청 일정, 배송·반입 가능 여부는 주문 전에 함께 상담해 주세요.\n\n꽃이랑 **1844-0644**에서 전하고 싶은 축하를 상품과 문구로 준비해 보세요. 상담원 연결은 **08:00~23:00**, 상품 확인과 온라인 주문은 [꽃이랑 공식몰](https://fwith.co.kr/)에서 가능합니다.",
+      "visualIntent": "공식 동일 SKU 축하 상품 예시 사진. 결혼 예시 리본이며 행사에 맞는 문구는 별도 지정·확인. 지역 행사 실배송 증거가 아님.",
+      "regionalProductKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "sources": [
+        {
+          "name": "강북문화재단 — 대관안내",
+          "url": "https://www.gbcf.or.kr/load.asp?subPage=210",
+          "verifiedAt": "2026-10-11",
+          "type": "official"
+        },
+        {
+          "name": "문화시설 — 강북문화예술회관",
+          "url": "https://child.gangbuk.go.kr/portal/bbs/B0000182/list.do?menuNo=200444",
+          "verifiedAt": "2026-10-11",
+          "type": "official"
+        }
+      ],
+      "sections": [],
+      "faq": [],
+      "relatedKeys": [],
+      "pageKey": "seoul-gangbuk-flower-direct-region-suyu-dong-gangbuk-arts-congratulation-wreath",
+      "category": "regions",
+      "routeType": "category",
+      "url": "/regions/suyu-dong-gangbuk-arts-congratulation-wreath/",
+      "pageType": "regional-service",
+      "status": "approved",
+      "file": "src/data/pages.json",
+      "order": 5,
+      "approvalVerified": true,
+      "sourceMode": "direct-git",
+      "queryClass": "local-commercial",
+      "assetSlot": "REAL_PROOF",
+      "source": {
+        "name": "강북문화재단 — 대관안내",
+        "url": "https://www.gbcf.or.kr/load.asp?subPage=210",
+        "verifiedAt": "2026-10-11",
+        "type": "official"
+      },
+      "productCardLimit": 4,
+      "productCardKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "scopeKey": "seoul-gangbuk-direct-initial-20261011",
+      "regionUnitKeys": [
+        "강북구/법정동/수유동"
+      ],
+      "regionalPurchaseMode": "catalog",
+      "regionalProductFamilies": [
+        "congrats"
+      ],
+      "ogImage": "/images/products/congrats-basic.jpg",
+      "ogImageAlt": "축하 3단 화환 공식 상품 사진",
+      "ogImageSha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+      "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=C200",
+      "ogImageWidth": 500,
+      "ogImageHeight": 500,
+      "ogImageType": "image/jpeg",
+      "facilityKey": "gangbuk-culture-arts-center",
+      "purchaseIntentKey": "event-congrats-wreath",
+      "contextKey": "gangbuk-culture-arts-center|event-congrats-wreath",
+      "intentKey": "seoul-gangbuk|gangbuk-culture-arts-center|event-congrats-wreath",
+      "snapshotId": "direct-content-suyu-dong-gangbuk-arts-congratulation-wreath-efe0a1c6b908f177",
+      "snapshotHash": "efe0a1c6b908f1773445713b75335bf37af6fdf0c999661057c9f6b79ccea211"
+    }
+  ],
+  "copyInputHash": "fd0eb566a5c69405d6e4b0c714889c82254f64c0cd5e3802aaffbd456ce76cc3",
+  "integrationReview": "pending",
+  "externalWrites": 0
+}
