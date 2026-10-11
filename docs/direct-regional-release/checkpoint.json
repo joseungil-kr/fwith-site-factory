@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T20:04:46.331Z",
+  "updatedAt": "2026-10-11T20:07:42.796Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -25015,7 +25015,7 @@
   "independentPreparations": [
     {
       "regionKey": "seoul-eunpyeong",
-      "status": "INDEPENDENT_REVIEW_PASS_SOURCE_CONTROL_SAVE_INTENT",
+      "status": "SOURCE_SAVED_CONTROLS_PREPARED_DISPATCH_CONNECTION_BLOCKED",
       "scope": "서울특별시 은평구 자치구",
       "officialCode": "11380",
       "repository": "joseungil-kr/fwith-site-factory",
@@ -25028,10 +25028,12 @@
       "serviceInvocationId": null,
       "providedRunTime": "2026-10-11T19:00:00+00:00",
       "owner": {
-        "active": true,
+        "active": false,
         "startedAt": "2026-10-11T19:19:44.187Z",
-        "executionState": "single root external writer; author source frozen",
-        "sourceWritingStarted": true
+        "executionState": "source author and source writes ended; deployment blocked by unavailable dispatch route",
+        "sourceWritingStarted": true,
+        "lastWriteReadbackVerified": true,
+        "endedAt": "2026-10-11T20:07:42.796Z"
       },
       "intent": {
         "action": "author independently reviewed four-article plan then prepare exact source",
@@ -25042,9 +25044,9 @@
       "minimumApprovedForPublication": 4,
       "approvedArticles": 4,
       "heldArticles": 0,
-      "sourceRevision": null,
+      "sourceRevision": "cbc33f79d437dd813f8319a4b192641bbc8eda86",
       "sourceReviewDigest": "922b854298a61ddb03184bca66d9b8bea1f72495a782958c190d0a7079fed9cc",
-      "sourceBranchCreated": false,
+      "sourceBranchCreated": true,
       "planCandidateSha256": "3d9f81bf7a8236c578a8e2a24c00259d4e915149c7be954267459f4d829dad5b",
       "planReviewSha256": "879ae20743ac6dfc3fd5440a53cdf4e3bd3dfaf6b55ab787c62574aa8cbc4bc4",
       "frozenAt": "2026-10-11T19:19:44.187Z",
@@ -26645,7 +26647,51 @@
         },
         "publication": "NOT_ATTEMPTED",
         "visualQa": "DEFERRED_NOT_PASS",
-        "strategy": "Customer source root only on region branch; three exact regional controls on main; shared helpers unchanged"
+        "strategy": "Customer source root only on region branch; three exact regional controls on main; shared helpers unchanged",
+        "status": "SOURCE_SAVE_CONFIRMED_CONTROL_FILES_IN_THIS_OPERATION"
+      },
+      "sourceSaveResult": {
+        "sha": "cbc33f79d437dd813f8319a4b192641bbc8eda86",
+        "tree": "21b5b96caf8014f29677f344791bf0b4cf4b8694",
+        "parent": "231dc2fdbf59f2c82a508e3fb90f6f92ae39c869",
+        "sourceFiles": 70,
+        "newBlobFullTextReadbacks": 28,
+        "branch": "site-factory-seoul-eunpyeong-direct",
+        "at": "2026-10-11T20:07:06.042Z",
+        "wholeTreeVerified": true,
+        "allNewTextMatched": true,
+        "existingRuntimeImageBlobsReusedAndBound": true,
+        "reviewDigest": "922b854298a61ddb03184bca66d9b8bea1f72495a782958c190d0a7079fed9cc"
+      },
+      "controlPreparation": {
+        "files": [
+          {
+            "path": ".github/workflows/seoul-eunpyeong-direct-publish.yml",
+            "blobSha": "4f51f6d9fffb6983263e5ff69069055b5782c25b"
+          },
+          {
+            "path": "scripts/direct-seoul-eunpyeong/publish.py",
+            "blobSha": "bc3483785067cf8aa007ed44a2e9994224416b49"
+          },
+          {
+            "path": "scripts/direct-seoul-eunpyeong/test_publish.py",
+            "blobSha": "51d6a877c2be3678b842a1c9836cb3b68a92d9b9"
+          }
+        ],
+        "sharedHelperFilesUnchanged": 3,
+        "independentPublisherTests": 42,
+        "independentReviewSha256": "922b854298a61ddb03184bca66d9b8bea1f72495a782958c190d0a7079fed9cc",
+        "status": "PREPARED_THIS_COMMIT_READBACK_REQUIRED"
+      },
+      "dispatchBlocker": {
+        "kind": "CONNECTION_TOOL_CAPABILITY",
+        "action": "workflow_dispatch",
+        "target": ".github/workflows/seoul-eunpyeong-direct-publish.yml",
+        "expectedRevision": "cbc33f79d437dd813f8319a4b192641bbc8eda86",
+        "observedAt": "2026-10-11T19:54:00Z",
+        "reason": "No workflow_dispatch tool; cloud browser reported Chromium not running and no windows; official Run workflow UI could not be used",
+        "attempted": false,
+        "userApprovalIsNotMissing": true
       }
     }
   ]
