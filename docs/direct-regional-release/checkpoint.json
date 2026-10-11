@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T10:15:46.949Z",
+  "updatedAt": "2026-10-11T10:32:18.594Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -14913,11 +14913,20 @@
       "qualityPassed": 2,
       "sourceManifestSha256": "6a0ec3e293a60e0978176c06ef68e6e7d4ee95f6250524ceb2d67dca3486cc94",
       "controlManifestSha256": "6a2d440d60de2abc51ac17489c8dabc4dec78e6b57b551c3b0ad999042e3e2c8",
-      "status": "reviewed_local_ready",
+      "status": "source_saved_control_prepared",
       "intent": {
-        "action": "save_reviewed_additive_source_and_minimal_exact_route_controls",
-        "idempotencyKey": "anyang:additions:20261011:6a0ec3e293a60e0978176c06ef68e6d7d4ee95f6250524ceb2d67dca3486cc94"
-      }
+        "action": "save_minimal_controls_and_dispatch_existing_anyang_workflow_once",
+        "workflow": ".github/workflows/anyang-direct-publish.yml",
+        "expectedRevision": "d7dca6efcdd5187cb10c5a1cdcbf262a0f6c75d3",
+        "idempotencyKey": "anyang:additions:dispatch:d7dca6efcdd5187cb10c5a1cdcbf262a0f6c75d3"
+      },
+      "sourceRevision": "d7dca6efcdd5187cb10c5a1cdcbf262a0f6c75d3",
+      "sourceSaveVerified": true,
+      "remoteChangedFileReadback": "9/9 exact blob bytes verified, including2 control blobs",
+      "resultingArticles": 14,
+      "resultingNormalHtml": 19,
+      "resultingSitemapUrls": 18,
+      "visualQa": "deferred_not_pass"
     },
     "completed": [],
     "triggerSafety": {

@@ -39,17 +39,20 @@ def binding(host=pub.HOSTNAME, worker=pub.WORKER):
 class PublishTests(unittest.TestCase):
     def test_fixed_route_set(self):
         self.assertEqual(len(pub.SLUGS), 7)
-        self.assertEqual(len(pub.ARTICLE_ROUTES), 12)
-        self.assertEqual(len(pub.ROUTES), 16)
-        self.assertEqual(len(pub.SITEMAP_ROUTES), 15)
-        self.assertEqual(pub.THIN_HUB_ROUTES, {'/event/'})
+        self.assertEqual(len(pub.ARTICLE_ROUTES), 14)
+        self.assertEqual(len(pub.ROUTES), 19)
+        self.assertEqual(len(pub.SITEMAP_ROUTES), 18)
+        self.assertEqual(pub.THIN_HUB_ROUTES, {'/business/'})
         self.assertEqual(pub.ROUTES - pub.SITEMAP_ROUTES, pub.THIN_HUB_ROUTES)
         self.assertTrue(pub.REGION_ROUTES <= pub.SITEMAP_ROUTES)
         self.assertTrue(pub.ADDED_ROUTES <= pub.SITEMAP_ROUTES)
+        self.assertEqual(len(pub.ADDED_ROUTES), 5)
+        self.assertEqual(pub.UPDATE_ROUTES, {'/business/pyeongchon-smart-square-opening-wreath/', '/event/anyang-art-center-performance-wreath/'})
+        self.assertTrue(pub.UPDATE_ROUTES <= pub.SITEMAP_ROUTES)
         self.assertFalse(set(pub.DEFERRED) & pub.ROUTES)
 
     def test_explicit_thin_hub_robots_only(self):
-        self.assertEqual(pub.expected_robots('/event/'), {'noindex', 'follow'})
+        self.assertEqual(pub.expected_robots('/business/'), {'noindex', 'follow'})
         for route in pub.SITEMAP_ROUTES:
             self.assertEqual(pub.expected_robots(route), {'index', 'follow'})
         self.assertEqual(pub.expected_robots('/404.html'), {'noindex', 'nofollow', 'noarchive'})
@@ -173,16 +176,16 @@ class ArtifactTests(unittest.TestCase):
 
     def test_exact_fixed_artifact_and_http_counts(self):
         result = pub.artifact()
-        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (12, 15, 16))
+        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (14, 18, 19))
         contract = json.loads(Path('http-contract.json').read_text())
-        self.assertEqual(next(p['robots'] for p in contract['pages'] if p['path'] == '/event/'), ['follow', 'noindex'])
+        self.assertEqual(next(p['robots'] for p in contract['pages'] if p['path'] == '/business/'), ['follow', 'noindex'])
         def fixture_get(path, status=200):
             headers = Message(); headers['Content-Type'] = 'text/html'
             file = '404.html' if status == 404 else (path.lstrip('/') + 'index.html' if path.endswith('/') else path.lstrip('/'))
             return (self.root / file).read_bytes(), headers
         with patch.object(pub, 'get', side_effect=fixture_get):
             result = pub.http_once(contract)
-        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (12, 15, 16))
+        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (14, 18, 19))
 
     def test_missing_article_is_blocked(self):
         (self.root / 'funeral/anyang-funeral-hall-wreath/index.html').unlink(); self.seal()
@@ -198,15 +201,16 @@ class ArtifactTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'robots_meta_mismatch'): pub.artifact()
 
     def test_indexed_thin_hub_is_blocked(self):
-        file = self.root / 'event/index.html'
+        file = self.root / 'business/index.html'
         file.write_text(file.read_text().replace('follow,noindex', 'follow,index')); self.seal()
         with self.assertRaisesRegex(ValueError, 'robots_meta_mismatch'): pub.artifact()
 
     def test_thin_hub_in_sitemap_is_blocked(self):
         file = self.root / 'sitemap-0.xml'
-        file.write_text(file.read_text().replace('</urlset>', '<url><loc>' + pub.ORIGIN + '/event/</loc></url></urlset>')); self.seal()
+        file.write_text(file.read_text().replace('</urlset>', '<url><loc>' + pub.ORIGIN + '/business/</loc></url></urlset>')); self.seal()
         with self.assertRaisesRegex(ValueError, 'sitemap_exact_reviewed_urls_mismatch'): pub.artifact()
 
 
 if __name__ == '__main__':
     unittest.main()
+

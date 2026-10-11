@@ -31,9 +31,10 @@ REGION_ROUTES = {'/regions/' + slug + '/' for slug in SLUGS}
 ADDED_ROUTES = {'/funeral/anyang-funeral-hall-wreath/', '/funeral/sam-hospital-funeral-wreath/',
                 '/funeral/hallym-hospital-funeral-wreath/', '/event/patiobella-wedding-wreath/',
                 '/event/partyum-anyang-wedding-wreath/'}
-ARTICLE_ROUTES = REGION_ROUTES | ADDED_ROUTES
-THIN_HUB_ROUTES = {'/event/'}
-SITEMAP_ROUTES = {'/', '/regions/', '/funeral/'} | ARTICLE_ROUTES
+UPDATE_ROUTES = {'/business/pyeongchon-smart-square-opening-wreath/', '/event/anyang-art-center-performance-wreath/'}
+ARTICLE_ROUTES = REGION_ROUTES | ADDED_ROUTES | UPDATE_ROUTES
+THIN_HUB_ROUTES = {'/business/'}
+SITEMAP_ROUTES = {'/', '/regions/', '/funeral/', '/event/'} | ARTICLE_ROUTES
 ROUTES = SITEMAP_ROUTES | THIN_HUB_ROUTES
 
 
@@ -414,3 +415,4 @@ def strip_one_cf_beacon(body,expected_sha):
 
 if __name__ == '__main__':
     raise SystemExit(main())
+
