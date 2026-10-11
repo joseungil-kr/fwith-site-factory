@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T04:25:10.946Z",
+  "updatedAt": "2026-10-11T04:29:29.607Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-dongdaemun-direct-initial-20261011",
     "city": "서울특별시 동대문구",
-    "status": "content_independent_pass_source_preparing",
+    "status": "reviewed_source_saved_remote_readback_pending",
     "owner": {
       "scheduledRunAt": "2026-10-11T04:00:00Z",
       "observedExecutionAt": "2026-10-11T04:06:56.054Z",
@@ -78,8 +78,8 @@
       }
     },
     "changeIntent": {
-      "action": "save_exact_independently_reviewed_customer_source_then_publish_fixed_workflow",
-      "idempotencyKey": "seoul-dongdaemun:source:d4b8d6660376bb5b0b3e5eb90a3383287cde8af8dad72e9a3c1016f7cf8811f2"
+      "action": "publish_fixed_direct_workflow_for_exact_source_after_remote_readback",
+      "idempotencyKey": "seoul-dongdaemun:publish:c7950231a67ff2494f0c37298029343456089b39"
     },
     "unfinishedStages": [
       "official_research",
@@ -151,15 +151,17 @@
       "independentReviewSha256": "cbdf7ddd5e2c974c39cd346cd8a84f4a15595755e40dc9d0b4c813b18bbbfa4a",
       "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
       "contentRevision": 2,
-      "runtimeStatus": "PREPARATION_PASS_ACTUAL_SOURCE_NOT_YET_REVIEWED"
+      "runtimeStatus": "PASS_EXACT_LOCAL_SOURCE_PREPUBLICATION",
+      "runtimeReviewSha256": "b6cbf9bda46bda562efb53bfd57eb0b4af81e3d14af33975c28481ab7a53e2f2"
     },
     "recovery": {
-      "status": "safe_content_wording_revision_rebuild_pending",
+      "status": "resolved_rev2_all_68_source_tests_passed",
       "reason": "Unchanged product-family validator interpreted a negative mention of an unregistered family as a promised family; author replaced one negative disclaimer sentence, independently re-reviewed exact revised bytes. No validator weakened.",
       "priorAuthorSha256": "2159eb8d1a60a01bd6ef94b79bb60eb98bb8e271320eb1cbea56267e9e5e48a8",
       "priorFailedTests": "67/68 passed; false positive missing promised family bouquet",
       "newAuthorSha256": "d4b8d6660376bb5b0b3e5eb90a3383287cde8af8dad72e9a3c1016f7cf8811f2"
-    }
+    },
+    "sourceRevision": "c7950231a67ff2494f0c37298029343456089b39"
   },
   "history": [
     {
