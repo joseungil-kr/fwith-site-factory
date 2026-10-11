@@ -2,5 +2,6 @@
 import {site} from '../config/site';
 const {products=[]}=Astro.props;
 ---
-<div class="product-grid">{products.map((p:any)=><article class="product-card" data-product-family={p.family} data-product-key={p.key}><img src={p.img} alt={p.name} loading="lazy" width="420" height="420"/><div><h3>{p.name}</h3><strong>{p.price.toLocaleString()}원</strong><p>{p.desc}</p>{p.family==='congrats' && <p class="product-notice">사진 속 리본은 예시이며, 보내실 축하 인사로 주문 상담하실 수 있습니다.</p>}<a href={p.orderUrl || site.orderUrl}>상품 확인·주문 →</a></div></article>)}</div>
-<p class="product-notice">{site.productVariationNotice} {site.deliveryNotice}</p>
+<div class="product-grid">{products.map((p:any)=><article class="product-card" data-product-family={p.family} data-product-key={p.key}><img src={p.img} alt={p.name} loading="lazy" width="420" height="420"/><div><h3>{p.name}</h3><strong>{p.price.toLocaleString()}원</strong><p>{p.desc}</p><a href={p.orderUrl || site.orderUrl}>상품 확인·주문 →</a></div></article>)}</div>
+{products.some((p:any)=>p.family==='congrats') && <p class="product-notice">사진 속 리본은 예시이며, 보내실 축하 인사로 주문 상담하실 수 있습니다.</p>}
+<p class="product-notice">표시금액은 상품 기본가격입니다. {site.productVariationNotice} {site.deliveryNotice} 최종금액은 주문 상담에서 안내받으실 수 있습니다.</p>
