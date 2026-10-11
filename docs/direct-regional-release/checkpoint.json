@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T20:02:15.806Z",
+  "updatedAt": "2026-10-11T20:04:46.331Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -25015,7 +25015,7 @@
   "independentPreparations": [
     {
       "regionKey": "seoul-eunpyeong",
-      "status": "FIXED_PLAN_N4_AUTHORING_CLAIMED_NOT_PUBLISHED",
+      "status": "INDEPENDENT_REVIEW_PASS_SOURCE_CONTROL_SAVE_INTENT",
       "scope": "서울특별시 은평구 자치구",
       "officialCode": "11380",
       "repository": "joseungil-kr/fwith-site-factory",
@@ -25030,8 +25030,8 @@
       "owner": {
         "active": true,
         "startedAt": "2026-10-11T19:19:44.187Z",
-        "executionState": "single source author with serialized root external writer",
-        "sourceWritingStarted": false
+        "executionState": "single root external writer; author source frozen",
+        "sourceWritingStarted": true
       },
       "intent": {
         "action": "author independently reviewed four-article plan then prepare exact source",
@@ -25040,10 +25040,10 @@
       },
       "originalPlanN": 4,
       "minimumApprovedForPublication": 4,
-      "approvedArticles": 0,
-      "heldArticles": [],
+      "approvedArticles": 4,
+      "heldArticles": 0,
       "sourceRevision": null,
-      "sourceReviewDigest": null,
+      "sourceReviewDigest": "922b854298a61ddb03184bca66d9b8bea1f72495a782958c190d0a7079fed9cc",
       "sourceBranchCreated": false,
       "planCandidateSha256": "3d9f81bf7a8236c578a8e2a24c00259d4e915149c7be954267459f4d829dad5b",
       "planReviewSha256": "879ae20743ac6dfc3fd5440a53cdf4e3bd3dfaf6b55ab787c62574aa8cbc4bc4",
@@ -26316,7 +26316,337 @@
       "publication": "NOT_ATTEMPTED",
       "indexNow": "NOT_SUBMITTED",
       "gsc": "NOT_SUBMITTED",
-      "visualQa": "DEFERRED_NOT_PASS"
+      "visualQa": "DEFERRED_NOT_PASS",
+      "sourceSaveIntent": {
+        "at": "2026-10-11T20:04:46.331Z",
+        "idempotencyKey": "seoul-eunpyeong:source:e2bc95b5249e84cd106eb036be689543b4f19924ee33cdb8e97401ed68de5bdb",
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-seoul-eunpyeong-direct",
+        "root": "site-factory/seoul-eunpyeong-flower",
+        "sourceFiles": [
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/.gitignore",
+            "blobSha": "6bd40fd273da61bbc6c8ef5c00dfd947ca89e5ce"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/README.md",
+            "blobSha": "4bca9dd64a71e20cd8ebb86e75e6cf9c5b0cf89e"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/astro.config.mjs",
+            "blobSha": "e4c686ed4ee3f1ae7f66daea5e4f7bcee917d0a9"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/package-lock.json",
+            "blobSha": "640929d57802c2f534db82da79cb19c36b006df3"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/package.json",
+            "blobSha": "391c3b88aebce59c9c3c0a49e5fd3a88769719d5"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/public/_headers",
+            "blobSha": "af23a9cc2aca1c815b74c4da87a4191f045f6805"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/public/d7e9dfc9284537fc424b4b25376b4c17.txt",
+            "blobSha": "7cbe7bfe5abae7293f97427bb0feb1bc78de154c"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/public/favicon.svg",
+            "blobSha": "04825f793dd3f36db0ac15ad82dbf1d954746f8e"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/public/images/editorial/opening-wreath-illustration-v1.webp",
+            "blobSha": "8ab5a58eef8b16e2952229bc95c7f063dfef434e"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/public/images/products/congrats-basic.jpg",
+            "blobSha": "f142abff10936c47f30b96ab37e79c6224bc1527"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/public/images/products/congrats-large.jpg",
+            "blobSha": "9c7f02a1a4dc526d84c91d6fd75640e1800bb0fd"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/public/images/products/congrats-premium.jpg",
+            "blobSha": "7c6289c4db4ffd91ac034ecd7a9e288add7ba0c7"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/public/images/products/congrats-xl.jpg",
+            "blobSha": "00df190b6f62e702c45de1d97148003b9ab7943f"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/public/images/products/funeral-basic.jpg",
+            "blobSha": "52f55c45c05a9a31488b8ac03a39975fba93c601"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/public/images/products/funeral-large.jpg",
+            "blobSha": "ab914ee924fd0bf0e39a2061cf74e2ef550186b9"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/public/images/products/funeral-premium.jpg",
+            "blobSha": "566809de3fd7367a506e267f8ecbf1b81207cdca"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/public/images/products/funeral-xl.jpg",
+            "blobSha": "24a9c466cfb2116b6432389c6bbb1c226c9ce4ca"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/scripts/assert_preview_boundary.mjs",
+            "blobSha": "ef8bef6aad2103086284800654ff3c45548c9c6f"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/scripts/qa_bootstrap_or_graph.mjs",
+            "blobSha": "b572b14571480886a529a8dfa30a951bffe5f695"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/scripts/qa_graph.mjs",
+            "blobSha": "d3d9e2d747b4e9b276324e7625190aeb513817e8"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/scripts/qa_intent.mjs",
+            "blobSha": "b9e851f2818edf2cae6e1836d628bd32b4198624"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/scripts/qa_static.py",
+            "blobSha": "1eb2e612979df66f929550e680ae3629b5dca8c1"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/scripts/write_build_revision.mjs",
+            "blobSha": "7bb6ef97adb52cf3be9ba84c343e5be5df837f8f"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/scripts/write_response_headers.mjs",
+            "blobSha": "28fdee0510169d5652b212fcfcc9e03c1510a510"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/components/InlineOrderBanner.astro",
+            "blobSha": "bd5f4ad7ed6e4cf014b131b42731ed1c1f5ca0d0"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/components/InlineText.astro",
+            "blobSha": "e65577bc1857c80c807014610d5172272a40807b"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/components/MarkdownContent.astro",
+            "blobSha": "f40b368cd526df837b2a7602d3a48dcc462afd17"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/components/ProductCards.astro",
+            "blobSha": "2e9510597fa10c5b37abd7d9b047180b1766d8c0"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/components/RegionDirectory.astro",
+            "blobSha": "3dcbfd348651dde212bad1f22bb942e0d0a3b5b8"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/config/site.ts",
+            "blobSha": "676ec0f3cb25d5468199aea1cf4e176ae6c8524c"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/data/architecture.json",
+            "blobSha": "77fd1472c58e717a3a28aaafec8260a0373698fc"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/data/business-truth.json",
+            "blobSha": "e1072a73b284f7ed2375ae1449fe34e41a1566ec"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/data/direct-checkpoint.json",
+            "blobSha": "0a35b968dea8540e59cfb26eeafa5e6ead58cea6"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/data/editorial-assets.json",
+            "blobSha": "e1afa985dd826e0b012fa44bc5a737d32ef2f778"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/data/page-map.json",
+            "blobSha": "735422ce9a46f2dfc61235b15fa0c200dd12ed31"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/data/pages.json",
+            "blobSha": "b79f3b4376885c098db502a68bf60ed2c700543c"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/data/products.json",
+            "blobSha": "f552a3d3afb4adf58254c2483db56d27ee44d10b"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/data/publish-manifest.json",
+            "blobSha": "bdeeb727284e87550a8ff93956e5186ca6004d10"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/data/region-coverage.json",
+            "blobSha": "51fdeb9fa7bbfdea8a3efdd9a94ef247351a2f49"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/data/region-policy.json",
+            "blobSha": "746d8fed0f0efdbbb7174a5e99df17ba470381a5"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/data/site-config.json",
+            "blobSha": "65673a44b50b0e4bd45c2cdf932a185b54414ddd"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/data/social-image-provenance.json",
+            "blobSha": "a5e4e81ee03e3d4db72bc2ffe576f40890d12404"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/layouts/BaseLayout.astro",
+            "blobSha": "30f3fc553d666051fcdad23d9e38a57e38b6e6ad"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/lib/catalog.mjs",
+            "blobSha": "266204749651cac33ef53bb9be2a13943da6db3b"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/lib/content.mjs",
+            "blobSha": "e03cbe95986bb4502fa3f943f480785d799f352e"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/lib/hubs.mjs",
+            "blobSha": "9503ce8dd01257abb7f36c9e55d376601052f5bc"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/lib/journey.mjs",
+            "blobSha": "f19efadd9f1f35ada73bf74a2de9ab69ca8d4cdb"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/lib/regional-runtime.mjs",
+            "blobSha": "b82bc0438946cf1d2cb872a72f534b5e095a57c3"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/lib/regions.mjs",
+            "blobSha": "2055e39afe9ddb9f561a45a228474a357ec5eb11"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/lib/social-image.mjs",
+            "blobSha": "c7d9f1f647d4de512ff0cb7f06a1b23dc339f8d6"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/lib/sources.mjs",
+            "blobSha": "0169fd1710aedcbd81ea8530b3538aad97fd7c1d"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/lib/visual.mjs",
+            "blobSha": "19a8c6515a8e3e45f6f60e61c843814e68f6eb08"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/pages/404.astro",
+            "blobSha": "481dcb4ad4e6077e03a8ce080c7663ba99717af1"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/pages/[category]/[slug].astro",
+            "blobSha": "148daf5a9c9874133c8123c8cad917a461d7d7c9"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/pages/[category]/index.astro",
+            "blobSha": "d62a1c062cfd6604d48d99056a5ed106fdd48e31"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/pages/index.astro",
+            "blobSha": "7269db56306912d46d356c4391decb1509139b42"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/pages/robots.txt.ts",
+            "blobSha": "34bb350862a1d4f0197dc431e3bdf8955bd69ca4"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/src/styles/global.css",
+            "blobSha": "2d84867cf1cbc65120a7cb92ff4fd12620092c04"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/tests/answer-opening.test.mjs",
+            "blobSha": "8688d0f85ba4e736577a1fcb2c629e4f88a7e05f"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/tests/catalog.test.mjs",
+            "blobSha": "a4b0ddfb214a21f67ebaa468b487e00db8408ae0"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/tests/direct-source.test.mjs",
+            "blobSha": "df6195931dae504bdd6f0c53cc634a87d91a2972"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/tests/facility-context.test.mjs",
+            "blobSha": "936f81a94a3eadf02613cbc82bd972f74a6bc373"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/tests/journey-contract.test.mjs",
+            "blobSha": "01fafc603fdea3469b04acf4c383141df9d79df5"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/tests/purchase-banner-contract.test.mjs",
+            "blobSha": "35e738b0ef04d49c67b8b2afa26ca3a84d8c74aa"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/tests/regions-template.test.mjs",
+            "blobSha": "46283cb708bb8a9b124c917d6138f7953e3f5140"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/tests/social-image.test.mjs",
+            "blobSha": "e97df3de0c49e318b54362f36cbd3e37a53a5ef2"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/tests/sources.test.mjs",
+            "blobSha": "58786f9a415ba3a9f7d957a5a737f95babdab7f6"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/tests/visual.test.mjs",
+            "blobSha": "b12200da6ff3798573eddd9a61539ff60eb078ba"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/tsconfig.json",
+            "blobSha": "bb33be4f1b08c043c088a8db5bb01b0749135947"
+          },
+          {
+            "path": "site-factory/seoul-eunpyeong-flower/wrangler.jsonc",
+            "blobSha": "739d18c129786abfe0cbf1d9db19b673772f2677"
+          }
+        ],
+        "controlFiles": [
+          {
+            "path": ".github/workflows/seoul-eunpyeong-direct-publish.yml",
+            "blobSha": "4f51f6d9fffb6983263e5ff69069055b5782c25b"
+          },
+          {
+            "path": "scripts/direct-seoul-eunpyeong/publish.py",
+            "blobSha": "bc3483785067cf8aa007ed44a2e9994224416b49"
+          },
+          {
+            "path": "scripts/direct-seoul-eunpyeong/test_publish.py",
+            "blobSha": "51d6a877c2be3678b842a1c9836cb3b68a92d9b9"
+          }
+        ],
+        "sourceManifestSha256": "e2bc95b5249e84cd106eb036be689543b4f19924ee33cdb8e97401ed68de5bdb",
+        "finalHandoffSha256": "8d554d7566d09943e0d5c4cdf2f60575cb682b01b786ec4a1acb91d695fd0abf",
+        "independentIntegrationReviewSha256": "922b854298a61ddb03184bca66d9b8bea1f72495a782958c190d0a7079fed9cc",
+        "runtimeReviewSha256": "35e212fb4faead5be4cbe9368d4dc9841ecb4e65609c8b6912612225f18c7846",
+        "originalN": 4,
+        "approved": 4,
+        "held": 0,
+        "localValidation": {
+          "sourceTests": 98,
+          "publisherTests": 42,
+          "runtimeTests": 84,
+          "fullAstroFiles": 39,
+          "normalHtml": 6,
+          "errorHtml": 1,
+          "sitemap": 6,
+          "cards": 16
+        },
+        "sourceBaseMain": "0cef29605e566b493f2c78cb4cc000f2ebaecece",
+        "collisions": {
+          "branchAbsent": true,
+          "rootAbsent": true,
+          "workflowBlobsUnchanged": 54,
+          "providerAccountWorkerDomain": "NOT_VERIFIED_DO_NOT_INFER_ABSENT"
+        },
+        "publication": "NOT_ATTEMPTED",
+        "visualQa": "DEFERRED_NOT_PASS",
+        "strategy": "Customer source root only on region branch; three exact regional controls on main; shared helpers unchanged"
+      }
     }
   ]
 }
