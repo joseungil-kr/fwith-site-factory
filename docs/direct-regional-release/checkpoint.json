@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T16:46:32.386Z",
+  "updatedAt": "2026-10-11T16:53:55.732Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -40,10 +40,10 @@
       "serviceInvocationId": null,
       "scheduledRunAt": "2026-10-11T16:00:00Z",
       "active": true,
-      "executionState": "source_saved_control_save_in_progress_no_dispatch",
+      "executionState": "prepared_source_and_controls_saved_dispatch_not_attempted",
       "startedAt": "2026-10-11T16:32:52.520Z",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T13:34:59Z",
-      "mainWriteActive": true
+      "mainWriteActive": false
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -260,7 +260,9 @@
             "fullTextMatched": true
           }
         ],
-        "actualDispatch": false
+        "actualDispatch": false,
+        "controlCommit": "7fd328633df095795189f71d391d79178edf3736",
+        "controlReadbackVerified": true
       }
     }
   },
@@ -18372,19 +18374,25 @@
     "allCustomerRouteInventoryComplete": false,
     "sourceScopeInventorySha256": "879a4a1bb50ffab73814c7b5cd39fc97b1731358af05cd4251f6dda0ba107e78",
     "partialCopyReview": {
-      "articlesWithReconciledIndependentCopyReview": 707,
-      "scopeReconciliationComplete": false,
-      "ledgerSha256": "1ad1ff82e506b05da09a8b09e3b144c1d5cfd74a04d96544bbf8f7652618aeea",
+      "articlesWithReconciledIndependentCopyReview": 829,
+      "scopeReconciliationComplete": true,
+      "ledgerSha256": "ddaf20f278f1d4d4d4925b513013f31c3d0a137b1e040e5ac8663484584a1cf1",
       "publicCorrectionsVerified": 0,
       "buildAndHostedApproval": false,
       "observedAt": "2026-10-11T15:37:54.287Z",
-      "note": "Exact independent copy evidence reconciled for 682 of 829 existing public articles; integration, publication and hosted QA remain separate.",
-      "remainingArticlesWithoutReconciledCopyReview": 122,
-      "copyPassedArticles": 791,
-      "remainingArticles": 38,
+      "note": "All 829 original indexable article copy revisions have independent review records with exact file bindings. Complete customer-route inventory, integration, production builds, hosted verification and publication remain separate and incomplete.",
+      "remainingArticlesWithoutReconciledCopyReview": 0,
+      "copyPassedArticles": 829,
+      "remainingArticles": 0,
       "articleDenominator": 829,
       "extraReviewedMergedAliasArticles": 1,
-      "updatedAt": "2026-10-11T16:24:08.893Z"
+      "updatedAt": "2026-10-11T16:53:55.732Z",
+      "lastAddedProof": {
+        "region": "bucheon",
+        "articles": 38,
+        "commonFiles": 8,
+        "reviewSha256": "c7cd6138f4f5027aeb52c19b954bff9bd1b278bffaae836a34063811542972e0"
+      }
     },
     "acceptanceStandardUpdateIntent": {
       "path": "docs/direct-regional-release/SALES_COPY_ACCEPTANCE.md",
