@@ -28,6 +28,6 @@ const revision=buildRevision.revision || 'local';
 <header class="site-header"><div class="header-inner"><a class="brand" href="/"><span class="brand-icon">✿</span><span><b>{site.brand}</b><small>{site.region} 꽃배달</small></span></a>
 <nav aria-label="주요 메뉴">{menuGroups.map(g=><a href={g.url}>{g.label}</a>)}</nav><a class="phone" href={site.phoneHref}>☎ {site.phone}</a></div></header>
 <main id="main-content"><slot/></main>
-<footer><div><strong>{site.brand} {site.region}</strong><span>{site.orderHours}</span><a href={site.phoneHref}>{site.phone}</a><a href={orderUrl}>온라인 주문</a><small>{site.deliveryNotice}</small></div></footer>
+<footer><div><strong>{site.brand} {site.region}</strong><span>{site.orderHours}</span><a href={site.phoneHref}>{site.phone}</a><a href={orderUrl}>온라인 주문</a></div></footer>
 <div class="mobile-bar"><a href={site.phoneHref}>전화주문</a><a href={orderUrl}>온라인 주문</a></div>
 </body></html>
