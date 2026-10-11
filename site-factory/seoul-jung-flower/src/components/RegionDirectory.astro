@@ -14,17 +14,17 @@ const published=new Map<string,RegionEntry>(districts.flatMap(d=>d.items).flatMa
 ---
 <section class="category-hero">
   <span class="eyebrow">{site.brand} {site.region}</span>
-  <h1>{site.region} 지역별 꽃배달 안내</h1>
-  <p>{site.region}의 법정동·행정동 관할과 작성된 주문 안내입니다. 관할 목록과 개별 주문 안내의 범위는 다릅니다. 개별 안내가 없는 동은 준비 중으로 표시합니다. 배송 주소는 도로명주소와 건물명·층·호수까지 준비해 주세요.</p>
+  <h1>{site.region} 장소별 근조·축하화환</h1>
+  <p>호텔 예식과 전통혼례, 새 매장과 전시의 첫날까지. 중구의 장소별 안내에서 꽃을 고르고, 조문에 전할 위로도 차분히 준비해 보세요. 상품을 아직 정하지 않으셨다면 예산부터 편하게 상담하실 수 있습니다.</p>
   <div class="actions"><a class="btn primary" href={site.phoneHref}>전화 상담·주문</a><a class="btn dark" href={site.orderUrl}>온라인 주문</a></div>
 </section>
 <nav class="actions" aria-label="지역 안내">{districts.map(d=><a class="btn light" href={`#${d.key}`}>{d.name}</a>)}</nav>
 {districts.map((district,index)=><section id={district.key} data-region-district={district.key}>
   <div class="section-title"><h2>{district.name}</h2></div>
-  <div class="card-grid big">{district.items.map(({representative,page})=><a class="page-card" href={page.url} data-region-unit={representative.unitKeys.join('|')}><strong>{page.primaryKeyword}</strong><span>{page.cardSummary}</span><em>주문 안내 보기 →</em></a>)}</div>
+  <div class="card-grid big">{district.items.map(({representative,page})=><a class="page-card" href={page.url} data-region-unit={representative.unitKeys.join('|')}><strong>{page.primaryKeyword}</strong><span>{page.cardSummary}</span><em>상품과 꽃 이야기 보기 →</em></a>)}</div>
   {index===Math.floor((districts.length-1)/2) && <InlineOrderBanner/>}
   <details class="content-card"><summary>행정구역 이름으로 찾기</summary>
-    <p>행정안전부 관할 자료를 기준으로 법정동 {coverage.units.length}개와 행정동 {coverage.administrativeCrosswalk.length}개의 관계를 정리했습니다. 관할 목록은 배송 가능 여부나 모든 동의 개별 안내가 작성되었다는 뜻이 아닙니다. 여러 행정동에 나뉜 법정동은 ‘일부’로 표시하며, 정확한 관할은 전체 주소로 확인하세요.</p>
+    <p>동 이름으로 찾으실 수 있도록 법정동 {coverage.units.length}개와 행정동 {coverage.administrativeCrosswalk.length}개를 정리했습니다. 장소별 안내가 없는 곳은 ‘개별 안내 준비 중’, 여러 행정동에 걸친 곳은 ‘일부’로 표시합니다. 목록에 없는 장소도 전화로 문의하실 수 있으며, 실제 전달 가능 여부는 주문하실 주소와 일정에 따라 상담합니다.</p>
     <ul class="decision-list">{coverage.administrativeCrosswalk.filter(a=>a.districtKey===district.key).map(admin=><li data-administrative-unit={admin.aliasKey}><strong>{admin.name}</strong>: {admin.relations.map((relation,index)=>{
       const unit=coverage.units.find(unit=>unit.unitKey===relation.unitKey);
       const entry=published.get(relation.unitKey);
