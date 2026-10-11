@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T12:15:56.251Z",
+  "updatedAt": "2026-10-11T12:24:44.251Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,7 +33,7 @@
   "current": {
     "scopeKey": "seoul-dobong-direct-initial-20261011",
     "city": "서울특별시 도봉구",
-    "status": "reviewed_articles_runtime_actual_source_prepared",
+    "status": "ready_for_exact_source_dispatch",
     "owner": {
       "scheduledRunAt": "2026-10-11T11:00:00Z",
       "observedExecutionAt": "2026-10-11T11:42:51.328Z",
@@ -41,7 +41,7 @@
       "serviceInvocationId": null,
       "checkpointId": "direct-seoul-dobong-20261011T110000Z",
       "active": true,
-      "executionState": "source_save_intent",
+      "executionState": "exact_source_publication",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T11:47:35Z",
       "actualWriteStopConfirmedAt": "2026-10-11T11:43:46.578Z"
     },
@@ -79,12 +79,13 @@
       }
     },
     "changeIntent": {
-      "action": "save_reviewed_exact_dobong_source_tree_after_independent_actual_source_review",
-      "sourceBranch": "site-factory-seoul-dobong-direct",
-      "expectedSourceHead": "9badfbf6a04a8b94892c4dc1e936e546ca15320b",
-      "plannedArticleCount": 4,
-      "sourceFileCount": 72,
-      "idempotencyKey": "seoul-dobong:source:ba35a7ab5943e0f663160752fec09e079e8728ce8eb8fc2adb299f26d825e2b8"
+      "action": "publish_fixed_direct_workflow_once_for_exact_source_after_full_remote_readback",
+      "workflow": ".github/workflows/seoul-dobong-direct-publish.yml",
+      "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+      "worker": "seoul-dobong-flower-guide",
+      "hostname": "seoul-dobong.fwith.kr",
+      "noOverride": true,
+      "idempotencyKey": "seoul-dobong:publish:14d2c27f04c6c3139ba027af33f988244375b91f"
     },
     "plan": {
       "state": "frozen_before_authoring_independent_plan_pass",
@@ -153,17 +154,42 @@
       "imageReviewSha256": "f1601a1f929e5e5f5a1c740d318b63e0a9efbef5ad21034061fdc42d70f0de10",
       "assetManifestSha256": "34ceabd6872c6774b4de7c48efa633c5099d57491a6b5e763ed5e4d108c457bc",
       "sourceUploadManifestSha256": "ba35a7ab5943e0f663160752fec09e079e8728ce8eb8fc2adb299f26d825e2b8",
-      "actualSourceIndependentReview": "pending"
+      "actualSourceIndependentReview": "PASS_LOCAL_ACTUAL_SOURCE_AND_CONTROL",
+      "actualSourceReviewSha256": "56a1644d125bde1b88b3f504a88595bf49971d39bc8bb39b0470b28fafeea130"
     },
     "unfinishedStages": [
-      "actual_source_independent_review",
-      "source_save_readback",
       "exact_source_dispatch",
       "public_http_qa",
       "IndexNow_receipt",
       "GSC_submission",
       "deferred_desktop_narrow_visual_qa"
-    ]
+    ],
+    "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+    "searchSubmissionIntent": {
+      "action": "submit_sitemap_after_verified_public_release_and_durable_IndexNow_receipt",
+      "siteUrl": "sc-domain:fwith.kr",
+      "sitemapUrl": "https://seoul-dobong.fwith.kr/sitemap-index.xml",
+      "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+      "idempotencyKey": "seoul-dobong:gsc:14d2c27f04c6c3139ba027af33f988244375b91f",
+      "reuseExistingNormalSubmission": true
+    },
+    "validation": {
+      "sourceRevision": "14d2c27f04c6c3139ba027af33f988244375b91f",
+      "nodeVersion": "22.23.3",
+      "sourceTestsPassed": 70,
+      "publisherTestsPassed": 42,
+      "readbackHelperTestsPassed": 7,
+      "build": "PASS",
+      "static": "PASS",
+      "graph": "PASS",
+      "normalHtmlRoutes": 6,
+      "articleCount": 4,
+      "sitemapUrls": 6,
+      "remoteFullReadback": "72/72 full bytes and Git blob SHA verified via official connected fetch_file base64",
+      "remoteReadbackSha256": "ed73fc7783e931ef6f7ecaac5a8a68088180fa36754c05aef9f213cd52c23e88",
+      "exactSourceVerificationSha256": "36114e08ea1eea14b1aea1f49b08574982c63ff6f9475bb4eae54480c2c50297",
+      "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+    }
   },
   "history": [
     {
@@ -7422,7 +7448,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Save reviewed Dobong source with expected source head, verify all remote bytes and rebuild exact source, then publish existing direct workflow.",
+  "nextAction": "Dispatch reviewed SeoulDobong direct workflow once for exact source; verify provider GET/no-override binding and live HTTP/IndexNow/GSC; defer only actual screens.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
