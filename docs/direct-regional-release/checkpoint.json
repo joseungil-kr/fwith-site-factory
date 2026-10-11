@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T12:48:27.467Z",
+  "updatedAt": "2026-10-11T12:50:22.180Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -16535,7 +16535,7 @@
       "originalHeld": 1,
       "additivePlannedN": 1,
       "qualityPassed": 1,
-      "status": "reviewed_source_save_intent",
+      "status": "exact_source_saved_control_dispatch_intent",
       "sourceManifestSha256": "6bf41ebafaec73089111dc374540a4d0ae04f198d40655d166074de3d0377509",
       "controlManifestSha256": "7effcf5ee5abe7046335e0513626d8f9d6f19d8992eb7578accb6a0e137a0278",
       "intent": {
@@ -16552,7 +16552,64 @@
       "resultingArticles": 12,
       "resultingNormalHtml": 15,
       "resultingSitemapUrls": 14,
-      "visualQa": "deferred_not_pass"
+      "visualQa": "deferred_not_pass",
+      "sourceRevision": "ad83ea44ab1e8f87b871c9ea9ab2f2e29c7ce7a9",
+      "sourceFullChangedBlobReadback": [
+        {
+          "path": "site-factory/dongducheon-flower/src/data/architecture.json",
+          "sha": "598ac7a720dd06da42d77dd1964a9ff357925ae3",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/dongducheon-flower/src/data/page-map.json",
+          "sha": "4edc2423add48c31f8fcfbcf250c756c451fe3e8",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/dongducheon-flower/src/data/pages.json",
+          "sha": "5dfa88d8d466a5a6a2f8681afb7eebca1a5fa0d0",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/dongducheon-flower/src/data/publish-manifest.json",
+          "sha": "e57bc369b65abbec812cd64d8019bbe89c61fdd5",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/dongducheon-flower/src/lib/hubs.mjs",
+          "sha": "d10a08d43a5be90aedbc285e98802c12eaae6e3b",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/dongducheon-flower/tests/direct-source.test.mjs",
+          "sha": "a9696c1f881f62e8293ae73340890e0cb68dec30",
+          "fullTextMatches": true
+        },
+        {
+          "path": "site-factory/dongducheon-flower/tests/additive-20261011.test.mjs",
+          "sha": "37a596affc8ab795508a39528d10a9f44b01b16a",
+          "fullTextMatches": true
+        }
+      ],
+      "controlFullChangedBlobReadback": [
+        {
+          "path": "scripts/direct-dongducheon/publish.py",
+          "sha": "e03c8b1381dd36b9e883f40251a51e5434d35a73",
+          "fullTextMatches": true
+        },
+        {
+          "path": "scripts/direct-dongducheon/test_publish.py",
+          "sha": "0d43617da14cb2b90ac9f0ccc502e362dbfd0fff",
+          "fullTextMatches": true
+        }
+      ],
+      "dispatchIntent": {
+        "workflow": ".github/workflows/dongducheon-direct-publish.yml",
+        "ref": "main",
+        "expected_revision": "ad83ea44ab1e8f87b871c9ea9ab2f2e29c7ce7a9",
+        "indexnow_only": false,
+        "idempotencyKey": "dongducheon:additions:publish:ad83ea44ab1e8f87b871c9ea9ab2f2e29c7ce7a9"
+      }
     },
     "completed": [
       {
