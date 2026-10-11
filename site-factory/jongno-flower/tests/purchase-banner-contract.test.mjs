@@ -7,7 +7,7 @@ test('purchase banner consumes current Truth/config and never hardcodes a region
  for(const key of ['site.brand','site.region','site.phoneHref','site.orderUrl','site.phoneOrderHours'])assert.ok(component.includes(key));
  assert.doesNotMatch(component,/다른지역|예시지역|1844|59,?000|꽃이랑 온라인 주문/);
  assert.match(component,/site\.phoneOrderHours.*site\.onlineOrderHours.*접수/);
- assert.match(component,/상담/);assert.match(component,/일정|전달/);assert.ok(read('src/components/ProductCards.astro').includes('site.deliveryNotice'));assert.ok(read('src/layouts/BaseLayout.astro').includes('site.deliveryNotice'));
+ assert.match(component,/상담/);assert.match(component,/일정|전달/);assert.ok(read('src/components/ProductCards.astro').includes('site.deliveryNotice'));assert.ok(!read('src/layouts/BaseLayout.astro').includes('<small>{site.deliveryNotice}</small>'));
  assert.doesNotMatch(component,/(?:당일|즉시|무료)\s*배송|배송(?:시간)?(?:을|은)?\s*보장(?:합니다|해요)/);
 });
 test('home, hub and detail render a component outside frozen raw Markdown',()=>{
