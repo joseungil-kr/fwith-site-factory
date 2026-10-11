@@ -15,7 +15,7 @@ const published=new Map<string,RegionEntry>(districts.flatMap(d=>d.items).flatMa
 <section class="category-hero">
   <span class="eyebrow">{site.brand} {site.region}</span>
   <h1>{site.region} 지역별 꽃배달 안내</h1>
-  <p>안양의 7개 법정동별 주문 안내입니다. 명학동·병목안동 등 행정동 이름은 아래에서 해당 법정동으로 찾아보세요. 배송 주소는 도로명주소와 건물명·층·호수까지 확인해 주세요.</p>
+  <p>안양에서 위로와 축하를 전할 꽃을 살펴보세요. 7개 법정동별 안내에서 상품과 보내는 상황을 찾아보실 수 있습니다. 명학동·병목안동 등 행정동 이름으로도 아래에서 찾을 수 있어요.</p>
   <div class="actions"><a class="btn primary" href={site.phoneHref}>전화 상담·주문</a><a class="btn dark" href={site.orderUrl}>온라인 주문</a></div>
 </section>
 <nav class="actions" aria-label="구별 지역 안내">{districts.map(d=><a class="btn light" href={`#${d.key}`}>{d.name}</a>)}</nav>

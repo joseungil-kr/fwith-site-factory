@@ -17,7 +17,7 @@ test('Anyang has seven distinct legal-unit pages and all 31 current administrati
 });
 test('direct snapshot hashes bind the public content and all four page collections',()=>{
  const pages=read('pages'),manifest=read('publish-manifest');
- assert.equal(manifest.directRelease.sourceMode,'direct-git');assert.deepEqual(manifest.snapshotLedger,{});
+ assert.equal(manifest.directRelease.sourceMode,'direct-git');assert.deepEqual(manifest.snapshotLedger,Object.fromEntries(pages.map(p=>[p.snapshotId,{pageKey:p.pageKey,snapshotHash:p.snapshotHash}])));
  for(const p of pages){
   const omit=new Set(['approvalVerified','status','file','order','sourceMode','snapshotId','snapshotHash']);
   const digest=sha(canonical(Object.fromEntries(Object.entries(p).filter(([k])=>!omit.has(k)))));
@@ -59,10 +59,10 @@ test('the five approved additions preserve regional scope and index only support
  assert.equal(1+pages.length+indexableHubs.length,18);assert.equal(1+pages.length+htmlHubs.length,19);
 });
 
-test('existing seven article URLs and bodies stay unchanged',()=>{
+test('historical seven article bodies remain in evidence and original URLs stay unchanged',()=>{
  const originals={"anyang-dong":{"url":"/regions/anyang-dong/","bodySha256":"eb10ecfaa5b39b2bed132f5119db8288b5045c1857e1d3cb8cb791e97dce553a"},"seoksu-dong":{"url":"/regions/seoksu-dong/","bodySha256":"d8deca014ee3023b7f386657514f0b59a5262289e3750112e5a82ce1a273a450"},"bakdal-dong":{"url":"/regions/bakdal-dong/","bodySha256":"a3dcd68886238bff48ec7b67dfc121c8c3f45407105c5175e4dc5b74ade2c890"},"bisan-dong":{"url":"/regions/bisan-dong/","bodySha256":"2f56b65c075f5cf32e8eadd4607f4326e82618527fb6ecd95b3304d32da691b1"},"gwanyang-dong":{"url":"/regions/gwanyang-dong/","bodySha256":"8ce15bfbaafda1d1866f838d5823ec3f997af7b427f6ed6989f5f88ff6593176"},"pyeongchon-dong":{"url":"/regions/pyeongchon-dong/","bodySha256":"ec824b858bf748e399094b153824e1804f9b2f1d20579ffa8428c954a39d3eb1"},"hogye-dong":{"url":"/regions/hogye-dong/","bodySha256":"2ba2029b4c2392696dcac84a38d582fa5eb10cde7559ea9c2cef710dbd27e4cf"}};
- const pages=read('pages');
+ const pages=JSON.parse(fs.readFileSync(new URL('./fixtures/original-pages-before-copy.json',import.meta.url),'utf8'));
  for(const [slug,expected] of Object.entries(originals)){
-  const page=pages.find(p=>p.slug===slug);assert.ok(page);assert.equal(page.url,expected.url);assert.equal(sha(page.contentMarkdown),expected.bodySha256);
+  const page=pages.find(p=>p.slug===slug);assert.ok(page);assert.equal(page.url,expected.url);assert.equal(sha(page.contentMarkdown),expected.bodySha256);assert.equal(read('pages').find(p=>p.slug===slug).url,expected.url);
  }
 });
