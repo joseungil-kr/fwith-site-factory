@@ -1,0 +1,369 @@
+{
+  "schemaVersion": 1,
+  "scopeKey": "seoul-jungnang-direct-initial-20261011",
+  "region": "서울특별시 중랑구",
+  "officialCode": "11260",
+  "status": "fixed_content_plan_before_authoring",
+  "planStatus": "frozen_before_authoring",
+  "frozenAt": "2026-10-11T05:17:49.548943+00:00",
+  "researchedAt": "2026-10-11",
+  "plannedArticleCount": 3,
+  "originalN": 3,
+  "minimumPassedArticles": 3,
+  "geographicMembership": {
+    "legalDongCount": 6,
+    "administrativeDongCount": 16,
+    "relationshipCount": 16,
+    "plannedRepresentedLegalUnits": 3,
+    "unassignedLegalUnits": 3,
+    "unassignedLegalUnitNames": [
+      "중화동",
+      "묵동",
+      "망우동"
+    ],
+    "countIsPageQuota": false
+  },
+  "membershipPath": "docs/direct-regional-release/seoul-jungnang/research/jungnang-membership.json",
+  "membershipSha256": "22fb747f125254ad09bed2ea00ff27b467796e5aacc21d25fb648a70e11c3276",
+  "coverageInputPath": "docs/direct-regional-release/seoul-jungnang/coverage-input.json",
+  "coverageInputSha256": "40e3d78def2b44989a3a7c938be577ac206c6be90c4a8b8cf642c194bb45e5cc",
+  "pages": [
+    {
+      "slug": "sinnae-dong-seoul-medical-center-funeral-wreath",
+      "name": "신내동",
+      "unitKey": "중랑구/법정동/신내동",
+      "title": "서울의료원 장례식장 근조화환 주문",
+      "h1": "서울의료원 장례식장 근조화환 주문",
+      "primaryKeyword": "서울의료원 장례식장 근조화환 주문",
+      "family": "funeral",
+      "state": "planned",
+      "context": {
+        "name": "서울특별시 서울의료원 장례식장",
+        "address": "서울특별시 중랑구 신내로 156",
+        "legal_dong": "신내동",
+        "parcel_address": null
+      },
+      "distinctBuyerDecision": "신내로 156 도착과 빈소 인수를 구분한다. 공식 B1 외부 연결 출입구·B2 빈소층을 확인하고, 실제 부고의 호실과 인수 장소가 정해진 뒤 주문할 수 있도록 돕는다.",
+      "queryEvidence": {
+        "sourceUrl": "https://as.seoulmc.or.kr/funeral/page/use/use_01.asp",
+        "finding": "신내로 156 도착과 빈소 인수를 구분한다. 공식 B1 외부 연결 출입구·B2 빈소층을 확인하고, 실제 부고의 호실과 인수 장소가 정해진 뒤 주문할 수 있도록 돕는다.",
+        "kind": "editorial_purchase_intent_hypothesis_from_verified_official_facility_facts",
+        "measuredSearchVolume": null,
+        "originalResearchQuery": "서울의료원 장례식장 근조화환 주문"
+      },
+      "sources": [
+        {
+          "name": "서울특별시 서울의료원 장례식장 공식 안내",
+          "url": "https://news.seoul.go.kr/welfare/archives/256653",
+          "type": "official",
+          "verifiedAt": "2026-10-11",
+          "supports": [
+            "서울시 장례식장 안내는 중랑구 신내로 156의 서울의료원 장례식장과 분향소 9개소를 명시한다."
+          ],
+          "verificationMethod": "Python urllib.request direct public HTTPS GET; raw HTML and parsed text preserved"
+        },
+        {
+          "name": "서울특별시 서울의료원 장례식장 공식 안내",
+          "url": "https://as.seoulmc.or.kr/funeral/page/use/use_01.asp",
+          "type": "official",
+          "verifiedAt": "2026-10-11",
+          "supports": [
+            "장례식장 시설안내는 B1 외부 연결 출입구, B2 빈소 9개실, B3 주차장과 계단/E/V 연결을 구분한다."
+          ],
+          "verificationMethod": "Python urllib.request direct public HTTPS GET; raw HTML and parsed text preserved"
+        },
+        {
+          "name": "서울특별시 서울의료원 장례식장 공식 안내",
+          "url": "https://as.seoulmc.or.kr/funeral/page/map/map_n01.asp?AC_F=6&AC_S=1",
+          "type": "official",
+          "verifiedAt": "2026-10-11",
+          "supports": [
+            "장례식장 오시는 길에서 차량 경로의 목적지를 후문으로 안내한다."
+          ],
+          "verificationMethod": "Python urllib.request direct public HTTPS GET; raw HTML and parsed text preserved"
+        },
+        {
+          "name": "건강보험심사평가원 서울특별시서울의료원 병원정보",
+          "url": "https://www.hira.or.kr/ra/hosp/hospInfoAjax.do?ykiho=11101326",
+          "type": "official",
+          "verifiedAt": "2026-10-11",
+          "supports": [
+            "HIRA가 병원명과 신내동 주소를 함께 명시한다."
+          ],
+          "verificationMethod": "web.run open official HIRA page; exact tool response preserved; direct urllib timed out"
+        }
+      ],
+      "admissionEvidence": {
+        "status": "outside_wreath_acceptance_unconfirmed",
+        "unknowns": [
+          "외부 화환 반입 허용 여부",
+          "배송업체 출입구·하역·엘리베이터 사용 허용",
+          "화환 수령 가능 시간",
+          "호실별 설치 위치·크기 제한",
+          "철거·회수 규정",
+          "현재 빈소 배정과 특정 장례의 진행 여부"
+        ]
+      },
+      "requiredBuyerDecisions": [
+        "서울의료원 신내로 156 주소와 실제 장례식장명",
+        "공식 B1 출입구와 B2 빈소층의 차이 및 실제 호실",
+        "배송업체가 사용할 수 있는 인수 장소·운반 동선의 별도 확인",
+        "발인 전 실제 인수 가능한 마감 시각",
+        "근조 3단화환 기본·고급·특대·특특대의 가격 비교와 보낸 사람 문구"
+      ],
+      "nonGuaranteeRequirements": [
+        "시설 안내는 판매자 배송·인수·설치 보장이 아니다.",
+        "반입 가능 여부, 실제 수령자, 설치 위치·크기·수량·인수시간·회수는 개별 확인 질문으로만 다룬다.",
+        "당일·즉시·3시간·무료배송·정시도착·사진전송·설치·회수·재고·24시간 꽃배달을 보장하지 않는다.",
+        "시설 공식제휴·지정업체·납품 경험·상주꽃집을 주장하지 않는다.",
+        "검증한 8개 근조·축하 3단화환 SKU만 상품 선택 대상으로 쓴다. 화분·꽃다발·부케·쌀화환 판매를 새로 약속하지 않는다.",
+        "시설 안내번호와 꽃 판매자 주문번호를 구분한다.",
+        "고인·상주·유족·개업 당사자의 실시간 개인정보를 수집하거나 게시하지 않는다.",
+        "검색량·주문량·매출·전환율 실측은 없다. 구매 검색의도는 검증한 장소 사실에 기반한 편집 가설이다.",
+        "6법정동·16행정동 membership은 기사 할당량이나 배송 가능지역의 근거가 아니다.",
+        "서울시 시장자료의 보호되는 본문·표 디자인·사진은 복제하지 않는다. 이름·주소 등 사실만 독자적으로 서술한다.",
+        "기사 본문은 독립 계획검토와 부모의 명시적 freeze 후 작성한다."
+      ],
+      "prohibitedOrUnconfirmedClaims": [
+        "B1 출입구를 화환 지정 접수장소로 확정",
+        "B3 주차장·E/V 안내를 화물차 하역/운반 허가로 단정",
+        "일반 셔틀 시간표를 꽃 배송시간으로 전환"
+      ],
+      "articleBodyAuthored": false
+    },
+    {
+      "slug": "myeonmok-dong-green-hospital-funeral-wreath",
+      "name": "면목동",
+      "unitKey": "중랑구/법정동/면목동",
+      "title": "녹색병원 장례식장 근조화환 주문",
+      "h1": "녹색병원 장례식장 근조화환 주문",
+      "primaryKeyword": "녹색병원 장례식장 근조화환 주문",
+      "family": "funeral",
+      "state": "planned",
+      "context": {
+        "name": "(면목)녹색병원 장례식장",
+        "address": "서울특별시 중랑구 사가정로49길 53",
+        "legal_dong": "면목동",
+        "parcel_address": null
+      },
+      "distinctBuyerDecision": "장례식장 24시간 운영과 꽃 판매자 제작·배송·야간 인수 가능성을 구분한다. 야간 문의 시 바로 결제할지 확인 가능한 다음 인수시각으로 잡을지 판단하도록, B2의 실제 호실과 시설·판매자 각각의 확인사항을 제시한다.",
+      "queryEvidence": {
+        "sourceUrl": "https://www.greenhospital.co.kr/sub08/sub10.php",
+        "finding": "장례식장 24시간 운영과 꽃 판매자 제작·배송·야간 인수 가능성을 구분한다. 야간 문의 시 바로 결제할지 확인 가능한 다음 인수시각으로 잡을지 판단하도록, B2의 실제 호실과 시설·판매자 각각의 확인사항을 제시한다.",
+        "kind": "editorial_purchase_intent_hypothesis_from_verified_official_facility_facts",
+        "measuredSearchVolume": null,
+        "originalResearchQuery": "녹색병원 장례식장 근조화환 주문"
+      },
+      "sources": [
+        {
+          "name": "(면목)녹색병원 장례식장 공식 안내",
+          "url": "https://www.greenhospital.co.kr/sub08/sub10.php",
+          "type": "official",
+          "verifiedAt": "2026-10-11",
+          "supports": [
+            "장례식장 전용 안내는 연중무휴 24시간 운영과 상담 02-493-4444를 게시한다.",
+            "장례식장 B1은 안치실·입관실, B2는 인포데스크·상담실과 빈소 1·2·3·5호로 구분한다."
+          ],
+          "verificationMethod": "Python urllib.request direct public HTTPS GET; raw HTML and parsed text preserved"
+        },
+        {
+          "name": "(면목)녹색병원 장례식장 공식 안내",
+          "url": "https://www.greenhospital.co.kr/sub08/sub01.php",
+          "type": "official",
+          "verifiedAt": "2026-10-11",
+          "supports": [
+            "병원 찾아오시는 길에 사가정로49길 53과 면목동을 함께 명시한다."
+          ],
+          "verificationMethod": "Python urllib.request direct public HTTPS GET; raw HTML and parsed text preserved"
+        }
+      ],
+      "admissionEvidence": {
+        "status": "outside_wreath_acceptance_unconfirmed",
+        "unknowns": [
+          "외부 화환 반입 허용 여부",
+          "배송업체 출입구·하역·엘리베이터 사용 허용",
+          "화환 수령 가능 시간",
+          "호실별 설치 위치·크기 제한",
+          "철거·회수 규정",
+          "꽃집별 접수 마감·제작 시간·최단 배송 가능 시각"
+        ]
+      },
+      "requiredBuyerDecisions": [
+        "사가정로49길 53의 면목 녹색병원인지",
+        "장례식장 전용 안내의 B2 빈소 1·2·3·5호와 실제 부고 대조",
+        "야간 현장 수령 담당자가 있는지",
+        "판매자가 확인한 제작·출발·도착 가능 시각과 발인 일정의 양립",
+        "야간 인수가 불확실할 때 가능한 다음 인수시각으로 주문을 조정할지",
+        "근조 상품별 기본가격과 리본 표기"
+      ],
+      "nonGuaranteeRequirements": [
+        "시설 안내는 판매자 배송·인수·설치 보장이 아니다.",
+        "반입 가능 여부, 실제 수령자, 설치 위치·크기·수량·인수시간·회수는 개별 확인 질문으로만 다룬다.",
+        "당일·즉시·3시간·무료배송·정시도착·사진전송·설치·회수·재고·24시간 꽃배달을 보장하지 않는다.",
+        "시설 공식제휴·지정업체·납품 경험·상주꽃집을 주장하지 않는다.",
+        "검증한 8개 근조·축하 3단화환 SKU만 상품 선택 대상으로 쓴다. 화분·꽃다발·부케·쌀화환 판매를 새로 약속하지 않는다.",
+        "시설 안내번호와 꽃 판매자 주문번호를 구분한다.",
+        "고인·상주·유족·개업 당사자의 실시간 개인정보를 수집하거나 게시하지 않는다.",
+        "검색량·주문량·매출·전환율 실측은 없다. 구매 검색의도는 검증한 장소 사실에 기반한 편집 가설이다.",
+        "6법정동·16행정동 membership은 기사 할당량이나 배송 가능지역의 근거가 아니다.",
+        "서울시 시장자료의 보호되는 본문·표 디자인·사진은 복제하지 않는다. 이름·주소 등 사실만 독자적으로 서술한다.",
+        "기사 본문은 독립 계획검토와 부모의 명시적 freeze 후 작성한다."
+      ],
+      "prohibitedOrUnconfirmedClaims": [
+        "24시간 장례 운영을 24시간 꽃배달이나 당일 보장으로 사용",
+        "원문에 없는 4호 빈소 생성 또는 없는 이유 추측",
+        "일반 병원 층별도를 장례식장 안내로 전용",
+        "장례식장 인포데스크가 모든 외부 화환을 인수한다고 단정"
+      ],
+      "articleBodyAuthored": false
+    },
+    {
+      "slug": "sangbong-dong-dongbu-mideurang-opening-wreath",
+      "name": "상봉동",
+      "unitKey": "중랑구/법정동/상봉동",
+      "title": "동부시장 미드랑길 개업 축하화환 주문",
+      "h1": "동부시장 미드랑길 개업 축하화환 주문",
+      "primaryKeyword": "동부시장 미드랑길 개업 축하화환 주문",
+      "family": "congrats",
+      "state": "planned",
+      "context": {
+        "name": "동부시장 미드랑길 골목형상점가",
+        "address": "서울 중랑구 중랑천로12길 30",
+        "legal_dong": "상봉동",
+        "parcel_address": "서울 중랑구 상봉동 136-82",
+        "addressRole": "공식 상점가 대표주소; 개별 점포 배송주소가 아님"
+      },
+      "comparisonOnlyContext": {
+        "id": "dongbu_baekgudan",
+        "role": "comparison evidence only, not a separate Myeonmok topic",
+        "official_name": "동부시장 백구단길 골목형상점가",
+        "road_address": "서울 중랑구 동일로109길 61",
+        "parcel_address": "서울 중랑구 면목동 182-130",
+        "legal_dong": "면목동",
+        "type": "골목형상점가"
+      },
+      "distinctBuyerDecision": "서울시가 별도로 등록한 상봉동 동부시장 미드랑길과 면목동 동부시장 백구단길을 구분해, 시장 이름만으로 개업 화환을 결제하지 않도록 실제 점포를 식별한다. 대표주소를 주문서에 복사하지 않고 점포 상호·도로명·층호·인수 담당자를 확보한다.",
+      "queryEvidence": {
+        "sourceUrl": "https://news.seoul.go.kr/economy/archives/574563",
+        "finding": "서울시가 별도로 등록한 상봉동 동부시장 미드랑길과 면목동 동부시장 백구단길을 구분해, 시장 이름만으로 개업 화환을 결제하지 않도록 실제 점포를 식별한다. 대표주소를 주문서에 복사하지 않고 점포 상호·도로명·층호·인수 담당자를 확보한다.",
+        "kind": "editorial_purchase_intent_hypothesis_from_distinct_official_registry_entries",
+        "measuredSearchVolume": null,
+        "originalResearchQuery": "동부시장 미드랑길 개업 축하화환"
+      },
+      "sources": [
+        {
+          "name": "서울시 전통시장 현황(2026.8.28. 기준)",
+          "url": "https://news.seoul.go.kr/economy/archives/574563",
+          "type": "official",
+          "verifiedAt": "2026-10-11",
+          "supports": [
+            "동부시장 미드랑길=중랑천로12길 30·상봉동 136-82",
+            "동부시장 백구단길=동일로109길 61·면목동 182-130",
+            "서로 다른 골목형상점가 등록"
+          ],
+          "verificationMethod": "Python urllib.request direct public HTTPS GET; raw HTML and parsed text preserved"
+        }
+      ],
+      "admissionEvidence": {
+        "status": "individual_shop_acceptance_unconfirmed",
+        "unknowns": [
+          "실제로 새로 여는 점포·개업일",
+          "수령인의 축하화환 선호",
+          "출입구 너비·설치 공간",
+          "하역·주차 제한",
+          "상인회 등의 대리 수령 가능 여부"
+        ]
+      },
+      "requiredBuyerDecisions": [
+        "미드랑길인지 백구단길인지와 실제 가게 상호",
+        "실제 개업 점포 도로명주소·층·호수와 인수 담당자",
+        "개업일과 준비일 중 수령 가능한 일시",
+        "3단 화환을 둘 공간과 수령인의 선호를 확인한 뒤 크기·가격대 결정",
+        "축하 3단화환 기본·고급·특대·특특대의 가격 비교와 개업 문구"
+      ],
+      "nonGuaranteeRequirements": [
+        "시설 안내는 판매자 배송·인수·설치 보장이 아니다.",
+        "반입 가능 여부, 실제 수령자, 설치 위치·크기·수량·인수시간·회수는 개별 확인 질문으로만 다룬다.",
+        "당일·즉시·3시간·무료배송·정시도착·사진전송·설치·회수·재고·24시간 꽃배달을 보장하지 않는다.",
+        "시설 공식제휴·지정업체·납품 경험·상주꽃집을 주장하지 않는다.",
+        "검증한 8개 근조·축하 3단화환 SKU만 상품 선택 대상으로 쓴다. 화분·꽃다발·부케·쌀화환 판매를 새로 약속하지 않는다.",
+        "시설 안내번호와 꽃 판매자 주문번호를 구분한다.",
+        "고인·상주·유족·개업 당사자의 실시간 개인정보를 수집하거나 게시하지 않는다.",
+        "검색량·주문량·매출·전환율 실측은 없다. 구매 검색의도는 검증한 장소 사실에 기반한 편집 가설이다.",
+        "6법정동·16행정동 membership은 기사 할당량이나 배송 가능지역의 근거가 아니다.",
+        "서울시 시장자료의 보호되는 본문·표 디자인·사진은 복제하지 않는다. 이름·주소 등 사실만 독자적으로 서술한다.",
+        "기사 본문은 독립 계획검토와 부모의 명시적 freeze 후 작성한다."
+      ],
+      "prohibitedOrUnconfirmedClaims": [
+        "시장 대표주소를 가게 배송지로 제시",
+        "상인회 대리 인수·하역·주차 허용·설치 위치 추정",
+        "실제 신규 점포나 개업일을 만들어냄",
+        "같은 개업 주소확인 내용을 다른 법정동 시장명으로 반복",
+        "화분 판매·재고·배송 가능 약속"
+      ],
+      "articleBodyAuthored": false
+    }
+  ],
+  "geographicCoverageIsNotDeliveryGuarantee": true,
+  "selectedBy": "Three distinct purchase decisions supported by fresh official evidence: multi-level funeral handoff, overnight funeral order timing, similarly named shopping-street destination disambiguation. Six legal units are geographic inventory only.",
+  "preplanExclusionsPath": "docs/direct-regional-release/seoul-jungnang/facility-research/facility-report.json",
+  "preplanExclusions": [
+    {
+      "name": "동부제일병원 장례식장",
+      "claimed_dong": "망우동",
+      "status": "exclude_as_funeral_target",
+      "reason": "HIRA는 망우로 511 (망우동)의 병원을 확인하나 현재 장례식장 운영을 확인할 공식 근거는 확보하지 못했다. 병원이 있다는 사실은 장례식장 운영의 근거가 아니다.",
+      "source": {
+        "source_id": "dongbujeil-hira",
+        "url": "https://www.hira.or.kr/ra/hosp/hospInfoAjax.do?ykiho=JDQ4MTg4MSM1MSMkMSMkMCMkODkkMzgxMzUxIzExIyQxIyQzIyQxMyQyNjE4MzIjNDEjJDEjJDgjJDgz",
+        "verified_at_utc": "2026-10-11T05:09:39.585474+00:00",
+        "verification_method": "Python urllib.request direct public HTTPS GET; raw HTML and parsed text preserved",
+        "http_status": 200
+      },
+      "attempt_note": "https://www.dbjeil.co.kr/ web open returned 502 on 2026-10-11. Failure is not closure proof."
+    },
+    {
+      "name": "서울특별시 동부병원 장례식장",
+      "status": "exclude_outside_district",
+      "reason": "서울시 공식 안내상 동대문구 무학로 124에 있는 별도 시설이다. 중랑구 동부제일병원과 혼동 금지.",
+      "source": {
+        "source_id": "seoulmc-funeral-city",
+        "url": "https://news.seoul.go.kr/welfare/archives/256653",
+        "verified_at_utc": "2026-10-11T05:09:38.943685+00:00",
+        "verification_method": "Python urllib.request direct public HTTPS GET; raw HTML and parsed text preserved",
+        "http_status": 200
+      }
+    },
+    {
+      "name": "웨딩그룹위더스 중랑",
+      "claimed_dong": "묵동",
+      "status": "hold_no_current_official_operation_proof",
+      "reason": "현재 운영 공식 페이지·주소 확인 실패. 과거 디렉토리를 현재 예식장 근거로 쓰지 않는다.",
+      "attempt_note": "https://www.withusjn.co.kr/ inaccessible through web open on 2026-10-11; no closure claim."
+    },
+    {
+      "name": "라온드베뉴",
+      "claimed_dong": "망우동",
+      "status": "hold_no_current_official_operation_proof",
+      "reason": "과거 웨딩 디렉토리 외 현행 운영자/공공기관 근거를 확보하지 못해 채택하지 않았다."
+    },
+    {
+      "name": "동별 시장 페이지 추가",
+      "status": "exclude_repetition",
+      "reason": "시 등록표에 다른 시장이 많아도 같은 상품·주소확인 글의 동명 변경은 독립 구매의도를 만들지 못한다."
+    }
+  ],
+  "researchLimitations": [
+    "No measured search volume, conversion or order data.",
+    "No externally delivered wreath/admission policy confirmed for these facilities.",
+    "No current official wedding venue was verified in this limited research; this does not assert that no venue exists.",
+    "Current origin verification of reusable hero assets is blocked by HTTP403; fresh official same-SKU gallery alternatives exist, and runtime binding remains separate.",
+    "Seller consultation hours were not verified in official HTML. The user separately approved 꽃이랑 1844-0644 상담원 연결 08:00~23:00 as operator-provided information; these are consultation hours, not delivery or facility-receiving hours."
+  ],
+  "articleBodiesAuthored": 0,
+  "freezeRequirements": [
+    "Independent reviewer must approve exact candidate bytes and official evidence.",
+    "Parent must freeze denominator N=3 and exact slugs/unitKeys/keywords before authoring.",
+    "Do not reduce original denominator after freezing."
+  ]
+}
