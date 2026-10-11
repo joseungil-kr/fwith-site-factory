@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T11:45:08.202Z",
+  "updatedAt": "2026-10-11T12:15:56.251Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,18 +33,17 @@
   "current": {
     "scopeKey": "seoul-dobong-direct-initial-20261011",
     "city": "서울특별시 도봉구",
-    "status": "plan_frozen_before_customer_authoring",
+    "status": "reviewed_articles_runtime_actual_source_prepared",
     "owner": {
       "scheduledRunAt": "2026-10-11T11:00:00Z",
       "observedExecutionAt": "2026-10-11T11:42:51.328Z",
       "newRegionStartedAt": "2026-10-11T11:42:51.328Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-seoul-dobong-20261011T110000Z",
-      "active": false,
-      "executionState": "local_authoring_git_writes_yielded",
-      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T11:40:28Z",
-      "actualWriteStopConfirmedAt": "2026-10-11T11:43:46.578Z",
-      "yieldedTo": "regional-additions-20261011-owner-1144"
+      "active": true,
+      "executionState": "source_save_intent",
+      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T11:47:35Z",
+      "actualWriteStopConfirmedAt": "2026-10-11T11:43:46.578Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -53,7 +52,8 @@
       "worker": "seoul-dobong-flower-guide",
       "hostname": "seoul-dobong.fwith.kr",
       "externalCreationVerified": false,
-      "sourceBranchCreatedVerified": false
+      "sourceBranchCreatedVerified": true,
+      "sourceBranchBaseRevision": "9badfbf6a04a8b94892c4dc1e936e546ca15320b"
     },
     "selection": {
       "officialCode": "11320",
@@ -79,11 +79,12 @@
       }
     },
     "changeIntent": {
-      "action": "create_fixed_source_branch_then_author_original_four_purchase_articles",
-      "sourceBase": "current_plan_freeze_commit_after_CAS",
-      "branch": "site-factory-seoul-dobong-direct",
-      "root": "site-factory/seoul-dobong-flower",
-      "idempotencyKey": "seoul-dobong:plan4:20261011"
+      "action": "save_reviewed_exact_dobong_source_tree_after_independent_actual_source_review",
+      "sourceBranch": "site-factory-seoul-dobong-direct",
+      "expectedSourceHead": "9badfbf6a04a8b94892c4dc1e936e546ca15320b",
+      "plannedArticleCount": 4,
+      "sourceFileCount": 72,
+      "idempotencyKey": "seoul-dobong:source:ba35a7ab5943e0f663160752fec09e079e8728ce8eb8fc2adb299f26d825e2b8"
     },
     "plan": {
       "state": "frozen_before_authoring_independent_plan_pass",
@@ -106,7 +107,7 @@
           "unitKey": "도봉구/법정동/쌍문동",
           "facilityKey": "hanil-hospital-funeral",
           "purchaseIntentKey": "funeral-condolence-wreath",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_not_published"
         },
         {
           "slug": "banghak-dong-dokkaebi-market-opening-wreath",
@@ -115,7 +116,7 @@
           "unitKey": "도봉구/법정동/방학동",
           "facilityKey": "banghak-dokkaebi-market",
           "purchaseIntentKey": "opening-congrats-wreath",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_not_published"
         },
         {
           "slug": "chang-dong-dobong-harmony-hall-congrats-wreath",
@@ -124,7 +125,7 @@
           "unitKey": "도봉구/법정동/창동",
           "facilityKey": "dobong-civic-harmony-hall",
           "purchaseIntentKey": "event-congrats-wreath",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_not_published"
         },
         {
           "slug": "dobong-dong-peace-culture-bunker-exhibition-wreath",
@@ -133,19 +134,29 @@
           "unitKey": "도봉구/법정동/도봉동",
           "facilityKey": "peace-culture-bunker",
           "purchaseIntentKey": "event-congrats-wreath",
-          "status": "planned_not_authored"
+          "status": "independent_content_pass_not_published"
         }
-      ]
+      ],
+      "planFreezeRevision": "9badfbf6a04a8b94892c4dc1e936e546ca15320b",
+      "approvedArticleCount": 4,
+      "deferredArticleCount": 0
     },
     "review": {
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
       "planReviewSha256": "840910788eb38002f3c8d442d44feef219b4a0d24823388cd189bbc1ec3d5831",
-      "screenQa": "DEFERRED_NOT_PASS"
+      "screenQa": "DEFERRED_NOT_PASS",
+      "contentStatus": "PASS",
+      "contentRevision": 2,
+      "articlesSha256": "9f10e463b10c45522f6bdc009a34debbf67b914f8072b144d5d05fb74ad4e20d",
+      "independentContentReviewSha256": "df830e0be242c37b8faaeb8ba034f2e0616e0b44030cfcc9f54ca6244bad40f1",
+      "runtimeReviewSha256": "f88737900868ba6ec9875431f18b5324da819247180f0836980b5eb3fa0a4df3",
+      "imageReviewSha256": "f1601a1f929e5e5f5a1c740d318b63e0a9efbef5ad21034061fdc42d70f0de10",
+      "assetManifestSha256": "34ceabd6872c6774b4de7c48efa633c5099d57491a6b5e763ed5e4d108c457bc",
+      "sourceUploadManifestSha256": "ba35a7ab5943e0f663160752fec09e079e8728ce8eb8fc2adb299f26d825e2b8",
+      "actualSourceIndependentReview": "pending"
     },
     "unfinishedStages": [
-      "customer_originals",
-      "independent_content_review",
-      "runtime_review",
+      "actual_source_independent_review",
       "source_save_readback",
       "exact_source_dispatch",
       "public_http_qa",
@@ -7411,7 +7422,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Create only claimed Dobong source branch after exact plan freeze readback; author original N4 purchase articles, independently review and publish through existing direct path.",
+  "nextAction": "Save reviewed Dobong source with expected source head, verify all remote bytes and rebuild exact source, then publish existing direct workflow.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -15359,6 +15370,304 @@
         "confirmedVisualError": false
       },
       "followupStatus": "pending_batch_visual_review_against_exact_hosted_source"
+    },
+    {
+      "scopeKey": "uijeongbu-additions-20261011",
+      "city": "의정부시",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-uijeongbu-direct",
+        "root": "site-factory/uijeongbu-flower",
+        "worker": "uijeongbu-flower-guide",
+        "hostname": "uijeongbu.fwith.kr"
+      },
+      "sourceRevision": "cb1e9b6ea170b4a09509be0218b56c9a4adec231",
+      "controlRevision": "6ea27348748c31c72cf4965d3782b1226b8b04c5",
+      "originalPlannedN": 13,
+      "originalPublished": 12,
+      "originalHeld": 1,
+      "additivePlannedN": 1,
+      "qualityPassed": 1,
+      "heldAdditions": 0,
+      "publicUrl": "https://uijeongbu.fwith.kr",
+      "run": {
+        "id": 38136824339,
+        "html_url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38136824339",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T11:47:01Z",
+        "updated_at": "2026-10-11T11:48:01Z",
+        "run_attempt": 1,
+        "head_sha": "6ea27348748c31c72cf4965d3782b1226b8b04c5"
+      },
+      "publicHttp": {
+        "state": "public_release_verified",
+        "revision": "cb1e9b6ea170b4a09509be0218b56c9a4adec231",
+        "regionCount": 12,
+        "articleCount": 13,
+        "htmlRoutes": 16,
+        "noindexHubs": 1,
+        "sitemapUrls": 15,
+        "checkedPaths": 31,
+        "normalizedCloudflareBeacons": 18,
+        "unknownHttpStatus": 404
+      },
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "5d3885e949f8fa66049fb474ff6fb7102ebf17603c58179e460d7dde8f37a987",
+        "httpStatus": 200,
+        "origin": "https://uijeongbu.fwith.kr",
+        "recordedAt": "2026-10-11T11:47:54.658845+00:00",
+        "revision": "cb1e9b6ea170b4a09509be0218b56c9a4adec231",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38136824339",
+        "searchIndexing": "not_verified",
+        "siteKey": "uijeongbu-flower-direct",
+        "state": "received",
+        "urlCount": 15,
+        "urlSetSha256": "52d1f78b197122cba5a7977c9da9e5138b3abdf115f120a282fdaf26885df26a",
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6108696279",
+        "commentId": 6108696279,
+        "durableReadbackVerified": true
+      },
+      "gsc": {
+        "observedAt": "2026-10-11T11:49:12.844Z",
+        "siteUrl": "sc-domain:fwith.kr",
+        "status": "existing_registered_sitemap_reused",
+        "submissionPerformed": false,
+        "indexingVerified": false,
+        "sitemaps": [
+          {
+            "path": "https://uijeongbu.fwith.kr/sitemap-index.xml",
+            "lastSubmitted": "2026-10-09T15:34:08.908Z",
+            "isPending": false,
+            "isSitemapsIndex": true,
+            "lastDownloaded": "2026-10-09T16:01:10.865Z",
+            "warnings": "0",
+            "errors": "0"
+          }
+        ]
+      },
+      "articles": [
+        {
+          "path": "/regions/uijeongbu-dong/",
+          "pageKey": "uijeongbu-flower-direct-region-uijeongbu-dong",
+          "snapshotId": "direct-content-uijeongbu-dong-32a26f89853c366c",
+          "bodySha256": "bad6b8855c3ef0eb1ba8d9509d189dbb716f3a1a8f64cae9f9b86ea8639446b1",
+          "publicSourceHash": "32a26f89853c366c203bcad2257079079c13c3af5fb61bdd6ed3e4e127890011",
+          "allBodyLinesPresent": 12,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "292a89ec31bbf383d7166cf005d65e1d613defd6201a7fd08183e247e1596ae7"
+        },
+        {
+          "path": "/regions/howon-dong/",
+          "pageKey": "uijeongbu-flower-direct-region-howon-dong",
+          "snapshotId": "direct-content-howon-dong-9d95c6618adfb785",
+          "bodySha256": "e8489816f384f55437935f25aa2d4b9cb0098ecc236b1fa6ecca42d92a77be41",
+          "publicSourceHash": "9d95c6618adfb7852355c1155487a763d14c6509f7f662b3f2deaf6426a66e58",
+          "allBodyLinesPresent": 15,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "5fab3ea04cdf04f9c71e0e2c844acf83e95b232dba5811a8926848a48bbe7fcc"
+        },
+        {
+          "path": "/regions/jangam-dong/",
+          "pageKey": "uijeongbu-flower-direct-region-jangam-dong",
+          "snapshotId": "direct-content-jangam-dong-b6ea63adbd7c39bf",
+          "bodySha256": "4c51f0d8c2c7434df09bd8f822b8c045914deba5184ea2febabde0414f715551",
+          "publicSourceHash": "b6ea63adbd7c39bf6646c6ac6b91cb0a6e00f38e12d2d34a7d0325576ec063ef",
+          "allBodyLinesPresent": 12,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "d320ebfe35a06490ee3c684f16b556dc810024d8e162939b733d31b437c0a616"
+        },
+        {
+          "path": "/regions/singok-dong/",
+          "pageKey": "uijeongbu-flower-direct-region-singok-dong",
+          "snapshotId": "direct-content-singok-dong-7c0f624a0d4f254b",
+          "bodySha256": "e2a60fc125d9410d76c1da720fe8a41df6e615e14ec62f76c9a5f59fe99ebfd2",
+          "publicSourceHash": "7c0f624a0d4f254b2a43c9ccc817330e1c2c59315e33f24cca2c9bcbdab28a37",
+          "allBodyLinesPresent": 15,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "3a39fb9ecc3fdd21f104a39af6a99d7313766751f48cdabca1f9cbae93880a89"
+        },
+        {
+          "path": "/regions/yonghyeon-dong/",
+          "pageKey": "uijeongbu-flower-direct-region-yonghyeon-dong",
+          "snapshotId": "direct-content-yonghyeon-dong-32a39ee7897720b3",
+          "bodySha256": "43136c924fdb3190b8eca7f3947b353077645ee22038bccd7ec6556814cf6dd9",
+          "publicSourceHash": "32a39ee7897720b3f64545fe16d75f9245fab8281ebd7d4919625b7a181cae5f",
+          "allBodyLinesPresent": 13,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "310ae6243cb42d8e8e5225e364444826e919c7e8128c3b3f269a5dc6d4df8b8e"
+        },
+        {
+          "path": "/regions/millak-dong/",
+          "pageKey": "uijeongbu-flower-direct-region-millak-dong",
+          "snapshotId": "direct-content-millak-dong-7a8ca99b1c77ed53",
+          "bodySha256": "396ec972a35012986fc165b79bcd7d9e5306d2927253c42f63695e51817576d8",
+          "publicSourceHash": "7a8ca99b1c77ed53e1e49463267fc32a98b9f4a9cf08ea602529d479ac7231dd",
+          "allBodyLinesPresent": 12,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "15846ea4b47fba2cb7adfbaaac26f2540529b6b22c99ea1fa146fecc697f817d"
+        },
+        {
+          "path": "/regions/nakyang-dong/",
+          "pageKey": "uijeongbu-flower-direct-region-nakyang-dong",
+          "snapshotId": "direct-content-nakyang-dong-d6a492305aacde7a",
+          "bodySha256": "e13954ce11b39d146cb5284f26012c64cf0aa10d44002868f8806fd6ae126c45",
+          "publicSourceHash": "d6a492305aacde7a8a01bc544261701a9bd1a85450c36d67b1fb15a6fea1afe2",
+          "allBodyLinesPresent": 23,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "3c8a1d5ba3b9c7439ce31dfb1f8696faf83519071b14958d72c2922b1bddbf9f"
+        },
+        {
+          "path": "/regions/geumo-dong/",
+          "pageKey": "uijeongbu-flower-direct-region-geumo-dong",
+          "snapshotId": "direct-content-geumo-dong-2aafb93259fc25aa",
+          "bodySha256": "1480aa3ee6ca54542042e7cc96d9c9f7503cd0affb0982664c8c59d692c3c87d",
+          "publicSourceHash": "2aafb93259fc25aaa757add47740c649dad7324883a03d931a633b2d4ff3190f",
+          "allBodyLinesPresent": 20,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "2bf79ae0c82f0d1d8f784558867bc6d75a793b580ae033b0f2c91489d7439209"
+        },
+        {
+          "path": "/regions/ganeung-dong/",
+          "pageKey": "uijeongbu-flower-direct-region-ganeung-dong",
+          "snapshotId": "direct-content-ganeung-dong-5b96d52404356b21",
+          "bodySha256": "5b18048bbcc46af04338cab70fa753690d4ad8a4d7649a8a7942636636e9e1ea",
+          "publicSourceHash": "5b96d52404356b21c9793685f797c4cece87f893f1a30af03d1bd61bfc626450",
+          "allBodyLinesPresent": 22,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "7c870396c343751bf0783a91094ffcdd695ebb6b2d07e56f6665eea85d34ae1d"
+        },
+        {
+          "path": "/regions/nogyang-dong/",
+          "pageKey": "uijeongbu-flower-direct-region-nogyang-dong",
+          "snapshotId": "direct-content-nogyang-dong-f8f2faa8933bb5ba",
+          "bodySha256": "022eb55a880990a8081eb874c0d8ea3254d438221d06a5756c45353e4dabc071",
+          "publicSourceHash": "f8f2faa8933bb5ba07aa5057839f9e293df5b093a7a0dcc5d31b0d4e32d5ad0d",
+          "allBodyLinesPresent": 19,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "389dd954b62af72fa9b694364fc2db88cba3fe2b91b47b022478c37b191ec662"
+        },
+        {
+          "path": "/regions/gosan-dong/",
+          "pageKey": "uijeongbu-flower-direct-region-gosan-dong",
+          "snapshotId": "direct-content-gosan-dong-7aa0329bad03ec3f",
+          "bodySha256": "78b76a9e0817db87d6bb05946b2b3fb65b50ef1095828535b47961116ec5ccbb",
+          "publicSourceHash": "7aa0329bad03ec3f610c22c2b89b6177909c07ddf8cae6d94baa849fd8f70039",
+          "allBodyLinesPresent": 23,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "91a119554b9209bf4270295b4ba2e0058294ee7e75e597876825ca54e19dcbc7"
+        },
+        {
+          "path": "/regions/sangok-dong/",
+          "pageKey": "uijeongbu-flower-direct-region-sangok-dong",
+          "snapshotId": "direct-content-sangok-dong-729926732fed8d48",
+          "bodySha256": "48e1e8720e64c7b0d7e4774aad82b98e979914a4655080521c43571bf24e1ae5",
+          "publicSourceHash": "729926732fed8d480e66e6be136f7435ee1ad6ed46698e6677fdff1b8756875d",
+          "allBodyLinesPresent": 19,
+          "cards": 4,
+          "imageCount": 5,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "c24476243755cb62b632167df5fb7e9525dcefc4ae748e922752644a8315116b"
+        },
+        {
+          "path": "/funeral/uijeongbu-st-marys-funeral-wreath/",
+          "pageKey": "uijeongbu-flower-direct-funeral-uijeongbu-st-marys-funeral-wreath",
+          "snapshotId": "direct-content-uijeongbu-st-marys-funeral-wreath-cb2d10ffd8288b27",
+          "bodySha256": "87f4251df4f7a8a012a50cc1eaeed226acfafb5816da67f629b3d044cef4946f",
+          "publicSourceHash": "cb2d10ffd8288b272d6bf30f5ae61c7b92c91759d94d369d9dca663aaa66275c",
+          "allBodyLinesPresent": 17,
+          "cards": 3,
+          "imageCount": 4,
+          "titleH1DescriptionCanonicalRobotsOGTwitter": "PASS",
+          "artifactHtmlSha256": "bfb72f6a6d5fdedb274a0bdd8f936839753fd3c4d05605b2b79ab37f77be12eb"
+        }
+      ],
+      "imageDigests": {
+        "images/editorial/opening-wreath-illustration-v1.webp": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+        "images/products/congrats-basic.jpg": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+        "images/products/congrats-large.jpg": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+        "images/products/congrats-premium.jpg": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+        "images/products/congrats-xl.jpg": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+        "images/products/funeral-basic.webp": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+        "images/products/funeral-large.webp": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+        "images/products/funeral-premium.webp": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+        "images/products/funeral-xl.webp": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6"
+      },
+      "uncheckedDesktopRoutes": [
+        "/funeral/",
+        "/funeral/uijeongbu-st-marys-funeral-wreath/",
+        "/",
+        "/regions/ganeung-dong/",
+        "/regions/geumo-dong/",
+        "/regions/gosan-dong/",
+        "/regions/howon-dong/",
+        "/regions/",
+        "/regions/jangam-dong/",
+        "/regions/millak-dong/",
+        "/regions/nakyang-dong/",
+        "/regions/nogyang-dong/",
+        "/regions/sangok-dong/",
+        "/regions/singok-dong/",
+        "/regions/uijeongbu-dong/",
+        "/regions/yonghyeon-dong/"
+      ],
+      "uncheckedNarrowRoutes": [
+        "/funeral/",
+        "/funeral/uijeongbu-st-marys-funeral-wreath/",
+        "/",
+        "/regions/ganeung-dong/",
+        "/regions/geumo-dong/",
+        "/regions/gosan-dong/",
+        "/regions/howon-dong/",
+        "/regions/",
+        "/regions/jangam-dong/",
+        "/regions/millak-dong/",
+        "/regions/nakyang-dong/",
+        "/regions/nogyang-dong/",
+        "/regions/sangok-dong/",
+        "/regions/singok-dong/",
+        "/regions/uijeongbu-dong/",
+        "/regions/yonghyeon-dong/"
+      ],
+      "uncheckedItems": [
+        "layout",
+        "mobile text legibility",
+        "image rendering and crop",
+        "banner and CTA placement",
+        "horizontal overflow",
+        "visual product comparison"
+      ],
+      "lastObservation": "HTTP full-route and exact artifact/source byte checks passed; desktop and narrow viewport screenshots have not been inspected.",
+      "visualErrorObserved": false,
+      "actualVisualRootCauseDetermined": false,
+      "followupStatus": "pending_batch_visual_review",
+      "requiresExactHostedSourceRecomparison": true,
+      "independentReleaseReviewSha256": "d29a3040e37f83d48b28ed9dbba5e6daf512b3cf9877b60c7ac7d17293403742"
     }
   ],
   "releasedKnownHosts": [
@@ -15461,10 +15770,12 @@
     "owner": {
       "checkpointId": "regional-additions-20261011-owner-1144",
       "serviceInvocationId": null,
-      "active": true,
+      "active": false,
       "startedAt": "2026-10-11T11:45:08.202Z",
       "priorOwnerActualStopConfirmedAt": "2026-10-11T11:43:46.578Z",
-      "executionState": "uijeongbu_minimal_existing_binding_update_recovery"
+      "executionState": "external_write_stopped_read_only_release_verification",
+      "actualWriteStopConfirmedAt": "2026-10-11T11:47:35Z",
+      "yieldedTo": "direct-seoul-dobong-20261011T110000Z"
     },
     "current": {
       "region": "uijeongbu",
@@ -15478,7 +15789,7 @@
       "originalHeld": 1,
       "additivePlannedN": 1,
       "qualityPassed": 1,
-      "status": "reviewed_control_recovery_dispatch_intent",
+      "status": "released_search_submitted_visual_qa_deferred",
       "sourceManifestSha256": "0e26a14390cc27ced5361e9de04927b5cfd156db316bba9c949dbe8bcedaeaa5",
       "controlManifestSha256": "ff452bc2e8b7fb9e9b14aad0470bdf6ff4d13b7b3bd2103229fc55c91c82631d",
       "intent": {
@@ -15563,7 +15874,169 @@
         "testsPassed": 33,
         "sourceUnchanged": true,
         "rule": "Reuse only exact existing Worker and hostname binding; collisions, unbound existing worker, ambiguous/failed GET remain blocked; existing attach is GET-only."
-      }
+      },
+      "scopeKey": "uijeongbu-additions-20261011",
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-uijeongbu-direct",
+        "root": "site-factory/uijeongbu-flower",
+        "worker": "uijeongbu-flower-guide",
+        "hostname": "uijeongbu.fwith.kr"
+      },
+      "previousSource": "c047f1127f7908085fce55ab41504a23ff9b199c",
+      "controlRevision": "6ea27348748c31c72cf4965d3782b1226b8b04c5",
+      "heldAdditions": 0,
+      "originalPublishedPagesPreserved": 12,
+      "articles": [
+        {
+          "route": "/funeral/uijeongbu-st-marys-funeral-wreath/",
+          "status": "published_http_verified"
+        }
+      ],
+      "resultingArticleCount": 13,
+      "normalHtmlRoutes": 16,
+      "sitemapUrls": 15,
+      "separate404": 1,
+      "run": {
+        "id": 38136824339,
+        "html_url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38136824339",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T11:47:01Z",
+        "updated_at": "2026-10-11T11:48:01Z",
+        "run_attempt": 1,
+        "head_sha": "6ea27348748c31c72cf4965d3782b1226b8b04c5"
+      },
+      "priorFailedRun": {
+        "id": 38136421831,
+        "cause": "initial_target_must_be_absent",
+        "providerMutation": "skipped",
+        "indexNow": "skipped"
+      },
+      "http": {
+        "state": "public_release_verified",
+        "revision": "cb1e9b6ea170b4a09509be0218b56c9a4adec231",
+        "regionCount": 12,
+        "articleCount": 13,
+        "htmlRoutes": 16,
+        "noindexHubs": 1,
+        "sitemapUrls": 15,
+        "checkedPaths": 31,
+        "normalizedCloudflareBeacons": 18,
+        "unknownHttpStatus": 404
+      },
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "5d3885e949f8fa66049fb474ff6fb7102ebf17603c58179e460d7dde8f37a987",
+        "httpStatus": 200,
+        "origin": "https://uijeongbu.fwith.kr",
+        "recordedAt": "2026-10-11T11:47:54.658845+00:00",
+        "revision": "cb1e9b6ea170b4a09509be0218b56c9a4adec231",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38136824339",
+        "searchIndexing": "not_verified",
+        "siteKey": "uijeongbu-flower-direct",
+        "state": "received",
+        "urlCount": 15,
+        "urlSetSha256": "52d1f78b197122cba5a7977c9da9e5138b3abdf115f120a282fdaf26885df26a",
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6108696279",
+        "commentId": 6108696279,
+        "durableReadbackVerified": true
+      },
+      "gsc": {
+        "observedAt": "2026-10-11T11:49:12.844Z",
+        "siteUrl": "sc-domain:fwith.kr",
+        "status": "existing_registered_sitemap_reused",
+        "submissionPerformed": false,
+        "indexingVerified": false,
+        "sitemaps": [
+          {
+            "path": "https://uijeongbu.fwith.kr/sitemap-index.xml",
+            "lastSubmitted": "2026-10-09T15:34:08.908Z",
+            "isPending": false,
+            "isSitemapsIndex": true,
+            "lastDownloaded": "2026-10-09T16:01:10.865Z",
+            "warnings": "0",
+            "errors": "0"
+          }
+        ]
+      },
+      "providerBindingReuse": {
+        "before": {
+          "accountVerified": true,
+          "dnsState": "not_observed",
+          "hostname": "uijeongbu.fwith.kr",
+          "hostnameBindingExists": true,
+          "mutationsPerformed": false,
+          "state": "binding_verified",
+          "worker": "uijeongbu-flower-guide",
+          "workerExists": true
+        },
+        "attach": {
+          "accountVerified": true,
+          "dnsState": "not_observed",
+          "hostname": "uijeongbu.fwith.kr",
+          "hostnameBindingExists": true,
+          "mutationsPerformed": false,
+          "state": "binding_verified",
+          "worker": "uijeongbu-flower-guide",
+          "workerExists": true
+        },
+        "after": {
+          "accountVerified": true,
+          "dnsState": "not_observed",
+          "hostname": "uijeongbu.fwith.kr",
+          "hostnameBindingExists": true,
+          "mutationsPerformed": false,
+          "state": "binding_verified",
+          "worker": "uijeongbu-flower-guide",
+          "workerExists": true
+        }
+      },
+      "reviewReadbackDigest": "be0e65495b5e756b2c96394e6d33e551418d28d500ea1491679d391f31fc3b06",
+      "uncheckedDesktopRoutes": [
+        "/funeral/",
+        "/funeral/uijeongbu-st-marys-funeral-wreath/",
+        "/",
+        "/regions/ganeung-dong/",
+        "/regions/geumo-dong/",
+        "/regions/gosan-dong/",
+        "/regions/howon-dong/",
+        "/regions/",
+        "/regions/jangam-dong/",
+        "/regions/millak-dong/",
+        "/regions/nakyang-dong/",
+        "/regions/nogyang-dong/",
+        "/regions/sangok-dong/",
+        "/regions/singok-dong/",
+        "/regions/uijeongbu-dong/",
+        "/regions/yonghyeon-dong/"
+      ],
+      "uncheckedNarrowRoutes": [
+        "/funeral/",
+        "/funeral/uijeongbu-st-marys-funeral-wreath/",
+        "/",
+        "/regions/ganeung-dong/",
+        "/regions/geumo-dong/",
+        "/regions/gosan-dong/",
+        "/regions/howon-dong/",
+        "/regions/",
+        "/regions/jangam-dong/",
+        "/regions/millak-dong/",
+        "/regions/nakyang-dong/",
+        "/regions/nogyang-dong/",
+        "/regions/sangok-dong/",
+        "/regions/singok-dong/",
+        "/regions/uijeongbu-dong/",
+        "/regions/yonghyeon-dong/"
+      ],
+      "publicVerifiedBy": "2026-10-11T11:47:54.658845+00:00",
+      "httpVerifiedAt": "2026-10-11T11:51:04.142097+00:00",
+      "completedVerificationAt": "2026-10-11T11:51:28.575960+00:00",
+      "providerFixIndependentReviewSha256": "dd757ce6251da4cdcd96b1c4fc03ca3314dbeb52d78074f06b0ec713dd42dbe8",
+      "contentReviewSha256": "a48cdf36c492e0bd832ab4a184d7b8fee3bcd3ffc5dc7bba6f55cd99bcf273b8",
+      "originalInitialPlanAndHeldPreserved": true,
+      "independentReleaseReviewSha256": "d29a3040e37f83d48b28ed9dbba5e6daf512b3cf9877b60c7ac7d17293403742"
     },
     "completed": [
       {
@@ -15843,6 +16316,267 @@
           "sha256": "d35990d32723111be235db0a0d3bfe38e25633a1ef3f4af35df2852959174d2a",
           "scope": "Root independently verified official run, durable receipt, GSC registration, artifact ZIP digests and added route; existing full-route author evidence inspected, not falsely repeated as independent all-route verification."
         }
+      },
+      {
+        "region": "uijeongbu",
+        "branch": "site-factory-uijeongbu-direct",
+        "root": "site-factory/uijeongbu-flower",
+        "worker": "uijeongbu-flower-guide",
+        "hostname": "uijeongbu.fwith.kr",
+        "baselineSource": "c047f1127f7908085fce55ab41504a23ff9b199c",
+        "originalPlannedN": 13,
+        "originalPublished": 12,
+        "originalHeld": 1,
+        "additivePlannedN": 1,
+        "qualityPassed": 1,
+        "status": "released_search_submitted_visual_qa_deferred",
+        "sourceManifestSha256": "0e26a14390cc27ced5361e9de04927b5cfd156db316bba9c949dbe8bcedaeaa5",
+        "controlManifestSha256": "ff452bc2e8b7fb9e9b14aad0470bdf6ff4d13b7b3bd2103229fc55c91c82631d",
+        "intent": {
+          "action": "save_exact_reviewed_uijeongbu_addition_and_minimal_controls",
+          "idempotencyKey": "uijeongbu:additions:20261011:c047f1127f7908085fce55ab41504a23ff9b199c"
+        },
+        "reviews": {
+          "plan": "53bf0256dfca54131b793eecce393995b7db76404be1b42413b8a42bbd092824",
+          "content": "a48cdf36c492e0bd832ab4a184d7b8fee3bcd3ffc5dc7bba6f55cd99bcf273b8",
+          "code": "2b21d9e9a0b32885af75a175910367935eacbdfb20e30aa902ac96a8e5079566",
+          "baselineCorrection": "014d80c912c7d808638b8a87619aa88ef82d418710a04c42c2876355286decf0"
+        },
+        "resultingArticles": 13,
+        "resultingNormalHtml": 16,
+        "resultingSitemapUrls": 15,
+        "visualQa": "deferred_not_pass",
+        "sourceRevision": "cb1e9b6ea170b4a09509be0218b56c9a4adec231",
+        "sourceFullChangedBlobReadback": [
+          {
+            "path": "site-factory/uijeongbu-flower/src/data/architecture.json",
+            "sha": "d78ed391f1bfb23b49a75f5f131be681ec06042b",
+            "fullTextMatches": true
+          },
+          {
+            "path": "site-factory/uijeongbu-flower/src/data/page-map.json",
+            "sha": "5c188114eb11e32cd2f91c3e1086aecd87996daf",
+            "fullTextMatches": true
+          },
+          {
+            "path": "site-factory/uijeongbu-flower/src/data/publish-manifest.json",
+            "sha": "5bda89cf1a27744f39adea67d87d9b32b7d8c10e",
+            "fullTextMatches": true
+          },
+          {
+            "path": "site-factory/uijeongbu-flower/src/data/pages.json",
+            "sha": "b23f1bb548d53c815323c176cd3d2f2b3ea1e3bf",
+            "fullTextMatches": true
+          },
+          {
+            "path": "site-factory/uijeongbu-flower/tests/direct-source.test.mjs",
+            "sha": "deeb0989752d384219645b3ed9fa1e201113a5a7",
+            "fullTextMatches": true
+          },
+          {
+            "path": "site-factory/uijeongbu-flower/tests/additive-20261011.test.mjs",
+            "sha": "3402590935e9120d4dfc74e77da59958aa1af3d4",
+            "fullTextMatches": true
+          },
+          {
+            "path": "scripts/direct-uijeongbu/publish.py",
+            "sha": "9d0041c0d1a6d5e7665f9e74ffe35cac9c368fc5",
+            "fullTextMatches": true
+          },
+          {
+            "path": "scripts/direct-uijeongbu/test_publish.py",
+            "sha": "0a5e621ba1c707b5fe594eda2ffdce96ebdb9a57",
+            "fullTextMatches": true
+          }
+        ],
+        "dispatchIntent": {
+          "workflow": ".github/workflows/uijeongbu-direct-publish.yml",
+          "ref": "main",
+          "expected_revision": "cb1e9b6ea170b4a09509be0218b56c9a4adec231",
+          "indexnow_only": false,
+          "idempotencyKey": "uijeongbu:additions:provider-update-fix:cb1e9b6ea170b4a09509be0218b56c9a4adec231"
+        },
+        "failedAttempts": [
+          {
+            "runId": 38136421831,
+            "sourceRevision": "cb1e9b6ea170b4a09509be0218b56c9a4adec231",
+            "controlRevision": "18823489c03ffc36c7672cb95e393d9bd9e9d728",
+            "build": "PASS",
+            "artifact": "PASS_13_ARTICLES_16_HTML_15_SITEMAP",
+            "failureCode": "initial_target_must_be_absent",
+            "providerMutation": "SKIPPED",
+            "indexNow": "SKIPPED"
+          }
+        ],
+        "providerUpdateFix": {
+          "reviewSha256": "dd757ce6251da4cdcd96b1c4fc03ca3314dbeb52d78074f06b0ec713dd42dbe8",
+          "manifestSha256": "0cae1fba4932f69ec07fc573b08e12adf80f8bb582b6c9295ab852dafe98a9d5",
+          "testsPassed": 33,
+          "sourceUnchanged": true,
+          "rule": "Reuse only exact existing Worker and hostname binding; collisions, unbound existing worker, ambiguous/failed GET remain blocked; existing attach is GET-only."
+        },
+        "scopeKey": "uijeongbu-additions-20261011",
+        "identity": {
+          "repository": "joseungil-kr/fwith-site-factory",
+          "branch": "site-factory-uijeongbu-direct",
+          "root": "site-factory/uijeongbu-flower",
+          "worker": "uijeongbu-flower-guide",
+          "hostname": "uijeongbu.fwith.kr"
+        },
+        "previousSource": "c047f1127f7908085fce55ab41504a23ff9b199c",
+        "controlRevision": "6ea27348748c31c72cf4965d3782b1226b8b04c5",
+        "heldAdditions": 0,
+        "originalPublishedPagesPreserved": 12,
+        "articles": [
+          {
+            "route": "/funeral/uijeongbu-st-marys-funeral-wreath/",
+            "status": "published_http_verified"
+          }
+        ],
+        "resultingArticleCount": 13,
+        "normalHtmlRoutes": 16,
+        "sitemapUrls": 15,
+        "separate404": 1,
+        "run": {
+          "id": 38136824339,
+          "html_url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38136824339",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-11T11:47:01Z",
+          "updated_at": "2026-10-11T11:48:01Z",
+          "run_attempt": 1,
+          "head_sha": "6ea27348748c31c72cf4965d3782b1226b8b04c5"
+        },
+        "priorFailedRun": {
+          "id": 38136421831,
+          "cause": "initial_target_must_be_absent",
+          "providerMutation": "skipped",
+          "indexNow": "skipped"
+        },
+        "http": {
+          "state": "public_release_verified",
+          "revision": "cb1e9b6ea170b4a09509be0218b56c9a4adec231",
+          "regionCount": 12,
+          "articleCount": 13,
+          "htmlRoutes": 16,
+          "noindexHubs": 1,
+          "sitemapUrls": 15,
+          "checkedPaths": 31,
+          "normalizedCloudflareBeacons": 18,
+          "unknownHttpStatus": 404
+        },
+        "indexNow": {
+          "attempt": 1,
+          "endpoint": "https://searchadvisor.naver.com/indexnow",
+          "fingerprint": "5d3885e949f8fa66049fb474ff6fb7102ebf17603c58179e460d7dde8f37a987",
+          "httpStatus": 200,
+          "origin": "https://uijeongbu.fwith.kr",
+          "recordedAt": "2026-10-11T11:47:54.658845+00:00",
+          "revision": "cb1e9b6ea170b4a09509be0218b56c9a4adec231",
+          "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38136824339",
+          "searchIndexing": "not_verified",
+          "siteKey": "uijeongbu-flower-direct",
+          "state": "received",
+          "urlCount": 15,
+          "urlSetSha256": "52d1f78b197122cba5a7977c9da9e5138b3abdf115f120a282fdaf26885df26a",
+          "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6108696279",
+          "commentId": 6108696279,
+          "durableReadbackVerified": true
+        },
+        "gsc": {
+          "observedAt": "2026-10-11T11:49:12.844Z",
+          "siteUrl": "sc-domain:fwith.kr",
+          "status": "existing_registered_sitemap_reused",
+          "submissionPerformed": false,
+          "indexingVerified": false,
+          "sitemaps": [
+            {
+              "path": "https://uijeongbu.fwith.kr/sitemap-index.xml",
+              "lastSubmitted": "2026-10-09T15:34:08.908Z",
+              "isPending": false,
+              "isSitemapsIndex": true,
+              "lastDownloaded": "2026-10-09T16:01:10.865Z",
+              "warnings": "0",
+              "errors": "0"
+            }
+          ]
+        },
+        "providerBindingReuse": {
+          "before": {
+            "accountVerified": true,
+            "dnsState": "not_observed",
+            "hostname": "uijeongbu.fwith.kr",
+            "hostnameBindingExists": true,
+            "mutationsPerformed": false,
+            "state": "binding_verified",
+            "worker": "uijeongbu-flower-guide",
+            "workerExists": true
+          },
+          "attach": {
+            "accountVerified": true,
+            "dnsState": "not_observed",
+            "hostname": "uijeongbu.fwith.kr",
+            "hostnameBindingExists": true,
+            "mutationsPerformed": false,
+            "state": "binding_verified",
+            "worker": "uijeongbu-flower-guide",
+            "workerExists": true
+          },
+          "after": {
+            "accountVerified": true,
+            "dnsState": "not_observed",
+            "hostname": "uijeongbu.fwith.kr",
+            "hostnameBindingExists": true,
+            "mutationsPerformed": false,
+            "state": "binding_verified",
+            "worker": "uijeongbu-flower-guide",
+            "workerExists": true
+          }
+        },
+        "reviewReadbackDigest": "be0e65495b5e756b2c96394e6d33e551418d28d500ea1491679d391f31fc3b06",
+        "uncheckedDesktopRoutes": [
+          "/funeral/",
+          "/funeral/uijeongbu-st-marys-funeral-wreath/",
+          "/",
+          "/regions/ganeung-dong/",
+          "/regions/geumo-dong/",
+          "/regions/gosan-dong/",
+          "/regions/howon-dong/",
+          "/regions/",
+          "/regions/jangam-dong/",
+          "/regions/millak-dong/",
+          "/regions/nakyang-dong/",
+          "/regions/nogyang-dong/",
+          "/regions/sangok-dong/",
+          "/regions/singok-dong/",
+          "/regions/uijeongbu-dong/",
+          "/regions/yonghyeon-dong/"
+        ],
+        "uncheckedNarrowRoutes": [
+          "/funeral/",
+          "/funeral/uijeongbu-st-marys-funeral-wreath/",
+          "/",
+          "/regions/ganeung-dong/",
+          "/regions/geumo-dong/",
+          "/regions/gosan-dong/",
+          "/regions/howon-dong/",
+          "/regions/",
+          "/regions/jangam-dong/",
+          "/regions/millak-dong/",
+          "/regions/nakyang-dong/",
+          "/regions/nogyang-dong/",
+          "/regions/sangok-dong/",
+          "/regions/singok-dong/",
+          "/regions/uijeongbu-dong/",
+          "/regions/yonghyeon-dong/"
+        ],
+        "publicVerifiedBy": "2026-10-11T11:47:54.658845+00:00",
+        "httpVerifiedAt": "2026-10-11T11:51:04.142097+00:00",
+        "completedVerificationAt": "2026-10-11T11:51:28.575960+00:00",
+        "providerFixIndependentReviewSha256": "dd757ce6251da4cdcd96b1c4fc03ca3314dbeb52d78074f06b0ec713dd42dbe8",
+        "contentReviewSha256": "a48cdf36c492e0bd832ab4a184d7b8fee3bcd3ffc5dc7bba6f55cd99bcf273b8",
+        "originalInitialPlanAndHeldPreserved": true,
+        "independentReleaseReviewSha256": "d29a3040e37f83d48b28ed9dbba5e6daf512b3cf9877b60c7ac7d17293403742"
       }
     ],
     "triggerSafety": {
