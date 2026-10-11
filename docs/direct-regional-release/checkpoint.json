@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T04:33:33.979Z",
+  "updatedAt": "2026-10-11T04:38:31.532Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -33,17 +33,20 @@
   "current": {
     "scopeKey": "seoul-dongdaemun-direct-initial-20261011",
     "city": "서울특별시 동대문구",
-    "status": "ready_for_exact_source_dispatch",
+    "status": "waiting_approval_exact_hostname_deployment",
     "owner": {
       "scheduledRunAt": "2026-10-11T04:00:00Z",
       "observedExecutionAt": "2026-10-11T04:06:56.054Z",
       "newRegionStartedAt": "2026-10-11T04:06:56.054Z",
       "serviceInvocationId": null,
       "checkpointId": "direct-seoul-dongdaemun-20261011T040000Z",
-      "active": true,
-      "executionState": "research_and_source_preparation",
+      "active": false,
+      "executionState": "paused_waiting_approval_no_deployment_started",
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T04:04:09Z",
-      "priorOwnerReadbackConfirmedAt": "2026-10-11T04:04:13Z"
+      "priorOwnerReadbackConfirmedAt": "2026-10-11T04:04:13Z",
+      "browserOperationsStoppedAt": "2026-10-11T04:38:31.532Z",
+      "sourceAndDeploymentWritesStoppedAt": "2026-10-11T04:38:31.532Z",
+      "finalCheckpointWritePending": true
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
@@ -78,16 +81,10 @@
       }
     },
     "changeIntent": {
-      "action": "publish_fixed_direct_workflow_for_exact_source_after_remote_readback",
-      "idempotencyKey": "seoul-dongdaemun:publish:c7950231a67ff2494f0c37298029343456089b39"
+      "action": "preserve_waiting_approval_and_release_execution_ownership",
+      "idempotencyKey": "seoul-dongdaemun:waiting-approval:c7950231a67ff2494f0c37298029343456089b39"
     },
     "unfinishedStages": [
-      "official_research",
-      "fixed_plan",
-      "original_authoring",
-      "independent_review",
-      "source_save",
-      "build_static_graph",
       "formal_publish",
       "http_qa",
       "indexnow",
@@ -178,6 +175,30 @@
       "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
       "remoteReadbackSha256": "e2c31746b7c212bb67d5c784a1e8184fcaa3c502baa4f5789f054955ac11c740",
       "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+    },
+    "lastSuccessfulStage": "exact_source_full_remote_readback_build_static_graph_independent_review",
+    "approval": {
+      "status": "required_not_granted_for_exact_target",
+      "reason": "Execution-time approval gate requires exact Dongdaemun hostname deployment authorization.",
+      "action": "Dispatch seoul-dongdaemun-direct-publish.yml once with exact reviewed source; deploy Worker and connect only designated hostname after account/Worker/domain GET collision checks using no-override.",
+      "workflow": ".github/workflows/seoul-dongdaemun-direct-publish.yml",
+      "sourceRevision": "c7950231a67ff2494f0c37298029343456089b39",
+      "worker": "seoul-dongdaemun-flower-guide",
+      "hostname": "seoul-dongdaemun.fwith.kr",
+      "scope": "Existing fwith.kr account; only this Worker and hostname. No credential, permission, security, DNS ownership changes, override, payment or contract.",
+      "resumeAfter": "Verify exact approval scope and unchanged reviewed source, then retry the same official Run workflow action once; read back before any further attempt."
+    },
+    "publication": {
+      "status": "not_dispatched_approval_gate",
+      "runId": null,
+      "url": "https://seoul-dongdaemun.fwith.kr",
+      "publicReleaseVerified": false,
+      "httpQa": "NOT_RUN",
+      "indexNow": "NOT_SUBMITTED",
+      "gsc": "NOT_SUBMITTED",
+      "dispatchAcceptedCount": 0,
+      "latestRunsReadbackAt": "2026-10-11T04:38:31.532Z",
+      "latestRepositoryRunObserved": 38079835650
     }
   },
   "history": [
@@ -6352,7 +6373,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Prepare only Seoul Dongdaemun-gu from verified official research and freeze its unique purchase-intent plan before authoring.",
+  "nextAction": "Resume exact Dongdaemun deployment only after target-specific approval. This invocation already claimed one new region; no second new region.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -6380,7 +6401,179 @@
       "enabledChanged": false
     }
   },
-  "waitingApproval": [],
+  "waitingApproval": [
+    {
+      "scopeKey": "seoul-dongdaemun-direct-initial-20261011",
+      "city": "서울특별시 동대문구",
+      "status": "waiting_approval_exact_hostname_deployment",
+      "owner": {
+        "scheduledRunAt": "2026-10-11T04:00:00Z",
+        "observedExecutionAt": "2026-10-11T04:06:56.054Z",
+        "newRegionStartedAt": "2026-10-11T04:06:56.054Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-seoul-dongdaemun-20261011T040000Z",
+        "active": false,
+        "executionState": "paused_waiting_approval_no_deployment_started",
+        "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T04:04:09Z",
+        "priorOwnerReadbackConfirmedAt": "2026-10-11T04:04:13Z",
+        "browserOperationsStoppedAt": "2026-10-11T04:38:31.532Z",
+        "sourceAndDeploymentWritesStoppedAt": "2026-10-11T04:38:31.532Z",
+        "finalCheckpointWritePending": true
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-seoul-dongdaemun-direct",
+        "root": "site-factory/seoul-dongdaemun-flower",
+        "worker": "seoul-dongdaemun-flower-guide",
+        "hostname": "seoul-dongdaemun.fwith.kr",
+        "externalCreationVerified": false,
+        "sourceBranchCreatedVerified": true,
+        "sourceBranchBaseRevision": "0357f18138aa13bade74bf4ac2bbca3559d5c828"
+      },
+      "selection": {
+        "officialCode": "11230",
+        "reason": "Next unreleased autonomous district in remote frozen national official-code order",
+        "nationalPlanDenominator": 230
+      },
+      "conflictChecks": {
+        "branchesChecked": 129,
+        "matchingBranch": false,
+        "openMatchingPullRequests": 0,
+        "inProgressWorkflows": 0,
+        "mainMatchingPaths": false,
+        "providerOwnershipCollisionCheck": "REQUIRED_BEFORE_PUBLICATION",
+        "publicHostObservation": {
+          "absenceConfirmed": false,
+          "observation": "web tool inaccessible, not proof of absent hostname"
+        },
+        "triggerSafety": {
+          "allCurrentWorkflowFilesRead": 47,
+          "mainPushAndTargetBranchDoNotMatchPushTriggers": true,
+          "stoppedFactoryNotInvoked": true
+        }
+      },
+      "changeIntent": {
+        "action": "preserve_waiting_approval_and_release_execution_ownership",
+        "idempotencyKey": "seoul-dongdaemun:waiting-approval:c7950231a67ff2494f0c37298029343456089b39"
+      },
+      "unfinishedStages": [
+        "formal_publish",
+        "http_qa",
+        "indexnow",
+        "gsc",
+        "deferred_visual_qa"
+      ],
+      "plan": {
+        "state": "frozen_before_authoring_independent_plan_pass",
+        "plannedArticleCount": 5,
+        "minimumPassedArticles": 5,
+        "legalDongCount": 10,
+        "administrativeDongCount": 15,
+        "relationshipCount": 16,
+        "unassignedLegalUnits": 5,
+        "countIsPageQuota": false,
+        "fixedPlanPath": "docs/direct-regional-release/seoul-dongdaemun/fixed-plan.json",
+        "fixedPlanSha256": "412fc3e7c898ff170df77017c3fc7da2d4fd8a5b17e0cf06ac7c5b67d053445c",
+        "frozenAt": "2026-10-11T04:13:44.430710+00:00",
+        "articles": [
+          {
+            "slug": "hoegi-dong-khmc-funeral-wreath",
+            "title": "경희의료원 장례식장 근조화환 주문",
+            "primaryKeyword": "경희의료원 장례식장 근조화환 주문",
+            "status": "independent_content_pass_not_published"
+          },
+          {
+            "slug": "hwigyeong-dong-bellaluce-seoul-wedding-wreath",
+            "title": "벨라루체 서울점 결혼식 축하화환 주문",
+            "primaryKeyword": "벨라루체 서울점 결혼식 축하화환 주문",
+            "status": "independent_content_pass_not_published"
+          },
+          {
+            "slug": "jeonnong-dong-l65-wedding-wreath",
+            "title": "L65호텔웨딩컨벤션 결혼식 축하화환 주문",
+            "primaryKeyword": "L65호텔웨딩컨벤션 결혼식 축하화환 주문",
+            "status": "independent_content_pass_not_published"
+          },
+          {
+            "slug": "jegi-dong-kyungdong-market-opening-wreath",
+            "title": "경동시장 거래처 개업화환 주문",
+            "primaryKeyword": "경동시장 거래처 개업화환 주문",
+            "status": "independent_content_pass_not_published"
+          },
+          {
+            "slug": "sinseol-dong-seoul-pungmul-market-opening-wreath",
+            "title": "서울풍물시장 점포 이전·개업화환 주문",
+            "primaryKeyword": "서울풍물시장 점포 이전·개업화환 주문",
+            "status": "independent_content_pass_not_published"
+          }
+        ],
+        "planFreezeRevision": "3258fb4c3ab10fc4763e6ce4b63ca9c61d8c56d8",
+        "approvedArticleCount": 5,
+        "deferredArticleCount": 0
+      },
+      "review": {
+        "screenQa": "DEFERRED_NOT_PASS",
+        "planReviewStatus": "PASS_BEFORE_AUTHORING",
+        "planReviewSha256": "5fc4c15d97553c9dbfd54ff309b4a7a3f5e7ab45bee1614941373243a98a121d",
+        "contentStatus": "PASS",
+        "articlesSha256": "d4b8d6660376bb5b0b3e5eb90a3383287cde8af8dad72e9a3c1016f7cf8811f2",
+        "independentReviewSha256": "cbdf7ddd5e2c974c39cd346cd8a84f4a15595755e40dc9d0b4c813b18bbbfa4a",
+        "catalogStatus": "INDEPENDENT_EIGHT_PRODUCT_IMAGE_AND_PRICE_PASS",
+        "contentRevision": 2,
+        "runtimeStatus": "PASS_EXACT_LOCAL_SOURCE_PREPUBLICATION",
+        "runtimeReviewSha256": "b6cbf9bda46bda562efb53bfd57eb0b4af81e3d14af33975c28481ab7a53e2f2"
+      },
+      "recovery": {
+        "status": "resolved_rev2_all_68_source_tests_passed",
+        "reason": "Unchanged product-family validator interpreted a negative mention of an unregistered family as a promised family; author replaced one negative disclaimer sentence, independently re-reviewed exact revised bytes. No validator weakened.",
+        "priorAuthorSha256": "2159eb8d1a60a01bd6ef94b79bb60eb98bb8e271320eb1cbea56267e9e5e48a8",
+        "priorFailedTests": "67/68 passed; false positive missing promised family bouquet",
+        "newAuthorSha256": "d4b8d6660376bb5b0b3e5eb90a3383287cde8af8dad72e9a3c1016f7cf8811f2"
+      },
+      "sourceRevision": "c7950231a67ff2494f0c37298029343456089b39",
+      "controlRevision": "c6d236e50925ad021c94dc695bf2e10833771953",
+      "validation": {
+        "sourceRevision": "c7950231a67ff2494f0c37298029343456089b39",
+        "nodeVersion": "22.23.3",
+        "sourceTestsPassed": 68,
+        "publisherTestsPassed": 42,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "artifactFiles": 24,
+        "normalHtmlRoutes": 7,
+        "articleCount": 5,
+        "sitemapUrls": 7,
+        "remoteFullReadback": "72/72 full bytes and Git blob SHA verified",
+        "remoteReadbackSha256": "e2c31746b7c212bb67d5c784a1e8184fcaa3c502baa4f5789f054955ac11c740",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS"
+      },
+      "lastSuccessfulStage": "exact_source_full_remote_readback_build_static_graph_independent_review",
+      "approval": {
+        "status": "required_not_granted_for_exact_target",
+        "reason": "Execution-time approval gate requires exact Dongdaemun hostname deployment authorization.",
+        "action": "Dispatch seoul-dongdaemun-direct-publish.yml once with exact reviewed source; deploy Worker and connect only designated hostname after account/Worker/domain GET collision checks using no-override.",
+        "workflow": ".github/workflows/seoul-dongdaemun-direct-publish.yml",
+        "sourceRevision": "c7950231a67ff2494f0c37298029343456089b39",
+        "worker": "seoul-dongdaemun-flower-guide",
+        "hostname": "seoul-dongdaemun.fwith.kr",
+        "scope": "Existing fwith.kr account; only this Worker and hostname. No credential, permission, security, DNS ownership changes, override, payment or contract.",
+        "resumeAfter": "Verify exact approval scope and unchanged reviewed source, then retry the same official Run workflow action once; read back before any further attempt."
+      },
+      "publication": {
+        "status": "not_dispatched_approval_gate",
+        "runId": null,
+        "url": "https://seoul-dongdaemun.fwith.kr",
+        "publicReleaseVerified": false,
+        "httpQa": "NOT_RUN",
+        "indexNow": "NOT_SUBMITTED",
+        "gsc": "NOT_SUBMITTED",
+        "dispatchAcceptedCount": 0,
+        "latestRunsReadbackAt": "2026-10-11T04:38:31.532Z",
+        "latestRepositoryRunObserved": 38079835650
+      }
+    }
+  ],
   "deferredVisualQa": [
     {
       "scopeKey": "hanam-direct-initial-20261010",
