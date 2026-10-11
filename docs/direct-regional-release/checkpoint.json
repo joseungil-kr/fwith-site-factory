@@ -29155,7 +29155,7 @@
     },
     {
       "regionKey": "seoul-seodaemun",
-      "status": "FIXED_PLAN_N4_AUTHORING_CLAIMED_NOT_PUBLISHED",
+      "status": "REVIEWED_SOURCE_SAVED_CONTROL_PREPARED_DISPATCH_TECHNICALLY_BLOCKED",
       "scope": "서울특별시 서대문구 자치구",
       "officialCode": "11410",
       "repository": "joseungil-kr/fwith-site-factory",
@@ -29948,6 +29948,65 @@
         "gsc": "NOT_SUBMITTED",
         "screenQa": "DEFERRED_NOT_PASS",
         "savedAt": "2026-10-11T20:44:11.384Z"
+      },
+      "source": {
+        "sha": "ec22377b91a08831259604b5b440cd9738d20269",
+        "parent": "e51d8aa15aa81e42f158482812a03adf3089b30a",
+        "branch": "site-factory-seoul-seodaemun-direct",
+        "root": "site-factory/seoul-seodaemun-flower",
+        "sourceFiles": 70,
+        "createdBlobs": 28,
+        "verifiedReusedBlobs": 45,
+        "wholeTreeVerified": true,
+        "fullChangedTextVerified": true,
+        "approvedArticles": 4,
+        "originalN": 4,
+        "held": 0,
+        "independentReviewSha256": "2495b992bee23fb3b48bd01accf19834edf2741ed07c93257d39769ae81983f3",
+        "sourceManifestSha256": "699f638cd79155a5c87842af46ef5f0d263fbb2ab7d241807c310232ad54525d",
+        "savedAt": "2026-10-11T20:45:55.264Z",
+        "publicDeployment": "NOT_ATTEMPTED"
+      },
+      "lastSuccessfulStage": "source_saved_full_readback_verified",
+      "remainingStages": [
+        "exact_saved_source_production_build",
+        "formal_workflow_dispatch",
+        "provider_ownership_GET",
+        "public_HTTP_QA",
+        "IndexNow_receipt",
+        "GSC_submission",
+        "deferred_visual_QA"
+      ],
+      "blocker": {
+        "kind": "technical_cloud_browser_runtime_not_user_approval",
+        "observedAt": "2026-10-11T20:40:00Z",
+        "action": "Open official GitHub Actions Run workflow UI",
+        "target": "https://github.com/joseungil-kr/fwith-site-factory/actions",
+        "observations": [
+          "Cloud Chromium error code 9",
+          "CDP create tab timed out after 50000ms",
+          "Supported launch and error-page refresh did not recover a usable GitHub page"
+        ],
+        "githubAuthentication": "NOT_OBSERVED",
+        "dispatchAttempted": false
+      },
+      "preparedControl": {
+        "files": [
+          {
+            "path": ".github/workflows/seoul-seodaemun-direct-publish.yml",
+            "blobSha": "279aadb09fb98fb4424c35c050529bf5681740f4"
+          },
+          {
+            "path": "scripts/direct-seoul-seodaemun/publish.py",
+            "blobSha": "8f783cc41805b4bd85b18cf06221abfe32a3c11c"
+          },
+          {
+            "path": "scripts/direct-seoul-seodaemun/test_publish.py",
+            "blobSha": "09bf6a0f4f06906da4c1c5fc358b1f95e1b67524"
+          }
+        ],
+        "status": "SAVED_IN_THIS_MAIN_COMMIT_READBACK_REQUIRED",
+        "sharedHelpersChanged": false
       }
     }
   ]
