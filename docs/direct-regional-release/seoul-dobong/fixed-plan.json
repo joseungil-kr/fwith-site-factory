@@ -1,0 +1,755 @@
+{
+  "schemaVersion": 2,
+  "scopeKey": "seoul-dobong-direct-initial-20261011",
+  "region": "서울특별시 도봉구",
+  "officialCode": "11320",
+  "status": "frozen_before_authoring",
+  "planStatus": "frozen_independent_plan_review_pass",
+  "createdAt": "2026-10-11T11:30:36.300692+00:00",
+  "fixedN": 4,
+  "originalN": 4,
+  "originalProposedN": 4,
+  "recommendedN": 4,
+  "candidateCount": 4,
+  "proposedArticleCount": 4,
+  "plannedArticleCount": 4,
+  "minimumPassedArticles": 4,
+  "frozenAt": "2026-10-11T11:42:24.821Z",
+  "customerArticleBodiesAuthored": false,
+  "geographicMembership": {
+    "legalDongCount": 4,
+    "administrativeDongCount": 14,
+    "relationshipCount": 14,
+    "proposedRepresentedLegalUnits": 4,
+    "unassignedLegalUnitKeys": [],
+    "countIsPageQuota": false,
+    "membershipFile": "assembler-membership-input.json",
+    "membershipSha256": "b07ccb7c85c78478e1566d6138344acadb3926dfab688ff53594a43c835ded99",
+    "originalMembershipSha256": "a012850f37791fdff94bdf0329b5a417ba23ffc1167f0386760cdbd6da100cd5",
+    "coverageFile": "coverage-input.json",
+    "coverageSha256": "2acc5ff64667aa3578925e22dfed1108d2a4f46852c3fd7833203d53ef94bf6c"
+  },
+  "reviewEvidence": {
+    "path": "/workspace/shared/dobong-plan-review-20261011/review.json",
+    "sha256": "5e45176e4156737b5da591e7c3565281470c936702d043dc4cefe48d61619e2a",
+    "verdict": "SUPPORT_N4_PLAN_WITH_REQUIRED_GUARDRAILS_NOT_A_PUBLICATION_APPROVAL",
+    "sourceInputBundleSha256": "bb3fe6e4a085eff14812d079289922b56a242cef9d670494be13e53b62adabe8",
+    "preservedOriginalFileCount": 80,
+    "preservedVerifiedSourceCount": 20,
+    "preservedArtifactCount": 8,
+    "sourceInputPreservation": "input-preservation-validation.json"
+  },
+  "uniquenessRule": {
+    "pageKey": [
+      "slug",
+      "facilityKey",
+      "purchaseIntentKey"
+    ],
+    "oneArticlePerLegalDongRequired": false,
+    "NReason": "독립 검토가 지지한 서로 다른 네 시설의 구매목적·수령 문제를 보존한다. 네 법정동 수와 일치하는 것은 선정 근거가 아니며 별칭·문상실·전시실별로 분할하지 않는다."
+  },
+  "runtimeReuse": {
+    "candidateContract": "legacy regions.mjs unchanged",
+    "reason": "Original independently reviewed N4 happens to contain one facility per legal unit; no duplicate-unit support is required and N4 is not derived from that constraint.",
+    "runtimeCodeChangesRequired": false,
+    "duplicateLegalDongsRequiredForReuse": false,
+    "reuseDoesNotChangeProposedN": 4,
+    "runtimePageFields": [
+      "slug",
+      "unitKey",
+      "primaryKeyword",
+      "queryEvidence"
+    ],
+    "facilityMetadataBinding": "queryEvidence.facilityKey / purchaseIntentKey / canonicalFacility; separate facilities-registry.json",
+    "runtimeCoverageTopLevelFacilitiesOrPageContextAllowed": false,
+    "normalizations": {
+      "performance-congrats-wreath": "event-congrats-wreath",
+      "exhibition-congrats-wreath": "event-congrats-wreath"
+    },
+    "originalIntentDetailPreserved": true,
+    "executableRuntimeCompatibilityTest": "not_run_in_readonly_mapping_task"
+  },
+  "facilities": [
+    {
+      "facilityKey": "hanil-hospital-funeral",
+      "name": "한일병원 장례식장",
+      "sourceUrl": "https://m.hanilmed.net/m/contents.do?menuNo=81101348",
+      "address": "서울특별시 도봉구 우이천로 308 (쌍문동)",
+      "addressDetail": "3동 지하1층 장례식장",
+      "unitKey": "도봉구/법정동/쌍문동",
+      "legalCode": "1132010500",
+      "aliases": [
+        "한일병원장례식장",
+        "한일병원 장례식장",
+        "한전의료재단 한일병원 장례식장"
+      ],
+      "notAliases": [],
+      "acceptancePolicyVerified": false,
+      "sourceKeys": [
+        "hanil-funeral",
+        "hanil-floor",
+        "hanil-contact"
+      ],
+      "facilityPhonePublishingAllowed": null,
+      "purchaseIntentKey": "funeral-condolence-wreath"
+    },
+    {
+      "facilityKey": "banghak-dokkaebi-market",
+      "name": "방학동도깨비시장",
+      "sourceUrl": "https://www.dobongmarket.kr/dokkaebimarket",
+      "address": "서울특별시 도봉구 도당로 85-7 (방학동)",
+      "addressDetail": "고객지원센터 기준주소이며 실제 점포 배송지 별도 확인",
+      "unitKey": "도봉구/법정동/방학동",
+      "legalCode": "1132010600",
+      "aliases": [
+        "방학동도깨비시장",
+        "방학동 도깨비시장",
+        "방학도깨비시장",
+        "도깨비시장(도봉 방학동 문맥)"
+      ],
+      "notAliases": [],
+      "acceptancePolicyVerified": false,
+      "sourceKeys": [
+        "official-market-records",
+        "dokkaebi-market"
+      ],
+      "facilityPhonePublishingAllowed": null,
+      "addressRole": "customer_support_center_reference_not_shop_delivery_address",
+      "administrativeDong": "방학제2동",
+      "administrativeDisplayName": "방학2동",
+      "administrativeCode": "1132070000",
+      "purchaseIntentKey": "opening-congrats-wreath"
+    },
+    {
+      "facilityKey": "dobong-civic-harmony-hall",
+      "name": "도봉구민회관 하모니홀",
+      "sourceUrl": "https://yeyak.seoul.go.kr/web/reservation/selectReservView.do?rsv_svc_id=S251113115433740026",
+      "address": "서울특별시 도봉구 도봉로 552 (창동)",
+      "addressDetail": "도봉구민회관 1층 하모니홀",
+      "unitKey": "도봉구/법정동/창동",
+      "legalCode": "1132010700",
+      "aliases": [
+        "도봉구민회관 하모니홀",
+        "도봉구민회관 대강당",
+        "도봉구민회관 대강당(하모니홀)"
+      ],
+      "notAliases": [
+        "도봉구민회관 소공연장",
+        "다른 지역의 하모니홀"
+      ],
+      "acceptancePolicyVerified": false,
+      "sourceKeys": [
+        "harmonyhall"
+      ],
+      "facilityPhonePublishingAllowed": false,
+      "purchaseIntentKey": "event-congrats-wreath"
+    },
+    {
+      "facilityKey": "peace-culture-bunker",
+      "name": "평화문화진지",
+      "sourceUrl": "https://tour.dobong.go.kr/Contents.asp?code=10007287",
+      "address": "서울특별시 도봉구 마들로 932 (도봉동)",
+      "addressDetail": "행사별 동·전시실·수령자 확인 필요",
+      "unitKey": "도봉구/법정동/도봉동",
+      "legalCode": "1132010800",
+      "aliases": [
+        "평화문화진지",
+        "도봉 평화문화진지",
+        "평화문화진지 전시실",
+        "문화벙커(해당 시설 문맥)"
+      ],
+      "notAliases": [],
+      "acceptancePolicyVerified": false,
+      "sourceKeys": [
+        "culturebunker",
+        "culturebunker-tour",
+        "culturebunker-current",
+        "culturebunker-spacetable",
+        "culturebunker-rental-application.hwp"
+      ],
+      "facilityPhonePublishingAllowed": null,
+      "purchaseIntentKey": "event-congrats-wreath"
+    }
+  ],
+  "pages": [
+    {
+      "slug": "ssangmun-dong-hanil-hospital-funeral-wreath",
+      "name": "쌍문동",
+      "unitKey": "도봉구/법정동/쌍문동",
+      "facilityKey": "hanil-hospital-funeral",
+      "purchaseIntentKey": "funeral-condolence-wreath",
+      "originalResearchPurchaseIntentKey": "funeral-condolence-wreath",
+      "purchaseIntentDetail": "장례 조문 근조화환",
+      "title": "한일병원 장례식장 근조화환 주문",
+      "h1": "한일병원 장례식장 근조화환 주문",
+      "primaryKeyword": "한일병원 장례식장 근조화환 주문",
+      "family": "funeral",
+      "state": "candidate",
+      "candidateDecision": "INCLUDE_PLAN",
+      "context": {
+        "name": "한일병원 장례식장",
+        "address": "서울특별시 도봉구 우이천로 308 (쌍문동)",
+        "addressDetail": "3동 지하1층 장례식장",
+        "legal_dong": "쌍문동",
+        "parcel_address": null,
+        "verifiedAdministrativeDong": null,
+        "supportedContext": [
+          "병원 공식 층별안내에서 3동 B1 장례식장이 확인된다.",
+          "공식 문상실은 1·2·3·5·6·7호실이며 4호실을 만들어서는 안 된다.",
+          "대표주소는 우이천로 308, 법정동은 쌍문동이다."
+        ]
+      },
+      "distinctBuyerDecision": "같은 병원 주소라도 병동·응급실과 장례식장을 구분하고 공식 문상실 번호를 대조해 근조화환 목적지를 정한다.",
+      "queryEvidence": {
+        "sourceUrl": "https://m.hanilmed.net/m/contents.do?menuNo=81101348",
+        "finding": "같은 병원 주소라도 병동·응급실과 장례식장을 구분하고 공식 문상실 번호를 대조해 근조화환 목적지를 정한다.",
+        "measuredSearchVolume": null,
+        "originalResearchQuery": "한일병원 장례식장 근조화환 주문",
+        "status": "official_facility_supported_purchase_hypothesis_not_measured_demand",
+        "facilityKey": "hanil-hospital-funeral",
+        "purchaseIntentKey": "funeral-condolence-wreath",
+        "canonicalFacility": {
+          "name": "한일병원 장례식장",
+          "address": "서울특별시 도봉구 우이천로 308 (쌍문동)",
+          "sourceURL": "https://m.hanilmed.net/m/contents.do?menuNo=81101348"
+        },
+        "unitKey": "도봉구/법정동/쌍문동"
+      },
+      "sources": [
+        {
+          "key": "hanil-funeral",
+          "name": "한일병원 장례식장 안내",
+          "publisher": "의료법인 한전의료재단 한일병원",
+          "type": "operator_official",
+          "url": "https://m.hanilmed.net/m/contents.do?menuNo=81101348",
+          "verifiedAt": "2026-10-11T11:08:07.299790+00:00",
+          "sourceDate": null,
+          "sourceDateNote": "명시 발행일 미확인; 조회일과 발행일을 구별함",
+          "evidencePath": "/workspace/shared/dobong-readonly-20261011/sources/hanil-funeral.html",
+          "sha256": "58af3e7753b1eeb28fb77c354978e4bc8d2f608b0c8d4214067fd3a8896a38b4",
+          "verificationMethod": "preserved official HTTP200 source and independent review; exact bytes rechecked locally"
+        },
+        {
+          "key": "hanil-floor",
+          "name": "한일병원 층별안내",
+          "publisher": "의료법인 한전의료재단 한일병원",
+          "type": "operator_official",
+          "url": "https://m.hanilmed.net/m/contents.do?menuNo=40702000",
+          "verifiedAt": "2026-10-11T11:08:07.300711+00:00",
+          "sourceDate": null,
+          "sourceDateNote": "명시 발행일 미확인; 조회일과 발행일을 구별함",
+          "evidencePath": "/workspace/shared/dobong-readonly-20261011/sources/hanil-floor.html",
+          "sha256": "dde7c282a73bdb61d0f9f30e6039bcb7b1cb82082e038dac4c722d5df15ad6f5",
+          "verificationMethod": "preserved official HTTP200 source and independent review; exact bytes rechecked locally"
+        },
+        {
+          "key": "hanil-contact",
+          "name": "한일병원 전화번호 안내 및 주소",
+          "publisher": "의료법인 한전의료재단 한일병원",
+          "type": "operator_official",
+          "url": "https://www.hanilmed.net/portal/contents.do?menuNo=20202000",
+          "verifiedAt": "2026-10-11T11:08:13.885324+00:00",
+          "sourceDate": null,
+          "sourceDateNote": "명시 발행일 미확인; 조회일과 발행일을 구별함",
+          "evidencePath": "/workspace/shared/dobong-readonly-20261011/sources/hanil-contact.html",
+          "sha256": "0ccf3a99069a53e89886c94eec8b319e5b1fdcb82607a1443c90096d53374c9c",
+          "verificationMethod": "preserved official HTTP200 source and independent review; exact bytes rechecked locally"
+        }
+      ],
+      "requiredBuyerDecisions": [
+        "부고의 고인명·문상실과 현재 빈소가 일치하는지",
+        "발인 전 인수 가능시각",
+        "유족 화환 사양 여부와 현장 허용 형태·배치 지점"
+      ],
+      "admissionEvidence": {
+        "status": "outside_wreath_acceptance_unconfirmed",
+        "wreathPolicy": "NO_EXPLICIT_WREATH_BAN_FOUND_IN_REVIEWED_PRIMARY_SOURCES; NOT_A_PERMISSION_CONFIRMATION",
+        "acceptancePolicyVerified": false,
+        "unknowns": [
+          "부고의 고인명·문상실과 현재 빈소가 일치하는지",
+          "발인 전 인수 가능시각",
+          "유족 화환 사양 여부와 현장 허용 형태·배치 지점"
+        ]
+      },
+      "prohibitedOrUnconfirmedClaims": [
+        "문상실 면적이 4·5단 반입 가능성을 보장한다.",
+        "공유면적은 모두 화환 배치 공간이다.",
+        "확인 없이 빈소 앞까지 배치한다.",
+        "꽃이랑 24시간 상담·즉시 도착을 보장한다.",
+        "문상실 면적만 보고 4단·5단 수용 가능하다고 추론하지 않는다.",
+        "빈소 앞 무조건 반입·직접 설치·상시 수령을 보장하지 않는다.",
+        "한일병원의 장례상담24시간과 꽃이랑상담08~23를 혼동하지 않는다."
+      ],
+      "nonGuaranteeRequirements": [
+        "시설 존재·주소·대관조건과 판매자의 배송·반입·설치 능력을 구별한다.",
+        "화환 금지 문구를 찾지 못했다는 사실을 반입 허가로 바꾸지 않는다.",
+        "시설·행사 주최자가 수령을 거절하면 배송을 강행하거나 미판매 대체상품을 제안하지 않는다.",
+        "배송속도·당일·정시·무료·재고·설치·사진 전송·제휴·회수 서비스를 보장하지 않는다.",
+        "시설 사진·약도는 허가 없이 사용하지 않는다.",
+        "꽃다발·꽃바구니·난·화분·쌀화환·카드 등 미검증 판매상품을 추가하지 않는다.",
+        "시설 전화번호를 꽃 주문 전화로 오인하게 만들지 않는다. 하모니홀은 시설 전화번호 자체를 고객 페이지에 게시하지 않는다.",
+        "실시간 고인·상주·행사 참석자 등 개인정보를 수집·게시하지 않는다.",
+        "상품 가격·이미지는 별도 검증 후 결속하고 기존 시설 대관료를 화환 가격으로 쓰지 않는다."
+      ],
+      "facilityPhotoPermission": false,
+      "articleBody": null,
+      "catalogKeys": [
+        "funeral-basic",
+        "funeral-premium",
+        "funeral-large",
+        "funeral-xl"
+      ]
+    },
+    {
+      "slug": "banghak-dong-dokkaebi-market-opening-wreath",
+      "name": "방학동",
+      "unitKey": "도봉구/법정동/방학동",
+      "facilityKey": "banghak-dokkaebi-market",
+      "purchaseIntentKey": "opening-congrats-wreath",
+      "originalResearchPurchaseIntentKey": "opening-congrats-wreath",
+      "purchaseIntentDetail": "시장 내 개별 점포 개업 축하화환",
+      "title": "방학동도깨비시장 점포 개업화환 주문",
+      "h1": "방학동도깨비시장 점포 개업화환 주문",
+      "primaryKeyword": "방학동도깨비시장 점포 개업화환 주문",
+      "family": "congrats",
+      "state": "candidate",
+      "candidateDecision": "INCLUDE_PLAN",
+      "context": {
+        "name": "방학동도깨비시장",
+        "address": "서울특별시 도봉구 도당로 85-7 (방학동)",
+        "addressDetail": "고객지원센터 기준주소이며 실제 점포 배송지 별도 확인",
+        "legal_dong": "방학동",
+        "parcel_address": null,
+        "verifiedAdministrativeDong": "방학제2동",
+        "supportedContext": [
+          "2026-01-29 구청 데이터가 방학2동·법정동 방학동을 확인한다.",
+          "도당로 85-7은 고객지원센터의 주소이며 개업점포 공통 배송지가 아니다.",
+          "공영주차장은 방학로10길 51로 별도이다.",
+          "시장 2문·고객지원센터 표지는 위치 확인 단서이고 모든 점포의 배송 입구가 아니다."
+        ]
+      },
+      "distinctBuyerDecision": "센터 주소와 공영주차장 주소를 실제 주문 목적지로 오인하지 않도록 개업점포 상호·도로명·호수를 분리해 받는다.",
+      "queryEvidence": {
+        "sourceUrl": "https://www.dobongmarket.kr/dokkaebimarket",
+        "finding": "센터 주소와 공영주차장 주소를 실제 주문 목적지로 오인하지 않도록 개업점포 상호·도로명·호수를 분리해 받는다.",
+        "measuredSearchVolume": null,
+        "originalResearchQuery": "방학동도깨비시장 점포 개업화환 주문",
+        "status": "official_facility_supported_purchase_hypothesis_not_measured_demand",
+        "facilityKey": "banghak-dokkaebi-market",
+        "purchaseIntentKey": "opening-congrats-wreath",
+        "canonicalFacility": {
+          "name": "방학동도깨비시장",
+          "address": "서울특별시 도봉구 도당로 85-7 (방학동)",
+          "sourceURL": "https://www.dobongmarket.kr/dokkaebimarket"
+        },
+        "unitKey": "도봉구/법정동/방학동"
+      },
+      "sources": [
+        {
+          "key": "official-market-records",
+          "name": "도봉구 관내 전통시장 현황 JSON",
+          "publisher": "도봉구 열린데이터광장",
+          "type": "municipal_official_dataset",
+          "url": "https://opendata.dobong.go.kr/dataset_download.asp?cont_seq=57&type=json",
+          "verifiedAt": "2026-10-11T11:10:10Z",
+          "sourceDate": "2026-01-29",
+          "sourceDateNote": "데이터 기준일",
+          "evidencePath": "/workspace/shared/dobong-readonly-20261011/sources/official-market-records.json",
+          "sha256": "464b6621f768147f8ac63101579cfe8c268f8a46a4dc456de34e118aa45ab0e3",
+          "verificationMethod": "preserved official HTTP200 source and independent review; exact bytes rechecked locally"
+        },
+        {
+          "key": "dokkaebi-market",
+          "name": "방학동도깨비시장 소개·오시는길",
+          "publisher": "도봉구 전통시장",
+          "type": "official_market_site",
+          "url": "https://www.dobongmarket.kr/dokkaebimarket",
+          "verifiedAt": "2026-10-11T11:09:22.659535+00:00",
+          "sourceDate": null,
+          "sourceDateNote": "명시 발행일 미확인; 조회일과 발행일을 구별함",
+          "evidencePath": "/workspace/shared/dobong-readonly-20261011/sources/dokkaebi-market.html",
+          "sha256": "ca91fc861805c4082a2468dd9b0f9b042c6032bea682e3b2d7f7348e63ddce91",
+          "verificationMethod": "preserved official HTTP200 source and independent review; exact bytes rechecked locally"
+        }
+      ],
+      "requiredBuyerDecisions": [
+        "실제 개업점포·수령담당자",
+        "점포 앞 허용 배치 지점과 통행 방해 여부",
+        "반입시간·영업 전 인수·철수 또는 처리 계획"
+      ],
+      "admissionEvidence": {
+        "status": "outside_wreath_acceptance_unconfirmed",
+        "wreathPolicy": "NO_EXPLICIT_MARKET_WIDE_WREATH_BAN_FOUND_IN_REVIEWED_PRIMARY_SOURCES; EACH_SHOP_AND_EVENT_REQUIRES_CONFIRMATION",
+        "acceptancePolicyVerified": false,
+        "unknowns": [
+          "실제 개업점포·수령담당자",
+          "점포 앞 허용 배치 지점과 통행 방해 여부",
+          "반입시간·영업 전 인수·철수 또는 처리 계획"
+        ]
+      },
+      "prohibitedOrUnconfirmedClaims": [
+        "시장센터가 모든 점포 화환을 대신 받는다.",
+        "센터 운영시간이 모든 점포·꽃이랑 영업시간이다.",
+        "현재 모든 점포가 개업행사를 한다.",
+        "2문으로 오면 모든 점포에 자동 배송된다.",
+        "89점포 각각 개업 중이라고 쓰지 않는다.",
+        "시장센터 또는 주차장으로 일괄 배송한다고 쓰지 않는다.",
+        "센터10~18 운영시간을 모든 상점 또는 꽃이랑 운영시간으로 쓰지 않는다."
+      ],
+      "nonGuaranteeRequirements": [
+        "시설 존재·주소·대관조건과 판매자의 배송·반입·설치 능력을 구별한다.",
+        "화환 금지 문구를 찾지 못했다는 사실을 반입 허가로 바꾸지 않는다.",
+        "시설·행사 주최자가 수령을 거절하면 배송을 강행하거나 미판매 대체상품을 제안하지 않는다.",
+        "배송속도·당일·정시·무료·재고·설치·사진 전송·제휴·회수 서비스를 보장하지 않는다.",
+        "시설 사진·약도는 허가 없이 사용하지 않는다.",
+        "꽃다발·꽃바구니·난·화분·쌀화환·카드 등 미검증 판매상품을 추가하지 않는다.",
+        "시설 전화번호를 꽃 주문 전화로 오인하게 만들지 않는다. 하모니홀은 시설 전화번호 자체를 고객 페이지에 게시하지 않는다.",
+        "실시간 고인·상주·행사 참석자 등 개인정보를 수집·게시하지 않는다.",
+        "상품 가격·이미지는 별도 검증 후 결속하고 기존 시설 대관료를 화환 가격으로 쓰지 않는다."
+      ],
+      "facilityPhotoPermission": false,
+      "articleBody": null,
+      "catalogKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "productImageRule": "사용할 공식 SKU 사진의 리본을 별도 픽셀 검토한다. 결혼 예시 리본 사진이면 개업·공연·전시 납품사진으로 표시하지 않고 상품 예시임과 용도별 문구 별도 확인을 명시한다."
+    },
+    {
+      "slug": "chang-dong-dobong-harmony-hall-congrats-wreath",
+      "name": "창동",
+      "unitKey": "도봉구/법정동/창동",
+      "facilityKey": "dobong-civic-harmony-hall",
+      "purchaseIntentKey": "event-congrats-wreath",
+      "originalResearchPurchaseIntentKey": "performance-congrats-wreath",
+      "purchaseIntentDetail": "공연·행사 축하화환",
+      "title": "도봉구민회관 하모니홀 공연 축하화환 주문",
+      "h1": "도봉구민회관 하모니홀 공연 축하화환 주문",
+      "primaryKeyword": "도봉구민회관 하모니홀 공연 축하화환 주문",
+      "family": "congrats",
+      "state": "candidate",
+      "candidateDecision": "INCLUDE_PLAN_WITH_RECEPTION_GUARDRAILS",
+      "context": {
+        "name": "도봉구민회관 하모니홀",
+        "address": "서울특별시 도봉구 도봉로 552 (창동)",
+        "addressDetail": "도봉구민회관 1층 하모니홀",
+        "legal_dong": "창동",
+        "parcel_address": null,
+        "verifiedAdministrativeDong": null,
+        "supportedContext": [
+          "서울시 공공서비스예약의 2025-11-01~2026-12-31 운영 안내에서 1층 하모니홀·주소가 확인된다.",
+          "대관시설 문은 대관시간에 맞춰 열리고 사전준비·철수·청소 시간을 대관시간에 포함해야 한다.",
+          "같은 건물 소공연장과 하모니홀은 별개 공연장이다.",
+          "음식물 반입과 현장 판매·현금수수는 금지지만 그 문구를 화환 반입금지로 바꿀 수 없다.",
+          "행사 관련 홍보·안내문은 사전협의 대상이고 구민회관 전화번호 게재 금지 문구가 있다."
+        ]
+      },
+      "distinctBuyerDecision": "공연 시작시각과 대관 개방시각을 구분해 문이 닫힌 시간에 화환을 보내는 실패를 막고, 같은 건물의 소공연장 혼동을 해소한다.",
+      "queryEvidence": {
+        "sourceUrl": "https://yeyak.seoul.go.kr/web/reservation/selectReservView.do?rsv_svc_id=S251113115433740026",
+        "finding": "공연 시작시각과 대관 개방시각을 구분해 문이 닫힌 시간에 화환을 보내는 실패를 막고, 같은 건물의 소공연장 혼동을 해소한다.",
+        "measuredSearchVolume": null,
+        "originalResearchQuery": "도봉구민회관 하모니홀 공연 축하화환 주문",
+        "status": "official_facility_supported_purchase_hypothesis_not_measured_demand",
+        "facilityKey": "dobong-civic-harmony-hall",
+        "purchaseIntentKey": "event-congrats-wreath",
+        "canonicalFacility": {
+          "name": "도봉구민회관 하모니홀",
+          "address": "서울특별시 도봉구 도봉로 552 (창동)",
+          "sourceURL": "https://yeyak.seoul.go.kr/web/reservation/selectReservView.do?rsv_svc_id=S251113115433740026"
+        },
+        "unitKey": "도봉구/법정동/창동"
+      },
+      "sources": [
+        {
+          "key": "harmonyhall",
+          "name": "도봉구민회관 하모니홀 대관",
+          "publisher": "서울특별시 공공서비스예약",
+          "type": "municipal_official_reservation_notice",
+          "url": "https://yeyak.seoul.go.kr/web/reservation/selectReservView.do?rsv_svc_id=S251113115433740026",
+          "verifiedAt": "2026-10-11T11:08:15.981352+00:00",
+          "sourceDate": null,
+          "sourceDateNote": "명시 발행일 미확인; 조회일과 발행일을 구별함",
+          "evidencePath": "/workspace/shared/dobong-readonly-20261011/sources/harmonyhall.html",
+          "sha256": "8260a5e13e746a0f250b95c134fa1a422688431075a33cc570da2882ded5009d",
+          "verificationMethod": "preserved official HTTP200 source and independent review; exact bytes rechecked locally"
+        }
+      ],
+      "requiredBuyerDecisions": [
+        "행사주최자가 외부 스탠드 축하화환을 받는지",
+        "공연명·수령주최자·정확한 홀",
+        "대관문 개방 이후 인수자와 장소",
+        "철수·청소시간에 맞춘 처리"
+      ],
+      "admissionEvidence": {
+        "status": "outside_wreath_acceptance_unconfirmed",
+        "wreathPolicy": "EXPLICIT_FOOD_AND_ON_SITE_SALES_RESTRICTIONS; NO_EXPLICIT_WREATH_BAN_FOUND; NO_UNCONDITIONAL_ACCEPTANCE",
+        "acceptancePolicyVerified": false,
+        "unknowns": [
+          "행사주최자가 외부 스탠드 축하화환을 받는지",
+          "공연명·수령주최자·정확한 홀",
+          "대관문 개방 이후 인수자와 장소",
+          "철수·청소시간에 맞춘 처리"
+        ]
+      },
+      "prohibitedOrUnconfirmedClaims": [
+        "금지 안내가 없으므로 모든 공연에 화환을 보낼 수 있다.",
+        "공연 전이면 문을 언제든 열어준다.",
+        "식음료 반입금지는 곧 화환 금지다.",
+        "구민회관 시설 전화번호를 고객 구매페이지에 게재한다.",
+        "반입금지가 없다고 화환을 무조건 허용한다고 단정하지 않는다.",
+        "공연 1~2시간 전이면 언제든 홀 입장 가능하다고 쓰지 않는다.",
+        "구민회관 전화번호를 꽃주문처로 표시하지 않는다.",
+        "운영자 원사이트502로 세부정책까지 검증 완료했다고 쓰지 않는다."
+      ],
+      "nonGuaranteeRequirements": [
+        "시설 존재·주소·대관조건과 판매자의 배송·반입·설치 능력을 구별한다.",
+        "화환 금지 문구를 찾지 못했다는 사실을 반입 허가로 바꾸지 않는다.",
+        "시설·행사 주최자가 수령을 거절하면 배송을 강행하거나 미판매 대체상품을 제안하지 않는다.",
+        "배송속도·당일·정시·무료·재고·설치·사진 전송·제휴·회수 서비스를 보장하지 않는다.",
+        "시설 사진·약도는 허가 없이 사용하지 않는다.",
+        "꽃다발·꽃바구니·난·화분·쌀화환·카드 등 미검증 판매상품을 추가하지 않는다.",
+        "시설 전화번호를 꽃 주문 전화로 오인하게 만들지 않는다. 하모니홀은 시설 전화번호 자체를 고객 페이지에 게시하지 않는다.",
+        "실시간 고인·상주·행사 참석자 등 개인정보를 수집·게시하지 않는다.",
+        "상품 가격·이미지는 별도 검증 후 결속하고 기존 시설 대관료를 화환 가격으로 쓰지 않는다."
+      ],
+      "facilityPhotoPermission": false,
+      "articleBody": null,
+      "catalogKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "mandatoryEditorialRules": [
+        "고객 구매페이지 어디에도 구민회관 시설 전화번호를 게재하지 않는다.",
+        "공연 시작시각과 대관 문 개방시각을 구분하고 사전준비·철수·청소를 포함한 실제 인수시간을 확인한다.",
+        "현장 판매·현금수수 금지를 꽃 판매자의 외부 주문 안내와 혼동하지 말되, 현장에서 판매하거나 현금수수할 수 있다고 쓰지 않는다."
+      ],
+      "productImageRule": "사용할 공식 SKU 사진의 리본을 별도 픽셀 검토한다. 결혼 예시 리본 사진이면 개업·공연·전시 납품사진으로 표시하지 않고 상품 예시임과 용도별 문구 별도 확인을 명시한다."
+    },
+    {
+      "slug": "dobong-dong-peace-culture-bunker-exhibition-wreath",
+      "name": "도봉동",
+      "unitKey": "도봉구/법정동/도봉동",
+      "facilityKey": "peace-culture-bunker",
+      "purchaseIntentKey": "event-congrats-wreath",
+      "originalResearchPurchaseIntentKey": "exhibition-congrats-wreath",
+      "purchaseIntentDetail": "전시 개막 축하화환",
+      "title": "평화문화진지 전시 개막 축하화환 주문",
+      "h1": "평화문화진지 전시 개막 축하화환 주문",
+      "primaryKeyword": "평화문화진지 전시 개막 축하화환 주문",
+      "family": "congrats",
+      "state": "candidate",
+      "candidateDecision": "INCLUDE_PLAN_WITH_RECEPTION_GUARDRAILS",
+      "context": {
+        "name": "평화문화진지",
+        "address": "서울특별시 도봉구 마들로 932 (도봉동)",
+        "addressDetail": "행사별 동·전시실·수령자 확인 필요",
+        "legal_dong": "도봉동",
+        "parcel_address": null,
+        "verifiedAdministrativeDong": null,
+        "supportedContext": [
+          "구청 관광자료가 마들로 932 (도봉동)을 확인한다.",
+          "재단과 전용 운영사이트가 2동 전시실1·2를 대관시설로 구분한다.",
+          "1동 공연장, 3동 사무실, 5동 영상스튜디오와 전시 목적지를 구분할 필요가 있다.",
+          "현행 대관표의 전시실1·2에는 일부 면적 사용 불가가 명시되어 있다.",
+          "운영자 안내는 허가조건 확인과 행사 후 쓰레기 되가져가기를 요구한다.",
+          "자체 주차공간 없음은 외부 주차장으로 배송하라는 뜻이 아니다.",
+          "전용사이트에 2026년 프로그램·대관 공지가 있으므로 현재 문화공간 운영 근거가 있다."
+        ]
+      },
+      "distinctBuyerDecision": "동 번호와 전시실을 지정해 사무실·공연장·외부 주차장으로 잘못 인도하는 일을 막고, 제한된 전시공간 배치와 행사 종료 후 처리를 주문 전에 분리 확인한다.",
+      "queryEvidence": {
+        "sourceUrl": "https://tour.dobong.go.kr/Contents.asp?code=10007287",
+        "finding": "동 번호와 전시실을 지정해 사무실·공연장·외부 주차장으로 잘못 인도하는 일을 막고, 제한된 전시공간 배치와 행사 종료 후 처리를 주문 전에 분리 확인한다.",
+        "measuredSearchVolume": null,
+        "originalResearchQuery": "평화문화진지 전시 개막 축하화환 주문",
+        "status": "official_facility_supported_purchase_hypothesis_not_measured_demand",
+        "facilityKey": "peace-culture-bunker",
+        "purchaseIntentKey": "event-congrats-wreath",
+        "canonicalFacility": {
+          "name": "평화문화진지",
+          "address": "서울특별시 도봉구 마들로 932 (도봉동)",
+          "sourceURL": "https://tour.dobong.go.kr/Contents.asp?code=10007287"
+        },
+        "unitKey": "도봉구/법정동/도봉동"
+      },
+      "sources": [
+        {
+          "key": "culturebunker",
+          "name": "평화문화진지 문화공간 안내",
+          "publisher": "도봉문화재단",
+          "type": "operator_official",
+          "url": "https://www.dbfac.or.kr/front/cultureplace/culturebunker.do",
+          "verifiedAt": "2026-10-11T11:08:14.971907+00:00",
+          "sourceDate": null,
+          "sourceDateNote": "명시 발행일 미확인; 조회일과 발행일을 구별함",
+          "evidencePath": "/workspace/shared/dobong-readonly-20261011/sources/culturebunker.html",
+          "sha256": "27d9a31ef4015731aeca5d3ebd248a0b3b68462156365e0ac39c13112438fec8",
+          "verificationMethod": "preserved official HTTP200 source and independent review; exact bytes rechecked locally"
+        },
+        {
+          "key": "culturebunker-tour",
+          "name": "평화문화진지 시설현황 및 위치",
+          "publisher": "도봉구 문화관광",
+          "type": "municipal_official",
+          "url": "https://tour.dobong.go.kr/Contents.asp?code=10007287",
+          "verifiedAt": "2026-10-11T11:08:15.785137+00:00",
+          "sourceDate": null,
+          "sourceDateNote": "명시 발행일 미확인; 조회일과 발행일을 구별함",
+          "evidencePath": "/workspace/shared/dobong-readonly-20261011/sources/culturebunker-tour.html",
+          "sha256": "f3ce0490e97cf35f6beb3d579f9b0e1835659e5acd54e7451aecc4014219d8d5",
+          "verificationMethod": "preserved official HTTP200 source and independent review; exact bytes rechecked locally"
+        },
+        {
+          "key": "culturebunker-current",
+          "name": "평화문화진지 현행 운영 사이트",
+          "publisher": "평화문화진지 / 도봉문화재단",
+          "type": "operator_official",
+          "url": "https://culturebunker.or.kr/",
+          "verifiedAt": "2026-10-11T11:19:43.333742+00:00",
+          "sourceDate": null,
+          "sourceDateNote": "URL 연도나 조회일을 최신 발행일로 단정하지 않음; 현재 운영자 페이지가 연결하는 자료",
+          "evidencePath": "/workspace/shared/dobong-plan-review-20261011/independent-sources/culturebunker-current.html",
+          "sha256": "dc1a251290cb728c413b5e80ac0e433eb9811199266497b31481c17c58f468b1",
+          "verificationMethod": "independent reviewer HTTP200 readback, HWP full extraction/render review; exact bytes locally rechecked"
+        },
+        {
+          "key": "culturebunker-spacetable",
+          "name": "평화문화진지 대관 시설 안내",
+          "publisher": "평화문화진지 / 도봉문화재단",
+          "type": "operator_official",
+          "url": "https://culturebunker.or.kr/space/spacetable",
+          "verifiedAt": "2026-10-11T11:21:02.798093+00:00",
+          "sourceDate": null,
+          "sourceDateNote": "URL 연도나 조회일을 최신 발행일로 단정하지 않음; 현재 운영자 페이지가 연결하는 자료",
+          "evidencePath": "/workspace/shared/dobong-plan-review-20261011/independent-sources/culturebunker-spacetable.html",
+          "sha256": "e36db19c79e673d1bdd5601b82f4d9e1640937fef9acff27d330245adf945ef1",
+          "verificationMethod": "independent reviewer HTTP200 readback, HWP full extraction/render review; exact bytes locally rechecked"
+        },
+        {
+          "key": "culturebunker-rental-application.hwp",
+          "name": "평화문화진지 현행 연결 대관신청서·시설 사용 서약서",
+          "publisher": "평화문화진지 / 도봉문화재단",
+          "type": "operator_official",
+          "url": "https://culturebunker.or.kr/wp-content/uploads/2021/07/%EB%8F%84%EB%B4%89%EB%AC%B8%ED%99%94%EC%9E%AC%EB%8B%A8-%ED%8F%89%ED%99%94%EB%AC%B8%ED%99%94%EC%A7%84%EC%A7%80-%EB%8C%80%EA%B4%80%EC%8B%A0%EC%B2%AD%EC%84%9C.hwp",
+          "verifiedAt": "2026-10-11T11:21:08.799138+00:00",
+          "sourceDate": null,
+          "sourceDateNote": "URL 연도나 조회일을 최신 발행일로 단정하지 않음; 현재 운영자 페이지가 연결하는 자료",
+          "evidencePath": "/workspace/shared/dobong-plan-review-20261011/independent-sources/culturebunker-rental-application.hwp",
+          "sha256": "4ca1b2c4102b11532c19f5b7319381f61cc2592526484656ac9dd92c711d8838",
+          "verificationMethod": "independent reviewer HTTP200 readback, HWP full extraction/render review; exact bytes locally rechecked"
+        }
+      ],
+      "requiredBuyerDecisions": [
+        "전시명·작가 또는 주최자·동·전시실",
+        "해당 전시에서 외부 축하화환 허용 여부",
+        "허용 배치면적·작품과 관람 동선 영향",
+        "실제 행사 인수시간·철수 또는 처리 책임"
+      ],
+      "admissionEvidence": {
+        "status": "outside_wreath_acceptance_unconfirmed",
+        "wreathPolicy": "NO_EXPLICIT_WREATH_BAN_FOUND_IN_REVIEWED_PAGES_OR_CURRENTLY_LINKED_APPLICATION; PER_EVENT_PERMISSION_REMAINS_UNKNOWN",
+        "acceptancePolicyVerified": false,
+        "unknowns": [
+          "전시명·작가 또는 주최자·동·전시실",
+          "해당 전시에서 외부 축하화환 허용 여부",
+          "허용 배치면적·작품과 관람 동선 영향",
+          "실제 행사 인수시간·철수 또는 처리 책임"
+        ]
+      },
+      "prohibitedOrUnconfirmedClaims": [
+        "5동 전시실3이 현행 대관목록에 포함된다.",
+        "전시실 전체 면적을 화환 배치에 사용할 수 있다.",
+        "평화광장에 임의 설치할 수 있다.",
+        "꽃이랑이 수거 서비스를 제공한다.",
+        "관광 관람시간·홈페이지 일반 운영시간이 행사 화환 인수시간이다.",
+        "5동 전시실3을 현행 대관시설이라고 자동 포함하지 않는다.",
+        "다락원체육공원 또는 도봉산역 주차장 주소를 배송지로 쓰지 않는다.",
+        "재단10~18와 구청관광09~18가 상충하므로 확인 없이 일정 보장에 사용하지 않는다.",
+        "군사시설 유래만으로 현재 출입통제 또는 보안수속이 있다고 꾸며내지 않는다."
+      ],
+      "nonGuaranteeRequirements": [
+        "시설 존재·주소·대관조건과 판매자의 배송·반입·설치 능력을 구별한다.",
+        "화환 금지 문구를 찾지 못했다는 사실을 반입 허가로 바꾸지 않는다.",
+        "시설·행사 주최자가 수령을 거절하면 배송을 강행하거나 미판매 대체상품을 제안하지 않는다.",
+        "배송속도·당일·정시·무료·재고·설치·사진 전송·제휴·회수 서비스를 보장하지 않는다.",
+        "시설 사진·약도는 허가 없이 사용하지 않는다.",
+        "꽃다발·꽃바구니·난·화분·쌀화환·카드 등 미검증 판매상품을 추가하지 않는다.",
+        "시설 전화번호를 꽃 주문 전화로 오인하게 만들지 않는다. 하모니홀은 시설 전화번호 자체를 고객 페이지에 게시하지 않는다.",
+        "실시간 고인·상주·행사 참석자 등 개인정보를 수집·게시하지 않는다.",
+        "상품 가격·이미지는 별도 검증 후 결속하고 기존 시설 대관료를 화환 가격으로 쓰지 않는다."
+      ],
+      "facilityPhotoPermission": false,
+      "articleBody": null,
+      "catalogKeys": [
+        "congrats-basic",
+        "congrats-premium",
+        "congrats-large",
+        "congrats-xl"
+      ],
+      "mandatoryEditorialRules": [
+        "2동 전시실1·2의 일부 면적 사용 불가를 반영하여 실제 허용 배치면적과 작품·관람 동선을 주최자에게 확인한다.",
+        "대관규칙·해당 행사 허가조건을 확인하고 외부 화환 허용을 별도로 확인한다.",
+        "사용 후 발생한 쓰레기는 이용자가 가져가는 원칙을 반영하여 행사 종료 후 철수·처리 책임을 정한다. 꽃이랑 수거 서비스를 약속하지 않는다.",
+        "시설 소개의 5동 전시실3을 현행 대관 가능 목록으로 전용하지 않는다."
+      ],
+      "productImageRule": "사용할 공식 SKU 사진의 리본을 별도 픽셀 검토한다. 결혼 예시 리본 사진이면 개업·공연·전시 납품사진으로 표시하지 않고 상품 예시임과 용도별 문구 별도 확인을 명시한다."
+    }
+  ],
+  "requiredPlanGuardrails": [
+    "하모니홀 고객 구매페이지에는 구민회관 전화번호를 싣지 않고 꽃이랑 공식 주문 전화만 사용한다. 원문의 시설번호를 꽃주문처로 쓰지 말라는 제한보다 엄격히 적용한다.",
+    "평화문화진지 일부 면적 사용 불가·허가조건 확인·자체 처리 의무를 고유 구매 수령문맥에 반영한다. 고객에게 수거 서비스를 약속하지 않는다.",
+    "모든 후보에서 화환 허용·금지·미확인을 구분하고 검색에서 금지문구를 찾지 못했다는 사실을 반입 허가로 바꾸지 않는다.",
+    "N=4를 법정동 네 곳 맞추기로 늘리거나 별칭·문상실·전시실별 페이지로 쪼개지 않는다.",
+    "후보 선정은 실제 배달·당일 인수·설치 가능 보증이 아니다. 수령 거절 시 주문을 밀어붙이지 않고 미판매 대체상품을 제안하지 않는다."
+  ],
+  "exclusionsEvidence": "candidate-exclusions.json",
+  "catalogEvidence": {
+    "status": "fresh_official_get_and_exact_previously_reviewed_images_verified",
+    "allowedProductKeys": [
+      "funeral-basic",
+      "funeral-premium",
+      "funeral-large",
+      "funeral-xl",
+      "congrats-basic",
+      "congrats-premium",
+      "congrats-large",
+      "congrats-xl"
+    ],
+    "pricesImported": false,
+    "imageEvidenceImported": false,
+    "sourceUrl": "https://fwith.co.kr/",
+    "unverifiedAlternativesForbidden": true,
+    "factsFile": "catalog-fresh-observations.json",
+    "factsSha256": "19ad28162ed148f7e834a5f447e2a7e5edddaa23d94529baa3a3dffc19a820f5",
+    "catalogMetaFile": "catalog-meta-input.json",
+    "catalogMetaSha256": "d0bb586970a50a2f8c04bc13319a31178cb57b0840feb76ca56fc8260e3599ef",
+    "imageEvidenceFile": "official-product-image-readback.json",
+    "imageEvidenceSha256": "481bf5d41cd4ec24402387888f02589793a6e639a9a92c5a6a914d09ee565029",
+    "reuseVerificationFile": "catalog-reuse-verification.json",
+    "reuseVerificationSha256": "399285c4f394139df028fac574b7db8daf94cba064dd10d3f07fe8e94684b3b8",
+    "pricesFreshlyVerified": true,
+    "imageEvidenceFreshlyVerified": true,
+    "priorPixelReviewReusedByExactBytes": true,
+    "remainingGate": "Bind prepared runtime asset manifest and actual rendered product images to these exact bytes; do not imply article or delivery approval."
+  },
+  "remainingGates": [
+    "부모가 원격 선택·소유권 충돌 확인 후 검토된 계획과 원래 N4를 고정할 것",
+    "발행 runtime asset manifest와 실제 이미지가 새 공식 GET·기존 독립 픽셀 검토의 동일 SHA256 8개에 결속되는지 검증",
+    "legacy regions.mjs 무수정 runtime 호환성 실행 테스트",
+    "원격 freeze 이후에만 고객 본문 작성 및 독립 본문 검토"
+  ],
+  "customerPhoneRule": "하모니홀 시설 전화는 게시하지 않는다. 판매자 공식 주문 정보는 별도 검증된 입력만 사용한다.",
+  "facilityEvidence": {
+    "registryFile": "facilities-registry.json",
+    "registrySha256": "1eb84b87fb543ddb0bb96cfee3ed5e30151c2918a26a15fc4dab0c3ae2fc445a",
+    "registryRuntimeUse": "validation_only_not_copied_to_customer_data",
+    "originalReviewSha256": "5e45176e4156737b5da591e7c3565281470c936702d043dc4cefe48d61619e2a"
+  },
+  "researchCandidateSha256": "b8a9aeada503e57c4af7891c2b1c0fe24f45ff81a2567a1bdc04735135e09199",
+  "independentPlanReviewSha256": "840910788eb38002f3c8d442d44feef219b4a0d24823388cd189bbc1ec3d5831"
+}

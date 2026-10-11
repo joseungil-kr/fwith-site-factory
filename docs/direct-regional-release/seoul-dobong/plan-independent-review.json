@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "INDEPENDENT_EXACT_ASSEMBLY_PLAN_REVIEW",
+  "reviewer": "/root/review_dobong_purchase_plan",
+  "reviewedAt": "2026-10-11T11:39:39.097195+00:00",
+  "verdict": "PASS_EXACT_N4_PLAN_FOR_PARENT_REMOTE_FREEZE",
+  "planContentEligibleForRemoteFreeze": true,
+  "recommendedFixedN": 4,
+  "approvedCandidateSha256": "b8a9aeada503e57c4af7891c2b1c0fe24f45ff81a2567a1bdc04735135e09199",
+  "exactInputDigests": {
+    "plan-candidate.json": "b8a9aeada503e57c4af7891c2b1c0fe24f45ff81a2567a1bdc04735135e09199",
+    "coverage-input.json": "2acc5ff64667aa3578925e22dfed1108d2a4f46852c3fd7833203d53ef94bf6c",
+    "research-input-digests.json": "c74ca2440fc26afe1563dbd43647eb96412c271f7ca89feb1a4c30b794dfd04e"
+  },
+  "validationFile": "validation.json",
+  "validationSha256": "55959c3588dbe44d3ec5927b7bbd11acb6673fd6a9c66678bea923b1b26adb6b",
+  "checksPassed": 98,
+  "checksFailed": 0,
+  "blockingContentIssues": [],
+  "sourceMutationCount": 0,
+  "remoteMutationCount": 0,
+  "customerBodiesAuthored": 0,
+  "remoteFreezePerformed": false,
+  "rootScopeCondition": "원격 freeze를 실행하는 소유자가 최신 체크포인트에서 신규지역 선택·소유권 충돌을 확인해야 한다. 이 검토는 강북 active owner를 변경하거나 도봉 claim·main 쓰기·배포를 실행하지 않는다.",
+  "acceptedPages": [
+    {
+      "slug": "ssangmun-dong-hanil-hospital-funeral-wreath",
+      "facilityKey": "hanil-hospital-funeral",
+      "unitKey": "도봉구/법정동/쌍문동",
+      "purchaseIntentKey": "funeral-condolence-wreath",
+      "originalResearchPurchaseIntentKey": "funeral-condolence-wreath",
+      "purchaseIntentDetail": "장례 조문 근조화환"
+    },
+    {
+      "slug": "banghak-dong-dokkaebi-market-opening-wreath",
+      "facilityKey": "banghak-dokkaebi-market",
+      "unitKey": "도봉구/법정동/방학동",
+      "purchaseIntentKey": "opening-congrats-wreath",
+      "originalResearchPurchaseIntentKey": "opening-congrats-wreath",
+      "purchaseIntentDetail": "시장 내 개별 점포 개업 축하화환"
+    },
+    {
+      "slug": "chang-dong-dobong-harmony-hall-congrats-wreath",
+      "facilityKey": "dobong-civic-harmony-hall",
+      "unitKey": "도봉구/법정동/창동",
+      "purchaseIntentKey": "event-congrats-wreath",
+      "originalResearchPurchaseIntentKey": "performance-congrats-wreath",
+      "purchaseIntentDetail": "공연·행사 축하화환"
+    },
+    {
+      "slug": "dobong-dong-peace-culture-bunker-exhibition-wreath",
+      "facilityKey": "peace-culture-bunker",
+      "unitKey": "도봉구/법정동/도봉동",
+      "purchaseIntentKey": "event-congrats-wreath",
+      "originalResearchPurchaseIntentKey": "exhibition-congrats-wreath",
+      "purchaseIntentDetail": "전시 개막 축하화환"
+    }
+  ],
+  "findings": [
+    "네 시설과 네 고유 구매효용, 공식 사실, 주문별 미확인 항목이 기존 독립검토에서 그대로 보존되었다.",
+    "법정동 4·행정동 14·연결 14의 원본 관계가 양방향 assembler membership과 coverage에 정확히 투영되었다. 행정동 partial 및 주소 확인 조건을 유지한다.",
+    "N4와 4법정동 각1의 일치는 선정의 결과이다. legacy runtime의 중복 법정동 제약을 맞추기 위한 후보 삭제·추가·별칭분할은 없다.",
+    "공연·전시를 runtime enum event-congrats-wreath로 정규화했지만 시설키·originalResearchPurchaseIntentKey·title·distinctBuyerDecision에 원래 의도를 보존하여 같은 콘텐츠로 합쳐지지 않았다.",
+    "하모니홀 시설전화 게시 금지와 평화문화진지 일부 면적 제한·허가조건·행사 후 처리 의무가 mandatoryEditorialRules 및 전역 guardrail에 반영되었다.",
+    "초안산은 미확인 보류이며 금지 단정하지 않는다. 아레나는 2027년 예정 현장으로 현재 제외, 메이다이닝/한가향은 정체성·현재 웨딩 운영 보류를 유지한다.",
+    "8SKU만 바인딩하고 축하화환 리본의 결혼 예시를 실제 개업·공연·전시 납품사진으로 오인시키지 않는 규칙을 포함한다. 기존 픽셀검토 파일·binding 해시는 일치하며 이번에 새 픽셀검토를 했다고 주장하지 않는다.",
+    "판매자 CTA https://fwith.co.kr/ , 전화 1844-0644 , 상담 08:00~23:00은 해시로 결속된 기존 review의 productScope 제약이 그대로 유효하다."
+  ],
+  "freezeReceiptRequirements": [
+    "후보 plan SHA, coverage SHA, research-input-digests SHA와 fixedN=4, 원래 제안 N=4, frozenAt, 원격 소유자·검토파일 참조를 함께 기록한다.",
+    "후보 입력을 조용히 덮어쓰지 않는다. freeze 상태를 별도 기록하거나 상태 전환 산출물로 저장할 경우 원 검토 대상 candidate SHA를 보존한다.",
+    "현재 후보에 의미 있는 변경을 하면 새 exact digest로 재검토한다."
+  ],
+  "postFreezeReleaseGates": [
+    "legacy regions.mjs 무수정 호환성 실행 및 실제 조립 테스트. 이번 검토는 데이터 구조·참조 결속을 검증했으며 실행통과를 대신하지 않는다.",
+    "runtime asset manifest의 8개 이미지가 공식 재조회 및 기존 독립 픽셀검토 bytes와 동일하게 결속되어야 한다.",
+    "원격 freeze 이후 고객 본문을 작성하고 고유 효용·시설번호 배제·상품 예시 표기·CTA·보장금지의 실제 구현을 독립 검토한다.",
+    "배포 소유권·최종 source commit·CI·HTTP·실제 화면 등 출시 증거를 별도로 확인한다."
+  ],
+  "approvalLimits": [
+    "이 결과는 계획 freeze 적합성이다. 고객본문·배포·배송/반입 허가·runtime 실행 통과 승인으로 사용하면 안 된다.",
+    "현재 선택·소유권의 최신 원격 관찰은 이 검토에서 실행하지 않았다. 원격 저장 직전 소유자의 확인이 필요하다."
+  ]
+}

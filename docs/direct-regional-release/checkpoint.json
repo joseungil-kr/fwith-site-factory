@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T11:38:40.687Z",
+  "updatedAt": "2026-10-11T11:42:51.328Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -31,299 +31,126 @@
     "blog.fwith.kr"
   ],
   "current": {
-    "scopeKey": "seoul-gangbuk-direct-initial-20261011",
-    "city": "서울특별시 강북구",
-    "status": "released_search_submitted_visual_qa_deferred",
+    "scopeKey": "seoul-dobong-direct-initial-20261011",
+    "city": "서울특별시 도봉구",
+    "status": "plan_frozen_before_customer_authoring",
     "owner": {
-      "scheduledRunAt": "2026-10-11T10:00:00Z",
-      "observedExecutionAt": "2026-10-11T10:48:09.269Z",
-      "newRegionStartedAt": "2026-10-11T10:48:09.269Z",
+      "scheduledRunAt": "2026-10-11T11:00:00Z",
+      "observedExecutionAt": "2026-10-11T11:42:51.328Z",
+      "newRegionStartedAt": "2026-10-11T11:42:51.328Z",
       "serviceInvocationId": null,
-      "checkpointId": "direct-seoul-gangbuk-20261011T100000Z",
-      "active": false,
-      "executionState": "released_search_submitted_main_write_yielded",
-      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T10:46:30.399Z",
-      "actualGitWriteStopReportedAt": "2026-10-11T11:22:21Z",
-      "actualBrowserLastActionAt": "2026-10-11T11:21:55Z"
+      "checkpointId": "direct-seoul-dobong-20261011T110000Z",
+      "active": true,
+      "executionState": "claimed_and_plan_frozen_before_authoring",
+      "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T11:40:28Z"
     },
     "identity": {
       "repository": "joseungil-kr/fwith-site-factory",
-      "branch": "site-factory-seoul-gangbuk-direct",
-      "root": "site-factory/seoul-gangbuk-flower",
-      "worker": "seoul-gangbuk-flower-guide",
-      "hostname": "seoul-gangbuk.fwith.kr",
-      "externalCreationVerified": true,
-      "sourceBranchCreatedVerified": true,
-      "sourceBranchBaseRevision": "3f5485cccfa253c0855bbdb6505245a5ccdc0e20"
+      "branch": "site-factory-seoul-dobong-direct",
+      "root": "site-factory/seoul-dobong-flower",
+      "worker": "seoul-dobong-flower-guide",
+      "hostname": "seoul-dobong.fwith.kr",
+      "externalCreationVerified": false,
+      "sourceBranchCreatedVerified": false
     },
     "selection": {
-      "officialCode": "11305",
-      "reason": "Next eligible unreleased autonomous district in remote frozen national official-code order; approved pending Dongdaemun resumed first and completed without claiming a new region this invocation.",
-      "nationalPlanDenominator": 230
+      "officialCode": "11320",
+      "nationalOrder": 10,
+      "scheduledInvocationNewRegionCount": 1,
+      "nationalPlanDenominator": 230,
+      "priorGangbukReleasedSearchSubmittedScreensDeferred": true
     },
     "conflictChecks": {
-      "providerOwnershipCollisionCheck": "PASS_GET_ONLY_TARGET_ABSENT_BEFORE_NO_OVERRIDE_PUBLISH",
-      "publicHostObservation": {
-        "publicExactSourceVerified": true,
-        "normalRoutes": 7,
-        "articleCount": 5,
-        "unknownHttpStatus": 404,
-        "revision": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
-        "absenceInferredFromHttp": false
-      },
+      "matchingSourceBranch": false,
+      "openMatchingPullRequests": 0,
+      "mainMatchingPaths": false,
+      "providerOwnershipCollisionCheck": "REQUIRED_BEFORE_PUBLICATION",
       "triggerSafety": {
-        "allCurrentWorkflowFilesRead": 50,
-        "mainPushAndTargetBranchDoNotMatchPushTriggers": true,
-        "stoppedFactoryNotInvoked": true
-      },
-      "initialSelectionReadback": {
-        "matchingSourceBranch": false,
-        "openMatchingPullRequests": 0,
-        "mainMatchingPaths": false,
-        "otherRegionWorkflowInProgress": {
-          "region": "pyeongtaek",
-          "runId": 38133140488,
-          "isolatedSourceAndHostname": true
-        }
-      },
-      "providerBefore": {
-        "accountVerified": true,
-        "dnsState": "not_observed",
-        "hostname": "seoul-gangbuk.fwith.kr",
-        "hostnameBindingExists": false,
-        "mutationsPerformed": false,
-        "state": "target_absent_verified",
-        "worker": "seoul-gangbuk-flower-guide",
-        "workerExists": false
-      },
-      "providerAfter": {
-        "accountVerified": true,
-        "dnsState": "not_observed",
-        "hostname": "seoul-gangbuk.fwith.kr",
-        "hostnameBindingExists": true,
-        "mutationsPerformed": false,
-        "state": "binding_verified",
-        "worker": "seoul-gangbuk-flower-guide",
-        "workerExists": true
-      },
-      "hostnameAttach": {
-        "hostname": "seoul-gangbuk.fwith.kr",
-        "liveVerification": "pending",
-        "mutationsPerformed": true,
-        "state": "attach_request_accepted",
-        "worker": "seoul-gangbuk-flower-guide"
+        "verifiedAt": "2026-10-11T11:42:13.116Z",
+        "workflowFiles": 51,
+        "unchangedVerifiedFulltext": 50,
+        "changedFulltextRead": [
+          ".github/workflows/seoul-gangbuk-direct-publish.yml"
+        ],
+        "mainAndDobongPushNotTriggered": true,
+        "issuesNotCreated": true
       }
     },
     "changeIntent": {
-      "action": "release_and_search_submission_complete_visual_qa_deferred",
-      "sourceRevision": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
-      "remaining": "batch_desktop_and_narrow_visual_qa"
+      "action": "create_fixed_source_branch_then_author_original_four_purchase_articles",
+      "sourceBase": "current_plan_freeze_commit_after_CAS",
+      "branch": "site-factory-seoul-dobong-direct",
+      "root": "site-factory/seoul-dobong-flower",
+      "idempotencyKey": "seoul-dobong:plan4:20261011"
     },
     "plan": {
       "state": "frozen_before_authoring_independent_plan_pass",
-      "plannedArticleCount": 5,
-      "minimumPassedArticles": 5,
+      "plannedArticleCount": 4,
+      "minimumPassedArticles": 4,
       "legalDongCount": 4,
-      "administrativeDongCount": 13,
+      "administrativeDongCount": 14,
       "relationshipCount": 14,
-      "representedLegalUnits": 3,
-      "unassignedLegalUnits": 1,
+      "representedLegalUnits": 4,
+      "unassignedLegalUnits": 0,
       "countIsPageQuota": false,
-      "fixedPlanPath": "docs/direct-regional-release/seoul-gangbuk/fixed-plan.json",
-      "fixedPlanSha256": "ba508ecf992014057692011fa5b6b4afc17d2c746aaf841c37bf1a38f6adacd0",
-      "frozenAt": "2026-10-11T11:00:23.520092+00:00",
-      "representativeAssignment": "facility-purchase-context-v1",
+      "fixedPlanPath": "docs/direct-regional-release/seoul-dobong/fixed-plan.json",
+      "fixedPlanSha256": "9def6130fa1c0c2b50d858196daa8b88f067165b5b4615efe768aaa057ee3d1b",
+      "frozenAt": "2026-10-11T11:42:24.821Z",
       "articles": [
         {
-          "slug": "suyu-dong-daehan-funeral-wreath",
-          "title": "대한병원장례식장 근조화환 주문",
-          "primaryKeyword": "대한병원장례식장 근조화환 주문",
-          "unitKey": "강북구/법정동/수유동",
-          "facilityKey": "daehan-hospital-funeral",
+          "slug": "ssangmun-dong-hanil-hospital-funeral-wreath",
+          "title": "한일병원 장례식장 근조화환 주문",
+          "primaryKeyword": "한일병원 장례식장 근조화환 주문",
+          "unitKey": "도봉구/법정동/쌍문동",
+          "facilityKey": "hanil-hospital-funeral",
           "purchaseIntentKey": "funeral-condolence-wreath",
-          "status": "published_content_http_pass_visual_deferred"
+          "status": "planned_not_authored"
         },
         {
-          "slug": "mia-dong-the-victoria-wedding-wreath",
-          "title": "더빅토리아웨딩파티 결혼식 축하화환 주문",
-          "primaryKeyword": "더빅토리아웨딩파티 결혼식 축하화환 주문",
-          "unitKey": "강북구/법정동/미아동",
-          "facilityKey": "the-victoria-wedding-party",
-          "purchaseIntentKey": "wedding-congrats-wreath",
-          "status": "published_content_http_pass_visual_deferred"
-        },
-        {
-          "slug": "ui-dong-anto-wedding-wreath",
-          "title": "안토 리조트 웨딩 축하화환 주문",
-          "primaryKeyword": "안토 리조트 웨딩 축하화환 주문",
-          "unitKey": "강북구/법정동/우이동",
-          "facilityKey": "anto-resort",
-          "purchaseIntentKey": "wedding-congrats-wreath",
-          "status": "published_content_http_pass_visual_deferred"
-        },
-        {
-          "slug": "suyu-dong-suyu-market-opening-wreath",
-          "title": "수유시장 점포 개업화환 주문",
-          "primaryKeyword": "수유시장 점포 개업화환 주문",
-          "unitKey": "강북구/법정동/수유동",
-          "facilityKey": "suyu-market",
+          "slug": "banghak-dong-dokkaebi-market-opening-wreath",
+          "title": "방학동도깨비시장 점포 개업화환 주문",
+          "primaryKeyword": "방학동도깨비시장 점포 개업화환 주문",
+          "unitKey": "도봉구/법정동/방학동",
+          "facilityKey": "banghak-dokkaebi-market",
           "purchaseIntentKey": "opening-congrats-wreath",
-          "status": "published_content_http_pass_visual_deferred"
+          "status": "planned_not_authored"
         },
         {
-          "slug": "suyu-dong-gangbuk-arts-congratulation-wreath",
-          "title": "강북문화예술회관 공연·전시 축하화환 주문",
-          "primaryKeyword": "강북문화예술회관 공연·전시 축하화환 주문",
-          "unitKey": "강북구/법정동/수유동",
-          "facilityKey": "gangbuk-culture-arts-center",
+          "slug": "chang-dong-dobong-harmony-hall-congrats-wreath",
+          "title": "도봉구민회관 하모니홀 공연 축하화환 주문",
+          "primaryKeyword": "도봉구민회관 하모니홀 공연 축하화환 주문",
+          "unitKey": "도봉구/법정동/창동",
+          "facilityKey": "dobong-civic-harmony-hall",
           "purchaseIntentKey": "event-congrats-wreath",
-          "status": "published_content_http_pass_visual_deferred"
+          "status": "planned_not_authored"
+        },
+        {
+          "slug": "dobong-dong-peace-culture-bunker-exhibition-wreath",
+          "title": "평화문화진지 전시 개막 축하화환 주문",
+          "primaryKeyword": "평화문화진지 전시 개막 축하화환 주문",
+          "unitKey": "도봉구/법정동/도봉동",
+          "facilityKey": "peace-culture-bunker",
+          "purchaseIntentKey": "event-congrats-wreath",
+          "status": "planned_not_authored"
         }
-      ],
-      "planFreezeRevision": "3f5485cccfa253c0855bbdb6505245a5ccdc0e20",
-      "approvedArticleCount": 5,
-      "deferredArticleCount": 0
+      ]
     },
-    "unfinishedStages": [
-      "deferred_desktop_narrow_visual_qa"
-    ],
     "review": {
       "planReviewStatus": "PASS_BEFORE_AUTHORING",
-      "planReviewSha256": "649d5608070907807b02712c79c366aac31a6b7f40ff2dad27e166b380e20d7f",
-      "imageReviewSha256": "d8f8731f283ce3acb2d333ab5d303ebb016a501e6def04f6955ebcb3914290e6",
-      "screenQa": "DEFERRED_NOT_PASS",
-      "contentStatus": "PASS",
-      "articlesSha256": "ef77d4d011c6180c7003d6d5efd5fcc77c9f688ec69f903997dc976215388aa2",
-      "independentReviewSha256": "9c4aa3bc1d101e81fb3410a624076d064821e73a1d87d152a4de5e39ee5aa04c",
-      "contentRevision": 2,
-      "runtimeContractStatus": "PASS_INDEPENDENT_IMPLEMENTATION_REVIEW",
-      "runtimeContractReviewSha256": "ac690bdcbaa331ab7d5a5e07e9f53ced719de8bee8ec9461aa227cd9e47a7fec",
-      "runtimeContractImplementationSha256": "34a57c09aebf98f4f4b10d26838d5c91abf1b21075046036a30b1300fa1ff65b",
-      "actualSourceStatus": "PASS_INDEPENDENT_LOCAL_ACTUAL_SOURCE_CONTROL_AND_EXACT_REMOTE_VERIFICATION",
-      "actualSourceReviewSha256": "ae3bfac687626fe1eeb3e9144b357e047cc8484afe057078c4bb00569ba256ff",
-      "hostedStatus": "PASS_INDEPENDENT_HOSTED_SOURCE_HTTP_AND_DURABLE_RECEIPT",
-      "hostedReviewSha256": "6bfeb3134f1a88787b0d853e37e55edbe108cf3f490eebaaffa916366c03a57b",
-      "officialArtifactChainStatus": "PASS_INDEPENDENT_OFFICIAL_ZIPS_ARTIFACT_SOURCE_HOSTED_RECEIPT_CHAIN",
-      "officialArtifactChainReviewSha256": "9ada91fb393b3759771011e3501f217f81920117dc666e08109ccfca1eaf8c8b",
-      "finalHostedIndependentReviewSha256": "31c2394923775c85bf09545555dc326e52a9c3a5743868e110c737480cd60855"
+      "planReviewSha256": "840910788eb38002f3c8d442d44feef219b4a0d24823388cd189bbc1ec3d5831",
+      "screenQa": "DEFERRED_NOT_PASS"
     },
-    "sourceRevision": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
-    "validation": {
-      "sourceRevision": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
-      "nodeVersion": "22.23.3",
-      "sourceTestsPassed": 94,
-      "publisherTestsPassed": 42,
-      "readbackHelperTestsPassed": 7,
-      "build": "PASS",
-      "static": "PASS",
-      "graph": "PASS",
-      "normalHtmlRoutes": 7,
-      "articleCount": 5,
-      "sitemapUrls": 7,
-      "remoteFullReadback": "73/73 full bytes and Git blob SHA verified",
-      "remoteReadbackSha256": "4ab65642cc42fd297afadd1175fa75a422dd4058a5d8d952153f2b0a0664519e",
-      "exactSourceVerificationSha256": "73765a012d6d4ba5f2de963e80a692ce4f58bb2eeadd2dde3138ee2fef542391",
-      "screenQa": "DEFERRED_BY_USER_NOT_PASS",
-      "publicHttp": "PASS",
-      "officialArtifactChain": "PASS",
-      "indexNowDurableReceipt": "HTTP200_received",
-      "gscSubmission": "accepted_confirmed_separate_list_readback"
-    },
-    "completedAt": "2026-10-11T11:25:43.011346+00:00",
-    "publicUrl": "https://seoul-gangbuk.fwith.kr",
-    "controlRevision": "6df278d47c65fd4450ffafaa656eb2b69ffa1f62",
-    "run": {
-      "id": 38135282606,
-      "html_url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38135282606",
-      "status": "completed",
-      "conclusion": "success",
-      "created_at": "2026-10-11T11:21:55Z",
-      "updated_at": "2026-10-11T11:23:14Z",
-      "run_attempt": 1,
-      "head_sha": "6df278d47c65fd4450ffafaa656eb2b69ffa1f62"
-    },
-    "publicHttp": {
-      "articleCount": 5,
-      "attempts": 2,
-      "checkedPaths": 21,
-      "htmlRoutes": 7,
-      "noindexHubs": 0,
-      "normalizedCloudflareBeacons": 8,
-      "regionCount": 5,
-      "revision": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
-      "sitemapUrls": 7,
-      "state": "public_release_verified",
-      "unknownHttpStatus": 404
-    },
-    "indexNow": {
-      "attempt": 1,
-      "endpoint": "https://searchadvisor.naver.com/indexnow",
-      "fingerprint": "6d06cc7f24aa66df2da0587c8f7fa0b2cd6a1792bebbbbda5c416d6d25a5ff48",
-      "httpStatus": 200,
-      "origin": "https://seoul-gangbuk.fwith.kr",
-      "recordedAt": "2026-10-11T11:23:04.754326+00:00",
-      "revision": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
-      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38135282606",
-      "searchIndexing": "not_verified",
-      "siteKey": "seoul-gangbuk-flower-direct",
-      "state": "received",
-      "urlCount": 7,
-      "urlSetSha256": "8b36100f4ead70af7f187291f6960f3cd52c98aa8d316f15fed21e437794b2a5",
-      "urls": [
-        "https://seoul-gangbuk.fwith.kr/",
-        "https://seoul-gangbuk.fwith.kr/regions/",
-        "https://seoul-gangbuk.fwith.kr/regions/mia-dong-the-victoria-wedding-wreath/",
-        "https://seoul-gangbuk.fwith.kr/regions/suyu-dong-daehan-funeral-wreath/",
-        "https://seoul-gangbuk.fwith.kr/regions/suyu-dong-gangbuk-arts-congratulation-wreath/",
-        "https://seoul-gangbuk.fwith.kr/regions/suyu-dong-suyu-market-opening-wreath/",
-        "https://seoul-gangbuk.fwith.kr/regions/ui-dong-anto-wedding-wreath/"
-      ],
-      "commentId": 6108499508,
-      "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6108499508",
-      "durableReadbackVerified": true
-    },
-    "gsc": {
-      "siteUrl": "sc-domain:fwith.kr",
-      "status": "submitted_and_list_readback_confirmed",
-      "submit": {
-        "siteUrl": "sc-domain:fwith.kr",
-        "attempted": 1,
-        "submitted": 1,
-        "failed": 0,
-        "results": [
-          {
-            "sitemapUrl": "https://seoul-gangbuk.fwith.kr/sitemap-index.xml",
-            "accepted": true,
-            "confirmed": true,
-            "lastSubmitted": "2026-10-11T11:25:18.462Z",
-            "isPending": true,
-            "isSitemapsIndex": false,
-            "warnings": "0",
-            "errors": "0"
-          }
-        ],
-        "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
-        "actions": [
-          "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
-        ]
-      },
-      "listReadback": [
-        {
-          "path": "https://seoul-gangbuk.fwith.kr/sitemap-index.xml",
-          "lastSubmitted": "2026-10-11T11:25:18.462Z",
-          "isPending": true,
-          "isSitemapsIndex": false,
-          "warnings": "0",
-          "errors": "0"
-        }
-      ],
-      "listReadbackAt": "2026-10-11T11:25:27.895Z",
-      "indexingVerified": false
-    },
-    "independentReview": {
-      "sha256": "d849f6b507c5d9b33a831f32f71a12774682de53270cb46ba273fa8b86421562",
-      "verdict": "PASS_WITH_VISUAL_QA_DEFERRED"
-    }
+    "unfinishedStages": [
+      "customer_originals",
+      "independent_content_review",
+      "runtime_review",
+      "source_save_readback",
+      "exact_source_dispatch",
+      "public_http_qa",
+      "IndexNow_receipt",
+      "GSC_submission",
+      "deferred_desktop_narrow_visual_qa"
+    ]
   },
   "history": [
     {
@@ -7247,6 +7074,301 @@
       },
       "evidencePath": "docs/direct-regional-release/seoul-seongbuk/release-evidence.json",
       "evidenceSha256": "67bc6bf6debbfbc38dcd611473d36235a6f6b786e65475e7f962d841ac76ab83"
+    },
+    {
+      "scopeKey": "seoul-gangbuk-direct-initial-20261011",
+      "city": "서울특별시 강북구",
+      "status": "released_search_submitted_visual_qa_deferred",
+      "owner": {
+        "scheduledRunAt": "2026-10-11T10:00:00Z",
+        "observedExecutionAt": "2026-10-11T10:48:09.269Z",
+        "newRegionStartedAt": "2026-10-11T10:48:09.269Z",
+        "serviceInvocationId": null,
+        "checkpointId": "direct-seoul-gangbuk-20261011T100000Z",
+        "active": false,
+        "executionState": "released_search_submitted_main_write_yielded",
+        "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T10:46:30.399Z",
+        "actualGitWriteStopReportedAt": "2026-10-11T11:22:21Z",
+        "actualBrowserLastActionAt": "2026-10-11T11:21:55Z"
+      },
+      "identity": {
+        "repository": "joseungil-kr/fwith-site-factory",
+        "branch": "site-factory-seoul-gangbuk-direct",
+        "root": "site-factory/seoul-gangbuk-flower",
+        "worker": "seoul-gangbuk-flower-guide",
+        "hostname": "seoul-gangbuk.fwith.kr",
+        "externalCreationVerified": true,
+        "sourceBranchCreatedVerified": true,
+        "sourceBranchBaseRevision": "3f5485cccfa253c0855bbdb6505245a5ccdc0e20"
+      },
+      "selection": {
+        "officialCode": "11305",
+        "reason": "Next eligible unreleased autonomous district in remote frozen national official-code order; approved pending Dongdaemun resumed first and completed without claiming a new region this invocation.",
+        "nationalPlanDenominator": 230
+      },
+      "conflictChecks": {
+        "providerOwnershipCollisionCheck": "PASS_GET_ONLY_TARGET_ABSENT_BEFORE_NO_OVERRIDE_PUBLISH",
+        "publicHostObservation": {
+          "publicExactSourceVerified": true,
+          "normalRoutes": 7,
+          "articleCount": 5,
+          "unknownHttpStatus": 404,
+          "revision": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
+          "absenceInferredFromHttp": false
+        },
+        "triggerSafety": {
+          "allCurrentWorkflowFilesRead": 50,
+          "mainPushAndTargetBranchDoNotMatchPushTriggers": true,
+          "stoppedFactoryNotInvoked": true
+        },
+        "initialSelectionReadback": {
+          "matchingSourceBranch": false,
+          "openMatchingPullRequests": 0,
+          "mainMatchingPaths": false,
+          "otherRegionWorkflowInProgress": {
+            "region": "pyeongtaek",
+            "runId": 38133140488,
+            "isolatedSourceAndHostname": true
+          }
+        },
+        "providerBefore": {
+          "accountVerified": true,
+          "dnsState": "not_observed",
+          "hostname": "seoul-gangbuk.fwith.kr",
+          "hostnameBindingExists": false,
+          "mutationsPerformed": false,
+          "state": "target_absent_verified",
+          "worker": "seoul-gangbuk-flower-guide",
+          "workerExists": false
+        },
+        "providerAfter": {
+          "accountVerified": true,
+          "dnsState": "not_observed",
+          "hostname": "seoul-gangbuk.fwith.kr",
+          "hostnameBindingExists": true,
+          "mutationsPerformed": false,
+          "state": "binding_verified",
+          "worker": "seoul-gangbuk-flower-guide",
+          "workerExists": true
+        },
+        "hostnameAttach": {
+          "hostname": "seoul-gangbuk.fwith.kr",
+          "liveVerification": "pending",
+          "mutationsPerformed": true,
+          "state": "attach_request_accepted",
+          "worker": "seoul-gangbuk-flower-guide"
+        }
+      },
+      "changeIntent": {
+        "action": "release_and_search_submission_complete_visual_qa_deferred",
+        "sourceRevision": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
+        "remaining": "batch_desktop_and_narrow_visual_qa"
+      },
+      "plan": {
+        "state": "frozen_before_authoring_independent_plan_pass",
+        "plannedArticleCount": 5,
+        "minimumPassedArticles": 5,
+        "legalDongCount": 4,
+        "administrativeDongCount": 13,
+        "relationshipCount": 14,
+        "representedLegalUnits": 3,
+        "unassignedLegalUnits": 1,
+        "countIsPageQuota": false,
+        "fixedPlanPath": "docs/direct-regional-release/seoul-gangbuk/fixed-plan.json",
+        "fixedPlanSha256": "ba508ecf992014057692011fa5b6b4afc17d2c746aaf841c37bf1a38f6adacd0",
+        "frozenAt": "2026-10-11T11:00:23.520092+00:00",
+        "representativeAssignment": "facility-purchase-context-v1",
+        "articles": [
+          {
+            "slug": "suyu-dong-daehan-funeral-wreath",
+            "title": "대한병원장례식장 근조화환 주문",
+            "primaryKeyword": "대한병원장례식장 근조화환 주문",
+            "unitKey": "강북구/법정동/수유동",
+            "facilityKey": "daehan-hospital-funeral",
+            "purchaseIntentKey": "funeral-condolence-wreath",
+            "status": "published_content_http_pass_visual_deferred"
+          },
+          {
+            "slug": "mia-dong-the-victoria-wedding-wreath",
+            "title": "더빅토리아웨딩파티 결혼식 축하화환 주문",
+            "primaryKeyword": "더빅토리아웨딩파티 결혼식 축하화환 주문",
+            "unitKey": "강북구/법정동/미아동",
+            "facilityKey": "the-victoria-wedding-party",
+            "purchaseIntentKey": "wedding-congrats-wreath",
+            "status": "published_content_http_pass_visual_deferred"
+          },
+          {
+            "slug": "ui-dong-anto-wedding-wreath",
+            "title": "안토 리조트 웨딩 축하화환 주문",
+            "primaryKeyword": "안토 리조트 웨딩 축하화환 주문",
+            "unitKey": "강북구/법정동/우이동",
+            "facilityKey": "anto-resort",
+            "purchaseIntentKey": "wedding-congrats-wreath",
+            "status": "published_content_http_pass_visual_deferred"
+          },
+          {
+            "slug": "suyu-dong-suyu-market-opening-wreath",
+            "title": "수유시장 점포 개업화환 주문",
+            "primaryKeyword": "수유시장 점포 개업화환 주문",
+            "unitKey": "강북구/법정동/수유동",
+            "facilityKey": "suyu-market",
+            "purchaseIntentKey": "opening-congrats-wreath",
+            "status": "published_content_http_pass_visual_deferred"
+          },
+          {
+            "slug": "suyu-dong-gangbuk-arts-congratulation-wreath",
+            "title": "강북문화예술회관 공연·전시 축하화환 주문",
+            "primaryKeyword": "강북문화예술회관 공연·전시 축하화환 주문",
+            "unitKey": "강북구/법정동/수유동",
+            "facilityKey": "gangbuk-culture-arts-center",
+            "purchaseIntentKey": "event-congrats-wreath",
+            "status": "published_content_http_pass_visual_deferred"
+          }
+        ],
+        "planFreezeRevision": "3f5485cccfa253c0855bbdb6505245a5ccdc0e20",
+        "approvedArticleCount": 5,
+        "deferredArticleCount": 0
+      },
+      "unfinishedStages": [
+        "deferred_desktop_narrow_visual_qa"
+      ],
+      "review": {
+        "planReviewStatus": "PASS_BEFORE_AUTHORING",
+        "planReviewSha256": "649d5608070907807b02712c79c366aac31a6b7f40ff2dad27e166b380e20d7f",
+        "imageReviewSha256": "d8f8731f283ce3acb2d333ab5d303ebb016a501e6def04f6955ebcb3914290e6",
+        "screenQa": "DEFERRED_NOT_PASS",
+        "contentStatus": "PASS",
+        "articlesSha256": "ef77d4d011c6180c7003d6d5efd5fcc77c9f688ec69f903997dc976215388aa2",
+        "independentReviewSha256": "9c4aa3bc1d101e81fb3410a624076d064821e73a1d87d152a4de5e39ee5aa04c",
+        "contentRevision": 2,
+        "runtimeContractStatus": "PASS_INDEPENDENT_IMPLEMENTATION_REVIEW",
+        "runtimeContractReviewSha256": "ac690bdcbaa331ab7d5a5e07e9f53ced719de8bee8ec9461aa227cd9e47a7fec",
+        "runtimeContractImplementationSha256": "34a57c09aebf98f4f4b10d26838d5c91abf1b21075046036a30b1300fa1ff65b",
+        "actualSourceStatus": "PASS_INDEPENDENT_LOCAL_ACTUAL_SOURCE_CONTROL_AND_EXACT_REMOTE_VERIFICATION",
+        "actualSourceReviewSha256": "ae3bfac687626fe1eeb3e9144b357e047cc8484afe057078c4bb00569ba256ff",
+        "hostedStatus": "PASS_INDEPENDENT_HOSTED_SOURCE_HTTP_AND_DURABLE_RECEIPT",
+        "hostedReviewSha256": "6bfeb3134f1a88787b0d853e37e55edbe108cf3f490eebaaffa916366c03a57b",
+        "officialArtifactChainStatus": "PASS_INDEPENDENT_OFFICIAL_ZIPS_ARTIFACT_SOURCE_HOSTED_RECEIPT_CHAIN",
+        "officialArtifactChainReviewSha256": "9ada91fb393b3759771011e3501f217f81920117dc666e08109ccfca1eaf8c8b",
+        "finalHostedIndependentReviewSha256": "31c2394923775c85bf09545555dc326e52a9c3a5743868e110c737480cd60855"
+      },
+      "sourceRevision": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
+      "validation": {
+        "sourceRevision": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
+        "nodeVersion": "22.23.3",
+        "sourceTestsPassed": 94,
+        "publisherTestsPassed": 42,
+        "readbackHelperTestsPassed": 7,
+        "build": "PASS",
+        "static": "PASS",
+        "graph": "PASS",
+        "normalHtmlRoutes": 7,
+        "articleCount": 5,
+        "sitemapUrls": 7,
+        "remoteFullReadback": "73/73 full bytes and Git blob SHA verified",
+        "remoteReadbackSha256": "4ab65642cc42fd297afadd1175fa75a422dd4058a5d8d952153f2b0a0664519e",
+        "exactSourceVerificationSha256": "73765a012d6d4ba5f2de963e80a692ce4f58bb2eeadd2dde3138ee2fef542391",
+        "screenQa": "DEFERRED_BY_USER_NOT_PASS",
+        "publicHttp": "PASS",
+        "officialArtifactChain": "PASS",
+        "indexNowDurableReceipt": "HTTP200_received",
+        "gscSubmission": "accepted_confirmed_separate_list_readback"
+      },
+      "completedAt": "2026-10-11T11:25:43.011346+00:00",
+      "publicUrl": "https://seoul-gangbuk.fwith.kr",
+      "controlRevision": "6df278d47c65fd4450ffafaa656eb2b69ffa1f62",
+      "run": {
+        "id": 38135282606,
+        "html_url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38135282606",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T11:21:55Z",
+        "updated_at": "2026-10-11T11:23:14Z",
+        "run_attempt": 1,
+        "head_sha": "6df278d47c65fd4450ffafaa656eb2b69ffa1f62"
+      },
+      "publicHttp": {
+        "articleCount": 5,
+        "attempts": 2,
+        "checkedPaths": 21,
+        "htmlRoutes": 7,
+        "noindexHubs": 0,
+        "normalizedCloudflareBeacons": 8,
+        "regionCount": 5,
+        "revision": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
+        "sitemapUrls": 7,
+        "state": "public_release_verified",
+        "unknownHttpStatus": 404
+      },
+      "indexNow": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "6d06cc7f24aa66df2da0587c8f7fa0b2cd6a1792bebbbbda5c416d6d25a5ff48",
+        "httpStatus": 200,
+        "origin": "https://seoul-gangbuk.fwith.kr",
+        "recordedAt": "2026-10-11T11:23:04.754326+00:00",
+        "revision": "292baeb3ba0edc5bed8491bd6cee2e8ffb2c33d2",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38135282606",
+        "searchIndexing": "not_verified",
+        "siteKey": "seoul-gangbuk-flower-direct",
+        "state": "received",
+        "urlCount": 7,
+        "urlSetSha256": "8b36100f4ead70af7f187291f6960f3cd52c98aa8d316f15fed21e437794b2a5",
+        "urls": [
+          "https://seoul-gangbuk.fwith.kr/",
+          "https://seoul-gangbuk.fwith.kr/regions/",
+          "https://seoul-gangbuk.fwith.kr/regions/mia-dong-the-victoria-wedding-wreath/",
+          "https://seoul-gangbuk.fwith.kr/regions/suyu-dong-daehan-funeral-wreath/",
+          "https://seoul-gangbuk.fwith.kr/regions/suyu-dong-gangbuk-arts-congratulation-wreath/",
+          "https://seoul-gangbuk.fwith.kr/regions/suyu-dong-suyu-market-opening-wreath/",
+          "https://seoul-gangbuk.fwith.kr/regions/ui-dong-anto-wedding-wreath/"
+        ],
+        "commentId": 6108499508,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6108499508",
+        "durableReadbackVerified": true
+      },
+      "gsc": {
+        "siteUrl": "sc-domain:fwith.kr",
+        "status": "submitted_and_list_readback_confirmed",
+        "submit": {
+          "siteUrl": "sc-domain:fwith.kr",
+          "attempted": 1,
+          "submitted": 1,
+          "failed": 0,
+          "results": [
+            {
+              "sitemapUrl": "https://seoul-gangbuk.fwith.kr/sitemap-index.xml",
+              "accepted": true,
+              "confirmed": true,
+              "lastSubmitted": "2026-10-11T11:25:18.462Z",
+              "isPending": true,
+              "isSitemapsIndex": false,
+              "warnings": "0",
+              "errors": "0"
+            }
+          ],
+          "message": "Submitted 1 of 1 sitemap(s) to Search Console for sc-domain:fwith.kr. Submitting queues a download; it does not index the URLs.",
+          "actions": [
+            "Re-check list_sitemaps in a few hours: warnings, errors and indexed counts appear only after Google has downloaded the sitemap."
+          ]
+        },
+        "listReadback": [
+          {
+            "path": "https://seoul-gangbuk.fwith.kr/sitemap-index.xml",
+            "lastSubmitted": "2026-10-11T11:25:18.462Z",
+            "isPending": true,
+            "isSitemapsIndex": false,
+            "warnings": "0",
+            "errors": "0"
+          }
+        ],
+        "listReadbackAt": "2026-10-11T11:25:27.895Z",
+        "indexingVerified": false
+      },
+      "independentReview": {
+        "sha256": "d849f6b507c5d9b33a831f32f71a12774682de53270cb46ba273fa8b86421562",
+        "verdict": "PASS_WITH_VISUAL_QA_DEFERRED"
+      }
     }
   ],
   "maintenanceBacklog": [
@@ -7287,7 +7409,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Prepare only Gangbuk official membership and purchase-intent plan; freeze independently reviewed plan before customer article authoring.",
+  "nextAction": "Create only claimed Dobong source branch after exact plan freeze readback; author original N4 purchase articles, independently review and publish through existing direct path.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -15279,7 +15401,7 @@
       "Historical visual deferrals and held articles are maintenance backlogs, not erased by geographic release progression.",
       "Reverify official effective changes before choosing later units; do not mutate historical denominator silently."
     ],
-    "nextSelectedUnit": "11290",
+    "nextSelectedUnit": "11320",
     "path": "docs/direct-regional-release/national/fixed-plan.json",
     "independentReviewPath": "docs/direct-regional-release/national/independent-review.json",
     "progress": {
@@ -15337,11 +15459,13 @@
     "owner": {
       "checkpointId": "regional-additions-20261011-owner-1126",
       "serviceInvocationId": null,
-      "active": true,
+      "active": false,
       "startedAt": "2026-10-11T11:26:58.658Z",
       "priorOwnerActualStopConfirmedAt": "2026-10-11T11:21:55Z",
       "priorOwnerRunVerifiedCompleted": 38135282606,
-      "executionState": "uijeongbu_additive_source_and_control_save"
+      "executionState": "external_write_stopped_read_only_uijeongbu_diagnosis",
+      "actualWriteStopConfirmedAt": "2026-10-11T11:40:28Z",
+      "yieldedTo": "direct-seoul-dobong-20261011T110000Z"
     },
     "current": {
       "region": "uijeongbu",
