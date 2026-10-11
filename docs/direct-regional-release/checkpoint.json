@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-11T15:15:02.479Z",
+  "updatedAt": "2026-10-11T15:33:47.422Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -18076,9 +18076,9 @@
       "priorOwnerActualWriteStopConfirmedAt": "2026-10-11T12:45:17Z",
       "executionState": "local_full_scope_authoring_and_independent_review",
       "mainWriteIntent": {
-        "action": "reconcile_non_sensitive_operational_state_only",
-        "expectedMainSha": "0233b62f8327cf6404e1bc25f6db085cc3bf0cb4",
-        "idempotencyKey": "copy-review:operational-readback:20261011T1514Z"
+        "action": "record_reviewed_gwangmyeong_full_copy_source_save_intent",
+        "expectedMainSha": "1f4671d642463102c3d1f050c437e20607b778c3",
+        "idempotencyKey": "gwangmyeong:full-copy-source-save:cf91d3e929bd190bf3a7c0a70844121c3150e31e1015c1d665ef6a5efe2506e1"
       }
     },
     "current": {
@@ -18146,6 +18146,36 @@
         "superseded": true,
         "actualDispatchVerified": false,
         "reason": "Full existing-page review and correction takes priority; do not dispatch this old revision."
+      },
+      "fullCopyRevision": {
+        "status": "reviewed_source_save_intent",
+        "action": "save_reviewed_existing_nine_articles_and_common_copy_without_dispatch",
+        "branch": "site-factory-gwangmyeong-direct",
+        "expectedSourceHead": "7ad2c164083f02ceda3c7d95adb1f6c838a2a13c",
+        "changedExistingArticles": 9,
+        "newArticles": 0,
+        "originalN": 8,
+        "additiveN": 1,
+        "held": 0,
+        "changedFiles": 16,
+        "sourceManifestSha256": "cf91d3e929bd190bf3a7c0a70844121c3150e31e1015c1d665ef6a5efe2506e1",
+        "contentReviewSha256": "8fbda6461545bf2a81b80613ff9635a62265449b4ab7a8b6c8ad4331e21b89fc",
+        "independentIntegrationReviewSha256": "4f2aeef0b643d2be58f4ad96a45c388e412f3748cd9fbeeff72d76a9b2a7d41a",
+        "localNode22TestsPassed": 71,
+        "localAstroBuildStaticGraph": "passed_noindex_fixture_not_hosted_QA",
+        "actualDispatch": false,
+        "sourceSaveConfirmed": false,
+        "safetyReadback": {
+          "at": "2026-10-11T15:33:47.422Z",
+          "currentSourceHeadMatched": true,
+          "inProgressRuns": 0,
+          "queuedRuns": 0,
+          "branchWorkflowCount": 22,
+          "mainWorkflowCount": 52,
+          "matchingPushTriggers": 0,
+          "workflowRunListeners": 0
+        },
+        "idempotencyKey": "gwangmyeong:full-copy-source-save:cf91d3e929bd190bf3a7c0a70844121c3150e31e1015c1d665ef6a5efe2506e1"
       }
     },
     "completed": [],
@@ -18156,13 +18186,14 @@
     "allCustomerRouteInventoryComplete": false,
     "sourceScopeInventorySha256": "879a4a1bb50ffab73814c7b5cd39fc97b1731358af05cd4251f6dda0ba107e78",
     "partialCopyReview": {
-      "articlesWithReconciledIndependentCopyReview": 525,
+      "articlesWithReconciledIndependentCopyReview": 682,
       "scopeReconciliationComplete": false,
-      "ledgerSha256": "163cdeb2fa6d3aaa9aae04e68c8f028b93c3f4d922f5f46b009aa21ade588a88",
+      "ledgerSha256": "0989cff10ea9b0d54f5b8fdb5cd49c20167bd54fabd2bd6e3fdef53777291f03",
       "publicCorrectionsVerified": 0,
       "buildAndHostedApproval": false,
-      "observedAt": "2026-10-11T15:08:53Z",
-      "note": "Prepared copy-only evidence is not a published source or build/HTTP QA result; other completed reviews still await reconciliation."
+      "observedAt": "2026-10-11T15:33:47.422Z",
+      "note": "Exact independent copy evidence reconciled for 682 of 829 existing public articles; integration, publication and hosted QA remain separate.",
+      "remainingArticlesWithoutReconciledCopyReview": 147
     }
   }
 }
