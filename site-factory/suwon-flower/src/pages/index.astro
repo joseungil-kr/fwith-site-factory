@@ -1,0 +1,30 @@
+---
+import {regionalPages} from '../lib/regional-runtime.mjs';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PurchaseBanner from '../components/PurchaseBanner.astro';
+import {site,groups} from '../config/site';
+import ProductCards from '../components/ProductCards.astro';
+import pages from '../lib/all-pages.mjs';
+import products from '../data/products.json';
+import {homeProducts} from '../lib/catalog.mjs';
+import {hubGuides} from '../lib/hubs.mjs';
+const featured=homeProducts(products);
+const heroProducts=['bouquet-happiness','basket-sunshine','funeral-basic','congrats-basic'].map(key=>products.find(p=>p.key===key)).filter(Boolean);
+---
+<BaseLayout title="수원 꽃배달 | 근조·축하화환·꽃선물 꽃이랑" description="수원 꽃배달 꽃이랑. 꽃다발 50,000원부터, 꽃바구니 65,000원, 근조·축하 기본 3단 화환 59,000원. 전화 1844-0644와 온라인으로 졸업·공연·기념일·개업·장례식장 목적에 맞는 꽃을 주문하세요." canonicalPath="/">
+<section class="home-hero">
+ <div class="hero-copy"><span class="eyebrow">수원 꽃배달 · 꽃이랑</span><h1>수원 꽃배달,<br/>전할 마음에 맞게 고르세요</h1><p>졸업·공연·기념일에 건네는 꽃다발은 50,000원부터, 꽃바구니 햇살 한가득은 65,000원. 장례식장과 개업·행사에 보내는 기본 3단 화환은 59,000원입니다. 축하와 고마움, 위로를 담을 선물을 골라 보세요. 표시가격은 상품 기본가격이며 추가 배송비와 선택사항을 포함한 최종금액은 상담하실 수 있습니다.</p>
+ <div class="actions"><a class="btn primary" href={site.phoneHref}>☎ 1844-0644 전화주문</a><a class="btn dark" href={site.orderUrl}>온라인 주문</a></div>
+ <div class="facts"><span>전화 08:00~23:00</span><span>온라인 24시간 접수</span><span>상품·전달 일정 상담</span></div></div>
+ <div class="hero-products" aria-label="꽃다발·꽃바구니·화환 상품">{heroProducts.map((p:any)=><a class="hero-product" href={p.orderUrl} data-product-family={p.family} data-product-key={p.key}><img src={p.img} alt={p.name} loading="eager" width="420" height="420"/><span>{p.name}<strong>{p.price.toLocaleString()}원</strong></span></a>)}</div>
+</section>
+<section class="purpose-navigation" data-purpose-navigation><div class="section-title"><span class="eyebrow">목적에 맞게 선택</span><h2>누구에게, 어디로 보내시나요?</h2></div><div class="purpose-grid">{groups.filter(g=>g.cat!=='regions'||pages.some((p:any)=>p.category==='regions'&&p.publicationMode==='manual-user-request')).map(g=><a class="page-card purpose-card" href={g.url}><strong>{g.label}</strong><span>{hubGuides[g.cat].decision[0]}</span><em>꽃 선물 살펴보기 →</em></a>)}</div></section>
+<section class="product-section" data-home-selection><div class="section-title"><span class="eyebrow">꽃이랑 상품과 가격</span><h2>꽃다발·꽃바구니·화환을 비교하세요</h2><p>반가운 만남에는 손에 건넬 꽃다발을, 마음을 모아 전할 축하와 위로에는 화환을 살펴보세요. 사진의 현재 구성과 실제 규격도 상담하실 수 있습니다.</p></div>
+<ProductCards products={featured}/></section>
+<PurchaseBanner pageRole="home" heading="어떤 마음을 전하고 싶으신가요?"/>
+<section class="hub-overview"><div class="section-title"><span class="eyebrow">장소와 상황별 상세 안내</span><h2>소중한 순간에 어울릴 꽃을 만나보세요</h2></div>
+{groups.filter(g=>g.cat!=='regions'||pages.some((p:any)=>p.category==='regions'&&p.publicationMode==='manual-user-request')).map(g=><article class="hub-block"><div class="hub-heading"><h3>{g.label}</h3><a href={g.url}>전체 보기 →</a></div><div class="card-grid">{pages.filter((p:any)=>p.category===g.cat).map((p:any)=><a class="page-card" href={p.url}><strong>{p.primaryKeyword}</strong><span>{p.cardSummary}</span></a>)}</div></article>)}</section>
+<section class="conversion-panel"><div><span class="eyebrow">꽃으로 전하는 마음</span><h2>축하도 위로도 편하게 상담하세요</h2><p>선물할 상황과 예산을 이야기해 주세요. 원하는 상품과 가능한 전달 일정을 함께 상담하실 수 있습니다.</p></div><div class="actions"><a class="btn light" href={site.phoneHref}>전화주문</a><a class="btn yellow" href={site.orderUrl}>온라인 주문</a></div></section>
+{regionalPages.length>0 && <section class="section"><div class="container"><a href="/regions/">{site.region} 지역별 꽃배달 안내 →</a></div></section>}
+</BaseLayout>
+

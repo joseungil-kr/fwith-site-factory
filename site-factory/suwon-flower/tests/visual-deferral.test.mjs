@@ -1,0 +1,6 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {assertVisualQa} from '../src/lib/manual-review-contract.mjs';
+const d=JSON.parse(fs.readFileSync('reviews/suwon-customer-copy-review-20261011.json')).visualDeferral;
+test('explicit user-authorized screen deferral binds all current articles without claiming PASS',()=>assert(assertVisualQa({visualQa:'DEFERRED_NOT_PASS',visualDeferral:d})));
+test('real visual PASS remains a separate explicit decision',()=>assert(assertVisualQa({visualQa:'PASS'})));
+for(const key of ['status','criterion','authorization','authorizationReference','reason','pendingChecks','pendingPageKeys','noVisualPassClaim'])test('visual deferral missing '+key+' rejects',()=>{const x=structuredClone(d);delete x[key];assert.throws(()=>assertVisualQa({visualQa:'DEFERRED_NOT_PASS',visualDeferral:x}));});
+test('unknown visual values and reduced or expanded deferred inventory reject',()=>{for(const v of ['UNVERIFIED','pending','pass',true])assert.throws(()=>assertVisualQa({visualQa:v,visualDeferral:d}));for(const keys of [d.pendingPageKeys.slice(1),[...d.pendingPageKeys,'extra']])assert.throws(()=>assertVisualQa({visualQa:'DEFERRED_NOT_PASS',visualDeferral:{...d,pendingPageKeys:keys}}));});

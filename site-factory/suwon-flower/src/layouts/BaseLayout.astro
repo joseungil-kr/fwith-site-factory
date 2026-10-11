@@ -1,0 +1,31 @@
+---
+import '../styles/global.css';
+import {site,groups,regionalMenuEligible} from '../config/site';
+import buildRevision from '../data/build-revision.json';
+import {socialImageFor} from '../lib/social-image.mjs';
+const {title,description,canonicalPath='/',noindex=false,isNotFound=false,socialImage=null,orderUrl=site.orderUrl}=Astro.props;
+const canonical=isNotFound ? null : new URL(canonicalPath,site.domain).toString();
+const indexable=site.indexable && !noindex && !isNotFound;
+const revision=buildRevision.revision || 'local';
+const social=Astro.props.ogImage ? {path:Astro.props.ogImage,alt:Astro.props.ogImageAlt,width:Astro.props.ogImageWidth,height:Astro.props.ogImageHeight,type:Astro.props.ogImageType} : (noindex ? null : socialImageFor(socialImage));
+const socialUrl=social ? new URL(social.path,site.domain).toString() : null;
+---
+<!doctype html><html lang="ko"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>{title}</title><meta name="description" content={description}/>
+<meta name="robots" content={!site.indexable ? 'noindex,nofollow,noarchive' : (Astro.props.robotsOverride || (indexable?'index,follow':'noindex,nofollow,noarchive'))}/>
+{indexable && <meta name="naver-site-verification" content={site.naverVerification}/>}
+<meta name="site-factory-revision" content={revision}/>{canonical && <link rel="canonical" href={canonical}/>}
+<meta property="og:type" content="website"/><meta property="og:title" content={title}/><meta property="og:description" content={description}/>{canonical && <meta property="og:url" content={canonical}/>}<meta property="og:locale" content="ko_KR"/>
+{social && <><meta property="og:image" content={socialUrl}/><meta property="og:image:secure_url" content={socialUrl}/><meta property="og:image:alt" content={social.alt}/><meta property="og:image:type" content={social.type}/><meta property="og:image:width" content={social.width}/><meta property="og:image:height" content={social.height}/><meta name="twitter:image" content={socialUrl}/><meta name="twitter:image:alt" content={social.alt}/></>}
+<meta name="twitter:card" content={social?'summary_large_image':'summary'}/><meta name="twitter:title" content={title}/><meta name="twitter:description" content={description}/>
+<meta name="theme-color" content="#3a214f"/>
+{!isNotFound && <script type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@type':'Florist',name:site.brand,url:site.domain,telephone:site.phone,areaServed:site.region}).replace(/</g, String.fromCharCode(92) + 'u003c')}></script>}
+</head><body>
+<a class="skip-link" href="#main-content">본문 바로가기</a>
+<header class="site-header"><div class="header-inner"><a class="brand" href="/"><span class="brand-icon">✿</span><span><b>{site.brand}</b><small>{site.region} 꽃배달</small></span></a>
+<nav aria-label="주요 메뉴">{groups.filter(g=>g.cat!=='regions'||regionalMenuEligible).map(g=><a href={g.url}>{g.label}</a>)}</nav><a class="phone" href={site.phoneHref}>☎ {site.phone}</a></div></header>
+<main id="main-content"><slot/></main>
+<footer><div><strong>{site.brand} {site.region}</strong><span>{site.orderHours}</span><a href={site.phoneHref}>{site.phone}</a><a href={orderUrl}>온라인 주문</a><small>{site.deliveryNotice}</small></div></footer>
+<div class="mobile-bar"><a href={site.phoneHref}>전화주문</a><a href={orderUrl}>온라인 주문</a></div>
+</body></html>

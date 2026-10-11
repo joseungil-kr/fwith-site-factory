@@ -1,0 +1,235 @@
+{
+  "purpose": "Preserve pre-patch source before explicitly authorized404-only technical correction; normal customer copy remains unchanged",
+  "files": {
+    "src/layouts/BaseLayout.astro": {
+      "sha256": "251e59314152aa00ca07be83251a5573b9cbc0674b788d39edacb4581095e5d5",
+      "text": "---\nimport '../styles/global.css';\nimport {site,groups,regionalMenuEligible} from '../config/site';\nimport buildRevision from '../data/build-revision.json';\nimport {socialImageFor} from '../lib/social-image.mjs';\nconst {title,description,canonicalPath='/',noindex=false,socialImage=null,orderUrl=site.orderUrl}=Astro.props;\nconst canonical=new URL(canonicalPath,site.domain).toString();\nconst indexable=site.indexable && !noindex;\nconst revision=buildRevision.revision || 'local';\nconst social=Astro.props.ogImage ? {path:Astro.props.ogImage,alt:Astro.props.ogImageAlt,width:Astro.props.ogImageWidth,height:Astro.props.ogImageHeight,type:Astro.props.ogImageType} : (noindex ? null : socialImageFor(socialImage));\nconst socialUrl=social ? new URL(social.path,site.domain).toString() : null;\n---\n<!doctype html><html lang=\"ko\"><head>\n<meta charset=\"UTF-8\"/><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"/>\n<title>{title}</title><meta name=\"description\" content={description}/>\n<meta name=\"robots\" content={!site.indexable ? 'noindex,nofollow,noarchive' : (Astro.props.robotsOverride || (indexable?'index,follow':'noindex,nofollow,noarchive'))}/>\n{indexable && <meta name=\"naver-site-verification\" content={site.naverVerification}/>}\n<meta name=\"site-factory-revision\" content={revision}/><link rel=\"canonical\" href={canonical}/>\n<meta property=\"og:type\" content=\"website\"/><meta property=\"og:title\" content={title}/><meta property=\"og:description\" content={description}/><meta property=\"og:url\" content={canonical}/><meta property=\"og:locale\" content=\"ko_KR\"/>\n{social && <><meta property=\"og:image\" content={socialUrl}/><meta property=\"og:image:secure_url\" content={socialUrl}/><meta property=\"og:image:alt\" content={social.alt}/><meta property=\"og:image:type\" content={social.type}/><meta property=\"og:image:width\" content={social.width}/><meta property=\"og:image:height\" content={social.height}/><meta name=\"twitter:image\" content={socialUrl}/><meta name=\"twitter:image:alt\" content={social.alt}/></>}\n<meta name=\"twitter:card\" content={social?'summary_large_image':'summary'}/><meta name=\"twitter:title\" content={title}/><meta name=\"twitter:description\" content={description}/>\n<meta name=\"theme-color\" content=\"#3a214f\"/>\n<script type=\"application/ld+json\" set:html={JSON.stringify({'@context':'https://schema.org','@type':'Florist',name:site.brand,url:site.domain,telephone:site.phone,areaServed:site.region}).replace(/</g, String.fromCharCode(92) + 'u003c')}></script>\n</head><body>\n<a class=\"skip-link\" href=\"#main-content\">본문 바로가기</a>\n<header class=\"site-header\"><div class=\"header-inner\"><a class=\"brand\" href=\"/\"><span class=\"brand-icon\">✿</span><span><b>{site.brand}</b><small>{site.region} 꽃배달</small></span></a>\n<nav aria-label=\"주요 메뉴\">{groups.filter(g=>g.cat!=='regions'||regionalMenuEligible).map(g=><a href={g.url}>{g.label}</a>)}</nav><a class=\"phone\" href={site.phoneHref}>☎ {site.phone}</a></div></header>\n<main id=\"main-content\"><slot/></main>\n<footer><div><strong>{site.brand} {site.region}</strong><span>{site.orderHours}</span><a href={site.phoneHref}>{site.phone}</a><a href={orderUrl}>온라인 주문</a><small>{site.deliveryNotice}</small></div></footer>\n<div class=\"mobile-bar\"><a href={site.phoneHref}>전화주문</a><a href={orderUrl}>온라인 주문</a></div>\n</body></html>\n"
+    },
+    "src/pages/404.astro": {
+      "sha256": "f02c6e89fda31f13cc07517422e9a2d2d492cb30c22bc24a0faf1ad3569cd086",
+      "text": "--- import BaseLayout from '../layouts/BaseLayout.astro'; ---<BaseLayout title=\"페이지를 찾을 수 없습니다 | 꽃이랑 수원\" description=\"요청한 페이지를 찾을 수 없습니다.\" noindex={true}><section class=\"not-found\"><h1>페이지를 찾을 수 없습니다</h1><p>수원 꽃배달 메인에서 필요한 정보를 다시 찾아보세요.</p><a class=\"btn primary\" href=\"/\">홈으로 이동</a></section></BaseLayout>"
+    }
+  },
+  "normalRenderedBefore": [
+    {
+      "path": "business/gwanggyo-opening-congrats-wreath/index.html",
+      "sha256": "b4ebd8951ecb35a3a20cb7a2ab2fcc529d49e0157ae958f25422b626a65ba283"
+    },
+    {
+      "path": "business/gwonseon-opening-wreath/index.html",
+      "sha256": "4aa249999e209f1ab152c44d651a01cf1200aec2f649eb1ad109a70538be96e4"
+    },
+    {
+      "path": "business/index.html",
+      "sha256": "c0ca8e48580d5c1fb4e109d95ae5e1131c964736f48c6056c895a0122f6ecf3a"
+    },
+    {
+      "path": "business/ingyedong-opening-wreath/index.html",
+      "sha256": "a6921425241288571f4ae9ff54cc1d805e58803df71ed8d55127c13a19ac6ae5"
+    },
+    {
+      "path": "business/suwon-office-relocation-wreath/index.html",
+      "sha256": "08f6f19a316f9c06f26f42381f0bb3d35b9be81da4ce11f594de599ef7d465d0"
+    },
+    {
+      "path": "business/yeongtong-opening-wreath/index.html",
+      "sha256": "2d99637c1ccecc91966762fa8904ba74d355de9907185bd07980a2fdfc40c495"
+    },
+    {
+      "path": "event/gyeonggi-arts-center-performance-flowers/index.html",
+      "sha256": "89d0c76cd4c50ea4738e36166eaf799148c073298c95bc843f6964ff33935a36"
+    },
+    {
+      "path": "event/ibis-ambassador-suwon-wedding-wreath/index.html",
+      "sha256": "d2927cb9431e7c59092dcbd4dae3c39987c072d1f606312d316cffbecf4a918d"
+    },
+    {
+      "path": "event/index.html",
+      "sha256": "851688a7b2f9ae704a11eb1ece8e26780f1535b4851d4e92b49d94028b0855c7"
+    },
+    {
+      "path": "event/noblesse-suwon-wedding-wreath/index.html",
+      "sha256": "4472e893a9ebab17808c93de1c2a755ebb38c7aaeb501d9791796cf7acce53ed"
+    },
+    {
+      "path": "event/novotel-ambassador-suwon-wedding-wreath/index.html",
+      "sha256": "7a8d99cc196598071e63e3db48706fff5fca02828eec38da7abeebd64bb56362"
+    },
+    {
+      "path": "event/partyumhouse-suwon-wedding-wreath/index.html",
+      "sha256": "76283bc8dc1a5b8df834ecb2702cbbfe08ea133dab46ef5fb78e0ca9284c0238"
+    },
+    {
+      "path": "event/suwon-convention-center-event-flowers/index.html",
+      "sha256": "871326178e3ca9cf7335fc189b4bb70b3bbfc6cad8df4a8199f553b96603418e"
+    },
+    {
+      "path": "event/suwon-event-congrats-wreath/index.html",
+      "sha256": "d42d08824ebfaf2b32b8816c188f159d6bd9e04ee38a17cde78677229f3bb1a2"
+    },
+    {
+      "path": "event/suwon-hwaseong-event-flowers/index.html",
+      "sha256": "712732837eb665ad83a0db90a1f71e71277204e5d35ed694ba74eed2435a44e7"
+    },
+    {
+      "path": "event/suwon-messe-event-flowers/index.html",
+      "sha256": "ce27c460ba883549dd51502bb62cc9d1197bb1db15bb56db71e75451fe0524e6"
+    },
+    {
+      "path": "event/suwon-sk-artrium-performance-flowers/index.html",
+      "sha256": "ba2371afe104176039f01715a63a13aee34850f9e7af8d930fc8c1c17a8bc1a3"
+    },
+    {
+      "path": "event/the-ariel-suwon-wedding-wreath/index.html",
+      "sha256": "78fc44d2a9eabfb714dfee856c03a1b6c08d07dd8f3932167427f01a591baec9"
+    },
+    {
+      "path": "event/wi-convention-wedding-wreath/index.html",
+      "sha256": "1ac4c3d1c70c4851fb15c70bacc355384b6a2f447cca7844c2317f914ce78938"
+    },
+    {
+      "path": "funeral/ajou-hospital-funeral-wreath/index.html",
+      "sha256": "b7a8e6eb1944ae8fb92a49f49ad6f4b261fbccd997e8e9a8cf43836b309359c0"
+    },
+    {
+      "path": "funeral/dongsuwon-hospital-funeral-wreath/index.html",
+      "sha256": "599198f8cb4e37e77af1f963024b8e461524e83ae236b090ad558200a8b09269"
+    },
+    {
+      "path": "funeral/gyeonggi-suwon-hospital-funeral-wreath/index.html",
+      "sha256": "3ec4e0960d14e164c6a66b77d16af59b758a9abb861f7eb7e1099dc57d34fda6"
+    },
+    {
+      "path": "funeral/index.html",
+      "sha256": "9563de9bf85bc89f903a2f880690bdc1580d688ca687b9c0a42e1700e39c148f"
+    },
+    {
+      "path": "funeral/st-vincent-hospital-funeral-wreath/index.html",
+      "sha256": "9bc83e53cad5cf48f8590dc1e229a23c7a4dcaf2813a292c6a5e61b919868800"
+    },
+    {
+      "path": "funeral/suwon-central-hospital-funeral-wreath/index.html",
+      "sha256": "1efc98b647984b0e01cad380beb45da6f11b33fc6203211a0660703af67cf448"
+    },
+    {
+      "path": "funeral/suwon-condolence-wreath/index.html",
+      "sha256": "62d8674a21647810443a918ea4865eb8eb3533815bb20f642f794135771d4e4a"
+    },
+    {
+      "path": "funeral/suwon-deoksan-hospital-funeral-wreath/index.html",
+      "sha256": "d705c2e96b95c279669fa1cb8066c0cb672e4cd383279f134ec4a9c6edc6337f"
+    },
+    {
+      "path": "funeral/suwon-funeral-wreath-price/index.html",
+      "sha256": "c6b032ae488bd8fa106786610fa72b12504376483aabe51587d0830e84f6e263"
+    },
+    {
+      "path": "funeral/suwon-handok-hospital-funeral-wreath/index.html",
+      "sha256": "a235e09e8d17a6e6a01fb508ff003a9b1154d471828b17b72c20e11aa75e398e"
+    },
+    {
+      "path": "funeral/suwon-nursing-hospital-funeral-wreath/index.html",
+      "sha256": "53ae7649765748bf49a0b6aed9b7902de70ab04bda1bbb842baee8bb16ce7220"
+    },
+    {
+      "path": "funeral/suwon-yeonhwajang-funeral-wreath/index.html",
+      "sha256": "a7d996946365211e93632d6c5303332e934e2930091876973b3f3480306fe8b3"
+    },
+    {
+      "path": "gift/ajou-hospital-visit-flowers/index.html",
+      "sha256": "418e742e3bdcb956cc778a5278436ea03b001f2bf28db86517daf0e9cc57f3c1"
+    },
+    {
+      "path": "gift/gwanggyo-anniversary-flower-delivery/index.html",
+      "sha256": "f792d8e69b19b8d71977b9229b067a7d2abff57e65dfcc27f5e37f596f06f42f"
+    },
+    {
+      "path": "gift/haenggungdong-bouquet/index.html",
+      "sha256": "af57121f39df67d967bad603b36fa0d150ca21b1040729a4f5e01c7b8c39a8da"
+    },
+    {
+      "path": "gift/index.html",
+      "sha256": "54ae55439a1d3648fcf54c5832db71a64b7a42516a55f7adba726cb5a2e34c8e"
+    },
+    {
+      "path": "gift/st-vincent-hospital-visit-flowers/index.html",
+      "sha256": "627db22490d56aab82768752b6475750063692e484ad5d30e8d94cce39cd2440"
+    },
+    {
+      "path": "gift/suwon-station-bouquet/index.html",
+      "sha256": "322f1ff0892e3d0d9a21412f557a2b2c73ab225e0ec8694b8f74d782c65b7dfc"
+    },
+    {
+      "path": "index.html",
+      "sha256": "191cc3d4e92a08c3b989aa73c2ce72a7acd19e27688cd1809a8cecbd2546e1b3"
+    },
+    {
+      "path": "order/index.html",
+      "sha256": "628ffaab1ab3d18ecb4192cc6ef152f593b55861e7339137e1e3461b19d09787"
+    },
+    {
+      "path": "order/suwon-flower-address-guide/index.html",
+      "sha256": "950d5864202095557823f5361e6f4d358bca314510b031c054c88e61b5bec796"
+    },
+    {
+      "path": "order/suwon-flower-delivery-price/index.html",
+      "sha256": "1a3f8fcb3f33834ab08aac1d5aa90fd566b664c197fb4a97270215a7f65fdc7d"
+    },
+    {
+      "path": "order/suwon-same-day-flower-delivery/index.html",
+      "sha256": "dce704576edacaa86afc05a6254cc21d124ea9e3be13c8b6109e7719209b0633"
+    },
+    {
+      "path": "order/suwon-wreath-message/index.html",
+      "sha256": "cde21b9b868a9f94d788d14a608df450788f03b1bf42de305728f236ea2477bf"
+    },
+    {
+      "path": "order/suwon-wreath-order/index.html",
+      "sha256": "6de5b7eb9a91fddef86cbcb08bf244b72b0faa832e6e09f602625cc4001adfae"
+    },
+    {
+      "path": "regions/gwonseon-flower-delivery/index.html",
+      "sha256": "10f7dd6f4c105cb8c4b773041220598cb7711f75c2c13d01d051f5835b3d3564"
+    },
+    {
+      "path": "regions/index.html",
+      "sha256": "09dce4abb8251dea396dbf008ebb3f4364886955b778cb203ca1d40f3dee660e"
+    },
+    {
+      "path": "regions/jangan-flower-delivery/index.html",
+      "sha256": "7417379bd359aecdb1dd31f705962aca64f3973bc8d7d3bfdd3adf670b09fce0"
+    },
+    {
+      "path": "regions/paldal-flower-delivery/index.html",
+      "sha256": "c117b96b1d82d11074c37e5bdcc2de07efee210e551bedab46189740da732740"
+    },
+    {
+      "path": "regions/yeongtong-flower-delivery/index.html",
+      "sha256": "3cc8a5989f0513d8333eed485e551293df61e5ffcbec67fb79357766a9639b9f"
+    },
+    {
+      "path": "school/ajou-university-graduation-flowers/index.html",
+      "sha256": "401720d048f00012fe007c37de88405ed0fe41853896dbb5b404df75f3017f51"
+    },
+    {
+      "path": "school/index.html",
+      "sha256": "19ef1a4b53d55483361e47ec8aef2a0a0d653878f0aadbb7da2c62ab08470ac0"
+    },
+    {
+      "path": "school/kyonggi-suwon-campus-graduation-flowers/index.html",
+      "sha256": "be2a1bf7a9cd030049eb8b3c856e81c299d65839dc1950a86ccf5deb46f1680f"
+    },
+    {
+      "path": "school/skku-natural-campus-graduation-flowers/index.html",
+      "sha256": "e0c49187ab52cb4945e7468c3fd9b05fa9a4fd3d9ab52097822571c979e13602"
+    },
+    {
+      "path": "school/suwon-graduation-bouquet/index.html",
+      "sha256": "e89d0a1fdf9ed6a398d3452f9813112d704eaa844ae351792faec09e9f11fe6f"
+    },
+    {
+      "path": "school/suwon-womens-university-graduation-flowers/index.html",
+      "sha256": "a4b5e05a83133d52378fe3cbf0296e5a4cf58af55842310ae342bfbddc508ad5"
+    }
+  ]
+}

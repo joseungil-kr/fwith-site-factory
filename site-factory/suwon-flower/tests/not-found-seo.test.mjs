@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import crypto from 'node:crypto';
+const read=f=>fs.readFileSync(f,'utf8'),hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
+test('only404 opts into metadata exclusion; normal layout defaults remain intact',()=>{const layout=read('src/layouts/BaseLayout.astro'),page=read('src/pages/404.astro');assert.match(layout,/isNotFound=false/);assert.match(layout,/canonical=isNotFound \? null : new URL\(canonicalPath,site.domain\)/);assert.match(layout,/!isNotFound && <script type="application\/ld\+json"/);assert.match(page,/noindex=\{true\} isNotFound=\{true\}/);});
+test('all10 independently approved common source files remain exact',()=>{const revision=JSON.parse(read('src/data/customer-copy-revision-20261011.json'));assert.equal(revision.surfaces.length,10);for(const e of revision.surfaces)assert.equal(hash(e.file),e.sha256,e.file);});

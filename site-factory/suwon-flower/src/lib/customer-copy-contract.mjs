@@ -1,0 +1,11 @@
+import fs from 'node:fs';import path from 'node:path';import crypto from 'node:crypto';import assert from 'node:assert/strict';
+const hash=x=>crypto.createHash('sha256').update(x).digest('hex');
+export function canonical(v){return JSON.stringify(v,(_,x)=>x&&typeof x==='object'&&!Array.isArray(x)?Object.fromEntries(Object.entries(x).sort(([a],[b])=>a<b?-1:a>b?1:0)):x);}
+export function validateCustomerCopyRevision(root='.'){
+ const read=f=>JSON.parse(fs.readFileSync(path.join(root,f)));const r=read('src/data/customer-copy-revision-20261011.json');assert.equal(r.revisionId,'suwon-customer-copy-20261011');assert.equal(r.integrationWriter,'/root/integrate_reviewed_legacy_copy');assert.equal(r.expectedIndependentReviewer,'/root');assert.equal(r.articles.length,47);assert.equal(r.appendices.length,5);
+ for(const e of [r.history,...r.copyReviewEvidence,...r.surfaces])assert.equal(hash(fs.readFileSync(path.join(root,e.file))),e.sha256,'Reviewed evidence/common copy drift '+e.file);
+ const data={'pages.json':read('src/data/pages.json'),'manual-pages.json':read('src/data/manual-pages.json')};
+ for(const e of r.articles){const bytes=fs.readFileSync(path.join(root,e.approvedFile));assert.equal(hash(bytes),e.approvedSha256);const approved=JSON.parse(bytes),p=data[e.collection].find(x=>x.pageKey===e.pageKey);assert(p);assert.equal(hash(canonical(p)),e.currentObjectSha256,'Reviewed article drift '+e.pageKey);for(const k of new Set([...Object.keys(p),...Object.keys(approved)]))if(!r.operationalFields.includes(k))assert.deepEqual(p[k],approved[k],'Exact approved copy '+e.pageKey+':'+k);if(e.kind!=='manual'){assert.notEqual(p.snapshotId,p.parentSnapshotId);assert.equal(p.snapshotHash,hash(canonical(Object.fromEntries(Object.entries(approved).filter(([k])=>!r.operationalFields.includes(k))))));}}
+ const addenda=read('src/data/manual-revisions.json');for(const e of r.appendices){const bytes=fs.readFileSync(path.join(root,e.approvedFile));assert.equal(hash(bytes),e.approvedSha256);const a=addenda.find(x=>x.pageKey===e.pageKey),approved=JSON.parse(bytes);assert.equal(hash(canonical(a)),e.currentObjectSha256);for(const k of new Set([...Object.keys(a),...Object.keys(approved)]))if(!['manualReleaseId','baseContentSha256','sectionsSha256','revisionId'].includes(k))assert.deepEqual(a[k],approved[k],'Reviewed appendix drift '+k);}
+ return r;
+}
