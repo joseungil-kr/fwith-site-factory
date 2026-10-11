@@ -6,7 +6,7 @@
   "scheduledRun": "2026-10-11T06:40:00Z",
   "actualInvocationId": null,
   "checkpointId": "blog-fwith-daily-20261011-claim",
-  "status": "prepared_review_pass",
+  "status": "published_visual_correction_prepared",
   "owner": {
     "task": "publish_blog_daily_1011",
     "state": "active"
@@ -14,9 +14,9 @@
   "baselineSource": "b4bbdb479ed5bc704c1d4f09f4fc4df10598be74",
   "controllerRevision": "b9f1db6241aec100b0987987b4a6d35ab5729934",
   "existingPublishedPostCount": 32,
-  "publishedPostCount": 0,
+  "publishedPostCount": 5,
   "dailyPostsPreviouslyPublished": 0,
-  "remainingDailyQuota": 5,
+  "remainingDailyQuota": 0,
   "slugs": [
     "busan-bexco-corporate-event-flowers",
     "daejeon-kaist-professor-orchid",
@@ -25,7 +25,7 @@
     "daegu-interburgo-wedding-wreath"
   ],
   "intent": {
-    "action": "commit five independently reviewed posts and images, then existing exact-source blog assets publication",
+    "action": "publish reviewed Markdown-only correction; no additional articles",
     "idempotencyKey": "blog-fwith-daily-20261011"
   },
   "dedupe": {
@@ -40,5 +40,23 @@
   "localBuild": {
     "state": "blocked_on_og_font_fetch",
     "reason": "Current cloud font response not valid font; unchanged successful baseline also fails; official isolated CI build mandatory"
+  },
+  "sourceRevision": "83e4470a1989236e8fc2e77e3c9e337931ac9f7c",
+  "publication": {
+    "sourceRevision": "83e4470a1989236e8fc2e77e3c9e337931ac9f7c",
+    "runId": 38129184593,
+    "state": "success",
+    "exactHostedRevisionVerified": true,
+    "totalArticles": 37
+  },
+  "httpQa": {
+    "state": "PASS",
+    "checkedRoutes": 186,
+    "unknown404": "PASS"
+  },
+  "visualQa": {
+    "state": "REVISE",
+    "reason": "literal markdown delimiters in two address paragraphs",
+    "correction": "remove only four asterisks each; independent delta review PASS"
   }
 }
