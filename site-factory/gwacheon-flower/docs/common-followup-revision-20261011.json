@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "revisionId": "gwacheon-customer-copy-20261011-rev3",
+  "priorRevision": "customer-copy-20261011-rev2",
+  "meaning": "Exact independently reviewed common-copy followup; not deployment or provider-security approval.",
+  "independentReviewSha256": "badea3d08bfebc866af8ce13a8923047eee8e9ffe9d28ec8688b341bca21b1cf",
+  "independentReviewDecision": "COPY_PASS_THREE_COMMON_FOLLOWUP_PROPOSALS",
+  "independentReviewCreatedAt": "2026-10-11T18:12:33.541539+00:00",
+  "proposalHandoffSha256": "1291362b5eef41c33e90fba588d07a79392ba3bfff3ec381761c36d63d84fd17",
+  "priorSourceManifestSha256": "3125f88081c4b4e82f19f40e56071c04ffb54a3162829735f25d4e328ed054fb",
+  "reviewedCopyOnlyManifestSha256": "707083afefa4ef069de460365232d3594983860f07f16f829ef5c70b58a72480",
+  "reviewedFile": {
+    "path": "src/components/ProductCards.astro",
+    "beforeSha256": "090962a1d9c3c4524d1865de796397b2e7897728404896af735f6d41a8d22848",
+    "afterSha256": "e30d19949891acc363adcc96a2f47677705ba13feaa3fbf9b25dcd66cc4e36db",
+    "afterGitBlobSha": "2e1fa3435d61fc1e6d99280e4e006d3d02c66bd1",
+    "beforeUtf8": "---\nimport {site} from '../config/site';\nconst {products=[]}=Astro.props;\n---\n<div class=\"product-grid\">{products.map((p:any)=><article class=\"product-card\" data-product-family={p.family} data-product-key={p.key}><img src={p.img} alt={p.name} loading=\"lazy\" width=\"420\" height=\"420\"/><div><h3>{p.name}</h3><strong>{p.price.toLocaleString()}원</strong><p>{p.desc}</p>{p.family==='congrats' && <p class=\"product-notice\">사진 속 리본은 예시이며, 보내실 축하 인사로 주문 상담하실 수 있습니다.</p>}<a href={p.orderUrl || site.orderUrl}>상품 확인·주문 →</a></div></article>)}</div>\n<p class=\"product-notice\">{site.productVariationNotice} {site.deliveryNotice}</p>\n",
+    "approvedUtf8": "---\nimport {site} from '../config/site';\nconst {products=[]}=Astro.props;\n---\n<div class=\"product-grid\">{products.map((p:any)=><article class=\"product-card\" data-product-family={p.family} data-product-key={p.key}><img src={p.img} alt={p.name} loading=\"lazy\" width=\"420\" height=\"420\"/><div><h3>{p.name}</h3><strong>{p.price.toLocaleString()}원</strong><p>{p.desc}</p><a href={p.orderUrl || site.orderUrl}>상품 확인·주문 →</a></div></article>)}</div>\n{products.some((p:any)=>p.family==='congrats') && <p class=\"product-notice\">사진 속 리본은 예시이며, 보내실 축하 인사로 주문 상담하실 수 있습니다.</p>}\n<p class=\"product-notice\">{site.productVariationNotice} {site.deliveryNotice}</p>\n"
+  },
+  "articleCopyAndSnapshotsUnchanged": true,
+  "originalPlanAndHeldUnchanged": true
+}
