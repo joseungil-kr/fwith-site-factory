@@ -36,9 +36,9 @@ test('direct snapshot hashes bind every public customer field and all four page 
  }
 });
 // BEGIN TARGET_CONTAMINATION_GUARD
-function assertNoCopiedRegionalRecords(name,value){
+function assertNoCopiedRegionalRecords(name,value,allowHistoricalJikContrast=false){
  const inspected=structuredClone(value);
- if(name==='pages'){
+ if(name==='pages' && allowHistoricalJikContrast){
   const contrasts=inspected.filter(p=>p.slug==='jik-dong');assert.ok(contrasts.length<=1);
   if(contrasts.length){
    const page=contrasts[0];assert.equal(page.pageKey,'gwangju-flower-direct-region-jik-dong');
@@ -77,5 +77,16 @@ test('every reviewed four-variant comparison renders all four exact family produ
   assert.equal(p.productCardLimit,4);assert.equal(p.productCardKeys.length,4);
   assert.deepEqual(selectProducts(p,products,p.productCardLimit).map(x=>x.key),p.productCardKeys);
   assert.deepEqual(p.productCardKeys,p.regionalProductKeys);
+ }
+});
+
+test('exact previous Jik-dong business contrast remains validated only in non-rendered history',()=>{
+ const history=JSON.parse(fs.readFileSync(new URL('../docs/customer-copy-history-20261011.json',import.meta.url),'utf8'));
+ assertNoCopiedRegionalRecords('pages',history.oldData['pages.json'],true);
+});
+test('current revised customer collections reject other-region contamination without historical exceptions',()=>{
+ for(const word of ['이천','의왕','파주','queueRecordId']){
+  const copied=structuredClone(read('pages'));copied.find(p=>p.slug==='jik-dong').contentMarkdown+=' '+word;
+  assert.throws(()=>assertNoCopiedRegionalRecords('pages',copied));
  }
 });
