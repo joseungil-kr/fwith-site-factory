@@ -3,9 +3,14 @@ on:
   workflow_dispatch:
     inputs:
       expected_revision:
-        description: Exact reviewed 40-character Goyang copy revision source SHA
+        description: Exact 40-character source branch SHA for all modes, including provider observation
         required: true
         type: string
+      provider_probe_only:
+        description: GET-only observation of the fixed existing provider target; no build, publish or approval
+        required: false
+        default: false
+        type: boolean
       indexnow_only:
         description: Verify and finalize the existing exact public release without any Cloudflare mutation
         required: false
@@ -18,8 +23,62 @@ concurrency:
   group: goyang-reviewed-manual-release
   cancel-in-progress: false
 jobs:
+  provider_probe:
+    if: inputs.provider_probe_only == true && github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    concurrency:
+      group: site-staging-${{ github.repository }}
+      cancel-in-progress: false
+    steps:
+      - name: Authorize fixed read-only probe and exact main
+        uses: actions/github-script@v7
+        env:
+          EXPECTED_REVISION: ${{ inputs.expected_revision }}
+          INDEXNOW_ONLY: ${{ inputs.indexnow_only }}
+        with:
+          script: |
+            if (!/^[0-9a-f]{40}$/.test(process.env.EXPECTED_REVISION)) throw new Error('Full source SHA required');
+            if (process.env.INDEXNOW_ONLY === 'true') throw new Error('Provider probe cannot include finalization');
+            if (process.env.GITHUB_RUN_ATTEMPT !== '1') throw new Error('Start a new exact-main observation instead of a rerun');
+            const owner = context.payload.repository.owner;
+            if (!(owner.type === 'User' && context.actor === owner.login)) {
+              const {data} = await github.rest.repos.getCollaboratorPermissionLevel({...context.repo, username: context.actor});
+              if (!['admin', 'maintain', 'write'].includes(data.permission)) throw new Error('Untrusted actor');
+            }
+            const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/main'});
+            if (data.object.type !== 'commit' || data.object.sha !== context.sha) throw new Error('Trusted main moved');
+            const {data: source} = await github.rest.git.getRef({...context.repo, ref: 'heads/site-factory-goyang-copy-20261011'});
+            if (source.object.type !== 'commit' || source.object.sha !== process.env.EXPECTED_REVISION) throw new Error('Source branch moved');
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - name: Test fixed read-only observation boundary without provider credentials
+        run: python3 -B control/scripts/direct-goyang-copy/test_publish.py -v
+      - name: Fetch exact public source objects without checkout or source execution
+        env:
+          EXPECTED_REVISION: ${{ inputs.expected_revision }}
+        run: git -C control fetch --no-tags --depth=1 origin "$EXPECTED_REVISION"
+      - name: Observe fixed existing provider state using GET only
+        env:
+          EXPECTED_REVISION: ${{ inputs.expected_revision }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 -B control/scripts/direct-goyang-copy/provider_probe.py --report provider-observation.json
+      - name: Retain observed-not-approved evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: goyang-provider-observation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: provider-observation.json
+          if-no-files-found: warn
+          retention-days: 14
   build:
-    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'
+    if: inputs.provider_probe_only != true && github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     outputs:
@@ -109,7 +168,7 @@ jobs:
     concurrency:
       group: site-staging-${{ github.repository }}
       cancel-in-progress: false
-    if: inputs.indexnow_only != true
+    if: inputs.provider_probe_only != true && inputs.indexnow_only != true
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -236,7 +295,7 @@ jobs:
     concurrency:
       group: site-staging-${{ github.repository }}
       cancel-in-progress: false
-    if: inputs.indexnow_only == true
+    if: inputs.provider_probe_only != true && inputs.indexnow_only == true
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 10

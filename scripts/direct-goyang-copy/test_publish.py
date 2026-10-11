@@ -218,14 +218,14 @@ class ArtifactTests(unittest.TestCase):
             (root/'extra.txt').write_text('extra')
             with self.assertRaises(ValueError):pub.check_static(root,contract,REV,[])
     def test_workflow_fixed_dispatch_no_target_code_in_publisher(self):
-        w=(ROOT/guard.WORKFLOW).read_text();build,publish=w.split('  publish:\n',1);final=publish.split('  finalize_indexnow:\n',1)[1]
+        w=(ROOT/guard.WORKFLOW).read_text();build,publish=w.split('  build:\n',1)[1].split('  publish:\n',1);final=publish.split('  finalize_indexnow:\n',1)[1]
         self.assertIn('  workflow_dispatch:',w)
         for x in ('  push:','  schedule:','  workflow_run:','  pull_request:'):self.assertNotIn(x,w.split('permissions:',1)[0])
         self.assertIn("github.ref == 'refs/heads/main'",w);self.assertIn("ref: 'heads/"+guard.BRANCH+"'",w)
         self.assertNotIn('secrets.',build);self.assertNotIn('MANUAL_PREVIEW',w)
         for x in ('npm ci','npm test','npm run build','npm run qa'):self.assertIn(x,build);self.assertNotIn(x,publish)
         for x in ('CLOUDFLARE','secrets.','wrangler@','provider-before','provider-after'):self.assertNotIn(x,final)
-        self.assertIn('group: goyang-reviewed-manual-release',build);self.assertEqual(w.count('group: site-staging-${{ github.repository }}'),2)
+        self.assertIn('group: goyang-reviewed-manual-release',w);self.assertEqual(w.count('group: site-staging-${{ github.repository }}'),3)
         self.assertIn('wrangler@4.147.0',publish);self.assertIn('a.digest',publish);self.assertIn('a.workflow_run?.id',publish)
         self.assertNotIn('publish.py attach',w);self.assertNotIn('domain_attach',Path(pub.__file__).read_text());self.assertNotIn('GSC',w)
         self.assertIn("steps.deploy.outcome == 'failure'",publish);self.assertIn('cancel-in-progress: false',w)
@@ -287,5 +287,170 @@ class JournalTests(unittest.TestCase):
                     with self.assertRaisesRegex(ValueError,'indexnow_observation_scope_mismatch'):pub.observed_indexnow_request('POST',pub.ORIGIN+'/')
                     self.assertEqual(request.call_count,1)
             finally:os.chdir(old)
+
+
+import provider_probe as probe
+publish=pub
+CODE='c'*40;SOURCE='a'*40;ACCOUNT='2'*32
+
+def context():return dict(repository=probe.REPOSITORY,controlRevision=CODE,sourceBranch=probe.SOURCE_BRANCH,sourceRevision=SOURCE,runId='123',runAttempt=1,actor='owner',runUrl='https://github.com/'+probe.REPOSITORY+'/actions/runs/123',trustedCode={'fixture':'unit-only'})
+def env():return dict(GITHUB_REPOSITORY=probe.REPOSITORY,GITHUB_REF='refs/heads/main',GITHUB_EVENT_NAME='workflow_dispatch',GITHUB_SHA=CODE,EXPECTED_REVISION=SOURCE,GITHUB_RUN_ID='123',GITHUB_RUN_ATTEMPT='1',GITHUB_ACTOR='owner')
+def domain(host=probe.HOSTNAME,worker=probe.WORKER):return dict(id='d'*32,hostname=host,service=worker,environment=None,zone_id='e'*32,zone_name='fwith.kr',enabled=None,previews_enabled=None)
+class ProbeProvider:
+    def __init__(self):
+        self.calls=[];self.names=[probe.WORKER,'unrelated-private-worker'];self.domains=[domain(),domain('unrelated-private.example','unrelated-private-worker')]
+        self.settings={'bindings':[],'compatibility_date':'2026-09-29','compatibility_flags':[],'logpush':False,'placement':{},'tags':[],'tail_consumers':[],'usage_model':'standard'}
+        self.subdomain={'enabled':True,'previews_enabled':True}
+    def __call__(self,path):
+        self.calls.append(path)
+        if path.endswith('/settings'):result=self.settings
+        elif path.endswith('/subdomain'):result=self.subdomain
+        elif '/workers/scripts?' in path:result=[{'id':name} for name in self.names]
+        elif '/workers/domains?' in path:result=self.domains
+        else:result={'id':ACCOUNT}
+        return {'success':True,'result':result}
+
+class ProbeTests(unittest.TestCase):
+    def test_exact_source_code_main_and_filtered_observed_receipt(self):
+        provider=ProbeProvider()
+        with patch.object(probe,'trusted_control',return_value=context()),patch.object(probe,'current_refs') as refs,patch.object(publish,'provider_transport',return_value=(ACCOUNT,provider)),patch.object(publish.guard,'control',side_effect=AssertionError('Publication authority must not be read')):
+            receipt=probe.observe()
+        self.assertEqual(receipt['status'],'OBSERVED_NOT_APPROVED');self.assertEqual(receipt['sourceRevision'],SOURCE);self.assertEqual(receipt['controlRevision'],CODE)
+        self.assertEqual(receipt['providerStateSha256'],probe.sha(probe.compact(receipt['providerState'])))
+        self.assertEqual(receipt['providerApproval'],'NOT_GRANTED');self.assertFalse(receipt['providerMutationsPerformed']);refs.assert_called_once_with(CODE,SOURCE)
+        encoded=json.dumps(receipt);self.assertNotIn('unrelated-private',encoded);self.assertNotIn(ACCOUNT,encoded)
+        self.assertTrue(all('/workers/routes' not in p for p in provider.calls))
+    def test_absent_host_wrong_worker_or_duplicate_domains_block(self):
+        for mode in ('absent-worker','absent-host','misbound','duplicate'):
+            p=ProbeProvider()
+            if mode=='absent-worker':p.names=[]
+            elif mode=='absent-host':p.domains=[]
+            elif mode=='misbound':p.domains=[domain(worker='foreign')]
+            else:p.domains=[domain(),domain()]
+            with self.subTest(mode=mode),patch.object(probe,'trusted_control',return_value=context()),patch.object(publish,'provider_transport',return_value=(ACCOUNT,p)):
+                with self.assertRaises(ValueError):probe.observe()
+    def test_secret_bindings_unknown_settings_and_incomplete_exposure_block(self):
+        for mode in ('secret','unknown','preview-shape'):
+            p=ProbeProvider()
+            if mode=='secret':p.settings['bindings']=[{'name':'secret','type':'secret_text','text':'DO_NOT_LOG'}]
+            elif mode=='unknown':p.settings['unknown_sensitive']='DO_NOT_LOG'
+            else:p.subdomain['unreviewed']='DO_NOT_LOG'
+            with self.subTest(mode=mode),patch.object(probe,'trusted_control',return_value=context()),patch.object(publish,'provider_transport',return_value=(ACCOUNT,p)):
+                with self.assertRaises(ValueError):probe.observe()
+    def test_private_canaries_never_reach_receipt_or_stdout(self):
+        import contextlib,io
+        canary='PRIVATE_CANARY_MUST_NOT_LEAVE'
+        for field in ('tags','placement','limits','compatibility_flags','zone_id','zone_name','id','observability'):
+            provider=ProbeProvider()
+            if field in ('zone_id','zone_name','id'):provider.domains[0][field]=canary
+            elif field in ('tags','compatibility_flags'):provider.settings[field]=[canary]
+            else:provider.settings[field]={'private':canary}
+            old=Path.cwd()
+            with self.subTest(field=field),tempfile.TemporaryDirectory() as tmp:
+                try:
+                    os.chdir(tmp);stdout=io.StringIO()
+                    with patch.object(probe,'trusted_control',return_value=context()),patch.object(probe,'current_refs'),patch.object(publish,'provider_transport',return_value=(ACCOUNT,provider)),patch.object(sys,'argv',['probe','--report','provider-observation.json']),contextlib.redirect_stdout(stdout):
+                        self.assertEqual(probe.main(),1)
+                    raw=Path('provider-observation.json').read_text();self.assertNotIn(canary,raw+stdout.getvalue());self.assertNotIn('providerState',json.loads(raw))
+                finally:os.chdir(old)
+    def test_live_nondefault_settings_are_observed_without_acceptance(self):
+        p=ProbeProvider();p.settings['usage_model']='bundled'
+        with patch.object(probe,'trusted_control',return_value=context()),patch.object(probe,'current_refs'),patch.object(publish,'provider_transport',return_value=(ACCOUNT,p)):
+            result=probe.observe()
+        self.assertEqual(result['providerState']['settings']['usage_model'],'bundled');self.assertEqual(result['providerApproval'],'NOT_GRANTED')
+    def test_after_read_ref_movement_blocks_approval_free_observation(self):
+        with patch.object(probe,'trusted_control',return_value=context()),patch.object(probe,'current_refs',side_effect=ValueError('probe_main_or_source_moved')),patch.object(publish,'provider_transport',return_value=(ACCOUNT,ProbeProvider())):
+            with self.assertRaisesRegex(ValueError,'probe_main_or_source_moved'):probe.observe()
+    def test_transport_denial_is_not_retried_and_legacy_route_is_forbidden(self):
+        with patch.dict(os.environ,{'CLOUDFLARE_ACCOUNT_ID':ACCOUNT,'CLOUDFLARE_API_TOKEN':'UNIT_SECRET_DO_NOT_LOG'}),patch.object(publish,'build_opener') as opener:
+            opener.return_value.open.side_effect=HTTPError('https://api.cloudflare.com',403,'UNIT_SECRET_DO_NOT_LOG',{},None)
+            _,get=publish.provider_transport()
+            with self.assertRaises(HTTPError):get('/accounts/'+ACCOUNT)
+            with self.assertRaisesRegex(ValueError,'provider_operation_forbidden'):get('/zones/private/workers/routes')
+            self.assertEqual(opener.return_value.open.call_count,1)
+    def test_mutating_methods_or_foreign_endpoint_are_not_exposed(self):
+        with patch.dict(os.environ,{'CLOUDFLARE_ACCOUNT_ID':ACCOUNT,'CLOUDFLARE_API_TOKEN':'UNIT_SECRET'}),patch.object(publish,'build_opener') as opener:
+            _,get=publish.provider_transport()
+            with self.assertRaises(TypeError):get('POST','/accounts/'+ACCOUNT,{})
+            for path in ['/accounts/'+ACCOUNT+'/tokens','/accounts/'+ACCOUNT+'/workers/scripts/foreign/settings','/zones/zone/workers/routes','/accounts/'+ACCOUNT+'/workers/domains?custom=1']:
+                with self.assertRaises(ValueError):get(path)
+            opener.return_value.open.assert_not_called()
+    def test_fixed_identity_drift_before_credentials_is_rejected(self):
+        with patch.object(probe,'trusted_control',return_value=context()),patch.object(publish,'WORKER','other'),patch.object(publish,'provider_transport') as transport:
+            with self.assertRaisesRegex(ValueError,'probe_fixed_target_drift'):probe.observe()
+            transport.assert_not_called()
+    def test_trusted_main_and_source_ref_negatives(self):
+        good=(CODE+'\trefs/heads/main\n'+SOURCE+'\trefs/heads/'+probe.SOURCE_BRANCH+'\n').encode()
+        with patch.object(probe,'git',return_value=good):probe.current_refs(CODE,SOURCE)
+        for data in [b'',good.replace(SOURCE.encode(),b'b'*40),good.replace(CODE.encode(),b'd'*40),good+good]:
+            with patch.object(probe,'git',return_value=data):
+                with self.assertRaises(ValueError):probe.current_refs(CODE,SOURCE)
+    def test_invalid_dispatch_context_source_sha_and_reruns_block(self):
+        for key,value in [('GITHUB_REPOSITORY','foreign/repo'),('GITHUB_REF','refs/heads/source'),('GITHUB_EVENT_NAME','push'),('GITHUB_SHA','short'),('EXPECTED_REVISION',''),('GITHUB_RUN_ATTEMPT','2')]:
+            e=env();e[key]=value
+            with self.subTest(key=key),patch.dict(os.environ,e),patch.object(probe,'git') as git:
+                with self.assertRaises(ValueError):probe.trusted_control()
+                git.assert_not_called()
+    def test_exact_git_blob_checks_and_drift_symlink_negatives(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            for name in probe.CODE_FILES:
+                p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(b'fixture code\n')
+            def git(*args):
+                if args[0]=='rev-parse':return (CODE+'\n').encode()
+                if args[0]=='ls-tree':return ('100644 blob '+'1'*40+'\t'+args[-1]+'\n').encode()
+                if args[0]=='show':return b'fixture code\n'
+                raise AssertionError(args)
+            with patch.object(probe,'CONTROL',root),patch.dict(os.environ,env()),patch.object(probe,'current_refs'),patch.object(probe,'git',side_effect=git),patch.object(probe,'verify_source_identity',return_value={'sourceFilesVerified':182}):
+                self.assertEqual(len(probe.trusted_control()['trustedCode']),len(probe.CODE_FILES))
+                p=root/probe.CODE_FILES[-1];p.write_bytes(b'changed')
+                with self.assertRaisesRegex(ValueError,'probe_code_worktree_drift'):probe.trusted_control()
+                p.unlink();p.symlink_to(root/probe.CODE_FILES[0])
+                with self.assertRaisesRegex(ValueError,'probe_code_symlink'):probe.trusted_control()
+    def test_full_source_blob_path_hash_size_negatives(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);p=root/probe.MANIFEST;p.parent.mkdir(parents=True)
+            files=[{'path':'f'+str(i),'gitBlob':format(i,'040x'),'sha256':probe.sha(b'x'),'bytes':1} for i in range(182)]
+            p.write_text(json.dumps({'fileCount':182,'files':files}));manifest_hash=probe.sha(p.read_bytes())
+            rows=b''.join(('100644 blob '+row['gitBlob']+'\t'+probe.SOURCE_ROOT+'/'+row['path']).encode()+b'\0' for row in files)
+            for case in ('good','missing','symlink','blob','bytes','manifest'):
+                tree=rows
+                if case=='missing':tree=rows.split(b'\0',1)[1]
+                elif case=='symlink':tree=rows.replace(b'100644',b'120000',1)
+                elif case=='blob':tree=rows.replace(b'0'*40,b'f'*40,1)
+                def git(*args):return tree if args[0]=='ls-tree' else b'changed' if case=='bytes' else b'x'
+                with self.subTest(case=case),patch.object(probe,'CONTROL',root),patch.object(probe,'MANIFEST_SHA256','0'*64 if case=='manifest' else manifest_hash),patch.object(probe,'git',side_effect=git):
+                    if case=='good':self.assertEqual(probe.verify_source_identity(SOURCE)['sourceFilesVerified'],182)
+                    else:
+                        with self.assertRaises(ValueError):probe.verify_source_identity(SOURCE)
+    def test_safe_error_never_exposes_provider_bodies_or_credentials(self):
+        self.assertEqual(probe.safe_error(HTTPError('https://private',403,'SECRET',{},None)),'provider_http_403')
+        self.assertEqual(probe.safe_error(ValueError('secret token value: SECRET')),'ValueError')
+        self.assertEqual(probe.safe_error(RuntimeError('SECRET')),'RuntimeError')
+    def test_main_retains_sanitized_failure_and_no_approval(self):
+        old=Path.cwd()
+        with tempfile.TemporaryDirectory() as tmp:
+            try:
+                os.chdir(tmp)
+                with patch.object(sys,'argv',['probe','--report','provider-observation.json']),patch.object(probe,'observe',side_effect=HTTPError('https://private',403,'SECRET',{},None)):
+                    self.assertEqual(probe.main(),1)
+                raw=Path('provider-observation.json').read_text();self.assertNotIn('SECRET',raw);self.assertNotIn('https://private',raw);self.assertEqual(json.loads(raw)['status'],'BLOCKED_NOT_APPROVED')
+            finally:os.chdir(old)
+    def test_workflow_probe_isolation_fixed_source_and_permissions(self):
+        workflow=(Path(__file__).resolve().parents[2]/probe.WORKFLOW).read_text();section=workflow.split('  provider_probe:\n',1)[1].split('  build:\n',1)[0]
+        self.assertIn("inputs.provider_probe_only == true",section);self.assertIn('EXPECTED_REVISION: ${{ inputs.expected_revision }}',section)
+        self.assertIn("ref: 'heads/"+probe.SOURCE_BRANCH+"'",section);self.assertIn('ref: ${{ github.sha }}',section);self.assertIn('persist-credentials: false',section)
+        for forbidden in ['working-directory: target','npm ','wrangler@','issues: write','indexnow --','provider-before','upload-ready','source-before','actions/setup-node','expected_revision }}\n          path: target']:
+            self.assertNotIn(forbidden,section)
+        for job in ['build','publish','finalize_indexnow']:
+            text=workflow.split('  '+job+':\n',1)[1]
+            self.assertRegex(text,r'(?m)^    if: inputs.provider_probe_only != true')
+        self.assertIn("INDEXNOW_ONLY === 'true'",section);self.assertEqual(set(re.findall(r'secrets[.]([A-Z_]+)',section)),{'CLOUDFLARE_API_TOKEN','CLOUDFLARE_ACCOUNT_ID'})
+    def test_probe_code_does_not_call_approval_or_mutation(self):
+        text=Path(probe.__file__).read_text()
+        for forbidden in ['guard.control(',"'authority.json'",'subprocess.run(','write_assets_only_config','indexnow(',"method='PUT'","method='POST'",'npx','npm']:
+            self.assertNotIn(forbidden,text)
+        self.assertIn("status='OBSERVED_NOT_APPROVED'",text);self.assertIn("providerApproval='NOT_GRANTED'",text)
+
 
 if __name__=='__main__':unittest.main()
