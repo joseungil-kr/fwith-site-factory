@@ -30,11 +30,11 @@ RECEIPT_ISSUE = 266
 SLUGS = ['uijeongbu-dong', 'howon-dong', 'jangam-dong', 'singok-dong', 'yonghyeon-dong', 'millak-dong', 'nakyang-dong', 'jail-dong', 'geumo-dong', 'ganeung-dong', 'nogyang-dong', 'gosan-dong', 'sangok-dong']
 DEFERRED_SLUGS = {'jail-dong'}
 REGION_ROUTES = {'/regions/' + slug + '/' for slug in SLUGS if slug not in DEFERRED_SLUGS}
-ADDED_ROUTES = set()
-ARTICLE_ROUTES = REGION_ROUTES
-THIN_HUB_ROUTES = set()
+ADDED_ROUTES = {'/funeral/uijeongbu-st-marys-funeral-wreath/'}
+ARTICLE_ROUTES = REGION_ROUTES | ADDED_ROUTES
+THIN_HUB_ROUTES = {'/funeral/'}
 SITEMAP_ROUTES = {'/', '/regions/'} | ARTICLE_ROUTES
-ROUTES = SITEMAP_ROUTES
+ROUTES = SITEMAP_ROUTES | THIN_HUB_ROUTES
 
 
 def expected_robots(route):
@@ -450,3 +450,4 @@ def strip_one_cf_beacon(body,expected_sha):
 
 if __name__ == '__main__':
     raise SystemExit(main())
+

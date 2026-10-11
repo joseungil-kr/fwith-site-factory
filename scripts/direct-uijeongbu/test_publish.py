@@ -112,13 +112,15 @@ class PublishTests(unittest.TestCase):
         self.assertEqual(len(pub.SLUGS), 13)
         self.assertEqual(pub.DEFERRED_SLUGS, {'jail-dong'})
         self.assertEqual(pub.DEFERRED, ['/regions/jail-dong/'])
-        self.assertEqual(len(pub.ARTICLE_ROUTES), 12)
-        self.assertEqual(len(pub.ROUTES), 14)
-        self.assertEqual(len(pub.SITEMAP_ROUTES), 14)
-        self.assertEqual(pub.THIN_HUB_ROUTES, set())
+        self.assertEqual(len(pub.ARTICLE_ROUTES), 13)
+        self.assertEqual(len(pub.ROUTES), 16)
+        self.assertEqual(len(pub.SITEMAP_ROUTES), 15)
+        self.assertEqual(pub.THIN_HUB_ROUTES, {'/funeral/'})
         self.assertEqual(pub.ROUTES - pub.SITEMAP_ROUTES, pub.THIN_HUB_ROUTES)
         self.assertTrue(pub.REGION_ROUTES <= pub.SITEMAP_ROUTES)
         self.assertTrue(pub.ADDED_ROUTES <= pub.SITEMAP_ROUTES)
+        self.assertEqual(pub.ADDED_ROUTES, {'/funeral/uijeongbu-st-marys-funeral-wreath/'})
+        self.assertEqual(len(pub.REGION_ROUTES),12)
         self.assertFalse(set(pub.DEFERRED) & pub.ROUTES)
 
     def test_explicit_thin_hub_robots_only(self):
@@ -246,16 +248,17 @@ class ArtifactTests(unittest.TestCase):
 
     def test_exact_fixed_artifact_and_http_counts(self):
         result = pub.artifact()
-        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (12, 14, 14))
+        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (13, 15, 16))
         contract = json.loads(Path('http-contract.json').read_text())
-        self.assertTrue(all(p['robots'] == ['follow', 'index'] for p in contract['pages']))
+        self.assertTrue(all(set(p['robots']) == pub.expected_robots(p['path']) for p in contract['pages']))
+        self.assertEqual(next(p['robots'] for p in contract['pages'] if p['path']=='/funeral/'), ['follow','noindex'])
         def fixture_get(path, status=200):
             headers = Message(); headers['Content-Type'] = 'text/html'
             file = '404.html' if status == 404 else (path.lstrip('/') + 'index.html' if path.endswith('/') else path.lstrip('/'))
             return (self.root / file).read_bytes(), headers
         with patch.object(pub, 'get', side_effect=fixture_get):
             result = pub.http_once(contract)
-        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (12, 14, 14))
+        self.assertEqual((result['articleCount'], result['sitemapUrls'], result['htmlRoutes']), (13, 15, 16))
 
     def test_missing_article_is_blocked(self):
         (self.root / 'regions/uijeongbu-dong/index.html').unlink(); self.seal()
@@ -280,7 +283,7 @@ class ArtifactTests(unittest.TestCase):
             return 200, file.read_text(), {}
         with patch.object(engine, 'request', side_effect=transport), patch.object(engine, 'Journal', side_effect=AssertionError('probe must not journal')):
             result = pub.indexnow_probe()
-        self.assertEqual(result['sitemapUrls'], 14); self.assertFalse(result['submissionAttempted'])
+        self.assertEqual(result['sitemapUrls'], 15); self.assertFalse(result['submissionAttempted'])
         self.assertTrue(all(method == 'GET' and payload is None for method, url, payload in calls))
 
     def test_deferred_customer_link_is_blocked(self):
@@ -301,6 +304,11 @@ class ArtifactTests(unittest.TestCase):
         self.assertIn(('/regions/jail-dong/', 404), calls)
         self.assertNotIn(('/regions/jail-dong/', 200), calls)
 
+    def test_indexed_thin_hub_is_blocked(self):
+        file=self.root/'funeral/index.html'
+        file.write_text(file.read_text().replace('follow,noindex','follow,index')); self.seal()
+        with self.assertRaisesRegex(ValueError,'robots_meta_mismatch'): pub.artifact()
+
     def test_unreviewed_hub_is_blocked(self):
         file = self.root / 'event/index.html'
         file.parent.mkdir(parents=True); file.write_text('Unreviewed hub'); self.seal()
@@ -314,3 +322,4 @@ class ArtifactTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
