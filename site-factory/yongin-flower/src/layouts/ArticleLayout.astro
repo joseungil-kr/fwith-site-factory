@@ -1,0 +1,80 @@
+---
+import { getDisplayArticles as getCollection } from '../lib/display-articles.mjs';
+import { removeRepeatedOpeningParagraph } from '../lib/article-opening.mjs';
+import BaseLayout from './BaseLayout.astro';
+import { siteConfig } from '../config/site';
+import architecture from '../data/architecture.json';
+import '../styles/article.css';
+import {manual} from '../lib/manual-source.mjs';
+import ManualProductCards from '../components/ManualProductCards.astro';
+
+type ArchitectureEntry = {
+  pageKey: string; url: string; pageRole?: string; parentHub?: string | null; primaryKeyword?: string;
+  intentKey?: string; pageType?: string; contentRole?: string; localizationPolicy?: string;
+  sitemapIndexable?: boolean; status?: string; canonicalUrl?: string;
+};
+type SourceRef = { name:string; url:string; type?:'official'|'facility'|'education'|'professional'|'business'|'reference'; verifiedAt?:Date };
+interface Props {
+  pageKey:string; title:string; description:string; category:string; structureType:string; pageType?:string;
+  contentRole?:string; localizationPolicy?:string; region:string; snapshotId:string; slug:string; routeType:'category';
+  sourceUrls?:string[]; sources?:SourceRef[]; relatedPageKeys?:string[]; verifiedAt?:Date; publishedAt?:Date; updatedAt?:Date;
+  ogImage?:string; ogImageAlt?:string;
+  h1?:string; firstAnswer?:string; queryClass?:string; visualIntent?:string; assetSlot?:string;
+}
+const {
+  pageKey,title,description,category,structureType,pageType='order-help',contentRole='question-answer',
+  localizationPolicy='local-required',region,snapshotId,sourceUrls=[],sources=[],relatedPageKeys=[],
+  verifiedAt,publishedAt,updatedAt,ogImage,ogImageAlt,h1,firstAnswer,queryClass,visualIntent,assetSlot,
+}=Astro.props;
+const manualEntry=manual.pages.find(p=>p.pageKey===pageKey);
+const categoryLabel:Record<string,string>={regions:'지역별', funeral:'근조·장례',business:'개업·이전',school:'졸업·입학',event:'공연·행사',gift:'선물·병문안',order:'주문 안내' };
+const architecturePages=(architecture.pages||[]) as ArchitectureEntry[];
+const architectureEntry=architecturePages.find((page)=>page.pageKey===pageKey);
+const effectivePageRole=architectureEntry?.pageRole??'INFORMATION_GUIDE';
+const effectivePrimaryKeyword=architectureEntry?.primaryKeyword??'';
+const effectiveIntentKey=architectureEntry?.intentKey??'';
+const effectiveParentHub=architectureEntry?.parentHub??`/${category}/`;
+const effectivePageType=architectureEntry?.pageType??pageType;
+const effectiveLocalizationPolicy=architectureEntry?.localizationPolicy??localizationPolicy;
+const architectureIndexable=architectureEntry?.sitemapIndexable!==false&&architectureEntry?.status!=='merged';
+const canonicalPath=architectureEntry?.canonicalUrl??Astro.url.pathname;
+const categoryHref=`/${category}/`;
+const activePageKeys=new Set(architecturePages.filter((p)=>p.sitemapIndexable!==false&&p.status!=='merged').map((p)=>p.pageKey));
+const allArticles=await getCollection('articles',({data})=>(data.draftStatus==='approved'||data.draftStatus==='published'||data.manualState==='candidate')&&activePageKeys.has(data.pageKey));
+const hrefFor=(article:(typeof allArticles)[number])=>`/${article.data.category}/${article.data.slug}/`;
+const eligibleRelatedArticles=allArticles.filter((a)=>a.data.pageKey!==pageKey);
+const related=relatedPageKeys.length
+  ? [...new Set(relatedPageKeys)].flatMap((key)=>{
+      const article=eligibleRelatedArticles.find((a)=>a.data.pageKey===key);
+      return article?[article]:[];
+    })
+  : eligibleRelatedArticles.map((article)=>({article,score:article.data.category===category?40:10}))
+      .sort((a,b)=>b.score-a.score||a.article.data.pageKey.localeCompare(b.article.data.pageKey,'ko')).slice(0,4).map(({article})=>article);
+const formatDate=(date?:Date)=>date?new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'numeric'}).format(date):null;
+const normalizedSources=sources.length?sources.map((s)=>({name:s.name,url:s.url,typeLabel:{business:'업체 공식자료',official:'공식기관',facility:'시설 공식자료',education:'교육기관',professional:'전문기관',reference:'참고자료'}[s.type??'reference'],verifiedAt:s.verifiedAt??verifiedAt})):sourceUrls.map((url)=>({name:new URL(url).hostname.replace(/^www\./,''),url,typeLabel:'참고자료',verifiedAt}));
+const webPageSchema={'@context':'https://schema.org','@type':'WebPage',name:title,description,inLanguage:'ko-KR',about:[region,'꽃배달',categoryLabel[category]??category],datePublished:publishedAt?.toISOString(),dateModified:(updatedAt??verifiedAt)?.toISOString(),isPartOf:{'@type':'WebSite',name:siteConfig.brand,url:Astro.site?.toString()??Astro.url.origin}};
+const breadcrumbSchema={'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[
+  {'@type':'ListItem',position:1,name:'홈',item:new URL('/',Astro.site??Astro.url.origin).toString()},
+  {'@type':'ListItem',position:2,name:categoryLabel[category]??category,item:new URL(categoryHref,Astro.site??Astro.url.origin).toString()},
+  {'@type':'ListItem',position:3,name:title,item:Astro.url.toString()}
+]};
+const articleContent=removeRepeatedOpeningParagraph(await Astro.slots.render('default'),firstAnswer);
+---
+<BaseLayout title={`${title} | ${siteConfig.brand}`} description={description} canonicalPath={canonicalPath} robotsOverride={!architectureIndexable?'noindex,follow,max-image-preview:large':undefined} ogType="article" ogImage={ogImage} ogImageAlt={ogImageAlt}>
+  <script type="application/ld+json" set:html={JSON.stringify(webPageSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <section class="article-shell" data-snapshot-id={manualEntry?undefined:snapshotId} data-manual-revision={manualEntry?.revisionId} data-original-snapshot={manualEntry?.supersedesSnapshotId} data-content-role={contentRole} data-page-type={effectivePageType} data-localization-policy={effectiveLocalizationPolicy} data-page-role={effectivePageRole} data-primary-keyword={effectivePrimaryKeyword} data-intent-key={effectiveIntentKey} data-parent-hub={effectiveParentHub} data-query-class={queryClass} data-visual-intent={visualIntent} data-asset-slot={assetSlot}>
+    <div class="container">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">홈</a><span>›</span><a href={categoryHref}>{categoryLabel[category]??category}</a><span>›</span><span>현재 글</span></nav>
+      <header class="article-header">
+        <span class="eyebrow">{categoryLabel[category]??category}</span><h1>{h1 || title}</h1><p>{firstAnswer || description}</p>
+        <div class="article-meta"><span>{region}</span><span>{categoryLabel[category]??category}</span>{verifiedAt&&<span>정보 확인일: {formatDate(verifiedAt)}</span>}</div>
+      </header>
+      <div class="article-grid article-grid-single"><article class="prose"><Fragment set:html={articleContent} />
+        <ManualProductCards pageKey={pageKey} category={category} />
+        {normalizedSources.length>0&&<section class="source-list" aria-labelledby="source-title"><div class="source-list-head"><h2 id="source-title">정보 출처</h2>{verifiedAt&&<span>출처 정보 확인일: {formatDate(verifiedAt)}</span>}</div><ul>{normalizedSources.map((s)=><li><div><strong>{s.name}</strong><span>{s.typeLabel}</span></div><a href={s.url} rel="nofollow noopener noreferrer">원문 보기 →</a></li>)}</ul></section>}
+      </article></div>
+      {related.length>0&&<section class="related-questions"><div class="related-questions-head"><span class="eyebrow">함께 보는 안내</span><h2>이어서 살펴볼 꽃 선물 이야기</h2></div><div class="related-question-grid">{related.map((article)=><a href={hrefFor(article)} class="related-question-card"><span>{categoryLabel[article.data.category]}</span><strong>{article.data.title}</strong><p>{article.data.cardSummary || article.data.description}</p><b>안내 보기 →</b></a>)}</div></section>}
+    </div>
+  </section>
+</BaseLayout>

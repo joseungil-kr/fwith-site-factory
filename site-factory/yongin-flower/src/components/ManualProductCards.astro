@@ -1,0 +1,10 @@
+---
+import {getArticleProductSelection} from '../lib/manual-source.mjs';
+import OrderCTA from './OrderCTA.astro';
+import business from '../data/business-truth.json';
+const {pageKey,category}=Astro.props;
+const selection=getArticleProductSelection(pageKey,category);
+const selected=selection.products;
+---
+{selection.mode==='consultation' ? <OrderCTA compact heading="꽃 선물의 구성과 예산을 편하게 상담하세요" /> : <section aria-label="상품 선택과 주문" data-product-page={pageKey}><h2>사진과 기본가격으로 화환 고르기</h2><p>마음에 드는 사진과 예산을 함께 살펴보세요. 사진과 리본문구는 상품 예시로, 해당 장소의 실제 전달 사례는 아닙니다. 본문 정보 확인일: {selection.verifiedAt}. 추가 배송비와 최종 구성·금액은 주문 시 상담해 주세요.</p><div class="manual-products">{selected.map(p=><article data-product-key={p.productKey}><img src={p.image} alt={p.imageAlt} width="640" height="640" loading="lazy"/><h3>{p.name}</h3><p>{p.price.toLocaleString('ko-KR')}원</p><a href={business.phoneHref}>이 상품 전화 상담</a> · <a href={business.onlineOrderUrl}>온라인 상품 확인</a></article>)}</div></section>}
+<style>.manual-products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.manual-products article{min-width:0;border:1px solid #e8d9dc;padding:1rem;border-radius:1rem}.manual-products img{width:100%;height:18rem;object-fit:contain}.manual-products a{overflow-wrap:anywhere}@media(max-width:480px){.manual-products{grid-template-columns:1fr}}</style>

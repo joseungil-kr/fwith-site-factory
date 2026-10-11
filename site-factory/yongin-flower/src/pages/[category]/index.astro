@@ -1,0 +1,61 @@
+---
+import { getDisplayArticles as getCollection } from '../../lib/display-articles.mjs';
+import RegionalHub from '../../components/RegionalHub.astro';
+import {regionalPages} from '../../lib/regional-runtime.mjs';
+import HubIndex from '../../components/HubIndex.astro';
+import { siteConfig } from '../../config/site';
+
+type Category = 'regions' | 'funeral' | 'business' | 'school' | 'event' | 'gift' | 'order';
+
+const definitions = {
+  funeral: {
+    eyebrow: '근조·장례',
+    title: `${siteConfig.region} 장례식장 근조화환 안내`,
+    intro: '갑작스러운 부고에 어떤 말부터 전할지 망설여질 때가 있습니다. 근조화환의 사진과 예산을 살펴보고, 전하고 싶은 조의를 차분히 준비하세요.',
+    description: `${siteConfig.region} 장례식장에 전할 근조화환의 상품과 기본가격, 조의 문구와 주문 상담을 안내합니다.`,
+  },
+  business: {
+    eyebrow: '개업·이전',
+    title: `${siteConfig.region} 개업·이전 축하꽃 안내`,
+    intro: '친구가 문을 여는 첫 가게와 오래 함께한 거래처의 이전은 저마다 반가운 소식입니다. 축하화환을 예산에 맞춰 고르고 새로운 시작에 보탤 인사를 준비해 보세요.',
+    description: `${siteConfig.region} 개업·이전을 축하하는 마음에 맞춰 화환의 사진과 기본가격을 비교하고 편하게 주문을 상담하세요.`,
+  },
+  school: {
+    eyebrow: '졸업·입학',
+    title: `${siteConfig.region} 대학 졸업·입학 꽃 안내`,
+    intro: '학창 시절을 마무리하는 기쁨과 새 학교에 들어서는 설렘을 꽃으로 축하해 보세요. 함께 사진을 남길 꽃다발이나 감사의 꽃바구니는 준비 가능한 구성과 가격을 상담할 수 있습니다.',
+    description: `${siteConfig.region} 대학 졸업·입학을 축하할 꽃다발·꽃바구니의 예산과 구성, 행사에 맞춘 전달 상담을 안내합니다.`,
+  },
+  event: {
+    eyebrow: '공연·행사',
+    title: `${siteConfig.region} 공연·전시·행사 축하꽃 안내`,
+    intro: '오래 연습한 무대에 오르거나 정성껏 준비한 전시를 여는 날, 곁에서 응원해 온 마음을 전해보세요. 주최 측에 보낼 축하화환과 주인공에게 건넬 개인 꽃 선물을 나누어 살펴볼 수 있습니다.',
+    description: `${siteConfig.region} 공연·전시·행사를 축하할 화환과 개인 꽃 선물을 살펴보고 예산·행사 일정에 맞춰 상담하세요.`,
+  },
+  gift: {
+    eyebrow: '선물·병문안',
+    title: `${siteConfig.region} 꽃다발·병문안·기념일 꽃 안내`,
+    intro: '평범한 만남에 꽃을 더하고 싶거나 소중한 기념일을 기억하고 싶을 때, 받는 분의 취향과 전하고 싶은 이야기를 들려주세요. 병문안 선물은 병원의 꽃 반입 안내를 먼저 살펴보세요.',
+    description: `${siteConfig.region} 기념일·만남·회복을 응원하는 꽃 선물의 용도와 예산 상담, 병원 반입 안내를 살펴보세요.`,
+  },
+  order: {
+    eyebrow: '주문 안내',
+    title: `${siteConfig.region} 꽃배달 주문·가격·문구 안내`,
+    intro: '마음은 정했는데 어떤 상품과 문구를 고를지 망설여지시나요? 화환의 기본가격을 비교하고, 짧은 인사와 희망 일정을 정해 편하게 상담해 보세요.',
+    description: `${siteConfig.region} 꽃배달의 화환 기본가격과 리본 문구를 살펴보고, 예산과 희망 일정에 맞춰 주문을 상담하세요.`,
+  },
+} as const;
+
+export async function getStaticPaths() {
+  const allowed = new Set(['funeral', 'business', 'school', 'event', 'gift', 'order']);
+  const articles = await getCollection('articles', ({ data }) => data.draftStatus === 'approved' || data.draftStatus === 'published' || data.manualState === 'candidate');
+  const categories = [...new Set(articles.map((article) => article.data.category))].filter((category) => allowed.has(category));
+  return [...categories, ...(regionalPages.length ? ['regions'] : [])].map((category) => ({ params: { category } }));
+}
+
+const category = Astro.params.category as Category;
+const definition = category==='regions' ? null : definitions[category];
+if (category !== 'regions' && !definition) throw new Error(`UNKNOWN_V2_HUB: ${category}`);
+---
+{category==='regions' ? <RegionalHub/> : <HubIndex category={category} {...definition!} />}
+

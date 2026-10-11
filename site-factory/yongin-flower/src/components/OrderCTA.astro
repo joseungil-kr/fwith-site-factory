@@ -1,0 +1,28 @@
+---
+import business from '../data/business-truth.json';
+
+interface Props {
+  compact?: boolean;
+  heading?: string;
+}
+
+const { compact = false, heading = '꽃 주문이 필요하신가요?' } = Astro.props;
+---
+<section class:list={['order-cta', compact && 'order-cta-compact']} aria-label="주문 안내">
+  <div>
+    <span class="order-kicker">편한 주문 상담</span>
+    <h2>{heading}</h2>
+    <p>
+      전하고 싶은 마음과 예산을 말씀해 주세요. 전화주문은 {business.phoneOrderHours}, 온라인 주문은 {business.onlineOrderHours} 접수합니다.
+      {business.deliveryArea}입니다. 상담시간과 실제 전달시간은 다를 수 있어요. 희망 일정과 반입 조건, 추가배송비를 포함한 최종금액은 주문할 때 함께 상담해 주세요.
+    </p>
+  </div>
+  <div class="order-actions">
+    <a class="btn btn-primary order-phone" href={business.phoneHref} aria-label={`${business.phone} 전화주문`}>
+      전화주문 {business.phone}
+    </a>
+    <a class="btn btn-ghost" href={business.onlineOrderUrl} rel="noopener">
+      온라인 주문
+    </a>
+  </div>
+</section>

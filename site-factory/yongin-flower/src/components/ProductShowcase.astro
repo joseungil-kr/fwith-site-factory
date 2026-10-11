@@ -1,0 +1,74 @@
+---
+import products from '../data/products.json';
+import business from '../data/business-truth.json';
+import { siteConfig } from '../config/site';
+
+interface Props {
+  limit?: number;
+  showHeading?: boolean;
+}
+
+const { limit, showHeading = true } = Astro.props;
+const selected = typeof limit === 'number' ? products.slice(0, limit) : products;
+const funeral = selected.filter((p) => p.category === 'funeral_wreath');
+const congrats = selected.filter((p) => p.category === 'congrats_wreath');
+const money = new Intl.NumberFormat('ko-KR');
+---
+
+<section class="product-showcase" aria-label="화환 상품과 가격">
+  {showHeading && (
+    <div class="section-head product-showcase-head">
+      <div>
+        <span class="eyebrow">상품·가격</span>
+        <h2>{siteConfig.region} 꽃배달 대표 화환</h2>
+        <p class="section-intro">사진과 기본가격으로 마음에 드는 화환을 골라보세요. 전화로 상담하거나 fwith.co.kr에서 24시간 주문을 접수할 수 있습니다.</p>
+      </div>
+    </div>
+  )}
+
+  {[
+    ['근조화환', '고인을 추모하고 유가족을 위로하는 마음을 담아보세요.', funeral, 'funeral'],
+    ['축하화환', '새로운 시작과 기쁜 소식을 함께 축하해 보세요.', congrats, 'congrats'],
+  ].map(([label, desc, group, tone]) => (
+    Array.isArray(group) && group.length > 0 && (
+      <div class:list={['product-group', `product-group-${tone}`]}>
+        <div class="product-group-head">
+          <div>
+            <h3>{label}</h3>
+            <p>{desc}</p>
+          </div>
+          <span>상품 사진·기본가격</span>
+        </div>
+        <div class="product-grid">
+          {group.map((product) => (
+            <article class="product-card">
+              <div class="product-image-wrap">
+                <img
+                  src={product.image}
+                  alt={product.imageAlt}
+                  loading="lazy"
+                  decoding="async"
+                  width="640"
+                  height="640"
+                />
+              </div>
+              <div class="product-card-body">
+                <h4>{product.name}</h4>
+                <strong class="product-price">{money.format(product.price)}원</strong>
+                <div class="product-card-actions">
+                  <a href={business.phoneHref}>전화주문</a>
+                  <a href={business.onlineOrderUrl} rel="noopener">온라인주문</a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    )
+  ))}
+
+  <div class="product-notices">
+    <p>ⓘ 상품 사진과 리본문구는 참고용 예시입니다. {business.productVariationNotice}</p>
+    <p>{business.deliveryNotice}</p>
+  </div>
+</section>

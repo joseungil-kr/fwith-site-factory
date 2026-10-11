@@ -1,0 +1,108 @@
+---
+import {regionalPages} from '../lib/regional-runtime.mjs';
+import { getDisplayArticles as getCollection } from '../lib/display-articles.mjs';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OrderCTA from '../components/OrderCTA.astro';
+import ProductShowcase from '../components/ProductShowcase.astro';
+import business from '../data/business-truth.json';
+import { siteConfig } from '../config/site';
+import architecture from '../data/architecture.json';
+
+const activePageKeys = new Set((architecture.pages || []).filter((page) => page.sitemapIndexable !== false && page.status !== 'merged').map((page) => page.pageKey));
+const articles = (await getCollection(
+  'articles',
+  ({ data }) => (data.draftStatus === 'approved' || data.draftStatus === 'published' || data.manualState === 'candidate') && activePageKeys.has(data.pageKey)
+)).sort((a, b) => b.data.pageKey.localeCompare(a.data.pageKey, 'ko'));
+
+const categoryCounts = articles.reduce<Record<string, number>>((acc, article) => {
+  acc[article.data.category] = (acc[article.data.category] ?? 0) + 1;
+  return acc;
+}, {});
+const hrefFor = (article: (typeof articles)[number]) => `/${article.data.category}/${article.data.slug}/`;
+const categoryLabel: Record<string,string> = {
+  funeral: '근조·장례', business: '개업·이전', school: '졸업·입학',
+  event: '공연·행사', gift: '선물·병문안', order: '주문 안내',
+};
+const services = [
+  { category:'funeral', tag:'근조·장례', title:'용인 장례식장 근조화환', body:'갑작스러운 부고 앞에서 전하고 싶은 위로를 근조화환과 짧은 조의 문구로 준비해 보세요.', href:'/funeral/' },
+  { category:'business', tag:'개업·이전', title:'용인 개업·이전 축하꽃', body:'친구의 첫 매장부터 거래처의 새 출발까지, 함께 기뻐하는 마음에 맞춰 축하꽃을 골라보세요.', href:'/business/' },
+  { category:'school', tag:'졸업·입학', title:'용인 대학 졸업·입학 꽃', body:'함께 보낸 시간을 기념하고 새로운 시작을 응원할 꽃 선물을 상담해 보세요.', href:'/school/' },
+  { category:'event', tag:'공연·행사', title:'용인 공연·전시·행사 꽃', body:'오래 준비한 무대와 기쁜 행사의 주인공에게 어떤 축하를 전할지 생각해 보세요.', href:'/event/' },
+  { category:'gift', tag:'선물·병문안', title:'용인 꽃다발·병문안 꽃', body:'고마운 사람과의 약속, 소중한 기념일, 회복을 응원하는 마음을 꽃 선물로 준비해 보세요.', href:'/gift/' },
+  { category:'order', tag:'주문 안내', title:'가격·문구·편한 주문 상담', body:'예산과 전하고 싶은 말부터 말씀해 주세요. 상품 선택과 희망 일정에 맞춰 주문을 상담할 수 있습니다.', href:'/order/' },
+];
+const recent = articles.slice(0, 6);
+---
+<BaseLayout
+  title={`용인 꽃배달 | 근조화환·개업화환·꽃다발 주문 | ${siteConfig.brand}`}
+  description="용인에서 전하는 위로와 축하, 소중한 날의 꽃 선물을 준비하세요. 근조·축하화환의 사진과 기본가격을 비교하고 꽃다발·꽃바구니는 예산과 용도에 맞춰 상담할 수 있습니다."
+>
+  <section class="hero hero-commerce">
+    <div class="container hero-commerce-grid">
+      <div class="hero-copy">
+        <span class="hero-badge">용인 꽃 선물·화환 상담</span>
+        <h1>용인 <em>꽃배달</em></h1>
+        <p class="hero-lead">위로하고 싶은 날에도, 함께 기뻐하고 싶은 날에도 꽃으로 마음을 전해보세요.</p>
+        <p class="hero-sub">근조·축하화환은 사진과 기본가격으로 비교하고,<br />꽃다발·꽃바구니는 받는 분과 예산을 떠올리며 편하게 상담하세요.</p>
+        <div class="hero-actions hero-order-actions">
+          <a class="hero-phone" href={business.phoneHref}><span>☎</span><strong>전화주문 {business.phone}</strong><small>{business.phoneOrderHours}</small></a>
+          <a class="hero-online" href={business.onlineOrderUrl} rel="noopener"><span>▣</span><strong>온라인 주문</strong><small>24시간 주문 접수</small></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section product-section"><div class="container"><ProductShowcase showHeading={false} /></div></section>
+
+  <div class="container" data-purchase-banner="middle" data-page-role="home">
+    <OrderCTA heading={`${siteConfig.region} 꽃 선물, 전하고 싶은 마음부터 들려주세요`} />
+  </div>
+
+  <section class="section guide-section">
+    <div class="container">
+      <div class="section-head simple-head">
+        <div><h2>어떤 마음을 전하고 싶으세요?</h2><p class="section-intro">조용한 위로부터 설레는 새 출발까지, 선물할 날에 어울리는 안내를 골라보세요.</p></div>
+      </div>
+      <div class="guide-tile-grid">
+        {services.map((item, index) => {
+          const ready = (categoryCounts[item.category] ?? 0) >= 1;
+          return ready ? (
+            <a class:list={['guide-tile', `guide-tile-${index + 1}`]} href={item.href}>
+              <span>{item.tag}</span><h3>{item.title}</h3><p>{item.body}</p><b>자세히 보기 ›</b>
+            </a>
+          ) : (
+            <div class:list={['guide-tile', `guide-tile-${index + 1}`]} aria-label={item.title}>
+              <span>{item.tag}</span><h3>{item.title}</h3><p>{item.body}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="info-band">
+    <div class="container info-band-grid">
+      <div><strong>용인 생활권</strong><span>처인구 · 기흥구 · 수지구에서 전할 꽃 선물을 상담하세요.</span></div>
+      <div><strong>함께 준비할 마음</strong><span>조의와 축하, 감사의 인사를 받는 분과의 관계에 맞춰 담아보세요.</span></div>
+      <div><strong>예산에 맞는 선택</strong><span>화환의 사진과 기본가격을 비교하고, 개인 꽃 선물의 구성과 가격은 상담해 주세요.</span></div>
+      <div><strong>전달 장소 안내</strong><span>병원·장례식장·공연장의 꽃 반입 조건은 각 장소 안내에서 짧게 살펴보세요.</span></div>
+    </div>
+  </section>
+
+  {recent.length > 0 && (
+    <section class="section recent-section">
+      <div class="container">
+        <div class="section-head simple-head"><div><h2>함께 살펴볼 용인 꽃 선물 안내</h2><p class="section-intro">받는 분과 함께할 날을 떠올리며 상품 선택과 주문 이야기를 읽어보세요.</p></div></div>
+        <div class="grid grid-3">
+          {recent.map((article) => (
+            <a class="card recent-card" href={hrefFor(article)}>
+              <div><span class="tag">{categoryLabel[article.data.category]}</span><h3>{article.data.title}</h3><p>{article.data.cardSummary || article.data.description}</p></div>
+              <span class="more">가이드 읽기 ›</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+{regionalPages.length>0 && <section class="section"><div class="container"><a href="/regions/">{siteConfig.region} 지역별 꽃배달 안내 →</a></div></section>}
+</BaseLayout>

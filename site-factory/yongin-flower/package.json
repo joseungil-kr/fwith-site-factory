@@ -1,0 +1,25 @@
+{
+  "name": "yongin-flower-site-factory-v2",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "validate:snapshot": "node scripts/validate_snapshot.mjs",
+    "build": "npm run qa:manual && node scripts/qa_regions.mjs && node scripts/write_build_revision.mjs && npm run qa:utf8 && npm run validate:snapshot && astro check && astro build && npm run inject:banners && npm run qa:seo && npm run qa:graph && npm run qa:manual",
+    "preview": "astro preview",
+    "qa:utf8": "node scripts/qa_utf8.mjs",
+    "qa:graph": "node scripts/qa_site_graph.mjs",
+    "inject:banners": "node scripts/inject_article_banners.mjs",
+    "qa:seo": "node scripts/qa_seo_score.mjs",
+    "qa:manual": "node scripts/qa_manual.mjs",
+    "test": "node --test scripts/*.test.mjs tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.0.0",
+    "astro": "^7.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.0",
+    "typescript": "^5.9.0"
+  }
+}
