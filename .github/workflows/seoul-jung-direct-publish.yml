@@ -1,5 +1,7 @@
 name: SeoulJung Direct GitHub Static Publish
 on:
+  issues:
+    types: [opened]
   workflow_dispatch:
     inputs:
       expected_revision:
@@ -18,7 +20,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   build:
-    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main'
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'issues' && github.event.issue.title == '[REGIONAL-COPY-DEPLOY] batch' && github.actor == 'joseungil-kr' && github.event.issue.user.login == 'joseungil-kr' && contains(github.event.issue.body, '"seoul-jung"')))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     outputs:
@@ -28,7 +30,7 @@ jobs:
       - name: Authorize exact source and first attempt
         uses: actions/github-script@v7
         env:
-          REVISION: ${{ inputs.expected_revision }}
+          REVISION: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).revisions['seoul-jung'] || inputs.expected_revision }}
         with:
           script: |
             if (!/^[0-9a-f]{40}$/.test(process.env.REVISION)) throw new Error('Full source SHA required');
@@ -49,14 +51,14 @@ jobs:
         run: python3 control/scripts/direct-seoul-jung/test_publish.py -v
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.expected_revision }}
+          ref: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).revisions['seoul-jung'] || inputs.expected_revision }}
           path: target
           fetch-depth: 0
           persist-credentials: false
       - name: Verify exact source ancestry
         working-directory: target
         env:
-          REVISION: ${{ inputs.expected_revision }}
+          REVISION: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).revisions['seoul-jung'] || inputs.expected_revision }}
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$REVISION"
@@ -70,7 +72,7 @@ jobs:
           ASTRO_TELEMETRY_DISABLED: '1'
           SITE_URL: https://seoul-jung.fwith.kr
           SITE_INDEXABLE: 'true'
-          SITE_FACTORY_REVISION: ${{ inputs.expected_revision }}
+          SITE_FACTORY_REVISION: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).revisions['seoul-jung'] || inputs.expected_revision }}
         run: |
           set -euo pipefail
           npm ci
@@ -79,7 +81,7 @@ jobs:
       - name: Package exact static artifact
         id: package
         env:
-          REVISION: ${{ inputs.expected_revision }}
+          REVISION: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).revisions['seoul-jung'] || inputs.expected_revision }}
         run: python3 control/scripts/direct-seoul-jung/publish.py package --source target/site-factory/seoul-jung-flower --report package-check.json
       - uses: actions/upload-artifact@v4
         id: artifact
@@ -97,7 +99,7 @@ jobs:
       contents: read
       issues: write
     env:
-      REVISION: ${{ inputs.expected_revision }}
+      REVISION: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).revisions['seoul-jung'] || inputs.expected_revision }}
     steps:
       - name: Reject mutation reruns
         run: test "$GITHUB_RUN_ATTEMPT" = 1
@@ -206,7 +208,7 @@ jobs:
       contents: read
       issues: write
     env:
-      REVISION: ${{ inputs.expected_revision }}
+      REVISION: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).revisions['seoul-jung'] || inputs.expected_revision }}
     steps:
       - name: Reject mutation reruns
         run: test "$GITHUB_RUN_ATTEMPT" = 1
