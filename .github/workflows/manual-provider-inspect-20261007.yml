@@ -1,4 +1,4 @@
-name: Inspect existing six manual-release targets 20261007
+name: Inspect existing manual-release targets 20261007
 'on':
   push:
     branches:
@@ -34,18 +34,61 @@ jobs:
           phase: preview
         - site: namyangju
           phase: production
+        - site: ansan
+          phase: production
+        - site: yongin
+          phase: production
     steps:
     - uses: actions/checkout@v4
       with:
         ref: 0e284e79d26d778c208766432b3f3bd6870ab9fd
         path: control
         persist-credentials: false
+    - name: Check out immutable supplemental provider reader
+      if: matrix.site == 'ansan' || matrix.site == 'yongin'
+      uses: actions/checkout@v4
+      with:
+        ref: 657b9ce62b1a519ba606f9fb0110aa3679d0931c
+        path: supplemental-control
+        persist-credentials: false
+    - name: Prepare fixed supplemental GET-only targets
+      if: matrix.site == 'ansan' || matrix.site == 'yongin'
+      shell: bash
+      run: |
+        set -euo pipefail
+        python3 - <<'PYTHON'
+        import hashlib, json, os
+        from pathlib import Path
+        helper = Path('supplemental-control/scripts/manual-release-20261007/provider_check.py')
+        assert hashlib.sha256(helper.read_bytes()).hexdigest() == 'f4e8bb7e4e0553d7535b713ecdae0fd4bc32608f692a91ba7c7f232b5a25ecb0'
+        # These target descriptions grant no upload authority and contain no baseline.
+        targets = {
+            'ansan': {'siteKey': 'ansan-flower-test', 'worker': 'ansan-flower-guide-test', 'productionOrigin': 'https://ansan.fwith.kr'},
+            'yongin': {'siteKey': 'yongin-flower-v2', 'worker': 'yongin-flower-guide-v2', 'productionOrigin': 'https://yongin.fwith.kr'},
+        }
+        expected = {'ansan': '341ce3cb3b3b044edf7e0c496db343ce7acc67850d24a0557bdf8bb34c6cfa06', 'yongin': '32f4cb199c0995aebcbbd7c15bdf8530ca2d7ad7b2f0346a2482ae599dd5d544'}
+        for site, target in targets.items():
+            raw = (json.dumps(target, sort_keys=True, separators=(',', ':')) + '\n').encode()
+            assert hashlib.sha256(raw).hexdigest() == expected[site]
+            path = Path(os.environ['RUNNER_TEMP']) / (site + '-inspect-target.json')
+            assert not path.is_symlink()
+            path.write_bytes(raw)
+        PYTHON
     - name: Read existing provider state only
       env:
         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      run: python3 control/scripts/manual-release-20261007/provider_check.py control/.github/manual-release-20261007/${{
-        matrix.site }}.policy.json "${{ matrix.phase }}" inspect
+      shell: bash
+      run: |
+        set -euo pipefail
+        case "${{ matrix.site }}" in
+          ansan|yongin)
+            python3 supplemental-control/scripts/manual-release-20261007/provider_check.py "$RUNNER_TEMP/${{ matrix.site }}-inspect-target.json" production inspect
+            ;;
+          *)
+            python3 control/scripts/manual-release-20261007/provider_check.py control/.github/manual-release-20261007/${{ matrix.site }}.policy.json "${{ matrix.phase }}" inspect
+            ;;
+        esac
     - uses: actions/upload-artifact@v4
       with:
         name: manual-provider-${{ matrix.site }}-${{ matrix.phase }}-${{ github.sha
