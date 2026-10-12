@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-12T20:10:00Z",
+  "updatedAt": "2026-10-12T20:53:00Z",
   "classification": "directly inspected artifacts and public observations; pending implementation/review described separately",
   "publishedBannerSites": 31,
   "publishedEligiblePages": 459,
@@ -7,7 +7,7 @@
   "indexNowReceivedSites": 24,
   "indexNowPendingSites": 7,
   "direct7Status": "source/control/remote readback independently reviewed; deployment issue approval pending",
-  "legacy8Status": "No banner source/preview/production update published. GET-only provider inventory verified for existing8 production and4 preview targets. Six existing paths are in source/phase/workflow preparation; Ansan/Yongin source preparation continues and credential-scope external change requires explicit user approval.",
+  "legacy8Status": "No legacy banner production or hosted-preview release. Four existing credential-free source-preview runs completed; actual image capture defects in Suwon/Seongnam were not treated as visual success. Seongnam capture-only canary subsequently passed. Native reviewer identity reassignment remains unapproved for all8; dependent releases are held.",
   "pendingSecurityChange": {
     "sites": [
       "ansan",
@@ -25,11 +25,132 @@
     "limitation": "Step environment scoping is not OS/process isolation from trusted same-runner source execution."
   },
   "remainingChecks": [
-    "Legacy candidates require final source/native/phase review and current exact-SHA CI artifact/pixel evidence before release acceptance.",
-    "Canonical QA mutation gaps are being minimally corrected; no defect is asserted in the current valid rendered canonicals.",
-    "Published31 directory-spacing follow-up remains a separate unpublished change.",
-    "Gangseo and Guro preparation/status records are separate and unchanged."
+    "Formal native reviewer assignment and genuine exact-source independent evidence are required before dependent source/build/release paths.",
+    "Suwon capture-only successor and Ansan/Yongin pending-preview candidates still require remote exact-source artifacts and real pixel verification.",
+    "Bucheon/Namyangju QA is held because it relies on approved native metadata; no fallback to bypass that requirement.",
+    "Production exact-C artifact authority, provider before/after, existing hosted-preview evidence where required, actual public responses and IndexNow receipts remain.",
+    "Ansan/Yongin Cloudflare environment scoping is a separate still-pending security approval.",
+    "Published31 directory spacing is a separate unpublished follow-up. Gangseo/Guro/Geumcheon progress and all other pending approvals are preserved."
   ],
   "providerRun": 38300995491,
-  "providerSourceRevision": "8d1b5adfa3f1defb6e2f392a59f248ae2b49389e"
+  "providerSourceRevision": "8d1b5adfa3f1defb6e2f392a59f248ae2b49389e",
+  "previousStatusCommit": "e7b40dfdbcb440102b447688b836152692154fb9",
+  "qaRuns": [
+    {
+      "region": "suwon",
+      "runId": 38304032327,
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "cb3a5e9dc1f0725ccfe75a1fd1c307274f274a79",
+      "attempt": 1,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38304032327"
+    },
+    {
+      "region": "hwaseong",
+      "runId": 38304047821,
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "4ece9e26792275cda2915ad9efdabcc05595749a",
+      "attempt": 1,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38304047821"
+    },
+    {
+      "region": "goyang",
+      "runId": 38304061531,
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "576ac63050539ad88d6b22a8be680a577cf8a08b",
+      "attempt": 1,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38304061531"
+    },
+    {
+      "region": "seongnam",
+      "runId": 38304134544,
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "56d1f6147feb62463a32e92e2a3089d5e6456cef",
+      "attempt": 1,
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38304134544"
+    },
+    {
+      "region": "seongnam",
+      "runId": 38306135447,
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "8c62636a4339c0f1a37f697236e2711d9d7fc796",
+      "attempt": 1,
+      "scope": "capture-only canary; not deployment"
+    }
+  ],
+  "currentVisualEvidence": [
+    {
+      "region": "hwaseong",
+      "reportPath": "docs/shared-banner-release/legacy-hwaseong-source-preview-visual-20261012.json",
+      "reportSha256": "159e861dc45c9f877e892bfcedb41423ec612f8b9e4af3dbff95367bf0549e00",
+      "visualQa": "PASS",
+      "sourceRevision": "4ece9e26792275cda2915ad9efdabcc05595749a",
+      "runId": 38304047821,
+      "scope": "Actual loopback CI artifact images only; native/hosted/production approval pending"
+    },
+    {
+      "region": "goyang",
+      "reportPath": "docs/shared-banner-release/legacy-goyang-source-preview-visual-20261012.json",
+      "reportSha256": "6314617b60c203401f66caf6070cd67d8333ef10abd861bab0c05c7189497667",
+      "visualQa": "PASS",
+      "sourceRevision": "576ac63050539ad88d6b22a8be680a577cf8a08b",
+      "runId": 38304061531,
+      "scope": "Actual loopback CI artifact images only; native/hosted/production approval pending"
+    },
+    {
+      "region": "seongnam",
+      "reportPath": "docs/shared-banner-release/legacy-seongnam-source-preview-visual-20261012.json",
+      "reportSha256": "70a9f0f68a6c8ee966921f6b39d4718625c3cd0ebf03a890d6bac2344539bedc",
+      "visualQa": "PASS",
+      "sourceRevision": "8c62636a4339c0f1a37f697236e2711d9d7fc796",
+      "runId": 38306135447,
+      "scope": "Actual loopback CI artifact images only; native/hosted/production approval pending"
+    }
+  ],
+  "captureDiagnostic": {
+    "originalSuwonMissingConsultationImages": 35,
+    "originalSuwonTotalImages": 110,
+    "originalSeongnamMissingConsultationImages": 9,
+    "originalSeongnamTotalImages": 70,
+    "sourcePageDefectEstablished": false,
+    "canaryChangedPath": ".github/scripts/seongnam-manual-preview.mjs",
+    "canaryReuses": "Original Hwaseong settleImages with decode, instant scroll, two animation frames",
+    "canaryFixedAll9PriorBlankPositions": true,
+    "canaryActualDistFiles": 67,
+    "artifactDifferenceFromPriorRun": "only exact source revision in36HTML; all remaining file bytes unchanged",
+    "propagation": "Suwon/Ansan/Yongin capture-only local successors undergoing independent review; Bucheon/Namyangju successor preparation held from QA push pending formal reviewer assignment"
+  },
+  "nativeReviewerAssignment": {
+    "status": "held-pending-formal-current-reviewer-assignment",
+    "scope": [
+      "suwon",
+      "hwaseong",
+      "goyang",
+      "seongnam",
+      "bucheon",
+      "namyangju",
+      "ansan",
+      "yongin"
+    ],
+    "hardcodedCodeIdentity": [
+      "hwaseong",
+      "goyang",
+      "bucheon",
+      "namyangju",
+      "ansan",
+      "yongin"
+    ],
+    "provenanceBoundIdentity": [
+      "suwon",
+      "seongnam"
+    ],
+    "restriction": "Do not relabel a historical reviewer identity as the current reviewer. Current independent findings are retained separately. Current candidate contracts remain unchanged until explicit assignment authorization.",
+    "bucheonNamyangjuLocalAmendments": "Not remotely committed or pushed; prior local role-compatible approval proposals are not authorized for execution.",
+    "historicalRoleNotes": "Original Bucheon/Namyangju evidence mentions assigned guard roles with actualVerifier, but does not itself authorize assigning the current verifier.",
+    "proposal": "A separate versioned assignment/contract proposal is being prepared locally; not an issued approval."
+  }
 }
