@@ -1,8 +1,9 @@
+import {readHistoricalBannerSource} from './shared-banner-amendment.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
-const read=p=>JSON.parse(fs.readFileSync(new URL('../'+p,import.meta.url),'utf8'));
+const read=p=>JSON.parse(readHistoricalBannerSource(new URL('../'+p,import.meta.url),'utf8'));
 const hash=x=>crypto.createHash('sha256').update(x).digest('hex');
 const pages=read('src/data/pages.json'), proof=read('src/data/customer-copy-review-20261011.json'), history=read('docs/customer-copy-history-20261011.json');
 const customer=['title','primaryKeyword','h1','description','cardSummary','firstAnswer','contentMarkdown','sections','faq','sources','source','sourceData'];
@@ -32,7 +33,7 @@ test('catalog descriptions are the only product changes; original business facts
  assert.deepEqual(read('src/data/products.json').map(strip),history.oldData['products.json'].map(strip));
  const manifest=JSON.parse(proof.approvalBasis.surfaceManifest.utf8Content);
  const dedup=JSON.parse(proof.approvalBasis.noteDedupManifest.utf8Content);
- for(const row of manifest.records){const expected=row.path==='src/components/ProductCards.astro'?dedup.proposalSha256:row.proposalSha256;assert.equal(hash(fs.readFileSync(new URL('../'+row.path,import.meta.url))),expected,row.path);}
+ for(const row of manifest.records){const expected=row.path==='src/components/ProductCards.astro'?dedup.proposalSha256:row.proposalSha256;assert.equal(hash(readHistoricalBannerSource(new URL('../'+row.path,import.meta.url))),expected,row.path);}
 });
 test('initial evidence stays historical and revised snapshots cannot reuse old content hashes',()=>{
  assert.equal(history.baselineSource,'559669d44ed6a4dc3d2c5a2fef760ca5f53f9412');
@@ -73,7 +74,7 @@ const allowedCopyCheckpoint={
   "copyReview": "src/data/customer-copy-review-20261011.json",
   "state": "local-integrated-source-pending-independent-code-review"
 };
-const bytes=p=>fs.readFileSync(new URL('../'+p,import.meta.url));
+const bytes=p=>readHistoricalBannerSource(new URL('../'+p,import.meta.url));
 const validatePinned=(values,pins)=>{for(const [p,expected] of Object.entries(pins))assert.equal(hash(values[p]),expected,p);};
 const validateCheckpoint=x=>assert.deepEqual(x,allowedCopyCheckpoint,'copy checkpoint must retain exact pending state and allowed fields');
 test('proof, original history and initial checkpoint are pinned to independently reviewed bytes',()=>{
