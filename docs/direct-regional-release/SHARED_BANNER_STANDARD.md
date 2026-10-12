@@ -44,3 +44,12 @@ IndexNow는 검증된 실제 sitemap URL 집합을 제출하고 접수 영수증
 과거 전체 파일 hash에 결속된 검수 증거는 덮어쓰거나 통과시키기 위해 완화하지 않는다. 정당한 배너 변경은 원본 bytes·기존 SHA를 별도 보존하고, 승인된 추가 변환을 원본에 적용한 결과가 현재 파일 전체와 정확히 같음을 검사한다. 과거 검사의 통과는 기존 승인 내용 보존을 뜻하며, 현재 코드의 동작 검증을 대신하지 않는다. 현재 source의 원문 검사와 잘못된 변경을 거부하는 테스트, 실제 build HTML 검사, 고정 publisher의 package/artifact 검사를 함께 통과해야 한다.
 
 trusted targets manifest에 결속된 배너 revision은 기존 사이트 업데이트 모드로만 공개한다. 같은 revision을 일반 초기 발행 모드로 보내면 거부하고, 검증 전 배포 재실행이나 이슈 중복 생성을 하지 않는다. 기존 noindex 고객 페이지와 404는 전체 경로 분모에 남기되 배너 제외 이유와 경로를 따로 기록한다.
+
+### 지역 목록의 실질 콘텐츠 분산
+
+지역 목록에서는 구역 수가 아니라 펼쳐진 실제 페이지 카드 수를 기준으로 budget 배너를 중간에 놓는다. 접힌 details/summary 한 줄만으로 두 배너 사이 콘텐츠를 확보했다고 판단하지 않는다. 기존 카드 순서·본문·H2·링크와 InlineOrderBanner의 상대 위치를 보존한다. 페이지의 원래 배너 적용/noindex 조건을 바꾸지 않는다.
+
+검수된 기본 구현은 안양 source dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8의 src/components/RegionDirectory.astro 및 src/lib/directory-banner-split.mjs이다. helper SHA-256은 04ed49395e2a3458c9b01c74eff57f425ed693e9f713b59bfe7343a4c433a19c이다. 적용 요청이 true인 실제 카드 2개는 1/1로 나누고, 0/1개는 명시적으로 실패시킨다. 원래 적용 요청이 false이면 배너 0개를 유지한다. 실제 페이지의 기존 items.length >= 3 조건을 helper의 경계 조건으로 바꾸지 않는다.
+
+새 페이지 제작 시 helper 단위시험과 scripts/qa_directory_spacing.py, scripts/test_directory_spacing.py를 build/qa에 연결한다. 실제 HTML에서 순서가 유지된 카드가 message–budget과 budget–consultation 사이에 각각 최소 1개 있는지 확인한다. 기존 공개31곳의 이전 revision은 별도 후속 배포 전까지 그대로이며, 새 구현의 로컬/소스 검수 결과를 그 공개 페이지에 적용됐다고 표현하지 않는다.
+

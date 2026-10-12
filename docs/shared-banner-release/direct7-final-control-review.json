@@ -1,0 +1,3303 @@
+{
+  "checkedAt": "2026-10-12T19:26:30.063703+00:00",
+  "classification": "directly_verified_final_local_control_evidence_bindings_and_artifact_bytes",
+  "scope": "Final targets and sealed evidence binding review on an isolated local copy; no dispatch, branch ref changes, provider calls or external mutation. This supplements the separately reviewed workflow design.",
+  "baselineControlRevision": "5aeb97bc49a5e63ac7e94736a6ff9895220d1dd9",
+  "existing31TargetValuesUnchanged": true,
+  "targetCount": 38,
+  "allowlistMatchesTargetSet": true,
+  "prior14DesignFilesUnchanged": true,
+  "designFileHashes": [
+    {
+      "path": ".github/workflows/anyang-direct-publish.yml",
+      "sha256": "0d5027d3f2b756d18b69c51a1a85e2ba92155f59fa6253cd759129c3b1205cd7",
+      "matchesPreliminaryDesign": true
+    },
+    {
+      "path": ".github/workflows/gwangmyeong-direct-publish.yml",
+      "sha256": "262bdb729d24c6d6b8966c0afbf0d60c19a526d3c4232607cb96f0d44a5cc72a",
+      "matchesPreliminaryDesign": true
+    },
+    {
+      "path": ".github/workflows/pyeongtaek-direct-publish.yml",
+      "sha256": "2f6402e940f54c15a05d869cf82e7186370ff63af36eea4680ebede2f04aceb2",
+      "matchesPreliminaryDesign": true
+    },
+    {
+      "path": ".github/workflows/yeoju-direct-publish.yml",
+      "sha256": "1bc06751d8d5d3e62ee775e0960326974eefe697db99687fd2af6023a2cfe8fe",
+      "matchesPreliminaryDesign": true
+    },
+    {
+      "path": ".github/workflows/seoul-eunpyeong-direct-publish.yml",
+      "sha256": "fa35f8809da62f81474a1e33511d3c5e89ff94740b5d8ed597571264c26b62e8",
+      "matchesPreliminaryDesign": true
+    },
+    {
+      "path": ".github/workflows/seoul-seodaemun-direct-publish.yml",
+      "sha256": "775f27a89b62e3aedb8566297251b216ae786d9ec51b813172906acd430d863e",
+      "matchesPreliminaryDesign": true
+    },
+    {
+      "path": ".github/workflows/seoul-mapo-direct-publish.yml",
+      "sha256": "c167cf29aee221d2e469284801c07bbe7781f7b0cd899b24b1503cb8c44cdeb9",
+      "matchesPreliminaryDesign": true
+    },
+    {
+      "path": "scripts/shared-banners/verify_update.py",
+      "sha256": "016997b3739b17d3b34f8e4b74f9830b23359ab8d48bd521bacde957d74820d5",
+      "matchesPreliminaryDesign": true
+    },
+    {
+      "path": "scripts/shared-banners/test_verify_update.py",
+      "sha256": "66791b70ab0008c720919efbcf05944dd14963b1b8d8e4151ac5e4d62a32d5cf",
+      "matchesPreliminaryDesign": true
+    },
+    {
+      "path": "scripts/shared-banners/test_direct7_workflow_selection.py",
+      "sha256": "64f6243fcb4e3898b07ec9b18d8b6356b8c99916709eaa363f9cd17a494f8022",
+      "matchesPreliminaryDesign": true
+    },
+    {
+      "path": "scripts/direct-yeoju/test_publish.py",
+      "sha256": "c39ab459d84b00a8720d9e6e39afdd76f66982111c691f2f9aba14ad033379a2",
+      "matchesPreliminaryDesign": true
+    },
+    {
+      "path": "scripts/direct-seoul-eunpyeong/test_publish.py",
+      "sha256": "abf2f4e4ec2fa05d7cc4f4c6c8758208731bc250a581cbf5c293843b0fc4c436",
+      "matchesPreliminaryDesign": true
+    },
+    {
+      "path": "scripts/direct-seoul-seodaemun/test_publish.py",
+      "sha256": "9fc8d6b3ab33285dbf7f9b0bd95255a77d9683fc99edb0109ef4a93edb19cb81",
+      "matchesPreliminaryDesign": true
+    },
+    {
+      "path": "scripts/direct-seoul-mapo/test_publish.py",
+      "sha256": "e2f7f9131d2e6797581a3f5e7397c863dd7080e7e9e334a38349b24ddceb0af2",
+      "matchesPreliminaryDesign": true
+    }
+  ],
+  "modes": [
+    {
+      "region": "seoul-yangcheon",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "anseong",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "dongducheon",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "gapyeong",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "gimpo",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "gunpo",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "guri",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "gwacheon",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "gwangju",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "hanam",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "icheon",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "jongno",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "osan",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "paju",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "pocheon",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "seoul-dobong",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "seoul-dongdaemun",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "seoul-gangbuk",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "seoul-gwangjin",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "seoul-jung",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "seoul-jungnang",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "seoul-seongbuk",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "seoul-seongdong",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "seoul-yongsan",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "siheung",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "uijeongbu",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "uiwang",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "yangju",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "yangpyeong",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "yeoncheon",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "seoul-nowon",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "anyang",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "gwangmyeong",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "pyeongtaek",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "yeoju",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "seoul-eunpyeong",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "seoul-seodaemun",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    },
+    {
+      "region": "seoul-mapo",
+      "loadPass": true,
+      "trueModePass": true,
+      "falseModeError": "reviewed_banner_revision_requires_existing_update",
+      "falseModeRejected": true
+    }
+  ],
+  "direct7": [
+    {
+      "region": "anyang",
+      "checks": {
+        "sourceReadbackDigestMatches": true,
+        "independentStaticReviewDigestMatches": true,
+        "localValidationDigestMatches": true,
+        "sealedIndependentReviewBytesMatch": true,
+        "sealedLocalValidationBytesMatch": true,
+        "sourceIdentitiesMatchIndependentRemoteInspection": true,
+        "changedFileSetMatchesIndependentRemoteDiff": true,
+        "changedFileDigestsMatchIndependentRemoteBlobBytes": true,
+        "sealedReleaseAllFileBytesMatch": true,
+        "sealedReleaseExactIdentity": true,
+        "releaseDigestMatchesValidation": true,
+        "allHtmlExactNewSha": true,
+        "allHtmlEqualsIndependentBuildPlusRevisionOnly": true,
+        "renderedCountsMatchTarget": true
+      },
+      "evidenceDigests": [
+        {
+          "path": "docs/shared-banner-release/source-readbacks/anyang.json",
+          "sha256": "c8032afe9a9715c962040d05310fb38b041677e8ffe831b6cb8b7532fd28915a",
+          "matches": true
+        },
+        {
+          "path": "docs/shared-banner-release/direct7-independent-source-review.json",
+          "sha256": "ea02b07c924701e8beb79031692af0185427669a92f507fda4df0865af804306",
+          "matches": true
+        },
+        {
+          "path": "docs/shared-banner-release/direct7-local-validation.json",
+          "sha256": "a9b9835f9489a98bcffe764ae9bc1895961322e10781504b5980947ad43ab384",
+          "matches": true
+        }
+      ],
+      "sourceFilesIndependentlyVerified": 94,
+      "changedFiles": 24,
+      "sealedReleaseFiles": 39,
+      "releaseFiles": [
+        {
+          "path": "3b41d9e91f04c1390fb4967e99f41bc6.txt",
+          "sha256": "7d4ee21d1343ecbb78c5b3e3d0b32802e26dd2b2a604ee19bf0629826c25f5a4",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "404.html",
+          "sha256": "6a6587d389d9c9ff796806fd563867d343697222bde89e97c5a0b8d47634aaad",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "_astro/BaseLayout.MRzcX74D.css",
+          "sha256": "1d272ba03de0b407c46bf1dc6c1c07059011ece39837a18dc349f273084f880b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "_headers",
+          "sha256": "1b27a67288f21cf98b19d15cef8fa084bf7d7ca7a0f89975dd48ba51f90ed015",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "business/index.html",
+          "sha256": "289f7179fcbcb2aa9839f5e475e4f309055d0f762a1e9689fa5fa46b876cca30",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "business/pyeongchon-smart-square-opening-wreath/index.html",
+          "sha256": "98feaea45613ecac1c9d577eb096a0d19cc96819b5b259f84df29d5f98789de2",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "event/anyang-art-center-performance-wreath/index.html",
+          "sha256": "33b3b8b22e81dc95d96a633d6ab7f5b3b34ea1d386ff12e783b5ef141e6b00eb",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "event/index.html",
+          "sha256": "108221b6606619a02fb1c45f1728dfddffc16e31ffd75c45cdb886740c51090a",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "event/partyum-anyang-wedding-wreath/index.html",
+          "sha256": "547acf563e8315617dc21e8e13ce42aaa48976b3aa97bcf04d7fdeb74edb097b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "event/patiobella-wedding-wreath/index.html",
+          "sha256": "d6795e76e054000df128f2fe73a7b6961f105b6fc9b01cbb757705e23ef782c1",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "favicon.svg",
+          "sha256": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "funeral/anyang-funeral-hall-wreath/index.html",
+          "sha256": "5a9663d2eae5074afdd445c89c44a74cbab2b13eaad2bfc7272e4db53f9a3ed1",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "funeral/hallym-hospital-funeral-wreath/index.html",
+          "sha256": "4a115befa482dfb6f46ea853801ecde231dc585a6e1bd88a06d501dd4d459d9d",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "funeral/index.html",
+          "sha256": "b9985ed4bc19b170939e11f26e078c092b9ff30c00a30667a94d3b778d860228",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "funeral/sam-hospital-funeral-wreath/index.html",
+          "sha256": "5ff59d029333696da28752bb8438cabee93b3e7cfc342372430059fdd5d3db64",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/editorial/opening-wreath-illustration-v1.webp",
+          "sha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-basic.jpg",
+          "sha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-large.jpg",
+          "sha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-premium.jpg",
+          "sha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-xl.jpg",
+          "sha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-basic.webp",
+          "sha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-large.webp",
+          "sha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-premium.webp",
+          "sha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-xl.webp",
+          "sha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-budget.webp",
+          "sha256": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-consultation.webp",
+          "sha256": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-message.webp",
+          "sha256": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "index.html",
+          "sha256": "765c2c7654a51177560b8c8aa38612657ac991eb44bdc361f17384b5da2db294",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/anyang-dong/index.html",
+          "sha256": "b91da83401e1c33b3799892c789790a21e1f0eff5a9343f84b738bd8f5acc165",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/bakdal-dong/index.html",
+          "sha256": "28b7cf0d51d7458d84587fd5c972de1f85ce409ff38dfccaf40d823ddce56070",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/bisan-dong/index.html",
+          "sha256": "f2c3840b158e9a2a91f440917211ef60b6af50d554fba54be2759f2b04cf3fa2",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/gwanyang-dong/index.html",
+          "sha256": "6572dccfc249a1018fd9e7bd9db070cd86782f6bfc30d80371d89fa127122f84",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/hogye-dong/index.html",
+          "sha256": "75d82c8b9827a3049860d4b2ca6d108502049f1a111afd092402425d0640d27c",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/index.html",
+          "sha256": "f962c2e7f85637fb881387af8cb3388d51a33bc7e14d7a3ed954ff90bc338b5a",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/pyeongchon-dong/index.html",
+          "sha256": "3a6de239cd11fae7bf75047329389f9f2a4adaf7301d6636cf0dce5bfd06ddd2",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/seoksu-dong/index.html",
+          "sha256": "cbc739d59de197c17c50d14eea8229a0f0c67c0fe00f2bc85112326a6d949f3b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "robots.txt",
+          "sha256": "ef9067fbe25bc33a0ee32a14c07f09f13901be4785944ebfba4c009e7ab8682f",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "sitemap-0.xml",
+          "sha256": "f5802ddf96252ab40e4c8f9ad1705131b89af433627e8c30a3f403adfe6fcee6",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "sitemap-index.xml",
+          "sha256": "5a44503f97cdcdcabf35879b0a5f05cdc4c35f90067f9664a8e79b66b5578079",
+          "matchesManifestAndBuiltDist": true
+        }
+      ],
+      "html": [
+        {
+          "path": "404.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 0,
+          "noindex": true
+        },
+        {
+          "path": "business/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 0,
+          "noindex": true
+        },
+        {
+          "path": "business/pyeongchon-smart-square-opening-wreath/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "event/anyang-art-center-performance-wreath/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "event/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "event/partyum-anyang-wedding-wreath/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "event/patiobella-wedding-wreath/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "funeral/anyang-funeral-hall-wreath/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "funeral/hallym-hospital-funeral-wreath/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "funeral/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "funeral/sam-hospital-funeral-wreath/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/anyang-dong/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/bakdal-dong/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/bisan-dong/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/gwanyang-dong/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/hogye-dong/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/pyeongchon-dong/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/seoksu-dong/index.html",
+          "revision": [
+            "dd0b91d58dff3c267cf2216c9a9d4bdf328e29c8"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        }
+      ],
+      "counts": {
+        "customerHtml": 19,
+        "bannerEligibleHtml": 18,
+        "banners": 54
+      },
+      "pass": true
+    },
+    {
+      "region": "gwangmyeong",
+      "checks": {
+        "sourceReadbackDigestMatches": true,
+        "independentStaticReviewDigestMatches": true,
+        "localValidationDigestMatches": true,
+        "sealedIndependentReviewBytesMatch": true,
+        "sealedLocalValidationBytesMatch": true,
+        "sourceIdentitiesMatchIndependentRemoteInspection": true,
+        "changedFileSetMatchesIndependentRemoteDiff": true,
+        "changedFileDigestsMatchIndependentRemoteBlobBytes": true,
+        "sealedReleaseAllFileBytesMatch": true,
+        "sealedReleaseExactIdentity": true,
+        "releaseDigestMatchesValidation": true,
+        "allHtmlExactNewSha": true,
+        "allHtmlEqualsIndependentBuildPlusRevisionOnly": true,
+        "renderedCountsMatchTarget": true
+      },
+      "evidenceDigests": [
+        {
+          "path": "docs/shared-banner-release/source-readbacks/gwangmyeong.json",
+          "sha256": "8a99854ceddb4b12a533511fc5f3ce63f120f43098dc3529d6af6af14be7e590",
+          "matches": true
+        },
+        {
+          "path": "docs/shared-banner-release/direct7-independent-source-review.json",
+          "sha256": "ea02b07c924701e8beb79031692af0185427669a92f507fda4df0865af804306",
+          "matches": true
+        },
+        {
+          "path": "docs/shared-banner-release/direct7-local-validation.json",
+          "sha256": "a9b9835f9489a98bcffe764ae9bc1895961322e10781504b5980947ad43ab384",
+          "matches": true
+        }
+      ],
+      "sourceFilesIndependentlyVerified": 93,
+      "changedFiles": 24,
+      "sealedReleaseFiles": 32,
+      "releaseFiles": [
+        {
+          "path": "404.html",
+          "sha256": "d5c92bc107fda609304aec26d806d42f61268c62d49967fb6a70090c3f3ff3d1",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "_astro/BaseLayout.MRzcX74D.css",
+          "sha256": "1d272ba03de0b407c46bf1dc6c1c07059011ece39837a18dc349f273084f880b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "_headers",
+          "sha256": "1b27a67288f21cf98b19d15cef8fa084bf7d7ca7a0f89975dd48ba51f90ed015",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "cdf9a8a7747db0d2d6f53e719089d168.txt",
+          "sha256": "1b7ee7603dadb9b58a406e25c510b454f18350fb58c0b68d5ccd61316bcd91a2",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "event/gwangmyeong-lapoete-wedding-wreath/index.html",
+          "sha256": "ee052bafe40d9633b563cf9c2c5ff822f7e3c4dd8293d9aeacd6b18f5d1d5728",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "event/index.html",
+          "sha256": "afb201dae86f1aa7e0114fc6e032f3bc6e5646230c0fc6c1e56b8c16154ae9aa",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "favicon.svg",
+          "sha256": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/editorial/opening-wreath-illustration-v1.webp",
+          "sha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-basic.jpg",
+          "sha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-large.jpg",
+          "sha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-premium.jpg",
+          "sha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-xl.jpg",
+          "sha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-basic.webp",
+          "sha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-large.webp",
+          "sha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-premium.webp",
+          "sha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-xl.webp",
+          "sha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-budget.webp",
+          "sha256": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-consultation.webp",
+          "sha256": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-message.webp",
+          "sha256": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "index.html",
+          "sha256": "dfa3ce3326118dadebdd0a2286e948590b95373939162e4e3fea5cb1d9e4b026",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/cheolsan-dong/index.html",
+          "sha256": "91b352be8dc745e113a183afd16880ff11aa8597b4074f162e850d8c79bddfca",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/gahak-dong/index.html",
+          "sha256": "aadb1accd242c8643491a49ab9efb73392ca4829d5919f09b29674391b4c4bb0",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/gwangmyeong-dong/index.html",
+          "sha256": "4e287b47577ade7ba20f5c201fe1c4319285a5ad12e624c677b516a62570342c",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/haan-dong/index.html",
+          "sha256": "7ee720cb59f1edb8e77917cdca313621966cf8e27fbb9d73a9c8e3426d27a9b1",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/iljik-dong/index.html",
+          "sha256": "012d4453ab529ebef76cead25f81dde8c0e698aa3905eec5fa6d744122567ca7",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/index.html",
+          "sha256": "e3309173b7f222792d4aca2264005011262a5fcdf6c3b81b92e734ab9d745b1e",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/noonsa-dong/index.html",
+          "sha256": "826033fee71317e4a2c4265c018b0fc59c3ef0ed814a7ebdf39d4bcbbc26fe76",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/okgil-dong/index.html",
+          "sha256": "8f981ca6f7037ce7f6b588043f69e9fd1e56702a896024713d1ec000cb6fa28b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/soha-dong/index.html",
+          "sha256": "17dd554621c3a6db475439c0a71543e34193df75a5146f4fddfb482f87c71023",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "robots.txt",
+          "sha256": "acd2e8af22962c6020672b7a369906f3fb43a15e7d0d9ad04ca5399f1234dbc0",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "sitemap-0.xml",
+          "sha256": "63181a32aefca56f2d4e32c5bbeca489a0626c1051f43c2672286f50f16c8ea1",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "sitemap-index.xml",
+          "sha256": "4344ec3408c0349d072b5d7b9aa4729cbefd12b6db68e7f5f89bff67559673b2",
+          "matchesManifestAndBuiltDist": true
+        }
+      ],
+      "html": [
+        {
+          "path": "404.html",
+          "revision": [
+            "5aea17446bf2c5cadeb66c5047fbcc739bc9bc56"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 0,
+          "noindex": true
+        },
+        {
+          "path": "event/gwangmyeong-lapoete-wedding-wreath/index.html",
+          "revision": [
+            "5aea17446bf2c5cadeb66c5047fbcc739bc9bc56"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "event/index.html",
+          "revision": [
+            "5aea17446bf2c5cadeb66c5047fbcc739bc9bc56"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 0,
+          "noindex": true
+        },
+        {
+          "path": "index.html",
+          "revision": [
+            "5aea17446bf2c5cadeb66c5047fbcc739bc9bc56"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/cheolsan-dong/index.html",
+          "revision": [
+            "5aea17446bf2c5cadeb66c5047fbcc739bc9bc56"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/gahak-dong/index.html",
+          "revision": [
+            "5aea17446bf2c5cadeb66c5047fbcc739bc9bc56"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/gwangmyeong-dong/index.html",
+          "revision": [
+            "5aea17446bf2c5cadeb66c5047fbcc739bc9bc56"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/haan-dong/index.html",
+          "revision": [
+            "5aea17446bf2c5cadeb66c5047fbcc739bc9bc56"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/iljik-dong/index.html",
+          "revision": [
+            "5aea17446bf2c5cadeb66c5047fbcc739bc9bc56"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/index.html",
+          "revision": [
+            "5aea17446bf2c5cadeb66c5047fbcc739bc9bc56"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/noonsa-dong/index.html",
+          "revision": [
+            "5aea17446bf2c5cadeb66c5047fbcc739bc9bc56"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/okgil-dong/index.html",
+          "revision": [
+            "5aea17446bf2c5cadeb66c5047fbcc739bc9bc56"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/soha-dong/index.html",
+          "revision": [
+            "5aea17446bf2c5cadeb66c5047fbcc739bc9bc56"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        }
+      ],
+      "counts": {
+        "customerHtml": 12,
+        "bannerEligibleHtml": 11,
+        "banners": 33
+      },
+      "pass": true
+    },
+    {
+      "region": "pyeongtaek",
+      "checks": {
+        "sourceReadbackDigestMatches": true,
+        "independentStaticReviewDigestMatches": true,
+        "localValidationDigestMatches": true,
+        "sealedIndependentReviewBytesMatch": true,
+        "sealedLocalValidationBytesMatch": true,
+        "sourceIdentitiesMatchIndependentRemoteInspection": true,
+        "changedFileSetMatchesIndependentRemoteDiff": true,
+        "changedFileDigestsMatchIndependentRemoteBlobBytes": true,
+        "sealedReleaseAllFileBytesMatch": true,
+        "sealedReleaseExactIdentity": true,
+        "releaseDigestMatchesValidation": true,
+        "allHtmlExactNewSha": true,
+        "allHtmlEqualsIndependentBuildPlusRevisionOnly": true,
+        "renderedCountsMatchTarget": true
+      },
+      "evidenceDigests": [
+        {
+          "path": "docs/shared-banner-release/source-readbacks/pyeongtaek.json",
+          "sha256": "4986642166cdc88c41844c4a44719d4920ecb124c53213683f6f3b810702ee27",
+          "matches": true
+        },
+        {
+          "path": "docs/shared-banner-release/direct7-independent-source-review.json",
+          "sha256": "ea02b07c924701e8beb79031692af0185427669a92f507fda4df0865af804306",
+          "matches": true
+        },
+        {
+          "path": "docs/shared-banner-release/direct7-local-validation.json",
+          "sha256": "a9b9835f9489a98bcffe764ae9bc1895961322e10781504b5980947ad43ab384",
+          "matches": true
+        }
+      ],
+      "sourceFilesIndependentlyVerified": 102,
+      "changedFiles": 25,
+      "sealedReleaseFiles": 63,
+      "releaseFiles": [
+        {
+          "path": "404.html",
+          "sha256": "c8ce0d9fd12bc8b8f8c53c14a14560a916f6369713f25fd422113db663e0be1c",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "708ecb57c729d9c61d08c73f117b9e03.txt",
+          "sha256": "9ef94753e6a1ab7c6a10bf5c93d0a9b4cdab250a1c46f1b14bf05deadddd7b92",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "_astro/BaseLayout.MRzcX74D.css",
+          "sha256": "1d272ba03de0b407c46bf1dc6c1c07059011ece39837a18dc349f273084f880b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "_headers",
+          "sha256": "1b27a67288f21cf98b19d15cef8fa084bf7d7ca7a0f89975dd48ba51f90ed015",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "event/index.html",
+          "sha256": "682b3017213753abdf614e7bb7bc3b4a4d6fd4421893639ec63b21d55c734cfb",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "event/pyeongtaek-art-center-performance-wreath/index.html",
+          "sha256": "342de8949f74c0f847249c8916eaac6411c40b1475f7d2cff09def9bd56a255a",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "favicon.svg",
+          "sha256": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/editorial/opening-wreath-illustration-v1.webp",
+          "sha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/basket-sunshine.jpg",
+          "sha256": "981b12dfed6d6a1a53689ffd1edbedad79b6bfd3db5315be2d328021aa42131f",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/bouquet-blue.jpg",
+          "sha256": "03867ab3419026155c68521b3a4fc0f63e4e03a347643d4c0c23d18dec44add7",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/bouquet-happiness.jpg",
+          "sha256": "902a9543f977f2f12884da9046f5dfd80d4bbb32f66f01f32708a450ef0d358d",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/bouquet-rose.jpg",
+          "sha256": "323602568f9af549a8cdafbd270a2914d167d4709dcbbfec8a49fad6ab54d7cd",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-basic.jpg",
+          "sha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-large.jpg",
+          "sha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-premium.jpg",
+          "sha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-xl.jpg",
+          "sha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-basic.webp",
+          "sha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-large.webp",
+          "sha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-premium.webp",
+          "sha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-xl.webp",
+          "sha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-budget.webp",
+          "sha256": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-consultation.webp",
+          "sha256": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-message.webp",
+          "sha256": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "index.html",
+          "sha256": "9125caa4b7ed98ce0a8c525428517f208f9acc344b6e0d25720d53be5cf65bd8",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/anjung-eup/index.html",
+          "sha256": "d8a1cb8f76dfad7e1302a7c8c115b366592aa51b50e9d1b681a86e4f8149c443",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/bijeon-dong/index.html",
+          "sha256": "c29f355709d55c816355e2517009a65f92d3e258a9f1641d70ee5a40025f3e8b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/cheongbuk-eup/index.html",
+          "sha256": "595fa1d6a8ac13944ca9729a7c0ff6fb1f2025bdb72cc52ca2542cf6d8bcfa54",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/cheongnyong-dong/index.html",
+          "sha256": "ca621e460eef9c7dc2bc3af47c775f018c486047ae058ce31ca1c4b4cd550e6c",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/chilgoe-dong/index.html",
+          "sha256": "52c72a8b95d9ceccce3e1aaa0ccf4f98fd8eb287f5b9a45b4e6799e797e0f03f",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/doil-dong/index.html",
+          "sha256": "630cd40a5ad22150f86b700d942f69824a0f4d4bba9059e7c59efa779f636110",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/dokgok-dong/index.html",
+          "sha256": "e0908f31783ad8f75aa53c7ce79adaa6bbc5c489297dd6aed138a7a1286fbe81",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/dongsak-dong/index.html",
+          "sha256": "fdee025b29395ed8a81b9464c0cab002eda2f48129e08f7439d668c372549c40",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/gajae-dong/index.html",
+          "sha256": "069ec470ded50b6e551fdaf03489633cd869f117c20f80b3048ac98b83122c95",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/godeok-dong/index.html",
+          "sha256": "7c2705cd9fbfa949ff7c0ad40ff91ee38026c376706f050d44f5324aa2e1c5bb",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/godeok-myeon/index.html",
+          "sha256": "2f2fcb79a570dc5f2ef2d823542dabc3ce05efc2b9ac26e072a5c6de8f33228b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/gunmun-dong/index.html",
+          "sha256": "e6b325835dd6029c0b056a6994f6ee8f20955922e23534e81a09b2e46f33bd5b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/hapjeong-dong/index.html",
+          "sha256": "6c467e4e3b2a7f489d17224139d115a41a67ed889d04c90bbb772a053c30c7a0",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/hyeondeok-myeon/index.html",
+          "sha256": "02a0d19a427b08e03240b57297d8693e479978544b6578373fdb896c499241c5",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/ichung-dong/index.html",
+          "sha256": "12a733b89648239f979d28127cc3def1b8c5254fe480b1de6ade2d8f82876926",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/index.html",
+          "sha256": "16557c4e2b51e4921dec92e19ad84f41687c818ee4bc79995da160edfe8ae3e5",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/jangan-dong/index.html",
+          "sha256": "6c0406ba413fd05c41956be802e332518ef3ae63c22339b51fdd900c668e9bad",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/jangdang-dong/index.html",
+          "sha256": "a6f91c3ec685b8a197dfa22d7b4d8e46df14eee1590280f5ef8d1c63556ae225",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/jije-dong/index.html",
+          "sha256": "02b40d81bd1d707e2ed8fbc54093266288b7f63229130c26b4dead5bab5b38ac",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/jinwi-myeon/index.html",
+          "sha256": "9d5f4d0a27027d1e9693338a0edcb717bed6d33583a943eb0a3d2cdbfe0f6762",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/jisan-dong/index.html",
+          "sha256": "c9ddce240f9bfa25bd2820c8739742e3a121401a8bb11e16c65396a611574787",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/jukbaek-dong/index.html",
+          "sha256": "a8c8b5a9fe17cb05037ad756de017f2edc11bf9dfe33827ceeade4d6f7c610ec",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/mogok-dong/index.html",
+          "sha256": "bb37c25da5156f488a3d435882689a6fa5d1401bc7a94dc39438e82b6432bb4a",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/oseong-myeon/index.html",
+          "sha256": "d3b1b52346d00208b5827fbf3883ae873d08c3597b72aff49287935a17128f13",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/paengseong-eup/index.html",
+          "sha256": "e589d79a1228fad54cfd50cbdd0344de88f705fc1ce710858abde5e8b9c2822a",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/poseung-eup/index.html",
+          "sha256": "42e1aefab1962b230c4938f3dba3b400ce74dfe9ec1f5fe9cf0e169772c044b9",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/pyeongtaek-dong/index.html",
+          "sha256": "340d0673409ffbf49373324850eabf1f6ba901bb77481568059bf5bf29c10dd9",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/segyo-dong/index.html",
+          "sha256": "62bb8530b52cf2ddefceed18cbdb784a660aefc3a4cf6171d8a72cb7cf619ba7",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/seojeong-dong/index.html",
+          "sha256": "1b6f13ab835f14d78428dc3ac07ec63ee2b8af041c435e60de219fce4be7c51e",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/seotan-myeon/index.html",
+          "sha256": "ebbabd04df2d2666f6574d3805e0c4374869ed514309a8485e00a042061291e1",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/sindae-dong/index.html",
+          "sha256": "b7df24d045c9a9c6e23223928b243aac3560cf9f354db8d1453f58b72f570e31",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/sinjang-dong/index.html",
+          "sha256": "afe865921b1cac504d90251bcc48083b6d492964396ccb1b49a06a00687d0b85",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/sosa-dong/index.html",
+          "sha256": "adb3763c23871bcd6810695cefd3122e67bc8d6198aca8b85abe20d7b79d45c0",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/tongbok-dong/index.html",
+          "sha256": "517d03d34957280d57a69bff79699215fae988fbce2fca58aa774de18e328f52",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/yongi-dong/index.html",
+          "sha256": "5ec10a08c159b516cf7d925b2cc1c329c58be753f6f32f0e53c91bf76406dca1",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/yucheon-dong/index.html",
+          "sha256": "8a44ce6f6d88f05d0f51293a90aa6d29abd05076f7e584c478613d80c3559eca",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "robots.txt",
+          "sha256": "4e726b7a6c0213198fece5f7661346fcf7dbd3f7633dda57b5503b8bdf2b7c2a",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "sitemap-0.xml",
+          "sha256": "fc7f8d4fd08609ea46feef75d91df26930aba979c6d490cf757b16318bae0f52",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "sitemap-index.xml",
+          "sha256": "0a2fff6e94039016e47754b7c2fcddcfbd4f513feecb6afaf2b21c691911b389",
+          "matchesManifestAndBuiltDist": true
+        }
+      ],
+      "html": [
+        {
+          "path": "404.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 0,
+          "noindex": true
+        },
+        {
+          "path": "event/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 0,
+          "noindex": true
+        },
+        {
+          "path": "event/pyeongtaek-art-center-performance-wreath/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/anjung-eup/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/bijeon-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/cheongbuk-eup/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/cheongnyong-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/chilgoe-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/doil-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/dokgok-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/dongsak-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/gajae-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/godeok-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/godeok-myeon/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/gunmun-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/hapjeong-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/hyeondeok-myeon/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/ichung-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/jangan-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/jangdang-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/jije-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/jinwi-myeon/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/jisan-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/jukbaek-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/mogok-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/oseong-myeon/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/paengseong-eup/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/poseung-eup/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/pyeongtaek-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/segyo-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/seojeong-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/seotan-myeon/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/sindae-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/sinjang-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/sosa-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/tongbok-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/yongi-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/yucheon-dong/index.html",
+          "revision": [
+            "616aba4aa52bbfbd33b476e2fc2db041379a667b"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        }
+      ],
+      "counts": {
+        "customerHtml": 39,
+        "bannerEligibleHtml": 38,
+        "banners": 114
+      },
+      "pass": true
+    },
+    {
+      "region": "yeoju",
+      "checks": {
+        "sourceReadbackDigestMatches": true,
+        "independentStaticReviewDigestMatches": true,
+        "localValidationDigestMatches": true,
+        "sealedIndependentReviewBytesMatch": true,
+        "sealedLocalValidationBytesMatch": true,
+        "sourceIdentitiesMatchIndependentRemoteInspection": true,
+        "changedFileSetMatchesIndependentRemoteDiff": true,
+        "changedFileDigestsMatchIndependentRemoteBlobBytes": true,
+        "sealedReleaseAllFileBytesMatch": true,
+        "sealedReleaseExactIdentity": true,
+        "releaseDigestMatchesValidation": true,
+        "allHtmlExactNewSha": true,
+        "allHtmlEqualsIndependentBuildPlusRevisionOnly": true,
+        "renderedCountsMatchTarget": true
+      },
+      "evidenceDigests": [
+        {
+          "path": "docs/shared-banner-release/source-readbacks/yeoju.json",
+          "sha256": "cb56ff7fe7d0457c8bfec5b5738ba60382278bbe63c294c078aa3550eba0655b",
+          "matches": true
+        },
+        {
+          "path": "docs/shared-banner-release/direct7-independent-source-review.json",
+          "sha256": "ea02b07c924701e8beb79031692af0185427669a92f507fda4df0865af804306",
+          "matches": true
+        },
+        {
+          "path": "docs/shared-banner-release/direct7-local-validation.json",
+          "sha256": "a9b9835f9489a98bcffe764ae9bc1895961322e10781504b5980947ad43ab384",
+          "matches": true
+        }
+      ],
+      "sourceFilesIndependentlyVerified": 94,
+      "changedFiles": 25,
+      "sealedReleaseFiles": 52,
+      "releaseFiles": [
+        {
+          "path": "404.html",
+          "sha256": "09a1eef9ab620833339cdc09d000c73eaff127f38b18580fbef1e2db36e52c77",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "5dd9187791acb5060b7beea480e40c38.txt",
+          "sha256": "5ade75c6015285d1cefec267f79bed1cd7f026c44d7ff0ace2493cfab5e93e8f",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "_astro/BaseLayout.MRzcX74D.css",
+          "sha256": "1d272ba03de0b407c46bf1dc6c1c07059011ece39837a18dc349f273084f880b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "_headers",
+          "sha256": "1b27a67288f21cf98b19d15cef8fa084bf7d7ca7a0f89975dd48ba51f90ed015",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "favicon.svg",
+          "sha256": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/editorial/opening-wreath-illustration-v1.webp",
+          "sha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-basic.jpg",
+          "sha256": "2f58d64d26983bf9aa19f2410b47bfc193ad18b948b2ab54bf59b8a36bb1fdf6",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-large.jpg",
+          "sha256": "2cffb47abdda01652a08e4f89372c5a32fed6b00d47f260afbbefe606bc72f15",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-premium.jpg",
+          "sha256": "9b2a869a4aba5ab02af7c0efb5270f536b90d5989d040af5c2c7ead78ec6b46d",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-xl.jpg",
+          "sha256": "4929374434bd95de1cfe73421fd3033ef74f9532a68df1837a7e6e6afb51a410",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-basic.webp",
+          "sha256": "7b6a2ae56415c52ddc1e072c2250066366e31c177601f84055bf038a5541239b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-large.webp",
+          "sha256": "f3d1eba34c8b288c0f61582f98c4e0ef0de422842f7e9a12407ccaaab8e04210",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-premium.webp",
+          "sha256": "c09af52edc3108584c0b76ae6d37715384d7b448dac3f3e7700f7ef10c5f7738",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-xl.webp",
+          "sha256": "fab5752e7c2577efd0ed1713e69e943c83378107abe2f238d0e84a4faf9ffad6",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-budget.webp",
+          "sha256": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-consultation.webp",
+          "sha256": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-message.webp",
+          "sha256": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "index.html",
+          "sha256": "b75e0881a62eb8a6187ebe7dde565daaab4e0c671e8304ca98acb2d3ca7bc8d3",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/bungnae-myeon/index.html",
+          "sha256": "a3ba18e6af213e2809831164742ff645a0b595cf0eac14a8b3c119a4fdb11f94",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/chang-dong/index.html",
+          "sha256": "58da261f5bb029fc55f51e30b4cd530243c5784baa698e7630962757014414b9",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/cheonsong-dong/index.html",
+          "sha256": "1f4cf6aad6e970f52b334ac2796448a24b033215c97eb3e268bfa99fd80dd8eb",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/daesin-myeon/index.html",
+          "sha256": "7f839f9bdadf499230479cb934063fc2d8fb133b6885f12d19cdfd0fbba41999",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/danhyeon-dong/index.html",
+          "sha256": "16c60eef57621d59f2ac08addea2d0f4874322aed5bb18f505957b880d147d7c",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/gaeop-dong/index.html",
+          "sha256": "728f5f944c48ecce403697966ae39ab6163fc1960ec04e173b4cef1660b59d8b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/ganam-eup/index.html",
+          "sha256": "0abb81c7cbef647705ba715483027723dc1ee6a6820d39bfc0e47743e7cb1276",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/gangcheon-myeon/index.html",
+          "sha256": "a7ffd1c99470136c59d8320211dad95288905a34e4a80176a9eb4e406df704f9",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/geumsa-myeon/index.html",
+          "sha256": "1135d6d45cee693c72a2d4e18f8bab5bc5a02bb474f1dbf3fe72d0a549ccbace",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/gyo-dong/index.html",
+          "sha256": "218ef0f4e909cd9f79bbe193bb1e77f6b68e077d944db38f17e1f6c0aa5529fd",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/ha-dong/index.html",
+          "sha256": "bd5d0867a267864fbecef95d9f73645897fa2c2a06ff9b8b9f20afd6f1c43ecf",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/hageo-dong/index.html",
+          "sha256": "9a9d025a935ea3dda2615072b17ea44f6527f2e93a04a252698278bd281008fb",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/heungcheon-myeon/index.html",
+          "sha256": "97a53c63eee402ce18fd1f0ce8a7de3ad17efa111c3ecb178d09ffdb74fd7855",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/hongmun-dong/index.html",
+          "sha256": "a25a2283d4cf7a269ac713997649c71272b96cbaac9c02e69787953256a65b67",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/hyeonam-dong/index.html",
+          "sha256": "507deec736563aac3d06306950616ff6881c6f586b354cbe76dd1e1185a7591d",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/index.html",
+          "sha256": "52049d4d1acfa0a03c6fba0b2cb00ee2295ae0926a930a848d9060a2d527554b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/jeombong-dong/index.html",
+          "sha256": "a5786c3798e677759a950e7bb2f5be83c5463dd8a742451e5ba56917697f96c9",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/jeomdong-myeon/index.html",
+          "sha256": "a405e3434addaf573065e6d7c0661f89723e49bd2e401886407581ac4a5a564a",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/maeryong-dong/index.html",
+          "sha256": "77433d81edf471d630662aff9266d3d3e5f8db5929ddc4f17b7a08fed8d59c03",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/myeokgok-dong/index.html",
+          "sha256": "95e8e0dc6bf092f057cdcd6222921bb457637508a3678deba9db1eec6e2baa4f",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/neunghyeon-dong/index.html",
+          "sha256": "492f13a2365991931e4cbecbc2fc5bff7517e7e1d3dcf863aea7b8824631ee72",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/ogeum-dong/index.html",
+          "sha256": "c7edc34855466be0af3f3ce03f2eb249cdf9ef0aa52a6a34a43487515d98be5a",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/ohak-dong/index.html",
+          "sha256": "4a06687262db80c166c7b73a66c39e8c83be94af7469e834bddaaf27942001b3",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/samgyo-dong/index.html",
+          "sha256": "d563ec1ee5391d5e3ff26357c4d5073498096239c62beb7287051dd3fa7f5820",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/sanbuk-myeon/index.html",
+          "sha256": "6c3b14a16d4b124a6aeabfb79326a25f18d026aefd328611e7a0f26e5f3a4a55",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/sang-dong/index.html",
+          "sha256": "c01a420bf095a16a3f520bb11268e7ed02933736c938c600001abb1618531911",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/sanggeo-dong/index.html",
+          "sha256": "e48fa11b423ebc9b662328b8a148d42f6ea7644a19d1f28c312f0c6f9e06cd64",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/sejongdaewang-myeon/index.html",
+          "sha256": "98d02970458805faefe39bd41490a31fe88f3f84753dc136d33287b9e5dd1e62",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/wolsong-dong/index.html",
+          "sha256": "2339d96e4af1d8529d554609d89ff02c26050e5cce0af9a0bf6c8b92b73f0cb8",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/yeonra-dong/index.html",
+          "sha256": "dfa6d2da85f607b235e40c4ab64e8c89a0b2788564318642b459daff048688fd",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/yeonyang-dong/index.html",
+          "sha256": "4a3504d0ba079599699eb0e0a130d299382488a3db276438e55507b0e4c1f4b6",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "robots.txt",
+          "sha256": "88c8e74b4de2cc7bdbc0d1e1be3ceabfd74814a435c1b9376ce28b572f00b3ee",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "sitemap-0.xml",
+          "sha256": "3569af7230a067d74a8e329bcb90b06148ecb7cece616b762a46c6c08f549756",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "sitemap-index.xml",
+          "sha256": "e3d3bde1a96314b7159abc15d2445f26650e1feeaabba6d1ab31a8f809d6c5f9",
+          "matchesManifestAndBuiltDist": true
+        }
+      ],
+      "html": [
+        {
+          "path": "404.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 0,
+          "noindex": true
+        },
+        {
+          "path": "index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/bungnae-myeon/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/chang-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/cheonsong-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/daesin-myeon/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/danhyeon-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/gaeop-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/ganam-eup/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/gangcheon-myeon/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/geumsa-myeon/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/gyo-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/ha-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/hageo-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/heungcheon-myeon/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/hongmun-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/hyeonam-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/jeombong-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/jeomdong-myeon/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/maeryong-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/myeokgok-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/neunghyeon-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/ogeum-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/ohak-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/samgyo-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/sanbuk-myeon/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/sang-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/sanggeo-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/sejongdaewang-myeon/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/wolsong-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/yeonra-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/yeonyang-dong/index.html",
+          "revision": [
+            "a1e3b0c5a083a67667278d351b90dc3c8bb9c58a"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        }
+      ],
+      "counts": {
+        "customerHtml": 32,
+        "bannerEligibleHtml": 32,
+        "banners": 96
+      },
+      "pass": true
+    },
+    {
+      "region": "seoul-eunpyeong",
+      "checks": {
+        "sourceReadbackDigestMatches": true,
+        "independentStaticReviewDigestMatches": true,
+        "localValidationDigestMatches": true,
+        "sealedIndependentReviewBytesMatch": true,
+        "sealedLocalValidationBytesMatch": true,
+        "sourceIdentitiesMatchIndependentRemoteInspection": true,
+        "changedFileSetMatchesIndependentRemoteDiff": true,
+        "changedFileDigestsMatchIndependentRemoteBlobBytes": true,
+        "sealedReleaseAllFileBytesMatch": true,
+        "sealedReleaseExactIdentity": true,
+        "releaseDigestMatchesValidation": true,
+        "allHtmlExactNewSha": true,
+        "allHtmlEqualsIndependentBuildPlusRevisionOnly": true,
+        "renderedCountsMatchTarget": true
+      },
+      "evidenceDigests": [
+        {
+          "path": "docs/shared-banner-release/source-readbacks/seoul-eunpyeong.json",
+          "sha256": "fa299541d31a181a11e946606228a29ae43dcac3cc5634b1bd14980741e32e99",
+          "matches": true
+        },
+        {
+          "path": "docs/shared-banner-release/direct7-independent-source-review.json",
+          "sha256": "ea02b07c924701e8beb79031692af0185427669a92f507fda4df0865af804306",
+          "matches": true
+        },
+        {
+          "path": "docs/shared-banner-release/direct7-local-validation.json",
+          "sha256": "a9b9835f9489a98bcffe764ae9bc1895961322e10781504b5980947ad43ab384",
+          "matches": true
+        }
+      ],
+      "sourceFilesIndependentlyVerified": 88,
+      "changedFiles": 24,
+      "sealedReleaseFiles": 26,
+      "releaseFiles": [
+        {
+          "path": "404.html",
+          "sha256": "aabc14118154801e56c690cf27c06fb9f1ccc8bd93efa69d35c6fa8d16bd9fa3",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "_astro/BaseLayout.MRzcX74D.css",
+          "sha256": "1d272ba03de0b407c46bf1dc6c1c07059011ece39837a18dc349f273084f880b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "_headers",
+          "sha256": "1b27a67288f21cf98b19d15cef8fa084bf7d7ca7a0f89975dd48ba51f90ed015",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "d7e9dfc9284537fc424b4b25376b4c17.txt",
+          "sha256": "7f3eddf1fa5241caf2fab6476bdacd82f9ed86106949294e2070e5cb8d112cb8",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "favicon.svg",
+          "sha256": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/editorial/opening-wreath-illustration-v1.webp",
+          "sha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-basic.jpg",
+          "sha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-large.jpg",
+          "sha256": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-premium.jpg",
+          "sha256": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-xl.jpg",
+          "sha256": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-basic.jpg",
+          "sha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-large.jpg",
+          "sha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-premium.jpg",
+          "sha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-xl.jpg",
+          "sha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-budget.webp",
+          "sha256": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-consultation.webp",
+          "sha256": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-message.webp",
+          "sha256": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "index.html",
+          "sha256": "19bb34bb6e560e89d08f2be4bfbe478a3a1b1f51e3ea8f4b690b207b5e7fff0f",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/bulgwang-dong-yeonseo-market-opening-wreath/index.html",
+          "sha256": "0e144d29ac41c82697a9254269a4fe230c144389bfbb151adec638c6c2676925",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/index.html",
+          "sha256": "a2db396aee53563217b764e6fed94219c2fdee89eff653105851472445740ff6",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/jingwan-dong-eunpyeong-st-mary-funeral-wreath/index.html",
+          "sha256": "0ab4b914137f5d304b1d6fcaeb4cd7bed8136ab0492d03f43c52c91f8cb2c329",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/nokbeon-dong-eunpyeong-arts-performance-wreath/index.html",
+          "sha256": "2971c28f4d0d6ba289328bfcbbc4be9cf811b24f4857d7b2e7dd3ee921554104",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/susaek-dong-seoul-arts-eunpyeong-wedding-wreath/index.html",
+          "sha256": "42e7cfde8e6446ff0751698681ba10f3f932bf4633241beb485fd13b65cda4a9",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "robots.txt",
+          "sha256": "ba1dab92bece87055589b8c95653e0f4b33b1eec3c52aaaf0ad762e5f0877592",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "sitemap-0.xml",
+          "sha256": "eef66d7106bea53bc81322aba2b7dcca1a9d0ccfc10e408eaf8b39cf2bcc7d11",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "sitemap-index.xml",
+          "sha256": "2e276e776afa03fda007fa44cc10edbc4b1b20eeff34b2194f71a582f375d4a6",
+          "matchesManifestAndBuiltDist": true
+        }
+      ],
+      "html": [
+        {
+          "path": "404.html",
+          "revision": [
+            "ded20dc26a417a16f6a83259c69d17a28c5bcdd6"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 0,
+          "noindex": true
+        },
+        {
+          "path": "index.html",
+          "revision": [
+            "ded20dc26a417a16f6a83259c69d17a28c5bcdd6"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/bulgwang-dong-yeonseo-market-opening-wreath/index.html",
+          "revision": [
+            "ded20dc26a417a16f6a83259c69d17a28c5bcdd6"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/index.html",
+          "revision": [
+            "ded20dc26a417a16f6a83259c69d17a28c5bcdd6"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/jingwan-dong-eunpyeong-st-mary-funeral-wreath/index.html",
+          "revision": [
+            "ded20dc26a417a16f6a83259c69d17a28c5bcdd6"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/nokbeon-dong-eunpyeong-arts-performance-wreath/index.html",
+          "revision": [
+            "ded20dc26a417a16f6a83259c69d17a28c5bcdd6"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/susaek-dong-seoul-arts-eunpyeong-wedding-wreath/index.html",
+          "revision": [
+            "ded20dc26a417a16f6a83259c69d17a28c5bcdd6"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        }
+      ],
+      "counts": {
+        "customerHtml": 6,
+        "bannerEligibleHtml": 6,
+        "banners": 18
+      },
+      "pass": true
+    },
+    {
+      "region": "seoul-seodaemun",
+      "checks": {
+        "sourceReadbackDigestMatches": true,
+        "independentStaticReviewDigestMatches": true,
+        "localValidationDigestMatches": true,
+        "sealedIndependentReviewBytesMatch": true,
+        "sealedLocalValidationBytesMatch": true,
+        "sourceIdentitiesMatchIndependentRemoteInspection": true,
+        "changedFileSetMatchesIndependentRemoteDiff": true,
+        "changedFileDigestsMatchIndependentRemoteBlobBytes": true,
+        "sealedReleaseAllFileBytesMatch": true,
+        "sealedReleaseExactIdentity": true,
+        "releaseDigestMatchesValidation": true,
+        "allHtmlExactNewSha": true,
+        "allHtmlEqualsIndependentBuildPlusRevisionOnly": true,
+        "renderedCountsMatchTarget": true
+      },
+      "evidenceDigests": [
+        {
+          "path": "docs/shared-banner-release/source-readbacks/seoul-seodaemun.json",
+          "sha256": "366c91a12633391b0f88922d16799ed9972e464aefd91ddebb81bf483de07f60",
+          "matches": true
+        },
+        {
+          "path": "docs/shared-banner-release/direct7-independent-source-review.json",
+          "sha256": "ea02b07c924701e8beb79031692af0185427669a92f507fda4df0865af804306",
+          "matches": true
+        },
+        {
+          "path": "docs/shared-banner-release/direct7-local-validation.json",
+          "sha256": "a9b9835f9489a98bcffe764ae9bc1895961322e10781504b5980947ad43ab384",
+          "matches": true
+        }
+      ],
+      "sourceFilesIndependentlyVerified": 88,
+      "changedFiles": 24,
+      "sealedReleaseFiles": 26,
+      "releaseFiles": [
+        {
+          "path": "404.html",
+          "sha256": "0561147df32fef40339747599cb92e5bb318c4a2b95dd2287bb776738e7ab469",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "_astro/BaseLayout.MRzcX74D.css",
+          "sha256": "1d272ba03de0b407c46bf1dc6c1c07059011ece39837a18dc349f273084f880b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "_headers",
+          "sha256": "1b27a67288f21cf98b19d15cef8fa084bf7d7ca7a0f89975dd48ba51f90ed015",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "d7d0895e23d60da7c9d75883fdfd46bb.txt",
+          "sha256": "f2512a909367e94066af0b9dba6c35c7244ff80f98322e0869eca3ab672c1839",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "favicon.svg",
+          "sha256": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/editorial/opening-wreath-illustration-v1.webp",
+          "sha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-basic.jpg",
+          "sha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-large.jpg",
+          "sha256": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-premium.jpg",
+          "sha256": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-xl.jpg",
+          "sha256": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-basic.jpg",
+          "sha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-large.jpg",
+          "sha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-premium.jpg",
+          "sha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-xl.jpg",
+          "sha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-budget.webp",
+          "sha256": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-consultation.webp",
+          "sha256": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-message.webp",
+          "sha256": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "index.html",
+          "sha256": "d123952ff013493b027e032b00133966268e46af9ea56e8859ce08137995a1da",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/hongeun-dong-seodaemun-arts-performance-wreath/index.html",
+          "sha256": "5f46c5054a27be288f0affdd4a093c5810e0855dffc3a26abe1df7ce72e7ceec",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/index.html",
+          "sha256": "df9059940121b7dd29fc6e3e7207d19a492a349c973552fa038a5bc20cd90047",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/sinchon-dong-yonsei-alumni-wedding-wreath/index.html",
+          "sha256": "1e40973ec89823c3cf528257fa82ba2ba39d83a1b85f598ce4e0864380af9953",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/sinchon-dong-yonsei-funeral-wreath/index.html",
+          "sha256": "00e0e66c5f19edb4cdba7b5e8a9affaaa97e9e6b59eb5fd53901b845f797fc02",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/yeongcheon-dong-market-opening-wreath/index.html",
+          "sha256": "44f9f8e51400b00055fc9da9bbc4ce7adec6576f2ef22d5002ea6d034b39831a",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "robots.txt",
+          "sha256": "dbf56e8c13453c040365e23c0e59f5ebf27d3528e5d24d70fd4f32ade737c41e",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "sitemap-0.xml",
+          "sha256": "ca579129083e8ab033e09d242fd48ac041e9b691c42d8e0a152ab2396aed9ce5",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "sitemap-index.xml",
+          "sha256": "f29a80fe89a3b7428eea94ecab14aa6b7d1d9d8a917b434526d109155fadf057",
+          "matchesManifestAndBuiltDist": true
+        }
+      ],
+      "html": [
+        {
+          "path": "404.html",
+          "revision": [
+            "7e197a109bffe7949051bb1f96fcacb22da6be90"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 0,
+          "noindex": true
+        },
+        {
+          "path": "index.html",
+          "revision": [
+            "7e197a109bffe7949051bb1f96fcacb22da6be90"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/hongeun-dong-seodaemun-arts-performance-wreath/index.html",
+          "revision": [
+            "7e197a109bffe7949051bb1f96fcacb22da6be90"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/index.html",
+          "revision": [
+            "7e197a109bffe7949051bb1f96fcacb22da6be90"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/sinchon-dong-yonsei-alumni-wedding-wreath/index.html",
+          "revision": [
+            "7e197a109bffe7949051bb1f96fcacb22da6be90"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/sinchon-dong-yonsei-funeral-wreath/index.html",
+          "revision": [
+            "7e197a109bffe7949051bb1f96fcacb22da6be90"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/yeongcheon-dong-market-opening-wreath/index.html",
+          "revision": [
+            "7e197a109bffe7949051bb1f96fcacb22da6be90"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        }
+      ],
+      "counts": {
+        "customerHtml": 6,
+        "bannerEligibleHtml": 6,
+        "banners": 18
+      },
+      "pass": true
+    },
+    {
+      "region": "seoul-mapo",
+      "checks": {
+        "sourceReadbackDigestMatches": true,
+        "independentStaticReviewDigestMatches": true,
+        "localValidationDigestMatches": true,
+        "sealedIndependentReviewBytesMatch": true,
+        "sealedLocalValidationBytesMatch": true,
+        "sourceIdentitiesMatchIndependentRemoteInspection": true,
+        "changedFileSetMatchesIndependentRemoteDiff": true,
+        "changedFileDigestsMatchIndependentRemoteBlobBytes": true,
+        "sealedReleaseAllFileBytesMatch": true,
+        "sealedReleaseExactIdentity": true,
+        "releaseDigestMatchesValidation": true,
+        "allHtmlExactNewSha": true,
+        "allHtmlEqualsIndependentBuildPlusRevisionOnly": true,
+        "renderedCountsMatchTarget": true
+      },
+      "evidenceDigests": [
+        {
+          "path": "docs/shared-banner-release/source-readbacks/seoul-mapo.json",
+          "sha256": "42cb23ab1d4736ef6944f110ec40c594c9d8955101057b550a9f373594f0e888",
+          "matches": true
+        },
+        {
+          "path": "docs/shared-banner-release/direct7-independent-source-review.json",
+          "sha256": "ea02b07c924701e8beb79031692af0185427669a92f507fda4df0865af804306",
+          "matches": true
+        },
+        {
+          "path": "docs/shared-banner-release/direct7-local-validation.json",
+          "sha256": "a9b9835f9489a98bcffe764ae9bc1895961322e10781504b5980947ad43ab384",
+          "matches": true
+        }
+      ],
+      "sourceFilesIndependentlyVerified": 88,
+      "changedFiles": 24,
+      "sealedReleaseFiles": 25,
+      "releaseFiles": [
+        {
+          "path": "404.html",
+          "sha256": "088a296d3d7da5ccf6906061b30d2fb57cf32df5080168b059a0a4f2bd9fe15b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "9e00c9cfa71a841672434ff5d0f82ec9.txt",
+          "sha256": "4857d5bcc954bf63c695de087f6ba38f7f0a1eb1ab28c4c93e40cc16f3a517b7",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "_astro/BaseLayout.MRzcX74D.css",
+          "sha256": "1d272ba03de0b407c46bf1dc6c1c07059011ece39837a18dc349f273084f880b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "_headers",
+          "sha256": "1b27a67288f21cf98b19d15cef8fa084bf7d7ca7a0f89975dd48ba51f90ed015",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "favicon.svg",
+          "sha256": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/editorial/opening-wreath-illustration-v1.webp",
+          "sha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-basic.jpg",
+          "sha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-large.jpg",
+          "sha256": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-premium.jpg",
+          "sha256": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/congrats-xl.jpg",
+          "sha256": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-basic.jpg",
+          "sha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-large.jpg",
+          "sha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-premium.jpg",
+          "sha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/products/funeral-xl.jpg",
+          "sha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-budget.webp",
+          "sha256": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-consultation.webp",
+          "sha256": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "images/shared-banners/flower-message.webp",
+          "sha256": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "index.html",
+          "sha256": "405ffd76c6f680bb850a400c4a9c94eab6a950fea3e001993158c326f15ece45",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/daeheung-dong-mapo-arts-performance-wreath/index.html",
+          "sha256": "6646d73139aefb55a0468c0bf35579c3d562e9d47c497bc2f58b082e5315f36b",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/index.html",
+          "sha256": "1634e7d6a6bd479859fd0659e6c188d98daaa3eb9633b94861705e8b9d483692",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/mangwon-dong-mangwon-market-opening-wreath/index.html",
+          "sha256": "b31e0ccd3755231f473c631e6ca482bcfe1504401cba3d96f7fa5fc6ec686aa8",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "regions/sangam-dong-dmc-office-move-wreath/index.html",
+          "sha256": "311bbc34c5c2c465410748a11a830cee0bed83b0734b7ee73377ec8f9321c337",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "robots.txt",
+          "sha256": "49def3db8042016c3182fae754b8c74ed3b3beefce0d88219630e88260687d8a",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "sitemap-0.xml",
+          "sha256": "dbea41a332a09da24621f16a5fad862b40c4fb7b2105f72a9ba26c7ac14295ce",
+          "matchesManifestAndBuiltDist": true
+        },
+        {
+          "path": "sitemap-index.xml",
+          "sha256": "3abac9fb36ca0df3a69e577c6dd90a2aff3da3954ffa80f1fe1c513df70a1828",
+          "matchesManifestAndBuiltDist": true
+        }
+      ],
+      "html": [
+        {
+          "path": "404.html",
+          "revision": [
+            "9411596bc0b383e32aed3b716e2aa4a661555818"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 0,
+          "noindex": true
+        },
+        {
+          "path": "index.html",
+          "revision": [
+            "9411596bc0b383e32aed3b716e2aa4a661555818"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/daeheung-dong-mapo-arts-performance-wreath/index.html",
+          "revision": [
+            "9411596bc0b383e32aed3b716e2aa4a661555818"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/index.html",
+          "revision": [
+            "9411596bc0b383e32aed3b716e2aa4a661555818"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/mangwon-dong-mangwon-market-opening-wreath/index.html",
+          "revision": [
+            "9411596bc0b383e32aed3b716e2aa4a661555818"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        },
+        {
+          "path": "regions/sangam-dong-dmc-office-move-wreath/index.html",
+          "revision": [
+            "9411596bc0b383e32aed3b716e2aa4a661555818"
+          ],
+          "exactNewRevision": true,
+          "onlyRevisionDiffersFromIndependentRebuild": true,
+          "banners": 3,
+          "noindex": false
+        }
+      ],
+      "counts": {
+        "customerHtml": 5,
+        "bannerEligibleHtml": 5,
+        "banners": 15
+      },
+      "pass": true
+    }
+  ],
+  "tests": [
+    {
+      "test": "test_verify_update.py",
+      "exitCode": 0,
+      "count": 33,
+      "log": "/workspace/shared/common-banner-work/direct7-independent-final-binding-review/test_verify_update.py.log"
+    },
+    {
+      "test": "test_direct7_workflow_selection.py",
+      "exitCode": 0,
+      "count": 5,
+      "log": "/workspace/shared/common-banner-work/direct7-independent-final-binding-review/test_direct7_workflow_selection.py.log"
+    }
+  ],
+  "totals": {
+    "targets": 38,
+    "sourceFiles": 647,
+    "changedFiles": 170,
+    "sealedReleaseFiles": 263,
+    "html": 126,
+    "customerHtml": 119,
+    "bannerEligibleHtml": 116,
+    "banners": 348
+  },
+  "notes": [
+    "localValidation digest is independently verified here; inherited runtime load() enforces sourceReadback and independentStaticReview digests, not the additional localValidation metadata digest.",
+    "New-SHA release HTML was byte-compared against this reviewer prior independent rebuild, allowing only exact baseline-to-new revision replacement. No source behavior or rendered content differences were found when this check passes.",
+    "Live provider account/settings/exposure verification remains an execution-time gate. This report does not claim the control candidate is saved on remote main or that sites are publicly updated."
+  ],
+  "targetsFileSha256": "7cae9ae1b78dfc5d55122b95a497cecd9c674458416c099a8fd09bf7cecfc81e",
+  "reviewedControlsStillMatchOriginal": true,
+  "evidenceRoot": "/workspace/shared/common-banner-work/direct7-independent-final-binding-review",
+  "pass": true
+}

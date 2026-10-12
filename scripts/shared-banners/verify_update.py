@@ -8,7 +8,7 @@ from html.parser import HTMLParser
 from urllib.request import Request,build_opener
 from urllib.parse import urlsplit
 ROOT=Path(__file__).resolve().parents[2]
-ALLOWED={r:f'scripts/direct-{r}/publish.py' for r in ['seoul-yangcheon', 'anseong', 'dongducheon', 'gapyeong', 'gimpo', 'gunpo', 'guri', 'gwacheon', 'gwangju', 'hanam', 'icheon', 'jongno', 'osan', 'paju', 'pocheon', 'seoul-dobong', 'seoul-dongdaemun', 'seoul-gangbuk', 'seoul-gwangjin', 'seoul-jung', 'seoul-jungnang', 'seoul-seongbuk', 'seoul-seongdong', 'seoul-yongsan', 'siheung', 'uijeongbu', 'uiwang', 'yangju', 'yangpyeong', 'yeoncheon', 'seoul-nowon']}
+ALLOWED={r:f'scripts/direct-{r}/publish.py' for r in ['seoul-yangcheon', 'anseong', 'dongducheon', 'gapyeong', 'gimpo', 'gunpo', 'guri', 'gwacheon', 'gwangju', 'hanam', 'icheon', 'jongno', 'osan', 'paju', 'pocheon', 'seoul-dobong', 'seoul-dongdaemun', 'seoul-gangbuk', 'seoul-gwangjin', 'seoul-jung', 'seoul-jungnang', 'seoul-seongbuk', 'seoul-seongdong', 'seoul-yongsan', 'siheung', 'uijeongbu', 'uiwang', 'yangju', 'yangpyeong', 'yeoncheon', 'seoul-nowon', 'anyang', 'gwangmyeong', 'pyeongtaek', 'yeoju', 'seoul-eunpyeong', 'seoul-seodaemun', 'seoul-mapo']}
 def require(ok,code):
  if not ok:raise ValueError(code)
 def load(region):

@@ -164,5 +164,22 @@ class BatchWorkflowBoundary(unittest.TestCase):
     self.assertIn('Source branch moved; do not publish stale source',w)
     self.assertNotIn('override_existing_dns_record=True',w)
     self.assertEqual(w.count('verify_update.py authorize-mutation --region '+region),1)
-    self.assertNotIn('authorize-mutation',w.split('  finalize_indexnow:',1)[1])
+    if '  finalize_indexnow:' in w:self.assertNotIn('authorize-mutation',w.split('  finalize_indexnow:',1)[1])
+    else:self.assertIn(region,{'anyang','pyeongtaek'}) # Existing workflows have no finalization-only job.
+class Direct7ReviewBoundary(unittest.TestCase):
+ def test_expanded_targets_still_require_reviewed_manifest(self):
+  with tempfile.TemporaryDirectory() as temp:
+   root=Path(temp);p=root/'docs/shared-banner-release/targets.json';p.parent.mkdir(parents=True);p.write_text(json.dumps({'targets':{}}))
+   with patch.object(v,'ROOT',root):
+    for region in ('anyang','gwangmyeong','pyeongtaek','yeoju','seoul-eunpyeong','seoul-seodaemun','seoul-mapo'):
+     with self.subTest(region=region):
+      with self.assertRaisesRegex(ValueError,'update_target_not_reviewed'):v.load(region)
+ def test_every_reviewed_direct7_revision_requires_update_mode(self):
+  regions=('anyang','gwangmyeong','pyeongtaek','yeoju','seoul-eunpyeong','seoul-seodaemun','seoul-mapo')
+  with tempfile.TemporaryDirectory() as temp:
+   root=Path(temp);p=root/'docs/shared-banner-release/targets.json';p.parent.mkdir(parents=True);p.write_text(json.dumps({'targets':{r:{'revision':'b'*40} for r in regions}}))
+   with patch.object(v,'ROOT',root),patch.dict(os.environ,REVISION='b'*40,EXISTING_UPDATE='false'):
+    for region in regions:
+     with self.subTest(region=region):
+      with self.assertRaisesRegex(ValueError,'reviewed_banner_revision_requires_existing_update'):v.authorize_mutation(region)
 if __name__=='__main__':unittest.main()

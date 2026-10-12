@@ -8,6 +8,11 @@ on:
         description: Exact reviewed 40-character Gwangmyeong source SHA
         required: true
         type: string
+      existing_update:
+        description: Update only an existing exact hostname binding and previously reviewed public revision; no attach or DNS changes
+        required: false
+        default: false
+        type: boolean
       indexnow_only:
         description: Verify and finalize the existing exact public release without any Cloudflare mutation
         required: false
@@ -20,7 +25,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   build:
-    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'issues' && github.event.issue.title == '[REGIONAL-COPY-DEPLOY] gwangmyeong' && github.actor == 'joseungil-kr' && github.event.issue.user.login == 'joseungil-kr'))
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'issues' && ((github.event.issue.title == '[REGIONAL-COPY-DEPLOY] batch' && contains(github.event.issue.body, '"gwangmyeong"')) || github.event.issue.title == '[REGIONAL-COPY-DEPLOY] gwangmyeong') && github.actor == 'joseungil-kr' && github.event.issue.user.login == 'joseungil-kr'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     outputs:
@@ -30,7 +35,7 @@ jobs:
       - name: Authorize exact source and first attempt
         uses: actions/github-script@v7
         env:
-          REVISION: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).expected_revision || inputs.expected_revision }}
+          REVISION: ${{ github.event_name == 'issues' && (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] batch' && fromJSON(github.event.issue.body).revisions['gwangmyeong'] || (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] gwangmyeong' && fromJSON(github.event.issue.body).expected_revision)) || inputs.expected_revision }}
         with:
           script: |
             if (!/^[0-9a-f]{40}$/.test(process.env.REVISION)) throw new Error('Full source SHA required');
@@ -48,17 +53,20 @@ jobs:
           path: control
           persist-credentials: false
       - name: Test fixed publisher safety contracts
-        run: python3 control/scripts/direct-gwangmyeong/test_publish.py -v
+        run: |
+          python3 control/scripts/direct-gwangmyeong/test_publish.py -v
+          python3 control/scripts/shared-banners/test_verify_update.py -v
+          python3 control/scripts/shared-banners/test_direct7_workflow_selection.py -v
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).expected_revision || inputs.expected_revision }}
+          ref: ${{ github.event_name == 'issues' && (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] batch' && fromJSON(github.event.issue.body).revisions['gwangmyeong'] || (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] gwangmyeong' && fromJSON(github.event.issue.body).expected_revision)) || inputs.expected_revision }}
           path: target
           fetch-depth: 0
           persist-credentials: false
       - name: Verify exact source ancestry
         working-directory: target
         env:
-          REVISION: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).expected_revision || inputs.expected_revision }}
+          REVISION: ${{ github.event_name == 'issues' && (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] batch' && fromJSON(github.event.issue.body).revisions['gwangmyeong'] || (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] gwangmyeong' && fromJSON(github.event.issue.body).expected_revision)) || inputs.expected_revision }}
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$REVISION"
@@ -72,7 +80,7 @@ jobs:
           ASTRO_TELEMETRY_DISABLED: '1'
           SITE_URL: https://gwangmyeong.fwith.kr
           SITE_INDEXABLE: 'true'
-          SITE_FACTORY_REVISION: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).expected_revision || inputs.expected_revision }}
+          SITE_FACTORY_REVISION: ${{ github.event_name == 'issues' && (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] batch' && fromJSON(github.event.issue.body).revisions['gwangmyeong'] || (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] gwangmyeong' && fromJSON(github.event.issue.body).expected_revision)) || inputs.expected_revision }}
         run: |
           set -euo pipefail
           npm ci
@@ -81,7 +89,7 @@ jobs:
       - name: Package exact static artifact
         id: package
         env:
-          REVISION: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).expected_revision || inputs.expected_revision }}
+          REVISION: ${{ github.event_name == 'issues' && (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] batch' && fromJSON(github.event.issue.body).revisions['gwangmyeong'] || (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] gwangmyeong' && fromJSON(github.event.issue.body).expected_revision)) || inputs.expected_revision }}
         run: python3 control/scripts/direct-gwangmyeong/publish.py package --source target/site-factory/gwangmyeong-flower --report package-check.json
       - uses: actions/upload-artifact@v4
         id: artifact
@@ -99,7 +107,7 @@ jobs:
       contents: read
       issues: write
     env:
-      REVISION: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).expected_revision || inputs.expected_revision }}
+      REVISION: ${{ github.event_name == 'issues' && (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] batch' && fromJSON(github.event.issue.body).revisions['gwangmyeong'] || (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] gwangmyeong' && fromJSON(github.event.issue.body).expected_revision)) || inputs.expected_revision }}
     steps:
       - name: Reject mutation reruns
         run: test "$GITHUB_RUN_ATTEMPT" = 1
@@ -108,6 +116,10 @@ jobs:
           ref: ${{ github.sha }}
           path: control
           persist-credentials: false
+      - name: Bind reviewed banner revision to existing-update mutation mode
+        env:
+          EXISTING_UPDATE: ${{ inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true) }}
+        run: python3 control/scripts/shared-banners/verify_update.py authorize-mutation --region gwangmyeong --report banner-mode-check.json
       - uses: actions/download-artifact@v4
         with:
           artifact-ids: ${{ needs.build.outputs.artifact_id }}
@@ -117,6 +129,9 @@ jobs:
         env:
           RELEASE_SHA256: ${{ needs.build.outputs.release_sha256 }}
         run: python3 control/scripts/direct-gwangmyeong/publish.py artifact --report artifact-check.json
+      - name: Verify the approved common-banner artifact for existing update
+        if: inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true)
+        run: python3 control/scripts/shared-banners/verify_update.py artifact --region gwangmyeong --report banner-artifact.json
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -131,7 +146,12 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: python3 control/scripts/direct-gwangmyeong/publish.py preflight --report binding-before.json
+        run: |
+          if [ "${{ inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true) }}" = true ]; then
+            python3 control/scripts/shared-banners/verify_update.py preflight --region gwangmyeong --report binding-before.json
+          else
+            python3 control/scripts/direct-gwangmyeong/publish.py preflight --report binding-before.json
+          fi
       - name: Deploy fixed route-less static assets once
         id: deploy
         continue-on-error: true
@@ -142,13 +162,18 @@ jobs:
           WRANGLER_LOG_SANITIZE: 'true'
           WRANGLER_SEND_METRICS: 'false'
         run: |
-          if ! npx --yes wrangler@4.148.0 deploy --config wrangler.publish.json > "$RUNNER_TEMP/gwangmyeong-direct-upload.log" 2>&1; then
+          if [ "${{ inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true) }}" = true ]; then
+            WRANGLER_PACKAGE=wrangler@4.147.0
+          else
+            WRANGLER_PACKAGE=wrangler@4.148.0
+          fi
+          if ! npx --yes "$WRANGLER_PACKAGE" deploy --config wrangler.publish.json > "$RUNNER_TEMP/gwangmyeong-direct-upload.log" 2>&1; then
             echo 'Upload failed or uncertain. Inspect GET and HTTP evidence before any recovery.'
             exit 1
           fi
       - name: Attach only the fixed hostname with all overrides disabled
         id: attach
-        if: steps.deploy.outcome == 'success'
+        if: steps.deploy.outcome == 'success' && !(inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true))
         continue-on-error: true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -161,15 +186,24 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: python3 control/scripts/direct-gwangmyeong/publish.py readback --report binding-after.json
+        run: |
+          python3 control/scripts/direct-gwangmyeong/publish.py readback --report binding-after.json
+          if [ "${{ inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true) }}" = true ]; then
+            python3 control/scripts/shared-banners/verify_update.py provider-after --region gwangmyeong --report provider-state-after.json
+          fi
       - name: Verify public exact content, assets, SEO and real 404s
         id: http
         if: ${{ always() && steps.binding.outcome == 'success' }}
         continue-on-error: true
         run: python3 control/scripts/direct-gwangmyeong/publish.py http --report public-http.json
+      - name: Independently verify public shared image MIME and bytes
+        id: banners
+        if: ${{ always() && steps.http.outcome == 'success' && (inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true)) }}
+        continue-on-error: true
+        run: python3 control/scripts/shared-banners/verify_update.py public-assets --region gwangmyeong --report banner-public-assets.json
       - name: Submit exact verified sitemap once and retain IndexNow receipt
         id: indexnow
-        if: ${{ always() && steps.deploy.outcome == 'success' && steps.binding.outcome == 'success' && steps.http.outcome == 'success' }}
+        if: ${{ always() && steps.deploy.outcome == 'success' && steps.binding.outcome == 'success' && steps.http.outcome == 'success' && (steps.banners.outcome == 'success' || steps.banners.outcome == 'skipped') }}
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
@@ -181,8 +215,14 @@ jobs:
           name: gwangmyeong-direct-result-${{ github.run_id }}
           path: |
             artifact-check.json
+            banner-mode-check.json
+            banner-artifact.json
+            banner-public-assets.json
             http-contract.json
             binding-before.json
+            provider-state-before.json
+            provider-state-after.json
+            update-source-config.json
             domain-attach.json
             binding-after.json
             public-http.json
@@ -198,7 +238,8 @@ jobs:
           BINDING: ${{ steps.binding.outcome }}
           HTTP: ${{ steps.http.outcome }}
           INDEXNOW: ${{ steps.indexnow.outcome }}
-        run: test "$DEPLOY" = success && test "$BINDING" = success && test "$HTTP" = success && test "$INDEXNOW" = success
+          BANNERS: ${{ steps.banners.outcome }}
+        run: test "$DEPLOY" = success && test "$BINDING" = success && test "$HTTP" = success && test "$INDEXNOW" = success && ( test "$BANNERS" = success || test "$BANNERS" = skipped )
   finalize_indexnow:
     if: inputs.indexnow_only == true
     needs: build
@@ -208,7 +249,7 @@ jobs:
       contents: read
       issues: write
     env:
-      REVISION: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).expected_revision || inputs.expected_revision }}
+      REVISION: ${{ github.event_name == 'issues' && (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] batch' && fromJSON(github.event.issue.body).revisions['gwangmyeong'] || (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] gwangmyeong' && fromJSON(github.event.issue.body).expected_revision)) || inputs.expected_revision }}
     steps:
       - name: Reject mutation reruns
         run: test "$GITHUB_RUN_ATTEMPT" = 1
