@@ -6,7 +6,9 @@ test('purchase banner consumes current Truth/config and never hardcodes a region
  const component=read('src/components/InlineOrderBanner.astro');
  for(const key of ['site.brand','site.region','site.phoneHref','site.orderUrl','site.phoneOrderHours'])assert.ok(component.includes(key));
  assert.doesNotMatch(component,/다른지역|예시지역|1844|59,?000|꽃이랑 온라인 주문/);
- assert.match(component,/상담시간과 실제 전달시간은 다를 수 있어요/); for(const term of ['전달 일정','반입 조건','추가비용','주문할 때 함께 확인'])assert.ok(component.includes(term));
+ assert.match(component,/상담시간과 실제 전달시간은 다를 수 있어요/); for(const term of ['받는 장소와 예산','원하시는 일정에 주문할 수 있는지 상담해 드립니다'])assert.ok(component.includes(term));
+ const truth=JSON.parse(read('src/data/business-truth.json'));for(const term of ['추가 배송비','최종 결제금액','배송·반입 가능 여부','희망 시간'])assert.ok(truth.deliveryNotice.includes(term));
+ assert.ok(read('src/components/ProductCards.astro').includes('{site.deliveryNotice}'));
 });
 test('home, hub and detail render a component outside frozen raw Markdown',()=>{
  for(const page of ['src/pages/index.astro','src/pages/[category]/index.astro','src/pages/[category]/[slug].astro']){

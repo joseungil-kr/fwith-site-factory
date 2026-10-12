@@ -136,7 +136,7 @@ test('every reviewed comparison renders four exact family products and truthful 
   assert.deepEqual(row.image.dimensions,asset.dimensions);assert.equal(row.image.type,asset.mimeType);assert.equal(row.previousImageSha256,asset.previousImageSha256);
   assert.equal(p.desc,expected.reviewedProductDescriptions[p.officialSku]);
  }
- assert.match(read('business-truth').deliveryNotice,/실제 배송지 주소.*추가 배송비.*최종 결제금액.*주문 전에.*확인/);
+ assert.match(read('business-truth').deliveryNotice,/실제 배송지 주소.*추가 배송비.*최종 결제금액.*주문 상담.*안내/);
  const cardsSource=fs.readFileSync(new URL('../src/components/ProductCards.astro',import.meta.url),'utf8');
  assert.ok(cardsSource.includes('{site.deliveryNotice}'),'shared price/delivery notice must render with every product group');
  assert.doesNotMatch(read('business-truth').deliveryNotice,/양평|단월|양서|10,000원|무료/);
@@ -177,10 +177,10 @@ test('Yangcheon common purchase copy leads with purpose and choice while keeping
  const directory=fs.readFileSync(new URL('../src/components/RegionDirectory.astro',import.meta.url),'utf8');
  const banner=fs.readFileSync(new URL('../src/components/InlineOrderBanner.astro',import.meta.url),'utf8');
  const truth=read('business-truth');
- assert.ok(home.includes(expected.reviewedCommon.home.heroParagraph));assert.match(home,/예산에 맞는 화환/);
+ assert.ok(home.includes(expected.reviewedCommon.home.heroParagraph));assert.match(home,/예산에 맞는 근조·축하화환/);
  assert.ok(directory.includes(expected.reviewedCommon.regionDirectory.intro));assert.doesNotMatch(directory,/작성되었다는 뜻이 아닙니다/);
- assert.match(banner,/상품 선택이 어려우시면/);assert.match(banner,/상담시간과 실제 전달시간은 다를 수 있어요/); for(const term of ['전달 일정','반입 조건','추가비용','주문할 때 함께 확인'])assert.ok(banner.includes(term));
- for(const term of ['기본가격','추가 배송비','배송·반입 가능 여부','요청 시간','최종 결제금액','주문 전'])assert.ok(truth.deliveryNotice.includes(term));
+ assert.match(banner,/상품을 아직 고르지 않으셨다면/);assert.match(banner,/상담시간과 실제 전달시간은 다를 수 있어요/); for(const term of ['받는 장소와 예산','주문할 수 있는지 상담해 드립니다'])assert.ok(banner.includes(term));
+ for(const term of ['기본가격','추가 배송비','배송·반입 가능 여부','희망 시간','최종 결제금액','주문 상담'])assert.ok(truth.deliveryNotice.includes(term));
 });
 
 test('independently reviewed shared customer copy stays exact in generated sources',()=>{
@@ -189,7 +189,7 @@ test('independently reviewed shared customer copy stays exact in generated sourc
  const cards=fs.readFileSync(new URL('../src/components/ProductCards.astro',import.meta.url),'utf8');
  for(const field of ['{source.name}','sourceTypeLabels[source.type as keyof typeof sourceTypeLabels]','href={source.url}','datetime={source.verifiedAt}'])assert.ok(detail.includes(field),field);
  assert.doesNotMatch(detail,/상품 구성·배송조건이나 시설 반입 가능 여부는 주문 전에 해당 담당자에게 확인/);
- assert.equal((cards.match(/리본 문구는 보내는 목적에 맞춰 상담하실 수 있습니다/g)||[]).length,1);
+ assert.equal((cards.match(/리본 문구는 전하고 싶은 뜻에 맞춰 상담해 드립니다/g)||[]).length,1);
  assert.doesNotMatch(cards,/p.family==='congrats'/);
  assert.ok(cards.includes('{site.productVariationNotice} {site.deliveryNotice}'));
 });

@@ -15,12 +15,12 @@ const published=new Map<string,RegionEntry>(districts.flatMap(d=>d.items).flatMa
 <section class="category-hero">
   <span class="eyebrow">{site.brand} {site.region}</span>
   <h1>양천구 장소별 화환 주문 안내</h1>
-  <p>결혼 축하와 공연 응원, 조문의 위로는 고를 꽃도 전할 말도 다릅니다. 목동·신정동·신월동의 장소별 안내에서 마음에 맞는 선택을 찾아보세요.</p>
+  <p>결혼 축하와 공연 응원, 조문의 위로에 맞는 화환을 안내합니다. 목동·신정동·신월동으로 보내실 꽃을 편하게 상담해 주세요.</p>
   <div class="actions"><a class="btn primary" href={site.phoneHref}>전화 상담·주문</a><a class="btn dark" href={site.orderUrl}>온라인 주문</a></div>
 </section>
 <nav class="actions" aria-label="지역 안내">{districts.map(d=><a class="btn light" href={`#${d.key}`}>{d.name}</a>)}</nav>
 {districts.map((district,index)=><section id={district.key} data-region-district={district.key}>
-  <div class="section-title"><h2>{district.name}</h2><p>축하와 위로를 전할 장소에 맞춰 꽃을 고르고, 주문 상담으로 편하게 이어가세요.</p></div>
+  <div class="section-title"><h2>{district.name}</h2><p>보내실 장소에 맞는 상품과 주문 안내를 모았습니다.</p></div>
   <div class="card-grid big">{district.items.map(({representative,page})=><a class="page-card" href={page.url} data-region-unit={representative.unitKeys.join('|')}><strong>{page.primaryKeyword}</strong><span>{page.cardSummary}</span><em>주문 안내 보기 →</em></a>)}</div>
   {index===Math.floor((districts.length-1)/2) && <InlineOrderBanner/>}
   <details class="content-card"><summary>행정구역 이름으로 찾기</summary>
