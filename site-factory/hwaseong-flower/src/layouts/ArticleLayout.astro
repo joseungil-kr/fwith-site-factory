@@ -1,4 +1,6 @@
 ---
+import {splitBannerContent} from '../lib/shared-banner-content.mjs';
+import SharedFlowerBanner from '../components/SharedFlowerBanner.astro';
 import manualManifest from '../data/manual-manifest.json';
 import ManualFuneralOrderPanel from '../components/ManualFuneralOrderPanel.astro';
 import { getArticleCollection } from "../lib/manual-content";
@@ -308,25 +310,29 @@ const articleContent=removeRepeatedOpeningParagraph(await Astro.slots.render('de
 
       <div class="article-grid article-grid-single">
         <article class="prose">
-          <Fragment set:html={articleContent} />
+          {architectureIndexable && <SharedFlowerBanner variant="message"/>}
+          <Fragment set:html={splitBannerContent(articleContent)[0]} />
+          {architectureIndexable && <SharedFlowerBanner variant="budget"/>}
+          <Fragment set:html={splitBannerContent(articleContent)[1]} />
           {pageKey === 'hwaseong-manual-hwaseong-funeral-destination-directory' && <section aria-label="시설별 근조화환 상세"><h2>시설별 근조화환 주문 확인</h2><ul>{manualManifest.pages.filter(p => 'facilityCode' in p).map(p => <li><a href={p.url}>{p.h1}</a></li>)}</ul></section>}
       {orderPanel === "funeral-catalog" && <ManualFuneralOrderPanel />}
           {normalizedSources.length > 0 && (
             <section class="source-list" aria-labelledby="source-title">
               <div class="source-list-head">
-                <h2 id="source-title">정보 출처</h2>
+                <h2 id="source-title">출처 및 확인 정보</h2>
                 {verifiedAt && <span>최신 정보 확인: {formatDate(verifiedAt)}</span>}
               </div>
               <ul>
                 {normalizedSources.map((source) => (
                   <li>
-                    <div><strong>{source.name}</strong><span>{source.typeLabel}</span></div>
+                    <div><h3>{source.name}</h3><span>{source.typeLabel}</span></div>
                     <a href={source.url} rel="nofollow noopener noreferrer">원문 보기 →</a>
                   </li>
                 ))}
               </ul>
             </section>
           )}
+        {architectureIndexable && <SharedFlowerBanner variant="consultation"/>}
         </article>
       </div>
 

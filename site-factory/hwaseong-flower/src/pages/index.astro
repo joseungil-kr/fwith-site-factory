@@ -1,4 +1,5 @@
 ---
+import SharedFlowerBanner from '../components/SharedFlowerBanner.astro';
 import { getArticleCollection } from "../lib/manual-content";
 import {regionalPages} from '../lib/regional-runtime.mjs';
 import { getCollection } from 'astro:content';
@@ -69,7 +70,8 @@ const situations = [
     </div>
   </section>
 
-  <section class="section product-section"><div class="container"><ProductShowcase showHeading={false} /></div></section>
+  <div class="container"><SharedFlowerBanner variant="message"/></div>
+  <section class="section product-section"><div class="container"><h2>{siteConfig.region} 꽃 상품과 가격</h2><ProductShowcase showHeading={false} /></div></section>
 
   <div class="container" data-purchase-banner="middle" data-page-role="home">
     <OrderCTA heading={`${siteConfig.region} 꽃 주문 전 상품과 수령정보를 확인하세요`} />
@@ -88,6 +90,7 @@ const situations = [
     </section>
   )}
 
+  <div class="container"><SharedFlowerBanner variant="budget"/></div>
   <section class="info-band">
     <div class="container info-band-grid">
       <div><strong>주문 가능 시간</strong><span>전화주문 08:00~23:00 · 온라인 24시간</span></div>
@@ -110,6 +113,7 @@ const situations = [
       </div>
     </div>
   </section>
+<div class="container"><SharedFlowerBanner variant="consultation"/></div>
 {regionalPages.length>0 && <section class="section"><div class="container"><a href="/regions/">{siteConfig.region} 지역별 꽃배달 안내 →</a></div></section>}
 </BaseLayout>
 

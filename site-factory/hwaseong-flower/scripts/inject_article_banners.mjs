@@ -1,3 +1,4 @@
+import {stripSharedFlowerBanners,originalOrderBannerPositions} from '../src/lib/shared-banner-content.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -22,7 +23,7 @@ function walk(dir) {
 }
 
 function plainText(html) {
-  return html
+  return stripSharedFlowerBanners(html)
     .replace(/<script[\s\S]*?<\/script>/gi, ' ')
     .replace(/<style[\s\S]*?<\/style>/gi, ' ')
     .replace(/<[^>]+>/g, ' ')
@@ -67,18 +68,10 @@ for (const file of walk(DIST).filter((p) => p.endsWith('.html'))) {
   const chars = plainText(body).length;
   const count = bannerCount(chars);
 
-  const boundaryRe = /<\/(?:p|ul|ol|blockquote)>/gi;
-  const boundaries = [];
-  let m;
-  while ((m = boundaryRe.exec(body))) boundaries.push(m.index + m[0].length);
-  if (boundaries.length === 0) continue;
-
   const fractions = count === 1 ? [0.50] : count === 2 ? [0.34, 0.68] : [0.26, 0.53, 0.80];
-  const inserts = fractions.map((fraction, i) => {
-    const target = Math.floor(body.length * fraction);
-    const pos = boundaries.reduce((best, x) => Math.abs(x - target) < Math.abs(best - target) ? x : best, boundaries[0]);
-    return { pos, html: renderBanner(i) };
-  }).sort((a, b) => b.pos - a.pos);
+  const positions = originalOrderBannerPositions(body, fractions);
+  if (!positions.length) continue;
+  const inserts = positions.map((pos, i) => ({pos, html: renderBanner(i)})).sort((a, b) => b.pos - a.pos);
 
   for (const ins of inserts) body = body.slice(0, ins.pos) + ins.html + body.slice(ins.pos);
   html = html.slice(0, bodyStart) + body + html.slice(bodyEnd);

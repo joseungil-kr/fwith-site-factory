@@ -21,7 +21,14 @@ jobs:
       MANUAL_PREVIEW: 'true'
       SITE_URL: http://127.0.0.1:8935
       SITE_INDEXABLE: 'false'
-      EXPECTED_QA_RELEASE_HASH: 'e65b26efc54df7266408688ad67450860e9bd8933a37290b001277f69055773e'
+      EXPECTED_QA_RELEASE_HASH: '3e9f28b62c86c751a55d37133a17196d27f6047d78378ac85a73c0818fd54ede'
+      PYTHONDONTWRITEBYTECODE: '1'
+      SHARED_BANNER_REFERENCE_DIST: ${{ github.workspace }}/shared-banner-production-reference/site-factory/hwaseong-flower/dist
+      SHARED_BANNER_REFERENCE_MANIFEST: ${{ github.workspace }}/.github/shared-banner-reference/hwaseong-production.json
+      SHARED_BANNER_REFERENCE_MANIFEST_SHA256: 'b2dac217a11d00c6ff5714fc64fe953246a50c97da104d52dfddd7e95f4d831f'
+      SHARED_BANNER_REFERENCE_ARTIFACT_SHA256: 'f51af8135ee0440f3ee50ef285edb5c23cfdf161e4cf54dd47ba38e5218a6c95'
+      SHARED_BANNER_REFERENCE_REVISION: '4cd31bb5a55574ab6419c0291bb8a70d70ab9d0a'
+      SHARED_BANNER_REFERENCE_ORIGIN: 'https://hwaseong.fwith.kr'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,6 +37,50 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Check out immutable previously reviewed production source
+        uses: actions/checkout@v4
+        with:
+          ref: 4cd31bb5a55574ab6419c0291bb8a70d70ab9d0a
+          path: shared-banner-production-reference
+          persist-credentials: false
+      - name: Rebuild and authenticate the production route and indexability reference
+        working-directory: shared-banner-production-reference/site-factory/hwaseong-flower
+        env:
+          SITE_FACTORY_REVISION: '4cd31bb5a55574ab6419c0291bb8a70d70ab9d0a'
+          SITE_URL: 'https://hwaseong.fwith.kr'
+          SITE_ORIGIN: 'https://hwaseong.fwith.kr'
+          SITE_INDEXABLE: 'true'
+          MANUAL_QA_PHASE: production
+          MANUAL_PREVIEW: 'false'
+          MANUAL_LOCAL_PREVIEW: 'false'
+          PYTHONDONTWRITEBYTECODE: '1'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = '4cd31bb5a55574ab6419c0291bb8a70d70ab9d0a'
+          npm ci --ignore-scripts --no-audit --no-fund
+          mkdir -p ../evidence
+          npm run build
+          python3 - <<'PYREFERENCE'
+          import os,pathlib,json,hashlib
+          def digest(b):return hashlib.sha256(b).hexdigest()
+          def compact(x):return json.dumps(x,sort_keys=True,separators=(',',':')).encode()
+          raw=pathlib.Path(os.environ['SHARED_BANNER_REFERENCE_MANIFEST']).read_bytes()
+          assert digest(raw)==os.environ['SHARED_BANNER_REFERENCE_MANIFEST_SHA256'],'Reference metadata changed'
+          ref=json.loads(raw)
+          assert ref['baselineRevision']==os.environ['SHARED_BANNER_REFERENCE_REVISION']
+          assert ref['productionOrigin']==os.environ['SHARED_BANNER_REFERENCE_ORIGIN']
+          root=pathlib.Path('dist');assert root.is_dir() and not root.is_symlink()
+          files={}
+          for f in sorted(root.rglob('*')):
+              assert not f.is_symlink(),'Artifact symlink forbidden'
+              if f.is_dir():continue
+              assert f.is_file(),'Nonregular artifact'
+              files[f.relative_to(root).as_posix()]=digest(f.read_bytes())
+          assert files==ref['files'],'Rebuilt original artifact differs from reviewed full manifest'
+          assert digest(compact(files))==ref['artifactManifestSha256']==os.environ['SHARED_BANNER_REFERENCE_ARTIFACT_SHA256']
+          print('Previously reviewed production reference rebuilt and exact full artifact verified:',len(files))
+          PYREFERENCE
       - name: Assert fixed source and read-only preview boundary
         shell: bash
         run: |
@@ -74,6 +125,7 @@ jobs:
         run: |
           set -euo pipefail
           node --test scripts/*.test.mjs tests/*.test.mjs 2>&1 | tee "$GITHUB_WORKSPACE/hwaseong-preview-evidence/native-tests.log"
+          python3 -B scripts/test_shared_banners.py 2>&1 | tee "$GITHUB_WORKSPACE/hwaseong-preview-evidence/shared-banner-tests.log"
           node scripts/validate_manual.mjs
       - name: Install pinned official Playwright and Korean fonts
         shell: bash
