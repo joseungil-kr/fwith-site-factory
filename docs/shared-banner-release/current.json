@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "phase": "yangcheon_public_verified_batch30_published_indexnow7_pending",
+  "phase": "31_banner_sites_public_verified_indexnow7_pending_remaining15_unpublished",
   "sourceRevision": "0a2b4d4d7772dbed6cdf2be29f2b29a858d07797",
   "previousPublicRevision": "8c20e5726ab7ce5767391219ea93f690a572972d",
   "sourceBranch": "site-factory-seoul-yangcheon-direct",
@@ -28,7 +28,7 @@
     "correction": "Previously omitted existing noindex merged Ansan route; baseline/public bytes match. No new page or sitemap change.",
     "correctionEvidence": "docs/shared-banner-release/denominator-reconciliation.json"
   },
-  "next": "Commit and read back reviewed IndexNow-only recovery controls. Wait for explicit authorization before one recovery issue; never rerun deployment. Complete separate current HTTP checks and remaining15 release review.",
+  "next": "Wait for explicit authorization before one reviewed IndexNow-only recovery issue. Prepare and independently review direct7 update controls and legacy8 native release evidence, without advancing production branches before required gates.",
   "controlRevision": "d3923edc4955fdc13824dcd070cd44f9149d767c",
   "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38285343695",
   "runConclusion": "success",
@@ -81,7 +81,7 @@
     "providerStateUnchanged": 30,
     "runtimePublicHttpVerified": 30,
     "runtimeBannerAssetsVerified": 30,
-    "independentCurrentHttpVerification": "running",
+    "independentCurrentHttpVerification": "completed_bounded_readback",
     "runtimeEvidence": "docs/shared-banner-release/batch30-runtime-evidence.json",
     "runtimeIndependentVerification": "docs/shared-banner-release/batch30-runtime-verification.json",
     "indexNowReceivedSites": 23,
@@ -101,13 +101,27 @@
     "strictRecoveryReadProbesVerified": 7,
     "strictRecoveryReadProbeUrls": 94,
     "originalIndexNowFailure": "page_revision_mismatch",
-    "failureCause": "unconfirmed; original response metadata not retained; current strict probes and exact CI artifact parser pass"
+    "failureCause": "unconfirmed; original response metadata not retained; current strict probes and exact CI artifact parser pass",
+    "currentHttpSites": 30,
+    "currentHttpPaths": 557,
+    "currentCustomerHtml": 285,
+    "currentHomePages": 30,
+    "currentSharedBannerAssets": 90,
+    "currentHttpAllCollectedPassed": true,
+    "currentHttpNotSeparatelyRepeated": 423,
+    "currentHttpEvidence": "docs/shared-banner-release/batch30-current-public-http.json",
+    "currentHttpUnrepeatedPaths": "docs/shared-banner-release/batch30-current-http-not-repeated.json"
   },
-  "updatedAt": "2026-10-12T18:39:54.262953+00:00",
+  "updatedAt": "2026-10-12T18:46:27.632939+00:00",
   "bannerPublishedSites": 31,
   "bannerPublishedEligibleHtml": 459,
   "bannerPublishedCustomerHtml": 461,
   "bannerPublishedImages": 1377,
   "remainingBannerSites": 15,
-  "remainingBannerEligibleHtml": 509
+  "remainingBannerEligibleHtml": 509,
+  "indexNowReceivedSites": 24,
+  "indexNowPendingSites": 7,
+  "indexNowRecoveryControlRevision": "5aeb97bc49a5e63ac7e94736a6ff9895220d1dd9",
+  "indexNowRecoveryIssueApproval": "pending",
+  "actualBrowserCoverage": "Yangcheon only:5 routes at1180/500px; other30 not inspected;375px mobile unverified"
 }
