@@ -23,6 +23,13 @@ jobs:
       MANUAL_LOCAL_PREVIEW: 'true'
       SITE_URL: https://localhost:8936
       SITE_INDEXABLE: 'false'
+      PYTHONDONTWRITEBYTECODE: '1'
+      SHARED_BANNER_REFERENCE_DIST: ${{ github.workspace }}/shared-banner-production-reference/site-factory/goyang-flower/dist
+      SHARED_BANNER_REFERENCE_MANIFEST: ${{ github.workspace }}/.github/shared-banner-reference/goyang-production.json
+      SHARED_BANNER_REFERENCE_MANIFEST_SHA256: 'e6723fa548565038d067fbbc748b834737c20367dbd0ea1f1e8b064d25f5debe'
+      SHARED_BANNER_REFERENCE_ARTIFACT_SHA256: '71cc19a8bcbca96230c6097ef6b4aeb5fb60637141c5180fffa7ba689e36c863'
+      SHARED_BANNER_REFERENCE_REVISION: '936cf842b4fc82bc801a142db7196059814f266a'
+      SHARED_BANNER_REFERENCE_ORIGIN: 'https://goyang.fwith.kr'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,6 +37,50 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Check out immutable previously reviewed production source
+        uses: actions/checkout@v4
+        with:
+          ref: 936cf842b4fc82bc801a142db7196059814f266a
+          path: shared-banner-production-reference
+          persist-credentials: false
+      - name: Rebuild and authenticate the production route and indexability reference
+        working-directory: shared-banner-production-reference/site-factory/goyang-flower
+        env:
+          SITE_FACTORY_REVISION: '936cf842b4fc82bc801a142db7196059814f266a'
+          SITE_URL: 'https://goyang.fwith.kr'
+          SITE_ORIGIN: 'https://goyang.fwith.kr'
+          SITE_INDEXABLE: 'true'
+          MANUAL_QA_PHASE: production
+          MANUAL_PREVIEW: 'false'
+          MANUAL_LOCAL_PREVIEW: 'false'
+          PYTHONDONTWRITEBYTECODE: '1'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = '936cf842b4fc82bc801a142db7196059814f266a'
+          npm ci --ignore-scripts --no-audit --no-fund
+          mkdir -p ../evidence
+          npm run build
+          python3 - <<'PYREFERENCE'
+          import os,pathlib,json,hashlib
+          def digest(b):return hashlib.sha256(b).hexdigest()
+          def compact(x):return json.dumps(x,sort_keys=True,separators=(',',':')).encode()
+          raw=pathlib.Path(os.environ['SHARED_BANNER_REFERENCE_MANIFEST']).read_bytes()
+          assert digest(raw)==os.environ['SHARED_BANNER_REFERENCE_MANIFEST_SHA256'],'Reference metadata changed'
+          ref=json.loads(raw)
+          assert ref['baselineRevision']==os.environ['SHARED_BANNER_REFERENCE_REVISION']
+          assert ref['productionOrigin']==os.environ['SHARED_BANNER_REFERENCE_ORIGIN']
+          root=pathlib.Path('dist');assert root.is_dir() and not root.is_symlink()
+          files={}
+          for f in sorted(root.rglob('*')):
+              assert not f.is_symlink(),'Artifact symlink forbidden'
+              if f.is_dir():continue
+              assert f.is_file(),'Nonregular artifact'
+              files[f.relative_to(root).as_posix()]=digest(f.read_bytes())
+          assert files==ref['files'],'Rebuilt original artifact differs from reviewed full manifest'
+          assert digest(compact(files))==ref['artifactManifestSha256']==os.environ['SHARED_BANNER_REFERENCE_ARTIFACT_SHA256']
+          print('Previously reviewed production reference rebuilt and exact full artifact verified:',len(files))
+          PYREFERENCE
       - name: Assert fixed preview boundary
         shell: bash
         run: |
@@ -40,7 +91,7 @@ jobs:
           test "$SITE_INDEXABLE" = 'false'
           test "$MANUAL_LOCAL_PREVIEW" = 'true'
           mkdir -p goyang-preview-evidence
-          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/goyang-flower/src/data/manual-pages.json")).digest("hex");if(h!=="283a46f49d6489cd1636341cdbcf2e16b59b15738dbe0ce2188cc77d4f588f99")throw Error("Unexpected content digest"); const p=JSON.parse(fs.readFileSync("site-factory/goyang-flower/src/data/manual-provenance.json"));if(p.rendererHash!=="47a067b9428eaa454ae47afd29e0f2f5f9dc766e5f3589606e03796f01347bdc" || p.assetsHash!=="1f983822d5b6b40f56fd548d76f0bcd78953b2a7076de6ac5b34f85be01821ec" || p.frozenHash!=="263f6741c60b762bc0df73e711660a19c89aaf44ce10b230eba44f1950ecf410" || p.sourcesHash!=="b141db9cc04b5126b6e63700e32944e6c3d212d5d29bf359c68c908443ffd956" || p.catalogHash!=="ec5a547cf59a5641f3858deccf22f5961ac651229fc8f8e7f67d07d07527ac15" || p.catalogFileHash!=="33b543a8a051e5755742b8dacf22a77194e0d184e6173eea8c46386fd49c5b01"||p.independentReview.status!=="pending")throw Error("Unexpected candidate state");' 
+          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/goyang-flower/src/data/manual-pages.json")).digest("hex");if(h!=="283a46f49d6489cd1636341cdbcf2e16b59b15738dbe0ce2188cc77d4f588f99")throw Error("Unexpected content digest"); const p=JSON.parse(fs.readFileSync("site-factory/goyang-flower/src/data/manual-provenance.json"));if(p.rendererHash!=="6f134e7102d5cf391deec81a0b6d66a38434f5175741934f51f9d5b2b82a5b7c" || p.assetsHash!=="38ef154681e9d70cdec98fd6ca8e398e26da19d97ac4ea2f25bc4d20da839365" || p.frozenHash!=="ac934b71588fd168fa8f287d674eb719c77fef568daae596f292e566218663db" || p.sourcesHash!=="b141db9cc04b5126b6e63700e32944e6c3d212d5d29bf359c68c908443ffd956" || p.catalogHash!=="ec5a547cf59a5641f3858deccf22f5961ac651229fc8f8e7f67d07d07527ac15" || p.catalogFileHash!=="33b543a8a051e5755742b8dacf22a77194e0d184e6173eea8c46386fd49c5b01"||p.independentReview.status!=="pending")throw Error("Unexpected candidate state");' 
           node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("site-factory/goyang-flower/src/data/manual-provenance.json")); fs.writeFileSync("goyang-preview-evidence/revision.json",JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,provenance:p},null,2));'
       - name: Install native site dependencies
         working-directory: site-factory/goyang-flower
@@ -57,6 +108,7 @@ jobs:
         run: |
           set -euo pipefail
           npm test 2>&1 | tee "$GITHUB_WORKSPACE/goyang-preview-evidence/native-tests.log"
+          python3 -B scripts/test_shared_banners.py 2>&1 | tee "$GITHUB_WORKSPACE/goyang-preview-evidence/shared-banner-tests.log"
       - name: Install pinned official Playwright and Korean fonts
         shell: bash
         run: |
