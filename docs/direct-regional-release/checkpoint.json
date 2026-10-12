@@ -29367,7 +29367,7 @@
       }
     ],
     "anyang0250PublicationIntent": {
-      "status": "INTENT_SAVED_DISPATCH_NOT_YET_CALLED",
+      "status": "DISPATCH_CONFIRMED_IN_PROGRESS",
       "region": "anyang",
       "scope": "existing-region-second-correction-publication",
       "branch": "site-factory-anyang-direct",
@@ -29417,10 +29417,19 @@
         "lastAnyangRun": 38132415687
       },
       "visualQa": "DEFERRED_NOT_PASS",
-      "actualDispatch": false,
+      "actualDispatch": true,
       "publicationVerified": false,
       "searchSubmission": "PENDING",
-      "safety": "Existing fixed-host direct workflow; provider GET and no-override guards retained; no other regions changed."
+      "safety": "Existing fixed-host direct workflow; provider GET and no-override guards retained; no other regions changed.",
+      "dispatch": {
+        "runId": 38197532188,
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38197532188",
+        "controlSha": "0ef040e683ae27d7569e1d77559059d8779becdb",
+        "sourceSha": "76af52425054c4cf39305a2f954a4da4ba378cd1",
+        "createdAt": "2026-10-12T02:52:53Z",
+        "uiSubmissionCount": 1,
+        "apiReadbackStatus": "in_progress"
+      }
     }
   },
   "independentPreparations": [
@@ -33235,6 +33244,33 @@
       },
       "visualQa": {
         "status": "DEFERRED_NOT_PASS"
+      },
+      "sourceSaveIntent": {
+        "state": "INTENT_BEFORE_SOURCE_AND_CONTROL_WRITE",
+        "writtenAt": "2026-10-12T02:54:00.611Z",
+        "idempotencyKey": "seoul-mapo:initial-source:4d71f3c427917d1ca00b656b6a55a538eb77b786aba95b776a3dafb8e7840b70",
+        "owner": "root-serialized-external-writer",
+        "branch": "site-factory-seoul-mapo-direct",
+        "expectedSourceBranch": "ABSENT_FRESH_GIT_REF_404",
+        "baseMain": "0ef040e683ae27d7569e1d77559059d8779becdb",
+        "sourceManifestSha256": "4d71f3c427917d1ca00b656b6a55a538eb77b786aba95b776a3dafb8e7840b70",
+        "independentSourceReviewSha256": "c7ca45d8f8ef442ac1e23dd74b410f1af3b1316c5b0c84abfc03d5126605fda0",
+        "runtimeReviewSha256": "164418219eebfe4d1c46e2c979d0687cb8b7a330ce81302f0e7c8cf045a4ad38",
+        "customerFiles": 70,
+        "mainControlFiles": 3,
+        "reusedSourceBlobs": 52,
+        "newSourceBlobs": 18,
+        "originalN": 3,
+        "approved": 3,
+        "held": 0,
+        "localFullCheckFiles": 39,
+        "localHtml": 6,
+        "localSitemap": 5,
+        "sourceRevision": "PENDING_REMOTE_SHA",
+        "providerCollision": "NOT_OBSERVED_REQUIRED_BEFORE_DEPLOYMENT",
+        "actualDispatch": false,
+        "visualQa": "DEFERRED_NOT_PASS",
+        "preserveOtherRegionsAndMainRecords": true
       }
     }
   ]
