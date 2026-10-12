@@ -44,10 +44,16 @@ class PublishTests(unittest.TestCase):
                          'repos/joseungil-kr/fwith-site-factory/issues/266/comments')
         self.assertIn('Journal(REPOSITORY, RECEIPT_ISSUE)', Path(pub.__file__).read_text())
 
-    def test_workflow_is_fixed_dispatch_only_and_uses_existing_secret_names(self):
+    def test_workflow_uses_owner_only_issues_and_dispatch(self):
         workflow = (ROOT / '.github/workflows/gwacheon-direct-publish.yml').read_text()
         self.assertIn('  workflow_dispatch:', workflow)
-        for trigger in ['  push:', '  schedule:', '  issues:', '  workflow_run:', '  pull_request:', '  repository_dispatch:']:
+        self.assertIn('  issues:', workflow.split('permissions:', 1)[0])
+        self.assertIn('    types: [opened]', workflow.split('permissions:', 1)[0])
+        self.assertIn("github.event.issue.title == '[REGIONAL-COPY-DEPLOY] batch'", workflow)
+        self.assertIn("github.actor == 'joseungil-kr'", workflow)
+        self.assertIn("github.event.issue.user.login == 'joseungil-kr'", workflow)
+        self.assertIn('fromJSON(github.event.issue.body).revisions', workflow)
+        for trigger in ['  push:', '  schedule:', '  workflow_run:', '  pull_request:', '  repository_dispatch:']:
             self.assertNotIn(trigger, workflow.split('permissions:', 1)[0])
         self.assertIn("github.ref == 'refs/heads/main'", workflow)
         self.assertIn("ref: 'heads/site-factory-gwacheon-direct'", workflow)
