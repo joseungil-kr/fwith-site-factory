@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "phase": "31_banner_sites_public_verified_indexnow7_pending_remaining15_unpublished",
+  "phase": "31_banner_sites_http_verified_directory_spacing_followup_and_indexnow7_pending",
   "sourceRevision": "0a2b4d4d7772dbed6cdf2be29f2b29a858d07797",
   "previousPublicRevision": "8c20e5726ab7ce5767391219ea93f690a572972d",
   "sourceBranch": "site-factory-seoul-yangcheon-direct",
@@ -28,7 +28,7 @@
     "correction": "Previously omitted existing noindex merged Ansan route; baseline/public bytes match. No new page or sitemap change.",
     "correctionEvidence": "docs/shared-banner-release/denominator-reconciliation.json"
   },
-  "next": "Wait for explicit authorization before one reviewed IndexNow-only recovery issue. Prepare and independently review direct7 update controls and legacy8 native release evidence, without advancing production branches before required gates.",
+  "next": "Keep existing published revision pins for pending IndexNow7 recovery. Independently verify card-midpoint spacing fix; apply it to unpublished direct7 before first release. Prepare published31 directory-only follow-up as a separate reviewed deployment unit. Continue legacy8 genuine native/artifact/pixel/provider evidence.",
   "controlRevision": "d3923edc4955fdc13824dcd070cd44f9149d767c",
   "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38285343695",
   "runConclusion": "success",
@@ -112,7 +112,7 @@
     "currentHttpEvidence": "docs/shared-banner-release/batch30-current-public-http.json",
     "currentHttpUnrepeatedPaths": "docs/shared-banner-release/batch30-current-http-not-repeated.json"
   },
-  "updatedAt": "2026-10-12T18:46:27.632939+00:00",
+  "updatedAt": "2026-10-12T18:54:42.529019+00:00",
   "bannerPublishedSites": 31,
   "bannerPublishedEligibleHtml": 459,
   "bannerPublishedCustomerHtml": 461,
@@ -123,5 +123,20 @@
   "indexNowPendingSites": 7,
   "indexNowRecoveryControlRevision": "5aeb97bc49a5e63ac7e94736a6ff9895220d1dd9",
   "indexNowRecoveryIssueApproval": "pending",
-  "actualBrowserCoverage": "Yangcheon only:5 routes at1180/500px; other30 not inspected;375px mobile unverified"
+  "actualBrowserCoverage": "Yangcheon:5 customer routes at1180/500px. Batch: Nowon home, Anseong directory, Yongsan detail at1180/500px. Other27 batch sites and375px mobile unverified.",
+  "directorySpacingFollowup": {
+    "status": "local_fix_preparation_no_redeployment",
+    "publishedSites": 31,
+    "affectedRoute": "/regions/",
+    "affectedPages": 31,
+    "unpublishedDirect7CandidatesAffected": 6,
+    "finding": "All31 published directory pages have one district group. Current budget is after all page cards, leaving only collapsed administrative details before consultation. Anseong actual desktop/narrow screen confirms closely consecutive banners.",
+    "bodyOrUrlChangeRequired": false,
+    "proposedChange": "Split the existing page-card grid at the midpoint of all cards and place budget between the halves. Keep card order, headings, source links, InlineOrderBanner and noindex eligibility.",
+    "currentPublishedRevisionsRemainPinned": true,
+    "indexNow7RecoveryMustUseOriginalPublishedBannerRevisions": true,
+    "sourceCommitObjectsOnlyNoRefsChangedForDirect7": 3,
+    "homeAndArticleDefectClaimed": false,
+    "independentPlacementReviewRequiredBeforeRelease": true
+  }
 }
