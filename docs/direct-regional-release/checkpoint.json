@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-12T03:20:28.453Z",
+  "updatedAt": "2026-10-12T03:24:58.939Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -30539,7 +30539,7 @@
   "independentPreparations": [
     {
       "regionKey": "seoul-eunpyeong",
-      "status": "SOURCE_SAVED_CONTROLS_PREPARED_DISPATCH_CONNECTION_BLOCKED",
+      "status": "exact_source_production_rechecked_publication_intent_saved",
       "scope": "서울특별시 은평구 자치구",
       "officialCode": "11380",
       "repository": "joseungil-kr/fwith-site-factory",
@@ -32232,11 +32232,44 @@
         "sitemapUrls": 6,
         "detailArticles": 4,
         "productCards": 16
+      },
+      "publicationIntent": {
+        "recordedAt": "2026-10-12T03:24:58.939Z",
+        "action": "dispatch_previously_prepared_exact_source_once_verify_public_submit_sitemap",
+        "workflow": ".github/workflows/seoul-eunpyeong-direct-publish.yml",
+        "ref": "main",
+        "expectedRevision": "cbc33f79d437dd813f8319a4b192641bbc8eda86",
+        "indexnow_only": false,
+        "idempotencyKey": "seoul-eunpyeong:publish:cbc33f79d437dd813f8319a4b192641bbc8eda86",
+        "dispatchPerformed": false,
+        "activeMatchingRuns": 0,
+        "priorOwnerStopped": true,
+        "originalPlanN": 4,
+        "approvedArticles": 4,
+        "held": 0,
+        "productionReviewSha256": "e9b5f217ddbcda90474b1b1dfd5f0bca8043c8fc39b8be3d2157e3c77cd55e4a",
+        "recheckSha256": "22c201803e47b8b96732da1911889bdfc1db67baf9f79bd738d3e921f0f525fe",
+        "providerPreflight": "GET_verified_exact_target_absence_no_override",
+        "gsc": {
+          "property": "sc-domain:fwith.kr",
+          "sitemap": "https://seoul-eunpyeong.fwith.kr/sitemap-index.xml",
+          "action": "reuse_existing_registration_or_submit_once_after_public_QA_then_readback",
+          "route": "official_existing_authenticated_UI",
+          "submitted": false
+        },
+        "owner": {
+          "checkpointId": "seoul-eunpyeong-public-20261012T0324Z",
+          "serviceInvocationId": null,
+          "active": true,
+          "mainWriter": "root",
+          "dispatchExecutor": "delegated_single_executor"
+        },
+        "visualQa": "DEFERRED_NOT_PASS"
       }
     },
     {
       "regionKey": "seoul-seodaemun",
-      "status": "SOURCE_AND_CONTROL_PREPARED_DISPATCH_RUNTIME_BLOCKED",
+      "status": "exact_source_production_rechecked_publication_intent_saved",
       "scope": "서울특별시 서대문구 자치구",
       "officialCode": "11410",
       "repository": "joseungil-kr/fwith-site-factory",
@@ -32260,7 +32293,7 @@
       "minimumApprovedForPublication": 4,
       "approvedArticles": 0,
       "heldArticles": 0,
-      "sourceRevision": null,
+      "sourceRevision": "ec22377b91a08831259604b5b440cd9738d20269",
       "sourceReviewDigest": null,
       "sourceBranchCreated": false,
       "planCandidateSha256": "b9423519bd7879c106e21a86b29456217cbf78599c48877e625aa0c9c196b8d3",
@@ -33113,6 +33146,39 @@
         "dispatch": "NOT_RUN",
         "indexNow": "NOT_RUN",
         "gsc": "NOT_RUN",
+        "visualQa": "DEFERRED_NOT_PASS"
+      },
+      "publicationIntent": {
+        "recordedAt": "2026-10-12T03:24:58.939Z",
+        "action": "dispatch_previously_prepared_exact_source_once_verify_public_submit_sitemap",
+        "workflow": ".github/workflows/seoul-seodaemun-direct-publish.yml",
+        "ref": "main",
+        "expectedRevision": "ec22377b91a08831259604b5b440cd9738d20269",
+        "indexnow_only": false,
+        "idempotencyKey": "seoul-seodaemun:publish:ec22377b91a08831259604b5b440cd9738d20269",
+        "dispatchPerformed": false,
+        "activeMatchingRuns": 0,
+        "priorOwnerStopped": true,
+        "originalPlanN": 4,
+        "approvedArticles": 4,
+        "held": 0,
+        "productionReviewSha256": "6012d19d4d8f1f2eae522283eee0d713610d5f21b8c779482323721f8ee59ea6",
+        "recheckSha256": "22c201803e47b8b96732da1911889bdfc1db67baf9f79bd738d3e921f0f525fe",
+        "providerPreflight": "GET_verified_exact_target_absence_no_override",
+        "gsc": {
+          "property": "sc-domain:fwith.kr",
+          "sitemap": "https://seoul-seodaemun.fwith.kr/sitemap-index.xml",
+          "action": "reuse_existing_registration_or_submit_once_after_public_QA_then_readback",
+          "route": "official_existing_authenticated_UI",
+          "submitted": false
+        },
+        "owner": {
+          "checkpointId": "seoul-seodaemun-public-20261012T0324Z",
+          "serviceInvocationId": null,
+          "active": true,
+          "mainWriter": "root",
+          "dispatchExecutor": "delegated_single_executor"
+        },
         "visualQa": "DEFERRED_NOT_PASS"
       }
     },
