@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "phase": "yangcheon_canary_source_saved_controls_independently_reviewed_not_deployed",
+  "phase": "yangcheon_canary_public_verified_batch30_source_preparation",
   "sourceRevision": "0a2b4d4d7772dbed6cdf2be29f2b29a858d07797",
   "previousPublicRevision": "8c20e5726ab7ce5767391219ea93f690a572972d",
   "sourceBranch": "site-factory-seoul-yangcheon-direct",
@@ -12,10 +12,10 @@
   "controlTestsPassed": 15,
   "existingPublisherTestsPassed": 43,
   "sourceReadbackFiles": 13,
-  "publicationAttempted": false,
-  "mainWriterActive": true,
+  "publicationAttempted": true,
+  "mainWriterActive": false,
   "noNewRegionClaimed": true,
-  "visualQa": "pending_actual_public_browser",
+  "visualQa": "five_customer_routes_at_1180px_and_500px_verified; 375px_mobile_unverified",
   "scopeInventory": {
     "priorPublishedSites": 45,
     "priorCustomerHtml": 975,
@@ -25,5 +25,29 @@
     "customerHtml": 981,
     "coverage": "inventory_count_not_all_http_verified"
   },
-  "next": "Publish only the approved Yangcheon canary first. Batch30 requires successful public canary verification. Other 15 targets remain separate."
+  "next": "Prepare and independently review exact source amendments for approved batch30. Other15 publishing paths remain separate. Reacquire main writer lease before control changes. No all-region completion claim.",
+  "controlRevision": "d3923edc4955fdc13824dcd070cd44f9149d767c",
+  "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38285343695",
+  "runConclusion": "success",
+  "issueUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/281",
+  "publicVerifiedAt": "2026-10-12T17:46:06Z",
+  "publicHttp": {
+    "report": "docs/shared-banner-release/yangcheon-live-http.json",
+    "sha256": "5759fe77a9cd628a9a02c9fe7bec74e2a7c145d73577be8c2bfd36f8c1c5391e",
+    "paths": 22,
+    "allResponsesExpected": true,
+    "allBytesMatch": true
+  },
+  "publicBrowser": {
+    "report": "docs/shared-banner-release/yangcheon-live-browser.json",
+    "sha256": "90e5907f5640051d11550393ca331a4a62f39e8ca824d14547b79f72e9c34069",
+    "routeSizeCombinations": 10,
+    "widths": [
+      1180,
+      500
+    ]
+  },
+  "completedSites": 1,
+  "completedCustomerHtml": 5,
+  "remainingSites": 45
 }
