@@ -1,8 +1,9 @@
 ---
+import SharedFlowerBanner from './SharedFlowerBanner.astro';
 import {site} from '../config/site';
 import {groupsFor,coverage as sourceCoverage} from '../lib/regional-runtime.mjs';
 import InlineOrderBanner from './InlineOrderBanner.astro';
-const {pages}=Astro.props;
+const {pages,showBanners=true}=Astro.props;
 type Representative={pageKey:string;unitKeys:string[]};
 type District={key:string;name:string;sourceUrl:string};
 type RegionEntry={representative:Representative;page:{url:string;primaryKeyword:string;cardSummary:string}};
@@ -18,11 +19,12 @@ const published=new Map<string,RegionEntry>(districts.flatMap(d=>d.items).flatMa
   <p>{site.region}에 보낼 꽃을 찾고 계신가요? 받는 장소에 맞는 안내를 골라 축하와 위로의 마음을 준비해 보세요. 사진과 가격을 비교하며 편하게 주문을 상담할 수 있습니다.</p>
   <div class="actions"><a class="btn primary" href={site.phoneHref}>전화 상담·주문</a><a class="btn dark" href={site.orderUrl}>온라인 주문</a></div>
 </section>
+{showBanners && <SharedFlowerBanner variant="message"/>}
 <nav class="actions" aria-label="지역 안내">{districts.map(d=><a class="btn light" href={`#${d.key}`}>{d.name}</a>)}</nav>
 {districts.map((district,index)=><section id={district.key} data-region-district={district.key}>
   <div class="section-title"><h2>{district.name}</h2></div>
   <div class="card-grid big">{district.items.map(({representative,page})=><a class="page-card" href={page.url} data-region-unit={representative.unitKeys.join('|')}><strong>{page.primaryKeyword}</strong><span>{page.cardSummary}</span><em>주문 안내 보기 →</em></a>)}</div>
-  {index===Math.floor((districts.length-1)/2) && <InlineOrderBanner/>}
+  {index===Math.floor((districts.length-1)/2) && <><InlineOrderBanner/>{showBanners && <SharedFlowerBanner variant="budget"/>}</>}
   <details class="content-card"><summary>행정동 이름으로 찾기</summary>
     <p>익숙한 동 이름으로 찾아보세요. ‘일부’는 한 법정동이 여러 행정동에 걸친 경우를 표시합니다.</p>
     <ul class="decision-list">{coverage.administrativeCrosswalk.filter(a=>a.districtKey===district.key).map(admin=><li data-administrative-unit={admin.aliasKey}><strong>{admin.name}</strong>: {admin.relations.map((relation,index)=>{
@@ -34,3 +36,5 @@ const published=new Map<string,RegionEntry>(districts.flatMap(d=>d.items).flatMa
     <a href={district.sourceUrl} rel="nofollow">{district.name} 공식 관할 안내</a>
   </details>
 </section>)}
+
+{showBanners && <SharedFlowerBanner variant="consultation"/>}
