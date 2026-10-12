@@ -1,0 +1,47 @@
+{
+  "sourceMain": "9cf00bd1d9c4f4469031277e055f13afcd266452",
+  "workflowCount": 59,
+  "pushTriggeredWorkflows": [
+    {
+      "file": ".github/workflows/ansan-indexnow-production.yml",
+      "events": {
+        "push": {
+          "branches": [
+            "site-factory-ansan-v1"
+          ]
+        },
+        "workflow_dispatch": ""
+      }
+    },
+    {
+      "file": ".github/workflows/ansan-live-qa.yml",
+      "events": {
+        "push": {
+          "branches": [
+            "site-factory-ansan-v1"
+          ]
+        },
+        "workflow_dispatch": ""
+      }
+    },
+    {
+      "file": ".github/workflows/namyangju-production-gate-check.yml",
+      "events": {
+        "push": {
+          "branches": [
+            "codex/namyangju-production-gate"
+          ]
+        },
+        "pull_request": {
+          "paths": [
+            ".github/site-factory-sites.json",
+            "site-factory/engine/**",
+            "site-factory/releases/namyangju-flower-v2-initial-20261005/**"
+          ]
+        }
+      }
+    }
+  ],
+  "conclusion": "Only listed branch/path-scoped push triggers were found. Geumcheon plan documentation under docs/direct-regional-release/seoul-geumcheon is not an issue or dispatch event. No workflow/control modifications are planned.",
+  "scope": "Static trigger inspection, not an assertion about future Actions execution."
+}

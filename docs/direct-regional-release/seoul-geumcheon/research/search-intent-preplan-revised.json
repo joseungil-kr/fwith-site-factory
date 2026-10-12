@@ -1,0 +1,138 @@
+{
+  "checkedAt": "2026-10-12T20:53:23.828869+00:00",
+  "actualQueries": [
+    "금천구 장례식장",
+    "독산장례식장 근조화환",
+    "쉴낙원 서울장례식장 근조화환",
+    "가산디지털단지 개업화환 금천구",
+    "금천구 웨딩홀",
+    "금천뮤지컬센터 화환",
+    "금천구 녹색광장 결혼식 화환"
+  ],
+  "measurement": {
+    "searchVolume": null,
+    "rank": null,
+    "provider": "web search tool; no claim of a controlled Google/Naver SERP position"
+  },
+  "clusters": [
+    {
+      "intent": "funeral-condolence-wreath",
+      "queries": [
+        "금천구 근조화환",
+        "독산장례식장 화환",
+        "쉴낙원 서울 화환"
+      ],
+      "decision": "Choose a sympathy wreath/budget and submit correct intended funeral destination, recipient and desired timing without implying live room access.",
+      "combine": "Two official-listed facilities under one canonical article with distinct anchors; no same-funnel duplicate facility pages.",
+      "status": "proposed-active",
+      "canonicalArticleN": 1
+    },
+    {
+      "intent": "opening-congrats-wreath",
+      "queries": [
+        "가산디지털단지 개업화환",
+        "가산동 사무실 이전 화환",
+        "금천구 개업화환"
+      ],
+      "decision": "Choose a business congratulatory wreath for the actual recipient and opening/relocation occasion, with total budget, display suitability and no collection understood.",
+      "combine": "Opening/relocation are variants of one buying decision; do not create separate geography/synonym pages.",
+      "risk": "Confirmed material overlap with Guro source 500d82d01c1cdaed3ebde047bb3ce056705daac1. No new Gasan-specific receiving or buying answer established; reject local-name substitution and do not create substitute pages.",
+      "status": "preplan-hold",
+      "rejectedProposedUrl": "/regions/gasan-digital-opening-wreath/"
+    },
+    {
+      "intent": "performance-congrats-wreath",
+      "decision": "Do not sell wreath delivery intoMusical Center; actual facility prohibition overrides search opportunity.",
+      "status": "held"
+    },
+    {
+      "intent": "wedding-congrats-wreath",
+      "decision": "Wedding leads need usable current official receiving facts; none selected just to fillN.",
+      "status": "held"
+    }
+  ],
+  "competitors": [
+    {
+      "sourceId": "funeral-competition-binsoro",
+      "url": "https://www.binsoro.co.kr/sl-gc-shilnakwon-seoul",
+      "readScope": "ActualHTML body with products/prices/delivery notes.",
+      "answers": [
+        "Price-tier cards",
+        "Direct order path",
+        "Promised delivery/photo service"
+      ],
+      "gapsOrLimits": [
+        "Unverified competitive service claims are not fwith capability",
+        "Different flower products and terms cannot be substituted"
+      ]
+    },
+    {
+      "sourceId": "doksan-competitor",
+      "url": "https://doksan.thegardenflora.co.kr/",
+      "readScope": "ActualHTML product/order/facilityFAQ body.",
+      "answers": [
+        "Phone contact",
+        "Product examples",
+        "Photo-message claim"
+      ],
+      "gapsOrLimits": [
+        "Generic venue assertions require primary-source checking",
+        "No adoption of quality/installation orphoto promises"
+      ]
+    },
+    {
+      "sourceId": "opening-competition-yedo",
+      "url": "https://xn--hq1bj06a.kr/congrats-wreath/seoul-geumcheongu-opening",
+      "readScope": "ActualHTML opening guide, catalogue, FAQ and ribbon sections.",
+      "answers": [
+        "Price tiers and plant alternatives",
+        "Opening ribbon examples",
+        "Timing and installation promises"
+      ],
+      "gapsOrLimits": [
+        "Local imagery largely generic; do not copy fabricated delivery scenarios",
+        "A truthful total-cost/collection/materials explanation is useful but common, so not enough alone to justify multiple regional URLs"
+      ]
+    }
+  ],
+  "officialGuidelineSources": [
+    "google-helpful",
+    "google-spam",
+    "naver-guidelines",
+    "naver-seo-help"
+  ],
+  "rules": [
+    "2,500–3,000 unique-body characters is a draft information target, not ranking formula/minimum.",
+    "Comparative review must identify different customer questions/answers, not just low string similarity.",
+    "No measured rankings/indexing claims. Direct SKU and phone CTA reduces an unnecessary funnel but does not by itself remove doorway risk.",
+    "Do not copy competitor prose or policies."
+  ],
+  "internalOverlap": [
+    {
+      "source": "Guro 500d82d01c1cdaed3ebde047bb3ce056705daac1",
+      "path": "src/data/pages.json",
+      "article": "구로디지털단지 개업·이전 축하화환",
+      "finding": "Independent full-source comparison finds all proposed Gasan answers already in Guro. Hold the opening article, retain its research, and keep only one grouped funeral page."
+    },
+    {
+      "source": "Guro candidate inventory",
+      "finding": "Shillakwon Seoul Geumcheon was excluded as adjacent-district lead; not an activeGuropage. Seoul Jejung is a different facility and remains distinct."
+    }
+  ],
+  "revision": 2,
+  "history": {
+    "initialPlanPath": "candidate-plan.json",
+    "initialPlanSha256": "4f28da81873ad160de48a0bfdddd8b085fe34400ce014192def06203a67ab129",
+    "initialCandidateInventoryPath": "candidate-inventory.json",
+    "initialCandidateInventorySha256": "4fd21efe4f6019f9cecd55840dcb708b22e95c0ff971cc36765d811de8306a72",
+    "initialInventoryN": 9,
+    "initialActiveN": 3,
+    "initialHeldN": 6,
+    "initialProposedN": 2,
+    "reviewPath": "independent-review.json",
+    "reviewSha256": "5d853e46598df713c98cb380ca2d680c66d4773e9b6878a8840943de042943c9",
+    "verdict": "REVISE",
+    "originalFilesPreserved": true
+  },
+  "candidateTraceRule": "10 candidates = 2 proposed-active physical facilities in 1 article + 8 held. Membership of 3 legal/10 administrative dongs is not an article quota."
+}

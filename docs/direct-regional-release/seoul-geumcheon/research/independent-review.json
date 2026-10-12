@@ -1,0 +1,694 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "independent_plan_review",
+  "reviewer": "/root/review_geumcheon_regional_plan",
+  "author": "/root/prepare_geumcheon_regional_plan",
+  "checkedAt": "2026-10-12T20:51:07.372261+00:00",
+  "verdict": "REVISE",
+  "planPath": "/workspace/shared/geumcheon-evidence/candidate-plan.json",
+  "planSha256": "4f28da81873ad160de48a0bfdddd8b085fe34400ce014192def06203a67ab129",
+  "scope": "Plan and original-evidence review only. No copy, implementation, build, publication, indexing or freeze approval.",
+  "decision": {
+    "proposedNReviewed": 2,
+    "recommendedN": 1,
+    "approvedN": null,
+    "mayFreeze": false,
+    "mayStartCopy": false,
+    "publicationAuthorized": false,
+    "summary": "Hold the Gasan opening article because the exact Guro source already answers its proposed decisions. Keep the grouped funeral concept, but revise and bind the newly verified 2026 MOHW registry, add its newly discovered held lead, and resubmit the exact new plan digest."
+  },
+  "requiredFixes": [
+    {
+      "id": "R1",
+      "severity": "blocking",
+      "subject": "Gasan duplicates Guro purchase decision",
+      "finding": "The proposed 2nd/3rd-complex scope, actual receiving address, office opening versus relocation, ribbon wording, all four congratulatory SKUs, total budget, no collection, and change/refund guidance already appear in Guro. The plan supplies no independently evidenced Gasan receiving constraint or other additional buying answer. Showroom/shop variants remain generic.",
+      "requiredChange": "Revise to N1. Move gasan-digital-opening to preplan-hold in inventory, candidate trace and search-intent plan. Preserve its research and rejected proposed URL as history, but exclude it from active runtime/canonical/sitemap/IndexNow and customer cards. Do not add a substitute page to keep N2.",
+      "evidence": [
+        "Guro source 500d82d01c1cdaed3ebde047bb3ce056705daac1:site-factory/seoul-guro-flower/src/data/pages.json SHA256 1d186a5e46d42a1185180d79a97065b7d08a8a8c3d90cada6a0cc2d64ffce1f6",
+        "candidate-plan.json selectedProposedPages[1]",
+        "raw/geumcheon-gvalley.html"
+      ]
+    },
+    {
+      "id": "R2",
+      "severity": "blocking",
+      "subject": "Bind the newer funeral registry and preserve its extra lead",
+      "finding": "The bound plan uses a 2024.8 municipal list and a PDF generated 2025-09-29. During review, the author located the original MOHW 2026-04-01 CSV. I independently parsed all 1,080 records and the exact Seoul/Geumcheon filter: record 18 is 나눔길사회적협동조합, record 19 독산장례식장, record 20 쉴낙원 서울장례식장 (record numbers exclude header). The two proposed funeral names and addresses match. The new registry row cannot be omitted from the pre-freeze candidate trace.",
+      "requiredChange": "Add and hash-bind the MOHW catalog, original CSV and extraction evidence. Retain the initial 9 candidates as history, add nanumgil-social-cooperative as an explicitly held lead, and reconcile the revised inventory to 10 total = 2 active physical facilities + 8 held, with 0 active area contexts, if no further candidates are added. Preserve the initial 3-active/6-held proposal as review history. Record source data-as-of 2026-04-01, catalog registration/modification 2026-04-09 and October access time separately. Do not describe an October read as October operating-status confirmation.",
+      "evidence": [
+        "https://www.data.go.kr/data/15143467/fileData.do",
+        "https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000003623209&fileDetailSn=1&insertDataPrcus=N",
+        "raw/mohw-funerals-20260401.csv SHA256 fcf4911ed271cfbc364d2005c3ad02a5e821d3946fdf80b5119e36dfaadccd4b",
+        "supplemental-mohw-registry.json SHA256 6c4e31c657fa10386ebb20baf436ba045c41799e1d03bfc5642d1e686266d9c9"
+      ]
+    },
+    {
+      "id": "R3",
+      "severity": "blocking",
+      "subject": "Explicit N1 route and banner consequences",
+      "finding": "The exact reused category template uses noindex={items.length < 3} and showBanners={items.length >= 3}. The immutable banner split helper rejects requested 0/1-card directories. A grouped funeral article is one actual page card, even with two facility anchors.",
+      "requiredChange": "Write the N1 expectation into the plan: /regions/ remains one-card, noindex and without marketing banners under unchanged eligibility; the article and home can retain their intended non-directory banner flow with real intervening content. Preserve helper SHA 04ed49395e2a3458c9b01c74eff57f425ed693e9f713b59bfe7343a4c433a19c. Do not silently change the >=3 rule, duplicate a page card, split the facilities into two pages or count anchors as cards. Reconcile explicit expected routes and 404/noindex inventory during implementation. Rewrite reused home, directory, meta, navigation and common copy to the actual funeral-only article scope; do not inherit Guro wedding/office venue claims.",
+      "evidence": [
+        "Guro source src/pages/[category]/index.astro",
+        "reuse/src/components/RegionDirectory.astro",
+        "reuse/src/lib/directory-banner-split.mjs",
+        "SHARED_BANNER_STANDARD.md"
+      ]
+    }
+  ],
+  "confirmedResults": [
+    {
+      "classification": "직접 확인",
+      "subject": "Exact input integrity",
+      "result": "Exact requested plan digest matched. All seven bound JSON inputs and all 38 captured original raw-file hashes matched. Missing original responses remain failed/unverified sources."
+    },
+    {
+      "classification": "직접 확인",
+      "subject": "Official membership",
+      "result": "Independently opened the MOIS ZIP and decoded the original KIKcd_B, KIKcd_H and KIKmix records. The 3 legal dongs, 10 administrative dongs and 10 pairs match the plan exactly. Codes 1154510100/0200/0300 identify 가산동/독산동/시흥동. All membership denominators must remain even where no article is selected.",
+      "evidence": "raw/mois-package.zip; legal rows 393–395; administrative rows 298–307; pair rows 570–579"
+    },
+    {
+      "classification": "직접 확인",
+      "subject": "Funeral identity and address",
+      "result": "HWPX Contents/section0.xml and KFCPI original PDF page 2 both identify 쉴낙원 서울 at 서부샛길 732 and 독산장례식장 at 시흥대로116길 5. The municipal HWPX identifies administrative 가산동 and 독산4동; the 2026 MOHW CSV newly corroborates the same legal-dong addresses. Seoul Jejung in Guro is a separate entry. Independently fetched the original CSV again: HTTP 200 and byte-identical SHA256 fcf4911ed271cfbc364d2005c3ad02a5e821d3946fdf80b5119e36dfaadccd4b.",
+      "limits": "Recorded identity supports the grouped plan. Real-time operation, room availability, access, acceptance, affiliation and delivery capability remain unverified."
+    },
+    {
+      "classification": "직접 확인",
+      "subject": "Musical Center exclusion",
+      "result": "Read original regulations text and actual rendered PDF pages 5, 6 and 23. Article 17(10), revised 2026-05-11, prohibits hall/lobby wreaths; the use pledge on p. 23 prohibits building wreaths. The August 2026 rental announcement does not override this. Hold is correct; no permission-first or outside-building delivery workaround may be invented."
+    },
+    {
+      "classification": "직접 확인",
+      "subject": "Geumnarae exclusion",
+      "result": "Original district notice dated 2026-03-25 states April–December 2026 repairs and performance-hall rental suspension, with only limited gallery use. Hold is correct; a reopening date or active performance destination must not be inferred."
+    },
+    {
+      "classification": "직접 확인",
+      "subject": "Other holds",
+      "result": "Marvelie’s inspected brand home identifies Pyeongchon/Anyang; Weddingbook is an aggregator. The Mayqueen original is an EV charging listing. Green Plaza is an original public-wedding venue page with October 2026 calendar and flower-decoration options, but no established outside-wreath receiving rule. These sources do not justify active wreath venue pages. Huimyeong remains an unverified lead, not a closed/nonexistent-facility finding."
+    },
+    {
+      "classification": "직접 확인",
+      "subject": "Eight SKUs and real photographs",
+      "result": "Independently requested all eight official product pages and all eight image URLs at 20:48 UTC: HTTP 200, exact main product title/price match, matching referenced image URL, and fresh image bytes identical to the saved images. Viewed all eight actual product images. B201/B203/B205/B060 are KRW 59000/79000/109000/149000; C200/C203/C204/C205 are KRW 59000/79000/99000/149000.",
+      "evidence": "reviewer/catalog-independent-readback.json",
+      "limits": "Product listing and photo verification do not verify stock, dimensions, flower counts, superiority, delivery time or installed appearance at any venue."
+    },
+    {
+      "classification": "직접 확인",
+      "subject": "Business policy images",
+      "result": "Viewed actual order-top2 and de_change_content image pixels. Mixed fresh/artificial material, no separate wreath collection, variable regional backing, and defect/damage/wrong-product refund grounds are present. Production/completion/change restrictions and post-shipment cancellation language must remain qualified; do not invent one universal cutoff or erase exceptions.",
+      "limits": "Telephone hours 08:00–23:00 and 24-hour online reception come from existing operator_confirmed repository data, not newly verified original-page text."
+    },
+    {
+      "classification": "직접 확인",
+      "subject": "Reusable source and docs",
+      "result": "All 14 saved reuse files match their declared hashes and the exact Git objects at Guro source 500d82d01c1cdaed3ebde047bb3ce056705daac1. Read the explicit grouped adapter, directory/anchor logic, preserved legacy dispatcher, banner helper/components, binding and relevant tests. Current main checkout is e7b40dfdbcb440102b447688b836152692154fb9; its strategy and tone documents match inspected copies. Guro checkout HEAD is a later documentation commit, but its untracked runtime pages file is byte-identical to the exact reviewed source, so the comparison is bound to source Git objects, not the working branch label."
+    }
+  ],
+  "assessments": [
+    {
+      "classification": "추정·판단",
+      "subject": "Grouped funeral value",
+      "result": "One grouped funeral buying answer is defensible after R2 because the two real named destinations need accurate identification, and similarly named Seoul Jejung is distinct. Keep local details compact. The 116-versus-114 address conflict is an internal source-resolution fact, not a customer-error anecdote or a reason to pad copy. Do not expand to one page per venue."
+    },
+    {
+      "classification": "추정·판단",
+      "subject": "Doorway and information completeness",
+      "result": "The Gasan article fails the proposed added-value test. Geography, different wording, length, direct SKU links and non-guarantee wording do not by themselves establish a new useful answer. This is a content-plan judgment, not a prediction of penalties or rankings."
+    },
+    {
+      "classification": "추정·판단",
+      "subject": "Tone and length",
+      "result": "The outline reasonably covers sympathy-first help, four verified options, compact destinations, one order brief, ribbons, cost/timing/materials, qualified policy and visible FAQ. Aim for roughly 2500–3000 unique characters only where useful. Final first-answer/body/FAQ and all shared visible copy require separate full-text review; no plan review can pre-pass the tone or reject concise warranted content merely for length."
+    }
+  ],
+  "toolReportsNotIndependentlyProven": [
+    "Saved GitHub branch and Actions API responses support reconciliation, but this review did not independently request the live remote branch catalog, all Actions, ownership or publication state. The 46 released regions remain carried-forward history, not newly verified live releases.",
+    "Original capture audit HTTP status/redirect failures outside the independently re-read catalog remain capture-tool reports. The saved original bodies and their hashes were inspected independently. A failed operator endpoint is not evidence of closure.",
+    "External GitHub survey metadata reports nereast/florella unarchived, last push 2025-11-06 and no license; its saved package.json is Astro 4.7.1/MDX/Tailwind. The no-import conclusion is reasonable. The survey does not establish maintenance quality, so do not describe it as abandoned."
+  ],
+  "unverifiedAndLimits": [
+    "No final customer copy exists in this scope; tone, actual unique character counts, FAQ quality and cross-city final-copy duplication are not yet verified.",
+    "No Geumcheon implementation, tests, static build, rendered browser QA, deployed response, payment/order, venue contact, IndexNow, crawl or ranking was performed or approved.",
+    "The new MOHW CSV is current-year registry evidence, not real-time operation or wreath acceptance. The cooperative row with zero room/capacity fields is insufficient to classify it as an active wreath-receiving hall; zero fields also do not prove that the entity is closed or nonexistent.",
+    "Any revision of plan, evidence, scope, candidate count, source data or copy invalidates this exact-digest verdict and requires the relevant fresh review."
+  ],
+  "verificationEvidence": {
+    "inputBindings": [
+      {
+        "path": "/workspace/shared/geumcheon-evidence/membership.json",
+        "expectedSha256": "ded6c156cefc8c04ef066bd4cec30df2ee8103499f471299ddae8c69f3028b87",
+        "actualSha256": "ded6c156cefc8c04ef066bd4cec30df2ee8103499f471299ddae8c69f3028b87",
+        "matches": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reconciliation.json",
+        "expectedSha256": "933717b907de15919e237e96860c440d9473787d3261565d0f96eb1b45a8d96a",
+        "actualSha256": "933717b907de15919e237e96860c440d9473787d3261565d0f96eb1b45a8d96a",
+        "matches": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/candidate-inventory.json",
+        "expectedSha256": "4fd21efe4f6019f9cecd55840dcb708b22e95c0ff971cc36765d811de8306a72",
+        "actualSha256": "4fd21efe4f6019f9cecd55840dcb708b22e95c0ff971cc36765d811de8306a72",
+        "matches": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/source-evidence.json",
+        "expectedSha256": "8503999c8ea96037878cef493cd52083cf5e5e4bd17e2ae061538df70d9cf68b",
+        "actualSha256": "8503999c8ea96037878cef493cd52083cf5e5e4bd17e2ae061538df70d9cf68b",
+        "matches": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/business-policy-facts.json",
+        "expectedSha256": "4d8be9ec66f65a6cb9ba3e173c06675bca5767f79e744d13ec1a2ba9a2de2686",
+        "actualSha256": "4d8be9ec66f65a6cb9ba3e173c06675bca5767f79e744d13ec1a2ba9a2de2686",
+        "matches": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse-review.json",
+        "expectedSha256": "503e46f545f7da1504675df694bd1f43ab018717dea24ffbe57c2ebc1776ddb4",
+        "actualSha256": "503e46f545f7da1504675df694bd1f43ab018717dea24ffbe57c2ebc1776ddb4",
+        "matches": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/search-intent-preplan.json",
+        "expectedSha256": "cdbd6d8d3616330210be7157bb39fc0ec0d1e5970c9c21421903f7f84ff270c6",
+        "actualSha256": "cdbd6d8d3616330210be7157bb39fc0ec0d1e5970c9c21421903f7f84ff270c6",
+        "matches": true
+      }
+    ],
+    "rawOriginalManifest": [
+      {
+        "id": "funeral-government",
+        "url": "https://www.geumcheon.go.kr/portal/selectBbsNttView.do?bbsNo=596&key=2416&nttNo=235877",
+        "path": "/workspace/shared/geumcheon-evidence/raw/funeral-government.html",
+        "sha256": "b5ed18d364ece8b367da4677d60c2d7f02b2f0e4d90a60f3696c4cf2c4b0a0e8",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "shillakwon-seoul",
+        "url": "https://www.shillakwon.com/bbs/content.php?co_id=branch03",
+        "path": "/workspace/shared/geumcheon-evidence/raw/shillakwon-seoul.html",
+        "sha256": "50969c6a74a542a4cff62a7bb6f35a87393bcc680f22938d98a8f3adc3fb9bb9",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "geumnarae-government",
+        "url": "https://www.geumcheon.go.kr/portal/contents.do?key=938",
+        "path": "/workspace/shared/geumcheon-evidence/raw/geumnarae-government.html",
+        "sha256": "8c82a173f54a7299e750233a82577cb4f4af9a67eae63c4bb83e2d074839b106",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "geumnarae-regulations",
+        "url": "https://culture.seoul.go.kr/culture/cmmn/file/fileDown.do?atchFileId=795f008974374dd1abf23b3a690f0c0d&bbsId=&fileSn=3&menuNo=200050",
+        "capturedError": "HTTP Error 502: Bad Gateway",
+        "status": "No original body available; not used as affirmative evidence"
+      },
+      {
+        "id": "gcfac-home",
+        "url": "https://www.gcfac.or.kr/",
+        "path": "/workspace/shared/geumcheon-evidence/raw/gcfac-home.html",
+        "sha256": "536856a58c6648744d0ef047afabd44b570896a5e6426eed322fe554ff056083",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "funeral-competition-binsoro",
+        "url": "https://www.binsoro.co.kr/sl-gc-shilnakwon-seoul",
+        "path": "/workspace/shared/geumcheon-evidence/raw/funeral-competition-binsoro.html",
+        "sha256": "9b534843cc33587101a58edf703d4301189169e5e6c1a3eb06a75aadce3ccba1",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "opening-competition-yedo",
+        "url": "https://xn--hq1bj06a.kr/congrats-wreath/seoul-geumcheongu-opening",
+        "path": "/workspace/shared/geumcheon-evidence/raw/opening-competition-yedo.html",
+        "sha256": "ca3076c3862dbb2fd40b53732b984b89d4ffc5f3dab43cad4c41b901fd7e73c4",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "mois-20261012",
+        "url": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+        "path": "/workspace/shared/geumcheon-evidence/raw/mois-20261012.html",
+        "sha256": "8cc190d4ba92dd94f0097bf5e1bcbb1ab0c6881941f5905aaad28efc03c56d5a",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "mois-current-list",
+        "url": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardList.do?bbsId=BBSMSTR_000000000052",
+        "path": "/workspace/shared/geumcheon-evidence/raw/mois-current-list.html",
+        "sha256": "18da53892f82d0c7e01bcbe189530786788ef6a9b265877457c4df3287a319d8",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "mois-package",
+        "url": "https://www.mois.go.kr/cmm/fms/FileDown.do?atchFileId=FILE_0014963057q_I4g&fileSn=1",
+        "path": "/workspace/shared/geumcheon-evidence/raw/mois-package.zip",
+        "sha256": "3702ee001f131968983fbba1e08c6bffc89f6ee4377de327e5eff6946b1098d7",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "funeral-government-hwpx",
+        "url": "https://www.geumcheon.go.kr/portal/downloadBbsFileStr.do?atchmnflStr=2rtnSnuppjjDYSp4TTNl4A%3D%3D",
+        "path": "/workspace/shared/geumcheon-evidence/raw/funeral-government-hwpx.zip",
+        "sha256": "6617f888f283e1d771d84c7c4f3a0d1c5ce2b3658f73cd684f5ddcb2833628b7",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "kfcpi-funerals",
+        "url": "https://www.kfcpi.or.kr/link/2025/09/29/831da0f4-5acd-43d4-b0ae-60e6111f33f7.pdf",
+        "path": "/workspace/shared/geumcheon-evidence/raw/kfcpi-funerals.pdf",
+        "sha256": "b0e8b636e44decb6a875403d7f08f52617d68cedb5e81f5e82e61f65bd99822a",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "geumnarae-closure",
+        "url": "https://www.geumcheon.go.kr/portal/selectBbsNttView.do?bbsNo=8&key=297&nttNo=268120",
+        "path": "/workspace/shared/geumcheon-evidence/raw/geumnarae-closure.html",
+        "sha256": "fe62c6e83417ea5c76dc64802ae5444f62edf85aef5b9bd22ab94403db3bc734",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "geumcheon-gvalley",
+        "url": "https://www.geumcheon.go.kr/portal/contents.do?key=914",
+        "path": "/workspace/shared/geumcheon-evidence/raw/geumcheon-gvalley.html",
+        "sha256": "2f19e90aaaf50a7fc4ba647314796ec3f18eefedb7799bb97713fe04059ad751",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "musical-center",
+        "url": "https://www.geumcheon.go.kr/portal/contents.do?key=4040",
+        "path": "/workspace/shared/geumcheon-evidence/raw/musical-center.html",
+        "sha256": "f6df49bf9487e661b2f8a091dee3aec79fe724ddd44d5d0b47b765d4df1f46d5",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "marvelie-home",
+        "url": "http://marvelie.co.kr/",
+        "path": "/workspace/shared/geumcheon-evidence/raw/marvelie-home.html",
+        "sha256": "f58525cd77acca046f1b9fe8e31540f34e3cd9cc9c91e04a904db048faa3b36d",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "seoulfuneral-home",
+        "url": "https://www.seoulfuneral.com/",
+        "capturedError": "HTTP Error 403: Forbidden",
+        "status": "No original body available; not used as affirmative evidence"
+      },
+      {
+        "id": "google-helpful",
+        "url": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
+        "path": "/workspace/shared/geumcheon-evidence/raw/google-helpful.html",
+        "sha256": "4ce2fbc82f5e3b8d6689f34ffb0cf7ce4739d648b5974b39f8d0f764ec1d3934",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "google-spam",
+        "url": "https://developers.google.com/search/docs/essentials/spam-policies",
+        "path": "/workspace/shared/geumcheon-evidence/raw/google-spam.html",
+        "sha256": "7d0e03be8f1080fc2b8a2d39bf5e25c3723f9c47add5de41dc0722cc54e13047",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "naver-content",
+        "url": "https://searchadvisor.naver.com/guide/seo-basic-content",
+        "capturedError": "HTTP Error 500: Internal Server Error",
+        "status": "No original body available; not used as affirmative evidence"
+      },
+      {
+        "id": "musical-current-rental",
+        "url": "https://gcfac.or.kr/board/noticeDetail?board_seq=9271&notice_gb=",
+        "path": "/workspace/shared/geumcheon-evidence/raw/musical-current-rental.html",
+        "sha256": "32ec95904bbd5162ec4734997e43ac523fddf5c6fde3a677426e1163675c9783",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "musical-regulation-index",
+        "url": "https://gcfac.or.kr/board/rentalRegulations?gcfac_menu_cd=U0207",
+        "path": "/workspace/shared/geumcheon-evidence/raw/musical-regulation-index.html",
+        "sha256": "673703f4f9eacd6f7bd77e8500455fa8a9274ca0515099ff09c7e066420d3b87",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "musical-rental-with-rules",
+        "url": "https://gcfac.or.kr/board/noticeDetail?board_seq=9176&notice_gb=",
+        "path": "/workspace/shared/geumcheon-evidence/raw/musical-rental-with-rules.html",
+        "sha256": "1f9d931802d2a0e9b07c6232d7336f6060322e83191c3f3bdc9899335de47372",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "musical-current-show",
+        "url": "https://gcfac.or.kr/performance/commonView?gcfac_menu_cd=U0007&perDisGubun=performance&seq_no=3692",
+        "path": "/workspace/shared/geumcheon-evidence/raw/musical-current-show.html",
+        "sha256": "e347f1cbf0137d82de331ada153db509660101aadebbb468c2361974dc114911",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "musical-introduction",
+        "url": "https://gcfac.or.kr/content?gcfac_menu_cd=U0224",
+        "path": "/workspace/shared/geumcheon-evidence/raw/musical-introduction.html",
+        "sha256": "84031ef3397956210e77217e43f70a0526e266d341afeb251f93c8ce8f2c0703",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "naver-content-retry",
+        "url": "https://searchadvisor.naver.com/guide/seo-basic-contents",
+        "capturedError": "HTTP Error 500: Internal Server Error",
+        "status": "No original body available; not used as affirmative evidence"
+      },
+      {
+        "id": "naver-guidelines",
+        "url": "https://searchadvisor.naver.com/guide/seo-basic-intro",
+        "path": "/workspace/shared/geumcheon-evidence/raw/naver-guidelines.html",
+        "sha256": "7ce3d1eb36f60d7a5d98a57c978b3bd06ebd68d462381114aa166f717c9cf417",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "musical-regulations",
+        "url": "https://gcfac.or.kr/common/nunFileDown/?file_attach_seq=14182",
+        "path": "/workspace/shared/geumcheon-evidence/raw/musical-regulations.pdf",
+        "sha256": "da34ab8674ab9c1aa6e52d6274364c717fbb15fd398176dfe1c0a88bdb5ff0ad",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "musical-admin-dong",
+        "url": "https://council.geumcheon.go.kr/cserver/data/burok/06/ZB/04/06ZB0400.pdf",
+        "capturedError": "HTTP Error 404: ",
+        "status": "No original body available; not used as affirmative evidence"
+      },
+      {
+        "id": "naver-seo-help",
+        "url": "https://searchadvisor.naver.com/guide/seo-help",
+        "path": "/workspace/shared/geumcheon-evidence/raw/naver-seo-help.html",
+        "sha256": "c701418babccb3d9b380b0514fe2cbe3b4a35faf8553addc776fee384a185cef",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "marvelie-booking-competitor",
+        "url": "https://www.weddingbook.com/weddinghall/85c6207d-338c-11ef-9a7b-023379a10fd2",
+        "path": "/workspace/shared/geumcheon-evidence/raw/marvelie-booking-competitor.html",
+        "sha256": "0996b9426c0085ab6e3a0b8c0fd32858cafa33ed6e4ee072e2ec5fc497db8906",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "mayqueen-government",
+        "url": "https://www.eshare.go.kr/UserPortal/Upv/UprResrcFacl/index.do?rsrc_no=EI14I3646726",
+        "path": "/workspace/shared/geumcheon-evidence/raw/mayqueen-government.html",
+        "sha256": "ad13601c295432a537b3a209214783eeb20fcb55eeedad2fb5fbe43dadf6834b",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "green-plaza-wedding",
+        "url": "https://wedding.seoulwomen.or.kr/facilities/3204",
+        "path": "/workspace/shared/geumcheon-evidence/raw/green-plaza-wedding.html",
+        "sha256": "1bc5701ffb8c464c325a4836e74b030bbd47be15bc4bfebb499eeba7c6766197",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "doksan-competitor",
+        "url": "https://doksan.thegardenflora.co.kr/",
+        "path": "/workspace/shared/geumcheon-evidence/raw/doksan-competitor.html",
+        "sha256": "b200a3b78392da43293d5d626b11d7e8fa3ed83dad0f58d5d427797544e8d92a",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "catalog-B201",
+        "url": "https://fwith.co.kr/shop/item.php?it_id=B201",
+        "path": "/workspace/shared/geumcheon-evidence/raw/catalog-B201.html",
+        "sha256": "9eb468c58e97c5ba31ed8e89bcea351c0e1fac15761cc835fb8ceb910a51f27c",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "catalog-B203",
+        "url": "https://fwith.co.kr/shop/item.php?it_id=B203",
+        "path": "/workspace/shared/geumcheon-evidence/raw/catalog-B203.html",
+        "sha256": "d5a70f12964ef1c5c83dfd8e33a6cfcc98c3610394d9449e2a46051f82d12e43",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "catalog-B205",
+        "url": "https://fwith.co.kr/shop/item.php?it_id=B205",
+        "path": "/workspace/shared/geumcheon-evidence/raw/catalog-B205.html",
+        "sha256": "199060ce00e6d7c80dd25fe460ab285a30b8fe54f031f40b28a54ddeb17382f6",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "catalog-B060",
+        "url": "https://fwith.co.kr/shop/item.php?it_id=B060",
+        "path": "/workspace/shared/geumcheon-evidence/raw/catalog-B060.html",
+        "sha256": "b9bfbf4710bc3d611df0a2fa9ec7dde1379ac6f66ab35b5f8bf71aae2b7fd84a",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "catalog-C200",
+        "url": "https://fwith.co.kr/shop/item.php?it_id=C200",
+        "path": "/workspace/shared/geumcheon-evidence/raw/catalog-C200.html",
+        "sha256": "6d2f76c30c53efeabe5e3f6582e69823f47dda0f38b584bd4151ebc1a00caab2",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "catalog-C203",
+        "url": "https://fwith.co.kr/shop/item.php?it_id=C203",
+        "path": "/workspace/shared/geumcheon-evidence/raw/catalog-C203.html",
+        "sha256": "77eea71c72eab325a4614ad7d46ff0c0c285da3fedba9fec0f9531d62ff99ce9",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "catalog-C204",
+        "url": "https://fwith.co.kr/shop/item.php?it_id=C204",
+        "path": "/workspace/shared/geumcheon-evidence/raw/catalog-C204.html",
+        "sha256": "8fc282e0769f3b4b88f96acac4d01de2ce8d05efb728bae38e063795d2048292",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "catalog-C205",
+        "url": "https://fwith.co.kr/shop/item.php?it_id=C205",
+        "path": "/workspace/shared/geumcheon-evidence/raw/catalog-C205.html",
+        "sha256": "ffc33cbb03108ee46b1a274d89b495896fd86db40dc97368c4e2e06c802b552c",
+        "matchesBoundHash": true
+      },
+      {
+        "id": "fwith-home",
+        "url": "https://fwith.co.kr/",
+        "path": "/workspace/shared/geumcheon-evidence/raw/fwith-home.html",
+        "sha256": "87e56e99058c2be20b75f898a17297c8c6cf45ddf97ae14ea50a06c229eaf44c",
+        "matchesBoundHash": true
+      }
+    ],
+    "supplementalAndComparisonFiles": [
+      {
+        "path": "/workspace/shared/geumcheon-evidence/supplemental-mohw-registry.json",
+        "sha256": "6c4e31c657fa10386ebb20baf436ba045c41799e1d03bfc5642d1e686266d9c9"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/raw/mohw-funerals-20260401.csv",
+        "sha256": "fcf4911ed271cfbc364d2005c3ad02a5e821d3946fdf80b5119e36dfaadccd4b"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/raw/mohw-registry-current.html",
+        "sha256": "91d8c7178a0beaecad3a5aa68e34b3594ea09b53ff1d4bdb94cead439451cc0d"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reviewer/catalog-independent-readback.json",
+        "sha256": "01634117af21ef7e2523a5f1db27a1b3a8c092ac9d9ef61939ee3b6733158d85"
+      },
+      {
+        "path": "/workspace/shared/guro-factory/site-factory/seoul-guro-flower/src/data/pages.json",
+        "sha256": "1d186a5e46d42a1185180d79a97065b7d08a8a8c3d90cada6a0cc2d64ffce1f6"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-factory/docs/direct-regional-release/SEARCH_CONTENT_STRATEGY.md",
+        "sha256": "62793bfc6e38746c3ef18bf0e148806214211e78e5b1433279cb22d5b7d307a8"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-factory/docs/direct-regional-release/SALES_COPY_ACCEPTANCE.md",
+        "sha256": "ad16cb2f4c34a2d47468850e70440790181ff5da67afc212f544e37170e850e0"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-factory/docs/direct-regional-release/SHARED_BANNER_STANDARD.md",
+        "sha256": "b9ad6e79a91346e6316c998c4cac3710f2a426828fc3b30c612e13e24b9375ca"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reviewer/mohw-independent-readback.json",
+        "sha256": "daf2bec4775281ec3486bcc32edd2b33d2dd4c377532708fae3915b37cd4dcfd"
+      }
+    ],
+    "productAndPolicyImages": [
+      {
+        "path": "/workspace/shared/geumcheon-evidence/catalog/B060.jpg",
+        "sha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+        "inspection": "Actual pixels viewed independently"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/catalog/B201.jpg",
+        "sha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+        "inspection": "Actual pixels viewed independently"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/catalog/B203.jpg",
+        "sha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+        "inspection": "Actual pixels viewed independently"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/catalog/B205.jpg",
+        "sha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+        "inspection": "Actual pixels viewed independently"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/catalog/C200.jpg",
+        "sha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+        "inspection": "Actual pixels viewed independently"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/catalog/C203.jpg",
+        "sha256": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+        "inspection": "Actual pixels viewed independently"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/catalog/C204.jpg",
+        "sha256": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+        "inspection": "Actual pixels viewed independently"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/catalog/C205.jpg",
+        "sha256": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+        "inspection": "Actual pixels viewed independently"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/catalog/de_change_content.jpg",
+        "sha256": "02701dd33c2a09258a882873df005dbe616842c2add159a08d618b68a934944c",
+        "inspection": "Actual pixels viewed independently"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/catalog/order-top2.jpg",
+        "sha256": "24c11e1cc413d3f64ad05145fdc0fb4171c8f3e618d4351609777f8e2ff43bc3",
+        "inspection": "Actual pixels viewed independently"
+      }
+    ],
+    "exactReuseFiles": [
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/package.json",
+        "sha256": "d5e9b497a3895ac35e7ec341fe49debd1d5455cea54c588cde20bf29a77b0d5a",
+        "matchesDeclaredHash": true,
+        "matchesExactGitObject": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/RUNTIME_REGENERATION.md",
+        "sha256": "2c3d8df70ac505c4337343547b84770b7d55d58331e1cb40f8a5f6ec299b882a",
+        "matchesDeclaredHash": true,
+        "matchesExactGitObject": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/README.md",
+        "sha256": "c687b1505e4264b07b7f3b5240be502371b6a8c72eb1b72cb468e5491625fdd0",
+        "matchesDeclaredHash": true,
+        "matchesExactGitObject": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/tests/guro-grouped.test.mjs",
+        "sha256": "e0bcf58f46d106ff23feab71ab32cd161b6696a42a30f53d3391449ce4ed096b",
+        "matchesDeclaredHash": true,
+        "matchesExactGitObject": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/src/lib/guro-regions.mjs",
+        "sha256": "c86a3994a4a1cac9e42371bd687d8dab47a4f14b7af9af6841021e4beeb2701f",
+        "matchesDeclaredHash": true,
+        "matchesExactGitObject": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/src/lib/directory-banner-split.mjs",
+        "sha256": "04ed49395e2a3458c9b01c74eff57f425ed693e9f713b59bfe7343a4c433a19c",
+        "matchesDeclaredHash": true,
+        "matchesExactGitObject": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/src/lib/regions.mjs",
+        "sha256": "29935ca3660cb64ae1f376994e2c3a2bc73be9c5324f77bdd7091ddb214b6677",
+        "matchesDeclaredHash": true,
+        "matchesExactGitObject": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/src/lib/regions-legacy.mjs",
+        "sha256": "cf2f44ce1feff2f44bb9213d55a63eac2f83dfadb49cac116c60769471ff29c1",
+        "matchesDeclaredHash": true,
+        "matchesExactGitObject": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/src/data/business-truth.json",
+        "sha256": "4614bca62b8c25760d56bf9500353c8574cac77d9ce737db0c8eacdb79fe2362",
+        "matchesDeclaredHash": true,
+        "matchesExactGitObject": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/src/data/products.json",
+        "sha256": "14eee4a6ed11dc18ed6c85d0cfdc2e1239de72bd00372a8b3b583618c84add8e",
+        "matchesDeclaredHash": true,
+        "matchesExactGitObject": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/src/data/guro-plan-binding.json",
+        "sha256": "3478e01c90ad8aa629009b105e6e6f1c06271b01e4c297c900e0fcc03d61644c",
+        "matchesDeclaredHash": true,
+        "matchesExactGitObject": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/src/data/architecture.json",
+        "sha256": "11f544f8a03fd2dcb081bf13a96ecf7ccd46ea58b4718844f4caedb0ca200565",
+        "matchesDeclaredHash": true,
+        "matchesExactGitObject": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/src/components/SharedFlowerBanner.astro",
+        "sha256": "bffdc5a802a911d688e388faa55ece9e1bf6b00e04c8fab0873e779b35702f74",
+        "matchesDeclaredHash": true,
+        "matchesExactGitObject": true
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/src/components/RegionDirectory.astro",
+        "sha256": "a750c36d3b313b44def75eb01314d1a22362ada019cc3633ee7ad18fa5b3d761",
+        "matchesDeclaredHash": true,
+        "matchesExactGitObject": true
+      }
+    ],
+    "pdfVisuals": [
+      {
+        "path": "/workspace/shared/geumcheon-evidence/musical-regulations-p5.png",
+        "sha256": "1f7f3f8acc80afcb13448fa13c479e6d31b2f41c7fd4a8ffdf9c219da16f7524"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/musical-regulations-p23.png",
+        "sha256": "531f73d6b217c7ef7728431df71331433baa061d7254c555d98802a52b6355ce"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reviewer/musical-p6.png",
+        "sha256": "47415a190d7f1ef493bfdcaccc9fa87a73160fa066c733453c7a3248be039b6b"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reviewer/kfcpi-p2.png",
+        "sha256": "0b76bb8ff820c8378fa252564a9bb3438a042cc9610a1a609213e2e8699c1af2"
+      }
+    ]
+  },
+  "afterRevisionExpectedState": {
+    "initialCandidateInventoryPreserved": 9,
+    "totalCandidates": 10,
+    "activeCandidates": 2,
+    "activePhysicalFacilities": 2,
+    "activeAreaContexts": 0,
+    "heldCandidates": 8,
+    "recommendedArticleN": 1,
+    "nationalDenominator": 230,
+    "legalDongs": 3,
+    "administrativeDongs": 10,
+    "membershipPairs": 10,
+    "frozenAt": null,
+    "publicationAuthorized": false,
+    "condition": "Expected only if the author makes these revisions and no further candidate is discovered. Reviewer does not freeze on behalf of the author."
+  }
+}
