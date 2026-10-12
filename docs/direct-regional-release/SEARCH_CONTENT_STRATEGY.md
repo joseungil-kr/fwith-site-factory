@@ -38,3 +38,8 @@
 원문뿐 아니라 실제 렌더 결과에서 title/H1/H2/meta, canonical, robots/index 가능성, sitemap, 실제 404, 내부링크, 상품 이미지/CTA, 모바일 읽기·버튼·레이아웃을 확인한다. FAQ와 필요한 안내가 접혀 있거나 숨겨졌다면 가시성과 사용성을 별도로 점검한다. 실제 화면 미검수는 기존 승인된 visual-qa-deferral-policy에 따라 별도 기록하며 PASS로 바꾸지 않는다.
 
 검토한 최종 파일 digest와 source commit, 실제 빌드 및 공개 결과를 결속한다. 원문 변경 후에는 해당 검수와 빌드를 다시 수행한다. IndexNow/GSC 접수, 실제 크롤·색인, 노출, 클릭, 순위는 각각 별도로 기록한다. 공개나 접수 성공을 상위노출 성과로 주장하지 않는다.
+
+
+## 공통 이미지와 실제 HTML 검사
+
+현재 및 신규 지역 페이지에 [공통 배너와 HTML 구조 기준](SHARED_BANNER_STANDARD.md)을 함께 적용한다. 승인된 동일 이미지 3종과 설명적 alt를 사용하고, H1 1개·H2/H3 순서·출처 구조·title/meta/canonical/robots/sitemap·내부 링크를 실제 HTML에서 검사한다. 배포와 공개 검증이 끝나지 않은 상태를 완료로 기록하지 않는다.

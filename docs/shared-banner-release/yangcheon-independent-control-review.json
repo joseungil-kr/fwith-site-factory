@@ -1,0 +1,300 @@
+{
+  "schemaVersion": 1,
+  "reviewKind": "independent-read-only-canary-review",
+  "status": "Yangcheon exact source and update-only control locally verified; deployment and actual browser rendering unverified",
+  "observedAt": "2026-10-12T17:33:31Z",
+  "reviewedBaseCommit": "8c20e5726ab7ce5767391219ea93f690a572972d",
+  "sourceRoot": "/workspace/shared/banner-canary/site-factory/seoul-yangcheon-flower",
+  "directlyVerified": {
+    "approvedImages": {
+      "originalsViewed": 3,
+      "webpOutputsViewed": 3,
+      "dimensions": [
+        1774,
+        887
+      ],
+      "originalSha256MatchesManifest": true,
+      "publicAndDistBytesMatch": true,
+      "visualComparison": "Same wording, composition, framing and flower placement. WebP lossy compression changes pixels; no redesign or crop was observed.",
+      "assets": [
+        {
+          "name": "flower-message",
+          "original": "꽃이랑_배너01_꽃으로전하는마음.png",
+          "originalSha256": "8475b12a62dff9c2e511b0c7e6de7033bd3ba97102ebe56be72a77575a7fb1f9",
+          "sha256": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+          "bytes": 147736,
+          "width": 1774,
+          "height": 887,
+          "optimization": "WebP quality90 format compression; original dimensions/composition/text unchanged; no crop, resize or design edit"
+        },
+        {
+          "name": "flower-budget",
+          "original": "꽃이랑_배너02_예산에맞는꽃선택.png",
+          "originalSha256": "9e571ffa7800d387461c71ee109c8a0bf93e1cbb0050811ceed011352539f7d2",
+          "sha256": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+          "bytes": 123720,
+          "width": 1774,
+          "height": 887,
+          "optimization": "WebP quality90 format compression; original dimensions/composition/text unchanged; no crop, resize or design edit"
+        },
+        {
+          "name": "flower-consultation",
+          "original": "꽃이랑_배너03_주문상담안내.png",
+          "originalSha256": "f24fb2ca5d621a73f74719d156701e56c8daaf1e34f73b148e518d856c85add7",
+          "sha256": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+          "bytes": 108154,
+          "width": 1774,
+          "height": 887,
+          "optimization": "WebP quality90 format compression; original dimensions/composition/text unchanged; no crop, resize or design edit"
+        }
+      ]
+    },
+    "renderedArtifact": {
+      "customerPages": 5,
+      "errorPages": 1,
+      "bannersOnCustomerPages": 15,
+      "bannersOn404": 0,
+      "exactSequence": [
+        "message",
+        "budget",
+        "consultation"
+      ],
+      "actualImageSourceVariantBindings": true,
+      "allReferencedLocalAssetAndHrefTargetsExist": true,
+      "samePageFragmentsResolve": true,
+      "canonicalExactOriginAndPath": "https://seoul-yangcheon.fwith.kr",
+      "oneH1Each": true,
+      "bodyH2AndProductSourceH3": true,
+      "appropriateNonemptyAlt": true,
+      "intrinsicDimensions": true,
+      "lazyAndAsyncAttributes": true
+    },
+    "fixtureReview": {
+      "initialIndependentNpmTest": {
+        "tests": 98,
+        "pass": 97,
+        "fail": 1
+      },
+      "failedTest": "independently reviewed shared customer copy stays exact in generated sources",
+      "reason": "Full-file source hashes intentionally changed with banner component insertion and source H2/H3 structure. Existing expected hashes exactly matched baseline commit; ProductCards remained unchanged.",
+      "judgment": "Updating only four changed shared source hash entries after reviewed changes is justified; keeping the test intact is required.",
+      "finalIndependentNpmTest": {
+        "tests": 98,
+        "pass": 98,
+        "fail": 0
+      },
+      "finalFixtureDiff": "Exactly four previously reviewed template hashes changed; ProductCards and unrelated fixture fields unchanged.",
+      "negativeQaNowInBuildAndQaScripts": true
+    },
+    "controlScope": {
+      "sourceDiffConfinedToBannerAndHeadingWork": true,
+      "canaryWorkflowOrSecuritySettingsChanged": false,
+      "mainControlCommitObserved": "848753b400978bb31ea4f75469635f6b9416b338",
+      "initialOnlyPublishers": [
+        "seoul-eunpyeong",
+        "seoul-mapo",
+        "seoul-nowon",
+        "seoul-seodaemun",
+        "seoul-yangcheon"
+      ],
+      "initialOnlyGuard": "initial_target_must_be_absent",
+      "updateCaution": "The existing initial-only preflight cannot be used for an already deployed Worker. Do not remove or bypass it. Review a separate authorized update-only path."
+    },
+    "qaMutationChecks": {
+      "performedWithoutFilesystemMutation": true,
+      "wrongImageSrc": "rejected",
+      "wrongVariantImage": "rejected",
+      "missingBannerImage": "rejected",
+      "foreignCanonical": "rejected",
+      "unevenImagesAcrossFigures": "rejected after correction",
+      "extraSharedImageOutsideFigure": "rejected after correction",
+      "independentTestRun": {
+        "total": 9,
+        "pass": 9,
+        "fail": 0
+      }
+    }
+  },
+  "agentReportedNotIndependentlyReverified": {
+    "baselineBodyAndMetadata": "Separate canary reviewer reports exact baseline body after removing new banner figures and source-group heading; metadata, JSON-LD, links and source dates unchanged. Their direct evidence belongs in their own review report."
+  },
+  "remaining": [
+    "Desktop and narrow actual-browser rendering remains with the separate canary reviewer; not established by this report.",
+    "No deployment, public HTTP response, public MIME or live image readback has been verified by this reviewer.",
+    "This canary review does not establish all-region rollout completeness."
+  ],
+  "reviewedFileSha256": {
+    "src/components/SharedFlowerBanner.astro": "bffdc5a802a911d688e388faa55ece9e1bf6b00e04c8fab0873e779b35702f74",
+    "src/components/RegionDirectory.astro": "86d9c49137e541e0d5983e248d83ac8e09e5ad0794e75f03bbc95efcf518aad5",
+    "src/pages/index.astro": "affb953e644d81481d1671ad1735e6f7ec42d631c6939b63a64e14c354ffb2ef",
+    "src/pages/[category]/index.astro": "0697a897bad07d5f0b5d48205fd6144c0e15c5fcb22de04e9ef53901b6ba82cb",
+    "src/pages/[category]/[slug].astro": "ee77de714e7dc90fc6504c1947235227dfe97bbe9e78bc4184e2cf3a7320e6b8",
+    "scripts/qa_shared_banners.py": "dd27f859f511c705f24876eaebcbc1c47cb774957a144165a4bf12155471a4cb",
+    "src/data/shared-banner-manifest.json": "47126a2f2f47ebbbb15a478e0df55dde829eaea2fc30474ddbf3cbae77506513",
+    "scripts/test_shared_banners.py": "eebe692d669b219da2f6d6008c5a7a3a8c0197ddc82eb70c81282d2adf94974c",
+    "tests/direct-source-expectations.json": "039581c390de62f79224a39046796d247045e3b9214c9a373cb73abf4663b10c",
+    "package.json": "55f67945cb4a80e9c82787fb6dc01e3aaa455b8d948458fbaeccddb0f454197b"
+  },
+  "updateControlReview": {
+    "status": "read-only-review-passed-for-exact-Yangcheon-source-and-current-control-files",
+    "directlyVerified": {
+      "newBoundaryTests": {
+        "pass": 15,
+        "fail": 0
+      },
+      "existingPublisherTests": {
+        "pass": 43,
+        "fail": 0
+      },
+      "yamlParse": true,
+      "bashSyntaxAllRunBlocks": true,
+      "initialTargetAbsenceGuardUnchanged": true,
+      "updateModeSkipsHostnameAttach": true,
+      "providerReadOnlyWrapperRejectsWrites": true,
+      "sourceBuildSeparatedFromProviderCredentials": true,
+      "negativeLoadTests": {
+        "wrongRevision": "rejected",
+        "sameRevision": "rejected",
+        "wrongHostname": "rejected",
+        "unreviewedStatus": "rejected",
+        "wrongRepository": "rejected",
+        "rerun": "rejected",
+        "actualEmptyTargetMap": "rejected"
+      },
+      "settingsAndBindingsFailClosed": true,
+      "unknownProviderCapabilityRejected": true,
+      "exposureFlagsPreserved": true,
+      "exactPostUploadStateConfigAndAccountComparison": true,
+      "updateWranglerVersion": "4.147.0",
+      "initialPublishWranglerVersion": "4.148.0",
+      "exactSourceEvidenceDigestsBound": true,
+      "actualTargetLoadPassed": true,
+      "initialGuardPreserved": true,
+      "hostnameAttachSkippedForUpdate": true,
+      "onlyGetProviderInspectionMethods": true,
+      "noNewSecretsOrPermissionsInWorkflowDiff": true
+    },
+    "pending": [
+      "The reviewed control patch must be committed and the exact committed bytes read back before dispatch.",
+      "Provider state and previous public revision are still runtime gates, not established by local tests.",
+      "No live upload, public image MIME/bytes, exact live HTML, genuine live 404, IndexNow receipt or actual browser screenshot is established by this review.",
+      "Workflow expressions were read manually and YAML/bash parsed; no actionlint binary was available."
+    ],
+    "fileSha256": {
+      ".github/workflows/seoul-yangcheon-direct-publish.yml": "81fbce74c02c8f6e001f7fe99d7a71c1286a3f26539b36ecd7581862ee77d014",
+      "scripts/shared-banners/verify_update.py": "a65f136d2bfcba7da61270551a8fc9116ab67c074719993d47d950342b02ce66",
+      "scripts/shared-banners/test_verify_update.py": "9772a5e191bd27ffb9bb6dd5c626367cd414c1aba69bb89b6ef8139c4344f98b",
+      "scripts/shared-banners/qa_shared_banners.py": "a59cf6976dbcba2c7eb46d3c8f07a4e9553074dd3e6b97b8a6a880a8d2276233",
+      "docs/shared-banner-release/targets.json": "3d6cd136e00267c715c5ff4e99df14ca325be7e1014c510a547ffb1f9e5f27ea",
+      "docs/shared-banner-release/approved-assets.json": "47126a2f2f47ebbbb15a478e0df55dde829eaea2fc30474ddbf3cbae77506513"
+    },
+    "resolvedFinding": "Initial configuration-preservation and Wrangler-version gaps were corrected and independently retested.",
+    "scope": "Only seoul-yangcheon pinned target. No blanket approval for other regions, modified target maps or future source commits."
+  },
+  "legacySourceReview": [
+    {
+      "region": "ansan",
+      "baseline": "a8116e0991c9a009ab1bfa085510fb1066cced9e",
+      "branch": "site-factory-ansan-v1",
+      "trackedFilesCompared": 134,
+      "changed": [
+        "package.json",
+        "src/components/HubIndex.astro",
+        "src/components/RegionalHub.astro",
+        "src/layouts/ArticleLayout.astro",
+        "src/pages/index.astro",
+        "src/styles/article.css"
+      ],
+      "missing": [],
+      "changeSha256": {
+        "package.json": "bc3baffbe6067bd0c98d920bfac70d109243832d9909d5d6ce5746568cbb61aa",
+        "src/components/HubIndex.astro": "b6ceacaa808255478e9c902bf1964e64d2190708b7e8a01bc341d76948cde924",
+        "src/components/RegionalHub.astro": "b70c71d2bdf2bb08bfe7501769a033e48d6d38f93d997ca243b6d32e8d57e901",
+        "src/layouts/ArticleLayout.astro": "2968228eef19bafefe2551606a82fb1222e65b35af9b0aafe97cc13a4ee99224",
+        "src/pages/index.astro": "af7bfec5c6c9d051c33a2f5e79bb809a5bd85f8b20fb4736f28b8a318b0c53c3",
+        "src/styles/article.css": "54ac57156a204136edd2214225c0570415719d78b7cde405d645f7fa3e248965"
+      },
+      "sourceReview": "banner-and-semantic-heading-scope accepted for local preview review; not publication approval",
+      "componentManifestAndWebpMatchCanary": true,
+      "newHelperTests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "renderedCandidate": "not yet independently verified",
+      "productionApprovalFixtures": "unchanged",
+      "additionalScopeReviewed": "Length/SEO calculations strip only new shared artwork captions, preserving existing CTA quota inputs; helper boundary tests 3/3 passed."
+    },
+    {
+      "region": "hwaseong",
+      "baseline": "4cd31bb5a55574ab6419c0291bb8a70d70ab9d0a",
+      "branch": "site-factory-hwaseong-v1",
+      "trackedFilesCompared": 148,
+      "changed": [
+        "package.json",
+        "src/components/HubIndex.astro",
+        "src/components/RegionalHub.astro",
+        "src/layouts/ArticleLayout.astro",
+        "src/pages/index.astro",
+        "src/styles/article.css"
+      ],
+      "missing": [],
+      "changeSha256": {
+        "package.json": "fffd34781e64aa540d3102bdce13e88852df5d40b66ed489bbb2c476588a36a5",
+        "src/components/HubIndex.astro": "c676958f781f5daf2929e1ffac15baefbb725497ee8cae1c54e482992d482f52",
+        "src/components/RegionalHub.astro": "f8f1a44994fe0ab77a1ab5cfd678f2c97b305d2d2c7faf9179d69aa00275d6f8",
+        "src/layouts/ArticleLayout.astro": "9a8650e16830f62a80ca2dc705f605090e7518544f093ad81b0601c78534daf5",
+        "src/pages/index.astro": "66c2ba4f622e06143092d48775791ca888f9449fd89cfa6605383e3fe3ebffc0",
+        "src/styles/article.css": "03c9af4f3753f9b86e3b9f63ab117d35ba70cfa219b88dd68a84f1777100fd1b"
+      },
+      "sourceReview": "banner-and-semantic-heading-scope accepted for local preview review; not publication approval",
+      "componentManifestAndWebpMatchCanary": true,
+      "newHelperTests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "renderedCandidate": "not yet independently verified",
+      "productionApprovalFixtures": "unchanged",
+      "additionalScopeReviewed": "Length/SEO calculations strip only new shared artwork captions, preserving existing CTA quota inputs; helper boundary tests 3/3 passed.",
+      "narrowHistoricalFixtureReviewed": "Original production evidence remains unchanged; source-c preservation test keeps original RegionalHub blob identity and adds a separately reviewed exact current RegionalHub digest."
+    },
+    {
+      "region": "goyang",
+      "baseline": "936cf842b4fc82bc801a142db7196059814f266a",
+      "branch": "site-factory-goyang-v2",
+      "trackedFilesCompared": 79,
+      "changed": [
+        "package.json",
+        "src/components/RegionDirectory.astro",
+        "src/pages/[category]/[slug].astro",
+        "src/pages/[category]/index.astro",
+        "src/pages/index.astro",
+        "src/styles/global.css"
+      ],
+      "missing": [],
+      "changeSha256": {
+        "package.json": "7ca1115856538784b9ca8cebe147b9ab9880a28a05b5a34ed30a0ccdb6e564a1",
+        "src/components/RegionDirectory.astro": "8b501fd4e58f24a5f888deb743a2991c939f2a1d97457b2da65a56a82c019199",
+        "src/pages/[category]/[slug].astro": "cd938b826ebb073b5edb2cbcf2425ec65cb393b0d5b71e706426015645cd77dd",
+        "src/pages/[category]/index.astro": "17058a4fbee29c522cfdfc9df6c2262d934f8f9c50e0c61bc4be6a3b4205b683",
+        "src/pages/index.astro": "a2755b8f9b4b2df73c64468deb7068b8d44b9f5f428de6ca34ac178c2370f073",
+        "src/styles/global.css": "781aeb01d09c5885c02c6f49f827392d2a99865ada897da1c35766e1f9ad9bb7"
+      },
+      "sourceReview": "banner-and-semantic-heading-scope accepted for local preview review; not publication approval",
+      "componentManifestAndWebpMatchCanary": true,
+      "newHelperTests": "not applicable",
+      "renderedCandidate": "not yet independently verified",
+      "productionApprovalFixtures": "unchanged"
+    }
+  ],
+  "exactSourceVerification": {
+    "revision": "0a2b4d4d7772dbed6cdf2be29f2b29a858d07797",
+    "parentRevision": "8c20e5726ab7ce5767391219ea93f690a572972d",
+    "remoteBranchHeadIndependentlyRead": "0a2b4d4d7772dbed6cdf2be29f2b29a858d07797",
+    "remoteCommitFetched": true,
+    "localGitCommitParentVerified": true,
+    "changedFiles": 13,
+    "changedGitBlobBytesEqualTestedLocalFiles": true,
+    "allSourceChangesWithinRoot": "site-factory/seoul-yangcheon-flower/",
+    "commitUrl": "https://github.com/joseungil-kr/fwith-site-factory/commit/0a2b4d4d7772dbed6cdf2be29f2b29a858d07797"
+  }
+}
