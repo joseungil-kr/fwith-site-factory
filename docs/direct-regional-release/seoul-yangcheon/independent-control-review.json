@@ -1,0 +1,106 @@
+{
+  "status": "PASS",
+  "scope": "Offline technical controls and assembled-source metadata/hash regressions only; not live deployment or editorial approval",
+  "reviewedAt": "2026-10-12T15:43:11.668820+00:00",
+  "baselineHead": "be7f29b84ffc004becf756517ca093441668e24a",
+  "candidateCommit": "Not established at review; candidate files initially untracked",
+  "reviewedFileSha256": {
+    "scripts/direct-seoul-yangcheon/publish.py": "123131b2779c1cd36cf870df860469827198ea19897c50f74492bed9841d9963",
+    "scripts/direct-seoul-yangcheon/test_publish.py": "adada191afd6514a4483ed1961db75532775995e59d5613f59fdcbe9444edb2a",
+    ".github/workflows/seoul-yangcheon-direct-publish.yml": "f39039f0c51605393af0166a135db817b3013e4ef56e21b1d6bce5c8433045af",
+    "scripts/direct-seoul-yangcheon/CONTROL_REVIEW.md": "e4034604b0a852776eea15393ffc23a5bf175926d2e4c55c16818bece439e440"
+  },
+  "assembledDataSha256": {
+    "site-factory/seoul-yangcheon-flower/src/data/architecture.json": "f1f5fde1f1b79cbd403c5185a0612dca1201538aeb480324fda3cf44caaab19b",
+    "site-factory/seoul-yangcheon-flower/src/data/build-revision.json": "7ac035559d422b823e4b60979dbb11ff64be5d05b036d8b76527f64d91908980",
+    "site-factory/seoul-yangcheon-flower/src/data/business-truth.json": "a684dd38c347b3eba908d2d57945726ca2eff83a0d6b42b6a5927ecd05e4c194",
+    "site-factory/seoul-yangcheon-flower/src/data/direct-checkpoint.json": "96556e4a6c48b8fc5eed533643771763c3a39491b20c488145561dbb59a1bbf4",
+    "site-factory/seoul-yangcheon-flower/src/data/editorial-assets.json": "00cbe0b89572b78c7694ae100e04a5fa7b3e64295739ae9ee60eee2496b4e1ec",
+    "site-factory/seoul-yangcheon-flower/src/data/page-map.json": "eceedbd2796ba71806993add557b4304dbed7bb6dba98c625d13021a1b580a69",
+    "site-factory/seoul-yangcheon-flower/src/data/pages.json": "148515e4fa2b84255ed7f6c1ad4136b9f37274a7d0e2d1a7d1483a696b6e1c99",
+    "site-factory/seoul-yangcheon-flower/src/data/products.json": "17fa2988def94e5b793077f3bcb5b217d4a74ed96fcf715c881f7782911103d9",
+    "site-factory/seoul-yangcheon-flower/src/data/publish-manifest.json": "ba910fc68a33fde0173f495ac37e39f79272e7ae2e5a22e4c490db74ce31ff0c",
+    "site-factory/seoul-yangcheon-flower/src/data/region-coverage.json": "fd9f32f721aea7946eaebaca70a7e4f14fbea7dfc45abe2f01982de5ae7b5761",
+    "site-factory/seoul-yangcheon-flower/src/data/region-policy.json": "8d87014bff2d05af2232ac873058e896f39c84bb7121497260d80498966a5e34",
+    "site-factory/seoul-yangcheon-flower/src/data/site-config.json": "d3b67d6b43839308a74a68b48ec334fd257e4d8f3818ef46899856ffd1ddd7c9",
+    "site-factory/seoul-yangcheon-flower/src/data/social-image-provenance.json": "468ab48d0a8c087254ca5cd835ad81421faf81a9791737d721cd3d9978b00705"
+  },
+  "directlyVerified": {
+    "publisherTests": {
+      "passed": 43,
+      "skipped": 0
+    },
+    "assembledSourceTests": {
+      "passed": 98,
+      "skipped": 0,
+      "node": "v24.19.0"
+    },
+    "existingPreviewStaticQa": {
+      "passed": true,
+      "details": 3,
+      "normalHtmlRoutes": 5,
+      "additional404": true,
+      "indexable": false
+    },
+    "productionApprovedObserved": true,
+    "controls": [
+      "Owner-only issue actor and author, exact batch title, fixed repository and main",
+      "Exact 40-character source SHA and branch-head/ancestry checks; first attempt only; pre-publication branch recheck",
+      "Normalized Dobong workflow differs only by descriptive step label; unchanged permissions and secret names",
+      "Mapo publisher reuse with fixed Yangcheon identity and plan guard",
+      "Shared journal fingerprint binds site, origin, revision, endpoint, URL-set digest/count and ownership-key digest; cross-region test passed",
+      "Uncertain submission replay blocked and exact prior 403 requires diagnostic review",
+      "Fixed hostname and Worker collisions fail closed; all attachment overrides false",
+      "Build/test without provider credentials; artifact route/hash/SEO/CTA checks before deploy; independent binding/live-content/404 checks before IndexNow",
+      "Assembled tests validate all public customer-field hashes across four collections and exact three-unit/eighteen-administrative-unit coverage"
+    ],
+    "productionStaticQa": {
+      "passed": true,
+      "details": 3,
+      "normalHtmlRoutes": 5,
+      "additional404": true,
+      "indexable": true,
+      "revision": "f3a64bbd6314e8fd7fef480262ac754f6e305118",
+      "command": "SITE_INDEXABLE=true SITE_URL=https://seoul-yangcheon.fwith.kr SITE_FACTORY_REVISION=f3a64bbd6314e8fd7fef480262ac754f6e305118 python3 scripts/qa_static.py",
+      "scope": "Existing production dist inspected and static QA independently rerun; full Astro build not rerun"
+    }
+  },
+  "toolReportsNotIndependentlyEstablished": [
+    "Builder reports Node22 test and complete Astro build success; this reviewer reran tests on Node24 and inspected existing preview artifact only"
+  ],
+  "limits": [
+    "No provider mutation or external catalog refresh performed",
+    "No implementation, approval flags, or customer copy changed by reviewer",
+    "No remote issue access, Actions execution, public HTTP, IndexNow receipt, search indexing or committed candidate SHA verified",
+    "Bind final reviewed commit and ensure unchanged reviewed control hashes before dispatch",
+    "Editorial/facility/catalog truth remains independent content reviewer scope",
+    "Production dist inspected uses provisional revision f3a64bbd6314e8fd7fef480262ac754f6e305118; rebuild and validate exact final source SHA before dispatch."
+  ],
+  "resolvedChecks": [
+    "Initial production qa_static invocation without SITE_INDEXABLE=true failed Wrong robots: /regions/ because default is preview; repeated with explicit production environment passed."
+  ],
+  "productionDistSha256": {
+    "site-factory/seoul-yangcheon-flower/dist/22233de219bb5ee4a249e6dea1b69af0.txt": "d156119b175c7ca2a640a27df3c9d8a50db6f12bad498adbe8a789a0ab8989ad",
+    "site-factory/seoul-yangcheon-flower/dist/404.html": "cc7728ff4a33b0424c6feb03928f095da0015aba79c875928842651805c787c4",
+    "site-factory/seoul-yangcheon-flower/dist/_astro/BaseLayout.MRzcX74D.css": "1d272ba03de0b407c46bf1dc6c1c07059011ece39837a18dc349f273084f880b",
+    "site-factory/seoul-yangcheon-flower/dist/_headers": "1b27a67288f21cf98b19d15cef8fa084bf7d7ca7a0f89975dd48ba51f90ed015",
+    "site-factory/seoul-yangcheon-flower/dist/favicon.svg": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+    "site-factory/seoul-yangcheon-flower/dist/images/editorial/opening-wreath-illustration-v1.webp": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+    "site-factory/seoul-yangcheon-flower/dist/images/products/congrats-basic.jpg": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+    "site-factory/seoul-yangcheon-flower/dist/images/products/congrats-large.jpg": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+    "site-factory/seoul-yangcheon-flower/dist/images/products/congrats-premium.jpg": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+    "site-factory/seoul-yangcheon-flower/dist/images/products/congrats-xl.jpg": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+    "site-factory/seoul-yangcheon-flower/dist/images/products/funeral-basic.jpg": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+    "site-factory/seoul-yangcheon-flower/dist/images/products/funeral-large.jpg": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+    "site-factory/seoul-yangcheon-flower/dist/images/products/funeral-premium.jpg": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+    "site-factory/seoul-yangcheon-flower/dist/images/products/funeral-xl.jpg": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+    "site-factory/seoul-yangcheon-flower/dist/index.html": "e5b8ff1f54d4e7715906a974ef218e20d6bf2cfd82f03334bf6e017488d6ac21",
+    "site-factory/seoul-yangcheon-flower/dist/regions/index.html": "236a2954897868105c95e82f8fa457f684e07448a7e95efea3b6955246c61f22",
+    "site-factory/seoul-yangcheon-flower/dist/regions/mok-dong-loftgarden344-wedding-wreath/index.html": "140592834b35b9e5daf2fb78449b7b853fc22b34959fa5876d792c28102d8b55",
+    "site-factory/seoul-yangcheon-flower/dist/regions/sinjeong-dong-yangcheon-culture-performance-wreath/index.html": "9de41807c31e88e33e1670afa980b07fe8d443c6a3dad76b8f8eddddf1b281c5",
+    "site-factory/seoul-yangcheon-flower/dist/regions/sinwol-dong-mediheal-funeral-wreath/index.html": "9acceb4ed47245522f8da23238953d60e964b551b41500023f6c0ea7d0898878",
+    "site-factory/seoul-yangcheon-flower/dist/robots.txt": "72a7ed8ccbe999ad9132d3a8db6a76d2cfd4df91a0a7e63834252945bbd10452",
+    "site-factory/seoul-yangcheon-flower/dist/sitemap-0.xml": "04d866ece4f24fff5c3ba0aa54555f089b3be2b7c7d91e733fb9fcab57f6d895",
+    "site-factory/seoul-yangcheon-flower/dist/sitemap-index.xml": "44fd3a66e0df1e4008e6bb8f06a697ca7f824d5e236f3e0dc62fd7bae1a94392"
+  }
+}
