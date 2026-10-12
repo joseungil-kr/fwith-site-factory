@@ -1,0 +1,29 @@
+{
+  "attempts": [
+    {
+      "action": "Initial build",
+      "failure": "Astro telemetry tried mkdir /home/agent/.config/astro: ENOENT",
+      "resolution": "Used supported ASTRO_TELEMETRY_DISABLED=1 and writable XDG_CONFIG_HOME; normal build passed."
+    },
+    {
+      "action": "Unpacked reference fixture build",
+      "failure": "Astro check included original Guro fixture lacking generated build-revision.json",
+      "resolution": "Excluded dist/node_modules/tests/reference from current app check; original131 tests still execute unchanged."
+    },
+    {
+      "action": "Directory copy output validation",
+      "failure": "Old directory card-label expectation did not match approved Geumcheon-specific copy",
+      "resolution": "Added explicit Geumcheon copy label binding; count/midpoint/eligibility rules unchanged."
+    },
+    {
+      "action": "Create new source branch with update_ref",
+      "failure": "GitHub422 Reference does not exist",
+      "resolution": "Used correct create_branch tool for the already verified commit; independent git ls-remote confirms exact branch SHA."
+    },
+    {
+      "action": "Chromium visual QA",
+      "failure": "process_singleton_posix.cc socket() Operation not permitted; SIGABRT",
+      "resolution": "Not bypassed. Actual screenshots remain unverified; source/static/local HTTP checks continued."
+    }
+  ]
+}

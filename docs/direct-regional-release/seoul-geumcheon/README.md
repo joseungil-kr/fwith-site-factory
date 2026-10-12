@@ -1,15 +1,9 @@
-# 금천구 계획 준비
+# Geumcheon preparation status
 
-금천구(11545)의 N1 계획과 고객용 원고 준비를 완료했습니다. 계획 동결 뒤 작성한 고객 원고 revision 2가 독립 전문 검토를 통과했습니다. 실제 사이트 런타임·소스 제작과 배포는 아직 시작하지 않았습니다.
+Frozen plan: one canonical article, two active funeral facilities and eight held leads from ten recorded candidates. Geographic membership remains three legal dongs, ten administrative dongs and ten relations.
 
-- 고객 원고 정본과 검토/수정 이력: [원고 안내](copy/README.md)
-- 현재 기준: [고정 계획](fixed-plan.json), [진행/소유권](progress.json), [원문 근거 색인](source-evidence.json)
-- 승인된 계획: [수정 계획](research/candidate-plan-revised.json), [독립 PASS](research/independent-review-revised.json)
-- 최초 N2 제안과 REVISE 이력은 research/ 아래 원본 바이트 그대로 보존했습니다.
-- 후보 10곳 중 독산장례식장·쉴낙원 서울장례식장 2곳을 근조화환 안내 1편으로 묶습니다. 나머지 8곳의 보류 사유도 유지합니다. 가산 개업 안내는 구로 기존 안내와 실질적으로 중복되어 보류했습니다.
-- 보건복지부 자료 기준일은 2026-04-01입니다. 10월 열람은 실시간 영업·빈소·화환 반입 허용 확인이 아닙니다.
-- 법정동 3개, 행정동 10개, 대응관계 10개는 전체 지역 이력이며 글 수 할당량이 아닙니다.
-- 지역 목록은 실제 글 카드 1개와 시설별 앵커 2개로 구성합니다. 기존 기준에 따라 목록은 noindex·마케팅 배너 없음이며, 홈과 실제 상세의 배너 적용은 별도입니다.
-- 강서·구로의 미공개 우선순위와 전국 완료 기록 46/230은 변경하지 않았습니다.
+Current prepared source: bbb016305dd2fe29f7d985a669acaa02224a9f2f on site-factory-seoul-geumcheon-direct. Revision3 changes only two body paragraphs after root tone inspection and renewed independent review. Earlier plans, copy revisions and reviews are retained.
 
-research/의 수집 경로는 조사 당시 작업 공간을 나타냅니다. 제3자 원문 HTML·시설 이미지·전체 전국 자료를 공개 저장소 파일로 제공한다는 뜻이 아닙니다. 공식 URL, 필요한 사실, 원본 해시와 독립 검토 기록을 보존했습니다.
+Read progress.json and implementation/verification-summary.json together with the independent technical/copy-interface reports, exact-source readback and static-artifact directory. Source and static preparation are verified; actual browser screens and public/provider behavior are unverified. Chromium failed on an environment socket restriction; no bypass was attempted.
+
+This is unpublished. productionApproved=false. No release issue, workflow dispatch, provider change or indexing submission is authorized. Gangseo remains the first pending public release; Guro and national46/230 records are unchanged.

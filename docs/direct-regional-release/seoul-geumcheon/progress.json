@@ -4,14 +4,14 @@
   "officialCode": "11545",
   "scopeKey": "seoul-geumcheon-direct-independent-preparation-20261012",
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-12T21:31:01.789023+00:00",
-  "status": "customer_copy_review_pass_no_runtime_or_publication",
+  "updatedAt": "2026-10-12T21:59:42.550494+00:00",
+  "status": "prepared_unpublished_exact_source_static_verified_visual_pending",
   "owner": {
-    "name": "prepare_geumcheon_regional_plan",
-    "active": true,
-    "executionState": "exact_copy_review_pass_runtime_preparation_next",
-    "mainWriteScope": "documentation_save_only",
-    "completedAt": null,
+    "name": "implement_geumcheon_regional_site",
+    "active": false,
+    "executionState": "prepared_unpublished_release_not_authorized",
+    "mainWriteScope": "geumcheon_documentation_progress_only",
+    "completedAt": "2026-10-12T21:59:42.550494+00:00",
     "copyStageCompletedAt": "2026-10-12T21:31:01.789023+00:00"
   },
   "selection": {
@@ -27,8 +27,8 @@
       "seoul-gangseo prepared unpublished awaiting specific release-issue approval",
       "seoul-guro prepared unpublished; release not authorized"
     ],
-    "existingGeumcheonSourceBranchObserved": false,
-    "sourceBranchCreated": false
+    "existingGeumcheonSourceBranchObserved": true,
+    "sourceBranchCreated": true
   },
   "fixedPlan": {
     "path": "fixed-plan.json",
@@ -43,19 +43,24 @@
     "planVerdict": "PASS",
     "planSha256": "95c2f8a46b62c90e1e5bb81f17a31b8794ff1c184820f5ceaebcdcfeaabdfae0",
     "reviewSha256": "2af5ea5973851904f8f77849dcea0da6188a7058da20201840f043dc0faf987f",
-    "finalCopy": "PASS_EXACT_REV2_TEXT_ONLY",
-    "implementation": "NOT_STARTED",
-    "build": "NOT_RUN",
-    "renderedScreen": "NOT_RUN",
+    "finalCopy": "PASS_EXACT_REV3_TEXT_AND_RENDERED_HTML",
+    "implementation": "PASS_SOURCE_STATIC_ONLY",
+    "build": "PASS_EXACT_SOURCE_SHA",
+    "renderedScreen": "UNVERIFIED_CHROMIUM_SOCKET_PERMISSION_ERROR",
     "publicHttp": "NOT_PUBLISHED",
-    "copySha256": "dc116c78188a3ed25e0d3dc1a6a1dcd2d257fd096d2ba60d7e64d397906bc90e",
-    "copyReviewSha256": "2b0eaf4f04694551257eb63b0fb6dd58e3129a8e7c1f33adfd6805503af3f0eb"
+    "copySha256": "01f9e71d13ad3a11122b832d649f60b6da976c85513ee90b6ccb531737fb7455",
+    "copyReviewSha256": "fd1a09b38acb21c708d5f418e6a293aac8b9dbb37cfeb49191595e807b87acc9",
+    "technicalSourceHtmlChecks": 334,
+    "renderedCopyChecks": 320
   },
   "source": {
-    "branch": null,
-    "revision": null,
-    "remoteRuntimeFiles": 0,
-    "workflowOrControlsCreated": false
+    "branch": "site-factory-seoul-geumcheon-direct",
+    "revision": "bbb016305dd2fe29f7d985a669acaa02224a9f2f",
+    "remoteRuntimeFiles": 202,
+    "workflowOrControlsCreated": false,
+    "remoteAddedFiles": 217,
+    "allFileReadback": "PASS",
+    "exactSourceRebuild": "PASS"
   },
   "publication": {
     "authorized": false,
@@ -67,48 +72,54 @@
     "GscSubmitted": false,
     "url": null
   },
-  "lastSuccessfulStage": "independent_full_customer_copy_review_pass_exact_rev2",
+  "lastSuccessfulStage": "exact_remote_source_readback_rebuild_static_and_independent_review",
   "remainingStages": [
-    "reuse grouped model and exact reviewed article/common copy",
-    "independent source, regressions, build/static HTML and real-screen verification",
-    "exact runtime source save and readback",
-    "separate publication authorization and preflight",
-    "public HTTP and authorized indexing verification"
+    "Actual wide/narrow browser visual QA in a permitted environment",
+    "Separate explicit publication authorization and preflight after Gangseo priority",
+    "Public HTTP/provider404/core behavior and separately authorized indexing verification"
   ],
   "documentationSave": {
-    "baseMain": "732b7aed244f6d80c65519736e2e7c529e064bbd",
-    "scope": "customer copy and independent review history only; no runtime site source",
-    "remoteReadback": "performed and reported separately after commit; not inferred from this precommit record"
+    "baseMain": "2199ce3a284bb104f18f1a130af2f342b1a82720",
+    "scope": "Geumcheon revision3, implementation evidence, exact static artifact and scoped progress only",
+    "remoteReadback": "Performed separately after documentation commit; not inferred from this precommit record."
   },
   "customerCopy": {
-    "path": "copy/geumcheon-copy.rev2.json",
-    "sha256": "dc116c78188a3ed25e0d3dc1a6a1dcd2d257fd096d2ba60d7e64d397906bc90e",
-    "reviewPath": "copy/independent-copy-review.rev2.json",
-    "reviewSha256": "2b0eaf4f04694551257eb63b0fb6dd58e3129a8e7c1f33adfd6805503af3f0eb",
+    "path": "copy/geumcheon-copy.rev3.json",
+    "sha256": "01f9e71d13ad3a11122b832d649f60b6da976c85513ee90b6ccb531737fb7455",
+    "reviewPath": "copy/independent-copy-review.rev3.json",
+    "reviewSha256": "fd1a09b38acb21c708d5f418e6a293aac8b9dbb37cfeb49191595e807b87acc9",
     "originalPlanN": 1,
     "firstAnswerCharacters": 154,
-    "bodyCharacters": 2248,
+    "bodyCharacters": 2214,
     "faqCharacters": 435,
-    "combinedArticleCharacters": 2839,
+    "combinedArticleCharacters": 2805,
     "commonUiExcluded": true,
-    "runtimeSourceCommit": null,
+    "runtimeSourceCommit": "bbb016305dd2fe29f7d985a669acaa02224a9f2f",
     "draftHistoryPreserved": true
   },
   "handoff": {
-    "resumeFrom": "copy/geumcheon-copy.rev2.json",
-    "copySha256": "dc116c78188a3ed25e0d3dc1a6a1dcd2d257fd096d2ba60d7e64d397906bc90e",
-    "copyReviewSha256": "2b0eaf4f04694551257eb63b0fb6dd58e3129a8e7c1f33adfd6805503af3f0eb",
+    "resumeFrom": "implementation/verification-summary.json",
+    "copySha256": "01f9e71d13ad3a11122b832d649f60b6da976c85513ee90b6ccb531737fb7455",
+    "copyReviewSha256": "fd1a09b38acb21c708d5f418e6a293aac8b9dbb37cfeb49191595e807b87acc9",
     "frozenPlanSha256": "4371357faa2f5ff54d31689ec270f8cf8a5da76e7faa73a4e937f90ee6cecc37",
-    "runtimeImplementationStarted": false,
-    "sourceBranchCreated": false,
+    "runtimeImplementationStarted": true,
+    "sourceBranchCreated": true,
     "publicationAuthorized": false,
     "frozenPlanFieldsDescribeFreezeTime": true,
     "copyChangesRequireFreshReview": true,
-    "runtimeImplementationAuthorizedForNextStage": true
+    "runtimeImplementationAuthorizedForNextStage": false
   },
   "continuation": {
-    "observedAt": "2026-10-12T21:31:01.789023+00:00",
-    "instruction": "After exact reviewed-copy save/readback, continue existing-owner runtime preparation; no publication issue/dispatch/indexing/security changes.",
-    "runtimeSourceCreated": false
+    "observedAt": "2026-10-12T21:59:42.550494+00:00",
+    "instruction": "Prepared unpublished. Keep Gangseo specific release-issue approval priority. No new release/dispatch/indexing/security action authorized.",
+    "runtimeSourceCreated": true
+  },
+  "implementationEvidence": {
+    "summary": "implementation/verification-summary.json",
+    "technical": "implementation/technical-review-report.json",
+    "copyInterface": "implementation/rendered-copy-review-report.json",
+    "exactSource": "implementation/exact-source-verification.json",
+    "readback": "implementation/source-ref-readback.json",
+    "artifact": "implementation/static-artifact/"
   }
 }

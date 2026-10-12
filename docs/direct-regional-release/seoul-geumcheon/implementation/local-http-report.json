@@ -1,0 +1,78 @@
+{
+  "status": "PASS_LOCAL_HTTP_ONLY",
+  "scope": "Loopback Python static server reading built dist; not Cloudflare hosting or public HTTP proof. Missing-route HTTP 404 is verified only in this local harness; branded provider fallback remains unverified.",
+  "checks": [
+    {
+      "route": "/",
+      "status": 200,
+      "expected": 200,
+      "bodySha256": "3a5e57e54e79f8cf6db011141363cbb6dc1300932c6cdb54a0a65d6ec562421b"
+    },
+    {
+      "route": "/regions/",
+      "status": 200,
+      "expected": 200,
+      "bodySha256": "1c9fbaa5c0c0f885df8fa9ec62365a55b604f7bfa1f0d754ab4cc1fa641d895c"
+    },
+    {
+      "route": "/regions/geumcheon-funeral-wreath/",
+      "status": 200,
+      "expected": 200,
+      "bodySha256": "0998418f40924ed53fb31e97b3f076b616fdd7de9a6edfc1f51fc20271e1b87b"
+    },
+    {
+      "route": "/regions/gasan-digital-opening-wreath/",
+      "status": 404,
+      "expected": 404,
+      "bodySha256": "860b53ed6ea6a0cf602fae632cfcd28dbcf637f85a8bee28d2ee9c6cc9081669"
+    },
+    {
+      "route": "/funeral/",
+      "status": 404,
+      "expected": 404,
+      "bodySha256": "860b53ed6ea6a0cf602fae632cfcd28dbcf637f85a8bee28d2ee9c6cc9081669"
+    },
+    {
+      "route": "/business/",
+      "status": 404,
+      "expected": 404,
+      "bodySha256": "860b53ed6ea6a0cf602fae632cfcd28dbcf637f85a8bee28d2ee9c6cc9081669"
+    },
+    {
+      "route": "/school/",
+      "status": 404,
+      "expected": 404,
+      "bodySha256": "860b53ed6ea6a0cf602fae632cfcd28dbcf637f85a8bee28d2ee9c6cc9081669"
+    },
+    {
+      "route": "/event/",
+      "status": 404,
+      "expected": 404,
+      "bodySha256": "860b53ed6ea6a0cf602fae632cfcd28dbcf637f85a8bee28d2ee9c6cc9081669"
+    },
+    {
+      "route": "/gift/",
+      "status": 404,
+      "expected": 404,
+      "bodySha256": "860b53ed6ea6a0cf602fae632cfcd28dbcf637f85a8bee28d2ee9c6cc9081669"
+    },
+    {
+      "route": "/order/",
+      "status": 404,
+      "expected": 404,
+      "bodySha256": "860b53ed6ea6a0cf602fae632cfcd28dbcf637f85a8bee28d2ee9c6cc9081669"
+    },
+    {
+      "route": "/not-a-real-route/",
+      "status": 404,
+      "expected": 404,
+      "bodySha256": "860b53ed6ea6a0cf602fae632cfcd28dbcf637f85a8bee28d2ee9c6cc9081669"
+    },
+    {
+      "route": "/robots.txt",
+      "status": 200,
+      "expected": 200,
+      "bodySha256": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1"
+    }
+  ]
+}

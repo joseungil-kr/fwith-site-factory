@@ -1,0 +1,73 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> build
+> node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && python3 scripts/test_output_bindings.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_links.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py
+
+06:56:26 [types] Generated 110ms
+06:56:26 [check] Getting diagnostics for Astro files in /workspace/shared/geumcheon-exact/site-factory/seoul-geumcheon-flower...
+Result (50 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+06:56:30 [types] Generated 37ms
+06:56:30 [build] output: "static"
+06:56:30 [build] mode: "static"
+06:56:30 [build] directory: /workspace/shared/geumcheon-exact/site-factory/seoul-geumcheon-flower/dist/
+06:56:30 [build] Collecting build info...
+06:56:30 [build] ✓ Completed in 74ms.
+06:56:30 [build] Building static entrypoints...
+06:56:30 [vite] ✓ built in 232ms
+06:56:30 [vite] ✓ built in 23ms
+06:56:30 [build] Rearranging server assets...
+
+ generating static routes 
+06:56:30   ├─ /404.html (+12ms) 
+06:56:30   ├─ /robots.txt (+3ms) 
+06:56:30   ├─ /regions/geumcheon-funeral-wreath/index.html (+7ms) 
+06:56:30   ├─ /regions/index.html (+3ms) 
+06:56:30   ├─ /index.html (+3ms) 
+06:56:30 ✓ Completed in 54ms.
+
+06:56:30 [build] ✓ Completed in 342ms.
+06:56:30 [WARN] [@astrojs/sitemap] No pages found!
+`sitemap-index.xml` not created.
+06:56:30 [build] 4 page(s) built in 421ms
+06:56:30 [build] Complete!
+STATIC QA PASSED: 1 details, 3 HTML routes; indexable=False; exact metadata/sitemap/snapshot/link parity
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.044s
+
+OK
+STATIC QA PASSED: 1 details, 3 HTML routes; indexable=False; exact metadata/sitemap/snapshot/link parity
+GRAPH QA PASSED { pages: 1, hubs: 1 }
+FAQ / PRODUCT QA: 1 details, 3 visible FAQs, 12 exact product links
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.059s
+
+OK
+FAQ / PRODUCT QA: 1 details, 3 visible FAQs, 12 exact product links
+FAQ / PRODUCT QA: 1 details, 3 visible FAQs, 12 exact product links
+SHARED BANNER QA: 3 customer pages, 6 banners; headings, alt, exact assets and links checked
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.081s
+
+OK
+SHARED BANNER QA: 3 customer pages, 6 banners; headings, alt, exact assets and links checked
+SHARED BANNER QA: 4 customer pages, 6 banners; headings, alt, exact assets and links checked
+DIRECTORY QA: 10 administrative entries; 5 exact destination links; grouped=True; all named destination anchors checked
+DIRECTORY SPACING QA: {"cards": 1, "districts": 1, "eligible": false, "bannerKinds": [], "visibleCardsBetweenBanners": [], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.082s
+
+OK
+DIRECTORY SPACING QA: {"cards": 1, "districts": 1, "eligible": false, "bannerKinds": [], "visibleCardsBetweenBanners": [], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
