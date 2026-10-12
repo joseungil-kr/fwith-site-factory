@@ -1,0 +1,902 @@
+{
+  "status": "PASS",
+  "scope": "Read-only/in-memory validation of current source. Mutations of frozen registry are rejected at immutable-plan binding before lower-level registry checks; this does not claim each inner branch was independently reached.",
+  "tests": 129,
+  "passed": 129,
+  "results": [
+    {
+      "name": "live full graph",
+      "expected": "accept",
+      "actual": "accepted",
+      "pass": true
+    },
+    {
+      "name": "live Guro definition",
+      "expected": "accept",
+      "actual": "accepted",
+      "pass": true
+    },
+    {
+      "name": "empty frozen representatives",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan denominator drift",
+      "pass": true
+    },
+    {
+      "name": "shrink N3 to N2",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan denominator drift",
+      "pass": true
+    },
+    {
+      "name": "expand N3 to N4",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan denominator drift",
+      "pass": true
+    },
+    {
+      "name": "legal membership name drift",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: official membership binding drift",
+      "pass": true
+    },
+    {
+      "name": "legal count 9",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Regional service: invalid alias relation seoul-guro-gu/admin/1153080000",
+      "pass": true
+    },
+    {
+      "name": "administrative count 15",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: official membership binding drift",
+      "pass": true
+    },
+    {
+      "name": "administrative relation removal",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: official membership binding drift",
+      "pass": true
+    },
+    {
+      "name": "official membership digest drift",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: official membership binding drift",
+      "pass": true
+    },
+    {
+      "name": "physical source HTTP",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan registry drift",
+      "pass": true
+    },
+    {
+      "name": "physical credentialed URL",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan registry drift",
+      "pass": true
+    },
+    {
+      "name": "physical source encoded hostname",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan registry drift",
+      "pass": true
+    },
+    {
+      "name": "physical source control character",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan registry drift",
+      "pass": true
+    },
+    {
+      "name": "physical fake address",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan registry drift",
+      "pass": true
+    },
+    {
+      "name": "physical duplicate source address",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan registry drift",
+      "pass": true
+    },
+    {
+      "name": "physical duplicate key",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan registry drift",
+      "pass": true
+    },
+    {
+      "name": "physical unknown canonical unit",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan registry drift",
+      "pass": true
+    },
+    {
+      "name": "physical unexpected field",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan registry drift",
+      "pass": true
+    },
+    {
+      "name": "area synthetic address",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan registry drift",
+      "pass": true
+    },
+    {
+      "name": "area synthetic facility key",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan registry drift",
+      "pass": true
+    },
+    {
+      "name": "area pretending physical type",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan registry drift",
+      "pass": true
+    },
+    {
+      "name": "unknown candidate membership",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan member/anchor binding drift",
+      "pass": true
+    },
+    {
+      "name": "duplicate candidate membership",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan member/anchor binding drift",
+      "pass": true
+    },
+    {
+      "name": "member moved to other article",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan member/anchor binding drift",
+      "pass": true
+    },
+    {
+      "name": "canonical unit union reversal",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan member/anchor binding drift",
+      "pass": true
+    },
+    {
+      "name": "canonical unit union missing",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan member/anchor binding drift",
+      "pass": true
+    },
+    {
+      "name": "purchase intent mismatch",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan member/anchor binding drift",
+      "pass": true
+    },
+    {
+      "name": "anchor heading identity mismatch",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan member/anchor binding drift",
+      "pass": true
+    },
+    {
+      "name": "anchor destination URL mismatch",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan member/anchor binding drift",
+      "pass": true
+    },
+    {
+      "name": "anchor canonical unit mismatch",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan member/anchor binding drift",
+      "pass": true
+    },
+    {
+      "name": "mixed site opt-in",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: site/scope/assignment opt-in mismatch",
+      "pass": true
+    },
+    {
+      "name": "mixed scope opt-in",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: site/scope/assignment opt-in mismatch",
+      "pass": true
+    },
+    {
+      "name": "mixed assignment opt-in",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: site/scope/assignment opt-in mismatch",
+      "pass": true
+    },
+    {
+      "name": "frozen representative single-facility alias",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: invalid canonical grouped context",
+      "pass": true
+    },
+    {
+      "name": "zero routes with valid frozen coverage",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: approved route parity mismatch",
+      "pass": true
+    },
+    {
+      "name": "zero routes with empty frozen coverage",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: frozen plan denominator drift",
+      "pass": true
+    },
+    {
+      "name": "architecture duplicate page",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: architecture semantic mismatch",
+      "pass": true
+    },
+    {
+      "name": "approval flag false",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: route/approval mismatch",
+      "pass": true
+    },
+    {
+      "name": "disabled policy",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: approved route parity mismatch",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift scopeKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift scopeKey",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift regionUnitKeys",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionUnitKeys",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift regionalPurchaseMode",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionalPurchaseMode",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift regionalProductKeys",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionalProductKeys",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift regionalProductFamilies",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionalProductFamilies",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift ogImage",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImage",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift ogImageAlt",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageAlt",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift ogImageSha256",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageSha256",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift ogImageSourceUrl",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageSourceUrl",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift ogImageWidth",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageWidth",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift ogImageHeight",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageHeight",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift ogImageType",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageType",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift candidateIds",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift candidateIds",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift purchaseIntentKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift purchaseIntentKey",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift contextKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift contextKey",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift intentKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift intentKey",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift facilityAnchors",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift facilityAnchors",
+      "pass": true
+    },
+    {
+      "name": "pages metadata drift primaryKeyword",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: grouped unit/keyword binding drift",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift scopeKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift scopeKey",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift regionUnitKeys",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionUnitKeys",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift regionalPurchaseMode",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionalPurchaseMode",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift regionalProductKeys",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionalProductKeys",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift regionalProductFamilies",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionalProductFamilies",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift ogImage",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImage",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift ogImageAlt",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageAlt",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift ogImageSha256",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageSha256",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift ogImageSourceUrl",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageSourceUrl",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift ogImageWidth",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageWidth",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift ogImageHeight",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageHeight",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift ogImageType",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageType",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift candidateIds",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift candidateIds",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift purchaseIntentKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift purchaseIntentKey",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift contextKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift contextKey",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift intentKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift intentKey",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift facilityAnchors",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift facilityAnchors",
+      "pass": true
+    },
+    {
+      "name": "architecture metadata drift primaryKeyword",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: grouped unit/keyword binding drift",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift scopeKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift scopeKey",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift regionUnitKeys",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionUnitKeys",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift regionalPurchaseMode",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionalPurchaseMode",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift regionalProductKeys",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionalProductKeys",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift regionalProductFamilies",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionalProductFamilies",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift ogImage",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImage",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift ogImageAlt",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageAlt",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift ogImageSha256",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageSha256",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift ogImageSourceUrl",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageSourceUrl",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift ogImageWidth",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageWidth",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift ogImageHeight",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageHeight",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift ogImageType",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageType",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift candidateIds",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift candidateIds",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift purchaseIntentKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift purchaseIntentKey",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift contextKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift contextKey",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift intentKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift intentKey",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift facilityAnchors",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift facilityAnchors",
+      "pass": true
+    },
+    {
+      "name": "manifest metadata drift primaryKeyword",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: grouped unit/keyword binding drift",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift scopeKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift scopeKey",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift regionUnitKeys",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionUnitKeys",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift regionalPurchaseMode",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionalPurchaseMode",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift regionalProductKeys",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionalProductKeys",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift regionalProductFamilies",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift regionalProductFamilies",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift ogImage",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImage",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift ogImageAlt",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageAlt",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift ogImageSha256",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageSha256",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift ogImageSourceUrl",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageSourceUrl",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift ogImageWidth",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageWidth",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift ogImageHeight",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageHeight",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift ogImageType",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift ogImageType",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift candidateIds",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift candidateIds",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift purchaseIntentKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift purchaseIntentKey",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift contextKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift contextKey",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift intentKey",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift intentKey",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift facilityAnchors",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: reviewed source binding drift facilityAnchors",
+      "pass": true
+    },
+    {
+      "name": "map metadata drift primaryKeyword",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: grouped unit/keyword binding drift",
+      "pass": true
+    },
+    {
+      "name": "guro-funeral-hospitals-condolence-wreath purchase contract",
+      "expected": "accept",
+      "actual": "accepted",
+      "pass": true
+    },
+    {
+      "name": "guro-wedding-venues-congrats-wreath purchase contract",
+      "expected": "accept",
+      "actual": "accepted",
+      "pass": true
+    },
+    {
+      "name": "guro-dong-digital-valley-office-wreath purchase contract",
+      "expected": "accept",
+      "actual": "accepted",
+      "pass": true
+    },
+    {
+      "name": "funeral product family swapped to congratulations",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Guro grouped: purchase intent/family mismatch",
+      "pass": true
+    },
+    {
+      "name": "strict page source \"http://example.com\"",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Source must be an HTTPS URL without credentials or control characters",
+      "pass": true
+    },
+    {
+      "name": "strict page source \"https://user:password@example.com\"",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Source must be an HTTPS URL without credentials or control characters",
+      "pass": true
+    },
+    {
+      "name": "strict page source \"https://example.com\\n\"",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Source must be an HTTPS URL without credentials or control characters",
+      "pass": true
+    },
+    {
+      "name": "strict page source \"https://example.com\\\\evil\"",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Source must be an HTTPS URL without credentials or control characters",
+      "pass": true
+    },
+    {
+      "name": "strict page source \"javascript:alert(1)\"",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Source must be an HTTPS URL without credentials or control characters",
+      "pass": true
+    },
+    {
+      "name": "strict page source \"data:text/html,x\"",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Source must be an HTTPS URL without credentials or control characters",
+      "pass": true
+    },
+    {
+      "name": "strict page source \"https://example.com/a b\"",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Source must be an HTTPS URL without credentials or control characters",
+      "pass": true
+    },
+    {
+      "name": "guro-funeral-hospitals-condolence-wreath exact H2 anchors",
+      "expected": "accept",
+      "actual": "accepted",
+      "pass": true
+    },
+    {
+      "name": "guro-wedding-venues-congrats-wreath exact H2 anchors",
+      "expected": "accept",
+      "actual": "accepted",
+      "pass": true
+    },
+    {
+      "name": "guro-dong-digital-valley-office-wreath exact H2 anchors",
+      "expected": "accept",
+      "actual": "accepted",
+      "pass": true
+    },
+    {
+      "name": "missing exact facility H2",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Reviewed facility H2 missing or duplicated: 고려대학교 구로병원 장례식장",
+      "pass": true
+    },
+    {
+      "name": "duplicate facility H2",
+      "expected": "reject",
+      "actual": "rejected",
+      "error": "Reviewed facility H2 missing or duplicated: A",
+      "pass": true
+    },
+    {
+      "name": "same article separate Sindorim destinations",
+      "expected": "accept",
+      "actual": "accepted",
+      "pass": true
+    }
+  ]
+}

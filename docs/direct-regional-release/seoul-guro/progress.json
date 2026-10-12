@@ -3,18 +3,18 @@
   "scopeKey": "seoul-guro-direct-independent-preparation-20261012",
   "region": "서울 구로구",
   "officialCode": "11530",
-  "active": true,
+  "active": false,
   "owner": "prepare_rich_guro_site",
-  "executionState": "local_copy_reviewed_final_technical_rebuild_in_progress",
+  "executionState": "prepared_unpublished_release_not_authorized",
   "progressPath": "seoul-guro/progress.json",
   "sourceBranch": "site-factory-seoul-guro-direct",
-  "sourceRevision": null,
-  "sourceState": "local_only_not_saved_to_remote",
+  "sourceRevision": "500d82d01c1cdaed3ebde047bb3ce056705daac1",
+  "sourceState": "remote_saved_exact_source_and_static_artifact_verified",
   "publicationAuthorized": false,
-  "updatedAt": "2026-10-12T19:28:06.045428+00:00",
+  "updatedAt": "2026-10-12T19:36:33.042141+00:00",
   "nominalScheduledAt": "2026-10-12T19:30:00Z",
   "actualResumeNotifiedAt": "2026-10-12T19:25:29Z",
-  "resumeRule": "Continue this active independent preparation; reconcile owner and remote evidence before creating another task. Gangseo remains the unfinished publication priority.",
+  "resumeRule": "Reconcile exact saved source and this evidence before resuming. Do not create duplicate Guro research or replace the frozen N3. Gangseo remains the unfinished publication priority; no Guro release approval has been granted.",
   "fixedPlan": {
     "articleN": 3,
     "originalCandidates": 8,
@@ -26,16 +26,43 @@
   },
   "reviews": {
     "plan": "PASS",
+    "planReviewSha256": "b785e36650ded45bc7f8ef5ce9ebc7830c8b71ec27f3c8c87bf25a7b03c3f596",
     "copy": "PASS",
     "copyReviewSha256": "5d74c9b06192e738f55f9960c107d81147dfd6c5387877268ac85c1178e33063",
-    "technical": "IN_PROGRESS",
-    "screen": "UNVERIFIED"
+    "technical": "PASS_LOCAL_SOURCE_AND_STATIC_OUTPUT_ONLY",
+    "technicalReviewSha256": "4ca7ef95fc07111f0633fba1977fc5840e9fbf9e42e41ce33b97d7c9ef882d3a",
+    "screen": "UNVERIFIED",
+    "public": "NOT_PUBLISHED"
   },
   "verifiedLocalEvidence": {
-    "unitTests": 131,
+    "nodeTests": 131,
+    "pythonRegressions": 34,
     "independentMutationCases": 129,
-    "priorBuild": "passed before final basic-price and social-alt fixes; final rebuild pending",
-    "sourceCopySha256": "e2999d1f85ddf0f546d7bc4aa0366f40a84b9e1e535a27ff15e0345d53e715dc"
+    "independentHtmlChecks": 30,
+    "exactSourceBuild": "PASS",
+    "exactSourceFiles": 103,
+    "artifactFiles": 25,
+    "customerRoutes": 5,
+    "renderedHtmlIncluding404": 6,
+    "visibleFaq": 9,
+    "exactSkuLinks": 24,
+    "sharedBanners": 15,
+    "directoryCardsBetweenBanners": [
+      2,
+      1
+    ],
+    "sourceCopySha256": "e2999d1f85ddf0f546d7bc4aa0366f40a84b9e1e535a27ff15e0345d53e715dc",
+    "copyVisibleUniqueCharacters": [
+      3027,
+      3107,
+      3107
+    ],
+    "contentMarkdownCharacters": [
+      2852,
+      3405,
+      2823
+    ],
+    "wordCountBasis": "Unique visible total includes first answer + rendered body + FAQ; excludes shared cards/menu/footer. Raw contentMarkdown character lengths are reported separately."
   },
   "publication": {
     "published": false,
@@ -45,13 +72,32 @@
     "indexNow": null
   },
   "reconciledParent": {
-    "main": "09d32f96bc7fd69f53482c6fbbdd606a0f026593",
+    "mainBeforeFinalEvidenceSave": "00ede767fc55a7018d4292f43b3af76a8a661ab3",
     "gangseoSource": "f7f2b9d017b8b8352aae8b0339b5a2cac0da1d32",
     "gangseoState": "awaiting_specific_issue_creation_approval"
   },
   "remaining": [
-    "Complete independent final technical review",
-    "Save exact Guro source and independently verify remote bytes",
-    "Preserve visual QA limitation; wait for distinct publication approval and Gangseo-first coordination"
-  ]
+    "Actual browser/mobile visual and clicked-interaction QA remains unverified because local Chromium launch was blocked by socket permissions.",
+    "Do not create a deployment issue, dispatch workflow, change providers/DNS/security, or submit IndexNow without the applicable separate approval and Gangseo-first coordination.",
+    "After any authorized release, independently verify Actions artifact, public HTTP/canonical/assets/FAQ/source revision and receipt; none are claimed here."
+  ],
+  "releaseApproval": {
+    "approved": false,
+    "specificGuroIssueApprovalRequested": false,
+    "gangseoPriorityRemains": true,
+    "productionApprovedInSource": false,
+    "SITE_INDEXABLE_true": "fails closed as intended"
+  },
+  "evidencePaths": [
+    "source-readback.json",
+    "exact-source-artifact.json",
+    "source-actions-readback.json",
+    "independent-plan-review.final.json",
+    "independent-copy-review.final.rev2.json",
+    "independent-technical-review.json",
+    "independent-technical-source-manifest.json",
+    "source-evidence.json",
+    "browser-rendering-failure.json"
+  ],
+  "sourceReviewMetadataBoundary": "The immutable source snapshot retains pre-review technical-pending labels. The external final technical report and exact remote manifest binding establish the later verified scope; no source text was silently changed after review."
 }

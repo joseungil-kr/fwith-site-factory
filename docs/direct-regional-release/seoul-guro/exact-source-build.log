@@ -1,0 +1,70 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> build
+> node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && python3 scripts/test_output_bindings.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_links.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py
+
+04:34:25 [vite] Re-optimizing dependencies because vite config has changed
+04:34:25 [types] Generated 113ms
+04:34:25 [check] Getting diagnostics for Astro files in /workspace/shared/guro-exact/site-factory/seoul-guro-flower...
+Result (51 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+04:34:29 [types] Generated 37ms
+04:34:29 [build] output: "static"
+04:34:29 [build] mode: "static"
+04:34:29 [build] directory: /workspace/shared/guro-exact/site-factory/seoul-guro-flower/dist/
+04:34:29 [build] Collecting build info...
+04:34:29 [build] ✓ Completed in 72ms.
+04:34:29 [build] Building static entrypoints...
+04:34:29 [vite] ✓ built in 200ms
+04:34:29 [vite] ✓ built in 21ms
+04:34:29 [build] Rearranging server assets...
+
+ generating static routes 
+04:34:29   ├─ /404.html (+11ms) 
+04:34:29   ├─ /robots.txt (+3ms) 
+04:34:29   ├─ /regions/guro-funeral-hospitals-condolence-wreath/index.html (+13ms) 
+04:34:29   ├─ /regions/guro-wedding-venues-congrats-wreath/index.html (+4ms) 
+04:34:29   ├─ /regions/guro-dong-digital-valley-office-wreath/index.html (+3ms) 
+04:34:29   ├─ /regions/index.html (+5ms) 
+04:34:29   ├─ /index.html (+3ms) 
+04:34:29 ✓ Completed in 66ms.
+
+04:34:29 [build] ✓ Completed in 321ms.
+04:34:29 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+04:34:29 [build] 6 page(s) built in 405ms
+04:34:29 [build] Complete!
+STATIC QA PASSED: 3 details, 5 HTML routes; indexable=False; exact metadata/sitemap/snapshot/link parity
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.071s
+
+OK
+STATIC QA PASSED: 3 details, 5 HTML routes; indexable=False; exact metadata/sitemap/snapshot/link parity
+GRAPH QA PASSED { pages: 3, hubs: 1 }
+FAQ / PRODUCT QA: 3 details, 9 visible FAQs, 24 exact product links
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.089s
+
+OK
+FAQ / PRODUCT QA: 3 details, 9 visible FAQs, 24 exact product links
+FAQ / PRODUCT QA: 3 details, 9 visible FAQs, 24 exact product links
+SHARED BANNER QA: 5 customer pages, 15 banners; headings, alt, exact assets and links checked
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.125s
+
+OK
+SHARED BANNER QA: 5 customer pages, 15 banners; headings, alt, exact assets and links checked
+SHARED BANNER QA: 6 customer pages, 15 banners; headings, alt, exact assets and links checked
+DIRECTORY QA: 16 administrative entries; 24 exact destination links; grouped=True; all named destination anchors checked
+DIRECTORY SPACING QA: {"cards": 3, "districts": 1, "eligible": true, "bannerKinds": ["message", "budget", "consultation"], "visibleCardsBetweenBanners": [2, 1], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.079s
+
+OK
+DIRECTORY SPACING QA: {"cards": 3, "districts": 1, "eligible": true, "bannerKinds": ["message", "budget", "consultation"], "visibleCardsBetweenBanners": [2, 1], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}

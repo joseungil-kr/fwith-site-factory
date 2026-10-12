@@ -1,0 +1,29 @@
+{
+  "checkedAt": "2026-10-12T18:54:00Z",
+  "status": "retained_capture_limitation_not_active_customer_source",
+  "directlyChecked": [
+    "fetch_sources.py lines34–37: hashes data, decodes with errors=replace, then write_text.",
+    "Both stored .html files contain Unicode replacement bytes and are not HTML facility pages.",
+    "The relevant candidate was already held before this audit; all source digests joined by active candidates passed byte-identity checks."
+  ],
+  "inference": "The fetcher computes SHA from response bytes but saves a UTF-8 decode with errors=replace. This explains why an image response cannot retain byte identity in a .html file. Original network bytes are not retained by that script.",
+  "unverified": "Cannot reconstruct original bytes or independently confirm the reported original response SHA from the lossy files. No source-content or runtime PASS claimed for these held candidates.",
+  "records": [
+    {
+      "id": "shillakwon-home",
+      "reportedResponseSha256": "50969c6a74a542a4cff62a7bb6f35a87393bcc680f22938d98a8f3adc3fb9bb9",
+      "storedUtf8Sha256": "f3de945731073f1d756fb5ae66ba8ff5c8bfa232b5cac907cba48d29eed58055",
+      "containsReplacementCharacters": true,
+      "prefixHex": "efbfbd504e470d0a1a0a0000000d4948",
+      "file": "raw/shillakwon-home.html"
+    },
+    {
+      "id": "shillakwon-branch03",
+      "reportedResponseSha256": "50969c6a74a542a4cff62a7bb6f35a87393bcc680f22938d98a8f3adc3fb9bb9",
+      "storedUtf8Sha256": "f3de945731073f1d756fb5ae66ba8ff5c8bfa232b5cac907cba48d29eed58055",
+      "containsReplacementCharacters": true,
+      "prefixHex": "efbfbd504e470d0a1a0a0000000d4948",
+      "file": "raw/shillakwon-branch03.html"
+    }
+  ]
+}

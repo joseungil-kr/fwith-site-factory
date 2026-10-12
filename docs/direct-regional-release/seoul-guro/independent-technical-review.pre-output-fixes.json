@@ -1,0 +1,44 @@
+{
+  "reviewer": "independent /root/prepare_rich_guro_site/review_guro_runtime_output",
+  "reviewedAt": "2026-10-12T19:24:47.256385+00:00",
+  "verdict": "CHANGES_REQUIRED",
+  "scope": "Read-only independent source/runtime/static-output review; Guro remains unpublished.",
+  "fixedFinding": {
+    "id": "T1",
+    "finding": "Zero representatives bypassed frozen N=3 and active-registry checks.",
+    "status": "fixed and independently regression-tested",
+    "runtimeSha256": "c86a3994a4a1cac9e42371bd687d8dab47a4f14b7af9af6841021e4beeb2701f"
+  },
+  "requiredChangesRemaining": [
+    {
+      "id": "T2",
+      "finding": "Rendered og:image:alt and twitter:image:alt differ from the approved regional ogImageAlt for all 3 articles.",
+      "evidence": "independent-technical-html.pre-output-fixes.json"
+    },
+    {
+      "id": "T3",
+      "finding": "Four homepage hero amounts omit 기본가격 although detail hero/card prices use it.",
+      "evidence": "src/pages/index.astro and dist/index.html"
+    }
+  ],
+  "results": {
+    "nodeTests": {
+      "passed": 131,
+      "failed": 0
+    },
+    "fullBuildExitCode": 0,
+    "indexableBuildExpectedRejectionExitCode": 1,
+    "independentAdversarial": {
+      "passed": 129,
+      "total": 129
+    },
+    "independentHtml": {
+      "passed": 26,
+      "total": 30
+    }
+  },
+  "visualBoundary": {
+    "status": "UNVERIFIED",
+    "reason": "Existing Chromium attempt failed at launch with socket() Operation not permitted and read-only profile errors. No permission relaxation or bypass attempted. HTML parse and asset contact-sheet inspection are not browser/mobile/clicked-interaction verification."
+  }
+}

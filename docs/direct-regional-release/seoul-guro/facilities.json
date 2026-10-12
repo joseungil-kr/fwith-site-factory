@@ -1,0 +1,1754 @@
+{
+  "scope": "서울 구로구11530 시설 원문 조사; 대상별 독립 구매결정을 확인하며 글 수를 미리 정하지 않음",
+  "checked_at": "2026-10-12T18:41:12.658104+00:00",
+  "result_classification": [
+    "직접 확인",
+    "도구 보고",
+    "추정·판단",
+    "미확인"
+  ],
+  "verification_method": "공식 홈페이지를 web.run과 Python urllib 공개GET으로 열람. HTTP200 자체만 성공으로 인정하지 않고 주소·본문·호실·반입제한 텍스트를 직접 검사하고 assertions로 재검증. 일부 사이트는 HTTPS502를 HTTP공개원문으로 확인. 브라우저 시각검사·전화·현장방문·외부 연락은 하지 않음.",
+  "completion_scope": "시설 원문 조사와 후보/보류 분류 산출물을 작성·검증함. 현장 배송 허가 및 판매/배포 완료를 뜻하지 않음.",
+  "facilities": [
+    {
+      "id": "korea-university-guro-funeral",
+      "name": "고려대학교 구로병원 장례식장",
+      "category": "funeral",
+      "municipality": "서울특별시 구로구",
+      "municipality_code": "11530",
+      "geographic_class": "within_guro",
+      "address": "서울특별시 구로구 구로동로 148",
+      "planning_status": "candidate",
+      "confirmed_facts": [
+        "고려중앙학원 공식 사업 안내에서 안암·구로·안산 장례식장 직영과 funeral.or.kr 공식 연결을 확인했다.",
+        "공식 위치 페이지가 구로동로 148 및 장례식장 연락처 02-857-0444, 02-857-1444를 안내한다.",
+        "B2층 빈소는 B101·B102·B105·B106·B107호다. B101의 B를 지하 1층으로 추정하면 안 된다.",
+        "1층은 111·112·113호 및 운영사무실, 2층은 201(특실)·202·203호로 안내된다.",
+        "공식 구로 FAQ에 24시간 상담번호와 조문객 주차 안내가 있다."
+      ],
+      "sources": [
+        {
+          "id": "kuf-business",
+          "url": "https://www.kuf.or.kr/business/sub3/p_menu_group/300/p_menu_id_sel/businesssub3",
+          "checked_at": "2026-10-12T18:32:25.921863+00:00",
+          "http_status": 200,
+          "final_url": "https://www.kuf.or.kr/business/sub3/p_menu_group/300/p_menu_id_sel/businesssub3",
+          "level": "직접 확인",
+          "inspection_scope": "법인 장례식장 사업 설명과 공식 링크",
+          "summary": "구로 등 3개 장례식장 직영 및 funeral.or.kr 연결을 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/kuf-business.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/kuf-business.txt",
+          "sha256": "eb3b4214ee336fb10a097980879cfd4c1949e860f9b3869a5c989cc5c5fbef1b",
+          "error": null,
+          "text_line_count": 89
+        },
+        {
+          "id": "kuro-funeral-map",
+          "url": "https://funeral.or.kr/53",
+          "checked_at": "2026-10-12T18:33:27.388706+00:00",
+          "http_status": 200,
+          "final_url": "https://funeral.or.kr/53",
+          "level": "직접 확인",
+          "inspection_scope": "주소·장례식장 전화번호",
+          "summary": "서울 구로구 구로동로 148",
+          "raw_path": "/workspace/shared/guro-evidence/raw/kuro-funeral-map.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/kuro-funeral-map.txt",
+          "sha256": "832305e0c72f44ad5b7b4ea042496a75c94ac07a12306ea1d2b05e5e72e4d0fe",
+          "error": null,
+          "text_line_count": 111
+        },
+        {
+          "id": "kuro-funeral-facilities",
+          "url": "https://funeral.or.kr/36",
+          "checked_at": "2026-10-12T18:33:27.389865+00:00",
+          "http_status": 200,
+          "final_url": "https://funeral.or.kr/36",
+          "level": "직접 확인",
+          "inspection_scope": "층별 시설/호실과 운영사무실",
+          "summary": "B2의 B101·B102·B105·B106·B107, 1층111·112·113, 2층201·202·203 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/kuro-funeral-facilities.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/kuro-funeral-facilities.txt",
+          "sha256": "1a210b19c36950f39b72035a40a18559a525f1b2564ad7fa2507d7989c60f201",
+          "error": null,
+          "text_line_count": 283
+        },
+        {
+          "id": "kuro-funeral-faq",
+          "url": "https://funeral.or.kr/58",
+          "checked_at": "2026-10-12T18:33:27.390563+00:00",
+          "http_status": 200,
+          "final_url": "https://funeral.or.kr/58",
+          "level": "직접 확인",
+          "inspection_scope": "구로 FAQ의 주차 및 상담 안내",
+          "summary": "24시간 상담, 빈소 확인과 주차 안내. 화환 반입 제한 문구는 확인하지 못함",
+          "raw_path": "/workspace/shared/guro-evidence/raw/kuro-funeral-faq.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/kuro-funeral-faq.txt",
+          "sha256": "cf8ecf3800dc5d6b4d50fde38323d9d3518bea4bafbb5ddd337d40c4db781a49",
+          "error": null,
+          "text_line_count": 141
+        },
+        {
+          "id": "hospital-dong-government-2026",
+          "url": "https://www.guro.go.kr/contents/2026thanks/html/sub2.html",
+          "checked_at": "2026-10-12T18:42:01.027955+00:00",
+          "http_status": 200,
+          "final_url": "https://www.guro.go.kr/contents/2026thanks/html/sub2.html",
+          "bytes": 67182,
+          "sha256": "8c58bb12cb6c2313ee9b56ad709aae76ebdb33b47327d069388181f1a946e283",
+          "raw_path": "/workspace/shared/guro-evidence/raw/hospital-dong-government-2026.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/hospital-dong-government-2026.txt",
+          "level": "직접 확인",
+          "inspection_scope": "구로구 공식 2026 추석 의료기관 안내에서 해당 병원명·도로명주소와 괄호 법정동 일치 확인",
+          "summary": "구로병원 구로동 / 구로성심병원 고척동",
+          "text_line_count": 629
+        }
+      ],
+      "unverified": [
+        "현재 특정 빈소 입실 상태",
+        "근조화환 지정 설치구역·화물 출입구·외부 반입 규격"
+      ],
+      "judgment": "근조화환의 독립 구매결정 후보로 유지. 배송정보에서 빈소번호와 실제 층을 별도로 받아 오배송을 예방할 수 있다.",
+      "operational_status_scope": "현재 공개된 공식 시설/운영 안내 원문을 확인했다. 실제 방문·전화·행사 당일 운영 확인은 하지 않았다.",
+      "flower_delivery_policy": {
+        "status": "not_found_in_inspected_official_sources",
+        "allowed": null,
+        "unknowns": [
+          "외부 축하/근조화환 허용 규격·설치 위치",
+          "배송차량 하역 및 반입시간",
+          "당일 담당자·회수 동선"
+        ],
+        "publication_guardrail": "안내 미발견을 반입 허용으로 해석하지 말 것. 화환 주문·배송 가능 보장은 꽃이랑의 현장 확인 전까지 금지.",
+        "inspection_result": "열람한 공식 위치·시설·홀·FAQ 범위에서 외부 화환 수령·반입·홀별 외부선물 허용조건을 확인하지 못함. 전 사이트에 규정이 없거나 현장에서 허용된다는 의미가 아님."
+      },
+      "legal_dong": {
+        "name": "구로동",
+        "level": "직접 확인",
+        "evidence": [
+          {
+            "sourceId": "hospital-dong-government-2026",
+            "url": "https://www.guro.go.kr/contents/2026thanks/html/sub2.html",
+            "evidence_kind": "official_body_text",
+            "exact_text": "구로구 구로동로 148, 고려대부속구로병원 (구로동)",
+            "path": "/workspace/shared/guro-evidence/raw/hospital-dong-government-2026.txt",
+            "line_numbers": [
+              36
+            ],
+            "inspection_scope": "병원 본관과 장례식장 공식 주소 구로동로148 일치"
+          }
+        ],
+        "note": "법정동 결속 자료이며 행정동/동주민센터 관할로 자동 변환하지 않음"
+      },
+      "sourceIds": [
+        "kuf-business",
+        "kuro-funeral-map",
+        "kuro-funeral-facilities",
+        "kuro-funeral-faq",
+        "hospital-dong-government-2026"
+      ],
+      "official_url": "https://funeral.or.kr/53",
+      "purchase_practical_facts": {
+        "level": "직접 확인",
+        "facts": [
+          "고려중앙학원 공식 사업 안내에서 안암·구로·안산 장례식장 직영과 funeral.or.kr 공식 연결을 확인했다.",
+          "공식 위치 페이지가 구로동로 148 및 장례식장 연락처 02-857-0444, 02-857-1444를 안내한다.",
+          "B2층 빈소는 B101·B102·B105·B106·B107호다. B101의 B를 지하 1층으로 추정하면 안 된다.",
+          "1층은 111·112·113호 및 운영사무실, 2층은 201(특실)·202·203호로 안내된다.",
+          "공식 구로 FAQ에 24시간 상담번호와 조문객 주차 안내가 있다."
+        ],
+        "sourceIds": [
+          "kuf-business",
+          "kuro-funeral-map",
+          "kuro-funeral-facilities",
+          "kuro-funeral-faq",
+          "hospital-dong-government-2026"
+        ],
+        "do_not_infer": "방문객 주차/도보 안내를 화환 납품차량·화물 동선 허가로 전용하지 않음."
+      }
+    },
+    {
+      "id": "guro-seongsim-funeral",
+      "name": "구로성심병원 장례식장",
+      "category": "funeral",
+      "municipality": "서울특별시 구로구",
+      "municipality_code": "11530",
+      "geographic_class": "within_guro",
+      "address": "서울특별시 구로구 경인로 427, 지하 2층",
+      "planning_status": "candidate",
+      "confirmed_facts": [
+        "병원 공식 홈페이지에서 경인로 427 주소를 확인했다.",
+        "공식 층별 안내 /floor에 B2F 장례식장(외부업체)이라고 명시되어 있다.",
+        "병원 대표번호 02-2067-1500은 확인했지만 장례식장 직통번호로 바꾸어 표기하면 안 된다."
+      ],
+      "sources": [
+        {
+          "id": "guroseongsim",
+          "url": "https://gurosungsim.co.kr/index",
+          "checked_at": "2026-10-12T18:32:25.924108+00:00",
+          "http_status": 200,
+          "final_url": "https://gurosungsim.co.kr/index",
+          "level": "직접 확인",
+          "inspection_scope": "공식 병원 홈페이지 하단 주소와 연락처",
+          "summary": "경인로 427 / 병원 대표번호 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/guroseongsim.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/guroseongsim.txt",
+          "sha256": "7621fe17cc2275ef0dc2b95a36127c61efb400721208e02f7a50fa1b32223901",
+          "error": null,
+          "text_line_count": 284
+        },
+        {
+          "id": "guroseongsim-floor",
+          "url": "https://gurosungsim.co.kr/floor",
+          "checked_at": "2026-10-12T18:33:27.394835+00:00",
+          "http_status": 200,
+          "final_url": "https://gurosungsim.co.kr/floor",
+          "level": "직접 확인",
+          "inspection_scope": "공식 층별 안내 본문",
+          "summary": "B2F 장례식장(외부업체) 명시",
+          "raw_path": "/workspace/shared/guro-evidence/raw/guroseongsim-floor.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/guroseongsim-floor.txt",
+          "sha256": "5689829486068ea6f4f76cabd742988494a9b37d2ef535e1cfbf69d4105685fb",
+          "error": null,
+          "text_line_count": 304
+        },
+        {
+          "id": "hospital-dong-government-2026",
+          "url": "https://www.guro.go.kr/contents/2026thanks/html/sub2.html",
+          "checked_at": "2026-10-12T18:42:01.027955+00:00",
+          "http_status": 200,
+          "final_url": "https://www.guro.go.kr/contents/2026thanks/html/sub2.html",
+          "bytes": 67182,
+          "sha256": "8c58bb12cb6c2313ee9b56ad709aae76ebdb33b47327d069388181f1a946e283",
+          "raw_path": "/workspace/shared/guro-evidence/raw/hospital-dong-government-2026.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/hospital-dong-government-2026.txt",
+          "level": "직접 확인",
+          "inspection_scope": "구로구 공식 2026 추석 의료기관 안내에서 해당 병원명·도로명주소와 괄호 법정동 일치 확인",
+          "summary": "구로병원 구로동 / 구로성심병원 고척동",
+          "text_line_count": 629
+        }
+      ],
+      "unverified": [
+        "장례식장 외부 운영업체의 현재 상호·직통번호·빈소 호수",
+        "화환 반입·설치·하역 규정"
+      ],
+      "judgment": "병원 본관 주소와 장례식장 층이 공식적으로 확인돼 근조화환 후보로 유지. 병원과 외부운영 장례식장 연락처를 혼동하지 말 것.",
+      "operational_status_scope": "현재 공개된 공식 시설/운영 안내 원문을 확인했다. 실제 방문·전화·행사 당일 운영 확인은 하지 않았다.",
+      "flower_delivery_policy": {
+        "status": "not_found_in_inspected_official_sources",
+        "allowed": null,
+        "unknowns": [
+          "외부 축하/근조화환 허용 규격·설치 위치",
+          "배송차량 하역 및 반입시간",
+          "당일 담당자·회수 동선"
+        ],
+        "publication_guardrail": "안내 미발견을 반입 허용으로 해석하지 말 것. 화환 주문·배송 가능 보장은 꽃이랑의 현장 확인 전까지 금지.",
+        "inspection_result": "열람한 공식 위치·시설·홀·FAQ 범위에서 외부 화환 수령·반입·홀별 외부선물 허용조건을 확인하지 못함. 전 사이트에 규정이 없거나 현장에서 허용된다는 의미가 아님."
+      },
+      "legal_dong": {
+        "name": "고척동",
+        "level": "직접 확인",
+        "evidence": [
+          {
+            "sourceId": "hospital-dong-government-2026",
+            "url": "https://www.guro.go.kr/contents/2026thanks/html/sub2.html",
+            "evidence_kind": "official_body_text",
+            "exact_text": "구로구 경인로 427, 구로성심병원 (고척동)",
+            "path": "/workspace/shared/guro-evidence/raw/hospital-dong-government-2026.txt",
+            "line_numbers": [
+              46
+            ],
+            "inspection_scope": "병원명·도로명주소 일치; 병원 자체 홈페이지 JSON-LD도 같은 법정동"
+          }
+        ],
+        "note": "법정동 결속 자료이며 행정동/동주민센터 관할로 자동 변환하지 않음"
+      },
+      "sourceIds": [
+        "guroseongsim",
+        "guroseongsim-floor",
+        "hospital-dong-government-2026"
+      ],
+      "official_url": "https://gurosungsim.co.kr/floor",
+      "purchase_practical_facts": {
+        "level": "직접 확인",
+        "facts": [
+          "병원 공식 홈페이지에서 경인로 427 주소를 확인했다.",
+          "공식 층별 안내 /floor에 B2F 장례식장(외부업체)이라고 명시되어 있다.",
+          "병원 대표번호 02-2067-1500은 확인했지만 장례식장 직통번호로 바꾸어 표기하면 안 된다."
+        ],
+        "sourceIds": [
+          "guroseongsim",
+          "guroseongsim-floor",
+          "hospital-dong-government-2026"
+        ],
+        "do_not_infer": "방문객 주차/도보 안내를 화환 납품차량·화물 동선 허가로 전용하지 않음."
+      }
+    },
+    {
+      "id": "weddingcity-sindorim",
+      "name": "웨딩시티 신도림",
+      "category": "wedding",
+      "municipality": "서울특별시 구로구",
+      "municipality_code": "11530",
+      "geographic_class": "within_guro",
+      "address": "서울특별시 구로구 새말로 97, 신도림테크노마트",
+      "planning_status": "candidate",
+      "confirmed_facts": [
+        "공식 하단 주소의 8층은 안내 주소이며 실제 예식홀 층은 홀별로 다르다.",
+        "그랜드볼룸은 11F, 스타티스와 아모르는 8F로 각각 공식 홀 페이지에 명시된다.",
+        "공식 전화는 02-2111-8000이다."
+      ],
+      "sources": [
+        {
+          "id": "weddingcity-location",
+          "url": "https://www.tmwedding.co.kr/location",
+          "checked_at": "2026-10-12T18:33:27.391316+00:00",
+          "http_status": 200,
+          "final_url": "https://www.tmwedding.co.kr/location",
+          "level": "직접 확인",
+          "inspection_scope": "오시는 길과 공식 하단 주소",
+          "summary": "새말로 97 신도림테크노마트 8층 안내",
+          "raw_path": "/workspace/shared/guro-evidence/raw/weddingcity-location.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/weddingcity-location.txt",
+          "sha256": "181180512b87c52f96a2b36ac1af59079be9ab03746630d2b21ba215f4c19152",
+          "error": null,
+          "text_line_count": 151
+        },
+        {
+          "id": "weddingcity-grand",
+          "url": "https://www.tmwedding.co.kr/11fhall",
+          "checked_at": "2026-10-12T18:33:27.392030+00:00",
+          "http_status": 200,
+          "final_url": "https://www.tmwedding.co.kr/11fhall",
+          "level": "직접 확인",
+          "inspection_scope": "그랜드볼룸 홀 본문",
+          "summary": "그랜드볼룸 11F",
+          "raw_path": "/workspace/shared/guro-evidence/raw/weddingcity-grand.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/weddingcity-grand.txt",
+          "sha256": "59d454b72949219f2195688c359a6c7de56d986909fda720f386bd34c44bdd53",
+          "error": null,
+          "text_line_count": 106
+        },
+        {
+          "id": "weddingcity-statis",
+          "url": "https://www.tmwedding.co.kr/8fhall1",
+          "checked_at": "2026-10-12T18:33:27.393317+00:00",
+          "http_status": 200,
+          "final_url": "https://www.tmwedding.co.kr/8fhall1",
+          "level": "직접 확인",
+          "inspection_scope": "스타티스 홀 본문",
+          "summary": "스타티스 8F",
+          "raw_path": "/workspace/shared/guro-evidence/raw/weddingcity-statis.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/weddingcity-statis.txt",
+          "sha256": "4972806c6f78633fd2f3065b586317f0177cc4dda8f058992f73ee2baf3c9ea2",
+          "error": null,
+          "text_line_count": 106
+        },
+        {
+          "id": "weddingcity-amor",
+          "url": "https://www.tmwedding.co.kr/8fhall2",
+          "checked_at": "2026-10-12T18:33:27.394178+00:00",
+          "http_status": 200,
+          "final_url": "https://www.tmwedding.co.kr/8fhall2",
+          "level": "직접 확인",
+          "inspection_scope": "아모르 홀 본문",
+          "summary": "아모르홀 8F",
+          "raw_path": "/workspace/shared/guro-evidence/raw/weddingcity-amor.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/weddingcity-amor.txt",
+          "sha256": "68e0a285ab4ae49c141437f6360e8a2f9a470a2b1a89446f195b9ba6526a6721",
+          "error": null,
+          "text_line_count": 105
+        }
+      ],
+      "unverified": [
+        "각 홀의 화환 설치장소·수량제한·전용반입 동선",
+        "행사 일시별 수령 담당자"
+      ],
+      "judgment": "축하화환 후보로 유지. 주문에 홀명과 층을 함께 받는 실제 구매결정이 있다. 경인로638의 꽃집 주소를 시설 주소로 적은 제3자 페이지는 배제.",
+      "operational_status_scope": "현재 공개된 공식 시설/운영 안내 원문을 확인했다. 실제 방문·전화·행사 당일 운영 확인은 하지 않았다.",
+      "flower_delivery_policy": {
+        "status": "not_found_in_inspected_official_sources",
+        "allowed": null,
+        "unknowns": [
+          "외부 축하/근조화환 허용 규격·설치 위치",
+          "배송차량 하역 및 반입시간",
+          "당일 담당자·회수 동선"
+        ],
+        "publication_guardrail": "안내 미발견을 반입 허용으로 해석하지 말 것. 화환 주문·배송 가능 보장은 꽃이랑의 현장 확인 전까지 금지.",
+        "inspection_result": "열람한 공식 위치·시설·홀·FAQ 범위에서 외부 화환 수령·반입·홀별 외부선물 허용조건을 확인하지 못함. 전 사이트에 규정이 없거나 현장에서 허용된다는 의미가 아님.",
+        "search_evidence_path": "/workspace/shared/guro-evidence/raw/flower-policy-search.json",
+        "planning_constraint": "주소·홀·문의처 차이 외에 고유한 외부화환 수령조건은 미확인. 본문분량을 위해 관광성 설명·감성 묘사·허위 납품동선 추가 금지."
+      },
+      "legal_dong": {
+        "name": "구로동",
+        "level": "직접 확인",
+        "evidence": [
+          {
+            "sourceId": "weddingcity-location",
+            "url": "https://www.tmwedding.co.kr/location",
+            "evidence_kind": "official_HTML_JSON_LD",
+            "exact_text": "서울 구로구 새말로 97 (구로동, 신도림테크노마트)",
+            "path": "/workspace/shared/guro-evidence/raw/weddingcity-location.html",
+            "line_numbers": [
+              4492
+            ],
+            "inspection_scope": "공식 위치 페이지 HTML JSON-LD streetAddress 직접 열람. 신도림이라는 상호를 법정동으로 사용하지 않음"
+          }
+        ],
+        "note": "법정동 결속 자료이며 행정동/동주민센터 관할로 자동 변환하지 않음"
+      },
+      "sourceIds": [
+        "weddingcity-location",
+        "weddingcity-grand",
+        "weddingcity-statis",
+        "weddingcity-amor"
+      ],
+      "official_url": "https://www.tmwedding.co.kr/location",
+      "purchase_practical_facts": {
+        "level": "직접 확인",
+        "facts": [
+          "공식 하단 주소의 8층은 안내 주소이며 실제 예식홀 층은 홀별로 다르다.",
+          "그랜드볼룸은 11F, 스타티스와 아모르는 8F로 각각 공식 홀 페이지에 명시된다.",
+          "공식 전화는 02-2111-8000이다."
+        ],
+        "sourceIds": [
+          "weddingcity-location",
+          "weddingcity-grand",
+          "weddingcity-statis",
+          "weddingcity-amor"
+        ],
+        "do_not_infer": "방문객 주차/도보 안내를 화환 납품차량·화물 동선 허가로 전용하지 않음."
+      }
+    },
+    {
+      "id": "ramada-seoul-sindorim",
+      "name": "라마다 서울 신도림 호텔 웨딩",
+      "category": "wedding",
+      "municipality": "서울특별시 구로구",
+      "municipality_code": "11530",
+      "geographic_class": "within_guro",
+      "address": "서울특별시 구로구 경인로 624",
+      "planning_status": "candidate",
+      "confirmed_facts": [
+        "공식 호텔 HTTP 홈페이지의 현행 본문에 경인로 624 및 2026 패키지 안내가 있다.",
+        "웨딩 문의는 02-2162-2100이며 객실·세미나·연회 문의 02-2162-2000과 구분된다.",
+        "공식 웨딩 및 연회 원문에서 그랜드볼룸·세인트그레이스·하늘정원을 확인했다."
+      ],
+      "sources": [
+        {
+          "id": "ramada-http",
+          "url": "http://www.ramadasindorim.com/main",
+          "checked_at": "2026-10-12T18:35:14.537943+00:00",
+          "http_status": 200,
+          "final_url": "http://www.ramadasindorim.com/main",
+          "level": "직접 확인",
+          "inspection_scope": "공식 호텔 홈페이지 본문·2026 상품 표시·주소·웨딩 문의",
+          "summary": "경인로624, 웨딩문의02-2162-2100",
+          "raw_path": "/workspace/shared/guro-evidence/raw/ramada-http.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/ramada-http.txt",
+          "sha256": "45fcf44a3d3328d73997978deb79d61ab12801668997203a93327292d76015df",
+          "error": null,
+          "text_line_count": 130
+        },
+        {
+          "id": "ramada-grand-http",
+          "url": "http://www.ramadasindorim.com/page/business01",
+          "checked_at": "2026-10-12T18:36:10.301654+00:00",
+          "http_status": 200,
+          "final_url": "http://www.ramadasindorim.com/page/business01",
+          "level": "직접 확인",
+          "inspection_scope": "공식 그랜드볼룸 연회 안내",
+          "summary": "그랜드볼룸 행사 시설 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/ramada-grand-http.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/ramada-grand-http.txt",
+          "sha256": "a4e1da88047a4aaadc5d90f88d02829da4b419067c5b8f1d7e791ac7ac6b8493",
+          "error": null,
+          "text_line_count": 118
+        },
+        {
+          "id": "ramada-grace-http",
+          "url": "http://www.ramadasindorim.com/page/business02",
+          "checked_at": "2026-10-12T18:36:10.302612+00:00",
+          "http_status": 200,
+          "final_url": "http://www.ramadasindorim.com/page/business02",
+          "level": "직접 확인",
+          "inspection_scope": "공식 세인트그레이스 연회 안내",
+          "summary": "세인트그레이스 행사 시설 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/ramada-grace-http.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/ramada-grace-http.txt",
+          "sha256": "a624668679611677299928b4c94d53a4db325518692b56728a273f179276308c",
+          "error": null,
+          "text_line_count": 118
+        },
+        {
+          "id": "ramada-sky-http",
+          "url": "http://www.ramadasindorim.com/page/business03",
+          "checked_at": "2026-10-12T18:36:10.304047+00:00",
+          "http_status": 200,
+          "final_url": "http://www.ramadasindorim.com/page/business03",
+          "level": "직접 확인",
+          "inspection_scope": "공식 하늘정원 연회 안내",
+          "summary": "하늘정원 행사 시설 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/ramada-sky-http.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/ramada-sky-http.txt",
+          "sha256": "c2c916302ea19e8c49934f68fe8475f9762494bf648018470e0b3682259c86c4",
+          "error": null,
+          "text_line_count": 118
+        }
+      ],
+      "unverified": [
+        "본문에서 각 홀의 층 번호를 확정하지 못함. 이미지 파일명의 2f·5f·14f를 층 증거로 채택하지 않음.",
+        "외부화환 반입·설치 규정",
+        "HTTPS 원문 도구 접근에서 502 발생. 공개 HTTP 원문으로 사실을 확인함."
+      ],
+      "judgment": "축하화환 후보로 유지. 호텔 객실·연회·웨딩 연락처를 구분하고 홀명은 확인된 3개만 사용.",
+      "operational_status_scope": "현재 공개된 공식 시설/운영 안내 원문을 확인했다. 실제 방문·전화·행사 당일 운영 확인은 하지 않았다.",
+      "flower_delivery_policy": {
+        "status": "not_found_in_inspected_official_sources",
+        "allowed": null,
+        "unknowns": [
+          "외부 축하/근조화환 허용 규격·설치 위치",
+          "배송차량 하역 및 반입시간",
+          "당일 담당자·회수 동선"
+        ],
+        "publication_guardrail": "안내 미발견을 반입 허용으로 해석하지 말 것. 화환 주문·배송 가능 보장은 꽃이랑의 현장 확인 전까지 금지.",
+        "inspection_result": "열람한 공식 위치·시설·홀·FAQ 범위에서 외부 화환 수령·반입·홀별 외부선물 허용조건을 확인하지 못함. 전 사이트에 규정이 없거나 현장에서 허용된다는 의미가 아님.",
+        "search_evidence_path": "/workspace/shared/guro-evidence/raw/flower-policy-search.json",
+        "planning_constraint": "주소·홀·문의처 차이 외에 고유한 외부화환 수령조건은 미확인. 본문분량을 위해 관광성 설명·감성 묘사·허위 납품동선 추가 금지."
+      },
+      "legal_dong": {
+        "name": "신도림동",
+        "level": "직접 확인",
+        "evidence": [
+          {
+            "sourceId": "ramada-http",
+            "url": "http://www.ramadasindorim.com/main",
+            "evidence_kind": "official_body_text",
+            "exact_text": "서울특별시 구로구 신도림동 427-3",
+            "path": "/workspace/shared/guro-evidence/raw/ramada-http.txt",
+            "line_numbers": [
+              97
+            ],
+            "inspection_scope": "공식 호텔 본문 하단 지번주소"
+          }
+        ],
+        "note": "법정동 결속 자료이며 행정동/동주민센터 관할로 자동 변환하지 않음"
+      },
+      "sourceIds": [
+        "ramada-http",
+        "ramada-grand-http",
+        "ramada-grace-http",
+        "ramada-sky-http"
+      ],
+      "official_url": "http://www.ramadasindorim.com/main",
+      "purchase_practical_facts": {
+        "level": "직접 확인",
+        "facts": [
+          "공식 호텔 HTTP 홈페이지의 현행 본문에 경인로 624 및 2026 패키지 안내가 있다.",
+          "웨딩 문의는 02-2162-2100이며 객실·세미나·연회 문의 02-2162-2000과 구분된다.",
+          "공식 웨딩 및 연회 원문에서 그랜드볼룸·세인트그레이스·하늘정원을 확인했다."
+        ],
+        "sourceIds": [
+          "ramada-http",
+          "ramada-grand-http",
+          "ramada-grace-http",
+          "ramada-sky-http"
+        ],
+        "do_not_infer": "방문객 주차/도보 안내를 화환 납품차량·화물 동선 허가로 전용하지 않음."
+      }
+    },
+    {
+      "id": "the-link-seoul-wedding",
+      "name": "더 링크 서울 호텔 웨딩",
+      "category": "wedding",
+      "municipality": "서울특별시 구로구",
+      "municipality_code": "11530",
+      "geographic_class": "within_guro",
+      "address": "서울특별시 구로구 경인로 610 (신도림동 413-9)",
+      "planning_status": "candidate",
+      "confirmed_facts": [
+        "공식 입구 thelinkseoul.com은 Marriott 객실 페이지와 thelinkseoul.com/index.php 웨딩 페이지로 분기한다.",
+        "공식 웨딩 홈페이지에 링크홀·베일리홀·플라자홀·가든홀·화이트홀을 각각 소개한다.",
+        "웨딩 문의 02-852-5000, 객실 문의 02-852-7000, 기업·가족연·돌잔치 문의 02-311-4454~5가 구분되어 있다.",
+        "Marriott Events FAQ에는 wedding service가 없다고 쓰여 있으나 별도 공식 웨딩 홈페이지에는 5개 홀이 존재한다. 이를 폐업 근거로 해석하지 않는다."
+      ],
+      "sources": [
+        {
+          "id": "link-home",
+          "url": "https://thelinkseoul.com/",
+          "checked_at": "2026-10-12T18:34:26.136979+00:00",
+          "http_status": 200,
+          "final_url": "https://thelinkseoul.com/",
+          "level": "직접 확인",
+          "inspection_scope": "공식 진입 HTML의 호텔/웨딩 링크",
+          "summary": "호텔 예약과 웨딩 페이지가 분리되어 있음을 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/link-home.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/link-home.txt",
+          "sha256": "62cae0c32874f34f20aedec32f2fca0687c3912cf19b582bc20129e36925dc28",
+          "error": null,
+          "text_line_count": 1
+        },
+        {
+          "id": "link-wedding",
+          "url": "https://www.thelinkseoul.com/index.php",
+          "checked_at": "2026-10-12T18:35:14.533604+00:00",
+          "http_status": 200,
+          "final_url": "https://www.thelinkseoul.com/index.php",
+          "level": "직접 확인",
+          "inspection_scope": "공식 웨딩 주소·홀 목록·목적별 전화",
+          "summary": "경인로610, 5개 웨딩홀과 웨딩 문의",
+          "raw_path": "/workspace/shared/guro-evidence/raw/link-wedding.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/link-wedding.txt",
+          "sha256": "bf9834161c2d42e08f9032260d64a014fec73e0eabbd7cec06cca4ece0defa10",
+          "error": null,
+          "text_line_count": 179
+        },
+        {
+          "id": "link-2",
+          "url": "https://www.thelinkseoul.com/bbs/page.php?hid=m02_02",
+          "checked_at": "2026-10-12T18:36:10.298556+00:00",
+          "http_status": 200,
+          "final_url": "https://www.thelinkseoul.com/bbs/page.php?hid=m02_02",
+          "level": "직접 확인",
+          "inspection_scope": "개별 공식 웨딩홀 본문",
+          "summary": "링크홀 존재 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/link-2.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/link-2.txt",
+          "sha256": "f232385051094a324da113da44184164e894aa6fe79c48ca635d6c3d31998d99",
+          "error": null,
+          "text_line_count": 127
+        },
+        {
+          "id": "link-3",
+          "url": "https://www.thelinkseoul.com/bbs/page.php?hid=m02_03",
+          "checked_at": "2026-10-12T18:36:10.299427+00:00",
+          "http_status": 200,
+          "final_url": "https://www.thelinkseoul.com/bbs/page.php?hid=m02_03",
+          "level": "직접 확인",
+          "inspection_scope": "개별 공식 웨딩홀 본문",
+          "summary": "베일리홀 존재 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/link-3.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/link-3.txt",
+          "sha256": "27648ad18f06ba83e15d3e81f57ce59dcc59695352710a21482e6b50c8aec0ea",
+          "error": null,
+          "text_line_count": 126
+        },
+        {
+          "id": "link-4",
+          "url": "https://www.thelinkseoul.com/bbs/page.php?hid=m02_04",
+          "checked_at": "2026-10-12T18:36:10.300013+00:00",
+          "http_status": 200,
+          "final_url": "https://www.thelinkseoul.com/bbs/page.php?hid=m02_04",
+          "level": "직접 확인",
+          "inspection_scope": "개별 공식 웨딩홀 본문",
+          "summary": "플라자홀 존재 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/link-4.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/link-4.txt",
+          "sha256": "57636aa3771922ffe3632eb8afb2e70dfe2ba3c62b5545acc4c26c8e9f9c826e",
+          "error": null,
+          "text_line_count": 125
+        },
+        {
+          "id": "link-5",
+          "url": "https://www.thelinkseoul.com/bbs/page.php?hid=m02_05",
+          "checked_at": "2026-10-12T18:36:10.300471+00:00",
+          "http_status": 200,
+          "final_url": "https://www.thelinkseoul.com/bbs/page.php?hid=m02_05",
+          "level": "직접 확인",
+          "inspection_scope": "개별 공식 웨딩홀 본문",
+          "summary": "가든홀 존재 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/link-5.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/link-5.txt",
+          "sha256": "2bab6f4d730ff47316d16640ce9743c2bcac5557382604d5ee97420dbef46693",
+          "error": null,
+          "text_line_count": 127
+        },
+        {
+          "id": "link-6",
+          "url": "https://www.thelinkseoul.com/bbs/page.php?hid=m02_06",
+          "checked_at": "2026-10-12T18:36:10.301026+00:00",
+          "http_status": 200,
+          "final_url": "https://www.thelinkseoul.com/bbs/page.php?hid=m02_06",
+          "level": "직접 확인",
+          "inspection_scope": "개별 공식 웨딩홀 본문",
+          "summary": "화이트홀 존재 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/link-6.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/link-6.txt",
+          "sha256": "620df6c22f06502e0d0eb5f93f2a416b8cee99f8e463c459a26100bdd198c9ee",
+          "error": null,
+          "text_line_count": 127
+        },
+        {
+          "id": "link-events",
+          "url": "https://www.marriott.com/en-gb/hotels/seltx-the-link-seoul-a-tribute-portfolio-hotel/events/",
+          "checked_at": "2026-10-12T18:33:34.096661+00:00",
+          "http_status": 200,
+          "final_url": "https://www.marriott.com/en-gb/hotels/seltx-the-link-seoul-a-tribute-portfolio-hotel/events/",
+          "level": "직접 확인",
+          "inspection_scope": "Marriott FAQ와 사업장 하단 주소",
+          "summary": "Marriott Events의 웨딩서비스 안내와 별도 웨딩홈페이지 내용 차이 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/link-events.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/link-events.txt",
+          "sha256": "5ff69cb7da842dcf54d1492c25c006244594fc7f5ddaacb57413e98ac40a53b3",
+          "error": null,
+          "text_line_count": 843
+        }
+      ],
+      "unverified": [
+        "검사한 공식 홀 텍스트에서 각 홀의 층 번호를 확인하지 못함. 제3자 2·3·4·5·7층 안내를 확정값에 넣지 않음.",
+        "외부 축하화환 반입·설치·회수 규정"
+      ],
+      "judgment": "5개 홀을 5개 지역 페이지로 불필요하게 분리하지 말고 하나의 시설 구매결정으로 유지. 실무 주문에서는 정확한 홀·층을 추가 확인.",
+      "operational_status_scope": "현재 공개된 공식 시설/운영 안내 원문을 확인했다. 실제 방문·전화·행사 당일 운영 확인은 하지 않았다.",
+      "flower_delivery_policy": {
+        "status": "not_found_in_inspected_official_sources",
+        "allowed": null,
+        "unknowns": [
+          "외부 축하/근조화환 허용 규격·설치 위치",
+          "배송차량 하역 및 반입시간",
+          "당일 담당자·회수 동선"
+        ],
+        "publication_guardrail": "안내 미발견을 반입 허용으로 해석하지 말 것. 화환 주문·배송 가능 보장은 꽃이랑의 현장 확인 전까지 금지.",
+        "inspection_result": "열람한 공식 위치·시설·홀·FAQ 범위에서 외부 화환 수령·반입·홀별 외부선물 허용조건을 확인하지 못함. 전 사이트에 규정이 없거나 현장에서 허용된다는 의미가 아님.",
+        "search_evidence_path": "/workspace/shared/guro-evidence/raw/flower-policy-search.json",
+        "planning_constraint": "주소·홀·문의처 차이 외에 고유한 외부화환 수령조건은 미확인. 본문분량을 위해 관광성 설명·감성 묘사·허위 납품동선 추가 금지."
+      },
+      "legal_dong": {
+        "name": "신도림동",
+        "level": "직접 확인",
+        "evidence": [
+          {
+            "sourceId": "link-wedding",
+            "url": "https://www.thelinkseoul.com/index.php",
+            "evidence_kind": "official_body_text",
+            "exact_text": "신도림동 413-9",
+            "path": "/workspace/shared/guro-evidence/raw/link-wedding.txt",
+            "line_numbers": [
+              124
+            ],
+            "inspection_scope": "공식 웨딩 사이트 하단 도로명주소와 지번주소"
+          }
+        ],
+        "note": "법정동 결속 자료이며 행정동/동주민센터 관할로 자동 변환하지 않음"
+      },
+      "sourceIds": [
+        "link-home",
+        "link-wedding",
+        "link-2",
+        "link-3",
+        "link-4",
+        "link-5",
+        "link-6",
+        "link-events"
+      ],
+      "official_url": "https://www.thelinkseoul.com/index.php",
+      "purchase_practical_facts": {
+        "level": "직접 확인",
+        "facts": [
+          "공식 입구 thelinkseoul.com은 Marriott 객실 페이지와 thelinkseoul.com/index.php 웨딩 페이지로 분기한다.",
+          "공식 웨딩 홈페이지에 링크홀·베일리홀·플라자홀·가든홀·화이트홀을 각각 소개한다.",
+          "웨딩 문의 02-852-5000, 객실 문의 02-852-7000, 기업·가족연·돌잔치 문의 02-311-4454~5가 구분되어 있다.",
+          "Marriott Events FAQ에는 wedding service가 없다고 쓰여 있으나 별도 공식 웨딩 홈페이지에는 5개 홀이 존재한다. 이를 폐업 근거로 해석하지 않는다."
+        ],
+        "sourceIds": [
+          "link-home",
+          "link-wedding",
+          "link-2",
+          "link-3",
+          "link-4",
+          "link-5",
+          "link-6",
+          "link-events"
+        ],
+        "do_not_infer": "방문객 주차/도보 안내를 화환 납품차량·화물 동선 허가로 전용하지 않음."
+      }
+    },
+    {
+      "id": "j-ostiel",
+      "name": "제이오스티엘",
+      "category": "wedding",
+      "municipality": "서울특별시 구로구",
+      "municipality_code": "11530",
+      "geographic_class": "within_guro",
+      "address": "서울특별시 구로구 경인로 565, 삼영빌딩 2층",
+      "planning_status": "candidate",
+      "confirmed_facts": [
+        "공식 모바일 HTTP 원문 하단은 경인로565 삼영빌딩2층을 안내한다.",
+        "공식 오시는 길의 지번 주소는 구로동604-19이며 연락처는 02-2635-2222다.",
+        "공식 티파니홀 소개를 실제 열람했다.",
+        "공식 FAQ 본문에 게시글이 없다고 표시되어 화환규정 답변은 얻지 못했다."
+      ],
+      "sources": [
+        {
+          "id": "jostiel-mobile-http",
+          "url": "http://m.j-ostiel.co.kr/home/index",
+          "checked_at": "2026-10-12T18:34:26.139165+00:00",
+          "http_status": 200,
+          "final_url": "http://m.j-ostiel.co.kr/home/index",
+          "level": "직접 확인",
+          "inspection_scope": "공식 모바일 홈페이지 주소 및 메뉴",
+          "summary": "삼영빌딩2층, 티파니홀 안내 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/jostiel-mobile-http.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/jostiel-mobile-http.txt",
+          "sha256": "3d60a5b5ae03be49c1cb9e2f23b07bc801f93d97899ecf9998d121f4b7e094f9",
+          "error": null,
+          "text_line_count": 87
+        },
+        {
+          "id": "jostiel-map",
+          "url": "http://m.j-ostiel.co.kr/home/info/230",
+          "checked_at": "2026-10-12T18:35:14.534680+00:00",
+          "http_status": 200,
+          "final_url": "http://m.j-ostiel.co.kr/home/info/230",
+          "level": "직접 확인",
+          "inspection_scope": "공식 오시는 길 본문",
+          "summary": "구로동604-19, 구로역2·3번출구 안내",
+          "raw_path": "/workspace/shared/guro-evidence/raw/jostiel-map.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/jostiel-map.txt",
+          "sha256": "a4946a728c57f487e27996f0898c10f6901e9028cce606a9acfde3b8492067c3",
+          "error": null,
+          "text_line_count": 120
+        },
+        {
+          "id": "jostiel-tiffany",
+          "url": "http://m.j-ostiel.co.kr/home/info/2087",
+          "checked_at": "2026-10-12T18:35:14.535276+00:00",
+          "http_status": 200,
+          "final_url": "http://m.j-ostiel.co.kr/home/info/2087",
+          "level": "직접 확인",
+          "inspection_scope": "공식 티파니홀 소개",
+          "summary": "티파니홀 존재 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/jostiel-tiffany.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/jostiel-tiffany.txt",
+          "sha256": "fcbf336375db5b0be9f7692316e3ba6af5ee3d54feeea9ead323935d9e1ec600",
+          "error": null,
+          "text_line_count": 108
+        },
+        {
+          "id": "jostiel-faq",
+          "url": "http://m.j-ostiel.co.kr/home/sub/bbs_faq",
+          "checked_at": "2026-10-12T18:35:14.534262+00:00",
+          "http_status": 200,
+          "final_url": "http://m.j-ostiel.co.kr/home/sub/bbs_faq",
+          "level": "직접 확인",
+          "inspection_scope": "FAQ 목록",
+          "summary": "현재 파싱 본문에는 게시글이 없다고 표시",
+          "raw_path": "/workspace/shared/guro-evidence/raw/jostiel-faq.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/jostiel-faq.txt",
+          "sha256": "45fc9506ff76eb792c1d092503da179e4d13ce46175129bf511d48e1b279adaa",
+          "error": null,
+          "text_line_count": 96
+        }
+      ],
+      "unverified": [
+        "현장 외부화환 반입규격·설치위치",
+        "HTTPS 접근502, 공개 HTTP 원문200으로 확인",
+        "특정 날짜 예식 운영 여부"
+      ],
+      "judgment": "축하화환 후보로 유지. 공식 주소·건물·층·홀명까지 확인되어 구매 입력에 활용 가능.",
+      "operational_status_scope": "현재 공개된 공식 시설/운영 안내 원문을 확인했다. 실제 방문·전화·행사 당일 운영 확인은 하지 않았다.",
+      "flower_delivery_policy": {
+        "status": "not_found_in_inspected_official_sources",
+        "allowed": null,
+        "unknowns": [
+          "외부 축하/근조화환 허용 규격·설치 위치",
+          "배송차량 하역 및 반입시간",
+          "당일 담당자·회수 동선"
+        ],
+        "publication_guardrail": "안내 미발견을 반입 허용으로 해석하지 말 것. 화환 주문·배송 가능 보장은 꽃이랑의 현장 확인 전까지 금지.",
+        "inspection_result": "열람한 공식 위치·시설·홀·FAQ 범위에서 외부 화환 수령·반입·홀별 외부선물 허용조건을 확인하지 못함. 전 사이트에 규정이 없거나 현장에서 허용된다는 의미가 아님.",
+        "search_evidence_path": "/workspace/shared/guro-evidence/raw/flower-policy-search.json",
+        "planning_constraint": "주소·홀·문의처 차이 외에 고유한 외부화환 수령조건은 미확인. 본문분량을 위해 관광성 설명·감성 묘사·허위 납품동선 추가 금지."
+      },
+      "legal_dong": {
+        "name": "구로동",
+        "level": "직접 확인",
+        "evidence": [
+          {
+            "sourceId": "jostiel-map",
+            "url": "http://m.j-ostiel.co.kr/home/info/230",
+            "evidence_kind": "official_body_text",
+            "exact_text": "서울특별시 구로구 구로동 604-19",
+            "path": "/workspace/shared/guro-evidence/raw/jostiel-map.txt",
+            "line_numbers": [
+              57
+            ],
+            "inspection_scope": "공식 오시는 길 본문 Address"
+          }
+        ],
+        "note": "법정동 결속 자료이며 행정동/동주민센터 관할로 자동 변환하지 않음"
+      },
+      "sourceIds": [
+        "jostiel-mobile-http",
+        "jostiel-map",
+        "jostiel-tiffany",
+        "jostiel-faq"
+      ],
+      "official_url": "http://m.j-ostiel.co.kr/home/info/230",
+      "purchase_practical_facts": {
+        "level": "직접 확인",
+        "facts": [
+          "공식 모바일 HTTP 원문 하단은 경인로565 삼영빌딩2층을 안내한다.",
+          "공식 오시는 길의 지번 주소는 구로동604-19이며 연락처는 02-2635-2222다.",
+          "공식 티파니홀 소개를 실제 열람했다.",
+          "공식 FAQ 본문에 게시글이 없다고 표시되어 화환규정 답변은 얻지 못했다."
+        ],
+        "sourceIds": [
+          "jostiel-mobile-http",
+          "jostiel-map",
+          "jostiel-tiffany",
+          "jostiel-faq"
+        ],
+        "do_not_infer": "방문객 주차/도보 안내를 화환 납품차량·화물 동선 허가로 전용하지 않음."
+      }
+    },
+    {
+      "id": "g-tower-convention",
+      "name": "지타워컨벤션",
+      "category": "wedding",
+      "municipality": "서울특별시 구로구",
+      "municipality_code": "11530",
+      "geographic_class": "within_guro",
+      "address": "서울특별시 구로구 디지털로26길 38, G-TOWER 2층",
+      "planning_status": "candidate",
+      "confirmed_facts": [
+        "공식 예약/위치 안내에 2층 그랜드볼룸과 전화02-432-9000이 명시된다.",
+        "차량은 디지털로26길에서 Gate1 또는 Gate2로 진입하도록 안내한다.",
+        "버스 이용 동선은 건물 뒤편3층 도착 후 에스컬레이터로2층 이동이라고 별도 안내한다. 이는 화물반입 동선 보장이 아니다."
+      ],
+      "sources": [
+        {
+          "id": "gtower-reservation",
+          "url": "https://www.g-towerconvention.kr/reservation",
+          "checked_at": "2026-10-12T18:33:30.654139+00:00",
+          "http_status": 200,
+          "final_url": "https://www.g-towerconvention.kr/reservation",
+          "level": "직접 확인",
+          "inspection_scope": "공식 예약/오시는 길 주소·층·홀·차량입구",
+          "summary": "G-TOWER2층 그랜드볼룸 / 차량Gate1·2",
+          "raw_path": "/workspace/shared/guro-evidence/raw/gtower-reservation.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/gtower-reservation.txt",
+          "sha256": "ee8ca405f9e45d0e32aeafe697f3201abfb4e271d0c4034c827d8f0a3d50645e",
+          "error": null,
+          "text_line_count": 256
+        },
+        {
+          "id": "gtower-dong-government",
+          "url": "https://www.guro.go.kr/www/contents.do?key=2852",
+          "checked_at": "2026-10-12T18:44:46.657364+00:00",
+          "http_status": 200,
+          "final_url": "https://www.guro.go.kr/www/contents.do?key=2852",
+          "bytes": 525447,
+          "sha256": "f704807dd6271e02b486ff7a5fa9dc82f7cd346fa7c9bc810ae322d9f67f5030",
+          "raw_path": "/workspace/shared/guro-evidence/raw/gtower-dong-government.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/gtower-dong-government.txt",
+          "level": "직접 확인",
+          "inspection_scope": "구로구 공식 기업지원시설표의 동일 도로명주소 지타워 법정동. 다른 입주기관의 층수는 컨벤션 층 근거로 사용하지 않음",
+          "summary": "디지털로26길38 지타워가 구로동임을 확인. 컨벤션 2층은 별도 gtower-reservation 원문에 따름",
+          "text_line_count": 2263
+        }
+      ],
+      "unverified": [
+        "화환 배송차의 Gate1·2 이용 가능 여부 및 하역공간",
+        "에스컬레이터의 화환 운반 가능 여부",
+        "외부화환 규격·수량·설치 제한"
+      ],
+      "judgment": "구로구에 실제 위치한 축하화환 후보. 가산디지털단지역 셔틀을 운영해도 금천구 시설로 분류하지 말 것.",
+      "operational_status_scope": "현재 공개된 공식 시설/운영 안내 원문을 확인했다. 실제 방문·전화·행사 당일 운영 확인은 하지 않았다.",
+      "flower_delivery_policy": {
+        "status": "not_found_in_inspected_official_sources",
+        "allowed": null,
+        "unknowns": [
+          "외부 축하/근조화환 허용 규격·설치 위치",
+          "배송차량 하역 및 반입시간",
+          "당일 담당자·회수 동선"
+        ],
+        "publication_guardrail": "안내 미발견을 반입 허용으로 해석하지 말 것. 화환 주문·배송 가능 보장은 꽃이랑의 현장 확인 전까지 금지.",
+        "inspection_result": "열람한 공식 위치·시설·홀·FAQ 범위에서 외부 화환 수령·반입·홀별 외부선물 허용조건을 확인하지 못함. 전 사이트에 규정이 없거나 현장에서 허용된다는 의미가 아님.",
+        "search_evidence_path": "/workspace/shared/guro-evidence/raw/flower-policy-search.json",
+        "planning_constraint": "주소·홀·문의처 차이 외에 고유한 외부화환 수령조건은 미확인. 본문분량을 위해 관광성 설명·감성 묘사·허위 납품동선 추가 금지."
+      },
+      "legal_dong": {
+        "name": "구로동",
+        "level": "직접 확인",
+        "evidence": [
+          {
+            "sourceId": "gtower-dong-government",
+            "url": "https://www.guro.go.kr/www/contents.do?key=2852",
+            "evidence_kind": "official_body_text",
+            "exact_text": "서울특별시 구로구 디지털로 26길 38{구로동) 지타워 5~6층",
+            "path": "/workspace/shared/guro-evidence/raw/gtower-dong-government.txt",
+            "line_numbers": [
+              2027
+            ],
+            "inspection_scope": "구청 동일 건물 주소표. 원문 괄호 오타 { 를 인용 그대로 보존; 다른 입주기관 5~6층은 법정동 결속용으로만 사용"
+          }
+        ],
+        "note": "법정동 결속 자료이며 행정동/동주민센터 관할로 자동 변환하지 않음"
+      },
+      "sourceIds": [
+        "gtower-reservation",
+        "gtower-dong-government"
+      ],
+      "official_url": "https://www.g-towerconvention.kr/reservation",
+      "purchase_practical_facts": {
+        "level": "직접 확인",
+        "facts": [
+          "공식 예약/위치 안내에 2층 그랜드볼룸과 전화02-432-9000이 명시된다.",
+          "차량은 디지털로26길에서 Gate1 또는 Gate2로 진입하도록 안내한다.",
+          "버스 이용 동선은 건물 뒤편3층 도착 후 에스컬레이터로2층 이동이라고 별도 안내한다. 이는 화물반입 동선 보장이 아니다."
+        ],
+        "sourceIds": [
+          "gtower-reservation",
+          "gtower-dong-government"
+        ],
+        "do_not_infer": "방문객 주차/도보 안내를 화환 납품차량·화물 동선 허가로 전용하지 않음."
+      }
+    },
+    {
+      "id": "shillakwon-seoul-jejung",
+      "name": "쉴낙원 서울제중장례식장",
+      "category": "funeral",
+      "municipality": "서울특별시 구로구",
+      "municipality_code": "11530",
+      "geographic_class": "guro_candidate_not_primary_address_verified",
+      "address": null,
+      "planning_status": "preplan_hold",
+      "confirmed_facts": [],
+      "sources": [
+        {
+          "id": "preed-home",
+          "url": "https://www.preedlife.com/pc/main",
+          "checked_at": "2026-10-12T18:36:15.317634+00:00",
+          "http_status": 200,
+          "final_url": "https://www.preedlife.com/pc/main",
+          "level": "직접 확인",
+          "inspection_scope": "운영사 공식 홈페이지와 쉴낙원 링크",
+          "summary": "운영사와 브랜드 공식 연결 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/preed-home.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/preed-home.txt",
+          "sha256": "d336d03b3878bca9fe0842efcbfe8cb3ee302ba26935107ca9ec10c2f847305a",
+          "error": null,
+          "text_line_count": 191
+        },
+        {
+          "id": "preed-shillakwon",
+          "url": "https://www.preedlife.com/landing/shillakwon",
+          "checked_at": "2026-10-12T18:37:05.759177+00:00",
+          "http_status": 200,
+          "final_url": "https://www.preedlife.com/landing/shillakwon",
+          "level": "직접 확인",
+          "inspection_scope": "운영사 직영장례식장 연결 페이지 HTML",
+          "summary": "지점별 이미지 링크로 구성되나 서울제중 상세주소 본문은 확보하지 못함",
+          "raw_path": "/workspace/shared/guro-evidence/raw/preed-shillakwon.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/preed-shillakwon.txt",
+          "sha256": "659d9504e46e9a9380ccf082b5cf1903522f23309ec69419c6dbd414fadaf27d",
+          "error": null,
+          "text_line_count": 175
+        },
+        {
+          "id": "shillakwon-home",
+          "url": "https://www.shillakwon.com/",
+          "checked_at": "2026-10-12T18:34:26.138078+00:00",
+          "http_status": 200,
+          "final_url": "http://www.kuipernet.com/images/bg.png",
+          "level": "직접 확인",
+          "inspection_scope": "브랜드 도메인 직접GET 결과",
+          "summary": "요청URL은 shillakwon.com이나 최종응답은 kuipernet.com/images/bg.png. 시설 본문이 아님.",
+          "raw_path": "/workspace/shared/guro-evidence/raw/shillakwon-home.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/shillakwon-home.txt",
+          "sha256": "50969c6a74a542a4cff62a7bb6f35a87393bcc680f22938d98a8f3adc3fb9bb9",
+          "error": null,
+          "text_line_count": 3333
+        },
+        {
+          "id": "shillakwon-branch03",
+          "url": "https://www.shillakwon.com/bbs/content.php?co_id=branch03",
+          "checked_at": "2026-10-12T18:33:30.825033+00:00",
+          "http_status": 200,
+          "final_url": "http://www.kuipernet.com/images/bg.png",
+          "level": "직접 확인",
+          "inspection_scope": "기존 서울지점 URL 직접GET 결과",
+          "summary": "동일하게 외부 PNG로 이동. 현재 시설원문 접근 실패.",
+          "raw_path": "/workspace/shared/guro-evidence/raw/shillakwon-branch03.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/shillakwon-branch03.txt",
+          "sha256": "50969c6a74a542a4cff62a7bb6f35a87393bcc680f22938d98a8f3adc3fb9bb9",
+          "error": null,
+          "text_line_count": 3333
+        }
+      ],
+      "unverified": [
+        "공식 시설 상세 원문상 새말로60 및 층/빈소 정보",
+        "현재 외부 근조화환 반입 정책",
+        "브랜드 도메인의 시설 본문이 정상적으로 반환되지 않음"
+      ],
+      "judgment": "원문 충분조건 미달로 보류. 검색/채용플랫폼에서는 구로 새말로60 제중요양병원B1이 나타나지만 이번 공식원문 확정 필드에 넣지 않는다. 옛 쉴낙원 서울(금천구)과 합치지 않는다.",
+      "operational_status_scope": "브랜드 공식 상세를 직접 검증하지 못함. 현재 영업 단정 금지.",
+      "flower_delivery_policy": {
+        "status": "not_found_in_inspected_official_sources",
+        "allowed": null,
+        "unknowns": [
+          "외부 축하/근조화환 허용 규격·설치 위치",
+          "배송차량 하역 및 반입시간",
+          "당일 담당자·회수 동선"
+        ],
+        "publication_guardrail": "안내 미발견을 반입 허용으로 해석하지 말 것. 화환 주문·배송 가능 보장은 꽃이랑의 현장 확인 전까지 금지."
+      },
+      "sourceIds": [
+        "preed-home",
+        "preed-shillakwon",
+        "shillakwon-home",
+        "shillakwon-branch03"
+      ],
+      "legal_dong": {
+        "name": null,
+        "level": "미확인",
+        "note": "보류/제외 후보이며 이 조사에서 법정동 결속까지 확정하지 않음."
+      }
+    },
+    {
+      "id": "guro-arts-valley",
+      "name": "구로아트밸리 예술극장",
+      "category": "performance",
+      "municipality": "서울특별시 구로구",
+      "municipality_code": "11530",
+      "geographic_class": "within_guro",
+      "address": "서울특별시 구로구 가마산로25길 9-24",
+      "planning_status": "preplan_hold",
+      "confirmed_facts": [
+        "구로문화재단 공식 대관 안내에서 총579석 공연장과 담당전화02-2029-1722를 확인했다.",
+        "2025 구로 클래식 페스타 더울림앙상블의 서울시 공식 상세에는 공연장 내 음식물·꽃다발·화환 반입금지가 명시된다."
+      ],
+      "sources": [
+        {
+          "id": "guroarts-rent",
+          "url": "https://www.guroartsvalley.or.kr/user/overall/overallArt.do",
+          "checked_at": "2026-10-12T18:32:34.320923+00:00",
+          "http_status": 200,
+          "final_url": "https://www.guroartsvalley.or.kr/user/overall/overallArt.do",
+          "level": "직접 확인",
+          "inspection_scope": "재단 공식 예술극장 대관 시설·주소",
+          "summary": "구로 소재579석 공연장",
+          "raw_path": "/workspace/shared/guro-evidence/raw/guroarts-rent.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/guroarts-rent.txt",
+          "sha256": "9e504d9e1d46b5039a7c6ce153e7f7531863d3b971e9cb6924c54d413ad6bca0",
+          "error": null,
+          "text_line_count": 508
+        },
+        {
+          "id": "guroarts-classic-2025",
+          "url": "https://culture.seoul.go.kr/culture/culture/cultureEvent/view.do?cultcode=155198&menuNo=200110",
+          "checked_at": "2026-10-12T18:32:35.896560+00:00",
+          "http_status": 200,
+          "final_url": "https://culture.seoul.go.kr/culture/culture/cultureEvent/view.do?cultcode=155198&menuNo=200110",
+          "level": "직접 확인",
+          "inspection_scope": "서울시 2025 공연 상세의 관람안내",
+          "summary": "공연장 내부 꽃다발·화환 반입 금지 문구 확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/guroarts-classic-2025.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/guroarts-classic-2025.txt",
+          "sha256": "9295c46e1032997680119130a50cca4b3fdd202ed3b280b4e798941f16040a97",
+          "error": null,
+          "text_line_count": 226
+        }
+      ],
+      "unverified": [
+        "건물 전체나 로비·야외에도 같은 금지가 적용되는지",
+        "현재 다른 공연의 반입 규정",
+        "주최자 승인을 받은 외부 수령·설치 위치"
+      ],
+      "judgment": "일반 축하화환 즉시판매 시설 페이지로 확정하지 않고 보류. 특정 공연 내부 금지를 건물전체 영구금지로 확대하지 말 것.",
+      "operational_status_scope": "현재 공개된 공식 시설/운영 안내 원문을 확인했다. 실제 방문·전화·행사 당일 운영 확인은 하지 않았다.",
+      "flower_delivery_policy": {
+        "status": "event_specific_interior_ban_verified",
+        "allowed": null,
+        "exact_restriction": "공연장 내 음식물, 꽃다발, 화환 등의 반입이 금지되어 있습니다.",
+        "scope": "2025 구로 클래식 페스타 더울림앙상블 공연 관람안내의 공연장 내부",
+        "not_proven": [
+          "건물 전체",
+          "로비",
+          "공연장 밖",
+          "모든 미래행사"
+        ],
+        "hold_release_condition": "해당 행사 주최자와 시설이 허용하는 외부 수령/설치장소를 확인할 때만 배송가능성을 판단"
+      },
+      "sourceIds": [
+        "guroarts-rent",
+        "guroarts-classic-2025"
+      ],
+      "legal_dong": {
+        "name": null,
+        "level": "미확인",
+        "note": "보류/제외 후보이며 이 조사에서 법정동 결속까지 확정하지 않음."
+      }
+    },
+    {
+      "id": "oryu-art-hall",
+      "name": "오류아트홀",
+      "category": "performance",
+      "municipality": "서울특별시 구로구",
+      "municipality_code": "11530",
+      "geographic_class": "within_guro",
+      "address": "서울특별시 구로구 경인로20가길 38, 오류문화센터 2층",
+      "planning_status": "preplan_hold",
+      "confirmed_facts": [
+        "공식 재단 위치 안내의 주소는 경인로20가길38이며 시설은365석 공연장으로 안내된다.",
+        "2025년11월29일 연극 코다 공식 서울시 상세에서 오류문화센터2층과 공연장 내부 꽃다발·화환 반입금지를 확인했다."
+      ],
+      "sources": [
+        {
+          "id": "oryu-rent",
+          "url": "https://www.guroartsvalley.or.kr/user/overall/overallArt6.do",
+          "checked_at": "2026-10-12T18:32:34.323258+00:00",
+          "http_status": 200,
+          "final_url": "https://www.guroartsvalley.or.kr/user/overall/overallArt6.do",
+          "level": "직접 확인",
+          "inspection_scope": "공식 대관 본문",
+          "summary": "365석 가변형 극장",
+          "raw_path": "/workspace/shared/guro-evidence/raw/oryu-rent.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/oryu-rent.txt",
+          "sha256": "72b2838446e03d672921299cbb8e1f0c11700083245befb04ebba4335d6aa556",
+          "error": null,
+          "text_line_count": 468
+        },
+        {
+          "id": "oryu-map",
+          "url": "https://www.guroartsvalley.or.kr/user/page/mn01190503.do",
+          "checked_at": "2026-10-12T18:32:34.751568+00:00",
+          "http_status": 200,
+          "final_url": "https://www.guroartsvalley.or.kr/user/page/mn01190503.do",
+          "level": "직접 확인",
+          "inspection_scope": "재단 오시는 길",
+          "summary": "경인로20가길38, 오류문화센터",
+          "raw_path": "/workspace/shared/guro-evidence/raw/oryu-map.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/oryu-map.txt",
+          "sha256": "f3934839cf7e29831d7823d8305529bf1a35aa6548eaeb16e42c2a1ae4fbc75f",
+          "error": null,
+          "text_line_count": 472
+        },
+        {
+          "id": "oryu-official-event",
+          "url": "https://culture.seoul.go.kr/culture/culture/cultureEvent/view.do?cultcode=155279&menuNo=200013",
+          "checked_at": "2026-10-12T18:38:26Z",
+          "http_status": null,
+          "level": "직접 확인",
+          "access_method": "web.run open; full page body returned, HTTP numeric status not exposed",
+          "inspection_scope": "연극코다 2025-11-29 상세의 관람주의와 주소",
+          "summary": "오류문화센터2층 및 공연장내 꽃다발·화환 반입금지",
+          "raw_path": "/workspace/shared/guro-evidence/raw/web-official-events.json"
+        }
+      ],
+      "unverified": [
+        "건물전체·로비·외부 공간 금지 여부",
+        "현재 행사별 수령담당자·설치허용 범위"
+      ],
+      "judgment": "공연축하 목적은 존재하나 화환 반입가능성 미확정. 공연 내부 금지 범위만 사실로 쓰고 주문대상 확정은 보류.",
+      "operational_status_scope": "현재 공개된 공식 시설/운영 안내 원문을 확인했다. 실제 방문·전화·행사 당일 운영 확인은 하지 않았다.",
+      "flower_delivery_policy": {
+        "status": "event_specific_interior_ban_verified",
+        "allowed": null,
+        "exact_restriction": "공연장 내 음료, 음식물, 꽃다발, 화환 등의 반입이 금지되어 있습니다.",
+        "scope": "2025-11-29 연극코다의 공연장 내부 관람안내",
+        "not_proven": [
+          "오류문화센터 건물전체",
+          "로비·외부",
+          "모든 행사"
+        ],
+        "hold_release_condition": "현재 행사 주최자·시설의 외부수령 및 설치허용 확인"
+      },
+      "sourceIds": [
+        "oryu-rent",
+        "oryu-map",
+        "oryu-official-event"
+      ],
+      "legal_dong": {
+        "name": null,
+        "level": "미확인",
+        "note": "보류/제외 후보이며 이 조사에서 법정동 결속까지 확정하지 않음."
+      }
+    },
+    {
+      "id": "gocheok-sky-dome",
+      "name": "고척스카이돔",
+      "category": "event",
+      "municipality": "서울특별시 구로구",
+      "municipality_code": "11530",
+      "geographic_class": "within_guro",
+      "address": "서울특별시 구로구 경인로 430",
+      "planning_status": "preplan_hold",
+      "confirmed_facts": [
+        "서울시설공단 공식 돔구장·대관·FAQ 원문을 열람했다. 콘서트·이벤트·시상식 등의 행사 용도와 경인로430을 확인했다.",
+        "대관 본문에서 행사 준비·운영·철거 책임이 신청자에게 있음을 확인했다.",
+        "공식 FAQ10건에서 꽃/화환 규정은 발견하지 못했다. 음식물 규정을 꽃 배송 가능성으로 전용하지 않았다."
+      ],
+      "sources": [
+        {
+          "id": "gocheok-dome",
+          "url": "https://www.sisul.or.kr/open_content/skydome/guidance/dome.jsp",
+          "checked_at": "2026-10-12T18:38:26Z",
+          "http_status": null,
+          "level": "직접 확인",
+          "access_method": "web.run open; full page body returned, HTTP numeric status not exposed",
+          "inspection_scope": "이용안내 본문·푸터주소",
+          "summary": "행사 가능 시설, 경인로430",
+          "raw_path": "/workspace/shared/guro-evidence/raw/web-official-events.json"
+        },
+        {
+          "id": "gocheok-rent",
+          "url": "https://www.sisul.or.kr/open_content/skydome/guidance/rent.jsp",
+          "checked_at": "2026-10-12T18:38:26Z",
+          "http_status": null,
+          "level": "직접 확인",
+          "access_method": "web.run open; full page body returned, HTTP numeric status not exposed",
+          "inspection_scope": "문화·기업행사 대관과 신청자 책임",
+          "summary": "문화행사담당02-2128-2331, 기업행사02-2128-2337",
+          "raw_path": "/workspace/shared/guro-evidence/raw/web-official-events.json"
+        },
+        {
+          "id": "gocheok-faq",
+          "url": "https://www.sisul.or.kr/open_content/skydome/community/faq.jsp",
+          "checked_at": "2026-10-12T18:38:26Z",
+          "http_status": null,
+          "level": "직접 확인",
+          "access_method": "web.run open; full page body returned, HTTP numeric status not exposed",
+          "inspection_scope": "10개 FAQ 제목·본문",
+          "summary": "행사별 운영 주체, 주차혼잡 등은 확인; 꽃/화환허용 미확인",
+          "raw_path": "/workspace/shared/guro-evidence/raw/web-official-events.json"
+        }
+      ],
+      "unverified": [
+        "화환 가능 행사 종류 및 주최자 허용",
+        "대형화환 설치장소·시간·반입게이트·철수시간",
+        "주차장 일반 관람객 규정과 납품차량 규정의 차이"
+      ],
+      "judgment": "시설이 행사장이란 사실만으로 축하화환 구매페이지를 만들지 말 것. 행사명·주최자·허용설치구역의 근거가 갖춰질 때 조건부 재검토.",
+      "operational_status_scope": "현재 공개된 공식 시설/운영 안내 원문을 확인했다. 실제 방문·전화·행사 당일 운영 확인은 하지 않았다.",
+      "flower_delivery_policy": {
+        "status": "not_found_in_inspected_official_sources",
+        "allowed": null,
+        "unknowns": [
+          "외부 축하/근조화환 허용 규격·설치 위치",
+          "배송차량 하역 및 반입시간",
+          "당일 담당자·회수 동선"
+        ],
+        "publication_guardrail": "안내 미발견을 반입 허용으로 해석하지 말 것. 화환 주문·배송 가능 보장은 꽃이랑의 현장 확인 전까지 금지."
+      },
+      "sourceIds": [
+        "gocheok-dome",
+        "gocheok-rent",
+        "gocheok-faq"
+      ],
+      "legal_dong": {
+        "name": null,
+        "level": "미확인",
+        "note": "보류/제외 후보이며 이 조사에서 법정동 결속까지 확정하지 않음."
+      }
+    },
+    {
+      "id": "guro-digital-complex-opening",
+      "name": "구로디지털단지 사무실 개업·입주·이전",
+      "category": "area_context",
+      "municipality": "서울특별시 구로구",
+      "municipality_code": "11530",
+      "geographic_class": "guro_subarea",
+      "address": null,
+      "planning_status": "context_candidate",
+      "confirmed_facts": [
+        "구로구 공식 보도자료 원문은 디지털단지1단지가 구로구, 2·3단지가 금천구라는 구분을 설명한다.",
+        "2026년 구청 보도자료는 구로디지털단지/G밸리 산업단지와 디지털로의 현행 보행환경 사업을 다룬다.",
+        "지타워컨벤션 공식주소 디지털로26길38은 구로구임이 확인된다.",
+        "구청 현재 소개 원문의 구로구 부분은 구로동이며, 1단지(구로)·2단지(금천)·3단지(금천) 표가 재확인된다. 콘텐츠수정일은 2026.07.06이다."
+      ],
+      "sources": [
+        {
+          "id": "guro-gvalley",
+          "url": "https://www.guro.go.kr/www/selectBbsNttView.do?bbsNo=665&key=1793&nttNo=20677&pageIndex=826&pageUnit=10",
+          "checked_at": "2026-10-12T18:34:26.143911+00:00",
+          "http_status": 200,
+          "final_url": "https://www.guro.go.kr/www/selectBbsNttView.do?bbsNo=665&key=1793&nttNo=20677&pageIndex=826&pageUnit=10",
+          "level": "직접 확인",
+          "inspection_scope": "2012년 구청 보도자료의 산업단지 행정구역 구분",
+          "summary": "1단지구로/2·3단지금천 구분",
+          "raw_path": "/workspace/shared/guro-evidence/raw/guro-gvalley.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/guro-gvalley.txt",
+          "sha256": "cd05c765385cdf92a27f18e32cfe7a89d2773470dabd92057d0a107fb84928c2",
+          "error": null,
+          "text_line_count": 1864
+        },
+        {
+          "id": "guro-gvalley-2026",
+          "url": "https://www.guro.go.kr/www/selectBbsNttView.do?bbsNo=665&key=1793&nttNo=236081&pageIndex=1&pageUnit=10",
+          "checked_at": "2026-10-12T18:37:05.760044+00:00",
+          "http_status": 200,
+          "final_url": "https://www.guro.go.kr/www/selectBbsNttView.do?bbsNo=665&key=1793&nttNo=236081&pageIndex=1&pageUnit=10",
+          "level": "직접 확인",
+          "inspection_scope": "2026-07-14 구청 G밸리 보행환경 보도자료",
+          "summary": "구로디지털단지 및 디지털로 산업단지 맥락",
+          "raw_path": "/workspace/shared/guro-evidence/raw/guro-gvalley-2026.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/guro-gvalley-2026.txt",
+          "sha256": "7f9f40f89b1daa912e56d0a0a73064abebe3760963012be5ca351abe204b84f8",
+          "error": null,
+          "text_line_count": 1833
+        },
+        {
+          "id": "guro-valley-current",
+          "url": "https://www.guro.go.kr/www/contents.do?key=2849",
+          "checked_at": "2026-10-12T18:38:00.619405+00:00",
+          "http_status": 200,
+          "http_status_provenance": "도구 보고: parent의 공개GET 메타데이터 파일; 저장 원본과 SHA256 및 본문은 이 연구자가 독립 검사",
+          "level": "직접 확인",
+          "raw_path": "/workspace/shared/guro-evidence/guro-valley.html",
+          "text_path": "/workspace/shared/guro-evidence/raw/guro-valley-parent.txt",
+          "sha256": "e0933b6040e588a56babbe2eb5f60710768d286fd781a3404c27faac4795c9dd",
+          "inspection_scope": "구청 현재 구로디지털밸리 소개 저장 원문. 구로동/가산동 및 1단지구로/2·3단지금천 표, 콘텐츠수정일2026.07.06 검사",
+          "summary": "구로구 부분의 법정동 맥락은 구로동. 배송지는 개별 회사 실제 주소를 받아야 함"
+        }
+      ],
+      "judgment": "특정 시설 주소를 묶어 복제하지 않고 개업/이전 축하 배송에서 건물명·동/층/호·수령회사·수령담당자·관리실 하역규정을 확인하는 독립 구매 맥락으로 유지 가능. 꽃이랑의 실제 서비스범위·배송가능시간은 별도 검증 필요.",
+      "unverified": [
+        "특정 신규개업이나 실제 주문 수요량",
+        "개별 빌딩의 꽃/화환 반입정책",
+        "단지 전체에 적용되는 배송·설치 허가"
+      ],
+      "flower_delivery_policy": {
+        "status": "building_specific_unknown",
+        "allowed": null,
+        "inspection_result": "열람한 공식 위치·시설·홀·FAQ 범위에서 외부 화환 수령·반입·홀별 외부선물 허용조건을 확인하지 못함. 전 사이트에 규정이 없거나 현장에서 허용된다는 의미가 아님."
+      },
+      "operational_status_scope": "산업지역 맥락만 확인, 개별 회사 신규개업의 존재나 수요는 추정하지 않음.",
+      "legal_dong": {
+        "name": "구로동",
+        "level": "직접 확인",
+        "scope": "공식 산업단지 소개의 구로구 부분 지리 맥락. 단일 시설/수령주소 아님",
+        "evidence": [
+          {
+            "sourceId": "guro-valley-current",
+            "url": "https://www.guro.go.kr/www/contents.do?key=2849",
+            "exact_text": "서울특별시 구로구 구로동과 금천구 가산동 일대",
+            "path": "/workspace/shared/guro-evidence/raw/guro-valley-parent.txt",
+            "line_numbers": [
+              2019
+            ]
+          }
+        ],
+        "note": "구로구 1단지 범위를 유지. 금천구 가산동 2·3단지를 구로구 배송지로 편입하지 않음."
+      },
+      "sourceIds": [
+        "guro-gvalley",
+        "guro-gvalley-2026",
+        "guro-valley-current"
+      ],
+      "official_url": "https://www.guro.go.kr/www/contents.do?key=2849",
+      "purchase_practical_facts": {
+        "level": "직접 확인",
+        "facts": [
+          "구로구 공식 보도자료 원문은 디지털단지1단지가 구로구, 2·3단지가 금천구라는 구분을 설명한다.",
+          "2026년 구청 보도자료는 구로디지털단지/G밸리 산업단지와 디지털로의 현행 보행환경 사업을 다룬다.",
+          "지타워컨벤션 공식주소 디지털로26길38은 구로구임이 확인된다.",
+          "구청 현재 소개 원문의 구로구 부분은 구로동이며, 1단지(구로)·2단지(금천)·3단지(금천) 표가 재확인된다. 콘텐츠수정일은 2026.07.06이다."
+        ],
+        "sourceIds": [
+          "guro-gvalley",
+          "guro-gvalley-2026",
+          "guro-valley-current"
+        ],
+        "do_not_infer": "방문객 주차/도보 안내를 화환 납품차량·화물 동선 허가로 전용하지 않음."
+      }
+    },
+    {
+      "id": "shillakwon-seoul-geumcheon",
+      "name": "쉴낙원 서울장례식장(금천구 검색후보)",
+      "category": "funeral",
+      "municipality": "서울특별시 금천구",
+      "municipality_code": null,
+      "geographic_class": "adjacent_district_search_only",
+      "address": null,
+      "planning_status": "exclude_from_guro",
+      "confirmed_facts": [],
+      "tool_report": [
+        "공식도메인의 검색 색인 결과는 금천구 서부샛길732를 옛 쉴낙원서울 주소로 표시한다. 이 내용은 원문 직접접근에서는 재검증하지 못했다."
+      ],
+      "sources": [
+        {
+          "url": "https://www.shillakwon.com/bbs/content.php?co_id=branch03",
+          "level": "도구 보고",
+          "inspection_scope": "공식도메인 검색색인 텍스트만 확인. 직접GET은 외부PNG로 리디렉션",
+          "summary": "서울제중과 다른 명칭·주소의 금천구 후보",
+          "id": "shillakwon-seoul-geumcheon-search-index-1"
+        }
+      ],
+      "unverified": [
+        "현재 운영 여부 및 공식 주소 재확인"
+      ],
+      "judgment": "구로구 지역 시설로 등록하지 않는다. 서울제중 새말로60 후보와 절대 합치지 않는다.",
+      "sourceIds": [
+        "shillakwon-seoul-geumcheon-search-index-1"
+      ],
+      "legal_dong": {
+        "name": null,
+        "level": "미확인",
+        "note": "보류/제외 후보이며 이 조사에서 법정동 결속까지 확정하지 않음."
+      }
+    }
+  ],
+  "validation": [
+    {
+      "check": "guro_funeral_address",
+      "passed": true,
+      "source_id": "kuro-funeral-map",
+      "text_path": "/workspace/shared/guro-evidence/raw/kuro-funeral-map.txt",
+      "needle": "서울특별시 구로구 구로동로 148",
+      "line_numbers": [
+        77,
+        86
+      ]
+    },
+    {
+      "check": "guro_funeral_B2",
+      "passed": true,
+      "source_id": "kuro-funeral-facilities",
+      "text_path": "/workspace/shared/guro-evidence/raw/kuro-funeral-facilities.txt",
+      "needle": "[B2층]",
+      "line_numbers": [
+        78,
+        195
+      ]
+    },
+    {
+      "check": "guro_funeral_B101",
+      "passed": true,
+      "source_id": "kuro-funeral-facilities",
+      "text_path": "/workspace/shared/guro-evidence/raw/kuro-funeral-facilities.txt",
+      "needle": "B101호",
+      "line_numbers": [
+        79,
+        99,
+        196,
+        211
+      ]
+    },
+    {
+      "check": "seongsim_external_funeral",
+      "passed": true,
+      "source_id": "guroseongsim-floor",
+      "text_path": "/workspace/shared/guro-evidence/raw/guroseongsim-floor.txt",
+      "needle": "장례식장(외부업체)",
+      "line_numbers": [
+        210,
+        271
+      ]
+    },
+    {
+      "check": "weddingcity_11F",
+      "passed": true,
+      "source_id": "weddingcity-grand",
+      "text_path": "/workspace/shared/guro-evidence/raw/weddingcity-grand.txt",
+      "needle": "그랜드 볼룸 11F",
+      "line_numbers": [
+        85
+      ]
+    },
+    {
+      "check": "weddingcity_8F_statis",
+      "passed": true,
+      "source_id": "weddingcity-statis",
+      "text_path": "/workspace/shared/guro-evidence/raw/weddingcity-statis.txt",
+      "needle": "스타티스 8F",
+      "line_numbers": [
+        85,
+        92
+      ]
+    },
+    {
+      "check": "weddingcity_8F_amor",
+      "passed": true,
+      "source_id": "weddingcity-amor",
+      "text_path": "/workspace/shared/guro-evidence/raw/weddingcity-amor.txt",
+      "needle": "아모르 8F",
+      "line_numbers": [
+        85
+      ]
+    },
+    {
+      "check": "ramada_road_address",
+      "passed": true,
+      "source_id": "ramada-http",
+      "text_path": "/workspace/shared/guro-evidence/raw/ramada-http.txt",
+      "needle": "서울특별시 구로구 경인로 624",
+      "line_numbers": [
+        96
+      ]
+    },
+    {
+      "check": "link_road_address",
+      "passed": true,
+      "source_id": "link-wedding",
+      "text_path": "/workspace/shared/guro-evidence/raw/link-wedding.txt",
+      "needle": "서울특별시 구로구 경인로 610",
+      "line_numbers": [
+        124
+      ]
+    },
+    {
+      "check": "jostiel_building",
+      "passed": true,
+      "source_id": "jostiel-map",
+      "text_path": "/workspace/shared/guro-evidence/raw/jostiel-map.txt",
+      "needle": "삼영빌딩 2층",
+      "line_numbers": [
+        116
+      ]
+    },
+    {
+      "check": "gtower_hall",
+      "passed": true,
+      "source_id": "gtower-reservation",
+      "text_path": "/workspace/shared/guro-evidence/raw/gtower-reservation.txt",
+      "needle": "G-TOWER 2층 지타워컨벤션 (그랜드볼룸)",
+      "line_numbers": [
+        213
+      ]
+    },
+    {
+      "check": "gtower_gate",
+      "passed": true,
+      "source_id": "gtower-reservation",
+      "text_path": "/workspace/shared/guro-evidence/raw/gtower-reservation.txt",
+      "needle": "Gate 1, Gate 2",
+      "line_numbers": [
+        219
+      ]
+    },
+    {
+      "check": "korea-university-guro-funeral_legal_dong",
+      "passed": true,
+      "sourceId": "hospital-dong-government-2026",
+      "url": "https://www.guro.go.kr/contents/2026thanks/html/sub2.html",
+      "evidence_kind": "official_body_text",
+      "exact_text": "구로구 구로동로 148, 고려대부속구로병원 (구로동)",
+      "path": "/workspace/shared/guro-evidence/raw/hospital-dong-government-2026.txt",
+      "line_numbers": [
+        36
+      ],
+      "inspection_scope": "병원 본관과 장례식장 공식 주소 구로동로148 일치"
+    },
+    {
+      "check": "guro-seongsim-funeral_legal_dong",
+      "passed": true,
+      "sourceId": "hospital-dong-government-2026",
+      "url": "https://www.guro.go.kr/contents/2026thanks/html/sub2.html",
+      "evidence_kind": "official_body_text",
+      "exact_text": "구로구 경인로 427, 구로성심병원 (고척동)",
+      "path": "/workspace/shared/guro-evidence/raw/hospital-dong-government-2026.txt",
+      "line_numbers": [
+        46
+      ],
+      "inspection_scope": "병원명·도로명주소 일치; 병원 자체 홈페이지 JSON-LD도 같은 법정동"
+    },
+    {
+      "check": "weddingcity-sindorim_legal_dong",
+      "passed": true,
+      "sourceId": "weddingcity-location",
+      "url": "https://www.tmwedding.co.kr/location",
+      "evidence_kind": "official_HTML_JSON_LD",
+      "exact_text": "서울 구로구 새말로 97 (구로동, 신도림테크노마트)",
+      "path": "/workspace/shared/guro-evidence/raw/weddingcity-location.html",
+      "line_numbers": [
+        4492
+      ],
+      "inspection_scope": "공식 위치 페이지 HTML JSON-LD streetAddress 직접 열람. 신도림이라는 상호를 법정동으로 사용하지 않음"
+    },
+    {
+      "check": "ramada-seoul-sindorim_legal_dong",
+      "passed": true,
+      "sourceId": "ramada-http",
+      "url": "http://www.ramadasindorim.com/main",
+      "evidence_kind": "official_body_text",
+      "exact_text": "서울특별시 구로구 신도림동 427-3",
+      "path": "/workspace/shared/guro-evidence/raw/ramada-http.txt",
+      "line_numbers": [
+        97
+      ],
+      "inspection_scope": "공식 호텔 본문 하단 지번주소"
+    },
+    {
+      "check": "the-link-seoul-wedding_legal_dong",
+      "passed": true,
+      "sourceId": "link-wedding",
+      "url": "https://www.thelinkseoul.com/index.php",
+      "evidence_kind": "official_body_text",
+      "exact_text": "신도림동 413-9",
+      "path": "/workspace/shared/guro-evidence/raw/link-wedding.txt",
+      "line_numbers": [
+        124
+      ],
+      "inspection_scope": "공식 웨딩 사이트 하단 도로명주소와 지번주소"
+    },
+    {
+      "check": "j-ostiel_legal_dong",
+      "passed": true,
+      "sourceId": "jostiel-map",
+      "url": "http://m.j-ostiel.co.kr/home/info/230",
+      "evidence_kind": "official_body_text",
+      "exact_text": "서울특별시 구로구 구로동 604-19",
+      "path": "/workspace/shared/guro-evidence/raw/jostiel-map.txt",
+      "line_numbers": [
+        57
+      ],
+      "inspection_scope": "공식 오시는 길 본문 Address"
+    },
+    {
+      "check": "g-tower-convention_legal_dong",
+      "passed": true,
+      "sourceId": "gtower-dong-government",
+      "url": "https://www.guro.go.kr/www/contents.do?key=2852",
+      "evidence_kind": "official_body_text",
+      "exact_text": "서울특별시 구로구 디지털로 26길 38{구로동) 지타워 5~6층",
+      "path": "/workspace/shared/guro-evidence/raw/gtower-dong-government.txt",
+      "line_numbers": [
+        2027
+      ],
+      "inspection_scope": "구청 동일 건물 주소표. 원문 괄호 오타 { 를 인용 그대로 보존; 다른 입주기관 5~6층은 법정동 결속용으로만 사용"
+    },
+    {
+      "check": "guro_digital_current_original_hash_and_district_text",
+      "passed": true,
+      "source_id": "guro-valley-current",
+      "path": "/workspace/shared/guro-evidence/guro-valley.html",
+      "sha256": "e0933b6040e588a56babbe2eb5f60710768d286fd781a3404c27faac4795c9dd"
+    }
+  ],
+  "do_not_publish_as_fact": [
+    "모든 시설 화환 반입 가능",
+    "꽃이랑 현장배송 완료 실적",
+    "실제 검증하지 않은 당일배송·가격·설치 보장",
+    "공연장 내부 금지를 건물전체 영구금지로 확대",
+    "Marriott FAQ만으로 더링크 웨딩시설 폐업 단정",
+    "검색색인 주소만으로 쉴낙원서울제중 공식원문 검증완료 단정"
+  ],
+  "supporting_files": {
+    "http_log": "/workspace/shared/guro-evidence/http_sources.json",
+    "raw_directory": "/workspace/shared/guro-evidence/raw"
+  },
+  "source_access_failures": [
+    {
+      "facility": "쉴낙원",
+      "error": "공식 브랜드 페이지가 kuipernet.com/images/bg.png로 redirect. 운영사 이미지URL은 HTTP200이지만17바이트 text/html로 이미지 미확보.",
+      "status": "미확인"
+    },
+    {
+      "facility": "일부 공식 사이트",
+      "error": "web.run403 또는502; Python공개GET 혹은HTTP원문으로 대체검증. 각 source의 실제HTTP로그 참조.",
+      "status": "대체검증 완료/개별 항목 명시"
+    }
+  ],
+  "legal_dong_supplement_checked_at": "2026-10-12T18:46:28.528656+00:00",
+  "selected_candidate_ids": [
+    "korea-university-guro-funeral",
+    "guro-seongsim-funeral",
+    "weddingcity-sindorim",
+    "ramada-seoul-sindorim",
+    "the-link-seoul-wedding",
+    "j-ostiel",
+    "g-tower-convention",
+    "guro-digital-complex-opening"
+  ],
+  "selection_note": "독립 구매결정 계획검토용 7개 시설 + 1개 지역 맥락. 본문 작성/발행 승인이나 모든 후보의 글 가치 확정을 의미하지 않음."
+}

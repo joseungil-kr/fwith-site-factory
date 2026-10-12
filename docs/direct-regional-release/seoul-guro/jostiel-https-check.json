@@ -1,0 +1,118 @@
+{
+  "scope": "의뢰받은 5개 HTTPS URL만 확인. 부모가 별도 확인 중인 non-www 및 /official.php/info/230·2087 URL은 재요청하지 않음.",
+  "results": [
+    {
+      "id": "jostiel-https-home-retry",
+      "url": "https://m.j-ostiel.co.kr/home/index",
+      "checked_at": "2026-10-12T18:48:04.411629+00:00",
+      "error": "HTTPError: HTTP Error 502: Bad Gateway",
+      "http_status": 502,
+      "web_open_error": "(502) Bad Gateway",
+      "final_url": null,
+      "origin_body_sha256": null,
+      "inspection_scope": "HTTPS 공식 원문 본문을 확보하지 못함. 주소·홀·수령 규정 신규 검증 없음.",
+      "level": "미확인",
+      "transport_evidence_level": "도구 보고"
+    },
+    {
+      "id": "jostiel-https-style",
+      "url": "https://m.j-ostiel.co.kr/home/sub/official_style",
+      "checked_at": "2026-10-12T18:48:04.412898+00:00",
+      "error": "HTTPError: HTTP Error 502: Bad Gateway",
+      "http_status": 502,
+      "web_open_error": "Cache miss",
+      "final_url": null,
+      "origin_body_sha256": null,
+      "inspection_scope": "HTTPS 공식 원문 본문을 확보하지 못함. 주소·홀·수령 규정 신규 검증 없음.",
+      "level": "미확인",
+      "transport_evidence_level": "도구 보고"
+    },
+    {
+      "id": "jostiel-https-location",
+      "url": "https://m.j-ostiel.co.kr/home/sub/official_location",
+      "checked_at": "2026-10-12T18:48:04.413434+00:00",
+      "error": "HTTPError: HTTP Error 502: Bad Gateway",
+      "http_status": 502,
+      "web_open_error": "(400) Timeout fetching",
+      "final_url": null,
+      "origin_body_sha256": null,
+      "inspection_scope": "HTTPS 공식 원문 본문을 확보하지 못함. 주소·홀·수령 규정 신규 검증 없음.",
+      "level": "미확인",
+      "transport_evidence_level": "도구 보고"
+    },
+    {
+      "id": "jostiel-https-www-location",
+      "url": "https://www.j-ostiel.co.kr/official.php/home/sub/official_location",
+      "checked_at": "2026-10-12T18:48:04.414170+00:00",
+      "error": "HTTPError: HTTP Error 502: Bad Gateway",
+      "http_status": 502,
+      "web_open_error": "(400) Timeout fetching",
+      "final_url": null,
+      "origin_body_sha256": null,
+      "inspection_scope": "HTTPS 공식 원문 본문을 확보하지 못함. 주소·홀·수령 규정 신규 검증 없음.",
+      "level": "미확인",
+      "transport_evidence_level": "도구 보고"
+    },
+    {
+      "id": "jostiel-https-www-info586",
+      "url": "https://www.j-ostiel.co.kr/official.php/info/586",
+      "checked_at": "2026-10-12T18:48:04.415274+00:00",
+      "error": "HTTPError: HTTP Error 502: Bad Gateway",
+      "http_status": 502,
+      "web_open_error": "URL is not accessible via this tool",
+      "final_url": null,
+      "origin_body_sha256": null,
+      "inspection_scope": "HTTPS 공식 원문 본문을 확보하지 못함. 주소·홀·수령 규정 신규 검증 없음.",
+      "level": "미확인",
+      "transport_evidence_level": "도구 보고"
+    }
+  ],
+  "checked_at": "2026-10-12T18:48:33.783370+00:00",
+  "methods": [
+    "web.run open",
+    "Python urllib.request default TLS verification; no insecure option"
+  ],
+  "result": "5개 모두 urllib 공개GET은 HTTP502, web.run도 본문 미확보. 열람 가능한 HTTPS 공식 원문을 이 검사범위에서 찾지 못함. 폐업이나 전 사이트 부재를 뜻하지 않음.",
+  "preserved_http_originals": [
+    {
+      "id": "jostiel-mobile-http",
+      "url": "http://m.j-ostiel.co.kr/home/index",
+      "final_url": "http://m.j-ostiel.co.kr/home/index",
+      "http_status": 200,
+      "raw_path": "/workspace/shared/guro-evidence/raw/jostiel-mobile-http.html",
+      "sha256": "3d60a5b5ae03be49c1cb9e2f23b07bc801f93d97899ecf9998d121f4b7e094f9",
+      "preservation_verified": true
+    },
+    {
+      "id": "jostiel-map",
+      "url": "http://m.j-ostiel.co.kr/home/info/230",
+      "final_url": "http://m.j-ostiel.co.kr/home/info/230",
+      "http_status": 200,
+      "raw_path": "/workspace/shared/guro-evidence/raw/jostiel-map.html",
+      "sha256": "a4946a728c57f487e27996f0898c10f6901e9028cce606a9acfde3b8492067c3",
+      "preservation_verified": true
+    },
+    {
+      "id": "jostiel-tiffany",
+      "url": "http://m.j-ostiel.co.kr/home/info/2087",
+      "final_url": "http://m.j-ostiel.co.kr/home/info/2087",
+      "http_status": 200,
+      "raw_path": "/workspace/shared/guro-evidence/raw/jostiel-tiffany.html",
+      "sha256": "fcbf336375db5b0be9f7692316e3ba6af5ee3d54feeea9ead323935d9e1ec600",
+      "preservation_verified": true
+    },
+    {
+      "id": "jostiel-faq",
+      "url": "http://m.j-ostiel.co.kr/home/sub/bbs_faq",
+      "final_url": "http://m.j-ostiel.co.kr/home/sub/bbs_faq",
+      "http_status": 200,
+      "raw_path": "/workspace/shared/guro-evidence/raw/jostiel-faq.html",
+      "sha256": "45fc9506ff76eb792c1d092503da179e4d13ce46175129bf511d48e1b279adaa",
+      "preservation_verified": true
+    }
+  ],
+  "facilities_artifact_unchanged": {
+    "path": "/workspace/shared/guro-evidence/facilities.json",
+    "sha256": "bd67209f83401b88eccc1d4383bb7db3b6547b7d2d4456339184df6c68defc57"
+  }
+}

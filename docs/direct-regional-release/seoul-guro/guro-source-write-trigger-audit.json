@@ -1,0 +1,19 @@
+{
+  "baseCommit": "b666fa3cbbdfe0d148b9e72e1df00f40f9d2ed12",
+  "sourceBranch": "site-factory-seoul-guro-direct",
+  "findings": [
+    {
+      "path": ".github/workflows/ansan-indexnow-production.yml",
+      "triggerBlock": "on:\n  push:\n    branches:\n      - site-factory-ansan-v1\n  workflow_dispatch:\n\n"
+    },
+    {
+      "path": ".github/workflows/ansan-live-qa.yml",
+      "triggerBlock": "on:\n  push:\n    branches:\n      - site-factory-ansan-v1\n  workflow_dispatch:\n\n"
+    },
+    {
+      "path": ".github/workflows/namyangju-production-gate-check.yml",
+      "triggerBlock": "on:\n  push:\n    branches: [codex/namyangju-production-gate]\n  pull_request:\n    paths:\n      - .github/site-factory-sites.json\n      - site-factory/engine/**\n      - site-factory/releases/namyangju-flower-v2-initial-20261005/**\n"
+    }
+  ],
+  "conclusion": "No push/create workflow matches this new source branch; no workflow file is modified in source save."
+}

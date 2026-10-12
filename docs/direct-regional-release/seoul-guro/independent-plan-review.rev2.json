@@ -1,0 +1,490 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent /root/review_guro_content_plan",
+  "reviewedAt": "2026-10-12T18:49:15.961787+00:00",
+  "regionKey": "seoul-guro",
+  "reviewPhase": "Pre-draft information architecture and evidence review only",
+  "reviewedPlan": {
+    "file": "candidate-plan.json",
+    "revision": 2,
+    "sha256": "5c5f7dca1cc39377fa0cc6b829c946f70cc447bc5afe2d25df1ef240ea091e2c",
+    "priorRevision1Sha256": "7278061174a74d86b63b36f66d57e49a3b8253f366fca15249f1ce575579cd27",
+    "repository": "joseungil-kr/fwith-site-factory",
+    "localControlsHEAD": "ef9ae159848cc96cf292c89c4c238755f186862e",
+    "reuseSourceRevisionReported": "9692b2cf29a90a4eb3f50e27788293284cffc1b3"
+  },
+  "verdict": "REVISE",
+  "authoringGate": "Not passed for reviewed revision. No full customer copy or regional implementation approved by this review. Resolve pre-freeze revisions, submit revised plan and digest, and obtain a new independent plan result.",
+  "recommendation": {
+    "alternative": "N3_purchase_intent_guides",
+    "canonicalArticleCount": 3,
+    "candidateCountRetained": 8,
+    "newCandidateCount": 0,
+    "existingFrozenDenominatorChanged": false,
+    "reason": "Two funeral destinations and five wedding destinations are seven named destination lookups, but the currently supported flower-buying decisions collapse into three coherent intents: condolence, wedding congratulations, and office opening/moving. Address/floor/operator differences deserve prominent sections and direct anchors; they do not yet support seven separately expanded 2,500–3,000-character buying guides. N3 reduces repeated product/policy/order paragraphs while preserving all facility-name queries. This is a content-design judgment, not evidence of search volume or a ranking prediction.",
+    "importantFraming": "The sender normally already knows the destination from the obituary or invitation. Do not turn either grouped guide into a ranking or a venue-selection comparison. Help locate the named destination and choose a flower product, ribbon and consultation path."
+  },
+  "alternativeAssessment": [
+    {
+      "id": "N8_facility_pages",
+      "result": "REVISE / not justified now",
+      "reason": "All five wedding candidates share four congrats SKUs, the same cost/fulfilment limits and the same main purchase questions. Verified venue detail is mostly address, hall name/floor and general access. Separate long pages would invite thin destination swaps or emotional padding. Official flower acceptance differences, materially different order processes or other independent decision evidence have not been established."
+    },
+    {
+      "id": "N4_consolidated_wedding_decision",
+      "result": "Better than N8, still REVISE",
+      "reason": "Wedding consolidation is well founded. The same test also applies to the two funeral pages: one has multiple official room floors; the other is an externally operated B2 funeral hall. These facts are useful, but do not establish different product, budget, ribbon, deadline, or fulfilment decisions. Calling one hospital a university hospital and the other local, or assigning different social relationships, would not create unique buying value. Two separate pages could be reconsidered only if future original evidence supports genuinely distinct decisions."
+    },
+    {
+      "id": "N3_purchase_intent_guides",
+      "result": "Recommended revised alternative; not yet frozen",
+      "reason": "Preserve 2 funeral sections, 5 wedding sections and 1 office context inside 3 complete intent-specific guides. Keep names discoverable without separate doorway-like URLs. Fewer pages is not inherently better; this selection follows the present evidence and can change before freeze if evidence changes."
+    }
+  ],
+  "requiredFixes": [
+    {
+      "id": "R1",
+      "stage": "before_plan_freeze",
+      "severity": "blocking",
+      "target": "alternatives, recommendedAlternative, article assignment",
+      "requirement": "Add N3 with the three proposed intent pages below and record the actual consolidation rationale. Preserve N8 and N4 as considered alternatives and retain all 8 original candidate records, stable IDs and all four preplan holds. No need to invent additional candidates or expand to a preset page count. If retaining N4 instead, supply non-template, evidence-backed buying questions answered differently by each funeral guide and re-review."
+    },
+    {
+      "id": "R2",
+      "stage": "before_plan_freeze",
+      "severity": "blocking",
+      "target": "candidateTrace legalDongEvidenceStatus and geographic/source registry",
+      "requirement": "Replace blanket pending legal-dong fields with per-candidate original-source URL, exact address/dong statement, capture/hash and verified status only after corroboration. Local 2026 Guro government hospital table supports Guro Hospital=구로동 and Guro Seongsim=고척동; other current plan fields still require explicit joins. MOIS 10 legal/16 administrative/18 relationship data verifies geography inventory, not each facility address. Do not infer exact administrative dong from legal dong. Preserve partial membership semantics."
+    },
+    {
+      "id": "R3",
+      "stage": "before_plan_freeze",
+      "severity": "blocking",
+      "target": "grouped-page headings, links and candidate trace",
+      "requirement": "Declare candidate-to-canonical-article AND candidate-to-fragment mappings. Both funeral names must appear in title/H1 or clear first answer, and each full facility name must have a visible H2 and stable anchor. All five wedding names need visible named sections, not only footer/source text. The legal-dong directory must expose Guro/Gocheok funeral destinations and Guro/Sindorim wedding destinations. Candidate names in cards/links must reach their exact section. Canonical and sitemap entries remain one per article; fragments and synonyms are not additional pages."
+    },
+    {
+      "id": "R4",
+      "stage": "before_plan_freeze",
+      "severity": "blocking",
+      "target": "Ramada factual claim and source joins",
+      "requirement": "Remove the claim that an official hotel description establishes 하늘정원 14층, or attach the exact official prose/image evidence and sourceId that actually says this. The currently bound raw text does not contain 14층/14F; 14f image filenames do not by themselves prove a customer-facing floor statement. Keep weddingcity verified floors as rev2 corrected: Grand Ballroom 11F; Statis/Amor 8F. Join additional-official-sources.json explicitly so office sourceIds guro-valley/guro-entry resolve. Keep the candidate/evidenceFacilityId crosswalk for IDs that differ."
+    },
+    {
+      "id": "R5",
+      "stage": "plan must record now; resolve before source implementation/release",
+      "severity": "blocking_for_runtime_not_a_reason_to_erase_candidates",
+      "target": "sourceIdentity/pageSources HTTPS contract and HTTP-only original venue sources",
+      "requirement": "Record the precise publication-source blocker for Ramada/J-Ostiel. Independently accessible HTTP captures establish what was read, but cannot silently satisfy the existing HTTPS-only registry/render contract. Do not rewrite HTTP URLs to HTTPS, fabricate a verification result, weaken shared safety validation, or drop a venue from the denominator. Obtain a verifiable official HTTPS source supporting the claims; alternatively leave the affected planned page blocked with its retained source evidence until an authorized reviewed solution exists. Do not treat competitor pages as official venue substitutes."
+    },
+    {
+      "id": "R6",
+      "stage": "before_plan_freeze",
+      "severity": "required",
+      "target": "commonQuestionMatrix and page-specific question map",
+      "requirement": "Add separate question→answer-basis→next-action maps for condolence, wedding and office intent. Explain why each FAQ adds an answer beyond the body instead of repeating it. Keep product/basic-price facts explicit, one concise order-information bundle, purpose-appropriate ribbon examples, final-total/availability consultation and narrow onsite uncertainty. Actual 2,500–3,000 unique-character guidance must not force duplicate warnings, irrelevant venue history or price-derived superiority."
+    },
+    {
+      "id": "R7",
+      "stage": "before_authoring_and_final_copy_review",
+      "severity": "required",
+      "target": "business-policy wording and provider voice",
+      "requirement": "Retain the original product-policy image nuance: defects, damage or wrong products have stated refund treatment; completed-flower restrictions and post-dispatch cancellation wording have unresolved applicability. Never state a blanket no-refund rule or invent a cut-off/deadline. Use current operator-confirmed phone/online hours only as reported business facts, not as a live phone test. No same-day, fixed arrival, free delivery, setup, collection, proof-photo, affiliation, stock, or superior-quality promises unless independently supported."
+    },
+    {
+      "id": "R8",
+      "stage": "design before implementation; execute before completion",
+      "severity": "required",
+      "target": "additive Guro runtime and verification plan",
+      "requirement": "Plan a Guro-only explicit grouped-context mode. Keep facility identities and their individual legal units in the registry; representative unitKeys must equal the set-union of member units. Do not assign a fake composite address, choose one primary venue and silently discard the others, or change Gangseo v1 single-facility invariants. The office context requires an explicit non-physical-context representation; its descriptive receiving-address text must never become a street address in LocalBusiness/Place schema. Test candidate/intent uniqueness, unknown/duplicate members, mismatched unit union, source identity, anchor existence, legal/admin directory coverage, exact CTA destinations and old single-facility behavior."
+    }
+  ],
+  "recommendedInformationArchitecture": [
+    {
+      "slug": "guro-funeral-hospitals-condolence-wreath",
+      "titleDirection": "고려대학교 구로병원·구로성심병원 장례식장 근조화환",
+      "intent": "funeral-condolence-wreath",
+      "candidateIds": [
+        "korea-guro-funeral",
+        "guro-seongsim-funeral"
+      ],
+      "legalUnits": [
+        "구로동",
+        "고척동"
+      ],
+      "firstAnswerPurpose": "Calm condolence purpose, available real funeral-product choices and consultation; clearly say both named funeral destinations are covered by the guide without promising facility acceptance.",
+      "sectionOrder": [
+        "Condolence first answer and a short provider-led consultation CTA",
+        "Visible links to the two exact funeral-hall sections",
+        "The 4 verified funeral products with basic prices and specific detail links; choose by budget/photo, not inferred quality",
+        "Named hospital sections with concise road address and official room/floor facts; no real deceased or bereaved-person details",
+        "Ribbon examples clearly marked as examples, respectful tone and sender identity",
+        "One order bundle: actual funeral destination/room and recipient, relevant date/funeral departure information, product/budget, ribbon/sender, contact",
+        "Costs, arrangement variation, onsite receiving uncertainty and change/cancellation boundary at relevant points",
+        "A small set of non-redundant remaining questions and concise sources/date"
+      ],
+      "questions": [
+        {
+          "question": "Which guide applies to the funeral hall named in the notice?",
+          "basis": "Two individually sourced venue sections and anchors. B101 is officially B2 at Guro Hospital; Seongsim funeral hall is main-building B2 and externally operated.",
+          "nextAction": "Jump directly to the named section, then consult with actual room/time."
+        },
+        {
+          "question": "Which funeral product fits my budget?",
+          "basis": "B201 59,000; B203 79,000; B205 109,000; B060 149,000 KRW basic prices and real photos.",
+          "nextAction": "Open exact selected SKU or discuss total budget."
+        },
+        {
+          "question": "Can it arrive before the funeral departure?",
+          "basis": "Desired timing and current receiving conditions are consultation inputs; no guaranteed speed has been established.",
+          "nextAction": "Call 1844-0644 during reported hours; online order submission is not completion."
+        }
+      ]
+    },
+    {
+      "slug": "guro-wedding-venues-congrats-wreath",
+      "titleDirection": "구로·신도림 예식장 결혼 축하화환",
+      "intent": "wedding-congrats-wreath",
+      "candidateIds": [
+        "weddingcity-sindorim",
+        "ramada-sindorim-wedding",
+        "the-link-hotel-wedding",
+        "j-ostiel-tiffany",
+        "g-tower-convention"
+      ],
+      "legalUnits": [
+        "구로동",
+        "신도림동"
+      ],
+      "firstAnswerPurpose": "Congratulating the marrying couple, then choosing a real product and locating the invitation’s venue/hall. Friendly without inventing the sender’s memories or relationships.",
+      "sectionOrder": [
+        "Wedding first answer and provider-led product/phone CTA",
+        "Five individually named venue jump links",
+        "4 verified congrats products and basic-price choices",
+        "Five visible venue H2 sections containing each exact address, reliable hall/floor facts and local source attribution",
+        "Wedding ribbon examples and one concise invitation/date/time/recipient/product/contact order bundle",
+        "Actual total, timing consultation, arrangement variation and no separate collection at the point those decisions matter",
+        "Non-repeated questions about named venue/hall and schedule changes, sources/date"
+      ],
+      "questions": [
+        {
+          "question": "Where does the invitation’s venue/hall appear?",
+          "basis": "Five separate source-bound sections. Weddingcity Grand 11F vs Statis/Amor 8F; Link five distinct hall names; J-Ostiel Tiffany at the official building; G-Tower 2F Grand Ballroom.",
+          "nextAction": "Follow facility-name anchor, provide actual invitation details."
+        },
+        {
+          "question": "Does a more expensive venue require a more expensive wreath?",
+          "basis": "No source establishes such a rule; selection should stay within buyer budget and actual product photos/prices.",
+          "nextAction": "Compare C200/C203/C204/C205 or consult."
+        },
+        {
+          "question": "Does the hall information establish flower entry or removal?",
+          "basis": "No. Exterior/guest access and hall decoration do not establish external-wreath rules; fwith policy says no separate collection.",
+          "nextAction": "Consult receiving feasibility without promising setup/teardown."
+        }
+      ]
+    },
+    {
+      "slug": "guro-dong-digital-valley-office-wreath",
+      "titleDirection": "구로디지털단지 개업·이전 축하화환",
+      "intent": "opening-congrats-wreath",
+      "candidateIds": [
+        "guro-digital-valley-offices"
+      ],
+      "legalUnits": [
+        "구로동"
+      ],
+      "contextType": "Geographic office-gift context, no single delivery street address",
+      "firstAnswerPurpose": "Supporting a business’s new start or move; help choose the verified congrats product and occasion-specific wording.",
+      "sectionOrder": [
+        "Business congratulations purpose and consultation CTA",
+        "Real 4-product/basic-price comparison with actual-detail URLs",
+        "Opening vs relocation ribbon examples and neutral tone, no invented delivery story or industry caricature",
+        "Concise Guro 1st-complex vs Geumcheon 2nd/3rd-complex geography only as useful destination scope",
+        "Actual recipient company/building/floor/receiving date, total budget and contact in one order bundle",
+        "Cost/receiving/variation and change boundaries; documentation may be discussed but issuance methods must not be promised without evidence",
+        "Remaining intent-specific questions and direct sources/date"
+      ],
+      "questions": [
+        {
+          "question": "Is this a new opening or an office move?",
+          "basis": "Different ordinary ribbon examples fit the occasion without inventing business facts.",
+          "nextAction": "Choose a suitable example and provide exact company/sender text."
+        },
+        {
+          "question": "Is a G-Valley address automatically a Guro address?",
+          "basis": "Official Guro source distinguishes complex 1 in Guro from complexes 2/3 in Geumcheon.",
+          "nextAction": "Use receiving company’s actual address, not a representative complex address."
+        },
+        {
+          "question": "What is the full spend and receiving date for a company gift?",
+          "basis": "Displayed basic price is not a promised final total; building receiving rules and actual schedule remain specific.",
+          "nextAction": "Discuss total budget, date and any necessary proof-of-payment question without claiming unsupported invoicing policy."
+        }
+      ]
+    }
+  ],
+  "candidateTrace": [
+    {
+      "candidateId": "korea-guro-funeral",
+      "evidenceFacilityId": "korea-university-guro-funeral",
+      "name": "고려대학교 구로병원 장례식장",
+      "candidateAddress": "서울특별시 구로구 구로동로 148",
+      "candidateLegalDong": "구로동",
+      "candidateLegalDongCode": "1153010200",
+      "legalDongStatus": "Do not freeze from pending plan field; corroboration attachment and explicit status update required. Hospital government cross-check independently read.",
+      "recommendedCanonicalUrl": "/regions/guro-funeral-hospitals-condolence-wreath/",
+      "recommendedAnchor": "korea-guro-funeral",
+      "recommendedFacilityLink": "/regions/guro-funeral-hospitals-condolence-wreath/#korea-guro-funeral",
+      "sourceIdsPreserved": [
+        "kuro-funeral-map",
+        "kuro-funeral-facilities"
+      ],
+      "disposition": "Preserved in an individually named, server-rendered facility section; no source or identity loss."
+    },
+    {
+      "candidateId": "guro-seongsim-funeral",
+      "evidenceFacilityId": "guro-seongsim-funeral",
+      "name": "구로성심병원 장례식장",
+      "candidateAddress": "서울특별시 구로구 경인로 427",
+      "candidateLegalDong": "고척동",
+      "candidateLegalDongCode": "1153010600",
+      "legalDongStatus": "Do not freeze from pending plan field; corroboration attachment and explicit status update required. Hospital government cross-check independently read.",
+      "recommendedCanonicalUrl": "/regions/guro-funeral-hospitals-condolence-wreath/",
+      "recommendedAnchor": "guro-seongsim-funeral",
+      "recommendedFacilityLink": "/regions/guro-funeral-hospitals-condolence-wreath/#guro-seongsim-funeral",
+      "sourceIdsPreserved": [
+        "guroseongsim",
+        "guroseongsim-floor"
+      ],
+      "disposition": "Preserved in an individually named, server-rendered facility section; no source or identity loss."
+    },
+    {
+      "candidateId": "weddingcity-sindorim",
+      "evidenceFacilityId": "weddingcity-sindorim",
+      "name": "웨딩시티 신도림",
+      "candidateAddress": "서울특별시 구로구 새말로 97 신도림테크노마트",
+      "candidateLegalDong": "구로동",
+      "candidateLegalDongCode": "1153010200",
+      "legalDongStatus": "Do not freeze from pending plan field; corroboration attachment and explicit status update required. Hospital government cross-check independently read.",
+      "recommendedCanonicalUrl": "/regions/guro-wedding-venues-congrats-wreath/",
+      "recommendedAnchor": "weddingcity-sindorim",
+      "recommendedFacilityLink": "/regions/guro-wedding-venues-congrats-wreath/#weddingcity-sindorim",
+      "sourceIdsPreserved": [
+        "weddingcity-location",
+        "weddingcity-grand",
+        "weddingcity-statis",
+        "weddingcity-amor"
+      ],
+      "disposition": "Preserved in an individually named, server-rendered facility section; no source or identity loss."
+    },
+    {
+      "candidateId": "ramada-sindorim-wedding",
+      "evidenceFacilityId": "ramada-seoul-sindorim",
+      "name": "라마다 서울 신도림 호텔",
+      "candidateAddress": "서울특별시 구로구 경인로 624",
+      "candidateLegalDong": "신도림동",
+      "candidateLegalDongCode": "1153010100",
+      "legalDongStatus": "Do not freeze from pending plan field; corroboration attachment and explicit status update required. Hospital government cross-check independently read.",
+      "recommendedCanonicalUrl": "/regions/guro-wedding-venues-congrats-wreath/",
+      "recommendedAnchor": "ramada-sindorim-wedding",
+      "recommendedFacilityLink": "/regions/guro-wedding-venues-congrats-wreath/#ramada-sindorim-wedding",
+      "sourceIdsPreserved": [
+        "ramada-wed-map-http",
+        "ramada-wed-grand-http",
+        "ramada-wed-grace-http",
+        "ramada-wed-sky-http"
+      ],
+      "disposition": "Preserved in an individually named, server-rendered facility section; no source or identity loss."
+    },
+    {
+      "candidateId": "the-link-hotel-wedding",
+      "evidenceFacilityId": "the-link-seoul-wedding",
+      "name": "더 링크 호텔 웨딩",
+      "candidateAddress": "서울특별시 구로구 경인로 610 (신도림동 413-9)",
+      "candidateLegalDong": "신도림동",
+      "candidateLegalDongCode": "1153010100",
+      "legalDongStatus": "Do not freeze from pending plan field; corroboration attachment and explicit status update required. Hospital government cross-check independently read.",
+      "recommendedCanonicalUrl": "/regions/guro-wedding-venues-congrats-wreath/",
+      "recommendedAnchor": "the-link-hotel-wedding",
+      "recommendedFacilityLink": "/regions/guro-wedding-venues-congrats-wreath/#the-link-hotel-wedding",
+      "sourceIdsPreserved": [
+        "link-wedding",
+        "link-2",
+        "link-3",
+        "link-4",
+        "link-5",
+        "link-6"
+      ],
+      "disposition": "Preserved in an individually named, server-rendered facility section; no source or identity loss."
+    },
+    {
+      "candidateId": "j-ostiel-tiffany",
+      "evidenceFacilityId": "j-ostiel",
+      "name": "제이오스티엘",
+      "candidateAddress": "서울특별시 구로구 경인로 565 삼영빌딩 2층",
+      "candidateLegalDong": "구로동",
+      "candidateLegalDongCode": "1153010200",
+      "legalDongStatus": "Do not freeze from pending plan field; corroboration attachment and explicit status update required. Hospital government cross-check independently read.",
+      "recommendedCanonicalUrl": "/regions/guro-wedding-venues-congrats-wreath/",
+      "recommendedAnchor": "j-ostiel-tiffany",
+      "recommendedFacilityLink": "/regions/guro-wedding-venues-congrats-wreath/#j-ostiel-tiffany",
+      "sourceIdsPreserved": [
+        "jostiel-map",
+        "jostiel-tiffany"
+      ],
+      "disposition": "Preserved in an individually named, server-rendered facility section; no source or identity loss."
+    },
+    {
+      "candidateId": "g-tower-convention",
+      "evidenceFacilityId": "g-tower-convention",
+      "name": "지타워컨벤션",
+      "candidateAddress": "서울특별시 구로구 디지털로26길 38 G-TOWER 2층",
+      "candidateLegalDong": "구로동",
+      "candidateLegalDongCode": "1153010200",
+      "legalDongStatus": "Do not freeze from pending plan field; corroboration attachment and explicit status update required. Hospital government cross-check independently read.",
+      "recommendedCanonicalUrl": "/regions/guro-wedding-venues-congrats-wreath/",
+      "recommendedAnchor": "g-tower-convention",
+      "recommendedFacilityLink": "/regions/guro-wedding-venues-congrats-wreath/#g-tower-convention",
+      "sourceIdsPreserved": [
+        "gtower-reservation"
+      ],
+      "disposition": "Preserved in an individually named, server-rendered facility section; no source or identity loss."
+    },
+    {
+      "candidateId": "guro-digital-valley-offices",
+      "evidenceFacilityId": "guro-digital-complex-opening",
+      "name": "구로디지털단지 사무실",
+      "candidateAddress": "서울특별시 구로구 구로동 서울디지털산업단지 1단지 내 받는 회사의 실제 주소",
+      "candidateLegalDong": "구로동",
+      "candidateLegalDongCode": "1153010200",
+      "legalDongStatus": "Do not freeze from pending plan field; corroboration attachment and explicit status update required. Hospital government cross-check independently read.",
+      "recommendedCanonicalUrl": "/regions/guro-dong-digital-valley-office-wreath/",
+      "recommendedAnchor": "guro-digital-valley-offices",
+      "recommendedFacilityLink": "/regions/guro-dong-digital-valley-office-wreath/#guro-digital-valley-offices",
+      "sourceIdsPreserved": [
+        "guro-valley",
+        "guro-entry"
+      ],
+      "disposition": "Preserved in an individually named, server-rendered facility section; office is a geographic purchase context, not a physical facility."
+    }
+  ],
+  "directlyChecked": [
+    "Read original local candidate-plan rev2 and strategy/copy acceptance documents at controls HEAD ef9ae159848cc96cf292c89c4c238755f186862e; hashes recorded below.",
+    "Read local original HTML/text for the facility facts, including Guro Hospital B2/1F/2F rooms; Seongsim main-building B2; Weddingcity three explicit hall-floor labels; Ramada and Link hall names; J-Ostiel address/Tiffany; G-Tower actual 2F address and passenger directions.",
+    "Read original 2026 Guro government hospital table: 구로동로148(구로동), 경인로427(고척동). Read original Guro digital-valley HTML table: complex1 Guro, complexes2/3 Geumcheon. Did not infer flower permission from either.",
+    "Recounted local official-package extract rows: 10 legal dongs, 16 administrative dongs, 18 relationships, excluding the district row. Read membership JSON. Did not freshly download the ZIP.",
+    "Independently opened five competitor original pages with web.run and inspected body/FAQ, not only search-result titles. Read location errors, advertised policies, product options, and unrelated filler; their claims are not adopted as ours.",
+    "Independently searched four actual query variants for the two funerals, Guro wedding wreaths and Guro digital-complex moving wreaths. This checks examples of results, not demand size, rank performance or comprehensive coverage.",
+    "Read all eight stored official product HTML/text snapshots; their SHA256 values equal catalog readback hashes and each contains the expected name/price. Opened both original policy-image pixels and inspected the refund exceptions, completed-flower restriction, post-dispatch wording, mixed fresh/artificial composition and no-separate-collection rule. Individual product-photo pixels were not independently re-opened in this plan review.",
+    "Opened Seoul cultural event originals for 2025 Guro arts and Oryu events: event-interior flower/wreath prohibition exists. It is not proof of a building-wide or all-future-events ban. Opened the official Gocheok dome information page successfully through web.run; earlier Python502 does not establish total unavailability.",
+    "Read the reused Gangseo regions.mjs, sources.mjs, directory-links.mjs, RegionDirectory.astro and relevant tests. Verified existing code expects a single facility/unit per v1 representative and HTTPS source URLs, and the directory enumerates partial legal/admin relationships."
+  ],
+  "toolReportedNotIndependentlyEstablished": [
+    "Historical HTTP status/check timestamps in other-worker source logs remain collector reports; this reviewer independently inspected their saved bytes and exact contents where stated, not every fresh network response.",
+    "External GitHub repository license/maintenance metadata in reuse-review.json was read as a prior research report. Direct web opening of github.com/nereast/florella failed. No external code adoption is proposed or approved.",
+    "Business sourceLevel operator_confirmed, phone08:00–23:00 and online24h were read from the existing business-truth.json. Reviewer did not telephone the operator or verify live fulfilment operations."
+  ],
+  "unverifiedAndFailed": [
+    "Per-candidate legal-dong status is still pending in the reviewed plan; the researcher is updating corroboration. A later message does not retroactively pass this exact digest.",
+    "External-wreath acceptance, event-day receiving contacts, unloading, setup, removal and order-time availability are not established for these venue candidates.",
+    "Reviewer HTTPS opens: m.j-ostiel.co.kr/home/info/230 returned502; /2087 timed out; www.j-ostiel.co.kr/home/info/230 cache miss; ramadasindorimwed.com/page/directions returned502. Weddingcity and Seongsim web opens returned403, but original local publicGET snapshots were inspected. Failure of one tool is not claimed as proof the venue is unavailable.",
+    "Ramada 14층 exact customer-facing source statement was not found in the candidate-bound raw text. Asset filename14f is insufficient to promote the claim to direct confirmation.",
+    "Full customer copy, actual grouped runtime, build, rendered HTML, mobile/desktop UI, public HTTP deployment, sitemap/canonical/404 and search submission do not exist for this review phase and were not passed."
+  ],
+  "competitionOriginals": [
+    {
+      "url": "https://js-flower-seoul.kr/guro-condolence-wreath/",
+      "inspection": "Original body/FAQ; the page labels Seongsim 개봉동 and makes time/placement/product-volume claims. Our direct official cross-check shows 고척동; preserve correct facts and avoid copying unsupported service assertions."
+    },
+    {
+      "url": "https://www.1588-6790.com/product/a25b2285/",
+      "inspection": "Original product and long sales body; groups Ramada/Technomart but emphasizes service, speed and exclusivity. Useful question categories do not support our making the same claims."
+    },
+    {
+      "url": "https://ramadasd.theflora.co.kr/portfolio_page/",
+      "inspection": "Original venue/wreath guide and FAQ; broad etiquette content and operator-specific installation/photos/collection/payment statements. Do not pad our buying guide with guest etiquette or inherit policies."
+    },
+    {
+      "url": "https://xn--hq1bj06a.kr/congrats-wreath/seoul-gurogu-opening",
+      "inspection": "Original office-opening article, ribbons, disclosed example case and pricing. Extract only unanswered purchase questions; do not copy example delivery narratives, timing/installation promises or price-quality claims."
+    },
+    {
+      "url": "https://xn--9m1bt77dma.com/area/guro",
+      "inspection": "Original region directory, facilities and FAQ. Count/price labels and potentially duplicated venue representations need care. Our plan should make exact facility identity, current SKU price and route/section completeness inspectable."
+    }
+  ],
+  "plannedFinalVerification": [
+    "Freeze only the selected article denominator, canonical URLs, candidate memberships, retained holds and plan digest after the revised plan passes; 8 is a candidate inventory, not an article quota.",
+    "Review final customer text separately for fact validity, unique decision value, provider voice, empathy/small talk, teaching tone, repeated warnings and invented promises. Compare sibling pages beyond exact-string matching and report concrete repeated blocks.",
+    "Measure raw contentMarkdown and visible unique body separately from firstAnswer/body/FAQ totals, excluding shared menus/cards/footer/banners. A number alone is not a pass.",
+    "Run positive/negative grouped-mode tests and unchanged single-facility regression tests. Candidate and legal-unit unions, unique anchors, official source bindings, context/product families and article parity must be exact.",
+    "Inspect actual rendered title/H1/H2/H3/meta, canonical/robots/sitemap/404, visible FAQ question and answer, individual product image/detail CTA, correct tel CTA, all 8 candidate anchors and Guro/Gocheok/Sindorim legal/admin links. Inspect desktop/mobile actual screens or record an applicable authorized deferral honestly.",
+    "Bind final copy digest, implementation revision, tests, build and eventual public responses. Current preparation authorization does not authorize a Guro deployment trigger or provider mutation."
+  ],
+  "inputManifest": [
+    {
+      "file": "candidate-plan.json",
+      "sha256": "5c5f7dca1cc39377fa0cc6b829c946f70cc447bc5afe2d25df1ef240ea091e2c"
+    },
+    {
+      "file": "candidate-plan.rev1.json",
+      "sha256": "7278061174a74d86b63b36f66d57e49a3b8253f366fca15249f1ce575579cd27"
+    },
+    {
+      "file": "facilities.json",
+      "sha256": "bd67209f83401b88eccc1d4383bb7db3b6547b7d2d4456339184df6c68defc57"
+    },
+    {
+      "file": "http_sources.json",
+      "sha256": "87fb8d41cdf68461520bbc5a2e400722afe990d1b2702917fa901b40a5cf9e08"
+    },
+    {
+      "file": "membership.json",
+      "sha256": "473deef48a3129ff02d19630771bae3acd48e41222681a1b628da3cab1d6faab"
+    },
+    {
+      "file": "search-intent-preplan.json",
+      "sha256": "108da334b8eb9b4f6f31c8808ae34210de05bba771bf07012a232d67a8346c79"
+    },
+    {
+      "file": "catalog-current-readback.json",
+      "sha256": "a6c30099074dbe74309186bc93e6a2f4d3abe772942be8df42832c09441e352b"
+    },
+    {
+      "file": "reuse-review.json",
+      "sha256": "215e92c8353d2f27fee763dbd3350880c084a66f0da1f59dd1c221c9b9625c4e"
+    },
+    {
+      "file": "preflight-and-internal-audit.json",
+      "sha256": "6bbabd56b1c300370e4bf449d6ad57d744a27a17e2930575a43a38a42723caf5"
+    },
+    {
+      "file": "additional-official-sources.json",
+      "sha256": "9dbd73a2ea36ddc08b5fbf8381641bd53098eab779a69e525f677399973da8bf"
+    },
+    {
+      "file": "KIKcd_B.20261012.txt",
+      "sha256": "2211c37c536ed2034899af39e643bea17645f8468e40f7755e2f816d54f3bcce"
+    },
+    {
+      "file": "KIKcd_H.20261012.txt",
+      "sha256": "a6f516c8165872a078267e691ef37c8db0b9aa0ce9edf7cc66b5033dc24f41e6"
+    },
+    {
+      "file": "KIKmix.20261012.txt",
+      "sha256": "6662fd0a0149b0e4204d5e815dbf0ad91a4db17258a574d071d56a0d27569396"
+    }
+  ],
+  "policyManifest": [
+    {
+      "file": "SEARCH_CONTENT_STRATEGY.md",
+      "sha256": "62793bfc6e38746c3ef18bf0e148806214211e78e5b1433279cb22d5b7d307a8"
+    },
+    {
+      "file": "SALES_COPY_ACCEPTANCE.md",
+      "sha256": "ad16cb2f4c34a2d47468850e70440790181ff5da67afc212f544e37170e850e0"
+    }
+  ],
+  "modificationsByReviewer": "Only new independent review artifact/script in guro-evidence. No author evidence, source implementation, repository commit/push or external state modified."
+}
