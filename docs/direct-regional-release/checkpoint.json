@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-12T02:34:19.419Z",
+  "updatedAt": "2026-10-12T03:11:29.665Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -29745,7 +29745,21 @@
       "visualQa": "DEFERRED_NOT_PASS",
       "providerGetAndNoOverride": "REQUIRED_IN_EXISTING_WORKFLOW",
       "searchReceipt": "REQUIRED_NO_DUPLICATE_POST",
-      "gscCurrentService": "payment_required; reuse verified existing registration where applicable"
+      "gscCurrentService": "payment_required; reuse verified existing registration where applicable",
+      "actualRuns": [
+        {
+          "region": "pyeongtaek",
+          "runId": 38198341212,
+          "conclusion": "success",
+          "publicIndependentQa": "pending"
+        },
+        {
+          "region": "yeoju",
+          "runId": 38198402447,
+          "conclusion": "success",
+          "publicIndependentQa": "pending"
+        }
+      ]
     }
   },
   "independentPreparations": [
@@ -32330,7 +32344,7 @@
     },
     {
       "regionKey": "seoul-mapo",
-      "status": "SOURCE_SAVED_EXACT_PRODUCTION_REVALIDATION_PENDING",
+      "status": "exact_source_production_verified_publication_intent_saved",
       "scope": "seoul-mapo-direct-initial-20261011",
       "officialCode": "11440",
       "repository": "joseungil-kr/fwith-site-factory",
@@ -33616,6 +33630,50 @@
         "reviewSha256": "c7ca45d8f8ef442ac1e23dd74b410f1af3b1316c5b0c84abfc03d5126605fda0",
         "sourceSha": "fd14a190cb853607a8ae743da5068208409746ef",
         "commit": "7bc9431985a7e21aa4c102fea4fdfe8885916fd5"
+      },
+      "exactSourceLocalProduction": {
+        "sourceRevision": "fd14a190cb853607a8ae743da5068208409746ef",
+        "independentReviewSha256": "0250cf9dd9ee8d4f5a6c1cf8a8281a981baa7e2089cc7f358cd75fcc6d9e9aa0",
+        "productionEvidenceSha256": "06aab1db06edc311ae6d50ef6c3e85ac111e3c7a936004a61105166faa39c82e",
+        "sourceFiles": 70,
+        "artifactFiles": 22,
+        "normalHtml": 5,
+        "errorHtml": 1,
+        "articles": 3,
+        "productCards": 12,
+        "sitemapUrls": 5,
+        "fullCheckFiles": 39,
+        "fullCheckErrors": 0,
+        "independentAssertions": 455,
+        "status": "PASS_EXACT_SOURCE_LOCAL_PRODUCTION",
+        "hostedVerified": false
+      },
+      "publicationIntent": {
+        "recordedAt": "2026-10-12T03:11:29.665Z",
+        "action": "dispatch_exact_reviewed_direct_workflow_once_then_verify_public_and_submit_sitemap",
+        "workflow": ".github/workflows/seoul-mapo-direct-publish.yml",
+        "ref": "main",
+        "sourceRevision": "fd14a190cb853607a8ae743da5068208409746ef",
+        "indexnow_only": false,
+        "idempotencyKey": "seoul-mapo:publish:fd14a190cb853607a8ae743da5068208409746ef",
+        "dispatchPerformed": false,
+        "activeMatchingRuns": 0,
+        "providerCollisionCheck": "required_workflow_GET_fail_closed_no_override",
+        "gsc": {
+          "property": "sc-domain:fwith.kr",
+          "sitemap": "https://seoul-mapo.fwith.kr/sitemap-index.xml",
+          "action": "reuse_existing_registration_or_submit_once_after_public_HTTP_QA_then_readback",
+          "route": "official_existing_authenticated_GSC_UI",
+          "submissionPerformed": false
+        },
+        "owner": {
+          "checkpointId": "mapo-direct-publication-20261012T0311Z",
+          "serviceInvocationId": null,
+          "active": true,
+          "mainWriter": "root",
+          "dispatchExecutor": "delegated_single_executor"
+        },
+        "visualQa": "DEFERRED_NOT_PASS"
       }
     }
   ]
