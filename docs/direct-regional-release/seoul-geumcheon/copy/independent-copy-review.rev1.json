@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "independent_customer_copy_review",
+  "revision": 1,
+  "reviewer": "/root/review_geumcheon_regional_plan",
+  "author": "/root/prepare_geumcheon_regional_plan",
+  "checkedAt": "2026-10-12T21:24:37.394061+00:00",
+  "verdict": "REVISE",
+  "copyPath": "/workspace/shared/geumcheon-evidence/copy/geumcheon-copy.rev1.json",
+  "copySha256": "2eadb1eea876f4ba41695c7e00b5bd7f337567c7377c5205cd28d71f4ab8b5bf",
+  "scope": "Customer-copy draft only, including every proposed visible shared string. No edit to author copy, implementation, browser rendering, publication or remote action.",
+  "boundPlan": {
+    "approvedPlanSha256": "95c2f8a46b62c90e1e5bb81f17a31b8794ff1c184820f5ceaebcdcfeaabdfae0",
+    "fixedPlanSha256": "4371357faa2f5ff54d31689ec270f8cf8a5da76e7faa73a4e937f90ee6cecc37",
+    "planReviewSha256": "2af5ea5973851904f8f77849dcea0da6188a7058da20201840f043dc0faf987f",
+    "planDocumentationCommit": "56c4c27ae9fa98b28cd0a03fcadf128c2384bd13"
+  },
+  "separateJudgments": {
+    "tone": {
+      "verdict": "REVISE",
+      "summary": "Generally calm and provider-led, with appropriate brief condolence empathy and no fabricated memory or experience. Repeated budget/scheduling consultation prompts and an immediate repeat of the order-list request need consolidation to meet the one-brief/no-repeat instruction."
+    },
+    "facts": {
+      "verdict": "REVISE",
+      "summary": "Venue, product, material, price and qualified refund facts pass against originals. The specific interaction claim that product names open item pages is not supported by the draft links or exact reused card component."
+    },
+    "intentCompleteness": {
+      "verdict": "PASS_FOR_DRAFT_STRUCTURE",
+      "summary": "The article answers product, budget, destination, wording, one order brief, timing, materials/collection and changes/refund decisions. Three FAQs have identifiable additional roles. Actual CTA operation, visible FAQ, card placement and delivery capability are not verified."
+    },
+    "semanticDuplication": {
+      "verdict": "ACCEPTABLE_SCOPE_WITH_REPETITION_REVISION",
+      "summary": "Guro/Gangseo share the same four products, budget comparison, sympathy ribbons, order inputs and business policies. Those facts must remain consistent. Geumcheon has two different registry-bound destinations in a single canonical answer and newly explicit dated registry context, backing-paper FAQ and fuller qualified refund explanation. It is not a new Gasan opening page or one-per-venue split. Several consultation sentences merely restate shared generic advice; C2 removes that padding. No claimed word-count or lexical score establishes independent usefulness."
+    },
+    "sharedCopyAndAssets": {
+      "verdict": "PASS_FOR_DRAFT_CONTRACT",
+      "summary": "Home/directory/navigation/footer/404 are funeral-only. Four B-SKU cards and exact item CTAs match. Three reusable banner assets, filenames, alt strings and caption match approved source bytes/text; directory/404 declare zero marketing banners, directory declares one card and noindex. These are draft/source checks, not rendered-output findings."
+    }
+  },
+  "requiredFixes": [
+    {
+      "id": "C1",
+      "severity": "blocking",
+      "category": "factual interaction wording",
+      "location": "article.contentMarkdown / 예산에 맞춰 준비하는 근조화환 / first paragraph",
+      "quote": "상품 이름을 누르면 꽃이랑 공식몰의 해당 상품 상세페이지로 연결됩니다.",
+      "evidence": "The four body SKU names use Markdown bold, not links. The only Markdown link in the body is the phone CTA. At Guro source 500d82d..., ProductCards.astro renders the product name as an unlinked h3 and provides a separate product-order anchor. The draft card CTA URLs themselves are correct.",
+      "requiredChange": "Refer accurately to each product’s 상품 확인·주문 button, or add explicit four exact-SKU links to the named text and make the intended interaction unambiguous. Do not claim that a future rendered link works before implementation/output verification."
+    },
+    {
+      "id": "C2",
+      "severity": "blocking",
+      "category": "repeated customer instructions and padding",
+      "locations": [
+        "article.contentMarkdown / product budget section / final sentence",
+        "article.contentMarkdown / 상품 기본가격과 최종 결제금액 / second paragraph",
+        "article.contentMarkdown / 주문 상담은 필요한 내용을 한 번에 / paragraph immediately after the input list"
+      ],
+      "examples": [
+        "예산과 원하시는 상품을 기준으로 주문을 상담해 드립니다.",
+        "주문을 결정하시기 전에 받는 장소와 희망 날짜를 기준으로 금액과 가능한 일정을 상담하실 수 있습니다. 아직 상품번호를 정하지 않으셨어도 예산부터 문의하시면 됩니다.",
+        "발인 시간을 알고 계시면 희망 전달 시간과 함께 말씀해 주세요."
+      ],
+      "finding": "The product introduction/first answer already offer budget-and-product help; the total-cost section already explains the distinct delivery-inclusive budget. The order list immediately above the last example already asks for both desired delivery and known departure times. Repeating those asks adds no decision or evidence and shifts the copy back toward repeated customer homework.",
+      "requiredChange": "Consolidate budget/help reassurance into the place where it changes the decision, and keep timing inputs in the one order brief. Retain the useful distinction between product price and final total, and retain the clear caveat that reception does not fix arrival time. Remove or combine the redundant sentences rather than replacing them with new generic emotion, local anecdotes or extra warnings. It is acceptable for the honest body count to fall slightly below the drafting target if no actual question is left unanswered."
+    }
+  ],
+  "nonblockingEditorialNotes": [
+    {
+      "location": "article.contentMarkdown / 조의 리본에 담는 짧은 인사",
+      "note": "The final sentence about reusing/changing example text repeats the previous paragraph’s customization invitation. Consider consolidating; neutral religious-expression FAQ still has a defined purpose."
+    },
+    {
+      "location": "article.contentMarkdown / 꽃 구성과 수거 안내",
+      "note": "After stating no collection and the recipient’s post-event handling, the last sentence re-explains why the no-collection disclosure matters. It may be shortened without hiding this important limit."
+    },
+    {
+      "location": "article.firstAnswer",
+      "note": "The conditional short sympathy sentence is not a fabricated emotion, but a provider-led reassurance would read more naturally than telling the reader to begin thinking about an greeting. This is a refinement, not a new factual service promise."
+    },
+    {
+      "location": "common.productSharedNotice and common.inlineOrder",
+      "note": "Full versus compact/shared notice placement is not implemented. At rendering, avoid repeating the complete material/fee notice and full budget request next to a body that just explains them; use the existing body-covered/compact treatment where appropriate. All final visible variants need copy binding."
+    }
+  ],
+  "confirmedFacts": [
+    {
+      "classification": "직접 확인",
+      "subject": "Venue identity and date",
+      "finding": "Original MOHW CSV records 19 and 20 support the exact two named registered addresses. Body and source note correctly say 2026-04-01 registry basis. The draft does not state that the October read proves current operation or that wreath acceptance is guaranteed. Footer distinguishes this shop guide from the venues’ official sites."
+    },
+    {
+      "classification": "직접 확인",
+      "subject": "Four product cards",
+      "finding": "B201/B203/B205/B060 names, KRW 59000/79000/109000/149000 basic prices, official image URLs and all four exact SKU CTA URLs match previously independently fetched official originals. Re-viewed all four actual product pixels; colour-only descriptions fit. No height, count, quality, lifespan or stock inference appears."
+    },
+    {
+      "classification": "직접 확인",
+      "subject": "Material and collection policy",
+      "finding": "Re-viewed actual order-top2 image pixels. Mixed fresh/artificial material, no separate collection, and regional backing-paper variation unrelated to quality are supported. Conditional recipient/family handling is not falsely attributed as a specific venue policy."
+    },
+    {
+      "classification": "직접 확인",
+      "subject": "Refund policy",
+      "finding": "Re-viewed actual de_change_content image pixels. Defect/damage/wholly different item refund grounds are preserved; material substitutions are distinguished; delivery unavailable/no stock after payment is a stated full-refund condition. Production-completed, elapsed-delivery-time, wrong-address/refusal and post-shipment terms remain explicitly stage-qualified. The draft does not create an unconditional cancellation deadline/right. This is review against the merchant notice, not a legal-validity judgment."
+    },
+    {
+      "classification": "직접 확인",
+      "subject": "Phone and reception",
+      "finding": "1844-0644 matches official product-page text. 08:00–23:00 phone / 24-hour online reception is retained from exact operator_confirmed business-truth.json, explicitly separated from delivery timing. It is not presented in the evidence map as a freshly verified hours claim."
+    },
+    {
+      "classification": "직접 확인",
+      "subject": "All visible draft surfaces",
+      "finding": "Read article title, h1, description, card summary, first answer, full body, all FAQ, sources and CTAs; common.home, directory, navigation, inlineOrder, all four productCards, productSharedNotice, footer, errorPage, and sharedBanners. No held venue, wedding/office claim, empty service hub or cross-region sales link is introduced."
+    }
+  ],
+  "faqReview": [
+    {
+      "question": "늦은 밤에도 온라인으로 주문할 수 있나요?",
+      "judgment": "Adds exact support/reception hours and distinguishes late online reception from dispatch. Some timing caveat overlaps the body, but the new practical question justifies the short answer."
+    },
+    {
+      "question": "리본에 종교적인 표현을 넣고 싶지 않아요.",
+      "judgment": "Adds an explicit nonreligious-expression choice rather than merely repeating a general ribbon list. Examples are common language, not a claim about a recipient’s religion."
+    },
+    {
+      "question": "화환 뒤쪽의 종이가 사진과 달라도 되나요?",
+      "judgment": "Adds a distinct backing-paper question and directly supported answer not otherwise explained in the main body. No physical product quality guarantee is inferred beyond attributed official notice."
+    }
+  ],
+  "metrics": {
+    "independentMethod": "Unicode codepoints after removing Markdown headings, bold delimiters, link destinations, and leading list-marker hyphens; normalize whitespace. Keep heading text; exclude common UI, cards, navigation/footer. FAQ separate.",
+    "independentlyComputed": {
+      "firstAnswer": {
+        "includingNormalizedSpaces": 154,
+        "excludingWhitespace": 122
+      },
+      "mainBodyIncludingHeadings": {
+        "includingNormalizedSpaces": 2582,
+        "excludingWhitespace": 1965
+      },
+      "faqQuestionsAndAnswers": {
+        "includingNormalizedSpaces": 435,
+        "excludingWhitespace": 334
+      },
+      "combinedArticleText": {
+        "includingNormalizedSpaces": 3173,
+        "excludingWhitespace": 2421
+      }
+    },
+    "authorReported": {
+      "copySha256": "2eadb1eea876f4ba41695c7e00b5bd7f337567c7377c5205cd28d71f4ab8b5bf",
+      "method": "Unicode codepoints after removing Markdown markup and link destinations; whitespace normalized to single spaces. Common UI, product-card descriptions, navigation and footer are excluded from article text counts. FAQ is separate.",
+      "firstAnswer": {
+        "visibleCharactersIncludingSpaces": 154,
+        "visibleCharactersExcludingWhitespace": 122
+      },
+      "mainBodyIncludingHeadings": {
+        "visibleCharactersIncludingSpaces": 2590,
+        "visibleCharactersExcludingWhitespace": 1969
+      },
+      "faqQuestionsAndAnswers": {
+        "visibleCharactersIncludingSpaces": 435,
+        "visibleCharactersExcludingWhitespace": 334
+      },
+      "combinedArticleText": {
+        "visibleCharactersIncludingSpaces": 3181,
+        "visibleCharactersExcludingWhitespace": 2425
+      },
+      "targetInterpretation": "Main body roughly 2500–3000 visible characters is an information target, not ranking evidence or an acceptance threshold. Combined first answer/body/FAQ is separately reported.",
+      "productCards": 4,
+      "skuList": [
+        "B201",
+        "B203",
+        "B205",
+        "B060"
+      ],
+      "faqCount": 3,
+      "heldDestinationsInActiveArticle": 0,
+      "candidateCount": 2,
+      "runtimeHtmlVerified": false,
+      "commonVisibleTextReviewedByAuthor": true
+    },
+    "differenceExplanation": "Author main-body 2590 versus reviewer 2582, and combined 3181 versus reviewer 3173, are explained by the four leading Markdown list markers (- plus a space). Clarify the method or update counts on revision; this 8-character difference is not a quality blocker or ranking issue. Counts measure text length, not original information."
+  },
+  "evidence": {
+    "reviewedFiles": [
+      {
+        "path": "/workspace/shared/geumcheon-evidence/candidate-plan-revised.json",
+        "sha256": "95c2f8a46b62c90e1e5bb81f17a31b8794ff1c184820f5ceaebcdcfeaabdfae0"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/fixed-plan.json",
+        "sha256": "4371357faa2f5ff54d31689ec270f8cf8a5da76e7faa73a4e937f90ee6cecc37"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/independent-review-revised.json",
+        "sha256": "2af5ea5973851904f8f77849dcea0da6188a7058da20201840f043dc0faf987f"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/copy/copy-facts-map.rev1.json",
+        "sha256": "664c48d8b14afa01e7edb463dbf228fd3076c210996416ae44648995955de5d3"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/copy/copy-metrics.rev1.json",
+        "sha256": "ff635e1b086c68120f96a6e01e4b8ac56c4145fb4e24955fffec76f854585517"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/business-policy-facts.json",
+        "sha256": "4d8be9ec66f65a6cb9ba3e173c06675bca5767f79e744d13ec1a2ba9a2de2686"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/supplemental-mohw-registry.json",
+        "sha256": "6c4e31c657fa10386ebb20baf436ba045c41799e1d03bfc5642d1e686266d9c9"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/raw/mohw-funerals-20260401.csv",
+        "sha256": "fcf4911ed271cfbc364d2005c3ad02a5e821d3946fdf80b5119e36dfaadccd4b"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/catalog/order-top2.jpg",
+        "sha256": "24c11e1cc413d3f64ad05145fdc0fb4171c8f3e618d4351609777f8e2ff43bc3"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/catalog/de_change_content.jpg",
+        "sha256": "02701dd33c2a09258a882873df005dbe616842c2add159a08d618b68a934944c"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reviewer/catalog-independent-readback.json",
+        "sha256": "01634117af21ef7e2523a5f1db27a1b3a8c092ac9d9ef61939ee3b6733158d85"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/src/data/business-truth.json",
+        "sha256": "4614bca62b8c25760d56bf9500353c8574cac77d9ce737db0c8eacdb79fe2362"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/src/components/SharedFlowerBanner.astro",
+        "sha256": "bffdc5a802a911d688e388faa55ece9e1bf6b00e04c8fab0873e779b35702f74"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-evidence/reuse/src/lib/directory-banner-split.mjs",
+        "sha256": "04ed49395e2a3458c9b01c74eff57f425ed693e9f713b59bfe7343a4c433a19c"
+      }
+    ],
+    "products": [
+      {
+        "sku": "B201",
+        "name": "근조 3단 화환",
+        "basicPriceKRW": 59000,
+        "officialUrl": "https://fwith.co.kr/shop/item.php?it_id=B201",
+        "ctaUrl": "https://fwith.co.kr/shop/item.php?it_id=B201",
+        "imagePath": "/workspace/shared/geumcheon-evidence/catalog/B201.jpg",
+        "imageSha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+        "actualPixelsViewed": true
+      },
+      {
+        "sku": "B203",
+        "name": "근조 고급 3단 화환",
+        "basicPriceKRW": 79000,
+        "officialUrl": "https://fwith.co.kr/shop/item.php?it_id=B203",
+        "ctaUrl": "https://fwith.co.kr/shop/item.php?it_id=B203",
+        "imagePath": "/workspace/shared/geumcheon-evidence/catalog/B203.jpg",
+        "imageSha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+        "actualPixelsViewed": true
+      },
+      {
+        "sku": "B205",
+        "name": "근조 특대 3단 화환",
+        "basicPriceKRW": 109000,
+        "officialUrl": "https://fwith.co.kr/shop/item.php?it_id=B205",
+        "ctaUrl": "https://fwith.co.kr/shop/item.php?it_id=B205",
+        "imagePath": "/workspace/shared/geumcheon-evidence/catalog/B205.jpg",
+        "imageSha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+        "actualPixelsViewed": true
+      },
+      {
+        "sku": "B060",
+        "name": "근조 특특대 3단 화환",
+        "basicPriceKRW": 149000,
+        "officialUrl": "https://fwith.co.kr/shop/item.php?it_id=B060",
+        "ctaUrl": "https://fwith.co.kr/shop/item.php?it_id=B060",
+        "imagePath": "/workspace/shared/geumcheon-evidence/catalog/B060.jpg",
+        "imageSha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+        "actualPixelsViewed": true
+      }
+    ],
+    "crossRegionOriginals": [
+      {
+        "sourceCommit": "500d82d01c1cdaed3ebde047bb3ce056705daac1",
+        "path": "site-factory/seoul-guro-flower/src/data/pages.json",
+        "sha256": "1d186a5e46d42a1185180d79a97065b7d08a8a8c3d90cada6a0cc2d64ffce1f6",
+        "scopeRead": "Actual funeral article title, first answer, entire body and FAQ from the exact Git object"
+      },
+      {
+        "sourceCommit": "f7f2b9d017b8b8352aae8b0339b5a2cac0da1d32",
+        "path": "site-factory/seoul-gangseo-flower/src/data/pages.json",
+        "sha256": "3455e419c2e2d03d42c5536180bab2ad04b56f6d97af8b081175a73617a9a052",
+        "scopeRead": "Actual funeral article title, first answer, entire body and FAQ from the exact Git object"
+      }
+    ],
+    "bannerAssets": [
+      {
+        "variant": "message",
+        "sourceAsset": "/workspace/shared/guro-factory/site-factory/seoul-guro-flower/public/images/shared-banners/flower-message.webp",
+        "sha256": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+        "altExactlyMatchesApprovedComponent": true
+      },
+      {
+        "variant": "budget",
+        "sourceAsset": "/workspace/shared/guro-factory/site-factory/seoul-guro-flower/public/images/shared-banners/flower-budget.webp",
+        "sha256": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+        "altExactlyMatchesApprovedComponent": true
+      },
+      {
+        "variant": "consultation",
+        "sourceAsset": "/workspace/shared/guro-factory/site-factory/seoul-guro-flower/public/images/shared-banners/flower-consultation.webp",
+        "sha256": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+        "altExactlyMatchesApprovedComponent": true
+      }
+    ],
+    "reusedProductCardPath": "500d82d01c1cdaed3ebde047bb3ce056705daac1:site-factory/seoul-guro-flower/src/components/ProductCards.astro"
+  },
+  "unverifiedAndLimits": [
+    "No runtime or rendered page exists in this review scope. FAQ visibility, heading levels, actual anchors, buttons, banner spacing, noindex/canonical/sitemap, accessibility/responsiveness and true 404 behaviour must be verified later.",
+    "No live funeral operation, specific-room state, acceptance, promised installation, delivery timing, stock or fulfilment has been established.",
+    "Merchant hours originate from retained operator-confirmed repository facts; no independent new hours confirmation occurred.",
+    "No publication, order, venue contact, repository/source write, workflow dispatch or indexing action was performed."
+  ],
+  "resubmission": "Keep rev1 and this review unchanged. Submit revised full article/common copy and updated facts map/metrics under a new digest. Re-read all changed and surrounding text before a new verdict; the plan PASS does not pre-pass the copy.",
+  "actionBoundary": {
+    "authorCopyEdited": false,
+    "runtimeStarted": false,
+    "remoteWrites": 0,
+    "publicationApproved": false
+  }
+}

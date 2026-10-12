@@ -1,7 +1,8 @@
 # 금천구 계획 준비
 
-금천구(11545)의 계획 준비만 완료했습니다. 독립 검토를 통과한 N1 계획을 동결했으며, 고객 원고·사이트 소스·배포는 시작하지 않았습니다.
+금천구(11545)의 N1 계획과 고객용 원고 준비를 완료했습니다. 계획 동결 뒤 작성한 고객 원고 revision 2가 독립 전문 검토를 통과했습니다. 실제 사이트 런타임·소스 제작과 배포는 아직 시작하지 않았습니다.
 
+- 고객 원고 정본과 검토/수정 이력: [원고 안내](copy/README.md)
 - 현재 기준: [고정 계획](fixed-plan.json), [진행/소유권](progress.json), [원문 근거 색인](source-evidence.json)
 - 승인된 계획: [수정 계획](research/candidate-plan-revised.json), [독립 PASS](research/independent-review-revised.json)
 - 최초 N2 제안과 REVISE 이력은 research/ 아래 원본 바이트 그대로 보존했습니다.

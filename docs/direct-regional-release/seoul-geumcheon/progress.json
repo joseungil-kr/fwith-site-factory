@@ -4,14 +4,15 @@
   "officialCode": "11545",
   "scopeKey": "seoul-geumcheon-direct-independent-preparation-20261012",
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-12T21:10:06.534480+00:00",
-  "status": "plan_preparation_complete_frozen_N1_no_copy_or_source",
+  "updatedAt": "2026-10-12T21:31:01.789023+00:00",
+  "status": "customer_copy_review_pass_no_runtime_or_publication",
   "owner": {
     "name": "prepare_geumcheon_regional_plan",
-    "active": false,
-    "executionState": "plan_preparation_complete_no_customer_authoring",
+    "active": true,
+    "executionState": "exact_copy_review_pass_runtime_preparation_next",
     "mainWriteScope": "documentation_save_only",
-    "completedAt": "2026-10-12T21:10:06.534480+00:00"
+    "completedAt": null,
+    "copyStageCompletedAt": "2026-10-12T21:31:01.789023+00:00"
   },
   "selection": {
     "nationalPlanDenominator": 230,
@@ -42,11 +43,13 @@
     "planVerdict": "PASS",
     "planSha256": "95c2f8a46b62c90e1e5bb81f17a31b8794ff1c184820f5ceaebcdcfeaabdfae0",
     "reviewSha256": "2af5ea5973851904f8f77849dcea0da6188a7058da20201840f043dc0faf987f",
-    "finalCopy": "NOT_STARTED",
+    "finalCopy": "PASS_EXACT_REV2_TEXT_ONLY",
     "implementation": "NOT_STARTED",
     "build": "NOT_RUN",
     "renderedScreen": "NOT_RUN",
-    "publicHttp": "NOT_PUBLISHED"
+    "publicHttp": "NOT_PUBLISHED",
+    "copySha256": "dc116c78188a3ed25e0d3dc1a6a1dcd2d257fd096d2ba60d7e64d397906bc90e",
+    "copyReviewSha256": "2b0eaf4f04694551257eb63b0fb6dd58e3129a8e7c1f33adfd6805503af3f0eb"
   },
   "source": {
     "branch": null,
@@ -64,19 +67,48 @@
     "GscSubmitted": false,
     "url": null
   },
-  "lastSuccessfulStage": "independent_revised_plan_pass_and_separate_N1_freeze",
+  "lastSuccessfulStage": "independent_full_customer_copy_review_pass_exact_rev2",
   "remainingStages": [
-    "root decides customer-authoring scope",
-    "full article and shared customer copy",
-    "independent full-text facts/tone/intent/duplication review",
-    "scoped grouped-runtime implementation and source QA",
-    "build/static HTML/exact-source and real screen verification",
+    "reuse grouped model and exact reviewed article/common copy",
+    "independent source, regressions, build/static HTML and real-screen verification",
+    "exact runtime source save and readback",
     "separate publication authorization and preflight",
     "public HTTP and authorized indexing verification"
   ],
   "documentationSave": {
-    "baseMain": "9cf00bd1d9c4f4469031277e055f13afcd266452",
-    "scope": "this commit stores plan/research/review only; no customer site source",
+    "baseMain": "732b7aed244f6d80c65519736e2e7c529e064bbd",
+    "scope": "customer copy and independent review history only; no runtime site source",
     "remoteReadback": "performed and reported separately after commit; not inferred from this precommit record"
+  },
+  "customerCopy": {
+    "path": "copy/geumcheon-copy.rev2.json",
+    "sha256": "dc116c78188a3ed25e0d3dc1a6a1dcd2d257fd096d2ba60d7e64d397906bc90e",
+    "reviewPath": "copy/independent-copy-review.rev2.json",
+    "reviewSha256": "2b0eaf4f04694551257eb63b0fb6dd58e3129a8e7c1f33adfd6805503af3f0eb",
+    "originalPlanN": 1,
+    "firstAnswerCharacters": 154,
+    "bodyCharacters": 2248,
+    "faqCharacters": 435,
+    "combinedArticleCharacters": 2839,
+    "commonUiExcluded": true,
+    "runtimeSourceCommit": null,
+    "draftHistoryPreserved": true
+  },
+  "handoff": {
+    "resumeFrom": "copy/geumcheon-copy.rev2.json",
+    "copySha256": "dc116c78188a3ed25e0d3dc1a6a1dcd2d257fd096d2ba60d7e64d397906bc90e",
+    "copyReviewSha256": "2b0eaf4f04694551257eb63b0fb6dd58e3129a8e7c1f33adfd6805503af3f0eb",
+    "frozenPlanSha256": "4371357faa2f5ff54d31689ec270f8cf8a5da76e7faa73a4e937f90ee6cecc37",
+    "runtimeImplementationStarted": false,
+    "sourceBranchCreated": false,
+    "publicationAuthorized": false,
+    "frozenPlanFieldsDescribeFreezeTime": true,
+    "copyChangesRequireFreshReview": true,
+    "runtimeImplementationAuthorizedForNextStage": true
+  },
+  "continuation": {
+    "observedAt": "2026-10-12T21:31:01.789023+00:00",
+    "instruction": "After exact reviewed-copy save/readback, continue existing-owner runtime preparation; no publication issue/dispatch/indexing/security changes.",
+    "runtimeSourceCreated": false
   }
 }
