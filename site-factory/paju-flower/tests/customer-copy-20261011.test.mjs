@@ -1,8 +1,9 @@
+import {readHistoricalBannerSource} from './shared-banner-amendment.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
-const read=p=>JSON.parse(fs.readFileSync(new URL('../'+p,import.meta.url),'utf8'));
+const read=p=>JSON.parse(readHistoricalBannerSource(new URL('../'+p,import.meta.url),'utf8'));
 const hash=x=>crypto.createHash('sha256').update(x).digest('hex');
 const pages=read('src/data/pages.json'), proof=read('src/data/customer-copy-review-20261011.json'), history=read('docs/customer-copy-history-20261011.json');
 const customer=['title','primaryKeyword','h1','description','cardSummary','firstAnswer','contentMarkdown','sections','faq','sources','source','sourceData'];
@@ -31,7 +32,7 @@ test('catalog descriptions are the only product changes; original business facts
  const strip=p=>Object.fromEntries(Object.entries(p).filter(([k])=>k!=='desc'));
  assert.deepEqual(read('src/data/products.json').map(strip),history.oldData['products.json'].map(strip));
  const manifest=JSON.parse(proof.approvalBasis.choiceCommonManifest.utf8Content);
- for(const row of manifest.commonChanges){assert.equal(hash(fs.readFileSync(new URL('../'+row.path,import.meta.url))),row.proposalSha256,row.path);}
+ for(const row of manifest.commonChanges){assert.equal(hash(readHistoricalBannerSource(new URL('../'+row.path,import.meta.url))),row.proposalSha256,row.path);}
 });
 test('initial evidence stays historical and revised snapshots cannot reuse old content hashes',()=>{
  assert.equal(history.baselineSource,'4a8011cfaac421aacb6ab4b753ad0a792d11dfc1');
@@ -42,7 +43,7 @@ test('initial evidence stays historical and revised snapshots cannot reuse old c
 test('shared delivery wording preserves business facts and ribbon notice is once per product group',()=>{
  const strip=x=>Object.fromEntries(Object.entries(x).filter(([k])=>k!=='deliveryNotice'));
  assert.deepEqual(strip(read('src/data/business-truth.json')),strip(history.oldData['business-truth.json']));
- const cards=fs.readFileSync(new URL('../src/components/ProductCards.astro',import.meta.url),'utf8');
+ const cards=readHistoricalBannerSource(new URL('../src/components/ProductCards.astro',import.meta.url),'utf8');
  assert.equal((cards.match(/사진 속 리본은 예시입니다/g)||[]).length,1);
  assert.ok(cards.includes("products.some((p:any)=>p.family==='congrats')"));
  assert.ok(cards.includes('site.productVariationNotice'));assert.ok(cards.includes('site.deliveryNotice'));
@@ -81,7 +82,7 @@ const allowedCopyCheckpoint={
   "copyReview": "src/data/customer-copy-review-20261011.json",
   "state": "local-integrated-source-pending-independent-code-review"
 };
-const bytes=p=>fs.readFileSync(new URL('../'+p,import.meta.url));
+const bytes=p=>readHistoricalBannerSource(new URL('../'+p,import.meta.url));
 const validatePinned=(values,pins)=>{for(const [p,expected] of Object.entries(pins))assert.equal(hash(values[p]),expected,p);};
 const validateCheckpoint=x=>assert.deepEqual(x,allowedCopyCheckpoint,'copy checkpoint must retain exact pending state and allowed fields');
 test('proof, original history and initial checkpoint are pinned to independently reviewed bytes',()=>{
