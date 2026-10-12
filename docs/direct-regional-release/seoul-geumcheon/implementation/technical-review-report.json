@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-12T21:53:00.273293+00:00",
+  "resultClass": "직접 확인",
+  "verdict": "PASS_SOURCE_AND_STATIC_HTML_ONLY",
+  "fullRequestedCompletion": false,
+  "sourceRoot": "/workspace/shared/geumcheon-factory/site-factory/seoul-geumcheon-flower",
+  "sourceCommit": null,
+  "reviewedBaseCommit": "2199ce3a284bb104f18f1a130af2f342b1a82720",
+  "reuseCommit": "500d82d01c1cdaed3ebde047bb3ce056705daac1",
+  "reuseGitObjectReadback": {
+    "commit": "500d82d01c1cdaed3ebde047bb3ce056705daac1",
+    "gitTreeFiles": 103,
+    "mismatches": [],
+    "pass": true
+  },
+  "sourceManifestSha256": "2661d2932c69cd4cfc178085a6519259aaa3205f18e98c121a74a481ae173a39",
+  "distManifestSha256": "74b2dd22dd6f91e3b372c6d5e3e1a5ec535662bc3154a49289e59a48b740e0e7",
+  "directlyVerified": [
+    "Original Guro reference bytes match all 103 files at local Git commit 500d82d01c1cdaed3ebde047bb3ce056705daac1; unpacked regression fixture matches those bytes.",
+    "Unchanged legacy adapter, Guro adapter/binding, directory midpoint helper, and SharedFlowerBanner component; package-lock differs only in the two root package-name labels.",
+    "131 original Guro tests pass with current shared libraries and the new Geumcheon frozen binding overlaid; 116 current tests pass independently.",
+    "93 independent adapter-boundary tests pass, including rejection of N0/N2, cross-site opt-in, held candidates, changed membership/union/facility/anchor/source bindings; original Guro still rejects N0/N1.",
+    "334 independent source and actual generated HTML checks pass. N1 article, two facility anchors, 3 legal dongs, 10 administrative dongs and all 10 relations preserved exactly.",
+    "Approved revision-3 article body, first answer, all 3 FAQ answers, common copy, exact product photos/basic prices/SKU buttons and notice variants are rendered in actual HTML.",
+    "Exact output is home, directory, one detail and 404 HTML. Directory has one actual article card, two exact legal-unit inverse links, zero marketing banners. Home/detail have three exact shared banners each.",
+    "All four HTML outputs are noindex; X-Robots-Tag blocks indexing; robots disallows all; sitemap has no preview URLs; productionApproved and publicationAuthorized are false.",
+    "Production-indexable build guard rejects SITE_INDEXABLE=true with exit 1 before build.",
+    "Independent npm test and npm run qa pass in isolated source/output copy, including static/snapshot/FAQ/product/banner/directory-spacing mutation tests.",
+    "All 12 customer Astro template SHA256 bindings independently match the actual files. Final independent npm test rerun is 131 original Guro plus 116 current tests; final copied-tree npm run qa passes.",
+    "Read the existing local HTTP report and independently matched all four reported successful HTTP response-body SHA256 values to current home/directory/detail/robots output files.",
+    "Revision 3 independently compared against preserved revision 2: exactly two article body paragraphs changed; first answer, FAQ, all common copy, product data and customer Astro templates are unchanged. Both revised paragraphs are present in actual HTML. Snapshot SHA256 recomputed independently and matches all page collections; rev3 copy and independent review digests match runtime binding."
+  ],
+  "resolvedFinding": {
+    "id": "T1",
+    "before": "Directory noindex added OR copy.noindex to the frozen count expression.",
+    "after": "Restored exact noindex={items.length < 3}; independently rechecked source and output."
+  },
+  "unverifiedAndFailures": [
+    {
+      "item": "Wide/narrow actual browser rendering and screenshots",
+      "reason": "Read browser-attempt.log: Chromium launch failed at process_singleton_posix.cc: socket() failed: Operation not permitted (1), followed by SIGABRT. No bypass attempted. Static output is not visual evidence."
+    },
+    {
+      "item": "Provider/branded HTTP 404 and deployed HTTP/core behavior",
+      "reason": "No public deployment permitted. Parent local Python static-server report covers 8 missing-route 404 responses, but does not exercise Cloudflare hosting or branded 404 fallback. Source 404.html and not_found_handling=404-page remain configuration evidence."
+    },
+    {
+      "item": "Final source commit/push and commit-bound build revision",
+      "reason": "Source is still an untracked new tree on the reviewed documentation base when inspected. Final commit must be independently read back and output regenerated/checked as appropriate after commit."
+    }
+  ],
+  "evidence": {
+    "independent-audit.py": "78392d7ecac8942b4c96b7ab5cd32bc3ac3522b56658749b200da4b17ae9cba5",
+    "independent-audit.json": "c7951e084cdca6ce8b3f6f20b64a4c72dde919c5d36522e3f422c0a0a3827577",
+    "independent-boundaries.mjs": "3c623d225d7dcc31424d9ac7aa50088aee21bfc3bf06128a31dbf60c3787f002",
+    "independent-boundaries.json": "47484cf3e81f84f4e7151abf09a733593e62c83ec9cdaa9b31f918db27a32185",
+    "original-git-object-integrity.json": "6a407756acc69669776059b84ab7ba22c42ee31fba0e88380105a939d125bd4b",
+    "guro-fixture-integrity.json": "1269a06f813e7535c8bf4da842442f82a8ac4e982b39683403d8670d3a830092",
+    "independent-current-on-original-guro.log": "39fea62906c1b05455ced00ef27ce56985cdc838278135e4284e2be87f6e7802",
+    "independent-current-suite.log": "cfb07f279021f24b8202597b3a79c98b3e806aaffeeea913b5de6783d20c4988",
+    "independent-npm-test.log": "a08601de4c95d08d0dc575881654fe1c107265eff6338c896b1a6821f9516e98",
+    "independent-qa.log": "b403c77b41f2efb6a02f0f2003dee5483547d6c98d077ac3596dfe1c969321fc",
+    "production-indexing-denial.log": "600236f3c37eb6ec32c610f8090b688c35c33f83f2f1fa5a7fb38164643f161a",
+    "reviewed-source-sha256.json": "2661d2932c69cd4cfc178085a6519259aaa3205f18e98c121a74a481ae173a39",
+    "reviewed-dist-sha256.json": "74b2dd22dd6f91e3b372c6d5e3e1a5ec535662bc3154a49289e59a48b740e0e7",
+    "final-source-metadata-delta.json": "d05cf4cc5d382a07a7a0bb38c59ed39a9d73801c42c04df494a75a706ccfb5fb",
+    "customer-template-binding-readback.json": "ff94c753b733c507588748fadf1b115a100c9f133ebda1ecaebda289ea533c55",
+    "http-report-output-readback.json": "0e4365e5a4b39b9545d973ba89d28bce9e903ec25b70d4493b342bcfaa5a0f27",
+    "revision3-source-delta.json": "d96c04c6b91f57b491a8670206693323f657c0caf62b6336258b0f9d5ddbd418",
+    "revision3-independent-copy-delta.json": "f628374250a3b9f06d12b5bd6a35c1c54f8816a7e8c76e8be9f89b96adf3a56f"
+  },
+  "scopeExclusions": [
+    "No implementation edits",
+    "No Git push or remote mutation",
+    "No public deployment or indexing",
+    "No browser security/socket bypass",
+    "No user-computer access"
+  ],
+  "recommendation": "Source and static-HTML review may be recorded as passed for unpublished preparation only. Keep actual browser/HTTP and final commit checks pending, and do not convert this scoped pass into a full visual or public-release PASS.",
+  "toolReported": [
+    {
+      "resultClass": "도구 보고",
+      "source": "/workspace/shared/geumcheon-evidence/local-http-report.json",
+      "scope": "Parent local Python static-server HTTP harness; not independently rerun by this reviewer.",
+      "result": "Three customer routes plus robots returned 200; eight missing routes returned 404. Successful-response body hashes were independently checked against dist. Provider/branded fallback behavior remains unverified."
+    }
+  ],
+  "metadataRefresh": {
+    "sourceDeltaPath": "/workspace/shared/geumcheon-evidence/technical-review/revision3-source-delta.json",
+    "customerTemplatesUnchanged": true,
+    "allCustomerTemplateBindingsVerified": true,
+    "customerBodyChanged": "Exactly two agreed paragraphs; see revision3-independent-copy-delta.json."
+  },
+  "relatedEvidence": {
+    "localHttpReportSha256": "2405f3e94f1f4ddc4f29051fe64bcb38fed4df1daa2f17e2d90efa1abd3654f8",
+    "handoffRevision3Sha256": "cc9c2f964e37c3acd98e4fa08b2fe6f4fc2d80939323f2e516a7474f93582130"
+  },
+  "reviewRevision": 3,
+  "approvedCopy": {
+    "revision": 3,
+    "copyPath": "copy/geumcheon-copy.rev3.json",
+    "copySha256": "01f9e71d13ad3a11122b832d649f60b6da976c85513ee90b6ccb531737fb7455",
+    "independentReviewPath": "copy/independent-copy-review.rev3.json",
+    "independentReviewSha256": "fd1a09b38acb21c708d5f418e6a293aac8b9dbb37cfeb49191595e807b87acc9",
+    "bodySha256": "6711f0804e2d52c018834cd6bdfd8c1cca6b858171a5f39391d1948455c3e585",
+    "snapshotHash": "ba436e0c76f07c4c788cbf064c59aee3a1bbc239ac741a0b599eb529ddb93532"
+  },
+  "historicalReview": {
+    "revision": 2,
+    "directory": "/workspace/shared/geumcheon-evidence/technical-review/revision2-history",
+    "supersededForCurrentSource": true
+  },
+  "testCounts": {
+    "sourceAndActualHtml": 334,
+    "independentBoundary": 93,
+    "originalGuroRegression": 131,
+    "currentRuntime": 116,
+    "fullQa": "pass in isolated current-source copy"
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "independent_customer_copy_review",
+  "revision": 3,
+  "reviewer": "/root/implement_geumcheon_regional_site/review_geumcheon_rendered_copy",
+  "author": "/root/implement_geumcheon_regional_site",
+  "checkedAt": "2026-10-12T21:51:09.905970+00:00",
+  "verdict": "PASS",
+  "scope": "Fresh full-text semantic review of exact rev3 article and all common text, with independent narrow-delta verification against preserved rev2. This copy verdict does not assert pixels, runtime publication, HTTP, a source commit, indexing or the current status of live merchant policy. Actual local render review is a separate report.",
+  "copyPath": "/workspace/shared/geumcheon-factory/docs/direct-regional-release/seoul-geumcheon/copy/geumcheon-copy.rev3.json",
+  "copySha256": "01f9e71d13ad3a11122b832d649f60b6da976c85513ee90b6ccb531737fb7455",
+  "boundContent": {
+    "articleCanonicalJsonSha256": "7852ef257262c3f312f43c87ee813a7fb6ec55fac4996ac728a31ae3609db767",
+    "contentMarkdownUtf8Sha256": "6711f0804e2d52c018834cd6bdfd8c1cca6b858171a5f39391d1948455c3e585",
+    "commonCanonicalJsonSha256": "0b2037975555e20b6435c0092f73b0262c7cda8092ab9ef6a3bb6f68f0738ad6",
+    "runtimeCopyByteIdenticalAtReview": true,
+    "runtimeMetadataNotBound": "This artifact deliberately excludes the digest/status metadata that will later reference this review, avoiding a circular hash dependency."
+  },
+  "priorRevision": {
+    "copyPath": "/workspace/shared/geumcheon-factory/docs/direct-regional-release/seoul-geumcheon/copy/geumcheon-copy.rev2.json",
+    "copySha256": "dc116c78188a3ed25e0d3dc1a6a1dcd2d257fd096d2ba60d7e64d397906bc90e",
+    "independentReviewPath": "/workspace/shared/geumcheon-factory/docs/direct-regional-release/seoul-geumcheon/copy/independent-copy-review.rev2.json",
+    "independentReviewSha256": "2b0eaf4f04694551257eb63b0fb6dd58e3129a8e7c1f33adfd6805503af3f0eb",
+    "renderedReviewPath": "/workspace/shared/geumcheon-evidence/rendered-copy-review/report.json",
+    "renderedReviewSha256": "80cb0ea3c26b01ffa9e70d26c91ac60f63202b00966207dff4598505d6dd66bc",
+    "status": "Historical exact-rev2 evidence preserved; not relabeled as rev3."
+  },
+  "blockingFindings": [],
+  "narrowDelta": {
+    "classification": "직접 확인",
+    "onlyArticleContentMarkdownChanged": true,
+    "firstAnswerUnchanged": true,
+    "faqUnchanged": true,
+    "commonUnchanged": true,
+    "allOtherArticleFieldsUnchanged": true,
+    "changes": [
+      {
+        "old": "유족이 화환을 받지 않겠다는 뜻을 전했다면 그 의사를 먼저 존중해 주세요. 꽃을 보내는 방식보다 받는 분의 뜻에 맞는 인사가 중요합니다.",
+        "new": "부고나 유족의 안내에 화환을 사양한다는 내용이 있다면, 꽃 대신 짧은 조의 인사로 마음을 전하실 수 있습니다.",
+        "judgment": "PASS. Keeps both obituary and direct family refusal of wreaths while offering a quiet alternative; removes a lecture about whose wishes matter."
+      },
+      {
+        "old": "꽃이랑은 화환을 별도로 수거하지 않습니다. 장례 뒤 정리가 필요한 경우에는 유족이나 시설에서 정한 처리 안내에 따라 주시면 됩니다.",
+        "new": "꽃이랑은 화환을 별도로 수거하지 않습니다. 장례 뒤 화환 정리는 시설별 안내가 다를 수 있습니다.",
+        "judgment": "PASS. Preserves the categorical no-collection disclosure; acknowledges variation without directing cleanup actions or promising the facility or seller will perform them."
+      }
+    ],
+    "noncustomerMetadataChanges": [
+      "revision",
+      "status",
+      "createdAt",
+      "revisionHistory"
+    ]
+  },
+  "separateJudgments": {
+    "tone": {
+      "verdict": "PASS",
+      "basis": "Re-read the exact full opening, body, FAQ and common variants. Restrained condolences and seller-led budget/ribbon/order help remain natural. The two revised paragraphs remove unnecessary teaching and instructions. Other necessary input requests are a short bundle and relevant questions, not a recurring lecture. No invented personal memory, presumed customer feeling, urgency pressure or expensive-product virtue claim."
+    },
+    "facts": {
+      "verdict": "PASS_FOR_UNCHANGED_APPROVED_FACTS_AND_NARROW_DELTA",
+      "basis": "Direct comparison confirms unchanged facility identity/address date, exact products/basic prices, image descriptions, CTA targets and substantive cost/timing/materials/refund limits. The two new statements add no service guarantee, current operating claim, local rule, collection promise or service responsibility. Underlying factual provenance remains the prior independent review and source evidence; no new live verification is claimed."
+    },
+    "intentCompleteness": {
+      "verdict": "PASS",
+      "basis": "The entire revised article still answers what to send, four budget options, two registered destinations, total-versus-basic cost, timing and order details, ribbon/sender wording, refusal alternative, mixed materials/variation, no collection, change/cancellation/refund issues. FAQ adds reception/dispatch distinction, nonreligious wording and backing paper. No decision-relevant detail was lost by the 34-character body reduction."
+    },
+    "semanticDuplication": {
+      "verdict": "PASS_FOR_NARROW_APPROVED_N1_SCOPE",
+      "basis": "One consolidated Geumcheon funeral intent and two facility anchors remain; no new venue page or substituted locality. Fresh inspection found no Guro name, unrelated congratulation content or new generic filler. Cross-region comparisons are unchanged prior-review evidence, not a new broad duplication audit."
+    },
+    "sharedCopyAndAssets": {
+      "verdict": "PASS_FOR_EXACT_COPY_CONTRACT",
+      "basis": "Re-read all unchanged home, directory, navigation, inline full/compact, product cards, source/footer/404, banner alt/captions and placement contract. Funeral-only scope, individual SKU order URLs and basic-price qualification remain. Detail suppresses duplicate product notice and uses compact inline; home full, directory compact and no marketing banners, 404 neither. Actual implementation is independently checked in the sibling render report."
+    }
+  },
+  "lengthAndCompleteness": {
+    "method": "Strip Markdown heading/bold markers, leading list markers and link destinations; normalize whitespace. Normalize first answer/body separately; join each FAQ question and answer with one space, then join first/body/FAQ with one space. Keep headings. Exclude common UI/cards/footer. Unicode codepoints.",
+    "independentCounts": {
+      "firstAnswer": {
+        "visibleCharactersIncludingSpaces": 154,
+        "visibleCharactersExcludingWhitespace": 121
+      },
+      "mainBodyIncludingHeadings": {
+        "visibleCharactersIncludingSpaces": 2214,
+        "visibleCharactersExcludingWhitespace": 1687
+      },
+      "faqQuestionsAndAnswers": {
+        "visibleCharactersIncludingSpaces": 435,
+        "visibleCharactersExcludingWhitespace": 334
+      },
+      "combinedArticleText": {
+        "visibleCharactersIncludingSpaces": 2805,
+        "visibleCharactersExcludingWhitespace": 2142
+      }
+    },
+    "rev2Reproduction": {
+      "firstAnswer": 154,
+      "mainBodyIncludingHeadings": 2248,
+      "faqQuestionsAndAnswers": 435,
+      "combinedArticleText": 2839
+    },
+    "assessment": "Rev3 body is 2214 visible characters including spaces, below the approximate 2500–3000 draft goal; first answer 154 and FAQ 435 are separate, not used to relabel the body. Combined is 2805. The two concise revisions remove teaching without losing information. No unsupported expansion or padding is warranted. Length is not proof of uniqueness or search performance.",
+    "initialAuthorMetricsIssue": "Initial rev3 author metrics used 430 FAQ and 2798 combined; independent re-normalization reproduced prior rev2 and established 435/2805. Parent was notified to correct only metrics metadata.",
+    "authorMetricsMatchAtReview": true,
+    "authorMetricsSha256AtReview": "e7a960483a401e7b80e8a8318925bda41752e914e11fad8c96a7db311f30adec"
+  },
+  "reviewedSurfaceInventory": [
+    "Complete article title/H1/meta/primary keyword/card summary/first answer/contentMarkdown/3 FAQ/2 anchors/2 CTAs/source note and URLs",
+    "All common.home content, facts, hero/card and product choices, banner order",
+    "All common.directory content, card, legal/admin explanation, empty label and area-source label",
+    "All common.navigation, breadcrumb, full/compact inline-order and mobile labels",
+    "All 4 product names, basic-price values/labels, photo descriptions/alts, SKU CTA labels and destinations, shared price/material notice",
+    "All footer, 404 and three shared-banner alt/caption strings; noticePlacementContract"
+  ],
+  "evidence": {
+    "bannerAssets": [
+      {
+        "variant": "message",
+        "sourceAsset": "/workspace/shared/guro-factory/site-factory/seoul-guro-flower/public/images/shared-banners/flower-message.webp",
+        "sha256": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+        "altExactlyMatchesApprovedComponent": true
+      },
+      {
+        "variant": "budget",
+        "sourceAsset": "/workspace/shared/guro-factory/site-factory/seoul-guro-flower/public/images/shared-banners/flower-budget.webp",
+        "sha256": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+        "altExactlyMatchesApprovedComponent": true
+      },
+      {
+        "variant": "consultation",
+        "sourceAsset": "/workspace/shared/guro-factory/site-factory/seoul-guro-flower/public/images/shared-banners/flower-consultation.webp",
+        "sha256": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+        "altExactlyMatchesApprovedComponent": true
+      }
+    ],
+    "directlyInspectedCopyFiles": [
+      {
+        "path": "/workspace/shared/geumcheon-factory/docs/direct-regional-release/seoul-geumcheon/copy/geumcheon-copy.rev2.json",
+        "sha256": "dc116c78188a3ed25e0d3dc1a6a1dcd2d257fd096d2ba60d7e64d397906bc90e"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-factory/docs/direct-regional-release/seoul-geumcheon/copy/geumcheon-copy.rev3.json",
+        "sha256": "01f9e71d13ad3a11122b832d649f60b6da976c85513ee90b6ccb531737fb7455"
+      },
+      {
+        "path": "/workspace/shared/geumcheon-factory/docs/direct-regional-release/seoul-geumcheon/copy/independent-copy-review.rev2.json",
+        "sha256": "2b0eaf4f04694551257eb63b0fb6dd58e3129a8e7c1f33adfd6805503af3f0eb"
+      }
+    ],
+    "copyFactsProvenance": "Existing prior copy-review and unchanged approved facts map. A previous report is attributed evidence, not a fresh original-photo or live external-source visit.",
+    "sourceCommit": "Not yet assigned for implementation. Copy/source/body hashes bind this review; a later immutable source readback must verify unchanged content."
+  },
+  "remainingMandatoryGates": [
+    "Refresh actual rendered HTML checks for rev3 and bind that independent report.",
+    "Bind eventual Git source commit and exact build artifacts; preserve rev2 history.",
+    "Browser visual review, public HTTP/assets and real 404 remain separately unverified.",
+    "Current local build noindex, no sitemap and productionApproved=false must not be described as a public/indexable release."
+  ],
+  "actionBoundary": {
+    "customerCopyEdited": false,
+    "repositoryEdits": false,
+    "gitWrites": 0,
+    "publicationWrites": 0,
+    "runtimeMetadataBound": false
+  }
+}
