@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-12T15:28:00Z",
+  "updatedAt": "2026-10-12T16:10:00Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -7949,7 +7949,7 @@
       "evidencePath": "docs/direct-regional-release/yeoju/release/dependency-exposure-report.json"
     }
   ],
-  "nextAction": "Continue full existing-customer-page copy correction and independent review. Preserve prepared Nowon N4 source and all prior release evidence; scheduled task settings unchanged.",
+  "nextAction": "Yangcheon is published; do not rebuild or redeploy it. Next hourly call selects next unreleased official-code region (Gangseo11500) after conflict checks. Preserve GSC submission blocker and deferred visual QA as Yangcheon follow-up.",
   "executionPolicy": {
     "version": "approval-wait-does-not-block-preparation-v1",
     "effectiveAt": "2026-10-09T17:27:12Z",
@@ -17439,6 +17439,69 @@
       ],
       "status": "pending_user_authorized_batch_review",
       "visualQa": "DEFERRED_NOT_PASS"
+    },
+    {
+      "regionKey": "seoul-yangcheon",
+      "scope": "initial_direct_regional_release",
+      "branch": "site-factory-seoul-yangcheon-direct",
+      "root": "site-factory/seoul-yangcheon-flower",
+      "worker": "seoul-yangcheon-flower-guide",
+      "hostname": "seoul-yangcheon.fwith.kr",
+      "exactSource": "8c20e5726ab7ce5767391219ea93f690a572972d",
+      "originalPlanN": 3,
+      "approved": 3,
+      "held": 0,
+      "publicUrl": "https://seoul-yangcheon.fwith.kr/",
+      "runId": 38275177748,
+      "publicQa": {
+        "sourceRevision": "8c20e5726ab7ce5767391219ea93f690a572972d",
+        "controlRevision": "4dd46ed2d6103337fc51147b646903f11f937a9d",
+        "triggerIssue": 279,
+        "runId": 38275177748,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38275177748",
+        "url": "https://seoul-yangcheon.fwith.kr/",
+        "articles": 3,
+        "normalHtml": 5,
+        "errorHtml": 1,
+        "sitemapUrls": 5,
+        "publisherPublicHttp": "verified 19 paths, real404, source bytes normalized only Cloudflare beacon",
+        "independentRootHttpStatus": 200,
+        "independentObservedAt": "2026-10-12T16:09:38Z",
+        "workflowConclusion": "success"
+      },
+      "indexNow": {
+        "state": "received",
+        "httpStatus": 200,
+        "urlCount": 5,
+        "revision": "8c20e5726ab7ce5767391219ea93f690a572972d",
+        "recordedAt": "2026-10-12T16:08:31.415376+00:00",
+        "fingerprint": "a50fbc1d78c41ebd06659ea423f9551d26f0d73695faf872b14c0479947f270e",
+        "urlSetSha256": "796240fe4413696aa5c83baa4a86ef09e6fa2a4ab28dcfbd1ec8bde19c028778",
+        "durableReceiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6128017605",
+        "searchIndexing": "not_verified"
+      },
+      "gsc": {
+        "state": "BLOCKED_NOT_SUBMITTED",
+        "sitemap": "https://seoul-yangcheon.fwith.kr/sitemap-index.xml",
+        "property": "sc-domain:fwith.kr",
+        "reason": "GSC Wizard list_sites returned payment_required: trial ended/no active subscription; no authenticated alternate browser route available; no payment or access changes attempted"
+      },
+      "desktopRoutes": [
+        "/",
+        "/regions/",
+        "/regions/mok-dong-loftgarden344-wedding-wreath/",
+        "/regions/sinjeong-dong-yangcheon-culture-performance-wreath/",
+        "/regions/sinwol-dong-mediheal-funeral-wreath/"
+      ],
+      "narrowRoutes": [
+        "/",
+        "/regions/",
+        "/regions/mok-dong-loftgarden344-wedding-wreath/",
+        "/regions/sinjeong-dong-yangcheon-culture-performance-wreath/",
+        "/regions/sinwol-dong-mediheal-funeral-wreath/"
+      ],
+      "status": "DEFERRED_BY_USER_NOT_PASS",
+      "visualQa": "NOT_PERFORMED"
     }
   ],
   "releasedKnownHosts": [
@@ -17471,6 +17534,13 @@
       "status": "released_search_submitted_visual_qa_deferred",
       "sourceRevision": "fd14a190cb853607a8ae743da5068208409746ef",
       "runId": 38198974218
+    },
+    {
+      "hostname": "seoul-yangcheon.fwith.kr",
+      "regionKey": "seoul-yangcheon",
+      "status": "released_indexnow_received_gsc_blocked_visual_qa_deferred",
+      "sourceRevision": "8c20e5726ab7ce5767391219ea93f690a572972d",
+      "runId": 38275177748
     }
   ],
   "nationalPlan": {
@@ -34605,26 +34675,27 @@
       "worker": "seoul-yangcheon-flower-guide",
       "hostname": "seoul-yangcheon.fwith.kr",
       "url": "https://seoul-yangcheon.fwith.kr/",
-      "status": "research_resumed_owner_reconciled",
+      "status": "released_indexnow_received_gsc_blocked_visual_qa_deferred",
       "checkpointId": "direct-seoul-yangcheon-20261012T1530Z",
       "serviceInvocationId": null,
       "providedRunTime": "2026-10-12T03:00:00Z",
       "owner": {
-        "active": true,
+        "active": false,
         "startedAt": "2026-10-12T15:26:17Z",
-        "sourceWritingStarted": false,
+        "sourceWritingStarted": true,
         "mainWriter": "dot-cloud-yangcheon-executor",
-        "researchOnly": true
+        "researchOnly": false,
+        "completedAt": "2026-10-12T16:09:38Z"
       },
       "intent": {
-        "action": "research_freeze_review_build_publish_one_region",
+        "action": "one_region_published_exact_reviewed_source",
         "idempotencyKey": "seoul-yangcheon:research:20261012T030000Z",
-        "customerAuthoringAllowed": false
+        "customerAuthoringAllowed": true
       },
-      "originalPlanN": null,
-      "approvedArticles": 0,
+      "originalPlanN": 3,
+      "approvedArticles": 3,
       "heldArticles": [],
-      "sourceRevision": null,
+      "sourceRevision": "8c20e5726ab7ce5767391219ea93f690a572972d",
       "nationalPlan": {
         "plannedRegionCount": 230,
         "order": 15,
@@ -34638,10 +34709,40 @@
         "observedAt": "2026-10-12T15:27:17Z",
         "staleClaimReconciliation": "Previous research-only owner has no branch, source revision, workflow run or publication; latest explicit user request resumes same region."
       },
-      "publication": "NOT_PERFORMED",
-      "indexNow": "NOT_PERFORMED",
-      "gsc": "NOT_PERFORMED",
-      "visualQa": "NOT_PERFORMED",
+      "publication": {
+        "sourceRevision": "8c20e5726ab7ce5767391219ea93f690a572972d",
+        "controlRevision": "4dd46ed2d6103337fc51147b646903f11f937a9d",
+        "triggerIssue": 279,
+        "runId": 38275177748,
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38275177748",
+        "url": "https://seoul-yangcheon.fwith.kr/",
+        "articles": 3,
+        "normalHtml": 5,
+        "errorHtml": 1,
+        "sitemapUrls": 5,
+        "publisherPublicHttp": "verified 19 paths, real404, source bytes normalized only Cloudflare beacon",
+        "independentRootHttpStatus": 200,
+        "independentObservedAt": "2026-10-12T16:09:38Z",
+        "workflowConclusion": "success"
+      },
+      "indexNow": {
+        "state": "received",
+        "httpStatus": 200,
+        "urlCount": 5,
+        "revision": "8c20e5726ab7ce5767391219ea93f690a572972d",
+        "recordedAt": "2026-10-12T16:08:31.415376+00:00",
+        "fingerprint": "a50fbc1d78c41ebd06659ea423f9551d26f0d73695faf872b14c0479947f270e",
+        "urlSetSha256": "796240fe4413696aa5c83baa4a86ef09e6fa2a4ab28dcfbd1ec8bde19c028778",
+        "durableReceiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6128017605",
+        "searchIndexing": "not_verified"
+      },
+      "gsc": {
+        "state": "BLOCKED_NOT_SUBMITTED",
+        "sitemap": "https://seoul-yangcheon.fwith.kr/sitemap-index.xml",
+        "property": "sc-domain:fwith.kr",
+        "reason": "GSC Wizard list_sites returned payment_required: trial ended/no active subscription; no authenticated alternate browser route available; no payment or access changes attempted"
+      },
+      "visualQa": "DEFERRED_NOT_PASS",
       "priorResearchClaim": {
         "checkpointId": "direct-seoul-yangcheon-20261012T030000Z",
         "owner": {
@@ -34651,7 +34752,20 @@
           "mainWriter": "root",
           "researchOnly": true
         }
-      }
+      },
+      "minimumApprovedForPublication": 3,
+      "sourceBranchCreated": true,
+      "fixedPlanPath": "docs/direct-regional-release/seoul-yangcheon/fixed-plan.json",
+      "planCandidateSha256": "5f90b8bff26c0514221d3c6c1bde091c20e4e518f09e35c59b21ebfe123ae715",
+      "planReviewSha256": "9788fcfde04a33a3bb78f9672bc7e99a21ca3fc3d67f8f6ed8053dbfff1fdf9e",
+      "toneReviewSha256": "f208915007f55e784f74b719e539550a9d199b7d96bd9cc9b134a2266492e153",
+      "lastSuccessfulStage": "published_exact_source_http_verified_IndexNow_received",
+      "remainingStages": [
+        "GSC sitemap submission when existing authorized access available",
+        "deferred desktop/narrow visual QA",
+        "search indexing not verified"
+      ],
+      "catalogFreshness": "6 official product HTML fresh; C204/C205 unchanged2026-10-11 source evidence reused. Hours operator-confirmed reuse."
     }
   ]
 }
