@@ -1,0 +1,9 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import crypto from 'node:crypto';
+import {applyDirectorySpacing} from './directory-spacing-transform.mjs';
+const root=new URL('../',import.meta.url);const read=p=>fs.readFileSync(new URL(p,root));const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+const fixture=JSON.parse(read('tests/fixtures/shared-banner-amendment.json'));const amendment=fixture.directorySpacing;
+const priorBytes=read(amendment.priorFixturePath);const prior=JSON.parse(priorBytes);
+test('prior banner fixture and helper remain exact historical evidence',()=>{assert.equal(sha(priorBytes),amendment.priorFixtureSha256);assert.equal(sha(read(amendment.priorHelperPath)),amendment.priorHelperSha256);});
+test('all original archive bytes and historical source pins are retained',()=>{assert.deepEqual(Object.keys(fixture.files).sort(),Object.keys(prior.files).sort());for(const [name,row] of Object.entries(prior.files)){assert.equal(fixture.files[name].beforeUtf8,row.beforeUtf8,name);assert.equal(fixture.files[name].beforeSha256,row.beforeSha256,name);}});
+test('current directory is the exact separately scoped transform of prior banner source',()=>{const raw=read(amendment.sourcePath);assert.equal(sha(amendment.beforeUtf8),prior.files[amendment.sourcePath].afterSha256);assert.equal(raw.toString(),applyDirectorySpacing(amendment.beforeUtf8));assert.equal(sha(raw),fixture.files[amendment.sourcePath].afterSha256);assert.throws(()=>applyDirectorySpacing(amendment.beforeUtf8+'\n'+amendment.beforeUtf8));});
+test('new spacing is candidate evidence, not retroactive publication approval',()=>{assert.equal(fixture.productionApprovalGranted,false);assert.equal(amendment.previousReviewDoesNotApproveThisChange,true);assert.equal(amendment.originalPageEligibilityPreserved,true);});
