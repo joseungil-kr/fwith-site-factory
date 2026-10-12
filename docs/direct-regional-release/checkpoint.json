@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-12T03:14:47.058Z",
+  "updatedAt": "2026-10-12T03:17:41.396Z",
   "selectionPolicy": {
     "region": "경기도 우선, 이후 전국",
     "order": "official administrative code ascending; exclude completed and active owned sites",
@@ -30354,6 +30354,34 @@
         }
       ],
       "status": "released_search_submitted_visual_qa_deferred"
+    },
+    "gwangju0317SourceSaveIntent": {
+      "action": "save_exact_independently_reviewed_final_body_notice_correction",
+      "region": "gwangju",
+      "branch": "site-factory-gwangju-direct",
+      "root": "site-factory/gwangju-flower",
+      "expectedSourceHead": "eeeda10ff3968022fce4efde6e395daaf2d8ee23",
+      "sourceManifestSha256": "fcbeb02d9faf2bae1e0d097906fb302348789943970184c3080341f919915678",
+      "sourceReviewSha256": "4c4f95d529df169ce8c4bc1f45ccb6fd5a929793dd8b9fe04ab28dc74aaa5d6d",
+      "publicationSuitabilityReviewSha256": "1235e7d988a5dfe2b86f4201019464572d6683ff5c3b3d7f92ef1d3f9879d5c6",
+      "inputSha256": "0310af61fa79b94ad8db8576ca390adc94c673316ff24275934e8a236fca0764",
+      "sourceFiles": 75,
+      "changedFiles": 8,
+      "originalPlanN": 26,
+      "approvedArticles": 25,
+      "held": [
+        "/regions/mokhyeon-dong/"
+      ],
+      "idempotencyKey": "gwangju:final-notice:fcbeb02d9faf2bae1e0d097906fb302348789943970184c3080341f919915678",
+      "owner": {
+        "checkpointId": "gwangju-final-notice-20261012T0317Z",
+        "serviceInvocationId": null,
+        "active": true,
+        "sourceWriter": "root",
+        "mainWriter": "root"
+      },
+      "lastSuccessfulStage": "independent_local_source_fullcheck_DOM_review",
+      "productionAndPublic": "pending"
     }
   },
   "independentPreparations": [
@@ -34267,7 +34295,14 @@
           "mainWriter": "root",
           "dispatchExecutor": "delegated_single_executor"
         },
-        "visualQa": "DEFERRED_NOT_PASS"
+        "visualQa": "DEFERRED_NOT_PASS",
+        "actualRun": {
+          "runId": 38198974218,
+          "controlSha": "d04cd048f98c087d1c77f71dc590b756b7ca4c9e",
+          "status": "completed",
+          "conclusion": "success",
+          "independentPublicQa": "in_progress"
+        }
       }
     }
   ]
