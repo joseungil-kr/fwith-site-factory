@@ -1,3 +1,4 @@
+import {stripSharedFlowerBanners} from '../src/lib/shared-banner-content.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -34,7 +35,7 @@ function walk(dir) {
   });
 }
 function textOnly(s) {
-  return s.replace(/<script[\s\S]*?<\/script>/gi,' ')
+  return stripSharedFlowerBanners(s).replace(/<script[\s\S]*?<\/script>/gi,' ')
     .replace(/<style[\s\S]*?<\/style>/gi,' ')
     .replace(/<[^>]+>/g,' ')
     .replace(/&[a-z0-9#]+;/gi,' ')

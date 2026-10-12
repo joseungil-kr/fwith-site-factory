@@ -1,3 +1,15 @@
+async function settleImages(page){
+ await page.evaluate(()=>document.fonts.ready);
+ for(const img of await page.locator('img').all())await img.scrollIntoViewIfNeeded();
+ await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));
+ await page.evaluate(async()=>{
+  await Promise.all([...document.images].map(i=>i.decode()));
+  // The site's smooth-scroll CSS must not leave a sticky header mid-capture.
+  window.scrollTo({top:0,left:0,behavior:'instant'});
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+ });
+ await page.waitForFunction(()=>window.scrollX===0&&window.scrollY===0);
+}
 import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
@@ -106,7 +118,7 @@ try {
    } catch(error){row.errors.push(error.stack||String(error));}
    try {
     row.screenshot=`screenshots/${target.id}-${viewport.name}.jpg`;
-    await page.screenshot({path:path.join(output,row.screenshot),type:'jpeg',quality:85,fullPage:true,animations:'disabled'});
+    await settleImages(page);row.finalScreenshotImageFacts=await page.evaluate(()=>({url:location.href,scrollX:window.scrollX,scrollY:window.scrollY,domImageReadiness:'decode-completed-and-paint-frames-awaited',pixelReview:'pending',images:[...document.images].map(img=>{const box=img.getBoundingClientRect();return {src:new URL(img.currentSrc||img.src).pathname,alt:img.alt,complete:img.complete,width:img.naturalWidth,height:img.naturalHeight,x:box.x,y:box.y,displayWidth:box.width,displayHeight:box.height};})}));await page.screenshot({path:path.join(output,row.screenshot),type:'jpeg',quality:85,fullPage:true,animations:'disabled'});
     row.screenshotSha256=crypto.createHash('sha256').update(fs.readFileSync(path.join(output,row.screenshot))).digest('hex');
    } catch(error){row.errors.push('Screenshot: '+error.message);}
    results.push(row);

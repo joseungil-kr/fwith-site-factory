@@ -21,6 +21,18 @@ jobs:
       MANUAL_PREVIEW: '1'
       SITE_URL: http://127.0.0.1:8934
       SITE_INDEXABLE: 'false'
+      PYTHONDONTWRITEBYTECODE: "1"
+      SHARED_BANNER_REFERENCE_DIST: "${{ github.workspace }}/shared-banner-production-dist"
+      SHARED_BANNER_REFERENCE_MANIFEST: "${{ github.workspace }}/.github/shared-banner-reference/ansan-production.json"
+      SHARED_BANNER_REFERENCE_MANIFEST_SHA256: "aab6e93563679f85953c471e815c272a0983b84ef9454cb4df4cdbd6097309bc"
+      SHARED_BANNER_REFERENCE_ARTIFACT_SHA256: "c3acc22df8270cbde058c6c1fcf1edae99eb76d557c03f6032cbbd5086d95523"
+      SHARED_BANNER_REFERENCE_REVISION: "a8116e0991c9a009ab1bfa085510fb1066cced9e"
+      SHARED_BANNER_REFERENCE_ORIGIN: "https://ansan.fwith.kr"
+      SHARED_BANNER_PREVIEW_REFERENCE_DIST: "${{ github.workspace }}/shared-banner-original-reference/site-factory/ansan-flower/dist"
+      SHARED_BANNER_PREVIEW_REFERENCE_MANIFEST: "${{ github.workspace }}/.github/shared-banner-reference/ansan-preview.json"
+      SHARED_BANNER_PREVIEW_REFERENCE_MANIFEST_SHA256: "fadafc0318f367be4368cb2bf4ea5a954fe648e4937235e2b78f9f482a9a0a80"
+      SHARED_BANNER_PREVIEW_REFERENCE_ARTIFACT_SHA256: "b9c9368c6ff2793486c1820f19bf030d1aa478a7ed925f1345f8be09dc811ecb"
+      SHARED_BANNER_PREVIEW_REFERENCE_ORIGIN: "http://127.0.0.1:8934"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,6 +40,83 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Check out immutable original source for both bound phases
+        uses: actions/checkout@v4
+        with:
+          ref: a8116e0991c9a009ab1bfa085510fb1066cced9e
+          path: shared-banner-original-reference
+          persist-credentials: false
+      - name: Rebuild and authenticate immutable original production full artifact
+        working-directory: shared-banner-original-reference/site-factory/ansan-flower
+        env:
+          SITE_URL: 'https://ansan.fwith.kr'
+          SITE_ORIGIN: 'https://ansan.fwith.kr'
+          SITE_INDEXABLE: 'true'
+          MANUAL_PREVIEW: 'false'
+          MANUAL_QA_PHASE: 'production'
+          GITHUB_SHA: 'a8116e0991c9a009ab1bfa085510fb1066cced9e'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 'a8116e0991c9a009ab1bfa085510fb1066cced9e'
+          npm install --no-package-lock
+          npm run build
+          python3 - <<'PYREFERENCE'
+          import os,pathlib,json,hashlib
+          raw=pathlib.Path(os.environ['SHARED_BANNER_REFERENCE_MANIFEST']).read_bytes()
+          h=lambda b:hashlib.sha256(b).hexdigest()
+          assert h(raw)==os.environ['SHARED_BANNER_REFERENCE_MANIFEST_SHA256'],'Original reference metadata changed'
+          ref=json.loads(raw)
+          assert ref['baselineRevision']==os.environ['SHARED_BANNER_REFERENCE_REVISION']
+          assert ref['productionOrigin']==os.environ['SHARED_BANNER_REFERENCE_ORIGIN']
+          root=pathlib.Path('dist');assert root.is_dir() and not root.is_symlink()
+          files={}
+          for p in sorted(root.rglob('*')):
+              assert not p.is_symlink(),'Artifact symlink forbidden'
+              if p.is_dir():continue
+              assert p.is_file(),'Nonregular artifact'
+              files[p.relative_to(root).as_posix()]=h(p.read_bytes())
+          assert files==ref['files'],'Original full artifact bytes changed'
+          assert h(json.dumps(files,sort_keys=True,separators=(',',':')).encode())==ref['artifactManifestSha256']==os.environ['SHARED_BANNER_REFERENCE_ARTIFACT_SHA256']
+          
+          print('Original production full artifact authenticated:',len(files))
+          PYREFERENCE
+          test ! -e "$SHARED_BANNER_REFERENCE_DIST"
+          cp -a dist "$SHARED_BANNER_REFERENCE_DIST"
+      - name: Rebuild and authenticate immutable original preview full artifact
+        working-directory: shared-banner-original-reference/site-factory/ansan-flower
+        env:
+          SITE_URL: 'http://127.0.0.1:8934'
+          SITE_ORIGIN: 'http://127.0.0.1:8934'
+          SITE_INDEXABLE: 'false'
+          MANUAL_PREVIEW: '1'
+          MANUAL_QA_PHASE: 'preview'
+          GITHUB_SHA: 'a8116e0991c9a009ab1bfa085510fb1066cced9e'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 'a8116e0991c9a009ab1bfa085510fb1066cced9e'
+          npm run build
+          python3 - <<'PYREFERENCE'
+          import os,pathlib,json,hashlib
+          raw=pathlib.Path(os.environ['SHARED_BANNER_PREVIEW_REFERENCE_MANIFEST']).read_bytes()
+          h=lambda b:hashlib.sha256(b).hexdigest()
+          assert h(raw)==os.environ['SHARED_BANNER_PREVIEW_REFERENCE_MANIFEST_SHA256'],'Original reference metadata changed'
+          ref=json.loads(raw)
+          assert ref['baselineRevision']==os.environ['SHARED_BANNER_REFERENCE_REVISION']
+          assert ref['previewOrigin']==os.environ['SHARED_BANNER_PREVIEW_REFERENCE_ORIGIN']
+          root=pathlib.Path('dist');assert root.is_dir() and not root.is_symlink()
+          files={}
+          for p in sorted(root.rglob('*')):
+              assert not p.is_symlink(),'Artifact symlink forbidden'
+              if p.is_dir():continue
+              assert p.is_file(),'Nonregular artifact'
+              files[p.relative_to(root).as_posix()]=h(p.read_bytes())
+          assert files==ref['files'],'Original full artifact bytes changed'
+          assert h(json.dumps(files,sort_keys=True,separators=(',',':')).encode())==ref['artifactManifestSha256']==os.environ['SHARED_BANNER_PREVIEW_REFERENCE_ARTIFACT_SHA256']
+          assert ref['productionArtifactManifestSha256']==os.environ['SHARED_BANNER_REFERENCE_ARTIFACT_SHA256']
+          print('Original preview full artifact authenticated:',len(files))
+          PYREFERENCE
       - name: Assert fixed preview boundary
         shell: bash
         run: |
@@ -47,12 +136,15 @@ jobs:
         run: |
           set -euo pipefail
           npm run build 2>&1 | tee "$GITHUB_WORKSPACE/ansan-preview-evidence/native-build.log"
+          test -f shared-banner-qa.json
+          mv shared-banner-qa.json "$GITHUB_WORKSPACE/ansan-preview-evidence/shared-banner-qa.json"
       - name: Native regression tests
         shell: bash
         working-directory: site-factory/ansan-flower
         run: |
           set -euo pipefail
           node --test scripts/*.test.mjs tests/*.test.mjs 2>&1 | tee "$GITHUB_WORKSPACE/ansan-preview-evidence/native-tests.log"
+          python3 -B scripts/test_shared_banners.py 2>&1 | tee "$GITHUB_WORKSPACE/ansan-preview-evidence/shared-banner-tests.log"
       - name: Install pinned official Playwright and Korean fonts
         shell: bash
         run: |

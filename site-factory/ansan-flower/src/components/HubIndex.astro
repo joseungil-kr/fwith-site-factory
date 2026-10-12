@@ -1,4 +1,5 @@
 ---
+import SharedFlowerBanner from './SharedFlowerBanner.astro';
 import { getVisibleArticles as getCollection, isArticleVisible } from '../lib/all-articles';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import OrderCTA from './OrderCTA.astro';
@@ -72,6 +73,7 @@ const structureLabel: Record<string, string> = {
     </div>
   </section>
 
+  {articles.length>=3 && <div class="container"><SharedFlowerBanner variant="message"/></div>}
   <section class="section">
     <div class="container">
       <div class="hub-card-grid">
@@ -89,6 +91,7 @@ const structureLabel: Record<string, string> = {
           {index === Math.floor((articles.length - 1) / 2) && (
             <div class="hub-purchase-banner" data-purchase-banner="middle" data-page-role="hub">
               <OrderCTA heading={`${title} 주문 안내`} />
+              {articles.length>=3 && <SharedFlowerBanner variant="budget"/>}
             </div>
           )}
           </>
@@ -96,4 +99,5 @@ const structureLabel: Record<string, string> = {
       </div>
     </div>
   </section>
+{articles.length>=3 && <div class="container"><SharedFlowerBanner variant="consultation"/></div>}
 </BaseLayout>
