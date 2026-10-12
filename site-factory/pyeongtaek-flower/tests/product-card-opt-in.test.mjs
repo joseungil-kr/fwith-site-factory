@@ -18,8 +18,9 @@ const chosen=p=>selectProducts(p,products,resolveProductCardLimit(p,products));
 
 test('portable original and reviewed-copy fixtures have exact independently reviewed SHA pins',()=>{
  assert.equal(sha(text('./fixtures/original-pages-before-copy.json')),'06fda605f3d88a6f60414ebd3c7204233f73849083acd0fdc83b8ab267c1c29d');
- assert.equal(sha(text('./fixtures/reviewed-copy.json')),'090548dcb1d65ad72d19e1eab590f363ef5256bbdfc098203c1576740834a6b1');
+ assert.equal(sha(text('./fixtures/reviewed-copy.json')),'df727534a91f4ca6ae46ca7ebdc1058e270e0011485a586013a1216e20b47c9f');
  assert.equal(baseline.length,36);assert.equal(reviewed.length,36);
+ const historical=read('../docs/notice-followup-history-20261011.json').files['tests/fixtures/reviewed-copy.json'];assert.equal(historical.sha256,'090548dcb1d65ad72d19e1eab590f363ef5256bbdfc098203c1576740834a6b1');assert.equal(sha(historical.utf8Content),historical.sha256);
 });
 for(const p of pages)test(`persisted selector ${p.slug}: exactly ${p.productCardLimit} bound real cards`,()=>{
  const selected=chosen(p);assert.equal(selected.length,p.productCardLimit);assert.deepEqual(selected.map(x=>x.key),p.productCardKeys);

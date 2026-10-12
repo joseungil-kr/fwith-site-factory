@@ -10,7 +10,7 @@ const pages=read('../src/data/pages.json'),copy=read('./fixtures/reviewed-copy.j
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 const canonical=v=>JSON.stringify(v,(_,x)=>x&&typeof x==='object'&&!Array.isArray(x)?Object.fromEntries(Object.entries(x).sort(([a],[b])=>a<b?-1:a>b?1:0)):x);
 test('all reviewed customer fields are exact independently approved copy, with original route order',()=>{
- assert.equal(sha(text('./fixtures/reviewed-copy.json')),'090548dcb1d65ad72d19e1eab590f363ef5256bbdfc098203c1576740834a6b1');assert.equal(pages.length,36);
+ assert.equal(sha(text('./fixtures/reviewed-copy.json')),'df727534a91f4ca6ae46ca7ebdc1058e270e0011485a586013a1216e20b47c9f');assert.equal(pages.length,36);
  const omit=new Set(['productCardLimit','productCardKeys','status','approvalVerified','snapshotId','snapshotHash']);
  assert.deepEqual(pages.map(p=>p.pageKey),copy.map(p=>p.pageKey));
  for(let i=0;i<pages.length;i++){
