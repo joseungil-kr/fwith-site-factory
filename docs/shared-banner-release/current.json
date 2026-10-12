@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "phase": "yangcheon_canary_public_verified_batch30_source_preparation",
+  "phase": "yangcheon_public_verified_batch30_source_saved_publication_pending",
   "sourceRevision": "0a2b4d4d7772dbed6cdf2be29f2b29a858d07797",
   "previousPublicRevision": "8c20e5726ab7ce5767391219ea93f690a572972d",
   "sourceBranch": "site-factory-seoul-yangcheon-direct",
@@ -13,19 +13,22 @@
   "existingPublisherTestsPassed": 43,
   "sourceReadbackFiles": 13,
   "publicationAttempted": true,
-  "mainWriterActive": false,
+  "mainWriterActive": true,
   "noNewRegionClaimed": true,
   "visualQa": "five_customer_routes_at_1180px_and_500px_verified; 375px_mobile_unverified",
   "scopeInventory": {
     "priorPublishedSites": 45,
-    "priorCustomerHtml": 975,
+    "priorCustomerHtml": 976,
     "newlyPublishedNowonAdded": true,
     "nowonCustomerHtml": 6,
     "totalSites": 46,
-    "customerHtml": 981,
-    "coverage": "inventory_count_not_all_http_verified"
+    "customerHtml": 982,
+    "coverage": "inventory_count_not_all_http_verified",
+    "priorCustomerHtmlOriginalSnapshot": 975,
+    "correction": "Previously omitted existing noindex merged Ansan route; baseline/public bytes match. No new page or sitemap change.",
+    "correctionEvidence": "docs/shared-banner-release/denominator-reconciliation.json"
   },
-  "next": "Prepare and independently review exact source amendments for approved batch30. Other15 publishing paths remain separate. Reacquire main writer lease before control changes. No all-region completion claim.",
+  "next": "Save and read back the independently verified batch30 trusted controls; then execute the separately approved second batch issue once. Other15 remain separate.",
   "controlRevision": "d3923edc4955fdc13824dcd070cd44f9149d767c",
   "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38285343695",
   "runConclusion": "success",
@@ -49,5 +52,24 @@
   },
   "completedSites": 1,
   "completedCustomerHtml": 5,
-  "remainingSites": 45
+  "remainingSites": 45,
+  "batch30": {
+    "sourceSavedSites": 30,
+    "sourceReadbackFiles": 2521,
+    "rawSamplesByteCompared": 60,
+    "customerHtml": 456,
+    "bannerEligibleHtml": 454,
+    "banners": 1362,
+    "excludedNoindexCustomerHtml": 2,
+    "notFoundHtml": 30,
+    "publicationAttempted": false,
+    "localNodeTests": 2586,
+    "localBannerTests": 270,
+    "existingPublisherTests": 1165,
+    "sourceBindings": "docs/shared-banner-release/batch30-source-branches.json",
+    "targetManifest": "docs/shared-banner-release/targets.json",
+    "controlTests": 31,
+    "sourceChangedFiles": 498,
+    "allBranchHeadsVerified": true
+  }
 }

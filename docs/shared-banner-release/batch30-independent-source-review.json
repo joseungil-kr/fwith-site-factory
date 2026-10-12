@@ -1,0 +1,553 @@
+{
+  "schemaVersion": 1,
+  "reviewKind": "independent-local-historical-amendment-review",
+  "observedAt": "2026-10-12T17:49:00Z",
+  "status": "accepted for local source-preservation validation only",
+  "directlyVerified": {
+    "sites": 30,
+    "historicalGitBlobsCompared": 2221,
+    "changedFilesDeclaredByFixture": 197,
+    "unexpectedChanges": 0,
+    "missingBaselineFiles": 0,
+    "archivedBeforeUtf8MatchesExactGitBlob": 197,
+    "currentAfterShaMatches": 197,
+    "sameReviewedHelperAcrossAllSites": true,
+    "amendmentTests": {
+      "pass": 90,
+      "fail": 0
+    },
+    "helperSourceRead": true,
+    "exactForwardTransformRequired": true,
+    "currentSourceShaRequired": true,
+    "fixtureShaRequiredByRawCurrentTest": true,
+    "originalDataSecurityAndProductionEvidenceUnchanged": true
+  },
+  "judgment": "The tightly pinned bridge is justified for reconciling historical full-file assertions with exact approved artwork/heading transformations. Historical tests read the archived original only after validating the current bytes match both approved digest and exact transformation. Separate raw-current amendment tests and rendered-artifact QA remain essential.",
+  "limitations": [
+    "Historical test PASS is preservation of past approvals, not independent semantic execution against current modified source.",
+    "Full build results, rendered candidate HTML, remote commits and publication for these 30 sites were not established in this focused review.",
+    "Provided inventory lacks publicRevision for Yangpyeong and Seoul Nowon. Their local git baseline validation is not public deployment baseline verification.",
+    "This review grants no security, provider-setting, DNS or permission changes."
+  ],
+  "sites": [
+    {
+      "hostname": "anseong.fwith.kr",
+      "sourceRoot": "site-factory/anseong-flower",
+      "baselineCommit": "398c8517a5346a31e48dd13db12e099482eaa9d6",
+      "archivedFilesMatchedBaseline": 6,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "3e08e8bb948b20174ec5a5775b9ed18ec4a4af7e0af5bdc2684ca682498c93f9",
+        "tests/fixtures/shared-banner-amendment.json": "5a52bee106b093ab0bab60c8c9e1b1828db2c8d3a84dcab46073b76cbc131667"
+      },
+      "publicBaselineInProvidedInventory": "398c8517a5346a31e48dd13db12e099482eaa9d6"
+    },
+    {
+      "hostname": "dongducheon.fwith.kr",
+      "sourceRoot": "site-factory/dongducheon-flower",
+      "baselineCommit": "db812feec29cd54107511e2ff547b7071e300bc4",
+      "archivedFilesMatchedBaseline": 7,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "532e60195e88a241d4fc0a39e2e41fceacc0b3b90c6aaa3dcf6ab86c90dfd995",
+        "tests/fixtures/shared-banner-amendment.json": "e75955c9a42fff1540140ef36a34ff685f4194c27623401ff6bb0616b5ab1dc3"
+      },
+      "publicBaselineInProvidedInventory": "db812feec29cd54107511e2ff547b7071e300bc4"
+    },
+    {
+      "hostname": "gapyeong.fwith.kr",
+      "sourceRoot": "site-factory/gapyeong-flower",
+      "baselineCommit": "649f958c9bdab227c265e693516f0b1ee4b25ace",
+      "archivedFilesMatchedBaseline": 8,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "25b47b3b534ecc31260efe43279f277cf37c504bfd49d5e17a9e052e287f3f53",
+        "tests/fixtures/shared-banner-amendment.json": "92c2b18a07e6f1b97cab07753632773c2a64f1b7dab78311f97637532b3462f7"
+      },
+      "publicBaselineInProvidedInventory": "649f958c9bdab227c265e693516f0b1ee4b25ace"
+    },
+    {
+      "hostname": "gimpo.fwith.kr",
+      "sourceRoot": "site-factory/gimpo-flower",
+      "baselineCommit": "d00c10b5ed5cb24c743209589eabbd8e5e685ab7",
+      "archivedFilesMatchedBaseline": 6,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "df8160cc86d1367e32c25762dc2dc18ec397387d9a549e61d76b09aa33d9ae77",
+        "tests/fixtures/shared-banner-amendment.json": "745c7729af10415b8b987b5c20b00946f987965590d9a43e95ebe6989092bd5a"
+      },
+      "publicBaselineInProvidedInventory": "d00c10b5ed5cb24c743209589eabbd8e5e685ab7"
+    },
+    {
+      "hostname": "gunpo.fwith.kr",
+      "sourceRoot": "site-factory/gunpo-flower",
+      "baselineCommit": "6c19db7879a8389515da54f3292abcbf161e26af",
+      "archivedFilesMatchedBaseline": 6,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "854695743daf1068cceaef17325d902793ceff0e123591f1dc3ca6ed63fb73c8",
+        "tests/fixtures/shared-banner-amendment.json": "d464a0cabd74d5ff17b21dd5c748e5d04afb851bfd19766b88ba43a5127ab38e"
+      },
+      "publicBaselineInProvidedInventory": "6c19db7879a8389515da54f3292abcbf161e26af"
+    },
+    {
+      "hostname": "guri.fwith.kr",
+      "sourceRoot": "site-factory/guri-flower",
+      "baselineCommit": "856ecffbb61236d9c5d769270fb3184103d47831",
+      "archivedFilesMatchedBaseline": 6,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "0e7f6c28d59667abcd97b88272a781457ee02d7316859b13f2477090d25d9d40",
+        "tests/fixtures/shared-banner-amendment.json": "ab1e82bc519289eca80f888bcd1ae7a8217770bb9cb9722d3b14912afa846c2c"
+      },
+      "publicBaselineInProvidedInventory": "856ecffbb61236d9c5d769270fb3184103d47831"
+    },
+    {
+      "hostname": "gwacheon.fwith.kr",
+      "sourceRoot": "site-factory/gwacheon-flower",
+      "baselineCommit": "41676c4ea274e3670b1ae2ad3941340a611e91b7",
+      "archivedFilesMatchedBaseline": 8,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "5516f0f8c9f02da6f5c04a2e8299363e826c5d7deefbbcbc9315fd1f1e4d0650",
+        "tests/fixtures/shared-banner-amendment.json": "a6c66f880a432343e1468cc5502b53203ecfa2909ac07c121af3a9863f53fad3"
+      },
+      "publicBaselineInProvidedInventory": "41676c4ea274e3670b1ae2ad3941340a611e91b7"
+    },
+    {
+      "hostname": "gwangju.fwith.kr",
+      "sourceRoot": "site-factory/gwangju-flower",
+      "baselineCommit": "3833da01acea3788a3413533faf5ac2a5da6b047",
+      "archivedFilesMatchedBaseline": 7,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "b096c66a001e1162f3d7247927bc756a9190ae759dfecf6913ad1492ea438640",
+        "tests/fixtures/shared-banner-amendment.json": "2f9c3e0bb54cea9183e212f23ec112ca4d45bf6dea12cecbd0d25bbda362b73d"
+      },
+      "publicBaselineInProvidedInventory": "3833da01acea3788a3413533faf5ac2a5da6b047"
+    },
+    {
+      "hostname": "hanam.fwith.kr",
+      "sourceRoot": "site-factory/hanam-flower",
+      "baselineCommit": "34e03110ab47a185fd78a89f5c12054d85a1fba4",
+      "archivedFilesMatchedBaseline": 6,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "cf3db0c2865ebc67655ef35dc12b01c1b365910baf8063226b78bd667a88609a",
+        "tests/fixtures/shared-banner-amendment.json": "6f3e0ef6273c6c84f1288dfef8a7e3bf3ed0d36fd0eb1143cc0d3859ff848b7c"
+      },
+      "publicBaselineInProvidedInventory": "34e03110ab47a185fd78a89f5c12054d85a1fba4"
+    },
+    {
+      "hostname": "icheon.fwith.kr",
+      "sourceRoot": "site-factory/icheon-flower",
+      "baselineCommit": "de3ce43534f6cde14813874f071360632de5b520",
+      "archivedFilesMatchedBaseline": 7,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "3b6a8e34b9c0977d63a38d17d8e1c6dce919c045355625d7aa49711025b6c472",
+        "tests/fixtures/shared-banner-amendment.json": "5f92bebf77252ae5138f5987fd3dac7ee2055e8f97b676e6b54ed99fb6d6cd7b"
+      },
+      "publicBaselineInProvidedInventory": "de3ce43534f6cde14813874f071360632de5b520"
+    },
+    {
+      "hostname": "jongno.fwith.kr",
+      "sourceRoot": "site-factory/jongno-flower",
+      "baselineCommit": "e8ee06720ec57cf6b2b8bd20656231c8deb2d6ed",
+      "archivedFilesMatchedBaseline": 6,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "f2ccea52652f6ead113a948e60a76929d76b23e603401ee23a1dbbe447ee4c1e",
+        "tests/fixtures/shared-banner-amendment.json": "6d0507c72470766cc2deb85f1098ec966d9722b2830a0a326b92f1f0abb23484"
+      },
+      "publicBaselineInProvidedInventory": "e8ee06720ec57cf6b2b8bd20656231c8deb2d6ed"
+    },
+    {
+      "hostname": "osan.fwith.kr",
+      "sourceRoot": "site-factory/osan-flower",
+      "baselineCommit": "69dd3d35134fe94e7cc854a1f44420da5b2084a9",
+      "archivedFilesMatchedBaseline": 6,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "1036565f9ebeda6431be1577233b4a53ab38283173d346d13eb9f9515abc91f5",
+        "tests/fixtures/shared-banner-amendment.json": "3819fca557b0dd155e7f30198f0210732ebfb8b4ee816ee51b46ca6efabff6c9"
+      },
+      "publicBaselineInProvidedInventory": "69dd3d35134fe94e7cc854a1f44420da5b2084a9"
+    },
+    {
+      "hostname": "paju.fwith.kr",
+      "sourceRoot": "site-factory/paju-flower",
+      "baselineCommit": "0671e3f98dac74e4328df41e1c17a92b3a12b6e5",
+      "archivedFilesMatchedBaseline": 6,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "35942dc63562b6decf07714d68be995f8ff124802358e619b38065693277ad09",
+        "tests/fixtures/shared-banner-amendment.json": "3880f8dfb904328ba51f1dbac8c1c73d0be9e6dcae6e3fb3d0653fee1523f187"
+      },
+      "publicBaselineInProvidedInventory": "0671e3f98dac74e4328df41e1c17a92b3a12b6e5"
+    },
+    {
+      "hostname": "pocheon.fwith.kr",
+      "sourceRoot": "site-factory/pocheon-flower",
+      "baselineCommit": "d67b87d6f16add182f837c8a3381964eb472785f",
+      "archivedFilesMatchedBaseline": 7,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "3ac71c2b1705f3ee1f082f5df08ac13455238e5a0c1c134555e3e665bab14f89",
+        "tests/fixtures/shared-banner-amendment.json": "6d64a05e2f01dea2ce5e4728e104b454e7fa0d781c682aa2dc045f072eb336a2"
+      },
+      "publicBaselineInProvidedInventory": "d67b87d6f16add182f837c8a3381964eb472785f"
+    },
+    {
+      "hostname": "seoul-dobong.fwith.kr",
+      "sourceRoot": "site-factory/seoul-dobong-flower",
+      "baselineCommit": "089a6efd7d852719af2ae56279ea13fbceb4b1b0",
+      "archivedFilesMatchedBaseline": 7,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "3b2151731214007cde40df464685eff80828a282776466ad3ac6c3f17462a758",
+        "tests/fixtures/shared-banner-amendment.json": "bd30ee96b7c3e5472189bdea753bab2cde8815fe1ba6d0671d6da6bebb4f1934"
+      },
+      "publicBaselineInProvidedInventory": "089a6efd7d852719af2ae56279ea13fbceb4b1b0"
+    },
+    {
+      "hostname": "seoul-dongdaemun.fwith.kr",
+      "sourceRoot": "site-factory/seoul-dongdaemun-flower",
+      "baselineCommit": "9090525f9888d7ebdafe4891bef77cf93a1236a7",
+      "archivedFilesMatchedBaseline": 6,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "fd529a5acbe34bb0eb17e2430e5f85d5b7756e53561d93aa74141cfa18cc3fe0",
+        "tests/fixtures/shared-banner-amendment.json": "9dd2dd507a836884547671a2adb5061671eea55fc5572e3d081bedae69200fc2"
+      },
+      "publicBaselineInProvidedInventory": "9090525f9888d7ebdafe4891bef77cf93a1236a7"
+    },
+    {
+      "hostname": "seoul-gangbuk.fwith.kr",
+      "sourceRoot": "site-factory/seoul-gangbuk-flower",
+      "baselineCommit": "b59cdce93c9255ae4a99a3e7c661898ab75974f6",
+      "archivedFilesMatchedBaseline": 7,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "efe8792a1340ce10527f004990be18d31bd8900005f63b9393c8ebc104a1302f",
+        "tests/fixtures/shared-banner-amendment.json": "ca9fde01cb04c19c09a30f5810412dc72e3d424641f5a1a3d202a3b902cb9e78"
+      },
+      "publicBaselineInProvidedInventory": "b59cdce93c9255ae4a99a3e7c661898ab75974f6"
+    },
+    {
+      "hostname": "seoul-gwangjin.fwith.kr",
+      "sourceRoot": "site-factory/seoul-gwangjin-flower",
+      "baselineCommit": "99dc437541ef21a419a494590154cd855acafe54",
+      "archivedFilesMatchedBaseline": 6,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "e5835c574b4875b460a42327ddd0a33ccdb92f855113bc0bc6bac456796717e1",
+        "tests/fixtures/shared-banner-amendment.json": "bd5ff889a3c96a6523102876035b0e144aa667aacad841a32d2e80936edc4c92"
+      },
+      "publicBaselineInProvidedInventory": "99dc437541ef21a419a494590154cd855acafe54"
+    },
+    {
+      "hostname": "seoul-jung.fwith.kr",
+      "sourceRoot": "site-factory/seoul-jung-flower",
+      "baselineCommit": "bfbc8f15e89573eefe46f2858b6ee33eebf63dc1",
+      "archivedFilesMatchedBaseline": 6,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "1ab131b433ce272f5fb84a7cd8bfd298cfd63c5e487d7334ddd67233f4e7ad72",
+        "tests/fixtures/shared-banner-amendment.json": "7f139943e47c5587ec9283a48c7ffb57e83c9f0a71e4338d6ccb10e2a51aa524"
+      },
+      "publicBaselineInProvidedInventory": "bfbc8f15e89573eefe46f2858b6ee33eebf63dc1"
+    },
+    {
+      "hostname": "seoul-jungnang.fwith.kr",
+      "sourceRoot": "site-factory/seoul-jungnang-flower",
+      "baselineCommit": "9ac710b22d7abd7ccf1847093e1ad56aa4175301",
+      "archivedFilesMatchedBaseline": 7,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "1b9f5803c4bc114217fa592f3250ff78bcd9cd24b26f93240c854727079610ae",
+        "tests/fixtures/shared-banner-amendment.json": "783b8183c560af0f252e5dae851cf964fd0e01581b67adeabe126c6cef774a2e"
+      },
+      "publicBaselineInProvidedInventory": "9ac710b22d7abd7ccf1847093e1ad56aa4175301"
+    },
+    {
+      "hostname": "seoul-seongbuk.fwith.kr",
+      "sourceRoot": "site-factory/seoul-seongbuk-flower",
+      "baselineCommit": "d2519f68d729b0d1a68e0cd4283bf6983d8de17c",
+      "archivedFilesMatchedBaseline": 6,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "48a6de5252d56e37c4d8162da3d843b9c0c722d6b23154e27aae7ca2356690ed",
+        "tests/fixtures/shared-banner-amendment.json": "3ef0b27631a6e30b5e3792d0a60e5203c5262f713796c11104f904728ba906ce"
+      },
+      "publicBaselineInProvidedInventory": "d2519f68d729b0d1a68e0cd4283bf6983d8de17c"
+    },
+    {
+      "hostname": "seoul-seongdong.fwith.kr",
+      "sourceRoot": "site-factory/seoul-seongdong-flower",
+      "baselineCommit": "8cb485861fc48c990a40842651c3b365de0fadc5",
+      "archivedFilesMatchedBaseline": 6,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "b2160b8ccea8b95f8beabdccc40e8a0fb450e9424ba082f5ba2db184d835c7b0",
+        "tests/fixtures/shared-banner-amendment.json": "eb87626962f22123fcd4c0cb823a8cb72f82e5a160b990379e2e631672ac42fb"
+      },
+      "publicBaselineInProvidedInventory": "8cb485861fc48c990a40842651c3b365de0fadc5"
+    },
+    {
+      "hostname": "seoul-yongsan.fwith.kr",
+      "sourceRoot": "site-factory/seoul-yongsan-flower",
+      "baselineCommit": "b4bdbf626371bbdacbbc22f207250897bbc218b7",
+      "archivedFilesMatchedBaseline": 6,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "18b32801e12d6faa27183d3ef483753efdc8d16edab0785c8ff9ca0e02048616",
+        "tests/fixtures/shared-banner-amendment.json": "ec688f571a110ab9969bd1a4d65ee389b29ade494208d777c1809c6ad96b1408"
+      },
+      "publicBaselineInProvidedInventory": "b4bdbf626371bbdacbbc22f207250897bbc218b7"
+    },
+    {
+      "hostname": "siheung.fwith.kr",
+      "sourceRoot": "site-factory/siheung-flower",
+      "baselineCommit": "68e4222ae30ee3228cb52f6b938604d45d7ecc34",
+      "archivedFilesMatchedBaseline": 7,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "0beac07435c1baf79faa99f61c90c1516550b37ca812c032962b1122b20a89b0",
+        "tests/fixtures/shared-banner-amendment.json": "aeda439dfabd647fb42af98f94604ce2661077c17a547cc722a815599b953da7"
+      },
+      "publicBaselineInProvidedInventory": "68e4222ae30ee3228cb52f6b938604d45d7ecc34"
+    },
+    {
+      "hostname": "uijeongbu.fwith.kr",
+      "sourceRoot": "site-factory/uijeongbu-flower",
+      "baselineCommit": "ed1669abb0e7872a783d66fc72b45375ac189bc1",
+      "archivedFilesMatchedBaseline": 7,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "256e61afb61558e0b56907870da43bf8883a96b647abc0e11d58de20a32f8a3d",
+        "tests/fixtures/shared-banner-amendment.json": "6351805e4de5bbd94c94b4f2a3a9c26824efdeece541c4588fed436f3b7f2ae9"
+      },
+      "publicBaselineInProvidedInventory": "ed1669abb0e7872a783d66fc72b45375ac189bc1"
+    },
+    {
+      "hostname": "uiwang.fwith.kr",
+      "sourceRoot": "site-factory/uiwang-flower",
+      "baselineCommit": "7965f290edd23e87eadfccc5c0c0c325eacb8ede",
+      "archivedFilesMatchedBaseline": 7,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "99c8edc9f62f8383a1966cbe0c3e435c5534fd3ea4576650f91aab50607cf2dd",
+        "tests/fixtures/shared-banner-amendment.json": "853617d631cd8fbe549766da9e1e621ee971f37b94bcd6537e5cbe9f0c70fecc"
+      },
+      "publicBaselineInProvidedInventory": "7965f290edd23e87eadfccc5c0c0c325eacb8ede"
+    },
+    {
+      "hostname": "yangju.fwith.kr",
+      "sourceRoot": "site-factory/yangju-flower",
+      "baselineCommit": "9c49328205f1dfa5ee80e05e18fc239a347481ea",
+      "archivedFilesMatchedBaseline": 7,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "d9f6167d6b1f76ad33ed4fbd890d7c8947a2fea4a77f105b4243525e0426d547",
+        "tests/fixtures/shared-banner-amendment.json": "d295a66096eb3aa9e6b22eefae21bf1912354ed01506af878d0c75520fde444b"
+      },
+      "publicBaselineInProvidedInventory": "9c49328205f1dfa5ee80e05e18fc239a347481ea"
+    },
+    {
+      "hostname": "yangpyeong.fwith.kr",
+      "sourceRoot": "site-factory/yangpyeong-flower",
+      "baselineCommit": "9602d4ab4355513e2cb4744d34c110dfcf2eacc9",
+      "archivedFilesMatchedBaseline": 8,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "ce8b49a4f27d5c9c647bd75182801e3f860fbd42d98282514a617ca44cc0b032",
+        "tests/fixtures/shared-banner-amendment.json": "e8b5b886538c24da44b6563c0bafb87b456c1deb0c501f48f8cf463a82e32b20"
+      },
+      "publicBaselineInProvidedInventory": null
+    },
+    {
+      "hostname": "yeoncheon.fwith.kr",
+      "sourceRoot": "site-factory/yeoncheon-flower",
+      "baselineCommit": "a369f3d695f5793b4c138190751c933e6f103afe",
+      "archivedFilesMatchedBaseline": 7,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "88569f04ca76784ea4198ecfca18fffe0d7c5ae58fe44e91ca68c3224a62a49e",
+        "tests/fixtures/shared-banner-amendment.json": "995ebc863fd61f3573afb69cd17a9fb2826413602ccec34c7c0e7b8e541db45c"
+      },
+      "publicBaselineInProvidedInventory": "a369f3d695f5793b4c138190751c933e6f103afe"
+    },
+    {
+      "hostname": "seoul-nowon.fwith.kr",
+      "sourceRoot": "site-factory/seoul-nowon-flower",
+      "baselineCommit": "c498fe38fb48c8a537e085f1fa200d17c4314e99",
+      "archivedFilesMatchedBaseline": 5,
+      "tests": {
+        "pass": 3,
+        "fail": 0
+      },
+      "readFilesSha256": {
+        "tests/shared-banner-amendment.mjs": "d76f962fe98f66d1d01f1c0c4112d1ee93c7f02600154981d3830aa86c7db32a",
+        "tests/shared-banner-amendment.test.mjs": "ba7bfae3582598ef2d6cd7f7c04fbbdc5e182472949f314591ce6d9e129c4fd7",
+        "tests/fixtures/shared-banner-amendment.json": "fc1c4d8ba4102037b4b7217290ffbf2cba85b424eebf53756c48728737c83055"
+      },
+      "publicBaselineInProvidedInventory": null
+    }
+  ],
+  "finalReviewGates": [
+    {
+      "layer": "historical source preservation",
+      "purpose": "Historical assertions receive exact archived baseline only after current SHA and exact approved forward transform verification. PASS is not current runtime validation."
+    },
+    {
+      "layer": "current source",
+      "purpose": "Run raw-current template/shared-banner amendment and negative QA tests against the exact new source SHA."
+    },
+    {
+      "layer": "current rendered artifact",
+      "purpose": "Run build and HTML shared-banner QA; assert body, metadata, canonical, links, source/product facts and CTA preservation against original rendered baseline."
+    },
+    {
+      "layer": "actual fixed publisher",
+      "purpose": "Validate source/package/artifact with current authorized fixed publisher, then exact public HTTP/asset/404/provider readback and receipt at publication."
+    }
+  ],
+  "nowonFinalAmendment": {
+    "observedAt": "2026-10-12T18:08:40Z",
+    "packageOriginalGitBlobMatchesArchive": true,
+    "onlyBuildAndQaScriptAppend": {
+      "build": [
+        "node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && node scripts/qa_bootstrap_or_graph.mjs",
+        "node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py"
+      ],
+      "qa": [
+        "python3 scripts/qa_static.py && node scripts/qa_bootstrap_or_graph.mjs",
+        "python3 scripts/qa_static.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py"
+      ]
+    },
+    "qaScriptsMatchApprovedDigests": true,
+    "newAmendmentTests": {
+      "pass": 3,
+      "fail": 0
+    },
+    "fixtureSha256": "02136facb96b55688af64d74b055bd06b422fee86c3a80069cf6abb55f864c8f"
+  },
+  "originalReportSha256": "dab77daead01063ca922dcaaef0acbad08690cbb5c159c4574e1b37b68c8e188"
+}

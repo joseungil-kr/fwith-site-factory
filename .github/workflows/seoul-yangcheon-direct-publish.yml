@@ -115,6 +115,10 @@ jobs:
           ref: ${{ github.sha }}
           path: control
           persist-credentials: false
+      - name: Bind reviewed banner revision to existing-update mutation mode
+        env:
+          EXISTING_UPDATE: ${{ inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true) }}
+        run: python3 control/scripts/shared-banners/verify_update.py authorize-mutation --region seoul-yangcheon --report banner-mode-check.json
       - uses: actions/download-artifact@v4
         with:
           artifact-ids: ${{ needs.build.outputs.artifact_id }}
@@ -210,6 +214,7 @@ jobs:
           name: seoul-yangcheon-direct-result-${{ github.run_id }}
           path: |
             artifact-check.json
+            banner-mode-check.json
             banner-artifact.json
             banner-public-assets.json
             http-contract.json

@@ -1,0 +1,412 @@
+{
+  "schemaVersion": 1,
+  "reviewKind": "independent-read-only-batch30-release-control-review",
+  "observedAt": "2026-10-12T18:14:10Z",
+  "status": "local control review passed for exact mapped source and hashed files; remote control-commit readback and actual release remain required",
+  "mainComparisonCommit": "91d5388f8512f00ab9f4c57ce20a360611a49bf4",
+  "scope": {
+    "newBatchSites": 30,
+    "allowedTargetsIncludingYangcheonCanary": 31,
+    "sourceCommitChangedFiles": 498,
+    "publicDeploymentClaim": false
+  },
+  "directlyVerified": {
+    "remoteMainTreeNotTruncated": true,
+    "savedBaselineWorkflowsMatchRemoteMain": 30,
+    "existingPublisherBytesMatchRemoteMain": true,
+    "workflowYAML": 31,
+    "bashScripts": 682,
+    "unitTests": {
+      "pass": 31,
+      "fail": 0
+    },
+    "actualTargetLoad": 31,
+    "mappedRevisionTrueModeAccepted": 31,
+    "mappedRevisionFalseModeRejected": 31,
+    "existingTriggersPermissionsConcurrencyUnchanged": 30,
+    "initialPublisherGuardsUnmodified": true,
+    "noNewSecrets": true,
+    "oneStaticDeployCommandPerWorkflow": true,
+    "updateUsesAuditedWranglerVersion": "4.147.0",
+    "updateSkipsHostnameAttach": true,
+    "providerInspectionGetOnly": true,
+    "exactFixedAccountWorkerHostAndOldPublicRevisionRequired": true,
+    "existingSettingsAndExposurePreservedFailClosed": true,
+    "providerAfterExactStateConfigAndAccountComparison": true,
+    "currentSourceBuildWithoutProviderCredentials": true,
+    "currentArtifactFixedPublisherAndGoldenBannerQaRequiredBeforeDeploy": true,
+    "publicFixedPublisherHttpAndGoldenMimeBytesRequiredAfterDeploy": true,
+    "independentRemoteSourceCommitsAndParentsChecked": 30,
+    "independentSourceFilesGitBlobIdentityMatches": 2521,
+    "sourceChangesOutsideReviewedRoot": 0,
+    "deletedBaselineFiles": 0,
+    "currentBranchHeadsMatchNewSourceSha": 30,
+    "readbackChangedFileSha256MatchesIndependentTreeProof": 30,
+    "targetEvidenceDigestsChecked": true,
+    "currentRenderedBannerQaSites": 30,
+    "customerHtml": 456,
+    "eligibleHtml": 454,
+    "preservedNoindexExceptions": 2,
+    "banners": 1362
+  },
+  "resolvedFindings": [
+    {
+      "finding": "29 legacy fixed publishers allowed already-bound Worker in ordinary publish path, allowing mapped banner revision to miss the new update gates.",
+      "resolution": "authorize-mutation runs before artifacts/provider steps for all31 mutation jobs, rejects mapped banner revision unless existing_update=true, invokes exact load for true mode. Existing ordinary revisions and finalize_indexnow remain unchanged."
+    },
+    {
+      "finding": "Old local HEAD made Nowon issue trigger appear newly added.",
+      "resolution": "Independent GitHub raw read and all30 baseline-workflow object comparisons to main91d5388f confirmed trigger was pre-existing; incorrect initial classification withdrawn."
+    }
+  ],
+  "regressionLayers": [
+    {
+      "layer": "historical source preservation",
+      "meaning": "Archived original assertions only after validating current exact SHA and approved forward transform; not current runtime PASS."
+    },
+    {
+      "layer": "current source and template",
+      "meaning": "Raw-current amendment/template and negative shared-banner tests against exact source revision."
+    },
+    {
+      "layer": "current rendered artifact",
+      "meaning": "Build plus shared-banner HTML QA, body/metadata/link/canonical/source/product/CTA preservation; current rendered QA was rerun independently here, full baseline DOM preservation remains separate writer evidence."
+    },
+    {
+      "layer": "actual publisher and public release",
+      "meaning": "The fixed current publisher must package and verify the exact newly built source, inspect provider state, upload once, then verify public bytes/status/404/SEO/assets/settings and IndexNow receipt. Local tests are not public completion."
+    }
+  ],
+  "nonblockingLimitations": [
+    "Opened issues share existing workflow-level region queues; unrelated issues may replace pending runs. No actual cancellation was reproduced. Preserve existing queue configuration and observe runs before any retry.",
+    "Old-public-revision check and upload are not atomic against an external dashboard/operator; no second repository publisher for these31 targets was found by the delegated concurrency audit.",
+    "No batch public browser screenshots or batch deployment outcome established by this control review.",
+    "No actionlint binary available; YAML, bash, expression structure and runtime code were reviewed.",
+    "No security, permission, hostname ownership or DNS changes authorized by this review."
+  ],
+  "requiredBeforeDispatch": [
+    "Commit only exact reviewed controls/evidence on the actual latest main parent; preserve unrelated main changes and independently read back committed file bytes.",
+    "Use exact intended30 source revisions with existing_update:true; do not include already-completed Yangcheon in the new batch.",
+    "Retain first-attempt, current branch head, exact old live revision and settings-preservation runtime checks."
+  ],
+  "evidence": {
+    "sourceTreeProof": "/workspace/shared/common-banner-work/independent-batch-source-tree-review.json",
+    "sourceTreeProofSha256": "4fa4ab28fcf57e2bc052a3e0d7226efe33732cce4966c55d550137837ded2eac",
+    "concurrencyAudit": "/workspace/shared/common-banner-work/independent-batch-concurrency-review.json",
+    "concurrencyAuditSha256": "2e416c7634025eba472caa8874976f4156ae7be002f194449deb509fd3e312d1"
+  },
+  "branchReadback": [
+    {
+      "region": "anseong",
+      "branch": "site-factory-anseong-direct",
+      "expected": "01e31c28210c8c0ac367ffbf370325521d7065ee",
+      "actual": "01e31c28210c8c0ac367ffbf370325521d7065ee",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "dongducheon",
+      "branch": "site-factory-dongducheon-direct",
+      "expected": "6c17e40d6931e658d39091110ba480dc87106fe2",
+      "actual": "6c17e40d6931e658d39091110ba480dc87106fe2",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "gapyeong",
+      "branch": "site-factory-gapyeong-direct",
+      "expected": "e3f4df1ec02374aa651246681eb535a6a06822e9",
+      "actual": "e3f4df1ec02374aa651246681eb535a6a06822e9",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "gimpo",
+      "branch": "site-factory-gimpo-direct",
+      "expected": "aee462128c12f73b0586278e5122b993b782a721",
+      "actual": "aee462128c12f73b0586278e5122b993b782a721",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "gunpo",
+      "branch": "site-factory-gunpo-direct",
+      "expected": "be7d7da7a35ee333982bee88a41146f624cc83ac",
+      "actual": "be7d7da7a35ee333982bee88a41146f624cc83ac",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "guri",
+      "branch": "site-factory-guri-direct",
+      "expected": "3d907156b4e94455a5ac5ae6df73373823f28d1a",
+      "actual": "3d907156b4e94455a5ac5ae6df73373823f28d1a",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "gwacheon",
+      "branch": "site-factory-gwacheon-direct",
+      "expected": "855ea7aa92314b455071b6d82d356604a8020de4",
+      "actual": "855ea7aa92314b455071b6d82d356604a8020de4",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "gwangju",
+      "branch": "site-factory-gwangju-direct",
+      "expected": "4f86e9db78469f031e4e3bfc9aee38e75d104cea",
+      "actual": "4f86e9db78469f031e4e3bfc9aee38e75d104cea",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "hanam",
+      "branch": "site-factory-hanam-direct",
+      "expected": "0b0c78da6e8be9c61bd92f7775ff02bcc31316d6",
+      "actual": "0b0c78da6e8be9c61bd92f7775ff02bcc31316d6",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "icheon",
+      "branch": "site-factory-icheon-direct",
+      "expected": "f60e472d52ae832c76dcecf74b69c3b8d04d4203",
+      "actual": "f60e472d52ae832c76dcecf74b69c3b8d04d4203",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "jongno",
+      "branch": "site-factory-jongno-direct",
+      "expected": "f7b71f9f44738ebc828de8bd1521600a0f05dddd",
+      "actual": "f7b71f9f44738ebc828de8bd1521600a0f05dddd",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "osan",
+      "branch": "site-factory-osan-direct",
+      "expected": "c4a97a1e212c9a8ce7536cace23160f4f5f1bcef",
+      "actual": "c4a97a1e212c9a8ce7536cace23160f4f5f1bcef",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "paju",
+      "branch": "site-factory-paju-direct",
+      "expected": "7f28a41fb7b46dbedc13b450c700d14b61e0f913",
+      "actual": "7f28a41fb7b46dbedc13b450c700d14b61e0f913",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "pocheon",
+      "branch": "site-factory-pocheon-direct",
+      "expected": "77b9e7df41c4baa36690c3b3fa861ca88a01ad9d",
+      "actual": "77b9e7df41c4baa36690c3b3fa861ca88a01ad9d",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "seoul-dobong",
+      "branch": "site-factory-seoul-dobong-direct",
+      "expected": "562c143207fd520db5e3ee679e3b92adb33b7355",
+      "actual": "562c143207fd520db5e3ee679e3b92adb33b7355",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "seoul-dongdaemun",
+      "branch": "site-factory-seoul-dongdaemun-direct",
+      "expected": "67a2826d789c1dcf372e87f02e0a921e0a82d746",
+      "actual": "67a2826d789c1dcf372e87f02e0a921e0a82d746",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "seoul-gangbuk",
+      "branch": "site-factory-seoul-gangbuk-direct",
+      "expected": "e4f2316c7f0d48985d22bc0b3acfda63d45bce69",
+      "actual": "e4f2316c7f0d48985d22bc0b3acfda63d45bce69",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "seoul-gwangjin",
+      "branch": "site-factory-seoul-gwangjin-direct",
+      "expected": "6babe2013808898d3061378827ab13162cd683ad",
+      "actual": "6babe2013808898d3061378827ab13162cd683ad",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "seoul-jung",
+      "branch": "site-factory-seoul-jung-direct",
+      "expected": "be1a38b31b5ded0a3c381917c7af03a03ad95e6b",
+      "actual": "be1a38b31b5ded0a3c381917c7af03a03ad95e6b",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "seoul-jungnang",
+      "branch": "site-factory-seoul-jungnang-direct",
+      "expected": "db82b948eda3558b1352ef5c7e1eecdc118ff6ad",
+      "actual": "db82b948eda3558b1352ef5c7e1eecdc118ff6ad",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "seoul-seongbuk",
+      "branch": "site-factory-seoul-seongbuk-direct",
+      "expected": "38b63ef21c65b77f0e28acd9b7707c21f441ba54",
+      "actual": "38b63ef21c65b77f0e28acd9b7707c21f441ba54",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "seoul-seongdong",
+      "branch": "site-factory-seoul-seongdong-direct",
+      "expected": "6fba6b864f2e610ca595a4ce79be72da162045df",
+      "actual": "6fba6b864f2e610ca595a4ce79be72da162045df",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "seoul-yongsan",
+      "branch": "site-factory-seoul-yongsan-direct",
+      "expected": "351de5198085c8de9815560652f66d642b08aed6",
+      "actual": "351de5198085c8de9815560652f66d642b08aed6",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "siheung",
+      "branch": "site-factory-siheung-direct",
+      "expected": "238575d08cc8cee629edeacdccfd6014c8a53323",
+      "actual": "238575d08cc8cee629edeacdccfd6014c8a53323",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "uijeongbu",
+      "branch": "site-factory-uijeongbu-direct",
+      "expected": "de7e64eda70dbf129c86029534b6799252dc61eb",
+      "actual": "de7e64eda70dbf129c86029534b6799252dc61eb",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "uiwang",
+      "branch": "site-factory-uiwang-direct",
+      "expected": "b04fa08c655b70c210b5d2dc0a92acaa8fa5b975",
+      "actual": "b04fa08c655b70c210b5d2dc0a92acaa8fa5b975",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "yangju",
+      "branch": "site-factory-yangju-direct",
+      "expected": "cebd1a3c0863b18d81db204b7d879cfbe6f80565",
+      "actual": "cebd1a3c0863b18d81db204b7d879cfbe6f80565",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "yangpyeong",
+      "branch": "site-factory-yangpyeong-direct",
+      "expected": "4924895406ec29babb4bc82d1dbc5fd5d712d4fd",
+      "actual": "4924895406ec29babb4bc82d1dbc5fd5d712d4fd",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "yeoncheon",
+      "branch": "site-factory-yeoncheon-direct",
+      "expected": "d58bf527639b8be6286be840f25e50ac498fd819",
+      "actual": "d58bf527639b8be6286be840f25e50ac498fd819",
+      "type": "commit",
+      "match": true
+    },
+    {
+      "region": "seoul-nowon",
+      "branch": "site-factory-seoul-nowon-direct",
+      "expected": "4ef0a11e5b6f6baea8213f450afd0a3f33f1e98d",
+      "actual": "4ef0a11e5b6f6baea8213f450afd0a3f33f1e98d",
+      "type": "commit",
+      "match": true
+    }
+  ],
+  "reviewedFilesSha256": {
+    ".github/workflows/anseong-direct-publish.yml": "1c068eb30f7a1ce77abf554f0e0956b0ef51d674ed75a0d37c5bfdb3baed6085",
+    ".github/workflows/dongducheon-direct-publish.yml": "bd5385cff98706deeac9723050d9cc683ab0f56b74995fdcd9807255d1d81189",
+    ".github/workflows/gapyeong-direct-publish.yml": "313aa0c72e0f5cf4cbcaab5f601b3af453b1b8e95e2d40cace00e403e85dd398",
+    ".github/workflows/gimpo-direct-publish.yml": "b0bcfdfe1c720be217f8273f2fc9eb9edbc266ca4ddf3d40789eebe5981b52cc",
+    ".github/workflows/gunpo-direct-publish.yml": "41b9c9e0c78b653206386307ade59a3ddf9826089aba204b84f0daf817ab9580",
+    ".github/workflows/guri-direct-publish.yml": "3dd29f62cb5b8334babffb6f6405972f3848917710e5b844755c89a11ebc116a",
+    ".github/workflows/gwacheon-direct-publish.yml": "a846b554ec45861959fd5e97e0ea393cf700aa9aededf1757120f1e3fbc9ddcd",
+    ".github/workflows/gwangju-direct-publish.yml": "7deb787543e95b182f43b29f74153da8c584aab34c6d40202ddd9f6e23dbf50a",
+    ".github/workflows/hanam-direct-publish.yml": "b1e65202b44107cd7cb73eaf03361b9108cde493fd9ae4fbb4b3fc774091b372",
+    ".github/workflows/icheon-direct-publish.yml": "9b9625c19641618de5e147696037f9f5e433097ca92f26e990f07d5380de5eec",
+    ".github/workflows/jongno-direct-publish.yml": "d57318ebca255a355c1ca6deb458b69e188b6cda16615119199ad12b7508178e",
+    ".github/workflows/osan-direct-publish.yml": "5dc66c1346c1fa50c81f30482083dca9f0773d11fbcf51eb6aaf763e5f4025c4",
+    ".github/workflows/paju-direct-publish.yml": "b125a5e67ddfa83c5399f5e9ff9209bf679e58da4f78cbe03a4c6c107e51e529",
+    ".github/workflows/pocheon-direct-publish.yml": "94e1336e7c7f2ecd89fa05fc069e4ac7330d3b155d12daefa24e6fdc5c43b36f",
+    ".github/workflows/seoul-dobong-direct-publish.yml": "a9f9b77b7b74f9a0a21a7a242a8e8cc7f2eed513e9663c30ed93dad497989620",
+    ".github/workflows/seoul-dongdaemun-direct-publish.yml": "487eb484ee3ca25b53aae6137c5909089119c6a697df5c4ff7ce2530296687ab",
+    ".github/workflows/seoul-gangbuk-direct-publish.yml": "8041433f7f4b9b188cc147e4bfb46d077caf42e0c6ae329894bcec9cdd18a86e",
+    ".github/workflows/seoul-gwangjin-direct-publish.yml": "76800fbf6e58869067ca5d217d0ec5eb4e161cf255dbc54e528b9ce856a2e980",
+    ".github/workflows/seoul-jung-direct-publish.yml": "d9b5939354e02fb01ff1f9c8c9788e36e36fe53e49f30995f76d1822db0cf746",
+    ".github/workflows/seoul-jungnang-direct-publish.yml": "b0bea2a7e66b7ea85b68916e0e40f3c858a397476a95f36ef5bb30eaf5813bd3",
+    ".github/workflows/seoul-nowon-direct-publish.yml": "2ee913503cb1aff35483809801808b1ebd2c89bc0e70f998a83c82b283010667",
+    ".github/workflows/seoul-seongbuk-direct-publish.yml": "afdbe9cdac37abdac20184cdaff69c41e636169c48793c05fa67271d038bc141",
+    ".github/workflows/seoul-seongdong-direct-publish.yml": "256e5a329f0fc407ab814e3e6078bfe6eb43bd27d4b7b858a54041706aaab300",
+    ".github/workflows/seoul-yangcheon-direct-publish.yml": "1bc7a55938898f825a4802517390dcaa4d890fc38471b9abd03d336945704cd1",
+    ".github/workflows/seoul-yongsan-direct-publish.yml": "d3485b74f10d0c125e7522d6cf51acf8d319d23d580929530fbf1bcb50e2836a",
+    ".github/workflows/siheung-direct-publish.yml": "be7e2958d177ce239a72dc47b5dc8b1040523d5286a852c6d85f355d58a48d1e",
+    ".github/workflows/uijeongbu-direct-publish.yml": "be7c4f6bf2fd6d41eae6b4479a8bb553c2b8e1185b2119c7a5d51152412c9396",
+    ".github/workflows/uiwang-direct-publish.yml": "e39f98a519f9e0d349e16c0316b6d7ccf6b77671e2c4506436d38bb425459df8",
+    ".github/workflows/yangju-direct-publish.yml": "77d002502ed61cb7af72c68e435108b85e59fa577b15c9dd7ea164a392c96685",
+    ".github/workflows/yangpyeong-direct-publish.yml": "c366cbb9e3aeb5fcd19574e4597819861fba98036f7928a87653f08af8c4ab5a",
+    ".github/workflows/yeoncheon-direct-publish.yml": "d558f3cf2727047a35294fe6a3a1bc63543b838d21d6e54bff07cbcfeebb5b3a",
+    "docs/shared-banner-release/approved-assets.json": "47126a2f2f47ebbbb15a478e0df55dde829eaea2fc30474ddbf3cbae77506513",
+    "docs/shared-banner-release/batch30-independent-source-review.json": "107e67f3d7e76384b8d57cb81ff47309bd2edea6019fad9ce005754cd6689d21",
+    "docs/shared-banner-release/batch30-local-validation.json": "5ee6557c066246576c03204299bd698e8d7b6b0b24d1d2ba83551845f88365e1",
+    "docs/shared-banner-release/source-readbacks/anseong.json": "0c66f8a126ee32055b35d2e87de6c688fb42eb8c5f0ba893faefc82b520f72cc",
+    "docs/shared-banner-release/source-readbacks/dongducheon.json": "7ee64d9c8feb55b492e0244a1ce2730edb097d7b0b74f7ca06b5990f11647b7c",
+    "docs/shared-banner-release/source-readbacks/gapyeong.json": "b090896e0d1c88ccfed90c1fddffa19720f2c48062e6468a2e43bfc309dc3af8",
+    "docs/shared-banner-release/source-readbacks/gimpo.json": "85004fdcc7c31ef89c1e4410d2355193218c22de6301746f914fcb41691c01ce",
+    "docs/shared-banner-release/source-readbacks/gunpo.json": "a0ac066c12b1f1c17acfb8beed655d73581c033ec976c5268347fbd061c6b85f",
+    "docs/shared-banner-release/source-readbacks/guri.json": "591ffe5deb1cbc6ada17cc440c4c986fdb5205a72a76c35ddbc7dc7acb692a14",
+    "docs/shared-banner-release/source-readbacks/gwacheon.json": "69cefe453d28ee5c0521506651ae2e7ebfb4422d1fb4c7fe91a428d58675107d",
+    "docs/shared-banner-release/source-readbacks/gwangju.json": "5458c9a994d8625142f862799e5055c2d262d12d901df6461867cd0c45e1a6ed",
+    "docs/shared-banner-release/source-readbacks/hanam.json": "e899c5d90056eabe76662f9745b1197bdff664f873fa487aeaab58a1b7d18b47",
+    "docs/shared-banner-release/source-readbacks/icheon.json": "3623c2e8db70dcdb661c2ac26638367558dbe021c3e87069e61f32f40dfb0933",
+    "docs/shared-banner-release/source-readbacks/jongno.json": "93087e881b59c6d3de8c7b71cee436cd3c70486f4f953a08f791da35fc084aec",
+    "docs/shared-banner-release/source-readbacks/osan.json": "c89fca17c706f1a3b5188805800502f52a6e20a31a416fff1574add4239351cf",
+    "docs/shared-banner-release/source-readbacks/paju.json": "969fc575c0d734058aff3bd2a530b7451755e3db4c090c63aed43b56c5fe5533",
+    "docs/shared-banner-release/source-readbacks/pocheon.json": "57774010ee9dd047116ba694f8c2ecfd67233f48e5348f2241e8619aa6f4cdbc",
+    "docs/shared-banner-release/source-readbacks/seoul-dobong.json": "8b7e2b381f1a95f09d702724ae70a6c32672f3300595fba080fc17b6a7b17656",
+    "docs/shared-banner-release/source-readbacks/seoul-dongdaemun.json": "dca4ce8457a6d724b2a91c73d40a922834de0fe0114dd7892b4545bd644516bd",
+    "docs/shared-banner-release/source-readbacks/seoul-gangbuk.json": "31bd008ec19ea6e9d22c5195e21b5647044cc9c63cf3962a15671671aeb0503c",
+    "docs/shared-banner-release/source-readbacks/seoul-gwangjin.json": "9957409eae986ecd8b9aa26aa2092596d1fa155d3a827212c5e489f0662ce5e3",
+    "docs/shared-banner-release/source-readbacks/seoul-jung.json": "988c0f71397d51ed4ee9c3a67ea6880295304d09ee36fb73304549ba2400b234",
+    "docs/shared-banner-release/source-readbacks/seoul-jungnang.json": "7f6755efeaccaa57408ef858a268f57a1a808bd7c51b581478091295d4d53ca3",
+    "docs/shared-banner-release/source-readbacks/seoul-nowon.json": "5548cbe662a6951e188794086ea72eb48f224c56af5c1a56fd2e16c8c1fd2444",
+    "docs/shared-banner-release/source-readbacks/seoul-seongbuk.json": "9e91594f74309c77e126f51efc325ca5f4fd0f043503d90ca023f0b47a07cb2b",
+    "docs/shared-banner-release/source-readbacks/seoul-seongdong.json": "d3185a70f4b8b4881dcb6f7e6b8e49e763642261d00ab620956d017b649135b7",
+    "docs/shared-banner-release/source-readbacks/seoul-yongsan.json": "4c58be8b11897d30b2b58bab467470ea2edda8c2065b924337f425848e02f6e1",
+    "docs/shared-banner-release/source-readbacks/siheung.json": "377a96429a242c6a3b782a0b43b86ca010b57c73cf644dedae4e0477522d2fa0",
+    "docs/shared-banner-release/source-readbacks/uijeongbu.json": "85634d36632dcd0f779d8c40a7f12d49cff39ffbb99511454bf22a5eb75c0fbe",
+    "docs/shared-banner-release/source-readbacks/uiwang.json": "803ede0a04dc3fefd0666ca3c173a73fa71caff89cd36171805532b8c123bf9f",
+    "docs/shared-banner-release/source-readbacks/yangju.json": "4418d1f8a7f5bd67523e6818ff60b6c77bef4499e8718af9b039b197bde8d01c",
+    "docs/shared-banner-release/source-readbacks/yangpyeong.json": "c0702c575fae283337af8bfb059766aee9e6d7441401c4bdf8787c73d28aab6c",
+    "docs/shared-banner-release/source-readbacks/yeoncheon.json": "93a7c5b73af4f0f523dfee8659ba4b9dad149290e27bd4f674f39c68294de336",
+    "docs/shared-banner-release/targets.json": "f764fd5fa117ba9702f33f827cc950d610262e178e5a892f5243b121c44ee519",
+    "docs/shared-banner-release/yangcheon-independent-static-review.json": "5d38f19f2e507c7b72bdd1dbe8fed3f2ba0ee8cbeac12addce52435780134c25",
+    "docs/shared-banner-release/yangcheon-source-readback.json": "573b35f8b6298e6ba64675a30964c507a7de030be666e16cbea2a63631c76774",
+    "scripts/shared-banners/qa_shared_banners.py": "a59cf6976dbcba2c7eb46d3c8f07a4e9553074dd3e6b97b8a6a880a8d2276233",
+    "scripts/shared-banners/test_verify_update.py": "1bbf86d02b7f71083fc8c2760eed28508fbe632b22e94e593416e48d13c98737",
+    "scripts/shared-banners/verify_update.py": "78b2a7bfb6b367c401146528f4ea732fc38911539affd6532c6f24678943fad6"
+  }
+}

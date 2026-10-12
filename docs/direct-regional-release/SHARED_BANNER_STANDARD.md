@@ -38,3 +38,9 @@ SharedFlowerBanner.astro와 public/images/shared-banners의 정본을 재사용�
 기존 사이트 업데이트는 정확한 계정/Worker/hostname/이전 공개 revision을 GET으로 확인한 뒤 기존 static assets만 업데이트한다. 초기 생성 guard는 보존한다. 업데이트를 위해 새 Worker 생성, hostname attach, DNS 소유권 변경, secret/권한 변경을 하지 않는다. source 코드가 provider credentials와 함께 실행되지 않도록 기존 분리 빌드·정적 산출물 경계를 유지한다.
 
 IndexNow는 검증된 실제 sitemap URL 집합을 제출하고 접수 영수증을 남긴다. 접수를 실제 검색 색인이나 순위 성과라고 주장하지 않는다. 접근 실패·실행 취소·화면 검증 누락은 수행됨·미검증 또는 확인 불가로 구분한다.
+
+### 과거 검수 증거와 현재 변경 검증
+
+과거 전체 파일 hash에 결속된 검수 증거는 덮어쓰거나 통과시키기 위해 완화하지 않는다. 정당한 배너 변경은 원본 bytes·기존 SHA를 별도 보존하고, 승인된 추가 변환을 원본에 적용한 결과가 현재 파일 전체와 정확히 같음을 검사한다. 과거 검사의 통과는 기존 승인 내용 보존을 뜻하며, 현재 코드의 동작 검증을 대신하지 않는다. 현재 source의 원문 검사와 잘못된 변경을 거부하는 테스트, 실제 build HTML 검사, 고정 publisher의 package/artifact 검사를 함께 통과해야 한다.
+
+trusted targets manifest에 결속된 배너 revision은 기존 사이트 업데이트 모드로만 공개한다. 같은 revision을 일반 초기 발행 모드로 보내면 거부하고, 검증 전 배포 재실행이나 이슈 중복 생성을 하지 않는다. 기존 noindex 고객 페이지와 404는 전체 경로 분모에 남기되 배너 제외 이유와 경로를 따로 기록한다.

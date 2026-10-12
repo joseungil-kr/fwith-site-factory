@@ -8,6 +8,11 @@ on:
         description: Exact reviewed 40-character Uiwang source SHA
         required: true
         type: string
+      existing_update:
+        description: Update only an existing exact hostname binding and previously reviewed public revision; no attach or DNS changes
+        required: false
+        default: false
+        type: boolean
       indexnow_only:
         description: Verify and finalize the existing exact public release without any Cloudflare mutation
         required: false
@@ -48,7 +53,9 @@ jobs:
           path: control
           persist-credentials: false
       - name: Test fixed publisher safety contracts
-        run: python3 control/scripts/direct-uiwang/test_publish.py -v
+        run: |
+          python3 control/scripts/direct-uiwang/test_publish.py -v
+          python3 control/scripts/shared-banners/test_verify_update.py -v
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).revisions['uiwang'] || inputs.expected_revision }}
@@ -108,6 +115,10 @@ jobs:
           ref: ${{ github.sha }}
           path: control
           persist-credentials: false
+      - name: Bind reviewed banner revision to existing-update mutation mode
+        env:
+          EXISTING_UPDATE: ${{ inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true) }}
+        run: python3 control/scripts/shared-banners/verify_update.py authorize-mutation --region uiwang --report banner-mode-check.json
       - uses: actions/download-artifact@v4
         with:
           artifact-ids: ${{ needs.build.outputs.artifact_id }}
@@ -117,6 +128,9 @@ jobs:
         env:
           RELEASE_SHA256: ${{ needs.build.outputs.release_sha256 }}
         run: python3 control/scripts/direct-uiwang/publish.py artifact --report artifact-check.json
+      - name: Verify the approved common-banner artifact for existing update
+        if: inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true)
+        run: python3 control/scripts/shared-banners/verify_update.py artifact --region uiwang --report banner-artifact.json
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -131,7 +145,12 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: python3 control/scripts/direct-uiwang/publish.py preflight --report binding-before.json
+        run: |
+          if [ "${{ inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true) }}" = true ]; then
+            python3 control/scripts/shared-banners/verify_update.py preflight --region uiwang --report binding-before.json
+          else
+            python3 control/scripts/direct-uiwang/publish.py preflight --report binding-before.json
+          fi
       - name: Deploy fixed route-less static assets once
         id: deploy
         continue-on-error: true
@@ -142,13 +161,18 @@ jobs:
           WRANGLER_LOG_SANITIZE: 'true'
           WRANGLER_SEND_METRICS: 'false'
         run: |
-          if ! npx --yes wrangler@4.148.0 deploy --config wrangler.publish.json > "$RUNNER_TEMP/uiwang-direct-upload.log" 2>&1; then
+          if [ "${{ inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true) }}" = true ]; then
+            WRANGLER_PACKAGE=wrangler@4.147.0
+          else
+            WRANGLER_PACKAGE=wrangler@4.148.0
+          fi
+          if ! npx --yes "$WRANGLER_PACKAGE" deploy --config wrangler.publish.json > "$RUNNER_TEMP/uiwang-direct-upload.log" 2>&1; then
             echo 'Upload failed or uncertain. Inspect GET and HTTP evidence before any recovery.'
             exit 1
           fi
       - name: Attach only the fixed hostname with all overrides disabled
         id: attach
-        if: steps.deploy.outcome == 'success'
+        if: steps.deploy.outcome == 'success' && !(inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true))
         continue-on-error: true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -161,15 +185,24 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: python3 control/scripts/direct-uiwang/publish.py readback --report binding-after.json
+        run: |
+          python3 control/scripts/direct-uiwang/publish.py readback --report binding-after.json
+          if [ "${{ inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true) }}" = true ]; then
+            python3 control/scripts/shared-banners/verify_update.py provider-after --region uiwang --report provider-state-after.json
+          fi
       - name: Verify public exact content, assets, SEO and real 404s
         id: http
         if: ${{ always() && steps.binding.outcome == 'success' }}
         continue-on-error: true
         run: python3 control/scripts/direct-uiwang/publish.py http --report public-http.json
+      - name: Independently verify public shared image MIME and bytes
+        id: banners
+        if: ${{ always() && steps.http.outcome == 'success' && (inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true)) }}
+        continue-on-error: true
+        run: python3 control/scripts/shared-banners/verify_update.py public-assets --region uiwang --report banner-public-assets.json
       - name: Submit exact verified sitemap once and retain IndexNow receipt
         id: indexnow
-        if: ${{ always() && steps.deploy.outcome == 'success' && steps.binding.outcome == 'success' && steps.http.outcome == 'success' }}
+        if: ${{ always() && steps.deploy.outcome == 'success' && steps.binding.outcome == 'success' && steps.http.outcome == 'success' && (steps.banners.outcome == 'success' || steps.banners.outcome == 'skipped') }}
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
@@ -181,8 +214,14 @@ jobs:
           name: uiwang-direct-result-${{ github.run_id }}
           path: |
             artifact-check.json
+            banner-mode-check.json
+            banner-artifact.json
+            banner-public-assets.json
             http-contract.json
             binding-before.json
+            provider-state-before.json
+            provider-state-after.json
+            update-source-config.json
             domain-attach.json
             binding-after.json
             public-http.json
@@ -198,7 +237,8 @@ jobs:
           BINDING: ${{ steps.binding.outcome }}
           HTTP: ${{ steps.http.outcome }}
           INDEXNOW: ${{ steps.indexnow.outcome }}
-        run: test "$DEPLOY" = success && test "$BINDING" = success && test "$HTTP" = success && test "$INDEXNOW" = success
+          BANNERS: ${{ steps.banners.outcome }}
+        run: test "$DEPLOY" = success && test "$BINDING" = success && test "$HTTP" = success && test "$INDEXNOW" = success && ( test "$BANNERS" = success || test "$BANNERS" = skipped )
   finalize_indexnow:
     if: inputs.indexnow_only == true
     needs: build

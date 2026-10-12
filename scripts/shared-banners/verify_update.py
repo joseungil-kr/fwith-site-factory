@@ -8,7 +8,7 @@ from html.parser import HTMLParser
 from urllib.request import Request,build_opener
 from urllib.parse import urlsplit
 ROOT=Path(__file__).resolve().parents[2]
-ALLOWED={r:f'scripts/direct-{r}/publish.py' for r in ['seoul-yangcheon','seoul-mapo','seoul-eunpyeong','seoul-seodaemun','seoul-nowon']}
+ALLOWED={r:f'scripts/direct-{r}/publish.py' for r in ['seoul-yangcheon', 'anseong', 'dongducheon', 'gapyeong', 'gimpo', 'gunpo', 'guri', 'gwacheon', 'gwangju', 'hanam', 'icheon', 'jongno', 'osan', 'paju', 'pocheon', 'seoul-dobong', 'seoul-dongdaemun', 'seoul-gangbuk', 'seoul-gwangjin', 'seoul-jung', 'seoul-jungnang', 'seoul-seongbuk', 'seoul-seongdong', 'seoul-yongsan', 'siheung', 'uijeongbu', 'uiwang', 'yangju', 'yangpyeong', 'yeoncheon', 'seoul-nowon']}
 def require(ok,code):
  if not ok:raise ValueError(code)
 def load(region):
@@ -24,14 +24,25 @@ def load(region):
   path=ROOT/relative;require(path.is_file() and not path.is_symlink(),'review_evidence_missing')
   require(hashlib.sha256(path.read_bytes()).hexdigest()==target.get(hash_key),'review_evidence_digest_mismatch')
  evidence=json.loads((ROOT/target['sourceReadback']).read_text())
- require(evidence.get('sourceCommit')==target['revision'] and evidence.get('parentCommit')==target['previousRevision'] and evidence.get('all13Match') is True,'remote_source_readback_mismatch')
- require(len(evidence.get('remoteChangedFiles',[]))==13 and all(r.get('remoteBytesMatch') is True and r.get('path','').startswith(target['root']+'/') for r in evidence['remoteChangedFiles']),'source_change_scope_mismatch')
+ require(evidence.get('sourceCommit')==target['revision'] and evidence.get('parentCommit')==target['previousRevision'] and evidence.get('allFilesMatch',evidence.get('all13Match')) is True,'remote_source_readback_mismatch')
+ count=target.get('changedFileCount');require(type(count) is int and 13<=count<=40,'reviewed_change_count_required')
+ files=evidence.get('remoteChangedFiles',[]);paths=[r.get('path','') for r in files]
+ require(len(files)==count and len(set(paths))==count and all(r.get('remoteBytesMatch') is True and r.get('path','').startswith(target['root']+'/') and '..' not in Path(r['path']).parts and re.fullmatch('[0-9a-f]{64}',r.get('sha256','')) for r in files),'source_change_scope_mismatch')
  spec=importlib.util.spec_from_file_location('fixed_publisher',ROOT/ALLOWED[region]);pub=importlib.util.module_from_spec(spec);spec.loader.exec_module(pub)
  expected={'repository':pub.REPOSITORY,'branch':pub.BRANCH,'root':pub.SOURCE_ROOT,'hostname':pub.HOSTNAME,'worker':pub.WORKER}
  require(all(target.get(k)==v for k,v in expected.items()),'fixed_identity_mismatch')
  require(os.environ.get('GITHUB_REPOSITORY')==pub.REPOSITORY,'repository_mismatch')
  require(os.environ.get('GITHUB_RUN_ATTEMPT')=='1','update_rerun_forbidden')
  return target,pub
+def authorize_mutation(region):
+ require(region in ALLOWED,'unknown_fixed_update_target')
+ target=json.loads((ROOT/'docs/shared-banner-release/targets.json').read_text())['targets'].get(region)
+ reviewed=bool(target and target.get('revision')==os.environ.get('REVISION'))
+ update=os.environ.get('EXISTING_UPDATE')=='true'
+ require(not reviewed or update,'reviewed_banner_revision_requires_existing_update')
+ if update:load(region)
+ return dict(state='mutation_mode_verified',region=region,reviewedBannerRevision=reviewed,existingUpdate=update)
+
 class RevisionPage(HTMLParser):
  def __init__(self):super().__init__();self.revisions=[]
  def handle_starttag(self,tag,attrs):
@@ -108,6 +119,9 @@ def public_assets(target,pub):
   rows.append(dict(path=path,status=200,mime='image/webp',sha256=pub.sha(body)))
  return dict(state='public_banner_assets_verified',revision=target['revision'],assets=rows)
 def main():
- p=argparse.ArgumentParser();p.add_argument('mode',choices=['preflight','artifact','public-assets','provider-after']);p.add_argument('--region',required=True);p.add_argument('--report',required=True);a=p.parse_args();target,pub=load(a.region)
+ p=argparse.ArgumentParser();p.add_argument('mode',choices=['preflight','artifact','public-assets','provider-after','authorize-mutation']);p.add_argument('--region',required=True);p.add_argument('--report',required=True);a=p.parse_args()
+ if a.mode=='authorize-mutation':
+  Path(a.report).write_text(json.dumps(authorize_mutation(a.region),sort_keys=True,indent=2)+'\n');return
+ target,pub=load(a.region)
  result={'preflight':preflight,'artifact':artifact,'public-assets':public_assets,'provider-after':provider_after}[a.mode](target,pub);pub.save(a.report,result)
 if __name__=='__main__':main()
