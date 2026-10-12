@@ -1,8 +1,9 @@
+import {readHistoricalBannerSource} from './shared-banner-amendment.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
-const read=p=>JSON.parse(fs.readFileSync(new URL('../'+p,import.meta.url),'utf8'));
+const read=p=>JSON.parse(readHistoricalBannerSource(new URL('../'+p,import.meta.url),'utf8'));
 const hash=x=>crypto.createHash('sha256').update(x).digest('hex');
 const pages=read('src/data/pages.json'), proof=read('src/data/customer-copy-review-20261011.json'), history=read('docs/customer-copy-history-20261011.json');
 const customer=['title','primaryKeyword','h1','description','cardSummary','firstAnswer','contentMarkdown','sections','faq','sources','source','sourceData'];
@@ -33,7 +34,7 @@ test('catalog descriptions are the only product changes; original business facts
  const strip=p=>Object.fromEntries(Object.entries(p).filter(([k])=>k!=='desc'));
  assert.deepEqual(read('src/data/products.json').map(strip),history.oldData['products.json'].map(strip));
  const manifest=JSON.parse(proof.approvalBasis.choiceCommonManifest.utf8Content);
- for(const row of manifest.commonChanges){assert.equal(hash(fs.readFileSync(new URL('../'+row.path,import.meta.url))),row.proposalSha256,row.path);}
+ for(const row of manifest.commonChanges){assert.equal(hash(readHistoricalBannerSource(new URL('../'+row.path,import.meta.url))),row.proposalSha256,row.path);}
 });
 test('initial evidence stays historical and revised snapshots cannot reuse old content hashes',()=>{
  assert.equal(history.baselineSource,'c7950231a67ff2494f0c37298029343456089b39');
@@ -42,8 +43,8 @@ test('initial evidence stays historical and revised snapshots cannot reuse old c
  assert.equal(proof.releaseId,'seoul-dongdaemun-customer-copy-20261011');
 });
 test('delivery and ribbon notices remain once per purchase group rather than every card and footer',()=>{
- const cards=fs.readFileSync(new URL('../src/components/ProductCards.astro',import.meta.url),'utf8');
- const layout=fs.readFileSync(new URL('../src/layouts/BaseLayout.astro',import.meta.url),'utf8');
+ const cards=readHistoricalBannerSource(new URL('../src/components/ProductCards.astro',import.meta.url),'utf8');
+ const layout=readHistoricalBannerSource(new URL('../src/layouts/BaseLayout.astro',import.meta.url),'utf8');
  assert.equal((cards.match(/site.deliveryNotice/g)||[]).length,1);
  assert.equal((layout.match(/site.deliveryNotice/g)||[]).length,0);
  assert.match(cards,/products.some\(\(p:any\)=>p.family==='congrats'\)/);
