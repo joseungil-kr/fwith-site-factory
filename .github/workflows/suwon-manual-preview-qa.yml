@@ -23,6 +23,13 @@ jobs:
       SITE_URL: http://127.0.0.1:8934
       SITE_ORIGIN: http://127.0.0.1:8934
       SITE_INDEXABLE: 'false'
+      PYTHONDONTWRITEBYTECODE: '1'
+      SHARED_BANNER_REFERENCE_DIST: ${{ github.workspace }}/shared-banner-production-reference/site-factory/suwon-flower/dist
+      SHARED_BANNER_REFERENCE_MANIFEST: ${{ github.workspace }}/.github/shared-banner-reference/suwon-production.json
+      SHARED_BANNER_REFERENCE_MANIFEST_SHA256: '3122b21e327d3571781999eb8ca15fd58a1ef39c5926e9f81ca4445e9590b6d0'
+      SHARED_BANNER_REFERENCE_ARTIFACT_SHA256: '1daeb81be244989e41d25501813c2d16381ac778f55e806be79e7aed405ceb60'
+      SHARED_BANNER_REFERENCE_REVISION: '962a279cfb7e3787a02d89c17847bf5f908b7b70'
+      SHARED_BANNER_REFERENCE_ORIGIN: 'https://suwon.fwith.kr'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,6 +38,50 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Check out immutable previously reviewed production source
+        uses: actions/checkout@v4
+        with:
+          ref: 962a279cfb7e3787a02d89c17847bf5f908b7b70
+          path: shared-banner-production-reference
+          persist-credentials: false
+      - name: Rebuild and authenticate the production route and indexability reference
+        working-directory: shared-banner-production-reference/site-factory/suwon-flower
+        env:
+          SITE_FACTORY_REVISION: '962a279cfb7e3787a02d89c17847bf5f908b7b70'
+          SITE_URL: 'https://suwon.fwith.kr'
+          SITE_ORIGIN: 'https://suwon.fwith.kr'
+          SITE_INDEXABLE: 'true'
+          MANUAL_QA_PHASE: production
+          MANUAL_PREVIEW: 'false'
+          MANUAL_LOCAL_PREVIEW: 'false'
+          PYTHONDONTWRITEBYTECODE: '1'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = '962a279cfb7e3787a02d89c17847bf5f908b7b70'
+          npm ci --ignore-scripts --no-audit --no-fund
+          mkdir -p ../evidence
+          npm run build
+          python3 - <<'PYREFERENCE'
+          import os,pathlib,json,hashlib
+          def digest(b):return hashlib.sha256(b).hexdigest()
+          def compact(x):return json.dumps(x,sort_keys=True,separators=(',',':')).encode()
+          raw=pathlib.Path(os.environ['SHARED_BANNER_REFERENCE_MANIFEST']).read_bytes()
+          assert digest(raw)==os.environ['SHARED_BANNER_REFERENCE_MANIFEST_SHA256'],'Reference metadata changed'
+          ref=json.loads(raw)
+          assert ref['baselineRevision']==os.environ['SHARED_BANNER_REFERENCE_REVISION']
+          assert ref['productionOrigin']==os.environ['SHARED_BANNER_REFERENCE_ORIGIN']
+          root=pathlib.Path('dist');assert root.is_dir() and not root.is_symlink()
+          files={}
+          for f in sorted(root.rglob('*')):
+              assert not f.is_symlink(),'Artifact symlink forbidden'
+              if f.is_dir():continue
+              assert f.is_file(),'Nonregular artifact'
+              files[f.relative_to(root).as_posix()]=digest(f.read_bytes())
+          assert files==ref['files'],'Rebuilt original artifact differs from reviewed full manifest'
+          assert digest(compact(files))==ref['artifactManifestSha256']==os.environ['SHARED_BANNER_REFERENCE_ARTIFACT_SHA256']
+          print('Previously reviewed production reference rebuilt and exact full artifact verified:',len(files))
+          PYREFERENCE
       - name: Assert exact content and reviewed native boundary
         shell: bash
         run: |
@@ -38,7 +89,7 @@ jobs:
           test "$GITHUB_REF" = 'refs/heads/manual-suwon-three-facility-preview-20261007'
           echo "PLAYWRIGHT_INSTALL_ROOT=$RUNNER_TEMP/suwon-manual-playwright" >> "$GITHUB_ENV"
           mkdir -p "suwon-$MANUAL_QA_PHASE-evidence/logs"
-          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/suwon-flower/src/data/manual-pages.json")).digest("hex");if(h!=="6bac9e54f6110a2ceaa39ff4ec6754917815221ecc6001dc221b26efa8e9c77a")throw Error("Unexpected content digest");const p=JSON.parse(fs.readFileSync("site-factory/suwon-flower/src/data/manual-provenance.json"));if(p.scopeDigest!=="c371c14fd94f320780d8764ab605a684d56f4e0a76ad860b835f36a89a87a96d"||p.independentReview.status!=="pending")throw Error("Unexpected pending candidate state");'
+          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/suwon-flower/src/data/manual-pages.json")).digest("hex");if(h!=="6bac9e54f6110a2ceaa39ff4ec6754917815221ecc6001dc221b26efa8e9c77a")throw Error("Unexpected content digest");const p=JSON.parse(fs.readFileSync("site-factory/suwon-flower/src/data/manual-provenance.json"));if(p.scopeDigest!=="348e1c5cec3c74e5071d6a7a5cd0c2e97e1c569f0b071229b556a584e330fc1e"||p.independentReview.status!=="pending")throw Error("Unexpected pending candidate state");'
           node -e 'const fs=require("fs");fs.writeFileSync("suwon-"+process.env.MANUAL_QA_PHASE+"-evidence/logs/revision.json",JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,phase:process.env.MANUAL_QA_PHASE,siteUrl:process.env.SITE_URL,siteIndexable:process.env.SITE_INDEXABLE},null,2));'
       - name: Install exact native dependency lock
         working-directory: site-factory/suwon-flower
@@ -52,9 +103,10 @@ jobs:
           for attempt in first second; do
             npm run build 2>&1 | tee "$evidence/logs/native-build-$attempt.log"
             npm test 2>&1 | tee "$evidence/logs/native-tests-$attempt.log"
+            python3 -B scripts/test_shared_banners.py 2>&1 | tee "$evidence/logs/shared-banner-tests-$attempt.log"
             python3 scripts/qa_static.py 2>&1 | tee "$evidence/logs/static-$attempt.log"
             node scripts/qa_graph.mjs 2>&1 | tee "$evidence/logs/graph-$attempt.log"
-            python3 -c 'import hashlib,json,pathlib,sys; d=pathlib.Path("dist"); m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob("*")) if f.is_file()}; assert len(m)==76,len(m);pathlib.Path(sys.argv[1]).write_text(json.dumps(m,sort_keys=True,separators=(",",":")))' "$evidence/logs/$attempt.manifest.json"
+            python3 -c 'import hashlib,json,pathlib,sys; d=pathlib.Path("dist"); m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob("*")) if f.is_file()}; assert len(m)==79,len(m);pathlib.Path(sys.argv[1]).write_text(json.dumps(m,sort_keys=True,separators=(",",":")))' "$evidence/logs/$attempt.manifest.json"
           done
           cmp "$evidence/logs/first.manifest.json" "$evidence/logs/second.manifest.json"
           cp -a dist "$evidence/dist"

@@ -34,7 +34,7 @@ assert.equal(frozen.length,30,'Unexpected frozen review scope');
 const provenance=read('src/data/manual-provenance.json');
 assert.equal(provenance.independentReview.status,'pending');
 assert.equal(provenance.manualPagesSha256,'6bac9e54f6110a2ceaa39ff4ec6754917815221ecc6001dc221b26efa8e9c77a');
-assert.equal(provenance.scopeDigest,'c371c14fd94f320780d8764ab605a684d56f4e0a76ad860b835f36a89a87a96d');
+assert.equal(provenance.scopeDigest,'348e1c5cec3c74e5071d6a7a5cd0c2e97e1c569f0b071229b556a584e330fc1e');
 assert.equal(provenance.manualRevisionsSha256,'8e2749262675e4f35b707cf2119ce99f272ed8ff454e086c706ff6aa448dde5c');
 const revisions=read('src/data/manual-revisions.json');assert.equal(revisions.length,5);
 const categories=[...new Set([...frozen,...manual].map(p=>p.category))];
