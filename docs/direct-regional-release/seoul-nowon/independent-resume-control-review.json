@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "independent_prepublication_control_review",
+  "reviewer": "review_nowon_publish_controls",
+  "reviewedAtUtc": "2026-10-12T16:40:17Z",
+  "repository": "joseungil-kr/fwith-site-factory",
+  "baselineControlRevision": "848753b400978bb31ea4f75469635f6b9416b338",
+  "state": "control_review_passed_release_not_yet_verified",
+  "decision": "No blocking finding in the two reviewed control changes. Publication completion remains conditional on exact remote source/control commits, successful provider readback, public-byte verification, real 404, and IndexNow receipt inspection.",
+  "reviewedChangedFiles": [
+    ".github/workflows/seoul-nowon-direct-publish.yml",
+    "scripts/direct-seoul-nowon/test_publish.py"
+  ],
+  "reviewedFileSha256": {
+    ".github/workflows/seoul-nowon-direct-publish.yml": "ef5fbdd04ab099b441d33017ec3a1be9deb870efbf98e32bc85ae8064f2ae30a",
+    "scripts/direct-seoul-nowon/test_publish.py": "7fecd0d8b27b5903c7839e7b5a02d96691bc6912ec857bb7e86e10f38ce3869b",
+    "scripts/direct-seoul-nowon/publish.py": "e1e9cd7b2011d0571e3fde47e33b25482a06f2d60802262de8de8693727c2367",
+    "site-factory/engine/indexnow_finalize.py": "55f5274d3fcc713e82fd8ce18e280447e68e9e460bc1ff3f9bf5cc683834935f",
+    "site-factory/engine/bucheon_domain_attach.py": "a8662dd6ff232c53b6c55f193553f134c7055ec80eca421b65bab9bedd220da3",
+    "site-factory/engine/goyang_domain.py": "8a30e0ea75758344a5ff92903ec0a9dbd1e4f2bff230cdf603ea871ca1bf9c68"
+  },
+  "unchangedPublisherAndDependencies": {
+    "scripts/direct-seoul-nowon/publish.py": true,
+    "site-factory/engine/indexnow_finalize.py": true,
+    "site-factory/engine/bucheon_domain_attach.py": true,
+    "site-factory/engine/goyang_domain.py": true
+  },
+  "findings": [],
+  "confirmedResults": [
+    "Issue trigger is opened-only, exact repository and main ref, exact batch title, and both actor and issue author equal the repository owner joseungil-kr.",
+    "Issue build guard and first authorization script exactly match the existing Yangcheon implementation after replacing only city identifiers.",
+    "Expected source revision is a full lowercase 40-character SHA, must equal the fixed branch head before build and immediately before publication; target checkout is SHA-pinned and source ancestry checked.",
+    "Workflow reruns are rejected before mutation; cancel-in-progress remains false under the fixed per-city concurrency group.",
+    "GitHub permission maps are unchanged from baseline. Only existing CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets appear; source build has no provider credentials.",
+    "Control checkout is fixed to github.sha. The source dist inventory forbids executable control files, symlinks and hidden paths; immutable artifact ID, manifest SHA256, repository/source/control/run identity and per-file digest are checked before provider credentials.",
+    "Initial provider publication requires no target Worker and no hostname or Worker binding. Incomplete inventory, wrong account, duplicate binding, foreign hostname and existing target fail closed. Domain attach permits only the fixed hostname/Worker and all three overrides false.",
+    "Public verification requires the six expected canonical routes, exact source revision and artifact bytes, assets/robots/sitemap/ownership bytes, CTAs, and an unknown route with HTTP 404 and exact 404 artifact bytes. Only one narrowly validated Cloudflare beacon can be removed before exact digest comparison.",
+    "IndexNow reuses the unchanged finalizer and issue 266 journal. Public verification and started receipt precede POST; accepted fingerprint reuse produces no second POST; started/unknown and previous same-fingerprint 403 prevent blind replay. Search indexing is explicitly not verified."
+  ],
+  "independentlyExecutedTests": [
+    {
+      "name": "Nowon publisher safety/unit suite",
+      "passed": 42,
+      "failed": 0,
+      "log": "/workspace/shared/nowon-control-independent-tests.log"
+    },
+    {
+      "name": "Shared IndexNow finalizer unit suite",
+      "passed": 30,
+      "failed": 0,
+      "log": "/workspace/shared/nowon-finalizer-independent-tests.log"
+    },
+    {
+      "name": "Actual workflow guard and authorization JS adversarial evaluation",
+      "passed": 19,
+      "failed": 0,
+      "evidence": "/workspace/shared/nowon-independent-guard-tests.json",
+      "method": "Node VM evaluates the extracted existing guard and auth script against synthetic contexts with read-only mock GitHub APIs."
+    },
+    {
+      "name": "Git diff whitespace check",
+      "result": "passed"
+    },
+    {
+      "name": "Control permission maps and known-good reuse comparison",
+      "result": "passed"
+    }
+  ],
+  "verificationLimits": [
+    "This review inspected a local control diff against baseline main and did not itself verify a newly committed remote control SHA.",
+    "Final source content edits, production source artifact, provider state, public HTTP, actual IndexNow receipt, and search indexing have not been verified in this prepublication report.",
+    "Offline provider and HTTP tests use fixtures. Their passing is not evidence of a completed deployment.",
+    "The first independent JS harness attempt had a harness-only SyntaxError. The harness was corrected and all 19 checks then passed; repository source was not changed by the reviewer."
+  ],
+  "externalMutationsPerformedByReviewer": false
+}
