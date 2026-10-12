@@ -1,0 +1,35 @@
+{
+  "updatedAt": "2026-10-12T20:10:00Z",
+  "classification": "directly inspected artifacts and public observations; pending implementation/review described separately",
+  "publishedBannerSites": 31,
+  "publishedEligiblePages": 459,
+  "publishedBannerFigures": 1377,
+  "indexNowReceivedSites": 24,
+  "indexNowPendingSites": 7,
+  "direct7Status": "source/control/remote readback independently reviewed; deployment issue approval pending",
+  "legacy8Status": "No banner source/preview/production update published. GET-only provider inventory verified for existing8 production and4 preview targets. Six existing paths are in source/phase/workflow preparation; Ansan/Yongin source preparation continues and credential-scope external change requires explicit user approval.",
+  "pendingSecurityChange": {
+    "sites": [
+      "ansan",
+      "yongin"
+    ],
+    "change": "same Cloudflare secret references moved from job-wide environment to single provider/upload step; ordinary source build and public GET receive no Cloudflare environment",
+    "externalState": "not applied",
+    "userApproval": "pending",
+    "actualLeak": "not confirmed",
+    "actualTokenPermission": "not inspected",
+    "localReviewPacketSha256": "a53f3a88de727ed352fb11491b2c4560b9c198bf1ced427b4d6bf38160ca0aa8",
+    "independentReviewSha256": "733c69f0af9a4982ff896e0ba6d577bbaabc1a3e32759d4cc73480e7a9db309a",
+    "localTests": 65,
+    "independentProcessTests": 18,
+    "limitation": "Step environment scoping is not OS/process isolation from trusted same-runner source execution."
+  },
+  "remainingChecks": [
+    "Legacy candidates require final source/native/phase review and current exact-SHA CI artifact/pixel evidence before release acceptance.",
+    "Canonical QA mutation gaps are being minimally corrected; no defect is asserted in the current valid rendered canonicals.",
+    "Published31 directory-spacing follow-up remains a separate unpublished change.",
+    "Gangseo and Guro preparation/status records are separate and unchanged."
+  ],
+  "providerRun": 38300995491,
+  "providerSourceRevision": "8d1b5adfa3f1defb6e2f392a59f248ae2b49389e"
+}
