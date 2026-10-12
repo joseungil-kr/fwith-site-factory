@@ -115,7 +115,7 @@ test('only approved articles and the regional hub are normal indexable routes',(
  for(const p of pages){for(const slug of expected.held)assert.ok(!JSON.stringify(p).includes(`/regions/${slug}/`));}
 });
 // Exact product descriptions from root-reviewed Nowon common-copy revision.
-const reviewedProductDescriptions={"B201":"흰 꽃 사이에 노란 꽃이 놓인 기본형 사진을 살펴보세요.","B203":"위쪽으로 이어지는 흰 꽃과 노란 꽃의 배치를 비교해 보세요.","B205":"상단의 노란 장식과 흰 꽃이 어우러진 사진을 살펴보세요.","B060":"흰 꽃 바탕에 연분홍·노랑이 더해진 사진을 비교해 보세요.","C200":"빨강·분홍과 노란 꽃이 어우러진 사진에서 원하는 색감을 찾아보세요.","C203":"가운데 노란 꽃이 강조된 사진을 보고 축하 선물의 분위기를 골라보세요.","C204":"노란 꽃과 여러 색의 둥근 꽃이 어우러진 모습을 살펴보세요.","C205":"노랑·분홍 꽃이 둥글게 이어지는 사진을 보며 축하 선물을 골라보세요."};
+const reviewedProductDescriptions={"B201": "흰 꽃 사이에 노란 꽃을 배치한 상품 예시입니다.", "B203": "위쪽으로 이어지는 흰 꽃과 노란 꽃의 배치가 보이는 상품 예시입니다.", "B205": "상단의 노란 장식과 흰 꽃이 어우러진 상품 예시입니다.", "B060": "흰 꽃 바탕에 연분홍과 노랑을 더한 상품 예시입니다.", "C200": "빨강·분홍과 노란 꽃이 어우러진 상품 예시입니다.", "C203": "가운데 노란 꽃이 강조된 상품 예시입니다.", "C204": "노란 꽃과 여러 색의 둥근 꽃이 어우러진 상품 예시입니다.", "C205": "노랑·분홍 꽃이 둥글게 이어지는 상품 예시입니다."};
 test('every reviewed comparison renders four exact family products and truthful delivery surcharge',()=>{
  const products=read('products'),proof=read('social-image-provenance');
  assert.equal(proof.assetSource,'fresh-same-sku-official-gallery');assert.equal(proof.assetSubstitutionManifestSha256,expected.assetManifestSha256);
@@ -127,7 +127,7 @@ test('every reviewed comparison renders four exact family products and truthful 
   assert.deepEqual(row.image.dimensions,asset.dimensions);assert.equal(row.image.type,asset.mimeType);assert.equal(row.previousImageSha256,asset.previousImageSha256);
   assert.equal(p.desc,reviewedProductDescriptions[p.officialSku]);
  }
- assert.match(read('business-truth').deliveryNotice,/실제 배송지 주소.*추가 배송비.*최종 결제금액.*주문 전에.*확인/);
+ assert.match(read('business-truth').deliveryNotice,/실제 배송지 주소.*추가 배송비.*최종 결제금액.*주문 상담.*안내/);
  const cardsSource=fs.readFileSync(new URL('../src/components/ProductCards.astro',import.meta.url),'utf8');
  assert.ok(cardsSource.includes('{site.deliveryNotice}'),'shared price/delivery notice must render with every product group');
  assert.doesNotMatch(read('business-truth').deliveryNotice,/양평|단월|양서|10,000원|무료/);
@@ -135,7 +135,8 @@ test('every reviewed comparison renders four exact family products and truthful 
   assert.equal(p.productCardLimit,4);assert.equal(p.productCardKeys.length,4);
   assert.deepEqual(selectProducts(p,products,p.productCardLimit).map(x=>x.key),p.productCardKeys);
   assert.deepEqual(p.productCardKeys,p.regionalProductKeys);
-  assert.match(p.contentMarkdown,/추가 배송비|추가배송비|배송비/);
+  assert.match(p.contentMarkdown+' '+read('business-truth').deliveryNotice,/추가 배송비|추가배송비|배송비/);
+  assert.ok(cardsSource.includes('{site.deliveryNotice}'));
  }
 });
 test('complete assembled graph and reviewed HTTPS source arrays pass unchanged shared validators',()=>{
@@ -163,20 +164,24 @@ test('frozen facility context registry and bindings remain exact across all cust
  }
 });
 
-test('Nowon common purchase copy leads with purpose and choice while keeping delivery limits',()=>{
+test('Nowon provider copy retains purchase support without repeated instructions',()=>{
  const home=fs.readFileSync(new URL('../src/pages/index.astro',import.meta.url),'utf8');
  const directory=fs.readFileSync(new URL('../src/components/RegionDirectory.astro',import.meta.url),'utf8');
  const banner=fs.readFileSync(new URL('../src/components/InlineOrderBanner.astro',import.meta.url),'utf8');
+ const footer=fs.readFileSync(new URL('../src/layouts/BaseLayout.astro',import.meta.url),'utf8');
  const truth=read('business-truth');
- assert.match(home,/멀리서 전할 조의부터 공릉동 가게의 첫날, 새 사무실과 공연 무대/);assert.match(home,/예산에 맞는 화환/);
- assert.match(directory,/전할 위로와 축하의 꽃/);assert.doesNotMatch(directory,/작성되었다는 뜻이 아닙니다/);
- assert.match(banner,/상품 선택이 어려우시면/);assert.match(banner,/상담시간과 실제 전달시간은 다를 수 있어요/); for(const term of ['전달 일정','반입 조건','추가비용','주문할 때 함께 확인'])assert.ok(banner.includes(term));
- for(const term of ['기본가격','추가 배송비','배송·반입 가능 여부','요청 시간','최종 결제금액','주문 전'])assert.ok(truth.deliveryNotice.includes(term));
+ assert.match(home,/공릉동의 새 가게와 사무실, 중계동의 공연 무대/);assert.match(home,/예산에 맞는 근조·축하화환/);
+ assert.match(directory,/전할 위로와 축하의 꽃/);
+ assert.match(banner,/상품을 아직 고르지 않으셨다면/);assert.match(banner,/상담시간과 실제 전달시간은 다를 수 있어요/);
+ assert.doesNotMatch(banner,/반입 조건|추가비용|함께 확인/);
+ assert.doesNotMatch(footer,/{site.deliveryNotice}/);
+ for(const term of ['기본가격','추가 배송비','배송 가능 여부','희망 시간','최종 결제금액','주문 상담'])assert.ok(truth.deliveryNotice.includes(term));
+ for(const p of read('pages'))assert.doesNotMatch(JSON.stringify(p),/골라보세요|골라 보세요|안내받아|가까이서 지켜봤다면|연습 이야기를 듣고/);
 });
 
-// Root common-copy review f2b8cc6a541e4fda9e1bd16d5bbe51300fc975537cddf14a072080434b9336d5.
-test('all four independently reviewed common-copy source files have exact SHA pins',()=>{
- const pins={"src/pages/[category]/[slug].astro":"2679caee82bf6516f55cf5a9187a89b7ffffd26d2b027e6c60f67700bcc68edf","src/components/ProductCards.astro":"7425a400057b1b55d899ead0e577d93a11bea5428968f3643b1120d2b48b2563","src/pages/index.astro":"5d92747fb1744849a110f1a35512f599f99c62c717d96ec4454857530e69a9b0","src/data/products.json":"17fa2988def94e5b793077f3bcb5b217d4a74ed96fcf715c881f7782911103d9"};
+// Exact candidate source pins; independent latest-tone review is recorded separately.
+test('all final customer-copy source files have exact SHA pins',()=>{
+ const pins={"src/pages/[category]/[slug].astro": "2679caee82bf6516f55cf5a9187a89b7ffffd26d2b027e6c60f67700bcc68edf", "src/components/ProductCards.astro": "a6c1e1a24d0a71fd197333a2ebefeacf62e95785a732c3547937ce7edd924b65", "src/components/InlineOrderBanner.astro": "75539cb1c9679f16108487e82e0beaefb07f5fbf016f6514bd0a4b0b5e686e09", "src/components/RegionDirectory.astro": "17096527ee16f4a1fe59e5d7cae7a389248ad804835e0ba48d54a44a3e1f7e6d", "src/layouts/BaseLayout.astro": "cb0eadcc8d98bb3a61256d4efba40fb5c16370e5d0ba6189ed63531f9a437fa1", "src/pages/index.astro": "ca8e740bd746993ea1cd79fffba0ab07d380ce3adbe5a7a2c5953bae977224ea", "src/data/products.json": "e64fb59b58ebe598eb67132a119db418e0913826ccc4e84467468bc51899455f", "src/data/business-truth.json": "81c1086d37adc0a14c2528ef927ab5ff5e80e59d98153f4b161877fca2a4cae5"};
  for(const [file,digest] of Object.entries(pins))assert.equal(sha(fs.readFileSync(new URL('../'+file,import.meta.url))),digest,file);
 });
 test('source cards retain their bibliographic fields while one grid notice keeps photo and delivery context',()=>{
@@ -184,7 +189,7 @@ test('source cards retain their bibliographic fields while one grid notice keeps
  const cards=fs.readFileSync(new URL('../src/components/ProductCards.astro',import.meta.url),'utf8');
  for(const field of ['{source.name}','sourceTypeLabels[source.type as keyof typeof sourceTypeLabels]','href={source.url}','datetime={source.verifiedAt}'])assert.ok(detail.includes(field),field);
  assert.doesNotMatch(detail,/상품 구성·배송조건이나 시설 반입 가능 여부는 주문 전에 해당 담당자에게 확인/);
- assert.equal((cards.match(/리본 문구는 보내는 목적에 맞춰 상담하실 수 있습니다/g)||[]).length,1);
+ assert.equal((cards.match(/리본 문구는 전하고 싶은 뜻에 맞춰 상담해 드립니다/g)||[]).length,1);
  assert.doesNotMatch(cards,/p.family==='congrats'/);
  assert.ok(cards.includes('{site.productVariationNotice} {site.deliveryNotice}'));
 });

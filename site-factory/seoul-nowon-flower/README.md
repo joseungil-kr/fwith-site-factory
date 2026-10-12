@@ -8,12 +8,12 @@ The frozen purchase-intent plan contains 4 pages, each linked to one valid legal
 
 ## Catalog and images
 
-Eight operator-owned catalog products are reused. Their same-SKU official gallery photographs are freshly revalidated for this release and independently pixel-reviewed. Exact prior pinned bytes are preserved when the new observations match. Names, prices and official detail-image links were freshly checked on 2026-10-11. Social provenance records actual SHA-256, measured dimensions and MIME type. These images illustrate catalog goods; they are not proof of local delivery or installation.
+Eight operator-owned catalog products are reused. Their same-SKU official gallery photographs retain the independently verified 2026-10-11 bytes and were independently pixel-reviewed again on 2026-10-12. Names and prices were rechecked from all eight live official product pages on 2026-10-12. Social provenance records actual SHA-256, measured dimensions and MIME type. These images illustrate catalog goods; they are not proof of local delivery or installation.
 
 ## Validation and publication
 
 Use Node 22 and the pinned lockfile. Run `npm ci` and `npm test`; a production build requires `SITE_URL=https://seoul-nowon.fwith.kr`, `SITE_INDEXABLE=true` and a full 40-character `SITE_FACTORY_REVISION`. Source tests and build run without provider credentials.
 
-Customer fields are SHA-256 snapshot-bound across all collections. The fixed dispatch-only workflow independently checks exact branch head, artifact digest, reviewed routes, assets, canonical metadata, robots, CTA destinations and real 404 behavior. Provider readback and IndexNow receipt are separate gates. Hostname attachment keeps all override flags disabled.
+Customer fields are SHA-256 snapshot-bound across all collections. The fixed owner-only issue-trigger/dispatch workflow independently checks exact branch head, artifact digest, reviewed routes, assets, canonical metadata, robots, CTA destinations and real 404 behavior. Provider readback and IndexNow receipt are separate gates. Hostname attachment keeps all override flags disabled.
 
 Prepared source, local tests or a successful upload do not prove a live release. Verify the exact remote source/control revisions, successful Actions run and artifact, actual hostname binding, public HTTPS bytes and metadata, and the IndexNow receipt. Screen QA status: DEFERRED_BY_USER_NOT_PASS; this is not a pass. Search indexing is not guaranteed.
