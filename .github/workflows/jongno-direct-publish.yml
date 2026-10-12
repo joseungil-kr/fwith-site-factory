@@ -25,7 +25,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   build:
-    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'issues' && github.event.issue.title == '[REGIONAL-COPY-DEPLOY] batch' && github.actor == 'joseungil-kr' && github.event.issue.user.login == 'joseungil-kr' && contains(github.event.issue.body, '"jongno"')))
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'issues' && (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] batch' || github.event.issue.title == '[REGIONAL-INDEXNOW-ONLY] batch') && github.actor == 'joseungil-kr' && github.event.issue.user.login == 'joseungil-kr' && contains(github.event.issue.body, '"jongno"')))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     outputs:
@@ -56,6 +56,7 @@ jobs:
         run: |
           python3 control/scripts/direct-jongno/test_publish.py -v
           python3 control/scripts/shared-banners/test_verify_update.py -v
+          python3 control/scripts/shared-banners/test_indexnow_recovery.py -v
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).revisions['jongno'] || inputs.expected_revision }}
@@ -98,7 +99,7 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
   publish:
-    if: inputs.indexnow_only != true
+    if: inputs.indexnow_only != true && !(github.event_name == 'issues' && github.event.issue.title == '[REGIONAL-INDEXNOW-ONLY] batch')
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -240,7 +241,7 @@ jobs:
           BANNERS: ${{ steps.banners.outcome }}
         run: test "$DEPLOY" = success && test "$BINDING" = success && test "$HTTP" = success && test "$INDEXNOW" = success && ( test "$BANNERS" = success || test "$BANNERS" = skipped )
   finalize_indexnow:
-    if: inputs.indexnow_only == true
+    if: inputs.indexnow_only == true || (github.event_name == 'issues' && github.event.issue.title == '[REGIONAL-INDEXNOW-ONLY] batch')
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -272,6 +273,9 @@ jobs:
         env:
           RELEASE_SHA256: ${{ needs.build.outputs.release_sha256 }}
         run: python3 control/scripts/direct-jongno/publish.py artifact --report artifact-check.json
+      - name: Verify reviewed shared-banner identity for issue-only recovery
+        if: github.event_name == 'issues' && github.event.issue.title == '[REGIONAL-INDEXNOW-ONLY] batch'
+        run: python3 control/scripts/shared-banners/verify_update.py artifact --region jongno --report banner-artifact.json
       - name: Verify all live source bytes and real 404s without provider credentials
         run: python3 control/scripts/direct-jongno/publish.py http --report public-http.json
       - name: Observe exact IndexNow client GET status and robots headers without submitting
@@ -288,6 +292,7 @@ jobs:
           name: jongno-indexnow-result-${{ github.run_id }}
           path: |
             artifact-check.json
+            banner-artifact.json
             http-contract.json
             public-http.json
             indexnow-probe.json

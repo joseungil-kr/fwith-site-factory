@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "reviewKind": "independent-indexnow-only-recovery-control-review",
+  "observedAt": "2026-10-12T18:38:55Z",
+  "baseCommit": "ef9ae159848cc96cf292c89c4c238755f186862e",
+  "status": "local exact patch verified; commit readback and explicit root release instruction required before issue creation",
+  "regions": [
+    "gwacheon",
+    "gwangju",
+    "jongno",
+    "seoul-yongsan",
+    "seoul-jungnang",
+    "yangju",
+    "yangpyeong"
+  ],
+  "issueTitle": "[REGIONAL-INDEXNOW-ONLY] batch",
+  "directlyVerified": {
+    "baselineWorkflowFilesMatchRemoteCommit": 7,
+    "exactCurrentSourceBranchAndFirstAttemptRequired": true,
+    "existingOwnerActorMainConditionsPreserved": true,
+    "existingEventTypesPermissionsConcurrencyUnchanged": true,
+    "batchTitleExcludedFromProviderPublishJob": true,
+    "onlyExistingFinalizeJobForRecoveryTitle": true,
+    "noCloudflareCredentialsDeploymentOrAttachInFinalize": true,
+    "trustedBannerArtifactCheckAdded": true,
+    "publicHttpAndIndexnowGetChecksRetained": true,
+    "sharedFinalizerAndSubmissionJournalCodeUnchanged": true,
+    "existingJungnangSingleTitlePreserved": true,
+    "recoveryUnitTests": {
+      "pass": 5,
+      "fail": 0
+    },
+    "existingUpdateTests": {
+      "pass": 31,
+      "fail": 0
+    },
+    "existingFixedPublisherSuites": {
+      "pass": 7,
+      "fail": 0
+    },
+    "workflowYaml": 7,
+    "bashScripts": 161
+  },
+  "failureDiagnosis": {
+    "originalResults": "30 uploads/provider-preservation/public HTTP/banner checks succeeded; 23 IndexNow200 receipts, seven page_revision_mismatch blocks before submission.",
+    "parser": "HTMLParser plus dict(attrs); attribute-order independent. Exact single revision required; no gate relaxation warranted.",
+    "actualCiArtifactsChecked": 7,
+    "actualCiHtmlWithCorrectRevision": 111,
+    "freshSameUserAgentBodiesCheckedWithSameParser": 7,
+    "originalRootCause": "Unconfirmed; original failure HTML/meta value was not retained.",
+    "lastObservedUrlCaution": "Finalizer checks built then public page; last observed HTTP URL is not guaranteed to be the failing page. Actual CI artifact validation eliminated current built-page mismatch."
+  },
+  "requiredNext": [
+    "Commit exact reviewed8 files plus clearly scoped evidence on current main parent and independently read back.",
+    "Wait for root release instruction before creating the single bounded seven-revision recovery issue.",
+    "Verify publish jobs skipped and provider credentials unavailable; collect actual Naver receipt for each finalized source.",
+    "Do not call receipt acceptance search indexing success."
+  ],
+  "reviewedFilesSha256": {
+    ".github/workflows/gwacheon-direct-publish.yml": "f569cb81f49e1dc2858f509475739054a99f22260ff8aa0bc3b73f7c6e3f2b41",
+    ".github/workflows/gwangju-direct-publish.yml": "865fb581884d72e18293eb55afbe3e289bbb599eaf85736fdf11bbe061212974",
+    ".github/workflows/jongno-direct-publish.yml": "af05a756367c0a008ee5d00dff2360bf7f0b55fbdbfe9e331137a2eba6cedc5f",
+    ".github/workflows/seoul-yongsan-direct-publish.yml": "8a5af33cf1711bf53e764d902a2dd85ea14c06859d753623fb3067bcb2465842",
+    ".github/workflows/seoul-jungnang-direct-publish.yml": "33e61532f0bbcdedbea4f1eca685ca20805f760da72d074e74049199446a71bc",
+    ".github/workflows/yangju-direct-publish.yml": "366a706f5f1410982d8ebcc2f265fa4ad2168067f32b2b09ff37397e447c7fa2",
+    ".github/workflows/yangpyeong-direct-publish.yml": "65caa8f5ff65702168cbbdcfb6c83a0d76087491f0ee92f63fd41ca70d350834",
+    "scripts/shared-banners/test_indexnow_recovery.py": "6c8789199461427337826882ebb4f3016a662d526ee61067f66706a4658556a1"
+  }
+}
