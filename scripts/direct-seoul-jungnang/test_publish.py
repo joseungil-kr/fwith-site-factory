@@ -68,6 +68,9 @@ class PublishTests(unittest.TestCase):
         self.assertIn("github.actor == 'joseungil-kr'", workflow)
         self.assertIn("github.event.issue.user.login == 'joseungil-kr'", workflow)
         self.assertIn('fromJSON(github.event.issue.body).revisions', workflow)
+        self.assertIn("[REGIONAL-INDEXNOW-ONLY] seoul-jungnang", workflow)
+        self.assertIn("if: inputs.indexnow_only != true && !(", workflow)
+        self.assertIn("if: inputs.indexnow_only == true || (", workflow)
         for trigger in ['  push:', '  schedule:', '  workflow_run:', '  pull_request:', '  repository_dispatch:']:
             self.assertNotIn(trigger, workflow.split('permissions:', 1)[0])
         self.assertIn("github.ref == 'refs/heads/main'", workflow)

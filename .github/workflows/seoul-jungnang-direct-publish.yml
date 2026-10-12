@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   build:
-    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'issues' && github.event.issue.title == '[REGIONAL-COPY-DEPLOY] batch' && github.actor == 'joseungil-kr' && github.event.issue.user.login == 'joseungil-kr' && contains(github.event.issue.body, '"seoul-jungnang"')))
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'issues' && (github.event.issue.title == '[REGIONAL-COPY-DEPLOY] batch' || github.event.issue.title == '[REGIONAL-INDEXNOW-ONLY] seoul-jungnang') && github.actor == 'joseungil-kr' && github.event.issue.user.login == 'joseungil-kr' && contains(github.event.issue.body, '"seoul-jungnang"')))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     outputs:
@@ -91,7 +91,7 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
   publish:
-    if: inputs.indexnow_only != true
+    if: inputs.indexnow_only != true && !(github.event_name == 'issues' && github.event.issue.title == '[REGIONAL-INDEXNOW-ONLY] seoul-jungnang')
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -200,7 +200,7 @@ jobs:
           INDEXNOW: ${{ steps.indexnow.outcome }}
         run: test "$DEPLOY" = success && test "$BINDING" = success && test "$HTTP" = success && test "$INDEXNOW" = success
   finalize_indexnow:
-    if: inputs.indexnow_only == true
+    if: inputs.indexnow_only == true || (github.event_name == 'issues' && github.event.issue.title == '[REGIONAL-INDEXNOW-ONLY] seoul-jungnang')
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 10
