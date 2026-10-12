@@ -1,0 +1,21 @@
+---
+interface Props { variant: 'message' | 'budget' | 'consultation'; }
+const {variant}=Astro.props;
+const banners={
+  message:{file:'flower-message.webp',alt:'꽃이랑, 꽃으로 전하는 마음. 전하고 싶은 마음에 어울리는 꽃을 안내합니다. 크림색 장미를 담은 안내 이미지.'},
+  budget:{file:'flower-budget.webp',alt:'꽃이랑, 예산에 맞는 꽃 선택. 상품 사진과 가격을 함께 살펴보세요. 크림색 라넌큘러스를 담은 안내 이미지.'},
+  consultation:{file:'flower-consultation.webp',alt:'꽃이랑, 주문 상담 안내. 상품 선택부터 리본 문구까지 상담해 드립니다. 아이보리 리시안셔스를 담은 안내 이미지.'}
+};
+const banner=banners[variant];
+if(!banner) throw new Error('Unknown shared flower banner');
+---
+<figure class="shared-flower-banner" data-shared-flower-banner={variant}>
+  <img src={`/images/shared-banners/${banner.file}`} alt={banner.alt} width="1774" height="887" loading="lazy" decoding="async"/>
+  <figcaption>꽃이랑 공통 안내 이미지 · 실제 판매상품 사진이 아닌 AI 생성 이미지입니다.</figcaption>
+</figure>
+<style>
+.shared-flower-banner{margin:2rem auto;width:100%;max-width:60rem;overflow:hidden}
+.shared-flower-banner img{display:block;width:100%;height:auto;aspect-ratio:2/1;border-radius:1rem}
+.shared-flower-banner figcaption{padding:.5rem .125rem 0;font-size:.75rem;line-height:1.5;color:#655568}
+@media(max-width:600px){.shared-flower-banner{margin:1.5rem auto}.shared-flower-banner img{border-radius:.625rem}}
+</style>

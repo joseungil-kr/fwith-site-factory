@@ -1,4 +1,6 @@
 ---
+import {splitBannerContent} from '../lib/shared-banner-content.mjs';
+import SharedFlowerBanner from '../components/SharedFlowerBanner.astro';
 import { getDisplayArticles as getCollection } from '../lib/display-articles.mjs';
 import { removeRepeatedOpeningParagraph } from '../lib/article-opening.mjs';
 import BaseLayout from './BaseLayout.astro';
@@ -70,10 +72,14 @@ const articleContent=removeRepeatedOpeningParagraph(await Astro.slots.render('de
         <span class="eyebrow">{categoryLabel[category]??category}</span><h1>{h1 || title}</h1><p>{firstAnswer || description}</p>
         <div class="article-meta"><span>{region}</span><span>{categoryLabel[category]??category}</span>{verifiedAt&&<span>정보 확인일: {formatDate(verifiedAt)}</span>}</div>
       </header>
-      <div class="article-grid article-grid-single"><article class="prose"><Fragment set:html={articleContent} />
+      <div class="article-grid article-grid-single"><article class="prose">
+          {architectureIndexable && <SharedFlowerBanner variant="message"/>}<Fragment set:html={splitBannerContent(articleContent)[0]} />
+          {architectureIndexable && <SharedFlowerBanner variant="budget"/>}
+          <Fragment set:html={splitBannerContent(articleContent)[1]} />
         {manualEntry&&<ManualProductCards category={category} />}
-        {normalizedSources.length>0&&<section class="source-list" aria-labelledby="source-title"><div class="source-list-head"><h2 id="source-title">정보 출처</h2>{verifiedAt&&<span>최신 정보 확인: {formatDate(verifiedAt)}</span>}</div><ul>{normalizedSources.map((s)=><li><div><strong>{s.name}</strong><span>{s.typeLabel}</span></div><a href={s.url} rel="nofollow noopener noreferrer">원문 보기 →</a></li>)}</ul></section>}
-      </article></div>
+        {normalizedSources.length>0&&<section class="source-list" aria-labelledby="source-title"><div class="source-list-head"><h2 id="source-title">출처 및 확인 정보</h2>{verifiedAt&&<span>최신 정보 확인: {formatDate(verifiedAt)}</span>}</div><ul>{normalizedSources.map((s)=><li><div><h3>{s.name}</h3><span>{s.typeLabel}</span></div><a href={s.url} rel="nofollow noopener noreferrer">원문 보기 →</a></li>)}</ul></section>}
+      {architectureIndexable && <SharedFlowerBanner variant="consultation"/>}
+        </article></div>
       {related.length>0&&<section class="related-questions"><div class="related-questions-head"><span class="eyebrow">다음 질문</span><h2>이어서 확인할 내용</h2></div><div class="related-question-grid">{related.map((article)=><a href={hrefFor(article)} class="related-question-card"><span>{categoryLabel[article.data.category]}</span><strong>{article.data.title}</strong><p>{article.data.cardSummary || article.data.description}</p><b>확인하기 →</b></a>)}</div></section>}
     </div>
   </section>

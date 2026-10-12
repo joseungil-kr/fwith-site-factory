@@ -22,6 +22,18 @@ jobs:
       ASTRO_TELEMETRY_DISABLED: '1'
       SITE_URL: http://127.0.0.1:8935
       SITE_INDEXABLE: 'false'
+      PYTHONDONTWRITEBYTECODE: "1"
+      SHARED_BANNER_REFERENCE_DIST: "${{ github.workspace }}/shared-banner-production-dist"
+      SHARED_BANNER_REFERENCE_MANIFEST: "${{ github.workspace }}/.github/shared-banner-reference/yongin-production.json"
+      SHARED_BANNER_REFERENCE_MANIFEST_SHA256: "9c5770981c327ec375e8ee562da210bbd6d985e9e2e9be3636b52dbacd478f39"
+      SHARED_BANNER_REFERENCE_ARTIFACT_SHA256: "4f105e4dafe8be2a598ff347b8af6488265432c217829fbe095594489e627501"
+      SHARED_BANNER_REFERENCE_REVISION: "f243fab54012c21b2480a14b4b118a29856db505"
+      SHARED_BANNER_REFERENCE_ORIGIN: "https://yongin.fwith.kr"
+      SHARED_BANNER_PREVIEW_REFERENCE_DIST: "${{ github.workspace }}/shared-banner-original-reference/site-factory/yongin-flower/dist"
+      SHARED_BANNER_PREVIEW_REFERENCE_MANIFEST: "${{ github.workspace }}/.github/shared-banner-reference/yongin-preview.json"
+      SHARED_BANNER_PREVIEW_REFERENCE_MANIFEST_SHA256: "030ce79f45350cc3c2dc12a255970da2d5a6f23a4e8df474464b764c20f1af93"
+      SHARED_BANNER_PREVIEW_REFERENCE_ARTIFACT_SHA256: "ef42d57793c348eab74b8fa42881409daac05a0f965934992bb04ad6827acf03"
+      SHARED_BANNER_PREVIEW_REFERENCE_ORIGIN: "http://127.0.0.1:8935"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,6 +42,83 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Check out immutable original source for both bound phases
+        uses: actions/checkout@v4
+        with:
+          ref: f243fab54012c21b2480a14b4b118a29856db505
+          path: shared-banner-original-reference
+          persist-credentials: false
+      - name: Rebuild and authenticate immutable original production full artifact
+        working-directory: shared-banner-original-reference/site-factory/yongin-flower
+        env:
+          SITE_URL: 'https://yongin.fwith.kr'
+          SITE_ORIGIN: 'https://yongin.fwith.kr'
+          SITE_INDEXABLE: 'true'
+          MANUAL_PREVIEW: 'false'
+          MANUAL_QA_PHASE: 'production'
+          GITHUB_SHA: 'f243fab54012c21b2480a14b4b118a29856db505'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 'f243fab54012c21b2480a14b4b118a29856db505'
+          npm install --no-package-lock
+          npm run build
+          python3 - <<'PYREFERENCE'
+          import os,pathlib,json,hashlib
+          raw=pathlib.Path(os.environ['SHARED_BANNER_REFERENCE_MANIFEST']).read_bytes()
+          h=lambda b:hashlib.sha256(b).hexdigest()
+          assert h(raw)==os.environ['SHARED_BANNER_REFERENCE_MANIFEST_SHA256'],'Original reference metadata changed'
+          ref=json.loads(raw)
+          assert ref['baselineRevision']==os.environ['SHARED_BANNER_REFERENCE_REVISION']
+          assert ref['productionOrigin']==os.environ['SHARED_BANNER_REFERENCE_ORIGIN']
+          root=pathlib.Path('dist');assert root.is_dir() and not root.is_symlink()
+          files={}
+          for p in sorted(root.rglob('*')):
+              assert not p.is_symlink(),'Artifact symlink forbidden'
+              if p.is_dir():continue
+              assert p.is_file(),'Nonregular artifact'
+              files[p.relative_to(root).as_posix()]=h(p.read_bytes())
+          assert files==ref['files'],'Original full artifact bytes changed'
+          assert h(json.dumps(files,sort_keys=True,separators=(',',':')).encode())==ref['artifactManifestSha256']==os.environ['SHARED_BANNER_REFERENCE_ARTIFACT_SHA256']
+          
+          print('Original production full artifact authenticated:',len(files))
+          PYREFERENCE
+          test ! -e "$SHARED_BANNER_REFERENCE_DIST"
+          cp -a dist "$SHARED_BANNER_REFERENCE_DIST"
+      - name: Rebuild and authenticate immutable original preview full artifact
+        working-directory: shared-banner-original-reference/site-factory/yongin-flower
+        env:
+          SITE_URL: 'http://127.0.0.1:8935'
+          SITE_ORIGIN: 'http://127.0.0.1:8935'
+          SITE_INDEXABLE: 'false'
+          MANUAL_PREVIEW: 'false'
+          MANUAL_QA_PHASE: 'preview'
+          GITHUB_SHA: 'f243fab54012c21b2480a14b4b118a29856db505'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 'f243fab54012c21b2480a14b4b118a29856db505'
+          npm run build
+          python3 - <<'PYREFERENCE'
+          import os,pathlib,json,hashlib
+          raw=pathlib.Path(os.environ['SHARED_BANNER_PREVIEW_REFERENCE_MANIFEST']).read_bytes()
+          h=lambda b:hashlib.sha256(b).hexdigest()
+          assert h(raw)==os.environ['SHARED_BANNER_PREVIEW_REFERENCE_MANIFEST_SHA256'],'Original reference metadata changed'
+          ref=json.loads(raw)
+          assert ref['baselineRevision']==os.environ['SHARED_BANNER_REFERENCE_REVISION']
+          assert ref['previewOrigin']==os.environ['SHARED_BANNER_PREVIEW_REFERENCE_ORIGIN']
+          root=pathlib.Path('dist');assert root.is_dir() and not root.is_symlink()
+          files={}
+          for p in sorted(root.rglob('*')):
+              assert not p.is_symlink(),'Artifact symlink forbidden'
+              if p.is_dir():continue
+              assert p.is_file(),'Nonregular artifact'
+              files[p.relative_to(root).as_posix()]=h(p.read_bytes())
+          assert files==ref['files'],'Original full artifact bytes changed'
+          assert h(json.dumps(files,sort_keys=True,separators=(',',':')).encode())==ref['artifactManifestSha256']==os.environ['SHARED_BANNER_PREVIEW_REFERENCE_ARTIFACT_SHA256']
+          assert ref['productionArtifactManifestSha256']==os.environ['SHARED_BANNER_REFERENCE_ARTIFACT_SHA256']
+          print('Original preview full artifact authenticated:',len(files))
+          PYREFERENCE
       - name: Assert fixed branch and reviewed source bundle
         shell: bash
         run: |
@@ -44,9 +133,9 @@ jobs:
           import fs from 'node:fs';
           import assert from 'node:assert/strict';
           import {artifactDigest,artifactInventory} from './site-factory/yongin-flower/src/lib/manual-release-gate.mjs';
-          const expected='6d1a1644c4e4b2159d458a5e36e1d2d87863aa853df729c9063f76b63a141d7b';
-          assert.equal(artifactDigest(),expected,'Reviewed source bundle changed');
-          fs.writeFileSync('yongin-preview-evidence/revision.json',JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,sourceBase:'bc49ea311ceebdc304288acf60b636cdb296d83c',reviewedArtifactDigest:expected,sourceReview:'eligible-css-delta-only',pixelReview:'pending',productionApproval:'pending'},null,2));
+          const expected='277e257d70d12589206cc6e20af6683240b92f99ae403eca98c8fa391de52b51';
+          assert.equal(artifactDigest(),expected,'Pending preview candidate source bundle changed');
+          fs.writeFileSync('yongin-preview-evidence/revision.json',JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,sourceBase:'bc49ea311ceebdc304288acf60b636cdb296d83c',candidateArtifactDigest:expected,sourceReview:'pending-common-banner-amendment',pixelReview:'pending',productionApproval:'pending'},null,2));
           fs.writeFileSync('yongin-preview-evidence/source-inventory.json',JSON.stringify(artifactInventory(),null,2));
           JS
       - name: Manual release verification regression tests
@@ -60,6 +149,8 @@ jobs:
         run: |
           set -euo pipefail
           npm run build 2>&1 | tee "$GITHUB_WORKSPACE/yongin-preview-evidence/native-build.log"
+          test -f shared-banner-qa.json
+          mv shared-banner-qa.json "$GITHUB_WORKSPACE/yongin-preview-evidence/shared-banner-qa.json"
           python3 scripts/qa_static.py 2>&1 | tee "$GITHUB_WORKSPACE/yongin-preview-evidence/native-static-qa.log"
       - name: Native regression tests
         shell: bash
@@ -67,6 +158,7 @@ jobs:
         run: |
           set -euo pipefail
           node --test scripts/*.test.mjs tests/*.test.mjs 2>&1 | tee "$GITHUB_WORKSPACE/yongin-preview-evidence/native-tests.log"
+          python3 -B scripts/test_shared_banners.py 2>&1 | tee "$GITHUB_WORKSPACE/yongin-preview-evidence/shared-banner-tests.log"
       - name: Install pinned official Playwright and Korean fonts
         shell: bash
         run: |
