@@ -1,0 +1,1132 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-12T17:40:00Z",
+  "researchStatus": "performed_and_artifact_verified; customer copy not authored; no external mutations",
+  "purpose": "Frozen four Gangseo articles: actual query research, competitor original-body analysis, internal intent duplication audit, question→evidence→distinct information→next link design.",
+  "evidenceLabels": {
+    "직접 확인": "원본 웹페이지의 추출 본문, 고정 커밋 파일, 보관된 공식 원문 텍스트 및 상품 정책 이미지를 직접 열람",
+    "도구 보고": "검색 결과 반환 및 기존 연구의 전달 사항. 순위, 수요, 서비스 실증으로 단정하지 않음",
+    "추정·판단": "질문, 구매 단계, 구성, 차별성 및 링크 설계",
+    "미확인": "실제 현장 반입, 배송, 행사 일정, 최종 원고 품질 및 아직 없는 공개 산출물"
+  },
+  "sourceBaseline": {
+    "repository": "joseungil-kr/fwith-site-factory",
+    "branch": "main",
+    "commit": "9f23247d4b8a80162ea88bf2d49e5ff33cbbe42b",
+    "instructionFiles": [
+      {
+        "path": "docs/direct-regional-release/SEARCH_CONTENT_STRATEGY.md",
+        "sha256": "878ba6b4bcb596d9102391821509baa9a1b50ad03b02a621fd5ee6694f96217e"
+      },
+      {
+        "path": "docs/direct-regional-release/SALES_COPY_ACCEPTANCE.md",
+        "sha256": "28061f7bd55a24f49adf99ca626245c97d78d5307a7868444fff560be00f404e"
+      }
+    ],
+    "priorResearch": {
+      "path": "/workspace/shared/gangseo-research.json",
+      "sha256": "f08499881ef20480ad8eb2c3592bb67de2e035dabd0c99979fd3ef6cdef17e46"
+    },
+    "frozenPlan": {
+      "path": "/workspace/shared/gangseo-factory/docs/direct-regional-release/seoul-gangseo/fixed-plan.json",
+      "sha256": "bdbbf1bef153a6eeb9492dc6b8a8daff5511cca7dfa6527824784fd7c63b1f22",
+      "originalN": 4,
+      "urlCount": 4
+    }
+  },
+  "searchMethod": {
+    "provider": "web.search_query",
+    "searchedAt": "2026-10-12 UTC",
+    "scope": "Representative and detailed query strings listed per article were actually submitted. Broad multi-query searches followed by individual exact-match checks for M+ and Artrium.",
+    "rankings": "Not measured; returned order is not presented as ranking evidence.",
+    "volume": "Not measured; no volume estimates.",
+    "competitorSelection": "Accessible commercial originals relevant to one or more buyer decisions, including one general performance-capable product category when exact venue commercial results were not obtained.",
+    "negativeObservations": [
+      {
+        "query": "\"서울창업허브 M+\" \"개업\" \"화환\"",
+        "toolResult": "Empty search results",
+        "meaning": "This single search response only; not evidence of absent competitors or absent demand."
+      },
+      {
+        "query": "\"강서아트리움\" \"공연\" \"꽃배달\"",
+        "toolResult": "Empty search results",
+        "meaning": "This single search response only; not evidence of absent competitors or absent demand."
+      },
+      {
+        "query": "\"강서아트리움\" \"아리홀\" \"화환\"",
+        "toolResult": "Returned official Gallery Seo page",
+        "meaning": "Page has Ari Hall navigation text; the ban applies to gallery, not automatically Ari Hall."
+      },
+      {
+        "query": "\"마곡\" \"사무실 이전\" \"화환\"",
+        "toolResult": "Returned unrelated results in this tool response",
+        "meaning": "Use broader local opening pages for comparator, not pretend to have found an exact M+ competitor."
+      }
+    ]
+  },
+  "competitorOriginalAnalysis": [
+    {
+      "id": "competitor-oneul",
+      "brand": "오늘꽃",
+      "url": "https://oneulkkot.com/funeral-halls/ewha-seoul-hospital-funeral-hall",
+      "readScope": "web.open HTML 텍스트 전체 149줄; 본문 44–126줄, 시설·반입·주차·주문·리본·배송사진·상품·출처·CTA를 직접 읽음",
+      "onPageDate": "시설정보 확인일 2026-07-25; 게시일/수정일 별도 확인 불가",
+      "answers": [
+        "주소/시설 대표연락처, 빈소 주문정보, 리본 명의, 반입 확인 절차",
+        "4개 근조상품 가격과 상품별 링크, 배송사진 안내, 공식출처"
+      ],
+      "gapsOrLimits": [
+        "꽃이랑의 실제 상품별 비교나 총액 기준을 제공하는 자료가 아니다.",
+        "읽은 페이지에서 발인 전 일정과 변경·취소의 상세 적용을 설명하지 않는다.",
+        "시설 위치 및 주문 절차가 이미 상당 부분 설명되어 있어 주소만 추가하는 것은 차별이 아니다."
+      ],
+      "ourDifference": "꽃이랑 4개 실제 SKU별 가격·직접 상품링크, 기본가와 최종금액 차이, 부고의 발인 일정과 희망시간 구분, 별도 수거 없음까지 하나의 구매 결정에 연결. 경쟁사에도 이대서울/다른 이화의료원 혼동 경고가 있으므로 그 구분 자체를 독점적 발견처럼 주장하지 않음.",
+      "policyUse": "경쟁사 배송사진·반입 점검 프로세스·배송조건을 꽃이랑 약속으로 옮기지 않음",
+      "classification": "직접 확인",
+      "verifiedAt": "2026-10-12",
+      "snapshotKind": "Original webpage textual snapshot through web.open; independent direct HTTP fingerprint; no rendered screenshot",
+      "httpStatus": 200,
+      "bytes": 82799,
+      "sha256": "cd987f0228d18dfd0c3050fb088837edc30db55ab07e2bd4b3667a3b080292c8",
+      "competitorClaimsIndependentlyVerified": false
+    },
+    {
+      "id": "competitor-wolf",
+      "brand": "꽃배달 늑대와여우",
+      "url": "https://www.1588-6790.com/product/8f1c0d40/",
+      "readScope": "web.open HTML 텍스트 전체 136줄; 제목·상품정보 39–70줄, 상세본문 87–133줄을 직접 읽음",
+      "onPageDate": "게시/수정일 확인 불가",
+      "answers": [
+        "메이필드 예식 화환 상품가격, 배송비, 리본 문구, 설치와 사진 안내",
+        "상품 형태와 주문 마감/배송시간에 관한 자체 약속"
+      ],
+      "gapsOrLimits": [
+        "제목의 개화동 표기와 기존 공식 관련 PDF의 외발산동 표기가 다르다.",
+        "핵심 장문이 분위기·배송 약속에 치중하며 공식 베뉴 구분과 외부 반입규정 출처는 제시하지 않는다.",
+        "실제 교환·환불 탭 내용은 이번 텍스트 스냅샷에 노출되지 않았다."
+      ],
+      "ourDifference": "공식 방화대로94와 호텔 연회장1층 메이필드볼룸의 적용 범위를 정확히 한정; 가든·프라이빗 베뉴까지 볼룸층수를 확대하지 않고 청첩장 베뉴명과 예식 일정을 주문정보에 묶음. 꽃이랑 4개 SKU를 가격·실제 사진으로 비교하고 미검증 크기·전담기사·정시 안치 주장을 쓰지 않음.",
+      "policyUse": "3시간 배송·무료배송·맞춤 제작·현장 안치·즉시 사진전송 등은 해당 업체의 주장일 뿐 꽃이랑의 근거가 아님",
+      "classification": "직접 확인",
+      "verifiedAt": "2026-10-12",
+      "snapshotKind": "Original webpage textual snapshot through web.open; independent direct HTTP fingerprint; no rendered screenshot",
+      "httpStatus": 200,
+      "bytes": 86346,
+      "sha256": "e982881256c01ec249f9eaa5ad48379948c1ba605330e959d7e35a005e0ef1f4",
+      "competitorClaimsIndependentlyVerified": false
+    },
+    {
+      "id": "competitor-yedo",
+      "brand": "예도화환",
+      "url": "https://xn--hq1bj06a.kr/congrats-wreath/seoul-gangseogu-opening",
+      "readScope": "web.open HTML 텍스트 208줄; 첫 답변, 본문, 가격표, 정책, 10개 FAQ, 하단 링크를 포함해 읽음. 원문 전체 복제 없이 자체 분석만 보존",
+      "onPageDate": "원본 HTML datePublished/dateModified에 2026-10-07; 실제 제작일을 독립 입증한 것은 아님",
+      "answers": [
+        "마곡 매장 개업의 시간·설치 장소·업종별 리본·가격 비교",
+        "당일배송 마감, 변경·환불, 상품 차이, 대량구매 등 상세 FAQ"
+      ],
+      "gapsOrLimits": [
+        "마곡 매장·상가 중심이며 서울창업허브 M+ 입주기업으로 보내는 수령 맥락이 없다.",
+        "가격·꽃수량·QC·후기·환불·설치 사례는 해당 업체의 자체 주장이고 원자료 실증은 본 조사 범위 밖이다.",
+        "동일 페이지의 긴 권역·타지역 목록을 강서 개별 시설 문서에 복제할 이유는 없다."
+      ],
+      "ourDifference": "M+ 운영기관을 축하하는 건물 개관 글이 아니라 특정 입주기업의 개업/입주/이전을 축하하는 선물로 한정. 회사 예산의 총액과 상품 기본가, 실제 받는 회사와 희망 수령일, 리본의 개업/이전 목적 차이를 안내. 건물 규정은 추정하지 않음.",
+      "policyUse": "일정 보장·꽃수량·할인·QC점수·환불기한·무료배송 전용 금지",
+      "classification": "직접 확인",
+      "verifiedAt": "2026-10-12",
+      "snapshotKind": "Original webpage textual snapshot through web.open; independent direct HTTP fingerprint; no rendered screenshot",
+      "httpStatus": 200,
+      "bytes": 659890,
+      "sha256": "763c65009eccd4f0a749840bcfddd7e2cbdd08f313ceead49cad09069053adfc",
+      "competitorClaimsIndependentlyVerified": false
+    },
+    {
+      "id": "competitor-kkotkkoma",
+      "brand": "꽃꼬마",
+      "url": "https://kkotkkoma.co.kr/congrat/",
+      "readScope": "web.open HTML 텍스트 전체 97줄; 상품·리본문구·배송·FAQ·연락처를 직접 읽음",
+      "onPageDate": "게시/수정일 확인 불가",
+      "answers": [
+        "공연을 포함한 축하 용도, 여러 규격의 가격, 리본, 예약/당일배송",
+        "기업 결제증빙과 쌀화환 질문"
+      ],
+      "gapsOrLimits": [
+        "일반 축하상품 페이지라 아리홀·갤러리서 구분이나 행사별 반입과 철수 조건이 없다.",
+        "가격과 시간 약속은 꽃꼬마 고유 조건이다."
+      ],
+      "ourDifference": "아리홀 외부화환 반입이 아직 확인되지 않았다는 조건과 갤러리서 명시 금지를 분리. 실제 판매 4개 SKU의 생화·조화 혼합 및 별도 수거 없음이 공연 종료 후 처리 결정에 직접 연결된다.",
+      "policyUse": "행사1시간전·전국배송비포함·24시간 전화·예약가능일 범위를 꽃이랑에 적용하지 않음",
+      "classification": "직접 확인",
+      "verifiedAt": "2026-10-12",
+      "snapshotKind": "Original webpage textual snapshot through web.open; independent direct HTTP fingerprint; no rendered screenshot",
+      "httpStatus": 200,
+      "bytes": 31702,
+      "sha256": "10fa653c532d7c9be357a393f2af71808c0531d09c6232b8421a70c28158edef",
+      "competitorClaimsIndependentlyVerified": false
+    }
+  ],
+  "officialEvidence": [
+    {
+      "id": "ewha-location",
+      "url": "https://seoul.eumc.ac.kr/funeral/guide/directions.do",
+      "snapshotKind": "HTTP 200 original downloaded and relevant body text directly inspected",
+      "sourceSnapshotPath": "/workspace/shared/gangseo-evidence/ewha-location.html",
+      "sha256": "b8c1443b3b6ed8dc1434ad402898bdfccb9ee8dc083d922ed3cdf202728d41c5",
+      "researcherReviewScope": "Relevant stored original text/image content was read; existing download provenance retained. PDF/HWP text extraction, not page-layout visual review, except product policy raster images."
+    },
+    {
+      "id": "ewha-facility",
+      "url": "https://seoul.eumc.ac.kr/funeral/guide/facility.do",
+      "snapshotKind": "HTTP 200 original downloaded and relevant body text directly inspected",
+      "sourceSnapshotPath": "/workspace/shared/gangseo-evidence/ewha-facility.html",
+      "sha256": "082635fbdb1955a6e2d68bd673a9cef4a94a5414dd82e7bd7561c9042786a18d",
+      "researcherReviewScope": "Relevant stored original text/image content was read; existing download provenance retained. PDF/HWP text extraction, not page-layout visual review, except product policy raster images."
+    },
+    {
+      "id": "mayfield-location",
+      "url": "https://www.mayfield.co.kr/main/location.html",
+      "snapshotKind": "HTTP 200 original downloaded and relevant body text directly inspected",
+      "sourceSnapshotPath": "/workspace/shared/gangseo-evidence/mayfield-location.html",
+      "sha256": "1a42c5a224b6ab95924e923922534cb5d3b612c4827d237d7be38f6c8bbb64ec",
+      "researcherReviewScope": "Relevant stored original text/image content was read; existing download provenance retained. PDF/HWP text extraction, not page-layout visual review, except product policy raster images."
+    },
+    {
+      "id": "mayfield-wedding",
+      "url": "https://www.mayfield.co.kr/wedding/grand.html",
+      "snapshotKind": "HTTP 200 original downloaded and relevant body text directly inspected",
+      "sourceSnapshotPath": "/workspace/shared/gangseo-evidence/mayfield-wedding.html",
+      "sha256": "6740e6ba9163a7834e354f6ca4dc57505b9f2d2e3db37b1f08ecea0b2a5a9560",
+      "researcherReviewScope": "Relevant stored original text/image content was read; existing download provenance retained. PDF/HWP text extraction, not page-layout visual review, except product policy raster images."
+    },
+    {
+      "id": "mayfield-job-pdf",
+      "url": "https://www.sungkyul.ac.kr/bbs/skutourist/1845/21328/download.do",
+      "snapshotKind": "HTTP 200 PDF original downloaded; pdftotext text lines 83 and 129 inspected",
+      "sourceSnapshotPath": "/workspace/shared/gangseo-evidence/mayfield-job-pdf.pdf",
+      "sha256": "79b546b5f982e3f4826282417292bdad0f881477f95fbefc0f1619b8113bee58",
+      "researcherReviewScope": "Relevant stored original text/image content was read; existing download provenance retained. PDF/HWP text extraction, not page-layout visual review, except product policy raster images."
+    },
+    {
+      "id": "mplus-info",
+      "url": "https://mplus.startup-plus.kr/info",
+      "snapshotKind": "HTTP 200 original downloaded and relevant body text directly inspected",
+      "sourceSnapshotPath": "/workspace/shared/gangseo-evidence/mplus-info.html",
+      "sha256": "cd53ebccd9ec660629cb4ad56ad6447d62ddc6b555b9a3580596501335c87bf4",
+      "researcherReviewScope": "Relevant stored original text/image content was read; existing download provenance retained. PDF/HWP text extraction, not page-layout visual review, except product policy raster images."
+    },
+    {
+      "id": "mplus-city-pdf",
+      "url": "https://ms.smc.seoul.kr/attach/record/SEOUL/appendix/a11/A0071725.pdf?time=20260512143622",
+      "snapshotKind": "HTTP 200 PDF original downloaded; pdftotext lines 495–500 directly inspected",
+      "sourceSnapshotPath": "/workspace/shared/gangseo-evidence/mplus-city-pdf.pdf",
+      "sha256": "704c4b95b367ffe2c3e1fa6a0e9e99a3975c561d899bd6d45c1f2e9276e0016d",
+      "researcherReviewScope": "Relevant stored original text/image content was read; existing download provenance retained. PDF/HWP text extraction, not page-layout visual review, except product policy raster images."
+    },
+    {
+      "id": "art-ari",
+      "url": "https://culture.gangseo.seoul.kr/gsfc/main/contents.do?menuNo=800079",
+      "snapshotKind": "HTTP 200 original downloaded and relevant body text directly inspected",
+      "sourceSnapshotPath": "/workspace/shared/gangseo-evidence/art-ari.html",
+      "sha256": "96bd71dd601676af748990a55a16625bad579aedd003c4d218d974ee0738575c",
+      "researcherReviewScope": "Relevant stored original text/image content was read; existing download provenance retained. PDF/HWP text extraction, not page-layout visual review, except product policy raster images."
+    },
+    {
+      "id": "art-gallery",
+      "url": "https://culture.gangseo.seoul.kr/gsfc/main/contents.do?menuNo=800080",
+      "snapshotKind": "HTTP 200 original downloaded and relevant body text directly inspected",
+      "sourceSnapshotPath": "/workspace/shared/gangseo-evidence/art-gallery.html",
+      "sha256": "27967c7410b627ae8526db7f31723574bb6170e5504787e4e3c2b31d90faa547",
+      "researcherReviewScope": "Relevant stored original text/image content was read; existing download provenance retained. PDF/HWP text extraction, not page-layout visual review, except product policy raster images."
+    },
+    {
+      "id": "ari-2026-notice-page",
+      "url": "https://culture.gangseo.seoul.kr/gsfc/bbs/BMSR00001/view.do?boardId=963&gubunCd=&menuNo=800046&pageIndex=1&searchCondition=&searchKeyword=",
+      "snapshotKind": "HTTP 200 original downloaded and relevant body text directly inspected",
+      "sourceSnapshotPath": "/workspace/shared/gangseo-evidence/ari-2026-notice-page.html",
+      "sha256": "cc268fe082cab41169e4912027cbd5114f20ac47c6cdc1b194e4da8fd519caf0",
+      "researcherReviewScope": "Relevant stored original text/image content was read; existing download provenance retained. PDF/HWP text extraction, not page-layout visual review, except product policy raster images."
+    },
+    {
+      "id": "ari-notice-2026",
+      "url": "https://culture.gangseo.seoul.kr/resources/gsfc/files/notice(hall)_26_2.zip",
+      "snapshotKind": "HTTP 200 ZIP downloaded; 5 HWP BodyText streams decompressed and read; corresponding .txt files retained",
+      "sourceSnapshotPath": "/workspace/shared/gangseo-evidence/ari-notice-2026.zip",
+      "sha256": "fc747a58700e90f15891fae72d49f8283502d614fd7989dfade5204bf6b146db",
+      "researcherReviewScope": "Relevant stored original text/image content was read; existing download provenance retained. PDF/HWP text extraction, not page-layout visual review, except product policy raster images."
+    }
+  ],
+  "verifiedCatalog": {
+    "checkedAt": "2026-10-12T17:33:00Z",
+    "verification": "HTTP original page bytes and exact name/price; both original linked images opened and visually read",
+    "products": [
+      {
+        "sku": "B201",
+        "name": "근조 3단 화환",
+        "basePriceKRW": 59000,
+        "sourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B201",
+        "httpStatus": 200,
+        "sourceSha256": "f229dee564a2b48fef21c5c836f470d422ab9a5a7fef981795a53c464a062d31",
+        "exactProductNameAndPriceVerified": true,
+        "officialPolicyImagesBound": true
+      },
+      {
+        "sku": "B203",
+        "name": "근조 고급 3단 화환",
+        "basePriceKRW": 79000,
+        "sourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B203",
+        "httpStatus": 200,
+        "sourceSha256": "cda76780f35a4fe94498852c9c925e34201c5a23297077a10a2d7b7e4b7b7a28",
+        "exactProductNameAndPriceVerified": true,
+        "officialPolicyImagesBound": true
+      },
+      {
+        "sku": "B205",
+        "name": "근조 특대 3단 화환",
+        "basePriceKRW": 109000,
+        "sourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B205",
+        "httpStatus": 200,
+        "sourceSha256": "fa299c94deb26edf228f0cd99de9e0dfb23c494c9d141d4de56b1edd197695e7",
+        "exactProductNameAndPriceVerified": true,
+        "officialPolicyImagesBound": true
+      },
+      {
+        "sku": "B060",
+        "name": "근조 특특대 3단 화환",
+        "basePriceKRW": 149000,
+        "sourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B060",
+        "httpStatus": 200,
+        "sourceSha256": "371a5ecc3259c21ae48fb8543d90519d73d68eff77433a469bdf1b94142cc0f8",
+        "exactProductNameAndPriceVerified": true,
+        "officialPolicyImagesBound": true
+      },
+      {
+        "sku": "C200",
+        "name": "축하 3단 화환",
+        "basePriceKRW": 59000,
+        "sourceUrl": "https://fwith.co.kr/shop/item.php?it_id=C200",
+        "httpStatus": 200,
+        "sourceSha256": "f8ad604bb5f26059c2e6a288056fbb4767b8389fa2ba0489c8f687cbeb0b61f9",
+        "exactProductNameAndPriceVerified": true,
+        "officialPolicyImagesBound": true
+      },
+      {
+        "sku": "C203",
+        "name": "축하 고급 3단 화환",
+        "basePriceKRW": 79000,
+        "sourceUrl": "https://fwith.co.kr/shop/item.php?it_id=C203",
+        "httpStatus": 200,
+        "sourceSha256": "53dc99d0a3cae791a14243cfbf13f788a494fd5bab937543610c6e99c158ca86",
+        "exactProductNameAndPriceVerified": true,
+        "officialPolicyImagesBound": true
+      },
+      {
+        "sku": "C204",
+        "name": "축하 특대 3단 화환",
+        "basePriceKRW": 99000,
+        "sourceUrl": "https://fwith.co.kr/shop/item.php?it_id=C204",
+        "httpStatus": 200,
+        "sourceSha256": "5c1ff4d3a40e48cb1607af7f0e874c064743ce9496e8e672b2e586de77b0e9bb",
+        "exactProductNameAndPriceVerified": true,
+        "officialPolicyImagesBound": true
+      },
+      {
+        "sku": "C205",
+        "name": "축하 특특대 3단 화환",
+        "basePriceKRW": 149000,
+        "sourceUrl": "https://fwith.co.kr/shop/item.php?it_id=C205",
+        "httpStatus": 200,
+        "sourceSha256": "e20254cf8326be821e5b064a62e44150d5bd254063aef050971fb34fc33cdb4c",
+        "exactProductNameAndPriceVerified": true,
+        "officialPolicyImagesBound": true
+      }
+    ],
+    "policyImages": [
+      {
+        "url": "https://fwith.co.kr/shop/img/order-top2.jpg",
+        "sha256": "24c11e1cc413d3f64ad05145fdc0fb4171c8f3e618d4351609777f8e2ff43bc3",
+        "appliesTo": "All 8 inspected SKU pages include this image; no wider catalog claim",
+        "relevantText": [
+          "화환수거는 따로 하지 않습니다.",
+          "본상품은 생화와 조화를 적절히 혼합 사용합니다."
+        ],
+        "imageReviewed": true
+      },
+      {
+        "url": "https://fwith.co.kr/data/common/flower379/de_change_content.jpg",
+        "sha256": "02701dd33c2a09258a882873df005dbe616842c2add159a08d618b68a934944c",
+        "appliesTo": "All 8 inspected SKU pages include this image",
+        "relevantText": [
+          "제작 완료된 꽃 상품의 경우",
+          "상품 출고 후 취소를 원할 경우, 배송비를 제외한 금액이 환불됩니다."
+        ],
+        "context": [
+          "제작 완료된 꽃 상품의 경우 is listed under 교환/환불 불가",
+          "출고 후 취소 is listed under 환불 규정"
+        ],
+        "unresolved": "Relationship of production-completed exclusion to shipped-product cancellation is not specified; do not turn into unconditional refund rule",
+        "imageReviewed": true
+      }
+    ],
+    "businessTruthConflicts": "No claim of 생화만 in inspected Gangseo business-truth/products; no extrapolation from image beyond 8 SKUs",
+    "excludedFromEvidence": "Customer review names, photos, orders and testimonials not copied to repository evidence.",
+    "provenanceNote": "Parent-provided point-in-time catalog verification is retained as reported. This researcher separately inspected current local HTML names/prices, both policy images, and all eight HTML image references; independent local-file hashes are in independentPolicyReadback. Dynamic HTML snapshots from different fetches may have different hashes; no claim that the parent hash equals the current local bytes."
+  },
+  "independentPolicyReadback": {
+    "classification": "직접 확인",
+    "openedImages": [
+      {
+        "path": "/workspace/shared/gangseo-evidence/catalog/exchange-policy.jpg",
+        "sha256": "02701dd33c2a09258a882873df005dbe616842c2add159a08d618b68a934944c"
+      },
+      {
+        "path": "/workspace/shared/gangseo-evidence/catalog/item-order-guide.jpg",
+        "sha256": "24c11e1cc413d3f64ad05145fdc0fb4171c8f3e618d4351609777f8e2ff43bc3"
+      }
+    ],
+    "safeFacts": [
+      "8개 대상 상품의 공식 안내 이미지는 생화와 조화 혼합을 명시",
+      "별도 화환 수거를 하지 않는다고 명시"
+    ],
+    "unresolved": "제작 완료 교환·환불 제한과 출고 후 취소·환불의 관계가 미확인 상태다. 상품별 제작 상태와 예외를 확인하지 않고 포괄 규칙으로 정리하지 않는다.",
+    "allEightSkuHtmlImageReferencesRechecked": [
+      {
+        "sku": "C204",
+        "orderImage": true,
+        "exchangeImage": true,
+        "sha256": "ee35a200335c2d1dcf1ca0f6d34f4ad815472bcb053c5be8a0f126dc6bccd0dd"
+      },
+      {
+        "sku": "B060",
+        "orderImage": true,
+        "exchangeImage": true,
+        "sha256": "dfa94a0222d26c71ea20f12509a83464743541fdb935b60323e87f5584271f70"
+      },
+      {
+        "sku": "B201",
+        "orderImage": true,
+        "exchangeImage": true,
+        "sha256": "c68df5842e209bcbac58586683075d711ce2736e8e5b5daf622baa1158550754"
+      },
+      {
+        "sku": "C203",
+        "orderImage": true,
+        "exchangeImage": true,
+        "sha256": "db46d171703ab9eb1844a424a21cfe31f200c9f3565eae07422d78656397a428"
+      },
+      {
+        "sku": "B203",
+        "orderImage": true,
+        "exchangeImage": true,
+        "sha256": "581226411d05c6799fca994cdc6327eed60d6e85787555d42b3a0bd80572d47a"
+      },
+      {
+        "sku": "C200",
+        "orderImage": true,
+        "exchangeImage": true,
+        "sha256": "1da2f8d7da527b8c4fabe91442234151955c1a70830d66aca3fcbb6f30927db7"
+      },
+      {
+        "sku": "B205",
+        "orderImage": true,
+        "exchangeImage": true,
+        "sha256": "a86e39d7d5b1ac1edbedcf4e31ab72161d4946cee7680728f87169d52864d971"
+      },
+      {
+        "sku": "C205",
+        "orderImage": true,
+        "exchangeImage": true,
+        "sha256": "8379aef23d3d807d8712e48dcaeb30b76ae4399d67c8c8231527b34a528e91b7"
+      }
+    ]
+  },
+  "internalDuplicateAudit": {
+    "classification": "직접 확인",
+    "baselineCommit": "9f23247d4b8a80162ea88bf2d49e5ff33cbbe42b",
+    "trackedFileCount": 841,
+    "controllerCount": 39,
+    "plannedSlugCountIncludingHeld": 502,
+    "rawAuditPath": "/workspace/shared/gangseo-evidence/internal-source-audit.json",
+    "exactFacilityTerms": [
+      "이대서울",
+      "이화의대부속서울",
+      "ewha-seoul",
+      "메이필드",
+      "mayfield",
+      "서울창업허브 M+",
+      "서울창업허브 엠플러스",
+      "mplus-office",
+      "강서아트리움",
+      "gangseo-artrium"
+    ],
+    "matchesInTrackedBaseline": 0,
+    "nearbyOriginalSource": {
+      "branch": "site-factory-seoul-yangcheon-direct",
+      "commit": "8c20e5726ab7ce5767391219ea93f690a572972d",
+      "path": "site-factory/seoul-yangcheon-flower/src/data/pages.json",
+      "sha256": "6fbac9e59743bd3652f483ebc1245864996f979f539e21858c4fb50ea83fec13",
+      "readScope": "3 customer contentMarkdown bodies and facility/intent metadata"
+    },
+    "independentlyOpenedLiveSamples": [
+      {
+        "id": "internal-nowon-office",
+        "url": "https://seoul-nowon.fwith.kr/regions/gongneung-dong-seoul-techno-park-office-move-wreath/",
+        "httpStatus": 200,
+        "finalUrl": "https://seoul-nowon.fwith.kr/regions/gongneung-dong-seoul-techno-park-office-move-wreath/",
+        "bytes": 14752,
+        "sha256": "bb9af6d954c5a914bb5c6330c3466c111f5188355fdfa6f245480df8d633d0f0",
+        "title": [
+          "서울테크노파크 사무실 이전 축하화환 주문"
+        ],
+        "pageDateMetadata": [],
+        "file": "/workspace/shared/gangseo-evidence/search-snapshots/internal-nowon-office.html",
+        "textFile": "/workspace/shared/gangseo-evidence/search-snapshots/internal-nowon-office.txt"
+      },
+      {
+        "id": "internal-nowon-performance",
+        "url": "https://seoul-nowon.fwith.kr/regions/junggye-dong-nowon-arts-performance-wreath/",
+        "httpStatus": 200,
+        "finalUrl": "https://seoul-nowon.fwith.kr/regions/junggye-dong-nowon-arts-performance-wreath/",
+        "bytes": 14959,
+        "sha256": "f5057a993daba636a465570d98f938410d1d21a23c2a438905efea20a1ac17ab",
+        "title": [
+          "노원문화예술회관 공연 축하화환 주문"
+        ],
+        "pageDateMetadata": [],
+        "file": "/workspace/shared/gangseo-evidence/search-snapshots/internal-nowon-performance.html",
+        "textFile": "/workspace/shared/gangseo-evidence/search-snapshots/internal-nowon-performance.txt"
+      },
+      {
+        "id": "internal-yangcheon-funeral",
+        "url": "https://seoul-yangcheon.fwith.kr/regions/sinwol-dong-mediheal-funeral-wreath/",
+        "httpStatus": 200,
+        "finalUrl": "https://seoul-yangcheon.fwith.kr/regions/sinwol-dong-mediheal-funeral-wreath/",
+        "bytes": 14753,
+        "sha256": "aca9e3a58591b58418e798ea44c8c45fbbf1ce0a2c808ec3a441f79ebd1ce641",
+        "title": [
+          "메디힐병원 장례식장 근조화환 주문"
+        ],
+        "pageDateMetadata": [],
+        "file": "/workspace/shared/gangseo-evidence/search-snapshots/internal-yangcheon-funeral.html",
+        "textFile": "/workspace/shared/gangseo-evidence/search-snapshots/internal-yangcheon-funeral.txt"
+      }
+    ],
+    "determination": "검사한 기존 시설·의도 목록에서 동일 시설의 새 URL 충돌을 찾지 못했다. 메디힐 근조, 로프트가든 웨딩, 서울테크노파크 사무실 이전, 노원·양천 공연과 상위 의도는 겹치므로 시설명만 바꾼 복제를 금지한다. 마곡의 이대서울 근조와 M+ 기업 축하는 동일 법정동이어도 다른 구매 결정이므로 분리한다.",
+    "scopeLimit": "Only main tracked source, 39 controller inventories, locally available Yangcheon exact branch source and three live samples were examined. Did not read all remote source branches or all published customer bodies. No claim of universal cross-site duplicate clearance."
+  },
+  "pages": [
+    {
+      "facilityKey": "ewha-seoul-funeral",
+      "slug": "magok-dong-ewha-seoul-funeral-wreath",
+      "url": "/regions/magok-dong-ewha-seoul-funeral-wreath/",
+      "frozenIntent": "funeral-condolence-wreath",
+      "classification": "추정·판단",
+      "representativeQueries": [
+        "이대서울병원 장례식장 근조화환 가격 배송",
+        "\"이대서울병원\" \"근조화환\""
+      ],
+      "longTailQueries": [
+        "\"이대서울병원\" \"근조화환\" \"발인\""
+      ],
+      "synonymsToConsolidate": [
+        "이대서울병원 화환",
+        "마곡 이대서울 장례식장 근조화환",
+        "이대서울병원 장례식장 꽃배달"
+      ],
+      "excludedIntents": [
+        "이대목동병원 주문",
+        "장례식장 예약/빈소 임대료",
+        "현재 고인검색을 복제한 명부"
+      ],
+      "purchaseStage": "시설은 정해졌고 근조상품·예산·가능한 전달시점·문구를 결정하는 단계",
+      "firstAnswerPlan": "조의를 전하는 근조 4개 상품과 기본가 범위를 먼저 연결. 직접 조문하기 어려운 상황의 차분한 공감은 1–2문장. 주소나 경고를 첫 문장으로 시작하지 않음.",
+      "questionAnswerEvidence": [
+        {
+          "question": "어떤 상품을 얼마 예산에서 비교할 수 있는가?",
+          "answerScope": "B201 59,000 / B203 79,000 / B205 109,000 / B060 149,000원의 공식 이름·실제 사진·기본가격을 설명. 8만원 상품예산은 앞2개, 11만원은 앞3개라는 산술 비교만 가능.",
+          "evidence": "catalog HTML 4개 및 product detail URLs",
+          "distinctInformation": "가격차이를 정성·품질·꽃수량 차이로 포장하지 않음",
+          "nextDecisionOrLink": [
+            "https://fwith.co.kr/shop/item.php?it_id=B201",
+            "https://fwith.co.kr/shop/item.php?it_id=B203",
+            "https://fwith.co.kr/shop/item.php?it_id=B205",
+            "https://fwith.co.kr/shop/item.php?it_id=B060"
+          ]
+        },
+        {
+          "question": "이대서울병원 어디로 보내는 주문인가?",
+          "answerScope": "강서구 공항대로260·마곡동808. 공식 시설 안내의 빈소는 병원 지하2층. 이대목동과 별도 시설임을 짧게 설명.",
+          "evidence": "ewha-location, ewha-facility",
+          "distinctInformation": "메디힐의 지상1층 안내나 다른 병원 정보를 이식하지 않음",
+          "nextDecisionOrLink": "https://seoul.eumc.ac.kr/funeral/guide/directions.do"
+        },
+        {
+          "question": "발인일이 가까운데 지금 주문해도 되는가?",
+          "answerScope": "부고에 있는 빈소와 발인 날짜/시간, 희망 수령시점을 묶어 주문상담. 전화 운영시간은 배달 가능시간 보장이 아니며 실제 가능 여부는 개별 확인.",
+          "evidence": "operator-confirmed business-truth + notVerified facility conditions",
+          "distinctInformation": "일률적인 2~3시간·새벽배송·발인전 도착 보장 없이 시간 제한을 중요한 주문 결정으로 다룸",
+          "nextDecisionOrLink": "tel:18440644"
+        },
+        {
+          "question": "주문할 때 무엇을 한 번에 전달하면 되는가?",
+          "answerScope": "병원명·빈소, 고인 또는 상주 식별정보, 발인일정/희망시점, 보내는 명의·리본문구, 선택상품/총예산을 한 곳에 통합. 유족이 화환 사양이면 뜻 존중.",
+          "evidence": "ewha-facility + purchase-context design",
+          "distinctInformation": "부고 원문을 공개하거나 개인정보를 페이지에 전재하지 않음",
+          "nextDecisionOrLink": "#order"
+        },
+        {
+          "question": "회사·모임 이름과 종교에 맞는 문구를 어떻게 정하는가?",
+          "answerScope": "추모 문구와 보내는 이름을 구분한 목적별 예시; 유족 종교를 임의로 추정하지 않음. 예시는 관례 설명/제안임을 유지.",
+          "evidence": "editorial judgment + approved ribbon consultation scope",
+          "distinctInformation": "친구 결혼의 밝은 어투를 근조에 가져오지 않음",
+          "nextDecisionOrLink": "#ribbon"
+        },
+        {
+          "question": "최종금액과 변경·취소, 화환 수거는 어떻게 되는가?",
+          "answerScope": "기본가/총액 차이, 주문상태별 변경상담, 별도수거 없음. 공식 이미지 문구를 정확히 한정.",
+          "evidence": "business-truth, policy images",
+          "distinctInformation": "경쟁사의 사진전송이나 환불마감 약속으로 미확인 부분을 채우지 않음",
+          "nextDecisionOrLink": "#order"
+        }
+      ],
+      "bodySequence": [
+        "조의 목적과 상품/상담 진입",
+        "근조4개 실제상품·예산별 선택",
+        "이대서울의 정확한 대상과 발인일정",
+        "통합 주문정보·추모 문구",
+        "비용·변경상담·수거 및 남는 구매질문",
+        "간결한 공식출처"
+      ],
+      "faqUniqueQuestions": [
+        "발인일만 아는데 상담할 수 있는가?",
+        "이대목동병원과 같은 주문처인가?",
+        "근조상품이 전부 생화인가?",
+        "주문 후 빈소/문구가 바뀌면 어떻게 요청하는가?"
+      ],
+      "nextDecisionLinks": [
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=B201",
+          "purpose": "해당 근조상품 상세 비교/주문"
+        },
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=B203",
+          "purpose": "해당 근조상품 상세 비교/주문"
+        },
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=B205",
+          "purpose": "해당 근조상품 상세 비교/주문"
+        },
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=B060",
+          "purpose": "해당 근조상품 상세 비교/주문"
+        },
+        {
+          "target": "tel:18440644",
+          "purpose": "발인일정·상품·최종금액 상담"
+        },
+        {
+          "target": "/regions/",
+          "purpose": "배송 시설을 잘못 선택했을 때 강서구 목적별 안내로 복귀; 본문에 무관한 다른시설 추천카드 묶음은 넣지 않음"
+        }
+      ],
+      "distinctFromInternal": "기존 메디힐 근조와 같은 상품군이지만 시설의 지하2층·별도 이대목동 구분·발인일정이라는 구매질문으로 독자적 설명. 일반 추모 도입과 가격표 문장을 그대로 복제하지 않음.",
+      "commonFramework": {
+        "productFacts": "공식 8개 SKU HTML의 상품명·기본가를 직접 읽음. 가격만으로 꽃 수량·높이·폭·수명·품질 차이를 단정하지 않음.",
+        "productCta": "상품카드는 실제 해당 SKU URL로 연결. 일반몰 홈과 전화상담은 별도 목적의 CTA로 구분.",
+        "costAndTiming": "표시가=상품 기본가. 배송지별 추가비용 가능성과 상담에서 최종금액·희망일정 가능 여부를 안내하는 사업정보만 사용. 상담시간과 배송시간을 동일시하지 않음.",
+        "policyImageFacts": "8개 상품에 공통 연결된 공식 주문안내 이미지를 시각적으로 직접 열어 확인: 생화·조화 혼합 사용, 별도 화환수거 없음. 실제 납품품을 검사한 주장은 아님.",
+        "cancellationBoundary": "공식 교환/환불 이미지에는 제작완료상품 제한과 출고후 취소 안내가 함께 있어 적용관계 미확인. 임의로 제작전 전액환불/제작후 절대불가/출고후 무조건환불이라고 정리하지 말고 주문상태별 상담으로 안내. 불량·파손 등의 자체 판단도 약속하지 않음.",
+        "writing": "이 산출물은 질문·근거·정보구조 설계만 포함. 약2,500~3,000자 고유본문은 후속 초안 목표이며 숫자만으로 품질을 판정하지 않음. 제삼자 안내서/경고문 말투 대신 판매자 상담 범위로 친절하게 작성.",
+        "privacy": "고인·상주·신랑신부·회사 담당자 실제 개인 이름이나 후기·납품사진 속 정보를 증거 파일·본문에 복제하지 않음."
+      },
+      "competitorEvidenceIds": [
+        "competitor-oneul"
+      ],
+      "bodyLengthTarget": "고유 본문 약 2,500~3,000자 초안 기준. 공통 상품 카드, 메뉴, 푸터를 제외한다. 질문에 대한 충분한 답을 우선하며 불필요한 주소 반복, 감성 복제, 시설 상식으로 채우지 않는다.",
+      "finalBodyDuplicateReview": "후속 최종 원고 단계에서 형제 4글 및 해당 유사 내부 글과 전문 대조가 필요하다. 현재는 원고 미작성으로 정량 중복률이나 완결성 PASS가 없다."
+    },
+    {
+      "facilityKey": "mayfield-hotel-wedding",
+      "slug": "oebalsan-dong-mayfield-wedding-wreath",
+      "url": "/regions/oebalsan-dong-mayfield-wedding-wreath/",
+      "frozenIntent": "wedding-congrats-wreath",
+      "classification": "추정·판단",
+      "representativeQueries": [
+        "메이필드호텔 축하화환 웨딩",
+        "\"메이필드호텔\" \"화환\""
+      ],
+      "longTailQueries": [
+        "\"메이필드호텔\" \"화환\" \"가격\"",
+        "\"메이필드호텔\" \"화환\" \"벨타워가든\""
+      ],
+      "synonymsToConsolidate": [
+        "메이필드호텔 결혼화환",
+        "메이필드볼룸 축하화환",
+        "메이필드 웨딩 화환"
+      ],
+      "excludedIntents": [
+        "호텔 웨딩대관 견적",
+        "객실예약",
+        "베뉴별로 같은 결혼상품 페이지를 추가 생성"
+      ],
+      "purchaseStage": "청첩장을 받은 친구·회사 담당자가 상품/문구/예식 베뉴와 희망일정을 정하는 단계",
+      "firstAnswerPlan": "두 사람의 결혼을 축하하는 실제4개 상품과 상담 연결. 청첩장에 적힌 베뉴별로 주문을 상담한다는 도움을 제시하되 보장된 설치나 배송실적을 발명하지 않음.",
+      "questionAnswerEvidence": [
+        {
+          "question": "친구·회사에서 보내는 화환을 예산별로 어떻게 비교하는가?",
+          "answerScope": "C200 59,000 / C203 79,000 / C204 99,000 / C205 149,000. 10만원 상품예산 앞3개, 15만원 상품예산4개. 실제 사진 색과 배치만 비교.",
+          "evidence": "catalog 4 SKU HTML/images",
+          "distinctInformation": "축하 특대는99,000원으로 근조 특대109,000원과 혼동하지 않음",
+          "nextDecisionOrLink": [
+            "https://fwith.co.kr/shop/item.php?it_id=C200",
+            "https://fwith.co.kr/shop/item.php?it_id=C203",
+            "https://fwith.co.kr/shop/item.php?it_id=C204",
+            "https://fwith.co.kr/shop/item.php?it_id=C205"
+          ]
+        },
+        {
+          "question": "볼룸·가든 등 어느 예식장으로 보내야 하는가?",
+          "answerScope": "방화대로94. 메이필드볼룸은 호텔 연회장1층. 호텔 공식 메뉴의 다른 웨딩베뉴는 별도 이름으로 취급; 해당 층수나 수령방법을 확대 적용하지 않음.",
+          "evidence": "mayfield-location, mayfield-wedding",
+          "distinctInformation": "경쟁 제목의 개화동에 의존하지 않고 공식주소·교차확인된 외발산동 사용",
+          "nextDecisionOrLink": "https://www.mayfield.co.kr/wedding/grand.html"
+        },
+        {
+          "question": "예식시간과 희망 전달시간은 어떻게 말하면 되는가?",
+          "answerScope": "예식 날짜·시각·청첩장 베뉴, 희망수령시점과 현장 지정수령정보를 통합상담. 외부화환 허용이나 야외/실내의 설치위치를 자동 승인으로 취급하지 않음.",
+          "evidence": "facility official facts + receiving condition unverified",
+          "distinctInformation": "일률적으로 예식1~2시간 전 배치 또는3시간전 주문 가능 약속을 쓰지 않음",
+          "nextDecisionOrLink": "tel:18440644"
+        },
+        {
+          "question": "리본에 신랑신부·회사·친구 이름은 어떻게 담는가?",
+          "answerScope": "수령인 식별과 보내는 명의를 구분하고 정중한 결혼축하/친구의 축하 예시를 제안. 실제 신랑신부 이름은 예시로 수집·공개하지 않음.",
+          "evidence": "editorial judgment and approved ribbon consultation",
+          "distinctInformation": "장문의 호텔정원 감성 문구 대신 읽히는 간결한 목적별 예시",
+          "nextDecisionOrLink": "#ribbon"
+        },
+        {
+          "question": "사진과 똑같은 상품인가, 모두 생화인가?",
+          "answerScope": "공식 상품 예시·지역/계절 변화·생화조화 혼합의 확인된 범위. 가격이 높을수록 꽃수량이나 크기가 커진다고 추정하지 않음.",
+          "evidence": "catalog + order-top2.jpg",
+          "distinctInformation": "상품명에 따라 예산을 비교하면서 실제사양 미확인을 숨기지 않음",
+          "nextDecisionOrLink": [
+            "https://fwith.co.kr/shop/item.php?it_id=C200",
+            "https://fwith.co.kr/shop/item.php?it_id=C203",
+            "https://fwith.co.kr/shop/item.php?it_id=C204",
+            "https://fwith.co.kr/shop/item.php?it_id=C205"
+          ]
+        },
+        {
+          "question": "호텔에서 화환을 회수해 주는가? 주문변경은 가능한가?",
+          "answerScope": "꽃이랑은 별도 수거하지 않음. 호텔/주최측의 처리방식은 별도 미확인. 주문 변경·취소는 상태별 상담, 출고후무조건환불 단정 금지.",
+          "evidence": "official policy images + facility unknowns",
+          "distinctInformation": "꽃이랑수거 없음과 시설처리 미확인을 구별",
+          "nextDecisionOrLink": "#order"
+        }
+      ],
+      "bodySequence": [
+        "결혼 축하 목적·상품 진입",
+        "예산4단계와 상품별 실제 사진",
+        "호텔안 베뉴 구분",
+        "예식일정·리본문구와 통합주문",
+        "상품재료·비용·변경·수거",
+        "공식출처"
+      ],
+      "faqUniqueQuestions": [
+        "메이필드볼룸과 벨타워가든은 같은 수령장소인가?",
+        "야외예식이면 아무 화환이나 반입할 수 있는가?",
+        "회사명으로 보내는 경우 문구를 상담할 수 있는가?",
+        "예식 일정 변경이 생기면 어떻게 요청하는가?"
+      ],
+      "nextDecisionLinks": [
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=C200",
+          "purpose": "축하상품 상세 비교/주문"
+        },
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=C203",
+          "purpose": "축하상품 상세 비교/주문"
+        },
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=C204",
+          "purpose": "축하상품 상세 비교/주문"
+        },
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=C205",
+          "purpose": "축하상품 상세 비교/주문"
+        },
+        {
+          "target": "https://www.mayfield.co.kr/wedding/grand.html",
+          "purpose": "실제 볼룸이 맞는지 공식 베뉴 참고"
+        },
+        {
+          "target": "tel:18440644",
+          "purpose": "청첩장 베뉴·일정·총액상담"
+        }
+      ],
+      "distinctFromInternal": "양천 로프트가든과는 동일 결혼의도라도 호텔 내 다중베뉴 선택이 핵심. 장식·크기·배송문구를 바꿔쓰는 복제 대신 초대된 특정예식에 맞춘 상담 설명.",
+      "commonFramework": {
+        "productFacts": "공식 8개 SKU HTML의 상품명·기본가를 직접 읽음. 가격만으로 꽃 수량·높이·폭·수명·품질 차이를 단정하지 않음.",
+        "productCta": "상품카드는 실제 해당 SKU URL로 연결. 일반몰 홈과 전화상담은 별도 목적의 CTA로 구분.",
+        "costAndTiming": "표시가=상품 기본가. 배송지별 추가비용 가능성과 상담에서 최종금액·희망일정 가능 여부를 안내하는 사업정보만 사용. 상담시간과 배송시간을 동일시하지 않음.",
+        "policyImageFacts": "8개 상품에 공통 연결된 공식 주문안내 이미지를 시각적으로 직접 열어 확인: 생화·조화 혼합 사용, 별도 화환수거 없음. 실제 납품품을 검사한 주장은 아님.",
+        "cancellationBoundary": "공식 교환/환불 이미지에는 제작완료상품 제한과 출고후 취소 안내가 함께 있어 적용관계 미확인. 임의로 제작전 전액환불/제작후 절대불가/출고후 무조건환불이라고 정리하지 말고 주문상태별 상담으로 안내. 불량·파손 등의 자체 판단도 약속하지 않음.",
+        "writing": "이 산출물은 질문·근거·정보구조 설계만 포함. 약2,500~3,000자 고유본문은 후속 초안 목표이며 숫자만으로 품질을 판정하지 않음. 제삼자 안내서/경고문 말투 대신 판매자 상담 범위로 친절하게 작성.",
+        "privacy": "고인·상주·신랑신부·회사 담당자 실제 개인 이름이나 후기·납품사진 속 정보를 증거 파일·본문에 복제하지 않음."
+      },
+      "competitorEvidenceIds": [
+        "competitor-wolf"
+      ],
+      "bodyLengthTarget": "고유 본문 약 2,500~3,000자 초안 기준. 공통 상품 카드, 메뉴, 푸터를 제외한다. 질문에 대한 충분한 답을 우선하며 불필요한 주소 반복, 감성 복제, 시설 상식으로 채우지 않는다.",
+      "finalBodyDuplicateReview": "후속 최종 원고 단계에서 형제 4글 및 해당 유사 내부 글과 전문 대조가 필요하다. 현재는 원고 미작성으로 정량 중복률이나 완결성 PASS가 없다."
+    },
+    {
+      "facilityKey": "seoul-startup-hub-mplus",
+      "slug": "magok-dong-mplus-office-congrats-wreath",
+      "url": "/regions/magok-dong-mplus-office-congrats-wreath/",
+      "frozenIntent": "opening-congrats-wreath",
+      "classification": "추정·판단",
+      "representativeQueries": [
+        "서울창업허브 M+ 개업 화환",
+        "\"서울창업허브\" \"화환\"",
+        "\"마곡\" \"개업화환\""
+      ],
+      "longTailQueries": [
+        "\"서울창업허브 M+\" \"개업\" \"화환\"",
+        "\"마곡\" \"사무실 이전\" \"화환\""
+      ],
+      "synonymsToConsolidate": [
+        "M+ 입주 축하화환",
+        "엠플러스 사무실 이전 화환",
+        "마곡 서울창업허브 개업 축하"
+      ],
+      "excludedIntents": [
+        "공공기관 허브 개관축하",
+        "입주기업 모집·정부지원 신청",
+        "허브 내 특정기업의 현재 입주를 검증 없이 기재",
+        "마곡 일반개업의 동의어로 새 URL 늘리기"
+      ],
+      "purchaseStage": "거래처·동료 기업의 새 공간 또는 사업 시작을 축하하는 상품과 수령일·명의를 정하는 단계",
+      "firstAnswerPlan": "M+ 입주기업에 전하는 개업·이전 축하 선물이라는 대상부터 설명. 기관 개관이나 모든 입주사의 배송가능 사례처럼 쓰지 않음.",
+      "questionAnswerEvidence": [
+        {
+          "question": "허브 개관을 축하하는 글인가, 입주기업에 보내는 선물인가?",
+          "answerScope": "공식기관은 여러기업의 성장·협업을 지원하는 공간. 수령인은 운영기관이 아닌 사용자가 축하하려는 해당회사라는 목적 분리.",
+          "evidence": "mplus-info, mplus-city-pdf",
+          "distinctInformation": "현재 입주기업명을 나열하거나 허브가 막 개관했다고 표현하지 않음",
+          "nextDecisionOrLink": "https://mplus.startup-plus.kr/info"
+        },
+        {
+          "question": "회사에서 정한 총예산으로 어떤 상품을 선택할 수 있는가?",
+          "answerScope": "축하4개 기본가와 실제사진. 사내 지출한도가 배송비 포함인지 구분해서 총액상담. 거래처중요도와 비싼등급을 결부하지 않음.",
+          "evidence": "catalog + business-truth",
+          "distinctInformation": "등급에 기업 관계의 우열을 붙이지 않는 실무 선택",
+          "nextDecisionOrLink": [
+            "https://fwith.co.kr/shop/item.php?it_id=C200",
+            "https://fwith.co.kr/shop/item.php?it_id=C203",
+            "https://fwith.co.kr/shop/item.php?it_id=C204",
+            "https://fwith.co.kr/shop/item.php?it_id=C205"
+          ]
+        },
+        {
+          "question": "개업·입주·이전 축하 문구는 어떻게 달리 쓰는가?",
+          "answerScope": "사업 시작에는 개업, 기존사업의 공간변경에는 이전, 새 입주를 축하할 때는 입주 목적을 맞춘 문구 제안. 법적 회사설립 사실은 추정하지 않음.",
+          "evidence": "editorial judgment + consultation scope",
+          "distinctInformation": "경쟁 마곡 식당/카페 위주 문구를 기업의 실제 사건에 맞춰 다르게 설계",
+          "nextDecisionOrLink": "#ribbon"
+        },
+        {
+          "question": "M+의 어느 회사에 언제 전달하는 주문인가?",
+          "answerScope": "공식 주소 마곡중앙8로14. 회사명·층/호실·담당자와 희망수령일을 한 번에 모음. 운영기관안내데스크의 대리수령을 약속하지 않음.",
+          "evidence": "mplus-info, mplus-city-pdf",
+          "distinctInformation": "마곡 상가 앞 설치라는 설명을 입주사 사무실에 이식하지 않음",
+          "nextDecisionOrLink": "#order"
+        },
+        {
+          "question": "행사 당일과 업무 시작 뒤 전달 중 무엇을 상담하는가?",
+          "answerScope": "개업식/이전행사가 있는지와 회사에서 받을 날짜를 듣는 목적별 상담. 일정에 맞는 배송가능 여부와 반입은 주문별 확인.",
+          "evidence": "buyer decision inference + unverified receiving conditions",
+          "distinctInformation": "공식 기관업무시간을 꽃배송 보장시간으로 쓰지 않음",
+          "nextDecisionOrLink": "tel:18440644"
+        },
+        {
+          "question": "통로나 로비에 둘 수 있고 행사 뒤 가져가 주는가?",
+          "answerScope": "화환반입/보관장소는 공개자료만으로 허용 확정 불가. 꽃이랑 별도수거없음은 확인됨. 해당기업의 수령·행사후 처리 조건으로 주문상담.",
+          "evidence": "official policy image + M+ facility unknowns",
+          "distinctInformation": "복도가 좁다/인도가 넓다 같은 지역 일반화를 만들지 않음",
+          "nextDecisionOrLink": "#order"
+        },
+        {
+          "question": "주문명의/문구/일정 변경과 결제증빙은 어떻게 되는가?",
+          "answerScope": "변경은 주문상태별 상담. 특정 세금계산서/법인카드/영수증전송 방식을 확인한 것은 아니므로 제공을 확약하지 않음.",
+          "evidence": "policy image + unverified payment/evidence methods",
+          "distinctInformation": "경쟁사의 경비처리 문구를 전용하지 않음",
+          "nextDecisionOrLink": "tel:18440644"
+        }
+      ],
+      "bodySequence": [
+        "받는기업과 축하목적",
+        "4개상품·회사총예산",
+        "개업/입주/이전의 문구차이",
+        "M+ 시설정보와 희망수령일",
+        "통합주문·수거·변경상담",
+        "자주남는 실무질문·공식출처"
+      ],
+      "faqUniqueQuestions": [
+        "기관 대표주소만으로 입주기업에 보낼 수 있는가?",
+        "회사 이전인데 축개업이라고 써야 하는가?",
+        "로비에서 맡아주거나 자동회수해 주는가?",
+        "총예산10만원이면 어떤 상품부터 비교하는가?"
+      ],
+      "nextDecisionLinks": [
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=C200",
+          "purpose": "기업축하상품 상세 비교"
+        },
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=C203",
+          "purpose": "기업축하상품 상세 비교"
+        },
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=C204",
+          "purpose": "기업축하상품 상세 비교"
+        },
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=C205",
+          "purpose": "기업축하상품 상세 비교"
+        },
+        {
+          "target": "https://mplus.startup-plus.kr/info",
+          "purpose": "시설명/소재지를 공식정보로 참고"
+        },
+        {
+          "target": "tel:18440644",
+          "purpose": "받는회사·희망일·총액상담"
+        }
+      ],
+      "distinctFromInternal": "노원 서울테크노파크 입주기업 이전과 의도 범주는 겹친다. 다른시설이므로 별도URL 가능하지만 단순 회사명/주소교체는 불합격. M+의 개업·입주·이전 의미 차이, 기관과수령기업 구분, 총액예산에 실제 설명을 추가.",
+      "commonFramework": {
+        "productFacts": "공식 8개 SKU HTML의 상품명·기본가를 직접 읽음. 가격만으로 꽃 수량·높이·폭·수명·품질 차이를 단정하지 않음.",
+        "productCta": "상품카드는 실제 해당 SKU URL로 연결. 일반몰 홈과 전화상담은 별도 목적의 CTA로 구분.",
+        "costAndTiming": "표시가=상품 기본가. 배송지별 추가비용 가능성과 상담에서 최종금액·희망일정 가능 여부를 안내하는 사업정보만 사용. 상담시간과 배송시간을 동일시하지 않음.",
+        "policyImageFacts": "8개 상품에 공통 연결된 공식 주문안내 이미지를 시각적으로 직접 열어 확인: 생화·조화 혼합 사용, 별도 화환수거 없음. 실제 납품품을 검사한 주장은 아님.",
+        "cancellationBoundary": "공식 교환/환불 이미지에는 제작완료상품 제한과 출고후 취소 안내가 함께 있어 적용관계 미확인. 임의로 제작전 전액환불/제작후 절대불가/출고후 무조건환불이라고 정리하지 말고 주문상태별 상담으로 안내. 불량·파손 등의 자체 판단도 약속하지 않음.",
+        "writing": "이 산출물은 질문·근거·정보구조 설계만 포함. 약2,500~3,000자 고유본문은 후속 초안 목표이며 숫자만으로 품질을 판정하지 않음. 제삼자 안내서/경고문 말투 대신 판매자 상담 범위로 친절하게 작성.",
+        "privacy": "고인·상주·신랑신부·회사 담당자 실제 개인 이름이나 후기·납품사진 속 정보를 증거 파일·본문에 복제하지 않음."
+      },
+      "competitorEvidenceIds": [
+        "competitor-yedo"
+      ],
+      "bodyLengthTarget": "고유 본문 약 2,500~3,000자 초안 기준. 공통 상품 카드, 메뉴, 푸터를 제외한다. 질문에 대한 충분한 답을 우선하며 불필요한 주소 반복, 감성 복제, 시설 상식으로 채우지 않는다.",
+      "finalBodyDuplicateReview": "후속 최종 원고 단계에서 형제 4글 및 해당 유사 내부 글과 전문 대조가 필요하다. 현재는 원고 미작성으로 정량 중복률이나 완결성 PASS가 없다."
+    },
+    {
+      "facilityKey": "gangseo-artrium-ari",
+      "slug": "hwagok-dong-gangseo-artrium-performance-wreath",
+      "url": "/regions/hwagok-dong-gangseo-artrium-performance-wreath/",
+      "frozenIntent": "event-congrats-wreath",
+      "classification": "추정·판단",
+      "representativeQueries": [
+        "강서아트리움 아리홀 공연 화환",
+        "\"강서구\" \"공연\" \"화환\"",
+        "\"공연 축하화환\" \"가격\" \"배송\""
+      ],
+      "longTailQueries": [
+        "\"강서아트리움\" \"화환\"",
+        "\"아리홀\" \"화환\" \"반입\"",
+        "\"강서아트리움\" \"아리홀\" \"화환\"",
+        "\"강서아트리움\" \"공연\" \"꽃배달\""
+      ],
+      "synonymsToConsolidate": [
+        "아리홀 공연 축하화환",
+        "강서아트리움 연주회 화환",
+        "화곡동 아리홀 공연 꽃배달"
+      ],
+      "excludedIntents": [
+        "갤러리서 전시화환 판매",
+        "아리홀 공연표/대관신청",
+        "강서아트리움 전체시설 무조건화환배송"
+      ],
+      "purchaseStage": "출연자·공연팀에게 축하를 보내려 하나 시설이 받을 수 있는 선물인지 먼저 결정해야 하는 조건부 단계",
+      "firstAnswerPlan": "공연 응원의 목적과 함께 아리홀 주문은 반입·수령 조건 확인이 필요하다는 핵심을 초반에 짧게 설명한다. 갤러리 서는 모든 화환 반입 불가이므로 갤러리 대상으로 구매를 권유하지 않는다.",
+      "questionAnswerEvidence": [
+        {
+          "question": "아리홀과 갤러리서 모두 화환을 받을 수 있는가?",
+          "answerScope": "두 시설을 구분한다. 갤러리 서는 공식적으로 모든 화환이 금지된다. 아리홀 본문과 관련 추출 문서에서 명시 허용을 확인하지 못했으므로 허용이라고 답하지 않는다.",
+          "evidence": "art-ari, art-gallery, ari-notice-2026",
+          "distinctInformation": "검색 결과 갤러리 페이지의 아리홀 메뉴를 보고 금지 범위를 공연장까지 확대하지 않는다.",
+          "nextDecisionOrLink": "https://culture.gangseo.seoul.kr/gsfc/main/contents.do?menuNo=800079"
+        },
+        {
+          "question": "공연 응원 선물을 어떻게 상담하기 시작하는가?",
+          "answerScope": "공연명, 날짜, 출연자 또는 공연팀, 주최측 수령 안내를 통합하여 상담한다. 받는 공연의 조건과 희망 일정이 맞는지 먼저 듣는 구조다.",
+          "evidence": "official venue + approved consultation scope",
+          "distinctInformation": "유명 출연자, 공연 일정, 배송 실적은 만들어 넣지 않는다.",
+          "nextDecisionOrLink": "tel:18440644"
+        },
+        {
+          "question": "반입 가능한 공연이면 어떤 가격의 상품을 비교하는가?",
+          "answerScope": "축하 4개 상품의 기본가와 실제 사진만 비교한다. 반입 규격을 모르는 상태에서 특특대가 공연장에 더 어울린다고 권하지 않는다.",
+          "evidence": "catalog HTML + Ari receiving unknowns",
+          "distinctInformation": "반입 조건을 알기 전에는 무조건 상품 구매 CTA보다 상담을 우선한다.",
+          "nextDecisionOrLink": [
+            "https://fwith.co.kr/shop/item.php?it_id=C200",
+            "https://fwith.co.kr/shop/item.php?it_id=C203",
+            "https://fwith.co.kr/shop/item.php?it_id=C204",
+            "https://fwith.co.kr/shop/item.php?it_id=C205"
+          ]
+        },
+        {
+          "question": "공연이 끝나면 화환은 누가 처리하는가?",
+          "answerScope": "꽃이랑은 별도 수거가 없다. 공식 대관 문서는 사용자에게 공연 후 시설 원상복구와 쓰레기 회수를 요구하므로 주최측과 정한 종료 후 처리 조건에 맞춘다.",
+          "evidence": "order-top2.jpg; ari-notice 03/04 extracted text",
+          "distinctInformation": "배송과 철거가 묶인 서비스가 아님을 실제 상품 정책과 공연장 조건을 이어 설명한다.",
+          "nextDecisionOrLink": "#after-performance"
+        },
+        {
+          "question": "공연장 위치와 반입시간은 어떻게 구분하는가?",
+          "answerScope": "가로공원로 195, 화곡동 379-68에 있다. 아리홀 객석은 2·3층이며 이것이 하역 장소나 선물 수령층을 뜻하지 않는다. 대관 시간에 준비·철수·청소를 포함하는 것은 시설 사용자 규칙이며 실제 배송 시간은 별도 상담 대상이다.",
+          "evidence": "art-ari; ari-notice-2026",
+          "distinctInformation": "주차, 입구 동선, 전용 기사에 관한 지식을 발명하지 않는다.",
+          "nextDecisionOrLink": "#order"
+        },
+        {
+          "question": "한 출연자와 공연팀 전체에 보내는 문구는 어떻게 다른가?",
+          "answerScope": "개인 출연 축하와 팀 전체 응원에 맞춘 짧은 예시를 각각 제안한다. 실제 프로그램을 읽지 않은 상태에서 첫 공연이나 졸업 공연이라고 단정하지 않는다.",
+          "evidence": "editorial judgment",
+          "distinctInformation": "노원·양천의 첫 무대 감성 문단을 복제하지 않는다.",
+          "nextDecisionOrLink": "#ribbon"
+        },
+        {
+          "question": "공연 취소나 일정변경이 생기면 환불이 되는가?",
+          "answerScope": "공연 취소와 꽃 주문 취소는 자동으로 같아지지 않는다. 실제 주문 상태를 기준으로 꽃이랑에 상담하며, 공식 규정의 충돌은 임의 해석하지 않는다.",
+          "evidence": "exchange-policy.jpg + limits",
+          "distinctInformation": "대관료 취소 반환서의 조건을 화환 환불로 가져오지 않는다.",
+          "nextDecisionOrLink": "tel:18440644"
+        }
+      ],
+      "bodySequence": [
+        "조건부 공연 응원의 첫 답변과 상담",
+        "아리홀과 갤러리 서의 명확한 구분",
+        "반입 가능한 행사에서 비교할 4개 상품",
+        "개인·팀 리본과 통합 주문",
+        "공연 후 처리, 수거 없음, 변경 상담",
+        "남는 구매 질문과 공식 출처"
+      ],
+      "faqUniqueQuestions": [
+        "갤러리 서 전시에도 보낼 수 있는가?",
+        "공연 티켓의 시작 시각만 알면 주문을 확정할 수 있는가?",
+        "공연 후 화환을 수거하는가?",
+        "꽃가루 사전 협의 규칙이 화환 허용을 뜻하는가?"
+      ],
+      "nextDecisionLinks": [
+        {
+          "target": "tel:18440644",
+          "purpose": "반입·주최측 수령 정보가 있는 공연의 조건부 상담"
+        },
+        {
+          "target": "https://culture.gangseo.seoul.kr/gsfc/main/contents.do?menuNo=800079",
+          "purpose": "아리홀 시설 안내"
+        },
+        {
+          "target": "https://culture.gangseo.seoul.kr/gsfc/main/contents.do?menuNo=800080",
+          "purpose": "갤러리 서 대상인 경우 명시 금지 확인"
+        },
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=C200",
+          "purpose": "반입 가능 조건을 충족할 때 실제 축하 상품 비교"
+        },
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=C203",
+          "purpose": "반입 가능 조건을 충족할 때 실제 축하 상품 비교"
+        },
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=C204",
+          "purpose": "반입 가능 조건을 충족할 때 실제 축하 상품 비교"
+        },
+        {
+          "target": "https://fwith.co.kr/shop/item.php?it_id=C205",
+          "purpose": "반입 가능 조건을 충족할 때 실제 축하 상품 비교"
+        }
+      ],
+      "distinctFromInternal": "노원문화예술회관도 조건부 공연이지만 그곳의 쓰레기 규정은 아리홀 규정의 대체 근거가 아니다. 강서는 같은 건물의 갤러리 서 명시 금지와 아리홀 허용 미확인이라는 구별, 꽃이랑 수거 없음과 공연장 원상복구를 연결해 설명한다.",
+      "commonFramework": {
+        "productFacts": "공식 8개 SKU HTML의 상품명·기본가를 직접 읽음. 가격만으로 꽃 수량·높이·폭·수명·품질 차이를 단정하지 않음.",
+        "productCta": "상품카드는 실제 해당 SKU URL로 연결. 일반몰 홈과 전화상담은 별도 목적의 CTA로 구분.",
+        "costAndTiming": "표시가=상품 기본가. 배송지별 추가비용 가능성과 상담에서 최종금액·희망일정 가능 여부를 안내하는 사업정보만 사용. 상담시간과 배송시간을 동일시하지 않음.",
+        "policyImageFacts": "8개 상품에 공통 연결된 공식 주문안내 이미지를 시각적으로 직접 열어 확인: 생화·조화 혼합 사용, 별도 화환수거 없음. 실제 납품품을 검사한 주장은 아님.",
+        "cancellationBoundary": "공식 교환/환불 이미지에는 제작완료상품 제한과 출고후 취소 안내가 함께 있어 적용관계 미확인. 임의로 제작전 전액환불/제작후 절대불가/출고후 무조건환불이라고 정리하지 말고 주문상태별 상담으로 안내. 불량·파손 등의 자체 판단도 약속하지 않음.",
+        "writing": "이 산출물은 질문·근거·정보구조 설계만 포함. 약2,500~3,000자 고유본문은 후속 초안 목표이며 숫자만으로 품질을 판정하지 않음. 제삼자 안내서/경고문 말투 대신 판매자 상담 범위로 친절하게 작성.",
+        "privacy": "고인·상주·신랑신부·회사 담당자 실제 개인 이름이나 후기·납품사진 속 정보를 증거 파일·본문에 복제하지 않음."
+      },
+      "competitorEvidenceIds": [
+        "competitor-kkotkkoma"
+      ],
+      "bodyLengthTarget": "고유 본문 약 2,500~3,000자 초안 기준. 공통 상품 카드, 메뉴, 푸터를 제외한다. 질문에 대한 충분한 답을 우선하며 불필요한 주소 반복, 감성 복제, 시설 상식으로 채우지 않는다.",
+      "finalBodyDuplicateReview": "후속 최종 원고 단계에서 형제 4글 및 해당 유사 내부 글과 전문 대조가 필요하다. 현재는 원고 미작성으로 정량 중복률이나 완결성 PASS가 없다."
+    }
+  ],
+  "linkDesign": {
+    "rule": "동일 지역이라는 이유만으로 형제 시설 4개를 본문에 전부 추천하지 않는다. 다음 결정이 같은 상품 상세, 해당 공식 시설, 전화 상담을 우선한다. 새 동의어 문서와 새 허브는 추가하지 않는다.",
+    "anchors": "#order, #ribbon, #after-performance은 설계상 제안이다. 후속 실제 HTML에 id가 있어야 링크로 사용하며 존재하지 않는 anchor를 출고하지 않는다.",
+    "productUrlsVerified": "8개 원본 상품 HTML 확인. 실제 클릭 도착과 CTA 렌더 검증은 구현 이후 필수다.",
+    "sameFacilitySynonyms": "병원·화환·꽃배달, 호텔 볼룸·웨딩, M+·엠플러스, 아리홀·공연의 동의어는 해당 고정 문서 안에서 답한다."
+  },
+  "authoringAndReviewRequirements": [
+    "고유 본문의 충분함은 질문→답변→근거→다음 행동으로 확인한다. 문체 PASS와 검색·정보 완결성 PASS를 분리한다.",
+    "수거 없음과 생화·조화 혼합은 구매에 중요한 확인 사실이다. 4개 글에 자연스럽게 포함하되 같은 경고를 여러 모듈에 반복하지 않는다.",
+    "상담과 상품 선택 도움은 확인 범위에서 판매자가 주도한다. 고객에게 확인 숙제를 계속 넘기지 않는다.",
+    "갤러리 서 금지를 초반의 범위 구분에 명확히 반영하고 아리홀 허용을 단정하지 않는다.",
+    "FAQ는 본문과 같은 답을 개수만 늘려 복제하지 말고 남는 실제 질문으로 작성한다. 실제 HTML과 화면 노출을 후속 확인한다.",
+    "상품 CTA는 8개 검증 상세 주소로 연결하고 전화 CTA와 몰 홈 CTA의 역할을 구분한다.",
+    "본문 변경 후 최종 digest와 원격 source SHA를 결속하고 새로 검수한다. 현재 연구 산출물은 고객 본문 품질 PASS가 아니다."
+  ],
+  "limitationsAndFailures": [
+    {
+      "classification": "미확인",
+      "item": "Competitor business service promises",
+      "reason": "Pages prove only that competitor makes claims; no order, delivery, refund or quality operation tested."
+    },
+    {
+      "classification": "미확인",
+      "item": "Facility acceptance and actual schedules",
+      "reason": "No facility contact, order, performance schedule or live funeral-room information tested."
+    },
+    {
+      "classification": "미확인",
+      "item": "Public deployment/SEO outcome",
+      "reason": "Research-only task. No deployed Gangseo artifact, screen test, indexing, clicks or rank observed."
+    },
+    {
+      "classification": "직접 확인",
+      "item": "web.open failures on own live samples",
+      "reason": "web tool reported not accessible; allowed normal direct HTTP later returned200 and bodies were read. No access-denial bypass or auth change."
+    },
+    {
+      "classification": "미확인",
+      "item": "JS-flower comparator",
+      "reason": "web.open Cache miss; omitted from minimum-three original-body comparison. Search snippets were not counted as body reading."
+    },
+    {
+      "classification": "직접 확인",
+      "item": "Local audit JSON serialization first attempt",
+      "reason": "Python set not JSON serializable; safely converted sets to lists, reran and verified final JSON. No external state changed."
+    },
+    {
+      "classification": "직접 확인",
+      "item": "Readability update first attempt",
+      "reason": "Local Python variable shadowing prevented the write; corrected the local script and independently reopened final JSON. No external state changed."
+    }
+  ],
+  "verificationEvidence": {
+    "httpEvidencePath": "/workspace/shared/gangseo-evidence/search-http-evidence.json",
+    "httpEvidenceSha256": "476943e75266c6096ae865eb28bac2b76245e3064e65ea3126fa187108f1ae85",
+    "internalAuditSha256": "8bf33313829d302289a406509e7ce988812457cf683863846120266f2fbe1c2b",
+    "competitorOriginalPagesOpened": 4,
+    "competitorHttp200": 4,
+    "internalLiveHtml200AndRead": 3,
+    "frozenPlanUrlsMatch": true,
+    "customerCopyWritten": false,
+    "externalChanges": false
+  }
+}
