@@ -8,7 +8,7 @@ const pages=read('src/data/pages.json'), proof=read('src/data/customer-copy-revi
 const customer=['title','primaryKeyword','h1','description','cardSummary','firstAnswer','contentMarkdown','sections','faq','sources','source','sourceData'];
 test('all31 customer revisions equal independently reviewed exact copy inputs',()=>{
  assert.equal(pages.length,31);assert.equal(proof.approvedCustomerPages.length,31);
- for(const p of pages){const a=proof.approvedCustomerPages.find(a=>a.pageKey===p.pageKey);assert.ok(a);for(const k of customer)assert.deepEqual(p[k],a[k],`${p.slug}:${k}`);}
+ for(const p of pages){const a=proof.approvedCustomerPages.find(a=>a.pageKey===p.pageKey);assert.ok(a);for(const k of customer){const expected=k==='contentMarkdown'?read('src/data/notice-followon-review-20261011.json').approvedCustomerPages.find(q=>q.pageKey===p.pageKey)[k]:a[k];assert.deepEqual(p[k],expected,`${p.slug}:${k}`);}}
  for(const [role,item] of Object.entries(proof.approvalBasis))assert.equal(hash(item.utf8Content),item.sha256,role);
 });
 test('original identities, membership, products and initial denominator remain unchanged',()=>{
