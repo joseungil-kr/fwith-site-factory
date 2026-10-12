@@ -23,6 +23,13 @@ jobs:
       SITE_URL: https://seongnam-flower-guide-qa.joseungil.workers.dev
       SITE_ORIGIN: https://seongnam-flower-guide-qa.joseungil.workers.dev
       SITE_INDEXABLE: 'false'
+      PYTHONDONTWRITEBYTECODE: '1'
+      SHARED_BANNER_REFERENCE_DIST: ${{ github.workspace }}/shared-banner-production-reference/site-factory/seongnam-flower/dist
+      SHARED_BANNER_REFERENCE_MANIFEST: ${{ github.workspace }}/.github/shared-banner-reference/seongnam-production.json
+      SHARED_BANNER_REFERENCE_MANIFEST_SHA256: 'ef0b0b1a85ccd49583dbc6b8ce8be643f6548c8a541070a04cadce5a86e6b531'
+      SHARED_BANNER_REFERENCE_ARTIFACT_SHA256: '2ab9f60cb9aa7d067f286e7febb96de085488d9ff72ecd097a99436e67c45a08'
+      SHARED_BANNER_REFERENCE_REVISION: '9cf55b95126eaf4f4a603e8fefe184f19872c1f2'
+      SHARED_BANNER_REFERENCE_ORIGIN: 'https://seongnam.fwith.kr'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,6 +38,50 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Check out immutable previously reviewed production source
+        uses: actions/checkout@v4
+        with:
+          ref: 9cf55b95126eaf4f4a603e8fefe184f19872c1f2
+          path: shared-banner-production-reference
+          persist-credentials: false
+      - name: Rebuild and authenticate the production route and indexability reference
+        working-directory: shared-banner-production-reference/site-factory/seongnam-flower
+        env:
+          SITE_FACTORY_REVISION: '9cf55b95126eaf4f4a603e8fefe184f19872c1f2'
+          SITE_URL: 'https://seongnam.fwith.kr'
+          SITE_ORIGIN: 'https://seongnam.fwith.kr'
+          SITE_INDEXABLE: 'true'
+          MANUAL_QA_PHASE: production
+          MANUAL_PREVIEW: 'false'
+          MANUAL_LOCAL_PREVIEW: 'false'
+          PYTHONDONTWRITEBYTECODE: '1'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = '9cf55b95126eaf4f4a603e8fefe184f19872c1f2'
+          npm ci --ignore-scripts --no-audit --no-fund
+          mkdir -p ../evidence
+          npm run build
+          python3 - <<'PYREFERENCE'
+          import os,pathlib,json,hashlib
+          def digest(b):return hashlib.sha256(b).hexdigest()
+          def compact(x):return json.dumps(x,sort_keys=True,separators=(',',':')).encode()
+          raw=pathlib.Path(os.environ['SHARED_BANNER_REFERENCE_MANIFEST']).read_bytes()
+          assert digest(raw)==os.environ['SHARED_BANNER_REFERENCE_MANIFEST_SHA256'],'Reference metadata changed'
+          ref=json.loads(raw)
+          assert ref['baselineRevision']==os.environ['SHARED_BANNER_REFERENCE_REVISION']
+          assert ref['productionOrigin']==os.environ['SHARED_BANNER_REFERENCE_ORIGIN']
+          root=pathlib.Path('dist');assert root.is_dir() and not root.is_symlink()
+          files={}
+          for f in sorted(root.rglob('*')):
+              assert not f.is_symlink(),'Artifact symlink forbidden'
+              if f.is_dir():continue
+              assert f.is_file(),'Nonregular artifact'
+              files[f.relative_to(root).as_posix()]=digest(f.read_bytes())
+          assert files==ref['files'],'Rebuilt original artifact differs from reviewed full manifest'
+          assert digest(compact(files))==ref['artifactManifestSha256']==os.environ['SHARED_BANNER_REFERENCE_ARTIFACT_SHA256']
+          print('Previously reviewed production reference rebuilt and exact full artifact verified:',len(files))
+          PYREFERENCE
       - name: Assert exact content and reviewed native boundary
         shell: bash
         run: |
@@ -42,7 +93,7 @@ jobs:
           test "$SITE_URL" = 'https://seongnam-flower-guide-qa.joseungil.workers.dev'
           git merge-base --is-ancestor 06f4049c2c8e818ef7474e628031c5f901b4ecab HEAD
           mkdir -p "seongnam-$MANUAL_QA_PHASE-evidence/logs"
-          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/seongnam-flower/src/data/manual-pages.json")).digest("hex");if(h!=="84de46e70ebd88c8058b57bb54ede0748385025052326e235e2a00bb543a81de")throw Error("Unexpected content digest");const p=JSON.parse(fs.readFileSync("site-factory/seongnam-flower/src/data/manual-provenance.json"));if(p.scopeDigest!=="7f882e379dfeaaa59dbc1d463cfc26b5b56a5c85c306827ac6f29a068516663f"||p.independentReview.status!=="pending")throw Error("Unexpected candidate review state");'
+          node -e 'const fs=require("fs"),crypto=require("crypto");const h=crypto.createHash("sha256").update(fs.readFileSync("site-factory/seongnam-flower/src/data/manual-pages.json")).digest("hex");if(h!=="84de46e70ebd88c8058b57bb54ede0748385025052326e235e2a00bb543a81de")throw Error("Unexpected content digest");const p=JSON.parse(fs.readFileSync("site-factory/seongnam-flower/src/data/manual-provenance.json"));if(p.scopeDigest!=="1435731607b742df2af6b1d8d3126c784f269edce7a49120fd6196608094f647"||p.independentReview.status!=="pending")throw Error("Unexpected candidate review state");'
           node -e 'const fs=require("fs");fs.writeFileSync("seongnam-"+process.env.MANUAL_QA_PHASE+"-evidence/logs/revision.json",JSON.stringify({commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,runAttempt:process.env.GITHUB_RUN_ATTEMPT,phase:process.env.MANUAL_QA_PHASE,siteUrl:process.env.SITE_URL,siteIndexable:process.env.SITE_INDEXABLE},null,2));'
       - name: Install exact native dependency lock
         working-directory: site-factory/seongnam-flower
@@ -57,9 +108,12 @@ jobs:
             node --test scripts/*.test.mjs tests/*.test.mjs 2>&1 | tee "$evidence/logs/native-tests-$attempt.log"
             python3 -m unittest discover -s tests -p '*_test.py' 2>&1 | tee "$evidence/logs/python-tests-$attempt.log"
             npm run build 2>&1 | tee "$evidence/logs/native-build-$attempt.log"
+            test -f shared-banner-qa.json
+            mv shared-banner-qa.json "$evidence/logs/shared-banner-qa-$attempt.json"
+            python3 -B scripts/test_shared_banners.py 2>&1 | tee "$evidence/logs/shared-banner-tests-$attempt.log"
             python3 scripts/qa_static.py 2>&1 | tee "$evidence/logs/static-$attempt.log"
             node scripts/qa_graph.mjs 2>&1 | tee "$evidence/logs/graph-$attempt.log"
-            python3 -c 'import hashlib,json,pathlib,sys; d=pathlib.Path("dist"); m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob("*")) if f.is_file()}; assert len(m)==64,len(m);pathlib.Path(sys.argv[1]).write_text(json.dumps(m,sort_keys=True,separators=(",",":")))' "$evidence/logs/$attempt.manifest.json"
+            python3 -c 'import hashlib,json,pathlib,sys; d=pathlib.Path("dist"); m={str(f.relative_to(d)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(d.rglob("*")) if f.is_file()}; assert len(m)==67,len(m);pathlib.Path(sys.argv[1]).write_text(json.dumps(m,sort_keys=True,separators=(",",":")))' "$evidence/logs/$attempt.manifest.json"
           done
           cmp "$evidence/logs/first.manifest.json" "$evidence/logs/second.manifest.json"
           cp -a dist "$evidence/dist"

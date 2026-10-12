@@ -13,7 +13,7 @@ const require=createRequire(path.join(process.env.PLAYWRIGHT_INSTALL_ROOT,'packa
 const read=n=>JSON.parse(fs.readFileSync(path.join(site,'src/data/'+n+'.json'),'utf8'));
 const frozen=read('pages'),manual=read('manual-pages'),products=read('products'),provenance=read('manual-provenance');
 const {selectProducts,productFamilies}=await import(new URL('../../site-factory/seongnam-flower/src/lib/catalog.mjs',import.meta.url));
-assert.equal(frozen.length,22);assert.equal(manual.length,8);assert.equal(provenance.independentReview.status,'pending');assert.equal(provenance.manualPagesSha256,'84de46e70ebd88c8058b57bb54ede0748385025052326e235e2a00bb543a81de');assert.equal(provenance.scopeDigest,'7f882e379dfeaaa59dbc1d463cfc26b5b56a5c85c306827ac6f29a068516663f');const pages=[...frozen,...manual];
+assert.equal(frozen.length,22);assert.equal(manual.length,8);assert.equal(provenance.independentReview.status,'pending');assert.equal(provenance.manualPagesSha256,'84de46e70ebd88c8058b57bb54ede0748385025052326e235e2a00bb543a81de');assert.equal(provenance.scopeDigest,'1435731607b742df2af6b1d8d3126c784f269edce7a49120fd6196608094f647');const pages=[...frozen,...manual];
 const categories=[...new Set(pages.map(p=>p.category))];const targets=[{id:'home',url:'/'},...categories.map(c=>({id:c+'-hub',url:`/${c}/`})),...pages.map(p=>({id:p.pageKey,url:p.url,page:p}))];assert.equal(targets.length,35);
 const network=[],consoleMessages=[],pageErrors=[],results=[];fs.mkdirSync(path.join(output,'metadata'),{recursive:true});
 const mimes={'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript','.json':'application/json','.svg':'image/svg+xml','.jpg':'image/jpeg','.png':'image/png','.webp':'image/webp','.txt':'text/plain','.xml':'application/xml'};

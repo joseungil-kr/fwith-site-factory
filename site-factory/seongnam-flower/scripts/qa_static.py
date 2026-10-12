@@ -31,7 +31,7 @@ class Document(HTMLParser):
             self.active_source={'type':a.get('data-source-type'),'name':[],'links':[],'dates':[],'date_text':[],'text':[]}
             self.source_cards.append(self.active_source);self.source_depth=len(self.sections)
         if self.active_source is not None:
-            if tag=='h2':self.source_field='name'
+            if tag in ['h2','h3']:self.source_field='name'
             if tag=='time':self.source_field='date_text';self.active_source['dates'].append(a.get('datetime'))
             if tag=='a':self.active_source['links'].append(a)
         if tag=='aside' and 'journey-link' in a.get('class','').split():self.journey_aside+=1
@@ -60,7 +60,7 @@ class Document(HTMLParser):
         if tag=='title':self.in_title=False
         if tag=='p' and self.capture_answer:self.capture_answer=False;self.answer_done=True
         if tag in ['script','style']:self.ignored=max(0,self.ignored-1)
-        if tag in ['h2','time']:self.source_field=None
+        if tag in ['h2','h3','time']:self.source_field=None
         if tag=='section' and self.sections:
             if self.active_source is not None and len(self.sections)==self.source_depth:self.active_source=None
             self.sections.pop()

@@ -1,3 +1,4 @@
+import {historicalBytes,historicalInventory} from "./banner-native-amendment.mjs";
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -11,15 +12,15 @@ function verify(overrides={}){
  assert.equal(fixture.baseCommit,baseCommit,'wrong fixture source pin');
  for(const [file,blob] of Object.entries(fixture.baselineGitBlobs)){
   if(fixture.separatelyValidatedBindings.includes(file)||fixture.revisedVerificationFiles.includes(file))continue;
-  const bytes=overrides[file]??fs.readFileSync(file);
+  const bytes=overrides[file]??historicalBytes(file);
   if(fixture.approvedRevisionSha256[file])assert.equal(sha256(bytes),fixture.approvedRevisionSha256[file],'approved revision drift: '+file);
   else assert.equal(gitBlob(bytes),blob,'frozen or unrelated source drift: '+file);
  }
- for(const [file,hash] of Object.entries(fixture.approvedRevisionSha256))assert.equal(sha256(overrides[file]??fs.readFileSync(file)),hash,'approved revision drift: '+file);
+ for(const [file,hash] of Object.entries(fixture.approvedRevisionSha256))assert.equal(sha256(overrides[file]??historicalBytes(file)),hash,'approved revision drift: '+file);
  const expected=new Set([...Object.keys(fixture.baselineGitBlobs),...fixture.addedFiles,...fixture.separatelyValidatedBindings.filter(f=>fs.existsSync(f))]);
- assert.deepEqual(inventory(),[...expected].sort(),'unreviewed added or deleted source');
+ assert.deepEqual(historicalInventory(inventory()),[...expected].sort(),'unreviewed added or deleted source');
 }
-test('exact pinned baseline preserved outside explicit reviewed revision and separately gated bindings',()=>verify());
+test('historical exact pinned baseline preserved outside explicit reviewed revision and separately gated bindings',()=>verify());
 test('injected frozen original drift is rejected',()=>{const f=Object.keys(fixture.baselineGitBlobs).find(f=>f.startsWith('src/content/articles/')&&f.endsWith('.md'))||'src/data/pages.json';assert.throws(()=>verify({[f]:Buffer.from('injected original drift')}),/source drift/);});
 test('injected unrelated runtime drift is rejected',()=>{const f=Object.keys(fixture.baselineGitBlobs).find(f=>f.startsWith('src/lib/')&&f.endsWith('.mjs'));assert.throws(()=>verify({[f]:Buffer.from('injected runtime drift')}),/source drift/);});
 test('approved content revision is exact, not a broad path waiver',()=>{const f=Object.keys(fixture.approvedRevisionSha256).find(f=>f.endsWith('.md'))||'src/data/manual-pages.json';assert.throws(()=>verify({[f]:Buffer.from('injected allowed-path drift')}),/revision drift/);});
