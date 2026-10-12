@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-12T20:53:00Z",
+  "updatedAt": "2026-10-12T21:19:00Z",
   "classification": "directly inspected artifacts and public observations; pending implementation/review described separately",
   "publishedBannerSites": 31,
   "publishedEligiblePages": 459,
@@ -7,7 +7,7 @@
   "indexNowReceivedSites": 24,
   "indexNowPendingSites": 7,
   "direct7Status": "source/control/remote readback independently reviewed; deployment issue approval pending",
-  "legacy8Status": "No legacy banner production or hosted-preview release. Four existing credential-free source-preview runs completed; actual image capture defects in Suwon/Seongnam were not treated as visual success. Seongnam capture-only canary subsequently passed. Native reviewer identity reassignment remains unapproved for all8; dependent releases are held.",
+  "legacy8Status": "No legacy banner production or hosted-preview release. Six credential-free pending source-preview candidates have actual CI artifact/pixel review within their captured scopes. Suwon/Seongnam capture-only successors fixed the earlier blank-image captures. Native/outer reviewer reassignment remains unapproved; dependent source/QA/release steps are held.",
   "pendingSecurityChange": {
     "sites": [
       "ansan",
@@ -26,7 +26,7 @@
   },
   "remainingChecks": [
     "Formal native reviewer assignment and genuine exact-source independent evidence are required before dependent source/build/release paths.",
-    "Suwon capture-only successor and Ansan/Yongin pending-preview candidates still require remote exact-source artifacts and real pixel verification.",
+    "Fresh native assignment and exact-source approval are still pending. The six permitted pending-preview candidates have completed current CI and captured-pixel review; this does not replace production-origin artifacts or hosted/public verification.",
     "Bucheon/Namyangju QA is held because it relies on approved native metadata; no fallback to bypass that requirement.",
     "Production exact-C artifact authority, provider before/after, existing hosted-preview evidence where required, actual public responses and IndexNow receipts remain.",
     "Ansan/Yongin Cloudflare environment scoping is a separate still-pending security approval.",
@@ -34,7 +34,7 @@
   ],
   "providerRun": 38300995491,
   "providerSourceRevision": "8d1b5adfa3f1defb6e2f392a59f248ae2b49389e",
-  "previousStatusCommit": "e7b40dfdbcb440102b447688b836152692154fb9",
+  "previousStatusCommit": "56c4c27ae9fa98b28cd0a03fcadf128c2384bd13",
   "qaRuns": [
     {
       "region": "suwon",
@@ -80,6 +80,36 @@
       "headSha": "8c62636a4339c0f1a37f697236e2711d9d7fc796",
       "attempt": 1,
       "scope": "capture-only canary; not deployment"
+    },
+    {
+      "runId": 38307700236,
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "7da50ec9ffbad8c83916fdeffaaaf2cfa5f55756",
+      "attempt": 1,
+      "path": ".github/workflows/suwon-manual-preview-qa.yml",
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38307700236",
+      "headBranch": "manual-suwon-three-facility-preview-20261007"
+    },
+    {
+      "runId": 38307715381,
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "620f0d918fd342a58925efd7e64e9e9fa73bae9c",
+      "attempt": 1,
+      "path": ".github/workflows/ansan-manual-preview-qa.yml",
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38307715381",
+      "headBranch": "manual-ansan-regional-qa-20261007"
+    },
+    {
+      "runId": 38307726217,
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "48ef9812014b19c917f772946bf5b7476b2a9f1f",
+      "attempt": 1,
+      "path": ".github/workflows/yongin-manual-preview-qa.yml",
+      "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38307726217",
+      "headBranch": "manual-yongin-five-qa-20261007"
     }
   ],
   "currentVisualEvidence": [
@@ -109,6 +139,15 @@
       "sourceRevision": "8c62636a4339c0f1a37f697236e2711d9d7fc796",
       "runId": 38306135447,
       "scope": "Actual loopback CI artifact images only; native/hosted/production approval pending"
+    },
+    {
+      "region": "suwon",
+      "reportPath": "docs/shared-banner-release/legacy-suwon-source-preview-visual-20261012.json",
+      "reportSha256": "fd7165e3bb055fa74726744be4ab54e7a5c02fce5ec24f6fbd2e86023a15454d",
+      "visualQa": "PASS",
+      "sourceRevision": "7da50ec9ffbad8c83916fdeffaaaf2cfa5f55756",
+      "runId": 38307700236,
+      "scope": "Actual loopback CI images110 at1440/390; native/hosted/production approval pending"
     }
   ],
   "captureDiagnostic": {
@@ -122,7 +161,14 @@
     "canaryFixedAll9PriorBlankPositions": true,
     "canaryActualDistFiles": 67,
     "artifactDifferenceFromPriorRun": "only exact source revision in36HTML; all remaining file bytes unchanged",
-    "propagation": "Suwon/Ansan/Yongin capture-only local successors undergoing independent review; Bucheon/Namyangju successor preparation held from QA push pending formal reviewer assignment"
+    "propagation": "Suwon/Ansan/Yongin existing QA runs completed and exact CI artifact/captured pixels independently reviewed. Bucheon/Namyangju capture successors remain local with QA push held pending formal reviewer assignment.",
+    "suwonCanary": {
+      "runId": 38307700236,
+      "sourceRevision": "7da50ec9ffbad8c83916fdeffaaaf2cfa5f55756",
+      "fixedAll35PriorBlankPositions": true,
+      "actualDistFiles": 79,
+      "artifactDifferenceFromPriorRun": "only exact source revision in56HTML; all remaining file bytes unchanged"
+    }
   },
   "nativeReviewerAssignment": {
     "status": "held-pending-formal-current-reviewer-assignment",
@@ -151,6 +197,45 @@
     "restriction": "Do not relabel a historical reviewer identity as the current reviewer. Current independent findings are retained separately. Current candidate contracts remain unchanged until explicit assignment authorization.",
     "bucheonNamyangjuLocalAmendments": "Not remotely committed or pushed; prior local role-compatible approval proposals are not authorized for execution.",
     "historicalRoleNotes": "Original Bucheon/Namyangju evidence mentions assigned guard roles with actualVerifier, but does not itself authorize assigning the current verifier.",
-    "proposal": "A separate versioned assignment/contract proposal is being prepared locally; not an issued approval."
+    "proposal": "Native8 contract/provenance reassignment draft passed independent local review; additional six M2 policies also require current author/reviewer reassignment. Both remain local/unapplied and require explicit owner confirmation.",
+    "nativeProposalPacketSha256": "f0b7ea908228dee5e1d86b40499d16b2a7d6cfc5ef9055e4150b04a2301c5521",
+    "nativeProposalIndependentReviewSha256": "7118b404582ecd5fe6c9a1b32fabf93f3b48c6701e72924776890f1aae214d1e",
+    "outerPolicyAssignmentStatus": "six exact two-identity-field policy diffs prepared locally; independent review pending; no security gate/assignment or approval has been applied"
+  },
+  "supplementalCurrentPreviewEvidence": {
+    "reportPath": "docs/shared-banner-release/legacy-ansan-yongin-source-preview-review-20261012.json",
+    "reportSha256": "7b9c720c9dca76662a86f6ad396505427a6854d3da9e0552399b5ce25f99cfa8",
+    "ansan": {
+      "sourceRevision": "620f0d918fd342a58925efd7e64e9e9fa73bae9c",
+      "runId": 38307715381,
+      "customerHtmlAutomaticallyChecked": 47,
+      "htmlIncluding404": 48,
+      "capturedRoutes": 28,
+      "capturedJpg": 56,
+      "wholeRemoteDistRetained": false,
+      "capturedRemoteHtmlRetained": false
+    },
+    "yongin": {
+      "sourceRevision": "48ef9812014b19c917f772946bf5b7476b2a9f1f",
+      "runId": 38307726217,
+      "customerHtmlAutomaticallyChecked": 47,
+      "htmlIncluding404": 48,
+      "capturedRoutes": 21,
+      "capturedJpg": 42,
+      "wholeRemoteDistRetained": false,
+      "capturedRemoteHtmlFiles": 42
+    },
+    "scope": "Only actual captured route/viewport images. Native and production approval not issued. Existing fixed-mobile-CTA occlusion noted separately; original component/CSS unchanged."
+  },
+  "currentPixelScope": {
+    "latestSixSourcePreviewJpgs": 554,
+    "latestFourFullCaptureJpgs": 456,
+    "ansanYonginCapturedSubsetJpgs": 98,
+    "desktopWidth": 1440,
+    "mobileWidth": 390,
+    "unverifiedWidth375": true,
+    "loopbackOnly": true,
+    "actualHostedOrProductionBannerRelease": false,
+    "priorFailedCapturesPreserved": true
   }
 }
