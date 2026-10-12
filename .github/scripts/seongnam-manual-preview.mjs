@@ -1,4 +1,16 @@
 import fs from 'node:fs';import path from 'node:path';import http from 'node:http';import assert from 'node:assert/strict';import crypto from 'node:crypto';import {createRequire} from 'node:module';
+async function settleImages(page){
+ await page.evaluate(()=>document.fonts.ready);
+ for(const img of await page.locator('img').all())await img.scrollIntoViewIfNeeded();
+ await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));
+ await page.evaluate(async()=>{
+  await Promise.all([...document.images].map(i=>i.decode()));
+  // The site's smooth-scroll CSS must not leave a sticky header mid-capture.
+  window.scrollTo({top:0,left:0,behavior:'instant'});
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+ });
+ await page.waitForFunction(()=>window.scrollX===0&&window.scrollY===0);
+}
 const root=process.cwd(),site=path.join(root,'site-factory/seongnam-flower'),dist=fs.realpathSync(path.join(site,'dist'));
 const phase=process.env.MANUAL_QA_PHASE;
 assert.equal(phase,'preview','Preview-only candidate evidence required');
@@ -32,7 +44,7 @@ try{if(process.env.LOCAL_QA_CHROMIUM)assert.equal(process.env.LOCAL_QA_CHROMIUM,
     if(t.page){const hub=`/${t.page.category}/`;await page.locator(`a[href="${hub}"]:visible`).first().click();await page.waitForURL(origin+hub);await page.goBack({waitUntil:'networkidle'});await page.waitForURL(origin+t.url);await page.evaluate(()=>document.fonts.ready);for(const img of await page.locator('img').all())await img.scrollIntoViewIfNeeded();await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));row.backNavigationVerified=true;}
     // Exercise repeated focus movement after page and back navigation.
     await page.keyboard.press('Tab');await page.keyboard.press('Tab');await page.keyboard.press('Tab');await page.evaluate(()=>document.activeElement?.blur());await page.evaluate(()=>window.scrollTo(0,0));
-    const chunk=String(Math.floor(capture/18)+1).padStart(2,'0');const folder=path.join(output,'screens-'+chunk);fs.mkdirSync(folder,{recursive:true});const file=path.join(folder,t.id+'-'+viewport.name+'.jpg');await page.screenshot({path:file,fullPage:true,type:'jpeg',quality:75});const bytes=fs.readFileSync(file);row.screenshot={file:path.relative(output,file),bytes:bytes.length,sha256:crypto.createHash('sha256').update(bytes).digest('hex')};capture++;row.status='PASS';
+    const chunk=String(Math.floor(capture/18)+1).padStart(2,'0');const folder=path.join(output,'screens-'+chunk);fs.mkdirSync(folder,{recursive:true});const file=path.join(folder,t.id+'-'+viewport.name+'.jpg');await settleImages(page);row.finalScreenshotImageFacts=await page.evaluate(()=>({url:location.href,scrollX:window.scrollX,scrollY:window.scrollY,domImageReadiness:'decode-completed-and-paint-frames-awaited',pixelReview:'pending',images:[...document.images].map(img=>{const box=img.getBoundingClientRect();return {src:new URL(img.currentSrc||img.src).pathname,alt:img.alt,complete:img.complete,width:img.naturalWidth,height:img.naturalHeight,x:box.x,y:box.y,displayWidth:box.width,displayHeight:box.height};})}));await page.screenshot({path:file,fullPage:true,type:'jpeg',quality:75});const bytes=fs.readFileSync(file);row.screenshot={file:path.relative(output,file),bytes:bytes.length,sha256:crypto.createHash('sha256').update(bytes).digest('hex')};capture++;row.status='PASS';
    }catch(e){row.status='FAIL';row.errors.push(e.message);}results.push(row);
   }await context.close();
  }
