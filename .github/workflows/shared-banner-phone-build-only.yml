@@ -1,0 +1,117 @@
+name: Reviewed Common Banner Phone Build Only
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      region:
+        description: One exact reviewed existing region from the fixed 33-site catalog
+        required: true
+        type: string
+      expected_revision:
+        description: Exact saved and read-back successor source SHA
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).region || inputs.region }}-direct-public-release
+  cancel-in-progress: false
+jobs:
+  build_only:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'issues' && github.event.issue.title == '[REGIONAL-BANNER-BUILD]' && github.actor == 'joseungil-kr' && github.event.issue.user.login == 'joseungil-kr'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      REGION: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).region || inputs.region }}
+      REVISION: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).revision || inputs.expected_revision }}
+      ASTRO_TELEMETRY_DISABLED: '1'
+    steps:
+      - name: Authorize owner and first attempt
+        uses: actions/github-script@v7
+        with:
+          script: |
+            if (!/^[0-9a-f]{40}$/.test(process.env.REVISION)) throw new Error('Full source SHA required');
+            if (process.env.GITHUB_RUN_ATTEMPT !== '1') throw new Error('Build reruns require new evidence');
+            const owner = context.payload.repository.owner;
+            if (!(owner.type === 'User' && context.actor === owner.login)) {
+              const {data} = await github.rest.repos.getCollaboratorPermissionLevel({...context.repo, username: context.actor});
+              if (!['admin', 'maintain', 'write'].includes(data.permission)) throw new Error('Untrusted actor');
+            }
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - name: Select exact independently reviewed source
+        id: select
+        run: python3 control/scripts/shared-banners/phone_update.py select --region "$REGION" --report selected-source.json
+      - name: Recheck the exact source branch head
+        uses: actions/github-script@v7
+        env:
+          SOURCE_BRANCH: ${{ steps.select.outputs.branch }}
+        with:
+          script: |
+            const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/' + process.env.SOURCE_BRANCH});
+            if (data.object.type !== 'commit' || data.object.sha !== process.env.REVISION) throw new Error('Source branch moved; do not build stale source');
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.REVISION }}
+          path: target
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify exact parent and full-repository changed path and byte set
+        run: python3 control/scripts/shared-banners/phone_update.py source --region "$REGION" --checkout target --report source-check.json
+      - name: Test existing fixed publishers and update boundaries
+        env:
+          DIRECT_SOURCE_ROOT: ${{ github.workspace }}/target/${{ steps.select.outputs.sourceRoot }}
+        run: |
+          set -euo pipefail
+          python3 "control/scripts/direct-$REGION/test_publish.py" -v
+          python3 control/scripts/shared-banners/test_verify_update.py -v
+          python3 control/scripts/shared-banners/test_phone_update.py -v
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run native tests and actual production build without provider credentials
+        working-directory: target/${{ steps.select.outputs.sourceRoot }}
+        env:
+          SITE_URL: ${{ steps.select.outputs.origin }}
+          SITE_INDEXABLE: 'true'
+          SITE_FACTORY_REVISION: ${{ env.REVISION }}
+        run: |
+          set -euo pipefail
+          npm ci
+          npm test
+          npm run build
+      - name: Package through the existing fixed publisher
+        id: package
+        env:
+          SOURCE_ROOT: ${{ steps.select.outputs.sourceRoot }}
+          PUBLISHER: ${{ steps.select.outputs.publisher }}
+        run: python3 "control/$PUBLISHER" package --source "target/$SOURCE_ROOT" --report package-check.json
+      - name: Verify all fixed routes and exact phone banner contract
+        env:
+          RELEASE_SHA256: ${{ steps.package.outputs.release_sha256 }}
+        run: python3 control/scripts/shared-banners/phone_update.py build-artifact --region "$REGION" --report phone-build-artifact.json
+      - name: Retain exact static artifact for independent all-route and pixel review
+        uses: actions/upload-artifact@v4
+        with:
+          name: phone-banner-${{ env.REGION }}-build-${{ github.run_id }}
+          path: release/
+          include-hidden-files: true
+          if-no-files-found: error
+      - name: Retain nonpublishing verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phone-banner-${{ env.REGION }}-evidence-${{ github.run_id }}
+          path: |
+            selected-source.json
+            source-check.json
+            package-check.json
+            phone-build-artifact.json
+            phone-shared-banner-qa.json
+            build-wrangler.publish.json
+            http-contract.json
+          if-no-files-found: warn

@@ -11,7 +11,10 @@ ROOT=Path(__file__).resolve().parents[2]
 ALLOWED={r:f'scripts/direct-{r}/publish.py' for r in ['seoul-yangcheon', 'anseong', 'dongducheon', 'gapyeong', 'gimpo', 'gunpo', 'guri', 'gwacheon', 'gwangju', 'hanam', 'icheon', 'jongno', 'osan', 'paju', 'pocheon', 'seoul-dobong', 'seoul-dongdaemun', 'seoul-gangbuk', 'seoul-gwangjin', 'seoul-jung', 'seoul-jungnang', 'seoul-seongbuk', 'seoul-seongdong', 'seoul-yongsan', 'siheung', 'uijeongbu', 'uiwang', 'yangju', 'yangpyeong', 'yeoncheon', 'seoul-nowon', 'anyang', 'gwangmyeong', 'pyeongtaek', 'yeoju', 'seoul-eunpyeong', 'seoul-seodaemun', 'seoul-mapo']}
 def require(ok,code):
  if not ok:raise ValueError(code)
+def phone_module():
+ spec=importlib.util.spec_from_file_location('reviewed_phone_update',Path(__file__).with_name('phone_update.py'));mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod);return mod
 def load(region):
+ if phone_module().selected(ROOT,region):return phone_module().load(ROOT,region,require_release=True)
  require(region in ALLOWED,'unknown_fixed_update_target')
  targets=json.loads((ROOT/'docs/shared-banner-release/targets.json').read_text())
  target=targets['targets'].get(region);require(target is not None,'update_target_not_reviewed')
@@ -35,7 +38,11 @@ def load(region):
  require(os.environ.get('GITHUB_RUN_ATTEMPT')=='1','update_rerun_forbidden')
  return target,pub
 def authorize_mutation(region):
- require(region in ALLOWED,'unknown_fixed_update_target')
+ if phone_module().selected(ROOT,region):
+  require(os.environ.get('EXISTING_UPDATE')=='true','reviewed_banner_revision_requires_existing_update')
+  phone_module().load(ROOT,region,require_release=True)
+  return dict(state='mutation_mode_verified',region=region,reviewedBannerRevision=True,existingUpdate=True,version='phone-20261013')
+ require(region in ALLOWED or region in phone_module().REGIONS,'unknown_fixed_update_target')
  target=json.loads((ROOT/'docs/shared-banner-release/targets.json').read_text())['targets'].get(region)
  reviewed=bool(target and target.get('revision')==os.environ.get('REVISION'))
  update=os.environ.get('EXISTING_UPDATE')=='true'
@@ -103,6 +110,7 @@ def provider_after(target,pub):
  return dict(state='provider_settings_and_exposure_unchanged',accountIdSha256=account_hash,providerStateSha256=helper('write_assets_only_config').state_digest(state),providerMethods=['GET'],providerMutationsPerformed=False)
 
 def artifact(target,pub):
+ if target.get('version')=='phone-20261013':return phone_module().artifact(ROOT,target,pub,for_public=True)
  manifest=json.loads(Path('release/release.json').read_text())
  require(manifest.get('revision')==target['revision'] and manifest.get('worker')==pub.WORKER and manifest.get('origin')==pub.ORIGIN,'release_identity_mismatch')
  sys.path.insert(0,str(Path(__file__).parent))
@@ -112,7 +120,8 @@ def artifact(target,pub):
  return dict(state='reviewed_banner_artifact_verified',revision=target['revision'],customerHtml=result['customerHtml'],banners=result['banners'],assetSha256=result['assetSha256'])
 def public_assets(target,pub):
  rows=[]
- for asset in json.loads((ROOT/'docs/shared-banner-release/approved-assets.json').read_text()):
+ assets_path=ROOT/('docs/shared-banner-phone-20261013/approved-assets.json' if target.get('version')=='phone-20261013' else 'docs/shared-banner-release/approved-assets.json')
+ for asset in json.loads(assets_path.read_text()):
   path='/images/shared-banners/'+asset['name']+'.webp';body,headers=pub.get(path)
   require(headers.get('Content-Type','').split(';')[0].strip().lower()=='image/webp','shared_banner_mime_mismatch')
   require(pub.sha(body)==asset['sha256'],'shared_banner_live_digest_mismatch')
