@@ -33,7 +33,7 @@ def fixture(root):
               'remoteFiles': [dict(path=p['path'], mode=p['mode'], sha256=p['sha256'], gitBlob=p['gitBlobSha'], remoteBytesMatch=True, evidenceBasis=('fresh immutable fetch_file original bytes and full remote tree identity' if p['path'] in {c['path'] for c in plan['changedFiles']} else 'historical original bytes plus unchanged remote Git blob identity; exact full-tree reconstruction')) for p in plan['files']],
               'changedPaths': [p['path'] for p in plan['changedFiles']]}
         relative = u.DIRECTORY + '/' + region + '-test-only-readback.json'; save(root / relative, rb)
-        target.update(status='independently_reviewed_source', revision=revision, sourceReadback=relative,
+        target.update(status='independently_reviewed_source', revision=revision, releaseReview=None, releaseReviewSha256=None, sourceReadback=relative,
                       sourceReadbackSha256=u.sha((root / relative).read_bytes()))
     save(root / u.DIRECTORY / 'targets.json', dict(version=u.VERSION, targets=values))
 
@@ -145,6 +145,41 @@ class Controls(unittest.TestCase):
         with patch.object(pub,'inventory',return_value={'x':'b'*64}),self.assertRaisesRegex(ValueError,'two_rebuilt_output_differs_from_reviewed_build'):
             u.artifact(self.root,target,pub,for_public=True)
 
+class DirectProductionBinding(Controls):
+    def binding(self, target, pub, files):
+        path=Path(pub.__file__).with_name('production-output-contract.json')
+        value=dict(sourceRevision=target['revision'],files=files,
+            state='independently_reviewed_actual_production_artifact',origin=pub.ORIGIN)
+        save(path,value)
+        return path,value
+    def test_binding_independent_of_missing_or_false_environment(self):
+        target,pub=u.load(self.root,REGION);files={'index.html':'a'*64};self.binding(target,pub,files)
+        for value in [None,'false','true']:
+            with self.subTest(value=value),patch.dict(os.environ,{},clear=False):
+                if value is None:os.environ.pop('REQUIRE_REVIEWED_PRODUCTION',None)
+                else:os.environ['REQUIRE_REVIEWED_PRODUCTION']=value
+                self.assertTrue(u.reviewed_production_binding(pub,target,files))
+    def test_binding_missing_rejects(self):
+        target,pub=u.load(self.root,REGION)
+        with self.assertRaisesRegex(ValueError,'independent_production_review_required'):
+            u.reviewed_production_binding(pub,target,{'index.html':'a'*64})
+    def test_binding_each_original_publisher_field_rejects_drift(self):
+        target,pub=u.load(self.root,REGION);files={'index.html':'a'*64};path,value=self.binding(target,pub,files)
+        for key,bad in [('sourceRevision','b'*40),('files',{}),('state','synthetic'),('origin','https://wrong.invalid')]:
+            with self.subTest(key=key):
+                save(path,{**value,key:bad})
+                with self.assertRaisesRegex(ValueError,'reviewed_production_output_mismatch'):u.reviewed_production_binding(pub,target,files)
+    def test_binding_symlink_rejects(self):
+        target,pub=u.load(self.root,REGION);files={'index.html':'a'*64};path,_=self.binding(target,pub,files)
+        other=path.with_suffix('.original');path.rename(other);path.symlink_to(other)
+        with self.assertRaisesRegex(ValueError,'independent_production_review_required'):u.reviewed_production_binding(pub,target,files)
+    def test_public_artifact_requires_original_binding_before_native_qa(self):
+        target,pub=u.load(self.root,REGION);files={'x':'b'*64};publish_review(self.root,target,u.sha(u.json_bytes(files)))
+        old=Path.cwd();work=Path(self.temp.name)/'gate-work';work.mkdir();os.chdir(work);self.addCleanup(os.chdir,old)
+        save(Path('release/release.json'),dict(revision=REV,worker=pub.WORKER,origin=pub.ORIGIN,files=files))
+        with patch.object(pub,'inventory',return_value=files),patch.object(u,'module',side_effect=AssertionError('native QA must not run')):
+            with self.assertRaisesRegex(ValueError,'independent_production_review_required'):u.artifact(self.root,target,pub,for_public=True)
+
 class Workflows(unittest.TestCase):
     def test_both_publishers_and_production_gates_preserved(self):
         for region in sorted(u.REGIONS):
@@ -166,9 +201,17 @@ class Workflows(unittest.TestCase):
             finalize=raw.split('  finalize_indexnow:\n',1)[1]
             self.assertNotIn('secrets.',finalize);self.assertNotIn('CLOUDFLARE',finalize)
             self.assertLess(finalize.index('public-assets'),finalize.index('publish.py indexnow --report'))
-    def test_catalog_public_is_still_disabled(self):
-        for target in u.catalog(ROOT).values():
-            self.assertIsNone(target['releaseReview']);self.assertIsNone(target['releaseReviewSha256'])
+    def test_catalog_public_requires_exact_review_when_enabled(self):
+        for region,target in u.catalog(ROOT).items():
+            if target['releaseReview'] is None:
+                self.assertIsNone(target['releaseReviewSha256'])
+            else:
+                with patch.dict(os.environ,dict(REVISION=target['revision'],GITHUB_REPOSITORY=target['repository'],GITHUB_RUN_ATTEMPT='1',EXISTING_UPDATE='true')):
+                    checked,pub=u.load(ROOT,region,require_release=True)
+                    review=u.release_review(ROOT,checked)
+                    binding=json.loads(Path(pub.__file__).with_name('production-output-contract.json').read_text())
+                    self.assertEqual(u.sha(u.json_bytes(binding['files'])),review['outputFilesSha256'])
+                    self.assertTrue(u.reviewed_production_binding(pub,checked,binding['files']))
 
 class ProviderReuse(unittest.TestCase):
     def setUp(self):

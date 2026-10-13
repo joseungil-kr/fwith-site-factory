@@ -175,6 +175,17 @@ def source(root, region, checkout):
     return {'state': 'two_exact_source_successor_verified', 'revision': target['revision'], 'previousRevision': target['previousRevision'],
             'sourceTree': plan['expectedTrees']['afterSource'], 'files': report['files'], 'changedFiles': len(changed)}
 
+def reviewed_production_binding(pub, target, files):
+    # Recheck the original publisher's exact binding without rerunning its
+    # artifact writer after wrangler.publish.json has already been emitted.
+    path = Path(pub.__file__).with_name('production-output-contract.json')
+    require(path.is_file() and not path.is_symlink(), 'independent_production_review_required')
+    binding = json.loads(path.read_text())
+    require(binding.get('sourceRevision') == target['revision'] and binding.get('files') == files
+            and binding.get('state') == 'independently_reviewed_actual_production_artifact'
+            and binding.get('origin') == pub.ORIGIN, 'reviewed_production_output_mismatch')
+    return True
+
 def artifact(root, target, pub, for_public=False):
     manifest = json.loads(Path('release/release.json').read_text())
     require(manifest.get('revision') == target['revision'] and manifest.get('worker') == pub.WORKER
@@ -184,6 +195,7 @@ def artifact(root, target, pub, for_public=False):
     digest = sha(json_bytes(actual))
     if for_public:
         require(release_review(root, target)['outputFilesSha256'] == digest, 'two_rebuilt_output_differs_from_reviewed_build')
+        reviewed_production_binding(pub, target, actual)
     dependencies(root)
     qa = module(root, 'scripts/shared-banners/qa_phone_banners.py', 'two_reviewed_phone_qa')
     os.environ['SITE_URL'] = pub.ORIGIN
@@ -214,9 +226,11 @@ def main():
             artifact(ROOT, target, pub, for_public=True)  # Checked again before any credentialed GET.
             result = shared(ROOT).preflight(target, pub)
         elif args.mode == 'provider-after':
+            artifact(ROOT, target, pub, for_public=True)
             result = shared(ROOT).provider_after(target, pub)
         else:
             # Same pinned phone assets; no widening of the 33-site selector/catalog.
+            artifact(ROOT, target, pub, for_public=True)
             result = shared(ROOT).public_assets({**target, 'version': 'phone-20261013'}, pub)
     Path(args.report).write_text(json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + '\n')
 
