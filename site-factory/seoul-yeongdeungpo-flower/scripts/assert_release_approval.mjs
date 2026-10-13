@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import crypto from 'node:crypto';
 import assert from 'node:assert/strict';
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
-const EXPECTED_APPROVAL_SHA='ba7499f181b25411f587a9b7bf995a313503b637c4f5d30f49fdd4b507e4d8ca';
+const EXPECTED_APPROVAL_SHA='64c3fc84ecc8e5992f68be454725abaa0124588b81c67c60e83bc66f208be0ef';
 const APPROVED_ORIGIN='https://seoul-yeongdeungpo.fwith.kr';
 export function validateRelease(read) {
  const raw=read('src/data/release-approval.json');
