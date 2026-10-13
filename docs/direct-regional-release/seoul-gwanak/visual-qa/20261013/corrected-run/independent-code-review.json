@@ -1,0 +1,46 @@
+{
+  "status": "SOURCE_AND_QA_CANDIDATE_INDEPENDENTLY_REVIEWED_READY_FOR_AUTHORIZED_EXACT_SHA_QA_ONLY",
+  "reviewScope": "Read-only source, Git object/diff, local QA candidate, and offline contract review. No Git writes, browser launch, installation, publication, or deployment.",
+  "sourceSha": "9f9c5abde306c5855104ea4ae58175a8da77496f",
+  "sourceBase": "4f982994513cb7913f869b0114b3427be50b1362",
+  "qaBaseSha": "9d1f8cb1be19d92da45f5dc4aa80fddca46c8bc7",
+  "qaCandidate16ManifestSha256": "11a2c30a68cc0ee53dcea28139e997f6152f1adc424aa5ecd1500bd8f77f75e9",
+  "checkedResults": [
+    "Both original commit and corrected commit were read from actual local Git objects. Both recursive trees contain 2,297 identical paths. Only global.css blob changes, its mode is preserved, and 2,296 other blobs and modes are identical.",
+    "Corrected CSS is 12,668 bytes, SHA256 cf0df5fc762e609e81811a10df82c410c468985aa4709409819e4018f9e1bf49. Its entire old 12,416-byte CSS is an unchanged prefix; the appended 252 bytes add mobile-only root scroll-padding at max-width 860px.",
+    "All 672 Gwanak working files were read and independently matched by bytes, SHA256 and Git blob against the corrected Git commit and frozen manifest. All 671 non-CSS files are preserved, including customer copy, product/source data, components, image assets, native build/test/quality scripts, preview boundary and approval gates.",
+    "QA candidate was independently compared to Git commit 9d1f8c: same 160 .github paths, exactly 7 changed paths and 153 unchanged blobs. All 16 declared QA files match their manifest bytes, SHA256 and Git blob hashes.",
+    "The adapter was independently bound against the actual clean corrected checkout. Returned JSON bytes exactly match candidate bound-spec.json. All source/tree/repository/manifest pins match actual Git identity.",
+    "Existing keyboard_flow and assert_keyboard_focus are AST-identical to the prior QA, retaining every native Tab target, viewport and sticky-UI boundaries, fragment hit tests, uniqueness and focus-ring requirements. The CSS is the only attempted product-side remedy; the harness does not scroll keyboard targets into place to hide failures.",
+    "Oversized-card handling checks exactly six real DOM descendants from ProductCards.astro: photo, name, price, description, order link and caption. Every actual target is scrolled and measured separately; all must satisfy the existing full visibility/boundary/occlusion gate. Contain image geometry validates true 500x500 photo content, no padding/border, centered object position and contain fit. Six independent viewport screenshots are mandatory for each oversized card. Nonoversized shells retain the original full-shell gate.",
+    "Every anchor flow resets to the actual directory HTTP200 document. The occasion goto must then return a new HTTP200 response and the exact URL. First-landing heading ID/tag/text and visibility are checked before any synthetic centering. None/404/500/wrong URL still fail.",
+    "35 offline tests directly rerun: 19 Gwanak contract tests and 16 upstream non-Git tests, all succeeded. This is synthetic guard/unit testing, not a new-source build or browser result.",
+    "Original failed report was read: 3 oversized product-shell failures, 3 occasion hash navigation harness errors, and 8 genuine keyboard-occlusion failures. Two original 320px screenshots were opened: the home native Tab target is visibly hidden by the fixed order bar; the premium product screenshot shows product content while only shell space extends beneath the bar. These are old-source evidence only.",
+    "Workflow remains single-site Gwanak on the exact QA branch, contents:read, credentials not persisted, local.invalid noindex/no-publication, exact source checkout, repeated native build/test/QA and deterministic comparison, native+additive captures, evidence sealing and retained artifacts. The workflow change is only the three actual source identity pins."
+  ],
+  "toolReported": [
+    "Fresh GitHub compare and fetch_commit readbacks report commit 9f9c5abde306c5855104ea4ae58175a8da77496f ahead of the base by one commit and a single CSS file with five insertions. The returned patch independently matches the local Git diff.",
+    "Preparation worker reports 44 offline tests passed. I directly reran 35; the 9 upstream SourceTest cases create and commit temporary Git fixtures, so I did not rerun those under this read-only/no-Git-writes assignment."
+  ],
+  "judgment": [
+    "No blocking defect found in this source/candidate review. Candidate is appropriate to submit to the separately authorized exact-SHA QA workflow.",
+    "The mobile top padding of 75px is consistent with the historical 63px sticky header plus 12px clearance; the bottom padding includes the existing 58px order bar, its safe-area variable and 12px clearance. Whether native focus scrolling honors this in the real new build must be established by the unchanged browser gate."
+  ],
+  "unverified": [
+    "No corrected-source native build, new GitHub Actions run, browser measurement, fresh screenshot, or public deployment was executed or verified in this review.",
+    "Do not call keyboard correction, anchor first landing, six-target card rendering, or overall visual QA complete until the actual new-SHA run passes and its produced pixels are independently inspected.",
+    "Only 320, 390 and 1280px Chromium coverage is planned by the inherited workflow. Other widths, mobile safe-area devices, engines and real on-screen keyboards are outside that coverage. Keyboard occlusion here means Tab-focused content hidden behind sticky UI, not a tested virtual on-screen keyboard."
+  ],
+  "nonBlockingProvenanceNote": "frozen source-manifest scope string remains a historical label saying LOCAL uncommitted; actual saved-source.json and bound-spec.json now accurately pin the saved commit. Do not treat that label or the historical frozen verdict as current browser evidence.",
+  "evidenceFiles": [
+    "independent-comparison.json",
+    "verify_independent.py",
+    "github-commit-readback.json",
+    "gwanak-contract-tests.log",
+    "upstream-nongit-contract-tests.log",
+    "old-320--home--keyboard-final-focus.jpg",
+    "old-320--regions--gwanak-funeral-wreath--product-funeral-premium.jpg"
+  ],
+  "visualQaPassed": false,
+  "publicationAuthorizedByThisReview": false
+}
