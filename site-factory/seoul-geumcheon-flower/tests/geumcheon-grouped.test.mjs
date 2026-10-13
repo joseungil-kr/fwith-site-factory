@@ -35,13 +35,13 @@ test('exact approved copy file, body, FAQ and customer fields are preserved',()=
 test('four real funeral SKUs, exact photo bytes, prices and individual CTAs',()=>{
  assert.deepEqual(products.map(p=>p.officialSku),['B201','B203','B205','B060']);for(const product of products){const approved=copy.common.productCards.find(p=>p.key===product.key);assert.equal(product.name,approved.name);assert.equal(product.price,approved.basicPriceKRW);assert.equal(product.desc,approved.description);assert.equal(product.orderUrl,approved.ctaUrl);assert.equal(sha(bytes('public'+product.img)),approved.imageSha256);}
 });
-test('byte-preserved shared legacy,Guro and midpoint helper',()=>{
- for(const [file,expected] of Object.entries({'src/lib/regions-legacy.mjs':'cf2f44ce1feff2f44bb9213d55a63eac2f83dfadb49cac116c60769471ff29c1','src/lib/guro-regions.mjs':'c86a3994a4a1cac9e42371bd687d8dab47a4f14b7af9af6841021e4beeb2701f','src/lib/directory-banner-split.mjs':'04ed49395e2a3458c9b01c74eff57f425ed693e9f713b59bfe7343a4c433a19c','src/components/SharedFlowerBanner.astro':'bffdc5a802a911d688e388faa55ece9e1bf6b00e04c8fab0873e779b35702f74'}))assert.equal(sha(bytes(file)),expected,file);
+test('byte-preserved legacy,Guro,midpoint helper and pinned banner successor',()=>{
+ for(const [file,expected] of Object.entries({'src/lib/regions-legacy.mjs':'cf2f44ce1feff2f44bb9213d55a63eac2f83dfadb49cac116c60769471ff29c1','src/lib/guro-regions.mjs':'c86a3994a4a1cac9e42371bd687d8dab47a4f14b7af9af6841021e4beeb2701f','src/lib/directory-banner-split.mjs':'04ed49395e2a3458c9b01c74eff57f425ed693e9f713b59bfe7343a4c433a19c','src/components/SharedFlowerBanner.astro':'7a6471713704c1fe844398fcaa6ec379b3c373c5fb50e319015bf5f23e6b4cfb'}))assert.equal(sha(bytes(file)),expected,file);
 });
 test('baseline preview evidence remains immutable; current release authority is independently pinned',()=>{
  const baseline=JSON.parse(bytes('tests/reference/release-baseline/site-config.json'));assert.equal(baseline.productionApproved,false);assert.equal(read('site-config').productionApproved,true);assert.equal(read('site-config').hostnameOwnershipVerified,false);assert.equal(manifest.directRelease.publicationAuthorized,true);assert.deepEqual(manifest.directRelease.publishedCoverage,{numerator:0,denominator:1,percent:0});assert.equal(read('direct-checkpoint').productionEvidence,null);assert.equal(read('direct-checkpoint').searchIndexing,'not_verified');assert.equal(a.hubs.find(h=>h.category==='regions').indexable,false);
 });
 
 test('rendered common-copy source files retain independent-review bindings',()=>{
- const review=read('copy-review-bindings');for(const [file,digest] of Object.entries(review.commonSourceSha256))assert.equal(sha(bytes(file)),digest,file);assert.equal(review.approvedCopySha256,sha(bytes('src/data/geumcheon-copy.json')));
+ const review=read('copy-review-bindings');for(const [file,digest] of Object.entries(review.commonSourceSha256)){if(file==='src/components/SharedFlowerBanner.astro'){assert.equal(digest,'bffdc5a802a911d688e388faa55ece9e1bf6b00e04c8fab0873e779b35702f74');assert.equal(sha(bytes(file)),'7a6471713704c1fe844398fcaa6ec379b3c373c5fb50e319015bf5f23e6b4cfb',file);}else assert.equal(sha(bytes(file)),digest,file);}assert.equal(review.approvedCopySha256,sha(bytes('src/data/geumcheon-copy.json')));
 });

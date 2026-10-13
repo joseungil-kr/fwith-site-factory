@@ -16,6 +16,24 @@ class SharedBannerNegativeTests(unittest.TestCase):
  def mutate(self,old,new):
   p=self.root/'dist/index.html';s=p.read_text();self.assertIn(old,s);p.write_text(s.replace(old,new,1))
  def test_clean_html_passes(self):self.assertGreater(self.check()['customerHtml'],0)
+ def test_shared_alt_old_or_wrong_phone_fails(self):
+  original=(self.root/'dist/index.html').read_text()
+  for value in ['', ' 전화 1844-0645.', ' 실제 판매상품 사진이 아닌 AI 생성 이미지입니다. 전화 1844-0644.']:
+   with self.subTest(value=value):
+    (self.root/'dist/index.html').write_text(original.replace(' 전화 1844-0644.',value,1))
+    with self.assertRaises(AssertionError):self.check()
+ def test_shared_alt_description_drift_fails(self):
+  self.mutate('크림색 장미를 담은 안내 이미지.', '임의 이미지.')
+  with self.assertRaises(AssertionError):self.check()
+ def test_shared_caption_reintroduced_fails(self):
+  self.mutate('</figure>','<figcaption>꽃이랑 공통 안내 이미지 · 실제 판매상품 사진이 아닌 AI 생성 이미지입니다.</figcaption></figure>')
+  with self.assertRaises(AssertionError):self.check()
+ def test_removed_disclosure_outside_banner_fails(self):
+  self.mutate('</main>','<p>꽃이랑 공통 안내 이미지 · 실제 판매상품 사진이 아닌 AI 생성 이미지입니다.</p></main>')
+  with self.assertRaises(AssertionError):self.check()
+ def test_banner_manifest_dimension_drift_fails(self):
+  p=self.root/'src/data/shared-banner-manifest.json';d=json.loads(p.read_text());d[0]['height']=886;p.write_text(json.dumps(d))
+  with self.assertRaises(AssertionError):self.check()
  def test_wrong_variant_asset_fails(self):
   self.mutate('src="/images/shared-banners/flower-message.webp"','src="/images/shared-banners/flower-budget.webp"')
   with self.assertRaises(AssertionError):self.check()
