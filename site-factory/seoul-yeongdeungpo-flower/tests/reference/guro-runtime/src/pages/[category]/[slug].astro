@@ -1,0 +1,57 @@
+---
+import SharedFlowerBanner from '../../components/SharedFlowerBanner.astro';
+import FaqSection from '../../components/FaqSection.astro';
+import InlineOrderBanner from '../../components/InlineOrderBanner.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MarkdownContent from '../../components/MarkdownContent.astro';
+import ProductCards from '../../components/ProductCards.astro';
+import InlineText from '../../components/InlineText.astro';
+import pages from '../../data/pages.json';
+import products from '../../data/products.json';
+import {site,groups} from '../../config/site';
+import {selectProducts,productHeading,productFamilies} from '../../lib/catalog.mjs';
+import {nextSteps,relatedReading} from '../../lib/journey.mjs';
+import editorial from '../../data/editorial-assets.json';
+import {pageSources,sourceTypeLabels} from '../../lib/sources.mjs';
+import {detailIllustration} from '../../lib/visual.mjs';
+import {groupsFor,assertRegionalInput} from '../../lib/regional-runtime.mjs';
+assertRegionalInput(pages);
+export function getStaticPaths(){return (pages as any[]).map(p=>({params:{category:p.category,slug:p.slug},props:{page:p}}));}
+const {page}=Astro.props;
+const district=groupsFor(pages).find((d:any)=>d.items.some((item:any)=>item.page.pageKey===page.pageKey));
+const regionalSocialProduct=page.pageType==='regional-service' ? products.find(p=>p.img===page.ogImage) : null;
+if(page.pageType==='regional-service' && !regionalSocialProduct) throw new Error('Regional social image has no verified product binding');
+const journey=nextSteps(page,pages);
+const related=relatedReading(page,pages);
+const productSet=selectProducts(page,products,page.productCardLimit===4||productFamilies(page).length>3?4:3); const hero=productSet[0];
+const illustration=detailIllustration(page,editorial);
+const sources=pageSources(page);
+const category=groups.find(g=>g.cat===page.category);
+const snapshotId=page.snapshotId;
+const pricePage=journey.find((p:any)=>p.pageType==='price-guide');
+const addressPage=journey.find((p:any)=>p.visualIntent==='order_address');
+---
+<BaseLayout title={page.title} description={page.description} canonicalPath={page.url} orderUrl={site.orderUrl} socialProduct={regionalSocialProduct || hero || products[0]} socialImageAlt={page.pageType==='regional-service' ? page.ogImageAlt : undefined}>
+<article data-snapshot-id={snapshotId} data-page-key={page.pageKey} data-page-type={page.pageType} data-query-class={page.queryClass} data-visual-intent={page.visualIntent} data-asset-slot={page.assetSlot}>
+<nav class="breadcrumb" aria-label="현재 위치"><a href="/">{site.region} 꽃배달</a><span>›</span><a href={category?.url || '/'}>{category?.label || '꽃배달'}</a><span>›</span>{district && <><a href={`/regions/#${district.key}`}>{district.name}</a><span>›</span></>}<span>{page.primaryKeyword}</span></nav>
+<section class="detail-hero"><div><span class="eyebrow">{site.brand} {site.region}</span><h1>{page.h1}</h1><p>{page.firstAnswer}</p><div class="actions"><a class="btn primary" href={site.phoneHref}>☎ {site.phone}</a><a class="btn dark" href={hero?.orderUrl || site.orderUrl} data-order-product-key={hero?.key}>{hero?.name || '상품'} 확인·주문</a></div><div class="facts"><span>전화 {site.phoneOrderHours}</span><span>온라인 {site.onlineOrderHours} 접수</span><span>상품 선택·일정 상담</span></div></div>
+{illustration ? <figure class="detail-product editorial-hero" data-asset-type={illustration.assetType}><img src={illustration.img} alt={illustration.alt} loading="eager" width="1000" height="1000"/><figcaption>{illustration.caption}</figcaption></figure> : hero ? <div class="detail-product" data-product-family={hero.family} data-product-key={hero.key}><img src={hero.img} alt={hero.name} loading="eager" width="540" height="540"/><strong>{hero.name}</strong><span>기본가격 {hero.price.toLocaleString()}원</span><small>{site.brand} 공식 상품 사진</small></div> : <aside class="detail-product"><h2>목적에 맞는 상품을 상담하세요</h2><p>원하는 형태와 전달 장소를 알려주시면 실제 주문 가능한 상품을 확인할 수 있습니다.</p><a class="btn primary" href={site.phoneHref}>전화 상담</a></aside>}
+</section>
+{page.pageType==='hospital-visit' && <aside class="caution"><strong>병동 반입 가능 여부부터 확인해 주세요</strong><p>생화 반입은 병원·병동에 따라 제한될 수 있습니다. 병동 확인 전에는 꽃을 주문하지 마시고, 반입이 허용되는 경우에만 아래 상품을 비교해 주세요.</p></aside>}
+<SharedFlowerBanner variant="message"/>
+{page.contentMarkdown ? <MarkdownContent content={page.contentMarkdown} firstAnswer={page.firstAnswer} facilityAnchors={page.facilityAnchors}/> : page.sections.slice(0,3).map((s:any)=><section class="content-card"><h2>{s[0]}</h2><p><InlineText text={s[1]}/></p></section>)}
+<SharedFlowerBanner variant="budget"/>
+<InlineOrderBanner compact={true}/>
+{pricePage && pricePage.pageKey!==page.pageKey && <aside class="journey-link"><span>예산을 먼저 정하고 싶다면</span><a href={pricePage.url}>{pricePage.primaryKeyword} 확인 →</a></aside>}
+{productSet.length>0 && <section class="product-section compact"><h2>{productHeading(page)}</h2><ProductCards products={productSet} noticeMode="body-covered"/></section>}
+{!page.contentMarkdown && page.sections.slice(3).map((s:any)=><section class="content-card"><h2>{s[0]}</h2><p><InlineText text={s[1]}/></p></section>)}
+{addressPage && <aside class="journey-link"><span>상품을 정했다면 수령정보를 준비해 주세요</span><a href={addressPage.url}>{addressPage.primaryKeyword} 확인 →</a></aside>}
+{sources.length>0 && <section class="source-references" aria-labelledby="source-references-title"><h2 id="source-references-title">출처 및 확인 정보</h2>
+{sources.map(source => <section class="source-card" data-source-type={source.type}><h3>{source.name}</h3><p>{sourceTypeLabels[source.type as keyof typeof sourceTypeLabels]}</p><a href={source.url} rel="nofollow" aria-label={`${source.name} 출처 확인`}>출처 확인 →</a><small>확인일 <time datetime={source.verifiedAt}>{source.verifiedAt}</time></small></section>)}
+</section>}
+<FaqSection items={page.faq} title={`${page.primaryKeyword} 자주 묻는 질문`}/>
+{journey.length>0 && <section class="related" data-journey="next-step"><h2>다음 주문 단계</h2><div class="card-grid journey-grid">{journey.map((p:any)=><a class="page-card" href={p.url}><strong>{p.primaryKeyword}</strong><span>{p.cardSummary}</span></a>)}</div></section>}
+{related.length>0 && <section class="related" data-journey="related-reading"><h2>함께 읽을 안내</h2><div class="card-grid journey-grid">{related.map((p:any)=><a class="page-card" href={p.url}><strong>{p.primaryKeyword}</strong><span>{p.cardSummary}</span></a>)}</div></section>}
+<SharedFlowerBanner variant="consultation"/>
+<section class="conversion-panel"><div><span class="eyebrow">{site.brand} 주문</span><h2>상품 선택부터 주문까지 편안한 상담</h2><p>전화 {site.phone} · {site.phoneOrderHours} / 온라인 {site.onlineOrderHours} 접수</p></div><div class="actions"><a class="btn light" href={site.phoneHref}>전화주문</a><a class="btn yellow" href={hero?.orderUrl || site.orderUrl} data-order-product-key={hero?.key}>{hero?.name || '상품'} 확인·주문</a></div></section>
+</article></BaseLayout>
