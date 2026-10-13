@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import crypto from 'node:crypto';
+import {successor,expectedSuccessorSha256,assertExactPhoneSuccessor,currentExpectedSha,assertCurrentPhoneBytes} from './shared-banner-phone-successor.mjs';
+const digest=b=>crypto.createHash('sha256').update(b).digest('hex');
+test('phone successor is independently sealed without changing the historical fixture or tests',()=>{assert.equal(digest(fs.readFileSync(new URL('./fixtures/shared-banner-phone-successor.json',import.meta.url))),expectedSuccessorSha256);assertExactPhoneSuccessor();assert.equal(Object.keys(successor.replacements).length,8);assert.equal(successor.productionApprovalGranted,false);});
+for(const [file,row] of Object.entries(successor.replacements)){
+ test('exact phone bytes and old pin are both required: '+file,()=>{const bytes=fs.readFileSync(new URL('../'+file,import.meta.url));assertCurrentPhoneBytes(file,bytes,row.beforeSha256);assert.throws(()=>assertCurrentPhoneBytes(file,Buffer.concat([bytes,Buffer.from('changed')]),row.beforeSha256));assert.throws(()=>currentExpectedSha(file,'0'.repeat(64)));});
+ test('neither new nor old successor pin can be refreshed: '+file,()=>{for(const key of ['beforeSha256','afterSha256']){const v=structuredClone(successor);v.replacements[file][key]='0'.repeat(64);assert.throws(()=>assertExactPhoneSuccessor(v));}});
+}
+test('unrelated files keep their original pin and cannot be added to the exact change set',()=>{assert.equal(currentExpectedSha('src/data/pages.json','original'),'original');const v=structuredClone(successor);v.replacements['src/data/pages.json']={beforeSha256:'0'.repeat(64),afterSha256:'1'.repeat(64)};assert.throws(()=>assertExactPhoneSuccessor(v));});
+test('parent, historical hashes and approval flags cannot change',()=>{for(const key of ['sourceParentRevision','previousPublicRevision','historicalFixtureSha256','historicalHelperSha256','productionApprovalGranted','historicalPinsPreserved']){const v=structuredClone(successor);v[key]='changed';assert.throws(()=>assertExactPhoneSuccessor(v));}});
