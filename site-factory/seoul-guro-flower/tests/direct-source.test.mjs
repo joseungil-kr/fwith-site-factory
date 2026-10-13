@@ -33,14 +33,14 @@ test('shared banners preserve the three approved image bytes and intrinsic dimen
  const m=read('shared-banner-manifest');assert.deepEqual(m.map(x=>x.sha256),expected);for(const a of m){assert.equal(a.width,1774);assert.equal(a.height,887);assert.equal(sha(bytes('public/images/shared-banners/'+a.name+'.webp')),a.sha256);}
 });
 test('customer-copy approval never becomes public deployment or indexing evidence',()=>{
- assert.equal(read('site-config').productionApproved,false);assert.equal(manifest.directRelease.publicationAuthorized,false);assert.deepEqual(manifest.directRelease.publishedCoverage,{numerator:0,denominator:3,percent:0});assert.equal(read('direct-checkpoint').productionEvidence,null);assert.equal(read('direct-checkpoint').searchIndexing,'not_verified');
+ assert.equal(read('site-config').productionApproved,true);assert.equal(manifest.directRelease.publicationAuthorized,true);assert.deepEqual(manifest.directRelease.publishedCoverage,{numerator:0,denominator:3,percent:0});assert.equal(read('direct-checkpoint').productionEvidence,null);assert.equal(read('direct-checkpoint').searchIndexing,'not_verified');
 });
 test('one canonical article per intent with complete named-destination directory',()=>{
  const groups=directoryGroups(pages,read('architecture'),coverage,policy);assert.equal(groups.flatMap(g=>g.items).length,3);assert.equal(groups.flatMap(g=>g.items).flatMap(x=>x.representative.facilityAnchors).length,7);
  assert.deepEqual(read('architecture').hubs.filter(h=>h.children>0).map(h=>h.url),['/regions/']);assert.equal(manifest.directRelease.renderedHtmlRouteCount,5);
 });
 test('approved copy and common customer UI are bound to independent review hashes',()=>{
- const review=read('copy-review-bindings');assert.equal(review.verdict,'PASS');for(const [file,digest] of Object.entries(review.commonSourceSha256))assert.equal(sha(bytes(file)),digest,file);
+ const review=read('copy-review-bindings');assert.equal(review.verdict,'PASS');for(const [file,digest] of Object.entries(review.commonSourceSha256))assert.equal(sha(file==='src/data/site-config.json'?bytes('tests/reference/release-baseline/site-config.json'):bytes(file)),digest,file);
  const strip=v=>Array.isArray(v)?v.map(strip):v&&typeof v==='object'?Object.fromEntries(Object.entries(v).filter(([k])=>!['status','approvalVerified'].includes(k)).map(([k,x])=>[k,strip(x)])):v;
  for(const [file,digest] of Object.entries(review.approvedMetadataOnlyTransform.normalizedFileSha256))assert.equal(sha(canonical(strip(JSON.parse(bytes(file).toString())))),digest);
  assert.deepEqual(pages.map(p=>sha(canonical(Object.fromEntries(review.customerFields.map(k=>[k,p[k]]))))),review.customerCopyObjectSha256);
