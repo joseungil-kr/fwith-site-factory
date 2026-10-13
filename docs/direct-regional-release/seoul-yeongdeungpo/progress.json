@@ -4,13 +4,13 @@
   "officialCode": "11560",
   "scopeKey": "seoul-yeongdeungpo-direct-independent-preparation-20261012",
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-13T01:40:08.632972+00:00",
-  "status": "prepared_unpublished_remote_source_exact_sha_static_verified",
+  "updatedAt": "2026-10-13T03:14:00Z",
+  "status": "prepared_unpublished_corrected_source_and_independent_browser_qa_passed",
   "owner": {
-    "name": "implement_yeongdeungpo_local_site",
+    "name": "prepare_yeongdeungpo_visual_checks",
     "active": false,
-    "executionState": "source_saved_exact_sha_verified_documentation_save_finishing",
-    "mainWriteScope": "seoul-yeongdeungpo documentation and append-only latest-progress independent preparation",
+    "executionState": "unpublished_qa_complete_release_preparation_pending",
+    "mainWriteScope": "Exclusive main writer lease: reviewed Yeongdeungpo QA documentation only",
     "startedAt": "2026-10-13T01:30:47Z",
     "actualSourceWriteStoppedAt": "2026-10-13T01:40:08.632972+00:00",
     "sourceBranch": "site-factory-seoul-yeongdeungpo-direct"
@@ -44,53 +44,61 @@
     "manifestSha256": "9f20e798932251cebe16c16115f1ba291da409ae1ffe2b688b3e74e83e13ebc4",
     "reviewSha256": "023958d8c4770bf88e49d657056f14f9d8bbc70dc77c20453f7de950e02815ef",
     "finalCopy": "PASS_EXACT_REV2_SOURCE_TEXT_AND_INTENDED_COMMON_WORDING_ONLY",
-    "implementation": "PASS_LOCAL_SOURCE_STATIC_ONLY",
-    "build": "PASS_EXACT_REMOTE_SHA_LOCAL_BUILD",
-    "renderedScreen": "UNVERIFIED_NOT_RUN",
+    "implementation": "PASS_EXACT_MINIMAL_CSS_CORRECTION",
+    "build": "PASS_TWO_IDENTICAL_EXACT_SOURCE_CI_BUILDS",
+    "renderedScreen": "PASS_UNPUBLISHED_BROWSER_QA_ONLY",
     "publicHttp": "NOT_PUBLISHED",
     "copySha256": "cdc2fda4970414d2d80c0aae7a939fb2d13f2bfbb210f3c2e663864945c01a1f",
     "copyReviewSha256": "d987260c39e27b504fdc9a262c9c97efd9460c3c2ec2b24f4c061bec4a1f52af",
     "copyManifestSha256": "09b782103be3870eefaa5572e772fc078d46b4f8c3930eb315011ed07b39fd64",
     "staticInterface": "PASS_EXACT_RENDERED_REV2",
     "staticInterfaceReviewSha256": "11742cb949a22ddb9db9e6d6b04367269cde51f41976ff18ed1a9f7bbd93f1b5",
-    "technicalReviewSha256": "265e34a27f11d793cd754560e30f8e4877496c1fc528cb74e13dfc9474003e81"
+    "technicalReviewSha256": "265e34a27f11d793cd754560e30f8e4877496c1fc528cb74e13dfc9474003e81",
+    "browserReviewSha256": "77ff88adabe175af00a166363a8cc30f0febb98cbdaebd47eb6965117549f7ba"
   },
   "source": {
     "branch": "site-factory-seoul-yeongdeungpo-direct",
-    "revision": "ccc6acd7a0f1beb20e4aa346b11ee35ae516ba58",
-    "tree": "8f38fc32a55435e99d1379ac87253ffc356c895e",
-    "parent": "b68fa7801b080da5a65fbaeceeba3aa9a81ac365",
+    "revision": "ca5c98b12420212d0aa8dd0c9a742f3e94237c07",
+    "tree": "19861c3434da4fff5000c32ac44078f3af66daa0",
+    "parent": "ccc6acd7a0f1beb20e4aa346b11ee35ae516ba58",
     "sourceBranchCreated": true,
     "sourceFiles": 308,
-    "readback": "All 308 remote Git blob IDs and detached actual Git checkout bytes match frozen source manifest; no mismatches.",
-    "sourceManifestSha256": "c6b40f1bc520220de52652992df4285ea1fbe149a770cc0b725b9bfb1e95d652",
-    "workflowOrControlsCreated": false,
-    "mainSourceCopied": false
+    "readback": "All308 actual Git/local bytes match the independently reviewed correction snapshot; only global.css changed,307 original source files unchanged.",
+    "sourceManifestSha256": "156424c8f32e84ea62f1513d88b90295ef1dbc42097968b5d5b3710a833c3433",
+    "workflowOrControlsCreated": true,
+    "mainSourceCopied": false,
+    "repositoryTree": "19861c3434da4fff5000c32ac44078f3af66daa0",
+    "siteTree": "2fd8165667a6d6e656b3c52a5ee50b6f07f47953"
   },
   "publication": {
-    "authorized": false,
+    "authorized": true,
     "productionApproved": false,
     "issueCreated": false,
     "workflowDispatched": false,
     "providerMutation": false,
     "IndexNowSubmitted": false,
     "GscSubmitted": false,
-    "url": null
+    "url": null,
+    "userPublicReleaseInstruction": "Already requested by the user; existing authorization remains valid. No generic public-release reconfirmation is needed.",
+    "authorizationDoesNotBypass": "Source production approval gate or mandatory service approval for new host proof.",
+    "newHostProofMandatoryApproval": "pending; proof-file addition and authentication connection prohibited until approval",
+    "releaseExecution": "not_performed"
   },
-  "lastSuccessfulStage": "remote_source_commit_tree_blob_readback_and_exact_sha_static_build_verified",
+  "lastSuccessfulStage": "exact_corrected_source_browser_qa_independently_verified",
   "remainingStages": [
-    "Main documentation commit readback after this save; no branch mutation or dispatch implied.",
-    "Separately authorized credential-free browser screenshot QA with independent wide/narrow image inspection.",
-    "Separately authorized release preflight, provider collision checks and public HTTP/function verification.",
-    "IndexNow/GSC receipt and actual indexing/rank are separate unverified outcomes."
+    "Confirm exact documentation commit/tree readback after saving this reviewed packet.",
+    "Complete release review and reuse the existing publisher under the valid user public-release instruction.",
+    "Honor pending mandatory new-host-proof approval; do not add proof file or authentication connection before approval.",
+    "Deploy then verify actual public HTTP, content, internal links, canonical, robots, sitemap and live404.",
+    "Submit IndexNow and retain its receipt; actual indexing/ranking remains separate."
   ],
   "documentationSave": {
-    "status": "EXACT_MAIN_DOCUMENTATION_COMMIT_PENDING_READBACK",
-    "baseMainBeforeWrite": "b68fa7801b080da5a65fbaeceeba3aa9a81ac365",
-    "scope": "seoul-yeongdeungpo/** plus latest-progress independentPreparations.seoul-yeongdeungpo and updatedAt only",
+    "status": "EXACT_QA_DOCUMENTATION_COMMIT_PENDING_READBACK",
+    "observedBaseMain": "2c0f3609165ee9153b325fb240e7d7d3e0310e3d",
+    "scope": "seoul-yeongdeungpo/progress.json plus visual-qa/20261013/** and latest-progress independentPreparations.seoul-yeongdeungpo/updatedAt only",
+    "mustRefreshAndReconcileBeforeRemoteWrite": true,
     "preservesHistoricalCheckpoint": true,
-    "sameCommitSelfReferenceAvoided": true,
-    "remoteReadback": "Parent must confirm final main commit/tree after this documentation write."
+    "sameCommitSelfReferenceAvoided": true
   },
   "customerCopy": {
     "path": "copy/yeongdeungpo-copy.rev2.json",
@@ -98,7 +106,8 @@
     "reviewPath": "copy/copy-review.rev2.json",
     "reviewSha256": "d987260c39e27b504fdc9a262c9c97efd9460c3c2ec2b24f4c061bec4a1f52af",
     "scope": "Source text only, including intended shared UI. New visible directory/helper text needs separate review.",
-    "sourceCommit": "ccc6acd7a0f1beb20e4aa346b11ee35ae516ba58"
+    "sourceCommit": "ccc6acd7a0f1beb20e4aa346b11ee35ae516ba58",
+    "currentSourceWithIdenticalCopy": "ca5c98b12420212d0aa8dd0c9a742f3e94237c07"
   },
   "implementationHandoff": {
     "path": "implementation-handoff.json",
@@ -112,6 +121,15 @@
       "mainWriteScope": "seoul-yeongdeungpo_documentation_only",
       "planCompletedAt": "2026-10-12T23:01:23.718485+00:00",
       "copyCompletedAt": "2026-10-12T23:30:01.316370+00:00"
+    },
+    {
+      "name": "implement_yeongdeungpo_local_site",
+      "active": false,
+      "executionState": "source_saved_exact_sha_verified_documentation_save_finishing",
+      "mainWriteScope": "seoul-yeongdeungpo documentation and append-only latest-progress independent preparation",
+      "startedAt": "2026-10-13T01:30:47Z",
+      "actualSourceWriteStoppedAt": "2026-10-13T01:40:08.632972+00:00",
+      "sourceBranch": "site-factory-seoul-yeongdeungpo-direct"
     }
   ],
   "implementationEvidence": {
@@ -131,16 +149,68 @@
     "directoryBanners": 0,
     "adminFacilityLinks": 0,
     "actualIndexableTrueBuildExit": 1,
-    "allHtmlOnlyRevisionMetadataChangedFromCopyReview": true,
-    "screenQa": "UNVERIFIED_NOT_RUN"
+    "allHtmlOnlyRevisionMetadataChangedFromCopyReview": false,
+    "screenQa": "PASS_UNPUBLISHED_BROWSER_QA_ONLY",
+    "correctionImpact": "Approved copy and markup preserved. Only source CSS changes; emitted CSS filename and actual revision metadata differ from historical reviewed output. See exact correction evidence.",
+    "currentVerificationPath": "visual-qa/20261013/summary.json"
   },
-  "sourceReviewMetadataBoundary": "Immutable reviewed source retains pre-final-review conservative status labels. External final review and exact remote readback establish the later verified local static state; no source content was changed after independent review.",
+  "sourceReviewMetadataBoundary": "Original source/copy/approval reviews keep their historical hashes and conservative labels. The later independent CSS-only correction and exact committed-source CI/pixel evidence establish the current unpublished QA PASS. Source productionApproved remains false; user public-release instruction remains valid; mandatory host-proof service approval is still pending.",
   "resumeHistory": [
     {
       "at": "2026-10-13T01:40:08.632972+00:00",
       "from": "local prepared, remote held",
       "to": "remote source saved and exact SHA rebuilt",
       "remainingApprovalBoundary": "This bounded save does not resolve unrelated image-upload service approval or authorize CI/deployment/security changes."
+    },
+    {
+      "at": "2026-10-13T03:14:00Z",
+      "from": "original source saved; browser unverified",
+      "to": "original QA failed with two source defects; exact CSS correction independently reviewed/saved and new QA passed",
+      "originalFailedRunId": 38335701874,
+      "correctedRunId": 38338256404,
+      "sourceRevision": "ca5c98b12420212d0aa8dd0c9a742f3e94237c07",
+      "remainingBoundary": "Release review/deployment/publicHTTP/IndexNow incomplete; mandatory new-host-proof approval pending, no general publication authorization gap."
     }
-  ]
+  ],
+  "sourceHistory": [
+    {
+      "branch": "site-factory-seoul-yeongdeungpo-direct",
+      "revision": "ccc6acd7a0f1beb20e4aa346b11ee35ae516ba58",
+      "tree": "8f38fc32a55435e99d1379ac87253ffc356c895e",
+      "parent": "b68fa7801b080da5a65fbaeceeba3aa9a81ac365",
+      "sourceBranchCreated": true,
+      "sourceFiles": 308,
+      "readback": "All 308 remote Git blob IDs and detached actual Git checkout bytes match frozen source manifest; no mismatches.",
+      "sourceManifestSha256": "c6b40f1bc520220de52652992df4285ea1fbe149a770cc0b725b9bfb1e95d652",
+      "workflowOrControlsCreated": false,
+      "mainSourceCopied": false
+    }
+  ],
+  "qa": {
+    "status": "PASS_UNPUBLISHED_BROWSER_QA_ONLY",
+    "sourceRevision": "ca5c98b12420212d0aa8dd0c9a742f3e94237c07",
+    "controlRevision": "34a6c6f4aa9b0d5d031e378c245a437e2fafc5fb",
+    "runId": 38338256404,
+    "runAttempt": 1,
+    "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38338256404",
+    "event": "push",
+    "customerRoutes": 4,
+    "totalRoutesIncluding404": 5,
+    "widths": [
+      320,
+      390,
+      1280
+    ],
+    "fullPageImages": 15,
+    "supplementalImages": 56,
+    "nativeImages": 7,
+    "geometryChecks": 267,
+    "legalRows": 34,
+    "administrativeRows": 18,
+    "facilityFirstLandings": 24,
+    "pixelReviewMethod": "20 changed images directly opened;58 exact byte-identical images were all opened in the preserved first-run review.",
+    "originalFailedRunId": 38335701874,
+    "evidencePath": "visual-qa/20261013/summary.json",
+    "productionUrlTested": false
+  }
 }
