@@ -1,0 +1,155 @@
+name: Yeongdeungpo unpublished loopback visual QA only
+on:
+  push:
+    branches: [qa/unpublished-regional-visual-20261012]
+    paths:
+      - '.github/workflows/unpublished-yeongdeungpo-visual-qa.yml'
+      - '.github/qa/unpublished-yeongdeungpo/**'
+  workflow_dispatch:
+    inputs:
+      site:
+        description: Only the reviewed unpublished Yeongdeungpo source
+        required: true
+        type: choice
+        options: [yeongdeungpo]
+        default: yeongdeungpo
+permissions:
+  contents: read
+jobs:
+  visual-evidence:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/qa/unpublished-regional-visual-20261012' && (github.event_name == 'push' || inputs.site == 'yeongdeungpo')
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - key: yeongdeungpo
+            source: ccc6acd7a0f1beb20e4aa346b11ee35ae516ba58
+            tree: 69e6a349b682e05e168dc3f2e260e517d254108e
+            repository_tree: 8f38fc32a55435e99d1379ac87253ffc356c895e
+            path: site-factory/seoul-yeongdeungpo-flower
+            url: https://seoul-yeongdeungpo.fwith.kr
+            indexable: 'false'
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+      SOURCE_ROOT: ${{ github.workspace }}/source
+      EVIDENCE_ROOT: ${{ github.workspace }}/evidence/${{ matrix.key }}
+      QA_ROOT: ${{ github.workspace }}/control/.github/qa/unpublished-yeongdeungpo
+      SITE_FACTORY_REVISION: ${{ matrix.source }}
+      SITE_URL: ${{ matrix.url }}
+      SITE_ORIGIN: ${{ matrix.url }}
+      SITE_INDEXABLE: ${{ matrix.indexable }}
+    steps:
+      - name: Check out exact QA control commit only
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - name: Check out exact saved unpublished source separately
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.source }}
+          path: source
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify actual source tree, all reviewed bytes and approval boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C control rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C source rev-parse HEAD)" = "$SITE_FACTORY_REVISION"
+          test "$(git -C source rev-parse 'HEAD^{tree}')" = '${{ matrix.repository_tree }}'
+          test "$(git -C source rev-parse 'HEAD:${{ matrix.path }}')" = '${{ matrix.tree }}'
+          mkdir -p "$EVIDENCE_ROOT/logs"
+          python3 "$QA_ROOT/adapter.py" bind --root "$SOURCE_ROOT" --sha "$SITE_FACTORY_REVISION" --output "$EVIDENCE_ROOT/bound-spec.json"
+          cmp "$QA_ROOT/bound-spec.json" "$EVIDENCE_ROOT/bound-spec.json"
+          python3 "$QA_ROOT/adapter.py" source --root "$SOURCE_ROOT" --binding "$EVIDENCE_ROOT/bound-spec.json" --output "$EVIDENCE_ROOT/source-readback.json"
+          git -C control rev-parse 'HEAD^{tree}' | tee "$EVIDENCE_ROOT/logs/control-tree.txt"
+      - name: Install exact native dependency lock
+        working-directory: source/${{ matrix.path }}
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Run every native test and prove two identical exact-SHA builds
+        working-directory: source/${{ matrix.path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in first second; do
+            npm run build 2>&1 | tee "$EVIDENCE_ROOT/logs/native-build-$attempt.log"
+            npm test 2>&1 | tee "$EVIDENCE_ROOT/logs/native-tests-$attempt.log"
+            npm run qa 2>&1 | tee "$EVIDENCE_ROOT/logs/native-qa-$attempt.log"
+            python3 "$QA_ROOT/adapter.py" manifest --root "$SOURCE_ROOT" --binding "$EVIDENCE_ROOT/bound-spec.json" --output "$EVIDENCE_ROOT/logs/$attempt.manifest.json"
+          done
+          cmp "$EVIDENCE_ROOT/logs/first.manifest.json" "$EVIDENCE_ROOT/logs/second.manifest.json"
+          OFFLINE_TEST_REPORT="$EVIDENCE_ROOT/offline-tests.json" python3 "$QA_ROOT/run_offline_tests.py" 2>&1 | tee "$EVIDENCE_ROOT/logs/control-tests.log"
+          cp -a dist "$EVIDENCE_ROOT/dist"
+      - name: Install pinned official Playwright and Korean fonts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install 'playwright==1.63.0'
+          python3 -m playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          fc-match 'Noto Sans CJK KR' | tee "$EVIDENCE_ROOT/logs/font-match.txt"
+      - name: Run unchanged native gate and independently reviewed additive captures
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 "$QA_ROOT/run_bound_capture.py" --binding "$EVIDENCE_ROOT/bound-spec.json" --allow-loopback-runner 2>&1 | tee "$EVIDENCE_ROOT/logs/browser-capture.log"
+          test "$(git -C control rev-parse HEAD)" = "$GITHUB_SHA"
+          git -C control diff --exit-code
+      - name: Seal captured evidence after logs close, including failures
+        if: always()
+        run: python3 "$QA_ROOT/adapter.py" seal --binding "$QA_ROOT/bound-spec.json" --evidence "$EVIDENCE_ROOT"
+      - name: Retain machine evidence, bindings and native report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unpublished-yeongdeungpo-reports-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            evidence/yeongdeungpo/*.json
+            evidence/yeongdeungpo/logs/
+            evidence/yeongdeungpo/native/report.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain exact deterministic unpublished build
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unpublished-yeongdeungpo-dist-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/yeongdeungpo/dist/
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 7
+      - name: Retain unchanged native screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unpublished-yeongdeungpo-native-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/yeongdeungpo/native/*.png
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain all full-page route captures at every width
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unpublished-yeongdeungpo-fullpages-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/yeongdeungpo/screenshots/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain selected risk-based viewport and all initial-anchor captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unpublished-yeongdeungpo-supplemental-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/yeongdeungpo/supplemental/
+          if-no-files-found: error
+          retention-days: 7
