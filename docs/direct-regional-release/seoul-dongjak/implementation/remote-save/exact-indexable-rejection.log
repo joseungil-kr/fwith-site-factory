@@ -1,0 +1,16 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> build
+> node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && python3 scripts/test_output_bindings.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_links.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py && python3 scripts/qa_dongjak.py && python3 scripts/test_dongjak.py
+
+file:///workspace/shared/dongjak-remote-checkout/site-factory/seoul-dongjak-flower/scripts/assert_preview_boundary.mjs:3
+  throw new Error('Production-indexable build is disabled for this unapproved regional template');
+        ^
+
+Error: Production-indexable build is disabled for this unapproved regional template
+    at file:///workspace/shared/dongjak-remote-checkout/site-factory/seoul-dongjak-flower/scripts/assert_preview_boundary.mjs:3:9
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:643:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.19.0

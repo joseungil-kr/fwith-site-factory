@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "/root/review_dongjak_regional_plan",
+  "gate": "LOCAL_COPY_ONLY",
+  "revision": 5,
+  "verdict": "REVISE",
+  "severity": "minor_editorial",
+  "reviewedAt": "2026-10-13T01:03:27.634336+00:00",
+  "inputs": [
+    {
+      "path": "/workspace/shared/dongjak-evidence/copy-v1/article-copy.rev5.json",
+      "sha256": "737a0255f42648d0c0a8f300dd9b9fb22e5693ffa1a2761fa33bdca4ae2f9fd5"
+    },
+    {
+      "path": "/workspace/shared/dongjak-evidence/copy-v1/common-visible-copy.rev5.json",
+      "sha256": "b158fa9b9faa4049f11b94c8023073ab3aee7fa8fdd3088b7e5b6d5a9701649f"
+    },
+    {
+      "path": "/workspace/shared/dongjak-evidence/copy-v1/full-copy-surface.rev5.txt",
+      "sha256": "1c7e792f0ec5f6f15f89512b1c983a83f23008251ce0250fa53071dc4d01b883"
+    },
+    {
+      "path": "/workspace/shared/dongjak-evidence/copy-v1/implementation-handoff.rev5.json",
+      "sha256": "344d79ba5f179d8a2b95648296affb20245eeea9ccb71897f2aa38ce5a04e455"
+    },
+    {
+      "path": "/workspace/shared/dongjak-evidence/copy-v1/copy-review-input-manifest.rev5.json",
+      "sha256": "683889a3f473c7f643aca254cd85ece703bf517d5aeacaef699103419069ffce"
+    }
+  ],
+  "directlyVerified": [
+    "Full article plus common-visible UI read; same common UI bytes as fully read rev4.",
+    "391 independent content/byte/link/input checks had no failure; body2650 chars including whitespace or2032 excluding whitespace.",
+    "Names, SKU prices, CAU/BRMH facts and policy scope preserved. Existing10-body comparison has no identical whole sentence>=18 chars under stated normalization, with material semantic policy overlap."
+  ],
+  "requiredEdits": [
+    {
+      "id": "C1",
+      "location": "sections[2] words-order paragraphs[0]",
+      "exactText": "두 문장은 표현을 고르실 때 참고할 수 있는 예시로, 장례식장이 정한 문구는 아닙니다.",
+      "reason": "앞의 예를 들어로 이미 예시임이 분명하다. 고객에게 불필요한 검증 해설/중복이어서 SALES_COPY_ACCEPTANCE의 고객용 문구에서 내부 검토 사정을 빼고 유용한 설명만 남기는 기준에 맞춰 줄인다.",
+      "requestedChange": "창작 예시라는 검증 분류는 fact-map에 남기고 고객 본문에서 이 문장을 덜어낸다."
+    },
+    {
+      "id": "C2",
+      "location": "sections[2] words-order paragraphs[2]",
+      "exactText": "희망 전달시간은 주문 상담 때 요청하시는 시간입니다. 실제 가능한 전달 일정은 상담에서 안내합니다.",
+      "reason": "희망시간의 사전식 정의를 반복할 필요가 없다. 실제 가능한 시간은 상담에서 정한다는 구매 관련 차이는 보존한다.",
+      "requestedChange": "발인이 임박한 경우 결제 전 희망 전달일정을 받아 실제 가능한 시간을 상담한다는 한 번의 자연스러운 설명으로 정리한다."
+    }
+  ],
+  "doNotChange": [
+    "Facility policy subjects and limits",
+    "Four SKU prices and individual CTAs",
+    "Mixed materials, extra shipping possibility and no collection",
+    "Refund conditions and exceptions",
+    "No delivery guarantee/installation/removal service invention"
+  ],
+  "noFillToTarget": "삭제로 줄어든 분량을 무관한 설명으로 채우지 않는다. 글자수는 자동합격 기준이 아니다.",
+  "laterGates": [
+    "Rebind exact final files and reread after edits",
+    "Independent tone and information-completeness PASS separately",
+    "No runtime, source commit, public HTTP, screenshots or indexing verified"
+  ],
+  "verificationFile": {
+    "path": "/workspace/shared/dongjak-review/copy-integrity.rev5.json",
+    "sha256": "cca20a0c6d90163bc05fd8874b990d695cbd5d9682f82ee21b4b1223617a7fe5"
+  },
+  "remoteMutations": 0
+}

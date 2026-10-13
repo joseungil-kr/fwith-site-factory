@@ -1,0 +1,253 @@
+{
+  "createdAt": "2026-10-13T00:36:27.481Z",
+  "purpose": "Preserve observed facility leads separately from evaluated page candidates. No local count target or page-count quota is applied.",
+  "classificationPolicy": {
+    "searchResult": "도구 보고",
+    "directSavedOriginal": "직접 확인 of source content only",
+    "candidateStatus": "추정·판단",
+    "venueOperationOrWreathAcceptance": "미확인 unless explicitly supported by official current original"
+  },
+  "observedLeads": [
+    {
+      "id": "L-F01",
+      "name": "중앙대학교병원 장례식장",
+      "aliases": [
+        "중앙대병원 장례식장",
+        "중앙대학교병원장례식장"
+      ],
+      "intent": "funeral",
+      "status": "evaluated-grouped-funeral-candidate",
+      "sources": [
+        "raw/q01-district-funeral.json",
+        "raw/q02-cau-funeral.json",
+        "raw/competitor-oneul-cau.txt",
+        "raw/official-cau-cooperation.txt"
+      ],
+      "note": "Official cooperation original independently HTTP200; actual room policy adds useful local content."
+    },
+    {
+      "id": "L-F02",
+      "name": "서울특별시보라매병원 장례식장",
+      "aliases": [
+        "보라매병원 장례식장",
+        "서울특별시보라매병원장례식장"
+      ],
+      "intent": "funeral",
+      "status": "evaluated-grouped-funeral-candidate",
+      "sources": [
+        "raw/q03-brmh-funeral.json",
+        "raw/competitor-area.txt",
+        "raw/competitor-funercorp-cau.txt"
+      ],
+      "note": "Parent web-reader official text/alt was read from brmh-web.json and brmh-service-web.json: static location confirmed. HTTP status unavailable; independent GET502 remains a failure. No external wreath reception permission inferred."
+    },
+    {
+      "id": "L-M01",
+      "name": "국립서울현충원",
+      "intent": "memorial-tribute",
+      "status": "hold-separate-product-and-intent",
+      "sources": [
+        "raw/competitor-area.txt",
+        "raw/q10-cemetery-floral.json"
+      ],
+      "note": "Observed tribute/cemetery flowers are not automatically suited to the verified 3-tier funeral catalog."
+    },
+    {
+      "id": "L-W01",
+      "name": "더에스비웨딩컨벤션",
+      "aliases": [
+        "더에스비웨딩홀"
+      ],
+      "intent": "wedding",
+      "status": "hold-official-current-venue-evidence",
+      "sources": [
+        "raw/q05-sb-wedding.json",
+        "raw/competitor-sb-wedding.txt"
+      ],
+      "note": "Original merchant blog HTTP200; flora original403. Parent reports official source resolves to placeholder. Not proof of closure; current official venue facts unconfirmed."
+    },
+    {
+      "id": "L-W02",
+      "name": "건설회관63웨딩홀",
+      "intent": "wedding",
+      "status": "hold-name-and-current-operation",
+      "sources": [
+        "raw/competitor-wedding-sangdo.txt",
+        "raw/search-initial-repeat.json"
+      ],
+      "note": "Preserve independently; do not silently merge into TheSB or assume distinct active site without evidence."
+    },
+    {
+      "id": "L-W03",
+      "name": "상도교회",
+      "intent": "church-wedding",
+      "status": "hold-official-wedding-and-wreath-suitability",
+      "sources": [
+        "raw/q04-district-wedding.json",
+        "raw/competitor-wedding-sangdo.txt"
+      ],
+      "note": "Competitor has address/order form, but official current wedding/wreath conditions not verified by this worker."
+    },
+    {
+      "id": "L-W04",
+      "name": "공군회관",
+      "intent": "wedding",
+      "status": "excluded-outside-dongjak-jurisdiction",
+      "sources": [
+        "raw/q04-district-wedding.json",
+        "raw/competitor-wedding-sangdo.txt"
+      ],
+      "note": "Original competitor Dongjak classification remains preserved. Parent official Air Force Hotel directions raw text directly read: 서울특별시 영등포구 여의대방로259. Do not promote into Dongjak candidate.",
+      "supplementalEvidence": "../raw/airforce-directions.txt"
+    },
+    {
+      "id": "L-W05",
+      "name": "핸드픽트호텔 나루",
+      "intent": "wedding",
+      "status": "hold-current-name-and-venue",
+      "sources": [
+        "raw/q04-district-wedding.json",
+        "raw/competitor-wedding-sangdo.txt"
+      ],
+      "note": "Keep named merchant lead; relationship to Marie & Co Dongjak Sky requires official verification."
+    },
+    {
+      "id": "L-W06",
+      "name": "마리앤코 동작스카이",
+      "aliases": [
+        "핸드픽트호텔 내 마리앤코"
+      ],
+      "intent": "small-wedding",
+      "status": "hold-current-name-and-wreath-suitability",
+      "sources": [
+        "raw/search-initial-repeat.json",
+        "raw/wedding-venue-longtails.json"
+      ],
+      "note": "Wedding listing says Handpicked Hotel location, but merchant listing alone insufficient to prove suitability or relationship to Naru."
+    },
+    {
+      "id": "L-W07",
+      "name": "시어터웨딩라무르",
+      "intent": "wedding",
+      "status": "hold-official-current-venue-evidence",
+      "sources": [
+        "raw/q04-district-wedding.json",
+        "raw/competitor-wedding-sangdo.txt"
+      ],
+      "note": "Source observation preserved; no official original checked by this worker."
+    },
+    {
+      "id": "L-W08",
+      "name": "대방교회",
+      "intent": "church-wedding",
+      "status": "hold-historical-source",
+      "sources": [
+        "raw/search-initial-repeat.json"
+      ],
+      "note": "Floral blog result published about 16.8 years ago; current operation/conditions cannot follow from old delivery post."
+    },
+    {
+      "id": "L-W09",
+      "name": "서울여성플라자 피움서울",
+      "intent": "public-wedding",
+      "status": "hold-parent-evaluation",
+      "sources": [
+        "raw/competitor-wedding-sangdo.txt"
+      ],
+      "note": "Observed in competitor related-venue list; parent has official public wedding evidence. Contractor flower-decoration rule must not be expanded into guest-wreath ban."
+    },
+    {
+      "id": "L-E01",
+      "name": "상도어울마당 아트홀",
+      "intent": "performance-event",
+      "status": "hold-current-wreath-suitability-and-unique-value",
+      "sources": [
+        "raw/search-initial-repeat.json",
+        "raw/q09-dongjak-performance.json"
+      ],
+      "note": "Official reservation search result establishes hall rental lead only, not wreath acceptance."
+    },
+    {
+      "id": "L-E02",
+      "name": "까망돌어울마당 아트홀",
+      "intent": "performance-event",
+      "status": "hold-current-wreath-suitability-and-unique-value",
+      "sources": [
+        "raw/search-initial-repeat.json",
+        "raw/q09-dongjak-performance.json"
+      ],
+      "note": "Rental search result is not floral purchase or acceptance proof."
+    },
+    {
+      "id": "L-E03",
+      "name": "숭실대학교 한경직기념관 김덕윤예배실",
+      "intent": "university-event",
+      "status": "hold-historical-event-only",
+      "sources": [
+        "raw/q12-performance-refined.json"
+      ],
+      "note": "2023 alumni meeting article includes a wreath attachment in search-tool report. Not current general entry permission, performance-gift demand or business delivery evidence."
+    },
+    {
+      "id": "L-O01",
+      "name": "노량진수산시장",
+      "intent": "market-shop-opening",
+      "status": "hold-no-specific-recipient-or-current-wreath-condition",
+      "sources": [
+        "raw/q11-opening-refined.json",
+        "raw/competitor-area-opening.txt"
+      ],
+      "note": "Merchant uses market-area opening narrative. Actual specific shop/opening or verified shared delivery constraint not established."
+    },
+    {
+      "id": "L-X01",
+      "name": "보라매공원",
+      "intent": "context-landmark",
+      "status": "observed-only-not-purchase-candidate",
+      "sources": [
+        "raw/q11-opening-refined.json",
+        "raw/competitor-area-opening.txt"
+      ],
+      "note": "Landmark list in opening page is not a buying destination."
+    },
+    {
+      "id": "L-X02",
+      "name": "사육신역사공원",
+      "intent": "context-landmark",
+      "status": "observed-only-not-purchase-candidate",
+      "sources": [
+        "raw/q11-opening-refined.json",
+        "raw/competitor-area-opening.txt"
+      ],
+      "note": "Landmark list in opening page is not evidence of an opening event or accepted wreaths."
+    }
+  ],
+  "observedLeadsCount": 18,
+  "unpromotedQueries": [
+    {
+      "terms": [
+        "동작구 아르테스 축하화환",
+        "중앙대학교 루이스홀 화환",
+        "중앙아트홀 화환"
+      ],
+      "note": "Exploratory query terms; no sufficiently relevant result returned. These are not newly observed venue leads."
+    }
+  ],
+  "outsideScopeOrContextOnlyResultLeads": [
+    "더바실리움 웨딩홀 (result says 성남 분당)",
+    "한국기독교연합회관 연합웨딩홀",
+    "한국교총MW컨벤션",
+    "로프트가든344",
+    "라비니움",
+    "루이비스웨딩 중구점",
+    "안양 더블룸하우스웨딩",
+    "농촌진흥청 농민회관 웨딩홀 (result says 수원)",
+    "보람의정부장례식장",
+    "보람새천년장례식장",
+    "국립중앙의료원 장례식장",
+    "전원예식장 (competitor related link)",
+    "웨딩아테네 (competitor related link)",
+    "N아모리스웨딩·UA컨벤션·W컨벤션 등 포항 화환결과에 묶인 시설"
+  ],
+  "preservationNote": "All 256 raw returned result sections remain in all-search-result-observations.json and their exact raw sources, including irrelevant facilities and incidental footer links. The explicit Dongjak lead set is a relevance-reviewed ledger, not a claim to list every named entity on the web or all operating facilities. Parent official research may add leads without replacing this ledger."
+}

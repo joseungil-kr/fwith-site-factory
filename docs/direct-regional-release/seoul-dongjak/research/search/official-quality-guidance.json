@@ -1,0 +1,48 @@
+{
+  "createdAt": "2026-10-13T00:39:28.646Z",
+  "classification": "직접 확인 of current official HTML; project implications are 추정·판단",
+  "sources": [
+    {
+      "id": "guideline-google-spam",
+      "url": "https://developers.google.com/search/docs/essentials/spam-policies",
+      "pageLastUpdated": "2026-08-28 UTC",
+      "directFindings": "Doorway abuse includes substantially similar geography/query pages funnelling to a usable destination. Scaled content abuse concerns mass content without user value regardless of production method. Keyword stuffing and scraped/lightly modified copies are also covered.",
+      "projectImplication": "Code/layout reuse is compatible with original useful content, but district-name substitutions or artificial facility×intent×dong URL expansion are risky. One grouped page must be a useful answer and buying path, not merely a funnel. This is risk analysis, not a Google enforcement determination."
+    },
+    {
+      "id": "guideline-google-helpful",
+      "url": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
+      "pageLastUpdated": "2026-10-05 UTC",
+      "directFindings": "Official questions emphasize original analysis, completeness, clear sourcing, truthful expertise and enough information to achieve a goal. The page explicitly rejects a preferred word-count assumption.",
+      "projectImplication": "2,500–3,000 Korean body characters is the user's editorial target, not Google's threshold. Original facility policy + verified products + honest total-price consultation should solve the purchase question. Do not invent experience, delivery cases or filler."
+    },
+    {
+      "id": "guideline-naver-abusing",
+      "url": "https://searchadvisor.naver.com/guide/content-abusing",
+      "pageLastUpdated": "Not found in captured body",
+      "directFindings": "Current official spam examples include keyword repetition, template mass production with only sentence changes, automated scraping and misleading phone/address/link content. Technology alone does not determine the violation.",
+      "projectImplication": "Use current official venue identity and contact data, avoid mechanically reskinned region pages, and do not turn merchant directory errors into local facts."
+    },
+    {
+      "id": "guideline-naver-content",
+      "url": "https://searchadvisor.naver.com/guide/content-basic",
+      "pageLastUpdated": "Not found in captured body",
+      "directFindings": "Naver recommends precise titles/descriptions, consistent subject coverage, credible sources, truthful original contributions, readable structure, textual key facts and current prices/policies. More repeated keywords do not guarantee higher exposure.",
+      "projectImplication": "Render actual FAQs/product terms as text, show real SKU destination links, retain brief official sources, and review the seller voice across all exposed copy."
+    },
+    {
+      "id": "guideline-naver-create",
+      "url": "https://searchadvisor.naver.com/guide/seo-basic-create",
+      "pageLastUpdated": "Not found in captured body",
+      "directFindings": "Same-content multiple hostnames/URLs should be consolidated; canonical/redirects identify representative URLs. Site maps, crawlable resources, meaningful HTTP errors and mobile usability are covered.",
+      "projectImplication": "Avoid independent URLs for synonyms; technical future testing must inspect actual canonical, sitemap, noindex, true404 and mobile output. No runtime changes were made here."
+    }
+  ],
+  "notInferred": [
+    "No minimum word count for indexation",
+    "No automatic penalty for any content reuse",
+    "No ranking guarantee from source count or article count",
+    "No current indexing or search performance confirmed"
+  ],
+  "evidence": "raw/http-readbacks.json and raw/http-readbacks-supplement.json bind every document to original URL, HTTP200, capture time, bytes, hashes and saved HTML/text."
+}

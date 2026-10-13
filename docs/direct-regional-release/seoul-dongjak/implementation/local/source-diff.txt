@@ -1,0 +1,2174 @@
+--- geumcheon/README.md
++++ dongjak/README.md
+@@ -1,11 +1,13 @@
+-# Geumcheon prepared, unpublished source
++# Dongjak local source preparation
+ 
+-Scope: seoul-geumcheon-direct-independent-preparation-20261012. Region code 11545.
++This is an unpublished Astro static site for 서울특별시 동작구 (11590). The frozen plan has one customer article at /regions/dongjak-funeral-wreath/, two facility anchors, twelve candidate leads (two active, ten held), and the official nine legal dongs, fifteen administrative dongs and eighteen relations. Geography counts are not article quotas.
+ 
+-Frozen N=1: one complete condolence-wreath purchase guide with two distinct facility anchors. The research trace preserves ten leads, with two active funeral facilities and eight held candidates. The official geographic inventory is three legal dongs, ten administrative dongs and ten membership relations; these counts are not article quotas.
++The exact independently COPY-reviewed revision 6 is stored unchanged in src/data/dongjak-article-copy.json and src/data/dongjak-common-copy.json. Source rendering reads those files directly. All thirteen body paragraphs, two visible FAQ answers, six official source links, four actual product cards, and their names, basic prices and individual order links are retained. The article's first section contains product cards after its first paragraph. Sources follow the final consultation banner. Extra accessibility, geography and explicitly named B201 CTA labels are isolated in src/data/dongjak-ui-copy.json for independent interface review.
+ 
+-This directory is source preparation only. productionApproved=false; SITE_INDEXABLE=true is rejected. There is no public release authorization, release issue, workflow dispatch, provider change or IndexNow submission. Static HTML and local test results do not imply real-screen or public verification.
++productionApproved=false and publicationAuthorized=false. SITE_INDEXABLE=true fails before build. The preview origin is https://dongjak-preview.invalid; this reserved placeholder is not a public site or a verified hostname. All four generated routes are noindex, robots disallows crawling, no customer sitemap is emitted, the one-card directory has zero banners, and home/detail each have the three approved banner assets. 404 has no marketing banner or canonical.
+ 
+-The new Geumcheon-only adapter preserves the exact Guro adapter, frozen Guro binding, original single-facility adapter and midpoint helper. All 103 original Guro source files are preserved in tests/reference/guro-runtime and tested separately with current library modules overlaid. Runtime customer content comes from the exact reviewed Geumcheon revision 3, not name-replaced Guro copy.
++Run npm test, ASTRO_TELEMETRY_DISABLED=1 XDG_CONFIG_HOME=/tmp/dongjak-config npm run build, and npm run qa. Dependencies and lockfile resolutions are inherited. The local preparation uses a read-only link to the existing installed Geumcheon dependencies; that link is not part of the source package. A clean permitted environment should run npm ci from the checked-in lockfile.
+ 
+-Run npm test, ASTRO_TELEMETRY_DISABLED=1 npm run build and npm run qa. The lockfile preserves original dependency resolutions. README and source metadata do not grant publication permission. Read RUNTIME_REGENERATION.md and the independent evidence alongside the final exact source commit.
++Original Guro, Geumcheon and Yeongdeungpo regression tests and source fixtures are preserved under tests/reference. Their original tests run unchanged against the current additive dispatcher. Two duplicate root template-placement test files were relocated byte-for-byte under tests/reference and remain executed in the original fixtures; the Dongjak source and compiled-output tests replace incompatible H2-only / source-before-FAQ assumptions without changing original assertions. See RUNTIME_REGENERATION.md.
++
++Local source/build/test evidence does not establish browser rendering, public HTTP, source saved to GitHub, deployment, or search indexing. No remote Git objects, commit, ref, issue, workflow, provider, deployment or IndexNow operation is included in this preparation.
+--- geumcheon/RUNTIME_REGENERATION.md
++++ dongjak/RUNTIME_REGENERATION.md
+@@ -1,11 +1,35 @@
+-# Geumcheon source regeneration boundaries
++# Regeneration and verification boundaries
+ 
+-This prepared, unpublished runtime reuses exact Guro source commit 500d82d01c1cdaed3ebde047bb3ce056705daac1. The independently reviewed frozen Geumcheon plan has one canonical article, two physical facilities, three legal dongs, ten administrative dongs and ten membership relations. All ten candidate leads remain in the plan trace; eight held leads are excluded from customer routes.
++## Inputs and reuse
+ 
+-The Geumcheon-only adapter and frozen binding are additive. Guro adapter, Guro frozen binding, legacy adapter and directory midpoint helper retain original bytes. tests/reference/guro-runtime contains the complete unchanged original source fixture; the regression runner overlays current library modules and runs every original test without weakening N3 or single-facility expectations.
++Geumcheon N1 base: bbb016305dd2fe29f7d985a669acaa02224a9f2f. Guro ancestor: 500d82d01c1cdaed3ebde047bb3ce056705daac1. Latest upstream main observed for the plan: b68fa7801b080da5a65fbaeceeba3aa9a81ac365. Yeongdeungpo's current local fixes were inspected and reused for geography-only administrative rows, H2/H3 checking, base-price mutations and exact card-label bindings. This is reuse provenance, not a Dongjak source commit.
+ 
+-src/data/geumcheon-copy.json is the exact independently reviewed revision 3. Rendered home, directory, detail, product cards, CTA variants, footer and 404 consume it. The sole detail has four verified funeral SKUs and three visible FAQ answers. Additional source metadata never grants publication authority.
++Frozen input SHA-256:
++- fixed-plan.json: 8c17e681bc49944eec59698fbd6dfea3ff4c91773e0d45dbe955dae20b443e7c
++- article-copy.rev6.json: 428b4c3a66e648c15cf35c3887aee619c1e8eeb724f98ea8cdaa044e55001489
++- common-visible-copy.rev6.json: b158fa9b9faa4049f11b94c8023073ab3aee7fa8fdd3088b7e5b6d5a9701649f
++- independent PLAN review: 921a64d860efdf1a86cce4ea56c349ad1e917d45315523b40f760c64fa84aa3d
++- independent COPY review rev6: fda619d326350cc6e1c47d6e67e6d3e8411e1872690089efd4ce89a5040b1c6b
+ 
+-Build/test: npm ci, npm test, npm run build, npm run qa. In constrained workspaces set ASTRO_TELEMETRY_DISABLED=1 and XDG_CONFIG_HOME to a writable directory. npm run qa:browser is separate and requires a permitted functional Chromium environment. Static HTML checks do not establish pixel rendering or public HTTP behavior.
++review-inputs/dongjak retains those exact input/review bytes. They are evidence for their original scoped review, not publication authority. The plan/handoff's historical earlier-stage authorization labels remain unchanged; the current task authorizes local implementation only.
+ 
+-productionApproved=false. SITE_INDEXABLE=true is rejected. Preview output is globally noindex, robots disallows crawling and sitemap contains no customer URLs. One-card directory stays noindex and has no shared marketing banners under unchanged <3 / >=3 rules; home/detail each have the three approved banners. 404 has no banners or inline order block. No deployment workflow or provider-control script is added. Gangseo and Guro sources, public-release priorities and national 46/230 record remain unchanged. Public release needs separate explicit approval.
++## Adapter and preserved controls
++
++src/lib/dongjak-regions.mjs is additive. Original legacy, Guro, Geumcheon and Yeongdeungpo adapters, their frozen bindings, original heading helper, directory midpoint helper and shared banner component retain their bytes. The current dispatcher rejects cross-site mode collisions. Dongjak's legal/admin mapping is exact; partial administrative relations never become facility assignments. Directory administrative rows contain geography only, while two precise facility links live in the legal-dong list.
++
++scripts/assert_preview_boundary.mjs, qa_static.py, qa_faq_products.py, test_faq_products.py, qa_shared_banners.py, test_shared_banners.py and test_directory_spacing.py are preserved. Directory-link QA adds Dongjak to the existing grouped/H3 model and requires zero administrative facility links. Directory-spacing QA selects the region by siteKey to prevent preserved historical copy inputs from masquerading as current data, then binds exact Dongjak card labels without changing >=3 eligibility. Base-price mutation tests reuse Yeongdeungpo's exact '상품 기본가격' label fix.
++
++## Original assertion preservation
++
++scripts/test_inherited_regressions.mjs runs each complete original Guro, Geumcheon and Yeongdeungpo test suite in an isolated temporary directory, overlays current shared lib modules and supplies additive import dependencies, then removes only that temporary directory. Original expected N3/N1/N2 values, old source hashes and all native negative assertions are unchanged.
++
++The two root duplicate files tests/answer-opening.test.mjs and tests/sources.test.mjs have original bytes at tests/reference/geumcheon-answer-opening.test.mjs.txt and tests/reference/geumcheon-sources.test.mjs.txt, as well as the complete original test fixtures. Their template-specific expectations cannot express the new exact structured section/H3/source-last layout. tests/dongjak-grouped.test.mjs supplies current source/identity assertions; scripts/qa_dongjak.py and scripts/test_dongjak.py independently parse and mutate the actual compiled HTML to verify full paragraph ordering, H3 anchors, exact copy, FAQ, per-SKU prices/links, geography, banner placement, footer, 404 and preview boundaries.
++
++## Commands and limitations
++
++npm test
++ASTRO_TELEMETRY_DISABLED=1 XDG_CONFIG_HOME=/tmp/dongjak-config npm run build
++npm run qa
++SITE_INDEXABLE=true npm run build (must fail before Astro runs)
++
++Use the normal lockfile in a permitted environment. The source manifest excludes node_modules, dist, .astro, Python caches and generated QA reports. The output manifest covers every file under dist. A valid local result needs successful commands, actual artifacts and independent source/output inspection. Browser screenshots and public HTTP have not been verified here. Do not retry previously blocked Chromium/socket routes, invent a public hostname, remove guards, dispatch workflows, create Git objects, deploy or submit IndexNow under this local scope.
+--- geumcheon/package-lock.json
++++ dongjak/package-lock.json
+@@ -1,10 +1,10 @@
+ {
+-  "name": "flower-direct-static-geumcheon",
++  "name": "flower-direct-static-dongjak",
+   "lockfileVersion": 3,
+   "requires": true,
+   "packages": {
+     "": {
+-      "name": "flower-direct-static-geumcheon",
++      "name": "flower-direct-static-dongjak",
+       "dependencies": {
+         "@astrojs/sitemap": "^3.0.0",
+         "astro": "^7.3.5"
+--- geumcheon/package.json
++++ dongjak/package.json
+@@ -1,12 +1,12 @@
+ {
+-  "name": "flower-direct-static-geumcheon",
++  "name": "flower-direct-static-dongjak",
+   "type": "module",
+   "private": true,
+   "scripts": {
+-    "build": "node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && python3 scripts/test_output_bindings.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_links.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py",
++    "build": "node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && python3 scripts/test_output_bindings.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_links.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py && python3 scripts/qa_dongjak.py && python3 scripts/test_dongjak.py",
+     "dev": "astro dev",
+-    "test": "node scripts/test_guro_regression.mjs && node --test tests/*.test.mjs",
+-    "qa": "python3 scripts/qa_static.py && python3 scripts/test_output_bindings.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_links.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py",
++    "test": "node scripts/test_inherited_regressions.mjs && node --test tests/*.test.mjs",
++    "qa": "python3 scripts/qa_static.py && python3 scripts/test_output_bindings.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_links.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py && python3 scripts/qa_dongjak.py && python3 scripts/test_dongjak.py",
+     "qa:browser": "python3 scripts/qa_browser_rendering.py"
+   },
+   "dependencies": {
+--- geumcheon/scripts/qa_directory_links.py
++++ dongjak/scripts/qa_directory_links.py
+@@ -9,19 +9,20 @@
+   if tag=='li' and (a.get('data-administrative-unit') or a.get('data-legal-unit')):
+    self.kind='admin' if a.get('data-administrative-unit') else 'legal';self.current=a.get('data-administrative-unit') or a['data-legal-unit'];getattr(self,self.kind)[self.current]=[]
+   elif tag=='a' and self.current:getattr(self,self.kind)[self.current].append(a.get('href'))
+-  if tag=='h2' and a.get('id'):self.heading=a['id'];self.anchors.setdefault(self.heading,[]).append('')
++  if tag in ['h2','h3'] and a.get('id'):self.heading=a['id'];self.anchors.setdefault(self.heading,[]).append('')
+  def handle_data(self,data):
+   if self.heading:self.anchors[self.heading][-1]+=data
+  def handle_endtag(self,tag):
+   if tag=='li':self.current=None
+-  if tag=='h2':self.heading=None
+-r=Path('.');c=json.loads((r/'src/data/region-coverage.json').read_text());pages=json.loads((r/'src/data/pages.json').read_text());doc=Links((r/'dist/regions/index.html').read_text());assignment=c.get('representativeAssignment');grouped=assignment in ['guro-grouped-purchase-context-v1','geumcheon-grouped-funeral-context-v1']
++  if tag in ['h2','h3']:self.heading=None
++r=Path('.');c=json.loads((r/'src/data/region-coverage.json').read_text());pages=json.loads((r/'src/data/pages.json').read_text());doc=Links((r/'dist/regions/index.html').read_text());assignment=c.get('representativeAssignment');grouped=assignment in ['guro-grouped-purchase-context-v1','geumcheon-grouped-funeral-context-v1','yeongdeungpo-grouped-occasion-context-v1','dongjak-grouped-funeral-context-v1']
+ def expected(unit):
+  if grouped:return [a['href'] for p in pages for a in p['facilityAnchors'] if a['unitKey']==unit]
+  return [p['url'] for p in pages if unit in p['regionUnitKeys']]
+ count=0
+ for admin in c['administrativeCrosswalk']:
+- links=[link for relation in admin['relations'] for link in expected(relation['unitKey'])]
++ # N2 administrative rows are geography only: never imply a facility's precise administrative assignment.
++ links=[] if assignment in ['yeongdeungpo-grouped-occasion-context-v1','dongjak-grouped-funeral-context-v1'] else [link for relation in admin['relations'] for link in expected(relation['unitKey'])]
+  assert doc.admin[admin['aliasKey']]==links,f'Incomplete/wrong administrative links: {admin["aliasKey"]}'
+  count+=len(links)
+ if grouped:
+@@ -30,6 +31,6 @@
+  for p in pages:
+   actual=Links((r/'dist'/p['url'].strip('/')/'index.html').read_text())
+   for a in p['facilityAnchors']:assert actual.anchors.get(a['anchor'])==[a['heading']],f'Anchor missing/duplicated/wrong heading: {a["href"]}'
+- expected_count=2 if assignment=='geumcheon-grouped-funeral-context-v1' else 7
++ expected_count={'geumcheon-grouped-funeral-context-v1':2,'guro-grouped-purchase-context-v1':7,'yeongdeungpo-grouped-occasion-context-v1':8,'dongjak-grouped-funeral-context-v1':2}[assignment]
+  assert sum(len(p['facilityAnchors']) for p in pages)==expected_count
+ print(f'DIRECTORY QA: {len(doc.admin)} administrative entries; {count} exact destination links; grouped={grouped}; all named destination anchors checked')
+--- geumcheon/scripts/qa_directory_spacing.py
++++ dongjak/scripts/qa_directory_spacing.py
+@@ -34,14 +34,30 @@
+ def source_contract(root=Path('.')):
+  code="""import pages from './src/data/pages.json' with {type:'json'};import {groupsFor} from './src/lib/regional-runtime.mjs';const items=pages.filter(p=>p.category==='regions');const groups=groupsFor(items).map(d=>({id:d.key,key:d.key,heading:d.name,cards:d.items.map(({representative,page})=>({href:page.url,unit:representative.unitKeys.join('|'),text:[page.primaryKeyword,page.cardSummary,'주문 안내 보기 →']}))}));console.log(JSON.stringify({eligible:items.length>=3,groups}));"""
+  contract=json.loads(subprocess.check_output(['node','--input-type=module','-e',code],cwd=root,text=True))
++ site_key=json.loads((root/'src/data/region-coverage.json').read_text())['siteKey']
+  # A separate exact Geumcheon copy binding changes labels, never card count or eligibility.
+  copy_path=root/'src/data/geumcheon-copy.json'
+- if copy_path.exists():
++ if copy_path.exists() and site_key=='seoul-geumcheon-flower-direct':
+   copy=json.loads(copy_path.read_text())['common']['directory']
+   assert len(contract['groups'])==1 and len(contract['groups'][0]['cards'])==1,'Geumcheon N1 directory drift'
+   group=contract['groups'][0];group['heading']=copy['districtHeading']
+   group['cards'][0]['text']=[copy['cardTitle'],copy['cardSummary']]
+   assert group['cards'][0]['href']==copy['cardHref'],'Approved directory route drift'
++ copy_path=root/'src/data/yeongdeungpo-copy.json'
++ if copy_path.exists() and site_key=='seoul-yeongdeungpo-flower-direct':
++  copy=json.loads(copy_path.read_text())['common']['directory'];ui=json.loads((root/'src/data/yeongdeungpo-ui-copy.json').read_text())['directory']
++  assert len(contract['groups'])==1 and len(contract['groups'][0]['cards'])==2,'Yeongdeungpo N2 directory drift'
++  group=contract['groups'][0];group['heading']=ui['districtHeading']
++  for card,approved in zip(group['cards'],copy['cards']):
++   assert card['href']==approved['href'],'Approved directory route drift'
++   card['text']=[approved['title'],approved['summary'],approved['buttonLabel']]
++ if site_key=='seoul-dongjak-flower-direct':
++  copy=json.loads((root/'src/data/dongjak-common-copy.json').read_text())['directory'];ui=json.loads((root/'src/data/dongjak-ui-copy.json').read_text())['directory']
++  assert len(contract['groups'])==1 and len(contract['groups'][0]['cards'])==1,'Dongjak N1 directory drift'
++  group=contract['groups'][0];group['heading']=ui['districtHeading']
++  for card,approved in zip(group['cards'],copy['cards']):
++   assert card['href']==approved['href'],'Approved directory route drift'
++   card['text']=[approved['title'],approved['summary'],approved['buttonLabel']]
+  return contract
+ 
+ def validate(html,contract,globally_indexable=True):
+--- geumcheon/scripts/test_output_bindings.py
++++ dongjak/scripts/test_output_bindings.py
+@@ -17,9 +17,9 @@
+   s,n=re.subn(r'(<meta name="twitter:image:alt" content=")[^"]*',r'\1wrong photo',self.detail.read_text(),count=1);self.assertEqual(n,1);self.detail.write_text(s)
+   with self.assertRaisesRegex(AssertionError,'Reviewed Twitter alt'):check(self.root)
+  def test_home_hero_base_price_label_missing_fails(self):
+-  p=self.root/'dist/index.html';s=p.read_text();self.assertIn('<strong>기본가격 ',s);p.write_text(s.replace('<strong>기본가격 ','<strong>',1))
++  p=self.root/'dist/index.html';s=p.read_text();self.assertIn('<strong>상품 기본가격 ',s);p.write_text(s.replace('<strong>상품 기본가격 ','<strong>',1))
+   with self.assertRaisesRegex(AssertionError,'base-price label missing'):check(self.root)
+  def test_detail_base_price_label_missing_fails(self):
+-  s=self.detail.read_text();self.assertIn('<span>기본가격 ',s);self.detail.write_text(s.replace('<span>기본가격 ','<span>',1))
++  s=self.detail.read_text();self.assertIn('<span>상품 기본가격 ',s);self.detail.write_text(s.replace('<span>상품 기본가격 ','<span>',1))
+   with self.assertRaisesRegex(AssertionError,'base-price label missing'):check(self.root)
+ if __name__=='__main__':unittest.main()
+--- geumcheon/src/components/InlineOrderBanner.astro
++++ dongjak/src/components/InlineOrderBanner.astro
+@@ -1,18 +1,11 @@
+ ---
+-import approvedCopy from '../data/geumcheon-copy.json';
++import approvedCopy from '../lib/dongjak-copy.mjs';
+ const {compact=false}=Astro.props;
+-const copy=approvedCopy.common.inlineOrder;
++const copy=approvedCopy.common.home;
+ ---
+-<aside class="inline-order-banner" data-order-banner="inline" data-order-variant={compact?'compact':'full'} aria-label={copy.heading}>
+-  <div class="inline-order-copy">
+-    <strong>{copy.heading}</strong>
+-    <span>{copy.hours}</span>
+-    <small>{compact ? copy.compactText : copy.text}</small>
+-  </div>
+-  <div class="inline-order-actions">
+-    <a class="inline-order-phone" href={copy.phoneHref}>{copy.phoneLabel}</a>
+-    <a class="inline-order-online" href={copy.onlineHref}>{copy.onlineLabel}</a>
+-  </div>
++<aside class="inline-order-banner" data-order-banner="inline" data-order-variant={compact?'compact':'full'} aria-label={copy.consultationHeading}>
++ <div class="inline-order-copy"><strong>{copy.consultationHeading}</strong><span>{copy.consultationText}</span></div>
++ <div class="inline-order-actions"><a class="inline-order-phone" href={copy.consultationButton.href}>{copy.consultationButton.label}</a></div>
+ </aside>
+ <style>
+   .inline-order-banner{margin:32px 0;padding:24px;border:1px solid #ddc5d6;border-radius:16px;background:#fff6fa;box-shadow:0 8px 24px rgba(58,33,79,.04)}
+--- geumcheon/src/components/ProductCards.astro
++++ dongjak/src/components/ProductCards.astro
+@@ -1,6 +1,6 @@
+ ---
+-import approvedCopy from '../data/geumcheon-copy.json';
++import approvedCopy from '../lib/dongjak-copy.mjs';
+ const {products=[],noticeMode="full"}=Astro.props;
+ ---
+ <div class="product-grid">{products.map((p:any)=><article class="product-card" data-product-family={p.family} data-product-key={p.key}><img src={p.img} alt={p.imageAlt} loading="lazy" width="500" height="500"/><div><h3>{p.name}</h3><strong>{p.priceLabel}</strong><p>{p.desc}</p><a href={p.orderUrl} data-order-product-key={p.key}>{p.ctaLabel}</a></div></article>)}</div>
+-{noticeMode==='full' && <p class="product-notice">{approvedCopy.common.productSharedNotice}</p>}
++{noticeMode==='full' && <><p class="product-notice">{approvedCopy.common.home.priceDeliveryNote}</p><p class="product-notice">{approvedCopy.common.home.materialsAndCollectionNote}</p></>}
+--- geumcheon/src/components/RegionDirectory.astro
++++ dongjak/src/components/RegionDirectory.astro
+@@ -2,28 +2,29 @@
+ import {planDirectoryBannerSplit} from '../lib/directory-banner-split.mjs';
+ import {publishedDestinationsByUnit} from '../lib/directory-links.mjs';
+ import {groupsFor,coverage as sourceCoverage} from '../lib/regional-runtime.mjs';
+-import approvedCopy from '../data/geumcheon-copy.json';
++import approvedCopy from '../lib/dongjak-copy.mjs';
+ import SharedFlowerBanner from './SharedFlowerBanner.astro';
+ import InlineOrderBanner from './InlineOrderBanner.astro';
+ const {pages,showBanners=true}=Astro.props;
+-const copy=approvedCopy.common.directory;
+-const navigation=approvedCopy.common.navigation;
++import ui from '../data/dongjak-ui-copy.json';
++const copy={...approvedCopy.common.directory,...ui.directory};
++const common=approvedCopy.common;
+ const coverage=sourceCoverage as any;
+ const districts=groupsFor(pages) as any[];
+ const directoryBannerPlan=planDirectoryBannerSplit(districts.map(d=>d.items.length),showBanners);
+ const destinations=publishedDestinationsByUnit(districts) as Map<string,{href:string;name:string;candidateId:string}[]>;
+ ---
+ <section class="category-hero">
+- <span class="eyebrow">{approvedCopy.common.home.eyebrow}</span>
++ <span class="eyebrow">{common.brandName}</span>
+  <h1>{copy.h1}</h1>
+- <p>{copy.intro}</p>
+- <div class="actions"><a class="btn primary" href={navigation.phoneHref}>{navigation.phoneLabel}</a><a class="btn dark" href={navigation.onlineHref}>{navigation.onlineLabel}</a></div>
++ <p>{copy.description}</p>
++ <div class="actions"><a class="btn primary" href={common.phoneHref}>{common.footer.phoneLinkText}</a><a class="btn dark" href={ui.directory.productCtaHref}>{ui.directory.productCtaLabel}</a></div>
+ </section>
+ {showBanners && <SharedFlowerBanner variant="message"/>}
+ {districts.map((district,index)=><section id={district.key} data-region-district={district.key}>
+- <div class="section-title"><h2>{copy.districtHeading}</h2><p>{copy.districtIntro}</p></div>
++ <div class="section-title"><h2>{copy.districtHeading}</h2></div>
+  {(index===directoryBannerPlan.districtIndex ? [district.items.slice(0,directoryBannerPlan.itemIndex),district.items.slice(directoryBannerPlan.itemIndex)].filter(items=>items.length>0) : [district.items]).map((items,segmentIndex)=><>
+- <div class="card-grid big">{items.map(({representative,page}:any)=><a class="page-card" href={page.url} data-region-unit={representative.unitKeys.join('|')}><strong>{copy.cardTitle}</strong><span>{copy.cardSummary}</span></a>)}</div>
++ <div class="card-grid big">{items.map(({representative,page}:any)=><a class="page-card" href={page.url} data-region-unit={representative.unitKeys.join('|')}><strong>{copy.cards.find(card=>card.href===page.url)?.title}</strong><span>{copy.cards.find(card=>card.href===page.url)?.summary}</span><em>{copy.cards.find(card=>card.href===page.url)?.buttonLabel}</em></a>)}</div>
+  {index===directoryBannerPlan.districtIndex && segmentIndex===0 && <SharedFlowerBanner variant="budget"/>}
+  </>)}
+  <section class="content-card"><h3>{copy.legalHeading}</h3>
+@@ -32,9 +33,9 @@
+  <details class="content-card"><summary>{copy.administrativeSummary}</summary>
+  <p>{copy.administrativeNote}</p>
+  <ul class="decision-list">{coverage.administrativeCrosswalk.filter((a:any)=>a.districtKey===district.key).map((admin:any)=><li data-administrative-unit={admin.aliasKey}><strong>{admin.name}</strong>: {admin.relations.map((relation:any,index:number)=>{
+- const unit=coverage.units.find((unit:any)=>unit.unitKey===relation.unitKey),entries=destinations.get(relation.unitKey)||[];
++ const unit=coverage.units.find((unit:any)=>unit.unitKey===relation.unitKey);
+  if(!unit)throw new Error('Administrative relation lacks a legal unit');
+- return <>{index>0?' · ':''}<span>{unit.name}{relation.scope==='partial'?' 일부':''}</span>{entries.length>0?<span class="administrative-purchase-links">{entries.map((entry,entryIndex)=><>{entryIndex>0?' / ':' · '}<a href={entry.href}>{entry.name}</a></>)}</span>:<span> ({copy.emptyUnitLabel})</span>}</>;
++ return <>{index>0?' · ':''}<span>{unit.name}{relation.scope==='partial'?' '+copy.partialLabel:''}</span></>;
+  })}</li>)}</ul>
+  <a href={district.sourceUrl} rel="nofollow">{copy.officialAreaLinkLabel}</a>
+  </details>
+--- geumcheon/src/data/architecture.json
++++ dongjak/src/data/architecture.json
+@@ -1,11 +1,11 @@
+ {
+   "schemaVersion": "1.2",
+-  "siteKey": "seoul-geumcheon-flower-direct",
++  "siteKey": "seoul-dongjak-flower-direct",
+   "home": {
+     "pageRole": "REGION_SERVICE_LANDING",
+-    "primaryKeyword": "금천구 근조화환",
++    "primaryKeyword": "동작구 근조화환",
+     "url": "/",
+-    "title": "금천구 근조화환 상품·주문 상담 | 꽃이랑"
++    "title": "동작구 근조화환 상담 · 중앙대·보라매 | 꽃이랑"
+   },
+   "hubs": [
+     {
+@@ -67,19 +67,19 @@
+   ],
+   "pages": [
+     {
+-      "slug": "geumcheon-funeral-wreath",
+-      "title": "금천구 근조화환: 쉴낙원 서울·독산장례식장 | 꽃이랑",
+-      "primaryKeyword": "금천구 근조화환",
++      "slug": "dongjak-funeral-wreath",
++      "title": "동작구 근조화환 · 중앙대병원·보라매병원 | 꽃이랑",
++      "primaryKeyword": "동작구 근조화환",
+       "regionalProductKeys": [
+         "funeral-basic",
+         "funeral-premium",
+         "funeral-large",
+         "funeral-xl"
+       ],
+-      "pageKey": "geumcheon-funeral-wreath",
++      "pageKey": "dongjak-funeral-wreath",
+       "category": "regions",
+       "routeType": "category",
+-      "url": "/regions/geumcheon-funeral-wreath/",
++      "url": "/regions/dongjak-funeral-wreath/",
+       "pageType": "regional-service",
+       "status": "primary",
+       "file": "src/data/pages.json",
+@@ -92,45 +92,45 @@
+         "funeral-large",
+         "funeral-xl"
+       ],
+-      "scopeKey": "seoul-geumcheon-direct-independent-preparation-20261012",
++      "scopeKey": "seoul-dongjak-direct-independent-preparation-20261013",
+       "regionUnitKeys": [
+-        "금천구/법정동/가산동",
+-        "금천구/법정동/독산동"
++        "동작구/법정동/흑석동",
++        "동작구/법정동/신대방동"
+       ],
+       "regionalPurchaseMode": "catalog",
+       "regionalProductFamilies": [
+         "funeral"
+       ],
+       "ogImage": "/images/products/funeral-basic.jpg",
+-      "ogImageAlt": "근조 3단 화환 공식 상품 사진",
++      "ogImageAlt": "근조 3단 화환 B201의 꽃이랑 공식 상품 사진",
+       "ogImageSha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+       "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B201",
+       "ogImageWidth": 500,
+       "ogImageHeight": 500,
+       "ogImageType": "image/jpeg",
+       "purchaseIntentKey": "funeral-condolence-wreath",
+-      "contextKey": "geumcheon|funeral-condolence-wreath",
+-      "intentKey": "seoul-geumcheon|funeral-condolence-wreath",
+-      "snapshotId": "direct-content-geumcheon-funeral-wreath-ba436e0c76f07c4c",
+-      "snapshotHash": "ba436e0c76f07c4c788cbf064c59aee3a1bbc239ac741a0b599eb529ddb93532",
++      "contextKey": "dongjak|funeral-condolence-wreath",
++      "intentKey": "seoul-dongjak|funeral-condolence-wreath",
++      "snapshotId": "direct-content-dongjak-funeral-wreath-d6ded00a53982caa",
++      "snapshotHash": "d6ded00a53982caa29676084d1ddee31ecca5f5e640a3ad1fb56b253f1a1d0c4",
+       "candidateIds": [
+-        "shillakwon-seoul",
+-        "doksan-funeral"
++        "cau-hospital",
++        "boramae-hospital"
+       ],
+       "facilityAnchors": [
+         {
+-          "candidateId": "shillakwon-seoul",
+-          "anchor": "shillakwon-seoul",
+-          "heading": "쉴낙원 서울장례식장",
+-          "href": "/regions/geumcheon-funeral-wreath/#shillakwon-seoul",
+-          "unitKey": "금천구/법정동/가산동"
++          "candidateId": "cau-hospital",
++          "anchor": "cau-hospital",
++          "heading": "중앙대학교병원 장례식장",
++          "unitKey": "동작구/법정동/흑석동",
++          "href": "/regions/dongjak-funeral-wreath/#cau-hospital"
+         },
+         {
+-          "candidateId": "doksan-funeral",
+-          "anchor": "doksan-funeral",
+-          "heading": "독산장례식장",
+-          "href": "/regions/geumcheon-funeral-wreath/#doksan-funeral",
+-          "unitKey": "금천구/법정동/독산동"
++          "candidateId": "boramae-hospital",
++          "anchor": "boramae-hospital",
++          "heading": "서울특별시보라매병원 장례식장",
++          "unitKey": "동작구/법정동/신대방동",
++          "href": "/regions/dongjak-funeral-wreath/#boramae-hospital"
+         }
+       ],
+       "pageRole": "REGION_SERVICE_LANDING",
+--- geumcheon/src/data/build-revision.json
++++ dongjak/src/data/build-revision.json
+@@ -1,3 +1,3 @@
+ {
+-  "revision": "bbb016305dd2fe29f7d985a669acaa02224a9f2f"
++  "revision": "local"
+ }--- geumcheon/src/data/copy-review-bindings.json
++++ dongjak/src/data/copy-review-bindings.json
+@@ -1,55 +1,14 @@
+ {
+   "schemaVersion": 1,
+-  "verdict": "PASS_EXACT_REV3_COPY_WITH_STATIC_INTERFACE_CHECKS",
+-  "approvedCopySha256": "01f9e71d13ad3a11122b832d649f60b6da976c85513ee90b6ccb531737fb7455",
+-  "independentCopyReviewSha256": "fd1a09b38acb21c708d5f418e6a293aac8b9dbb37cfeb49191595e807b87acc9",
+-  "fixedPlanSha256": "4371357faa2f5ff54d31689ec270f8cf8a5da76e7faa73a4e937f90ee6cecc37",
++  "verdict": "COPY_PASS_INTERFACE_PENDING",
++  "approvedArticleSha256": "428b4c3a66e648c15cf35c3887aee619c1e8eeb724f98ea8cdaa044e55001489",
++  "approvedCommonSha256": "b158fa9b9faa4049f11b94c8023073ab3aee7fa8fdd3088b7e5b6d5a9701649f",
++  "independentCopyReviewSha256": "fda619d326350cc6e1c47d6e67e6d3e8411e1872690089efd4ce89a5040b1c6b",
++  "fixedPlanSha256": "8c17e681bc49944eec59698fbd6dfea3ff4c91773e0d45dbe955dae20b443e7c",
+   "bodySha256": [
+-    "6711f0804e2d52c018834cd6bdfd8c1cca6b858171a5f39391d1948455c3e585"
++    "162649b0fa96741146c4a5d52663dcf8a2a30d595aab9403e9d5817243980875"
+   ],
+   "faqSha256": [
+-    "4c0e37d61f9eddb0cc77e586ad634ee20b8759883f525c25202ec495c51576e9"
+-  ],
+-  "customerFields": [
+-    "pageKey",
+-    "slug",
+-    "url",
+-    "title",
+-    "h1",
+-    "description",
+-    "primaryKeyword",
+-    "cardSummary",
+-    "firstAnswer",
+-    "contentMarkdown",
+-    "faq",
+-    "facilityAnchors",
+-    "primaryCta",
+-    "secondaryCta",
+-    "productCardKeys",
+-    "sourceNote",
+-    "sourceLinks",
+-    "candidateIds"
+-  ],
+-  "customerCopyObjectSha256": [
+-    "7852ef257262c3f312f43c87ee813a7fb6ec55fac4996ac728a31ae3609db767"
+-  ],
+-  "scope": "Exact customer text and actual static HTML; browser rendering and public release are not approved.",
+-  "commonSourceSha256": {
+-    "src/components/FaqSection.astro": "c93144348aea1fdbf2b87b21ea4d993875b365954c05c4b90f4e3a94bc6744db",
+-    "src/components/InlineOrderBanner.astro": "3fb3cb78bc4370bfdaec088548a49bb9d9137bc0d6b5ec315adb9b35f7982db9",
+-    "src/components/InlineText.astro": "ac748bd0e67c41dab43634bbb63a606d2f2124d1f2c089b1266a52795c3ceb0a",
+-    "src/components/MarkdownContent.astro": "30a788ad6f439eda826f8dc2f8e8fffa5c509a504b75fb6cbf31392174f7817c",
+-    "src/components/ProductCards.astro": "b69d2c30af8bfea04ce2a2c482858ba8355cbb267e4e82df956f57bb812be5e8",
+-    "src/components/RegionDirectory.astro": "8e45356949b5e86b44d32e7c95fb2067fa9c2d6d69f80c6adc5a32730685f2e2",
+-    "src/components/SharedFlowerBanner.astro": "bffdc5a802a911d688e388faa55ece9e1bf6b00e04c8fab0873e779b35702f74",
+-    "src/layouts/BaseLayout.astro": "d44431d7510f21ec59e1adeabaeacffae310e4c1ed335a75c526ca55746f2dd0",
+-    "src/pages/404.astro": "fd78c1d15f83ee6fb22f76bd4d8fb01946a324f53af5134a06af9ae8ce6c0530",
+-    "src/pages/[category]/[slug].astro": "4b133d4aa6a6d9efd2aaf52b1e10199d683fe2c67016cf77da376dc0cbc08bf8",
+-    "src/pages/[category]/index.astro": "3f6da4153f76299dd05157bd14a773f7c86095d41be2d46438eff7a55fe54d64",
+-    "src/pages/index.astro": "0f330607ae06f8293e06a488d6c573d3bed9debb8ad1d5e66d81b0087a505c56"
+-  },
+-  "implementationReviewPath": "docs/direct-regional-release/seoul-geumcheon/implementation/rendered-copy-review-report.json",
+-  "revision": 3,
+-  "approvedCopyPath": "docs/direct-regional-release/seoul-geumcheon/copy/geumcheon-copy.rev3.json",
+-  "independentCopyReviewPath": "docs/direct-regional-release/seoul-geumcheon/copy/independent-copy-review.rev3.json"
++    "4ecf2ad015151a2915e61bc338b57f7449c3a7550ec5f19df80557cea2ddec14"
++  ]
+ }
+--- geumcheon/src/data/direct-checkpoint.json
++++ dongjak/src/data/direct-checkpoint.json
+@@ -1,14 +1,14 @@
+ {
+   "schemaVersion": 1,
+-  "siteKey": "seoul-geumcheon-flower-direct",
+-  "scopeKey": "seoul-geumcheon-direct-independent-preparation-20261012",
+-  "status": "prepared-unpublished-static-review-pass-visual-unverified",
++  "siteKey": "seoul-dongjak-flower-direct",
++  "scopeKey": "seoul-dongjak-direct-independent-preparation-20261013",
++  "status": "local-copy-reviewed-technical-pending",
+   "candidate": {
+     "originalPlanN": 1,
+     "candidate": 1,
+     "approved": 1,
+     "held": 0,
+-    "fixedPlanSha256": "4371357faa2f5ff54d31689ec270f8cf8a5da76e7faa73a4e937f90ee6cecc37"
++    "fixedPlanSha256": "8c17e681bc49944eec59698fbd6dfea3ff4c91773e0d45dbe955dae20b443e7c"
+   },
+   "productionEvidence": null,
+   "searchIndexing": "not_verified"
+--- geumcheon/src/data/page-map.json
++++ dongjak/src/data/page-map.json
+@@ -1,23 +1,23 @@
+ {
+   "schemaVersion": 2,
+-  "siteKey": "seoul-geumcheon-flower-direct",
++  "siteKey": "seoul-dongjak-flower-direct",
+   "generatedFrom": "Direct Git customer-content source",
+   "snapshotMode": "direct-git-content",
+   "pages": [
+     {
+-      "slug": "geumcheon-funeral-wreath",
+-      "title": "금천구 근조화환: 쉴낙원 서울·독산장례식장 | 꽃이랑",
+-      "primaryKeyword": "금천구 근조화환",
++      "slug": "dongjak-funeral-wreath",
++      "title": "동작구 근조화환 · 중앙대병원·보라매병원 | 꽃이랑",
++      "primaryKeyword": "동작구 근조화환",
+       "regionalProductKeys": [
+         "funeral-basic",
+         "funeral-premium",
+         "funeral-large",
+         "funeral-xl"
+       ],
+-      "pageKey": "geumcheon-funeral-wreath",
++      "pageKey": "dongjak-funeral-wreath",
+       "category": "regions",
+       "routeType": "category",
+-      "url": "/regions/geumcheon-funeral-wreath/",
++      "url": "/regions/dongjak-funeral-wreath/",
+       "pageType": "regional-service",
+       "status": "approved",
+       "file": "src/data/pages.json",
+@@ -30,45 +30,45 @@
+         "funeral-large",
+         "funeral-xl"
+       ],
+-      "scopeKey": "seoul-geumcheon-direct-independent-preparation-20261012",
++      "scopeKey": "seoul-dongjak-direct-independent-preparation-20261013",
+       "regionUnitKeys": [
+-        "금천구/법정동/가산동",
+-        "금천구/법정동/독산동"
++        "동작구/법정동/흑석동",
++        "동작구/법정동/신대방동"
+       ],
+       "regionalPurchaseMode": "catalog",
+       "regionalProductFamilies": [
+         "funeral"
+       ],
+       "ogImage": "/images/products/funeral-basic.jpg",
+-      "ogImageAlt": "근조 3단 화환 공식 상품 사진",
++      "ogImageAlt": "근조 3단 화환 B201의 꽃이랑 공식 상품 사진",
+       "ogImageSha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+       "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B201",
+       "ogImageWidth": 500,
+       "ogImageHeight": 500,
+       "ogImageType": "image/jpeg",
+       "purchaseIntentKey": "funeral-condolence-wreath",
+-      "contextKey": "geumcheon|funeral-condolence-wreath",
+-      "intentKey": "seoul-geumcheon|funeral-condolence-wreath",
+-      "snapshotId": "direct-content-geumcheon-funeral-wreath-ba436e0c76f07c4c",
+-      "snapshotHash": "ba436e0c76f07c4c788cbf064c59aee3a1bbc239ac741a0b599eb529ddb93532",
++      "contextKey": "dongjak|funeral-condolence-wreath",
++      "intentKey": "seoul-dongjak|funeral-condolence-wreath",
++      "snapshotId": "direct-content-dongjak-funeral-wreath-d6ded00a53982caa",
++      "snapshotHash": "d6ded00a53982caa29676084d1ddee31ecca5f5e640a3ad1fb56b253f1a1d0c4",
+       "candidateIds": [
+-        "shillakwon-seoul",
+-        "doksan-funeral"
++        "cau-hospital",
++        "boramae-hospital"
+       ],
+       "facilityAnchors": [
+         {
+-          "candidateId": "shillakwon-seoul",
+-          "anchor": "shillakwon-seoul",
+-          "heading": "쉴낙원 서울장례식장",
+-          "href": "/regions/geumcheon-funeral-wreath/#shillakwon-seoul",
+-          "unitKey": "금천구/법정동/가산동"
++          "candidateId": "cau-hospital",
++          "anchor": "cau-hospital",
++          "heading": "중앙대학교병원 장례식장",
++          "unitKey": "동작구/법정동/흑석동",
++          "href": "/regions/dongjak-funeral-wreath/#cau-hospital"
+         },
+         {
+-          "candidateId": "doksan-funeral",
+-          "anchor": "doksan-funeral",
+-          "heading": "독산장례식장",
+-          "href": "/regions/geumcheon-funeral-wreath/#doksan-funeral",
+-          "unitKey": "금천구/법정동/독산동"
++          "candidateId": "boramae-hospital",
++          "anchor": "boramae-hospital",
++          "heading": "서울특별시보라매병원 장례식장",
++          "unitKey": "동작구/법정동/신대방동",
++          "href": "/regions/dongjak-funeral-wreath/#boramae-hospital"
+         }
+       ]
+     }
+--- geumcheon/src/data/pages.json
++++ dongjak/src/data/pages.json
+@@ -1,64 +1,111 @@
+ [
+   {
+-    "pageKey": "geumcheon-funeral-wreath",
+-    "slug": "geumcheon-funeral-wreath",
+-    "url": "/regions/geumcheon-funeral-wreath/",
+-    "title": "금천구 근조화환: 쉴낙원 서울·독산장례식장 | 꽃이랑",
+-    "h1": "금천구 근조화환: 쉴낙원 서울·독산장례식장",
+-    "description": "쉴낙원 서울장례식장과 독산장례식장에 전할 조의를 준비합니다. 네 가지 근조화환의 사진·기본가격, 등록 주소, 리본 문구와 일정·총금액 상담을 꽃이랑에서 안내합니다.",
+-    "primaryKeyword": "금천구 근조화환",
+-    "cardSummary": "쉴낙원 서울장례식장·독산장례식장 주소와 네 가지 근조화환, 조의 리본·예산·일정 상담을 한곳에서 안내합니다.",
+-    "firstAnswer": "쉴낙원 서울장례식장과 독산장례식장으로 조의를 전하려는 분께, 기본가격 59,000원부터 네 가지 근조화환을 안내합니다. 조의의 말을 정하기 어려우실 때도 편하게 문의해 주세요. 꽃이랑에서 예산에 맞는 상품과 리본 문구, 원하시는 일정의 주문 가능 여부를 함께 상담해 드립니다.",
+-    "contentMarkdown": "## 예산에 맞춰 준비하는 근조화환\n\n조의를 전하는 데 꼭 높은 가격의 화환을 선택하실 필요는 없습니다. 정해 두신 금액이 있다면 그 안에서 준비할 수 있는 상품을 함께 살펴드리겠습니다. 아래 네 상품은 실제 판매상품 사진과 기본가격을 나란히 보실 수 있도록 모았습니다. 각 상품의 ‘상품 확인·주문’ 버튼은 꽃이랑 공식몰의 해당 상품 상세페이지로 연결됩니다.\n\n기본가격 59,000원의 **근조 3단 화환 B201**과 79,000원의 **근조 고급 3단 화환 B203**은 상품 예산을 8만 원 이내로 잡으셨을 때 비교할 수 있는 두 가지입니다. 10만 원대 상품을 찾으신다면 109,000원의 **근조 특대 3단 화환 B205**, 149,000원의 **근조 특특대 3단 화환 B060**도 함께 안내해 드립니다.\n\n‘고급·특대·특특대’는 공식 상품명입니다. 사진으로 보는 배치와 색감 외에 실제 높이 등 꼭 필요한 규격이 있다면 상품번호와 함께 문의해 주세요.\n\n## 상품 기본가격과 최종 결제금액\n\n표시된 가격은 상품 자체의 기본가격이며, 실제 배송지에 따라 추가 배송비가 생길 수 있습니다. 배송비까지 포함해 지출할 금액을 정해 두셨다면 ‘총예산’으로 말씀해 주세요. 상품을 선택하실 때 배송 조건을 함께 살펴 최종금액을 안내해 드립니다.\n\n## 쉴낙원 서울장례식장\n\n쉴낙원 서울장례식장의 등록 주소는 **서울특별시 금천구 서부샛길 732, 가산동**입니다. 부고에 이 장소가 안내되어 있다면 ‘쉴낙원 서울장례식장’이라는 이름에 현재 빈소 정보를 더해 주문을 상담해 드립니다.\n\n## 독산장례식장\n\n독산장례식장의 등록 주소는 **서울특별시 금천구 시흥대로116길 5, 독산동**입니다. 독산장례식장으로 보내실 때는 부고에 적힌 빈소와 발인 일정을 기준으로 문의해 주세요.\n\n두 주소는 보건복지부의 2026년 4월 1일 기준 자료에 따른 것입니다. 외부 화환을 받을 수 있는지와 수령 위치는 해당 장례의 안내에 따라 달라질 수 있어, 알려주신 수령 조건과 희망 일정을 바탕으로 상담합니다.\n\n## 조의 리본에 담는 짧은 인사\n\n리본 문구를 길게 쓰지 않으셔도 괜찮습니다. ‘삼가 조의를 표합니다’, ‘깊은 애도의 뜻을 전합니다’, ‘삼가 고인의 명복을 빕니다’는 조의를 전할 때 사용할 수 있는 문구 예시입니다. 전하고 싶은 말이 따로 있다면 그 문장을 말씀해 주세요. 꽃이랑에서 상품 주문과 함께 리본 문구를 상담해 드립니다.\n\n문구와 함께 개인 성함이나 회사·모임 등 보내시는 이름을 담습니다. ‘○○회사 일동’처럼 공동명의를 쓰실 때는 실제 사용할 명칭을 알려주세요.\n\n부고나 유족의 안내에 화환을 사양한다는 내용이 있다면, 꽃 대신 짧은 조의 인사로 마음을 전하실 수 있습니다.\n\n## 주문 상담은 필요한 내용을 한 번에\n\n처음부터 긴 주문서를 준비하실 필요는 없습니다. 아래 내용을 알고 계신 범위에서 말씀해 주시면, 상품과 문구, 일정 상담을 이어가겠습니다.\n\n- 받는 곳: 장례식장 이름과 현재 빈소, 고인명·받는 분 정보\n- 일정: 희망 전달 날짜와 시간, 알고 계신 발인 날짜와 시간\n- 상품: 원하시는 상품번호 또는 총예산, 리본 문구와 보내는 이름\n- 연락: 주문하시는 분과 수령 관련 연락처\n\n희망 시간은 가능한 일정을 상담하기 위한 정보이며, 주문 접수만으로 도착 시각이 확정되지는 않습니다. 일정이 촉박하다면 [1844-0644 전화 상담](tel:18440644)으로 문의해 주세요.\n\n## 꽃 구성과 수거 안내\n\n안내하는 근조화환은 생화와 조화를 섞어 제작하는 상품입니다. 지역과 계절에 따라 같은 소재를 사용하기 어려우면 꽃의 구성과 형태가 사진과 일부 달라질 수 있습니다. 반드시 원하는 색이나 구성이 있다면 주문을 결정하기 전에 가능한 범위를 상담해 주세요.\n\n꽃이랑은 화환을 별도로 수거하지 않습니다. 장례 뒤 화환 정리는 시설별 안내가 다를 수 있습니다.\n\n## 변경·취소가 필요하거나 상품에 문제가 있을 때\n\n빈소나 일정이 바뀌었거나 문구를 수정하고 싶으시면, 주문 정보와 변경할 내용을 1844-0644로 알려주세요. 제작이 끝난 꽃상품, 배송 완료 뒤의 시간 경과, 배송지 정보 오류나 수취 거절 등에는 교환·환불 제한이 안내되어 있어 진행 상태에 따라 적용 조건을 살펴야 합니다.\n\n불량·파손이나 주문과 전혀 다른 상품이 배송된 경우는 공식몰에 안내된 환불 가능 사유입니다. 계절·지역에 따른 소재 차이와는 구분해 상담합니다. 결제 후 배송이 불가능하거나 재고가 없어 진행하지 못하는 경우에는 전액 환불한다고 안내되어 있습니다.\n\n출고 뒤 취소에는 배송비를 제외하고 환불한다는 조항도 있습니다. 취소 가능 여부와 환불 범위는 실제 제작·출고 상태에 따라 상담해 드리겠습니다.",
++    "pageKey": "dongjak-funeral-wreath",
++    "url": "/regions/dongjak-funeral-wreath/",
++    "title": "동작구 근조화환 · 중앙대병원·보라매병원 | 꽃이랑",
++    "h1": "중앙대병원·보라매병원에 전하는 근조화환",
++    "description": "동작구 중앙대학교병원·보라매병원 근조화환. 59,000원부터 네 상품의 사진과 기본가격, 분향소 안내, 조의 리본과 주문 상담을 꽃이랑에서 안내합니다.",
++    "cardSummary": "중앙대·보라매에 전할 근조화환 네 가지와 조의 리본 상담. 두 장례식장의 위치와 중앙대 분향소 진열 안내를 담았습니다.",
++    "firstAnswer": "중앙대학교병원이나 보라매병원에 조의를 전할 때, 꽃에 담을 짧은 인사까지 꽃이랑에서 함께 상담해 드립니다. 안내하는 상품은 59,000원부터 149,000원까지의 근조화환 네 가지입니다. 길게 말을 건네기 조심스러운 자리인 만큼, 전하고 싶은 뜻과 정해 두신 예산을 중심으로 주문을 돕겠습니다.",
++    "sections": [
++      {
++        "id": "products",
++        "heading": "조의의 뜻에 맞는 네 가지 근조화환",
++        "paragraphs": [
++          "근조 3단 화환 B201은 기본가격 59,000원, 근조 고급 3단 화환 B203은 79,000원입니다. 근조 특대 3단 화환 B205는 109,000원, 근조 특특대 3단 화환 B060은 149,000원으로 안내합니다. 아래 카드에는 각 상품의 실제 판매 사진과 해당 상품으로 연결되는 주문 버튼을 담았습니다.",
++          "상품 이름만으로 모습이 잘 떠오르지 않으실 수 있지요. 사진에서 마음에 드는 구성이 있거나, 두 상품 중에서 정하기 어려우시면 상품번호를 말씀해 주세요. 꽃이랑에서 예산과 원하시는 모습을 바탕으로 상품 선택을 상담해 드립니다. ‘고급·특대·특특대’는 상품의 정식 이름이며, 필요한 높이나 꽃 구성이 있다면 그 조건도 함께 상담할 수 있습니다.",
++          "이 페이지의 근조화환은 생화와 조화를 함께 사용하는 상품입니다. 계절이나 지역에 따라 사진과 같은 소재를 구하기 어려우면 꽃의 소재와 형태가 일부 달라질 수 있습니다. 사진에서 보신 특정 꽃이나 색이 꼭 필요하다면 그 부분을 말씀해 주세요. 가능한 구성을 주문 전에 상담해 드립니다.",
++          "가격표는 화환의 기본가격입니다. 실제 배송 주소에 따라 추가 배송비가 붙을 수 있어, 배송비를 포함한 최종금액은 주문 상담에서 안내합니다. 회사나 모임에서 정해 둔 지출 한도가 있다면 배송비까지 포함한 예산으로 말씀해 주시면 됩니다."
++        ]
++      },
++      {
++        "id": "places",
++        "heading": "중앙대와 보라매, 보내실 장소의 안내",
++        "subsections": [
++          {
++            "id": "cau-hospital",
++            "heading": "중앙대학교병원 장례식장",
++            "paragraphs": [
++              "흑석동의 중앙대학교병원 장례식장 주소는 서울 동작구 흑석로 102입니다. 병원은 화환을 분향소 안에 세우고 통로에는 놓지 않도록 안내합니다. 조문객이 오가는 통로가 아니라 분향소 내부가 진열 장소라는 점을 주문 상담에 반영합니다.",
++              "리본 컷팅이 필요할 때의 요청 창구는 병원 상담실입니다. 병원은 폐꽃의 재활용을 막기 위해 임의 반출을 금지하고 있습니다. 이는 중앙대학교병원의 현장 운영 안내입니다. 꽃이랑에서는 화환을 별도로 수거하지 않습니다."
++            ]
++          },
++          {
++            "id": "boramae-hospital",
++            "heading": "서울특별시보라매병원 장례식장",
++            "paragraphs": [
++              "신대방동의 보라매병원 장례식장은 서울 동작구 보라매로5길 20에 있습니다. 병원 층별 안내에는 3동 사랑관 지하1층으로 표시되어 있습니다. 보라매병원으로 보내는 주문에는 이 장소 정보와 해당 빈소를 연결해 상담합니다. 개별 장례의 화환 수령 조건은 유족과 장례식장의 안내를 따릅니다."
++            ]
++          }
++        ]
++      },
++      {
++        "id": "words-order",
++        "heading": "전하실 인사와 빈소를 연결하는 상담",
++        "paragraphs": [
++          "리본에는 길지 않은 말로도 조의의 뜻을 담을 수 있습니다. 예를 들어 ‘삼가 고인을 추모합니다’, ‘유가족께 깊은 위로를 전합니다’처럼 쓰실 수 있습니다. 종교적인 인사나 따로 전하고 싶은 말씀이 있다면 그 뜻에 맞춰 문구를 상담해 드립니다.",
++          "상품이 정해졌다면 장례식장·빈소, 고인명과 받는 분 정보에 희망 전달 날짜·시간과 발인 일정을 더해 상담을 이어갑니다. 상품번호 또는 예산, 리본 인사와 보내는 이름, 주문 및 수령 관련 연락처도 이때 함께 말씀해 주세요. 꽃이랑 전화 1844-0644에서 상품과 목적지에 맞는 주문 내용을 상담해 드립니다.",
++          "발인이 가까운 경우에는 결제 전에 전화로 희망 전달 일정을 말씀해 주시면, 실제 전달 가능한 시간을 상담해 드립니다. 부고에 화환을 사양한다는 뜻이 담겨 있을 때는 유족의 의사를 존중해 조의의 인사만 전하셔도 좋습니다."
++        ]
++      },
++      {
++        "id": "changes",
++        "heading": "주문 뒤 일정이나 내용이 달라졌다면",
++        "paragraphs": [
++          "빈소·발인 일정이 바뀌거나 리본을 수정해야 한다면, 주문 정보와 바뀐 내용을 1844-0644로 알려주세요. 이미 제작하거나 출고한 단계인지에 따라 수정과 취소의 적용 조건이 달라지므로, 해당 주문의 진행 상태를 바탕으로 상담합니다.",
++          "공식몰의 교환·환불 안내에는 제작 완료된 꽃상품, 배송 완료 후 하루 이상 경과한 경우, 배송지 기재 오류나 수취 거절에 대한 제한이 있습니다. 지역·계절에 따른 소재 차이로 사진과 달라진 경우도 취소·환불 제한 사유로 안내되어 있습니다.",
++          "불량이나 파손, 주문한 상품과 전혀 다른 상품의 배송은 환불 가능 사유로 별도 안내합니다. 결제 후 배송이 불가능하거나 재고가 없어 진행하지 못하면 전액 환불하며, 출고 뒤 취소 시에는 배송비를 제외한다는 조항도 있습니다. 각 조항은 주문 상태와 사유에 따라 적용하므로, 문제가 생긴 부분을 상담해 주시면 해당 조건을 안내해 드립니다."
++        ]
++      }
++    ],
+     "faq": [
+       {
+-        "question": "늦은 밤에도 온라인으로 주문할 수 있나요?",
+-        "answer": "온라인 주문은 24시간 접수하며, 전화 상담은 08:00~23:00에 운영합니다. 늦은 시간의 온라인 접수가 곧바로 배송 출발을 뜻하지는 않습니다. 발인이 가까운 경우에는 전화 상담시간에 1844-0644로 가능한 일정을 문의해 주세요."
+-      },
+-      {
+-        "question": "리본에 종교적인 표현을 넣고 싶지 않아요.",
+-        "answer": "종교적 표현 없이 조의를 전하려면 ‘깊은 애도의 뜻을 전합니다’나 ‘삼가 조의를 표합니다’처럼 뜻을 직접 담은 문구를 쓰실 수 있습니다. 정해 둔 추모 인사가 있으면 그 문장을 알려주세요. 보내는 분의 뜻에 맞는 표현으로 주문을 상담해 드립니다."
+-      },
+-      {
+-        "question": "화환 뒤쪽의 종이가 사진과 달라도 되나요?",
+-        "answer": "화환 뒤에 붙이는 종이인 ‘후다지’는 지역에 따라 붙이는 경우와 붙이지 않는 경우가 있습니다. 꽃이랑 공식몰은 이 차이가 상품의 품질과 관계없다고 안내하고 있습니다."
+-      }
+-    ],
+-    "facilityAnchors": [
+-      {
+-        "candidateId": "shillakwon-seoul",
+-        "anchor": "shillakwon-seoul",
+-        "heading": "쉴낙원 서울장례식장",
+-        "href": "/regions/geumcheon-funeral-wreath/#shillakwon-seoul",
+-        "unitKey": "금천구/법정동/가산동"
+-      },
+-      {
+-        "candidateId": "doksan-funeral",
+-        "anchor": "doksan-funeral",
+-        "heading": "독산장례식장",
+-        "href": "/regions/geumcheon-funeral-wreath/#doksan-funeral",
+-        "unitKey": "금천구/법정동/독산동"
++        "question": "중앙대 안내의 ‘조화 진열 및 폐꽃 반출 금지’는 화환을 보내면 안 된다는 뜻인가요?",
++        "answer": "중앙대학교병원은 화환을 분향소 안에 세우도록 안내하고, 통로 진열과 폐꽃 임의 반출을 제한합니다. 화환 전체를 금지하는 내용은 아닙니다. 개별 장례에서 화환을 사양하는 경우에는 유족의 뜻에 따릅니다."
++      },
++      {
++        "question": "환불이 결정되면 결제한 금액은 언제 돌려받나요?",
++        "answer": "꽃이랑 공식몰은 무통장 입금의 경우 주문자·입금자·환불계좌 예금주명이 일치하면 주말과 공휴일을 제외한 3일 안에 환불한다고 안내합니다. 카드 결제 취소는 카드사 처리기간에 따라 일주일 정도 걸릴 수 있습니다. 환불 가능 사유와 범위는 위의 변경·취소 안내를 함께 적용합니다."
+       }
+     ],
+     "primaryCta": {
+-      "label": "근조화환 전화 상담",
++      "label": "근조화환 주문 상담",
+       "href": "tel:18440644"
+     },
+-    "secondaryCta": {
+-      "label": "근조 3단 화환 B201 상품 보기",
+-      "href": "https://fwith.co.kr/shop/item.php?it_id=B201"
+-    },
+-    "productCardKeys": [
+-      "funeral-basic",
+-      "funeral-premium",
+-      "funeral-large",
+-      "funeral-xl"
+-    ],
+-    "sourceNote": "시설 등록정보: 보건복지부 2026년 4월 1일 기준. 상품·정책 열람: 2026년 10월 12일.",
++    "productCardSkus": [
++      "B201",
++      "B203",
++      "B205",
++      "B060"
++    ],
++    "facilityLinks": [
++      {
++        "label": "중앙대학교병원 장례식장",
++        "href": "#cau-hospital"
++      },
++      {
++        "label": "보라매병원 장례식장",
++        "href": "#boramae-hospital"
++      }
++    ],
++    "sourceHeading": "출처 및 확인 정보",
++    "sourceNote": "시설·상품·판매정책 확인일: 2026년 10월 13일. 시설 위치와 이용 안내는 아래 공식 자료를 기준으로 정리했습니다.",
+     "sourceLinks": [
+       {
+-        "label": "보건복지부 장례식장 현황",
+-        "url": "https://www.data.go.kr/data/15143467/fileData.do"
++        "label": "중앙대학교병원 장례식장 소개",
++        "url": "https://ch.cauhs.or.kr/funeral/conts/101002000000000.do"
++      },
++      {
++        "label": "중앙대학교병원 장례식장 협조사항",
++        "url": "https://ch.cauhs.or.kr/funeral/conts/102004000000000.do"
++      },
++      {
++        "label": "보라매병원 층별 안내",
++        "url": "https://www.brmh.org/cms_manage/view.do?site=001&user_code=009010001"
++      },
++      {
++        "label": "보라매병원 장례식장 이용 안내",
++        "url": "https://funeral.brmh.org/cms_manage/view.do?site=035&user_code=019001000"
+       },
+       {
+         "label": "꽃이랑 상품 구성·수거 안내",
+@@ -69,10 +116,9 @@
+         "url": "https://fwith.co.kr/data/common/flower379/de_change_content.jpg"
+       }
+     ],
+-    "candidateIds": [
+-      "shillakwon-seoul",
+-      "doksan-funeral"
+-    ],
++    "slug": "dongjak-funeral-wreath",
++    "primaryKeyword": "동작구 근조화환",
++    "contentMarkdown": "## 조의의 뜻에 맞는 네 가지 근조화환\n\n근조 3단 화환 B201은 기본가격 59,000원, 근조 고급 3단 화환 B203은 79,000원입니다. 근조 특대 3단 화환 B205는 109,000원, 근조 특특대 3단 화환 B060은 149,000원으로 안내합니다. 아래 카드에는 각 상품의 실제 판매 사진과 해당 상품으로 연결되는 주문 버튼을 담았습니다.\n\n상품 이름만으로 모습이 잘 떠오르지 않으실 수 있지요. 사진에서 마음에 드는 구성이 있거나, 두 상품 중에서 정하기 어려우시면 상품번호를 말씀해 주세요. 꽃이랑에서 예산과 원하시는 모습을 바탕으로 상품 선택을 상담해 드립니다. ‘고급·특대·특특대’는 상품의 정식 이름이며, 필요한 높이나 꽃 구성이 있다면 그 조건도 함께 상담할 수 있습니다.\n\n이 페이지의 근조화환은 생화와 조화를 함께 사용하는 상품입니다. 계절이나 지역에 따라 사진과 같은 소재를 구하기 어려우면 꽃의 소재와 형태가 일부 달라질 수 있습니다. 사진에서 보신 특정 꽃이나 색이 꼭 필요하다면 그 부분을 말씀해 주세요. 가능한 구성을 주문 전에 상담해 드립니다.\n\n가격표는 화환의 기본가격입니다. 실제 배송 주소에 따라 추가 배송비가 붙을 수 있어, 배송비를 포함한 최종금액은 주문 상담에서 안내합니다. 회사나 모임에서 정해 둔 지출 한도가 있다면 배송비까지 포함한 예산으로 말씀해 주시면 됩니다.\n\n## 중앙대와 보라매, 보내실 장소의 안내\n\n### 중앙대학교병원 장례식장\n\n흑석동의 중앙대학교병원 장례식장 주소는 서울 동작구 흑석로 102입니다. 병원은 화환을 분향소 안에 세우고 통로에는 놓지 않도록 안내합니다. 조문객이 오가는 통로가 아니라 분향소 내부가 진열 장소라는 점을 주문 상담에 반영합니다.\n\n리본 컷팅이 필요할 때의 요청 창구는 병원 상담실입니다. 병원은 폐꽃의 재활용을 막기 위해 임의 반출을 금지하고 있습니다. 이는 중앙대학교병원의 현장 운영 안내입니다. 꽃이랑에서는 화환을 별도로 수거하지 않습니다.\n\n### 서울특별시보라매병원 장례식장\n\n신대방동의 보라매병원 장례식장은 서울 동작구 보라매로5길 20에 있습니다. 병원 층별 안내에는 3동 사랑관 지하1층으로 표시되어 있습니다. 보라매병원으로 보내는 주문에는 이 장소 정보와 해당 빈소를 연결해 상담합니다. 개별 장례의 화환 수령 조건은 유족과 장례식장의 안내를 따릅니다.\n\n## 전하실 인사와 빈소를 연결하는 상담\n\n리본에는 길지 않은 말로도 조의의 뜻을 담을 수 있습니다. 예를 들어 ‘삼가 고인을 추모합니다’, ‘유가족께 깊은 위로를 전합니다’처럼 쓰실 수 있습니다. 종교적인 인사나 따로 전하고 싶은 말씀이 있다면 그 뜻에 맞춰 문구를 상담해 드립니다.\n\n상품이 정해졌다면 장례식장·빈소, 고인명과 받는 분 정보에 희망 전달 날짜·시간과 발인 일정을 더해 상담을 이어갑니다. 상품번호 또는 예산, 리본 인사와 보내는 이름, 주문 및 수령 관련 연락처도 이때 함께 말씀해 주세요. 꽃이랑 전화 1844-0644에서 상품과 목적지에 맞는 주문 내용을 상담해 드립니다.\n\n발인이 가까운 경우에는 결제 전에 전화로 희망 전달 일정을 말씀해 주시면, 실제 전달 가능한 시간을 상담해 드립니다. 부고에 화환을 사양한다는 뜻이 담겨 있을 때는 유족의 의사를 존중해 조의의 인사만 전하셔도 좋습니다.\n\n## 주문 뒤 일정이나 내용이 달라졌다면\n\n빈소·발인 일정이 바뀌거나 리본을 수정해야 한다면, 주문 정보와 바뀐 내용을 1844-0644로 알려주세요. 이미 제작하거나 출고한 단계인지에 따라 수정과 취소의 적용 조건이 달라지므로, 해당 주문의 진행 상태를 바탕으로 상담합니다.\n\n공식몰의 교환·환불 안내에는 제작 완료된 꽃상품, 배송 완료 후 하루 이상 경과한 경우, 배송지 기재 오류나 수취 거절에 대한 제한이 있습니다. 지역·계절에 따른 소재 차이로 사진과 달라진 경우도 취소·환불 제한 사유로 안내되어 있습니다.\n\n불량이나 파손, 주문한 상품과 전혀 다른 상품의 배송은 환불 가능 사유로 별도 안내합니다. 결제 후 배송이 불가능하거나 재고가 없어 진행하지 못하면 전액 환불하며, 출고 뒤 취소 시에는 배송비를 제외한다는 조항도 있습니다. 각 조항은 주문 상태와 사유에 따라 적용하므로, 문제가 생긴 부분을 상담해 주시면 해당 조건을 안내해 드립니다.",
+     "category": "regions",
+     "routeType": "category",
+     "pageType": "regional-service",
+@@ -83,14 +129,19 @@
+     "sourceMode": "direct-git",
+     "queryClass": "local-commercial",
+     "assetSlot": "REAL_PROOF",
+-    "visualIntent": "검증된 꽃이랑 공식 상품 사진으로 선택을 돕는 안내. 시설 실배송·납품 사진으로 사용하지 않음.",
+-    "sections": [],
++    "visualIntent": "검증된 꽃이랑 공식 상품 사진. 시설 실배송 사진이 아님.",
+     "relatedKeys": [],
+     "productCardLimit": 4,
+-    "scopeKey": "seoul-geumcheon-direct-independent-preparation-20261012",
++    "productCardKeys": [
++      "funeral-basic",
++      "funeral-premium",
++      "funeral-large",
++      "funeral-xl"
++    ],
++    "scopeKey": "seoul-dongjak-direct-independent-preparation-20261013",
+     "regionUnitKeys": [
+-      "금천구/법정동/가산동",
+-      "금천구/법정동/독산동"
++      "동작구/법정동/흑석동",
++      "동작구/법정동/신대방동"
+     ],
+     "regionalPurchaseMode": "catalog",
+     "regionalProductFamilies": [
+@@ -103,83 +154,100 @@
+       "funeral-xl"
+     ],
+     "ogImage": "/images/products/funeral-basic.jpg",
+-    "ogImageAlt": "근조 3단 화환 공식 상품 사진",
++    "ogImageAlt": "근조 3단 화환 B201의 꽃이랑 공식 상품 사진",
+     "ogImageSha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+     "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B201",
+     "ogImageWidth": 500,
+     "ogImageHeight": 500,
+     "ogImageType": "image/jpeg",
++    "candidateIds": [
++      "cau-hospital",
++      "boramae-hospital"
++    ],
+     "purchaseIntentKey": "funeral-condolence-wreath",
+-    "contextKey": "geumcheon|funeral-condolence-wreath",
+-    "intentKey": "seoul-geumcheon|funeral-condolence-wreath",
++    "contextKey": "dongjak|funeral-condolence-wreath",
++    "intentKey": "seoul-dongjak|funeral-condolence-wreath",
++    "facilityAnchors": [
++      {
++        "candidateId": "cau-hospital",
++        "anchor": "cau-hospital",
++        "heading": "중앙대학교병원 장례식장",
++        "unitKey": "동작구/법정동/흑석동",
++        "href": "/regions/dongjak-funeral-wreath/#cau-hospital"
++      },
++      {
++        "candidateId": "boramae-hospital",
++        "anchor": "boramae-hospital",
++        "heading": "서울특별시보라매병원 장례식장",
++        "unitKey": "동작구/법정동/신대방동",
++        "href": "/regions/dongjak-funeral-wreath/#boramae-hospital"
++      }
++    ],
+     "sources": [
+       {
+-        "name": "보건복지부 장례식장 현황",
+-        "url": "https://www.data.go.kr/data/15143467/fileData.do",
+-        "type": "official",
+-        "verifiedAt": "2026-10-12"
++        "name": "중앙대학교병원 장례식장 소개",
++        "url": "https://ch.cauhs.or.kr/funeral/conts/101002000000000.do",
++        "type": "official",
++        "verifiedAt": "2026-10-13"
++      },
++      {
++        "name": "중앙대학교병원 장례식장 협조사항",
++        "url": "https://ch.cauhs.or.kr/funeral/conts/102004000000000.do",
++        "type": "official",
++        "verifiedAt": "2026-10-13"
++      },
++      {
++        "name": "보라매병원 층별 안내",
++        "url": "https://www.brmh.org/cms_manage/view.do?site=001&user_code=009010001",
++        "type": "official",
++        "verifiedAt": "2026-10-13"
++      },
++      {
++        "name": "보라매병원 장례식장 이용 안내",
++        "url": "https://funeral.brmh.org/cms_manage/view.do?site=035&user_code=019001000",
++        "type": "official",
++        "verifiedAt": "2026-10-13"
+       },
+       {
+         "name": "꽃이랑 상품 구성·수거 안내",
+         "url": "https://fwith.co.kr/shop/img/order-top2.jpg",
+         "type": "business",
+-        "verifiedAt": "2026-10-12"
++        "verifiedAt": "2026-10-13"
+       },
+       {
+         "name": "꽃이랑 교환·환불 안내",
+         "url": "https://fwith.co.kr/data/common/flower379/de_change_content.jpg",
+         "type": "business",
+-        "verifiedAt": "2026-10-12"
+-      },
+-      {
+-        "name": "근조 3단 화환",
+-        "url": "https://fwith.co.kr/shop/item.php?it_id=B201",
+-        "type": "business",
+-        "verifiedAt": "2026-10-12"
+-      },
+-      {
+-        "name": "근조 고급 3단 화환",
+-        "url": "https://fwith.co.kr/shop/item.php?it_id=B203",
+-        "type": "business",
+-        "verifiedAt": "2026-10-12"
+-      },
+-      {
+-        "name": "근조 특대 3단 화환",
+-        "url": "https://fwith.co.kr/shop/item.php?it_id=B205",
+-        "type": "business",
+-        "verifiedAt": "2026-10-12"
+-      },
+-      {
+-        "name": "근조 특특대 3단 화환",
+-        "url": "https://fwith.co.kr/shop/item.php?it_id=B060",
+-        "type": "business",
+-        "verifiedAt": "2026-10-12"
++        "verifiedAt": "2026-10-13"
+       }
+     ],
+     "source": {
+-      "name": "보건복지부 장례식장 현황",
+-      "url": "https://www.data.go.kr/data/15143467/fileData.do",
++      "name": "중앙대학교병원 장례식장 소개",
++      "url": "https://ch.cauhs.or.kr/funeral/conts/101002000000000.do",
+       "type": "official",
+-      "verifiedAt": "2026-10-12"
++      "verifiedAt": "2026-10-13"
+     },
+     "secondary_keywords": [
+-      "쉴낙원 서울장례식장 근조화환",
+-      "독산장례식장 근조화환"
++      "중앙대학교병원 장례식장 근조화환 주문",
++      "중앙대병원 화환",
++      "보라매병원 장례식장 근조화환 가격",
++      "흑석동 근조화환",
++      "신대방동 근조화환"
+     ],
+     "keyword_cluster": "funeral-condolence-wreath",
+     "query_class": "local-commercial",
+     "query_priority": "qualitative-no-volume-measured",
+     "query_evidence": {
+-      "sourceProposalSha256": "4371357faa2f5ff54d31689ec270f8cf8a5da76e7faa73a4e937f90ee6cecc37",
+-      "method": "Previously reviewed original query/competitor/source research; no search-volume or ranking claim.",
++      "sourceProposalSha256": "8c17e681bc49944eec59698fbd6dfea3ff4c91773e0d45dbe955dae20b443e7c",
++      "method": "Reviewed original query/competitor/source research; no search-volume or ranking claim.",
+       "intent": "funeral-condolence-wreath",
+       "candidateIds": [
+-        "shillakwon-seoul",
+-        "doksan-funeral"
++        "cau-hospital",
++        "boramae-hospital"
+       ],
+-      "evidencePath": "docs/direct-regional-release/seoul-geumcheon/research/search-intent-preplan-revised.json"
++      "evidencePath": "docs/direct-regional-release/seoul-dongjak/research/search/search-intent-research.json"
+     },
+-    "snapshotHash": "ba436e0c76f07c4c788cbf064c59aee3a1bbc239ac741a0b599eb529ddb93532",
+-    "snapshotId": "direct-content-geumcheon-funeral-wreath-ba436e0c76f07c4c"
++    "snapshotHash": "d6ded00a53982caa29676084d1ddee31ecca5f5e640a3ad1fb56b253f1a1d0c4",
++    "snapshotId": "direct-content-dongjak-funeral-wreath-d6ded00a53982caa"
+   }
+ ]
+--- geumcheon/src/data/products.json
++++ dongjak/src/data/products.json
+@@ -4,75 +4,75 @@
+     "name": "근조 3단 화환",
+     "price": 59000,
+     "img": "/images/products/funeral-basic.jpg",
+-    "desc": "흰색 꽃과 노란색 꽃이 어우러진 공식 상품 사진입니다.",
++    "desc": "꽃이랑 공식 판매상품 사진",
+     "family": "funeral",
+     "orderUrl": "https://fwith.co.kr/shop/item.php?it_id=B201",
+     "sourceLevel": "official_business_source",
+     "sourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B201",
+-    "verifiedAt": "2026-10-12",
++    "verifiedAt": "2026-10-13",
+     "assetType": "real_product",
+     "sourceImageUrl": "https://fwith.co.kr/data/item/flower379/B201/thumb-1_500x500.jpg",
+     "officialSku": "B201",
+     "officialDetailImageUrl": "https://fwith.co.kr/data/item/flower379/B201/thumb-1_500x500.jpg",
+-    "imageAlt": "근조 3단 화환 공식 상품 사진",
+-    "priceLabel": "기본가격 59,000원",
+-    "ctaLabel": "근조 3단 화환 상품 확인·주문"
++    "imageAlt": "근조 3단 화환 B201의 꽃이랑 공식 상품 사진",
++    "priceLabel": "상품 기본가격 59,000원",
++    "ctaLabel": "상품 확인·주문"
+   },
+   {
+     "key": "funeral-premium",
+     "name": "근조 고급 3단 화환",
+     "price": 79000,
+     "img": "/images/products/funeral-premium.jpg",
+-    "desc": "흰색·노란색 꽃에 연분홍색이 더해진 모습을 사진에서 보실 수 있습니다.",
++    "desc": "꽃이랑 공식 판매상품 사진",
+     "family": "funeral",
+     "orderUrl": "https://fwith.co.kr/shop/item.php?it_id=B203",
+     "sourceLevel": "official_business_source",
+     "sourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B203",
+-    "verifiedAt": "2026-10-12",
++    "verifiedAt": "2026-10-13",
+     "assetType": "real_product",
+     "sourceImageUrl": "https://fwith.co.kr/data/item/flower379/B203/thumb-1_500x500.jpg",
+     "officialSku": "B203",
+     "officialDetailImageUrl": "https://fwith.co.kr/data/item/flower379/B203/thumb-1_500x500.jpg",
+-    "imageAlt": "근조 고급 3단 화환 공식 상품 사진",
+-    "priceLabel": "기본가격 79,000원",
+-    "ctaLabel": "근조 고급 3단 화환 상품 확인·주문"
++    "imageAlt": "근조 고급 3단 화환 B203의 꽃이랑 공식 상품 사진",
++    "priceLabel": "상품 기본가격 79,000원",
++    "ctaLabel": "상품 확인·주문"
+   },
+   {
+     "key": "funeral-large",
+     "name": "근조 특대 3단 화환",
+     "price": 109000,
+     "img": "/images/products/funeral-large.jpg",
+-    "desc": "흰색 꽃 사이와 가장자리에 노란색이 보이는 공식 상품 사진입니다.",
++    "desc": "꽃이랑 공식 판매상품 사진",
+     "family": "funeral",
+     "orderUrl": "https://fwith.co.kr/shop/item.php?it_id=B205",
+     "sourceLevel": "official_business_source",
+     "sourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B205",
+-    "verifiedAt": "2026-10-12",
++    "verifiedAt": "2026-10-13",
+     "assetType": "real_product",
+     "sourceImageUrl": "https://fwith.co.kr/data/item/flower379/B205/thumb-1_500x500.jpg",
+     "officialSku": "B205",
+     "officialDetailImageUrl": "https://fwith.co.kr/data/item/flower379/B205/thumb-1_500x500.jpg",
+-    "imageAlt": "근조 특대 3단 화환 공식 상품 사진",
+-    "priceLabel": "기본가격 109,000원",
+-    "ctaLabel": "근조 특대 3단 화환 상품 확인·주문"
++    "imageAlt": "근조 특대 3단 화환 B205의 꽃이랑 공식 상품 사진",
++    "priceLabel": "상품 기본가격 109,000원",
++    "ctaLabel": "상품 확인·주문"
+   },
+   {
+     "key": "funeral-xl",
+     "name": "근조 특특대 3단 화환",
+     "price": 149000,
+     "img": "/images/products/funeral-xl.jpg",
+-    "desc": "흰색 꽃을 바탕으로 노란색과 연분홍색이 함께 보이는 공식 상품 사진입니다.",
++    "desc": "꽃이랑 공식 판매상품 사진",
+     "family": "funeral",
+     "orderUrl": "https://fwith.co.kr/shop/item.php?it_id=B060",
+     "sourceLevel": "official_business_source",
+     "sourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B060",
+-    "verifiedAt": "2026-10-12",
++    "verifiedAt": "2026-10-13",
+     "assetType": "real_product",
+     "sourceImageUrl": "https://fwith.co.kr/data/item/flower379/B060/thumb-1_500x500.jpg",
+     "officialSku": "B060",
+     "officialDetailImageUrl": "https://fwith.co.kr/data/item/flower379/B060/thumb-1_500x500.jpg",
+-    "imageAlt": "근조 특특대 3단 화환 공식 상품 사진",
+-    "priceLabel": "기본가격 149,000원",
+-    "ctaLabel": "근조 특특대 3단 화환 상품 확인·주문"
++    "imageAlt": "근조 특특대 3단 화환 B060의 꽃이랑 공식 상품 사진",
++    "priceLabel": "상품 기본가격 149,000원",
++    "ctaLabel": "상품 확인·주문"
+   }
+ ]
+--- geumcheon/src/data/publish-manifest.json
++++ dongjak/src/data/publish-manifest.json
+@@ -1,23 +1,23 @@
+ {
+   "schemaVersion": 2,
+-  "siteKey": "seoul-geumcheon-flower-direct",
++  "siteKey": "seoul-dongjak-flower-direct",
+   "generatedFrom": "Direct Git customer-content source",
+   "snapshotMode": "direct-git-content",
+   "pages": [
+     {
+-      "slug": "geumcheon-funeral-wreath",
+-      "title": "금천구 근조화환: 쉴낙원 서울·독산장례식장 | 꽃이랑",
+-      "primaryKeyword": "금천구 근조화환",
++      "slug": "dongjak-funeral-wreath",
++      "title": "동작구 근조화환 · 중앙대병원·보라매병원 | 꽃이랑",
++      "primaryKeyword": "동작구 근조화환",
+       "regionalProductKeys": [
+         "funeral-basic",
+         "funeral-premium",
+         "funeral-large",
+         "funeral-xl"
+       ],
+-      "pageKey": "geumcheon-funeral-wreath",
++      "pageKey": "dongjak-funeral-wreath",
+       "category": "regions",
+       "routeType": "category",
+-      "url": "/regions/geumcheon-funeral-wreath/",
++      "url": "/regions/dongjak-funeral-wreath/",
+       "pageType": "regional-service",
+       "status": "approved",
+       "file": "src/data/pages.json",
+@@ -30,63 +30,62 @@
+         "funeral-large",
+         "funeral-xl"
+       ],
+-      "scopeKey": "seoul-geumcheon-direct-independent-preparation-20261012",
++      "scopeKey": "seoul-dongjak-direct-independent-preparation-20261013",
+       "regionUnitKeys": [
+-        "금천구/법정동/가산동",
+-        "금천구/법정동/독산동"
++        "동작구/법정동/흑석동",
++        "동작구/법정동/신대방동"
+       ],
+       "regionalPurchaseMode": "catalog",
+       "regionalProductFamilies": [
+         "funeral"
+       ],
+       "ogImage": "/images/products/funeral-basic.jpg",
+-      "ogImageAlt": "근조 3단 화환 공식 상품 사진",
++      "ogImageAlt": "근조 3단 화환 B201의 꽃이랑 공식 상품 사진",
+       "ogImageSha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+       "ogImageSourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B201",
+       "ogImageWidth": 500,
+       "ogImageHeight": 500,
+       "ogImageType": "image/jpeg",
+       "purchaseIntentKey": "funeral-condolence-wreath",
+-      "contextKey": "geumcheon|funeral-condolence-wreath",
+-      "intentKey": "seoul-geumcheon|funeral-condolence-wreath",
+-      "snapshotId": "direct-content-geumcheon-funeral-wreath-ba436e0c76f07c4c",
+-      "snapshotHash": "ba436e0c76f07c4c788cbf064c59aee3a1bbc239ac741a0b599eb529ddb93532",
++      "contextKey": "dongjak|funeral-condolence-wreath",
++      "intentKey": "seoul-dongjak|funeral-condolence-wreath",
++      "snapshotId": "direct-content-dongjak-funeral-wreath-d6ded00a53982caa",
++      "snapshotHash": "d6ded00a53982caa29676084d1ddee31ecca5f5e640a3ad1fb56b253f1a1d0c4",
+       "candidateIds": [
+-        "shillakwon-seoul",
+-        "doksan-funeral"
++        "cau-hospital",
++        "boramae-hospital"
+       ],
+       "facilityAnchors": [
+         {
+-          "candidateId": "shillakwon-seoul",
+-          "anchor": "shillakwon-seoul",
+-          "heading": "쉴낙원 서울장례식장",
+-          "href": "/regions/geumcheon-funeral-wreath/#shillakwon-seoul",
+-          "unitKey": "금천구/법정동/가산동"
++          "candidateId": "cau-hospital",
++          "anchor": "cau-hospital",
++          "heading": "중앙대학교병원 장례식장",
++          "unitKey": "동작구/법정동/흑석동",
++          "href": "/regions/dongjak-funeral-wreath/#cau-hospital"
+         },
+         {
+-          "candidateId": "doksan-funeral",
+-          "anchor": "doksan-funeral",
+-          "heading": "독산장례식장",
+-          "href": "/regions/geumcheon-funeral-wreath/#doksan-funeral",
+-          "unitKey": "금천구/법정동/독산동"
++          "candidateId": "boramae-hospital",
++          "anchor": "boramae-hospital",
++          "heading": "서울특별시보라매병원 장례식장",
++          "unitKey": "동작구/법정동/신대방동",
++          "href": "/regions/dongjak-funeral-wreath/#boramae-hospital"
+         }
+       ]
+     }
+   ],
+   "snapshotLedger": {},
+   "directRelease": {
+-    "releaseId": "seoul-geumcheon-direct-independent-preparation-20261012",
++    "releaseId": "seoul-dongjak-direct-independent-preparation-20261013",
+     "sourceMode": "direct-git",
+-    "newRegionStartedAt": "2026-10-12T21:35:10Z",
+     "plannedOriginalCount": 1,
+     "reviewedArticleCount": 1,
+     "candidateArticleCount": 1,
+     "regionArticleCount": 1,
+     "sitemapUrlCount": 0,
+     "intrinsicIndexableRouteCount": 2,
+-    "renderedHtmlRouteCount": 3,
+-    "publicationState": "prepared-unpublished-static-review-pass-visual-unverified",
+-    "screenQa": "UNVERIFIED_CHROMIUM_SOCKET_PERMISSION_ERROR",
++    "renderedHtmlRouteCount": 4,
++    "publicationState": "local-copy-reviewed-technical-review-pending",
++    "screenQa": "UNVERIFIED",
+     "deferredPageKeys": [],
+     "deferredRoutes": [],
+     "publishedCoverage": {
+@@ -101,37 +100,42 @@
+     "publicSourceHashAlgorithm": "sha256-sorted-utf8-json-v1",
+     "contentHashes": [
+       {
+-        "pageKey": "geumcheon-funeral-wreath",
+-        "bodySha256": "6711f0804e2d52c018834cd6bdfd8c1cca6b858171a5f39391d1948455c3e585",
+-        "publicSourceSha256": "ba436e0c76f07c4c788cbf064c59aee3a1bbc239ac741a0b599eb529ddb93532"
++        "pageKey": "dongjak-funeral-wreath",
++        "bodySha256": "162649b0fa96741146c4a5d52663dcf8a2a30d595aab9403e9d5817243980875",
++        "publicSourceSha256": "d6ded00a53982caa29676084d1ddee31ecca5f5e640a3ad1fb56b253f1a1d0c4"
+       }
+     ],
+-    "reusedRuntimeCommit": "500d82d01c1cdaed3ebde047bb3ce056705daac1",
++    "reusedRuntimeCommits": [
++      "500d82d01c1cdaed3ebde047bb3ce056705daac1",
++      "bbb016305dd2fe29f7d985a669acaa02224a9f2f"
++    ],
+     "officialMembership": {
+-      "legalUnits": 3,
+-      "administrativeUnits": 10,
+-      "relations": 10,
++      "legalUnits": 9,
++      "administrativeUnits": 15,
++      "relations": 18,
+       "plannedRepresentedUnits": 2,
+-      "unrepresentedUnits": 1,
++      "unrepresentedUnits": 7,
+       "countIsPageQuota": false
+     },
+-    "representativeAssignment": "geumcheon-grouped-funeral-context-v1",
+-    "reviewStatus": "COPY_INTERFACE_TECHNICAL_STATIC_PASS",
+-    "independentPlanSha256": "2af5ea5973851904f8f77849dcea0da6188a7058da20201840f043dc0faf987f",
+-    "fixedPlanSha256": "4371357faa2f5ff54d31689ec270f8cf8a5da76e7faa73a4e937f90ee6cecc37",
++    "representativeAssignment": "dongjak-grouped-funeral-context-v1",
++    "reviewStatus": "COPY_PASS_TECHNICAL_PENDING",
++    "independentPlanSha256": "921a64d860efdf1a86cce4ea56c349ad1e917d45315523b40f760c64fa84aa3d",
++    "fixedPlanSha256": "8c17e681bc49944eec59698fbd6dfea3ff4c91773e0d45dbe955dae20b443e7c",
+     "candidateInventory": {
+-      "original": 10,
+-      "initial": 9,
++      "original": 12,
+       "active": 2,
++      "held": 10,
+       "heldBeforeFreeze": [
+-        "gasan-digital-opening",
+-        "geumnarae-art-hall",
+-        "geumcheon-musical-center",
+-        "marvelie-siheung",
+-        "mayqueen-convention",
+-        "geumcheon-green-plaza",
+-        "huimyeong-funeral-lead",
+-        "nanumgil-social-cooperative"
++        "pium-seoul",
++        "boramae-safety",
++        "the-sb",
++        "handpicked",
++        "sangdo-arthall",
++        "dongjak-artgallery",
++        "noryangjin-market",
++        "seoul-cemetery",
++        "airforce-hotel",
++        "artes"
+       ]
+     },
+     "publicationAuthorized": false
+--- geumcheon/src/data/region-coverage.json
++++ dongjak/src/data/region-coverage.json
+@@ -1,274 +1,431 @@
+ {
+   "schemaVersion": 2,
+-  "siteKey": "seoul-geumcheon-flower-direct",
+-  "scopeKey": "seoul-geumcheon-direct-independent-preparation-20261012",
++  "siteKey": "seoul-dongjak-flower-direct",
++  "scopeKey": "seoul-dongjak-direct-independent-preparation-20261013",
+   "unitBasis": "legal-dong-plus-eup-myeon",
+   "countIsPageQuota": false,
+-  "verifiedAt": "2026-10-12",
++  "verifiedAt": "2026-10-13",
+   "sourceBasisDate": "2026-10-12",
+-  "officialCode": "11545",
+-  "districtLegalCode": "1154500000",
++  "officialCode": "11590",
++  "districtLegalCode": "1159000000",
+   "officialSourceUrls": [
+     "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
+   ],
+   "sourceAttachmentSha256": "3702ee001f131968983fbba1e08c6bffc89f6ee4377de327e5eff6946b1098d7",
+-  "membershipSourceSha256": "ded6c156cefc8c04ef066bd4cec30df2ee8103499f471299ddae8c69f3028b87",
++  "membershipSourceSha256": "37e6a28da192c1dcf84e5f52ea19b13c6e19bca456496ab4ec126ec96a4c88f7",
+   "districts": [
+     {
+-      "key": "seoul-geumcheon-gu",
+-      "name": "금천구",
++      "key": "seoul-dongjak-gu",
++      "name": "동작구",
+       "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
+     }
+   ],
+   "units": [
+     {
+-      "unitKey": "금천구/법정동/가산동",
+-      "name": "가산동",
+-      "unitType": "legal-dong",
+-      "districtKeys": [
+-        "seoul-geumcheon-gu"
+-      ],
+-      "legalRi": [],
+-      "legalCode": "1154510100",
+-      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+-      "requiresFullAddressForAdministrativeAssignment": true
+-    },
+-    {
+-      "unitKey": "금천구/법정동/독산동",
+-      "name": "독산동",
+-      "unitType": "legal-dong",
+-      "districtKeys": [
+-        "seoul-geumcheon-gu"
+-      ],
+-      "legalRi": [],
+-      "legalCode": "1154510200",
+-      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+-      "requiresFullAddressForAdministrativeAssignment": true
+-    },
+-    {
+-      "unitKey": "금천구/법정동/시흥동",
+-      "name": "시흥동",
+-      "unitType": "legal-dong",
+-      "districtKeys": [
+-        "seoul-geumcheon-gu"
+-      ],
+-      "legalRi": [],
+-      "legalCode": "1154510300",
++      "unitKey": "동작구/법정동/노량진동",
++      "name": "노량진동",
++      "unitType": "legal-dong",
++      "districtKeys": [
++        "seoul-dongjak-gu"
++      ],
++      "legalRi": [],
++      "legalCode": "1159010100",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "requiresFullAddressForAdministrativeAssignment": true
++    },
++    {
++      "unitKey": "동작구/법정동/상도동",
++      "name": "상도동",
++      "unitType": "legal-dong",
++      "districtKeys": [
++        "seoul-dongjak-gu"
++      ],
++      "legalRi": [],
++      "legalCode": "1159010200",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "requiresFullAddressForAdministrativeAssignment": true
++    },
++    {
++      "unitKey": "동작구/법정동/상도1동",
++      "name": "상도1동",
++      "unitType": "legal-dong",
++      "districtKeys": [
++        "seoul-dongjak-gu"
++      ],
++      "legalRi": [],
++      "legalCode": "1159010300",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "requiresFullAddressForAdministrativeAssignment": true
++    },
++    {
++      "unitKey": "동작구/법정동/본동",
++      "name": "본동",
++      "unitType": "legal-dong",
++      "districtKeys": [
++        "seoul-dongjak-gu"
++      ],
++      "legalRi": [],
++      "legalCode": "1159010400",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "requiresFullAddressForAdministrativeAssignment": true
++    },
++    {
++      "unitKey": "동작구/법정동/흑석동",
++      "name": "흑석동",
++      "unitType": "legal-dong",
++      "districtKeys": [
++        "seoul-dongjak-gu"
++      ],
++      "legalRi": [],
++      "legalCode": "1159010500",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "requiresFullAddressForAdministrativeAssignment": true
++    },
++    {
++      "unitKey": "동작구/법정동/동작동",
++      "name": "동작동",
++      "unitType": "legal-dong",
++      "districtKeys": [
++        "seoul-dongjak-gu"
++      ],
++      "legalRi": [],
++      "legalCode": "1159010600",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "requiresFullAddressForAdministrativeAssignment": true
++    },
++    {
++      "unitKey": "동작구/법정동/사당동",
++      "name": "사당동",
++      "unitType": "legal-dong",
++      "districtKeys": [
++        "seoul-dongjak-gu"
++      ],
++      "legalRi": [],
++      "legalCode": "1159010700",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "requiresFullAddressForAdministrativeAssignment": true
++    },
++    {
++      "unitKey": "동작구/법정동/대방동",
++      "name": "대방동",
++      "unitType": "legal-dong",
++      "districtKeys": [
++        "seoul-dongjak-gu"
++      ],
++      "legalRi": [],
++      "legalCode": "1159010800",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "requiresFullAddressForAdministrativeAssignment": true
++    },
++    {
++      "unitKey": "동작구/법정동/신대방동",
++      "name": "신대방동",
++      "unitType": "legal-dong",
++      "districtKeys": [
++        "seoul-dongjak-gu"
++      ],
++      "legalRi": [],
++      "legalCode": "1159010900",
+       "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+       "requiresFullAddressForAdministrativeAssignment": true
+     }
+   ],
+   "administrativeCrosswalk": [
+     {
+-      "aliasKey": "seoul-geumcheon-gu/admin/1154551000",
+-      "name": "가산동",
+-      "districtKey": "seoul-geumcheon-gu",
+-      "administrativeCode": "1154551000",
+-      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+-      "relations": [
+-        {
+-          "unitKey": "금천구/법정동/가산동",
++      "aliasKey": "seoul-dongjak-gu/admin/1159051000",
++      "name": "노량진제1동",
++      "districtKey": "seoul-dongjak-gu",
++      "administrativeCode": "1159051000",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "relations": [
++        {
++          "unitKey": "동작구/법정동/노량진동",
++          "scope": "partial",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        },
++        {
++          "unitKey": "동작구/법정동/본동",
+           "scope": "whole",
+           "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
+         }
+       ]
+     },
+     {
+-      "aliasKey": "seoul-geumcheon-gu/admin/1154561000",
+-      "name": "독산제1동",
+-      "districtKey": "seoul-geumcheon-gu",
+-      "administrativeCode": "1154561000",
+-      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+-      "relations": [
+-        {
+-          "unitKey": "금천구/법정동/독산동",
+-          "scope": "partial",
+-          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
+-        }
+-      ]
+-    },
+-    {
+-      "aliasKey": "seoul-geumcheon-gu/admin/1154562000",
+-      "name": "독산제2동",
+-      "districtKey": "seoul-geumcheon-gu",
+-      "administrativeCode": "1154562000",
+-      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+-      "relations": [
+-        {
+-          "unitKey": "금천구/법정동/독산동",
+-          "scope": "partial",
+-          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
+-        }
+-      ]
+-    },
+-    {
+-      "aliasKey": "seoul-geumcheon-gu/admin/1154563000",
+-      "name": "독산제3동",
+-      "districtKey": "seoul-geumcheon-gu",
+-      "administrativeCode": "1154563000",
+-      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+-      "relations": [
+-        {
+-          "unitKey": "금천구/법정동/독산동",
+-          "scope": "partial",
+-          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
+-        }
+-      ]
+-    },
+-    {
+-      "aliasKey": "seoul-geumcheon-gu/admin/1154564000",
+-      "name": "독산제4동",
+-      "districtKey": "seoul-geumcheon-gu",
+-      "administrativeCode": "1154564000",
+-      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+-      "relations": [
+-        {
+-          "unitKey": "금천구/법정동/독산동",
+-          "scope": "partial",
+-          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
+-        }
+-      ]
+-    },
+-    {
+-      "aliasKey": "seoul-geumcheon-gu/admin/1154567000",
+-      "name": "시흥제1동",
+-      "districtKey": "seoul-geumcheon-gu",
+-      "administrativeCode": "1154567000",
+-      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+-      "relations": [
+-        {
+-          "unitKey": "금천구/법정동/시흥동",
+-          "scope": "partial",
+-          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
+-        }
+-      ]
+-    },
+-    {
+-      "aliasKey": "seoul-geumcheon-gu/admin/1154568000",
+-      "name": "시흥제2동",
+-      "districtKey": "seoul-geumcheon-gu",
+-      "administrativeCode": "1154568000",
+-      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+-      "relations": [
+-        {
+-          "unitKey": "금천구/법정동/시흥동",
+-          "scope": "partial",
+-          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
+-        }
+-      ]
+-    },
+-    {
+-      "aliasKey": "seoul-geumcheon-gu/admin/1154569000",
+-      "name": "시흥제3동",
+-      "districtKey": "seoul-geumcheon-gu",
+-      "administrativeCode": "1154569000",
+-      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+-      "relations": [
+-        {
+-          "unitKey": "금천구/법정동/시흥동",
+-          "scope": "partial",
+-          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
+-        }
+-      ]
+-    },
+-    {
+-      "aliasKey": "seoul-geumcheon-gu/admin/1154570000",
+-      "name": "시흥제4동",
+-      "districtKey": "seoul-geumcheon-gu",
+-      "administrativeCode": "1154570000",
+-      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+-      "relations": [
+-        {
+-          "unitKey": "금천구/법정동/시흥동",
+-          "scope": "partial",
+-          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
+-        }
+-      ]
+-    },
+-    {
+-      "aliasKey": "seoul-geumcheon-gu/admin/1154571000",
+-      "name": "시흥제5동",
+-      "districtKey": "seoul-geumcheon-gu",
+-      "administrativeCode": "1154571000",
+-      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+-      "relations": [
+-        {
+-          "unitKey": "금천구/법정동/시흥동",
++      "aliasKey": "seoul-dongjak-gu/admin/1159052000",
++      "name": "노량진제2동",
++      "districtKey": "seoul-dongjak-gu",
++      "administrativeCode": "1159052000",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "relations": [
++        {
++          "unitKey": "동작구/법정동/노량진동",
++          "scope": "partial",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        }
++      ]
++    },
++    {
++      "aliasKey": "seoul-dongjak-gu/admin/1159053000",
++      "name": "상도제1동",
++      "districtKey": "seoul-dongjak-gu",
++      "administrativeCode": "1159053000",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "relations": [
++        {
++          "unitKey": "동작구/법정동/상도동",
++          "scope": "partial",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        },
++        {
++          "unitKey": "동작구/법정동/상도1동",
++          "scope": "whole",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        }
++      ]
++    },
++    {
++      "aliasKey": "seoul-dongjak-gu/admin/1159054000",
++      "name": "상도제2동",
++      "districtKey": "seoul-dongjak-gu",
++      "administrativeCode": "1159054000",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "relations": [
++        {
++          "unitKey": "동작구/법정동/상도동",
++          "scope": "partial",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        }
++      ]
++    },
++    {
++      "aliasKey": "seoul-dongjak-gu/admin/1159055000",
++      "name": "상도제3동",
++      "districtKey": "seoul-dongjak-gu",
++      "administrativeCode": "1159055000",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "relations": [
++        {
++          "unitKey": "동작구/법정동/상도동",
++          "scope": "partial",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        }
++      ]
++    },
++    {
++      "aliasKey": "seoul-dongjak-gu/admin/1159056000",
++      "name": "상도제4동",
++      "districtKey": "seoul-dongjak-gu",
++      "administrativeCode": "1159056000",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "relations": [
++        {
++          "unitKey": "동작구/법정동/상도동",
++          "scope": "partial",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        }
++      ]
++    },
++    {
++      "aliasKey": "seoul-dongjak-gu/admin/1159060500",
++      "name": "흑석동",
++      "districtKey": "seoul-dongjak-gu",
++      "administrativeCode": "1159060500",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "relations": [
++        {
++          "unitKey": "동작구/법정동/흑석동",
++          "scope": "whole",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        }
++      ]
++    },
++    {
++      "aliasKey": "seoul-dongjak-gu/admin/1159062000",
++      "name": "사당제1동",
++      "districtKey": "seoul-dongjak-gu",
++      "administrativeCode": "1159062000",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "relations": [
++        {
++          "unitKey": "동작구/법정동/사당동",
++          "scope": "partial",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        }
++      ]
++    },
++    {
++      "aliasKey": "seoul-dongjak-gu/admin/1159063000",
++      "name": "사당제2동",
++      "districtKey": "seoul-dongjak-gu",
++      "administrativeCode": "1159063000",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "relations": [
++        {
++          "unitKey": "동작구/법정동/동작동",
++          "scope": "whole",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        },
++        {
++          "unitKey": "동작구/법정동/사당동",
++          "scope": "partial",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        }
++      ]
++    },
++    {
++      "aliasKey": "seoul-dongjak-gu/admin/1159064000",
++      "name": "사당제3동",
++      "districtKey": "seoul-dongjak-gu",
++      "administrativeCode": "1159064000",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "relations": [
++        {
++          "unitKey": "동작구/법정동/사당동",
++          "scope": "partial",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        }
++      ]
++    },
++    {
++      "aliasKey": "seoul-dongjak-gu/admin/1159065000",
++      "name": "사당제4동",
++      "districtKey": "seoul-dongjak-gu",
++      "administrativeCode": "1159065000",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "relations": [
++        {
++          "unitKey": "동작구/법정동/사당동",
++          "scope": "partial",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        }
++      ]
++    },
++    {
++      "aliasKey": "seoul-dongjak-gu/admin/1159065100",
++      "name": "사당제5동",
++      "districtKey": "seoul-dongjak-gu",
++      "administrativeCode": "1159065100",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "relations": [
++        {
++          "unitKey": "동작구/법정동/사당동",
++          "scope": "partial",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        }
++      ]
++    },
++    {
++      "aliasKey": "seoul-dongjak-gu/admin/1159066000",
++      "name": "대방동",
++      "districtKey": "seoul-dongjak-gu",
++      "administrativeCode": "1159066000",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "relations": [
++        {
++          "unitKey": "동작구/법정동/대방동",
++          "scope": "whole",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        }
++      ]
++    },
++    {
++      "aliasKey": "seoul-dongjak-gu/admin/1159067000",
++      "name": "신대방제1동",
++      "districtKey": "seoul-dongjak-gu",
++      "administrativeCode": "1159067000",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "relations": [
++        {
++          "unitKey": "동작구/법정동/신대방동",
++          "scope": "partial",
++          "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
++        }
++      ]
++    },
++    {
++      "aliasKey": "seoul-dongjak-gu/admin/1159068000",
++      "name": "신대방제2동",
++      "districtKey": "seoul-dongjak-gu",
++      "administrativeCode": "1159068000",
++      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
++      "relations": [
++        {
++          "unitKey": "동작구/법정동/신대방동",
+           "scope": "partial",
+           "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109"
+         }
+       ]
+     }
+   ],
+-  "membershipRelationCount": 10,
++  "membershipRelationCount": 18,
+   "membershipStatus": "official_current_effective_membership_verified",
+   "membershipAuthority": "행정안전부 주민과",
+   "honestyRules": [
+     "Official membership is not a delivery guarantee or a page quota.",
+     "Partial legal/admin relations do not establish the exact administrative dong of a facility."
+   ],
+-  "representativeAssignment": "geumcheon-grouped-funeral-context-v1",
++  "representativeAssignment": "dongjak-grouped-funeral-context-v1",
+   "facilities": [
+     {
+-      "facilityKey": "shillakwon-seoul",
+-      "name": "쉴낙원 서울장례식장",
+-      "sourceUrl": "https://www.data.go.kr/data/15143467/fileData.do",
+-      "address": "서울특별시 금천구 서부샛길 732",
+-      "unitKey": "금천구/법정동/가산동"
+-    },
+-    {
+-      "facilityKey": "doksan-funeral",
+-      "name": "독산장례식장",
+-      "sourceUrl": "https://www.data.go.kr/data/15143467/fileData.do",
+-      "address": "서울특별시 금천구 시흥대로116길 5",
+-      "unitKey": "금천구/법정동/독산동"
++      "facilityKey": "cau-hospital",
++      "name": "중앙대학교병원 장례식장",
++      "sourceUrl": "https://ch.cauhs.or.kr/funeral/conts/101002000000000.do",
++      "address": "서울특별시 동작구 흑석로 102",
++      "unitKey": "동작구/법정동/흑석동"
++    },
++    {
++      "facilityKey": "boramae-hospital",
++      "name": "서울특별시보라매병원 장례식장",
++      "sourceUrl": "https://www.brmh.org/cms_manage/view.do?site=001&user_code=009010001",
++      "address": "서울특별시 동작구 보라매로5길 20",
++      "unitKey": "동작구/법정동/신대방동"
+     }
+   ],
+   "areaContexts": [],
+   "representatives": [
+     {
+-      "pageKey": "geumcheon-funeral-wreath",
+-      "slug": "geumcheon-funeral-wreath",
+-      "url": "/regions/geumcheon-funeral-wreath/",
++      "pageKey": "dongjak-funeral-wreath",
++      "slug": "dongjak-funeral-wreath",
++      "url": "/regions/dongjak-funeral-wreath/",
+       "candidateIds": [
+-        "shillakwon-seoul",
+-        "doksan-funeral"
+-      ],
+-      "primaryKeyword": "금천구 근조화환",
++        "cau-hospital",
++        "boramae-hospital"
++      ],
++      "primaryKeyword": "동작구 근조화환",
+       "unitKeys": [
+-        "금천구/법정동/가산동",
+-        "금천구/법정동/독산동"
+-      ],
+-      "intentKey": "seoul-geumcheon|funeral-condolence-wreath",
+-      "contextKey": "geumcheon|funeral-condolence-wreath",
++        "동작구/법정동/흑석동",
++        "동작구/법정동/신대방동"
++      ],
++      "intentKey": "seoul-dongjak|funeral-condolence-wreath",
++      "contextKey": "dongjak|funeral-condolence-wreath",
+       "purchaseIntentKey": "funeral-condolence-wreath",
+       "facilityAnchors": [
+         {
+-          "candidateId": "shillakwon-seoul",
+-          "anchor": "shillakwon-seoul",
+-          "heading": "쉴낙원 서울장례식장",
+-          "href": "/regions/geumcheon-funeral-wreath/#shillakwon-seoul",
+-          "unitKey": "금천구/법정동/가산동"
++          "candidateId": "cau-hospital",
++          "anchor": "cau-hospital",
++          "heading": "중앙대학교병원 장례식장",
++          "unitKey": "동작구/법정동/흑석동",
++          "href": "/regions/dongjak-funeral-wreath/#cau-hospital"
+         },
+         {
+-          "candidateId": "doksan-funeral",
+-          "anchor": "doksan-funeral",
+-          "heading": "독산장례식장",
+-          "href": "/regions/geumcheon-funeral-wreath/#doksan-funeral",
+-          "unitKey": "금천구/법정동/독산동"
++          "candidateId": "boramae-hospital",
++          "anchor": "boramae-hospital",
++          "heading": "서울특별시보라매병원 장례식장",
++          "unitKey": "동작구/법정동/신대방동",
++          "href": "/regions/dongjak-funeral-wreath/#boramae-hospital"
+         }
+       ],
+       "routeMode": "regional",
+       "status": "approved",
+       "queryEvidence": {
+-        "sourceProposalSha256": "4371357faa2f5ff54d31689ec270f8cf8a5da76e7faa73a4e937f90ee6cecc37",
+-        "method": "Previously reviewed original query/competitor/source research; no search-volume or ranking claim.",
++        "sourceProposalSha256": "8c17e681bc49944eec59698fbd6dfea3ff4c91773e0d45dbe955dae20b443e7c",
++        "method": "Reviewed original query/competitor/source research; no search-volume or ranking claim.",
+         "intent": "funeral-condolence-wreath",
+         "candidateIds": [
+-          "shillakwon-seoul",
+-          "doksan-funeral"
++          "cau-hospital",
++          "boramae-hospital"
+         ],
+-        "evidencePath": "docs/direct-regional-release/seoul-geumcheon/research/search-intent-preplan-revised.json"
++        "evidencePath": "docs/direct-regional-release/seoul-dongjak/research/search/search-intent-research.json"
+       }
+     }
+   ]
+--- geumcheon/src/data/region-policy.json
++++ dongjak/src/data/region-policy.json
+@@ -1,7 +1,7 @@
+ {
+   "schemaVersion": 1,
+-  "siteKey": "seoul-geumcheon-flower-direct",
+-  "scopeKey": "seoul-geumcheon-direct-independent-preparation-20261012",
++  "siteKey": "seoul-dongjak-flower-direct",
++  "scopeKey": "seoul-dongjak-direct-independent-preparation-20261013",
+   "enabled": true,
+   "officialHosts": [
+     "www.mois.go.kr"
+@@ -13,13 +13,13 @@
+   ],
+   "rulesRevision": "f3a64bbd6314e8fd7fef480262ac754f6e305118",
+   "definitionFile": "src/data/region-coverage.json",
+-  "state": "prepared-unpublished-static-review-pass-visual-unverified",
+-  "membershipSourceSha256": "ded6c156cefc8c04ef066bd4cec30df2ee8103499f471299ddae8c69f3028b87",
++  "state": "local-copy-reviewed-implementation-publication-not-authorized",
++  "membershipSourceSha256": "37e6a28da192c1dcf84e5f52ea19b13c6e19bca456496ab4ec126ec96a4c88f7",
+   "visualBindings": [
+     {
+-      "pageKey": "geumcheon-funeral-wreath",
++      "pageKey": "dongjak-funeral-wreath",
+       "image": "/images/products/funeral-basic.jpg",
+-      "alt": "근조 3단 화환 공식 상품 사진",
++      "alt": "근조 3단 화환 B201의 꽃이랑 공식 상품 사진",
+       "sha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+       "sourceUrl": "https://fwith.co.kr/shop/item.php?it_id=B201",
+       "sourceImageUrl": "https://fwith.co.kr/data/item/flower379/B201/thumb-1_500x500.jpg",
+@@ -28,7 +28,7 @@
+       "width": 500,
+       "height": 500,
+       "type": "image/jpeg",
+-      "verifiedAt": "2026-10-12",
++      "verifiedAt": "2026-10-13",
+       "purchaseMode": "catalog",
+       "productKeys": [
+         "funeral-basic",
+@@ -39,5 +39,5 @@
+       "status": "approved"
+     }
+   ],
+-  "representativeAssignment": "geumcheon-grouped-funeral-context-v1"
++  "representativeAssignment": "dongjak-grouped-funeral-context-v1"
+ }
+--- geumcheon/src/data/site-config.json
++++ dongjak/src/data/site-config.json
+@@ -1,9 +1,10 @@
+ {
+   "naverVerification": "",
+-  "previewUrl": "https://seoul-geumcheon.fwith.kr",
++  "previewUrl": "https://dongjak-preview.invalid",
+   "productionApproved": false,
+-  "region": "서울 금천구",
+-  "siteKey": "seoul-geumcheon-flower-direct",
+-  "worker": "seoul-geumcheon-flower-guide",
+-  "sourceMode": "direct-git"
++  "region": "서울 동작구",
++  "siteKey": "seoul-dongjak-flower-direct",
++  "worker": "seoul-dongjak-flower-guide",
++  "sourceMode": "direct-git",
++  "hostnameOwnershipVerified": false
+ }
+--- geumcheon/src/layouts/BaseLayout.astro
++++ dongjak/src/layouts/BaseLayout.astro
+@@ -1,8 +1,10 @@
+ ---
+ import '../styles/global.css';
+ import {site} from '../config/site';
+-import approvedCopy from '../data/geumcheon-copy.json';
+-const navigation=approvedCopy.common.navigation;
++import approvedCopy from '../lib/dongjak-copy.mjs';
++import ui from '../data/dongjak-ui-copy.json';
++const common=approvedCopy.common;
++const navigation=common.navigation;
+ const footer=approvedCopy.common.footer;
+ import buildRevision from '../data/build-revision.json';
+ import products from '../data/products.json';
+@@ -29,10 +31,10 @@
+ <meta name="theme-color" content="#3a214f"/>
+ {includeSchema && <script type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@type':'Florist',name:site.brand,url:site.domain,telephone:site.phone,areaServed:site.region}).replace(/</g, String.fromCharCode(92) + 'u003c')}></script>}
+ </head><body>
+-<a class="skip-link" href="#main-content">본문 바로가기</a>
+-<header class="site-header"><div class="header-inner"><a class="brand" href="/"><span class="brand-icon" aria-hidden="true">✿</span><span><b>{navigation.brandLabel}</b><small>{navigation.homeLabel}</small></span></a>
+-<nav aria-label="주요 메뉴"><a href="/">{navigation.homeLabel}</a><a href="/regions/">{navigation.directoryLabel}</a><a href={navigation.onlineHref}>{navigation.onlineLabel}</a></nav><a class="phone" href={navigation.phoneHref}>{navigation.phoneLabel}</a></div></header>
++<a class="skip-link" href="#main-content">{ui.accessibility.skip}</a>
++<header class="site-header"><div class="header-inner"><a class="brand" href="/"><span class="brand-icon" aria-hidden="true">✿</span><span><b>{common.brandName}</b></span></a>
++<nav aria-label={ui.accessibility.navigation}>{navigation.map(link=><a href={link.href}>{link.label}</a>)}<a href="/regions/">{ui.directory.navLabel}</a></nav><a class="phone" href={common.phoneHref}>{common.phoneLabel}</a></div></header>
+ <main id="main-content"><slot/></main>
+-<footer><div><strong>{footer.brand}</strong><span>{footer.description}</span><span>{footer.hours}</span><a href={navigation.phoneHref}>{footer.phoneLabel}</a>{footer.links.map(link=><a href={link.href}>{link.label}</a>)}<small>{footer.affiliationNotice}</small></div></footer>
+-<div class="mobile-bar"><a href={navigation.phoneHref}>{navigation.phoneLabel}</a><a href={navigation.onlineHref}>{navigation.onlineLabel}</a></div>
++<footer><div><strong>{footer.brandLine}</strong><a href={common.phoneHref}>{footer.phoneLinkText}</a><a href={footer.homeHref}>{footer.homeLinkText}</a></div></footer>
++<div class="mobile-bar"><a href={common.phoneHref}>{footer.phoneLinkText}</a><a href="/regions/">{ui.directory.navLabel}</a></div>
+ </body></html>
+--- geumcheon/src/lib/regional-runtime.mjs
++++ dongjak/src/lib/regional-runtime.mjs
+@@ -5,6 +5,8 @@
+ import {regionalRows,directoryGroups,regionalMetadataFields} from './regions.mjs';
+ import {contextFields,isGuroMode} from './guro-regions.mjs';
+ import {isGeumcheonMode} from './geumcheon-regions.mjs';
++import {isDongjakMode} from './dongjak-regions.mjs';
++import {isYeongdeungpoMode} from './yeongdeungpo-regions.mjs';
+ export {coverage,policy,architecture};
+ const emptyCoverage={schemaVersion:2,siteKey:'template-only',scopeKey:'',unitBasis:'legal-dong-plus-eup-myeon',countIsPageQuota:false,verifiedAt:'',sourceBasisDate:'',officialSourceUrls:[],membershipSourceSha256:'',districts:[],units:[],administrativeCrosswalk:[],representatives:[]};
+ const emptyPolicy={schemaVersion:1,siteKey:'template-only',scopeKey:'',enabled:false,officialHosts:[],unitTypes:[],rulesRevision:'',definitionFile:'src/data/region-coverage.json',state:'unbound-template',membershipSourceSha256:'',visualBindings:[]};
+@@ -28,7 +30,7 @@
+  const regional=pages.filter(p=>p.category==='regions'||p.pageType==='regional-service');
+  if(regional.length!==regionalPages.length)throw new Error('Regional input/manifest count mismatch');
+  for(const page of regional){const frozen=regionalPages.find(p=>p.pageKey===page.pageKey);
+-  for(const field of ['pageKey','snapshotId','slug','category','pageType',...regionalMetadataFields,...((isGuroMode(coverage,policy)||isGeumcheonMode(coverage,policy))?contextFields:[])])if(JSON.stringify(page[field])!==JSON.stringify(frozen?.[field]))throw new Error('Regional input/manifest mismatch '+field);
++  for(const field of ['pageKey','snapshotId','slug','category','pageType',...regionalMetadataFields,...((isGuroMode(coverage,policy)||isGeumcheonMode(coverage,policy)||isDongjakMode(coverage,policy)||isYeongdeungpoMode(coverage,policy))?contextFields:[])])if(JSON.stringify(page[field])!==JSON.stringify(frozen?.[field]))throw new Error('Regional input/manifest mismatch '+field);
+  }
+  return regionalPages;
+ }
+--- geumcheon/src/lib/regions.mjs
++++ dongjak/src/lib/regions.mjs
+@@ -2,12 +2,14 @@
+ import * as legacy from './regions-legacy.mjs';
+ import * as guro from './guro-regions.mjs';
+ import * as geumcheon from './geumcheon-regions.mjs';
++import * as dongjak from './dongjak-regions.mjs';
++import * as yeongdeungpo from './yeongdeungpo-regions.mjs';
+ export {isRegional,hubState,regionalCustomerClaims} from './regions-legacy.mjs';
+ export const regionalMetadataFields=legacy.regionalMetadataFields;
+ const adapter=(c,p)=>{
+- const g=guro.isGuroMode(c,p),k=geumcheon.isGeumcheonMode(c,p);
+- if(g&&k)throw new Error('Regional adapter cross-site opt-in mismatch');
+- return k?geumcheon:g?guro:legacy;
++ const g=guro.isGuroMode(c,p),k=geumcheon.isGeumcheonMode(c,p),d=dongjak.isDongjakMode(c,p),y=yeongdeungpo.isYeongdeungpoMode(c,p);
++ if([g,k,d,y].filter(Boolean).length>1)throw new Error('Regional adapter cross-site opt-in mismatch');
++ return d?dongjak:y?yeongdeungpo:k?geumcheon:g?guro:legacy;
+ };
+ export const validateDefinition=(c,p)=>adapter(c,p).validateDefinition(c,p);
+ export const regionalRows=(rows,a,c,p)=>adapter(c,p).regionalRows(rows,a,c,p);
+@@ -19,4 +21,6 @@
+  legacy.validateRegionalPurchase(page,products,text);
+  if(page.scopeKey===guro.scopeKey)guro.validatePurchaseIntent(page);
+  if(page.scopeKey===geumcheon.scopeKey)geumcheon.validatePurchaseIntent(page);
++ if(page.scopeKey===dongjak.scopeKey)dongjak.validatePurchaseIntent(page);
++ if(page.scopeKey===yeongdeungpo.scopeKey)yeongdeungpo.validatePurchaseIntent(page);
+ }
+--- geumcheon/src/pages/404.astro
++++ dongjak/src/pages/404.astro
+@@ -1,6 +1,6 @@
+ ---
+ import BaseLayout from '../layouts/BaseLayout.astro';
+-import approvedCopy from '../data/geumcheon-copy.json';
+-const copy=approvedCopy.common.errorPage;
++import approvedCopy from '../lib/dongjak-copy.mjs';
++const copy=approvedCopy.common.notFound;
+ ---
+-<BaseLayout title={copy.title} description={copy.text} noindex={copy.noindex} canonicalPath={false} includeSchema={false}><section class="not-found"><h1>{copy.h1}</h1><p>{copy.text}</p><a class="btn primary" href={copy.linkHref}>{copy.linkLabel}</a></section></BaseLayout>
++<BaseLayout title={copy.title} description={copy.text} noindex={true} canonicalPath={false} includeSchema={false}><section class="not-found"><h1>{copy.title}</h1><p>{copy.text}</p><a class="btn primary" href={copy.href}>{copy.linkText}</a></section></BaseLayout>
+--- geumcheon/src/pages/[category]/[slug].astro
++++ dongjak/src/pages/[category]/[slug].astro
+@@ -1,49 +1,41 @@
+ ---
+ import SharedFlowerBanner from '../../components/SharedFlowerBanner.astro';
+ import FaqSection from '../../components/FaqSection.astro';
+-import InlineOrderBanner from '../../components/InlineOrderBanner.astro';
+ import BaseLayout from '../../layouts/BaseLayout.astro';
+-import MarkdownContent from '../../components/MarkdownContent.astro';
+ import ProductCards from '../../components/ProductCards.astro';
+ import pages from '../../data/pages.json';
+ import products from '../../data/products.json';
+-import approvedCopy from '../../data/geumcheon-copy.json';
+-import {selectProducts,productFamilies} from '../../lib/catalog.mjs';
++import approvedCopy from '../../lib/dongjak-copy.mjs';
++import ui from '../../data/dongjak-ui-copy.json';
++import {selectProducts} from '../../lib/catalog.mjs';
+ import {pageSources} from '../../lib/sources.mjs';
+-import {groupsFor,assertRegionalInput} from '../../lib/regional-runtime.mjs';
++import {assertRegionalInput} from '../../lib/regional-runtime.mjs';
+ assertRegionalInput(pages);
+ export function getStaticPaths(){return (pages as any[]).map(p=>({params:{category:p.category,slug:p.slug},props:{page:p}}));}
+ const {page}=Astro.props;
+ const copy=approvedCopy.article;
+-const common=approvedCopy.common;
+-const navigation=common.navigation;
+-const district=groupsFor(pages).find((d:any)=>d.items.some((item:any)=>item.page.pageKey===page.pageKey));
+-const regionalSocialProduct=products.find(p=>p.img===page.ogImage);
+-if(!regionalSocialProduct)throw new Error('Regional social image has no verified product binding');
+-const productSet=selectProducts(page,products,page.productCardLimit===4||productFamilies(page).length>3?4:3);
+-const hero=productSet[0];
++if(copy.pageKey!==page.pageKey)throw new Error('Missing exact approved article');
++const productSet=selectProducts(page,products,4),hero=productSet[0];
+ const sources=pageSources(page);
+-const approvedSourceNames=new Map([
+- ...copy.sourceLinks.map(source=>[source.url,source.label] as const),
+- ...common.productCards.map(product=>[product.officialUrl,product.name] as const)
+-]);
++const approvedSourceNames=new Map(copy.sourceLinks.map(source=>[source.url,source.label]));
+ for(const source of sources)if(!approvedSourceNames.has(source.url))throw new Error('Missing approved source display label: '+source.url);
+-const snapshotId=page.snapshotId;
++const [productSection,...bodySections]=copy.sections;
+ ---
+-<BaseLayout title={page.title} description={page.description} canonicalPath={page.url} socialProduct={regionalSocialProduct} socialImageAlt={page.ogImageAlt}>
+-<article data-snapshot-id={snapshotId} data-page-key={page.pageKey} data-page-type={page.pageType} data-query-class={page.queryClass} data-visual-intent={page.visualIntent} data-asset-slot={page.assetSlot}>
+-<nav class="breadcrumb" aria-label="현재 위치"><a href="/">{navigation.breadcrumbs[0]}</a><span>›</span><a href="/regions/">{navigation.breadcrumbs[1]}</a><span>›</span>{district && <><a href={`/regions/#${district.key}`}>{district.name}</a><span>›</span></>}<span>{page.primaryKeyword}</span></nav>
+-<section class="detail-hero"><div><span class="eyebrow">{common.home.eyebrow}</span><h1>{page.h1}</h1><p>{page.firstAnswer}</p><div class="actions"><a class="btn primary" href={copy.primaryCta.href}>{copy.primaryCta.label}</a><a class="btn dark" href={copy.secondaryCta.href} data-order-product-key={hero?.key}>{copy.secondaryCta.label}</a></div><div class="facts">{common.home.facts.map(fact=><span>{fact}</span>)}</div></div>
+-{hero && <div class="detail-product" data-product-family={hero.family} data-product-key={hero.key}><img src={hero.img} alt={hero.imageAlt} loading="eager" width="500" height="500"/><strong>{hero.name}</strong><span>{hero.priceLabel}</span></div>}
++<BaseLayout title={copy.title} description={copy.description} canonicalPath={page.url} socialProduct={hero} socialImageAlt={page.ogImageAlt}>
++<article data-snapshot-id={page.snapshotId} data-page-key={page.pageKey} data-page-type={page.pageType} data-query-class={page.queryClass} data-visual-intent={page.visualIntent} data-asset-slot={page.assetSlot}>
++<nav class="breadcrumb" aria-label={ui.accessibility.breadcrumb}><a href="/">{approvedCopy.common.navigation[0].label}</a><span>›</span><a href="/regions/">{ui.directory.navLabel}</a><span>›</span><span>{copy.h1}</span></nav>
++<section class="detail-hero"><div><span class="eyebrow">{approvedCopy.common.brandName}</span><h1>{copy.h1}</h1><p>{copy.firstAnswer}</p><div class="actions"><a class="btn primary" href={copy.primaryCta.href}>{copy.primaryCta.label}</a><a class="btn dark" href={hero.orderUrl} data-order-product-key={hero.key}>{ui.directory.productCtaLabel}</a></div><ul class="facility-links">{copy.facilityLinks.map(link=><li><a href={link.href}>{link.label}</a></li>)}</ul></div>
++<div class="detail-product" data-product-family={hero.family} data-product-key={hero.key}><img src={hero.img} alt={hero.imageAlt} loading="eager" width="500" height="500"/><strong>{hero.name}</strong><span>{hero.priceLabel}</span></div>
+ </section>
+ <SharedFlowerBanner variant="message"/>
+-<MarkdownContent content={page.contentMarkdown} firstAnswer={page.firstAnswer} facilityAnchors={page.facilityAnchors}/>
++<div class="markdown-content" data-approved-body>
++<section class="product-section compact" id={productSection.id}><h2>{productSection.heading}</h2><p>{productSection.paragraphs?.[0]}</p><ProductCards products={productSet} noticeMode="body-covered"/>{productSection.paragraphs?.slice(1).map(text=><p>{text}</p>)}</section>
+ <SharedFlowerBanner variant="budget"/>
+-<InlineOrderBanner compact={true}/>
+-{productSet.length>0 && <section class="product-section compact"><h2>{common.home.productSection.heading}</h2><ProductCards products={productSet} noticeMode="body-covered"/></section>}
+-{sources.length>0 && <section class="source-references" aria-labelledby="source-references-title"><h2 id="source-references-title">출처 및 확인 정보</h2><p>{copy.sourceNote}</p>
++{bodySections.map(section=><section class="content-card" id={section.id}><h2>{section.heading}</h2>{section.paragraphs?.map(text=><p>{text}</p>)}{section.subsections?.map(sub=><section class="facility-section"><h3 id={sub.id}>{sub.heading}</h3>{sub.paragraphs.map(text=><p>{text}</p>)}</section>)}</section>)}
++</div>
++<FaqSection items={page.faq} title={approvedCopy.common.faqHeading}/>
++<SharedFlowerBanner variant="consultation"/>
++<section class="source-references" aria-labelledby="source-references-title"><h2 id="source-references-title">{copy.sourceHeading}</h2><p>{copy.sourceNote}</p>
+ {sources.map(source => <section class="source-card" data-source-type={source.type} data-source-name={source.name} data-source-verified-at={source.verifiedAt}><h3><a href={source.url} rel="nofollow" aria-label={approvedSourceNames.get(source.url)}>{approvedSourceNames.get(source.url)}</a></h3><small><time datetime={source.verifiedAt}>{source.verifiedAt}</time></small></section>)}
+-</section>}
+-<FaqSection items={page.faq} title={`${page.primaryKeyword} 자주 묻는 질문`}/>
+-<SharedFlowerBanner variant="consultation"/>
++</section>
+ </article></BaseLayout>
+--- geumcheon/src/pages/[category]/index.astro
++++ dongjak/src/pages/[category]/index.astro
+@@ -2,16 +2,16 @@
+ import BaseLayout from '../../layouts/BaseLayout.astro';
+ import pages from '../../data/pages.json';
+ import products from '../../data/products.json';
+-import approvedCopy from '../../data/geumcheon-copy.json';
++import approvedCopy from '../../lib/dongjak-copy.mjs';
++import ui from '../../data/dongjak-ui-copy.json';
+ import {groups} from '../../config/site';
+ import RegionDirectory from '../../components/RegionDirectory.astro';
+ export function getStaticPaths(){return groups.filter(g=>g.cat==='regions').map(g=>({params:{category:g.cat},props:{group:g}}));}
+ const {group}=Astro.props;
+ const items=(pages as any[]).filter(p=>p.category===group.cat);
+ const copy=approvedCopy.common.directory;
+-const navigation=approvedCopy.common.navigation;
+ ---
+-<BaseLayout title={copy.title} description={copy.description} canonicalPath={group.url} noindex={items.length < 3} socialProduct={products[0]}>
+-<nav class="breadcrumb" aria-label="현재 위치"><a href="/">{navigation.breadcrumbs[0]}</a><span>›</span><span>{navigation.breadcrumbs[1]}</span></nav>
++<BaseLayout title={copy.title} description={copy.description} canonicalPath={group.url} noindex={items.length < 3} socialProduct={products[0]} socialImageAlt={products[0].imageAlt}>
++<nav class="breadcrumb" aria-label={ui.accessibility.breadcrumb}><a href="/">{approvedCopy.common.navigation[0].label}</a><span>›</span><span>{ui.directory.navLabel}</span></nav>
+ <RegionDirectory pages={items} showBanners={items.length>=3}/>
+ </BaseLayout>
+--- geumcheon/src/pages/index.astro
++++ dongjak/src/pages/index.astro
+@@ -1,31 +1,25 @@
+ ---
+ import SharedFlowerBanner from '../components/SharedFlowerBanner.astro';
+-import InlineOrderBanner from '../components/InlineOrderBanner.astro';
+ import BaseLayout from '../layouts/BaseLayout.astro';
+ import ProductCards from '../components/ProductCards.astro';
+ import pages from '../data/pages.json';
+ import products from '../data/products.json';
+-import approvedCopy from '../data/geumcheon-copy.json';
++import approvedCopy from '../lib/dongjak-copy.mjs';
+ import {assertRegionalInput} from '../lib/regional-runtime.mjs';
+ assertRegionalInput(pages);
+ const copy=approvedCopy.common.home;
+-const featured=copy.productSection.productCardKeys.map(key=>{
+- const product=products.find(product=>product.key===key);
+- if(!product||product.family!=='funeral')throw new Error('Approved home product binding missing: '+key);
+- return product;
+-});
++const hero=products[0];
+ ---
+-<BaseLayout title={copy.title} description={copy.description} canonicalPath="/" socialProduct={featured[0]}>
++<BaseLayout title={copy.title} description={copy.description} canonicalPath="/" socialProduct={hero} socialImageAlt={hero.imageAlt}>
+ <section class="home-hero">
+- <div class="hero-copy"><span class="eyebrow">{copy.eyebrow}</span><h1>{copy.h1}</h1><p>{copy.intro}</p>
+- <div class="actions"><a class="btn primary" href={copy.primaryCta.href}>{copy.primaryCta.label}</a><a class="btn dark" href={copy.secondaryCta.href}>{copy.secondaryCta.label}</a></div>
+- <div class="facts">{copy.facts.map(fact=><span>{fact}</span>)}</div></div>
+- <div class="hero-products" aria-label={copy.productSection.heading}>{featured.map((p:any)=><a class="hero-product" href={p.orderUrl} data-product-family={p.family} data-product-key={p.key}><img src={p.img} alt={p.imageAlt} loading="eager" width="500" height="500"/><span>{p.name}<strong>{p.priceLabel}</strong></span></a>)}</div>
++ <div class="hero-copy"><span class="eyebrow">{approvedCopy.common.brandName}</span><h1>{copy.h1}</h1><p>{copy.intro}</p>
++ <div class="actions"><a class="btn primary" href={copy.consultationButton.href}>{copy.consultationButton.label}</a></div></div>
++ <div class="hero-products" aria-label={copy.productsHeading}><a class="hero-product" href={hero.orderUrl} data-product-family={hero.family} data-product-key={hero.key}><img src={hero.img} alt={hero.imageAlt} loading="eager" width="500" height="500"/><span>{hero.name}<strong>{hero.priceLabel}</strong></span></a></div>
+ </section>
+ <SharedFlowerBanner variant="message"/>
+-<section class="purpose-navigation" data-region-navigation><div class="section-title"><h2>{copy.venueSection.heading}</h2><p>{copy.venueSection.text}</p></div><div class="purpose-grid"><a class="page-card purpose-card" href={copy.venueSection.cardHref}><strong>{copy.venueSection.cardTitle}</strong><span>{copy.venueSection.cardText}</span></a></div></section>
++<section class="purpose-navigation" data-region-navigation><div class="section-title"><h2>{copy.sectionHeading}</h2></div><div class="purpose-grid">{copy.cards.map(card=><a class="page-card purpose-card" href={card.href}><strong>{card.title}</strong><span>{card.summary}</span><em>{card.buttonLabel}</em></a>)}</div></section>
++<section class="product-section" data-home-selection><div class="section-title"><h2>{copy.productsHeading}</h2></div><ProductCards products={products} noticeMode="body-covered"/></section>
+ <SharedFlowerBanner variant="budget"/>
+-<section class="product-section" data-home-selection><div class="section-title"><h2>{copy.productSection.heading}</h2><p>{copy.productSection.text}</p></div><ProductCards products={featured}/></section>
++<section class="home-consultation"><h2>{copy.consultationHeading}</h2><p>{copy.consultationText}</p><a class="btn primary" href={copy.consultationButton.href}>{copy.consultationButton.label}</a><p class="product-notice">{copy.priceDeliveryNote}</p><p class="product-notice">{copy.materialsAndCollectionNote}</p></section>
+ <SharedFlowerBanner variant="consultation"/>
+-<InlineOrderBanner/>
+ </BaseLayout>
+--- geumcheon/src/styles/global.css
++++ dongjak/src/styles/global.css
+@@ -31,3 +31,7 @@
+ }
+ 
+ .administrative-purchase-links a{overflow-wrap:anywhere}.decision-list li{line-height:1.8}
++
++/* Dongjak N1 uses one hero product and one actual guide card. */
++.home-hero .hero-products{grid-template-columns:minmax(0,1fr);max-width:420px;width:100%;justify-self:center}.home-hero .hero-product img{height:280px}.purpose-grid{grid-template-columns:minmax(0,1fr)}.home-consultation{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px;margin:18px 0}.home-consultation p,.product-section>p{line-height:1.9;color:#554c57}.facility-links{padding-left:20px;line-height:1.8}.facility-links a{text-decoration:underline;text-underline-offset:3px}.facility-section+ .facility-section{margin-top:24px}
++@media(max-width:600px){.home-hero .hero-product img{height:230px}.home-consultation{padding:22px}.product-grid{grid-template-columns:1fr}}
+--- geumcheon/tests/direct-source-expectations.json
++++ dongjak/tests/direct-source-expectations.json
+@@ -1,9 +1,9 @@
+ {
+   "schemaVersion": 1,
+-  "region": "seoul-geumcheon",
+-  "status": "explicit_geumcheon_expectations_plus_unchanged_original_guro_regression",
++  "region": "seoul-dongjak",
+   "originalPlanN": 1,
+   "originalGuroCommit": "500d82d01c1cdaed3ebde047bb3ce056705daac1",
+-  "originalGuroFixtureFiles": 103,
+-  "note": "Original Guro N3 and legacy assertions run without expectation edits; copy/static review does not grant publication or screenshot approval."
++  "originalGeumcheonCommit": "bbb016305dd2fe29f7d985a669acaa02224a9f2f",
++  "originalRegression": "tests/reference/{guro,geumcheon}-runtime with byte-preserved original tests",
++  "screenQa": "UNVERIFIED"
+ }
+--- geumcheon/wrangler.jsonc
++++ dongjak/wrangler.jsonc
+@@ -1,5 +1,5 @@
+ {
+-  "name": "seoul-geumcheon-flower-guide",
++  "name": "seoul-dongjak-flower-guide",
+   "compatibility_date": "2026-10-09",
+   "workers_dev": false,
+   "assets": {

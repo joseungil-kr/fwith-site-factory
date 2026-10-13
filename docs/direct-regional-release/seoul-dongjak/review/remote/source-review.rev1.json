@@ -1,0 +1,300 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "/root/review_dongjak_local_runtime",
+  "reviewedAt": "2026-10-13T02:05:34.173056+00:00",
+  "verdict": "PASS",
+  "gate": "REMOTE_SOURCE_AND_ACTUAL_SHA_LOCAL_STATIC",
+  "mainDocumentationGate": "PENDING_SEPARATE_COMMIT_READBACK",
+  "publicationVerdict": "NOT_PERFORMED",
+  "repository": "joseungil-kr/fwith-site-factory",
+  "ref": "refs/heads/site-factory-seoul-dongjak-direct",
+  "commit": "1570f3866985a1434c2847604840926db92e300b",
+  "commitUrl": "https://github.com/joseungil-kr/fwith-site-factory/commit/1570f3866985a1434c2847604840926db92e300b",
+  "tree": "7d56e5776601e4553a38fa1284947eb4813755b2",
+  "dongjakSubtree": "c3eb7a51675012cbc9549819fb12dcd937206b03",
+  "parent": "b0ca4fa8a7a3c7e6565fc40e840e2209688b5188",
+  "boundOriginalReview": {
+    "path": "/workspace/shared/dongjak-review/runtime/technical-review.rev1.json",
+    "bytes": 13303,
+    "sha256": "3016fbd11235264a5c10368a994f580721940f99f121b274dd3f4306e61d290b"
+  },
+  "directlyVerified": [
+    "Independently fetched the current source branch ref, exact Git commit, root tree, site-factory tree and full Dongjak subtree through GitHub tools. The untruncated subtree contains exactly 629 blobs at the previously reviewed source paths.",
+    "Read every one of those 629 actual Git blob objects from the fetched commit object store, independently calculated its Git SHA-1 and file SHA-256, and matched remote tree SHA/size plus the prior frozen source manifest. Materialized a separate review build directory only from these matched objects, not the author’s modified build working files.",
+    "Independently fetched six full files by immutable commit via the supported base64 GitHub content API and decoded/rehashed them: approved article, preview config, Dongjak adapter, unchanged midpoint helper, approved WebP and B201 JPG. All match both remote Git blob identities and prior SHA-256 pins. The remaining 623 files were verified through the actual Git object bytes and independently fetched full remote tree, not 623 separate content-API requests.",
+    "Verified local commit/root/subtree Git object content hashes match the remote identities. The source commit adds exactly 629 files under site-factory/seoul-dongjak-flower/ and preserves every one of its 1,231 parent files. No workflow/control changes occur in the source commit.",
+    "Independently reran 446 Node tests (131 Guro + 116 Geumcheon + 120 Yeongdeungpo + 79 current), full Astro check/build and separate QA at SITE_FACTORY_REVISION=1570f3866985a1434c2847604840926db92e300b. All completed with exit 0; Astro checked 53 files with 0 errors/warnings/hints; five Python suites ran 54 tests in each build/QA run.",
+    "The indexable build mutation exits 1 at the unchanged preview guard before Astro. The 54 independent source checks and 222 artifact checks pass again. N1, exact 9/15/18 membership, two facility fragments, current approved cards/banners/FAQ and all-noindex empty-sitemap preview remain unchanged.",
+    "Compared all 16 actual-SHA build artifacts directly with the prior independently built local-review artifacts. Four HTML files differ only in the single site-factory-revision meta value local → 1570f3866985a1434c2847604840926db92e300b. The other 12 artifacts are byte-identical. Only generated src/data/build-revision.json changes during build; no source mutation was committed."
+  ],
+  "counts": {
+    "remoteSourceFiles": 629,
+    "parentFilesUnchanged": 1231,
+    "directApiFullFileReadbacks": 6,
+    "nodeTests": 446,
+    "pythonTestsPerBuildOrQaRun": 54,
+    "independentSourceChecks": 54,
+    "independentArtifactChecks": 222,
+    "actualShaArtifacts": 16,
+    "htmlRevisionOnlyChanges": 4,
+    "byteIdenticalNonHtmlArtifacts": 12
+  },
+  "actualShaArtifacts": [
+    {
+      "path": "404.html",
+      "bytes": 1892,
+      "sha256": "6d8360be54f537c600c7480de527369806d6830554a255681b930fab50d582b0",
+      "onlyRevisionMetaChanged": true,
+      "revisionMetaCount": 1
+    },
+    {
+      "path": "_astro/BaseLayout.B2xVqln_.css",
+      "bytes": 11496,
+      "sha256": "488399cba2389f46426f335cd101d495ccb25ee5db04f1e2da5e1a6337bf2863",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "_headers",
+      "bytes": 163,
+      "sha256": "3831fc6cebb82f8b15db4a56d950b93a878b1eb7d2bd47a8adff888353dead43",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "favicon.svg",
+      "bytes": 185,
+      "sha256": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "images/editorial/opening-wreath-illustration-v1.webp",
+      "bytes": 154376,
+      "sha256": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "images/products/funeral-basic.jpg",
+      "bytes": 75206,
+      "sha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "images/products/funeral-large.jpg",
+      "bytes": 86279,
+      "sha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "images/products/funeral-premium.jpg",
+      "bytes": 79304,
+      "sha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "images/products/funeral-xl.jpg",
+      "bytes": 84178,
+      "sha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "images/shared-banners/flower-budget.webp",
+      "bytes": 123720,
+      "sha256": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "images/shared-banners/flower-consultation.webp",
+      "bytes": 108154,
+      "sha256": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "images/shared-banners/flower-message.webp",
+      "bytes": 147736,
+      "sha256": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "index.html",
+      "bytes": 10075,
+      "sha256": "c0cca26f762148188a19d2ef0ae470eb7a0c4a9ec9f119c9c5795ba11f5cf8a1",
+      "onlyRevisionMetaChanged": true,
+      "revisionMetaCount": 1
+    },
+    {
+      "path": "regions/dongjak-funeral-wreath/index.html",
+      "bytes": 18963,
+      "sha256": "f3fb15d709a15cc59c320d39f8e154a37dc7098bd8e71b71f01135220b76d7b1",
+      "onlyRevisionMetaChanged": true,
+      "revisionMetaCount": 1
+    },
+    {
+      "path": "regions/index.html",
+      "bytes": 11013,
+      "sha256": "d31b659b2c08d1ea115d7d0c2922a723d317bc5ea71a8abb3a4ac167f22e6c0f",
+      "onlyRevisionMetaChanged": true,
+      "revisionMetaCount": 1
+    },
+    {
+      "path": "robots.txt",
+      "bytes": 26,
+      "sha256": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1",
+      "exactOriginalBytes": true
+    }
+  ],
+  "commands": [
+    {
+      "command": "SITE_FACTORY_REVISION=1570f3866985a1434c2847604840926db92e300b ASTRO_TELEMETRY_DISABLED=1 XDG_CONFIG_HOME=/tmp/dongjak-independent-remote-config npm test",
+      "exitCode": 0,
+      "log": "/workspace/shared/dongjak-review/remote/npm-test.log"
+    },
+    {
+      "command": "SITE_FACTORY_REVISION=1570f3866985a1434c2847604840926db92e300b ASTRO_TELEMETRY_DISABLED=1 XDG_CONFIG_HOME=/tmp/dongjak-independent-remote-config npm run build",
+      "exitCode": 0,
+      "log": "/workspace/shared/dongjak-review/remote/npm-build.log"
+    },
+    {
+      "command": "npm run qa",
+      "exitCode": 0,
+      "log": "/workspace/shared/dongjak-review/remote/npm-qa.log"
+    },
+    {
+      "command": "SITE_INDEXABLE=true SITE_FACTORY_REVISION=1570f3866985a1434c2847604840926db92e300b ASTRO_TELEMETRY_DISABLED=1 XDG_CONFIG_HOME=/tmp/dongjak-independent-remote-config npm run build",
+      "exitCode": 1,
+      "expectedRefusal": true,
+      "log": "/workspace/shared/dongjak-review/remote/indexable-refusal.log"
+    }
+  ],
+  "toolReported": [
+    "GitHub APIs report the ref/commit/tree identities. These were cross-checked against actual local Git object hashes and bytes; the remote server state itself is necessarily reported by GitHub.",
+    "The author reports independent full readback/build results. This reviewer reran the source/object/build/output checks independently and did not use the author’s PASS as the basis of the verdict."
+  ],
+  "assessment": [
+    "The exact remote source commit preserves the previously reviewed local candidate and passes actual-SHA local static verification.",
+    "This verifies saved source and static build output, not publication, browser layout or search visibility. Keep released-region and publication counts unchanged until their own gates are met.",
+    "Main documentation review remains open. Any forthcoming docs must bind this exact source commit and evidence, retain publication/screen holds, and avoid modifying unrelated current main work."
+  ],
+  "unverifiedAndResolvedAttempts": [
+    "No browser/mobile screen, local socket serving, public HTTP/404/MIME, deployment, CI dispatch, IndexNow submission, stock/fulfilment or search outcome was tested or claimed.",
+    "Main was b0ca4fa8a7a3c7e6565fc40e840e2209688b5188 when independently read at source-review start; no Dongjak main documentation commit has yet been reviewed.",
+    "The GitHub generic fetch helper returns decoded blob content. An initial reviewer parser expected a Git blob JSON envelope and failed on the adapter source. The six byte readbacks were redone successfully with the supported fetch_file encoding=base64 route; no write or authorization bypass occurred.",
+    "Build uses the existing installed dependency tree; no clean network install was attempted. The source commit is unsigned as reported by GitHub; this is recorded, not represented as signature verification."
+  ],
+  "blockingFindings": [],
+  "evidence": [
+    {
+      "path": "/workspace/shared/dongjak-review/remote/source-ref.json",
+      "bytes": 696,
+      "sha256": "f4207be8a11b970cf61befc188a933eaa679db4a46ecdeac6bd6306d950cd9d1"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/source-commit.json",
+      "bytes": 1626,
+      "sha256": "63fc2cabc43ea454b7b4770c986ba1d52b4297aa7739f74153cc08d2a3ac4c2d"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/source-root-tree.json",
+      "bytes": 6404,
+      "sha256": "459a59f54a8a3623ec6fb04375e1a12dc1a3deded48cd679c8a67817d42f604c"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/source-site-factory-tree.json",
+      "bytes": 1875,
+      "sha256": "c3df2fd4a30899c048073f5dd77d95e7b1af8226050fff14729d323b4c328d82"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/source-dongjak-tree.json",
+      "bytes": 264488,
+      "sha256": "f6c6f3597bd755d9ad2ae1d74810b2d6eec71655b01b4e7c5a909af70b42b4c9"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/main-ref-before.json",
+      "bytes": 568,
+      "sha256": "572fbdd1df7c4fc916ad4b512dbfcafd27b2172c2d4aa562ad75bd19893a9b16"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/git-object-review.json",
+      "bytes": 168671,
+      "sha256": "5f775c65320ba4b6ae28b41b843a9f85156d2aa17997e02b21f45d1d6cab47f3"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/api-blob-readback-review.json",
+      "bytes": 2720,
+      "sha256": "18737227997c775c012bedd282e980661f6e99c03e8cbc33e733c96298c0da8e"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/actual-sha-artifact-comparison.json",
+      "bytes": 3543,
+      "sha256": "89195f4b3b20542799a75de47b30dc2113203e288571e172c33f84fd608e39cd"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/final-source-review.json",
+      "bytes": 9397,
+      "sha256": "92b1a18227bec58895c664ada74eefc22ab0d95accd31e3d0e365619a95a9595"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/final-artifact-review.json",
+      "bytes": 31495,
+      "sha256": "56b54ea18db2b16bf8977a8356e32af5d944c738a22a8217b5cb8130100fca65"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/npm-test.log",
+      "bytes": 39631,
+      "sha256": "c84d060a70152820be6cdaf2aba20ff8ac6c71f6c449394a1ecc84e3b5c9959a"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/npm-build.log",
+      "bytes": 4933,
+      "sha256": "411e8b766ac9afa1b2af976862a9c3ecda523e6eaa21b6196c733b46c671ccdf"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/npm-qa.log",
+      "bytes": 3595,
+      "sha256": "536034fa357b7634a56a23cede74b6a7300c11d99f8dee4981dea834141eab67"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/indexable-refusal.log",
+      "bytes": 1351,
+      "sha256": "8dee11e8011bfc8351ded15ce985fe4ec8952981e4668dc23d9e78596c41f058"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/api-source-file-0.json",
+      "bytes": 13140,
+      "sha256": "df289863c63b3c0d44276df1c34a9931f9765d344031ba01b51d2559f9b57014"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/api-source-file-1.json",
+      "bytes": 837,
+      "sha256": "c089d4ea668f4ab9ffafbcc9daa45ef2769c7fd8544bec500cfaca1e876c0130"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/api-source-file-2.json",
+      "bytes": 14864,
+      "sha256": "a9d0db347d9802553685d3820a68656564abdca341ae6983dc02e21136bf1830"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/api-source-file-3.json",
+      "bytes": 2307,
+      "sha256": "b4db35873a40b53f88627750dcbbe52fc6c7f931e54232d6d1d1accf0813f1af"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/api-source-file-4.json",
+      "bytes": 204024,
+      "sha256": "28bc7ed23643739164a4c768f41b536d1daacb2221f73acf3f15ec7599b92763"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/remote/api-source-file-5.json",
+      "bytes": 104074,
+      "sha256": "415d2e35912579a815fad40a86b18ce216499f8bdff570c60686dec2bc67beaf"
+    }
+  ],
+  "actions": {
+    "remoteReads": true,
+    "localGitObjectsRead": true,
+    "reviewRebuildCreated": true,
+    "remoteWrites": 0,
+    "ciDispatches": 0,
+    "providerActions": 0,
+    "deployments": 0,
+    "browserSocketAttempts": 0
+  }
+}

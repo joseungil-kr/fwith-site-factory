@@ -1,0 +1,81 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> build
+> node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && python3 scripts/test_output_bindings.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_links.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py && python3 scripts/qa_dongjak.py && python3 scripts/test_dongjak.py
+
+11:00:36 [vite] Re-optimizing dependencies because vite config has changed
+11:00:36 [types] Generated 94ms
+11:00:36 [check] Getting diagnostics for Astro files in /workspace/shared/dongjak-remote-checkout/site-factory/seoul-dongjak-flower...
+Result (53 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+11:00:40 [types] Generated 35ms
+11:00:40 [build] output: "static"
+11:00:40 [build] mode: "static"
+11:00:40 [build] directory: /workspace/shared/dongjak-remote-checkout/site-factory/seoul-dongjak-flower/dist/
+11:00:40 [build] Collecting build info...
+11:00:40 [build] ✓ Completed in 72ms.
+11:00:40 [build] Building static entrypoints...
+11:00:40 [vite] ✓ built in 187ms
+11:00:40 [vite] ✓ built in 22ms
+11:00:40 [build] Rearranging server assets...
+
+ generating static routes 
+11:00:40   ├─ /404.html (+12ms) 
+11:00:40   ├─ /robots.txt (+4ms) 
+11:00:40   ├─ /regions/dongjak-funeral-wreath/index.html (+5ms) 
+11:00:40   ├─ /regions/index.html (+3ms) 
+11:00:40   ├─ /index.html (+3ms) 
+11:00:40 ✓ Completed in 50ms.
+
+11:00:40 [build] ✓ Completed in 292ms.
+11:00:40 [WARN] [@astrojs/sitemap] No pages found!
+`sitemap-index.xml` not created.
+11:00:40 [build] 4 page(s) built in 368ms
+11:00:40 [build] Complete!
+STATIC QA PASSED: 1 details, 3 HTML routes; indexable=False; exact metadata/sitemap/snapshot/link parity
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.033s
+
+OK
+STATIC QA PASSED: 1 details, 3 HTML routes; indexable=False; exact metadata/sitemap/snapshot/link parity
+GRAPH QA PASSED { pages: 1, hubs: 1 }
+FAQ / PRODUCT QA: 1 details, 2 visible FAQs, 9 exact product links
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.044s
+
+OK
+FAQ / PRODUCT QA: 1 details, 2 visible FAQs, 9 exact product links
+FAQ / PRODUCT QA: 1 details, 2 visible FAQs, 9 exact product links
+SHARED BANNER QA: 3 customer pages, 6 banners; headings, alt, exact assets and links checked
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.068s
+
+OK
+SHARED BANNER QA: 3 customer pages, 6 banners; headings, alt, exact assets and links checked
+SHARED BANNER QA: 4 customer pages, 6 banners; headings, alt, exact assets and links checked
+DIRECTORY QA: 15 administrative entries; 0 exact destination links; grouped=True; all named destination anchors checked
+DIRECTORY SPACING QA: {"cards": 1, "districts": 1, "eligible": false, "bannerKinds": [], "visibleCardsBetweenBanners": [], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.070s
+
+OK
+DIRECTORY SPACING QA: {"cards": 1, "districts": 1, "eligible": false, "bannerKinds": [], "visibleCardsBetweenBanners": [], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
+DONGJAK STATIC QA: {"scope": "Static HTML only; screen/public HTTP/search unverified", "htmlFiles": 4, "details": [{"url": "/regions/dongjak-funeral-wreath/", "anchors": 2, "productCards": 4, "faq": 2, "sourceSectionH2": 1, "approvedCopyPreserved": true}], "uniqueSku": 4, "legalEntries": 9, "adminEntries": 15, "officialRelations": 18, "legalFacilityLinks": 2, "administrativeFacilityLinks": 0, "directoryCards": 1, "directoryBanners": 0, "directoryIndexable": false, "productionApproved": false, "canonicalOrigin": "https://dongjak-preview.invalid", "hostnameOwnershipVerified": false, "approvedArticleParagraphs": 13}
+....................
+----------------------------------------------------------------------
+Ran 20 tests in 0.244s
+
+OK
+DONGJAK STATIC QA: {"scope": "Static HTML only; screen/public HTTP/search unverified", "htmlFiles": 4, "details": [{"url": "/regions/dongjak-funeral-wreath/", "anchors": 2, "productCards": 4, "faq": 2, "sourceSectionH2": 1, "approvedCopyPreserved": true}], "uniqueSku": 4, "legalEntries": 9, "adminEntries": 15, "officialRelations": 18, "legalFacilityLinks": 2, "administrativeFacilityLinks": 0, "directoryCards": 1, "directoryBanners": 0, "directoryIndexable": false, "productionApproved": false, "canonicalOrigin": "https://dongjak-preview.invalid", "hostnameOwnershipVerified": false, "approvedArticleParagraphs": 13}
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

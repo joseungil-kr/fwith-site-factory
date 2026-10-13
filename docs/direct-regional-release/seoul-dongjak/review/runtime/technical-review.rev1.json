@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "/root/review_dongjak_local_runtime",
+  "reviewedAt": "2026-10-13T01:24:10.206844+00:00",
+  "verdict": "PASS",
+  "gate": "LOCAL_TECHNICAL_STATIC_ONLY",
+  "status": "INDEPENDENT_SOURCE_BUILD_ARTIFACT_REVIEW_PASS_NOT_PUBLICATION_OR_SCREEN_QA",
+  "sourceCommit": null,
+  "sourceCommitLimit": "Dongjak remains a local-only source tree. Reused upstream commit identifiers are provenance, not a saved Dongjak Git revision.",
+  "boundCandidate": {
+    "sourceManifest": {
+      "path": "/workspace/shared/dongjak-evidence/local-implementation/source-manifest.json",
+      "bytes": 127773,
+      "sha256": "69042aa34ad10d3572af57387f86808276c2a210bceb0b673ffb8a9c93e726e5"
+    },
+    "sourceEntriesSha256": "78d97e250aca42723c2b24c849a30bf3d7c8688bd69e33a0c8eca7edc19359a2",
+    "sourceFileCount": 629,
+    "outputManifest": {
+      "path": "/workspace/shared/dongjak-evidence/local-implementation/output-manifest.json",
+      "bytes": 2842,
+      "sha256": "c8a0fbbc836dbb92d8eef2c5fb45d0e995a15e6202e08687830bdc54871ced1d"
+    },
+    "outputEntriesSha256": "8a70082d4c1391e8a7073674c8a0cafa96d2f3d40a0fc923da3c6830fcc3fb8b",
+    "outputFileCount": 16
+  },
+  "directlyVerified": [
+    "Read actual frozen source for regional dispatch, Dongjak geography validation, page renderers, banner and directory components, preview/indexability controls, copy binding, current tests, and declared source changes.",
+    "Verified all 629 author source files and 16 compiled artifacts against frozen SHA-256 manifests, copied the bound source into a separate review directory, rebuilt there, and rechecked both original and rebuilt bytes. No source or output mismatch remained; independently rebuilt outputs are byte-identical to the frozen author artifacts.",
+    "Reran the unchanged original Guro 131, Geumcheon 116 and Yeongdeungpo 120 Node assertions against current additive shared adapters, followed by 79 current assertions: 446 passed, zero failures. All 509 retained original fixture files match the independently captured baseline source bytes.",
+    "Ran the full build and QA commands. Astro checked 53 files with 0 errors, warnings or hints; static build emitted exactly home, directory, one article and 404 HTML. The five Python mutation suites ran 5+8+12+9+20=54 tests successfully during both build and separate QA.",
+    "Ran SITE_INDEXABLE=true npm run build and observed exit 1 at the unchanged assert_preview_boundary.mjs guard before Astro build. Source keeps productionApproved=false, hostnameOwnershipVerified=false, publicationAuthorized=false and publishedCoverage 0/1.",
+    "Independent 54 source/mapping assertions and 222 compiled-artifact assertions passed. Exact official legal/admin code-name sets and all 18 code pairs match retained MOIS membership bytes, including partial versus whole relation scopes; legal Sangdo1 and administrative Sangdoje1 remain distinct.",
+    "The single article has two exact facility fragments, no standalone facility/dong URLs, and one real directory article card. The directory contains 9 legal entries, 15 administrative entries and 18 relationships; only the 2 represented legal units have facility links. Directory rendering retains items.length >= 3 eligibility and currently emits zero shared banners.",
+    "Home and detail each use the same three approved WebP files in message/budget/consultation order, separated by substantive text/products; all six asset bytes, alt text, 1774x887 dimensions, lazy/async attributes, AI captions and responsive component CSS are preserved. WebP dimensions/format were decoded locally. This is not a browser layout observation.",
+    "Home and detail each render four actual funeral product cards, with exact B201/B203/B205/B060 names, 59,000/79,000/109,000/149,000 KRW base prices, individual official product URLs, approved alt text and JPG SHA bindings. The retained official source HTML separately contains each matching price field, name and SKU URL; no new external price/stock fetch was performed.",
+    "Actual compiled HTML contains both FAQ questions/answers, exact H3 facility anchors and one source H2. Four routes have one H1 each with non-skipping heading order, unique title/description, valid local assets and resolvable internal fragments. Canonicals use only https://dongjak-preview.invalid; 404 has no canonical. All four routes have noindex/nofollow/noarchive, robots disallows crawling, response headers forbid indexing and no sitemap is generated.",
+    "The 404 static file, noindex metadata and provider 404-page configuration exist; real missing-route HTTP status was not tested."
+  ],
+  "scopeCounts": {
+    "originalNodeTests": 367,
+    "currentNodeTests": 79,
+    "totalNodeTests": 446,
+    "pythonMutationSuiteTestsPerRun": 54,
+    "independentSourceChecks": 54,
+    "independentArtifactChecks": 222,
+    "preservedOriginalFixtureFiles": 509,
+    "customerHtmlFilesIncluding404": 4,
+    "activeArticles": 1,
+    "activeFacilities": 2,
+    "heldCandidateCount": 10,
+    "legalUnits": 9,
+    "administrativeUnits": 15,
+    "membershipPairs": 18
+  },
+  "commands": [
+    {
+      "command": "ASTRO_TELEMETRY_DISABLED=1 XDG_CONFIG_HOME=/tmp/dongjak-review-config npm test",
+      "exitCode": 0,
+      "log": "/workspace/shared/dongjak-review/runtime/npm-test.log"
+    },
+    {
+      "command": "ASTRO_TELEMETRY_DISABLED=1 XDG_CONFIG_HOME=/tmp/dongjak-review-config npm run build",
+      "exitCode": 0,
+      "log": "/workspace/shared/dongjak-review/runtime/npm-build.log"
+    },
+    {
+      "command": "npm run qa",
+      "exitCode": 0,
+      "log": "/workspace/shared/dongjak-review/runtime/npm-qa.log"
+    },
+    {
+      "command": "SITE_INDEXABLE=true ASTRO_TELEMETRY_DISABLED=1 XDG_CONFIG_HOME=/tmp/dongjak-review-config npm run build",
+      "exitCode": 1,
+      "expectedRefusal": true,
+      "log": "/workspace/shared/dongjak-review/runtime/indexable-refusal.log"
+    }
+  ],
+  "testAndGuardChangesReviewed": {
+    "originalFixtures": "All original test expectations preserved and executed unchanged. Native preview guard, old regional adapters, banner component, midpoint helper, static and shared-banner checks, and negative spacing tests retain baseline bytes.",
+    "qaDirectoryLinks": "Explicitly extends grouped/H3 handling to Dongjak and forbids facility links in its administrative rows; exact two-anchor count added.",
+    "qaDirectorySpacing": "Only source_contract changed by AST comparison. Region-specific siteKey dispatch prevents retained historical copy JSON from applying to Dongjak. Exact N1 card text binding added; midpoint algorithm and >=3 page-level eligibility unchanged.",
+    "rootTestRelocation": "Old template source-before-FAQ/H2 Markdown injection assumptions remain in original executed fixtures. Current Dongjak structured source-last/H3 layout is tested separately in source and compiled-output mutation tests. Region-specific original N2/N1 suite placement also remains in corresponding fixture.",
+    "comparisonBaseline": "Reviewer independently captured current local Yeongdeungpo baseline before candidate freeze. Author change manifest uses the Geumcheon source base; these comparisons intentionally have different removed/additive root test filenames.",
+    "rootTestDifferencesAgainstReviewerBaseline": [
+      {
+        "path": "tests/answer-opening.test.mjs",
+        "change": "removed",
+        "originalSha256": "b0c688b5ccd154e1dcd3e5e1b440fb3394718a3d80f011911689fa4389183d5d",
+        "currentSha256": null
+      },
+      {
+        "path": "tests/sources.test.mjs",
+        "change": "removed",
+        "originalSha256": "366f3e9a259b3d80ef04cf6eb9c60993a016730d254065cc92a326eea1317745",
+        "currentSha256": null
+      },
+      {
+        "path": "tests/yeongdeungpo-grouped.test.mjs",
+        "change": "removed",
+        "originalSha256": "6685178d768cc53cc41d4f9028595012d147ff3eb5e808c07a7f9f3ce166f3be",
+        "currentSha256": null
+      }
+    ]
+  },
+  "toolReportedAndNotAdoptedAsIndependentEvidence": [
+    "Author test, package-archive readback and preparation summaries were read as reports. The technical verdict above relies on the reviewer’s own source reads, command runs, asset inspection and manifest comparisons. Archive extraction/upload integrity is outside this technical review."
+  ],
+  "assessment": [
+    "The frozen candidate satisfies the requested local static implementation gate with preserved N1 scope and search/publication safeguards.",
+    "The empty-sitemap build warning is expected under the all-noindex preview configuration. npm’s preexisting http-proxy environment warning did not fail commands.",
+    "No technical blocker remains within this local-static scope. Browser/mobile behavior, actual HTTP routing and external publication still require separate authorized verification; this verdict must not be reported as public release completion."
+  ],
+  "unverifiedAndFailures": [
+    "No actual browser, mobile viewport, screenshots, click flow or live 404 response was run. Previously blocked browser/socket routes were not retried.",
+    "No Git object creation, source save/push, Actions dispatch, provider action, deploy, public hostname verification, public HTTP/MIME checks, IndexNow submission or search result validation was performed.",
+    "No stock, fulfilment, final delivery fee, arrival guarantee, checkout or real order was verified. Product price evidence is the retained official HTML from the approved plan capture.",
+    "The first reviewer npm test invocation used the parent review directory and failed ENOENT for package.json. The attempt is retained in npm-test.initial-wrong-cwd.log; correcting cwd to the isolated rebuild directory passed. This was a reviewer invocation error, not a source/test failure.",
+    "Review used the already installed dependency tree via local node_modules symlink; a fresh network dependency installation was not attempted."
+  ],
+  "blockingFindings": [],
+  "requiredNextGate": "Retain mandatory approval and publication holds. Conduct actual browser/mobile and public HTTP/404 validation only through a permitted route after separate authorization. Re-review if any bound source byte changes.",
+  "evidence": [
+    {
+      "path": "/workspace/shared/dongjak-review/runtime/yeongdeungpo-baseline-source-manifest.json",
+      "bytes": 57987,
+      "sha256": "00028b3b40fea564d7f1d29a7bb593e1d35d77d1179639cbbb6a6879afea0264"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/runtime/frozen-manifest-readback.json",
+      "bytes": 366,
+      "sha256": "959639042de8b9337122f95a8288ce712a0165247248b799813c9b04a9ff6e12"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/runtime/full-fixture-preservation-review.json",
+      "bytes": 109016,
+      "sha256": "a93e55b838ea964f43ae6e35a72c4a41da9536a6302292f22096eeaf90af75bf"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/runtime/final-source-review.json",
+      "bytes": 9398,
+      "sha256": "7471b19ca79c1d3f71d811bb562096247228afb02b4bd85078c7b8c8af061213"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/runtime/final-artifact-review.json",
+      "bytes": 31496,
+      "sha256": "bc5e4b9041574981014d94b3a3cf2f8b83004be26c55111de1549d1081b98133"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/runtime/post-rebuild-manifest-readback.json",
+      "bytes": 487,
+      "sha256": "a8169f21304ea5485eaf71a7935de5d8688b4dc64760c70bdbe01bff468016f1"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/runtime/retained-product-source-readback.json",
+      "bytes": 960,
+      "sha256": "733d064cc237dbf85691758ec619d7c8921ed8cb9c36b013383ceda4e7298b2f"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/runtime/npm-test.log",
+      "bytes": 39647,
+      "sha256": "5755c5b09418dfe5a10301150b14de8ce57a6ddf4628bca54d2222b2c114d7c2"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/runtime/npm-build.log",
+      "bytes": 4935,
+      "sha256": "992cfd47f1feb8e40637be4d52d0e201d380c69015b3a42bbe4f59454c96d36c"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/runtime/npm-qa.log",
+      "bytes": 3595,
+      "sha256": "24dbc68903cbcb5e9b1f96e6e822a5561b64dc7136bceddcfdfaab3fce748e18"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/runtime/indexable-refusal.log",
+      "bytes": 1353,
+      "sha256": "ebc84c428a943b3b0e3bc1556fea226533d2350786921eebfb118ff3b24e3cbe"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/runtime/npm-test.initial-wrong-cwd.log",
+      "bytes": 666,
+      "sha256": "5020f2728e24c9c33331d987051634419755bd9ab055abc1afc7605d0bd5272d"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/runtime/verify_source.py",
+      "bytes": 5832,
+      "sha256": "18181227777c34cf8951aa909d315699328995ad6bd2652a9c0d9fcc9767b5af"
+    },
+    {
+      "path": "/workspace/shared/dongjak-review/runtime/verify_artifact.py",
+      "bytes": 9674,
+      "sha256": "17d5b87cdb78c9de9e14c330a78d41d42197f3ce666d4b02e19340925fa19140"
+    }
+  ],
+  "actions": {
+    "localSourceAuthorEdits": 0,
+    "reviewCopyCreated": true,
+    "localReviewArtifactsWritten": true,
+    "originalCandidateChanged": false,
+    "browserOrSocketAttempts": 0,
+    "gitWrites": 0,
+    "remoteWrites": 0,
+    "deployments": 0
+  }
+}

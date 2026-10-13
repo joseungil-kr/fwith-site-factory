@@ -1,0 +1,722 @@
+{
+  "schemaVersion": 1,
+  "task": "Read-only reconcile regional release state and identify next independent preparation",
+  "nominalRunLabel": "regional-run-20261013T003000",
+  "actualObservationWindowUtc": {
+    "start": "2026-10-13T00:26:48Z",
+    "end": "2026-10-13T00:29:16Z"
+  },
+  "reportWrittenAtUtc": "2026-10-13T00:30:44Z",
+  "repository": "joseungil-kr/fwith-site-factory",
+  "resultClassification": {
+    "directlyVerified": "Read original local repository files whose Git blob hashes exactly match the latest remote main recursive tree; checked remote refs and run state; hashed listed local Yeongdeungpo handoff artifacts.",
+    "toolReported": "GitHub API Actions status/artifact descriptors and existing worker review/pass reports. Artifact screenshot pixels and public site responses were not re-examined in this task.",
+    "judgment": "Dongjak is the next official-code region after Yeongdeungpo and is suitable for isolated read-only research/local planning after the root assigned a new owner.",
+    "unverified": "Provider account/Worker/hostname ownership, full account-wide cloud-task ownership, current public status of all 46 historical regions, visual artifact contents, and any publication/indexing outcome for unpublished regions."
+  },
+  "remoteObservations": {
+    "observationWindowUtc": {
+      "start": "2026-10-13T00:26:48Z",
+      "end": "2026-10-13T00:29:16Z"
+    },
+    "main": {
+      "ref": "refs/heads/main",
+      "sha": "b68fa7801b080da5a65fbaeceeba3aa9a81ac365",
+      "url": "https://api.github.com/repos/joseungil-kr/fwith-site-factory/git/refs/heads/main"
+    },
+    "mainRecursiveTree": {
+      "sha": "b68fa7801b080da5a65fbaeceeba3aa9a81ac365",
+      "truncated": false,
+      "entries": 1251,
+      "documents": [
+        {
+          "path": "docs/direct-regional-release/README.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "9a601fd3a0ae2a6f420c937b4020dfc4405e82cc",
+          "size": 1392,
+          "url": "https://api.github.com/repos/joseungil-kr/fwith-site-factory/git/blobs/9a601fd3a0ae2a6f420c937b4020dfc4405e82cc"
+        },
+        {
+          "path": "docs/direct-regional-release/SALES_COPY_ACCEPTANCE.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "b326a91518fc1d6a603668d0e9e0dfc822ce84e8",
+          "size": 11149,
+          "url": "https://api.github.com/repos/joseungil-kr/fwith-site-factory/git/blobs/b326a91518fc1d6a603668d0e9e0dfc822ce84e8"
+        },
+        {
+          "path": "docs/direct-regional-release/SEARCH_CONTENT_STRATEGY.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "82b8ad3ea9e26f3e11b8ec58e64157152a6c6f29",
+          "size": 6766,
+          "url": "https://api.github.com/repos/joseungil-kr/fwith-site-factory/git/blobs/82b8ad3ea9e26f3e11b8ec58e64157152a6c6f29"
+        },
+        {
+          "path": "docs/direct-regional-release/SHARED_BANNER_STANDARD.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "591fd7df740f9ca298009542cae7cec933ba9843",
+          "size": 6794,
+          "url": "https://api.github.com/repos/joseungil-kr/fwith-site-factory/git/blobs/591fd7df740f9ca298009542cae7cec933ba9843"
+        },
+        {
+          "path": "docs/direct-regional-release/checkpoint.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "da452e9c815457c76c74a3ed16586a7c36296664",
+          "size": 1540925,
+          "url": "https://api.github.com/repos/joseungil-kr/fwith-site-factory/git/blobs/da452e9c815457c76c74a3ed16586a7c36296664"
+        },
+        {
+          "path": "docs/direct-regional-release/latest-progress.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "0fbee4893f9721d980257c2b04c3481f249baffa",
+          "size": 6849,
+          "url": "https://api.github.com/repos/joseungil-kr/fwith-site-factory/git/blobs/0fbee4893f9721d980257c2b04c3481f249baffa"
+        },
+        {
+          "path": "docs/direct-regional-release/national/fixed-plan.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "b4a6eec256d0aa312f72797784c849ea38d28ec8",
+          "size": 88496,
+          "url": "https://api.github.com/repos/joseungil-kr/fwith-site-factory/git/blobs/b4a6eec256d0aa312f72797784c849ea38d28ec8"
+        },
+        {
+          "path": "docs/direct-regional-release/national/source-evidence.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "a28422e7c3cc4c6cbf2416cdca5017a24a03e327",
+          "size": 5480,
+          "url": "https://api.github.com/repos/joseungil-kr/fwith-site-factory/git/blobs/a28422e7c3cc4c6cbf2416cdca5017a24a03e327"
+        },
+        {
+          "path": "docs/direct-regional-release/visual-qa-deferral-policy.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "0a00d93f36f627ac566d3852f3f431b0547e156d",
+          "size": 2653,
+          "url": "https://api.github.com/repos/joseungil-kr/fwith-site-factory/git/blobs/0a00d93f36f627ac566d3852f3f431b0547e156d"
+        }
+      ]
+    },
+    "sourceRefs": [
+      {
+        "ref": "refs/heads/site-factory-seoul-gangseo-direct",
+        "sha": "f7f2b9d017b8b8352aae8b0339b5a2cac0da1d32",
+        "url": "https://api.github.com/repos/joseungil-kr/fwith-site-factory/git/refs/heads/site-factory-seoul-gangseo-direct"
+      },
+      {
+        "ref": "refs/heads/site-factory-seoul-guro-direct",
+        "sha": "500d82d01c1cdaed3ebde047bb3ce056705daac1",
+        "url": "https://api.github.com/repos/joseungil-kr/fwith-site-factory/git/refs/heads/site-factory-seoul-guro-direct"
+      },
+      {
+        "ref": "refs/heads/site-factory-seoul-geumcheon-direct",
+        "sha": "bbb016305dd2fe29f7d985a669acaa02224a9f2f",
+        "url": "https://api.github.com/repos/joseungil-kr/fwith-site-factory/git/refs/heads/site-factory-seoul-geumcheon-direct"
+      }
+    ],
+    "branchEnumeration": {
+      "pageCounts": [
+        100,
+        51,
+        0
+      ],
+      "total": 151,
+      "dongjakMatches": [],
+      "yeongdeungpoMatches": [],
+      "urls": [
+        "https://api.github.com/repos/joseungil-kr/fwith-site-factory/branches?per_page=100&page=1",
+        "https://api.github.com/repos/joseungil-kr/fwith-site-factory/branches?per_page=100&page=2",
+        "https://api.github.com/repos/joseungil-kr/fwith-site-factory/branches?per_page=100&page=3"
+      ]
+    },
+    "actions": {
+      "inProgress": 0,
+      "waiting": 0,
+      "queued": [
+        {
+          "id": 37655516975,
+          "name": "Suwon C2 production source read-only verification",
+          "headSha": "c69cc145d38a3439320cddc43b8949ae4c91291f",
+          "headBranch": "manual-suwon-production-check-20261007",
+          "status": "queued",
+          "conclusion": null,
+          "createdAt": "2026-10-07T16:54:41Z",
+          "updatedAt": "2026-10-07T16:54:41Z",
+          "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/37655516975"
+        },
+        {
+          "id": 37655514711,
+          "name": "Bucheon C2 production source read-only verification",
+          "headSha": "c5b6a995fd404ce4eb21f1794386342383979e61",
+          "headBranch": "manual-bucheon-production-check-20261007",
+          "status": "queued",
+          "conclusion": null,
+          "createdAt": "2026-10-07T16:54:20Z",
+          "updatedAt": "2026-10-07T16:54:20Z",
+          "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/37655514711"
+        }
+      ],
+      "dongjakBranchRuns": 0,
+      "visualQa": {
+        "id": 38318719004,
+        "name": "Unpublished regional loopback visual QA only",
+        "headSha": "a12c406b2d6b4254a7a5541e7d1e631bf09701f2",
+        "headBranch": "qa/unpublished-regional-visual-20261012",
+        "status": "completed",
+        "conclusion": "success",
+        "createdAt": "2026-10-12T22:48:14Z",
+        "updatedAt": "2026-10-12T22:50:58Z",
+        "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38318719004"
+      },
+      "visualQaArtifacts": [
+        {
+          "id": 11778055126,
+          "name": "unpublished-geumcheon-dist-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 877384,
+          "digest": "sha256:dee4547c7027da0f448d69bd3bc4d94f7898dac30f19b67c04bc240ee07628e5",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:14Z"
+        },
+        {
+          "id": 11777604457,
+          "name": "unpublished-geumcheon-390-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 1030125,
+          "digest": "sha256:b38e0a25977b340d377c564d30cffca4a8a824e0945aef1dada3416723d86203",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:16Z"
+        },
+        {
+          "id": 11777569598,
+          "name": "unpublished-geumcheon-320-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 988334,
+          "digest": "sha256:9407d92af2d12780f21ce881cabb8612fdde31cb5344b05522dec3ca102a3b16",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:16Z"
+        },
+        {
+          "id": 11777469739,
+          "name": "unpublished-geumcheon-native-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 1572592,
+          "digest": "sha256:ebf284f45ae89abe798412128f8875169a99d65ef8d46acc08a929e137ae32c0",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:15Z"
+        },
+        {
+          "id": 11777409877,
+          "name": "unpublished-geumcheon-1280-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 1540255,
+          "digest": "sha256:b854ff4b5a71f343dcd60939e72ce74cec948c1f00151a0290dbd4017acbf9ec",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:17Z"
+        },
+        {
+          "id": 11777409866,
+          "name": "unpublished-geumcheon-reports-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 33589,
+          "digest": "sha256:f4ab7805bcc72d62226b18a61e3025194a119223a551c111c7a224ddb3901be5",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:13Z"
+        },
+        {
+          "id": 11777238897,
+          "name": "unpublished-guro-390-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 2609194,
+          "digest": "sha256:a5b7aaa34afe0f3dbd7585ae5c7eea3b1e09c38cc3b4248bfb87ee8106abf6fa",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:42Z"
+        },
+        {
+          "id": 11777184059,
+          "name": "unpublished-guro-320-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 2493044,
+          "digest": "sha256:8b6e7ef337d815870397e0b811e47d5ba691429e1e9c98f4bb8b1b4fd50ca33b",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:40Z"
+        },
+        {
+          "id": 11777184055,
+          "name": "unpublished-guro-native-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 1591349,
+          "digest": "sha256:cd2df918b7bcd86c25bbe9bef2d53dc1b151fdd13b23c34a1421a7a7a0fb13b5",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:39Z"
+        },
+        {
+          "id": 11777133970,
+          "name": "unpublished-guro-dist-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 1217570,
+          "digest": "sha256:272be14e91d1408fd9c9fb50795b614ef689874484f77335da82625ceb2b402d",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:37Z"
+        },
+        {
+          "id": 11777124039,
+          "name": "unpublished-gangseo-1280-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 4594900,
+          "digest": "sha256:f8ca30e762feb6412b189d39bbdb58c8e3fe178f310158e8a0afe49a0db9631f",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:55Z"
+        },
+        {
+          "id": 11777079008,
+          "name": "unpublished-gangseo-reports-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 48692,
+          "digest": "sha256:9c7819d297c8e7d255da5e61bd167d7c1949a1e281d2dbb430fcc360c9f881fc",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:51Z"
+        },
+        {
+          "id": 11777073991,
+          "name": "unpublished-guro-1280-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 3835601,
+          "digest": "sha256:26b27f9a0866b3e932bd5b7c2e829cbf153878335b853eb2ec07573f31d28f59",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:43Z"
+        },
+        {
+          "id": 11776994120,
+          "name": "unpublished-guro-reports-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 46638,
+          "digest": "sha256:17c6023ec480bb32db74d92d2862d2a5c4a0cf9a588a8b7889a58badb5b56878",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:36Z"
+        },
+        {
+          "id": 11776899299,
+          "name": "unpublished-gangseo-390-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 3122022,
+          "digest": "sha256:fb00fa328bf07ccd04cd39a3d9fc42304b2ef43a37f8f307961f29021fe3d461",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:54Z"
+        },
+        {
+          "id": 11776869342,
+          "name": "unpublished-gangseo-320-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 2984189,
+          "digest": "sha256:c3f9a0ad2c8e1d0058ddd91e2fc8d6d0b8d2845265c3d83b3a484d7797d73692",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:53Z"
+        },
+        {
+          "id": 11776794562,
+          "name": "unpublished-gangseo-native-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 1545480,
+          "digest": "sha256:26d2686dca6411600ae93e449c24ea932b74280f6bba74ef62edce3911bfb4c4",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:52Z"
+        },
+        {
+          "id": 11776774494,
+          "name": "unpublished-gangseo-dist-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+          "bytes": 1223768,
+          "digest": "sha256:36e4d4fd018f0af286cdbd4fe231d785309d261ec02fb0e6e7f6833409407e11",
+          "expired": false,
+          "createdAt": "2026-10-12T22:50:52Z"
+        }
+      ]
+    },
+    "openPulls": 0,
+    "dongjakSearch": {
+      "matchingRefs": [],
+      "branchActionsTotal": 0,
+      "issueQueries": [
+        {
+          "query": "repo:joseungil-kr/fwith-site-factory is:issue dongjak",
+          "count": 0
+        },
+        {
+          "query": "repo:joseungil-kr/fwith-site-factory is:issue 동작",
+          "count": 0
+        }
+      ],
+      "mainPaths": []
+    },
+    "cloudTaskCoverage": {
+      "directChildTasks": 0,
+      "accountVisibleThreadIds": 37,
+      "accountTaskBodiesRead": false,
+      "limitation": "Account-wide listing returns IDs only; no exhaustive account-wide active-task ownership conclusion is made.",
+      "directChildScope": "Direct children returned in this worker tool context only; this is not a full root-thread ownership inventory."
+    }
+  },
+  "originalFileBindings": [
+    {
+      "path": "docs/direct-regional-release/README.md",
+      "bytes": 1392,
+      "remoteGitBlob": "9a601fd3a0ae2a6f420c937b4020dfc4405e82cc",
+      "localGitBlob": "9a601fd3a0ae2a6f420c937b4020dfc4405e82cc",
+      "match": true,
+      "sha256": "20e1b19b203b439b06b091ecf52917f3d0d921a5434a78ccf80322594607a821"
+    },
+    {
+      "path": "docs/direct-regional-release/SALES_COPY_ACCEPTANCE.md",
+      "bytes": 11149,
+      "remoteGitBlob": "b326a91518fc1d6a603668d0e9e0dfc822ce84e8",
+      "localGitBlob": "b326a91518fc1d6a603668d0e9e0dfc822ce84e8",
+      "match": true,
+      "sha256": "ad16cb2f4c34a2d47468850e70440790181ff5da67afc212f544e37170e850e0"
+    },
+    {
+      "path": "docs/direct-regional-release/SEARCH_CONTENT_STRATEGY.md",
+      "bytes": 6766,
+      "remoteGitBlob": "82b8ad3ea9e26f3e11b8ec58e64157152a6c6f29",
+      "localGitBlob": "82b8ad3ea9e26f3e11b8ec58e64157152a6c6f29",
+      "match": true,
+      "sha256": "62793bfc6e38746c3ef18bf0e148806214211e78e5b1433279cb22d5b7d307a8"
+    },
+    {
+      "path": "docs/direct-regional-release/SHARED_BANNER_STANDARD.md",
+      "bytes": 6794,
+      "remoteGitBlob": "591fd7df740f9ca298009542cae7cec933ba9843",
+      "localGitBlob": "591fd7df740f9ca298009542cae7cec933ba9843",
+      "match": true,
+      "sha256": "b9ad6e79a91346e6316c998c4cac3710f2a426828fc3b30c612e13e24b9375ca"
+    },
+    {
+      "path": "docs/direct-regional-release/checkpoint.json",
+      "bytes": 1540925,
+      "remoteGitBlob": "da452e9c815457c76c74a3ed16586a7c36296664",
+      "localGitBlob": "da452e9c815457c76c74a3ed16586a7c36296664",
+      "match": true,
+      "sha256": "d9de4cb0c8483f6a5811d7847d296ac7456627e78f85cb3bca77f15a662a55c6"
+    },
+    {
+      "path": "docs/direct-regional-release/latest-progress.json",
+      "bytes": 6849,
+      "remoteGitBlob": "0fbee4893f9721d980257c2b04c3481f249baffa",
+      "localGitBlob": "0fbee4893f9721d980257c2b04c3481f249baffa",
+      "match": true,
+      "sha256": "de39f1099f267823bb2680667be9cb836aaa6eb9f60d0b874e40bb5066a6178c"
+    },
+    {
+      "path": "docs/direct-regional-release/national/fixed-plan.json",
+      "bytes": 88496,
+      "remoteGitBlob": "b4a6eec256d0aa312f72797784c849ea38d28ec8",
+      "localGitBlob": "b4a6eec256d0aa312f72797784c849ea38d28ec8",
+      "match": true,
+      "sha256": "eea0bff4e124d67817266ef0fd4298e3ca8fbae4cc651e0f202e7ac61e01d937"
+    },
+    {
+      "path": "docs/direct-regional-release/national/source-evidence.json",
+      "bytes": 5480,
+      "remoteGitBlob": "a28422e7c3cc4c6cbf2416cdca5017a24a03e327",
+      "localGitBlob": "a28422e7c3cc4c6cbf2416cdca5017a24a03e327",
+      "match": true,
+      "sha256": "cc3e82ce0b58cc6871936d0b2cba02eccb125ed84d809b5b7249a6ca134916e0"
+    },
+    {
+      "path": "docs/direct-regional-release/visual-qa-deferral-policy.md",
+      "bytes": 2653,
+      "remoteGitBlob": "0a00d93f36f627ac566d3852f3f431b0547e156d",
+      "localGitBlob": "0a00d93f36f627ac566d3852f3f431b0547e156d",
+      "match": true,
+      "sha256": "1561333708687ca1e8a8ec4f2275ef6c765b4083e6e6e7eb61bfa5ba56672156"
+    }
+  ],
+  "nationalProgress": {
+    "plannedRegionCount": 230,
+    "recordedReleasedRegionCount": 46,
+    "recordedRemainingRegionCount": 184,
+    "countBasis": "Carried forward from the independently read latest-progress.json at b68fa7801b080da5a65fbaeceeba3aa9a81ac365. This pass verified 46 unique recorded hosts, NOT 46 fresh live-site/public-HTTP checks.",
+    "sourceCountBasis": "Union43hosts from preserved checkpoint.completedKnownHosts and releasedKnownHosts at main3497da9, plus independently reconciled Eunpyeong/Seodaemun and completed Nowon.43 historical hosts are carried-forward release evidence, not46 fresh simultaneousHTTP checks.31 Gyeonggi and15 Seoul regions; fixed national denominator unchanged.",
+    "freshPublicHostChecksInThisPass": 0,
+    "originalDenominatorAndHistoryPreserved": true
+  },
+  "officialOrder": {
+    "selectionOrder": "official-code-ascending-after-Gyeonggi",
+    "nearbyUnits": [
+      {
+        "code": "11500",
+        "legal_code": "1150000000",
+        "sido_code": "11",
+        "sido": "서울특별시",
+        "name": "강서구",
+        "full_name": "서울특별시 강서구",
+        "kind": "autonomous_district",
+        "created": "19880423",
+        "source_line": 367,
+        "released_before_plan": false,
+        "national_order": 16,
+        "pending_order": 16
+      },
+      {
+        "code": "11530",
+        "legal_code": "1153000000",
+        "sido_code": "11",
+        "sido": "서울특별시",
+        "name": "구로구",
+        "full_name": "서울특별시 구로구",
+        "kind": "autonomous_district",
+        "created": "19880423",
+        "source_line": 381,
+        "released_before_plan": false,
+        "national_order": 17,
+        "pending_order": 17
+      },
+      {
+        "code": "11545",
+        "legal_code": "1154500000",
+        "sido_code": "11",
+        "sido": "서울특별시",
+        "name": "금천구",
+        "full_name": "서울특별시 금천구",
+        "kind": "autonomous_district",
+        "created": "19950301",
+        "source_line": 392,
+        "released_before_plan": false,
+        "national_order": 18,
+        "pending_order": 18
+      },
+      {
+        "code": "11560",
+        "legal_code": "1156000000",
+        "sido_code": "11",
+        "sido": "서울특별시",
+        "name": "영등포구",
+        "full_name": "서울특별시 영등포구",
+        "kind": "autonomous_district",
+        "created": "19880423",
+        "source_line": 396,
+        "released_before_plan": false,
+        "national_order": 19,
+        "pending_order": 19
+      },
+      {
+        "code": "11590",
+        "legal_code": "1159000000",
+        "sido_code": "11",
+        "sido": "서울특별시",
+        "name": "동작구",
+        "full_name": "서울특별시 동작구",
+        "kind": "autonomous_district",
+        "created": "19880423",
+        "source_line": 431,
+        "released_before_plan": false,
+        "national_order": 20,
+        "pending_order": 20
+      },
+      {
+        "code": "11620",
+        "legal_code": "1162000000",
+        "sido_code": "11",
+        "sido": "서울특별시",
+        "name": "관악구",
+        "full_name": "서울특별시 관악구",
+        "kind": "autonomous_district",
+        "created": "19880423",
+        "source_line": 441,
+        "released_before_plan": false,
+        "national_order": 21,
+        "pending_order": 21
+      }
+    ],
+    "nextAfterYeongdeungpo": {
+      "code": "11590",
+      "name": "서울특별시 동작구",
+      "nationalOrder": 20
+    },
+    "following": {
+      "code": "11620",
+      "name": "서울특별시 관악구",
+      "nationalOrder": 21
+    }
+  },
+  "ownershipAndPendingWork": {
+    "scopedMainRecords": [
+      {
+        "region": "seoul-gangseo",
+        "progressPath": "docs/direct-regional-release/seoul-gangseo/progress.json",
+        "sha256": "f441331e8165d6698283ef46dc63feeb7adfaa305d2fa7c9db735b1c86d42242",
+        "status": "source_saved_controls_verified_awaiting_single_issue_creation_approval",
+        "owner": {
+          "checkpointId": "direct-seoul-gangseo-20261012T172919Z",
+          "active": false,
+          "mainWriteActive": false,
+          "executionState": "safe_pause_after_source_and_control_commit; no deployment in flight"
+        },
+        "active": false,
+        "publication": {
+          "performed": false,
+          "actionsRun": null,
+          "publicHttpVerified": false,
+          "indexNowReceipt": null,
+          "actualIndexingVerified": false
+        },
+        "publicationAuthorized": null,
+        "updatedAt": "2026-10-12T19:16:22.793418+00:00"
+      },
+      {
+        "region": "seoul-guro",
+        "progressPath": "docs/direct-regional-release/seoul-guro/progress.json",
+        "sha256": "065659c5abd1b08d1efc1f7f840c8911d8d1be52d4c0aa0ab4c92c476e34a3c5",
+        "status": "prepared_unpublished_release_not_authorized",
+        "owner": "prepare_rich_guro_site",
+        "active": false,
+        "publication": {
+          "published": false,
+          "triggerIssue": null,
+          "workflowRun": null,
+          "publicHttp": null,
+          "indexNow": null
+        },
+        "publicationAuthorized": false,
+        "updatedAt": "2026-10-12T19:36:33.042141+00:00"
+      },
+      {
+        "region": "seoul-geumcheon",
+        "progressPath": "docs/direct-regional-release/seoul-geumcheon/progress.json",
+        "sha256": "d0b1cc7b4dc3b02da7b83747d541cba448a5de5c4563f028da1ad70193ba21e7",
+        "status": "prepared_unpublished_exact_source_static_verified_visual_pending",
+        "owner": {
+          "name": "implement_geumcheon_regional_site",
+          "active": false,
+          "executionState": "prepared_unpublished_release_not_authorized",
+          "mainWriteScope": "geumcheon_documentation_progress_only",
+          "completedAt": "2026-10-12T21:59:42.550494+00:00",
+          "copyStageCompletedAt": "2026-10-12T21:31:01.789023+00:00"
+        },
+        "active": false,
+        "publication": {
+          "authorized": false,
+          "productionApproved": false,
+          "issueCreated": false,
+          "workflowDispatched": false,
+          "providerMutation": false,
+          "IndexNowSubmitted": false,
+          "GscSubmitted": false,
+          "url": null
+        },
+        "publicationAuthorized": null,
+        "updatedAt": "2026-10-12T21:59:42.550494+00:00"
+      }
+    ],
+    "priority": "Gangseo remains first prepared-unpublished release priority. Independent research does not release it or bypass any pending action.",
+    "visualQaEvidenceWriter": {
+      "owner": "/root/implement_unpublished_visual_qa",
+      "state": "Root supplied: evidence save is awaiting existing service-required Git blob approval",
+      "observedVia": "parent task message",
+      "conflictAvoidance": "No external mutation, approval recreation, or edits to its files performed"
+    },
+    "yeongdeungpo": {
+      "state": "LOCAL_IMPLEMENTATION_AND_STATIC_QA_COMPLETE_REMOTE_HELD",
+      "sourceCommit": null,
+      "handoffPath": "/workspace/shared/yeongdeungpo-evidence/local-implementation/implementation-handoff.final.json",
+      "handoffSha256": "4dd65b88d3156e4bc2e624b4b1be564fd75c1f31f129426abaaadeae5ca9e427",
+      "artifactByteChecks": [
+        {
+          "path": "/workspace/shared/yeongdeungpo-evidence/local-implementation/yeongdeungpo-reviewed-local-source.zip",
+          "bytes": 3816742,
+          "sha256": "407b64d49f12bb327d1d2451f959f6508a2c9a8433f78db93f546c5da2367c53",
+          "expectedSha256": "407b64d49f12bb327d1d2451f959f6508a2c9a8433f78db93f546c5da2367c53",
+          "match": true
+        },
+        {
+          "path": "/workspace/shared/yeongdeungpo-evidence/local-implementation/yeongdeungpo-static-preview.zip",
+          "bytes": 1206515,
+          "sha256": "92a3690a97fbdbfeb389cad140dac684e5e4ad9f45d7340dd9dcaefedda15e62",
+          "expectedSha256": "92a3690a97fbdbfeb389cad140dac684e5e4ad9f45d7340dd9dcaefedda15e62",
+          "match": true
+        },
+        {
+          "path": "/workspace/shared/yeongdeungpo-evidence/local-implementation/source-file-manifest.final.json",
+          "bytes": 130582,
+          "sha256": "34358c68173778906dcf4844badcb92675b9af41338b203048d4e67c4653c959",
+          "expectedSha256": "34358c68173778906dcf4844badcb92675b9af41338b203048d4e67c4653c959",
+          "match": true
+        },
+        {
+          "path": "/workspace/shared/yeongdeungpo-evidence/local-implementation/proposed-source-tree-entries.json",
+          "bytes": 551510,
+          "sha256": "48122bd0af68218232ca52b74fa9fa3511741b2a545a6e782476180f30a64b9d",
+          "expectedSha256": "48122bd0af68218232ca52b74fa9fa3511741b2a545a6e782476180f30a64b9d",
+          "match": true
+        },
+        {
+          "path": "/workspace/shared/yeongdeungpo-evidence/local-implementation/final-byte-preservation.json",
+          "bytes": 1301,
+          "sha256": "b8d87da87bf1373bd0cd973765653bc373a4ef1a238361a8041983c9eead6445",
+          "expectedSha256": "b8d87da87bf1373bd0cd973765653bc373a4ef1a238361a8041983c9eead6445",
+          "match": true
+        }
+      ],
+      "directlyVerified": "Expected handoff and five listed artifacts exist and match recorded SHA256. Local source directory is untracked against b68fa78; remote branch was absent in full branch enumeration.",
+      "technicalResults": "Existing handoff reports local technical/static QA passed; this pass did not rerun tests or a build.",
+      "pending": "Service-required remote-save approval, exact saved-SHA rebuild/readback, and actual screenshot QA/publication gates as applicable."
+    },
+    "dongjak": {
+      "preAssignmentCollisionFinding": "No matching branch among all 151 remote branches, matching refs empty, expected branch Actions runs zero, open PRs zero, searches for dongjak/동작 issues empty, no main paths or regional owners, and no shared local dongjak root before assignment.",
+      "parentAssignedOwner": "research_dongjak_regional_plan",
+      "parentAssignmentObservedAtUtc": "2026-10-13T00:28:36Z",
+      "ownerScope": "Read-only research and local plan only; no remote source creation, workflow, deployment or ownership/security mutations.",
+      "providerOwnership": "Not checked; required before publication."
+    }
+  },
+  "recordReconciliation": [
+    "checkpoint.current still describes historical Nowon source 69adc8e; latest-progress correctly identifies completed Nowon source c498fe38. Do not recreate or redeploy Nowon from stale current.",
+    "latest-progress carries Gangseo/Guro/Geumcheon prepared-unpublished source SHAs that match current remote refs.",
+    "latest-progress still describes visual QA as unverified, while API reports completed/success QA run38318719004 with18 unexpired artifacts. Evidence update is already owned elsewhere; do not write over it or declare screenshot/publication completion from the run label.",
+    "Yeongdeungpo has local evidence but no remote source branch or main documentation at this snapshot; local completion must not be counted as a release."
+  ],
+  "currentGuidelines": {
+    "paths": [
+      "docs/direct-regional-release/SEARCH_CONTENT_STRATEGY.md",
+      "docs/direct-regional-release/SALES_COPY_ACCEPTANCE.md",
+      "docs/direct-regional-release/SHARED_BANNER_STANDARD.md",
+      "docs/direct-regional-release/visual-qa-deferral-policy.md"
+    ],
+    "requirements": [
+      "Before authoring: real search intent, original facility/local/product sources, competitor full-page comparison, internal overlap check, and GitHub code/license/maintenance/reuse investigation.",
+      "Unique article body draft target roughly2500–3000 Korean characters is a planning guide, not a ranking formula or hard pass threshold; no invented delivery/product/service promises.",
+      "Independent tone and information-completeness reviews are distinct; bind final files/digests/source SHA and rerun after meaningful edits.",
+      "Check real rendered FAQ, per-product CTA destinations, related decision links, headings/meta/canonical/robots/sitemap/404, shared image integrity, and directory banner spacing.",
+      "Actual desktop/narrow visual QA can be explicitly deferred under preserved policy; unperformed visual QA must not be marked PASS.",
+      "Approval waits do not erase prepared work or authorize deployment. Preserve releaseConcurrency1 and one-new-region-per-invocation scope; no new schedules."
+    ]
+  },
+  "officialSourceFreshness": {
+    "nationalFrozenAsOf": "2026-10-10",
+    "frozenNationalPrimaryPackage": "2026-09-30",
+    "historicalFutureNotAppliedPackageNowEffective": "2026-10-12",
+    "currentPackageLocalPath": "/workspace/shared/yeongdeungpo-evidence/raw/mois-package.zip",
+    "currentPackageActualSha256": "3702ee001f131968983fbba1e08c6bffc89f6ee4377de327e5eff6946b1098d7",
+    "originalNoticeLocalPath": "/workspace/shared/yeongdeungpo-evidence/raw/mois-20261012.html",
+    "originalNoticeSha256": "d85547bd2a59abb8175588396b32d5ebe8942a8a7490b35f6ee4f695a7c3cb75",
+    "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+    "inspection": "Read stored original official notice text: October12 change concerns Pyeongtaek Godeok-dong split; notice states legal-dong codes unchanged. Local ZIP hash was independently calculated; Dongjak researcher should rederive local unit membership from the current effective package.",
+    "frozenDenominatorPreserved": 230
+  },
+  "safeNextWork": [
+    "Assigned Dongjak researcher: inspect existing implementations and current effective official code/facility sources; produce isolated local research and independently reviewable plan with no publication.",
+    "Continue existing Yeongdeungpo local visual-preparation work without remote mutations while its required save approval is pending.",
+    "After the existing evidence-save approval resolves, assigned writer alone should refresh main, save and independently read back exact evidence; do not recreate pending approval.",
+    "Before any future publication, verify current source SHA, run state, provider ownership/collision and applicable authority; preserve national count until verified release evidence exists."
+  ],
+  "errorsAndRecovery": [
+    {
+      "attempt": "GitHub fetch search issues without issue-type qualifier",
+      "error": "HTTP422: query must include is:issue or is:pull-request",
+      "recovery": "Retried via read-only search_issues with is:issue; dongjak and 동작 both returned zero."
+    },
+    {
+      "attempt": "cloud_threads.list_threads limit100",
+      "error": "Schema maximum50",
+      "recovery": "Read-only limit50 succeeded; direct children0, account-wide37 IDs. Did not infer their task contents."
+    }
+  ],
+  "actionsTaken": {
+    "repositoryWrites": 0,
+    "remoteMutations": 0,
+    "workflowDispatches": 0,
+    "deployments": 0,
+    "publicHttpChecks": 0,
+    "approvalsCreatedOrRetried": 0,
+    "localReportWritten": true
+  },
+  "reportLimit": "This is a bounded reconciliation of current repository/control records and local artifact fingerprints, not a release verification or blanket confirmation that no work exists outside the inspected sources."
+}

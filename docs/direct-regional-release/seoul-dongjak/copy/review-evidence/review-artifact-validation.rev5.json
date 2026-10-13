@@ -1,0 +1,91 @@
+{
+  "createdAt": "2026-10-13T00:59:08.479611+00:00",
+  "classification": "직접 확인",
+  "status": "Local analysis artifacts verified; no COPY PASS or publication claim",
+  "checks": [
+    {
+      "check": "article JSON reconstructs unique-body TXT exactly",
+      "ok": true
+    },
+    {
+      "check": "all article prose/heading/FAQ pieces are present in full surface",
+      "ok": true,
+      "pieceCount": 24
+    },
+    {
+      "check": "full surface UI JSON equals standalone common-visible-copy",
+      "ok": true
+    },
+    {
+      "check": "common visible copy is byte-identical to already read rev2",
+      "ok": true
+    },
+    {
+      "check": "input remains same as reviewed snapshot",
+      "path": "/workspace/shared/dongjak-evidence/copy-v1/article-copy.rev5.json",
+      "ok": true
+    },
+    {
+      "check": "input remains same as reviewed snapshot",
+      "path": "/workspace/shared/dongjak-evidence/copy-v1/article-unique-body.rev5.txt",
+      "ok": true
+    },
+    {
+      "check": "input remains same as reviewed snapshot",
+      "path": "/workspace/shared/dongjak-evidence/copy-v1/common-visible-copy.rev5.json",
+      "ok": true
+    },
+    {
+      "check": "input remains same as reviewed snapshot",
+      "path": "/workspace/shared/dongjak-evidence/copy-v1/full-copy-surface.rev5.txt",
+      "ok": true
+    },
+    {
+      "check": "baseline snapshot remains unchanged",
+      "path": "/workspace/shared/dongjak-evidence/search/cross-region/gangseo-final-pages.json",
+      "ok": true
+    },
+    {
+      "check": "baseline snapshot remains unchanged",
+      "path": "/workspace/shared/dongjak-evidence/search/cross-region/guro-final-pages.json",
+      "ok": true
+    },
+    {
+      "check": "baseline snapshot remains unchanged",
+      "path": "/workspace/shared/dongjak-evidence/search/cross-region/geumcheon-final-pages.json",
+      "ok": true
+    },
+    {
+      "check": "baseline snapshot remains unchanged",
+      "path": "/workspace/shared/dongjak-evidence/search/cross-region/yeongdeungpo-full-copy-surface.rev2.txt",
+      "ok": true
+    },
+    {
+      "check": "generated artifact readback",
+      "path": "/workspace/shared/dongjak-evidence/copy-review/overlap-review.rev5.json",
+      "ok": true,
+      "bytes": 18714,
+      "sha256": "9d241b77b677281a705f1b11ba5a19d1c6de711297dfe39e040d9feed2be386b"
+    },
+    {
+      "check": "generated artifact readback",
+      "path": "/workspace/shared/dongjak-evidence/copy-review/overlap-review.rev5.txt",
+      "ok": true,
+      "bytes": 11459,
+      "sha256": "64dc008c077da09f664821d68bac2997690c32210339e5243ca63af29fb7a753"
+    },
+    {
+      "check": "generated artifact readback",
+      "path": "/workspace/shared/dongjak-evidence/copy-review/machine-overlap.rev5.json",
+      "ok": true,
+      "bytes": 44349,
+      "sha256": "5e070ba472bba409fae02a1015c95f0b992e4f62743163ca94bc396286371bd2"
+    },
+    {
+      "check": "review bound to current article digest",
+      "ok": true
+    }
+  ],
+  "failed": [],
+  "resolvedVerifierIssue": "Initial rev4 UI check looked for COMMON VISIBLE UI while the actual supplied surface uses COMMON VISIBLE SURFACES. Actual marker read, parser corrected, JSON equality rechecked. No source input was changed."
+}

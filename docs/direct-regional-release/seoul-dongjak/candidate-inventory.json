@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T00:44:55.978200+00:00",
+  "candidateInventoryN": 12,
+  "activeCandidateN": 2,
+  "heldCandidateN": 10,
+  "candidates": [
+    {
+      "candidateId": "cau-hospital",
+      "name": "중앙대학교병원 장례식장",
+      "primaryPurchaseIntentKey": "funeral-condolence-wreath",
+      "status": "active_grouped",
+      "unitKey": "동작구/법정동/흑석동",
+      "sourceIds": [
+        "mohw-funerals-20260401",
+        "cau-intro",
+        "cau-cooperation",
+        "cau-directions"
+      ],
+      "verifiedFacts": [
+        "흑석로 102(흑석동 224-1)",
+        "공식 협조사항: 조화는 분향소 내부에 세우고 통로에는 놓지 않음. 리본 컷팅 요청은 병원 상담실에, 폐꽃은 재활용 방지를 위해 임의 반출 금지."
+      ],
+      "decisionBasis": "실제 진열·반출 조건이 있는 부고 목적지다. 보라매와 같은 근조 구매 결정이므로 한 글의 시설 앵커로 묶는다.",
+      "reopenCondition": "작성 전 원문 현재성을 다시 확인한다. 병원의 제한·업무를 꽃이랑의 설치·철거·수거 약속으로 바꾸지 않는다.",
+      "standaloneUrlProposed": false
+    },
+    {
+      "candidateId": "boramae-hospital",
+      "name": "서울특별시보라매병원 장례식장",
+      "primaryPurchaseIntentKey": "funeral-condolence-wreath",
+      "status": "active_grouped",
+      "unitKey": "동작구/법정동/신대방동",
+      "sourceIds": [
+        "mohw-funerals-20260401",
+        "brmh-floors-web",
+        "brmh-service-web"
+      ],
+      "verifiedFacts": [
+        "보라매로5길 20(신대방동 425)",
+        "병원 공식 층별 안내 웹리더 원문: 3동 사랑관 지하1층 장례식장."
+      ],
+      "decisionBasis": "정부 CSV와 병원 공식 웹리더 원문으로 시설 정체성과 건물·층을 대조했다. 직접 HTTP는 502여서 웹리더 범위와 현재성을 독립 검수자가 판정해야 한다.",
+      "reopenCondition": "웹리더 근거를 검수자가 받아들이지 않으면 앵커를 보류하고 글 구성을 재검토한다. 다른 사실을 만들어 빈칸을 채우지 않는다.",
+      "standaloneUrlProposed": false
+    },
+    {
+      "candidateId": "pium-seoul",
+      "name": "서울여성플라자 피움서울",
+      "primaryPurchaseIntentKey": "wedding-congratulation-wreath",
+      "status": "held",
+      "unitKey": "동작구/법정동/대방동",
+      "sourceIds": [
+        "pium-current",
+        "pium-seoul-announcement",
+        "public-wedding-faq"
+      ],
+      "verifiedFacts": [
+        "현재 공식 예식장 목록: 서울여성플라자 피움서울, 여의대방로54길 18 1층",
+        "이전 서울시 홍보자료의 200명과 현재 원문의 80~150명은 다르므로 고객 글에 수용인원을 쓰지 않는다."
+      ],
+      "decisionBasis": "예식 시설 자체는 확인됐으나 외부 하객 화환의 수령·배치 조건은 확인되지 않았다. 지정업체의 예식 꽃장식 관리가 하객 화환 전면 금지를 뜻하지 않는다. 현재 자료만으로 기존 지역 결혼 글과 구별되는 충분한 구매 정보를 만들기 어렵다.",
+      "reopenCondition": "현재 운영자 원본의 하객 화환 조건과 독립적인 구매 가치가 확보되면 결혼 통합 후보부터 재검토한다.",
+      "standaloneUrlProposed": false
+    },
+    {
+      "candidateId": "boramae-safety",
+      "name": "보라매시민안전체험관 다목적홀",
+      "primaryPurchaseIntentKey": "wedding-congratulation-wreath",
+      "status": "held",
+      "unitKey": "동작구/법정동/신대방동",
+      "sourceIds": [
+        "boramae-safety-wedding",
+        "public-wedding-faq"
+      ],
+      "verifiedFacts": [
+        "현재 공공 예식장 원문 주소: 여의대방로20나길 16",
+        "예식 진행·꽃장식은 지정 전문업체의 관리 대상이다."
+      ],
+      "decisionBasis": "공공 예식장 존재만으로 외부 화환 반입을 확정하지 않는다. 일반적인 허락 확인 문장과 주소만 늘리는 글은 보류한다.",
+      "reopenCondition": "하객 화환과 예식 꽃장식의 범위를 구분하는 운영자 원본 및 의미 있는 구매 정보를 확보한다.",
+      "standaloneUrlProposed": false
+    },
+    {
+      "candidateId": "the-sb",
+      "name": "더에스비웨딩컨벤션",
+      "primaryPurchaseIntentKey": "wedding-congratulation-wreath",
+      "status": "held",
+      "unitKey": null,
+      "sourceIds": [
+        "sb-home",
+        "sb-home-http",
+        "felicity-home"
+      ],
+      "verifiedFacts": [],
+      "decisionBasis": "제3자 목록이 연결한 공식 주소는 HTTP 200 프레임이며, 연결 대상은 Cafe24 기본 화면이다. HTTPS는 502였다. 운영자 본문을 확보하지 못했으므로 주소·홀·현재 운영을 확정하지 않는다. 폐업이나 개명 증거도 아니다.",
+      "reopenCondition": "같은 시설의 현재 운영자 원본과 명칭 관계를 확인한 뒤 재평가한다.",
+      "standaloneUrlProposed": false
+    },
+    {
+      "candidateId": "handpicked",
+      "name": "핸드픽트호텔·나루·마리앤코 동작스카이",
+      "primaryPurchaseIntentKey": "wedding-congratulation-wreath",
+      "status": "held",
+      "unitKey": "동작구/법정동/상도동",
+      "sourceIds": [
+        "handpicked-home",
+        "handpicked-web",
+        "handpicked-homepage-web"
+      ],
+      "verifiedFacts": [
+        "호텔 홈페이지 웹리더 원문에 상도로 120과 2026년 소식이 표시됐다.",
+        "연결된 partyhall·naroo 원문은 사람 확인 절차를 표시했다. 확인 절차는 진행하지 않았다."
+      ],
+      "decisionBasis": "호텔 운영 확인과 마리앤코·나루의 현재 예식장 명칭·관계 확인은 다르다. 상세 운영·화환 조건은 미확인이다.",
+      "reopenCondition": "정상적으로 접근 가능한 현재 운영자 예식 원본과 관찰된 이름의 관계를 확인한다.",
+      "standaloneUrlProposed": false
+    },
+    {
+      "candidateId": "sangdo-arthall",
+      "name": "상도어울마당 아트홀",
+      "primaryPurchaseIntentKey": "performance-congratulation-wreath",
+      "status": "held",
+      "unitKey": "동작구/법정동/상도동",
+      "sourceIds": [
+        "sangdo-arthall"
+      ],
+      "verifiedFacts": [
+        "동작구 공식 예약 페이지: 성대로 180 지하1층, 공연·연습 등에 사용",
+        "열람한 예약기간은 2026년 3~4월이다."
+      ],
+      "decisionBasis": "공연장 사실과 현재 화환 반입·수령 조건은 별개다. 주소와 허락 확인 문장만으로 별도 구매 글을 만들지 않는다.",
+      "reopenCondition": "현재 행사·수령 조건과 적절한 실제 상품을 원본에서 확인한다.",
+      "standaloneUrlProposed": false
+    },
+    {
+      "candidateId": "dongjak-artgallery",
+      "name": "동작아트갤러리",
+      "primaryPurchaseIntentKey": "exhibition-congratulation-wreath",
+      "status": "held",
+      "unitKey": null,
+      "sourceIds": [
+        "gallery-pdf-web",
+        "dongjak-artgallery-2026"
+      ],
+      "verifiedFacts": [
+        "공식 2026-59호 공고는 전시실·세미나실의 하반기 대관을 안내한다.",
+        "인근 공사로 임시휴관·일부 진입로 통제 등이 생길 수 있다고 적혀 있다. 현재 폐쇄 확정 표현은 하지 않는다."
+      ],
+      "decisionBasis": "7쪽 PDF의 추출 텍스트를 읽었지만 PDF 화면은 미검수이고 직접 다운로드는 502였다. 꽃 반입 조건이나 주문 목적지가 확정된 행사는 확보하지 못했다.",
+      "reopenCondition": "현재 시설·행사 운영과 외부 화환 관련 조건을 원본에서 확인한 뒤 재평가한다.",
+      "standaloneUrlProposed": false
+    },
+    {
+      "candidateId": "noryangjin-market",
+      "name": "노량진수산시장 개업·입점",
+      "primaryPurchaseIntentKey": "opening-congratulation-wreath",
+      "status": "held",
+      "unitKey": null,
+      "sourceIds": [
+        "noryangjin-facilities"
+      ],
+      "verifiedFacts": [
+        "공식 시장 시설 페이지: 노들로 674, 층별 판매 공간과 상점 구획"
+      ],
+      "decisionBasis": "상점 목록과 시장 주소는 꽃 전달 조건을 입증하지 않는다. 기존 강서·구로 개업 글과 다른 구매 결정을 제공할 만큼 근거가 부족하다. 상인 이름·연락처를 본문 장식으로 사용하지 않는다.",
+      "reopenCondition": "실제 구매에 필요한 수령·접근 조건과 별도 지역적 가치를 확보한다.",
+      "standaloneUrlProposed": false
+    },
+    {
+      "candidateId": "seoul-cemetery",
+      "name": "국립서울현충원",
+      "primaryPurchaseIntentKey": "cemetery-memorial-flower",
+      "status": "held",
+      "unitKey": "동작구/법정동/동작동",
+      "sourceIds": [
+        "seoul-cemetery-current",
+        "cemetery-self-visit"
+      ],
+      "verifiedFacts": [
+        "공식 주소는 현충로 210이며 셀프 참배 안내를 제공한다.",
+        "플라스틱 조화 감축 캠페인이 안내되어 있다. 이를 전면 금지로 해석하지 않는다."
+      ],
+      "decisionBasis": "묘역 헌화와 장례식장 근조는 목적·상품 형태가 다르다. 검증한 3단 화환의 현충원 적합성은 확인되지 않았다.",
+      "reopenCondition": "승인된 적합 상품과 현재 공식 배치·참배 규칙을 확인하고 새 구매 의도를 별도 검수한다.",
+      "standaloneUrlProposed": false
+    },
+    {
+      "candidateId": "airforce-hotel",
+      "name": "공군호텔(관찰명 공군회관)",
+      "primaryPurchaseIntentKey": "wedding-congratulation-wreath",
+      "status": "held_outside_region",
+      "unitKey": null,
+      "sourceIds": [
+        "airforce-directions"
+      ],
+      "verifiedFacts": [
+        "현재 운영자 오시는 길: 영등포구 여의대방로 259, 신길동 1196"
+      ],
+      "decisionBasis": "경쟁 사이트의 동작구 분류를 관할 근거로 쓰지 않는다. 동작 후보에서 제외하되 기록은 보류 분모 안에 유지한다. 기존 영등포 계획에 자동 편입하지 않는다.",
+      "reopenCondition": "별개의 동작구 시설이라는 원본이 있을 때만 재검토한다. 관찰명 공군회관과의 관계는 자동 단정하지 않는다.",
+      "standaloneUrlProposed": false
+    },
+    {
+      "candidateId": "artes",
+      "name": "아르테스(관찰명 웨딩의전당 그랜드홀)",
+      "primaryPurchaseIntentKey": "wedding-congratulation-wreath",
+      "status": "held",
+      "unitKey": null,
+      "sourceIds": [
+        "artes-thirdparty"
+      ],
+      "verifiedFacts": [
+        "제3자 웨딩 소개 원문은 아르테스(구.웨딩의전당 그랜드홀), 동작구 사당동 1008-22로 소개한다."
+      ],
+      "decisionBasis": "제3자 소개 본문까지 확인했지만 현재 운영자 원본·현재 운영·명칭 연속성·화환 조건은 확보하지 못했다. 요청 URL의 날짜만으로 현행 시설이라고 확정하지 않는다.",
+      "reopenCondition": "현재 운영자 원문에서 정체성과 구매에 필요한 사실을 확보한다.",
+      "standaloneUrlProposed": false
+    }
+  ],
+  "taxonomy": "held_outside_region included in held denominator. Each active facility is an anchor in one proposed article,not a separate URL.",
+  "unassessedLeads": "search/observed-facility-leads.json에는 별도로 관찰된 교회·옛 이름·공원·대학 공간을 보존한다. 모두 평가한 시설이나 활성 후보를 뜻하지 않는다.",
+  "freezeStatus": "NOT_FROZEN"
+}

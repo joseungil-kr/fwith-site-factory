@@ -1,0 +1,146 @@
+{
+  "status": "COPY_DATA_ONLY_IMPLEMENTATION_NOT_AUTHORIZED",
+  "fixedPlan": {
+    "path": "fixed-plan.json",
+    "sha256": "8c17e681bc49944eec59698fbd6dfea3ff4c91773e0d45dbe955dae20b443e7c",
+    "originalPlanN": 1,
+    "facilityCandidateN": 2,
+    "heldCandidateN": 10
+  },
+  "copyInputs": [
+    {
+      "path": "article-copy.rev5.json",
+      "sha256": "737a0255f42648d0c0a8f300dd9b9fb22e5693ffa1a2761fa33bdca4ae2f9fd5"
+    },
+    {
+      "path": "common-visible-copy.rev5.json",
+      "sha256": "b158fa9b9faa4049f11b94c8023073ab3aee7fa8fdd3088b7e5b6d5a9701649f"
+    }
+  ],
+  "runtimeWritten": false,
+  "remoteSaved": false,
+  "published": false,
+  "instructions": [
+    "본 파일은 후속 구현의 인계 조건이며 지금 구현·원격 저장·배포하라는 허가가 아니다.",
+    "계획 URL /regions/dongjak-funeral-wreath/ 한 개와 #cau-hospital, #boramae-hospital 앵커를 유지한다. 동별·시설별 별도 글을 만들지 않는다.",
+    "본문 sections를 순서대로 표시하고 FAQ 질문·답변 모두 실제 HTML에 출력한다. contentMarkdown 조건에 의해 FAQ가 사라지는 기존 회귀를 방지한다.",
+    "근조4종 실제 상품 카드와 각각의 공식 상품 상세 URL을 연결한다. 홈페이지로 치환하지 않는다. 승인 JPG 바이트와 SHA를 사용하고 AI 배너를 실제 상품사진으로 표시하지 않는다.",
+    "홈과 상세에서 동일 승인 배너3종 message→budget→consultation을 실질 콘텐츠 사이에 분산한다. 승인 alt/caption/크기/자산SHA를 보존한다. 본문/상품 텍스트를 배너로 대체하지 않는다.",
+    "현재 실제 목록 카드는1개다. 기존 배너 eligibility false와 noindex 상태를 유지하고 목록 배너0개로 둔다. fake card를 만들거나 helper 적용 범위를 바꾸지 않는다.",
+    "각 customer route의 H1 1개, H2/H3 순서, title/meta, 출처 H2 한 개, canonical/robots/sitemap, 실제404, 내부 앵커·CTA를 실제 build HTML로 검사한다. hostname 소유권 미확인 상태에서는 canonical 공개호스트를 만들어 확정하지 않는다.",
+    "공통 배너 helper와 spacing regression, negative tests, source/build 검사 및 실제 화면·모바일 QA는 후속 별도 검증이다. 이번 COPY 검수가 이 검증을 대신하지 않는다.",
+    "Gitblob 필수 승인 대기, remote/source/dispatch/deploy/provider/security 변경 보류를 유지한다. 로컬N1 동결을 공개·완료 지역수에 합산하지 않는다."
+  ],
+  "plannedBannerPlacement": {
+    "home": [
+      "hero + intro",
+      "message",
+      "one genuine article card + four actual product cards",
+      "budget",
+      "consultation text and price/material notices",
+      "consultation",
+      "footer"
+    ],
+    "detail": [
+      "H1 + firstAnswer + CTA",
+      "message",
+      "four actual product cards and product-selection text",
+      "budget",
+      "facility anchors + ordering/material/change sections + FAQ",
+      "consultation",
+      "sources"
+    ],
+    "directory": []
+  },
+  "products": [
+    {
+      "sku": "B201",
+      "name": "근조 3단 화환",
+      "basicPriceKRW": 59000,
+      "currency": "KRW",
+      "priceLabel": "상품 기본가격",
+      "imageUrl": "https://fwith.co.kr/data/item/flower379/B201/thumb-1_500x500.jpg",
+      "imageSha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+      "imageAlt": "근조 3단 화환 B201의 꽃이랑 공식 상품 사진",
+      "caption": "꽃이랑 공식 판매상품 사진",
+      "buttonLabel": "상품 확인·주문",
+      "href": "https://fwith.co.kr/shop/item.php?it_id=B201"
+    },
+    {
+      "sku": "B203",
+      "name": "근조 고급 3단 화환",
+      "basicPriceKRW": 79000,
+      "currency": "KRW",
+      "priceLabel": "상품 기본가격",
+      "imageUrl": "https://fwith.co.kr/data/item/flower379/B203/thumb-1_500x500.jpg",
+      "imageSha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+      "imageAlt": "근조 고급 3단 화환 B203의 꽃이랑 공식 상품 사진",
+      "caption": "꽃이랑 공식 판매상품 사진",
+      "buttonLabel": "상품 확인·주문",
+      "href": "https://fwith.co.kr/shop/item.php?it_id=B203"
+    },
+    {
+      "sku": "B205",
+      "name": "근조 특대 3단 화환",
+      "basicPriceKRW": 109000,
+      "currency": "KRW",
+      "priceLabel": "상품 기본가격",
+      "imageUrl": "https://fwith.co.kr/data/item/flower379/B205/thumb-1_500x500.jpg",
+      "imageSha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+      "imageAlt": "근조 특대 3단 화환 B205의 꽃이랑 공식 상품 사진",
+      "caption": "꽃이랑 공식 판매상품 사진",
+      "buttonLabel": "상품 확인·주문",
+      "href": "https://fwith.co.kr/shop/item.php?it_id=B205"
+    },
+    {
+      "sku": "B060",
+      "name": "근조 특특대 3단 화환",
+      "basicPriceKRW": 149000,
+      "currency": "KRW",
+      "priceLabel": "상품 기본가격",
+      "imageUrl": "https://fwith.co.kr/data/item/flower379/B060/thumb-1_500x500.jpg",
+      "imageSha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+      "imageAlt": "근조 특특대 3단 화환 B060의 꽃이랑 공식 상품 사진",
+      "caption": "꽃이랑 공식 판매상품 사진",
+      "buttonLabel": "상품 확인·주문",
+      "href": "https://fwith.co.kr/shop/item.php?it_id=B060"
+    }
+  ],
+  "banners": [
+    {
+      "key": "message",
+      "file": "flower-message.webp",
+      "sha256": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+      "alt": "꽃이랑, 꽃으로 전하는 마음. 전하고 싶은 마음에 어울리는 꽃을 안내합니다. 크림색 장미를 담은 안내 이미지.",
+      "caption": "꽃이랑 공통 안내 이미지 · 실제 판매상품 사진이 아닌 AI 생성 이미지입니다.",
+      "width": 1774,
+      "height": 887
+    },
+    {
+      "key": "budget",
+      "file": "flower-budget.webp",
+      "sha256": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+      "alt": "꽃이랑, 예산에 맞는 꽃 선택. 상품 사진과 가격을 함께 살펴보세요. 크림색 라넌큘러스를 담은 안내 이미지.",
+      "caption": "꽃이랑 공통 안내 이미지 · 실제 판매상품 사진이 아닌 AI 생성 이미지입니다.",
+      "width": 1774,
+      "height": 887
+    },
+    {
+      "key": "consultation",
+      "file": "flower-consultation.webp",
+      "sha256": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+      "alt": "꽃이랑, 주문 상담 안내. 상품 선택부터 리본 문구까지 상담해 드립니다. 아이보리 리시안셔스를 담은 안내 이미지.",
+      "caption": "꽃이랑 공통 안내 이미지 · 실제 판매상품 사진이 아닌 AI 생성 이미지입니다.",
+      "width": 1774,
+      "height": 887
+    }
+  ],
+  "mustReverifyAtImplementation": [
+    "4개 실제 카드와 각각의href/imageSha",
+    "FAQ가 렌더 HTML에 실제로 보임",
+    "필수 가격/혼합구성/수거/시설규칙/환불 예외 보존",
+    "승인된 image/webp 3개 바이트 및SHA",
+    "목록1카드 noindex/배너0",
+    "모바일·실제화면 및 공개HTTP는 별도 미수행"
+  ]
+}

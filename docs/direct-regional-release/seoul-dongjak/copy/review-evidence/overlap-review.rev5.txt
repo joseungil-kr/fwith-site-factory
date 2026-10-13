@@ -1,0 +1,81 @@
+동작구 근조 원고와 지정 기존 10글의 문장·의미·구조 중복 검토
+Revision: rev5
+상태: analysis-complete; no independent COPY PASS asserted; no deployment/implementation approval
+
+[직접 확인] 비교: 기존 10글 + 동작 1글. 전체 동일문장 0쌍; 자체 동일문장 0쌍. (18자 이상, 마크다운/공백 정규화)
+[직접 확인] 제공 고유본문 TXT: 공백 정규화 2650자, 공백 제외 2032자. 지역적 독창성 글자 수가 아니다.
+
+[직접 확인] cross-exact (measurement)
+18자 이상 문장 전체의 마크다운·공백 정규화 동일 일치 0쌍. 부분문자열은 별도로 존재한다. 이 수치는 의미상 비복제 또는 품질 통과 판정이 아니다.
+동작 근거: machine-overlap.rev5.json
+
+[직접 확인] partial-verbatim-policy (common-business-fact)
+문장 전체 exact가 없어도 배송불가·재고부족 전액환불 설명에는 기존 글과 연속 동일 문자열이 있다. 이는 공식 사업정책의 공통 설명이므로 지역 고유 문구로 세지 않는다.
+동작 근거: 결제 후 배송이 불가능하거나 재고가 없어 진행하지 못하면 전액 환불
+기존 근거: 영등포 funeral: 결제 후 배송이 불가능하거나 재고가 없어 진행하지 못하면 전액 환불한다는 안내도 있습니다.
+
+[추정·판단] semantic-materials (medium-semantic-reuse)
+계절·지역 소재변동 설명은 기존 근조 글의 근접 재서술이다. 고객에게 필요한 공통 사실이지만 동작 차별점은 아니다.
+동작 근거: 계절이나 지역에 따라 사진과 같은 소재를 구하기 어려우면 꽃의 소재와 형태가 일부 달라질 수 있습니다.
+기존 근거: 금천 contentMarkdown: 지역과 계절에 따라 같은 소재를 사용하기 어려우면 꽃의 구성과 형태가 사진과 일부 달라질 수 있습니다.
+
+[추정·판단] semantic-change (medium-semantic-reuse)
+빈소·일정·리본 변경 시 주문정보와 변경내용을 전화로 알리는 문장도 금천과 근접 재서술이다. 필요한 절차를 명확히 설명하되 고유성을 이 문장으로 주장하지 않는다.
+동작 근거: 빈소·발인 일정이 바뀌거나 리본을 수정해야 한다면, 주문 정보와 바뀐 내용을 1844-0644로 알려주세요.
+기존 근거: 금천 contentMarkdown: 빈소나 일정이 바뀌었거나 문구를 수정하고 싶으시면, 주문 정보와 변경할 내용을 1844-0644로 알려주세요.
+
+[추정·판단] opening (low-to-medium-template-risk)
+첫 답변은 기존 글의 정서·상품범위·상담 구조를 공유하지만 지역명만 바꾼 동일 문장은 아니다. 조의 목적과 정해 둔 예산을 앞세운 점은 적절하다. 독립 어투 합격을 뜻하지 않는다.
+동작 근거: 중앙대학교병원이나 보라매병원에 조의를 전할 때, 꽃에 담을 짧은 인사까지 꽃이랑에서 함께 상담해 드립니다. 안내하는 상품은 59,000원부터 149,000원까지의 근조화환 네 가지입니다. 길게 말을 건네기 조심스러운 자리인 만큼, 전하고 싶은 뜻과 정해 두신 예산을 중심으로 주문을 돕겠습니다.
+기존 근거: 강서 이대서울 firstAnswer는 조문 마음→선택·주문 도움→59,000원부터 4상품→빈소/발인 상담. 금천 firstAnswer는 두 장례식장→59,000원부터 4상품→문구/예산/일정 상담.
+
+[추정·판단] order-homework (medium-editorial-risk)
+필수 주문입력 묶음은 기존 근조글과 같은 기능이지만 rev4는 명의 설명을 줄이고 한 문단으로 모았다. 제품·소재 절에도 상품번호/조건을 말해 달라는 요청은 남는다. 긴 체크리스트보다 부담은 줄었으나 지역 고유 정보로 보지는 않는다.
+동작 근거: words-order 문단2 및 products 문단2~3
+기존 근거: 강서 funeral 전화 상담과 온라인 접수; 구로 funeral 빈소와 발인 일정으로 주문 상담; 금천 주문 상담은 필요한 내용을 한 번에; 영등포 funeral 필요한 내용을 한 번에 말씀해 주세요.
+
+[추정·판단] article-structure (medium-residual-structural-overlap)
+rev4는 소재를 상품 절로 통합하고 독립 소재/종이 절 및 장황한 명의/CTA FAQ를 없애 rev2보다 모듈 반복을 줄였다. 전체적으로 상품·예산→복수 시설→리본/주문→변경·환불이라는 기존 근조글의 공통 골격은 남는다. 이는 필수 구매 설명에 상당 부분 기인하므로 구조만으로 복제를 단정하지 않지만, 문장 exact 0건도 고유성 합격 증거가 되지는 않는다.
+동작 근거: 목적/첫 답변 → 4상품·규격·소재·총예산 → 중앙대·보라매 → 리본·주문·임박 일정 → 변경·환불 → 시설규칙 오해/환불기간 FAQ
+기존 근거: 금천: 상품→총금액→쉴낙원·독산→리본→주문정보→소재/수거→변경·취소→FAQ. 영등포 funeral: 목적→상품/총예산→5시설→리본→주문정보→소재/정리→변경·취소→FAQ. 구로 funeral도 유사하나 소재 설명은 상품 절 안에 있음.
+제안: 필수 정책을 유지하면서 중앙대의 실제 분향소 배치/요청창구와 보라매의 건물 위치가 구매에 주는 도움을 짧고 분명하게 남긴다. 차별성을 위한 억지 재배열이나 분량 늘리기는 권하지 않는다.
+
+[직접 확인] dongjak-local-distinction (positive-scope-limited)
+검토한 기존 10글에는 중앙대·보라매를 목적지로 다룬 글이 없다. 새 원고의 중앙대 분향소 안 진열/통로 제외, 리본 요청창구, 폐꽃 임의반출 규칙 및 보라매 3동 사랑관 지하1층 문구는 기존 비교본문에는 없는 장소별 설명이다. 시설 사실의 정확성 자체는 이 중복비교에서 외부 원본을 재검증한 것이 아니다.
+동작 근거: sections places 및 FAQ[0]
+기존 근거: baseline-article-corpus.json 10개 전체
+
+[직접 확인] shared-visible-copy (approved-common-surface-separation)
+홈·목록·카드의 동작 특화 문장과 안내문도 실제 JSON으로 읽었다. 메뉴·공식 상품카드·공통 배너·푸터/출처는 본문 고유성 비교에서 제외했다. 홈의 지역별 인트로·상담문구는 별도 의미 검토에 포함했고, 예산/리본 상담이라는 기존 홈 기능을 공유한다.
+동작 근거: common-visible-copy.rev5.json
+기존 근거: 기존 홈/공통 UI 전문은 영등포 rev2만 제공됨. 강서·구로·금천은 지정 pages.json 상세글 범위.
+
+[직접 확인] revision4-resolved (resolved)
+rev2의 후다지 동일문장 2회가 삭제되었고 본문 전체의 18자 이상 동일문장 반복은 0쌍이다. 제작완료/배송완료 후 하루 이상/배송지 오류·수취거절/소재차이 제한 문단은 changes에 복구되었다. CTA 이용법 FAQ와 독립 명의 문단도 삭제되었다.
+동작 근거: rev2 input snapshot vs rev4 input snapshot
+
+[추정·판단] semantic-urgent-timing (low-common-order-context)
+rev5는 희망 전달시간과 실제 가능한 전달 일정을 분리하여 rev4의 주문 진행 시각 모호함을 없앴다. 발인 임박 시 결제 전 상담한다는 의미는 기존 근조글과 공통이므로 지역 고유 정보로 계산하지 않는다.
+동작 근거: 발인이 가까운 경우에는 결제 전에 전화로 희망 전달 날짜와 시간을 말씀해 주세요. 희망 전달시간은 주문 상담 때 요청하시는 시간입니다. 실제 가능한 전달 일정은 상담에서 안내합니다.
+기존 근거: 강서 funeral FAQ: 임박한 주문은 결제 전에 현재 상황으로 상담해 주세요. 금천 본문: 희망 시간은 가능한 일정을 상담하기 위한 정보이며, 주문 접수만으로 도착 시각이 확정되지는 않습니다.
+
+[직접 확인] faq-revision4 (positive-scope-limited)
+FAQ[0]은 분향소 진열규칙을 다시 말하지만 제목의 금지 문구가 화환 전체 금지라는 오해를 풀어 주는 별도 기능이 있다. FAQ[1] 결제수단별 환불 처리기간은 지정된 기존 10글의 본문/FAQ에는 없는 정보다. 다만 업체 공통정책으로서 정보 완결성 보강이며 동작 지역 고유성은 아니다. 출처 이미지의 정확한 해석은 이 중복 비교 범위에서 별도 재검증하지 않았다.
+동작 근거: [{"question": "중앙대 안내의 ‘조화 진열 및 폐꽃 반출 금지’는 화환을 보내면 안 된다는 뜻인가요?", "answer": "중앙대학교병원은 화환을 분향소 안에 세우도록 안내하고, 통로 진열과 폐꽃 임의 반출을 제한합니다. 화환 전체를 금지하는 내용은 아닙니다. 개별 장례에서 화환을 사양하는 경우에는 유족의 뜻에 따릅니다."}, {"question": "환불이 결정되면 결제한 금액은 언제 돌려받나요?", "answer": "꽃이랑 공식몰은 무통장 입금의 경우 주문자·입금자·환불계좌 예금주명이 일치하면 주말과 공휴일을 제외한 3일 안에 환불한다고 안내합니다. 카드 결제 취소는 카드사 처리기간에 따라 일주일 정도 걸릴 수 있습니다. 환불 가능 사유와 범위는 위의 변경·취소 안내를 함께 적용합니다."}]
+기존 근거: baseline-article-corpus.json 전체 본문/FAQ
+
+[직접 확인] revision5-two-locations (verified-revision-diff)
+rev4 대비 words-order 문단3과 FAQ[0] 답변만 변경되었다. 전체 원고와 제공 본문 TXT를 다시 읽고 기계 비교를 다시 실행했다. 중앙대 FAQ는 독자의 읽기 방식을 평가하던 표현 대신 분향소 진열 허용과 통로·반출 제한을 직접 답한다.
+동작 근거: article-copy.rev4.json vs article-copy.rev5.json
+
+제외 방법: 메뉴·제품카드·배너·푸터·출처는 별도 UI. 공식 상품명/SKU/가격/전화/운영시간 고정값만 근접문장 후보 검색에서 제거. 상품/예산/주문/약관 설명 문단 전체는 삭제하지 않았다.
+한계: No rendered HTML, visible screenshot, public HTTP output, search index/ranking data, or current deployed regional source was verified.
+한계: New Dongjak facility and policy facts were not independently fetched from the official sites during this overlap-only task. The report checks what the supplied draft says and compares it with the designated snapshots.
+한계: Only the requested 10 article snapshots were compared. No claim covers every repository region or all other regional homepage/common UI text.
+한계: Semantic and structure findings are editorial judgments based on full reading; SequenceMatcher numbers only retrieve candidate sentences and are not a semantic similarity percentage, plagiarism score, or search cannibalization probability.
+
+입력 해시:
+/workspace/shared/dongjak-evidence/copy-v1/article-copy.rev5.json SHA-256 737a0255f42648d0c0a8f300dd9b9fb22e5693ffa1a2761fa33bdca4ae2f9fd5
+/workspace/shared/dongjak-evidence/copy-v1/article-unique-body.rev5.txt SHA-256 20d4531ab9ddc85fe35829a6eb999a2b5010f1ca188aba43eb3d0f425cde96e5
+/workspace/shared/dongjak-evidence/copy-v1/common-visible-copy.rev5.json SHA-256 b158fa9b9faa4049f11b94c8023073ab3aee7fa8fdd3088b7e5b6d5a9701649f
+/workspace/shared/dongjak-evidence/copy-v1/full-copy-surface.rev5.txt SHA-256 1c7e792f0ec5f6f15f89512b1c983a83f23008251ce0250fa53071dc4d01b883
