@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "reviewedAtUtc": "2026-10-13T02:54:16.402394+00:00",
+  "reviewer": "review_guro_geumcheon_release",
+  "scope": "Read-only investigation of the one high npm audit warning from Guro release run 38338220101. No dependency updates, remote writes, audit suppression, security changes, or redeployment.",
+  "sourceRevision": "1b7b6420f8370315644044dd7ec351b294489a26",
+  "controlRevision": "abc3684c950b2b6a031b81be6662a7db0eac28cb",
+  "conclusion": "The flagged dependency is present in the locked build toolchain. The audited static release does not ship it or expose its cache-reuse API on public request paths; no current public runtime exposure from this advisory was identified. Keep a scoped dependency-maintenance finding open; this is not a blanket security certification.",
+  "directlyVerified": {
+    "lock": {
+      "sha256": "f697e96b288ed2aa2dafc0f41458474a144b015f7557cd6bc3a61f4a4d5d6d9d",
+      "unchanged": true,
+      "astro": "7.3.5",
+      "http-cache-semantics": "4.2.0",
+      "onlyDependencyParent": "astro",
+      "astroDeclaredRange": "^4.2.0"
+    },
+    "readOnlyAudit": {
+      "command": "npm --cache <isolated-writable-cache> audit --package-lock-only --json --ignore-scripts",
+      "workingDirectory": "isolated copy of the exact package.json and package-lock.json; no node_modules",
+      "exitCode": 1,
+      "exitMeaning": "Vulnerability finding, not audit execution failure",
+      "high": 1,
+      "package": "http-cache-semantics",
+      "advisory": "GHSA-ch52-4w7c-c8xp",
+      "cve": "CVE-2026-93748",
+      "affectedRange": "<=4.2.0",
+      "npmReportedFixAvailable": true,
+      "npmReportedCVSS3_1": 7.5
+    },
+    "installedSource": {
+      "path": "node_modules/astro/dist/assets/build/remote.js",
+      "sha256": "f373fa76e3112446db327c79b34e2bbb1ef1dcad41affb60788adf30edc9588e",
+      "onlyAstroDistImportOfCachePolicy": true,
+      "calls": [
+        "new CachePolicy",
+        "storable",
+        "timeToLive"
+      ],
+      "noCallsInAstroDist": [
+        "satisfiesWithoutRevalidation",
+        "evaluateRequest"
+      ],
+      "publicClientMaxStaleUsed": false
+    },
+    "project": {
+      "astroOutput": "static",
+      "noAdapter": true,
+      "noAstroImageComponentsOrGetImageOrFetchUseInCustomerSource": true,
+      "sourceImages": "ordinary local public image URLs"
+    },
+    "deployedArtifact": {
+      "distFileCount": 25,
+      "noBundledJsMjsCjsWasmOrServerEntrypoint": true,
+      "wranglerAssetsOnly": true,
+      "all25FilesMatchedIndependentExactSourceBuild": true,
+      "savedPublicHttpHeadersInspected": 22,
+      "observedSetCookieHeaderCount": 0
+    },
+    "registryMetadata": {
+      "latestVersion": "4.3.0",
+      "queriedReadOnly": true,
+      "installedOrExecutedNewPackage": false
+    },
+    "upstreamSourcesOpened": [
+      {
+        "url": "https://github.com/advisories/GHSA-ch52-4w7c-c8xp",
+        "observed": "Reviewed high advisory, affected <=4.2.0, patched versions listed as None; CVSS 4 page score 8.7 differs from npm CVSS 3.1 score."
+      },
+      {
+        "url": "https://github.com/kornelski/http-cache-semantics/issues/56",
+        "observed": "Maintainer disputed the report and closed it as not planned on 2026-10-04."
+      },
+      {
+        "url": "https://github.com/github/advisory-database/issues/10139",
+        "observed": "Open request to reconsider the advisory; no settled resolution observed."
+      },
+      {
+        "url": "https://github.com/kornelski/http-cache-semantics/pull/63",
+        "observed": "Open unmerged change to cache reuse/revalidation behavior, not an established deployed fix."
+      },
+      {
+        "url": "https://github.com/withastro/astro/blob/astro%407.3.5/packages/astro/src/assets/build/remote.ts",
+        "observed": "Tagged original asset-build source consulted alongside installed code."
+      }
+    ]
+  },
+  "assessment": {
+    "runtime": "The particular advisory needs a shared cache reuse path accepting client max-stale. This release has no application executable and does not deploy this npm package; the required path was not found.",
+    "build": "Astro is a production-classified dependency in package-lock, but its dependency is only part of the build toolchain for this static deployment. The inspected use computes remote-image storage/TTL and does not call the advisory cache-reuse API; this project does not use that image pipeline.",
+    "releaseImpact": "No evidence supports emergency rollback or changing the independently verified static release for this finding alone.",
+    "safeNextStep": "Retain the warning and original lock. Evaluate a narrowly scoped dependency maintenance change separately using official npm upstream provenance, code diff and clean npm ci/audit, then rerun the full source-contract, test/build and byte/visual review gates before any release. Reassess immediately before adding SSR, server endpoints, authenticated/shared response caching, or remote-image features.",
+    "versionCaveat": "npm fixAvailable and 4.3.0 falling outside the advisory range do not by themselves prove a security remediation. The advisory still says no patched version and the upstream dispute is unresolved."
+  },
+  "notVerified": [
+    "No exploit reproduction or full penetration test performed.",
+    "No claim about Cloudflare platform internals or unrelated dependencies.",
+    "No dependency update was tested or applied."
+  ],
+  "auditExecutionCaveat": "Initial audits without an explicitly writable npm cache produced one advisory plus an Astro metavulnerability and fixAvailable:false. The later successful isolated cached audit is authoritative for this report and reproduces the CI high 1 result. An npm view attempt failed with local cache ENOENT, then succeeded with a writable cache; no access denial was bypassed.",
+  "evidenceSha256": {
+    "guro-lock-only-audit-with-cache.json": "5f7a81779fca70ed23a6aa7ab4461fcd6c5aa9bc8064d74007a38f90f4d80fd0",
+    "http-cache-semantics-registry-verified.json": "6b6d760a05756708ba32a0a2cb6053d06dd090f6721e8eef21962836388522a7",
+    "guro-dependency-exposure-facts.json": "24662a8c8e1baa94234dbf7903f2ae1fa0b291e858ff7f8dbb324703067e5ea4",
+    "guro-ci-build-byte-audit.json": "599ff5e7d60dc762eb6f2b7b6146651d556aa5718b6d38d687928a67a4fa968d",
+    "guro-ci-result-byte-audit.json": "c6fbc42bdee466a94578cee0c3b7fcc3a8d8692b8888edcdb532f0bf87efbe08"
+  }
+}

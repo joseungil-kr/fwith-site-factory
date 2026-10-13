@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "review_guro_geumcheon_release",
+  "verdict": "PASS_EXACT_REMOTE_SOURCE_REBIND_AND_LOCAL_REBUILD",
+  "sourceRevision": "1b7b6420f8370315644044dd7ec351b294489a26",
+  "parentRevision": "500d82d01c1cdaed3ebde047bb3ce056705daac1",
+  "repositoryTreeSha": "fabba81c3b144be45b3b17685d8495913b2172ac",
+  "sourceSubtreeSha": "d7b2912da845e080c708bd9a4a7fae6adb378353",
+  "priorIndependentReviewSha256": "05ba2fcf2651e31b2bb9606d5353ad902b956b76baeecfb7376f99bc02a80797",
+  "confirmedResults": [
+    "Independently queried current remote branch reference, Git commit, full untruncated Git tree and compare endpoint. Exact reviewed source branch head is 1b7b6420..., direct parent 500d82..., one commit and exactly ten changed/new source paths.",
+    "Recomputed all 109 saved-source Git blob hashes, file sizes and SHA256 hashes and matched them simultaneously to the independent remote API tree, reviewed freeze and trusted four-control source contract. No mismatches or extra source files.",
+    "Independently reran 137 native tests and full production-indexable build/QA with the actual new source revision. All stages passed.",
+    "Independently reran exact HTML/output audit: all six generated HTML files differ from saved preview only in allowed metadata; all 15 non-HTML assets unchanged, including the original IndexNow proof. Actual output report equals writer exact-visual-transition.json byte-for-byte as parsed data.",
+    "All four locally proposed main control files still match the independently reviewed freeze hashes; their source-contract binds the exact109 newSHA source bytes and workflow requires expected revision to equal current source branch head before build and before publication."
+  ],
+  "controlFilesSha256": {
+    ".github/workflows/seoul-guro-direct-publish.yml": "d3bd3689f2e647345a382d2f2b1c9fead484b694107296f640c3e8d55a5ec36d",
+    "scripts/direct-seoul-guro/publish.py": "18c65d8967e59b2938edf77e3a0bd33ed76007c63ab8188fa16c81467c7793a3",
+    "scripts/direct-seoul-guro/test_publish.py": "db32fc9f17af60b2ab61af51d480857f0adece72118f4367d9016f3db753fc3e",
+    "scripts/direct-seoul-guro/source-contract.json": "5ba9a22554778387533cd362f3368e93e73c737555564dcbbe9b1b83f9922509"
+  },
+  "controlPinMeaning": "No literal new SHA is hard-coded into the frozen workflow. Runtime expected_revision is constrained to exact source branch head and complete frozen source byte contract; these two gates bind the supplied new SHA to the reviewed content.",
+  "remainingUnverified": [
+    "The four main controls have not been independently observed committed to main yet.",
+    "Node22 fresh npm ci/CI, provider deployment/binding, actual public HTTP/assets/404 and IndexNow receipt remain pending; local build runtime is Node24.",
+    "No new production browser execution or actual search indexing is established."
+  ],
+  "evidenceFilesSha256": {
+    "guro-exact-remote-api.json": "22726541a66c9a5aaf16edfea53ab869edf4ee20e2ed5d0892ea280af015ace8",
+    "guro-exact-git-commit.json": "32824fdc0d199d72bcc45267316e05b1cff8d897a21bb592726d47b13082fe6e",
+    "guro-exact-byte-readback.json": "bd0ebc41867225051cad5b9106d1dce0ba66488f9a8023013acae01d60384632",
+    "guro-exact-tests.log": "8f8901a46f8fd9c1b3eb73f09ad7631fd7426521464564adeeb237eb556f74c0",
+    "guro-exact-build.log": "4f3bccedf5ff95dde64f2528e1ce7e06b977cdda535922b554a6ae5bb1d2a5cf",
+    "guro-exact-render-audit.json": "7cc7795909dc0fde73723a89da1c67e20a3f5acba7b940706c1039f9cbd6caa6"
+  },
+  "actions": {
+    "remoteWrites": false,
+    "ciStarted": false,
+    "providerMutations": false,
+    "indexnowSubmitted": false
+  }
+}
