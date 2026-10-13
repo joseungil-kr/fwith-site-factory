@@ -126,7 +126,7 @@ class GwanakContract(unittest.TestCase):
  def test_source_tree_cache_symlink_and_dependency_boundaries(self):
   source=Path(os.environ['SOURCE_ROOT'])/a.SITE_PATH
   with tempfile.TemporaryDirectory()as tmp:
-   root=Path(tmp)/'repo';site=root/a.SITE_PATH;shutil.copytree(source,site,ignore=shutil.ignore_patterns('dist','node_modules','__pycache__','gwanak-static-qa.json','shared-banner-qa.json'))
+   root=Path(tmp)/'repo';site=root/a.SITE_PATH;shutil.copytree(source,site,ignore=shutil.ignore_patterns('dist','node_modules','.astro','__pycache__','faq-product-qa.json','shared-banner-qa.json','directory-spacing-qa.json','gwanak-static-qa.json'))
    a.verify_scoped_source_tree(root)
    for phase in [False,True]:
     p=site/'scripts/__pycache__';p.mkdir();(p/'bad.pyc').write_bytes(b'not executable')
@@ -147,6 +147,25 @@ class GwanakContract(unittest.TestCase):
    modules=site/'node_modules';(modules/'.bin').mkdir(parents=True);(modules/'astro').mkdir();(modules/'astro/astro.js').write_text('fixture only');(modules/'.bin/astro').symlink_to('../astro/astro.js')
    a.verify_scoped_source_tree(root,True)
    with self.assertRaises(AssertionError):a.verify_scoped_source_tree(root,False)
+ def test_generated_fixture_roots_remain_forbidden_in_prebuild(self):
+  source=Path(os.environ['SOURCE_ROOT'])/a.SITE_PATH
+  generated=['node_modules','dist','.astro','faq-product-qa.json','shared-banner-qa.json','directory-spacing-qa.json','gwanak-static-qa.json']
+  with tempfile.TemporaryDirectory()as tmp:
+   root=Path(tmp)/'repo';site=root/a.SITE_PATH
+   shutil.copytree(source,site,ignore=shutil.ignore_patterns(*generated,'__pycache__'))
+   a.verify_scoped_source_tree(root)
+   for name in generated:
+    with self.subTest(generated=name):
+     p=site/name
+     if name in ['node_modules','dist','.astro']:p.mkdir()
+     else:p.write_text('{}')
+     with self.assertRaises(AssertionError):a.verify_scoped_source_tree(root,False)
+     a.verify_scoped_source_tree(root,True)
+     if p.is_dir():p.rmdir()
+     else:p.unlink()
+   (site/'unreviewed-root.json').write_text('{}')
+   for phase in [False,True]:
+    with self.assertRaises(AssertionError):a.verify_scoped_source_tree(root,phase)
  def test_production_capable_source_stays_nonindexable_loopback_qa(self):
   source=Path(os.environ['SOURCE_ROOT'])/a.SITE_PATH
   result=a.verify_approved_render_boundary(source)
