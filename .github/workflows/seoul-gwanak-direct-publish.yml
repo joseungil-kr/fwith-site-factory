@@ -1,5 +1,5 @@
-# EXACT-SHA BUILD-ONLY CANDIDATE. No remote save or execution has occurred.
-# Public jobs remain statically disabled pending separate actual-output review.
+# EXACT-SHA publication requires the independently reviewed source and artifact binding.
+# Build-only requests remain provider-free; public jobs verify the pinned dist digest first.
 name: SeoulGwanak Direct GitHub Static Publish
 on:
   issues:
@@ -114,7 +114,7 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
   publish:
-    if: ${{ false }} # Build-only activation: public job disabled
+    if: inputs.indexnow_only != true && inputs.build_only != true && (github.event_name != 'issues' || fromJSON(github.event.issue.body).build_only != true)
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -223,7 +223,7 @@ jobs:
           INDEXNOW: ${{ steps.indexnow.outcome }}
         run: test "$DEPLOY" = success && test "$BINDING" = success && test "$HTTP" = success && test "$INDEXNOW" = success
   finalize_indexnow:
-    if: ${{ false }} # Build-only activation: public job disabled
+    if: inputs.indexnow_only == true && inputs.build_only != true
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 10

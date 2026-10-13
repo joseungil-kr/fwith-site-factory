@@ -182,13 +182,36 @@ class PortableWorkflowTests(unittest.TestCase):
         self.assertLess(workflow.index('          npm run build'), workflow.index('          npm test'))
         self.assertIn('SITE_URL: ${{ steps.binding.outputs.origin }}', workflow)
         self.assertIn('      build_only:',workflow)
-        for job in ['publish', 'finalize_indexnow']:
-            self.assertIn('  '+job+':\n    if: ${{ false }} # Build-only activation: public job disabled', workflow)
+        conditions = {
+            'publish': "inputs.indexnow_only != true && inputs.build_only != true && (github.event_name != 'issues' || fromJSON(github.event.issue.body).build_only != true)",
+            'finalize_indexnow': 'inputs.indexnow_only == true && inputs.build_only != true',
+        }
+        for job, condition in conditions.items():
+            self.assertIn('  '+job+':\n    if: '+condition+'\n    needs: build', workflow)
         self.assertIn("github.ref == 'refs/heads/main'", workflow)
         self.assertIn("GITHUB_RUN_ATTEMPT !== '1'", workflow)
         build, _ = workflow.split('  publish:\n', 1)
         self.assertNotIn('secrets.', build)
         self.assertNotIn('  push:', workflow.split('permissions:', 1)[0])
+
+    def test_build_only_and_indexnow_only_job_split(self):
+        # Truth table for the exact expressions asserted above, including the
+        # absent workflow_dispatch inputs on issue events. No external actions.
+        cases = [
+            ('issues', None, None, True, False, False),
+            ('issues', None, None, False, True, False),
+            ('workflow_dispatch', True, False, None, False, False),
+            ('workflow_dispatch', True, True, None, False, False),
+            ('workflow_dispatch', False, False, None, True, False),
+            ('workflow_dispatch', False, True, None, False, True),
+        ]
+        for event, build_only, indexnow_only, issue_build_only, publish, finalize in cases:
+            with self.subTest(event=event, build_only=build_only, indexnow_only=indexnow_only):
+                self.assertEqual(indexnow_only is not True and build_only is not True and (event != 'issues' or issue_build_only is not True), publish)
+                self.assertEqual(indexnow_only is True and build_only is not True, finalize)
+        public = WORKFLOW.read_text().split('  publish:\n', 1)[1].split('  finalize_indexnow:\n', 1)[0]
+        self.assertLess(public.index('publish.py artifact'), public.index('CLOUDFLARE_API_TOKEN'))
+        self.assertIn("Source branch moved; do not publish stale source", public)
 
     def test_indexnow_finalize_has_no_provider_credentials(self):
         finalize = WORKFLOW.read_text().split('  finalize_indexnow:\n', 1)[1]
