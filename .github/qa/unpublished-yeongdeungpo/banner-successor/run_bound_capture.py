@@ -89,12 +89,61 @@ def center_in_safe_area(page, locator):
     page.evaluate('() => new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))')
 
 
+READINESS_TIMEOUT_MS=10000
+
+# Bounded DOM promises: Playwright evaluate() itself does not impose its default
+# action timeout on a promise that never settles. Never rewrite loading or CSS.
+BOUNDED_DECODE = r"""async ({timeoutMs}) => {
+  let timer;
+  try {
+    await Promise.race([
+      (async()=>{await document.fonts.ready;
+        await Promise.all([...document.images].map(i=>i.decode()));
+        await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));})(),
+      new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('Image/font decode deadline exceeded')),timeoutMs);})
+    ]);
+  } finally { clearTimeout(timer); }
+}"""
+
+
+BOUNDED_PAINT = r"""async ({timeoutMs}) => {
+  let timer;
+  try {
+    await Promise.race([
+      new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))),
+      new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('Restored paint deadline exceeded')),timeoutMs);})
+    ]);
+  } finally { clearTimeout(timer); }
+}"""
+
+
+def ready_preserving_scroll(page):
+    original=page.evaluate('() => ({x:scrollX,y:scrollY})')
+    images=page.locator('img').all()
+    try:
+        # A hash landing can leave offscreen lazy images unloaded. Native scroll
+        # loads them; the original first-landing offset is restored exactly.
+        for index,img in enumerate(images):
+            if not img.evaluate('(i)=>i.complete&&i.naturalWidth>0'):
+                print(json.dumps({'capturePhase':'load-lazy-image','index':index,'imageCount':len(images)}),flush=True)
+                img.scroll_into_view_if_needed(timeout=READINESS_TIMEOUT_MS)
+        page.wait_for_function('()=>document.fonts.status==="loaded"&&[...document.images].every(i=>i.complete&&i.naturalWidth>0)',timeout=READINESS_TIMEOUT_MS)
+        page.evaluate(BOUNDED_DECODE,{'timeoutMs':READINESS_TIMEOUT_MS})
+    finally:
+        page.evaluate('(p)=>scrollTo({left:p.x,top:p.y,behavior:"instant"})',original)
+        page.wait_for_function('(p)=>Math.abs(scrollX-p.x)<0.5&&Math.abs(scrollY-p.y)<0.5',arg=original,timeout=READINESS_TIMEOUT_MS)
+    page.evaluate(BOUNDED_PAINT,{'timeoutMs':READINESS_TIMEOUT_MS})
+    page.wait_for_function('(p)=>Math.abs(scrollX-p.x)<0.5&&Math.abs(scrollY-p.y)<0.5',arg=original,timeout=READINESS_TIMEOUT_MS)
+    return {'originalScroll':original,'restoredScroll':page.evaluate('() => ({x:scrollX,y:scrollY})'),'imageCount':len(images),'deadlineMs':READINESS_TIMEOUT_MS,'restoredPaintFrames':2}
+
+
 def screenshot(page, output, rel):
     file=output/rel;file.parent.mkdir(parents=True,exist_ok=True)
-    page.evaluate('async()=>{await document.fonts.ready;await Promise.all([...document.images].map(i=>i.decode()));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));}')
-    page.wait_for_function('()=>document.fonts.status==="loaded"&&[...document.images].every(i=>i.complete&&i.naturalWidth>0)')
-    page.screenshot(path=str(file),type='jpeg',quality=90,full_page=False,animations='disabled')
-    return {'imageReadiness':'decode-completed-and-two-paint-frames-awaited','screenshot':rel,'screenshotSha256':controls.digest(file.read_bytes()),'dimensions':controls.jpeg_dimensions(file.read_bytes())}
+    print(json.dumps({'capturePhase':'screenshot-start','path':rel}),flush=True)
+    readiness=ready_preserving_scroll(page)
+    page.screenshot(path=str(file),type='jpeg',quality=90,full_page=False,animations='disabled',timeout=READINESS_TIMEOUT_MS)
+    print(json.dumps({'capturePhase':'screenshot-complete','path':rel}),flush=True)
+    return {'imageReadiness':'decode-completed-and-two-paint-frames-awaited','readiness':readiness,'screenshot':rel,'screenshotSha256':controls.digest(file.read_bytes()),'dimensions':controls.jpeg_dimensions(file.read_bytes())}
 
 
 def supplemental(source, spec, output, expected):
@@ -183,12 +232,17 @@ def supplemental(source, spec, output, expected):
                                     assert page.goto(origin+'/regions/',wait_until='networkidle').status==200
                                     target=page.locator('[data-legal-unit] a[data-candidate-id="'+link['candidateId']+'"]')
                                     target.click();page.wait_for_url(origin+link['href']);page.wait_for_load_state('networkidle')
-                                    # Decode assets without resetting anchor scroll position.
-                                    page.evaluate('async()=>{await document.fonts.ready;await Promise.all([...document.images].filter(i=>i.complete).map(i=>i.decode()));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));}')
+                                    # Record first-landing geometry before any readiness scroll.
                                     loc=page.locator('#'+link['href'].split('#')[1]);flow['facts']=loc.evaluate(FOCUS_FACTS)
                                     assert_focus(flow['facts'])
                                 except Exception:flow['issues'].append(traceback.format_exc())
-                                flow.update(screenshot(page,output,f'supplemental/{width}/anchor-first-landing/{link["candidateId"]}.jpg'))
+                                try:
+                                    flow.update(screenshot(page,output,f'supplemental/{width}/anchor-first-landing/{link["candidateId"]}.jpg'))
+                                    flow['captureFacts']=loc.evaluate(FOCUS_FACTS)
+                                    assert_focus(flow['captureFacts'])
+                                    for key in ('left','right','top','bottom','width','height','scrollY'):
+                                        assert abs(flow['facts'][key]-flow['captureFacts'][key])<0.5,'First landing geometry changed while loading images'
+                                except Exception:flow['issues'].append(traceback.format_exc())
                                 flow_rows.append(flow)
                     context.close()
             finally:browser.close()

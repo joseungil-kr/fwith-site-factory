@@ -52,6 +52,47 @@ def native_fixture(site,evidence):
  shutil.copytree(generated,evidence)
 
 class SuccessorTests(unittest.TestCase):
+ def test_restored_paint_deadline_rejects_nonpainting_dom(self):
+  js='global.requestAnimationFrame=f=>{};const fn=('+runner.BOUNDED_PAINT+');fn({timeoutMs:20}).then(()=>process.exit(9),e=>{if(!String(e).includes("Restored paint deadline exceeded"))process.exit(8);});'
+  r=subprocess.run(['node','-e',js],capture_output=True,text=True,timeout=2)
+  self.assertEqual(r.returncode,0,r.stderr)
+ def test_restored_paint_happens_after_scroll_restore(self):
+  from unittest.mock import MagicMock,call
+  page=MagicMock();page.locator.return_value.all.return_value=[];page.evaluate.return_value={'x':0,'y':123}
+  result=runner.ready_preserving_scroll(page)
+  calls=page.evaluate.call_args_list
+  self.assertLess(calls.index(call('(p)=>scrollTo({left:p.x,top:p.y,behavior:"instant"})',{'x':0,'y':123})),calls.index(call(runner.BOUNDED_PAINT,{'timeoutMs':10000})))
+  self.assertEqual(result['restoredPaintFrames'],2)
+ def test_screenshot_readiness_loads_pending_images_before_bounded_decode_and_restores(self):
+  from unittest.mock import MagicMock
+  page=MagicMock();image=MagicMock();image.evaluate.return_value=False
+  page.locator.return_value.all.return_value=[image];page.evaluate.return_value={'x':0,'y':123}
+  result=runner.ready_preserving_scroll(page)
+  image.scroll_into_view_if_needed.assert_called_once_with(timeout=10000)
+  page.evaluate.assert_any_call(runner.BOUNDED_DECODE,{'timeoutMs':10000})
+  page.evaluate.assert_any_call('(p)=>scrollTo({left:p.x,top:p.y,behavior:"instant"})',{'x':0,'y':123})
+  self.assertEqual(result['originalScroll'],result['restoredScroll'])
+  self.assertTrue(all(c.kwargs['timeout']==10000 for c in page.wait_for_function.call_args_list))
+ def test_screenshot_readiness_failure_is_not_swallowed_and_restores_scroll(self):
+  from unittest.mock import MagicMock
+  page=MagicMock();page.locator.return_value.all.return_value=[];page.evaluate.return_value={'x':0,'y':123}
+  page.wait_for_function.side_effect=[RuntimeError('unloaded image'),None]
+  with self.assertRaisesRegex(RuntimeError,'unloaded image'):runner.ready_preserving_scroll(page)
+  page.evaluate.assert_any_call('(p)=>scrollTo({left:p.x,top:p.y,behavior:"instant"})',{'x':0,'y':123})
+ def test_screenshot_decode_javascript_rejects_hanging_decode(self):
+  # Synthetic DOM promise, no browser, server, package installation or network.
+  js='global.document={fonts:{ready:Promise.resolve()},images:[{decode:()=>new Promise(()=>{})}]};global.requestAnimationFrame=f=>f();const fn=('+runner.BOUNDED_DECODE+');fn({timeoutMs:20}).then(()=>process.exit(9),e=>{if(!String(e).includes("deadline exceeded"))process.exit(8);});'
+  r=subprocess.run(['node','-e',js],capture_output=True,text=True,timeout=2)
+  self.assertEqual(r.returncode,0,r.stderr)
+ def test_screenshot_decode_javascript_propagates_broken_image(self):
+  js='global.document={fonts:{ready:Promise.resolve()},images:[{decode:()=>Promise.reject(new Error("broken image"))}]};global.requestAnimationFrame=f=>f();const fn=('+runner.BOUNDED_DECODE+');fn({timeoutMs:1000}).then(()=>process.exit(9),e=>{if(!String(e).includes("broken image"))process.exit(8);});'
+  r=subprocess.run(['node','-e',js],capture_output=True,text=True,timeout=2)
+  self.assertEqual(r.returncode,0,r.stderr)
+ def test_first_anchor_has_preload_facts_and_post_restore_checks(self):
+  code=Path(runner.__file__).read_text()
+  self.assertIn("flow['captureFacts']=loc.evaluate(FOCUS_FACTS)",code)
+  self.assertIn("assert_focus(flow['captureFacts'])",code)
+  self.assertIn("'First landing geometry changed while loading images'",code)
  def expected(self):return a.expectations(SITE)
  def test_global_clean_checkout_passes(self):
   with patch.object(a.controls,'git',return_value=''),patch.object(a.subprocess,'check_output',return_value=b''):
