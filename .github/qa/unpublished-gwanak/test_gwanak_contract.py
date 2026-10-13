@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Offline negative tests; fixture geometry is synthetic, never real browser proof."""
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 import copy,json,os,shutil,tempfile,unittest,subprocess
 import adapter as a
 import run_bound_capture as runner
@@ -123,8 +123,8 @@ class GwanakContract(unittest.TestCase):
   for key,value in [('visible',False),('width',0),('left',-1),('right',321),('top',69),('bottom',601),('hitTests',[False])]:
    with self.subTest(key=key),self.assertRaises(AssertionError):a.assert_focus(dict(base,**{key:value}))
  def test_javascript_syntax_without_browser(self):
-  scripts=[runner.EXTRA_FACTS,runner.FOCUS_FACTS,runner.RENDER_SNAPSHOT,runner.capture.FACTS]
-  code='for(const source of '+json.dumps(scripts)+'){new Function("return ("+source+")");} console.log("4 browser expressions parsed; none executed");'
+  scripts=[runner.EXTRA_FACTS,runner.FOCUS_FACTS,runner.PRODUCT_FACTS,runner.RENDER_SNAPSHOT,runner.capture.FACTS]
+  code='for(const source of '+json.dumps(scripts)+'){new Function("return ("+source+")");} console.log("5 browser expressions parsed; none executed");'
   result=subprocess.run(['node','-e',code],text=True,capture_output=True)
   self.assertEqual(result.returncode,0,result.stderr)
  def test_metadata_and_duplicate_id_mutations(self):
@@ -144,6 +144,9 @@ class GwanakContract(unittest.TestCase):
    with self.assertRaises(AssertionError):a.assert_keyboard_focus({**g,'bottom':bottom+1})
  def test_all_flow_screenshots_required_and_actual_counts(self):
   rows=[{'width':w,'height':h,'route':route,'label':label,'issues':[],'facts':{'width':100,'height':80,'renderSignature':label}}for w,h in a.controls.VIEWPORTS for route in a.ROUTES for label in a.focus_labels(EX,route)]
+  for row in rows:
+   if row['label'].startswith('product-'):row.update(self.product_row())
+  next(r for r in rows if r['label'].startswith('product-')).update(self.product_row(True))
   selection=a.screenshot_selection(rows)
   flows=[]
   for w,h in a.controls.VIEWPORTS:
@@ -159,9 +162,19 @@ class GwanakContract(unittest.TestCase):
    for i,r in enumerate(rows):
     key=(r['width'],r['route'],r['label']);r['screenshotReasons']=selection.get(key,[])
     if key in selection:shot(r,'row-'+str(i))
+   for i,r in enumerate(rows):
+    if r.get('oversizedProduct'):
+     for j,segment in enumerate(r['productSegments']):
+      segment['width']=r['width'];shot(segment,f'segment-{i}-{j}')
    for i,f in enumerate(flows):shot(f,'flow-'+str(i))
    result=a.validate_supplemental_evidence(rows,flows,EX,root)
    self.assertEqual(result['anchorScreenshots'],15);self.assertEqual(result['keyboardScreenshots'],15)
+   self.assertEqual(result['productContentChecks'],288);self.assertEqual(result['oversizedProductSegmentScreenshots'],6)
+   product_index=next(i for i,r in enumerate(rows)if r.get('oversizedProduct'))
+   for j in range(6):
+    for field in ['screenshot','screenshotSha256','dimensions']:
+     broken=copy.deepcopy(rows);del broken[product_index]['productSegments'][j][field]
+     with self.subTest(segment=j,field=field),self.assertRaises(AssertionError):a.validate_supplemental_evidence(broken,flows,EX,root)
    for i in range(30):
     for field in ['screenshot','screenshotSha256','dimensions']:
      broken=copy.deepcopy(flows);del broken[i][field]
@@ -170,6 +183,44 @@ class GwanakContract(unittest.TestCase):
    for f in broken:
     for field in ['screenshot','screenshotSha256','dimensions']:f.pop(field)
    with self.assertRaises(AssertionError):a.validate_supplemental_evidence(rows,broken,EX,root)
+ def product_row(self,oversized=False):
+  f=dict(visible=True,width=100,height=80,left=20,right=120,top=90,bottom=170,safeTop=63,safeBottom=682,viewportWidth=320,viewportHeight=740,hitTests=[True]*9)
+  image={**f,'tag':'IMG','naturalWidth':500,'naturalHeight':500,'complete':True,'objectFit':'contain','objectPosition':'50% 50%','zeroImageInset':True,'elementBox':{'left':20,'top':90,'width':100,'height':80},'left':30,'right':110,'width':80,'fragmentCount':1}
+  segments=[{'segment':label,'facts':image if label=='image'else{**f,'tag':'P','text':'synthetic visible product content','fragmentCount':1}}for label in a.PRODUCT_SEGMENTS]
+  shell={**f,'height':626.6875,'bottom':716.6875}if oversized else f
+  return {'facts':shell,'oversizedProduct':oversized,'productSegments':segments}
+ def test_oversized_product_requires_every_real_content_target(self):
+  row=self.product_row(True);a.assert_product_content(row)
+  with self.assertRaisesRegex(AssertionError,'sticky overlay'):a.assert_focus(row['facts'])
+  for index in range(6):
+   for change in [{'visible':False},{'bottom':683},{'top':62},{'left':-1},{'hitTests':[True]*8+[False]},{'fragmentCount':2}]:
+    broken=copy.deepcopy(row);broken['productSegments'][index]['facts'].update(change)
+    with self.subTest(segment=index,change=change),self.assertRaises(AssertionError):a.assert_product_content(broken)
+   broken=copy.deepcopy(row);broken['productSegments'].pop(index)
+   with self.assertRaises(AssertionError):a.assert_product_content(broken)
+  for change in [{'objectFit':'cover'},{'objectPosition':'left top'},{'zeroImageInset':False},{'naturalWidth':0},{'complete':False},{'width':79},{'left':29}]:
+   broken=copy.deepcopy(row);broken['productSegments'][0]['facts'].update(change)
+   with self.subTest(image=change),self.assertRaises(AssertionError):a.assert_product_content(broken)
+  broken=copy.deepcopy(row);broken['oversizedProduct']=False
+  with self.assertRaises(AssertionError):a.assert_product_content(broken)
+  broken=self.product_row();broken['facts']['bottom']=683
+  with self.assertRaises(AssertionError):a.assert_product_content(broken)
+ def test_anchor_baseline_reset_and_http_failures_remain_fatal(self):
+  origin='http://127.0.0.1:1234';link=EX['anchorFlows'][-1]
+  def page(statuses):
+   obj=MagicMock();obj.url=origin+link['href'];responses=iter(statuses)
+   def goto(url,**kwargs):
+    obj.url=url;status=next(responses);return None if status is None else type('Response',(),{'status':status})()
+   obj.goto.side_effect=goto;return obj
+  good=page([200,200]);flow={};runner.navigate_anchor(good,origin,link,flow)
+  self.assertEqual([x.args[0]for x in good.goto.call_args_list],[origin+'/regions/',origin+link['href']])
+  self.assertEqual(flow['documentHttpStatus'],200);self.assertEqual(flow['landingUrl'],origin+link['href'])
+  for statuses in [[None],[404],[500],[200,None],[200,404],[200,500]]:
+   with self.subTest(statuses=statuses),self.assertRaises(AssertionError):runner.navigate_anchor(page(statuses),origin,link,{})
+  bad=page([200,200])
+  def wrong(url,**kwargs):bad.url=origin+'/wrong/';return type('Response',(),{'status':200})()
+  bad.goto.side_effect=wrong
+  with self.assertRaisesRegex(AssertionError,'exact URL'):runner.navigate_anchor(bad,origin,link,{})
  def test_approved_asset_bytes_and_denominator(self):
   source=Path(os.environ.get('SOURCE_ROOT','/workspace/shared/gwanak-factory'))/a.SITE_PATH
   actual=a.verify_approved_asset_bytes(source,a.controls.manifest(source/'dist'))

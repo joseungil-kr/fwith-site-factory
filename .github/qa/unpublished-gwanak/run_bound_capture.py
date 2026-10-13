@@ -12,7 +12,7 @@ from adapter import (HERE, SITE_PATH, ROUTES, load, validate_spec, validate_envi
                      verify_upstream, verify_frozen_bytes, expectations,
                      validate_extra_facts, validate_not_found_facts, assert_focus, assert_footer_content, screenshot_selection, validate_supplemental_evidence, write)
 import controls, capture
-from adapter import bound_verify_source, assert_keyboard_focus, validate_bound_build
+from adapter import bound_verify_source, assert_keyboard_focus, validate_bound_build, assert_product_content, PRODUCT_SEGMENTS
 
 EXTRA_FACTS = r'''() => {
  const text=e=>e?.innerText.trim()||'';
@@ -81,6 +81,55 @@ FOCUS_FACTS = r'''el => {
     left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height,
     safeTop,safeBottom,viewportWidth:innerWidth,viewportHeight:innerHeight,scrollY,hitTests:hits};
 }'''.replace('__RENDER_SNAPSHOT__','('+RENDER_SNAPSHOT+')')
+
+
+# Measure the actual contain-rendered photo, not its stretched white img border box.
+# Text links use each native client fragment so multiline anchor whitespace is not a false hit.
+PRODUCT_FACTS = r'''el => {
+ const c=getComputedStyle(el),b=el.getBoundingClientRect(),image=el.tagName==='IMG';
+ let r=b;
+ if(image){const scale=Math.min(b.width/el.naturalWidth,b.height/el.naturalHeight),w=el.naturalWidth*scale,h=el.naturalHeight*scale;
+  r={left:b.left+(b.width-w)/2,top:b.top+(b.height-h)/2,width:w,height:h};r.right=r.left+w;r.bottom=r.top+h;}
+ const header=document.querySelector('.site-header'),bar=document.querySelector('.mobile-bar'),visible=e=>!!e&&getComputedStyle(e).display!=='none'&&e.getBoundingClientRect().height>0;
+ const fragments=image?[r]:[...el.getClientRects()].filter(x=>x.width>0&&x.height>0),hits=[];
+ for(const box of fragments)for(const fx of [.1,.5,.9])for(const fy of [.1,.5,.9]){const hit=document.elementFromPoint(box.left+box.width*fx,box.top+box.height*fy);hits.push(!!hit&&(hit===el||el.contains(hit)));}
+ return {tag:el.tagName,text:el.innerText||'',visible:el.checkVisibility({checkOpacity:true,checkVisibilityCSS:true}),left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height,
+  safeTop:visible(header)?Math.max(0,header.getBoundingClientRect().bottom):0,safeBottom:visible(bar)?Math.min(innerHeight,bar.getBoundingClientRect().top):innerHeight,viewportWidth:innerWidth,viewportHeight:innerHeight,scrollY,fragmentCount:fragments.length,hitTests:hits,
+  elementBox:{left:b.left,top:b.top,width:b.width,height:b.height},naturalWidth:el.naturalWidth,naturalHeight:el.naturalHeight,complete:el.complete,objectFit:c.objectFit,objectPosition:c.objectPosition,
+  zeroImageInset:['paddingLeft','paddingRight','paddingTop','paddingBottom','borderLeftWidth','borderRightWidth','borderTopWidth','borderBottomWidth'].every(k=>parseFloat(c[k])===0)};
+}'''
+
+PRODUCT_SELECTORS=('img','h3','strong','div > p:not(.product-notice)','a[data-order-product-key]','.product-notice')
+
+def product_segments(page,loc,row,output,name):
+    f=row['facts'];row['oversizedProduct']=f['height']>f['safeBottom']-f['safeTop']+.5;row['productSegments']=[]
+    for label,selector in zip(PRODUCT_SEGMENTS,PRODUCT_SELECTORS):
+        target=loc.locator(selector);assert target.count()==1,'Missing/duplicate product subtarget'
+        g=target.evaluate(PRODUCT_FACTS)
+        # Real scrolling only; keep sticky UI, source CSS and DOM untouched.
+        delta=g['top']-g['safeTop']-max(8,(g['safeBottom']-g['safeTop']-g['height'])/2)
+        page.evaluate("delta=>window.scrollTo({top:scrollY+delta,behavior:'instant'})",delta)
+        page.evaluate('()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))')
+        item={'segment':label,'facts':target.evaluate(PRODUCT_FACTS)};row['productSegments'].append(item)
+        if row['oversizedProduct']:item.update(screenshot(page,output,f'supplemental/{row["width"]}/{name}/{row["label"]}--{label}.jpg'))
+    assert_product_content(row)
+
+
+def navigate_anchor(page,origin,link,flow):
+    # Reset EVERY flow to an actual directory document. Occasion goto now always
+    # creates a document response; None/non-200 is still rejected, never exempted.
+    response=page.goto(origin+'/regions/',wait_until='networkidle')
+    assert response is not None and response.status==200,'Anchor baseline HTTP 200 required'
+    assert page.url==origin+'/regions/','Anchor baseline exact URL'
+    flow['baselineHttpStatus']=response.status;flow['baselineUrl']=page.url
+    if link['kind']=='facility':
+        target=page.locator(link['selector']);assert target.count()==1;target.click();page.wait_for_url(origin+link['href']);page.wait_for_load_state('networkidle')
+    else:
+        response=page.goto(origin+link['href'],wait_until='networkidle')
+        assert response is not None and response.status==200,'Occasion document HTTP 200 required'
+        flow['documentHttpStatus']=response.status
+    assert page.url==origin+link['href'],'Exact first-landing URL'
+    flow['landingUrl']=page.url
 
 
 def center_in_safe_area(page, locator):
@@ -190,7 +239,8 @@ def supplemental(source, spec, output, expected):
                                     assert row['facts']['visible'] and all(row['facts']['hitTests'])
                                 else:
                                     center_in_safe_area(page,loc);row['facts']=loc.evaluate(FOCUS_FACTS)
-                                    (assert_footer_content if label=='footer' else assert_focus)(row['facts'])
+                                    if label.startswith('product-'):product_segments(page,loc,row,output,name)
+                                    else:(assert_footer_content if label=='footer' else assert_focus)(row['facts'])
                             except Exception:row['issues'].append(traceback.format_exc())
                             rows.append(row);current_rows.append(row)
                         selection=screenshot_selection(rows)
@@ -205,7 +255,9 @@ def supplemental(source, spec, output, expected):
                             else:center_in_safe_area(page,loc)
                             row['captureFacts']=loc.evaluate(FOCUS_FACTS)
                             try:
-                                if row['label']!='header':(assert_footer_content if row['label']=='footer' else assert_focus)(row['captureFacts'])
+                                if row['label'].startswith('product-'):
+                                    assert_product_content({**row,'facts':row['captureFacts']})
+                                elif row['label']!='header':(assert_footer_content if row['label']=='footer' else assert_focus)(row['captureFacts'])
                             except Exception:row['issues'].append(traceback.format_exc())
                             row.update(screenshot(page,output,f'supplemental/{width}/{name}/{row["label"]}.jpg'))
                         if route=='/regions/':
@@ -213,14 +265,13 @@ def supplemental(source, spec, output, expected):
                             for link in expected['anchorFlows']:
                                 flow={'width':width,'flow':'anchor-first-landing','href':link['href'],'passed':False,'issues':[]}
                                 try:
-                                    if link['kind']=='facility':
-                                        assert page.goto(origin+'/regions/',wait_until='networkidle').status==200
-                                        target=page.locator(link['selector']);assert target.count()==1;target.click();page.wait_for_url(origin+link['href']);page.wait_for_load_state('networkidle')
-                                    else:
-                                        # No synthetic link or DOM mutation: direct hash navigation is the approved occasion URL contract.
-                                        assert page.goto(origin+link['href'],wait_until='networkidle').status==200
+                                    navigate_anchor(page,origin,link,flow)
                                     page.evaluate('async()=>{await document.fonts.ready;await Promise.all([...document.images].filter(i=>i.complete).map(i=>i.decode()));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));}')
                                     loc=page.locator('#'+link['anchor']);assert loc.count()==1;flow['facts']=loc.evaluate(FOCUS_FACTS)
+                                    landing_route=link['href'].split('#')[0];group=expected['pages'][landing_route]['facilities' if link['kind']=='facility' else 'occasions']
+                                    wanted=next(x for x in group if x['anchor']==link['anchor'])
+                                    flow['heading']=loc.evaluate("e=>({tag:e.tagName,text:e.innerText.trim(),id:e.id})")
+                                    assert flow['heading']=={'tag':'H2','text':wanted['heading'],'id':link['anchor']},'Exact first-landing heading'
                                     assert_focus(flow['facts']);flow['passed']=True
                                 except Exception:flow['issues'].append(traceback.format_exc())
                                 flow.update(screenshot(page,output,f'supplemental/{width}/anchor-first-landing/{link["anchor"]}.jpg'));flow_rows.append(flow)

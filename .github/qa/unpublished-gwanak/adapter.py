@@ -9,7 +9,7 @@ import controls
 SITE_PATH='site-factory/seoul-gwanak-flower'
 SITE_URL='https://seoul-gwanak.local.invalid'
 ROUTES=['/','/regions/','/regions/gwanak-funeral-wreath/','/regions/gwanak-celebration-wreath/','/404.html']
-MANIFEST_SHA='49efbc6768d52b208f5d7c2bfad8faab5386d5de777d16d6134263e6df168eb7'
+MANIFEST_SHA='153b9cf2f618a56fd4ca482816817474e014358710516e10e9bb1eaf1dde5dee'
 NATIVE_BLOB='dcd037a02423a0aa2ab51f78795a7acd34cfaba9'
 GENERATED_REVISION=SITE_PATH+'/src/data/build-revision.json'
 def load(p):return json.loads(Path(p).read_text())
@@ -208,6 +208,31 @@ def assert_focus(facts):
     assert facts['hitTests'] and all(facts['hitTests']), 'Focus target occluded'
 
 
+PRODUCT_SEGMENTS=('image','name','price','description','order','caption')
+
+def assert_product_content(row):
+    """Scrollable card shell may be tall; every real content target must remain fully accessible."""
+    f=row['facts']; oversized=f['height']>f['safeBottom']-f['safeTop']+.5
+    assert row.get('oversizedProduct') is oversized,'Product strategy does not match measured shell'
+    if not oversized:assert_focus(f)
+    else:
+        assert f['visible'] and f['width']>0 and f['height']>0,'Invisible product shell'
+        assert f['left']>=-.5 and f['right']<=f['viewportWidth']+.5,'Product shell horizontal clipping'
+        assert f['top']>=f['safeTop']-.5 and f['top']<f['safeBottom'],'Oversized shell initial top hidden'
+    segments=row.get('productSegments',[])
+    assert [x['segment']for x in segments]==list(PRODUCT_SEGMENTS),'All six real product subtargets required'
+    for item in segments:
+        g=item['facts'];assert_focus(g)
+        assert g['fragmentCount']>0 and len(g['hitTests'])==g['fragmentCount']*9,'Product hit-test fragments missing'
+        if item['segment']=='image':
+            assert g['tag']=='IMG' and g['naturalWidth']==500 and g['naturalHeight']==500 and g['complete'],'Actual product image incomplete'
+            assert g['objectFit']=='contain' and g['objectPosition']=='50% 50%' and g['zeroImageInset'],'Unexpected product image sizing'
+            box=g['elementBox'];scale=min(box['width']/500,box['height']/500)
+            assert abs(g['width']-500*scale)<.01 and abs(g['height']-500*scale)<.01,'Wrong contained image area'
+            assert abs(g['left']-(box['left']+(box['width']-g['width'])/2))<.01 and abs(g['top']-(box['top']+(box['height']-g['height'])/2))<.01,'Wrong contained image offset'
+        else:assert g['text'].strip(),'Empty product content'
+
+
 def assert_keyboard_focus(f):
  assert f['tag']!='BODY'and f['visible']and f['width']>0 and f['height']>0,'Missing/hidden keyboard target'
  assert f['left']>=-.5 and f['right']<=f['viewportWidth']+.5 and f['top']>=-.5 and f['bottom']<=f['viewportHeight']+.5,'Keyboard target clipped by viewport'
@@ -257,6 +282,7 @@ def screenshot_selection(rows):
     for row in rows:
         label=row['label']; facts=row.get('facts',{})
         if row.get('issues'):choose(row,'failed-geometry-or-occlusion')
+        if row.get('oversizedProduct'):choose(row,'oversized-product-shell-with-six-required-content-segments')
         if label.startswith('faq-'):choose(row,'every-unique-FAQ-at-every-width')
         if label.startswith('banner-') or label=='footer':
             signature=(row['width'],label,facts.get('renderSignature'),round(facts.get('width',0),2),round(facts.get('height',0),2))
@@ -287,13 +313,22 @@ def validate_supplemental_evidence(rows,flows,expected,output):
  selected=screenshot_selection(rows)
  assert {(r['width'],r['route'],r['label'])for r in rows if 'screenshot'in r}==set(selected),'Risk-based screenshot coverage'
  for r in rows:assert r.get('screenshotReasons',[])==selected.get((r['width'],r['route'],r['label']),[])
- shots=[r for r in rows if 'screenshot'in r]+[f for f in flows if 'screenshot'in f]
+ product_rows=[r for r in rows if r['label'].startswith('product-')]
+ segment_shots=[]
+ for row in product_rows:
+  assert_product_content(row)
+  for segment in row['productSegments']:
+   if row['oversizedProduct']:
+    assert all(k in segment for k in ['screenshot','screenshotSha256','dimensions']),'Oversized card requires six segment screenshots'
+    segment_shots.append({**segment,'width':row['width']})
+   else:assert 'screenshot'not in segment,'Unexpected non-risk product segment screenshot'
+ shots=[r for r in rows if 'screenshot'in r]+[f for f in flows if 'screenshot'in f]+segment_shots
  assert len({r['screenshot']for r in shots})==len(shots),'Duplicate screenshot path'
  for r in shots:
   rel=r['screenshot'];assert rel.startswith('supplemental/')and '..'not in Path(rel).parts
   f=Path(output)/rel;assert f.is_file()and not f.is_symlink()and sha(f.read_bytes())==r['screenshotSha256']
   dims=controls.jpeg_dimensions(f.read_bytes());assert dims==r['dimensions']and dims=={'width':r['width'],'height':dict(controls.VIEWPORTS)[r['width']]}
- return {'geometryChecks':len(rows),'riskBasedScreenshots':len(selected),'anchorScreenshots':sum(f['flow']=='anchor-first-landing'and 'screenshot'in f for f in flows),'keyboardScreenshots':sum(f['flow']=='keyboard-tab-focus'and 'screenshot'in f for f in flows),'keyboardFlows':len(keyboard),'interactionChecks':len(flows)}
+ return {'productContentChecks':sum(len(r['productSegments'])for r in product_rows),'oversizedProductSegmentScreenshots':len(segment_shots),'geometryChecks':len(rows),'riskBasedScreenshots':len(selected),'anchorScreenshots':sum(f['flow']=='anchor-first-landing'and 'screenshot'in f for f in flows),'keyboardScreenshots':sum(f['flow']=='keyboard-tab-focus'and 'screenshot'in f for f in flows),'keyboardFlows':len(keyboard),'interactionChecks':len(flows)}
 
 def main():
  p=argparse.ArgumentParser(description=__doc__);sub=p.add_subparsers(dest='command',required=True)
