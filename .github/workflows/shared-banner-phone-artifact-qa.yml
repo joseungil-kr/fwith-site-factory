@@ -1,0 +1,115 @@
+name: Exact common banner artifacts loopback QA only
+on:
+  push:
+    branches: [qa/unpublished-regional-visual-20261012]
+    paths:
+      - '.github/workflows/shared-banner-phone-artifact-qa.yml'
+      - '.github/qa/shared-banner-phone-20261013/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: shared-banner-phone-artifact-qa
+  cancel-in-progress: false
+jobs:
+  bindings:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/qa/unpublished-regional-visual-20261012' && github.actor == 'joseungil-kr' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.matrix.outputs.value }}
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: qa
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 782d25abe613f2d8dfbb68d82b401c2cdf4e7a2f
+          path: control
+          persist-credentials: false
+      - name: Verify fixed 33-site allowlist and complete selected artifact bindings
+        id: matrix
+        run: |
+          set -euo pipefail
+          matrix=$(python3 qa/.github/qa/shared-banner-phone-20261013/bind.py --control "$GITHUB_WORKSPACE/control")
+          echo "value=$matrix" >> "$GITHUB_OUTPUT"
+      - name: Test loopback, binding, archive and capture failure boundaries offline
+        run: python3 qa/.github/qa/shared-banner-phone-20261013/test_capture.py -v
+  capture:
+    needs: bindings
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix: ${{ fromJSON(needs.bindings.outputs.matrix) }}
+    env:
+      REGION: ${{ matrix.region }}
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: qa
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 782d25abe613f2d8dfbb68d82b401c2cdf4e7a2f
+          path: control
+          persist-credentials: false
+      - name: Download only the exact bound successful build artifact
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = '.github/qa/shared-banner-phone-20261013/bindings.json';
+            const data = JSON.parse(fs.readFileSync('qa/' + path, 'utf8'));
+            const b = data.sites[process.env.REGION].build;
+            if (!b) throw new Error('Unbound artifact');
+            const run = await github.rest.actions.getWorkflowRun({...context.repo, run_id:Number(b.runId)});
+            const artifact = await github.rest.actions.getArtifact({...context.repo, artifact_id:Number(b.artifactId)});
+            if (run.data.status !== 'completed' || run.data.conclusion !== 'success') throw new Error('Build is not successful');
+            if (artifact.data.digest !== 'sha256:' + b.archiveSha256 || artifact.data.expired) throw new Error('Artifact digest or expiry changed');
+            if (artifact.data.workflow_run.id !== Number(b.runId)) throw new Error('Artifact belongs to another run');
+            if (artifact.data.size_in_bytes > 33554432) throw new Error('Artifact too large');
+            fs.mkdirSync('inputs', {recursive:true});
+            fs.writeFileSync('inputs/run.json', JSON.stringify(run.data,null,2));
+            fs.writeFileSync('inputs/artifact.json', JSON.stringify(artifact.data,null,2));
+            const archive = await github.rest.actions.downloadArtifact({...context.repo, artifact_id:Number(b.artifactId), archive_format:'zip'});
+            fs.writeFileSync('inputs/artifact.zip', Buffer.from(archive.data));
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install the same pinned official browser tooling and Korean fonts
+        run: |
+          set -euo pipefail
+          python3 -m pip install 'playwright==1.63.0'
+          python3 -m playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          mkdir -p evidence/logs
+          fc-match 'Noto Sans CJK KR' | tee evidence/logs/font-match.txt
+      - name: Capture actual mobile and desktop lazy banners from exact downloaded bytes
+        run: |
+          set -euo pipefail
+          python3 qa/.github/qa/shared-banner-phone-20261013/capture.py \
+            --region "$REGION" --control "$GITHUB_WORKSPACE/control" \
+            --inputs "$GITHUB_WORKSPACE/inputs" --output "$GITHUB_WORKSPACE/evidence" \
+            2>&1 | tee evidence/logs/capture.log
+      - name: Seal final report, screenshots and log hashes
+        if: always()
+        run: python3 qa/.github/qa/shared-banner-phone-20261013/capture.py --seal --output "$GITHUB_WORKSPACE/evidence"
+      - name: Retain actual evidence for independent pixel review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phone-banner-${{ matrix.region }}-qa-${{ github.run_id }}-${{ github.sha }}
+          path: evidence/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
