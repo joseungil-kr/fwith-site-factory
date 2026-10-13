@@ -1,0 +1,90 @@
+{
+  "verdict": "PASS_TEST_FIXTURE_ONLY_FIX_READY_FOR_QA_SAVE_AND_RERUN",
+  "candidateTestSha256": "97d0074de124ae2fa925d9a129f54206902f117fddf35365ccf6ad311ad96faf",
+  "candidateManifestSha256": "a899b9a70512b73f8b50ac6db90678d73512a7678eb48c3339905d4cb7913148",
+  "fixDiffSha256": "389aeb971ab02735c1474b3dfa1ad7cc4665c149e7d718b42a79e4c315842373",
+  "sourceRevision": "ecc62ab4053365e451b697867bdf68c3d26b78d2",
+  "directChecks": {
+    "status": "PASS_ONE_TEST_FILE_FIX_FAILED_SHAPE_REPRODUCED_AND_49_OFFLINE_RERUN",
+    "changed": [
+      ".github/qa/unpublished-gwanak/test_gwanak_contract.py"
+    ],
+    "unchangedControlFiles": 159,
+    "candidateManifestSha256": "a899b9a70512b73f8b50ac6db90678d73512a7678eb48c3339905d4cb7913148",
+    "fixDiffSha256": "389aeb971ab02735c1474b3dfa1ad7cc4665c149e7d718b42a79e4c315842373",
+    "oldRemoteTestByteMatchesReviewedBase": true,
+    "actualFailureRun": 38424010963,
+    "artifactId": 11828715678,
+    "zipSha256": "d71ba0bf79235a4ac4a8ba7185ed20cef7b8044d711777b2cd133e5a8ccf8e29",
+    "zipBytes": 45729,
+    "zipCrcValid": true,
+    "actualReportFilesChecked": 16,
+    "sealedReportFilesChecked": 15,
+    "actualBuildLogChecks": [
+      {
+        "attempt": "first",
+        "nativeTests": 497,
+        "sourceMutations": 242,
+        "astroCheck": {
+          "files": 61,
+          "errors": 0,
+          "warnings": 0,
+          "hints": 0
+        }
+      },
+      {
+        "attempt": "second",
+        "nativeTests": 497,
+        "sourceMutations": 242,
+        "astroCheck": {
+          "files": 61,
+          "errors": 0,
+          "warnings": 0,
+          "hints": 0
+        }
+      }
+    ],
+    "actualTwoDistManifestsEqual": true,
+    "actualDistFilesInManifest": 21,
+    "oldFailureIndependentlyReproduced": true,
+    "newOfflineTests": 49,
+    "sourceGuardsWorkflowCaptureUnchanged": true,
+    "sourceChanges": false,
+    "limits": [
+      "Failure shape reproduced using exact saved source, explicitly synthetic dist and inert generated files, not a copied complete CI workspace.",
+      "Actual CI reported two successful native builds and matching dist inventories, but no dist bytes were retained because the step failed before copying dist. No browser stage ran; no new pixel or deployment PASS."
+    ]
+  },
+  "scope": "Only test_gwanak_contract.py changed. Existing fixture excludes exactly three additional legitimate postbuild outputs; new test proves seven generated roots remain forbidden prebuild, allowed postbuild, and arbitrary root remains forbidden in both phases. No runtime guard, source, workflow or browser-gate weakening.",
+  "limits": [
+    "Old run38424010963 remains FAILED. Browser stage skipped; only reports artifact was retained.",
+    "The independent local reproducer uses inert generated files to recreate the exact failing file-shape; it is not a new actual build or a claim to possess the entire CI workspace.",
+    "A new actual rerun and fresh pixel verification remain required."
+  ],
+  "evidence": [
+    {
+      "path": "gwanak-banner-fixture-independent-20261013/FRESH-FAILED-RUN.json",
+      "sha256": "93b363b2bb03425cf07cc1da7903f71aa14f7dfcaf8ffa8896e5bf723bf70af6"
+    },
+    {
+      "path": "gwanak-banner-fixture-independent-20261013/FIX-CHECK.json",
+      "sha256": "636abe92a0db9cc0ac97061f9361944f151539da82bc122b93bfd4e59b8f6650"
+    },
+    {
+      "path": "gwanak-banner-fixture-independent-20261013/OLD-REPRODUCED.log",
+      "sha256": "4f7f0468f973bad4fb03397c286203f1828d580c1c9a378303173e41bfadf09a"
+    },
+    {
+      "path": "gwanak-banner-fixture-independent-20261013/OFFLINE-49.json",
+      "sha256": "6fdb49ef365cd07a8b65033e8e899a9c519bd3c8d65e5a9563ba0844f9d68543"
+    },
+    {
+      "path": "gwanak-banner-fixture-independent-20261013/OFFLINE-49.log",
+      "sha256": "0fac2a7bb3da267530a9ed82dbffcae0c9030ff6de7c3033f639b2bba7231ae6"
+    },
+    {
+      "path": "gwanak-banner-fixture-independent-20261013/verify_fix.py",
+      "sha256": "f746234dccbea6ba1f19fa4256544f4796743827b9d111be6eb7a0ff46b9832b"
+    }
+  ]
+}
