@@ -8,6 +8,11 @@ on:
         description: Exact reviewed 40-character SeoulGeumcheon source SHA
         required: true
         type: string
+      existing_update:
+        description: Update only the exact existing reviewed release without attaching a hostname or changing provider settings
+        required: false
+        default: false
+        type: boolean
       build_only:
         description: Build and verify the candidate without provider mutation or IndexNow submission
         required: false
@@ -18,6 +23,8 @@ on:
         required: false
         default: false
         type: boolean
+env:
+  EXISTING_UPDATE: ${{ inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true) }}
 permissions:
   contents: read
 concurrency:
@@ -66,6 +73,11 @@ jobs:
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$REVISION"
           git merge-base --is-ancestor "$REVISION" origin/site-factory-seoul-geumcheon-direct
+      - name: Reject successor source without explicit existing-update mode
+        run: REVISION="$(git -C target rev-parse HEAD)" python3 control/scripts/two-regional-banners/update.py authorize-build --region seoul-geumcheon --report banner-build-mode.json
+      - name: Verify exact reviewed successor, parent, whole source tree and five-customer-file scope
+        if: inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true)
+        run: REVISION="$(git -C target rev-parse HEAD)" python3 control/scripts/two-regional-banners/update.py source --region seoul-geumcheon --checkout target --report banner-source-check.json
       - name: Verify fixed reviewed source bytes before running source code
         run: python3 control/scripts/direct-seoul-geumcheon/publish.py source --source target/site-factory/seoul-geumcheon-flower --report source-contract-check.json
       - name: Test fixed publisher safety contracts against exact separate target
@@ -119,6 +131,9 @@ jobs:
           path: release
       - name: Verify production output without provider credentials or publication
         run: python3 control/scripts/direct-seoul-geumcheon/publish.py artifact --report artifact-check.json
+      - name: Inspect exact phone assets and rendered banners without requiring public release approval
+        if: inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true)
+        run: python3 control/scripts/two-regional-banners/update.py build-artifact --region seoul-geumcheon --report banner-build-artifact.json
       - name: Preserve build-only inspection evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -126,6 +141,8 @@ jobs:
           name: seoul-geumcheon-build-inspection-${{ github.run_id }}
           path: |
             artifact-check.json
+            banner-build-artifact.json
+            two-banner-native-qa.json
             http-contract.json
           if-no-files-found: error
   publish:
@@ -147,6 +164,8 @@ jobs:
           ref: ${{ github.sha }}
           path: control
           persist-credentials: false
+      - name: Require reviewed successor mode and independently reviewed actual release before public work
+        run: python3 control/scripts/two-regional-banners/update.py authorize-mutation --region seoul-geumcheon --report banner-mode-check.json
       - uses: actions/download-artifact@v4
         with:
           artifact-ids: ${{ needs.build.outputs.artifact_id }}
@@ -156,6 +175,9 @@ jobs:
         env:
           RELEASE_SHA256: ${{ needs.build.outputs.release_sha256 }}
         run: python3 control/scripts/direct-seoul-geumcheon/publish.py artifact --report artifact-check.json
+      - name: Bind exact rebuilt output to the independent phone-banner release review
+        if: inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true)
+        run: python3 control/scripts/two-regional-banners/update.py artifact --region seoul-geumcheon --report banner-artifact.json
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -170,7 +192,13 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: python3 control/scripts/direct-seoul-geumcheon/publish.py preflight --report binding-before.json
+        run: |
+          set -euo pipefail
+          if [ "$EXISTING_UPDATE" = true ]; then
+            python3 control/scripts/two-regional-banners/update.py preflight --region seoul-geumcheon --report binding-before.json
+          else
+            python3 control/scripts/direct-seoul-geumcheon/publish.py preflight --report binding-before.json
+          fi
       - name: Deploy fixed route-less static assets once
         id: deploy
         continue-on-error: true
@@ -181,13 +209,19 @@ jobs:
           WRANGLER_LOG_SANITIZE: 'true'
           WRANGLER_SEND_METRICS: 'false'
         run: |
-          if ! npx --yes wrangler@4.148.0 deploy --config wrangler.publish.json > "$RUNNER_TEMP/seoul-geumcheon-direct-upload.log" 2>&1; then
+          set -euo pipefail
+          if [ "$EXISTING_UPDATE" = true ]; then
+            WRANGLER_PACKAGE=wrangler@4.147.0
+          else
+            WRANGLER_PACKAGE=wrangler@4.148.0
+          fi
+          if ! npx --yes "$WRANGLER_PACKAGE" deploy --config wrangler.publish.json > "$RUNNER_TEMP/seoul-geumcheon-direct-upload.log" 2>&1; then
             echo 'Upload failed or uncertain. Inspect GET and HTTP evidence before any recovery.'
             exit 1
           fi
       - name: Attach only the fixed hostname with all overrides disabled
         id: attach
-        if: steps.deploy.outcome == 'success'
+        if: steps.deploy.outcome == 'success' && !(inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true))
         continue-on-error: true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -200,15 +234,25 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: python3 control/scripts/direct-seoul-geumcheon/publish.py readback --report binding-after.json
+        run: |
+          set -euo pipefail
+          python3 control/scripts/direct-seoul-geumcheon/publish.py readback --report binding-after.json
+          if [ "$EXISTING_UPDATE" = true ]; then
+            python3 control/scripts/two-regional-banners/update.py provider-after --region seoul-geumcheon --report provider-state-after.json
+          fi
       - name: Verify public exact content, assets, SEO and real 404s
         id: http
         if: ${{ always() && steps.binding.outcome == 'success' }}
         continue-on-error: true
         run: python3 control/scripts/direct-seoul-geumcheon/publish.py http --report public-http.json
+      - name: Verify live phone-banner MIME and exact approved bytes before IndexNow
+        id: banners
+        if: ${{ always() && steps.http.outcome == 'success' && (inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true)) }}
+        continue-on-error: true
+        run: python3 control/scripts/two-regional-banners/update.py public-assets --region seoul-geumcheon --report banner-public-assets.json
       - name: Submit exact verified sitemap once and retain IndexNow receipt
         id: indexnow
-        if: ${{ always() && steps.deploy.outcome == 'success' && steps.binding.outcome == 'success' && steps.http.outcome == 'success' }}
+        if: ${{ always() && steps.deploy.outcome == 'success' && steps.binding.outcome == 'success' && steps.http.outcome == 'success' && (steps.banners.outcome == 'success' || steps.banners.outcome == 'skipped') }}
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
@@ -221,7 +265,14 @@ jobs:
           path: |
             artifact-check.json
             http-contract.json
+            banner-mode-check.json
+            banner-artifact.json
+            banner-public-assets.json
+            two-banner-native-qa.json
             binding-before.json
+            provider-state-before.json
+            provider-state-after.json
+            update-source-config.json
             domain-attach.json
             binding-after.json
             public-http.json
@@ -237,7 +288,8 @@ jobs:
           BINDING: ${{ steps.binding.outcome }}
           HTTP: ${{ steps.http.outcome }}
           INDEXNOW: ${{ steps.indexnow.outcome }}
-        run: test "$DEPLOY" = success && test "$BINDING" = success && test "$HTTP" = success && test "$INDEXNOW" = success
+          BANNERS: ${{ steps.banners.outcome }}
+        run: test "$DEPLOY" = success && test "$BINDING" = success && test "$HTTP" = success && test "$INDEXNOW" = success && ( test "$BANNERS" = success || test "$BANNERS" = skipped )
   finalize_indexnow:
     if: inputs.indexnow_only == true && inputs.build_only != true
     needs: [build, inspect_build]
@@ -257,6 +309,8 @@ jobs:
           ref: ${{ github.sha }}
           path: control
           persist-credentials: false
+      - name: Require independent actual-release review for existing-update finalization
+        run: python3 control/scripts/two-regional-banners/update.py authorize-mutation --region seoul-geumcheon --report banner-mode-check.json
       - uses: actions/download-artifact@v4
         with:
           artifact-ids: ${{ needs.build.outputs.artifact_id }}
@@ -272,8 +326,14 @@ jobs:
         env:
           RELEASE_SHA256: ${{ needs.build.outputs.release_sha256 }}
         run: python3 control/scripts/direct-seoul-geumcheon/publish.py artifact --report artifact-check.json
+      - name: Bind exact rebuilt output to the independent phone-banner release review
+        if: inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true)
+        run: python3 control/scripts/two-regional-banners/update.py artifact --region seoul-geumcheon --report banner-artifact.json
       - name: Verify all live source bytes and real 404s without provider credentials
         run: python3 control/scripts/direct-seoul-geumcheon/publish.py http --report public-http.json
+      - name: Verify exact public phone-banner assets before any finalization submission
+        if: inputs.existing_update == true || (github.event_name == 'issues' && fromJSON(github.event.issue.body).existing_update == true)
+        run: python3 control/scripts/two-regional-banners/update.py public-assets --region seoul-geumcheon --report banner-public-assets.json
       - name: Observe exact IndexNow client GET status and robots headers without submitting
         run: python3 control/scripts/direct-seoul-geumcheon/publish.py indexnow-probe --report indexnow-probe.json
       - name: Finalize exact verified sitemap through the existing idempotent receipt journal
@@ -288,6 +348,10 @@ jobs:
           name: seoul-geumcheon-indexnow-result-${{ github.run_id }}
           path: |
             artifact-check.json
+            banner-mode-check.json
+            banner-artifact.json
+            banner-public-assets.json
+            two-banner-native-qa.json
             http-contract.json
             public-http.json
             indexnow-probe.json
