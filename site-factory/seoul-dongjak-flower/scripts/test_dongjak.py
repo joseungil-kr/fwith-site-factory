@@ -1,5 +1,5 @@
 """Mutate actual compiled Dongjak output; no browser, provider or external action."""
-import json,shutil,tempfile,unittest,re
+import json,shutil,tempfile,unittest,re,os
 from pathlib import Path
 from qa_dongjak import inspect
 class Mutations(unittest.TestCase):
@@ -42,9 +42,9 @@ class Mutations(unittest.TestCase):
  def test_card_destination(self):
   self.mutate(self.detail,'<a href="https://fwith.co.kr/shop/item.php?it_id=B201" data-order-product-key=','<a href="https://fwith.co.kr/" data-order-product-key=');self.fail('Product CTA')
  def test_preview_indexable(self):
-  self.mutate(self.home,'content="noindex,nofollow,noarchive"','content="index,follow"');self.fail('Preview robots')
+  old,new=('index,follow','noindex,nofollow,noarchive') if os.environ.get('SITE_INDEXABLE')=='true' else ('noindex,nofollow,noarchive','index,follow');self.mutate(self.home,'content="'+old+'"','content="'+new+'"');self.fail('Mode robots')
  def test_preview_sitemap(self):
-  (self.r/'dist/sitemap-0.xml').write_text('<urlset/>');self.fail('Preview sitemap')
+  (self.r/'dist/sitemap-0.xml').write_text('<urlset/>');self.fail('Mode sitemap')
  def test_footer_destination(self):
   self.mutate(self.home,'href="/">꽃이랑 홈','href="https://fwith.co.kr">꽃이랑 홈');self.fail('Footer destination')
  def test_product_bytes(self):

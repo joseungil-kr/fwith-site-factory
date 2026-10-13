@@ -5,7 +5,8 @@ from pathlib import Path
 from html.parser import HTMLParser
 from urllib.parse import urlsplit
 from collections import Counter
-import hashlib,json,re
+import hashlib,json,re,os
+import xml.etree.ElementTree as ET
 from qa_static import Document
 from qa_faq_products import text_content
 VOID={'area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr'}
@@ -28,6 +29,7 @@ def descendants(n):
  for c in n['children']:yield c;yield from descendants(c)
 def inspect(root=Path('.'),write=True):
  root=Path(root);data=root/'src/data';dist=root/'dist';read=lambda n:json.loads((data/(n+'.json')).read_text());article=read('dongjak-article-copy');common=read('dongjak-common-copy');pages=read('pages');c=read('region-coverage');ui=read('dongjak-ui-copy');products=read('products');config=read('site-config')
+ indexable=os.environ.get('SITE_INDEXABLE')=='true';origin=os.environ.get('SITE_URL') or config['previewUrl']
  for file,expected_hash in [('dongjak-article-copy','428b4c3a66e648c15cf35c3887aee619c1e8eeb724f98ea8cdaa044e55001489'),('dongjak-common-copy','b158fa9b9faa4049f11b94c8023073ab3aee7fa8fdd3088b7e5b6d5a9701649f')]:assert hashlib.sha256((data/(file+'.json')).read_bytes()).hexdigest()==expected_hash,'Approved copy byte drift'
  assert len(pages)==1 and pages[0]['url']=='/regions/dongjak-funeral-wreath/','N1 route drift'
  detail_rel='regions/dongjak-funeral-wreath/index.html';expected={'index.html','regions/index.html','404.html',detail_rel};files={p.relative_to(dist).as_posix() for p in dist.rglob('*.html')};assert files==expected,'Unexpected standalone or missing HTML route'
@@ -54,8 +56,8 @@ def inspect(root=Path('.'),write=True):
    path=u.path or ('/'+rel.removesuffix('index.html') if rel!='index.html' else '/')
    target='index.html' if path=='/' else path.lstrip('/')+'index.html' if path.endswith('/') else path.lstrip('/')
    if u.fragment:assert u.fragment in allids[target],'Broken fragment '+link['attrs']['href']
-  old=Document((dist/rel).read_text());assert old.meta['robots']=='noindex,nofollow,noarchive','Preview robots drift'
-  if rel!='404.html':assert old.canonical==[config['previewUrl']+('/' if rel=='index.html' else '/'+rel.removesuffix('index.html'))],'Canonical drift'
+  old=Document((dist/rel).read_text());expected_robots=('noindex,nofollow,noarchive' if rel=='404.html' else 'noindex,follow' if rel=='regions/index.html' else 'index,follow') if indexable else 'noindex,nofollow,noarchive';assert old.meta['robots']==expected_robots,'Mode robots drift'
+  if rel!='404.html':assert old.canonical==[origin+('/' if rel=='index.html' else '/'+rel.removesuffix('index.html'))],'Canonical drift'
   else:assert not old.canonical,'404 canonical forbidden'
   footer=doc.where('footer');assert len(footer)==1
   for text in [common['footer']['brandLine'],common['footer']['phoneLinkText'],common['footer']['homeLinkText']]:assert text in footer[0]['text'],'Footer copy drift'
@@ -118,9 +120,17 @@ def inspect(root=Path('.'),write=True):
   path='/images/shared-banners/'+banner['file'];assert hashlib.sha256((dist/path.lstrip('/')).read_bytes()).hexdigest()==banner['sha256'],'Banner byte drift';assert asset_counts[path]==2,'Banner route count drift'
   for doc in docs.values():
    for n in doc.where('img',key='src',value=path):assert n['attrs']['alt']==banner['alt'],'Banner alt drift'
- assert config['productionApproved'] is False and config['hostnameOwnershipVerified'] is False,'Publication guard drift'
- assert 'Disallow: /' in (dist/'robots.txt').read_text(),'Preview robots text drift';assert not list(dist.glob('sitemap*.xml')),'Preview sitemap unexpectedly nonempty'
- report={'scope':'Static HTML only; screen/public HTTP/search unverified','htmlFiles':4,'details':[{'url':pages[0]['url'],'anchors':2,'productCards':4,'faq':2,'sourceSectionH2':1,'approvedCopyPreserved':True}],'uniqueSku':4,'legalEntries':9,'adminEntries':15,'officialRelations':18,'legalFacilityLinks':2,'administrativeFacilityLinks':0,'directoryCards':1,'directoryBanners':0,'directoryIndexable':False,'productionApproved':False,'canonicalOrigin':config['previewUrl'],'hostnameOwnershipVerified':False,'approvedArticleParagraphs':len(expected_body)}
+ assert config['productionApproved'] is True and config['hostnameOwnershipVerified'] is False,'Publication guard drift'
+ if not indexable:assert not list(dist.glob('sitemap*.xml')),'Mode sitemap unexpectedly present in preview'
+ urls=[]
+ for xml in dist.glob('sitemap*.xml'):
+  doc=ET.parse(xml)
+  if doc.getroot().tag.rsplit('}',1)[-1]=='urlset':urls.extend(n.text for n in doc.iter() if n.tag.rsplit('}',1)[-1]=='loc')
+ expected_urls={origin+'/',origin+'/regions/dongjak-funeral-wreath/'} if indexable else set()
+ assert len(urls)==len(set(urls)) and set(urls)==expected_urls,'Mode sitemap drift'
+ lines=[line.strip() for line in (dist/'robots.txt').read_text().splitlines() if line.strip()]
+ assert lines==(['User-agent: *','Allow: /','Sitemap: '+origin+'/sitemap-index.xml'] if indexable else ['User-agent: *','Disallow: /']),'Mode robots text drift'
+ report={'scope':'Static HTML only; screen/public HTTP/search unverified','htmlFiles':4,'details':[{'url':pages[0]['url'],'anchors':2,'productCards':4,'faq':2,'sourceSectionH2':1,'approvedCopyPreserved':True}],'uniqueSku':4,'legalEntries':9,'adminEntries':15,'officialRelations':18,'legalFacilityLinks':2,'administrativeFacilityLinks':0,'directoryCards':1,'directoryBanners':0,'directoryIndexable':False,'productionApproved':config['productionApproved'],'canonicalOrigin':origin,'hostnameOwnershipVerified':False,'approvedArticleParagraphs':len(expected_body)}
  if write:(root/'dongjak-static-qa.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
  print('DONGJAK STATIC QA: '+json.dumps(report,ensure_ascii=False));return report
 if __name__=='__main__':inspect()
