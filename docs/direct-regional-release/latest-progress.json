@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-13T18:19:45.148548+00:00",
+  "updatedAt": "2026-10-13T19:02:04Z",
   "mode": "direct-github-static",
   "status": "reconciled_latest_progress_supplement",
   "historicalCheckpoint": "checkpoint.json",
@@ -124,13 +124,13 @@
       "officialCode": "11530",
       "active": false,
       "owner": "prepare_rich_guro_site",
-      "executionState": "complete_public_release_and_indexnow_receipt_verified",
+      "executionState": "performed_existing_site_phone_banner_update_independent_public_http_pending",
       "progressPath": "seoul-guro/progress.json",
       "sourceBranch": "site-factory-seoul-guro-direct",
-      "sourceRevision": "1b7b6420f8370315644044dd7ec351b294489a26",
-      "sourceState": "exact_successor_saved_built_published_and_independently_verified",
+      "sourceRevision": "12e59a1af986a84773ff066fe2bd427fcb7b746f",
+      "sourceState": "exact_successor_deployed_ci_and_receipt_verified_independent_http_pending",
       "publicationAuthorized": true,
-      "updatedAt": "2026-10-13T02:50:45Z",
+      "updatedAt": "2026-10-13T19:02:04Z",
       "technicalReview": "PASS_EXACT_SUCCESSOR_SOURCE_AND_ACTUAL_CI_ARTIFACT",
       "screenQa": "PASS_INHERITED_PREVIEW_PIXELS_WITH_EXACT_METADATA_ONLY_SUCCESSOR_BINDING_AND_PUBLIC_DESKTOP_SPOTCHECK",
       "visualQa": {
@@ -156,10 +156,23 @@
         "sourceApprovalChanged": false
       },
       "baselineSourceRevision": "500d82d01c1cdaed3ebde047bb3ce056705daac1",
-      "releaseEvidence": "seoul-guro/public-release-20261013/release-verification.json",
+      "releaseEvidence": "seoul-guro/public-banner-update-20261013/release-verification.json",
       "publicUrl": "https://seoul-guro.fwith.kr/",
-      "runId": 38338220101,
-      "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6137055905"
+      "runId": 38451389423,
+      "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6152986545",
+      "initialPublicationSnapshot20261013": {
+        "sourceRevision": "1b7b6420f8370315644044dd7ec351b294489a26",
+        "runId": 38338220101,
+        "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6137055905",
+        "releaseEvidence": "seoul-guro/public-release-20261013/release-verification.json",
+        "executionState": "complete_public_release_and_indexnow_receipt_verified",
+        "sourceState": "exact_successor_saved_built_published_and_independently_verified",
+        "updatedAt": "2026-10-13T02:50:45Z"
+      },
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38451389423",
+      "requestedSharedBannerPhoneUpdateComplete": false,
+      "independentPublicHttpVerified": false,
+      "currentStateBoundary": "The initial-publication snapshot and original preparation/source/QA/dependency/release-approval fields retain their historical source-specific meaning. The existing region remains counted as released. This later phone-banner update was performed, but separate independent public HTTP verification is incomplete or pending; it is not recorded as a completed banner update."
     },
     "seoul-geumcheon": {
       "scopeKey": "seoul-geumcheon-direct-independent-preparation-20261012",
@@ -483,11 +496,14 @@
     }
   ],
   "requestedSharedBannerUpdate20261013": {
-    "status": "geumcheon_yeongdeungpo_dongjak_gwanak_requested_phone_banner_revisions_publicly_verified",
+    "status": "five_named_regional_phone_banner_updates_verified_two_performed_updates_pending_independent_public_http",
     "requestedChange": "Add 1844-0644 to each of the three shared banners and remove the common AI-generated-image caption. Do not rewrite customer article copy.",
-    "completedPublicHostsNeedingFollowup": [],
+    "completedPublicHostsNeedingFollowup": [
+      "seoul-gangseo.fwith.kr",
+      "seoul-guro.fwith.kr"
+    ],
     "initialPublicationsAwaitingUpdatedBinding": [],
-    "boundary": "These four regional hosts have the approved phone images, removed caption and phone-inclusive alt. Other existing-site banner updates remain separately owned and are not marked complete here. National completed-region count remains52.",
+    "boundary": "The four prior verified regional banner updates and the independently verified Yangcheon update are complete. Gangseo and Guro were deployed and have IndexNow receipts, but remain incomplete/pending at the separate independent public HTTP gate. These existing-site updates add no new regional release; national progress remains 52 of 230.",
     "completedWithRequestedBannerRevision": [
       {
         "host": "seoul-dongjak.fwith.kr",
@@ -508,6 +524,39 @@
         "host": "seoul-yeongdeungpo.fwith.kr",
         "sourceRevision": "5cfc90bc5d89a3d1f57d941e57ec4364404ec718",
         "evidencePath": "seoul-yeongdeungpo/public-banner-update-20261013/release-verification.json"
+      },
+      {
+        "host": "seoul-yangcheon.fwith.kr",
+        "sourceRevision": "9e9b793d42753752a531a55a0a476fdc2d4c33e7",
+        "evidencePath": "seoul-yangcheon/public-banner-update-20261013/release-verification.json"
+      }
+    ],
+    "existingSiteUpdatesPendingIndependentPublicHttp": [
+      {
+        "host": "seoul-gangseo.fwith.kr",
+        "state": "performed_existing_site_phone_banner_update_independent_public_http_incomplete",
+        "sourceRevision": "8f646d1287750734a053589b32cfaee78b63e632",
+        "runId": 38449812259,
+        "publicationPerformed": true,
+        "IndexNowSubmitted": true,
+        "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6152781529",
+        "independentPublicPathsVerified": 13,
+        "independentPublicPathsExpected": 25,
+        "publicCompletionVerified": false,
+        "evidencePath": "seoul-gangseo/public-banner-update-20261013/release-verification.json"
+      },
+      {
+        "host": "seoul-guro.fwith.kr",
+        "state": "performed_existing_site_phone_banner_update_independent_public_http_pending",
+        "sourceRevision": "12e59a1af986a84773ff066fe2bd427fcb7b746f",
+        "runId": 38451389423,
+        "publicationPerformed": true,
+        "IndexNowSubmitted": true,
+        "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6152986545",
+        "independentPublicPathsVerified": 0,
+        "independentPublicPathsExpected": 24,
+        "publicCompletionVerified": false,
+        "evidencePath": "seoul-guro/public-banner-update-20261013/release-verification.json"
       }
     ]
   }

@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-13T02:19:38Z",
+  "updatedAt": "2026-10-13T19:02:04Z",
   "mode": "direct-github-static",
   "scopeKey": "seoul-gangseo-direct-initial-20261012",
   "region": "서울 강서구",
   "officialCode": "11500",
-  "status": "complete_public_release_and_indexnow_receipt_verified",
+  "status": "performed_existing_site_phone_banner_update_independent_public_http_incomplete",
   "owner": {
     "checkpointId": "direct-seoul-gangseo-20261012T172919Z",
     "active": false,
     "mainWriteActive": false,
-    "executionState": "publication complete; no deployment in flight"
+    "executionState": "Publication performed; independent public HTTP verification incomplete; no deployment in flight."
   },
-  "sourceRevision": "f7f2b9d017b8b8352aae8b0339b5a2cac0da1d32",
+  "sourceRevision": "8f646d1287750734a053589b32cfaee78b63e632",
   "sourceBranch": "site-factory-seoul-gangseo-direct",
   "sourceRoot": "site-factory/seoul-gangseo-flower",
   "hostname": "seoul-gangseo.fwith.kr",
@@ -33,23 +33,59 @@
   },
   "publication": {
     "performed": true,
-    "actionsRun": 38335910005,
-    "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38335910005",
-    "controlRevision": "b0ca4fa8a7a3c7e6565fc40e840e2209688b5188",
-    "triggerIssue": "https://github.com/joseungil-kr/fwith-site-factory/issues/283",
-    "publicHttpVerified": true,
-    "independentPublicPaths": 23,
-    "internalLinksVerified": 55,
-    "fragmentAnchorsVerified": 12,
+    "state": "performed_existing_site_phone_banner_update_independent_public_http_incomplete",
+    "sourceRevision": "8f646d1287750734a053589b32cfaee78b63e632",
+    "controlRevision": "d94bdbb2d798255326b9c466d5d39cc59662f908",
+    "runId": 38449812259,
+    "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38449812259",
+    "triggerIssue": "https://github.com/joseungil-kr/fwith-site-factory/issues/302",
+    "existingUpdate": true,
+    "hostnameAttachPerformed": false,
+    "ciPublicHttpVerified": true,
+    "publicHttpVerified": false,
+    "independentPublicHttpVerified": false,
+    "independentPublicPathsVerified": 13,
+    "independentPublicPathsExpected": 25,
     "publicUrl": "https://seoul-gangseo.fwith.kr/",
+    "indexNow": {
+      "attempt": 1,
+      "endpoint": "https://searchadvisor.naver.com/indexnow",
+      "fingerprint": "822ead4779e0dd6e9675927f43a3607b2fc17309d44978bc8a7839d62c896f31",
+      "httpStatus": 200,
+      "origin": "https://seoul-gangseo.fwith.kr",
+      "recordedAt": "2026-10-13T18:50:27.969216+00:00",
+      "revision": "8f646d1287750734a053589b32cfaee78b63e632",
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38449812259",
+      "searchIndexing": "not_verified",
+      "siteKey": "seoul-gangseo-flower-direct",
+      "state": "received",
+      "urlCount": 6,
+      "urlSetSha256": "f374b845fe6a42e2e0b715e89f0920ec5f0d2f689b98dc6b0c4b42185d4aca20",
+      "urls": [
+        "https://seoul-gangseo.fwith.kr/",
+        "https://seoul-gangseo.fwith.kr/regions/",
+        "https://seoul-gangseo.fwith.kr/regions/hwagok-dong-gangseo-artrium-performance-wreath/",
+        "https://seoul-gangseo.fwith.kr/regions/magok-dong-ewha-seoul-funeral-wreath/",
+        "https://seoul-gangseo.fwith.kr/regions/magok-dong-mplus-office-congrats-wreath/",
+        "https://seoul-gangseo.fwith.kr/regions/oebalsan-dong-mayfield-wedding-wreath/"
+      ],
+      "commentId": 6152781529,
+      "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6152781529",
+      "originalCommentApiSha256": "388213ef7ea7fba925ef36bd1dfabad764b2c4093eef9c1faec85630c92cfe28",
+      "exactReceiptPayloadReadbackVerified": true,
+      "postCountInOriginalObservationLog": 1,
+      "actualSearchIndexing": "not_verified"
+    },
+    "actualIndexingVerified": false,
+    "evidencePath": "public-banner-update-20261013/release-verification.json",
+    "actionsRun": 38449812259,
+    "independentPublicPaths": 13,
     "indexNowReceipt": {
       "state": "received",
       "httpStatus": 200,
       "urlCount": 6,
-      "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6136738105"
-    },
-    "actualIndexingVerified": false,
-    "evidencePath": "public-release-20261013/release-verification.json"
+      "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6152781529"
+    }
   },
   "approvalWaiting": {
     "action": "Create exactly one existing owner-only GitHub release trigger issue; never use banner/Nowon issue approval",
@@ -70,12 +106,14 @@
     },
     "triggerIssue": 283
   },
-  "nextAction": "Gangseo public release and IndexNow receipt are verified. Continue the prepared Guro release after current source, controls and approval gates; do not republish Gangseo.",
+  "nextAction": "Independent HTTP is 13 of 25, blocked by an environment tunnel403 without an origin response. Keep the remaining 12 paths unverified; do not issue new GETs, a duplicate trigger, deployment or IndexNow submission from this record.",
   "unchangedDenominators": {
     "national": 230,
     "regionalArticles": 4
   },
-  "remaining": [],
+  "remaining": [
+    "Complete the separate independent public HTTP gate when permitted; do not duplicate the existing deployment or IndexNow submission."
+  ],
   "limitations": [
     "Actual indexing/ranking is not verified; IndexNow 200 is a received submission.",
     "Parent web reader and a separate urllib client had access limits; exact recorded public QA requests and cloud Chrome were verified.",
@@ -106,5 +144,55 @@
     "sourceApprovalChanged": false
   },
   "publicVisualSpotCheck": "public-release-20261013/live-browser-spot-check.json",
-  "releaseEvidence": "public-release-20261013/release-verification.json"
+  "releaseEvidence": "public-banner-update-20261013/release-verification.json",
+  "initialPublicationSnapshot20261013": {
+    "nextAction": "Gangseo public release and IndexNow receipt are verified. Continue the prepared Guro release after current source, controls and approval gates; do not republish Gangseo.",
+    "owner": {
+      "checkpointId": "direct-seoul-gangseo-20261012T172919Z",
+      "active": false,
+      "mainWriteActive": false,
+      "executionState": "publication complete; no deployment in flight"
+    },
+    "publication": {
+      "performed": true,
+      "actionsRun": 38335910005,
+      "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38335910005",
+      "controlRevision": "b0ca4fa8a7a3c7e6565fc40e840e2209688b5188",
+      "triggerIssue": "https://github.com/joseungil-kr/fwith-site-factory/issues/283",
+      "publicHttpVerified": true,
+      "independentPublicPaths": 23,
+      "internalLinksVerified": 55,
+      "fragmentAnchorsVerified": 12,
+      "publicUrl": "https://seoul-gangseo.fwith.kr/",
+      "indexNowReceipt": {
+        "state": "received",
+        "httpStatus": 200,
+        "urlCount": 6,
+        "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6136738105"
+      },
+      "actualIndexingVerified": false,
+      "evidencePath": "public-release-20261013/release-verification.json"
+    },
+    "releaseEvidence": "public-release-20261013/release-verification.json",
+    "remaining": [],
+    "sourceRevision": "f7f2b9d017b8b8352aae8b0339b5a2cac0da1d32",
+    "status": "complete_public_release_and_indexnow_receipt_verified",
+    "updatedAt": "2026-10-13T02:19:38Z"
+  },
+  "previousPublishedRevision": "f7f2b9d017b8b8352aae8b0339b5a2cac0da1d32",
+  "sharedBannerPhoneUpdate20261013": {
+    "state": "performed_existing_site_phone_banner_update_independent_public_http_incomplete",
+    "sourceRevision": "8f646d1287750734a053589b32cfaee78b63e632",
+    "runId": 38449812259,
+    "qaRunId": 38440987302,
+    "publicationPerformed": true,
+    "IndexNowSubmitted": true,
+    "publicCompletionVerified": false,
+    "independentPublicHttpVerified": false,
+    "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6152781529",
+    "evidencePath": "public-banner-update-20261013/release-verification.json",
+    "articleCopyChanged": false,
+    "newRegionCount": 0
+  },
+  "currentStateBoundary": "The initial-publication snapshot and original preparation/source/QA/dependency/release-approval fields retain their historical source-specific meaning. The existing region remains counted as released. This later phone-banner update was performed, but separate independent public HTTP verification is incomplete or pending; it is not recorded as a completed banner update."
 }
