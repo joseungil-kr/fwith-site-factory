@@ -1,0 +1,25 @@
+---
+import SharedFlowerBanner from '../components/SharedFlowerBanner.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCards from '../components/ProductCards.astro';
+import pages from '../data/pages.json';
+import products from '../data/products.json';
+import approvedCopy from '../lib/dongjak-copy.mjs';
+import {assertRegionalInput} from '../lib/regional-runtime.mjs';
+assertRegionalInput(pages);
+const copy=approvedCopy.common.home;
+const hero=products[0];
+---
+<BaseLayout title={copy.title} description={copy.description} canonicalPath="/" socialProduct={hero} socialImageAlt={hero.imageAlt}>
+<section class="home-hero">
+ <div class="hero-copy"><span class="eyebrow">{approvedCopy.common.brandName}</span><h1>{copy.h1}</h1><p>{copy.intro}</p>
+ <div class="actions"><a class="btn primary" href={copy.consultationButton.href}>{copy.consultationButton.label}</a></div></div>
+ <div class="hero-products" aria-label={copy.productsHeading}><a class="hero-product" href={hero.orderUrl} data-product-family={hero.family} data-product-key={hero.key}><img src={hero.img} alt={hero.imageAlt} loading="eager" width="500" height="500"/><span>{hero.name}<strong>{hero.priceLabel}</strong></span></a></div>
+</section>
+<SharedFlowerBanner variant="message"/>
+<section class="purpose-navigation" data-region-navigation><div class="section-title"><h2>{copy.sectionHeading}</h2></div><div class="purpose-grid">{copy.cards.map(card=><a class="page-card purpose-card" href={card.href}><strong>{card.title}</strong><span>{card.summary}</span><em>{card.buttonLabel}</em></a>)}</div></section>
+<section class="product-section" data-home-selection><div class="section-title"><h2>{copy.productsHeading}</h2></div><ProductCards products={products} noticeMode="body-covered"/></section>
+<SharedFlowerBanner variant="budget"/>
+<section class="home-consultation"><h2>{copy.consultationHeading}</h2><p>{copy.consultationText}</p><a class="btn primary" href={copy.consultationButton.href}>{copy.consultationButton.label}</a><p class="product-notice">{copy.priceDeliveryNote}</p><p class="product-notice">{copy.materialsAndCollectionNote}</p></section>
+<SharedFlowerBanner variant="consultation"/>
+</BaseLayout>

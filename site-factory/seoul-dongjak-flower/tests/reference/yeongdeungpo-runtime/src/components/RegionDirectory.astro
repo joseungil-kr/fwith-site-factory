@@ -1,0 +1,43 @@
+---
+import {planDirectoryBannerSplit} from '../lib/directory-banner-split.mjs';
+import {publishedDestinationsByUnit} from '../lib/directory-links.mjs';
+import {groupsFor,coverage as sourceCoverage} from '../lib/regional-runtime.mjs';
+import approvedCopy from '../data/yeongdeungpo-copy.json';
+import SharedFlowerBanner from './SharedFlowerBanner.astro';
+import InlineOrderBanner from './InlineOrderBanner.astro';
+const {pages,showBanners=true}=Astro.props;
+import ui from '../data/yeongdeungpo-ui-copy.json';
+const copy={...approvedCopy.common.directory,...ui.directory};
+const common=approvedCopy.common;
+const coverage=sourceCoverage as any;
+const districts=groupsFor(pages) as any[];
+const directoryBannerPlan=planDirectoryBannerSplit(districts.map(d=>d.items.length),showBanners);
+const destinations=publishedDestinationsByUnit(districts) as Map<string,{href:string;name:string;candidateId:string}[]>;
+---
+<section class="category-hero">
+ <span class="eyebrow">{common.brandName}</span>
+ <h1>{copy.h1}</h1>
+ <p>{copy.description}</p>
+ <div class="actions"><a class="btn primary" href={common.phoneHref}>{common.footer.phoneLinkText}</a></div>
+</section>
+{showBanners && <SharedFlowerBanner variant="message"/>}
+{districts.map((district,index)=><section id={district.key} data-region-district={district.key}>
+ <div class="section-title"><h2>{copy.districtHeading}</h2></div>
+ {(index===directoryBannerPlan.districtIndex ? [district.items.slice(0,directoryBannerPlan.itemIndex),district.items.slice(directoryBannerPlan.itemIndex)].filter(items=>items.length>0) : [district.items]).map((items,segmentIndex)=><>
+ <div class="card-grid big">{items.map(({representative,page}:any)=><a class="page-card" href={page.url} data-region-unit={representative.unitKeys.join('|')}><strong>{copy.cards.find(card=>card.href===page.url)?.title}</strong><span>{copy.cards.find(card=>card.href===page.url)?.summary}</span><em>{copy.cards.find(card=>card.href===page.url)?.buttonLabel}</em></a>)}</div>
+ {index===directoryBannerPlan.districtIndex && segmentIndex===0 && <SharedFlowerBanner variant="budget"/>}
+ </>)}
+ <section class="content-card"><h3>{copy.legalHeading}</h3>
+ <ul class="decision-list">{coverage.units.filter((u:any)=>u.districtKeys.includes(district.key)).map((u:any)=><li data-legal-unit={u.unitKey}><strong>{u.name}</strong>{(destinations.get(u.unitKey)||[]).length ? (destinations.get(u.unitKey)||[]).map((entry,index)=><>{index>0?' / ':' · '}<a href={entry.href} data-candidate-id={entry.candidateId}>{entry.name}</a></>) : <span> ({copy.emptyUnitLabel})</span>}</li>)}</ul></section>
+ <InlineOrderBanner compact={true}/>
+ <details class="content-card"><summary>{copy.administrativeSummary}</summary>
+ <p>{copy.administrativeNote}</p>
+ <ul class="decision-list">{coverage.administrativeCrosswalk.filter((a:any)=>a.districtKey===district.key).map((admin:any)=><li data-administrative-unit={admin.aliasKey}><strong>{admin.name}</strong>: {admin.relations.map((relation:any,index:number)=>{
+ const unit=coverage.units.find((unit:any)=>unit.unitKey===relation.unitKey);
+ if(!unit)throw new Error('Administrative relation lacks a legal unit');
+ return <>{index>0?' · ':''}<span>{unit.name}{relation.scope==='partial'?' '+copy.partialLabel:''}</span></>;
+ })}</li>)}</ul>
+ <a href={district.sourceUrl} rel="nofollow">{copy.officialAreaLinkLabel}</a>
+ </details>
+</section>)}
+{showBanners && <SharedFlowerBanner variant="consultation"/>}

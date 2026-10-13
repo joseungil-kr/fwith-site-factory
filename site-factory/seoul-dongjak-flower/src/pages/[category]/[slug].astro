@@ -1,0 +1,41 @@
+---
+import SharedFlowerBanner from '../../components/SharedFlowerBanner.astro';
+import FaqSection from '../../components/FaqSection.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductCards from '../../components/ProductCards.astro';
+import pages from '../../data/pages.json';
+import products from '../../data/products.json';
+import approvedCopy from '../../lib/dongjak-copy.mjs';
+import ui from '../../data/dongjak-ui-copy.json';
+import {selectProducts} from '../../lib/catalog.mjs';
+import {pageSources} from '../../lib/sources.mjs';
+import {assertRegionalInput} from '../../lib/regional-runtime.mjs';
+assertRegionalInput(pages);
+export function getStaticPaths(){return (pages as any[]).map(p=>({params:{category:p.category,slug:p.slug},props:{page:p}}));}
+const {page}=Astro.props;
+const copy=approvedCopy.article;
+if(copy.pageKey!==page.pageKey)throw new Error('Missing exact approved article');
+const productSet=selectProducts(page,products,4),hero=productSet[0];
+const sources=pageSources(page);
+const approvedSourceNames=new Map(copy.sourceLinks.map(source=>[source.url,source.label]));
+for(const source of sources)if(!approvedSourceNames.has(source.url))throw new Error('Missing approved source display label: '+source.url);
+const [productSection,...bodySections]=copy.sections;
+---
+<BaseLayout title={copy.title} description={copy.description} canonicalPath={page.url} socialProduct={hero} socialImageAlt={page.ogImageAlt}>
+<article data-snapshot-id={page.snapshotId} data-page-key={page.pageKey} data-page-type={page.pageType} data-query-class={page.queryClass} data-visual-intent={page.visualIntent} data-asset-slot={page.assetSlot}>
+<nav class="breadcrumb" aria-label={ui.accessibility.breadcrumb}><a href="/">{approvedCopy.common.navigation[0].label}</a><span>›</span><a href="/regions/">{ui.directory.navLabel}</a><span>›</span><span>{copy.h1}</span></nav>
+<section class="detail-hero"><div><span class="eyebrow">{approvedCopy.common.brandName}</span><h1>{copy.h1}</h1><p>{copy.firstAnswer}</p><div class="actions"><a class="btn primary" href={copy.primaryCta.href}>{copy.primaryCta.label}</a><a class="btn dark" href={hero.orderUrl} data-order-product-key={hero.key}>{ui.directory.productCtaLabel}</a></div><ul class="facility-links">{copy.facilityLinks.map(link=><li><a href={link.href}>{link.label}</a></li>)}</ul></div>
+<div class="detail-product" data-product-family={hero.family} data-product-key={hero.key}><img src={hero.img} alt={hero.imageAlt} loading="eager" width="500" height="500"/><strong>{hero.name}</strong><span>{hero.priceLabel}</span></div>
+</section>
+<SharedFlowerBanner variant="message"/>
+<div class="markdown-content" data-approved-body>
+<section class="product-section compact" id={productSection.id}><h2>{productSection.heading}</h2><p>{productSection.paragraphs?.[0]}</p><ProductCards products={productSet} noticeMode="body-covered"/>{productSection.paragraphs?.slice(1).map(text=><p>{text}</p>)}</section>
+<SharedFlowerBanner variant="budget"/>
+{bodySections.map(section=><section class="content-card" id={section.id}><h2>{section.heading}</h2>{section.paragraphs?.map(text=><p>{text}</p>)}{section.subsections?.map(sub=><section class="facility-section"><h3 id={sub.id}>{sub.heading}</h3>{sub.paragraphs.map(text=><p>{text}</p>)}</section>)}</section>)}
+</div>
+<FaqSection items={page.faq} title={approvedCopy.common.faqHeading}/>
+<SharedFlowerBanner variant="consultation"/>
+<section class="source-references" aria-labelledby="source-references-title"><h2 id="source-references-title">{copy.sourceHeading}</h2><p>{copy.sourceNote}</p>
+{sources.map(source => <section class="source-card" data-source-type={source.type} data-source-name={source.name} data-source-verified-at={source.verifiedAt}><h3><a href={source.url} rel="nofollow" aria-label={approvedSourceNames.get(source.url)}>{approvedSourceNames.get(source.url)}</a></h3><small><time datetime={source.verifiedAt}>{source.verifiedAt}</time></small></section>)}
+</section>
+</article></BaseLayout>

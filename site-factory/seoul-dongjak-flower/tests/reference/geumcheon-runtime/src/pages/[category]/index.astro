@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import pages from '../../data/pages.json';
+import products from '../../data/products.json';
+import approvedCopy from '../../data/geumcheon-copy.json';
+import {groups} from '../../config/site';
+import RegionDirectory from '../../components/RegionDirectory.astro';
+export function getStaticPaths(){return groups.filter(g=>g.cat==='regions').map(g=>({params:{category:g.cat},props:{group:g}}));}
+const {group}=Astro.props;
+const items=(pages as any[]).filter(p=>p.category===group.cat);
+const copy=approvedCopy.common.directory;
+const navigation=approvedCopy.common.navigation;
+---
+<BaseLayout title={copy.title} description={copy.description} canonicalPath={group.url} noindex={items.length < 3} socialProduct={products[0]}>
+<nav class="breadcrumb" aria-label="현재 위치"><a href="/">{navigation.breadcrumbs[0]}</a><span>›</span><span>{navigation.breadcrumbs[1]}</span></nav>
+<RegionDirectory pages={items} showBanners={items.length>=3}/>
+</BaseLayout>

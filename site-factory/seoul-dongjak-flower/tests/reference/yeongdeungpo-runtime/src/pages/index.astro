@@ -1,0 +1,26 @@
+---
+import SharedFlowerBanner from '../components/SharedFlowerBanner.astro';
+import InlineOrderBanner from '../components/InlineOrderBanner.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCards from '../components/ProductCards.astro';
+import pages from '../data/pages.json';
+import products from '../data/products.json';
+import approvedCopy from '../data/yeongdeungpo-copy.json';
+import {assertRegionalInput} from '../lib/regional-runtime.mjs';
+assertRegionalInput(pages);
+const copy=approvedCopy.common.home;
+const featured=[products[0],products[4]];
+---
+<BaseLayout title={copy.title} description={copy.description} canonicalPath="/" socialProduct={featured[0]} socialImageAlt={featured[0].imageAlt}>
+<section class="home-hero">
+ <div class="hero-copy"><span class="eyebrow">{approvedCopy.common.brandName}</span><h1>{copy.h1}</h1><p>{copy.intro}</p>
+ <div class="actions"><a class="btn primary" href={copy.consultationButton.href}>{copy.consultationButton.label}</a></div></div>
+ <div class="hero-products" aria-label={approvedCopy.articles[0].productHeading}>{featured.map((p:any)=><a class="hero-product" href={p.orderUrl} data-product-family={p.family} data-product-key={p.key}><img src={p.img} alt={p.imageAlt} loading="eager" width="500" height="500"/><span>{p.name}<strong>{p.priceLabel}</strong></span></a>)}</div>
+</section>
+<SharedFlowerBanner variant="message"/>
+<section class="purpose-navigation" data-region-navigation><div class="section-title"><h2>{copy.sectionHeading}</h2></div><div class="purpose-grid">{copy.cards.map(card=><a class="page-card purpose-card" href={card.href}><strong>{card.title}</strong><span>{card.summary}</span><em>{card.buttonLabel}</em></a>)}</div></section>
+<SharedFlowerBanner variant="budget"/>
+<section class="product-section" data-home-selection><div class="section-title"><h2>{approvedCopy.articles[0].productHeading}</h2></div><ProductCards products={products}/></section>
+<SharedFlowerBanner variant="consultation"/>
+<InlineOrderBanner/>
+</BaseLayout>

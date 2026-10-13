@@ -1,0 +1,13 @@
+# Dongjak local source preparation
+
+This is an unpublished Astro static site for 서울특별시 동작구 (11590). The frozen plan has one customer article at /regions/dongjak-funeral-wreath/, two facility anchors, twelve candidate leads (two active, ten held), and the official nine legal dongs, fifteen administrative dongs and eighteen relations. Geography counts are not article quotas.
+
+The exact independently COPY-reviewed revision 6 is stored unchanged in src/data/dongjak-article-copy.json and src/data/dongjak-common-copy.json. Source rendering reads those files directly. All thirteen body paragraphs, two visible FAQ answers, six official source links, four actual product cards, and their names, basic prices and individual order links are retained. The article's first section contains product cards after its first paragraph. Sources follow the final consultation banner. Extra accessibility, geography and explicitly named B201 CTA labels are isolated in src/data/dongjak-ui-copy.json for independent interface review.
+
+productionApproved=false and publicationAuthorized=false. SITE_INDEXABLE=true fails before build. The preview origin is https://dongjak-preview.invalid; this reserved placeholder is not a public site or a verified hostname. All four generated routes are noindex, robots disallows crawling, no customer sitemap is emitted, the one-card directory has zero banners, and home/detail each have the three approved banner assets. 404 has no marketing banner or canonical.
+
+Run npm test, ASTRO_TELEMETRY_DISABLED=1 XDG_CONFIG_HOME=/tmp/dongjak-config npm run build, and npm run qa. Dependencies and lockfile resolutions are inherited. The local preparation uses a read-only link to the existing installed Geumcheon dependencies; that link is not part of the source package. A clean permitted environment should run npm ci from the checked-in lockfile.
+
+Original Guro, Geumcheon and Yeongdeungpo regression tests and source fixtures are preserved under tests/reference. Their original tests run unchanged against the current additive dispatcher. Two duplicate root template-placement test files were relocated byte-for-byte under tests/reference and remain executed in the original fixtures; the Dongjak source and compiled-output tests replace incompatible H2-only / source-before-FAQ assumptions without changing original assertions. See RUNTIME_REGENERATION.md.
+
+Local source/build/test evidence does not establish browser rendering, public HTTP, source saved to GitHub, deployment, or search indexing. No remote Git objects, commit, ref, issue, workflow, provider, deployment or IndexNow operation is included in this preparation.

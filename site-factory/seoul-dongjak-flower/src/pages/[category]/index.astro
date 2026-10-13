@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import pages from '../../data/pages.json';
+import products from '../../data/products.json';
+import approvedCopy from '../../lib/dongjak-copy.mjs';
+import ui from '../../data/dongjak-ui-copy.json';
+import {groups} from '../../config/site';
+import RegionDirectory from '../../components/RegionDirectory.astro';
+export function getStaticPaths(){return groups.filter(g=>g.cat==='regions').map(g=>({params:{category:g.cat},props:{group:g}}));}
+const {group}=Astro.props;
+const items=(pages as any[]).filter(p=>p.category===group.cat);
+const copy=approvedCopy.common.directory;
+---
+<BaseLayout title={copy.title} description={copy.description} canonicalPath={group.url} noindex={items.length < 3} socialProduct={products[0]} socialImageAlt={products[0].imageAlt}>
+<nav class="breadcrumb" aria-label={ui.accessibility.breadcrumb}><a href="/">{approvedCopy.common.navigation[0].label}</a><span>›</span><span>{ui.directory.navLabel}</span></nav>
+<RegionDirectory pages={items} showBanners={items.length>=3}/>
+</BaseLayout>
