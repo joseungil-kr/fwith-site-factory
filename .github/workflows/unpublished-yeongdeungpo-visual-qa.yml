@@ -4,7 +4,7 @@ on:
     branches: [qa/unpublished-regional-visual-20261012]
     paths:
       - '.github/workflows/unpublished-yeongdeungpo-visual-qa.yml'
-      - '.github/qa/unpublished-yeongdeungpo/**'
+      - '.github/qa/unpublished-yeongdeungpo/banner-successor/**'
   workflow_dispatch:
     inputs:
       site:
@@ -25,9 +25,9 @@ jobs:
       matrix:
         include:
           - key: yeongdeungpo
-            source: ca5c98b12420212d0aa8dd0c9a742f3e94237c07
-            tree: 2fd8165667a6d6e656b3c52a5ee50b6f07f47953
-            repository_tree: 19861c3434da4fff5000c32ac44078f3af66daa0
+            source: 5cfc90bc5d89a3d1f57d941e57ec4364404ec718
+            tree: 367d2c1827f13bdf9f229d9cd767f98e48a0d19c
+            repository_tree: 68e7624876b7e41300446ee25dc19584a5e0e963
             path: site-factory/seoul-yeongdeungpo-flower
             url: https://seoul-yeongdeungpo.fwith.kr
             indexable: 'false'
@@ -36,7 +36,7 @@ jobs:
       PYTHONDONTWRITEBYTECODE: '1'
       SOURCE_ROOT: ${{ github.workspace }}/source
       EVIDENCE_ROOT: ${{ github.workspace }}/evidence/${{ matrix.key }}
-      QA_ROOT: ${{ github.workspace }}/control/.github/qa/unpublished-yeongdeungpo
+      QA_ROOT: ${{ github.workspace }}/control/.github/qa/unpublished-yeongdeungpo/banner-successor
       SITE_FACTORY_REVISION: ${{ matrix.source }}
       SITE_URL: ${{ matrix.url }}
       SITE_ORIGIN: ${{ matrix.url }}
@@ -48,10 +48,16 @@ jobs:
           ref: ${{ github.sha }}
           path: control
           persist-credentials: false
+      - name: Fail closed until exact saved source readback is bound
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -c "import sys; sys.path.insert(0, '$QA_ROOT'); import adapter; adapter.verify_upstream(); adapter.validate_spec(adapter.load(adapter.HERE/'bound-spec.json'))"
       - name: Check out exact saved unpublished source separately
         uses: actions/checkout@v4
         with:
           ref: ${{ matrix.source }}
+          fetch-depth: 2
           path: source
           persist-credentials: false
       - uses: actions/setup-node@v4
@@ -81,10 +87,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # The frozen release guard rejects an explicit nonproduction SITE_URL.
+          # Native code defaults to config.previewUrl; all adapter steps retain
+          # the explicit preview URL, and SITE_INDEXABLE remains false everywhere.
+          test "$SITE_INDEXABLE" = false
+          test "$SITE_URL" = https://seoul-yeongdeungpo.fwith.kr
           for attempt in first second; do
-            npm run build 2>&1 | tee "$EVIDENCE_ROOT/logs/native-build-$attempt.log"
-            npm test 2>&1 | tee "$EVIDENCE_ROOT/logs/native-tests-$attempt.log"
-            npm run qa 2>&1 | tee "$EVIDENCE_ROOT/logs/native-qa-$attempt.log"
+            env -u SITE_URL npm run build 2>&1 | tee "$EVIDENCE_ROOT/logs/native-build-$attempt.log"
+            env -u SITE_URL npm test 2>&1 | tee "$EVIDENCE_ROOT/logs/native-tests-$attempt.log"
+            env -u SITE_URL npm run qa 2>&1 | tee "$EVIDENCE_ROOT/logs/native-qa-$attempt.log"
             python3 "$QA_ROOT/adapter.py" manifest --root "$SOURCE_ROOT" --binding "$EVIDENCE_ROOT/bound-spec.json" --output "$EVIDENCE_ROOT/logs/$attempt.manifest.json"
           done
           cmp "$EVIDENCE_ROOT/logs/first.manifest.json" "$EVIDENCE_ROOT/logs/second.manifest.json"
