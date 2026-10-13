@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "observedAtUtc": "2026-10-13T02:19:38Z",
+  "state": "complete_public_release_and_indexnow_receipt_independently_verified",
+  "repository": "joseungil-kr/fwith-site-factory",
+  "sourceRevision": "f7f2b9d017b8b8352aae8b0339b5a2cac0da1d32",
+  "controlRevision": "b0ca4fa8a7a3c7e6565fc40e840e2209688b5188",
+  "triggerIssue": "https://github.com/joseungil-kr/fwith-site-factory/issues/283",
+  "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38335910005",
+  "runId": 38335910005,
+  "attempt": 1,
+  "publicUrl": "https://seoul-gangseo.fwith.kr/",
+  "originalPlanN": 4,
+  "publishedArticles": 4,
+  "customerHtmlRoutes": 6,
+  "sitemapUrls": 6,
+  "directlyVerified": [
+    "Remote exact source head and all three current publisher controls match approved pins.",
+    "Executed all 42 existing publisher tests.",
+    "Downloaded actual build/result artifacts; SHA256, size, safe ZIP paths and CRC verified.",
+    "All 26 actual release files match release manifest and prior exact-source local build bytes.",
+    "Independent 23 public GET paths verify HTML, SEO, canonical, CTA, all referenced images/CSS, robots, sitemaps, ownership proof and real 404.",
+    "All 55 internal links and 12 fragment targets resolve to exact live pages/IDs.",
+    "Live cloud Chrome desktop home/article pixels and navigation inspected; FAQ visible text and directory expand/collapse directly checked.",
+    "Exact IndexNow received journal entry independently read back."
+  ],
+  "toolReported": [
+    "Provider account/hostname/Worker binding verified by saved readback in deploy runner.",
+    "CI build source 126 tests and all static checks passed; public 23 paths passed.",
+    "IndexNow POST receipt HTTP200 for 6 URLs, attempt 1."
+  ],
+  "visualQa": {
+    "preReleaseActualRun": 38318719004,
+    "reviewSha256": "e4ba5191eec21f124cc2e83db9902f1064ee7bdcc927fff5f8f6dca6fd243dce",
+    "sourcePinUnchanged": true,
+    "publicDesktopSpotCheck": "live-browser-spot-check.json",
+    "publicMobileScreenshotTaken": false
+  },
+  "indexNow": {
+    "state": "received",
+    "httpStatus": 200,
+    "urlCount": 6,
+    "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6136738105",
+    "fingerprint": "6c73a7008dd673d971387734f008ac2c20766a411e74c514c9a0d8af9819e854",
+    "actualSearchIndexing": "not_checked_not_claimed"
+  },
+  "artifacts": [
+    {
+      "id": 11785016404,
+      "kind": "build",
+      "sha256": "cab6ed22b776005cf6c21d1eef26c246b14dcb9cad56f98b8300790e2cd5bac6",
+      "bytes": 1225772
+    },
+    {
+      "id": 11785191029,
+      "kind": "result",
+      "sha256": "c20307e6c1ecf55351c6188d3c708f1a8ff67dacde320326f42b2e0efb57b85c",
+      "bytes": 7281
+    }
+  ],
+  "limitations": [
+    "Parent web reader could not access origin and separate urllib returned 403; successful public readback is bounded to recorded request headers and cloud Chrome, not all possible clients.",
+    "Actual indexing/ranking and paid GSC not claimed.",
+    "Live narrow viewport was not independently recaptured after deployment; exact source visualQA and unchanged published byte binding are retained."
+  ],
+  "publicDataEvidenceLocal": "http-readback contains all 23 raw response bodies and headers; committed response hashes/headers link to actual CI artifact and source.",
+  "evidenceFilesSha256": {
+    "ci-artifact-check.json": "2502dee40ba66085e1e5e3682182ddc710247ba77146770d69cf6c9af1e7dbef",
+    "ci-binding-after.json": "5df0c8645ea95b1fb1524fec8ada22ea0f1bda247bdd1a63aff1632f85c6d332",
+    "ci-binding-before.json": "d0000a9cedfeb8671f1f77527619628544fd07cea1687849f0793ecb00cffe1b",
+    "ci-domain-attach.json": "655e8b1fa99c1cca19812cfdb095c35dbef27561a8f38e503fa21563cac614af",
+    "ci-indexnow-http-observations.json": "37993e808280c0e7861abf5e92dc67a67a3066b3b89cf9bf86bdb04d14116de0",
+    "ci-indexnow-receipt.json": "ca27675217cb5f490fdd4aa2204f7367c604d95e427ea9fb19db60952abbe2c4",
+    "ci-public-http.json": "7e62bf1a09a9a4c8d9a5a292299d6da8a16548e5faf0eee03726eef984c61740",
+    "github-readback.json": "19892c991a11a53be98e3058b19c7ad711a336bcb2e84d3703e997883a039e6e",
+    "independent-public-http.json": "95efec574c00c0f44979dc39715a678846be520ea8dd612e4696ec43b1640019",
+    "independent-response-headers.json": "ed83c2bb16e7155ce3d0b2cf5a99a42e53302beba07a786f9ea31af65cc63543",
+    "live-browser-spot-check.json": "5173274e3570d66624bec09dfe69fa29817a75478c09ee7d5614cc71b114c7e0",
+    "release-manifest.json": "b33856d950fbfb4e03473fb46df0fb99fa41c103e735359a451b0d5dff1fe2a3"
+  }
+}

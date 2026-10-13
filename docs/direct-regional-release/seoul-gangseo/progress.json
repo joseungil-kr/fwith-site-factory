@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-13T01:48:31Z",
+  "updatedAt": "2026-10-13T02:19:38Z",
   "mode": "direct-github-static",
   "scopeKey": "seoul-gangseo-direct-initial-20261012",
   "region": "서울 강서구",
   "officialCode": "11500",
-  "status": "source_saved_controls_verified_awaiting_single_issue_creation_approval",
+  "status": "complete_public_release_and_indexnow_receipt_verified",
   "owner": {
     "checkpointId": "direct-seoul-gangseo-20261012T172919Z",
     "active": false,
     "mainWriteActive": false,
-    "executionState": "safe_pause_after_source_and_control_commit; no deployment in flight"
+    "executionState": "publication complete; no deployment in flight"
   },
   "sourceRevision": "f7f2b9d017b8b8352aae8b0339b5a2cac0da1d32",
   "sourceBranch": "site-factory-seoul-gangseo-direct",
@@ -32,11 +32,24 @@
     "scripts/direct-seoul-gangseo/test_publish.py": "7b061c7feb8a64a358f343ad816b7233bf1239e8231ae83ce420a1da0f655e41"
   },
   "publication": {
-    "performed": false,
-    "actionsRun": null,
-    "publicHttpVerified": false,
-    "indexNowReceipt": null,
-    "actualIndexingVerified": false
+    "performed": true,
+    "actionsRun": 38335910005,
+    "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38335910005",
+    "controlRevision": "b0ca4fa8a7a3c7e6565fc40e840e2209688b5188",
+    "triggerIssue": "https://github.com/joseungil-kr/fwith-site-factory/issues/283",
+    "publicHttpVerified": true,
+    "independentPublicPaths": 23,
+    "internalLinksVerified": 55,
+    "fragmentAnchorsVerified": 12,
+    "publicUrl": "https://seoul-gangseo.fwith.kr/",
+    "indexNowReceipt": {
+      "state": "received",
+      "httpStatus": 200,
+      "urlCount": 6,
+      "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6136738105"
+    },
+    "actualIndexingVerified": false,
+    "evidencePath": "public-release-20261013/release-verification.json"
   },
   "approvalWaiting": {
     "action": "Create exactly one existing owner-only GitHub release trigger issue; never use banner/Nowon issue approval",
@@ -48,29 +61,25 @@
       }
     },
     "requestedAt": "2026-10-12T17:52:50Z",
-    "approved": false,
-    "status": "awaiting_user_reply_via_parent",
-    "noTriggerSent": true,
+    "approved": true,
+    "status": "fulfilled once under subsequent explicit publication request",
+    "noTriggerSent": false,
     "sourcePinAmendedAfterQuestion": {
       "priorSourceRevision": "9692b2cf29a90a4eb3f50e27788293284cffc1b3",
       "reason": "pre-publication reviewed card-spacing fix; same region and single issue action; parent notified"
-    }
+    },
+    "triggerIssue": 283
   },
-  "nextAction": "Resume this unfinished Gangseo source and exact controls; wait for issue-creation approval, then verify current source/main and ownership before one trigger. Do not create the next region or rebuild any completed region.",
+  "nextAction": "Gangseo public release and IndexNow receipt are verified. Continue the prepared Guro release after current source, controls and approval gates; do not republish Gangseo.",
   "unchangedDenominators": {
     "national": 230,
     "regionalArticles": 4
   },
-  "remaining": [
-    "single-issue-creation approval",
-    "actual Actions build/artifact and provider ownership/binding",
-    "public HTTP bytes/SEO/404/images/links",
-    "IndexNow receipt",
-    "Public-site visible FAQ/mobile behavior after separately authorized publication; pinned source runner-loopback visual QA is complete"
-  ],
+  "remaining": [],
   "limitations": [
-    "GSC payment_required previously established; no paid action authorized",
-    "Earlier local Chromium socket denial remains historical; later permitted GitHub Actions runner-local capture and independent pixels completed. Public cloud-browser verification remains pending."
+    "Actual indexing/ranking is not verified; IndexNow 200 is a received submission.",
+    "Parent web reader and a separate urllib client had access limits; exact recorded public QA requests and cloud Chrome were verified.",
+    "Live desktop visual/navigation spot-check completed; prior immutable-source 320/390/1280 visual QA binds to unchanged published bytes. No new live mobile screenshot is claimed."
   ],
   "priorSourceRevision": "9692b2cf29a90a4eb3f50e27788293284cffc1b3",
   "cardSpacingAmendment": "card-spacing-amendment.json",
@@ -95,5 +104,7 @@
     "public404Verified": false,
     "publicationApprovalChanged": false,
     "sourceApprovalChanged": false
-  }
+  },
+  "publicVisualSpotCheck": "public-release-20261013/live-browser-spot-check.json",
+  "releaseEvidence": "public-release-20261013/release-verification.json"
 }

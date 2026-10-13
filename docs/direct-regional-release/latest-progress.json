@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-13T01:48:31Z",
+  "updatedAt": "2026-10-13T02:19:38Z",
   "mode": "direct-github-static",
   "status": "reconciled_latest_progress_supplement",
   "historicalCheckpoint": "checkpoint.json",
@@ -11,7 +11,7 @@
     "region": "서울 강서구",
     "officialCode": "11500",
     "active": false,
-    "executionState": "awaiting_specific_issue_creation_approval",
+    "executionState": "complete_public_release_and_indexnow_receipt_verified",
     "progressPath": "seoul-gangseo/progress.json",
     "sourceRevision": "f7f2b9d017b8b8352aae8b0339b5a2cac0da1d32",
     "visualQa": {
@@ -38,26 +38,27 @@
     }
   },
   "lastCompleted": {
-    "region": "서울 노원구",
-    "officialCode": "11350",
-    "sourceRevision": "c498fe38fb48c8a537e085f1fa200d17c4314e99",
-    "controlRevision": "3497da9f45d9135f1b39a37a039ad8349880e452",
-    "runId": 38282665564,
-    "url": "https://seoul-nowon.fwith.kr/",
-    "progressPath": "seoul-nowon/resume-progress-20261012.json",
-    "evidencePath": "seoul-nowon/release-evidence-20261012.json",
-    "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6129036885"
+    "region": "서울 강서구",
+    "officialCode": "11500",
+    "sourceRevision": "f7f2b9d017b8b8352aae8b0339b5a2cac0da1d32",
+    "controlRevision": "b0ca4fa8a7a3c7e6565fc40e840e2209688b5188",
+    "runId": 38335910005,
+    "url": "https://seoul-gangseo.fwith.kr/",
+    "progressPath": "seoul-gangseo/progress.json",
+    "evidencePath": "seoul-gangseo/public-release-20261013/release-verification.json",
+    "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6136738105"
   },
   "nationalProgress": {
     "fixedPlanPath": "national/fixed-plan.json",
     "plannedRegionCount": 230,
-    "recordedReleasedRegionCount": 46,
-    "remainingRegionCount": 184,
-    "countBasis": "Union43hosts from preserved checkpoint.completedKnownHosts and releasedKnownHosts at main3497da9, plus independently reconciled Eunpyeong/Seodaemun and completed Nowon.43 historical hosts are carried-forward release evidence, not46 fresh simultaneousHTTP checks.31 Gyeonggi and15 Seoul regions; fixed national denominator unchanged.",
+    "recordedReleasedRegionCount": 47,
+    "remainingRegionCount": 183,
+    "countBasis": "Union43hosts from preserved checkpoint.completedKnownHosts and releasedKnownHosts at main3497da9, plus independently reconciled Eunpyeong/Seodaemun and completed Nowon.43 historical hosts are carried-forward release evidence, not46 fresh simultaneousHTTP checks.31 Gyeonggi and15 Seoul regions; fixed national denominator unchanged. Gangseo was independently verified on 2026-10-13 with exact public HTTP bytes and IndexNow 200; this adds one host for 47 total (31 Gyeonggi, 16 Seoul). Historical 46 are carried forward, not 47 simultaneous fresh checks.",
     "reconciledAdditions": [
       "seoul-eunpyeong.fwith.kr",
       "seoul-seodaemun.fwith.kr",
-      "seoul-nowon.fwith.kr"
+      "seoul-nowon.fwith.kr",
+      "seoul-gangseo.fwith.kr"
     ],
     "recordedReleasedHosts": [
       "ansan.fwith.kr",
@@ -87,6 +88,7 @@
       "seoul-dongdaemun.fwith.kr",
       "seoul-eunpyeong.fwith.kr",
       "seoul-gangbuk.fwith.kr",
+      "seoul-gangseo.fwith.kr",
       "seoul-gwangjin.fwith.kr",
       "seoul-jung.fwith.kr",
       "seoul-jungnang.fwith.kr",
@@ -110,20 +112,20 @@
     "priorReconciliationPath": "seoul-nowon/prior-release-reconciliation.json"
   },
   "nextNewRegion": {
-    "region": "서울 강서구",
-    "officialCode": "11500",
-    "status": "prepared_unpublished_resume_before_new_region",
+    "region": "서울 구로구",
+    "officialCode": "11530",
+    "status": "prepared_unpublished_resume_before_any_new_region",
     "strategyPath": "SEARCH_CONTENT_STRATEGY.md",
-    "progressPath": "seoul-gangseo/progress.json",
-    "sourceRevision": "f7f2b9d017b8b8352aae8b0339b5a2cac0da1d32"
+    "progressPath": "seoul-guro/progress.json",
+    "sourceRevision": "500d82d01c1cdaed3ebde047bb3ce056705daac1"
   },
   "scopeNotes": [
     "Existing-site SEO expansion deferred by user; next new region uses rich-content strategy.",
     "Shared-banner retrofit is a separate authorized task; acquire current owner/branch/run state and main writer lease before mutations.",
     "GSC subscription payment_required; IndexNow receipt is not actual indexing or ranking.",
-    "Pinned unpublished Gangseo/Guro/Geumcheon sources passed runner-loopback visual QA and independent 320/390/1280 screenshot review in run38318719004. Public-site visual/HTTP verification and other historical visual scopes are not established by this run."
+    "Pinned Gangseo/Guro/Geumcheon sources passed runner-loopback visual QA in run38318719004. Gangseo now additionally has independently verified public HTTP and a live desktop browser spot-check. Other public visual/HTTP scopes are not implied."
   ],
-  "unfinishedPriority": "Resume prepared Gangseo. No next new region until its source/control/approval/publication state is independently reconciled.",
+  "unfinishedPriority": "Gangseo is complete and must not be republished. Finish prepared Guro, then Geumcheon, then quality-ready Yeongdeungpo/Dongjak. Preserve exact source/QA bindings and any required ownership-proof approval.",
   "independentPreparations": {
     "seoul-guro": {
       "scopeKey": "seoul-guro-direct-independent-preparation-20261012",
@@ -242,5 +244,18 @@
       "screenQa": "UNVERIFIED_NOT_RUN",
       "verificationPath": "seoul-yeongdeungpo/implementation/remote-save-summary.json"
     }
-  }
+  },
+  "completedReleaseReconciliations": [
+    {
+      "region": "서울 노원구",
+      "officialCode": "11350",
+      "sourceRevision": "c498fe38fb48c8a537e085f1fa200d17c4314e99",
+      "controlRevision": "3497da9f45d9135f1b39a37a039ad8349880e452",
+      "runId": 38282665564,
+      "url": "https://seoul-nowon.fwith.kr/",
+      "progressPath": "seoul-nowon/resume-progress-20261012.json",
+      "evidencePath": "seoul-nowon/release-evidence-20261012.json",
+      "receiptUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6129036885"
+    }
+  ]
 }
