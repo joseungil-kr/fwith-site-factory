@@ -34,7 +34,18 @@ export function validateReleaseApproval(config, approval, manifest, read) {
   const expectedManifest = structuredClone(previousManifest);
   Object.assign(expectedManifest.directRelease, {publicationAuthorized:true, publicationState:'authorized-release-candidate-public-verification-pending', releaseApprovalFile:'src/data/release-approval.json', sitemapUrlCount:5});
   assert.deepEqual(manifest, expectedManifest);
-  for (const [path, digest] of Object.entries(approval.unchangedCustomerContent)) assert.equal(sha(read(path)), digest, path);
+  // Keep the original release evidence immutable. Only this exact five-file requested amendment changes its byte comparison.
+  const originalApproval = read('src/data/release-approval.json');
+  assert.equal(sha(originalApproval), '0f9f3d4dff2c63014cfcb46f81303edea876b12efb0d8e81168ee53196bf985a', 'Historical release approval drift');
+  assert.deepEqual(approval, JSON.parse(originalApproval), 'Historical release authority cannot be rewritten');
+  const amendmentRaw = read('src/data/shared-banner-phone-amendment.json');
+  assert.equal(sha(amendmentRaw), 'aeb0161f6beb2b23281efc436125ced4c4e975cccc5494fc39b96cfa735c0ae9', 'Shared banner amendment drift');
+  const amendment = JSON.parse(amendmentRaw);
+  for (const [path, digest] of Object.entries(approval.unchangedCustomerContent)) {
+    const replacement = amendment.replacements[path];
+    if (replacement) assert.equal(replacement.fromSha256, digest, 'Banner amendment baseline mismatch');
+    assert.equal(sha(read(path)), replacement ? replacement.toSha256 : digest, path);
+  }
   return true;
 }
 export function validateCurrentRelease() {

@@ -9,3 +9,14 @@ test('customer byte changes never reuse prior independent copy approval',()=>{co
 
 test('stripped protection map, extra approval metadata, false live claims and expanded manifest transition reject',()=>{const shortened=structuredClone(approval);delete shortened.unchangedCustomerContent[Object.keys(shortened.unchangedCustomerContent)[0]];assert.throws(()=>validateReleaseApproval(config,shortened,manifest,read));for(const extra of [{unreviewed:'new metadata'},{publicReleaseVerified:true},{publishedCoverage:{numerator:999,denominator:999,percent:100}}])assert.throws(()=>validateReleaseApproval(config,{...approval,...extra},manifest,read));const changed=structuredClone(manifest);changed.directRelease.unreviewed='new';assert.throws(()=>validateReleaseApproval(config,approval,changed,read));});
 test('production origin override rejects',()=>{const old=process.env.SITE_URL;try{process.env.SITE_URL='https://wrong.fwith.kr';assert.throws(()=>validateCurrentRelease(),/production origin override/);}finally{if(old===undefined)delete process.env.SITE_URL;else process.env.SITE_URL=old;}});
+
+test('the requested banner amendment rejects missing or altered metadata and every changed asset',()=>{
+ const amendmentPath='src/data/shared-banner-phone-amendment.json';
+ const amendment=JSON.parse(read(amendmentPath));
+ assert.equal(Object.keys(amendment.replacements).length,5);
+ assert.throws(()=>validateReleaseApproval(config,approval,manifest,p=>p===amendmentPath?Buffer.from('{}'):read(p)));
+ assert.throws(()=>validateReleaseApproval(config,approval,manifest,p=>{if(p===amendmentPath)throw new Error('missing amendment');return read(p);}));
+ for(const path of Object.keys(amendment.replacements))assert.throws(()=>validateReleaseApproval(config,approval,manifest,p=>p===path?Buffer.from('changed'):read(p)),path);
+ const historical='src/data/release-approval.json';
+ assert.throws(()=>validateReleaseApproval(config,approval,manifest,p=>p===historical?Buffer.from('{}'):read(p)));
+});

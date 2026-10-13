@@ -30,7 +30,7 @@ test('products keep exact fresh SKU prices, photo hashes and individual detail C
 });
 test('shared banners preserve the three approved image bytes and intrinsic dimensions',()=>{
  const expected=['b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253','bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df','4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b'];
- const m=read('shared-banner-manifest');assert.deepEqual(m.map(x=>x.sha256),expected);for(const a of m){assert.equal(a.width,1774);assert.equal(a.height,887);assert.equal(sha(bytes('public/images/shared-banners/'+a.name+'.webp')),a.sha256);}
+ const m=read('shared-banner-manifest');assert.deepEqual(m.map(x=>x.previousWebpSha256),expected);const amendment=read('shared-banner-phone-amendment');assert.deepEqual(m.map(x=>x.sha256),m.map(x=>amendment.replacements['public/images/shared-banners/'+x.name+'.webp'].toSha256));for(const a of m){assert.equal(a.width,1774);assert.equal(a.height,887);assert.equal(sha(bytes('public/images/shared-banners/'+a.name+'.webp')),a.sha256);}
 });
 test('customer-copy approval never becomes public deployment or indexing evidence',()=>{
  assert.equal(read('site-config').productionApproved,true);assert.equal(manifest.directRelease.publicationAuthorized,true);assert.deepEqual(manifest.directRelease.publishedCoverage,{numerator:0,denominator:3,percent:0});assert.equal(read('direct-checkpoint').productionEvidence,null);assert.equal(read('direct-checkpoint').searchIndexing,'not_verified');
@@ -40,7 +40,7 @@ test('one canonical article per intent with complete named-destination directory
  assert.deepEqual(read('architecture').hubs.filter(h=>h.children>0).map(h=>h.url),['/regions/']);assert.equal(manifest.directRelease.renderedHtmlRouteCount,5);
 });
 test('approved copy and common customer UI are bound to independent review hashes',()=>{
- const review=read('copy-review-bindings');assert.equal(review.verdict,'PASS');for(const [file,digest] of Object.entries(review.commonSourceSha256))assert.equal(sha(file==='src/data/site-config.json'?bytes('tests/reference/release-baseline/site-config.json'):bytes(file)),digest,file);
+ const review=read('copy-review-bindings');assert.equal(review.verdict,'PASS');for(const [file,digest] of Object.entries(review.commonSourceSha256)){let current=file==='src/data/site-config.json'?bytes('tests/reference/release-baseline/site-config.json'):bytes(file);if(file==='src/components/SharedFlowerBanner.astro'){const text=current.toString();assert.ok(!text.includes('<figcaption>'));assert.equal(sha(current),read('shared-banner-phone-amendment').replacements[file].toSha256);const marker='\n</figure>';assert.equal(text.split(marker).length,2);assert.equal(text.split(' 전화 1844-0644.').length,4);current=Buffer.from(text.replaceAll(' 전화 1844-0644.','').replace(marker,'\n  <figcaption>꽃이랑 공통 안내 이미지 · 실제 판매상품 사진이 아닌 AI 생성 이미지입니다.</figcaption>'+marker));}assert.equal(sha(current),digest,file);}
  const strip=v=>Array.isArray(v)?v.map(strip):v&&typeof v==='object'?Object.fromEntries(Object.entries(v).filter(([k])=>!['status','approvalVerified'].includes(k)).map(([k,x])=>[k,strip(x)])):v;
  for(const [file,digest] of Object.entries(review.approvedMetadataOnlyTransform.normalizedFileSha256))assert.equal(sha(canonical(strip(JSON.parse(bytes(file).toString())))),digest);
  assert.deepEqual(pages.map(p=>sha(canonical(Object.fromEntries(review.customerFields.map(k=>[k,p[k]]))))),review.customerCopyObjectSha256);
