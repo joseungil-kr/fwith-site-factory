@@ -43,5 +43,5 @@ class SourceLineageTests(unittest.TestCase):
   with self.assertRaisesRegex(AssertionError,'Generated revision bytes differ'):helper.check_bytes(data)
  def test_current_capture_pin_and_upstream_unchanged(self):
   adapter.verify_upstream()
-  self.assertEqual(adapter.sha((adapter.HERE/'run_bound_capture.py').read_bytes()),'8e0e95cbb73d761e00faa03768a939d5a6c014222bfba124a3dc1d5f8f9362ce')
+  self.assertEqual(adapter.sha((adapter.HERE/'run_bound_capture.py').read_bytes()),'8ff36ed26f2010d967b1ffc0c17f3d69378c347a92057c9a439d8d780b399534')
 if __name__=='__main__':unittest.main()

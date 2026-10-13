@@ -25,9 +25,9 @@ jobs:
       matrix:
         include:
           - key: dongjak
-            source: 430dada32f3f8b53f24aec8d9fdf3724529604e1
-            tree: a032dbdad16e044af8bca7163e26ca795f3b7d6c
-            repository_tree: 5d64d0467d6b900c549a8b26660b95b6f2b1e882
+            source: 2935ac394dd63e81c443995a66fab46981f652bf
+            tree: d1cdac47cd353b487f03f224ab4eb2bfcc2c47ad
+            repository_tree: 3d0bb0dd444a0abdd3a64c884a695aa9234f0527
             path: site-factory/seoul-dongjak-flower
             url: https://dongjak-preview.invalid
             indexable: 'false'
@@ -81,10 +81,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # The frozen release guard rejects an explicit nonproduction SITE_URL.
+          # Native code defaults to config.previewUrl; all adapter steps retain
+          # the explicit preview URL, and SITE_INDEXABLE remains false everywhere.
+          test "$SITE_INDEXABLE" = false
+          test "$SITE_URL" = https://dongjak-preview.invalid
           for attempt in first second; do
-            npm run build 2>&1 | tee "$EVIDENCE_ROOT/logs/native-build-$attempt.log"
-            npm test 2>&1 | tee "$EVIDENCE_ROOT/logs/native-tests-$attempt.log"
-            npm run qa 2>&1 | tee "$EVIDENCE_ROOT/logs/native-qa-$attempt.log"
+            env -u SITE_URL npm run build 2>&1 | tee "$EVIDENCE_ROOT/logs/native-build-$attempt.log"
+            env -u SITE_URL npm test 2>&1 | tee "$EVIDENCE_ROOT/logs/native-tests-$attempt.log"
+            env -u SITE_URL npm run qa 2>&1 | tee "$EVIDENCE_ROOT/logs/native-qa-$attempt.log"
             python3 "$QA_ROOT/adapter.py" manifest --root "$SOURCE_ROOT" --binding "$EVIDENCE_ROOT/bound-spec.json" --output "$EVIDENCE_ROOT/logs/$attempt.manifest.json"
           done
           cmp "$EVIDENCE_ROOT/logs/first.manifest.json" "$EVIDENCE_ROOT/logs/second.manifest.json"

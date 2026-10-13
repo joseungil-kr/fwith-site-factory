@@ -18,7 +18,7 @@ EXTRA_FACTS = r'''() => ({
     const i=el.querySelector('img'),r=i.getBoundingClientRect();return {
       variant:el.dataset.sharedFlowerBanner,src:new URL(i.currentSrc||i.src).pathname,
       naturalWidth:i.naturalWidth,naturalHeight:i.naturalHeight,width:r.width,height:r.height,
-      alt:i.alt,caption:el.querySelector('figcaption')?.innerText||''};}),
+      alt:i.alt,caption:el.querySelector('figcaption')?.innerText||'',figcaptionCount:el.querySelectorAll('figcaption').length};}),
   faq:[...document.querySelectorAll('[data-faq-entry]')].map(el=>({
     question:el.querySelector('[data-faq-question]').innerText.trim(),
     answer:el.querySelector('[data-faq-answer]').innerText.trim()})),
@@ -216,6 +216,10 @@ def supplemental(source, spec, output, expected):
     result={'state':'captured-awaiting-independent-pixel-review' if passed else 'supplemental-machine-qa-failed',
             'machineChecksPassed':passed,'sourceSha':spec['sourceSha'],'controlSha':os.environ['GITHUB_SHA'],'runId':os.environ['GITHUB_RUN_ID'],
             'fatalError':fatal_error,'coverage':coverage,'rows':rows,'flows':flow_rows,'network':network,'console':console,'pageErrors':errors,'pixelReview':'pending','publicHttpVerified':False}
+    # Image bytes are pinned, but rendered phone legibility requires an independent
+    # pixel review of each of the three banners at 320, 390 and 1280 pixels.
+    phone_shots=[{k:r[k]for k in ('width','height','route','label','screenshot','screenshotSha256','dimensions')}for r in rows if r['label'].startswith('banner-') and 'screenshot' in r]
+    write(output/'banner-phone-pixel-review.json',{'status':'pending-independent-pixel-review','expectedPhoneText':'1844-0644','requiredWidthVariantPairs':9,'sourceSha':spec['sourceSha'],'controlSha':os.environ['GITHUB_SHA'],'imageAssets':expected['banners'],'screenshots':phone_shots,'pixelReviewPassed':False,'publicHttpVerified':False})
     write(output/'supplemental-results.json',result);return passed
 
 

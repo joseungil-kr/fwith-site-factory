@@ -43,7 +43,7 @@ def static_facts(route):
     banners=[]
     for n in root.all(has('data-shared-flower-banner')):
         i=n.first(lambda x:x.tag=='img')
-        banners.append({'variant':n.attrs['data-shared-flower-banner'],'src':i.attrs['src'],'naturalWidth':int(i.attrs['width']),'naturalHeight':int(i.attrs['height']),'width':1774,'height':887,'alt':i.attrs['alt'],'caption':n.first(lambda x:x.tag=='figcaption').text()})
+        banners.append({'variant':n.attrs['data-shared-flower-banner'],'src':i.attrs['src'],'naturalWidth':int(i.attrs['width']),'naturalHeight':int(i.attrs['height']),'width':1774,'height':887,'alt':i.attrs['alt'],'caption':''.join(x.text()for x in n.all(lambda x:x.tag=='figcaption')),'figcaptionCount':len(n.all(lambda x:x.tag=='figcaption'))})
     faq=[{'question':n.first(has('data-faq-question')).text(),'answer':n.first(has('data-faq-answer')).text()}for n in root.all(has('data-faq-entry'))]
     products=[{'key':n.attrs['data-product-key'],'href':n.first(has('data-order-product-key')).attrs['href'],'priceLabel':n.first(lambda x:x.tag=='strong').text()}for n in root.all(cls('product-card'))]
     ids=['cau-hospital','boramae-hospital']
@@ -59,10 +59,10 @@ def static_facts(route):
 class AdapterTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):cls.expected=adapter.expectations(SOURCE/adapter.SITE_PATH)
-    def spec(self):return {'sourceSha':adapter.SOURCE_SHA,'sourceTree':adapter.SOURCE_TREE,'repositoryTree':adapter.REPOSITORY_TREE,'path':adapter.SITE_PATH,'siteUrl':adapter.SITE_URL,'productionApproved':False,'indexable':False,'routes':adapter.ROUTES,'sitemapRoutes':[],'frozenManifestSha256':adapter.MANIFEST_SHA}
+    def spec(self):return {'sourceSha':adapter.SOURCE_SHA,'sourceTree':adapter.SOURCE_TREE,'repositoryTree':adapter.REPOSITORY_TREE,'path':adapter.SITE_PATH,'siteUrl':adapter.SITE_URL,'productionApproved':True,'qaPublicationApproved':False,'hostnameOwnershipVerified':False,'indexable':False,'routes':adapter.ROUTES,'sitemapRoutes':[],'frozenManifestSha256':adapter.MANIFEST_SHA}
     def focus(self):return {'visible':True,'width':250,'height':200,'left':14,'right':264,'top':100,'bottom':300,'safeTop':62,'safeBottom':682,'viewportWidth':320,'hitTests':[True]*9}
     def test_upstream_bytes_identical(self):adapter.verify_upstream()
-    def test_frozen_629_source_bytes(self):self.assertEqual(adapter.verify_frozen_bytes(SOURCE,allow_generated=True)['files'],629)
+    def test_frozen_642_source_bytes(self):self.assertEqual(adapter.verify_frozen_bytes(SOURCE,allow_generated=True)['files'],642)
     def test_expected_scope(self):
         self.assertEqual(self.expected['captureCount'],12);self.assertEqual(self.expected['customerCaptureCount'],9)
         self.assertEqual(sum(len(adapter.focus_labels(self.expected,r))for r in adapter.ROUTES)*3,150)
@@ -88,7 +88,7 @@ class AdapterTests(unittest.TestCase):
     def test_indexable_mutation_rejected(self):
         with self.assertRaises(AssertionError):adapter.validate_spec({**self.spec(),'indexable':True})
     def test_production_approval_mutation_rejected(self):
-        with self.assertRaises(AssertionError):adapter.validate_spec({**self.spec(),'productionApproved':True})
+        with self.assertRaises(AssertionError):adapter.validate_spec({**self.spec(),'productionApproved':False})
     def test_sitemap_mutation_rejected(self):
         with self.assertRaises(AssertionError):adapter.validate_spec({**self.spec(),'sitemapRoutes':['/']})
     def test_routes_mutation_rejected(self):
@@ -126,7 +126,7 @@ class AdapterTests(unittest.TestCase):
         f=static_facts('/');f['banners'].reverse()
         with self.assertRaises(AssertionError):adapter.validate_extra_facts(f,self.expected,'/')
     def test_banner_crop_and_src_mutations_rejected(self):
-        for key,val in [('src','/wrong.webp'),('naturalWidth',500),('width',1000),('height',0.1),('alt',''),('caption','실제 상품')]:
+        for key,val in [('src','/wrong.webp'),('naturalWidth',500),('width',1000),('height',0.1),('alt',''),('caption','실제 상품'),('figcaptionCount',1)]:
             f=static_facts('/');f['banners'][0][key]=val
             with self.subTest(key=key),self.assertRaises(AssertionError):adapter.validate_extra_facts(f,self.expected,'/')
     def test_directory_banner_rejected(self):

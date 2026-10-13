@@ -5,11 +5,11 @@ Upstream SourceTest intentionally excluded: its fixtures would create Git commit
 import json, os, socket, sys, unittest
 from pathlib import Path
 from unittest.mock import patch
-import adapter, test_adapter, test_revision2, test_dongjak_binding, test_source_lineage, test_404_contract
+import adapter, test_adapter, test_revision2, test_dongjak_binding, test_source_lineage, test_404_contract, test_banner_successor
 sys.path.insert(0,str(Path(__file__).resolve().parent/'upstream'))
 import test_controls
 suite=unittest.TestSuite()
-for cls in (test_controls.ControlsTest,test_controls.BrowserAssertionsTest,test_adapter.AdapterTests,test_revision2.Revision2Tests,test_dongjak_binding.DongjakBindingTests,test_source_lineage.SourceLineageTests,test_404_contract.NotFoundContractTests):
+for cls in (test_controls.ControlsTest,test_controls.BrowserAssertionsTest,test_adapter.AdapterTests,test_revision2.Revision2Tests,test_dongjak_binding.DongjakBindingTests,test_source_lineage.SourceLineageTests,test_404_contract.NotFoundContractTests,test_banner_successor.BannerSuccessorTests):
     suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(cls))
 with patch.object(socket,'socket',side_effect=AssertionError('Network/socket use prohibited in offline preparation tests')):
     result=unittest.TextTestRunner(verbosity=2).run(suite)

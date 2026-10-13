@@ -8,7 +8,9 @@ class NotFoundContractTests(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
   cls.expected=adapter.expectations(SOURCE/adapter.SITE_PATH)
-  cls.spec=adapter.load(adapter.HERE/'bound-spec.json')
+  # Replay the immutable historical capture under its own exact revision;
+  # fresh runner captures separately enforce the successor revision.
+  cls.spec={**adapter.load(adapter.HERE/'bound-spec.json'),'sourceSha':adapter.HISTORICAL_SOURCE_SHA}
   cls.observed=adapter.load(adapter.HERE/'frozen-inputs/observed-404-facts.run38341440858.json')
  def facts(self,width=320):return copy.deepcopy(next(x['facts']for x in self.observed['observedRows']if x['width']==width))
  def check(self,facts,route='/404.html',width=320):run_bound_capture.assert_bound_facts(facts,self.spec,route,[],width,self.expected)
@@ -50,7 +52,7 @@ class NotFoundContractTests(unittest.TestCase):
  def test_nonassertion_is_never_suppressed(self):
   with patch.object(run_bound_capture,'ORIGINAL_ASSERT_FACTS',side_effect=RuntimeError('unexpected')),self.assertRaises(RuntimeError):self.check(self.facts())
  def test_fixture_is_exact_failed_original_run(self):
-  self.assertEqual(self.observed['sourceSha'],adapter.SOURCE_SHA);self.assertEqual(self.observed['runId'],'38341440858')
+  self.assertEqual(self.observed['sourceSha'],adapter.HISTORICAL_SOURCE_SHA);self.assertEqual(self.observed['runId'],'38341440858')
   self.assertTrue(all(r['issues']for r in self.observed['observedRows']))
 
 if __name__=='__main__':unittest.main()

@@ -13,10 +13,14 @@ import controls
 SITE_PATH = 'site-factory/seoul-dongjak-flower'
 SITE_URL = 'https://dongjak-preview.invalid'
 ROUTES = ['/', '/regions/', '/regions/dongjak-funeral-wreath/', '/404.html']
-MANIFEST_SHA = 'cbff591015f8458f35ce6d20c8eb6965323d052208f7a9f6aefa2cf8fa7d7722'
-SOURCE_SHA = '430dada32f3f8b53f24aec8d9fdf3724529604e1'
-SOURCE_TREE = 'a032dbdad16e044af8bca7163e26ca795f3b7d6c'
-REPOSITORY_TREE = '5d64d0467d6b900c549a8b26660b95b6f2b1e882'
+HISTORICAL_MANIFEST_SHA = 'cbff591015f8458f35ce6d20c8eb6965323d052208f7a9f6aefa2cf8fa7d7722'
+HISTORICAL_SOURCE_SHA = '430dada32f3f8b53f24aec8d9fdf3724529604e1'
+SOURCE_SHA = '2935ac394dd63e81c443995a66fab46981f652bf'
+SOURCE_TREE = 'd1cdac47cd353b487f03f224ab4eb2bfcc2c47ad'
+REPOSITORY_TREE = '3d0bb0dd444a0abdd3a64c884a695aa9234f0527'
+MANIFEST_SHA = '9a21e9ccb8946e6978bfca60cd9dab34058f5a9d9169d22fb1360c6bc88560d0'
+SUCCESSOR_LINEAGE_SHA = '97553bed20ace0e193e1ffc3730d27ac0b75bb58d1eccb5b28957754e43d4192'
+SOURCE_FILE_COUNT = 642
 GENERATED_REVISION = SITE_PATH+'/src/data/build-revision.json'
 
 
@@ -31,9 +35,9 @@ LINEAGE_SHA = 'c6e06ec86e83429f4d471cf1f3ec6c229de7f5b53c4a04a951d1e342bc6e1b1c'
 
 def validate_source_lineage(original, current, lineage):
     assert lineage['baseSourceSha']=='1570f3866985a1434c2847604840926db92e300b'
-    assert lineage['currentSourceSha']==SOURCE_SHA and lineage['publicationApproved'] is False
+    assert lineage['currentSourceSha']==HISTORICAL_SOURCE_SHA and lineage['publicationApproved'] is False
     assert lineage['baseManifestSha256']=='9635b41b830b811748c9fe76ca0c5e6815d3b4224eca8aaebc0d4bbe44b429bc'
-    assert lineage['currentManifestSha256']==MANIFEST_SHA
+    assert lineage['currentManifestSha256']==HISTORICAL_MANIFEST_SHA
     a={e['path']:{k:e[k]for k in ('bytes','sha256','gitBlobSha')}for e in original}
     b={e['path']:{k:e[k]for k in ('bytes','sha256','gitBlobSha')}for e in current}
     assert len(original)==len(current)==len(a)==len(b)==629 and a.keys()==b.keys(), 'Lineage source scope changed'
@@ -53,14 +57,47 @@ def verify_source_lineage():
     assert sha(current_path.read_bytes())==lineage['currentManifestSha256'], 'Current frozen manifest drift'
     return validate_source_lineage(load(original_path),load(current_path),lineage)
 
+def validate_banner_successor(base, current, lineage):
+    assert lineage['historicalQaSourceSha']==HISTORICAL_SOURCE_SHA
+    assert lineage['baseSourceSha']=='bdfb4ae78640a95aa6001581da552a7329fb4775'
+    assert lineage['immediateParentSourceSha']=='8aea2c4cf37368b0798b36ee3156ce80187ba111'
+    assert lineage['expectedAltSuffix']==' 전화 1844-0644.'
+    assert lineage['currentSourceSha']==SOURCE_SHA and lineage['sourceTree']==SOURCE_TREE and lineage['repositoryTree']==REPOSITORY_TREE, 'Successor Git identity drift'
+    assert lineage['baseFileCount']==639 and lineage['currentFileCount']==SOURCE_FILE_COUNT
+    assert lineage['currentManifestSha256']==MANIFEST_SHA
+    assert lineage['sourceProductionApproved'] is True and lineage['hostnameOwnershipVerified'] is False
+    assert lineage['qaPublicationApproved'] is False and lineage['qaIndexable'] is False, 'QA publication prohibited'
+    assert lineage['phoneTextForIndependentPixelReview']=='1844-0644' and lineage['captionMustBeAbsent'] is True
+    def indexed(rows,count):
+        assert len(rows)==count and len({e['path']for e in rows})==count, 'Successor scope count'
+        for e in rows:
+            assert e['path'].startswith(SITE_PATH+'/') and '..' not in Path(e['path']).parts, 'Unsafe successor scope'
+            assert e['mode'] in ('100644','100755'), 'Unsafe successor mode'
+            assert isinstance(e['bytes'],int) and e['bytes']>0
+            assert re.fullmatch(r'[0-9a-f]{64}',e['sha256']) and re.fullmatch(r'[0-9a-f]{40}',e['gitBlobSha'])
+        return {e['path']:e for e in rows}
+    a=indexed(base,639);b=indexed(current,SOURCE_FILE_COUNT)
+    assert sorted(set(a)-set(b))==lineage['removedPaths']==[], 'Successor deletion'
+    added=sorted(set(b)-set(a));changed=sorted(p for p in a if p in b and a[p]!=b[p])
+    assert added==lineage['addedPaths'] and len(added)==3, 'Unexpected successor additions'
+    assert changed==lineage['modifiedPaths'] and len(changed)==13, 'Unexpected successor changes'
+    # Only the three requested image replacements and two rendering/manifest
+    # files may change customer presentation. Exact all-file hashes remain pinned.
+    customer=[SITE_PATH+'/'+p for p in ('public/images/shared-banners/flower-budget.webp','public/images/shared-banners/flower-consultation.webp','public/images/shared-banners/flower-message.webp','src/components/SharedFlowerBanner.astro','src/data/shared-banner-manifest.json')]
+    assert all(p in changed for p in customer)
+    return True
+
+def verify_banner_successor():
+    path=HERE/'banner-successor-lineage.json'
+    assert sha(path.read_bytes())==SUCCESSOR_LINEAGE_SHA, 'Successor lineage metadata drift'
+    lineage=load(path);base=HERE/'frozen-inputs/source-file-manifest.approved-before-banner.json';current=HERE/'frozen-inputs/source-file-manifest.banner-phone.json'
+    assert sha(base.read_bytes())==lineage['baseManifestSha256'], 'Approved baseline manifest drift'
+    assert sha(current.read_bytes())==MANIFEST_SHA, 'Banner successor manifest drift'
+    return validate_banner_successor(load(base),load(current),lineage)
+
 def frozen_entries():
-    verify_source_lineage()
-    path=HERE/'frozen-inputs/source-file-manifest.final.json'
-    assert sha(path.read_bytes()) == MANIFEST_SHA, 'Authoritative manifest drift'
-    entries=load(path)
-    assert len(entries)==629 and len({e['path'] for e in entries})==629, 'Frozen scope count'
-    assert all(e['path'].startswith(SITE_PATH+'/') and '..' not in Path(e['path']).parts for e in entries), 'Unsafe manifest scope'
-    return entries
+    verify_source_lineage();verify_banner_successor()
+    return load(HERE/'frozen-inputs/source-file-manifest.banner-phone.json')
 
 def verify_upstream():
     provenance=load(HERE/'reuse-provenance.json')
@@ -121,8 +158,9 @@ def validate_not_found_facts(facts, expected):
 def expectations(site):
     site=Path(site); pages=load(site/'src/data/pages.json'); coverage=load(site/'src/data/region-coverage.json')
     products=load(site/'src/data/products.json'); banner=load(site/'src/data/shared-banner-manifest.json')
+    historical_banners={b['key']:b for b in load(site/'src/data/dongjak-common-copy.json')['bannerPolicy']['banners']}
     config=load(site/'src/data/site-config.json'); plan=load(site/'src/data/dongjak-plan-binding.json')
-    assert config['productionApproved'] is False and config['previewUrl']==SITE_URL and config['hostnameOwnershipVerified'] is False
+    assert config['productionApproved'] is True and config['previewUrl']==SITE_URL and config['hostnameOwnershipVerified'] is False
     assert controls.source_routes(site)==ROUTES
     assert len(pages)==1 and [len(p['facilityAnchors']) for p in pages]==[2]
     assert [len(p['faq']) for p in pages]==[2]
@@ -132,10 +170,10 @@ def expectations(site):
     def chosen(p):
         return [{'key':x['key'],'sku':x['officialSku'],'href':x['orderUrl'],'priceLabel':x['priceLabel']} for sku in p['productCardSkus'] for x in products if x['officialSku']==sku]
     return {'notFoundContract':not_found_contract(site),'routes':ROUTES,'customerRoutes':ROUTES[:-1], 'viewports':[list(x) for x in controls.VIEWPORTS],
-        'captureCount':12,'customerCaptureCount':9,'productionApproved':False,'indexable':False,'sitemapRoutes':[],
+        'captureCount':12,'customerCaptureCount':9,'productionApproved':True,'qaPublicationApproved':False,'indexable':False,'sitemapRoutes':[],
         'homeProducts':[{'key':p['key'],'href':p['orderUrl'],'priceLabel':p['priceLabel']}for p in products],
         'pages':{p['url']:{'faq':p['faq'],'facilities':p['facilityAnchors'],'products':chosen(p)} for p in pages},
-        'banners':[{'variant':x['name'].removeprefix('flower-'),'src':'/images/shared-banners/'+x['name']+'.webp','sha256':x['sha256'],'width':1774,'height':887}for x in banner],
+        'banners':[{'variant':x['name'].removeprefix('flower-'),'src':'/images/shared-banners/'+x['name']+'.webp','sha256':x['sha256'],'width':1774,'height':887,'alt':historical_banners[x['name'].removeprefix('flower-')]['alt']+' 전화 1844-0644.'}for x in banner],
         'legalUnits':[u['unitKey'] for u in coverage['units']],
         'legalLinks':[{k:f[k] for k in ('unitKey','href','candidateId')} for p in pages for f in p['facilityAnchors']],
         'adminRows':[{'key':a['aliasKey'],'relations':[next(u['name'] for u in coverage['units'] if u['unitKey']==rel['unitKey'])+(' 일부' if rel['scope']=='partial' else '')for rel in a['relations']]} for a in coverage['administrativeCrosswalk']]}
@@ -145,7 +183,10 @@ def validate_spec(spec):
     for key in ('sourceSha','sourceTree','repositoryTree'):
         assert isinstance(spec.get(key),str) and re.fullmatch(r'[0-9a-f]{40}',spec[key]) and spec[key]!='0'*40, ('Unbound or invalid Git identity',key)
     assert (spec['sourceSha'],spec['sourceTree'],spec['repositoryTree'])==(SOURCE_SHA,SOURCE_TREE,REPOSITORY_TREE), 'Exact saved source identities differ'
-    assert spec.get('productionApproved') is False and spec.get('indexable') is False, 'Publication prohibited'
+    assert spec.get('productionApproved') is True, 'Factual source approval differs'
+    assert spec.get('qaPublicationApproved') is False and spec.get('indexable') is False, 'QA publication prohibited'
+    assert spec.get('hostnameOwnershipVerified') is False, 'Hostname ownership is unverified'
+    assert load(HERE/'banner-successor-lineage.json')['sourceSavedAndIndependentlyReadBack'] is True, 'Reviewed successor Git readback is pending'
     assert spec.get('routes')==ROUTES and spec.get('sitemapRoutes')==[], 'Native route/sitemap scope drift'
     assert spec.get('frozenManifestSha256')==MANIFEST_SHA, 'Source review binding drift'
     return spec
@@ -155,19 +196,19 @@ def make_binding(root, source_sha):
     assert re.fullmatch(r'[0-9a-f]{40}',source_sha or '') and source_sha!='0'*40, 'A real saved Git SHA is required'
     assert controls.git(root,'rev-parse','HEAD')==source_sha, 'Source HEAD differs'
     verify_frozen_bytes(root)
-    # Every and only the reviewed 629 files must occur in the committed site tree.
+    # Every and only the reviewed 642 files must occur in the committed site tree.
     data=subprocess.check_output(['git','-C',str(root),'ls-tree','-rz',source_sha,'--',SITE_PATH])
     actual={}
     for entry in data.split(b'\0'):
         if not entry: continue
         meta,path=entry.split(b'\t',1); mode,kind,blob=meta.decode().split()
         assert kind=='blob' and mode in ('100644','100755'), 'Symlink or submodule in saved source'
-        actual[path.decode()]=blob
-    expected={e['path']:e['gitBlobSha'] for e in frozen_entries()}
-    assert actual==expected, 'Saved Git source does not exactly match 629 reviewed files'
+        actual[path.decode()]={'gitBlobSha':blob,'mode':mode}
+    expected={e['path']:{'gitBlobSha':e['gitBlobSha'],'mode':e['mode']} for e in frozen_entries()}
+    assert actual==expected, 'Saved Git source does not exactly match 642 reviewed files and modes'
     spec={'sourceSha':source_sha,'sourceTree':controls.git(root,'rev-parse',source_sha+':'+SITE_PATH),
           'repositoryTree':controls.git(root,'rev-parse',source_sha+'^{tree}'),'path':SITE_PATH,'siteUrl':SITE_URL,
-          'productionApproved':False,'indexable':False,'routes':ROUTES,'sitemapRoutes':[],'frozenManifestSha256':MANIFEST_SHA}
+          'productionApproved':True,'qaPublicationApproved':False,'hostnameOwnershipVerified':False,'indexable':False,'routes':ROUTES,'sitemapRoutes':[],'frozenManifestSha256':MANIFEST_SHA}
     validate_spec(spec); controls.verify_source(root,spec,pristine=True)
     expectations(root/SITE_PATH)
     return spec
@@ -188,7 +229,8 @@ def validate_extra_facts(facts, expected, route):
         source=next(x for x in expected['banners'] if x['variant']==b['variant'])
         assert b['src']==source['src'] and b['naturalWidth']==1774 and b['naturalHeight']==887, 'Banner asset mismatch'
         assert b['width']>0 and abs(b['width']/b['height']-2)<.02, 'Banner geometry/cropping'
-        assert b['alt'].strip() and 'AI' in b['caption'], 'Banner alternative/provenance text'
+        assert b['alt'].strip() and b['alt']==source['alt'], 'Exact phone-inclusive banner alternative text'
+        assert b['caption']=='' and b['figcaptionCount']==0, 'Shared banner caption must be absent from DOM'
     page=expected['pages'].get(route)
     if page:
         assert facts['faq']==page['faq'], 'Visible FAQ copy differs'
@@ -281,6 +323,8 @@ def validate_supplemental_evidence(rows, flows, expected, output):
     for r in rows:
         key=(r['width'],r['route'],r['label'])
         assert r.get('screenshotReasons',[])==selected.get(key,[]),'Screenshot selection reason differs'
+    banner_grid={(w,'banner-'+b['variant'])for w,h in controls.VIEWPORTS for b in expected['banners']}
+    assert {(r['width'],r['label'])for r in rows if 'screenshot' in r and r['label'].startswith('banner-')}==banner_grid, 'Missing phone-banner viewport evidence'
     assert all('screenshot' in f for f in flows if f['flow']=='legal-facility-anchor-first-landing'),'Missing initial anchor screenshot'
     assert all(f.get('passed') is True for f in flows if f['flow']=='admin-open-close-reopen'),'Missing details interaction proof'
     shots=[r for r in rows if 'screenshot' in r]+[f for f in flows if 'screenshot' in f]
@@ -304,7 +348,7 @@ def main():
     q=sub.add_parser('seal');q.add_argument('--binding',type=Path,required=True);q.add_argument('--evidence',type=Path,required=True)
     args=p.parse_args(); verify_upstream()
     if args.command=='check-local':
-        report={'status':'LOCAL_PREPARATION_VERIFIED_NOT_BROWSER_QA','frozenSource':verify_frozen_bytes(args.root),'expectations':expectations(args.root/SITE_PATH),'sourceCommit':None,'browserExecuted':False,'remoteActions':False}
+        report={'status':'LOCAL_PREPARATION_VERIFIED_NOT_BROWSER_QA','frozenSource':verify_frozen_bytes(args.root),'expectations':expectations(args.root/SITE_PATH),'sourceCommit':None,'sourceIdentityBinding':'not-checked-by-local-command','browserExecuted':False,'remoteActions':False}
         write(args.output,report)
     elif args.command=='bind':
         write(args.output,make_binding(args.root,args.sha))
