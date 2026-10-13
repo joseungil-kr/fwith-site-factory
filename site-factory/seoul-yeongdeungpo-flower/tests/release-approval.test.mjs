@@ -4,3 +4,13 @@ const read=p=>fs.readFileSync(new URL('../'+p,import.meta.url));
 test('exact authorized candidate gate passes without claiming publication',()=>{assert.equal(validateCurrentRelease(),true);const a=JSON.parse(read('src/data/release-approval.json'));assert.equal(a.publicReleaseVerified,false);assert.equal(a.publishedCoverage.numerator,0);});
 test('metadata,proof,customer bytes and stripped authority maps fail closed',()=>{for(const p of ['src/data/release-approval.json','src/data/site-config.json','src/data/publish-manifest.json','src/data/pages.json','src/styles/global.css','public/40ce75e866dc2c92254e7d1ad474326f.txt','tests/reference/release-baseline/site-config.json'])assert.throws(()=>validateRelease(x=>x===p?Buffer.concat([read(x),Buffer.from(' ')]):read(x)),p);for(const change of [a=>a.hostBindingApproved=false,a=>a.proofFileApproved=false,a=>a.publicReleaseVerified=true,a=>a.unchangedCustomerContent={},a=>a.publishedCoverage.numerator=999]){const a=JSON.parse(read('src/data/release-approval.json'));change(a);assert.throws(()=>validateRelease(p=>p==='src/data/release-approval.json'?Buffer.from(JSON.stringify(a)):read(p)));}});
 test('production origin and missing actual revision rejected',()=>{const env={...process.env};try{process.env.SITE_URL='https://foreign.example';assert.throws(validateCurrentRelease);delete process.env.SITE_URL;process.env.SITE_INDEXABLE='true';delete process.env.SITE_FACTORY_REVISION;assert.throws(validateCurrentRelease);}finally{for(const k of Object.keys(process.env))if(!(k in env))delete process.env[k];Object.assign(process.env,env);}});
+test('requested overlay cannot widen scope, replace historical seals, or mutate any replacement',()=>{
+ const a=JSON.parse(read('src/data/release-approval.json')),overlay=JSON.parse(read(a.requestedCustomerContentOverlay.path));
+ assert.equal(Object.keys(overlay.replacements).length,5);
+ for(const p of [a.requestedCustomerContentOverlay.path,overlay.historicalApproval.path,...Object.keys(overlay.replacements)])
+  assert.throws(()=>validateRelease(x=>x===p?Buffer.concat([read(x),Buffer.from(' ')]):read(x)),p);
+ for(const change of [o=>delete o.replacements['src/components/SharedFlowerBanner.astro'],o=>o.replacements['src/data/pages.json']={beforeSha256:'0'.repeat(64),afterSha256:'1'.repeat(64)},o=>o.historicalApproval.sha256='0'.repeat(64),o=>o.sourceRevisionBeforeChange='0'.repeat(40)]){
+  const changed=structuredClone(overlay);change(changed);
+  assert.throws(()=>validateRelease(p=>p===a.requestedCustomerContentOverlay.path?Buffer.from(JSON.stringify(changed)):read(p)));
+ }
+});

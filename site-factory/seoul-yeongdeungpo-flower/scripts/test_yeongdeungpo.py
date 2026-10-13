@@ -12,6 +12,14 @@ class Mutations(unittest.TestCase):
   s=f.read_text();self.assertIn(old,s);f.write_text(s.replace(old,new,1))
  def fail(self,pattern):
   with self.assertRaisesRegex(AssertionError,pattern):inspect(self.r,write=False)
+ def test_shared_caption_reintroduced(self):
+  self.mutate(self.detail,'</figure>','<figcaption>꽃이랑 공통 안내 이미지 · 실제 판매상품 사진이 아닌 AI 생성 이미지입니다.</figcaption></figure>');self.fail('caption reintroduced')
+ def test_banner_overlay_bytes(self):
+  f=self.r/'src/data/shared-banner-requested-change.json';f.write_text(f.read_text()+' ');self.fail('overlay byte drift')
+ def test_banner_bytes(self):
+  f=self.r/'dist/images/shared-banners/flower-message.webp';f.write_bytes(f.read_bytes()+b' ');self.fail('Banner byte drift')
+ def test_banner_alt(self):
+  self.mutate(self.detail,' 전화 1844-0644.',' 전화 1844-0645.');self.fail('Banner alt drift')
  def test_clean(self):inspect(self.r,write=False)
  def test_copy_bytes(self):
   f=self.r/'src/data/yeongdeungpo-copy.json';f.write_text(f.read_text()+' ');self.fail('copy byte drift')

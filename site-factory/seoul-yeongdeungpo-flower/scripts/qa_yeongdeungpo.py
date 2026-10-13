@@ -80,10 +80,19 @@ def inspect(root=Path('.'),write=True):
   names=[next(u['name'] for u in c['units'] if u['unitKey']==rel['unitKey'])+(' '+ui['directory']['partialLabel'] if rel['scope']=='partial' else '') for rel in admin['relations']]
   assert norm(row[0]['text'])==admin['name']+': '+' · '.join(names),'Official administrative relation text drift'
  notfound=Document((dist/'404.html').read_text());assert not notfound.canonical,'404 canonical forbidden';assert 'noindex' in notfound.meta['robots'],'404 indexable';assert not docs['404.html'].where(key='data-shared-flower-banner'),'404 banner forbidden'
+ approval_bytes=(data/'release-approval.json').read_bytes()
+ assert hashlib.sha256(approval_bytes).hexdigest()=='d39797c3e7d9e5c44e0991f51819cacef53ac37d12e410cb90d14723507fae79','Release approval byte drift'
+ approval=json.loads(approval_bytes);overlay_bytes=(root/approval['requestedCustomerContentOverlay']['path']).read_bytes()
+ assert hashlib.sha256(overlay_bytes).hexdigest()==approval['requestedCustomerContentOverlay']['sha256'],'Banner overlay byte drift'
+ overlay=json.loads(overlay_bytes)
+ for rel,doc in docs.items():
+  for banner in doc.where(key='data-shared-flower-banner'):
+   assert not any(n['tag']=='figcaption' for n in descendants(banner)),'Shared banner caption reintroduced'
+  assert '꽃이랑 공통 안내 이미지 · 실제 판매상품 사진이 아닌 AI 생성 이미지입니다.' not in norm((dist/rel).read_text()),'Removed shared caption reintroduced'
  for banner in cp['common']['bannerPolicy']['banners']:
-  path='/images/shared-banners/'+banner['file'];assert hashlib.sha256((dist/path.lstrip('/')).read_bytes()).hexdigest()==banner['sha256'],'Banner byte drift';assert asset_counts[path]==3,'Banner route count drift'
+  path='/images/shared-banners/'+banner['file'];replacement=overlay['replacements']['public'+path];assert replacement['beforeSha256']==banner['sha256'],'Historical banner pin drift';assert hashlib.sha256((dist/path.lstrip('/')).read_bytes()).hexdigest()==replacement['afterSha256'],'Banner byte drift';assert asset_counts[path]==3,'Banner route count drift'
   for doc in docs.values():
-   for n in doc.where('img',key='src',value=path):assert n['attrs']['alt']==banner['alt'],'Banner alt drift'
+   for n in doc.where('img',key='src',value=path):assert n['attrs']['alt']==banner['alt']+' 전화 1844-0644.','Banner alt drift'
  report={'scope':'Static HTML only; screen/public HTTP/search unverified','htmlFiles':len(files),'details':entries,'uniqueSku':len(products),'legalEntries':34,'adminEntries':18,'officialRelations':45,'legalFacilityLinks':8,'administrativeFacilityLinks':0,'directoryCards':2,'directoryBanners':0,'directoryIndexable':False,'productionApproved':config['productionApproved']}
  if write:(root/'yeongdeungpo-static-qa.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
  print('YEONGDEUNGPO STATIC QA: '+json.dumps(report,ensure_ascii=False));return report

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "changeId": "shared-banner-phone-20261013",
+  "requestedAt": "2026-10-13T14:53:24Z",
+  "sourceRevisionBeforeChange": "a52b71fac2cbd9befafd5c60b7b4e6250c44ddcd",
+  "request": "Remove the visible shared-image disclosure caption and put 1844-0644 into each of the three shared banner images.",
+  "historicalApproval": {
+    "path": "tests/reference/release-baseline/release-approval.before-banner-phone.json",
+    "sha256": "64c3fc84ecc8e5992f68be454725abaa0124588b81c67c60e83bc66f208be0ef"
+  },
+  "replacements": {
+    "public/images/shared-banners/flower-budget.webp": {
+      "beforeSha256": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+      "afterSha256": "081198095eb005603721be7c778f4d477f4dd93dcf96f0c261f18bf06bb91421"
+    },
+    "public/images/shared-banners/flower-consultation.webp": {
+      "beforeSha256": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+      "afterSha256": "d6654aa44c365f64e330d0be2042972d3320fad54231425aaffca1dfdcd25ebc"
+    },
+    "public/images/shared-banners/flower-message.webp": {
+      "beforeSha256": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+      "afterSha256": "a5ecdeb1914566a32d45b084351e2782fc8b234e9a4fbb8635a60a9921cac5f5"
+    },
+    "src/components/SharedFlowerBanner.astro": {
+      "beforeSha256": "bffdc5a802a911d688e388faa55ece9e1bf6b00e04c8fab0873e779b35702f74",
+      "afterSha256": "7a6471713704c1fe844398fcaa6ec379b3c373c5fb50e319015bf5f23e6b4cfb"
+    },
+    "src/data/shared-banner-manifest.json": {
+      "beforeSha256": "47126a2f2f47ebbbb15a478e0df55dde829eaea2fc30474ddbf3cbae77506513",
+      "afterSha256": "11b07a19ce29ea65c698bf53cb86e719e181aecd8057bd41e10e22141e650a59"
+    }
+  },
+  "verificationState": "local_source_verified_pending_fresh_exact_build_and_independent_browser_qa",
+  "unchangedScope": [
+    "Reviewed article and common-copy source bytes",
+    "Product names, prices, photos and individual order links",
+    "Facility plan and regional geography",
+    "Existing image description text before the appended phone, dimensions, responsive rules and CTA layout"
+  ],
+  "implementationAccessibility": "Append exactly 전화 1844-0644. to each existing banner alt description, matching the visible phone."
+}
