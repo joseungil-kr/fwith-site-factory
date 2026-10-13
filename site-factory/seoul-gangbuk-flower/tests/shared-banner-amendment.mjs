@@ -1,3 +1,4 @@
+import {currentExpectedSha} from './shared-banner-phone-successor.mjs';
 // Historical source pins remain unchanged. Only the exact reviewed banner amendment
 // may be reversed for historical assertions; current bytes are checked independently.
 import fs from 'node:fs';
@@ -70,6 +71,6 @@ export function readHistoricalBannerSource(file,options){
 }
 export function assertCurrentBannerAmendment(){
  for(const [file,record] of Object.entries(fixture.files))assertAmendedBytes(file,fs.readFileSync(path.join(root,file)),record);
- for(const [file,expected] of Object.entries(fixture.additions))assert.equal(sha(fs.readFileSync(path.join(root,file))),expected,'New reviewed banner artifact changed: '+file);
+ for(const [file,expected] of Object.entries(fixture.additions))assert.equal(sha(fs.readFileSync(path.join(root,file))),currentExpectedSha(file,expected),'New reviewed banner artifact changed: '+file);
  return fixture;
 }
