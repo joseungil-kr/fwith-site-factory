@@ -1,0 +1,51 @@
+관악 LOCAL 런타임·승인원고 독립검수
+
+판정 범위
+이 검수는 로컬 소스·생성 HTML·이미지 원본과 승인입력의 일치, 지역모델과 회귀계약 검증이다. 실제 브라우저 화면·실제 공개배포·검색수집·현장배송 검증은 포함하지 않는다. 최종 승인상태와 파일지문은 같은 폴더 verdict.json 및 source-manifest.json/dist-manifest.json에 기록한다.
+
+[직접 확인] 승인원본과 고객 출력
+- 별도 인계 디렉터리의 acceptance/approved-visible-surface/승인 기사 revision4/common revision3/인터페이스 레이블/PLAN·위치·멤버십 원문을 먼저 읽고 실제 런타임 JSON·Astro 소스·생성 HTML 다섯 개와 대조했다. 프로젝트 안 사본만을 정답으로 삼지 않았다. 모든 인계 사본은 별도 원본과 바이트 일치한다.
+- 런타임 articles 배열과 common 객체는 승인원본과 정확히 같다. 구현은 metaDescription을 페이지 description에 연결하고 시설·제품·원문 출처를 별도 메타데이터로 결속한다. 내부 evidence/renderRule/visibilityContract는 저장되어도 고객 출력에는 나타나지 않는다.
+- 근조 7섹션·15문단, 축하 9섹션·16문단을 전수 대조했다. firstAnswer는 글마다 한 번, 각 문단은 승인순서로 한 번 출력된다. contentMarkdown을 중복 렌더하지 않는다. 상품은 첫 문단이 아닌 products 섹션에 정확히 배치된다.
+- 상세별 FAQ 2개와 답변 전문, 근조 출처3개/축하 출처7개, sourceNote·전화CTA·관련글 소개와 링크를 대조했다. 교수회관 FAQ page=2 및 연구공원 약관 URL의 쿼리를 보존한다. 출처 영역 H2 하나 아래 출처별 H3를 쓴다. 출처 이름과 접근성 이름·검증날짜 속성은 일치하며 승인되지 않은 날짜 텍스트는 추가하지 않는다.
+- 홈의 제목·H1·메타·소개·짧은 상담말·가격주석·구매카드2개·상품8개와 목록의 실제구매카드2개를 대조했다. 상세는 각 구매의도별4SKU이고 hero는 B201/C200로 명시적 결속한다. 404 SEO title과 화면 H1은 승인값대로 서로 다르며 홈 링크는 /이다.
+- 전체 body 텍스트 노드를 승인 고객문구/정확한 지역명/문자 구분기호와 비교했다. 임의 추가문장, 옛 지역 고객원고, 내부검수 규칙 노출은 없었다. 두 상세의 모든 문단을 직접 읽어 기존 친절한 제공자 말투·공감·짧은 스몰토크가 유지됨을 확인했다.
+
+[직접 확인] 상품·사진·가격·배너
+- SKU B201/B203/B205/B060, C200/C203/C204/C205의 이름·기본가격·설명·사진alt·caption·각 개별상품 주문URL이 승인값과 일치한다. priceLabel에 가격을 다시 이어붙이는 이중표시는 없다.
+- public/dist의 상품사진8개는 각각 승인원본 SHA256과 일치하고500×500이다. 배너3개도 원본 SHA256과 일치하고1774×887이다. 실제 파일로 만든 contact sheet를 열어 상품사진8개와 배너3개 픽셀을 확인했다. 이는 실제 페이지 화면 캡처 검증이 아니다.
+- 홈과 각 상세에서 message→budget→consultation 3배너가 실질 본문·카드 사이에 분산되고 alt와 AI 이미지 고지가 보존된다. 목록과404에는 배너가 없다. 반복 표시가 필요한 개별 상품 photoCaption/배너 고지와 승인본문을 구분했으며, 본문 공통 판매정책을 새로운 경고상자/FAQ로 덧붙이지 않는다.
+
+[직접 확인] 지역·시설·N2와 SEO
+- 법정동3개, 행정동21개, 공식관계21개가 별도 승인자료와 실제 HTML에서 일치한다. 시설의 정확한 행정동 배정은0이다.
+- 봉천동에는 연구공원/낙성대 두 시설링크, 신림동에는 우신장례식장 한 시설링크만 존재한다. 남현동에 물리시설을 만들지 않았다. 교수회관은 null 법정/행정 정보를 유지하고 구단위 별도 목록에서 같은 축하 상세 앵커로 연결된다.
+- 물리시설4와 개업·이전 구매상황1을 구분한다. opening-occasion은 축하 글 안 H2이고 물리시설·독립페이지·행정동 링크로 승격하지 않는다. 보류10개는 활성 고객시설로 나오지 않는다. 모든 내부링크와 시설/개업 앵커 목적지 및 ID 단일성을 검사했다.
+- 실제 HTML은 홈/목록/상세2/404의5개, 구매상세 N은2이다. 시설·동·상품수로 N을 늘리지 않는다. 목록카드2개·배너0·noindex·sitemap 제외 조건을 보존한다.
+- 5개 HTML은 각각 H1 하나이며 모두 noindex,nofollow,noarchive이다. sitemap URL은0, 공개 소유확인 proof파일은 없다. 404는 canonical/schema/social metadata가 없다. 나머지 canonical은 예약된 local.invalid origin이다. Florist JSON-LD는 꽃이랑/전화1844-0644/관악구 areaServed만 사용하고 시설 주소·시설 전화를 꽃집 소재지로 위장하지 않는다.
+
+[직접 확인] 원본회귀 보존 및 보완
+- 보존된 ca5c98b12420212d0aa8dd0c9a742f3e94237c07 GitHub tree 응답과 원본 영등포 fixture308파일의 Git blob SHA를 직접 재계산해 전부 일치했다. 이 검수자가 새 원격 fetch를 수행한 것은 아니다.
+- 초기 관악 native 실패3건 원문을 읽었다. 과거 MarkdownContent 호출형태, approvedSourceNames 변수명 및 고객에게 별도 날짜를 보이는 source 렌더 형태를 요구한 검사였다. 해당 원본 검사파일은 수정·삭제되지 않았고 원본 영등포120검사에서 계속 실행한다. 관악 current 결과에서는 이3건을 성공으로 세지 않는다.
+- 신규 sections 렌더는 승인 전문/단회/순서/escape/출처 계층과 정확한 데이터 의미를 검사한다. 첫 검토에서 source aria/검증속성, 실행script/on*·raw HTML, OG/Twitter alt와 hero 가격레이블 변조 대응이 부족함을 발견하고 작성자에게 수정 요청했다. 검수자가 구현소스를 수정하지 않았다.
+- 수정 후 별도 임시복사본에 script 추가, on* 이벤트추가, source aria 제거, source verifiedAt 변경, OG alt 변경, hero 가격레이블 제거의6변조를 직접 가해 모두 거절되는 것을 확인했다. 추가 정식 회귀에는 외부script/iframe/raw HTML·source속성·Twitter alt·홈가격도 포함된다.
+- 영등포 데이터에 대해 현재 dispatcher/공통시설링크 helper와 원본을 독립 비교한83항목이 동일했다. 정확히8시설 목적지가 유지되며 신규 null 처리의 예외가 옛 지역으로 확장되지 않았다. 이 의미회귀도 작성자의 정식 테스트에8그룹으로 추가됐다.
+- 기존 Guro/Geumcheon/Yeongdeungpo adapter, legacy, source/content/catalog helper 및 주요 원본 테스트파일이 원본 fixture bytes와 같은지 별도로 확인했다.
+
+[추정·판단]
+현재 고객출력은 승인 원문을 임의로 새로 쓰거나 의미를 바꾼 흔적이 없고, 친절한 판매자 안내·검증된 시설 사실·미확인 일정의 상담 경계를 지킨다. 원본 UI 문법검사3건의 분리는 구현방식 차이 때문에 합리적이다. 원본 실행을 유지하고 관악 전수 렌더·변조 및 현재/원본 지역행동 비교를 추가한 뒤에는 확인한 의미계약이 약화되지 않았다.
+
+[미확인]
+- 실제320/390/1280 화면, overflow, 가격의 원 단위 줄바꿈, sticky-header 가림, 실제 앵커 도착위치, footer고정바/포커스/스크린리더는 미검증이다. CSS 규칙과 준비된 브라우저스크립트를 읽은 것만으로 이를 PASS로 보지 않는다.
+- 실제 재고·배송비 포함 최종금액·도착·시설 반입/인수/설치·완료사진·수거 이행은 검증하지 않았다.
+- 로컬작업에는 Git 저장소가 없어 새 branch/commit SHA를 만들거나 확인하지 않았다. source 전체파일 manifest와 dist manifest 지문으로 검수대상을 결속한다. 원격쓰기·공개배포·IndexNow·소유권/인증 설정은 수행하지 않았다. 공개완료48/230 분자는 이 검수로 바뀌지 않는다.
+
+실패 및 재검증 기록
+- 독립 mutation 첫 실행은 작성자의 최종 build가 dist를 교체하는 시점과 겹쳐 임시복사에 상세HTML이 없는 FileNotFoundError21건이 났다. 실패로그를 independent-mutations-race-failure.log로 보존한다. 이를 코드 결함 또는 PASS로 단정하지 않았으며, 동결된 dist에서 최종 재실행한 결과를 verdict에만 채택한다.
+- 독립 render-checker 작성 초기에는 visible-surface 투영과 내부 metadata가 남은 runtime 객체 자체를 완전동일 비교하여2개 형상 차이를 표시했다. 실제 승인값 변화는 없고 runtime은 원본 articles/common과 정확히 동일함을 확인하여 원본-런타임 정확비교와 고객 DOM whitelist를 분리했다. 검수기 구현을 교정했으며 제품코드 수정은 없었다.
+
+최종 독립 실행 및 동결 결속
+- 작성자가 source/dist 재생성 종료를 확인한 뒤 실제553렌더검사 실패0, 별도 영등포83의미비교 실패0, 독립235변조검사 실패0을 다시 실행했다. 앞선 교차빌드 race 오류는 재발하지 않았다.
+- npm test를 검수자가 별도로 실행한 로그는 Guro131 + Geumcheon116 + 원본영등포120 + current129 =496 PASS/실패0이다. Current129에는 관악 surface6과 현재/원본 영등포 의미회귀8이 포함된다. 원본 문법3건은 current실행 제외이며 원본120에서 검증한다.
+- 672개 source 전체파일과20개 dist파일의 bytes/SHA256을 작성자 manifest와 모두 대조했다. source에서 제외된 것은 dependency/cache와 별도 생성 QA보고3개이며 dist는 전수포함이다. 모든 manifest 항목은 실제 존재하며, 범위 안 누락파일0·변경파일0이다.
+- 작성자의 최종 build/QA 로그도 읽었다. Astro60파일 오류/경고/힌트0, HTML5개, 공통FAQ8·배너12·관악235변조 통과 기록을 확인했다. 이 검수자는 최종 build를 중복 생성하지 않았다.
+- 검수자는 현재 분기의 Git commit이 없는 로컬 source를 검증했다. source SHA256 manifest 49efbc6768d52b208f5d7c2bfad8faab5386d5de777d16d6134263e6df168eb7, dist SHA256 manifest 16c842994e9c5cd2b218a466c689f1fd920dcfb8f2c8ff141b75d7359eb4692e에 최종 판정을 결속한다.

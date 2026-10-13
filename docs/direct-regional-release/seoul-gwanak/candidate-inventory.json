@@ -1,0 +1,513 @@
+{
+  "candidateInventoryN": 15,
+  "activeCandidateN": 5,
+  "activePhysicalFacilityN": 4,
+  "activeBuyerOccasionN": 1,
+  "heldCandidateN": 10,
+  "candidates": [
+    {
+      "id": "wooshin-funeral",
+      "name": "우신장례식장",
+      "contextType": "physical-facility",
+      "status": "active_evidence_context_not_delivery_approval",
+      "articleId": "funeral",
+      "anchor": "wooshin-funeral",
+      "aliases": [],
+      "location": {
+        "address": "서울특별시 관악구 시흥대로572 B1",
+        "legalDong": "신림동",
+        "legalCode": "1162010200",
+        "administrativeDong": null,
+        "sourceIds": [
+          "base:gwanak-funeral-official",
+          "mohw-wooshin-location"
+        ],
+        "scope": "MOHW 지하층(신림동)과 구청시트 B1을 함께 기록하되 빈소/화환 자리로 확대하지 않음."
+      },
+      "evidence": {
+        "id": "wooshin-funeral",
+        "name": "우신장례식장",
+        "type": "funeral",
+        "researchStatus": "OFFICIAL_EXISTENCE_VERIFIED_DELIVERY_UNVERIFIED",
+        "aliases": [],
+        "facts": [
+          "관악구 공식 장례식장 현황 XLSX의 시설명은 우신장례식장이다.",
+          "원본 시트의 주소는 서울특별시 관악구 시흥대로 572, B1, 전화는 02-838-4444이다."
+        ],
+        "sources": [
+          {
+            "url": "https://www.gwanak.go.kr/site/gwanak/publicMaster/publicSubView.do?psIdx=PS_00000000000001631",
+            "at": "2026-10-13T03:19:45.736590+00:00",
+            "status": 200,
+            "finalUrl": "https://www.gwanak.go.kr/site/gwanak/publicMaster/publicSubView.do?psIdx=PS_00000000000001631",
+            "bytes": 176688,
+            "sha256": "ff370c727c973884b11b7e0d700c999383a9085040a3db806ba7fe9013364446",
+            "file": "raw/gwanak-funeral-official.html",
+            "textFile": "raw/gwanak-funeral-official.txt"
+          }
+        ],
+        "attachment": {
+          "file": "raw/gwanak-funeral-official.xlsx",
+          "sha256": "0195e45a87528748d051779b8007dc0716c9baf89d2f38d2f8045e3475915cb2",
+          "parsed": "raw/gwanak-funeral-official.parsed.json"
+        },
+        "dateConflict": "게시글 제목은 2026년, 본문은 2026년 4월 기준이나 XLSX A1은 2025.07.로 되어 있다. 최신 현황이라고 단정하거나 관악 내 유일 시설이라고 홍보하지 않는다.",
+        "orderingDecision": [
+          "빈소 호실과 받는 상주명을 주문 전 준비한다. 이름·호실을 이 조사에서 수집하지 않는다.",
+          "B201/B203/B205/B060의 공개 가격·사진을 비교할 수 있다.",
+          "B1 주소를 빈소 호실 또는 화환 설치 위치로 해석하지 않는다."
+        ],
+        "unverified": [
+          "당일 접수 가능",
+          "현장 반입 규정",
+          "개별 빈소 위치·발인 시각",
+          "최종 배송료",
+          "설치·사진 전송·도착 보장"
+        ]
+      },
+      "rule": "One physical facility, one anchor; aliases are not new pages or facility counts."
+    },
+    {
+      "id": "snu-faculty",
+      "name": "서울대학교 교수회관",
+      "contextType": "physical-facility",
+      "status": "active_evidence_context_not_delivery_approval",
+      "articleId": "celebration",
+      "anchor": "snu-faculty",
+      "aliases": [
+        "서울대 교수회관 웨딩홀",
+        "서울대학교 교수회관 웨딩홀"
+      ],
+      "location": {
+        "address": "서울특별시 관악구 관악로1 서울대학교65동 교수회관",
+        "legalDong": null,
+        "legalCode": null,
+        "administrativeDong": null,
+        "sourceIds": [
+          "base:faculty-location",
+          "base:faculty-faq-page2"
+        ],
+        "scope": "도로명·65동·2층홀 정적 사실만. 호암과 다른시설. 세부 법정/행정동 미배정."
+      },
+      "evidence": {
+        "id": "snu-faculty",
+        "name": "서울대학교 교수회관",
+        "type": "wedding",
+        "researchStatus": "OFFICIAL_EXISTENCE_VERIFIED_WREATH_ACCEPTANCE_UNVERIFIED",
+        "aliases": [
+          "서울대 교수회관 웨딩홀",
+          "서울대학교 교수회관 웨딩홀"
+        ],
+        "facts": [
+          "공식 주소는 관악로 1 서울대학교 교수회관 65동이다.",
+          "공식 위치 안내가 낙성대 근처 호암교수회관과 다른 시설이라고 명시한다.",
+          "공식 FAQ 2쪽은 컨벤션홀(웨딩홀)이 2층, 웨딩예약실·인포데스크 등이 1층이라고 밝힌다."
+        ],
+        "sources": [
+          {
+            "url": "https://www.snufacultyclub.com/sub01/sub03",
+            "at": "2026-10-13T03:20:57.930999+00:00",
+            "status": 200,
+            "finalUrl": "https://www.snufacultyclub.com/sub01/sub03",
+            "bytes": 39289,
+            "sha256": "0b9855c4977132f15c28b889e686d973935626217bbcd445045eac7a15e24fbb",
+            "file": "raw/faculty-location.html",
+            "textFile": "raw/faculty-location.txt"
+          },
+          {
+            "url": "https://www.snufacultyclub.com/sub04/sub01",
+            "at": "2026-10-13T03:24:11.698386+00:00",
+            "status": 200,
+            "finalUrl": "https://www.snufacultyclub.com/sub04/sub01",
+            "bytes": 41068,
+            "sha256": "4fdb9c315e70048828f969f8c9b9d45a62a07f2d86a5b462681478731453a7a5",
+            "file": "raw/faculty-wedding.html",
+            "textFile": "raw/faculty-wedding.txt"
+          },
+          {
+            "url": "https://www.snufacultyclub.com/board/bbs47",
+            "at": "2026-10-13T03:24:11.697630+00:00",
+            "status": 200,
+            "finalUrl": "https://www.snufacultyclub.com/board/bbs47",
+            "bytes": 54036,
+            "sha256": "3f14c370cfed3a6fbac14ee298891aea59fcb4482c4fb2c89f95dbc51db3e7be",
+            "file": "raw/faculty-faq.html",
+            "textFile": "raw/faculty-faq.txt"
+          },
+          {
+            "url": "https://www.snufacultyclub.com/board/bbs47?page=2",
+            "at": "2026-10-13T03:28:08.990948+00:00",
+            "status": 200,
+            "finalUrl": "https://www.snufacultyclub.com/board/bbs47?page=2",
+            "bytes": 50798,
+            "sha256": "b1ca63071ca5e8d85963a90c003abc4355d3bf9d655d81ca7a35b470c904ad03",
+            "file": "raw/faculty-faq-page2.html",
+            "textFile": "raw/faculty-faq-page2.txt"
+          }
+        ],
+        "policyScope": "FAQ의 꽃장식 추가 답변에 직영 운영 및 외부 플라워 반입금지가 있다. 예식장 장식 문맥이다. 이 근거만으로 외부 축하화환 전부 금지 또는 허용을 단정할 수 없다.",
+        "orderingDecision": [
+          "청첩장 명칭이 교수회관인지 호암교수회관인지 먼저 구분한다.",
+          "2층 홀이라는 시설 정보와 실제 화환 인수·배치 장소는 구분한다.",
+          "외부 축하화환 접수 여부가 확인되기 전 반입 가능·입구 설치·2층 배송을 약속하지 않는다."
+        ],
+        "unverified": [
+          "외부 축하화환 반입 허용",
+          "당일 인수 담당·장소",
+          "fwith 해당 주문 이행 가능"
+        ]
+      },
+      "rule": "One physical facility, one anchor; aliases are not new pages or facility counts."
+    },
+    {
+      "id": "snu-research-park",
+      "name": "서울대학교 연구공원 웨딩홀",
+      "contextType": "physical-facility",
+      "status": "active_evidence_context_not_delivery_approval",
+      "articleId": "celebration",
+      "anchor": "snu-research-park",
+      "aliases": [
+        "서울대 연구공원 웨딩홀",
+        "서울대연구공원웨딩홀"
+      ],
+      "location": {
+        "address": "서울특별시 관악구 관악로1 서울대학교 연구공원 본관",
+        "legalDong": "봉천동",
+        "legalCode": "1162010100",
+        "administrativeDong": null,
+        "sourceIds": [
+          "base:research-location",
+          "snu-research-main-legal-dong"
+        ],
+        "scope": "봉천동은 동일 연구공원 본관 건물의 공식 주소로 결속. 입주기관2층을 웨딩홀층으로 바꾸지 않음."
+      },
+      "evidence": {
+        "id": "snu-research-park",
+        "name": "서울대학교 연구공원 웨딩홀",
+        "type": "wedding",
+        "researchStatus": "OFFICIAL_FACILITY_AND_WREATH_MANAGEMENT_POLICY_VERIFIED",
+        "aliases": [
+          "서울대 연구공원 웨딩홀",
+          "서울대연구공원웨딩홀"
+        ],
+        "facts": [
+          "공식 주소는 관악로 1 서울대학교 연구공원 본관, 문의는 02-878-0465이다.",
+          "현행 기간 2026년 9월~2027년 8월 공식 이용약관 제6조는 축하화환의 배치·관리·처분을 예식장 사업자가 맡는다고 밝힌다.",
+          "2027년 9월 이후 약관에도 같은 관리 조항이 있지만 미래 시행 구간을 현행과 섞지 않는다."
+        ],
+        "sources": [
+          {
+            "url": "https://www.snuwedding.co.kr/snu/snu_location",
+            "at": "2026-10-13T03:19:00.763085+00:00",
+            "status": 200,
+            "finalUrl": "https://www.snuwedding.co.kr/snu/snu_location",
+            "bytes": 20454,
+            "sha256": "43414143f4738695b49f86506216c397ed8354cd0f0983de6aa693eeec5458f1",
+            "file": "raw/research-location.html",
+            "textFile": "raw/research-location.txt"
+          },
+          {
+            "url": "https://www.snuwedding.co.kr/snu/guide_cost",
+            "at": "2026-10-13T03:19:00.763875+00:00",
+            "status": 200,
+            "finalUrl": "https://www.snuwedding.co.kr/snu/guide_cost",
+            "bytes": 37437,
+            "sha256": "ec3cf77fc16328d4269d1bb0501b142f7203b05d0841316c1e52eade4ceb0558",
+            "file": "raw/research-guide.html",
+            "textFile": "raw/research-guide.txt"
+          },
+          {
+            "url": "https://snuwedding.co.kr/snu_board/views/1333?",
+            "at": "2026-10-13T03:28:08.991656+00:00",
+            "status": 200,
+            "finalUrl": "https://snuwedding.co.kr/snu_board/views/1333?",
+            "bytes": 54153,
+            "sha256": "a2d97428bdaa4de4729b0b2ae0aed59902261e73ab3cd9031e3093a6e6359763",
+            "file": "raw/research-current-terms.html",
+            "textFile": "raw/research-current-terms.txt"
+          },
+          {
+            "url": "https://snuwedding.co.kr/snu_board/views/3050?",
+            "at": "2026-10-13T03:28:08.992203+00:00",
+            "status": 200,
+            "finalUrl": "https://snuwedding.co.kr/snu_board/views/3050?",
+            "bytes": 62537,
+            "sha256": "373e0f3023cd927d8e8b61bd861fe94dcdd8fad5e71e62a4d41fdcb98ba28e1b",
+            "file": "raw/research-future-terms.html",
+            "textFile": "raw/research-future-terms.txt"
+          }
+        ],
+        "policyScope": "가격 안내의 생화장식 추가 항목에 있는 외부업체 반입불가 문구를 축하화환 전면 금지로 확대하지 않는다. 반대로 약관의 화환 관리 조항을 모든 외부 주문의 무조건 수용 보장으로도 확대하지 않는다.",
+        "orderingDecision": [
+          "교수회관 65동·호암교수회관과 연구공원 본관을 구분한다.",
+          "보내는 사람의 희망 배치 위치를 판매자가 보장하지 않는다. 현장 배치는 예식장 운영 기준에 따른다.",
+          "교내 차량 통행료 안내를 fwith 배송비 또는 추가금 확정 근거로 전환하지 않는다."
+        ],
+        "unverified": [
+          "특정 예식의 접수 가능",
+          "제품별 제한·인수 시간",
+          "fwith의 설치 서비스·사진 전송·배송 시간"
+        ]
+      },
+      "rule": "One physical facility, one anchor; aliases are not new pages or facility counts."
+    },
+    {
+      "id": "nakseongdae-traditional",
+      "name": "낙성대전통야외소극장 전통혼례",
+      "contextType": "physical-facility",
+      "status": "active_evidence_context_not_delivery_approval",
+      "articleId": "celebration",
+      "anchor": "nakseongdae-traditional",
+      "aliases": [
+        "낙성대 전통혼례식장",
+        "낙성대공원 전통혼례"
+      ],
+      "location": {
+        "address": "서울특별시 관악구 낙성대로3길45(봉천동)",
+        "legalDong": "봉천동",
+        "legalCode": "1162010100",
+        "administrativeDong": null,
+        "sourceIds": [
+          "base:nakseongdae-official"
+        ],
+        "scope": "공식 구청 시설표시 법정동. 낙성대동이라는 행정동을 이름만 보고 배정하지 않음."
+      },
+      "evidence": {
+        "id": "nakseongdae-traditional",
+        "name": "낙성대전통야외소극장 전통혼례",
+        "type": "wedding",
+        "researchStatus": "DISTRICT_OFFICIAL_SERVICE_VERIFIED_DELIVERY_UNVERIFIED",
+        "aliases": [
+          "낙성대 전통혼례식장",
+          "낙성대공원 전통혼례"
+        ],
+        "facts": [
+          "관악구 공식 시설 안내는 전통혼례 이용, 사전 예약, 낙성대로3길 45(봉천동), 전통혼례 문의 02-885-6145를 안내한다.",
+          "구청 페이지가 관악문화예절원 공식 사이트를 연결하며 해당 사이트의 전통혼례 페이지까지 HTTP200으로 열었다."
+        ],
+        "sources": [
+          {
+            "url": "https://www.gwanak.go.kr/site/gwanak/06/10603020400002016082209.jsp",
+            "at": "2026-10-13T03:21:39.564539+00:00",
+            "status": 200,
+            "finalUrl": "https://www.gwanak.go.kr/site/gwanak/06/10603020400002016082209.jsp",
+            "bytes": 173842,
+            "sha256": "48ef079aef26294742d3113b97bc065b45cc0aca556aa4e9666419dc79077a4e",
+            "file": "raw/nakseongdae-official.html",
+            "textFile": "raw/nakseongdae-official.txt"
+          },
+          {
+            "url": "http://www.gwanakcyw.or.kr",
+            "at": "2026-10-13T03:24:11.699364+00:00",
+            "status": 200,
+            "finalUrl": "https://www.gwanakcyw.or.kr:6015/",
+            "bytes": 20646,
+            "sha256": "1a2491a75b7eb4eee8a90f812df2f02ca8744dd7132c99f2475673e5ad9ea780",
+            "file": "raw/nakseongdae-center.html",
+            "textFile": "raw/nakseongdae-center.txt"
+          },
+          {
+            "url": "https://www.gwanakcyw.or.kr:6015/?c=user&mcd=gkd0002",
+            "at": "2026-10-13T03:28:08.992725+00:00",
+            "status": 200,
+            "finalUrl": "https://www.gwanakcyw.or.kr:6015/?c=user&mcd=gkd0002",
+            "bytes": 15439,
+            "sha256": "8253b26a85dc3ba3556b9a6e4b6275408c05f6915050f01a79e2241ff79e22f9",
+            "file": "raw/nakseongdae-wedding.html",
+            "textFile": "raw/nakseongdae-wedding.txt"
+          }
+        ],
+        "readScope": "구청 시설 안내 본문은 직접 읽었다. 예절원 혼례 상세 페이지는 본문 대부분 이미지라 텍스트 확인 범위가 제목에 한정되어 있다. 그 이미지 내용이나 행사 가능 일정은 확인하지 않았다.",
+        "orderingDecision": [
+          "전통혼례식장·공원 혼례라는 이름을 같은 물리적 시설의 별칭 후보로 묶어 페이지 중복을 피한다.",
+          "청첩장에 적힌 실제 행사명·장소를 기준으로 안내한다."
+        ],
+        "unverified": [
+          "현재 혼례 개최 가능 일정",
+          "야외 화환 고정·우천 취급",
+          "외부 화환 접수·설치 위치",
+          "제품별 현장 수용 여부"
+        ]
+      },
+      "rule": "One physical facility, one anchor; aliases are not new pages or facility counts."
+    },
+    {
+      "id": "gwanak-opening-occasion",
+      "name": "관악구 매장 개업·이전의 축하 주문",
+      "contextType": "buyer-occasion",
+      "status": "active_buyer_context_not_named_facility",
+      "articleId": "celebration",
+      "anchor": "opening-occasion",
+      "aliases": [
+        "개업축하화환",
+        "오픈축하화환",
+        "이전축하화환"
+      ],
+      "location": {
+        "district": "관악구",
+        "legalDong": null,
+        "administrativeDong": null
+      },
+      "evidenceFiles": [
+        "addendum:competitor-original-review.json",
+        "addendum:geographic-intent-matrix.json",
+        "base:catalog-policy-evidence.json"
+      ],
+      "rule": "개업 구매 질문은 검증된 축하 4개 SKU와 주문 준비 정보로 답한다. 특정 상가의 영업·수요·반입·설치 정책을 발명하지 않는다."
+    },
+    {
+      "id": "gwanak-arthall",
+      "name": "관악아트홀",
+      "contextType": "physical-facility",
+      "status": "held",
+      "articleId": null,
+      "reason": "공연장 내부 화환·꽃다발 반입 금지를 안내한다. 로비·외부도 전부 금지한다고 확대하거나, 수용 여부 확인 없이 공연 축하화환 판매 후보로 활성화하지 않는다.",
+      "evidence": {
+        "name": "관악아트홀",
+        "status": "HOLD_EXPLICIT_INTERIOR_RESTRICTION",
+        "sourceUrl": "https://gfac.or.kr/site/main/content/reservationArthall_1",
+        "evidenceFile": "raw/arthall-web-extraction.json",
+        "readScope": "웹 도구가 반환한 공식 원문302행 중 대관절차·7항 L230을 실제 열람. shell HTTP502 두 번은 별도 실패로 유지.",
+        "reason": "공연장 내부 화환·꽃다발 반입 금지를 안내한다. 로비·외부도 전부 금지한다고 확대하거나, 수용 여부 확인 없이 공연 축하화환 판매 후보로 활성화하지 않는다."
+      }
+    },
+    {
+      "id": "hoam-faculty",
+      "name": "호암교수회관",
+      "contextType": "physical-facility",
+      "status": "held",
+      "articleId": null,
+      "reason": "공식 홈페이지는 HTTP200이나778바이트 JS shell만 받았다. 별도 서울대 공식 2026.9.29 행사 페이지에서 삼성컨벤션센터2층 베리타스홀 명칭을 확인했으나 혼례·화환 정책을 검증한 것은 아니다. 검증하지 못한 혼례 공간 명칭이나 정책을 최신 시설 사실로 쓰지 않는다.",
+      "evidence": {
+        "name": "호암교수회관",
+        "status": "HOLD_CURRENT_WEDDING_DETAILS_UNVERIFIED",
+        "sources": [
+          {
+            "url": "https://snuhoam.co.kr/",
+            "at": "2026-10-13T03:18:06.932193+00:00",
+            "status": 200,
+            "finalUrl": "https://snuhoam.co.kr/",
+            "bytes": 778,
+            "sha256": "f83c92314b886ca95130e218e6289a809efb69a36d8e23fce5fce59e828327e0",
+            "file": "raw/hoam-home.html",
+            "textFile": "raw/hoam-home.txt"
+          },
+          {
+            "url": "https://snubioday.snu.ac.kr/awards",
+            "at": "2026-10-13T03:21:39.566584+00:00",
+            "status": 200,
+            "finalUrl": "https://snubioday.snu.ac.kr/awards",
+            "bytes": 102384,
+            "sha256": "a9105e9ded0398b4e34b103552bebd69aaf558e0c4bc239f98d4ad938b8d2912",
+            "file": "raw/hoam-snu-crosscheck.html",
+            "textFile": "raw/hoam-snu-crosscheck.txt"
+          }
+        ],
+        "reason": "공식 홈페이지는 HTTP200이나778바이트 JS shell만 받았다. 별도 서울대 공식 2026.9.29 행사 페이지에서 삼성컨벤션센터2층 베리타스홀 명칭을 확인했으나 혼례·화환 정책을 검증한 것은 아니다. 검증하지 못한 혼례 공간 명칭이나 정책을 최신 시설 사실로 쓰지 않는다."
+      }
+    },
+    {
+      "id": "grace-party",
+      "name": "그레이스파티",
+      "contextType": "physical-facility",
+      "status": "held",
+      "articleId": null,
+      "reason": "공식 루트 및 /29가 HTTP502. 검색 요약에서 본 주소·전화·운영 여부를 원문 검증 사실로 사용하지 않는다.",
+      "evidence": {
+        "name": "그레이스파티",
+        "status": "HOLD_ORIGINAL_ACCESS_FAILED",
+        "sources": [
+          {
+            "url": "https://www.graceparty.co.kr/29",
+            "at": "2026-10-13T03:19:22.284550+00:00",
+            "error": "<HTTPError 502: 'Bad Gateway'>"
+          },
+          {
+            "url": "https://www.graceparty.co.kr/",
+            "at": "2026-10-13T03:20:57.932907+00:00",
+            "error": "<HTTPError 502: 'Bad Gateway'>"
+          }
+        ],
+        "reason": "공식 루트 및 /29가 HTTP502. 검색 요약에서 본 주소·전화·운영 여부를 원문 검증 사실로 사용하지 않는다."
+      }
+    },
+    {
+      "id": "unverified-wedding-lead-1",
+      "name": "런던웨딩프라자",
+      "contextType": "unverified-facility-lead",
+      "status": "held",
+      "articleId": null,
+      "reason": "경쟁 목록에서만 발견. 공식 현재 운영·주소·동일시설별칭·화환 조건 미확인. 폐업/금지 확정 아님.",
+      "source": "base:facility-evidence.json / held[3]"
+    },
+    {
+      "id": "unverified-wedding-lead-2",
+      "name": "보람웨딩홀",
+      "contextType": "unverified-facility-lead",
+      "status": "held",
+      "articleId": null,
+      "reason": "경쟁 목록에서만 발견. 공식 현재 운영·주소·동일시설별칭·화환 조건 미확인. 폐업/금지 확정 아님.",
+      "source": "base:facility-evidence.json / held[3]"
+    },
+    {
+      "id": "unverified-wedding-lead-3",
+      "name": "로얄웨딩홀",
+      "contextType": "unverified-facility-lead",
+      "status": "held",
+      "articleId": null,
+      "reason": "경쟁 목록에서만 발견. 공식 현재 운영·주소·동일시설별칭·화환 조건 미확인. 폐업/금지 확정 아님.",
+      "source": "base:facility-evidence.json / held[3]"
+    },
+    {
+      "id": "unverified-wedding-lead-4",
+      "name": "페리시티컨벤션",
+      "contextType": "unverified-facility-lead",
+      "status": "held",
+      "articleId": null,
+      "reason": "경쟁 목록에서만 발견. 공식 현재 운영·주소·동일시설별칭·화환 조건 미확인. 폐업/금지 확정 아님.",
+      "source": "base:facility-evidence.json / held[3]"
+    },
+    {
+      "id": "unverified-wedding-lead-5",
+      "name": "르네상스컨벤션",
+      "contextType": "unverified-facility-lead",
+      "status": "held",
+      "articleId": null,
+      "reason": "경쟁 목록에서만 발견. 공식 현재 운영·주소·동일시설별칭·화환 조건 미확인. 폐업/금지 확정 아님.",
+      "source": "base:facility-evidence.json / held[3]"
+    },
+    {
+      "id": "unverified-wedding-lead-6",
+      "name": "이라운지 서울대점",
+      "contextType": "unverified-facility-lead",
+      "status": "held",
+      "articleId": null,
+      "reason": "경쟁 목록에서만 발견. 공식 현재 운영·주소·동일시설별칭·화환 조건 미확인. 폐업/금지 확정 아님.",
+      "source": "base:facility-evidence.json / held[3]"
+    },
+    {
+      "id": "unverified-wedding-lead-7",
+      "name": "아이홀 서울대점",
+      "contextType": "unverified-facility-lead",
+      "status": "held",
+      "articleId": null,
+      "reason": "경쟁 목록에서만 발견. 공식 현재 운영·주소·동일시설별칭·화환 조건 미확인. 폐업/금지 확정 아님.",
+      "source": "base:facility-evidence.json / held[3]"
+    }
+  ],
+  "additionalSearchLeadsNotEvaluatedAsCandidates": [
+    {
+      "name": "메모리스클래식",
+      "reason": "검색 결과의 과거납품 제목에서 관찰. 현재 운영·공식명 확인 전 활성화하지 않음."
+    },
+    {
+      "name": "양지병원 장례식장이라는 경쟁사 표현",
+      "reason": "병원명만으로 장례식장 존재·운영을 확정하지 않음."
+    },
+    {
+      "name": "보라매병원 장례식장",
+      "reason": "이미 동작 계획의 대상이며 관악 원고로 중복 편입하지 않음. 관악 경쟁문구의 인접시설 언급은 관악 소속 증거가 아니다."
+    }
+  ],
+  "countsArePageQuota": false
+}

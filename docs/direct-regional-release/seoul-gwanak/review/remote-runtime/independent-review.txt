@@ -1,0 +1,35 @@
+관악 원격 source SHA 및 LOCAL 실제SHA 산출물 독립검수
+
+판정: SOURCE_SHA_AND_LOCAL_ARTIFACT_VERIFIED_BROWSER_UNVERIFIED
+대상 commit: 4f982994513cb7913f869b0114b3427be50b1362
+대상 branch: site-factory-seoul-gwanak-direct
+원격 저장소: joseungil-kr/fwith-site-factory
+
+[직접 확인] 원격 참조와 원문
+1. GitHub GET으로 branch ref·commit·main ref와 두 recursive tree 원문을 새로 읽었다. branch는4f982994…, main과 commit의 유일한 직계부모는f30375041d97d958493ca74b0c4220d8ab85fc4b이다. tree 응답은 둘 다 truncated=false였다. 검수 마지막에도 branch/main ref를 다시 GET하여 같음을 확인했다.
+2. repository tree는8cbb1865d81f9d74b064bd04043098029aa19705, 관악 project tree는e07ff28761715249feeade371e08c32007c6eb14이다. 기존 main의1625개 파일은 blob SHA·mode·size 전부 유지된다. 추가 파일은 관악 프로젝트 아래 정확히672개이며 다른 경로의 추가·수정·삭제는 없다.
+3. 앞서 독립승인한 source manifest49efbc6768d52b208f5d7c2bfad8faab5386d5de777d16d6134263e6df168eb7의672개 로컬파일 bytes를 다시 읽고 SHA256 및 Git blob SHA1을 계산했다. 이 값을 새 원격 tree의672개 blob identity와 대조해 모두 일치했다.
+4. 이어 실제 원격 checkout /workspace/shared/gwanak-source-exact의 immutable Git object를 git cat-file --batch로672개 전부 읽었다. HEAD=대상commit, origin=해당 GitHub repo를 직접 확인했다. 각 committed byte의 SHA256/Git blob SHA1은 독립승인 manifest·새 원격tree와 전부일치한다. tree identity만 읽거나 작성자 fullreadback 보고만 믿은 검수가 아니다.
+
+[직접 확인] 실제SHA build 산출물
+1. source exact checkout의 dist20개 파일을 앞서 독립검수한 기존 LOCAL dist20개의 실제 bytes와 전수 비교했다. 기존 파일의 SHA256도 이전 승인 dist manifest16c842994e9c5cd2b218a466c689f1fd920dcfb8f2c8ff141b75d7359eb4692e와 다시 대조했다.
+2. 실제 변경은 HTML5개 각각의 단일 site-factory-revision meta content가 local-gwanak-unpublished에서4f982994513cb7913f869b0114b3427be50b1362로 바뀐 것뿐이다. 비교에서 이 단일필드만 동일 placeholder로 치환했다. 모든 나머지 HTML bytes, CSS, 사진, 배너, robots, headers, favicon은 동일하다. 경로수20과 HTML수5도 동일하다.
+3. 실제5HTML의 revision값, H1각1개 및 preview noindex,nofollow,noarchive를 직접 확인했다. 앞선 승인문구·지역매핑·SKU/가격·시설·FAQ·출처·CTA 검수대상은 메타변경 외에 정확히 유지된다. 이 단계에서 이전553검사를 새로 실행한 것으로 세지 않는다.
+4. 작성자 actual-sha-artifact-manifest20개 항목을 내 직접 재해시 결과와 대조했고 전부일치했다. 정식 인계용 manifest SHA256은b0aac2492bf6ff410cd640d58ef8b2341795bdd515cff500b9ff4dafdd1f2446이다. 검수자 별도manifest는 scope문장이 추가되어 문서자체 지문이 다르지만20개 path/bytes/SHA256항목이 정확히 같다.
+5. 빌드 중 tracked build-revision.json만 일시 변경됐던 것을 확인했으며, 최종에는 원본bytes로 복구됐다. source672개 bytes 재대조 실패0 및 git status --porcelain 빈 출력으로 clean 상태를 확인했다.
+
+[도구 보고] 실행로그를 읽고 산출물에 교차 결속
+작성자가 실행한 actual-sha-build/native/qa 로그를 직접 읽고 수치·실패마커를 파싱했다. 이 검수 단계에서는 build/QA/test를 다시 실행하지 않았다.
+- native:131+116+120+129=496 PASS, 각 실패0
+- 실제SHA build:Astro60files, 오류0/경고0/hint0; FAQ8/배너12/관악235변조 각각 OK
+- 별도qa:FAQ8/배너12/관악235변조 각각 OK
+- 첫 native는 fresh checkout에 아직dist가 없어495PASS/1FAIL이었고, surface gate가 누락산출물을 거절한 기록이다. actual-sha-native-before-build-failure.log를 보존했다. 같은 immutable source에서 build→native→qa 순으로 재실행한 후496PASS가 기록됐으며 실제 산출물20개도 직접 검증했다.
+
+승인·provenance 경계
+원격 source와 immutable 승인입력의 private/historical copy fields를 수정하지 않았다. copy-review-bindings의 renderedReview=PENDING, screenQa=UNVERIFIED, verdict=APPROVED_INPUTS_RUNTIME_REVIEW_PENDING 및 direct-checkpoint의 기존LOCAL_IMPLEMENTED_VERIFICATION_PENDING은 그대로 남아 있다. 이 원문들을 과거시점 PASS로 고치지 않고, 별도 독립 verdict로 실제 source SHA와 검증산출물을 결속했다. productionApproved=false, hostnameOwnershipVerified=false도 유지된다.
+
+[미확인]
+실제 브라우저320/390/1280 화면·가격 줄바꿈·overflow·앵커 가림·footer/고정바·키보드/스크린리더는 여전히 미검증이다. 공개HTTP·배포·provider404·소유권·IndexNow·검색노출·실제배송이행도 이 판정에 포함하지 않는다. 검수자는 이 단계에서 원격쓰기, QA 실행, 배포, proof설정을 수행하지 않았다.
+
+검수기 오류 기록
+초기 byte비교 코드에서 정규식 bytes에 .findall을 호출하는 AttributeError가 있었다. 제품 source나 산출물 수정 없이 검수기에서 re.compile을 사용하도록 고쳐 전수 비교를 재실행했다. 실패를 성공으로 처리하지 않았으며 최종 비교결과만 verdict에 반영했다.

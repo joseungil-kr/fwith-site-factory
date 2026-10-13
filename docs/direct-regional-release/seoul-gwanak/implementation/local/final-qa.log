@@ -1,0 +1,269 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> qa
+> python3 scripts/qa_static.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_gwanak.py && python3 scripts/test_gwanak.py
+
+STATIC QA PASSED: 2 details, 4 HTML routes; indexable=False; exact metadata/sitemap/snapshot/link parity
+GRAPH QA PASSED { pages: 2, hubs: 1 }
+FAQ / PRODUCT QA: 2 details, 4 visible FAQs, 18 exact product links
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.065s
+
+OK
+FAQ / PRODUCT QA: 2 details, 4 visible FAQs, 18 exact product links
+FAQ / PRODUCT QA: 2 details, 4 visible FAQs, 18 exact product links
+SHARED BANNER QA: 4 customer pages, 9 banners; headings, alt, exact assets and links checked
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.096s
+
+OK
+SHARED BANNER QA: 4 customer pages, 9 banners; headings, alt, exact assets and links checked
+SHARED BANNER QA: 5 customer pages, 9 banners; headings, alt, exact assets and links checked
+GWANAK STATIC QA: {"status": "LOCAL_STATIC_VERIFIED", "scope": "Sealed inputs, runtime data, and generated HTML/assets only. Browser screens, responsive layout, focus, live HTTP, deploy and search are UNVERIFIED.", "approvalPins": {"acceptance.json": "60a27c02c52321f0bec102f3c2a8dc0a4f97f039ecdadf1917b56a88ca78d2f9", "approved-visible-surface.json": "f9d0adaacd2601d4c97d0f45195f14b8b327ae4d1763764f07c994b897029f0e", "approved-assets.json": "ccbfc6062dbdfb0649e86ea1200f64fa9f13f8df37f652d5c3cc4920cb7725a8", "runtime-input-bindings.json": "f3b7a1b40d56145c4e0b8ad293041b1b5b9a05847fef752ecd072bdc69ee7419", "interface-copy-addendum.json": "b1f0d37532998454a6098f8118b5f9b4d8b7069f6d089580756eb7569449fcca", "inputs/copy/article-copy.rev4.json": "e51f8afdf54145750ce88e3f9c35924ec11671a047090f9d457e23eeacdd5969", "inputs/copy/common-visible-copy.rev3.json": "a433bc613087ad61ce4f2a044e6a06e827b5fc726db141c3b9a31ea19c9ee96b", "inputs/plan/fixed-plan.json": "e68fa31eee4b3d375fb5a73cf8652828ef01e8c34ab6648bc0d6c44e8786a522", "inputs/plan/candidate-inventory.json": "21c65e56b849cb9c7f09be8676e8673111bfd69c9f83709607d94f6b2ce64634", "inputs/plan/membership.json": "5327b48e818dd13094d3cd9ee1b6e343c810c18d9f91567d80c114caed5f21a8"}, "htmlFiles": 5, "details": 2, "articleParagraphs": [15, 16], "articleFaqs": [2, 2], "articleSources": [3, 7], "directoryCards": 2, "productCards": {"home": 8, "eachDetail": 4}, "physicalFacilities": 4, "buyerOccasions": 1, "legalUnits": 3, "administrativeUnits": 21, "officialRelations": 21, "legalFacilityLinks": 3, "districtUnassignedFacilityLinks": 1, "administrativeFacilityLinks": 0, "assets": 11, "previewNoindex": true, "sitemapCustomerUrls": 0, "files": [{"file": "404.html", "sha256": "bf823c145a58c6f8f7bb4a78852ce5ed80fd386fe4af170c585d1d45d577a7e0", "productCards": 0, "heroProducts": 0, "sharedBanners": []}, {"file": "index.html", "sha256": "ce79078808aebcd5db53a7e3ea61ace7b2431b4c56d97cdfa52920e355531449", "productCards": 8, "heroProducts": 2, "sharedBanners": ["message", "budget", "consultation"]}, {"file": "regions/gwanak-celebration-wreath/index.html", "sha256": "6d8daa2a2883867ceac7df3475034e776d18ffb29c24afc28fe3488c605acf94", "productCards": 4, "heroProducts": 1, "sharedBanners": ["message", "budget", "consultation"]}, {"file": "regions/gwanak-funeral-wreath/index.html", "sha256": "da43de835f709d02b86416a64c12294ef5a938188a04c16b608b3deb0e0707ac", "productCards": 4, "heroProducts": 1, "sharedBanners": ["message", "budget", "consultation"]}, {"file": "regions/index.html", "sha256": "87c6c11b8874771f666b13fc6b1c60c4dfa444482c37a20d261a8c93d6c7e2fc", "productCards": 0, "heroProducts": 0, "sharedBanners": []}]}
+test_404_banner_forbidden (__main__.GwanakMutations.test_404_banner_forbidden) ... ok
+test_404_canonical_forbidden (__main__.GwanakMutations.test_404_canonical_forbidden) ... ok
+test_404_home_link_wrong (__main__.GwanakMutations.test_404_home_link_wrong) ... ok
+test_404_schema_forbidden (__main__.GwanakMutations.test_404_schema_forbidden) ... ok
+test_404_social_forbidden (__main__.GwanakMutations.test_404_social_forbidden) ... ok
+test_404_title_h1_conflation (__main__.GwanakMutations.test_404_title_h1_conflation) ... ok
+test_admin_facility_assignment_html (__main__.GwanakMutations.test_admin_facility_assignment_html) ... ok
+test_banner_alt_missing (__main__.GwanakMutations.test_banner_alt_missing) ... ok
+test_banner_caption_missing (__main__.GwanakMutations.test_banner_caption_missing) ... ok
+test_banner_duplicate (__main__.GwanakMutations.test_banner_duplicate) ... ok
+test_banner_missing (__main__.GwanakMutations.test_banner_missing) ... ok
+test_banner_wrong_bytes (__main__.GwanakMutations.test_banner_wrong_bytes) ... ok
+test_banner_wrong_variant (__main__.GwanakMutations.test_banner_wrong_variant) ... ok
+test_banners_adjacent (__main__.GwanakMutations.test_banners_adjacent) ... ok
+test_broken_facility_fragment (__main__.GwanakMutations.test_broken_facility_fragment) ... ok
+test_clean_compiled_output (__main__.GwanakMutations.test_clean_compiled_output) ... ok
+test_detail_hero_base_price_label_missing (__main__.GwanakMutations.test_detail_hero_base_price_label_missing) ... ok
+test_detail_product_card_duplicate (__main__.GwanakMutations.test_detail_product_card_duplicate) ... ok
+test_directory_banner_forbidden (__main__.GwanakMutations.test_directory_banner_forbidden) ... ok
+test_directory_card_duplicate (__main__.GwanakMutations.test_directory_card_duplicate) ... ok
+test_directory_card_missing (__main__.GwanakMutations.test_directory_card_missing) ... ok
+test_directory_facility_candidate_attribute (__main__.GwanakMutations.test_directory_facility_candidate_attribute) ... ok
+test_duplicate_faq_without_marker (__main__.GwanakMutations.test_duplicate_faq_without_marker) ... ok
+test_duplicate_heading_id (__main__.GwanakMutations.test_duplicate_heading_id) ... ok
+test_duplicate_hero (__main__.GwanakMutations.test_duplicate_hero) ... ok
+test_duplicate_html_alt_attribute (__main__.GwanakMutations.test_duplicate_html_alt_attribute) ... ok
+test_duplicate_image (__main__.GwanakMutations.test_duplicate_image) ... ok
+test_duplicate_paragraph_in_unmarked_span (__main__.GwanakMutations.test_duplicate_paragraph_in_unmarked_span) ... ok
+test_duplicate_primary_cta (__main__.GwanakMutations.test_duplicate_primary_cta) ... ok
+test_executable_script_injection (__main__.GwanakMutations.test_executable_script_injection) ... ok
+test_external_script_injection (__main__.GwanakMutations.test_external_script_injection) ... ok
+test_extra_product_image_outside_card (__main__.GwanakMutations.test_extra_product_image_outside_card) ... ok
+test_extra_seller_facility_address_schema (__main__.GwanakMutations.test_extra_seller_facility_address_schema) ... ok
+test_extra_standalone_facility_route (__main__.GwanakMutations.test_extra_standalone_facility_route) ... ok
+test_faq_celebration_0_answer_duplicate (__main__.GwanakMutations.test_faq_celebration_0_answer_duplicate) ... ok
+test_faq_celebration_0_answer_missing (__main__.GwanakMutations.test_faq_celebration_0_answer_missing) ... ok
+test_faq_celebration_0_question_duplicate (__main__.GwanakMutations.test_faq_celebration_0_question_duplicate) ... ok
+test_faq_celebration_0_question_missing (__main__.GwanakMutations.test_faq_celebration_0_question_missing) ... ok
+test_faq_celebration_1_answer_duplicate (__main__.GwanakMutations.test_faq_celebration_1_answer_duplicate) ... ok
+test_faq_celebration_1_answer_missing (__main__.GwanakMutations.test_faq_celebration_1_answer_missing) ... ok
+test_faq_celebration_1_question_duplicate (__main__.GwanakMutations.test_faq_celebration_1_question_duplicate) ... ok
+test_faq_celebration_1_question_missing (__main__.GwanakMutations.test_faq_celebration_1_question_missing) ... ok
+test_faq_funeral_0_answer_duplicate (__main__.GwanakMutations.test_faq_funeral_0_answer_duplicate) ... ok
+test_faq_funeral_0_answer_missing (__main__.GwanakMutations.test_faq_funeral_0_answer_missing) ... ok
+test_faq_funeral_0_question_duplicate (__main__.GwanakMutations.test_faq_funeral_0_question_duplicate) ... ok
+test_faq_funeral_0_question_missing (__main__.GwanakMutations.test_faq_funeral_0_question_missing) ... ok
+test_faq_funeral_1_answer_duplicate (__main__.GwanakMutations.test_faq_funeral_1_answer_duplicate) ... ok
+test_faq_funeral_1_answer_missing (__main__.GwanakMutations.test_faq_funeral_1_answer_missing) ... ok
+test_faq_funeral_1_question_duplicate (__main__.GwanakMutations.test_faq_funeral_1_question_duplicate) ... ok
+test_faq_funeral_1_question_missing (__main__.GwanakMutations.test_faq_funeral_1_question_missing) ... ok
+test_first_answer_duplicate (__main__.GwanakMutations.test_first_answer_duplicate) ... ok
+test_general_directory_link_missing (__main__.GwanakMutations.test_general_directory_link_missing) ... ok
+test_hero_count_inflates_card_count (__main__.GwanakMutations.test_hero_count_inflates_card_count) ... ok
+test_hidden_faq (__main__.GwanakMutations.test_hidden_faq) ... ok
+test_hidden_image (__main__.GwanakMutations.test_hidden_image) ... ok
+test_hidden_paragraph (__main__.GwanakMutations.test_hidden_paragraph) ... ok
+test_home_card_missing (__main__.GwanakMutations.test_home_card_missing) ... ok
+test_home_hero_base_price_label_missing (__main__.GwanakMutations.test_home_hero_base_price_label_missing) ... ok
+test_home_primary_cta_duplicate (__main__.GwanakMutations.test_home_primary_cta_duplicate) ... ok
+test_home_product_card_missing (__main__.GwanakMutations.test_home_product_card_missing) ... ok
+test_iframe_injection (__main__.GwanakMutations.test_iframe_injection) ... ok
+test_inline_event_handler (__main__.GwanakMutations.test_inline_event_handler) ... ok
+test_missing_breadcrumb_aria (__main__.GwanakMutations.test_missing_breadcrumb_aria) ... ok
+test_missing_detail_route (__main__.GwanakMutations.test_missing_detail_route) ... ok
+test_missing_hero (__main__.GwanakMutations.test_missing_hero) ... ok
+test_missing_image (__main__.GwanakMutations.test_missing_image) ... ok
+test_missing_primary_cta (__main__.GwanakMutations.test_missing_primary_cta) ... ok
+test_missing_related_link (__main__.GwanakMutations.test_missing_related_link) ... ok
+test_namhyeon_facility_fabrication (__main__.GwanakMutations.test_namhyeon_facility_fabrication) ... ok
+test_new_unapproved_sentence (__main__.GwanakMutations.test_new_unapproved_sentence) ... ok
+test_og_alt_drift (__main__.GwanakMutations.test_og_alt_drift) ... ok
+test_old_region_copy (__main__.GwanakMutations.test_old_region_copy) ... ok
+test_paragraph_celebration_celebrate_0_duplicate (__main__.GwanakMutations.test_paragraph_celebration_celebrate_0_duplicate) ... ok
+test_paragraph_celebration_celebrate_0_missing (__main__.GwanakMutations.test_paragraph_celebration_celebrate_0_missing) ... ok
+test_paragraph_celebration_celebrate_1_duplicate (__main__.GwanakMutations.test_paragraph_celebration_celebrate_1_duplicate) ... ok
+test_paragraph_celebration_celebrate_1_missing (__main__.GwanakMutations.test_paragraph_celebration_celebrate_1_missing) ... ok
+test_paragraph_celebration_changes_0_duplicate (__main__.GwanakMutations.test_paragraph_celebration_changes_0_duplicate) ... ok
+test_paragraph_celebration_changes_0_missing (__main__.GwanakMutations.test_paragraph_celebration_changes_0_missing) ... ok
+test_paragraph_celebration_changes_1_duplicate (__main__.GwanakMutations.test_paragraph_celebration_changes_1_duplicate) ... ok
+test_paragraph_celebration_changes_1_missing (__main__.GwanakMutations.test_paragraph_celebration_changes_1_missing) ... ok
+test_paragraph_celebration_nakseongdae_traditional_0_duplicate (__main__.GwanakMutations.test_paragraph_celebration_nakseongdae_traditional_0_duplicate) ... ok
+test_paragraph_celebration_nakseongdae_traditional_0_missing (__main__.GwanakMutations.test_paragraph_celebration_nakseongdae_traditional_0_missing) ... ok
+test_paragraph_celebration_opening_occasion_0_duplicate (__main__.GwanakMutations.test_paragraph_celebration_opening_occasion_0_duplicate) ... ok
+test_paragraph_celebration_opening_occasion_0_missing (__main__.GwanakMutations.test_paragraph_celebration_opening_occasion_0_missing) ... ok
+test_paragraph_celebration_opening_occasion_1_duplicate (__main__.GwanakMutations.test_paragraph_celebration_opening_occasion_1_duplicate) ... ok
+test_paragraph_celebration_opening_occasion_1_missing (__main__.GwanakMutations.test_paragraph_celebration_opening_occasion_1_missing) ... ok
+test_paragraph_celebration_order_0_duplicate (__main__.GwanakMutations.test_paragraph_celebration_order_0_duplicate) ... ok
+test_paragraph_celebration_order_0_missing (__main__.GwanakMutations.test_paragraph_celebration_order_0_missing) ... ok
+test_paragraph_celebration_order_1_duplicate (__main__.GwanakMutations.test_paragraph_celebration_order_1_duplicate) ... ok
+test_paragraph_celebration_order_1_missing (__main__.GwanakMutations.test_paragraph_celebration_order_1_missing) ... ok
+test_paragraph_celebration_products_0_duplicate (__main__.GwanakMutations.test_paragraph_celebration_products_0_duplicate) ... ok
+test_paragraph_celebration_products_0_missing (__main__.GwanakMutations.test_paragraph_celebration_products_0_missing) ... ok
+test_paragraph_celebration_products_1_duplicate (__main__.GwanakMutations.test_paragraph_celebration_products_1_duplicate) ... ok
+test_paragraph_celebration_products_1_missing (__main__.GwanakMutations.test_paragraph_celebration_products_1_missing) ... ok
+test_paragraph_celebration_products_2_duplicate (__main__.GwanakMutations.test_paragraph_celebration_products_2_duplicate) ... ok
+test_paragraph_celebration_products_2_missing (__main__.GwanakMutations.test_paragraph_celebration_products_2_missing) ... ok
+test_paragraph_celebration_snu_faculty_0_duplicate (__main__.GwanakMutations.test_paragraph_celebration_snu_faculty_0_duplicate) ... ok
+test_paragraph_celebration_snu_faculty_0_missing (__main__.GwanakMutations.test_paragraph_celebration_snu_faculty_0_missing) ... ok
+test_paragraph_celebration_snu_research_park_0_duplicate (__main__.GwanakMutations.test_paragraph_celebration_snu_research_park_0_duplicate) ... ok
+test_paragraph_celebration_snu_research_park_0_missing (__main__.GwanakMutations.test_paragraph_celebration_snu_research_park_0_missing) ... ok
+test_paragraph_celebration_wedding_words_0_duplicate (__main__.GwanakMutations.test_paragraph_celebration_wedding_words_0_duplicate) ... ok
+test_paragraph_celebration_wedding_words_0_missing (__main__.GwanakMutations.test_paragraph_celebration_wedding_words_0_missing) ... ok
+test_paragraph_celebration_wedding_words_1_duplicate (__main__.GwanakMutations.test_paragraph_celebration_wedding_words_1_duplicate) ... ok
+test_paragraph_celebration_wedding_words_1_missing (__main__.GwanakMutations.test_paragraph_celebration_wedding_words_1_missing) ... ok
+test_paragraph_funeral_changes_0_duplicate (__main__.GwanakMutations.test_paragraph_funeral_changes_0_duplicate) ... ok
+test_paragraph_funeral_changes_0_missing (__main__.GwanakMutations.test_paragraph_funeral_changes_0_missing) ... ok
+test_paragraph_funeral_changes_1_duplicate (__main__.GwanakMutations.test_paragraph_funeral_changes_1_duplicate) ... ok
+test_paragraph_funeral_changes_1_missing (__main__.GwanakMutations.test_paragraph_funeral_changes_1_missing) ... ok
+test_paragraph_funeral_condolence_0_duplicate (__main__.GwanakMutations.test_paragraph_funeral_condolence_0_duplicate) ... ok
+test_paragraph_funeral_condolence_0_missing (__main__.GwanakMutations.test_paragraph_funeral_condolence_0_missing) ... ok
+test_paragraph_funeral_condolence_1_duplicate (__main__.GwanakMutations.test_paragraph_funeral_condolence_1_duplicate) ... ok
+test_paragraph_funeral_condolence_1_missing (__main__.GwanakMutations.test_paragraph_funeral_condolence_1_missing) ... ok
+test_paragraph_funeral_materials_0_duplicate (__main__.GwanakMutations.test_paragraph_funeral_materials_0_duplicate) ... ok
+test_paragraph_funeral_materials_0_missing (__main__.GwanakMutations.test_paragraph_funeral_materials_0_missing) ... ok
+test_paragraph_funeral_materials_1_duplicate (__main__.GwanakMutations.test_paragraph_funeral_materials_1_duplicate) ... ok
+test_paragraph_funeral_materials_1_missing (__main__.GwanakMutations.test_paragraph_funeral_materials_1_missing) ... ok
+test_paragraph_funeral_order_0_duplicate (__main__.GwanakMutations.test_paragraph_funeral_order_0_duplicate) ... ok
+test_paragraph_funeral_order_0_missing (__main__.GwanakMutations.test_paragraph_funeral_order_0_missing) ... ok
+test_paragraph_funeral_order_1_duplicate (__main__.GwanakMutations.test_paragraph_funeral_order_1_duplicate) ... ok
+test_paragraph_funeral_order_1_missing (__main__.GwanakMutations.test_paragraph_funeral_order_1_missing) ... ok
+test_paragraph_funeral_products_0_duplicate (__main__.GwanakMutations.test_paragraph_funeral_products_0_duplicate) ... ok
+test_paragraph_funeral_products_0_missing (__main__.GwanakMutations.test_paragraph_funeral_products_0_missing) ... ok
+test_paragraph_funeral_products_1_duplicate (__main__.GwanakMutations.test_paragraph_funeral_products_1_duplicate) ... ok
+test_paragraph_funeral_products_1_missing (__main__.GwanakMutations.test_paragraph_funeral_products_1_missing) ... ok
+test_paragraph_funeral_products_2_duplicate (__main__.GwanakMutations.test_paragraph_funeral_products_2_duplicate) ... ok
+test_paragraph_funeral_products_2_missing (__main__.GwanakMutations.test_paragraph_funeral_products_2_missing) ... ok
+test_paragraph_funeral_ribbon_0_duplicate (__main__.GwanakMutations.test_paragraph_funeral_ribbon_0_duplicate) ... ok
+test_paragraph_funeral_ribbon_0_missing (__main__.GwanakMutations.test_paragraph_funeral_ribbon_0_missing) ... ok
+test_paragraph_funeral_ribbon_1_duplicate (__main__.GwanakMutations.test_paragraph_funeral_ribbon_1_duplicate) ... ok
+test_paragraph_funeral_ribbon_1_missing (__main__.GwanakMutations.test_paragraph_funeral_ribbon_1_missing) ... ok
+test_paragraph_funeral_wooshin_funeral_0_duplicate (__main__.GwanakMutations.test_paragraph_funeral_wooshin_funeral_0_duplicate) ... ok
+test_paragraph_funeral_wooshin_funeral_0_missing (__main__.GwanakMutations.test_paragraph_funeral_wooshin_funeral_0_missing) ... ok
+test_paragraph_funeral_wooshin_funeral_1_duplicate (__main__.GwanakMutations.test_paragraph_funeral_wooshin_funeral_1_duplicate) ... ok
+test_paragraph_funeral_wooshin_funeral_1_missing (__main__.GwanakMutations.test_paragraph_funeral_wooshin_funeral_1_missing) ... ok
+test_paragraph_reordered (__main__.GwanakMutations.test_paragraph_reordered) ... ok
+test_preview_robots (__main__.GwanakMutations.test_preview_robots) ... ok
+test_preview_sitemap_not_empty (__main__.GwanakMutations.test_preview_sitemap_not_empty) ... ok
+test_product_B060_alt (__main__.GwanakMutations.test_product_B060_alt) ... ok
+test_product_B060_cta (__main__.GwanakMutations.test_product_B060_cta) ... ok
+test_product_B060_price (__main__.GwanakMutations.test_product_B060_price) ... ok
+test_product_B201_alt (__main__.GwanakMutations.test_product_B201_alt) ... ok
+test_product_B201_cta (__main__.GwanakMutations.test_product_B201_cta) ... ok
+test_product_B201_price (__main__.GwanakMutations.test_product_B201_price) ... ok
+test_product_B203_alt (__main__.GwanakMutations.test_product_B203_alt) ... ok
+test_product_B203_cta (__main__.GwanakMutations.test_product_B203_cta) ... ok
+test_product_B203_price (__main__.GwanakMutations.test_product_B203_price) ... ok
+test_product_B205_alt (__main__.GwanakMutations.test_product_B205_alt) ... ok
+test_product_B205_cta (__main__.GwanakMutations.test_product_B205_cta) ... ok
+test_product_B205_price (__main__.GwanakMutations.test_product_B205_price) ... ok
+test_product_C200_alt (__main__.GwanakMutations.test_product_C200_alt) ... ok
+test_product_C200_cta (__main__.GwanakMutations.test_product_C200_cta) ... ok
+test_product_C200_price (__main__.GwanakMutations.test_product_C200_price) ... ok
+test_product_C203_alt (__main__.GwanakMutations.test_product_C203_alt) ... ok
+test_product_C203_cta (__main__.GwanakMutations.test_product_C203_cta) ... ok
+test_product_C203_price (__main__.GwanakMutations.test_product_C203_price) ... ok
+test_product_C204_alt (__main__.GwanakMutations.test_product_C204_alt) ... ok
+test_product_C204_cta (__main__.GwanakMutations.test_product_C204_cta) ... ok
+test_product_C204_price (__main__.GwanakMutations.test_product_C204_price) ... ok
+test_product_C205_alt (__main__.GwanakMutations.test_product_C205_alt) ... ok
+test_product_C205_cta (__main__.GwanakMutations.test_product_C205_cta) ... ok
+test_product_C205_price (__main__.GwanakMutations.test_product_C205_price) ... ok
+test_product_description_missing (__main__.GwanakMutations.test_product_description_missing) ... ok
+test_product_image_bytes (__main__.GwanakMutations.test_product_image_bytes) ... ok
+test_product_photo_caption_missing (__main__.GwanakMutations.test_product_photo_caption_missing) ... ok
+test_product_public_image_bytes (__main__.GwanakMutations.test_product_public_image_bytes) ... ok
+test_professor_forced_legal_html (__main__.GwanakMutations.test_professor_forced_legal_html) ... ok
+test_runtime_admin_denominator (__main__.GwanakMutations.test_runtime_admin_denominator) ... ok
+test_runtime_copy_article (__main__.GwanakMutations.test_runtime_copy_article) ... ok
+test_runtime_copy_common (__main__.GwanakMutations.test_runtime_copy_common) ... ok
+test_runtime_directory_indexable (__main__.GwanakMutations.test_runtime_directory_indexable) ... ok
+test_runtime_facility_admin (__main__.GwanakMutations.test_runtime_facility_admin) ... ok
+test_runtime_facility_candidate (__main__.GwanakMutations.test_runtime_facility_candidate) ... ok
+test_runtime_facility_missing (__main__.GwanakMutations.test_runtime_facility_missing) ... ok
+test_runtime_facility_wrong_unit (__main__.GwanakMutations.test_runtime_facility_wrong_unit) ... ok
+test_runtime_legal_denominator (__main__.GwanakMutations.test_runtime_legal_denominator) ... ok
+test_runtime_n_expanded (__main__.GwanakMutations.test_runtime_n_expanded) ... ok
+test_runtime_occasion_as_facility (__main__.GwanakMutations.test_runtime_occasion_as_facility) ... ok
+test_runtime_occasion_geography (__main__.GwanakMutations.test_runtime_occasion_geography) ... ok
+test_runtime_occasion_misclassification (__main__.GwanakMutations.test_runtime_occasion_misclassification) ... ok
+test_runtime_ownership (__main__.GwanakMutations.test_runtime_ownership) ... ok
+test_runtime_page_candidate (__main__.GwanakMutations.test_runtime_page_candidate) ... ok
+test_runtime_page_duplicate (__main__.GwanakMutations.test_runtime_page_duplicate) ... ok
+test_runtime_page_facility_unit (__main__.GwanakMutations.test_runtime_page_facility_unit) ... ok
+test_runtime_page_intent (__main__.GwanakMutations.test_runtime_page_intent) ... ok
+test_runtime_page_missing (__main__.GwanakMutations.test_runtime_page_missing) ... ok
+test_runtime_page_occasion_facility (__main__.GwanakMutations.test_runtime_page_occasion_facility) ... ok
+test_runtime_page_paragraph (__main__.GwanakMutations.test_runtime_page_paragraph) ... ok
+test_runtime_price (__main__.GwanakMutations.test_runtime_price) ... ok
+test_runtime_product_cta (__main__.GwanakMutations.test_runtime_product_cta) ... ok
+test_runtime_professor_forced_unit (__main__.GwanakMutations.test_runtime_professor_forced_unit) ... ok
+test_runtime_publication (__main__.GwanakMutations.test_runtime_publication) ... ok
+test_runtime_relationship (__main__.GwanakMutations.test_runtime_relationship) ... ok
+test_runtime_scope_key (__main__.GwanakMutations.test_runtime_scope_key) ... ok
+test_runtime_site_key (__main__.GwanakMutations.test_runtime_site_key) ... ok
+test_runtime_sku (__main__.GwanakMutations.test_runtime_sku) ... ok
+test_sealed_approval_bytes (__main__.GwanakMutations.test_sealed_approval_bytes) ... ok
+test_shared_policy_duplicate (__main__.GwanakMutations.test_shared_policy_duplicate) ... ok
+test_source_aria_label (__main__.GwanakMutations.test_source_aria_label) ... ok
+test_source_celebration_0_duplicate (__main__.GwanakMutations.test_source_celebration_0_duplicate) ... ok
+test_source_celebration_0_missing (__main__.GwanakMutations.test_source_celebration_0_missing) ... ok
+test_source_celebration_1_duplicate (__main__.GwanakMutations.test_source_celebration_1_duplicate) ... ok
+test_source_celebration_1_missing (__main__.GwanakMutations.test_source_celebration_1_missing) ... ok
+test_source_celebration_2_duplicate (__main__.GwanakMutations.test_source_celebration_2_duplicate) ... ok
+test_source_celebration_2_missing (__main__.GwanakMutations.test_source_celebration_2_missing) ... ok
+test_source_celebration_3_duplicate (__main__.GwanakMutations.test_source_celebration_3_duplicate) ... ok
+test_source_celebration_3_missing (__main__.GwanakMutations.test_source_celebration_3_missing) ... ok
+test_source_celebration_4_duplicate (__main__.GwanakMutations.test_source_celebration_4_duplicate) ... ok
+test_source_celebration_4_missing (__main__.GwanakMutations.test_source_celebration_4_missing) ... ok
+test_source_celebration_5_duplicate (__main__.GwanakMutations.test_source_celebration_5_duplicate) ... ok
+test_source_celebration_5_missing (__main__.GwanakMutations.test_source_celebration_5_missing) ... ok
+test_source_celebration_6_duplicate (__main__.GwanakMutations.test_source_celebration_6_duplicate) ... ok
+test_source_celebration_6_missing (__main__.GwanakMutations.test_source_celebration_6_missing) ... ok
+test_source_extra (__main__.GwanakMutations.test_source_extra) ... ok
+test_source_funeral_0_duplicate (__main__.GwanakMutations.test_source_funeral_0_duplicate) ... ok
+test_source_funeral_0_missing (__main__.GwanakMutations.test_source_funeral_0_missing) ... ok
+test_source_funeral_1_duplicate (__main__.GwanakMutations.test_source_funeral_1_duplicate) ... ok
+test_source_funeral_1_missing (__main__.GwanakMutations.test_source_funeral_1_missing) ... ok
+test_source_funeral_2_duplicate (__main__.GwanakMutations.test_source_funeral_2_duplicate) ... ok
+test_source_funeral_2_missing (__main__.GwanakMutations.test_source_funeral_2_missing) ... ok
+test_source_h2_regression (__main__.GwanakMutations.test_source_h2_regression) ... ok
+test_source_name_attribute (__main__.GwanakMutations.test_source_name_attribute) ... ok
+test_source_raw_html (__main__.GwanakMutations.test_source_raw_html) ... ok
+test_source_section_h2_missing (__main__.GwanakMutations.test_source_section_h2_missing) ... ok
+test_source_type_attribute (__main__.GwanakMutations.test_source_type_attribute) ... ok
+test_source_unsafe_url (__main__.GwanakMutations.test_source_unsafe_url) ... ok
+test_source_verified_at_attribute (__main__.GwanakMutations.test_source_verified_at_attribute) ... ok
+test_twitter_alt_drift (__main__.GwanakMutations.test_twitter_alt_drift) ... ok
+test_unapproved_image (__main__.GwanakMutations.test_unapproved_image) ... ok
+test_unapproved_visible_verified_at (__main__.GwanakMutations.test_unapproved_visible_verified_at) ... ok
+test_whole_body_double_rendered (__main__.GwanakMutations.test_whole_body_double_rendered) ... ok
+test_wrong_admin_legal_html (__main__.GwanakMutations.test_wrong_admin_legal_html) ... ok
+test_wrong_heading_level (__main__.GwanakMutations.test_wrong_heading_level) ... ok
+test_wrong_image_dimensions (__main__.GwanakMutations.test_wrong_image_dimensions) ... ok
+test_wrong_image_sku (__main__.GwanakMutations.test_wrong_image_sku) ... ok
+test_wrong_sku_card (__main__.GwanakMutations.test_wrong_sku_card) ... ok
+
+----------------------------------------------------------------------
+Ran 235 tests in 6.271s
+
+OK
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
