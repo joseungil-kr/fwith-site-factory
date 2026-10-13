@@ -2,14 +2,15 @@
 """Exact Gwanak-only additive QA bindings. No remote write or deployment capability."""
 from pathlib import Path
 from unittest.mock import patch
-import argparse, hashlib, json, os, re, subprocess, sys
+import argparse, hashlib, json, os, re, stat, subprocess, sys
 HERE=Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE/'upstream'))
 import controls
 SITE_PATH='site-factory/seoul-gwanak-flower'
-SITE_URL='https://seoul-gwanak.local.invalid'
+PREVIEW_URL='https://seoul-gwanak.local.invalid'
+SITE_URL='https://seoul-gwanak.fwith.kr'
 ROUTES=['/','/regions/','/regions/gwanak-funeral-wreath/','/regions/gwanak-celebration-wreath/','/404.html']
-MANIFEST_SHA='153b9cf2f618a56fd4ca482816817474e014358710516e10e9bb1eaf1dde5dee'
+MANIFEST_SHA='2536432066ab8d5860b12795216a3554407e30f8836243742f45a5a18c1a29f4'
 NATIVE_BLOB='dcd037a02423a0aa2ab51f78795a7acd34cfaba9'
 GENERATED_REVISION=SITE_PATH+'/src/data/build-revision.json'
 def load(p):return json.loads(Path(p).read_text())
@@ -24,7 +25,7 @@ def saved():
 
 def frozen_entries():
  p=HERE/'frozen-inputs/source-manifest.json';assert sha(p.read_bytes())==MANIFEST_SHA,'Frozen manifest drift'
- entries=load(p)['files'];assert len(entries)==len({e['path']for e in entries})==672
+ entries=load(p)['files'];assert len(entries)==len({e['path']for e in entries})==679
  assert all(not Path(e['path']).is_absolute()and '..'not in Path(e['path']).parts for e in entries)
  return [{**e,'path':SITE_PATH+'/'+e['path'],'gitBlobSha':e['gitBlob']}for e in entries]
 
@@ -37,13 +38,38 @@ def verify_upstream():
  assert controls.VIEWPORTS==[(320,740),(390,844),(1280,900)]
  return p
 
+def verify_scoped_source_tree(root,allow_generated=False):
+ root=Path(root);site=root/SITE_PATH
+ assert root.is_dir()and site.is_dir()and all(not p.is_symlink()for p in [site,*site.parents]),'Source root/parent symlink'
+ expected={e['path'].removeprefix(SITE_PATH+'/')for e in frozen_entries()}
+ expected_top={p.split('/')[0]for p in expected}
+ generated={'node_modules','dist','.astro','faq-product-qa.json','shared-banner-qa.json','directory-spacing-qa.json','gwanak-static-qa.json'}if allow_generated else set()
+ for p in site.iterdir():
+  mode=p.lstat().st_mode
+  assert not p.is_symlink()and(stat.S_ISREG(mode)or stat.S_ISDIR(mode)),'Unsafe source root entry'
+  assert p.name in expected_top|generated,'Unreviewed source root entry'
+ actual=set()
+ for name in expected_top:
+  top=site/name
+  nodes=[top,*top.rglob('*')]if top.is_dir()else[top]
+  for p in nodes:
+   mode=p.lstat().st_mode;rel=p.relative_to(site).as_posix()
+   assert not p.is_symlink()and(stat.S_ISREG(mode)or stat.S_ISDIR(mode)),'Source tree link/special file'
+   assert '__pycache__'not in p.relative_to(site).parts,'Source Python cache forbidden'
+   if stat.S_ISREG(mode):actual.add(rel)
+ assert actual==expected,'Unreviewed/missing source file'
+ return True
+
+
 def verify_frozen_bytes(root,allow_generated=False):
+ verify_scoped_source_tree(root,allow_generated)
  root=Path(root).resolve();rows=[]
  for e in frozen_entries():
   f=root/e['path'];cursor=root
   for part in Path(e['path']).parts:
    cursor=cursor/part;assert not cursor.is_symlink(),('Source symlink',e['path'])
   assert f.is_file(),('Missing frozen file',e['path']);b=f.read_bytes()
+  assert stat.S_IMODE(f.stat().st_mode)==(int(e['mode'],8)&0o777),('Frozen file mode changed',e['path'])
   if allow_generated and e['path']==GENERATED_REVISION:
    identity=saved();assert controls.git(root,'rev-parse','HEAD')==identity['sourceSha'],'Generated phase wrong HEAD'
    assert b==json.dumps({'revision':identity['sourceSha']},indent=2).encode(),'Post-build revision must be exact HEAD bytes'
@@ -53,11 +79,39 @@ def verify_frozen_bytes(root,allow_generated=False):
   rows.append({'path':e['path'],'sha256':e['sha256']})
  return {'files':len(rows),'manifestSha256':MANIFEST_SHA,'phase':'postbuild-exact-head'if allow_generated else 'prebuild-exact-reviewed','verified':True}
 
+def verify_approved_render_boundary(site):
+ site=Path(site); entries={e['path']:e for e in frozen_entries()}
+ def fixed(rel):
+  p=site/rel;e=entries[SITE_PATH+'/'+rel];raw=p.read_bytes()
+  assert not p.is_symlink()and sha(raw)==e['sha256']and len(raw)==e['bytes'],('Release-bound input drift',rel)
+  return json.loads(raw)
+ config=fixed('src/data/site-config.json');approval=fixed('src/data/release-approval.json');manifest=fixed('src/data/publish-manifest.json');amendment=fixed('src/data/common-banner-phone-amendment.json')
+ assert config['productionApproved']is True and config['hostnameOwnershipVerified']is False and config['previewUrl']==PREVIEW_URL
+ assert config['worker']==approval['configuredWorkerTarget']=='seoul-gwanak-flower-guide'
+ assert approval['origin']==SITE_URL and approval['hostname']=='seoul-gwanak.fwith.kr'and approval['providerExistenceVerified']is False
+ assert approval['state']=='approved'and approval['approvals']=={'publication':True,'hostBinding':True,'indexNowProof':True}
+ assert set(approval['evidenceReferences'])=={'publication','hostBinding','indexNowProof'}and all(approval['evidenceReferences'].values())
+ assert manifest['directRelease']['publicationAuthorized']is True
+ files={}
+ for directory in ['src/data','public']:
+  for p in sorted((site/directory).rglob('*')):
+   assert not p.is_symlink()
+   if p.is_file():
+    rel=p.relative_to(site).as_posix()
+    if rel not in ['src/data/release-approval.json','src/data/build-revision.json']:files[rel]=sha(p.read_bytes())
+ expected={p.removeprefix(SITE_PATH+'/'):e['sha256']for p,e in entries.items()if p.startswith((SITE_PATH+'/src/data/',SITE_PATH+'/public/'))and p not in [SITE_PATH+'/src/data/release-approval.json',GENERATED_REVISION]}
+ assert files==expected,'Release runtime data/asset set changed'
+ assert sha(json.dumps(files,sort_keys=True,separators=(',',':')).encode())==approval['approvedRuntimeDataSha256'],'Release runtime digest mismatch'
+ assert amendment['phone']=='1844-0644'and amendment['productPhotosChanged']is False and amendment['historicalApprovalSealsChanged']is False
+ return {'sourcePreviewUrl':PREVIEW_URL,'renderedOrigin':SITE_URL,'indexable':False,'transport':'existing dynamic loopback only'}
+
 def bound_verify_source(root,spec,pristine=False):
  validate_spec(spec);verify_frozen_bytes(root,allow_generated=not pristine)
- # Only the immutable native identity parameter is rebound. Every original guard
- # executes unchanged, plus the stronger full manifest and exact revision guards.
- with patch.object(controls,'NATIVE_BLOB',NATIVE_BLOB):return controls.verify_source(Path(root),spec,pristine=pristine)
+ # Original source preview URL guard remains exact. The separately approved
+ # rendered origin is only for static metadata; transport stays loopback-only.
+ verify_approved_render_boundary(Path(root)/SITE_PATH)
+ source_spec={**spec,'siteUrl':PREVIEW_URL}
+ with patch.object(controls,'NATIVE_BLOB',NATIVE_BLOB):return controls.verify_source(Path(root),source_spec,pristine=pristine)
 
 def verify_approved_asset_bytes(site,files):
  site=Path(site);entries={e['path']:e for e in frozen_entries()}
@@ -93,7 +147,7 @@ def validate_spec(spec):
  for k in ['sourceSha','sourceTree','repositoryTree']:assert spec[k]==identity[k],('Saved identity drift',k)
  assert spec['path']==SITE_PATH and spec['siteUrl']==SITE_URL
  assert spec['routes']==ROUTES and spec['sitemapRoutes']==[]
- assert spec['productionApproved'] is False and spec['indexable'] is False
+ assert spec['productionApproved'] is True and spec['indexable'] is False
  assert spec['frozenManifestSha256']==MANIFEST_SHA
  return spec
 
@@ -106,10 +160,10 @@ def make_binding(root,source_sha):
   if not raw:continue
   meta,path=raw.split(b'\t',1);mode,kind,blob=meta.decode().split()
   assert kind=='blob'and mode in ['100644','100755'];actual[path.decode()]=blob
- assert actual=={e['path']:e['gitBlobSha']for e in frozen_entries()},'Saved tree differs from all 672 reviewed files'
+ assert actual=={e['path']:e['gitBlobSha']for e in frozen_entries()},'Saved tree differs from all 679 reviewed files'
  assert GENERATED_REVISION in actual,'Reviewed revision must be tracked in saved source'
  spec={k:identity[k]for k in ['sourceSha','sourceTree','repositoryTree']}
- spec.update(path=SITE_PATH,siteUrl=SITE_URL,productionApproved=False,indexable=False,routes=ROUTES,sitemapRoutes=[],frozenManifestSha256=MANIFEST_SHA)
+ spec.update(path=SITE_PATH,siteUrl=SITE_URL,productionApproved=True,indexable=False,routes=ROUTES,sitemapRoutes=[],frozenManifestSha256=MANIFEST_SHA)
  bound_verify_source(root,spec,pristine=True);expectations(root/SITE_PATH);return spec
 
 def validate_environment(spec):
@@ -130,7 +184,8 @@ def not_found_contract(common,ui):
 def expectations(site):
  site=Path(site);pages=load(site/'src/data/pages.json');cov=load(site/'src/data/region-coverage.json');products=load(site/'src/data/products.json')
  cp=load(site/'src/data/gwanak-copy.json');c=cp['common'];ui=load(site/'src/data/gwanak-ui-copy.json');config=load(site/'src/data/site-config.json');plan=load(site/'src/data/gwanak-plan-binding.json')
- assert config['productionApproved']is False and config['hostnameOwnershipVerified']is False and config['previewUrl']==SITE_URL
+ verify_approved_render_boundary(site)
+ amendment=load(site/'src/data/common-banner-phone-amendment.json')
  assert controls.source_routes(site)==ROUTES and len(pages)==2
  assert [len(p['facilityAnchors'])for p in pages]==[1,3]and [len(p.get('buyerOccasionAnchors',[]))for p in pages]==[0,1]
  assert [len(p['faq'])for p in pages]==[2,2]and len(products)==8
@@ -141,7 +196,7 @@ def expectations(site):
  for page in pages:
   article=next(x for x in cp['articles']if x['slug']==page['slug'])
   exp['pages'][page['url']]={'h1':page['h1'],'title':page['title'],'description':page['description'],'firstAnswer':page['firstAnswer'],'faq':[{k:f[k]for k in ['question','answer']}for f in page['faq']],'facilities':page['facilityAnchors'],'occasions':page.get('buyerOccasionAnchors',[]),'products':[product(next(p for p in products if p['officialSku']==sku))for sku in article['productSkus']],'sections':[{k:s[k]for k in ['id','heading','paragraphs']}for s in article['sections']],'sources':article['sourceLinks'],'sourceNote':article['sourceNote'],'relatedLink':article['relatedLink']}
- exp['banners']=[{'variant':v,'src':'/images/shared-banners/'+c['banners'][v]['file'],'alt':c['banners'][v]['alt'],'caption':c['banners']['caption']}for v in ['message','budget','consultation']]
+ exp['banners']=[{'variant':v,'src':'/images/shared-banners/'+c['banners'][v]['file'],'alt':amendment['assets'][v]['alt'],'caption':''}for v in ['message','budget','consultation']]
  allfac=[f for p in pages for f in p['facilityAnchors']]
  exp['legalLinks']=[{k:f[k]for k in ['unitKey','href','candidateId']}for f in allfac if f['unitKey']]
  exp['unassignedLinks']=[{k:f[k]for k in ['href','candidateId']}for f in allfac if f['unitKey']is None]
@@ -162,10 +217,12 @@ def validate_not_found_facts(facts,expected):
 def validate_extra_facts(f,ex,route):
  common=ex['common'];page=ex['pages'].get(route)
  variants=[]if route in ['/regions/','/404.html']else ['message','budget','consultation']
+ assert f['removedBannerCaptionOccurrences']==0,'Removed banner caption reintroduced'
  assert [b['variant']for b in f['banners']]==variants,'Banner order/count'
  for b in f['banners']:
   e=next(x for x in ex['banners']if x['variant']==b['variant'])
   assert all(b[k]==e[k]for k in ['variant','src','alt','caption']),'Banner exact approved copy/asset'
+  assert b['captionElements']==0,'Banner figcaption reintroduced'
   assert b['naturalWidth']==1774 and b['naturalHeight']==887 and b['width']>0 and abs(b['width']/b['height']-2)<.02,'Banner dimensions/crop'
  expected_products=page['products']if page else ex['homeProducts']if route=='/'else []
  assert f['products']==expected_products,'Exact SKU/name/price/photo/caption/CTA contract'
@@ -342,10 +399,10 @@ def main():
  elif a.command=='bind':write(a.output,make_binding(a.root,a.sha))
  elif a.command=='seal':
   spec=validate_spec(load(a.binding));validate_environment(spec);files=controls.manifest(a.evidence);files.pop('evidence-manifest.json',None)
-  write(a.evidence/'evidence-manifest.json',{'sourceSha':spec['sourceSha'],'sourceTree':spec['sourceTree'],'repositoryTree':spec['repositoryTree'],'controlSha':os.environ['GITHUB_SHA'],'runId':os.environ['GITHUB_RUN_ID'],'runAttempt':os.environ['GITHUB_RUN_ATTEMPT'],'files':files,'pixelReview':'pending','publicationAuthorization':'not-issued'})
+  write(a.evidence/'evidence-manifest.json',{'sourceSha':spec['sourceSha'],'sourceTree':spec['sourceTree'],'repositoryTree':spec['repositoryTree'],'controlSha':os.environ['GITHUB_SHA'],'runId':os.environ['GITHUB_RUN_ID'],'runAttempt':os.environ['GITHUB_RUN_ATTEMPT'],'files':files,'pixelReview':'pending','publicationExecution':'not-performed-by-credential-free-loopback-QA'})
  else:
   spec=validate_spec(load(a.binding));validate_environment(spec);site=bound_verify_source(a.root,spec,pristine=a.command=='source');expectations(site)
-  if a.command=='source':write(a.output,{'spec':spec,'actualHead':controls.git(a.root,'rev-parse','HEAD'),'frozenBytesVerified':True,'files':672,'revisionTracked':True})
+  if a.command=='source':write(a.output,{'spec':spec,'actualHead':controls.git(a.root,'rev-parse','HEAD'),'frozenBytesVerified':True,'files':679,'revisionTracked':True})
   else:
    files=validate_bound_build(site,spec);a.output.write_bytes(controls.compact(files))
    write(a.output.with_suffix('.assets.json'),{'sourceSha':spec['sourceSha'],**verify_approved_asset_bytes(site,files)})

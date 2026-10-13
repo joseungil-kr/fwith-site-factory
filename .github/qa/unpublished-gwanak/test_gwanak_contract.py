@@ -53,6 +53,9 @@ class GwanakContract(unittest.TestCase):
     'banner-order':lambda f:f['extra']['banners'].reverse(),
     'banner-alt':lambda f:f['extra']['banners'][0].update(alt='generic'),
     'banner-caption':lambda f:f['extra']['banners'][0].update(caption='actual photo'),
+    'banner-caption-element':lambda f:f['extra']['banners'][0].update(captionElements=1),
+    'removed-caption-anywhere':lambda f:f['extra'].update(removedBannerCaptionOccurrences=1),
+    'banner-phone-alt':lambda f:f['extra']['banners'][0].update(alt=f['extra']['banners'][0]['alt'].replace('1844-0644','')),
     'banner-size':lambda f:f['extra']['banners'][0].update(naturalWidth=500),
     'banner-crop':lambda f:f['extra']['banners'][0].update(height=50),
    }
@@ -91,7 +94,7 @@ class GwanakContract(unittest.TestCase):
   for name,fn in changes.items():
    with self.subTest(mutation=name):self.reject('/regions/',fn)
  def test_exact_source_and_native_identity(self):
-  a.verify_upstream();entries=a.frozen_entries();self.assertEqual(len(entries),672)
+  a.verify_upstream();entries=a.frozen_entries();self.assertEqual(len(entries),679)
   self.assertEqual(next(e['gitBlobSha']for e in entries if e['path'].endswith('/scripts/qa_browser_rendering.py')),a.NATIVE_BLOB)
   self.assertIn(a.GENERATED_REVISION,[e['path']for e in entries])
  def test_frozen_and_generated_phase_guards(self):
@@ -107,6 +110,9 @@ class GwanakContract(unittest.TestCase):
    with patch.object(a,'saved',return_value={'sourceSha':exact}),patch.object(a.controls,'git',return_value=exact):
     with self.assertRaises(AssertionError):a.verify_frozen_bytes(root,allow_generated=True)
     revision.write_bytes(json.dumps({'revision':exact},indent=2).encode());a.verify_frozen_bytes(root,allow_generated=True)
+    revision.chmod(0o755)
+    with self.assertRaises(AssertionError):a.verify_frozen_bytes(root,allow_generated=True)
+    revision.chmod(0o644)
     for payload in [revision.read_bytes()+b'\n',json.dumps({'revision':'2'*40},indent=2).encode(),b'{}']:
      revision.write_bytes(payload)
      with self.assertRaises(AssertionError):a.verify_frozen_bytes(root,allow_generated=True)
@@ -114,9 +120,70 @@ class GwanakContract(unittest.TestCase):
     other=root/(a.SITE_PATH+'/src/pages/404.astro');other.write_bytes(other.read_bytes()+b' ')
     with self.assertRaises(AssertionError):a.verify_frozen_bytes(root,allow_generated=True)
  def test_source_guard_preserves_upstream_identity_after_failure(self):
-  with patch.object(a,'validate_spec'),patch.object(a,'verify_frozen_bytes'),patch.object(a.controls,'verify_source',side_effect=AssertionError('expected wrong tree')):
+  with patch.object(a,'validate_spec'),patch.object(a,'verify_frozen_bytes'),patch.object(a,'verify_approved_render_boundary'),patch.object(a.controls,'verify_source',side_effect=AssertionError('expected wrong tree')):
    with self.assertRaises(AssertionError):a.bound_verify_source(Path('/tmp'),{})
   self.assertEqual(a.controls.NATIVE_BLOB,'41ee8a757b7a742b6125ef15b5356e0eca47c01f')
+ def test_source_tree_cache_symlink_and_dependency_boundaries(self):
+  source=Path(os.environ['SOURCE_ROOT'])/a.SITE_PATH
+  with tempfile.TemporaryDirectory()as tmp:
+   root=Path(tmp)/'repo';site=root/a.SITE_PATH;shutil.copytree(source,site,ignore=shutil.ignore_patterns('dist','node_modules','__pycache__','gwanak-static-qa.json','shared-banner-qa.json'))
+   a.verify_scoped_source_tree(root)
+   for phase in [False,True]:
+    p=site/'scripts/__pycache__';p.mkdir();(p/'bad.pyc').write_bytes(b'not executable')
+    with self.assertRaises(AssertionError):a.verify_scoped_source_tree(root,phase)
+    shutil.rmtree(p)
+    link=site/'public/dangling';link.symlink_to('/nonexistent-banner-target')
+    with self.assertRaises(AssertionError):a.verify_scoped_source_tree(root,phase)
+    link.unlink()
+    link=site/'public/untracked-dir';link.symlink_to(site/'src',target_is_directory=True)
+    with self.assertRaises(AssertionError):a.verify_scoped_source_tree(root,phase)
+    link.unlink()
+    link=site/'node_modules';link.symlink_to(site/'src',target_is_directory=True)
+    with self.assertRaises(AssertionError):a.verify_scoped_source_tree(root,phase)
+    link.unlink()
+    parent_link=Path(tmp)/'parent-link';parent_link.symlink_to(root,target_is_directory=True)
+    with self.assertRaises(AssertionError):a.verify_scoped_source_tree(parent_link,phase)
+    parent_link.unlink()
+   modules=site/'node_modules';(modules/'.bin').mkdir(parents=True);(modules/'astro').mkdir();(modules/'astro/astro.js').write_text('fixture only');(modules/'.bin/astro').symlink_to('../astro/astro.js')
+   a.verify_scoped_source_tree(root,True)
+   with self.assertRaises(AssertionError):a.verify_scoped_source_tree(root,False)
+ def test_production_capable_source_stays_nonindexable_loopback_qa(self):
+  source=Path(os.environ['SOURCE_ROOT'])/a.SITE_PATH
+  result=a.verify_approved_render_boundary(source)
+  self.assertEqual(result,{'sourcePreviewUrl':a.PREVIEW_URL,'renderedOrigin':a.SITE_URL,'indexable':False,'transport':'existing dynamic loopback only'})
+  cases=[('src/data/site-config.json',lambda x:x.update(previewUrl=a.SITE_URL)),
+         ('src/data/site-config.json',lambda x:x.update(productionApproved=False)),
+         ('src/data/release-approval.json',lambda x:x.update(hostname='other.fwith.kr')),
+         ('src/data/release-approval.json',lambda x:x.update(origin='https://other.fwith.kr')),
+         ('src/data/release-approval.json',lambda x:x.update(approvedRuntimeDataSha256='0'*64)),
+         ('src/data/release-approval.json',lambda x:x['evidenceReferences'].update(publication='changed')),
+         ('src/data/release-approval.json',lambda x:x.update(providerExistenceVerified=True))]
+  for rel,change in cases:
+   with self.subTest(path=rel),tempfile.TemporaryDirectory()as tmp:
+    root=Path(tmp)/'site';shutil.copytree(source,root,ignore=shutil.ignore_patterns('dist','node_modules','__pycache__'))
+    p=root/rel;v=a.load(p);change(v);p.write_text(json.dumps(v))
+    with self.assertRaises(AssertionError):a.verify_approved_render_boundary(root)
+ def test_source_spec_is_distinct_fixed_preview_copy_and_upstream_stays_strict(self):
+  spec={'siteUrl':a.SITE_URL,'productionApproved':True,'indexable':False,'nested':{'x':1}};before=copy.deepcopy(spec)
+  with patch.object(a,'validate_spec'),patch.object(a,'verify_frozen_bytes'),patch.object(a,'verify_approved_render_boundary'),patch.object(a.controls,'verify_source',return_value='passed')as upstream:
+   self.assertEqual(a.bound_verify_source(Path('/tmp'),spec,pristine=True),'passed')
+   actual=upstream.call_args.args[1];self.assertEqual(actual,{**spec,'siteUrl':a.PREVIEW_URL});self.assertIsNot(actual,spec)
+  self.assertEqual(spec,before)
+  with patch.object(a,'validate_spec'),patch.object(a,'verify_frozen_bytes'),patch.object(a,'verify_approved_render_boundary'),patch.object(a.controls,'verify_source',side_effect=AssertionError('upstream-failure')):
+   with self.assertRaisesRegex(AssertionError,'upstream-failure'):a.bound_verify_source(Path('/tmp'),spec)
+  self.assertEqual(spec,before)
+ def test_rendered_origin_or_indexable_env_cannot_expand_boundary(self):
+  identity={'sourceSha':'1'*40,'sourceTree':'2'*40,'repositoryTree':'3'*40,'sourceManifestSha256':a.MANIFEST_SHA}
+  spec={k:identity[k]for k in ['sourceSha','sourceTree','repositoryTree']};spec.update(path=a.SITE_PATH,siteUrl=a.SITE_URL,productionApproved=True,indexable=False,routes=a.ROUTES,sitemapRoutes=[],frozenManifestSha256=a.MANIFEST_SHA)
+  env={'GITHUB_REF':'refs/heads/qa/unpublished-regional-visual-20261012','GITHUB_REPOSITORY':'joseungil-kr/fwith-site-factory','GITHUB_SHA':'4'*40,'SITE_FACTORY_REVISION':identity['sourceSha'],'SITE_URL':a.SITE_URL,'SITE_ORIGIN':a.SITE_URL,'SITE_INDEXABLE':'false'}
+  with patch.object(a,'saved',return_value=identity),patch.dict(os.environ,env):
+   a.validate_environment(spec)
+   for key,value in [('SITE_URL',a.PREVIEW_URL),('SITE_ORIGIN','https://other.fwith.kr'),('SITE_INDEXABLE','true')]:
+    with patch.dict(os.environ,{key:value}),self.assertRaises(AssertionError):a.validate_environment(spec)
+   for change in [{'siteUrl':a.PREVIEW_URL},{'productionApproved':False},{'indexable':True}]:
+    with self.assertRaises(AssertionError):a.validate_spec({**spec,**change})
+  self.assertFalse(a.controls.allowed_request(a.SITE_URL+'/','GET','http://127.0.0.1:12345'))
+  self.assertTrue(a.controls.allowed_request('http://127.0.0.1:12345/','GET','http://127.0.0.1:12345'))
  def test_geometry_negative_contracts(self):
   base=dict(visible=True,width=100,height=80,left=0,right=100,top=80,bottom=160,safeTop=70,safeBottom=600,viewportWidth=320,hitTests=[True]*9)
   a.assert_focus(base)
