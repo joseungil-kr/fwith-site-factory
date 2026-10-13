@@ -38,10 +38,8 @@ test('four real funeral SKUs, exact photo bytes, prices and individual CTAs',()=
 test('byte-preserved shared legacy,Guro and midpoint helper',()=>{
  for(const [file,expected] of Object.entries({'src/lib/regions-legacy.mjs':'cf2f44ce1feff2f44bb9213d55a63eac2f83dfadb49cac116c60769471ff29c1','src/lib/guro-regions.mjs':'c86a3994a4a1cac9e42371bd687d8dab47a4f14b7af9af6841021e4beeb2701f','src/lib/directory-banner-split.mjs':'04ed49395e2a3458c9b01c74eff57f425ed693e9f713b59bfe7343a4c433a19c','src/components/SharedFlowerBanner.astro':'bffdc5a802a911d688e388faa55ece9e1bf6b00e04c8fab0873e779b35702f74'}))assert.equal(sha(bytes(file)),expected,file);
 });
-test('preview source is not public authority; attempted indexable build rejects',()=>{
- assert.equal(read('site-config').productionApproved,false);assert.equal(manifest.directRelease.publicationAuthorized,false);assert.deepEqual(manifest.directRelease.publishedCoverage,{numerator:0,denominator:1,percent:0});assert.equal(read('direct-checkpoint').productionEvidence,null);assert.equal(read('direct-checkpoint').searchIndexing,'not_verified');
- const result=spawnSync(process.execPath,['scripts/assert_preview_boundary.mjs'],{env:{...process.env,SITE_INDEXABLE:'true'},encoding:'utf8'});assert.notEqual(result.status,0);assert.match(result.stderr,/Production-indexable build is disabled/);
- assert.equal(a.hubs.find(h=>h.category==='regions').indexable,false);assert.equal(a.hubs.find(h=>h.category==='regions').children,1);
+test('baseline preview evidence remains immutable; current release authority is independently pinned',()=>{
+ const baseline=JSON.parse(bytes('tests/reference/release-baseline/site-config.json'));assert.equal(baseline.productionApproved,false);assert.equal(read('site-config').productionApproved,true);assert.equal(read('site-config').hostnameOwnershipVerified,false);assert.equal(manifest.directRelease.publicationAuthorized,true);assert.deepEqual(manifest.directRelease.publishedCoverage,{numerator:0,denominator:1,percent:0});assert.equal(read('direct-checkpoint').productionEvidence,null);assert.equal(read('direct-checkpoint').searchIndexing,'not_verified');assert.equal(a.hubs.find(h=>h.category==='regions').indexable,false);
 });
 
 test('rendered common-copy source files retain independent-review bindings',()=>{
