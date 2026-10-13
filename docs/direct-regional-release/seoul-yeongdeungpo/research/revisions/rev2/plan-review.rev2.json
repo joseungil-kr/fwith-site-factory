@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "independent_PLAN_recheck",
+  "revision": 2,
+  "reviewer": "/root/review_yeongdeungpo_regional_plan",
+  "reviewedAt": "2026-10-12T22:55:57.177482+00:00",
+  "verdict": "REVISE",
+  "freezeAllowed": false,
+  "copyAllowedByThisReview": false,
+  "publicationAllowed": false,
+  "immutableInputBinding": {
+    "candidatePlanSha256": "b8a39e0aa418eb2e6c3ee2bd21616066426cc7cbc3a5f1761affa59d384ce560",
+    "reviewInputManifestSha256": "10aa818508a83e08e2e6daf12beec5d5589df264499862c27c419eba86bce44e"
+  },
+  "priorReview": {
+    "path": "plan-review.rev1.json",
+    "sha256": "c2125db7487fda8fabddec6be5ab2c8fd30de6f178fed53ed404d93e2c0055ec"
+  },
+  "resolvedFindings": [
+    {
+      "id": "R1",
+      "resultClass": "직접 확인",
+      "status": "RESOLVED",
+      "finding": "Read all46 observation rows; all37 wedding-labelled entries+8funeral entries+1unresolvedprose name preserved.17 map to existing evaluated candidates and29 are observed-only/unassessed. Checked every supplied plain-text line reference and file hash; no failures. Nunaflower reader-line provenance matches the original previously read. Unresolved aliases/type/address/operation remain unverified and no new anchor/page is created.",
+      "evidence": {
+        "path": "observed-competitor-leads.json",
+        "sha256": "1d6dfaf2b9357520af00ec8ef5f8ef38d9087a31ffa4754e5505ed71ab97b9c9"
+      }
+    },
+    {
+      "id": "R2",
+      "resultClass": "직접 확인",
+      "status": "RESOLVED",
+      "finding": "Wedding research now explicitly states3activecandidateanchors JK/Partyum/Withus and GrandDangsanheld; no4active-venue claim in current grouping. ArticleN2 and19/8/11 evaluation counts unchanged."
+    },
+    {
+      "id": "R3",
+      "resultClass": "직접 확인",
+      "status": "RESOLVED",
+      "finding": "Current priorFullBodyReadback now binds final Guro500d82d/Geumcheonbbb0163 files and exact source/body hashes. Independently recomputed all4contentMarkdown hashes/character lengths; all match. Final bytes equal reviewer GitHub readbacks from rev1. Read actual3Guro refund diffs and Geumcheon equality record; overlap findings remain unchanged."
+    }
+  ],
+  "requiredFixes": [
+    {
+      "id": "R4",
+      "severity": "major-immutable-binding",
+      "target": "facility-source-evidence.json sources search-worker-ifc-originals and search-worker-leads",
+      "finding": "Both records still bind evidenceFile search/search-intent-research.json to previous sha25602ed645577ecd22ceeeb5c02ccc8a9574178d6f590cb976d1a04102daee63850, but that current path now has270a27f8a92bd11dd1e14038f40e69f3c8cd020b88725c21eae869304dff76bd. Top-level manifest hashes match but these2transitive evidence links are stale.",
+      "requiredChange": "Update both current evidenceSha256 values and regenerate facility-source-evidence hash, plan inputs and manifest; alternatively point explicitly at preserved rev1 historical paths if historical reference is intended. Preserve rev2 input bytes and this review before making revision3. No substantive candidate/copy change is requested."
+    }
+  ],
+  "maintainedJudgments": {
+    "proposedN": 2,
+    "activeFacilities": 8,
+    "JKWithusFreshnessDisposition": "ACCEPT_STATIC_IDENTITY_ONLY",
+    "sourceAndCopyLimits": "All rev1 freshness, product/service, privacy, noindex/banner and copy-stage guardrails remain. No live operation, outside-wreath permission, delivery, copy/build/publication/indexing PASS."
+  },
+  "actionsTaken": [
+    "Local evidence reading",
+    "Line/hash/body-source checks",
+    "Reviewer JSON only"
+  ],
+  "noRemoteWrites": true,
+  "planNotFrozen": true
+}

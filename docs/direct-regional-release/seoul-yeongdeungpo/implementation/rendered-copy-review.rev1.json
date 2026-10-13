@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "RENDERED_COPY_INTERFACE_STATIC_HTML",
+  "revision": 1,
+  "reviewer": "/root/review_yeongdeungpo_regional_plan",
+  "reviewedAt": "2026-10-12T23:42:06.135923+00:00",
+  "verdict": "REVISE",
+  "scope": "Complete text, metadata, accessibility labels and static link/asset destinations of all five generated HTML documents, with exact approved COPY rev2 and original source evidence. Static HTML is not browser-screen testing.",
+  "immutableInputs": {
+    "manifest": {
+      "path": "/workspace/shared/yeongdeungpo-evidence/local-implementation/reviewer-input-snapshot.rev1/rendered-copy-inputs.rev1.json",
+      "sha256": "ba44e612ff2e51e84cf609b47100ae905ae74c45c302dff1c970f1febad35df9"
+    },
+    "fullRenderedSurface": {
+      "path": "/workspace/shared/yeongdeungpo-evidence/local-implementation/reviewer-input-snapshot.rev1/full-rendered-copy.rev1.txt",
+      "sha256": "69be704c950b60ec03e31198334b81a01ff54adf24ec17053308f374d92c14aa"
+    },
+    "html": [
+      {
+        "path": "dist/404.html",
+        "sha256": "3bc6d05c345b3952df1fd868dd55ea2829a15989cbc50901af1d457639e1d61d"
+      },
+      {
+        "path": "dist/index.html",
+        "sha256": "3010ceea7663e51d0964aa892b5561ce5a8be66efd11c8a823eb0d194e5cd46b"
+      },
+      {
+        "path": "dist/regions/index.html",
+        "sha256": "f01a0cf54f0b6a14f53773ebb745f6d885c07e8046fa349b66933fd7f7be7588"
+      },
+      {
+        "path": "dist/regions/yeongdeungpo-funeral-wreath/index.html",
+        "sha256": "cdecce067fc67cd7af188c6494018bd8c16156266f531fe6524079d3f66e8bb1"
+      },
+      {
+        "path": "dist/regions/yeongdeungpo-wedding-wreath/index.html",
+        "sha256": "6c7f2ed034f9a2ed427a0542bd927ddfe84e6a203ec2ffa8b93fab31d05b1c16"
+      }
+    ],
+    "uiCopy": {
+      "path": "src/data/yeongdeungpo-ui-copy.json",
+      "sha256": "c20d83894bfde22a422304e7bede6fbbcec71d261ed49405e2988200f951d383"
+    },
+    "approvedCopy": {
+      "path": "/workspace/shared/yeongdeungpo-evidence/copy/yeongdeungpo-copy.rev2.json",
+      "sha256": "cdc2fda4970414d2d80c0aae7a939fb2d13f2bfbb210f3c2e663864945c01a1f"
+    },
+    "approvedCopyReview": {
+      "path": "/workspace/shared/yeongdeungpo-evidence/copy/copy-review.rev2.json",
+      "sha256": "d987260c39e27b504fdc9a262c9c97efd9460c3c2ec2b24f4c061bec4a1f52af"
+    },
+    "fixedPlan": {
+      "path": "/workspace/shared/yeongdeungpo-evidence/prepared-docs/docs/direct-regional-release/seoul-yeongdeungpo/fixed-plan.json",
+      "sha256": "bd952a480edd4d2382d957929695eef130f80868e5f14579550e3759dae14d5c"
+    },
+    "officialMembership": {
+      "path": "/workspace/shared/yeongdeungpo-evidence/membership.json",
+      "sha256": "cea038c0368af338c658399e4cb6846430326780b204d5e905571c1bbb0d1fda"
+    }
+  },
+  "verification": {
+    "path": "/workspace/shared/yeongdeungpo-evidence/local-implementation/reviewer-static-verification.rev1.json",
+    "sha256": "41788a0b3c134258a4d781ea8051a756078161adc34dd2a2f40b1a6ad6e239a0"
+  },
+  "checks": {
+    "programmaticChecks": 250,
+    "programmaticFailures": 0,
+    "semanticFindingsRequiringRevision": 1,
+    "note": "Mechanical matches do not supersede the geography attribution finding."
+  },
+  "requiredFixes": [
+    {
+      "id": "UI1",
+      "severity": "required",
+      "location": "dist/regions/index.html → 행정동과 법정동 관계 보기; src/components/RegionDirectory.astro administrative rows",
+      "observed": "강남성심병원 장례식장 is linked under 신길제5동, 대림제1동, 대림제2동 and 대림제3동 because each has a partial relation to the legal dong 대림동. The original official hospital source names 대림1동; no reviewed source places the facility in all four administrative dongs.",
+      "why": "The frozen plan says a legal-dong multimap is not evidence for an individual facility administrative assignment. Row-level facility links create an attribution impression that the general caveat does not adequately resolve.",
+      "requiredChange": "Make the administrative table a pure official administrative↔legal relation table. Remove its facility links and facility-availability placeholders. Keep the 34 legal-dong rows, eight verified named facility links under their six legal dongs, two article cards and existing noindex/no-banner gate. Preserve all 18 administrative rows, 45 legal relations and partial labels.",
+      "recheck": "Provide distinct revision 2 HTML/input hashes; verify no facility link or availability placeholder remains in administrative rows, while exact MOIS relationships and all eight legal-dong anchor links remain."
+    }
+  ],
+  "directlyVerified": [
+    {
+      "category": "content_and_tone",
+      "result": "The complete funeral and wedding DOM text, first answers, FAQ, source note/heading, common home/footer/order wording and source-card labels were reread. Approved COPY rev2 body text renders unchanged. Calm provider perspective and concise purchase help are retained without new promise or repeated venue-input homework."
+    },
+    {
+      "category": "accuracy_and_freshness",
+      "result": "Official source constraints retained: JK and Withus static labels only; no 10F ceremony-hall claim; no current-operation/intake inference; funeral April 1 registry date preserved; prices are basic product prices; additional cost/material variation/no collection/refund exceptions retained. This follow-on review uses the original snapshots and sources inspected in prior independent PLAN/COPY reviews; no new live freshness claim."
+    },
+    {
+      "category": "products_and_links",
+      "result": "Four actual SKU cards per article and eight on home; names, prices, CTA labels/destinations, image alt and exact saved official image bytes match approved COPY. Internal href targets and eight facility fragment IDs exist; funeral H3 and wedding H2 preserved. Footer 꽃이랑 홈 points to https://fwith.co.kr and all telephone anchors to tel:18440644."
+    },
+    {
+      "category": "additional_UI",
+      "result": "New skip/navigation/breadcrumb/directory/title/heading/partial/empty-legal-row labels are accurate, short and neutral. The legal empty label describes absent linked site guidance, not facility absence or refusal of delivery. Administrative helper caveat is accurate but row-level associations need UI1."
+    },
+    {
+      "category": "HTML_metadata",
+      "result": "All five documents have one H1, unique IDs, lang=ko, nonempty image alt and nonempty links; new accessibility label wording inspected. Titles/descriptions/social-image alt match approved copy or new reviewed directory label. JSON-LD contains brand/site/phone/regional service context, without invented street address, opening hours, rating or operational promise. No browser accessibility conformance claim."
+    },
+    {
+      "category": "banners_and_index_boundary",
+      "result": "Home and two articles have approved message→budget→consultation image byte hashes, alt and three AI captions. Two-card directory and 404 have no shared banners. All five preview HTML documents are noindex,nofollow,noarchive. No inherited Guro/Geumcheon/Gangseo sales wording, 08–23/24-hour or free/guaranteed delivery wording appears in inspected page body text."
+    }
+  ],
+  "toolReports": [
+    "Implementer reports full build/static QA passing; this reviewer independently inspected output bytes and static checks, but did not rerun the full build or all test suites."
+  ],
+  "inferencesAndJudgments": [
+    "UI1 is a semantic accuracy concern even though link targets and formal data bindings pass.",
+    "Approved COPY rev2 remains valid; no customer article prose or new quota is needed for this fix."
+  ],
+  "unverified": [
+    "Browser launch was explicitly outside permission; no desktop/mobile screenshot, visual layout, clipping, focus traversal, interactive details operation or screen-reader test was performed.",
+    "No public HTTP, deployment, remote commit, publication, indexing or search ranking verification.",
+    "Third-party live availability and delivery/receiving conditions were not newly established."
+  ],
+  "actionBoundary": {
+    "sourceChangedByReviewer": false,
+    "browserStarted": false,
+    "remoteChanged": false,
+    "publicationApprovedByThisReview": false,
+    "copyReviewDoesNotAuthorizeRemoteActions": true
+  },
+  "nextGate": "Resolve UI1 and return immutable revision 2 HTML/manifest for static interface re-review; retain browser-screen QA as unverified."
+}

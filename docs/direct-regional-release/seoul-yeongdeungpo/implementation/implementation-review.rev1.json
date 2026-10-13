@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "INDEPENDENT_FROZEN_LOCAL_SOURCE_RUNTIME_STATIC_HTML",
+  "reviewer": "/root/review_yeongdeungpo_local_runtime",
+  "reviewedAt": "2026-10-12T23:49:00.751087+00:00",
+  "verdict": "PASS_LOCAL_SOURCE_STATIC_ONLY",
+  "scope": "Frozen source, independently executed local tests/build/QA, actual generated HTML and exact-copy/asset/guard evidence. Not public release, visual browser QA, ordering, live venue operation or indexing approval.",
+  "bindings": {
+    "sourceManifest": {
+      "path": "/workspace/shared/yeongdeungpo-evidence/local-implementation/source-manifest.candidate.json",
+      "sha256": "c6b40f1bc520220de52652992df4285ea1fbe149a770cc0b725b9bfb1e95d652"
+    },
+    "sourceEntriesSha256": "4b4c787672d5c32426678df23760cac2e336a90710e348a37f048ffe71520b14",
+    "sourceEntriesHashMatches": true,
+    "files": 308,
+    "bytes": 5028530,
+    "baseCommit": "b68fa7801b080da5a65fbaeceeba3aa9a81ac365",
+    "sourceCommit": null,
+    "sourceCommitReason": "Local uncommitted implementation; service-required Git save approval remains outside reviewer authority.",
+    "fixedPlanSha256": "bd952a480edd4d2382d957929695eef130f80868e5f14579550e3759dae14d5c",
+    "approvedCopySha256": "cdc2fda4970414d2d80c0aae7a939fb2d13f2bfbb210f3c2e663864945c01a1f",
+    "copyReviewSha256": "d987260c39e27b504fdc9a262c9c97efd9460c3c2ec2b24f4c061bec4a1f52af",
+    "renderedCopyReview": {
+      "path": "/workspace/shared/yeongdeungpo-evidence/local-implementation/rendered-copy-review.rev2.json",
+      "sha256": "11742cb949a22ddb9db9e6d6b04367269cde51f41976ff18ed1a9f7bbd93f1b5"
+    },
+    "additionalUiSha256": "c20d83894bfde22a422304e7bede6fbbcec71d261ed49405e2988200f951d383",
+    "authorAndReviewerSourceDriftAfterTests": []
+  },
+  "directlyVerified": [
+    {
+      "resultClass": "직접 확인",
+      "subject": "Exact source identity",
+      "finding": "Read frozen contracts and runtime source, matched all 308 manifest entries before tests and rechecked author/reviewer copies afterward. Recomputed ordered-entry digest. Source bytes did not change during review."
+    },
+    {
+      "resultClass": "직접 확인",
+      "subject": "Inherited source and regression preservation",
+      "finding": "All 103 Guro and 96 Geumcheon fixture files exactly match existing pinned local source baselines. Active legacy, Guro, Geumcheon adapters, their plan bindings, original H2 helper, directory midpoint helper and approved shared-banner component remain byte-identical. Ran original unmodified Guro N3/Geumcheon N1 suites with new dispatcher and current libraries overlaid; inherited single-facility/missing-mode/metadata/route/URL security-negative assertions remain exercised.",
+      "preservedFiles": [
+        {
+          "file": "src/lib/regions-legacy.mjs",
+          "sha256": "cf2f44ce1feff2f44bb9213d55a63eac2f83dfadb49cac116c60769471ff29c1",
+          "baselineSha256": "cf2f44ce1feff2f44bb9213d55a63eac2f83dfadb49cac116c60769471ff29c1",
+          "matches": true
+        },
+        {
+          "file": "src/lib/guro-regions.mjs",
+          "sha256": "c86a3994a4a1cac9e42371bd687d8dab47a4f14b7af9af6841021e4beeb2701f",
+          "baselineSha256": "c86a3994a4a1cac9e42371bd687d8dab47a4f14b7af9af6841021e4beeb2701f",
+          "matches": true
+        },
+        {
+          "file": "src/lib/geumcheon-regions.mjs",
+          "sha256": "47b09de58abf251f57cc1b9bb826b0d3b7536e28c379bdba92bf32a80b77913e",
+          "baselineSha256": "47b09de58abf251f57cc1b9bb826b0d3b7536e28c379bdba92bf32a80b77913e",
+          "matches": true
+        },
+        {
+          "file": "src/lib/heading-anchors.mjs",
+          "sha256": "ace9937a2f23d96cedda35d93ff73eb195df1cb578789761ef75bd8bd7ca7631",
+          "baselineSha256": "ace9937a2f23d96cedda35d93ff73eb195df1cb578789761ef75bd8bd7ca7631",
+          "matches": true
+        },
+        {
+          "file": "src/lib/directory-banner-split.mjs",
+          "sha256": "04ed49395e2a3458c9b01c74eff57f425ed693e9f713b59bfe7343a4c433a19c",
+          "baselineSha256": "04ed49395e2a3458c9b01c74eff57f425ed693e9f713b59bfe7343a4c433a19c",
+          "matches": true
+        },
+        {
+          "file": "src/data/guro-plan-binding.json",
+          "sha256": "3478e01c90ad8aa629009b105e6e6f1c06271b01e4c297c900e0fcc03d61644c",
+          "baselineSha256": "3478e01c90ad8aa629009b105e6e6f1c06271b01e4c297c900e0fcc03d61644c",
+          "matches": true
+        },
+        {
+          "file": "src/data/geumcheon-plan-binding.json",
+          "sha256": "2bcb864fa1854abb89514ed10bca4ce8c650d0f8009f83bf5cba4b11c76a2d6e",
+          "baselineSha256": "2bcb864fa1854abb89514ed10bca4ce8c650d0f8009f83bf5cba4b11c76a2d6e",
+          "matches": true
+        },
+        {
+          "file": "src/components/SharedFlowerBanner.astro",
+          "sha256": "bffdc5a802a911d688e388faa55ece9e1bf6b00e04c8fab0873e779b35702f74",
+          "baselineSha256": "bffdc5a802a911d688e388faa55ece9e1bf6b00e04c8fab0873e779b35702f74",
+          "matches": true
+        }
+      ],
+      "baselineCommits": {
+        "guro": "500d82d01c1cdaed3ebde047bb3ce056705daac1",
+        "geumcheon": "bbb016305dd2fe29f7d985a669acaa02224a9f2f"
+      }
+    },
+    {
+      "resultClass": "직접 확인",
+      "subject": "Frozen N2 and fail-closed regional scope",
+      "finding": "New Yeongdeungpo mode is explicit and isolated. Two grouped canonical guides bind five funeral and three wedding anchors, eight verified SKUs, 19 evaluated/8 active/11 held plus 46 separate observed labels; 34 legal/18 administrative/45 relations remain bound. Independent in-memory negatives reject crossed/missing/downgraded site-scope modes, N0/N1/N3, held activation, duplicate or changed candidates, geography/official membership hashes, source/address changes, singular facility mode, wrong anchors, route/approval/architecture/metadata/product-family drift. Partial administrative aliases do not return a facility.",
+      "independentChecks": 103,
+      "failures": []
+    },
+    {
+      "resultClass": "직접 확인",
+      "subject": "Independent build and tests",
+      "finding": "npm test and full npm build/qa independently rerun from separate frozen copy, using already installed dependencies and identical lockfile. Original Guro 131, Geumcheon 116 and live 120 Node assertions pass. Astro checks 53 files with 0 errors/warnings/hints. Full build runs 45 Python checks including actual-output mutations, then all five expected HTML documents exist.",
+      "commands": [
+        {
+          "command": "npm test",
+          "exitCode": 0
+        },
+        {
+          "command": "ASTRO_TELEMETRY_DISABLED=1 npm run build",
+          "exitCode": 0
+        },
+        {
+          "command": "npm run qa",
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "resultClass": "직접 확인",
+      "subject": "Rendered copy binding",
+      "finding": "All five independently rebuilt HTML files exactly match separate COPY/UI review rev2 hashes, and all 13 bound UI/source files plus ui-copy bytes match. Every approved article field and rendered paragraph/bullet, first answer, one visible FAQ, exact single source H2, correct H2/H3 anchors, four actual article product cards, source note/link labels, metadata and common reviewed UI remain preserved.",
+      "htmlChecks": 298,
+      "failures": []
+    },
+    {
+      "resultClass": "직접 확인",
+      "subject": "Price and CTA boundaries",
+      "finding": "Four article SKU CTA destinations per guide and eight home cards match exact fwith product details; tel links equal tel:18440644. General flower homepage link remains labelled 꽃이랑 홈. Actual-output price mutation checks separately reject missing amount, wrong amount and removed basic-price qualification in home/detail heroes and cards.",
+      "priceMutationChecks": 6,
+      "failures": []
+    },
+    {
+      "resultClass": "직접 확인",
+      "subject": "Assets, navigation and directory",
+      "finding": "Opened/decode-checked actual eight JPEGs at 500x500 and three WebPs at 1774x887 and matched reviewed hashes. HTML includes explicit dimensions and approved alt/captions. Home/articles contain message→budget→consultation banners; two actual directory cards and 404 contain no shared banners. All internal routes/fragments and backlinks resolve against generated files. Directory retains eight links in six represented legal dongs, 28 no-linked-guide entries, and 18 purely geographic administrative rows with 45 relations and no venue attribution."
+    },
+    {
+      "resultClass": "직접 확인",
+      "subject": "Preview/search boundary",
+      "finding": "productionApproved=false and publicationAuthorized=false remain. Actual SITE_INDEXABLE=true npm run build exits 1 before compilation with the expected production-indexable-disabled error. All preview documents noindex,nofollow,noarchive; robots disallows all and omits sitemap; no sitemap generated; response-header file retains noindex. Thin directory index/sitemap gate still uses >=3 actual cards. 404 is generated, noindex and canonical-free.",
+      "indexGuardExitCode": 1
+    }
+  ],
+  "defects": [],
+  "toolReports": [
+    {
+      "resultClass": "도구 보고",
+      "finding": "Separate independent COPY/UI reviewer reports rev2 PASS after removing administrative-row facility attribution. This reviewer independently verified its digest, source bindings and exact rebuilt HTML byte equality, but does not claim a new live venue/source-content investigation."
+    }
+  ],
+  "inferencesAndJudgments": [
+    {
+      "resultClass": "추정·판단",
+      "finding": "No technical/source/static blocker was found within the frozen scope. Acceptance is justified by exact-copy/source preservation, direct output inspection and negative-boundary behavior rather than raw test counts. This verdict can support subsequent separately authorized workflow steps, but is not authority to save remotely, publish or index."
+    }
+  ],
+  "unverified": [
+    {
+      "resultClass": "미확인",
+      "finding": "No Chromium or other browser launched. Desktop/mobile pixels, clipping/overlap, responsive layout, interactive administrative disclosure, keyboard/focus and screen-reader output remain unverified. Known local Chromium socket restriction was not retried or bypassed."
+    },
+    {
+      "resultClass": "미확인",
+      "finding": "No remote Git mutation/commit/push, CI dispatch, release issue, provider/security change, deployment, public HTTP/status or actual phone/order action performed. Local 404 files and header definitions are not evidence of public HTTP 404 behavior."
+    },
+    {
+      "resultClass": "미확인",
+      "finding": "No IndexNow/GSC receipt, crawl/indexation, traffic/ranking, current venue operation or order-specific availability/fees/fulfilment verified."
+    }
+  ],
+  "nonBlockingDiagnostics": [
+    {
+      "resultClass": "직접 확인",
+      "finding": "Sitemap plugin emits No pages found because all preview routes are intentionally nonindexable; no sitemap is the expected result. npm warns about existing http-proxy environment configuration; commands still exit 0."
+    }
+  ],
+  "reviewerRecovery": [
+    {
+      "attempt": "Initial independent WIP DOM line matcher",
+      "result": "Two list blocks appeared unmatched because inline HTML concatenated li text without whitespace. Reviewer changed only its own checker to inspect individual approved bullet lines, then reran all checks against frozen output; no application defect or source edit."
+    }
+  ],
+  "evidence": [
+    {
+      "path": "/workspace/shared/yeongdeungpo-evidence/implementation-review/input-verification.json",
+      "sha256": "a38f9f94d67a89a38b10124148defa0b86e5c2ac17b818d8d3fc533f92dff048",
+      "bytes": 3266
+    },
+    {
+      "path": "/workspace/shared/yeongdeungpo-evidence/implementation-review/source-freeze-verification.json",
+      "sha256": "db6819c56c72ef7201d0fbd76f944c9f6c3082cd468d6c9b6c87aaa6a07f1d1b",
+      "bytes": 121673
+    },
+    {
+      "path": "/workspace/shared/yeongdeungpo-evidence/implementation-review/independent-tests.log",
+      "sha256": "cea0e4a74554e749f0f4581f83feacba4a337f2064b0658047f42c29a611555b",
+      "bytes": 32423
+    },
+    {
+      "path": "/workspace/shared/yeongdeungpo-evidence/implementation-review/independent-build.log",
+      "sha256": "ce99404be3ec535bed45e369bb86903143804d13c7e3d38e228bea7855e429e1",
+      "bytes": 5140
+    },
+    {
+      "path": "/workspace/shared/yeongdeungpo-evidence/implementation-review/independent-qa.log",
+      "sha256": "cb48d6a73f45d4e505144e0ed0dc635068a15a8406470b18551caecb5d17caea",
+      "bytes": 3667
+    },
+    {
+      "path": "/workspace/shared/yeongdeungpo-evidence/implementation-review/independent-index-guard.log",
+      "sha256": "a11c826720e48c5f4e65700c386cf8f9bc0e59c97bdf56a4af078c3872467654",
+      "bytes": 1417
+    },
+    {
+      "path": "/workspace/shared/yeongdeungpo-evidence/implementation-review/independent-negative-review.mjs",
+      "sha256": "2e03a9badbf491fb98a087e50ca4dd4ecb0d2f4c57c9e74cd5ca429acf9b6bb6",
+      "bytes": 6957
+    },
+    {
+      "path": "/workspace/shared/yeongdeungpo-evidence/implementation-review/independent-negative-review.json",
+      "sha256": "afd05127489f764fa96af93fa559a0a85055add8ac7fb21e70e7d68c9a830447",
+      "bytes": 19457
+    },
+    {
+      "path": "/workspace/shared/yeongdeungpo-evidence/implementation-review/independent_html_review.py",
+      "sha256": "6c7037ac1a3a8e31f3c9a5d272d4072cb8b20356e5af38e31b771fa694fcbbe9",
+      "bytes": 9255
+    },
+    {
+      "path": "/workspace/shared/yeongdeungpo-evidence/implementation-review/independent-html-review.json",
+      "sha256": "d0b34293a7c6e59e0c7e567683e0db9fd20ed99c9e172021db6fa5ad404dfa08",
+      "bytes": 55154
+    },
+    {
+      "path": "/workspace/shared/yeongdeungpo-evidence/implementation-review/copy-review-readback.json",
+      "sha256": "de5b05e34c5fbf18698a9f94cc21c660ea3e3eff0a47defc7f4bc8186a57eeea",
+      "bytes": 4792
+    },
+    {
+      "path": "/workspace/shared/yeongdeungpo-evidence/implementation-review/independent-price-mutations.py",
+      "sha256": "cc9c412b0750886b635e05c77a39885ead41ca2b4c4ce5237dfe9d25180a56e3",
+      "bytes": 1842
+    },
+    {
+      "path": "/workspace/shared/yeongdeungpo-evidence/implementation-review/independent-price-mutations.json",
+      "sha256": "7a25a2f96bc85629fd0cee5463844c49267f9fb921f057a91110619d8186bc5b",
+      "bytes": 1340
+    }
+  ],
+  "actions": {
+    "readLocalSources": true,
+    "ranLocalTestsAndBuildInSeparateCopy": true,
+    "mutatedAuthorSource": false,
+    "browserAttempted": false,
+    "remoteAction": false,
+    "publicationApproval": false
+  },
+  "validity": "Applies only to source-manifest c6b40f1bc520220de52652992df4285ea1fbe149a770cc0b725b9bfb1e95d652 and entry digest 4b4c787672d5c32426678df23760cac2e336a90710e348a37f048ffe71520b14. Source/wording/assets/route or governance changes require affected rechecks and new binding; later revision-metadata changes must be reconciled explicitly."
+}

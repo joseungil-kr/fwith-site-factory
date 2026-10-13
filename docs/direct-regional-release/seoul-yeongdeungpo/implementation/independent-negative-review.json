@@ -1,0 +1,651 @@
+{
+  "reviewer": "/root/review_yeongdeungpo_local_runtime",
+  "scope": "Independent in-memory negative/positive boundary checks",
+  "sourceRoot": "/workspace/shared/yeongdeungpo-evidence/implementation-review/frozen-source",
+  "checks": [
+    {
+      "name": "exact definition",
+      "expected": 2,
+      "actual": 2,
+      "error": null,
+      "passed": true
+    },
+    {
+      "name": "c.siteKey missing",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "c.siteKey=other",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "c.siteKey=seoul-guro-flower-direct",
+      "expected": "reject",
+      "passed": true,
+      "error": "Regional adapter cross-site opt-in mismatch"
+    },
+    {
+      "name": "c.siteKey=seoul-geumcheon-flower-direct",
+      "expected": "reject",
+      "passed": true,
+      "error": "Regional adapter cross-site opt-in mismatch"
+    },
+    {
+      "name": "c.siteKey=facility-purchase-context-v1",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "c.scopeKey missing",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "c.scopeKey=other",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "c.scopeKey=seoul-guro-flower-direct",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "c.scopeKey=seoul-geumcheon-flower-direct",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "c.scopeKey=facility-purchase-context-v1",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "c.representativeAssignment missing",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "c.representativeAssignment=other",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "c.representativeAssignment=seoul-guro-flower-direct",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "c.representativeAssignment=seoul-geumcheon-flower-direct",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "c.representativeAssignment=facility-purchase-context-v1",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "p.siteKey missing",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "p.siteKey=other",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "p.siteKey=seoul-guro-flower-direct",
+      "expected": "reject",
+      "passed": true,
+      "error": "Regional adapter cross-site opt-in mismatch"
+    },
+    {
+      "name": "p.siteKey=seoul-geumcheon-flower-direct",
+      "expected": "reject",
+      "passed": true,
+      "error": "Regional adapter cross-site opt-in mismatch"
+    },
+    {
+      "name": "p.siteKey=facility-purchase-context-v1",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "p.scopeKey missing",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "p.scopeKey=other",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "p.scopeKey=seoul-guro-flower-direct",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "p.scopeKey=seoul-geumcheon-flower-direct",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "p.scopeKey=facility-purchase-context-v1",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "p.representativeAssignment missing",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "p.representativeAssignment=other",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "p.representativeAssignment=seoul-guro-flower-direct",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "p.representativeAssignment=seoul-geumcheon-flower-direct",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "p.representativeAssignment=facility-purchase-context-v1",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: site/scope/assignment opt-in mismatch"
+    },
+    {
+      "name": "c exact opposite mode",
+      "expected": "reject",
+      "passed": true,
+      "error": "Regional adapter cross-site opt-in mismatch"
+    },
+    {
+      "name": "p exact opposite mode",
+      "expected": "reject",
+      "passed": true,
+      "error": "Regional adapter cross-site opt-in mismatch"
+    },
+    {
+      "name": "both unknown modes cannot downgrade",
+      "expected": "reject",
+      "passed": true,
+      "error": "Regional service: facility assignment opt-in mismatch"
+    },
+    {
+      "name": "both mode markers removed cannot downgrade",
+      "expected": "reject",
+      "passed": true,
+      "error": "Regional service: facility context requires explicit opt-in"
+    },
+    {
+      "name": "N=0",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen plan denominator drift"
+    },
+    {
+      "name": "N=1",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen plan denominator drift"
+    },
+    {
+      "name": "N=3",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen plan denominator drift"
+    },
+    {
+      "name": "held-candidate activation",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen plan member/anchor binding drift"
+    },
+    {
+      "name": "cross-occasion duplicate candidate",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen plan member/anchor binding drift"
+    },
+    {
+      "name": "facility missing",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen plan registry drift"
+    },
+    {
+      "name": "facility address drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen plan registry drift"
+    },
+    {
+      "name": "facility source drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen plan registry drift"
+    },
+    {
+      "name": "facility fabricated admin attribute",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen plan registry drift"
+    },
+    {
+      "name": "area context forbidden",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen plan registry drift"
+    },
+    {
+      "name": "membership source drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: official membership binding drift"
+    },
+    {
+      "name": "policy membership source drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: membership count/policy binding drift"
+    },
+    {
+      "name": "legal count drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Regional service: invalid alias relation seoul-yeongdeungpo-gu/admin/1156062000"
+    },
+    {
+      "name": "admin count drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen Yeongdeungpo inventory mismatch"
+    },
+    {
+      "name": "relation removal",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen Yeongdeungpo inventory mismatch"
+    },
+    {
+      "name": "relation incorrect whole",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: official membership binding drift"
+    },
+    {
+      "name": "quota enabled",
+      "expected": "reject",
+      "passed": true,
+      "error": "Regional service: unsupported unit basis or quota"
+    },
+    {
+      "name": "anchor text drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen plan member/anchor binding drift"
+    },
+    {
+      "name": "anchor target drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen plan member/anchor binding drift"
+    },
+    {
+      "name": "anchor unit drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen plan member/anchor binding drift"
+    },
+    {
+      "name": "anchor duplicate",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen plan member/anchor binding drift"
+    },
+    {
+      "name": "unit order drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: frozen plan member/anchor binding drift"
+    },
+    {
+      "name": "single-facility field forbidden",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: invalid canonical grouped context"
+    },
+    {
+      "name": "page scopeKey drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: route/approval mismatch"
+    },
+    {
+      "name": "page candidateIds drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: grouped context binding drift candidateIds"
+    },
+    {
+      "name": "page facilityAnchors drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: grouped context binding drift facilityAnchors"
+    },
+    {
+      "name": "page regionUnitKeys drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: grouped unit/keyword binding drift"
+    },
+    {
+      "name": "page purchaseIntentKey drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: grouped context binding drift purchaseIntentKey"
+    },
+    {
+      "name": "page contextKey drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: grouped context binding drift contextKey"
+    },
+    {
+      "name": "page intentKey drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: grouped context binding drift intentKey"
+    },
+    {
+      "name": "page primaryKeyword drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: grouped unit/keyword binding drift"
+    },
+    {
+      "name": "architecture scopeKey drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: architecture semantic mismatch"
+    },
+    {
+      "name": "architecture parentHub drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: architecture semantic mismatch"
+    },
+    {
+      "name": "architecture url drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: architecture semantic mismatch"
+    },
+    {
+      "name": "architecture slug drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: architecture semantic mismatch"
+    },
+    {
+      "name": "architecture localizationPolicy drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: architecture semantic mismatch"
+    },
+    {
+      "name": "architecture pageRole drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: architecture semantic mismatch"
+    },
+    {
+      "name": "architecture candidateIds drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: grouped context binding drift candidateIds"
+    },
+    {
+      "name": "page approval false",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: route/approval mismatch"
+    },
+    {
+      "name": "page reserved",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: route/approval mismatch"
+    },
+    {
+      "name": "page missing",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: approved route parity mismatch"
+    },
+    {
+      "name": "architecture duplicate",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: architecture semantic mismatch"
+    },
+    {
+      "name": "runtime snapshot id drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Regional input/manifest mismatch snapshotId"
+    },
+    {
+      "name": "reviewed metadata regionalProductKeys drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: reviewed source binding drift regionalProductKeys"
+    },
+    {
+      "name": "reviewed metadata regionalProductFamilies drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: reviewed source binding drift regionalProductFamilies"
+    },
+    {
+      "name": "reviewed metadata ogImage drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: reviewed source binding drift ogImage"
+    },
+    {
+      "name": "reviewed metadata ogImageAlt drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: reviewed source binding drift ogImageAlt"
+    },
+    {
+      "name": "reviewed metadata ogImageSha256 drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: reviewed source binding drift ogImageSha256"
+    },
+    {
+      "name": "reviewed metadata ogImageSourceUrl drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: reviewed source binding drift ogImageSourceUrl"
+    },
+    {
+      "name": "reviewed metadata ogImageWidth drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: reviewed source binding drift ogImageWidth"
+    },
+    {
+      "name": "reviewed metadata ogImageHeight drift",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: reviewed source binding drift ogImageHeight"
+    },
+    {
+      "name": "purchase-family drift 0",
+      "expected": "reject",
+      "passed": true,
+      "error": "Regional service: product family binding mismatch"
+    },
+    {
+      "name": "purchase-intent drift 0",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: unknown purchase intent"
+    },
+    {
+      "name": "frozen heading 0 missing",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo reviewed heading missing, duplicated or level changed: 여의도성모장례식장"
+    },
+    {
+      "name": "frozen heading 0 duplicate",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo reviewed heading missing, duplicated or level changed: 여의도성모장례식장"
+    },
+    {
+      "name": "frozen heading 0 level",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo reviewed heading missing, duplicated or level changed: 여의도성모장례식장"
+    },
+    {
+      "name": "purchase-family drift 1",
+      "expected": "reject",
+      "passed": true,
+      "error": "Regional service: product family binding mismatch"
+    },
+    {
+      "name": "purchase-intent drift 1",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo grouped: unknown purchase intent"
+    },
+    {
+      "name": "frozen heading 1 missing",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo reviewed heading missing, duplicated or level changed: JK아트컨벤션"
+    },
+    {
+      "name": "frozen heading 1 duplicate",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo reviewed heading missing, duplicated or level changed: JK아트컨벤션"
+    },
+    {
+      "name": "frozen heading 1 level",
+      "expected": "reject",
+      "passed": true,
+      "error": "Yeongdeungpo reviewed heading missing, duplicated or level changed: JK아트컨벤션"
+    },
+    {
+      "name": "partial-admin target 신길제5동",
+      "expected": [],
+      "actual": [],
+      "error": null,
+      "passed": true
+    },
+    {
+      "name": "partial-admin target 대림제1동",
+      "expected": [],
+      "actual": [],
+      "error": null,
+      "passed": true
+    },
+    {
+      "name": "partial-admin target 대림제2동",
+      "expected": [],
+      "actual": [],
+      "error": null,
+      "passed": true
+    },
+    {
+      "name": "partial-admin target 대림제3동",
+      "expected": [],
+      "actual": [],
+      "error": null,
+      "passed": true
+    },
+    {
+      "name": "whole-admin target 여의동",
+      "expected": [
+        "/regions/yeongdeungpo-funeral-wreath/#yeouido-stmary",
+        "/regions/yeongdeungpo-wedding-wreath/#partyum"
+      ],
+      "actual": [
+        "/regions/yeongdeungpo-funeral-wreath/#yeouido-stmary",
+        "/regions/yeongdeungpo-wedding-wreath/#partyum"
+      ],
+      "error": null,
+      "passed": true
+    },
+    {
+      "name": "directory N2 eligibility",
+      "expected": {
+        "exists": true,
+        "indexable": false,
+        "menu": false,
+        "sitemap": false
+      },
+      "actual": {
+        "exists": true,
+        "indexable": false,
+        "menu": false,
+        "sitemap": false
+      },
+      "error": null,
+      "passed": true
+    },
+    {
+      "name": "unchanged N3 eligibility",
+      "expected": true,
+      "actual": true,
+      "error": null,
+      "passed": true
+    }
+  ],
+  "checksN": 103,
+  "failed": []
+}

@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "independent_customer_COPY_and_common_text",
+  "revision": 1,
+  "reviewer": "/root/review_yeongdeungpo_regional_plan",
+  "author": "/root/prepare_yeongdeungpo_regional_plan",
+  "reviewedAt": "2026-10-12T23:25:31.946683+00:00",
+  "verdict": "REVISE",
+  "scope": "Customer source text and intended shared UI wording only. No implementation, HTML, screen, public HTTP or publication PASS.",
+  "immutableInputBinding": {
+    "copyPath": "yeongdeungpo-copy.rev1.json",
+    "copySha256": "1275185f2c9902082aa37b23652ff64937c0821c42990eb3c2743ab4d61f2807",
+    "manifestPath": "copy-review-inputs.rev1.json",
+    "manifestSha256": "957900aa1e5ea6bc105383d8ec84e76b843a505d6e5600c1f21cb280f9119b54",
+    "fullSurfaceSha256": "054de80a76594a83510607027fb69ed9795b44522552de47ef6415e5c4dc6a13",
+    "sourceTraceSha256": "ec89d08a3a68d5838bcb59c76ef04b24bb8e7be691cce82c5475142658b5319b",
+    "fixedPlanSha256": "bd952a480edd4d2382d957929695eef130f80868e5f14579550e3759dae14d5c",
+    "planReviewSha256": "023958d8c4770bf88e49d657056f14f9d8bbc70dc77c20453f7de950e02815ef"
+  },
+  "requiredFixes": [
+    {
+      "id": "C1",
+      "category": "facility_fact_scope",
+      "severity": "required",
+      "location": "wedding contentMarkdown, 웨딩그룹위더스 영등포 paragraph",
+      "currentExcerpt": "홀은 6층 메리엘컨벤션, 7층 펠리체, 8층 엘린, 9층 아모르, 10층 프리비가든으로 표기되어 있습니다.",
+      "finding": "This wording classifies every listed floor, including 10F Privy Garden, as a hall. The inspected original floor guide labels 10F with studio, outdoor terrace and pyebaek room. The frozen plan accepted static floor labels, not proof that all labels are individual ceremony halls.",
+      "requiredChange": "Describe these as labels in the official floor guide, or separate verified hall labels from 10F ancillary-space labelling. Do not call 10F a ceremony hall or wreath receiving point. Keep the current-operations and receipt limitations; no new facility research, quota or anchor is required.",
+      "sourceUrl": "https://www.withus.kr/package/",
+      "sourceEvidence": "Official original reopened during COPY review. L16 floor guide versus L17–22 Wedding navigation; also preserved in ../review-official-web-readback.json."
+    },
+    {
+      "id": "C2",
+      "category": "provider_tone_and_repetition",
+      "severity": "required",
+      "location": "Both articles: facility paragraphs and order/ribbon sections",
+      "finding": "Each wedding venue repeats an instruction to provide the invitation hall and time, followed by the same consolidated order block. Funeral venue paragraphs similarly repeat room/departure consultation at multiple anchors. The phrases explaining that readers must replace example names with real names add homework without an additional purchase decision. The draft is generally courteous, but this repetition conflicts with the requested single grouped input block and reader-respecting provider voice.",
+      "examples": [
+        "JK: 청첩장의 홀명과 예식 시간을 덧붙여 주시면 됩니다.",
+        "Partyum: 전체 시설명과 함께 그 표기를 주문에 담아 주세요.",
+        "Withus: 홀명과 층 정보를 함께 전달해 주시면 ...",
+        "Funeral ribbon: 예시의 이름을 실제 사용할 명칭으로 바꾸어 전달해 주시면 됩니다."
+      ],
+      "requiredChange": "Retain useful original building/address/hall distinctions, especially the Hangang funeral annex difference. Remove repeated generic room/hall/time requests from facility paragraphs and keep common inputs in the order block once. Shorten example-name replacement instructions. Keep empathy, product help and material cost/receipt/refund limits; do not pad back to a character quota or invent a new service."
+    },
+    {
+      "id": "C3",
+      "category": "shared_visible_wording_contract",
+      "severity": "required",
+      "location": "articles[*].sourceHeading and common.sourcesHeading",
+      "currentExcerpt": "시설·상품 안내 출처",
+      "finding": "SHARED_BANNER_STANDARD.md explicitly names the single source-section H2 as 출처 및 확인 정보. The intended heading strings currently differ.",
+      "requiredChange": "Set the two article sourceHeading values and common.sourcesHeading to 출처 및 확인 정보. Preserve source names, URLs and dates. Actual single-H2 structure is a later HTML verification gate.",
+      "sourcePath": "/workspace/shared/yeongdeungpo-factory/docs/direct-regional-release/SHARED_BANNER_STANDARD.md",
+      "sourceSha256": "b9ad6e79a91346e6316c998c4cac3710f2a426828fc3b30c612e13e24b9375ca"
+    }
+  ],
+  "reviewDimensions": {
+    "products_and_commercial_policy": {
+      "verdict": "PASS_SOURCE_TEXT",
+      "resultClass": "직접 확인",
+      "finding": "All eight product names, basic prices, image URLs, image hashes and exact SKU links match original fwith evidence. Four product cards per article are specified. The copy preserves mixed fresh/artificial materials, possible seasonal/regional variation, address-dependent extra cost, no separate collection, production/elapsed-delivery/address/refusal restrictions, defect/damage/wrong-item refund grounds, unavailable fulfilment/stock full refund and the separate post-shipment minus-shipping clause. It does not invent a universal cancellation cutoff, guaranteed time, free delivery, stock, affiliation or physical specification."
+    },
+    "facility_facts": {
+      "verdict": "REVISE_C1",
+      "resultClass": "직접 확인",
+      "finding": "Five funeral addresses/identities and three wedding addresses are consistent with previously inspected primary originals. Han River hospital/footer distinction is correct, held Dangsan FAQ is absent, and no live family or room names are copied. JK/Withus source note preserves static-only status. Withus 10F classification needs the narrower wording in C1."
+    },
+    "information_completeness": {
+      "verdict": "SUFFICIENT_SUBJECT_TO_REVISIONS",
+      "resultClass": "추정·판단",
+      "finding": "Both guides cover the known occasion, budget and product selection, destination identity, ribbon options, one order route, total-price uncertainty, suitable timing consultation, material variation, no collection and policy exceptions. No essential purchase-information gap was found within verified service scope. The wedding depositor-name FAQ is source-supported; the funeral no-flowers FAQ answers a suitability question not repeated in the main body. More FAQ or longer prose is not required."
+    },
+    "warmth_empathy_smalltalk": {
+      "verdict": "GENERALLY_MEETS_WITH_C2_REQUIRED",
+      "resultClass": "추정·판단",
+      "finding": "The funeral opening is restrained and supportive; the wedding opening uses a brief congratulations context and invites discussion without inventing memories, emotions, experience or popularity. Provider voice is present and help is limited to product/ribbon/order consultation. Repetition of hall/room instructions needs removal so courtesy is more than repeated 말씀해 주세요/상담해 드립니다 endings."
+    },
+    "customer_homework_and_tone": {
+      "verdict": "REVISE_C2",
+      "resultClass": "추정·판단",
+      "finding": "No sustained fear-based warnings or customer incompetence narrative. Local helper paragraphs nevertheless repeat the same input task, and explaining how to replace placeholder names is unnecessary. Do not remove actual delivery/receipt/refund constraints while fixing this."
+    },
+    "substantive_cross_region_duplication": {
+      "verdict": "SUPPORTABLE_LOCAL_VALUE_WITH_C2_REQUIRED",
+      "resultClass": "추정·판단",
+      "finding": "Compared all final Gangseo four, Guro three and Geumcheon one body/FAQ sets. Shared product tiers, total budget, ribbon wording, change/refund and no-collection answers recur because they are the same business truth. Local destination content is genuinely different, including five distinct funeral facilities and the funeral-annex address, plus JK building and Partyum/Withus names/floor labels. These are sufficient for the frozen two grouped intents; unrelated office/performance pages remain absent. Repeated consultation instructions should not be treated as additional unique value. Exact-string checks are supplementary, never the reason for approval."
+    },
+    "common_text": {
+      "verdict": "REVISE_C3_OTHER_TEXT_ACCEPTABLE",
+      "resultClass": "직접 확인",
+      "finding": "Home title/H1/intro/cards, navigation, directory cards, price/material/collection notices, product CTA/alt/caption, phone/footer, FAQ heading, approved banner alt/AI caption and 404 wording were actually read. Common copy is brief and provider-led. Product photos and AI atmosphere banners remain distinct. Two-card noindex/no-banner intent matches plan. Source heading needs C3."
+    }
+  },
+  "questionAnswerSourceAction": [
+    {
+      "intent": "funeral",
+      "question": "Which condolence product and total budget can I discuss?",
+      "answer": "Four exact basic prices and photos, two options within an 80,000 KRW product budget, address-dependent final total.",
+      "source": "Eight-SKU official evidence and additional-delivery-charge notice.",
+      "nextAction": "Exact SKU detail link or 1844-0644 consultation."
+    },
+    {
+      "intent": "funeral",
+      "question": "Which named funeral destination is meant?",
+      "answer": "Five source-backed addresses/anchors; Hangang annex differs from hospital footer; Kangnam is a separate institution.",
+      "source": "MOHW April registry and hospital/operator originals.",
+      "nextAction": "One grouped order block with destination, room and available departure information."
+    },
+    {
+      "intent": "wedding",
+      "question": "Which invitation venue and hall information belongs to the order?",
+      "answer": "JK SK Leaders View 4F, Partyum at 은행로 30 and source-labelled Withus floors, with C1 narrowing required.",
+      "source": "Official operator originals, limited to static identity for JK/Withus.",
+      "nextAction": "One grouped order block; repeated venue-level input requests removed under C2."
+    },
+    {
+      "intent": "both",
+      "question": "What if flowers, details or the occasion change?",
+      "answer": "Original materials/variation and refund-restriction/exception clauses; no unconditional cancellation or fulfilment promise.",
+      "source": "Official policy images directly inspected during PLAN review.",
+      "nextAction": "Consult for the actual order state, not an invented blanket result."
+    }
+  ],
+  "directChecks": {
+    "resultClass": "직접 확인",
+    "manifestFilesMatched": 3,
+    "fixedPlanUnchanged": true,
+    "activeCandidateAndAnchorBindingsEqualFixedPlan": true,
+    "exactSkuCardChecks": 8,
+    "sourceHeadingsVsStandard": "C3 mismatch",
+    "counts": [
+      {
+        "id": "funeral",
+        "bodySha256": "8b4243179855eacdcdf5d734ed71893f34ed5698478de89a9e9d02a5dae9251d",
+        "visibleBodyCharsIncludingSpaces": 2678,
+        "firstAnswerBodyFaqChars": 2917,
+        "countMethod": "Unicode characters, Markdown heading markers removed and link markup replaced with visible label; spaces retained; shared UI/cards/notes excluded."
+      },
+      {
+        "id": "wedding",
+        "bodySha256": "dd76f23dfe04d837f29ff1f1ed2c302759c099d2c2c99b96749d92da2d854b09",
+        "visibleBodyCharsIncludingSpaces": 2662,
+        "firstAnswerBodyFaqChars": 2915,
+        "countMethod": "Unicode characters, Markdown heading markers removed and link markup replaced with visible label; spaces retained; shared UI/cards/notes excluded."
+      }
+    ],
+    "countInterpretation": "Neither quantity nor a low text-similarity figure is an automatic content-quality pass. Shared UI is excluded."
+  },
+  "finalSourceComparators": [
+    {
+      "region": "gangseo",
+      "commit": "f7f2b9d017b8b8352aae8b0339b5a2cac0da1d32",
+      "pagesSha256": "3455e419c2e2d03d42c5536180bab2ad04b56f6d97af8b081175a73617a9a052",
+      "gitBlobSha": "1ba7f6e41df1b84cdfdddac82c6428c9bf1c9867",
+      "reviewerReadbackFile": "reviewer-gangseo-final-readback.json",
+      "reviewerReadbackSha256": "5695dad575d63963bf32b923d62bd1e886abf6ade0dabdfa0a37facbf294cf2b",
+      "scope": "Independently fetched exact final GitHub bytes; local equality and recomputed blob hash match. Four bodies/FAQs were read."
+    },
+    {
+      "region": "guro",
+      "commit": "500d82d01c1cdaed3ebde047bb3ce056705daac1",
+      "pagesSha256": "1d186a5e46d42a1185180d79a97065b7d08a8a8c3d90cada6a0cc2d64ffce1f6",
+      "scope": "Three final bodies/FAQs and final refund diffs read. Exact GitHub/source verification preserved in reviewer PLAN evidence."
+    },
+    {
+      "region": "geumcheon",
+      "commit": "bbb016305dd2fe29f7d985a669acaa02224a9f2f",
+      "pagesSha256": "17fc450a84e3d354008bc57c8f170c32cb1ca8c47f1a95cb25bc5d6b610ba780",
+      "scope": "Final full body/FAQ read, matching reviewed rev3. Exact GitHub/source verification preserved in reviewer PLAN evidence."
+    }
+  ],
+  "futureGates": [
+    "After every wording change, regenerate exact copy/surface/trace/manifest digests and obtain fresh independent COPY review. Do not change frozen N, anchors or coverage to address these edits.",
+    "Any additional inherited UI introduced in implementation, including geographic directory helper text, must be included in the final visible-copy surface and reviewed. This review does not pre-approve unseen UI.",
+    "Implementation must prove actual card counts, anchor destinations, exact SKU links, FAQ visibility, one H1 and the single approved source H2, banners, alt/caption, robots/canonical/sitemap/404 and screen QA status. Data fields alone are not rendered behaviour."
+  ],
+  "unverifiedStages": {
+    "resultClass": "미확인",
+    "items": [
+      "Source implementation or new source commit",
+      "Build and tests",
+      "Rendered HTML and actual anchor/CTA behaviour",
+      "Browser/screen visibility",
+      "Public URL/HTTP",
+      "Publication and indexing"
+    ]
+  },
+  "actionsTaken": [
+    "Read full customer JSON and export surface",
+    "Original policy/facility/source-code comparisons",
+    "Independent exact binding/card/count checks",
+    "Read-only final Gangseo GitHub readback",
+    "Local reviewer JSON written"
+  ],
+  "noRemoteWrites": true,
+  "noCustomerCopyModified": true,
+  "frozenPlanModified": false
+}

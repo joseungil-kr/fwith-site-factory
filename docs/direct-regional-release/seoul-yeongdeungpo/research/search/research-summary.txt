@@ -1,0 +1,49 @@
+영등포 검색 의도·경쟁 원문·지역 간 중복 연구
+확인 시각: 2026-10-12 UTC / 2026-10-13 KST
+기준 저장소: joseungil-kr/fwith-site-factory, b68fa7801b080da5a65fbaeceeba3aa9a81ac365
+상태: 연구 완료, 그룹안 제안. 원고·구현·freeze·승인·배포 완료가 아님.
+
+[직접 확인]
+1. 기존 SEARCH_CONTENT_STRATEGY와 SALES_COPY_ACCEPTANCE, 강서/구로/금천 계획 및 최종 원고 8개를 읽었다. 강서 4글은 exact artifact pages.json의 SHA256 3455e419c2e2d03d42c5536180bab2ad04b56f6d97af8b081175a73617a9a052가 기존 source-review-binding과 일치한다. 구로 3글과 금천 rev3 1글은 현재 기준 커밋의 검토 원고다. 공개 렌더나 원격 전체 브랜치를 검사한 것은 아니다.
+2. 8개 개별 대표/세부 검색을 추가로 실행했다. q01–q08 파일에 질의, 시각, 반환 결과를 각각 보존했다. 앞선 5개 묶음 검색도 보존했다. 이는 웹 검색 도구가 반환한 순서이며 Google/Naver 실측 순위·검색량·수요 추정이 아니다.
+3. 경쟁사 원문 8개를 본문까지 열람했다. 여의도성모 Flora, 청솔플라워, 더컨벤션 꽃집누나, 더파티움 더화환, 예도 식당 개업, 오늘의화환 사무실 이전, 축하화환.kr 영등포아트홀, 더화환 영등포 지역 목록이다. HTTP fallback 5개에는 상태200, 본문 파일, hash를 남겼다. 실패했던 웹 캐시 접근도 지우지 않았다.
+4. 경쟁 원문에는 상품 가격/문구/주문입력/야간예외/사진전송/환불/화분 대안 등이 있었다. 서비스 실적과 약속의 사실성은 검증하지 않았고 꽃이랑 약속으로 채택하지 않는다. 더파티움 갤러리는 다른 지역 캡션도 포함하므로 그 사진을 해당 시설 실배송 증거로 읽지 않는다.
+5. 축하화환.kr 영등포아트홀 원문은 공연장을 ‘전용 예식장’이라고 부르고 신랑/신부 관계와 예식 날짜를 입력받는다. 검색결과에 페이지가 있다는 사실은 시설 유형·수령 정책의 신뢰성을 보증하지 않는다.
+6. Google 원문은 사용자에게 충분한 답, 독창적 가치, 선호 단어 수 없음, 도어웨이 및 가치 없는 대규모 콘텐츠 문제를 명시한다. Naver 원문은 동일 콘텐츠의 여러 사이트와 같은 제목 사용을 경고한다. 공식 원문 URL/확인범위는 JSON에 있다. 2,500–3,000자는 내부 초안 목표이지 랭킹 법칙이나 합격 보장이 아니다.
+7. IFC 원문 KO/EN와 IFC Mall 주소 페이지를 직접 열었다. 국제금융로10·여의도동, One/Two/Three IFC, 오피스/몰/호텔 복합과 출입통제를 확인했다. 화환 반입금지나 배송수령허용은 확인되지 않았다. 몰 영업시간을 사무실 수령시간으로 바꾸지 않는다.
+8. 현재 영등포아트홀 register.pdf는 상위 작업자가 현행 대관 페이지에서 내려받았고, 이 연구에서는 동일 PDF의 추출 원문과 SHA를 독립 검사했다. 2026-07-13 시행, 제23조4항은 공연장 내부 화환 금지와 입구 설치시 대관자 처리비 부담을 규정한다. 제19조 로비 물품보관 문구는 관객 입장 안내이며 꽃배달 업체의 수령/설치 승인 증명이 아니다. 2025 검색 PDF는 현행 근거로 사용하지 않는다.
+
+[추정·판단]
+권고는 2개 구매결정 묶음이다. 수를 먼저 정한 계획이나 freeze가 아니다.
+- 근조 1글: 검증된 영등포 장례시설을 anchor로 묶는다. 여의도성모 명칭 변형은 하나의 시설이다. 한강성심 본원과 제5별관 장례식장의 다른 주소처럼 실제 목적지를 바꾸는 정보는 의미가 있다. 시설 수가 글 수가 되지 않게 한다. 8개 등록시설 전부를 활성화할 필요 없이 근거가 부족한 시설은 보류 추적한다.
+- 웨딩 1글: 검증된 JK/더파티움/당산그랜드/위더스 등의 실제 예식장과 홀을 anchor로 구분한다. 영등포와 여의도 키워드, 결혼/축하/화혼 동의어, 홀별 URL을 추가로 만들지 않는다.
+- 공연 보류: 금지·조건 정보는 유용하지만 허용된 실제 수령대안, 주최측 역할, 장소/시간, 처리 책임이 확립되지 않았다. 강서 아리홀의 일반 공연문구·시간상담을 이름만 바꾸어 재생산할 이유가 없다. 구로/금천의 제한시설 보류와 같은 판단 기준을 유지한다.
+- 사무실 보류: 구로디지털단지와 M+의 전문에는 목적, 상품예산, 실제 회사·층·호·담당자, 행사/평일수령, 문구, 증빙상담, 추가배송비, 별도수거없음, 변경정책이 이미 있다. IFC의 타워/보안 정보만으로 새로운 구매 답변은 성립하지 않는다. 금천 가산을 보류한 기준과 같다.
+
+지역 간 중복에 대한 엄격한 조건
+- 근조·웨딩도 상품·가격·문구·취소 질문은 기존 원고와 크게 겹친다. 지역명 치환, 도입의 감성 표현 변경, 상식/주소 반복만으로 고유본문 분량을 채우면 안 된다.
+- 시설마다 다른 URL로 쪼개기보다는 하나의 글에서 검증된 시설별 의사결정 정보를 명확히 찾아가게 한다.
+- Google 정책상 직접 상품링크가 있다는 이유만으로 지역 도어웨이 위험이 해소되는 것은 아니다. 신규 글에는 실제 지역 독자가 따로 검색할 필요를 줄이는 고유한 답이 있어야 한다.
+- 현재 60개 로컬 계획/release/checkpoint JSON의 시설명 검색에서 같은 영등포 시설의 기존 활성계획 충돌은 찾지 못했다. 중랑 위더스는 다른 지점의 보류 기록이고 ‘장당산단’은 당산동이 아니다. 전체 원격·공개 전수 중복 해제는 주장하지 않는다.
+
+[미확인 및 실패]
+- 통제된 Google/Naver SERP, 검색량, 순위, 색인, 클릭 성과 미측정.
+- 현재 개별 빈소/유족 의사, 각 예식의 외부화환 수령·설치, IFC 꽃 수령규정, KBS/영산 실제 허용 동선 미확인.
+- KBS 신관 웨딩홀, 영산아트홀, 코트야드 메리어트 타임스퀘어, 페어몬트 서울은 실제 검색/경쟁 원문에서 발견한 lead다. 공식 현재 운영·시설별 수령 근거가 없는 상태로 활성시설에 넣지 않는다.
+- 화분/꽃다발/쌀화환/오브제는 경쟁사가 판매하지만 이 연구에서 꽃이랑의 해당 SKU를 검증하지 않았다. 대체상품으로 자동 확대하지 않는다.
+- 웹 cache miss 일부는 직접 HTTP200으로 회복했다. 1588-6790 더컨벤션·씨플라워 갤러리·채피디 일부 원문 실패는 실패로 남기고, 원문까지 읽었다고 주장하지 않는다. Naver 존재하지 않거나 해석되지 않은 content(s) 경로도 실패 기록에 있다.
+- 원고를 쓰지 않았으므로 신규 본문 중복률·정보완결성·친절함 PASS는 없다. parent 시설 증거와 독립 계획 검토가 결합되어야 최종 계획 판단이 가능하다.
+
+검증 증거
+- search-intent-research.json: 질의/원문/공식 가이드/8개 기존 글 hash·제목·질문/4개 의도/보류/한계
+- cross-region-inventory-scan-expanded.json: 60개 파일 해시와 정확한 매치
+- raw/q01.json ~ q08.json: 개별 실검색
+- raw/http-readbacks.json 및 office-http-readback.json: 경쟁 원본 HTTP200와 hash
+- raw/ifc-official-originals.json: IFC 3개 원문
+- raw/official-guidelines-focus.json 및 official-search-guidelines.json: Google/Naver 원문
+- art-hall current PDF: /workspace/shared/yeongdeungpo-evidence/raw/art-hall-linked-register.pdf
+
+변경 경계: 이 작업은 search 디렉터리에 연구 자료만 썼다. Git 커밋·push·기준원고 변경·배포·승인을 수행하지 않았다.
+
+
+Revision2 correction (2026-10-12): actual candidate wedding anchors are JK/Partyum/Withus (3), with Grand Dangsan held. observed-competitor-leads.json preserves37 seller-labelled wedding names +8 funeral directory names +1 unresolved prose name, with status and provenance; these are not verified operations or page counts. All3 final Guro pages were re-read from exact500d82d source and the refund paragraph differences were inspected; grouping conclusion unchanged. See current search-intent-research.json and search/prior-final-source-readback.json for final hashes.

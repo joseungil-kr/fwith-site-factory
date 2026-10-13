@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "independent_customer_COPY_and_common_text",
+  "revision": 2,
+  "reviewer": "/root/review_yeongdeungpo_regional_plan",
+  "author": "/root/prepare_yeongdeungpo_regional_plan",
+  "reviewedAt": "2026-10-12T23:28:16.061698+00:00",
+  "verdict": "PASS",
+  "scope": "Exact customer source copy and intended common visible wording only. This is not a source implementation, rendered HTML, screen, public HTTP, publication or indexing PASS.",
+  "immutableInputBinding": {
+    "copyPath": "yeongdeungpo-copy.rev2.json",
+    "copySha256": "cdc2fda4970414d2d80c0aae7a939fb2d13f2bfbb210f3c2e663864945c01a1f",
+    "manifestPath": "copy-review-inputs.rev2.json",
+    "manifestSha256": "09b782103be3870eefaa5572e772fc078d46b4f8c3930eb315011ed07b39fd64",
+    "fullSurfacePath": "full-copy-surface.rev2.txt",
+    "fullSurfaceSha256": "fede5354ec932584ede32dc0d85dc54ee30d0d3d1ab774a39b70cf1317038d62",
+    "sourceTracePath": "copy-source-trace.rev2.json",
+    "sourceTraceSha256": "c0e366fd38fcbef6dd7e1bc84ce51c4e1f3c7a5195c784ba5e9c44f5b86e6341",
+    "fixedPlanSha256": "bd952a480edd4d2382d957929695eef130f80868e5f14579550e3759dae14d5c",
+    "planReviewSha256": "023958d8c4770bf88e49d657056f14f9d8bbc70dc77c20453f7de950e02815ef",
+    "newSourceCommit": null,
+    "newSourceCommitReason": "Local copy artifacts only; no implementation or commit in this task. Future implemented source must preserve this exact copy binding and pass output review."
+  },
+  "previousReview": {
+    "path": "copy-review.rev1.json",
+    "sha256": "fbaa48903b2bc3f1629b6ffa31e7613b75c5fc3afa7641729c8d4d44dd737731",
+    "verdict": "REVISE"
+  },
+  "requiredFixes": [],
+  "resolvedFindings": [
+    {
+      "id": "C1",
+      "resultClass": "직접 확인",
+      "status": "RESOLVED",
+      "finding": "Withus now says the listed names appear in the official floor guide. It no longer classifies 10F Privy Garden as a ceremony hall or wreath receiving location. The static-source/current-operations limit remains in the source note."
+    },
+    {
+      "id": "C2",
+      "resultClass": "직접 확인",
+      "status": "RESOLVED",
+      "finding": "Re-read both complete revised bodies and FAQs, not just the diff. Repetitive venue-level room/hall/time input instructions and placeholder-name replacement advice are removed. Useful Hangang annex/address guidance remains, and the common order inputs are consolidated. Important material, delivery-cost, receipt, no-collection and refund text is unchanged."
+    },
+    {
+      "id": "C3",
+      "resultClass": "직접 확인",
+      "status": "RESOLVED",
+      "finding": "Both article sourceHeading values and common.sourcesHeading now exactly equal 출처 및 확인 정보. Actual H2 DOM structure remains unverified until implementation."
+    }
+  ],
+  "dimensionVerdicts": {
+    "fact_product_policy": {
+      "verdict": "PASS_SOURCE_TEXT",
+      "resultClass": "직접 확인",
+      "finding": "All eight exact SKU names, basic prices, image references/hashes and detail URLs match inspected official originals. Five funeral and three wedding destinations remain within frozen source limits; Withus wording is corrected. Both texts retain address-dependent charges, material variation, no collection and the actual refund restriction/exception nuances. No guaranteed time, free delivery, stock, affiliation, quality superiority, delivered-item evidence or invented experience is claimed."
+    },
+    "search_intent_and_information_completeness": {
+      "verdict": "PASS_SOURCE_TEXT",
+      "resultClass": "추정·판단",
+      "finding": "Each guide answers the intended sender’s purchase decision: occasion, verified product/budget choice, destination identity, ribbon, grouped order inputs, achievable-time consultation and total cost, material/collection limits and changes/refunds. The single FAQ in each text adds an unanswered relevant question; more questions or length are unnecessary. Exact SKU and phone next actions are specified, but their rendered operation is not yet verified."
+    },
+    "warmth_empathy_smalltalk": {
+      "verdict": "PASS_SOURCE_TEXT",
+      "resultClass": "추정·판단",
+      "finding": "Funeral language is restrained and supports a sender unsure of wording or budget. Wedding language briefly acknowledges the happy occasion and offers product/ribbon help without inventing personal memories or emotions. Home wording distinguishes condolence and celebration naturally. The provider remains the speaker. Routine required-input instructions are now bounded rather than repeated after each facility."
+    },
+    "reader_respect_and_repetition": {
+      "verdict": "PASS_SOURCE_TEXT",
+      "resultClass": "추정·판단",
+      "finding": "No repeated selection lesson, manufactured mistake scenario or excessive homework remains. Mandatory limits are retained in relevant places without dominating the opening. Repeated truthful business facts across independent occasions are proportionate; the removed sentences were not replaced with filler."
+    },
+    "substantive_cross_region_originality": {
+      "verdict": "PASS_SOURCE_TEXT_WITH_BOUNDED_CLAIM",
+      "resultClass": "추정·판단",
+      "finding": "Final Gangseo, Guro and Geumcheon full bodies/FAQs were compared. Shared business-policy/product facts are expected to recur and are not counted as novel local expertise. These two grouped guides retain different original destinations, the Hangang funeral annex distinction and the JK/Partyum/Withus building/floor labels. They are not additional facility or geographic-synonym URLs. This judgment is semantic and source-based, not a low-similarity or word-count score."
+    },
+    "common_visible_wording": {
+      "verdict": "PASS_SOURCE_TEXT",
+      "resultClass": "직접 확인",
+      "finding": "Home/navigation/directory/cards/CTA/footer/price/material notes/product alt and captions/banner alt and AI caption/404 text were read. Revised source headings match the fixed standard. Product and approved banner data are unchanged. Two directory cards remain intended noindex with zero shared banners. This says nothing about actual final visibility/layout."
+    }
+  },
+  "characterCountReview": {
+    "resultClass": "직접 확인",
+    "method": "Unicode count with Markdown heading markers removed and links replaced by displayed label, retaining spaces. Excludes shared UI, product cards, banners, footer and source notes/links.",
+    "articles": [
+      {
+        "id": "funeral",
+        "bodyChars": 2489,
+        "firstBodyFaqChars": 2728,
+        "bodySha256": "13aa69b4bcc0907ea73c648f65306e9f659cede46016536c72ef8cd8d76af997"
+      },
+      {
+        "id": "wedding",
+        "bodyChars": 2354,
+        "firstBodyFaqChars": 2607,
+        "bodySha256": "b4653464e051480283747e68ce79305ef57df226e234cb606d4db4ece0067617"
+      }
+    ],
+    "judgment": "After removing duplication, bodies are 2,489 and 2,354 characters; first answer, body and FAQ together are 2,728 and 2,607. The approximately 2,500–3,000 drafting target is not a mechanical minimum. All necessary verified answers remain, so no padding or new unsupported facts are needed."
+  },
+  "evidence": {
+    "independentVerificationPath": "reviewer-copy-verification.rev2.json",
+    "independentVerificationSha256": "313198af1542f5170a7d30275ece483d7c0949002ca8afdc63ba894e36f13223",
+    "manifestFileChecksMatched": 6,
+    "skuChecksMatched": 8,
+    "fixedPlanUnchanged": true,
+    "candidateIdsAnchorsProductsUnchanged": true,
+    "firstAnswersFaqSourceNotesUnchanged": true,
+    "approvedBannerDataUnchanged": true,
+    "importantOrderMaterialRefundSectionsUnchanged": true,
+    "authorSelfCheckNotUsedAsCompletionProof": true
+  },
+  "finalSourceComparators": [
+    {
+      "region": "gangseo",
+      "commit": "f7f2b9d017b8b8352aae8b0339b5a2cac0da1d32",
+      "pagesSha256": "3455e419c2e2d03d42c5536180bab2ad04b56f6d97af8b081175a73617a9a052",
+      "gitBlobSha": "1ba7f6e41df1b84cdfdddac82c6428c9bf1c9867",
+      "reviewerReadbackFile": "reviewer-gangseo-final-readback.json",
+      "reviewerReadbackSha256": "5695dad575d63963bf32b923d62bd1e886abf6ade0dabdfa0a37facbf294cf2b",
+      "scope": "Independently fetched exact final GitHub bytes; local equality and recomputed blob hash match. Four bodies/FAQs were read."
+    },
+    {
+      "region": "guro",
+      "commit": "500d82d01c1cdaed3ebde047bb3ce056705daac1",
+      "pagesSha256": "1d186a5e46d42a1185180d79a97065b7d08a8a8c3d90cada6a0cc2d64ffce1f6",
+      "scope": "Three final bodies/FAQs and final refund diffs read. Exact GitHub/source verification preserved in reviewer PLAN evidence."
+    },
+    {
+      "region": "geumcheon",
+      "commit": "bbb016305dd2fe29f7d985a669acaa02224a9f2f",
+      "pagesSha256": "17fc450a84e3d354008bc57c8f170c32cb1ca8c47f1a95cb25bc5d6b610ba780",
+      "scope": "Final full body/FAQ read, matching reviewed rev3. Exact GitHub/source verification preserved in reviewer PLAN evidence."
+    }
+  ],
+  "scopeControls": {
+    "frozenArticleN": 2,
+    "activeFacilityAnchors": 8,
+    "evaluatedCandidates": 19,
+    "heldCandidates": 11,
+    "observedLabelsSeparate": 46,
+    "membership": "34 legal dongs / 18 administrative dongs / 45 relations, unchanged",
+    "newFacilityUrls": false,
+    "newServiceClaims": false,
+    "newCustomerSourceWrittenByReviewer": false,
+    "remoteMutation": false
+  },
+  "futureAcceptanceGates": [
+    "Any further customer wording change invalidates this exact COPY PASS and needs a new digest-bound review.",
+    "Bind these exact approved strings to the eventual source commit; do not substitute a related region’s generic prose.",
+    "Review any additional inherited UI text that becomes visible during implementation, especially legal/administrative directory helper wording, before declaring whole-site copy approved.",
+    "Verify four actual SKU cards per article, anchor IDs and destinations, exact product links and phone CTA, visible FAQ and sources, one H1 and one approved source H2 in real rendered HTML.",
+    "Verify the approved banner bytes/order/alt/AI caption, two-card directory noindex/no-banner eligibility, canonical/robots/sitemap/internal links/404 and actual screen QA status.",
+    "Publication requires separate authority and evidence. Verify source, build and public URL/function results separately from search submission receipts and eventual indexing/rank."
+  ],
+  "unverified": {
+    "resultClass": "미확인",
+    "items": [
+      "Live venue operation, ceremony/room availability, outside-wreath permission and actual order fulfilment",
+      "Source implementation/new source commit",
+      "Build/tests",
+      "Rendered HTML/anchor/CTA/FAQ behaviour",
+      "Browser and screen QA",
+      "Public HTTP and deployment",
+      "IndexNow/GSC, indexing, impressions, clicks or ranking"
+    ]
+  },
+  "actionsTaken": [
+    "Full revised copy and common wording read",
+    "Original evidence and final regional source comparison",
+    "Independent manifest, plan, SKU, count and unchanged-scope checks",
+    "Local reviewer JSON written"
+  ],
+  "sourceImplementationAllowedByThisReview": false,
+  "publicationAllowedByThisReview": false
+}

@@ -1,0 +1,44 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> qa
+> python3 scripts/qa_static.py && python3 scripts/test_output_bindings.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_links.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py && python3 scripts/qa_yeongdeungpo.py && python3 scripts/test_yeongdeungpo.py
+
+STATIC QA PASSED: 2 details, 4 HTML routes; indexable=False; exact metadata/sitemap/snapshot/link parity
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.046s
+
+OK
+STATIC QA PASSED: 2 details, 4 HTML routes; indexable=False; exact metadata/sitemap/snapshot/link parity
+GRAPH QA PASSED { pages: 2, hubs: 1 }
+FAQ / PRODUCT QA: 2 details, 2 visible FAQs, 18 exact product links
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.061s
+
+OK
+FAQ / PRODUCT QA: 2 details, 2 visible FAQs, 18 exact product links
+FAQ / PRODUCT QA: 2 details, 2 visible FAQs, 18 exact product links
+SHARED BANNER QA: 4 customer pages, 9 banners; headings, alt, exact assets and links checked
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.102s
+
+OK
+SHARED BANNER QA: 4 customer pages, 9 banners; headings, alt, exact assets and links checked
+SHARED BANNER QA: 5 customer pages, 9 banners; headings, alt, exact assets and links checked
+DIRECTORY QA: 18 administrative entries; 0 exact destination links; grouped=True; all named destination anchors checked
+DIRECTORY SPACING QA: {"cards": 2, "districts": 1, "eligible": false, "bannerKinds": [], "visibleCardsBetweenBanners": [], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.080s
+
+OK
+DIRECTORY SPACING QA: {"cards": 2, "districts": 1, "eligible": false, "bannerKinds": [], "visibleCardsBetweenBanners": [], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
+YEONGDEUNGPO STATIC QA: {"scope": "Static HTML only; screen/public HTTP/search unverified", "htmlFiles": 5, "details": [{"url": "/regions/yeongdeungpo-funeral-wreath/", "anchors": 5, "productCards": 4, "faq": 1, "sourceSectionH2": 1, "approvedCopyPreserved": true}, {"url": "/regions/yeongdeungpo-wedding-wreath/", "anchors": 3, "productCards": 4, "faq": 1, "sourceSectionH2": 1, "approvedCopyPreserved": true}], "uniqueSku": 8, "legalEntries": 34, "adminEntries": 18, "officialRelations": 45, "legalFacilityLinks": 8, "administrativeFacilityLinks": 0, "directoryCards": 2, "directoryBanners": 0, "directoryIndexable": false, "productionApproved": false}
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 0.131s
+
+OK
+YEONGDEUNGPO STATIC QA: {"scope": "Static HTML only; screen/public HTTP/search unverified", "htmlFiles": 5, "details": [{"url": "/regions/yeongdeungpo-funeral-wreath/", "anchors": 5, "productCards": 4, "faq": 1, "sourceSectionH2": 1, "approvedCopyPreserved": true}, {"url": "/regions/yeongdeungpo-wedding-wreath/", "anchors": 3, "productCards": 4, "faq": 1, "sourceSectionH2": 1, "approvedCopyPreserved": true}], "uniqueSku": 8, "legalEntries": 34, "adminEntries": 18, "officialRelations": 45, "legalFacilityLinks": 8, "administrativeFacilityLinks": 0, "directoryCards": 2, "directoryBanners": 0, "directoryIndexable": false, "productionApproved": false}

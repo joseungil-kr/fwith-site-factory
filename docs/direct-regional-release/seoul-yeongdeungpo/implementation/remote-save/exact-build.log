@@ -1,0 +1,77 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> build
+> node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && python3 scripts/test_output_bindings.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_links.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py && python3 scripts/qa_yeongdeungpo.py && python3 scripts/test_yeongdeungpo.py
+
+10:37:38 [vite] Re-optimizing dependencies because vite config has changed
+10:37:38 [types] Generated 92ms
+10:37:38 [check] Getting diagnostics for Astro files in /workspace/shared/yeongdeungpo-exact-saved/site-factory/seoul-yeongdeungpo-flower...
+Result (53 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+10:37:41 [types] Generated 41ms
+10:37:41 [build] output: "static"
+10:37:41 [build] mode: "static"
+10:37:41 [build] directory: /workspace/shared/yeongdeungpo-exact-saved/site-factory/seoul-yeongdeungpo-flower/dist/
+10:37:41 [build] Collecting build info...
+10:37:41 [build] ✓ Completed in 74ms.
+10:37:41 [build] Building static entrypoints...
+10:37:42 [vite] ✓ built in 214ms
+10:37:42 [vite] ✓ built in 22ms
+10:37:42 [build] Rearranging server assets...
+
+ generating static routes 
+10:37:42   ├─ /404.html (+11ms) 
+10:37:42   ├─ /robots.txt (+2ms) 
+10:37:42   ├─ /regions/yeongdeungpo-funeral-wreath/index.html (+5ms) 
+10:37:42   ├─ /regions/yeongdeungpo-wedding-wreath/index.html (+3ms) 
+10:37:42   ├─ /regions/index.html (+4ms) 
+10:37:42   ├─ /index.html (+3ms) 
+10:37:42 ✓ Completed in 53ms.
+
+10:37:42 [build] ✓ Completed in 322ms.
+10:37:42 [WARN] [@astrojs/sitemap] No pages found!
+`sitemap-index.xml` not created.
+10:37:42 [build] 5 page(s) built in 400ms
+10:37:42 [build] Complete!
+STATIC QA PASSED: 2 details, 4 HTML routes; indexable=False; exact metadata/sitemap/snapshot/link parity
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.086s
+
+OK
+STATIC QA PASSED: 2 details, 4 HTML routes; indexable=False; exact metadata/sitemap/snapshot/link parity
+GRAPH QA PASSED { pages: 2, hubs: 1 }
+FAQ / PRODUCT QA: 2 details, 2 visible FAQs, 18 exact product links
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.059s
+
+OK
+FAQ / PRODUCT QA: 2 details, 2 visible FAQs, 18 exact product links
+FAQ / PRODUCT QA: 2 details, 2 visible FAQs, 18 exact product links
+SHARED BANNER QA: 4 customer pages, 9 banners; headings, alt, exact assets and links checked
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.111s
+
+OK
+SHARED BANNER QA: 4 customer pages, 9 banners; headings, alt, exact assets and links checked
+SHARED BANNER QA: 5 customer pages, 9 banners; headings, alt, exact assets and links checked
+DIRECTORY QA: 18 administrative entries; 0 exact destination links; grouped=True; all named destination anchors checked
+DIRECTORY SPACING QA: {"cards": 2, "districts": 1, "eligible": false, "bannerKinds": [], "visibleCardsBetweenBanners": [], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.073s
+
+OK
+DIRECTORY SPACING QA: {"cards": 2, "districts": 1, "eligible": false, "bannerKinds": [], "visibleCardsBetweenBanners": [], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
+YEONGDEUNGPO STATIC QA: {"scope": "Static HTML only; screen/public HTTP/search unverified", "htmlFiles": 5, "details": [{"url": "/regions/yeongdeungpo-funeral-wreath/", "anchors": 5, "productCards": 4, "faq": 1, "sourceSectionH2": 1, "approvedCopyPreserved": true}, {"url": "/regions/yeongdeungpo-wedding-wreath/", "anchors": 3, "productCards": 4, "faq": 1, "sourceSectionH2": 1, "approvedCopyPreserved": true}], "uniqueSku": 8, "legalEntries": 34, "adminEntries": 18, "officialRelations": 45, "legalFacilityLinks": 8, "administrativeFacilityLinks": 0, "directoryCards": 2, "directoryBanners": 0, "directoryIndexable": false, "productionApproved": false}
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 0.142s
+
+OK
+YEONGDEUNGPO STATIC QA: {"scope": "Static HTML only; screen/public HTTP/search unverified", "htmlFiles": 5, "details": [{"url": "/regions/yeongdeungpo-funeral-wreath/", "anchors": 5, "productCards": 4, "faq": 1, "sourceSectionH2": 1, "approvedCopyPreserved": true}, {"url": "/regions/yeongdeungpo-wedding-wreath/", "anchors": 3, "productCards": 4, "faq": 1, "sourceSectionH2": 1, "approvedCopyPreserved": true}], "uniqueSku": 8, "legalEntries": 34, "adminEntries": 18, "officialRelations": 45, "legalFacilityLinks": 8, "administrativeFacilityLinks": 0, "directoryCards": 2, "directoryBanners": 0, "directoryIndexable": false, "productionApproved": false}

@@ -1,0 +1,252 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "independent_PLAN_review",
+  "revision": 1,
+  "reviewer": "/root/review_yeongdeungpo_regional_plan",
+  "author": "/root/prepare_yeongdeungpo_regional_plan",
+  "reviewedAt": "2026-10-12T22:50:48.670117+00:00",
+  "verdict": "REVISE",
+  "freezeAllowed": false,
+  "copyAllowedByThisReview": false,
+  "publicationAllowed": false,
+  "immutableInputBinding": {
+    "candidatePlanSha256": "6c283416ce2bd13c148f06991d0e5a90b268ac86f80411600e2fd03ef769e2df",
+    "reviewInputManifestSha256": "450d5b7d52a7abf3e8aa067dbeda95a6a1b7e6b1770d0646fb67f61692167ded",
+    "mainBaseRevision": "b68fa7801b080da5a65fbaeceeba3aa9a81ac365",
+    "bindingRule": "Only the exact bytes identified here were reviewed. A revised candidate and manifest need fresh independent review; this verdict does not bind a future frozen plan."
+  },
+  "summary": "N2 grouping, eight active original-source destinations, products and geographic mapping are supportable at PLAN stage. Reconcile all observed local leads, remove stale four-wedding-venue wording, and bind substantive comparison to final source versions before freeze. No increase in article quota or deep investigation of every unassessed lead is required.",
+  "requiredFixes": [
+    {
+      "id": "R1",
+      "severity": "major-provenance",
+      "target": [
+        "candidate-inventory.json",
+        "search/search-intent-research.json",
+        "candidate-plan.json",
+        "review-input-manifest.json"
+      ],
+      "finding": "Observed local facility leads from inspected competitor originals are only selectively retained. The central competitor analysed is The Convention Yeongdeungpo, yet it is absent even from unmatchedSearchLeads. competitor-area.txt contains 37 named wedding-labelled leads while the inventory retains a small subset without a source-to-disposition reconciliation. A bounded research pass need not activate or investigate them all, but cannot silently lose observed leads.",
+      "evidence": [
+        {
+          "path": "search/raw/competitor-area.txt",
+          "sha256": "52da327167a446ba68243e8f150d215490892c0cfc7a42ed106ba6464fa2007c",
+          "location": "시설별 화환 배송 안내 > 예식장 37 block before 보내는 자리에 맞게",
+          "observedRawNames": [
+            "그랜드컨벤션센터",
+            "JK아트컨벤션",
+            "더컨벤션 영등포점",
+            "웨스턴베니비스 영등포",
+            "웨딩그룹위더스 영등포",
+            "규수당 문래점",
+            "여의도웨딩컨벤션",
+            "더파티움 여의도",
+            "더베르G",
+            "베뉴비안",
+            "웨딩여율리",
+            "공군호텔 웨딩홀",
+            "FKI전경련플라자 웨딩홀",
+            "루나미엘레",
+            "페어몬트앰배서더서울웨딩",
+            "한전웨딩여의프라자",
+            "연변웨딩홀",
+            "국회 예식장",
+            "가든웨딩홀",
+            "마리나컨벤션센터",
+            "서울씨티클럽",
+            "63컨벤션센터",
+            "한결웨딩뷔페",
+            "켄싱턴호텔 여의도 웨딩",
+            "장백산웨딩홀",
+            "중앙보훈회관 예식부",
+            "공군회관",
+            "코트야드 메리어트 서울 타임스퀘어",
+            "파라클레토스웨딩",
+            "KBS 신관 웨딩홀",
+            "병무회관",
+            "샤이닝스톤",
+            "영등포아트홀",
+            "해군호텔 W웨딩홀",
+            "대방동성당",
+            "도림동성당",
+            "영산아트홀"
+          ]
+        },
+        {
+          "path": "search/raw/competitor-originals-2.json",
+          "sha256": "a2d4eedccbebec77d3380fb317da9c08b2a379690024dd874e83d656cb209095",
+          "location": "Nunaflower original L22, L40–54, L128–137"
+        },
+        {
+          "path": "search/raw/competitor-partyum.txt",
+          "sha256": "24760db8b66ac7bf84f484e71f80b25cd21d2cba415e05b05a345768b65b87b0",
+          "location": "Nearby and other Yeongdeungpo wedding venue lists"
+        }
+      ],
+      "requiredChange": "Add a source-bound observed-lead reconciliation with raw label, source URL/file, known candidate match or unresolved alias, official-verification status and held/unassessed/excluded reason. Keep the original19 evaluated candidates and their history traceable, or explicitly log an inventory denominator revision. Do not count these vendor labels as verified operating facilities, geographic members, outside-wreath acceptance or new article quotas. Preserve questionable duplicates/types as unresolved rather than guessing."
+    },
+    {
+      "id": "R2",
+      "severity": "medium-consistency",
+      "target": [
+        "search/search-intent-research.json",
+        "candidate-plan.json",
+        "review-input-manifest.json"
+      ],
+      "finding": "The bound search research still says Four planned venue anchors and JK/Partyum/Grand/Withus merge although the candidate has only JK/Partyum/Withus active and Dangsan Grand held.",
+      "requiredChange": "Reconcile the research recommendation to three active wedding anchors plus the held Dangsan lead, retain the decision history, regenerate all affected input hashes and candidate/manifest bindings. N2 may remain unchanged."
+    },
+    {
+      "id": "R3",
+      "severity": "medium-version-binding",
+      "target": [
+        "search/search-intent-research.json priorFullBodyReadback",
+        "candidate-plan.json inputs",
+        "review-input-manifest.json"
+      ],
+      "finding": "Guro full-body comparison uses guro-copy.rev1.json in main instead of the final pages.json at source500d82d. The final source revises the change/refund paragraph in each of three articles. Geumcheon rev3 matches the final source body.",
+      "requiredChange": "Bind the final Guro500d82d and Geumcheonbbb0163 full-body source files/digests in the comparison, or add the exact final-source delta review alongside the historical revision. The reviewer independently read these differences; they do not overturn N2 grouping but must not be omitted from final-source evidence.",
+      "evidence": [
+        {
+          "path": "review-guro-source-readback.json",
+          "sha256": "26e47aef142a39de745ebd3afba83f6900f3d43ecff0a0f529738d53381ec3f7",
+          "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/500d82d01c1cdaed3ebde047bb3ce056705daac1/site-factory/seoul-guro-flower/src/data/pages.json",
+          "fileSha256": "1d186a5e46d42a1185180d79a97065b7d08a8a8c3d90cada6a0cc2d64ffce1f6",
+          "computedAndReturnedGitBlobSha": "b344a247b3ae00708199fa469dadc5293f6e541c"
+        },
+        {
+          "path": "review-geumcheon-source-readback.json",
+          "sha256": "b78916d0b9b0ac480c12bd35613b26011c011841610ba93d3917720a87d02daa",
+          "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/bbb016305dd2fe29f7d985a669acaa02224a9f2f/site-factory/seoul-geumcheon-flower/src/data/pages.json",
+          "fileSha256": "17fc450a84e3d354008bc57c8f170c32cb1ca8c47f1a95cb25bc5d6b610ba780",
+          "computedAndReturnedGitBlobSha": "c946d6edd689644bb3a067e470002db3b8e84a98"
+        }
+      ]
+    }
+  ],
+  "directlyVerified": [
+    {
+      "topic": "input_integrity",
+      "resultClass": "직접 확인",
+      "finding": "96 independent file-hash checks matched bound and transitive originals; eight active IDs appear once across two proposed articles; source IDs and URL fragments resolve;6represented+28unrepresented exactly preserve34legal units. Arithmetic consistency does not establish lead completeness.",
+      "evidence": {
+        "path": "review-integrity-verification.json",
+        "sha256": "234202251054709534e358211b85792b927b20e2a64d5484adaaeadb188d194e"
+      }
+    },
+    {
+      "topic": "MOIS",
+      "resultClass": "직접 확인",
+      "finding": "Read official notice/list snapshots and reparsed CP949 fixed-width ZIP originals, independently reproducing34legal/18administrative/45relations exactly, including source line numbers. Source effective2026-10-12 differs from older national baseline. Legal-dong multimap cannot assign a multi-mapped venue to a precise administrative dong.",
+      "sourceUrl": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+      "archiveSha256": "3702ee001f131968983fbba1e08c6bffc89f6ee4377de327e5eff6946b1098d7"
+    },
+    {
+      "topic": "MOHW",
+      "resultClass": "직접 확인",
+      "finding": "Opened catalog snapshot and parsed raw CSV:1080data rows; exact Seoul/Yeongdeungpo rows45–52 contain all8funeral inventory entries. Data as-of2026-04-01, catalog registered/modified2026-04-09. October read is not October live operation evidence.",
+      "rawSha256": "fcf4911ed271cfbc364d2005c3ad02a5e821d3946fdf80b5119e36dfaadccd4b",
+      "sourceUrl": "https://www.data.go.kr/data/15143467/fileData.do"
+    },
+    {
+      "topic": "five_funeral_destinations",
+      "resultClass": "직접 확인",
+      "finding": "Read actual hospital/operator source text snapshots. Han River funeral-specific address is 국회대로56길18 제5별관 지하1층; footer hospital address is 버드나루로7길12. Kangnam hospital footer says 신길로1(대림1동); MOHW binds legal대림동. Yeouido St Mary links its official funeral operator at63로10. Kyowon Seoseoul original branch gives선유로101(양평동1가); Shinhwa footer gives영중로100(영등포동7가). Private obituary names and current room occupants are not accepted copy facts."
+    },
+    {
+      "topic": "wedding_freshness_gate",
+      "resultClass": "직접 확인",
+      "decision": "ACCEPT_STATIC_IDENTITY_ONLY",
+      "finding": "Independently reopened JK and Withus official-domain original text through web reader. JK confirms문래로164,문래동3가55-16,SK리더스뷰4층 and named hall navigation. Withus confirms영중로55,영등포동6가7 and6F–10F labels. Crawled last month/2weeks ago; direct HTTP502 remains an access/freshness limit. Labels are acceptable planning facts, not verified live operation, event inventory, external-wreath permission or delivery receiving locations. Read Partyum location and both hall originals:은행로30중소기업중앙회,GrandConvention/Partyum; no unsupported floors.",
+      "evidence": {
+        "path": "review-official-web-readback.json",
+        "sha256": "e99f327449d0bc8e9d219cc86ebf95e2330a7b5711a3aca06ecbd6886e8327cf"
+      }
+    },
+    {
+      "topic": "Art_Hall",
+      "resultClass": "직접 확인",
+      "finding": "Read current register.pdf text and actual rendered pages7–8; appendix says effective2026-07-13. Art19 has spectator cloakroom wording. Art23(4) bans wreaths within performance hall and assigns all entrance-display handling cost to renter; Art23(5) assigns delayed-removal expense. This is neither a whole-building flower ban nor blanket retailer drop-off permission. Holding sales article is appropriate; fwith no-collection remains explicit.",
+      "pdfSha256": "4c75f5878f1e33395d186fbe0f3cfc6fe434df768e02bc88084d6428a3656467",
+      "sourceUrl": "https://www.ydpcf.or.kr/data/register.pdf"
+    },
+    {
+      "topic": "product_policy",
+      "resultClass": "직접 확인",
+      "finding": "Read eight exact SKU HTML/text originals, verified SKU/name/price and policy-image references, visually inspected all eight first product photos and two policy images. Funeral59k/79k/109k/149k;wedding59k/79k/99k/149k. Photo composition is not specification/quality proof. Official policy states mixed fresh/artificial materials, variable backing, no collection, address-dependent charges and refund caveats including defect/damage/wrong-item exceptions. Product creation and post-shipment clauses are not a universal cancellation cutoff. Phone1844-0644 appears; inherited hours/nationwide claims are not newly verified.",
+      "evidenceFile": "catalog-reuse/business-policy-facts.json"
+    },
+    {
+      "topic": "actual_search_and_competitors",
+      "resultClass": "직접 확인",
+      "finding": "Read actual query response records and original competitor bodies, including Flora funeral, Nunaflower wedding, TheHwawhanPartyum/area, Yedo opening and office-move body. They answer product tiers, dates/recipients/ribbons and service claims; these are competitor statements, not fwith promises. Search tool ordering is not Google/Naver rank/volume evidence. Official Google helpful/spam and Naver duplicate/link guidance were inspected in original readbacks."
+    },
+    {
+      "topic": "prior_full_bodies",
+      "resultClass": "직접 확인",
+      "finding": "Read Gangseo four body/FAQ sets; Guro three body/FAQ sets plus final-source refund diffs; Geumcheon rev3 full body/FAQ and final-source equality. Independently fetched Guro500d82d and Geumcheonbbb0163 pages.json and recomputed their Git blob IDs; returned bytes equal exact local files. They already answer shared product/budget/ribbon/order/refund/no-collection questions. New local value is limited to actual different destinations and specific original building/hall mapping; prose rewrite alone never suffices."
+    },
+    {
+      "topic": "runtime_and_banner_contract",
+      "resultClass": "직접 확인",
+      "finding": "Read actual regional category source: noindex when items.length<3, showBanners only>=3. Midpoint helper can split2 but does not set eligibility. Preserve N2directory noindex/no3sharedbanners and count2actual cards, not8anchors/34dongs. Home/article use approved same3banners only under later authorized implementation. Read official Astro/Next starter licenses/packages and owner runtime files; owner grouped Astro reuse is supportable, no new framework/import needed."
+    }
+  ],
+  "judgments": [
+    {
+      "resultClass": "추정·판단",
+      "topic": "N2",
+      "finding": "One funeral and one wedding purchase guide is supportable; no quota expansion and no same-intent 영등포/여의도 or facility URL duplicates. Five funeral anchors provide concrete destination resolution, especially hospital/annex difference; three wedding anchors cover original building/hall identity. Office and performance holds are justified. This is planning sufficiency, not copy/indexing/ranking approval."
+    },
+    {
+      "resultClass": "추정·판단",
+      "topic": "copy_gate",
+      "finding": "Rich2500–3000character target excludes sharedUI; it is not ranking formula or mandatory minimum. Select useful facts briefly, write seller-led empathy and occasional natural smalltalk without invented feelings/experience, and consolidate ordering information. A long shared policy essay or rewritten emotional template cannot stand in for local value. Final full-body tone, substantive duplication, FAQ visibility and SKU CTA review remain mandatory."
+    }
+  ],
+  "copyStageGuardrails": [
+    "JK/Withus source notes must not present the review date as proof of current operation or flower acceptance. Use only static operator-labelled facts, preserve freshness provenance.",
+    "Do not turn held Dangsan Grand original-source failure into a confident comparative facility/operation FAQ. Drop that candidate FAQ or keep the answer limited to independently verified Partyum identity until comparator primary evidence exists.",
+    "Do not import08:00–23:00/24-hour/nationwide operational statements as fresh web-confirmed facts; use their operator-confirmed provenance only if the root has valid authority/evidence.",
+    "Do not add all observed competitor leads to customer-facing pages. The reconciliation is evidence preservation, not a sales directory or activation list.",
+    "No collection, free/guaranteed/on-time/same-day delivery, installation, stock, affiliation, actual delivery photos, product superiority or invented experience.",
+    "A final rendered-content review must independently assess text and shared visible UI; no copy exists yet and no such PASS is granted."
+  ],
+  "toolReportsNotPromoted": [
+    {
+      "resultClass": "도구 보고",
+      "finding": "Author recent Actions/source-branch zero results, issue/PR collision checks and46recorded releases were not independently rerun here. They remain bounded reports, not whole-account/public production audit."
+    },
+    {
+      "resultClass": "도구 보고",
+      "finding": "Raw HTTP status/time for saved source captures is the author capture tool report; reviewer directly inspected saved original bytes and matched hashes, plus independently reopened JK/Withus and currentPDF via web reader. No site visit/call or fulfilled flower order occurred."
+    }
+  ],
+  "unverified": [
+    {
+      "resultClass": "미확인",
+      "finding": "Actual live operation/room inventory/ceremony and outside-wreath permission; all actual delivery/price/time commitments."
+    },
+    {
+      "resultClass": "미확인",
+      "finding": "No new copy/runtime/source branch/build/test/deploy/publicHTTP/browser/IndexNow/GSC execution. PLAN review does not verify future artifacts or public indexing."
+    },
+    {
+      "resultClass": "미확인",
+      "finding": "Provider hostname/Worker collision and full historic release audit remain future-publication gates."
+    }
+  ],
+  "actionsTaken": [
+    "Read-only source/evidence inspection",
+    "Independent hash and mapping reparse",
+    "Read-only GitHub exact-file readbacks",
+    "Reviewer evidence JSON created under local evidence directory"
+  ],
+  "actionsNotTaken": [
+    "No plan freeze",
+    "No customer copy authored",
+    "No source/Git mutation",
+    "No remote state change",
+    "No publication"
+  ]
+}
