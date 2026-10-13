@@ -1,0 +1,6 @@
+---
+import {site} from '../config/site';
+const {products=[],noticeMode="full"}=Astro.props;
+---
+<div class="product-grid">{products.map((p:any)=><article class="product-card" data-product-family={p.family} data-product-key={p.key}><img src={p.img} alt={p.name} loading="lazy" width="420" height="420"/><div><h3>{p.name}</h3><strong>기본가격 {p.price.toLocaleString()}원</strong><p>{p.desc}</p><a href={p.orderUrl} data-order-product-key={p.key}>상품 확인·주문 →</a></div></article>)}</div>
+{noticeMode==='body-covered' ? <p class="product-notice">사진은 꽃이랑 공식 상품 예시입니다.</p> : <p class="product-notice">사진은 공식 상품 예시입니다. 리본 문구는 전하고 싶은 뜻에 맞춰 상담해 드립니다. {site.productVariationNotice} {site.deliveryNotice}</p>}

@@ -1,0 +1,16 @@
+관악 공유 접근성 레이블 추가 검수
+
+[추정·판단] LOCAL INTERFACE COPY ADDENDUM PASS. ‘본문 바로가기’, ‘주요 메뉴’, ‘현재 위치’ 세 문자열은 용도가 명확하고 자연스러운 한국어이다. 판정 범위는 이 세 문자열과 기존 템플릿에서의 사용 맥락뿐이다. 본문·상품·정책·지역별 제목의 기존 COPY 판정을 변경하지 않는다.
+
+[직접 확인] interface-copy-addendum.json 전문과 영등포의 yeongdeungpo-ui-copy.json, BaseLayout.astro, 상세 페이지 [category]/[slug].astro를 열어 읽었다. 세 문자열은 원본 accessibility 객체와 정확히 같고, 원본에서는 각각 #main-content로 가는 건너뛰기 링크, 주 내비게이션의 aria-label, 경로 내비게이션의 aria-label로 쓰인다. 레이블 자체에 영등포 지역이나 사업 조건이 들어 있지 않아 관악에서 같은 용도로 재사용하기에 적절하다.
+
+[직접 확인] 별도 검사 11개 통과, 실패 0. 저자가 제시한 영등포 15파일의 로컬 byte 길이·SHA-256·Git blob을 다시 계산해 제공된 readback과 모두 일치함을 확인했다. 15파일 모두의 동작을 검수한 것이 아니며, 의미·문체와 사용 맥락을 실제 읽은 원본은 위 3파일이다. 관악 article rev4, common rev3, 기존 COPY verdict와 review-manifest가 모두 기존 지문 그대로이다.
+
+[도구 보고] ca5c98b12420212d0aa8dd0c9a742f3e94237c07 원격 tree에 15개 blob이 결속된다는 점은 작성자의 yeongdeungpo-template-readback.json 보고를 인용했다. 이번 작은 추가 검수에서 원격 commit/tree를 다시 요청하지 않았다. 로컬 원본 내용과 지문 일치는 별도로 직접 확인했다.
+
+[미확인] 관악의 실제 DOM 연결, 키보드 포커스, 건너뛰기 이동, 스크린리더 낭독 및 접근성 적합성 전반은 확인하지 않았다. 세 레이블의 COPY PASS가 사이트 접근성 테스트나 템플릿 전체 기술 PASS를 뜻하지 않는다. 원본 UI 파일의 pending 상태를 승인으로 간주하지 않고 이 별도 판정으로 세 문자열만 승인한다.
+
+승인 대상
+/workspace/shared/gwanak-plan-copy-20261013/handoff/interface-copy-addendum.json
+SHA-256 b1f0d37532998454a6098f8118b5f9b4d8b7069f6d089580756eb7569449fcca
+기존 COPY verdict는 변경하지 않았으며 이 추가 판정은 별도 파일로 결속한다.

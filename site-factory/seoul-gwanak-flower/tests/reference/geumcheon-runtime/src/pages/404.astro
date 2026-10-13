@@ -1,0 +1,6 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import approvedCopy from '../data/geumcheon-copy.json';
+const copy=approvedCopy.common.errorPage;
+---
+<BaseLayout title={copy.title} description={copy.text} noindex={copy.noindex} canonicalPath={false} includeSchema={false}><section class="not-found"><h1>{copy.h1}</h1><p>{copy.text}</p><a class="btn primary" href={copy.linkHref}>{copy.linkLabel}</a></section></BaseLayout>

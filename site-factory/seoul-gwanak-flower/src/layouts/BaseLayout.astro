@@ -1,0 +1,40 @@
+---
+import '../styles/global.css';
+import {site} from '../config/site';
+import approvedCopy from '../data/gwanak-copy.json';
+import ui from '../data/gwanak-ui-copy.json';
+const common=approvedCopy.common;
+const navigation=[{href:'/',label:common.navigation.home},{href:'/regions/gwanak-funeral-wreath/',label:common.navigation.funeral},{href:'/regions/gwanak-celebration-wreath/',label:common.navigation.celebration},{href:'/regions/',label:common.navigation.regions}];
+const footer=approvedCopy.common.footer;
+import buildRevision from '../data/build-revision.json';
+import products from '../data/products.json';
+import provenance from '../data/social-image-provenance.json';
+import {productSocialImage} from '../lib/social-image.mjs';
+const {title,description,canonicalPath='/',noindex=false,includeSchema=true,socialProduct=products[0],socialImageAlt}=Astro.props;
+const canonical=canonicalPath===false ? '' : new URL(canonicalPath,site.domain).toString();
+const socialImage=canonical ? productSocialImage(socialProduct,provenance,site.domain,site.brand) : null;
+if(socialImageAlt!=null&&(typeof socialImageAlt!=='string'||!socialImageAlt.trim()||/[\p{Cc}\p{Cf}]/u.test(socialImageAlt)))throw new Error('Invalid reviewed social image alt');
+const socialAlt=socialImageAlt ?? socialImage?.alt;
+const indexable=site.indexable && !noindex;
+const robots=site.indexable && canonical ? (noindex ? 'noindex,follow' : 'index,follow') : 'noindex,nofollow,noarchive';
+const revision=buildRevision.revision || 'local';
+---
+<!doctype html><html lang="ko"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>{title}</title><meta name="description" content={description}/>
+<meta name="robots" content={robots}/>
+{indexable && <meta name="naver-site-verification" content={site.naverVerification}/>}
+<meta name="site-factory-revision" content={revision}/>{canonical && <link rel="canonical" href={canonical}/>}
+{canonical && <><meta property="og:type" content="website"/><meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:url" content={canonical}/><meta property="og:locale" content="ko_KR"/></>}
+{socialImage && <><meta property="og:image" content={socialImage.url}/><meta property="og:image:secure_url" content={socialImage.url}/><meta property="og:image:alt" content={socialAlt}/><meta property="og:image:type" content={socialImage.type}/><meta property="og:image:width" content={socialImage.width}/><meta property="og:image:height" content={socialImage.height}/><meta name="twitter:image" content={socialImage.url}/><meta name="twitter:image:alt" content={socialAlt}/></>}
+{canonical && <><meta name="twitter:card" content="summary"/><meta name="twitter:title" content={title}/><meta name="twitter:description" content={description}/></>}
+<meta name="theme-color" content="#3a214f"/>
+{includeSchema && <script type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@type':'Florist',name:site.brand,url:site.domain,telephone:site.phone,areaServed:site.region}).replace(/</g, String.fromCharCode(92) + 'u003c')}></script>}
+</head><body>
+<a class="skip-link" href="#main-content">{ui.accessibility.skip}</a>
+<header class="site-header"><div class="header-inner"><a class="brand" href="/"><span class="brand-icon" aria-hidden="true">✿</span><span><b>{common.brand}</b></span></a>
+<nav aria-label={ui.accessibility.navigation}>{navigation.map(link=><a href={link.href}>{link.label}</a>)}</nav><a class="phone" href={footer.phoneHref}>{common.navigation.phone}</a></div></header>
+<main id="main-content"><slot/></main>
+<footer><div><strong>{footer.brandLine}</strong><a href={footer.phoneHref}>{footer.phoneLabel}</a><a href={footer.shopHref}>{footer.shopLabel}</a><a href="/">{footer.homeLinkLabel}</a></div></footer>
+<div class="mobile-bar"><a href={footer.phoneHref}>{common.navigation.phone}</a><a href="/regions/">{common.navigation.regions}</a></div>
+</body></html>

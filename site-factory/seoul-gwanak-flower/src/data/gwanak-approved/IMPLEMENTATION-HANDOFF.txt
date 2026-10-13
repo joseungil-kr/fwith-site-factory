@@ -1,0 +1,76 @@
+관악 LOCAL 공식계획·승인 고객원고 통합 인계
+
+1. 현재 결과와 범위
+[직접 확인] 관악 code11620, 전국 순서21. 첫 동결 N=2는 근조와 축하의 두 구매 상세 글이다. 인벤토리15개 중 물리 시설4개·구매 상황1개가 활성이고10개는 보류다. 3법정동·21행정동·21관계는 지역정보이지 페이지 할당량이 아니다.
+[직접 확인] PLAN 동결 readback PASS, COPY 사실·문체·구매의도 각 PASS, 독립 COPY49검사 실패0. 추가 접근성 레이블3개도 별도11검사 PASS. acceptance.json과 독립 verdict의 정확한 지문에 결속한다.
+[직접 확인] 현재 통합 대상은 article-copy.rev4.json, common-visible-copy.rev3.json, interface-copy-addendum.json이다. 제목·메타·첫답변·고유본문·FAQ·8상품 설명·버튼·가격·주의문구·배너alt·푸터·404를 포함한다. 본문은2499/2583자이며 길이는 품질합격선이 아니다. 부모 교정과 독립 검수의 출처 추가를 반영했고 모든 이전판을 보존했다.
+이 인계는 지역명 치환용 예문이 아니다. 원고를 정확히 통합하고, 동작·영등포·타 지역의 고객본문을 가져오지 않는다. 관악을 미착수로 보고 다시 조사/기획/집필하는 중복 착수를 하지 않는다.
+
+2. 가장 먼저 열 입력
+- acceptance.json: PLAN·COPY·추가 레이블 판정과 원본 지문
+- inputs/plan/fixed-plan.json, candidate-inventory.json, membership.json, location-reconciliation.json
+- inputs/copy/article-copy.rev4.json, article-copy.rev4.txt, common-visible-copy.rev3.json
+- approved-visible-surface.json: 현재 PASS 고객값의 그대로인 투영. 내부 지침·출처 metadata는 출력값에서 제외
+- interface-copy-addendum.json: 별도 PASS 접근성 레이블3개
+- approved-assets.json과 inputs/assets/: 승인 상품사진8개·공통배너3개 원본 bytes
+- runtime-input-bindings.json: 두 URL·의도·SKU·섹션 순서·시설앵커·행정관계·thin목록 조건. 런타임 스키마를 이미 구현했다는 뜻은 아니다.
+- template-reuse-decision.json 및 두 source-tree/readback: 재사용 원본과 실제 비교 범위
+- inputs/reviews/: 고정계획 및 COPY 판정 사본. 전체49검사·전문·기존 조사 검수는 acceptance 참조
+원본 조사 rev2와 검색보완은 /workspace/shared/gwanak-research-20261013, /workspace/shared/gwanak-search-addendum-20261013에 그대로 있다. 이 인계의 원문 근거를 더 열 때 사용한다. 다른 실행환경에서는 /workspace/shared 경로가 자동 전달되지 않으므로 입력파일과 원본 근거를 소비자 환경으로 옮기고 지문을 다시 대조해야 한다.
+
+3. 재사용 선택: 영등포 N2를 주 기반으로
+[직접 확인] source ca5c98b12420212d0aa8dd0c9a742f3e94237c07의 site-factory/seoul-yeongdeungpo-flower/15개 파일을 실제 읽고 최신 GitHub tree 원문의 Git blob과 로컬 bytes를 대조했다.15개 모두 일치한다.
+- src/pages/[category]/[slug].astro: approvedCopy.articles.find(a=>a.slug===page.slug), 없으면 오류. 기존 다중 기사 선택을 우선 재사용한다.
+- src/pages/index.astro: 두 상품군 대표와8개 상품, 두 실제 구매 카드. 배열 위치 products[0]/[4] 가정은 관악 SKU B201/C200 또는 명시된 검증 키로 결속한다.
+- 상세 firstAnswer, MarkdownContent, 상품4개 모듈이 이미 분리되어 있어 동작의 첫 섹션=상품 가정을 가져올 필요가 없다.
+- src/components/MarkdownContent.astro와 src/lib/yeongdeungpo-heading-anchors.mjs: 제목·수준·앵커를 승인 본문과 대조하는 접근을 재사용하되 관악 입력에 결속한다.
+- src/pages/[category]/index.astro와 astro.config.mjs: N2 thin목록의 noindex·배너 비노출·사이트맵 제외를 이미 지원한다.
+[추정·판단] 이 구조가 단일 기사 동작 템플릿을 억지로 늘리는 것보다 변경 범위가 작다. 다만 영등포의8시설·34법정동·18행정동·45관계·두예식/근조 의도 같은 고정값은 관악에 맞지 않는다. 기존 grouped adapter 자체를 지역명만 바꾸어 사용하면 안 된다.
+
+4. 동작에서 선별할 수정
+[직접 확인] source430dada32f3f8b53f24aec8d9fdf3724529604e1의 같은 프로젝트 컴포넌트24개가 로컬과 blob 일치했다. 로컬 사본 CSS1개는 이전판이라 불일치했다. 해당 CSS는 별도로 GitHub 원문을 직접 읽어 H3[id] scroll-margin-top:90px 교정을 확인했고 template-global-css.response.json에 보존했다. 로컬 이전 CSS를 source430 원본이라고 사용하지 않는다.
+- H3 sticky-header 가림 방지와 실제 앵커 화면검사를 선별 재사용한다. 관악 시설은 현재 sections의H2앵커4개이며 모두정확히한번 존재해야 한다.
+- 404 canonicalPath=false, includeSchema=false, noindex, 마케팅 배너 없음과 제품/본문/출처의 정확한 렌더 검증 접근을 선별한다.
+- 동작의 단일 approvedCopy.article, N1 카드/상품 수, 첫 섹션을 productSection으로 분해하는 구조는 사용하지 않는다. 관악 첫 섹션은 condolence 또는 celebrate이고 상품은 id=products이다.
+- 최신 동작 QA 보고를 관악의 화면검사 완료로 간주하지 않는다. 관악 가격 길이·본문·카드·앵커는 새 화면에서 검증한다.
+
+5. 권장 프로젝트 경로와 필수 연결 변경
+예정 프로젝트 경로는 site-factory/seoul-gwanak-flower/, 증거 경로는 docs/direct-regional-release/seoul-gwanak/이다. 여기서는 그 프로젝트나 source/main을 만들지 않았다. 구현 작업자가 당시 원격 main·branch·checkpoint를 다시 대조하고 부모에게 배정받은 범위에서 시작한다.
+- src/data/: 검수된 plan/copy/common의 원본 bytes 사본과 별도 runtime 변환물을 구분한다. 변환 시 metaDescription→description, brand→brandName 같은 키 변경은 가능하나 문자열은 바꾸지 않는다. sourceLinks.name과 URL을 모두 그대로 연결한다. 검수 SHA를 원문과 렌더 데이터 양쪽에 결속한다.
+- src/pages/[category]/[slug].astro: slug 또는 고정 id로 두 글 중 정확히 하나를 선택한다. firstAnswer는 한 번만 출력한다. 고유 sections의 순서/문단/제목을 보존하고 products 섹션의 네 승인 카드를 알맞게 결합한다. 전체 sections와 contentMarkdown을 동시에 출력해 본문을 두 번 만들지 않는다. SKU 네 개가 글별로 섞이지 않게 한다.
+- src/pages/index.astro: 홈 승인 제목·H1·소개·짧은 상담말·두 카드·8상품·버튼을 정확히 쓴다. 공통 문구에 없는 이전 지역의 상담시간/배송약속/경고를 상속하지 않는다.
+- src/components/ProductCards.astro: common.productCards의 name/priceLabel/description/imageAlt/cta/photoCaption을 사용한다. priceLabel에는 이미 금액이 있으므로 가격을 다시 이어붙이지 않는다. 실제 이미지 원본8개를 쓰고 생성 배너로 대체하지 않는다.
+- src/components/RegionDirectory.astro: 실제 구매 카드2개를 한번씩만 표시한다. 법정동별 물리 시설목록과 일반 구매글 링크를 분리한다. 교수회관은 구단위 별도 목록이다. 남현동에 화환시설이 있는 것처럼 링크하지 않는다. 승인된 relationNote/facilityScopeNote와 기존 common 레이블을 사용한다. 편의상 새 경고/문구를 만들어 넣으면 추가 COPY 검수 대상이다.
+- src/lib/regions.mjs, regional-runtime.mjs 및 별도 관악 adapter: 기존 모드 불변·교차 사이트 opt-in 거부를 유지한다. 근조1시설, 축하3시설+개업/이전 상황을 정확히 구분하는 관악용 결속만 추가한다. 기존 region schema 검증을 무조건 끄거나 null에 임의동을 채워 통과시키지 않는다.
+- src/lib/directory-links.mjs: unitKey가 있는 물리시설만 법정동 귀속 링크로 변환한다. 교수회관의 null지리를 누락시키거나 임의 보정하지 말고 별도 구단위 링크로 유지한다. 일반 동별 구매 안내 링크는 시설 주소 증거로 취급하지 않는다.
+- src/layouts/BaseLayout.astro, src/config/site.ts, src/pages/404.astro: 관악 common의 구조에 맞게 탐색/전화/푸터를 연결한다. 404의 SEO title과 화면h1이 서로 다른 검수값이므로 기존 title→h1 재사용을 하지 않는다. homeHref=/와 공식몰 href를 혼동하지 않는다. 전화1844-0644 외 미확인 영업시간은 렌더하지 않는다. 접근성 레이블은 별도 PASS3개를 같은 용도로 쓴다.
+- src/data/site-config.json, business-truth.json, social-image-provenance.json, build-revision.json, architecture.json, pages.json, publish-manifest.json 및 관련 스크립트: 다른 지역키·canonical·URL·sourceHash·시설·전화시간·AI이미지/실사진 혼동을 남기지 않는다. 실제 예식장/장례식장 주소나 전화번호를 꽃이랑 점포 주소·전화로 구조화데이터에 넣지 않는다. productionApproved/hostnameOwnershipVerified는 이 인계로 true가 되지 않는다.
+
+6. 지역·시설·동의어 경계
+- 봉천동1162010100: 연구공원 본관과 낙성대전통야외소극장만 근거 있는 시설배정. 연구공원 입주기관2층 사무실을 웨딩홀 층수로 바꾸지 않는다.
+- 신림동1162010200: 우신장례식장 시흥대로572 B1. B1은 빈소번호가 아니며 근거 없는 ‘우신병원 장례식장’ 별칭을 복원하지 않는다.
+- 남현동1162010300: 이번에 검증된 물리 시설 없음.3법정동 및21행정동 안내 자체는 유지한다.
+- 교수회관65동: 법정동·행정동 미배정. 관악로1이라는 도로명이나 서울대 명칭으로 신림/봉천을 추정하지 않는다. 호암교수회관과 별개다.
+- 모든4시설의 정확한 행정동 배정은 없음. MOIS 법정↔행정 관계만으로 개별 주소를 특정 행정동에 넣지 않는다. 낙성대라는 이름으로 낙성대동을 배정하지 않는다.
+- 개업/이전은 축하 상세의 opening-occasion 앵커다. gwanak-opening-occasion은 구매상황 식별자이며 시설이름/주소/동의어가 아니다.
+- 낙성대 전통혼례 관련 동의어는 같은 물리 시설과 같은 앵커를 가리킨다. 시설별 새 상세URL을 만들지 않는다. 보류10개는 후보인벤토리에만 유지한다. 관악아트홀의 금지는 공연장 내부 화환/꽃다발 범위이며 로비/야외/건물전체 금지로 확대하지 않는다. 고객 판매시설로 승격하지 않는다.
+
+7. N2 thin목록·배너·검색 조건
+구매 상세URL은 /regions/gwanak-funeral-wreath/와 /regions/gwanak-celebration-wreath/ 두 개다. 홈/, 목록/regions/,404는 N에 포함하지 않는다.
+/regions/의 실제 children=2이다. 현재 미공개 빌드는 전체 noindex,nofollow,noarchive이며 sitemap은 비어야 한다. 향후 별도 공개승인으로 사이트가 indexable이 되어도 이 목록은 noindex,follow·사이트맵 제외·공통배너0개를 유지한다. items.length<3, showBanners=items.length>=3 조건을 풀지 않는다. 기존5개이상 메뉴노출 임계에도 미달하지만 승인된 헤더/유틸리티의 명시적 목록 링크는 가능하다.
+시설앵커4개, 개업앵커1개,3법정동,21행정동, 상품8개를 children 수로 세지 않는다. 가짜 카드/시설복제/별도 페이지를 만들어 배너나 검색노출 조건을 맞추지 않는다.
+홈과 각 상세는 message→budget→consultation 순서의 배너3개를 실질 본문/상품/FAQ 사이에 분산한다. 문구/alt/AI고지/비율은 변경하지 않는다.404에는 배너가 없다. 판매자 공통정책을 본문과 카드하단/경고상자/FAQ에서 중복 출력하지 않는다.
+
+8. 구현 후 필수 검증, 아직 수행되지 않음
+- 승인입력 SHA→런타임 바인딩→출력 HTML의 제목/H1/메타/카드/첫답변/전체 문단/FAQ/출처/CTA를 대조한다. 교수회관 FAQ page=2 링크도 있어야 한다.
+- 정확한 HTML5개(홈/목록/상세2/404), 상세별4SKU·홈8SKU, SKU별 실제이미지와 개별상품URL, 사진500×500·배너1774×887·alt·AI고지를 검사한다.
+- 상세당 고유H1하나, 섹션순서,4시설앵커와 opening-occasion의 단일ID·도착위치, 관련글/전화/공식몰/내부 링크를 검증한다.
+-3법정·21행정·21관계 정확성, 법정시설링크3개+구단위미배정교수회관1개, 행정동시설배정0개, 목록 실제카드2개/배너0개/noindex/sitemap 제외를 검증한다.
+- 잘못된facility unit, 교수회관강제동배정, 가짜개업시설, 누락/중복기사, 잘못된SKU/가격/이미지/사진해시, old지역문구, 출처page2누락, N/카드분모확장에 대한 음성테스트를 둔다. 기존지역 회귀검사를 함께 유지한다.
+- 정확한 최종 source SHA의 빌드·aggregate QA·양성/음성테스트를 실행한다. 실제320/390/1280 화면에서 가격 원 단위 줄바꿈, 가로overflow, header로 가린H2/H3, 상품/CTA·푸터 고정바·404를 직접 확인한다. 접근성3문구 PASS는 실제포커스/스크린리더 PASS가 아니다.
+- 공개/소유증명/IndexNow 권한과 gate는 별도다. 실제배포가 허용된 뒤에만 새sourceSHA 재결속, 공개HTTP·이미지 Content-Type/bytes·canonical/robots/sitemap·제출영수증을 검증한다. 이 인계로48/230 공개완료 분자나실제배포상태를 바꾸지 않는다.
+
+9. 남은 미확인과 현재main
+[미확인] 실제 재고, 배송비 포함금액, 일정/도착, 개별시설 반입·인수·설치·완료사진·수거 이행은 확인하지 않았다. 본문은 원문 사실과 상담 안내 범위를 지킨다.
+[도구 보고] 부모는2026-10-13 04:31 UTC main f30375041d97d958493ca74b0c4220d8ab85fc4b를 직접 조회했다고 전달했다. 이 작성자의 PLAN시점 직접조회f86ba6f…는 역사로 보존하며 현재main이라고 바꾸어 말하지 않는다. 새작업자는 실제현재ref와 작업권을 다시 확인한다.
+[직접 확인] 구현 템플릿 대조 중 로컬430dada Git object가 없어 cat-file/diff는 실패했다. 원격 GET tree와 blob 대조 및 CSS 원문 fetch로 대체했다. 로컬/원격쓰기, Git fetch/commit/push, 배포, IndexNow, proof 설정은 수행하지 않았다.
