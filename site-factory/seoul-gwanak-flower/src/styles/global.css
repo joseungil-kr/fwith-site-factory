@@ -49,3 +49,8 @@ h1,h2,h3,p,a,li,span,strong,small,figcaption{word-break:keep-all;overflow-wrap:b
 [data-directory-facilities] li{margin:12px 0;line-height:1.8}
 [data-general-purchase-links] a{margin-right:12px;text-decoration:underline}
 @media(max-width:420px){.hero-product strong{font-size:11px}.hero-product span{font-size:11px}.product-card strong{font-size:18px}}
+
+/* Keep native focus scrolling clear of the mobile sticky header and order bar. */
+@media(max-width:860px){
+  html{scroll-padding-block-start:75px;scroll-padding-block-end:calc(var(--mobile-order-bar-height) + var(--mobile-order-safe-area) + 12px)}
+}
