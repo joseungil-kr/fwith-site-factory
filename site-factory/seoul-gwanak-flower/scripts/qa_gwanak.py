@@ -9,6 +9,7 @@ from html.parser import HTMLParser
 from urllib.parse import urlsplit
 from collections import Counter
 import hashlib, json, os, re, xml.etree.ElementTree as ET
+from release_mode import resolve_mode, expected_robots, validate_search_output
 
 PINS = {
  'acceptance.json': '60a27c02c52321f0bec102f3c2a8dc0a4f97f039ecdadf1917b56a88ca78d2f9',
@@ -83,12 +84,12 @@ def link_exact(doc,label,href,count=None,scope=None):
  assert not any(hidden(n) for n in found),f'Approved link hidden: {label}'
  return found
 
-def check_metadata(doc,title,h1,description,route,base):
+def check_metadata(doc,title,h1,description,route,base,indexable=False):
  assert doc.text('title')==[title],f'SEO title drift: {route}'
  assert doc.text('h1')==[h1],f'H1 drift: {route}'
  meta={n['attrs'].get('name',n['attrs'].get('property')):n['attrs'].get('content') for n in doc.where('meta')}
  assert meta.get('description')==description,f'Meta description drift: {route}'
- assert meta.get('robots')=='noindex,nofollow,noarchive',f'Preview robots drift: {route}'
+ assert meta.get('robots')==expected_robots(route,indexable),f'Mode-specific robots drift: {route}'
  canon=doc.where('link','rel','canonical')
  if route=='/404.html':
   assert not canon,'404 canonical forbidden'
@@ -116,8 +117,7 @@ def inspect(root=Path('.'),write=True,quiet=False):
  for name in ['region-policy','publish-manifest','page-map','direct-checkpoint']:
   obj=read(data/(name+'.json'));assert obj['siteKey']==SITE,f'Active technical siteKey drift: {name}'
   if 'scopeKey' in obj:assert obj['scopeKey']==SCOPE,f'Active technical scope drift: {name}'
- assert config['productionApproved'] is False,'Preview publication authorization drift'
- assert not config.get('hostnameOwnershipVerified',False),'Preview hostname ownership drift'
+ mode=resolve_mode(root);indexable=mode['indexable']
  hub=next(h for h in architecture['hubs'] if h['category']=='regions')
  assert hub['children']==2 and hub['indexable'] is False and hub['menuVisible'] is False,'Thin directory N/eligibility drift'
  assert [p['officialSku'] for p in products]==[p['sku'] for p in common['productCards']],'Catalog SKU/order drift'
@@ -156,7 +156,7 @@ def inspect(root=Path('.'),write=True,quiet=False):
  expected={'index.html','regions/index.html','404.html'}|{p['url'].strip('/')+'/index.html' for p in original}
  actual={p.relative_to(dist).as_posix() for p in dist.rglob('*.html')}
  assert actual==expected,'Unexpected standalone or missing HTML route'
- docs={rel:Surface((dist/rel).read_text()) for rel in sorted(expected)};base=(os.environ.get('SITE_URL') or config['previewUrl']).rstrip('/')
+ docs={rel:Surface((dist/rel).read_text()) for rel in sorted(expected)};base=mode['origin']
  asset_map={a['proposedRuntimePath'].removeprefix('public'):a for a in assets}
  for a in assets:
   path=a['proposedRuntimePath'].removeprefix('public/')
@@ -254,7 +254,7 @@ def inspect(root=Path('.'),write=True,quiet=False):
    target='index.html' if path=='/' else path.lstrip('/')+'index.html' if path.endswith('/') else path.lstrip('/')
    assert target in docs,f'Broken static internal route: {rel}: {u.geturl()}'
    if u.fragment:assert u.fragment in ids[target],f'Broken static anchor: {rel}: {u.geturl()}'
- home=docs['index.html'];h=common['home'];check_metadata(home,h['title'],h['h1'],h['metaDescription'],'/',base)
+ home=docs['index.html'];h=common['home'];check_metadata(home,h['title'],h['h1'],h['metaDescription'],'/',base,indexable)
  for text in [h['intro'],h['shortTalk'],h['priceNote']]:exactly(home,'p',text)
  for text in [h['productHeading'],h['articleHeading'],h['placeHeading']]:exactly(home,'h2',text)
  for cta in [h['phoneCta'],h['shopCta']]:link_exact(home,cta['label'],cta['href'],1)
@@ -264,7 +264,7 @@ def inspect(root=Path('.'),write=True,quiet=False):
   for card,approved in zip(cards,common['articleCards']):
    assert all(norm(card['text']).count(approved[k])==1 for k in ['title','summary','ctaLabel']),'Guide-card approved text missing/duplicated'
  for approved,page in zip(original,pages):
-  rel=page['url'].strip('/')+'/index.html';doc=docs[rel];meta=check_metadata(doc,approved['title'],approved['h1'],approved['metaDescription'],page['url'],base)
+  rel=page['url'].strip('/')+'/index.html';doc=docs[rel];meta=check_metadata(doc,approved['title'],approved['h1'],approved['metaDescription'],page['url'],base,indexable)
   breadcrumb=doc.cls('breadcrumb');assert len(breadcrumb)==1 and breadcrumb[0]['attrs'].get('aria-label')==read(sealed/'interface-copy-addendum.json')['customerLabels']['accessibility']['breadcrumb'],'Approved breadcrumb aria label drift'
   assert meta.get('og:image:alt')==bysku[approved['productSkus'][0]]['imageAlt'],'Article OG image alt drift'
   exactly(doc,'p',approved['firstAnswer']);assert sum(t.count(approved['firstAnswer']) for _,t in doc.text_events)==1,'FirstAnswer duplication'
@@ -309,7 +309,7 @@ def inspect(root=Path('.'),write=True,quiet=False):
   exactly(doc,'p',approved['relatedLink']['intro'])
   for key,value in common['sharedNotices'].items():
    if key!='renderRule': assert not any(norm(n['text'])==value for n in doc.where('p')),'Seller policy duplicated outside approved article body'
- directory=docs['regions/index.html'];d=common['directory'];check_metadata(directory,d['title'],d['h1'],d['intro'],'/regions/',base)
+ directory=docs['regions/index.html'];d=common['directory'];check_metadata(directory,d['title'],d['h1'],d['intro'],'/regions/',base,indexable)
  for key in ['intro','relationNote','facilityScopeNote']:exactly(directory,'p',d[key])
  for key in ['purchaseHeading','legalHeading','facilityHeading']:exactly(directory,'h2',d[key])
  exactly(directory,'h3',d['unassignedFacilityHeading'])
@@ -338,18 +338,14 @@ def inspect(root=Path('.'),write=True,quiet=False):
  assert len(faculty)==1,'District-level unassigned faculty link missing/duplicate'
  assert faculty[0]['attrs'].get('data-candidate-id')=='snu-faculty','Unassigned professor candidate id drift'
  assert not any('data-legal-unit' in a['attrs'] or 'data-administrative-unit' in a['attrs'] or 'data-facility-legal-unit' in a['attrs'] for a in ancestor_nodes(faculty[0])),'Professor forced legal/administrative assignment'
- notfound=docs['404.html'];n=common['notFound'];check_metadata(notfound,n['title'],n['h1'],n['text'],'/404.html',base)
+ notfound=docs['404.html'];n=common['notFound'];check_metadata(notfound,n['title'],n['h1'],n['text'],'/404.html',base,indexable)
  assert n['title']!=n['h1'],'404 approved title must differ from H1'
  exactly(notfound,'p',n['text']);link_exact(notfound,n['homeLabel'],n['homeHref'],1)
  for rel,doc in docs.items():
   for node in doc.where('script','type','application/ld+json'):
    schema=json.loads(node['text']);assert schema=={'@context':'https://schema.org','@type':'Florist','name':common['brand'],'url':base,'telephone':'1844-0644','areaServed':'서울특별시 관악구'},'Seller schema invented facility address/phone or metadata'
- for path in dist.glob('sitemap*.xml'):
-  tree=ET.parse(path)
-  assert not any((el.text or '').strip() and not (el.text or '').endswith('.xml') for el in tree.iter() if el.tag.endswith('}loc')),'Preview sitemap contains indexable URL'
- assert 'Disallow: /' in (dist/'robots.txt').read_text(),'Preview robots.txt not disallowed'
- assert 'X-Robots-Tag: noindex, nofollow, noarchive' in (dist/'_headers').read_text(),'Preview response header noindex missing'
- report={'status':'LOCAL_STATIC_VERIFIED','scope':'Sealed inputs, runtime data, and generated HTML/assets only. Browser screens, responsive layout, focus, live HTTP, deploy and search are UNVERIFIED.','approvalPins':PINS,'htmlFiles':len(docs),'details':len(pages),'articleParagraphs':[sum(len(s['paragraphs']) for s in a['sections']) for a in original],'articleFaqs':[len(a['faq']) for a in original],'articleSources':[len(a['sourceLinks']) for a in original],'directoryCards':2,'productCards':{'home':8,'eachDetail':4},'physicalFacilities':4,'buyerOccasions':1,'legalUnits':3,'administrativeUnits':21,'officialRelations':21,'legalFacilityLinks':3,'districtUnassignedFacilityLinks':1,'administrativeFacilityLinks':0,'assets':11,'previewNoindex':True,'sitemapCustomerUrls':0,'files':reports}
+ sitemap_count=validate_search_output(dist,base,indexable)
+ report={'status':'LOCAL_STATIC_VERIFIED','scope':'Sealed inputs, runtime data, and generated HTML/assets only. Browser screens, responsive layout, focus, live HTTP, deploy and search are UNVERIFIED.','approvalPins':PINS,'htmlFiles':len(docs),'details':len(pages),'articleParagraphs':[sum(len(s['paragraphs']) for s in a['sections']) for a in original],'articleFaqs':[len(a['faq']) for a in original],'articleSources':[len(a['sourceLinks']) for a in original],'directoryCards':2,'productCards':{'home':8,'eachDetail':4},'physicalFacilities':4,'buyerOccasions':1,'legalUnits':3,'administrativeUnits':21,'officialRelations':21,'legalFacilityLinks':3,'districtUnassignedFacilityLinks':1,'administrativeFacilityLinks':0,'assets':11,'previewNoindex':not indexable,'sitemapCustomerUrls':sitemap_count,'files':reports}
  if write:
   output=Path(os.environ.get('GWANAK_QA_REPORT_PATH',root/'gwanak-static-qa.json'));output.parent.mkdir(parents=True,exist_ok=True);output.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
  if not quiet:print('GWANAK STATIC QA: '+json.dumps(report,ensure_ascii=False))

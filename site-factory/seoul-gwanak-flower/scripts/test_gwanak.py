@@ -83,7 +83,10 @@ class GwanakMutations(unittest.TestCase):
  def test_404_social_forbidden(self):self.replace('dist/404.html','</head>','<meta property="og:title" content="꽃이랑"></head>');self.rejected()
  def test_404_schema_forbidden(self):self.replace('dist/404.html','</head>','<script type="application/ld+json">{}</script></head>');self.rejected()
  def test_404_home_link_wrong(self):self.replace('dist/404.html','href="/">'+COMMON['notFound']['homeLabel'],'href="https://fwith.co.kr/">'+COMMON['notFound']['homeLabel']);self.rejected()
- def test_preview_robots(self):self.replace(self.detail,'noindex,nofollow,noarchive','index,follow');self.rejected()
+ def test_preview_robots(self):
+  # Retain the negative assertion in both exact modes, never accept either blindly.
+  production=os.environ.get('SITE_INDEXABLE')=='true'
+  self.replace(self.detail,'index,follow' if production else 'noindex,nofollow,noarchive','noindex,nofollow,noarchive' if production else 'index,follow');self.rejected()
  def test_preview_sitemap_not_empty(self):
   (self.root/'dist/sitemap-mutated.xml').write_text('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://seoul-gwanak.local.invalid/regions/</loc></url></urlset>');self.rejected()
  def test_extra_seller_facility_address_schema(self):self.replace(self.home,'"@type":"Florist"','"@type":"Florist","address":"서울특별시 관악구 시흥대로572 B1"');self.rejected()
@@ -186,7 +189,7 @@ RUNTIME_MUTATIONS={
  'admin_denominator':('region-coverage',lambda x:x['administrativeCrosswalk'].pop()),
  'site_key':('site-config',lambda x:x.__setitem__('siteKey','seoul-yeongdeungpo-flower-direct')),
  'scope_key':('region-coverage',lambda x:x.__setitem__('scopeKey','wrong')),
- 'publication':('site-config',lambda x:x.__setitem__('productionApproved',True)),
+ 'publication':('site-config',lambda x:x.__setitem__('productionApproved',not x['productionApproved'])),
  'ownership':('site-config',lambda x:x.__setitem__('hostnameOwnershipVerified',True)),
 }
 for name,(file,change) in RUNTIME_MUTATIONS.items():
