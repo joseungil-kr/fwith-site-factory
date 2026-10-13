@@ -119,14 +119,14 @@ def inspect(root=Path('.'),write=True):
  assert sum(len(a['relations']) for a in c['administrativeCrosswalk'])==18,'Official relationship count drift'
  nf=docs['404.html'];assert not nf.where(key='data-shared-flower-banner') and not nf.where(key='data-order-banner'),'404 marketing forbidden';assert nf.where('h1')[0]['text']==common['notFound']['title'],'404 copy drift';assert any(n['text']==common['notFound']['text'] for n in nf.where('p')),'404 paragraph drift'
  approval_bytes=(data/'release-approval.json').read_bytes()
- assert hashlib.sha256(approval_bytes).hexdigest()=='966d6182cc46714eb5f124ae229d487748f493b16b8680b8da270eda255030d5','Release approval byte drift'
+ assert hashlib.sha256(approval_bytes).hexdigest()=='0873b3ffcf00bc7f43c07afaf242c3df1e93e19fbbffff539a55a73eedc047f1','Release approval byte drift'
  approval=json.loads(approval_bytes);overlay_bytes=(root/approval['requestedCustomerContentOverlay']['path']).read_bytes()
  assert hashlib.sha256(overlay_bytes).hexdigest()==approval['requestedCustomerContentOverlay']['sha256'],'Banner overlay byte drift'
  overlay=json.loads(overlay_bytes)
  for banner in common['bannerPolicy']['banners']:
   path='/images/shared-banners/'+banner['file'];replacement=overlay['replacements']['public'+path];assert replacement['beforeSha256']==banner['sha256'],'Historical banner pin drift';assert hashlib.sha256((dist/path.lstrip('/')).read_bytes()).hexdigest()==replacement['afterSha256'],'Banner byte drift';assert asset_counts[path]==2,'Banner route count drift'
   for doc in docs.values():
-   for n in doc.where('img',key='src',value=path):assert n['attrs']['alt']==banner['alt'],'Banner alt drift'
+   for n in doc.where('img',key='src',value=path):assert n['attrs']['alt']==banner['alt']+' 전화 1844-0644.','Banner alt drift'
  assert config['productionApproved'] is True and config['hostnameOwnershipVerified'] is False,'Publication guard drift'
  if not indexable:assert not list(dist.glob('sitemap*.xml')),'Mode sitemap unexpectedly present in preview'
  urls=[]

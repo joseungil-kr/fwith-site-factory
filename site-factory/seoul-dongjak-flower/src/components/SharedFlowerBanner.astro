@@ -2,9 +2,9 @@
 interface Props { variant: 'message' | 'budget' | 'consultation'; }
 const {variant}=Astro.props;
 const banners={
-  message:{file:'flower-message.webp',alt:'꽃이랑, 꽃으로 전하는 마음. 전하고 싶은 마음에 어울리는 꽃을 안내합니다. 크림색 장미를 담은 안내 이미지.'},
-  budget:{file:'flower-budget.webp',alt:'꽃이랑, 예산에 맞는 꽃 선택. 상품 사진과 가격을 함께 살펴보세요. 크림색 라넌큘러스를 담은 안내 이미지.'},
-  consultation:{file:'flower-consultation.webp',alt:'꽃이랑, 주문 상담 안내. 상품 선택부터 리본 문구까지 상담해 드립니다. 아이보리 리시안셔스를 담은 안내 이미지.'}
+  message:{file:'flower-message.webp',alt:'꽃이랑, 꽃으로 전하는 마음. 전하고 싶은 마음에 어울리는 꽃을 안내합니다. 크림색 장미를 담은 안내 이미지. 전화 1844-0644.'},
+  budget:{file:'flower-budget.webp',alt:'꽃이랑, 예산에 맞는 꽃 선택. 상품 사진과 가격을 함께 살펴보세요. 크림색 라넌큘러스를 담은 안내 이미지. 전화 1844-0644.'},
+  consultation:{file:'flower-consultation.webp',alt:'꽃이랑, 주문 상담 안내. 상품 선택부터 리본 문구까지 상담해 드립니다. 아이보리 리시안셔스를 담은 안내 이미지. 전화 1844-0644.'}
 };
 const banner=banners[variant];
 if(!banner) throw new Error('Unknown shared flower banner');

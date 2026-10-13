@@ -61,6 +61,8 @@ def inspect(root=Path('.'),manifest_path=None):
   for variant,img in doc.banner_images:
    target=f'/images/shared-banners/flower-{variant}.webp'
    if img.get('src')!=target:issues.append(f'variant {variant} image must use {target}')
+   if not img.get('alt','').endswith(' 전화 1844-0644.'):issues.append('shared banner alt phone missing or changed')
+   if '실제 판매상품 사진이 아닌 AI 생성 이미지' in img.get('alt',''):issues.append('removed shared disclosure reintroduced in alt')
    if not (dist/target.lstrip('/')).is_file():issues.append(f'rendered image does not exist: {target}')
   for img in doc.images:
    if not img.get('alt','').strip():issues.append(f'missing image alt: {img.get("src")}')

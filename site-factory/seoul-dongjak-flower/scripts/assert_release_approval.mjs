@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import crypto from 'node:crypto';
 import assert from 'node:assert/strict';
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
-const EXPECTED_APPROVAL_SHA='966d6182cc46714eb5f124ae229d487748f493b16b8680b8da270eda255030d5';
+const EXPECTED_APPROVAL_SHA='0873b3ffcf00bc7f43c07afaf242c3df1e93e19fbbffff539a55a73eedc047f1';
 const HISTORICAL_APPROVAL_SHA='655577a5da36019a2c16b9974e3315995870a85d2ce546ade36cee3a0c17d6eb';
 const OVERLAY_PATH='src/data/shared-banner-requested-change.json';
 const APPROVED_REPLACEMENTS=["public/images/shared-banners/flower-budget.webp", "public/images/shared-banners/flower-consultation.webp", "public/images/shared-banners/flower-message.webp", "src/components/SharedFlowerBanner.astro", "src/data/shared-banner-manifest.json"];
