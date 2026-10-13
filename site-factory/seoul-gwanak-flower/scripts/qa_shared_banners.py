@@ -4,6 +4,7 @@ from pathlib import Path
 from html.parser import HTMLParser
 import os,json,hashlib
 from urllib.parse import urlsplit,unquote
+from banner_phone_amendment import load_amendment
 class Page(HTMLParser):
  def __init__(self):super().__init__();self.headings=[];self.images=[];self.meta={};self.links=[];self.canonical=[];self.title=[];self.in_title=False;self.banner_kinds=[];self.banner_images=[];self.current_banner=None;self.figure_depth=0
  def handle_starttag(self,tag,attrs):
@@ -33,7 +34,8 @@ def inspect(root=Path('.'),manifest_path=None):
  thin_hubs={h['url'] for h in json.loads(architecture_path.read_text())['hubs'] if h['children']<3} if architecture_path.exists() else set()
  expected_origin=os.environ.get('SITE_URL','').rstrip('/')
  assert not global_indexable or expected_origin.startswith('https://'),'Production SITE_URL is required'
- golden={'flower-message':'b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253','flower-budget':'bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df','flower-consultation':'4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b'}
+ amendment=load_amendment(root)
+ golden={'flower-'+k:v['sha256'] for k,v in amendment['assets'].items()}
  assert {r['name']:r['sha256'] for r in manifest}==golden,'Reviewed banner asset pins changed'
  for row in manifest:
   p=dist/'images/shared-banners'/f"{row['name']}.webp"
@@ -56,6 +58,7 @@ def inspect(root=Path('.'),manifest_path=None):
   for variant,img in doc.banner_images:
    target=f'/images/shared-banners/flower-{variant}.webp'
    if img.get('src')!=target:issues.append(f'variant {variant} image must use {target}')
+   if img.get('alt')!=amendment['assets'][variant]['alt']:issues.append('banner exact amended alt mismatch')
    if not (dist/target.lstrip('/')).is_file():issues.append(f'rendered image does not exist: {target}')
   for img in doc.images:
    if not img.get('alt','').strip():issues.append(f'missing image alt: {img.get("src")}')

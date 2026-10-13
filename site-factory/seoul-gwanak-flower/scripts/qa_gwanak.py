@@ -10,6 +10,7 @@ from urllib.parse import urlsplit
 from collections import Counter
 import hashlib, json, os, re, xml.etree.ElementTree as ET
 from release_mode import resolve_mode, expected_robots, validate_search_output
+from banner_phone_amendment import load_amendment, effective_assets
 
 PINS = {
  'acceptance.json': '60a27c02c52321f0bec102f3c2a8dc0a4f97f039ecdadf1917b56a88ca78d2f9',
@@ -108,6 +109,7 @@ def inspect(root=Path('.'),write=True,quiet=False):
   assert sha(f.read_bytes())==digest,f'Sealed approval byte drift: {path}'
  surface=read(sealed/'approved-visible-surface.json');binding=read(sealed/'runtime-input-bindings.json')
  original=read(sealed/'inputs/copy/article-copy.rev4.json')['articles'];common=read(sealed/'inputs/copy/common-visible-copy.rev3.json')['common'];assets=read(sealed/'approved-assets.json')['assets']
+ amendment=load_amendment(root);assets=effective_assets(root,assets)
  copy=read(data/'gwanak-copy.json');pages=read(data/'pages.json');products=read(data/'products.json');coverage=read(data/'region-coverage.json');config=read(data/'site-config.json');architecture=read(data/'architecture.json')
  assert copy['articles']==original,'Runtime approved articles drift'
  assert copy['common']==common,'Runtime approved common copy drift'
@@ -177,6 +179,7 @@ def inspect(root=Path('.'),write=True,quiet=False):
      value=node['attrs'][key] or '';assert not re.search(r'[\x00-\x20]',value),'Control/whitespace in URL forbidden'
      parsed=urlsplit(value);assert parsed.scheme in ('','https','tel') and not value.startswith('//'),'Unsafe URL protocol forbidden'
   visible_body=norm(doc.where('body')[0]['text'])
+  assert norm(amendment['removedVisibleCaption']) not in visible_body,'Removed common-banner caption reintroduced'
   ids[rel]=[n['attrs']['id'] for n in doc.where(key='id')]
   assert len(ids[rel])==len(set(ids[rel])),f'Duplicate HTML id: {rel}'
   for node,text in doc.text_events:
@@ -211,7 +214,7 @@ def inspect(root=Path('.'),write=True,quiet=False):
    imgs=within(banner,'img');variant=banner['attrs']['data-shared-flower-banner']
    assert len(imgs)==1 and imgs[0]['attrs']['src']=='/images/shared-banners/flower-'+variant+'.webp','Banner exact variant image drift'
    assert imgs[0]['attrs'].get('loading')=='lazy' and imgs[0]['attrs'].get('decoding')=='async','Banner lazy/async drift'
-   assert [norm(n['text']) for n in within(banner,'figcaption')]==[common['banners']['caption']],'Banner AI caption drift'
+   assert not within(banner,'figcaption'),'Common banner caption must be absent under explicit amendment'
   assert sum('/images/shared-banners/' in n['attrs'].get('src','') for n in doc.where('img'))==len(banners),'Extra banner image outside figure'
   for left,right in zip(banners,banners[1:]):
    between=[n for n in doc.nodes if left['i']<n['i']<right['i'] and (n['tag']=='p' or 'page-card' in n['attrs'].get('class','').split()) and len(norm(n['text']))>=30 and not any('data-shared-flower-banner' in a['attrs'] for a in ancestor_nodes(n))]

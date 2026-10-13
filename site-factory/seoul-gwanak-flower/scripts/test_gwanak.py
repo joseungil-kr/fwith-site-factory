@@ -8,6 +8,7 @@ from qa_gwanak import inspect, read
 SOURCE=Path.cwd()
 ARTICLES=read(SOURCE/'src/data/gwanak-approved/inputs/copy/article-copy.rev4.json')['articles']
 COMMON=read(SOURCE/'src/data/gwanak-approved/inputs/copy/common-visible-copy.rev3.json')['common']
+AMENDMENT=read(SOURCE/'src/data/common-banner-phone-amendment.json')
 
 class GwanakMutations(unittest.TestCase):
  def setUp(self):
@@ -66,8 +67,18 @@ class GwanakMutations(unittest.TestCase):
  def test_banner_wrong_variant(self):self.replace(self.home,'data-shared-flower-banner="message"','data-shared-flower-banner="budget"');self.rejected()
  def test_banner_wrong_bytes(self):
   p=self.root/'dist/images/shared-banners/flower-budget.webp';p.write_bytes(p.read_bytes()+b'changed');self.rejected()
- def test_banner_alt_missing(self):self.replace(self.home,'alt="'+COMMON['banners']['message']['alt']+'"','');self.rejected()
- def test_banner_caption_missing(self):self.replace(self.home,COMMON['banners']['caption'],'');self.rejected()
+ def test_banner_alt_missing(self):self.replace(self.home,'alt="'+AMENDMENT['assets']['message']['alt']+'"','');self.rejected()
+ def test_removed_banner_caption_reintroduced(self):self.replace(self.home,'</figure>','<figcaption>'+COMMON['banners']['caption']+'</figcaption></figure>');self.rejected()
+ def test_removed_caption_reintroduced_outside_banner(self):self.replace(self.home,'</main>','<p>'+COMMON['banners']['caption']+'</p></main>');self.rejected()
+ def test_unapproved_banner_caption(self):self.replace(self.home,'</figure>','<figcaption>1844-0644</figcaption></figure>');self.rejected()
+ def test_banner_phone_alt_missing(self):self.replace(self.home,AMENDMENT['assets']['message']['alt'],AMENDMENT['assets']['message']['alt'].replace('1844-0644',''));self.rejected()
+ def test_banner_amendment_missing(self):(self.root/'src/data/common-banner-phone-amendment.json').unlink();self.rejected()
+ def test_banner_amendment_bytes(self):
+  p=self.root/'src/data/common-banner-phone-amendment.json';p.write_text(p.read_text()+' ');self.rejected()
+ def test_banner_amendment_product_scope_expansion(self):
+  self.data('common-banner-phone-amendment',lambda a:a.update(productPhotosChanged=True));self.rejected()
+ def test_banner_public_bytes(self):
+  p=self.root/'public/images/shared-banners/flower-consultation.webp';p.write_bytes(p.read_bytes()+b'changed');self.rejected()
  def test_banners_adjacent(self):
   p=self.root/self.home;s=p.read_text();pattern=r'<figure class="shared-flower-banner"[^>]*data-shared-flower-banner="budget".*?</figure>';banner=re.search(pattern,s,re.S)[0];s=s.replace(banner,'');s=re.sub(r'(<figure class="shared-flower-banner"[^>]*data-shared-flower-banner="message".*?</figure>)',lambda m:m[0]+banner,s,count=1,flags=re.S);p.write_text(s);self.rejected()
  def test_directory_banner_forbidden(self):

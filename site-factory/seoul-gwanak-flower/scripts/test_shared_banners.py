@@ -10,6 +10,7 @@ class SharedBannerNegativeTests(unittest.TestCase):
   shutil.copytree(self.source/'dist',self.root/'dist');(self.root/'scripts').mkdir(parents=True);(self.root/'src/data').mkdir(parents=True)
   shutil.copy2(self.source/'src/data/architecture.json',self.root/'src/data/architecture.json')
   shutil.copy2(self.source/'src/data/shared-banner-manifest.json',self.root/'src/data/shared-banner-manifest.json')
+  shutil.copy2(self.source/'src/data/common-banner-phone-amendment.json',self.root/'src/data/common-banner-phone-amendment.json')
  def tearDown(self):self.temp.cleanup()
  def check(self):
   with patch.dict(os.environ,{'SITE_URL':self.origin,'SITE_INDEXABLE':os.environ.get('SITE_INDEXABLE','false')}):return inspect(self.root)
