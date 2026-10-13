@@ -1,0 +1,92 @@
+{
+  "state": "PASS_INDEPENDENT_PUBLIC_RELEASE_HTTP_AND_INDEXNOW_RECEIPT",
+  "publicUrl": "https://seoul-gwanak.fwith.kr/",
+  "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38434306070",
+  "runAttempt": 1,
+  "sourceSha": "ecc62ab4053365e451b697867bdf68c3d26b78d2",
+  "controlSha": "0584677b4ae6737b91835cfbede2668a7859c0d0",
+  "jobConclusions": {
+    "build": "success",
+    "publish": "success",
+    "finalize_indexnow": "skipped"
+  },
+  "artifacts": [
+    {
+      "kind": "build",
+      "id": 11832690474,
+      "bytes": 1118290,
+      "sha256": "c8b0bd40496e9974ca9324bf21d8c2d20e8fa108a8ba5d8a0d030467107bbcdc",
+      "allMemberCrcAndExtractedBytesVerified": true
+    },
+    {
+      "kind": "result",
+      "id": 11831983912,
+      "bytes": 6511,
+      "sha256": "2b9d4fb6125f02b6cc36841351ec1e71c53d1e355ffd6c823318c87338f97850",
+      "allMemberCrcAndExtractedBytesVerified": true
+    }
+  ],
+  "distFiles": 23,
+  "distManifestSha256": "279ee811d6f361eb3b25f2fd14d677edd2b2cd419233506afd47607a1822a876",
+  "all23FilesByteIdenticalToPrepublicationReviewedArtifact": true,
+  "buildTests": {
+    "native": 497,
+    "mutations": 242,
+    "portable": 25,
+    "faq": 8,
+    "banners": 12,
+    "astro61FilesZeroErrorsWarningsHints": true
+  },
+  "directPublicHttp": {
+    "checkedPaths": 22,
+    "normalHtml": 4,
+    "assetsIncludingFavicon": 13,
+    "robotsProofSitemaps": 4,
+    "unknownRoute": 404,
+    "htmlBeaconNormalizationCount": 5,
+    "onlyAllowedCloudflareBeaconNormalized": true,
+    "allOtherBytesExactReviewedArtifact": true,
+    "internalLinksAndAnchorsVerified": 59,
+    "readbackSha256": "d0c6c010d2b7c86bf75dd2703d331a92180a889e02b0953ce063fdb2fedc9eb0"
+  },
+  "providerEvidence": {
+    "scope": "CI GET-only provider readback outputs independently matched to fresh job log; reviewer did not use provider credentials or issue provider API requests",
+    "beforeAbsent": true,
+    "afterFixedWorkerHostnameBindingVerified": true,
+    "environment": "production",
+    "zone": "fwith.kr",
+    "dnsRecordState": "not_observed"
+  },
+  "indexNow": {
+    "state": "received",
+    "httpStatus": 200,
+    "postAttemptsObserved": 1,
+    "urlCount": 3,
+    "fingerprint": "50b1ebbecca6577ccaf42d882cb6945d5a33bd99a69497ee671bd7d2b4ac72ab",
+    "urlSetSha256": "98a30cc3ce03932ef539c50957985a000e42000bbdbfe551e18542ade219af20",
+    "receiptSha256": "5c19613a5f9705ebd5c632a9694765787f2787a408e6198fb9ec5991d4082525",
+    "freshJournalReceivedUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/266#issuecomment-6150738523",
+    "sameReceiptArtifactFreshLogAndJournal": true,
+    "searchIndexing": "not_verified"
+  },
+  "pixelEvidence": {
+    "finalQaRun": 38428439688,
+    "reviewedCurrentScreenshotScope": 102,
+    "directlyOpenedPredecessorImages": 78,
+    "priorExactPixelReused": 24,
+    "publicPixelTransferBasis": "All5 HTML bodies and all13CSS/favicon/images exact after narrowly validated single beacon removal; source/layout unchanged",
+    "newPublicBrowserSession": false
+  },
+  "unresolvedDependencyWarning": {
+    "exactNewBuildLogLine": "2026-10-13T16:54:48.2447582Z 1 high severity vulnerability",
+    "packageAndAdvisory": "unidentified",
+    "applicabilityAndExploitability": "unassessed",
+    "securityClearance": false
+  },
+  "reviewerRemoteWrites": 0,
+  "limitations": [
+    "IndexNow HTTP200 confirms acceptance, not actual search indexing.",
+    "Provider binding observed through authenticated CI GET evidence and live anonymous HTTP, not a second reviewer provider API session.",
+    "One high npm vulnerability warning remains untriaged; no dependency/security clearance is claimed."
+  ]
+}

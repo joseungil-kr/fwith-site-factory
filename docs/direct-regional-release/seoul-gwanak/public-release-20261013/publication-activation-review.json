@@ -1,0 +1,91 @@
+{
+  "state": "PASS_EXACT_THREE_FILE_PUBLICATION_ACTIVATION_CANDIDATE",
+  "candidateManifestSha256": "82ae86fcc655ee204553e87d832b74f69804388e606a11647f926e04c20c3894",
+  "changedFiles": [
+    ".github/workflows/seoul-gwanak-direct-publish.yml",
+    "scripts/direct-seoul-gwanak/publication-binding.json",
+    "scripts/direct-seoul-gwanak/test_publish.py"
+  ],
+  "publisherAndSourceContractByteUnchanged": true,
+  "source679ActualPrebuild": {
+    "state": "source_contract_verified",
+    "files": 679,
+    "baselineSourceRevision": "0bc1a2aa83bb3613e58950fe91dde271c6e701b3"
+  },
+  "actualPreviouslyReviewedProduction23OutputGate": {
+    "state": "independent_build_output_binding_verified",
+    "sourceRevision": "ecc62ab4053365e451b697867bdf68c3d26b78d2",
+    "distManifestSha256": "279ee811d6f361eb3b25f2fd14d677edd2b2cd419233506afd47607a1822a876"
+  },
+  "portableOfflineTests": 25,
+  "workflowDiffOnlyCommentsAndTwoPublicConditions": true,
+  "workflowDefaultBuildOnlyTrue": true,
+  "buildOnlyAndIndexnowOnlySixCaseTruthTable": true,
+  "artifactGateBeforeProviderAndHttp": true,
+  "negativeCases": [
+    {
+      "case": "unapproved",
+      "error": "independent_build_output_review_required"
+    },
+    {
+      "case": "wrong_source",
+      "error": "reviewed_output_source_mismatch"
+    },
+    {
+      "case": "wrong_dist",
+      "error": "rebuilt_output_differs_from_reviewed_artifact"
+    },
+    {
+      "case": "missing_evidence",
+      "error": "reviewed_output_evidence_missing"
+    },
+    {
+      "case": "missing_artifact",
+      "error": "reviewed_output_evidence_missing"
+    },
+    {
+      "case": "foreign_run",
+      "error": "reviewed_output_evidence_missing"
+    },
+    {
+      "case": "dirty_dist_artifact",
+      "error": "rebuilt_output_differs_from_reviewed_artifact"
+    },
+    {
+      "case": "dirty_dist_preflight",
+      "error": "rebuilt_output_differs_from_reviewed_artifact"
+    },
+    {
+      "case": "dirty_dist_attach",
+      "error": "rebuilt_output_differs_from_reviewed_artifact"
+    },
+    {
+      "case": "dirty_dist_readback",
+      "error": "rebuilt_output_differs_from_reviewed_artifact"
+    },
+    {
+      "case": "dirty_dist_http",
+      "error": "rebuilt_output_differs_from_reviewed_artifact"
+    },
+    {
+      "case": "dirty_dist_indexnow-probe",
+      "error": "rebuilt_output_differs_from_reviewed_artifact"
+    },
+    {
+      "case": "dirty_dist_indexnow",
+      "error": "rebuilt_output_differs_from_reviewed_artifact"
+    }
+  ],
+  "networkCalls": 0,
+  "evidenceCommit": "6ddfbe27be16b8f2c0449ada7dda08045e7eb24e",
+  "finalQaIndependentEvidenceSha256": "43bff370a6a1bf0d05cc727f73a614b1b0a0f2b680ae1f7b552cc95caccab029",
+  "actualSourceSha": "ecc62ab4053365e451b697867bdf68c3d26b78d2",
+  "fixedHost": "seoul-gwanak.fwith.kr",
+  "fixedWorker": "seoul-gwanak-flower-guide",
+  "publicationExecutedByReviewer": false,
+  "limits": [
+    "Read-only code/data review and local offline tests only. No provider, HTTP, host binding or IndexNow request issued.",
+    "Saving this candidate permits separately authorized workflow publication; actual successful deploy/readback/HTTP/IndexNow evidence still required.",
+    "Existing1high npm warning remains untriaged; no dependency/security clearance is claimed."
+  ]
+}
