@@ -43,4 +43,37 @@ class SharedBannerNegativeTests(unittest.TestCase):
   image=re.search(pattern,s).group(0);s=s.replace(image,image+image,1)
   s=re.sub(r'<img src="/images/shared-banners/flower-budget.webp"[^>]*>','',s,count=1);p.write_text(s)
   with self.assertRaises(AssertionError):self.check()
+ def test_removed_caption_reintroduced_in_banner_fails(self):
+  import re
+  p=self.root/'dist/index.html';s=p.read_text();pattern=r'(<figure[^>]*data-shared-flower-banner="message"[^>]*>.*?)(</figure>)'
+  s,count=re.subn(pattern,lambda m:m[1]+'<figcaption>꽃이랑 공통 안내 이미지 · 실제 판매상품 사진이 아닌 AI 생성 이미지입니다.</figcaption>'+m[2],s,count=1,flags=re.S);self.assertEqual(count,1);p.write_text(s)
+  with self.assertRaises(AssertionError):self.check()
+ def test_any_caption_in_shared_banner_fails(self):
+  import re
+  p=self.root/'dist/index.html';s=p.read_text();pattern=r'(<figure[^>]*data-shared-flower-banner="message"[^>]*>.*?)(</figure>)'
+  s,count=re.subn(pattern,lambda m:m[1]+'<figcaption>unexpected caption</figcaption>'+m[2],s,count=1,flags=re.S);self.assertEqual(count,1);p.write_text(s)
+  with self.assertRaises(AssertionError):self.check()
+ def test_removed_caption_reintroduced_elsewhere_fails(self):
+  self.mutate('</main>','<p>꽃이랑 공통 안내 이미지 · 실제 판매상품 사진이 아닌 AI 생성 이미지입니다.</p></main>')
+  with self.assertRaises(AssertionError):self.check()
+ def assert_invalid_banner_alts(self,change):
+  import re
+  p=self.root/'dist/index.html';original=p.read_text()
+  for variant in ['message','budget','consultation']:
+   with self.subTest(variant=variant):
+    pattern=r'(<img src="/images/shared-banners/flower-'+variant+r'.webp"[^>]* alt=")([^"]*)(")'
+    def replace(match):return match[1]+change(match[2])+match[3]
+    changed,count=re.subn(pattern,replace,original,count=1);self.assertEqual(count,1);self.assertNotEqual(changed,original);p.write_text(changed)
+    with self.assertRaises(AssertionError):self.check()
+  p.write_text(original)
+ def test_banner_alt_missing_phone_fails(self):
+  self.assert_invalid_banner_alts(lambda alt:alt.replace(' 전화 1844-0644.',''))
+ def test_banner_alt_wrong_phone_fails(self):
+  self.assert_invalid_banner_alts(lambda alt:alt.replace('1844-0644','1844-0645'))
+ def test_banner_alt_description_removed_fails(self):
+  self.assert_invalid_banner_alts(lambda alt:'전화 1844-0644.')
+ def test_removed_caption_reintroduced_in_alt_fails(self):
+  self.assert_invalid_banner_alts(lambda alt:alt+' 꽃이랑 공통 안내 이미지 · 실제 판매상품 사진이 아닌 AI 생성 이미지입니다.')
+ def test_banner_alt_duplicate_phone_fails(self):
+  self.assert_invalid_banner_alts(lambda alt:alt+' 전화 1844-0644.')
 if __name__=='__main__':unittest.main()
