@@ -1,0 +1,1144 @@
+{
+  "schemaVersion": 1,
+  "reviewedAtUtc": "2026-10-12T23:03:45Z",
+  "reviewer": "Independent QA reviewer",
+  "verdict": "PASS",
+  "scope": "Only the immutable saved-source build and loopback browser visual QA represented by this run. No public deployment or release approval is established.",
+  "repository": "joseungil-kr/fwith-site-factory",
+  "controlCommit": "a12c406b2d6b4254a7a5541e7d1e631bf09701f2",
+  "controlBranch": "qa/unpublished-regional-visual-20261012",
+  "baseMain": "b68fa7801b080da5a65fbaeceeba3aa9a81ac365",
+  "reviewFreezeSha256": "1ec1074c95d5bd25f1e39e8f281cee3e27f23a080eecc750188c5937dd1acc1c",
+  "reviewedFilesSha256": {
+    ".github/qa/unpublished-regional/capture.py": "abc3031db0c777d034aa994ee7e3ff06e20ca0c14745c8e36c864b9005f33b1f",
+    ".github/qa/unpublished-regional/controls.py": "9e8ab01414bb54762015e3e5a25bafc86d2f457c9d65936773a09c737ca1b93c",
+    ".github/qa/unpublished-regional/test_controls.py": "0bb2e3ac1338fbd52e2ebb0d4ba67a74fb687f26d8c3ba140def90941a71d26b",
+    ".github/qa/unpublished-regional/sites.json": "2125065721b78a7abaa654ef84e950d8ac49649cca0b8e68c9f84bd4394bd78a",
+    ".github/workflows/unpublished-regional-visual-qa.yml": "697f4d5359e09af2634208591a0c130ed29ae013c168afe45249adde73cb4e3b"
+  },
+  "remoteControlDiff": {
+    "status": "ahead",
+    "ahead_by": 1,
+    "behind_by": 0,
+    "total_commits": 1,
+    "files": [
+      {
+        "filename": ".github/qa/unpublished-regional/capture.py",
+        "status": "added",
+        "sha": "7014a038d8c4f9763e6ee4b632688b935b75280f",
+        "additions": 190,
+        "deletions": 0,
+        "changes": 190
+      },
+      {
+        "filename": ".github/qa/unpublished-regional/controls.py",
+        "status": "added",
+        "sha": "2e2c5ac80d01d2b865d3cd7cc79814120e798ef4",
+        "additions": 203,
+        "deletions": 0,
+        "changes": 203
+      },
+      {
+        "filename": ".github/qa/unpublished-regional/sites.json",
+        "status": "added",
+        "sha": "555ab4205e72d9edb05863ea27649f64b7705710",
+        "additions": 68,
+        "deletions": 0,
+        "changes": 68
+      },
+      {
+        "filename": ".github/qa/unpublished-regional/test_controls.py",
+        "status": "added",
+        "sha": "2d2cfce00a57fec835004f7f877031d96428ae2e",
+        "additions": 127,
+        "deletions": 0,
+        "changes": 127
+      },
+      {
+        "filename": ".github/workflows/unpublished-regional-visual-qa.yml",
+        "status": "added",
+        "sha": "7fae47ea11f72e2218e8bd4b175d95ec119f86e1",
+        "additions": 159,
+        "deletions": 0,
+        "changes": 159
+      }
+    ]
+  },
+  "run": {
+    "id": 38318719004,
+    "run_attempt": 1,
+    "event": "push",
+    "head_sha": "a12c406b2d6b4254a7a5541e7d1e631bf09701f2",
+    "head_branch": "qa/unpublished-regional-visual-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38318719004"
+  },
+  "directlyVerified": [
+    "Read and reviewed all five adapter files, exact SHA256 freeze, remote byte readback and compare showing exactly five added files.",
+    "Executed 25 offline control tests and independent FAQ same-count/visibility/collapse/content and URL-origin-confusion negatives.",
+    "Reviewed all 59 existing workflow triggers against the base main; exact QA branch isolation has no matched deployment or workflow_run/create chain.",
+    "Independently fetched GitHub API run, jobs and 18 artifact digests; checked downloaded ZIP SHA256, size, CRC, safe entries and reconstructed artifact contents independently.",
+    "Rehashed all 190 evidence files and 67 dist files; compared two build manifests and actual dist bytes; matched immutable source/control/run/browser bindings.",
+    "Decoded all 51 original JPEGs and checked image dimensions, unique exact route/viewport grid and screenshot SHA256.",
+    "Actually viewed pixels from all 51 JPEGs. Long 320px detail pages and Geumcheon 390px detail were read end-to-end in original-width continuous analysis crops; original JPEG bytes preserved.",
+    "Viewed six additional native PNGs: each site detail-390-top.png and detail-390-faq.png.",
+    "Read both native npm-test log sets and retained native browser reports; no failed native tests or browser result rows.",
+    "Read network, page-error and console evidence: 1931 network records were loopback HTTP 200, with no external attempts, page errors or console errors."
+  ],
+  "artifactZipCount": 18,
+  "artifactZips": [
+    {
+      "id": 11778055126,
+      "name": "unpublished-geumcheon-dist-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:dee4547c7027da0f448d69bd3bc4d94f7898dac30f19b67c04bc240ee07628e5",
+      "zipBytes": 877384,
+      "zipCRC": "PASS",
+      "entryCount": 16
+    },
+    {
+      "id": 11777604457,
+      "name": "unpublished-geumcheon-390-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:b38e0a25977b340d377c564d30cffca4a8a824e0945aef1dada3416723d86203",
+      "zipBytes": 1030125,
+      "zipCRC": "PASS",
+      "entryCount": 4
+    },
+    {
+      "id": 11777569598,
+      "name": "unpublished-geumcheon-320-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:9407d92af2d12780f21ce881cabb8612fdde31cb5344b05522dec3ca102a3b16",
+      "zipBytes": 988334,
+      "zipCRC": "PASS",
+      "entryCount": 4
+    },
+    {
+      "id": 11777469739,
+      "name": "unpublished-geumcheon-native-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:ebf284f45ae89abe798412128f8875169a99d65ef8d46acc08a929e137ae32c0",
+      "zipBytes": 1572592,
+      "zipCRC": "PASS",
+      "entryCount": 7
+    },
+    {
+      "id": 11777409877,
+      "name": "unpublished-geumcheon-1280-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:b854ff4b5a71f343dcd60939e72ce74cec948c1f00151a0290dbd4017acbf9ec",
+      "zipBytes": 1540255,
+      "zipCRC": "PASS",
+      "entryCount": 4
+    },
+    {
+      "id": 11777409866,
+      "name": "unpublished-geumcheon-reports-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:f4ab7805bcc72d62226b18a61e3025194a119223a551c111c7a224ddb3901be5",
+      "zipBytes": 33589,
+      "zipCRC": "PASS",
+      "entryCount": 18
+    },
+    {
+      "id": 11777238897,
+      "name": "unpublished-guro-390-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:a5b7aaa34afe0f3dbd7585ae5c7eea3b1e09c38cc3b4248bfb87ee8106abf6fa",
+      "zipBytes": 2609194,
+      "zipCRC": "PASS",
+      "entryCount": 6
+    },
+    {
+      "id": 11777184059,
+      "name": "unpublished-guro-320-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:8b6e7ef337d815870397e0b811e47d5ba691429e1e9c98f4bb8b1b4fd50ca33b",
+      "zipBytes": 2493044,
+      "zipCRC": "PASS",
+      "entryCount": 6
+    },
+    {
+      "id": 11777184055,
+      "name": "unpublished-guro-native-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:cd2df918b7bcd86c25bbe9bef2d53dc1b151fdd13b23c34a1421a7a7a0fb13b5",
+      "zipBytes": 1591349,
+      "zipCRC": "PASS",
+      "entryCount": 7
+    },
+    {
+      "id": 11777133970,
+      "name": "unpublished-guro-dist-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:272be14e91d1408fd9c9fb50795b614ef689874484f77335da82625ceb2b402d",
+      "zipBytes": 1217570,
+      "zipCRC": "PASS",
+      "entryCount": 25
+    },
+    {
+      "id": 11777124039,
+      "name": "unpublished-gangseo-1280-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:f8ca30e762feb6412b189d39bbdb58c8e3fe178f310158e8a0afe49a0db9631f",
+      "zipBytes": 4594900,
+      "zipCRC": "PASS",
+      "entryCount": 7
+    },
+    {
+      "id": 11777079008,
+      "name": "unpublished-gangseo-reports-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:9c7819d297c8e7d255da5e61bd167d7c1949a1e281d2dbb430fcc360c9f881fc",
+      "zipBytes": 48692,
+      "zipCRC": "PASS",
+      "entryCount": 18
+    },
+    {
+      "id": 11777073991,
+      "name": "unpublished-guro-1280-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:26b27f9a0866b3e932bd5b7c2e829cbf153878335b853eb2ec07573f31d28f59",
+      "zipBytes": 3835601,
+      "zipCRC": "PASS",
+      "entryCount": 6
+    },
+    {
+      "id": 11776994120,
+      "name": "unpublished-guro-reports-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:17c6023ec480bb32db74d92d2862d2a5c4a0cf9a588a8b7889a58badb5b56878",
+      "zipBytes": 46638,
+      "zipCRC": "PASS",
+      "entryCount": 18
+    },
+    {
+      "id": 11776899299,
+      "name": "unpublished-gangseo-390-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:fb00fa328bf07ccd04cd39a3d9fc42304b2ef43a37f8f307961f29021fe3d461",
+      "zipBytes": 3122022,
+      "zipCRC": "PASS",
+      "entryCount": 7
+    },
+    {
+      "id": 11776869342,
+      "name": "unpublished-gangseo-320-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:c3f9a0ad2c8e1d0058ddd91e2fc8d6d0b8d2845265c3d83b3a484d7797d73692",
+      "zipBytes": 2984189,
+      "zipCRC": "PASS",
+      "entryCount": 7
+    },
+    {
+      "id": 11776794562,
+      "name": "unpublished-gangseo-native-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:26d2686dca6411600ae93e449c24ea932b74280f6bba74ef62edce3911bfb4c4",
+      "zipBytes": 1545480,
+      "zipCRC": "PASS",
+      "entryCount": 7
+    },
+    {
+      "id": 11776774494,
+      "name": "unpublished-gangseo-dist-a12c406b2d6b4254a7a5541e7d1e631bf09701f2-1",
+      "apiSha256": "sha256:36e4d4fd018f0af286cdbd4fe231d785309d261ec02fb0e6e7f6833409407e11",
+      "zipBytes": 1223768,
+      "zipCRC": "PASS",
+      "entryCount": 26
+    }
+  ],
+  "evidenceFileCount": 190,
+  "distFileCount": 67,
+  "captureCount": 51,
+  "regions": {
+    "gangseo": {
+      "controlSha": "a12c406b2d6b4254a7a5541e7d1e631bf09701f2",
+      "sourceSha": "f7f2b9d017b8b8352aae8b0339b5a2cac0da1d32",
+      "sourceTree": "d91a88816ce75e677c59e4e7f7ed0f82ef1d09a5",
+      "runId": 38318719004,
+      "runAttempt": 1,
+      "artifactFileCount": 71,
+      "distFileCount": 26,
+      "buildManifestSha256": "f50fe1b8465528989620097b210508f0f745eadf935d95bbf288beba59c79af4",
+      "browserVersion": "153.0.8010.12",
+      "captureCount": 21,
+      "pixelReview": "PASS",
+      "networkEventCount": 867,
+      "publicHttpVerified": false,
+      "productionApprovalVerified": false,
+      "source": {
+        "sourceSha": "f7f2b9d017b8b8352aae8b0339b5a2cac0da1d32",
+        "sourceTree": "d91a88816ce75e677c59e4e7f7ed0f82ef1d09a5",
+        "path": "site-factory/seoul-gangseo-flower",
+        "siteUrl": "https://seoul-gangseo.fwith.kr",
+        "indexable": true,
+        "productionApproved": true,
+        "routes": [
+          "/",
+          "/regions/",
+          "/regions/magok-dong-ewha-seoul-funeral-wreath/",
+          "/regions/oebalsan-dong-mayfield-wedding-wreath/",
+          "/regions/magok-dong-mplus-office-congrats-wreath/",
+          "/regions/hwagok-dong-gangseo-artrium-performance-wreath/",
+          "/404.html"
+        ],
+        "repositoryTree": "d75a7d29a963fd8088f605a8efa78687c2e28bae",
+        "sitemapRoutes": [
+          "/",
+          "/regions/",
+          "/regions/magok-dong-ewha-seoul-funeral-wreath/",
+          "/regions/oebalsan-dong-mayfield-wedding-wreath/",
+          "/regions/magok-dong-mplus-office-congrats-wreath/",
+          "/regions/hwagok-dong-gangseo-artrium-performance-wreath/"
+        ]
+      },
+      "sourceApprovalMeaning": "Immutable source configuration only; does not authorize a public release.",
+      "captures": [
+        {
+          "route": "/",
+          "path": "screenshots/320/home.jpg",
+          "sha256": "bb398a9f5b786f2ed94b9e9d7a9d71600b4b3b73782fce642e4f5fe68aa78922",
+          "width": 320,
+          "height": 4793,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/",
+          "path": "screenshots/320/regions.jpg",
+          "sha256": "0982aa786288c7b309a068508009565282ec0d055a53539e5983c40eeaa372e9",
+          "width": 320,
+          "height": 2928,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/magok-dong-ewha-seoul-funeral-wreath/",
+          "path": "screenshots/320/regions--magok-dong-ewha-seoul-funeral-wreath.jpg",
+          "sha256": "068283ef66a0a5d80c5947c272ae55f4db914b2a67a2b0c4762c9035c6b34e05",
+          "width": 320,
+          "height": 11388,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/oebalsan-dong-mayfield-wedding-wreath/",
+          "path": "screenshots/320/regions--oebalsan-dong-mayfield-wedding-wreath.jpg",
+          "sha256": "673ef72779d682b908db3f17d7e022bbd71507117ed2da57e4e998ce875ba6ca",
+          "width": 320,
+          "height": 11806,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/magok-dong-mplus-office-congrats-wreath/",
+          "path": "screenshots/320/regions--magok-dong-mplus-office-congrats-wreath.jpg",
+          "sha256": "47299786de4db30432416362b2ca85142c0da4bd290d6c10544331da07e8ad8c",
+          "width": 320,
+          "height": 12021,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/hwagok-dong-gangseo-artrium-performance-wreath/",
+          "path": "screenshots/320/regions--hwagok-dong-gangseo-artrium-performance-wreath.jpg",
+          "sha256": "6976dd52543c6def62e4ad35c85538f2cd7b88aaed41c45b095a1d459e93bc89",
+          "width": 320,
+          "height": 11805,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/404.html",
+          "path": "screenshots/320/404-html.jpg",
+          "sha256": "f9d954442e6f39cd5a2227ad3a1954e090140353cfa9545489aa966e1e8ae596",
+          "width": 320,
+          "height": 849,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/",
+          "path": "screenshots/390/home.jpg",
+          "sha256": "5c2cd097e42c9f8866802d02637eee267008445d21aa9f00242b7c9feca4326b",
+          "width": 390,
+          "height": 4585,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/",
+          "path": "screenshots/390/regions.jpg",
+          "sha256": "1cc3933926cec3ae72d7ec5a1bf541d2a5afb3867ff776bf0f6485644533886e",
+          "width": 390,
+          "height": 2797,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/magok-dong-ewha-seoul-funeral-wreath/",
+          "path": "screenshots/390/regions--magok-dong-ewha-seoul-funeral-wreath.jpg",
+          "sha256": "d696ea2667db0cce6b7ef5eb1dc81eea06f4221a9bfb0dce83370e5031b62ae6",
+          "width": 390,
+          "height": 10072,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/oebalsan-dong-mayfield-wedding-wreath/",
+          "path": "screenshots/390/regions--oebalsan-dong-mayfield-wedding-wreath.jpg",
+          "sha256": "21c5b16c5f454c1c56fbec3615eeed26e36b8e80ee446ad40a2be29fba3fd4a4",
+          "width": 390,
+          "height": 10541,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/magok-dong-mplus-office-congrats-wreath/",
+          "path": "screenshots/390/regions--magok-dong-mplus-office-congrats-wreath.jpg",
+          "sha256": "3a7be9f8f9fc096a705bc4423bd94926c97a4f6465e2d5cbb36c44fa01ec873e",
+          "width": 390,
+          "height": 10618,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/hwagok-dong-gangseo-artrium-performance-wreath/",
+          "path": "screenshots/390/regions--hwagok-dong-gangseo-artrium-performance-wreath.jpg",
+          "sha256": "6cb2d60fcb5a787fc405f920699e7a2a11325208ac648703523e95abaeab2378",
+          "width": 390,
+          "height": 10463,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/404.html",
+          "path": "screenshots/390/404-html.jpg",
+          "sha256": "40b65c04b197da79423a401125805077c64166b9662f18dd47e05db0ad6cc24e",
+          "width": 390,
+          "height": 844,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/",
+          "path": "screenshots/1280/home.jpg",
+          "sha256": "4c62299dd280ea8c9b56c395e024909fdf35786625c13f58a766e25744b061ca",
+          "width": 1280,
+          "height": 4304,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/",
+          "path": "screenshots/1280/regions.jpg",
+          "sha256": "cb004a940d241010618898135c99a2b94d694b56ed7a88f17ebd8a5fa7f91534",
+          "width": 1280,
+          "height": 3126,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/magok-dong-ewha-seoul-funeral-wreath/",
+          "path": "screenshots/1280/regions--magok-dong-ewha-seoul-funeral-wreath.jpg",
+          "sha256": "969ea2753db272a223d5fa9679ea0fc5a335097bbcb8e856e111a55942a3c6ce",
+          "width": 1280,
+          "height": 7987,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/oebalsan-dong-mayfield-wedding-wreath/",
+          "path": "screenshots/1280/regions--oebalsan-dong-mayfield-wedding-wreath.jpg",
+          "sha256": "ed31fcfe8495cd2e21870221cd5dbaec1c7812037105fd1c9d26378ddd71b5fd",
+          "width": 1280,
+          "height": 8366,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/magok-dong-mplus-office-congrats-wreath/",
+          "path": "screenshots/1280/regions--magok-dong-mplus-office-congrats-wreath.jpg",
+          "sha256": "b8c8503582f359eee6bdc26a26b9cb6edd794a791a44a75b5b5813af543414a2",
+          "width": 1280,
+          "height": 8235,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/hwagok-dong-gangseo-artrium-performance-wreath/",
+          "path": "screenshots/1280/regions--hwagok-dong-gangseo-artrium-performance-wreath.jpg",
+          "sha256": "9b819a44ae41fbda5428774bae482301bdf721a2eb2432fd7d3cb634b6e1e498",
+          "width": 1280,
+          "height": 8131,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/404.html",
+          "path": "screenshots/1280/404-html.jpg",
+          "sha256": "196ddc8e2659fd3bd04d8baf2448c966bd604053ab29e032df0a9edef365ccb9",
+          "width": 1280,
+          "height": 900,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        }
+      ],
+      "originalEvidenceManifestSha256": "61902a7f3ac0955aa9596a5213432985e57add1a064b42899414626558d5ff6c",
+      "originalEvidenceHashes": {
+        "browser-console.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "capture-results.json": "f9dbbe96ca2746aabeeff8e90b7d848bb7698bf1cd417c2ffa055700ff5d2d84",
+        "dist/404.html": "3a957359884c680403773f7ef8f6768f7be5d8f3f7eebe410bac85965bff89ef",
+        "dist/40ce75e866dc2c92254e7d1ad474326f.txt": "c40f009f9ed19bfb57c3e66503439b83f5725595cebdbfb9b6a5a41a526cbde1",
+        "dist/_astro/BaseLayout.DeABFOxw.css": "c5912b1d2ee07e2fa35462bf40fdc1e3c017ba8147a6b7e117c08025316d0079",
+        "dist/_headers": "1b27a67288f21cf98b19d15cef8fa084bf7d7ca7a0f89975dd48ba51f90ed015",
+        "dist/favicon.svg": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+        "dist/images/editorial/opening-wreath-illustration-v1.webp": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+        "dist/images/products/congrats-basic.jpg": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+        "dist/images/products/congrats-large.jpg": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+        "dist/images/products/congrats-premium.jpg": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+        "dist/images/products/congrats-xl.jpg": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+        "dist/images/products/funeral-basic.jpg": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+        "dist/images/products/funeral-large.jpg": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+        "dist/images/products/funeral-premium.jpg": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+        "dist/images/products/funeral-xl.jpg": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+        "dist/images/shared-banners/flower-budget.webp": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+        "dist/images/shared-banners/flower-consultation.webp": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+        "dist/images/shared-banners/flower-message.webp": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+        "dist/index.html": "89c1ee9590037c85b2e580bb8a057aa46fddbb2235f555e114ffbf3027df8f40",
+        "dist/regions/hwagok-dong-gangseo-artrium-performance-wreath/index.html": "3ab2175b7b7434805fce244cf0f47cddfe593bc7df721fda1ad2d60a5dedc314",
+        "dist/regions/index.html": "54e63446eb0f944b340138053592cd1aa60e72f2c624d32e0eb25214c920d087",
+        "dist/regions/magok-dong-ewha-seoul-funeral-wreath/index.html": "12a4c01cefc1cd53bb61d84f3a39322994dc03092bf3e8597f56266d715942e9",
+        "dist/regions/magok-dong-mplus-office-congrats-wreath/index.html": "5c8060144d2e944d7d24a3ca80aefc6d5887c896924ee88b68d0932c8f5c85b3",
+        "dist/regions/oebalsan-dong-mayfield-wedding-wreath/index.html": "4618ea41678ca67226e80e151612ceaf273236baa93f431fdb99758b7c9517eb",
+        "dist/robots.txt": "d2c69d62d79b6931c810572e936e4c02507da6ce37f21235235127dfb7813206",
+        "dist/sitemap-0.xml": "48e310513cf3a3cbbe85e97917af966428d7531db624860a9296649f98ab2c9b",
+        "dist/sitemap-index.xml": "3d11ea37f136e58da014c3656d1d6a99f323eff3109800e81ae77524329f5198",
+        "logs/browser-capture.log": "939e08fb222aa10b8aeb3b6795fd415e391abeb8dd2810d8889efe04e6844a40",
+        "logs/control-tests.log": "6b4b6e62a76b84ad72c013bc8d2f873cdabdf2033c053c01f5c64bb29c007281",
+        "logs/first.manifest.json": "f50fe1b8465528989620097b210508f0f745eadf935d95bbf288beba59c79af4",
+        "logs/font-match.txt": "ac9be2a1fbc08bb6bd4aa30122a4180d4a2780fbb87c6dbc888f1541afe540aa",
+        "logs/native-build-first.log": "b8e6779d859bd9ad5fa7d79f101ad7322da7c4137223822c1ce1ee5be7c0a03d",
+        "logs/native-build-second.log": "4e2c52c20b94f4ee274df39164d19e77e1b344e86185340481bc2349725ae738",
+        "logs/native-qa-first.log": "64b9a1993987d6d0d10d4b87f9534405136925989293803c4da78be0d3e672e7",
+        "logs/native-qa-second.log": "801ab092a9ee582224e7260773d90ff76c42606e1688de50f5d7d6eca8b7c5e4",
+        "logs/native-tests-first.log": "1fa0a570ab8056969d12701845ed25a217e99cf7c478d2bc399f37dbdb73757e",
+        "logs/native-tests-second.log": "b20ebc95e46692c2e8561a87401aa93f257e36c36df09a42d41affd98575f6f0",
+        "logs/second.manifest.json": "f50fe1b8465528989620097b210508f0f745eadf935d95bbf288beba59c79af4",
+        "native/detail-1280-body.png": "05693f0346cea3bc9d2581c773f9ad487553aa80a587be5b3268d37b9f05bab2",
+        "native/detail-1280-faq.png": "b0c2e3cfde268455124259ae4383789588526b6ac8f15c14eb3a048c010a76c4",
+        "native/detail-1280-top.png": "0aeb4b6b85640f83cbba43af7cbecce7a1eccfd1ed6da36eb6f03e512032553d",
+        "native/detail-390-body.png": "96db77854988cc31c8de013de0a5786928071b1d56e83bf2f299af29d1981142",
+        "native/detail-390-faq.png": "2428f7fba62b2455575ca18094af5ca02acfc97dd301bc433dbf3f1bddfbf7af",
+        "native/detail-390-top.png": "98b1cdb8dc33894c8f7152e3fe2ea06678ef8626c0f08a13527d57e6ff764688",
+        "native/home-mobile.png": "3b8267b3382eac901fe5ee8e600d7649805d7a6a2940c5444eaa97ceebd9b829",
+        "native/report.json": "08a06c9eeefbf3a8a6cd6d469ab354f6c139037a77d3b9a19f4ab9f8158730ac",
+        "network.json": "eafa661a383231b21ab8da3da50058089b90583515ee33ed6672e077aaff0dc1",
+        "page-errors.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "screenshots/1280/404-html.jpg": "196ddc8e2659fd3bd04d8baf2448c966bd604053ab29e032df0a9edef365ccb9",
+        "screenshots/1280/home.jpg": "4c62299dd280ea8c9b56c395e024909fdf35786625c13f58a766e25744b061ca",
+        "screenshots/1280/regions--hwagok-dong-gangseo-artrium-performance-wreath.jpg": "9b819a44ae41fbda5428774bae482301bdf721a2eb2432fd7d3cb634b6e1e498",
+        "screenshots/1280/regions--magok-dong-ewha-seoul-funeral-wreath.jpg": "969ea2753db272a223d5fa9679ea0fc5a335097bbcb8e856e111a55942a3c6ce",
+        "screenshots/1280/regions--magok-dong-mplus-office-congrats-wreath.jpg": "b8c8503582f359eee6bdc26a26b9cb6edd794a791a44a75b5b5813af543414a2",
+        "screenshots/1280/regions--oebalsan-dong-mayfield-wedding-wreath.jpg": "ed31fcfe8495cd2e21870221cd5dbaec1c7812037105fd1c9d26378ddd71b5fd",
+        "screenshots/1280/regions.jpg": "cb004a940d241010618898135c99a2b94d694b56ed7a88f17ebd8a5fa7f91534",
+        "screenshots/320/404-html.jpg": "f9d954442e6f39cd5a2227ad3a1954e090140353cfa9545489aa966e1e8ae596",
+        "screenshots/320/home.jpg": "bb398a9f5b786f2ed94b9e9d7a9d71600b4b3b73782fce642e4f5fe68aa78922",
+        "screenshots/320/regions--hwagok-dong-gangseo-artrium-performance-wreath.jpg": "6976dd52543c6def62e4ad35c85538f2cd7b88aaed41c45b095a1d459e93bc89",
+        "screenshots/320/regions--magok-dong-ewha-seoul-funeral-wreath.jpg": "068283ef66a0a5d80c5947c272ae55f4db914b2a67a2b0c4762c9035c6b34e05",
+        "screenshots/320/regions--magok-dong-mplus-office-congrats-wreath.jpg": "47299786de4db30432416362b2ca85142c0da4bd290d6c10544331da07e8ad8c",
+        "screenshots/320/regions--oebalsan-dong-mayfield-wedding-wreath.jpg": "673ef72779d682b908db3f17d7e022bbd71507117ed2da57e4e998ce875ba6ca",
+        "screenshots/320/regions.jpg": "0982aa786288c7b309a068508009565282ec0d055a53539e5983c40eeaa372e9",
+        "screenshots/390/404-html.jpg": "40b65c04b197da79423a401125805077c64166b9662f18dd47e05db0ad6cc24e",
+        "screenshots/390/home.jpg": "5c2cd097e42c9f8866802d02637eee267008445d21aa9f00242b7c9feca4326b",
+        "screenshots/390/regions--hwagok-dong-gangseo-artrium-performance-wreath.jpg": "6cb2d60fcb5a787fc405f920699e7a2a11325208ac648703523e95abaeab2378",
+        "screenshots/390/regions--magok-dong-ewha-seoul-funeral-wreath.jpg": "d696ea2667db0cce6b7ef5eb1dc81eea06f4221a9bfb0dce83370e5031b62ae6",
+        "screenshots/390/regions--magok-dong-mplus-office-congrats-wreath.jpg": "3a7be9f8f9fc096a705bc4423bd94926c97a4f6465e2d5cbb36c44fa01ec873e",
+        "screenshots/390/regions--oebalsan-dong-mayfield-wedding-wreath.jpg": "21c5b16c5f454c1c56fbec3615eeed26e36b8e80ee446ad40a2be29fba3fd4a4",
+        "screenshots/390/regions.jpg": "1cc3933926cec3ae72d7ec5a1bf541d2a5afb3867ff776bf0f6485644533886e",
+        "source-readback.json": "0d5a43750592518433a38e9b8932a7e7a799b55964d60eaeecdf0002a983684f"
+      },
+      "nativeNpmTestLogSummaries": {
+        "first": {
+          "tests": [
+            126
+          ],
+          "pass": [
+            126
+          ],
+          "fail": [
+            0
+          ]
+        },
+        "second": {
+          "tests": [
+            126
+          ],
+          "pass": [
+            126
+          ],
+          "fail": [
+            0
+          ]
+        }
+      }
+    },
+    "guro": {
+      "controlSha": "a12c406b2d6b4254a7a5541e7d1e631bf09701f2",
+      "sourceSha": "500d82d01c1cdaed3ebde047bb3ce056705daac1",
+      "sourceTree": "455433060062e8089ca3ff9c0f2ebc8efb04a319",
+      "runId": 38318719004,
+      "runAttempt": 1,
+      "artifactFileCount": 67,
+      "distFileCount": 25,
+      "buildManifestSha256": "a9df3c257b524712717ae07be19b43327bc9112c59df17a36fe55d636488a9c7",
+      "browserVersion": "153.0.8010.12",
+      "captureCount": 18,
+      "pixelReview": "PASS",
+      "networkEventCount": 727,
+      "publicHttpVerified": false,
+      "productionApprovalVerified": false,
+      "source": {
+        "sourceSha": "500d82d01c1cdaed3ebde047bb3ce056705daac1",
+        "sourceTree": "455433060062e8089ca3ff9c0f2ebc8efb04a319",
+        "path": "site-factory/seoul-guro-flower",
+        "siteUrl": "https://seoul-guro.fwith.kr",
+        "indexable": false,
+        "productionApproved": false,
+        "routes": [
+          "/",
+          "/regions/",
+          "/regions/guro-funeral-hospitals-condolence-wreath/",
+          "/regions/guro-wedding-venues-congrats-wreath/",
+          "/regions/guro-dong-digital-valley-office-wreath/",
+          "/404.html"
+        ],
+        "repositoryTree": "c6afd77a7a1e1d6ec88ef2068ac1e4cf20030138",
+        "sitemapRoutes": [
+          "/",
+          "/regions/",
+          "/regions/guro-funeral-hospitals-condolence-wreath/",
+          "/regions/guro-wedding-venues-congrats-wreath/",
+          "/regions/guro-dong-digital-valley-office-wreath/"
+        ]
+      },
+      "sourceApprovalMeaning": "Immutable source configuration only; does not authorize a public release.",
+      "captures": [
+        {
+          "route": "/",
+          "path": "screenshots/320/home.jpg",
+          "sha256": "c2f1ea746821b7c2048f57ab7e567705fac7617a8d798acdfda5f1a7366d5c09",
+          "width": 320,
+          "height": 4874,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/",
+          "path": "screenshots/320/regions.jpg",
+          "sha256": "fc51439c8cfd9713a741b838005591fdb90c54d464098688c8c12af8959373c8",
+          "width": 320,
+          "height": 3328,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/guro-funeral-hospitals-condolence-wreath/",
+          "path": "screenshots/320/regions--guro-funeral-hospitals-condolence-wreath.jpg",
+          "sha256": "42ed2fbde8e75219d66dc7cbbdf96c1a0dddcc2d943f1ea3d7649c4003b3f71d",
+          "width": 320,
+          "height": 12646,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/guro-wedding-venues-congrats-wreath/",
+          "path": "screenshots/320/regions--guro-wedding-venues-congrats-wreath.jpg",
+          "sha256": "63769a9cd5c7b775fbcf0e0ac3fcf8ca18f4216342ab313581a519edb050b49e",
+          "width": 320,
+          "height": 13847,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/guro-dong-digital-valley-office-wreath/",
+          "path": "screenshots/320/regions--guro-dong-digital-valley-office-wreath.jpg",
+          "sha256": "43edcf85456be1f22a19a3d610824d1a74039d2d4590465c1a0162d1476ee8bc",
+          "width": 320,
+          "height": 12460,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/404.html",
+          "path": "screenshots/320/404-html.jpg",
+          "sha256": "89c984200bab381e1365b5c1a13508c2b0d060df6b0dfa900475bffcd5a0ca65",
+          "width": 320,
+          "height": 849,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/",
+          "path": "screenshots/390/home.jpg",
+          "sha256": "a20ae28530cc3afb81c874b393bbc3a544e49d0049d1ee562d472e489e330566",
+          "width": 390,
+          "height": 4585,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/",
+          "path": "screenshots/390/regions.jpg",
+          "sha256": "01402c984f42573d1d7218b319ff4211cc61c9a212b728842a996eb2195a6946",
+          "width": 390,
+          "height": 3146,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/guro-funeral-hospitals-condolence-wreath/",
+          "path": "screenshots/390/regions--guro-funeral-hospitals-condolence-wreath.jpg",
+          "sha256": "d5f8fac2689d678c23eee4f5d45d3eb8d2fe23a847df5972765593c2c206360f",
+          "width": 390,
+          "height": 11138,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/guro-wedding-venues-congrats-wreath/",
+          "path": "screenshots/390/regions--guro-wedding-venues-congrats-wreath.jpg",
+          "sha256": "8e8c4969d500f5ac42394e2723260d34da08d671251474968e9fd2cb260f68dd",
+          "width": 390,
+          "height": 12220,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/guro-dong-digital-valley-office-wreath/",
+          "path": "screenshots/390/regions--guro-dong-digital-valley-office-wreath.jpg",
+          "sha256": "eb8b0dbe082a3e05f7fa98fa26b9c0e54432faba0aa534e4337424a5108eede2",
+          "width": 390,
+          "height": 10923,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/404.html",
+          "path": "screenshots/390/404-html.jpg",
+          "sha256": "1bc9de8326aef7059e0fc95aa93841a9d004f46bb8fee672781fa0c1802b6662",
+          "width": 390,
+          "height": 844,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/",
+          "path": "screenshots/1280/home.jpg",
+          "sha256": "7139ef2111028689920d770f99c26f4330543bccb7a0b643b6d7c8e5040275e2",
+          "width": 1280,
+          "height": 4346,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/",
+          "path": "screenshots/1280/regions.jpg",
+          "sha256": "5ed92aba58299671fcd2e12d11891ce63e4eea7bf938389893c051893f808831",
+          "width": 1280,
+          "height": 3483,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/guro-funeral-hospitals-condolence-wreath/",
+          "path": "screenshots/1280/regions--guro-funeral-hospitals-condolence-wreath.jpg",
+          "sha256": "d21f44ce9931eeee5c207ed6b9756a8590b2ef77f999962c6141829a81bfeeac",
+          "width": 1280,
+          "height": 8811,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/guro-wedding-venues-congrats-wreath/",
+          "path": "screenshots/1280/regions--guro-wedding-venues-congrats-wreath.jpg",
+          "sha256": "562ae88b3239f048dd84ce1840671b8b0e80802fbfa6403bc91ef84dfa13151f",
+          "width": 1280,
+          "height": 9984,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/guro-dong-digital-valley-office-wreath/",
+          "path": "screenshots/1280/regions--guro-dong-digital-valley-office-wreath.jpg",
+          "sha256": "d0d1fc95ec5850b7028b185d5c46ca1a3e238fd48221064a6df68ed45118f698",
+          "width": 1280,
+          "height": 8336,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/404.html",
+          "path": "screenshots/1280/404-html.jpg",
+          "sha256": "c2e3e10a9f3d4e1c40bb325d6528188984523b88d19e6eb35f2fa1ee0d1098a7",
+          "width": 1280,
+          "height": 900,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        }
+      ],
+      "originalEvidenceManifestSha256": "b81e2663de30614535a6c193fe039f23b5df45d400765d38869ac5fd3f29af18",
+      "originalEvidenceHashes": {
+        "browser-console.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "capture-results.json": "5fd8d7ec7925206b93f82399006110d23512eff9e79d996412fb0aef24c08ffe",
+        "dist/39c4ed924bc6084c670a963c26d9f018.txt": "5da3864d5327c6e4e41e6eef12510004b2302f55c3bc61593d7d49c1797739b5",
+        "dist/404.html": "0c423ad8d4d113ff3dbbea5cc1fd67bec9ea88818203092315ef5ad876883e63",
+        "dist/_astro/BaseLayout.DeABFOxw.css": "c5912b1d2ee07e2fa35462bf40fdc1e3c017ba8147a6b7e117c08025316d0079",
+        "dist/_headers": "3831fc6cebb82f8b15db4a56d950b93a878b1eb7d2bd47a8adff888353dead43",
+        "dist/favicon.svg": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+        "dist/images/editorial/opening-wreath-illustration-v1.webp": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+        "dist/images/products/congrats-basic.jpg": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+        "dist/images/products/congrats-large.jpg": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+        "dist/images/products/congrats-premium.jpg": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+        "dist/images/products/congrats-xl.jpg": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+        "dist/images/products/funeral-basic.jpg": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+        "dist/images/products/funeral-large.jpg": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+        "dist/images/products/funeral-premium.jpg": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+        "dist/images/products/funeral-xl.jpg": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+        "dist/images/shared-banners/flower-budget.webp": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+        "dist/images/shared-banners/flower-consultation.webp": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+        "dist/images/shared-banners/flower-message.webp": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+        "dist/index.html": "6adfd5348348bb6787be345eafbe96c553e529d32a3f84153710bd302335e285",
+        "dist/regions/guro-dong-digital-valley-office-wreath/index.html": "e681c851c5d3a6c53e48523026dcea684ce7f4fdc9392f34b7cc6e7b816c7509",
+        "dist/regions/guro-funeral-hospitals-condolence-wreath/index.html": "73c3132e1f110bd95776f866691c7444357dfb9d19356ccdd311b8695cbd22b2",
+        "dist/regions/guro-wedding-venues-congrats-wreath/index.html": "ff52f5d57051d1313577be4d87c29e3aac6a06bcc2dd4c6c6b52500afc2f475a",
+        "dist/regions/index.html": "bcb93d5bac71ce9d07b608dc82d84972ce187abe4aa206d4e038e0bd902cf9c6",
+        "dist/robots.txt": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1",
+        "dist/sitemap-0.xml": "a49c17fb61b450de4d7648ae7813f6942f12ecaa2b94d67bb8183a9e1333e533",
+        "dist/sitemap-index.xml": "aacfdc6c92f37f55de0013aab637a8680eecf946431495c3ab2ea979baad0e73",
+        "logs/browser-capture.log": "9c3d91a190318240c9c6d0c8385eae4e8aa893dbf912a5c01536d00de961097c",
+        "logs/control-tests.log": "1b742cb36cd6e8b7ecf6e9ada190bc3c86b3e8b822f3d768300f9daf6e2330e0",
+        "logs/first.manifest.json": "a9df3c257b524712717ae07be19b43327bc9112c59df17a36fe55d636488a9c7",
+        "logs/font-match.txt": "ac9be2a1fbc08bb6bd4aa30122a4180d4a2780fbb87c6dbc888f1541afe540aa",
+        "logs/native-build-first.log": "06bd19bf6016d477c13094fb709d9ed1e5604254f7fbd60fe092578e7b63f785",
+        "logs/native-build-second.log": "03791d9acdc69089223092e449f6550a398d1281f1c6b7a608d81b931ad5be63",
+        "logs/native-qa-first.log": "6a84bdc097c8a3524cbacffd36cc88086d790e817f798d6b925a836bbc68ef05",
+        "logs/native-qa-second.log": "e3dc5befd87eb5a0f3de167cbd65daa0a250e5e53231d7dc119e6fc3e88a2825",
+        "logs/native-tests-first.log": "027c43a1046bd21b89adb2a28ccc71cf3ae799c67cf3d8ea4fa8cd213685dcb1",
+        "logs/native-tests-second.log": "71e1a715dacd161e64c0737a85c391cc3fb11b1417b228793dba5b89c5478b5e",
+        "logs/second.manifest.json": "a9df3c257b524712717ae07be19b43327bc9112c59df17a36fe55d636488a9c7",
+        "native/detail-1280-body.png": "a6476a7f0e644fdc0bbcbc3e21c55b6f08bb9d98dc1dd5a9b0d25f9e55f745d2",
+        "native/detail-1280-faq.png": "4eb93208faaa5a17bfad00bf6cb51d477927b410fc8521126b0b137b48562203",
+        "native/detail-1280-top.png": "38f2007676b04223240b1349134925cc8a2e7444825e69cea7da24d59e93dd33",
+        "native/detail-390-body.png": "0b1c605eac9a4a400986c17bfd433ba8a1efb641cff0f575efcf83914742c91b",
+        "native/detail-390-faq.png": "f4f4028656674a7c5d2e526c5e852565ffad35c0743bd725a78a29a122446aac",
+        "native/detail-390-top.png": "7a3aaf0e1adc26f269b01c6a1691ab5fb550fbb42029bbe90dd6c219bbefc007",
+        "native/home-mobile.png": "182563a4046c1d1a8fd18da560af5cf87f7f979e5e678aeae8df66b5f0545182",
+        "native/report.json": "b2523b0438829253f21623c03edc148d155834f56593869173795fded0d54182",
+        "network.json": "09317269db0b31c899d21156d8b9b4862476c93b950c0ffbb24728792af6514c",
+        "page-errors.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "screenshots/1280/404-html.jpg": "c2e3e10a9f3d4e1c40bb325d6528188984523b88d19e6eb35f2fa1ee0d1098a7",
+        "screenshots/1280/home.jpg": "7139ef2111028689920d770f99c26f4330543bccb7a0b643b6d7c8e5040275e2",
+        "screenshots/1280/regions--guro-dong-digital-valley-office-wreath.jpg": "d0d1fc95ec5850b7028b185d5c46ca1a3e238fd48221064a6df68ed45118f698",
+        "screenshots/1280/regions--guro-funeral-hospitals-condolence-wreath.jpg": "d21f44ce9931eeee5c207ed6b9756a8590b2ef77f999962c6141829a81bfeeac",
+        "screenshots/1280/regions--guro-wedding-venues-congrats-wreath.jpg": "562ae88b3239f048dd84ce1840671b8b0e80802fbfa6403bc91ef84dfa13151f",
+        "screenshots/1280/regions.jpg": "5ed92aba58299671fcd2e12d11891ce63e4eea7bf938389893c051893f808831",
+        "screenshots/320/404-html.jpg": "89c984200bab381e1365b5c1a13508c2b0d060df6b0dfa900475bffcd5a0ca65",
+        "screenshots/320/home.jpg": "c2f1ea746821b7c2048f57ab7e567705fac7617a8d798acdfda5f1a7366d5c09",
+        "screenshots/320/regions--guro-dong-digital-valley-office-wreath.jpg": "43edcf85456be1f22a19a3d610824d1a74039d2d4590465c1a0162d1476ee8bc",
+        "screenshots/320/regions--guro-funeral-hospitals-condolence-wreath.jpg": "42ed2fbde8e75219d66dc7cbbdf96c1a0dddcc2d943f1ea3d7649c4003b3f71d",
+        "screenshots/320/regions--guro-wedding-venues-congrats-wreath.jpg": "63769a9cd5c7b775fbcf0e0ac3fcf8ca18f4216342ab313581a519edb050b49e",
+        "screenshots/320/regions.jpg": "fc51439c8cfd9713a741b838005591fdb90c54d464098688c8c12af8959373c8",
+        "screenshots/390/404-html.jpg": "1bc9de8326aef7059e0fc95aa93841a9d004f46bb8fee672781fa0c1802b6662",
+        "screenshots/390/home.jpg": "a20ae28530cc3afb81c874b393bbc3a544e49d0049d1ee562d472e489e330566",
+        "screenshots/390/regions--guro-dong-digital-valley-office-wreath.jpg": "eb8b0dbe082a3e05f7fa98fa26b9c0e54432faba0aa534e4337424a5108eede2",
+        "screenshots/390/regions--guro-funeral-hospitals-condolence-wreath.jpg": "d5f8fac2689d678c23eee4f5d45d3eb8d2fe23a847df5972765593c2c206360f",
+        "screenshots/390/regions--guro-wedding-venues-congrats-wreath.jpg": "8e8c4969d500f5ac42394e2723260d34da08d671251474968e9fd2cb260f68dd",
+        "screenshots/390/regions.jpg": "01402c984f42573d1d7218b319ff4211cc61c9a212b728842a996eb2195a6946",
+        "source-readback.json": "a888224789e3c274f7d1496f398e6b2e4cfb025196d8003db42d2f1cb83370f4"
+      },
+      "nativeNpmTestLogSummaries": {
+        "first": {
+          "tests": [
+            131
+          ],
+          "pass": [
+            131
+          ],
+          "fail": [
+            0
+          ]
+        },
+        "second": {
+          "tests": [
+            131
+          ],
+          "pass": [
+            131
+          ],
+          "fail": [
+            0
+          ]
+        }
+      }
+    },
+    "geumcheon": {
+      "controlSha": "a12c406b2d6b4254a7a5541e7d1e631bf09701f2",
+      "sourceSha": "bbb016305dd2fe29f7d985a669acaa02224a9f2f",
+      "sourceTree": "1f2397c6a00c34e74ec2d3441001b233934fbb25",
+      "runId": 38318719004,
+      "runAttempt": 1,
+      "artifactFileCount": 52,
+      "distFileCount": 16,
+      "buildManifestSha256": "ebcb4fedf90989a7aa9347a9e98385dad2a0fe8a01344680f7fc50df1f0ae05f",
+      "browserVersion": "153.0.8010.12",
+      "captureCount": 12,
+      "pixelReview": "PASS",
+      "networkEventCount": 337,
+      "publicHttpVerified": false,
+      "productionApprovalVerified": false,
+      "source": {
+        "sourceSha": "bbb016305dd2fe29f7d985a669acaa02224a9f2f",
+        "sourceTree": "1f2397c6a00c34e74ec2d3441001b233934fbb25",
+        "path": "site-factory/seoul-geumcheon-flower",
+        "siteUrl": "https://seoul-geumcheon.fwith.kr",
+        "indexable": false,
+        "productionApproved": false,
+        "routes": [
+          "/",
+          "/regions/",
+          "/regions/geumcheon-funeral-wreath/",
+          "/404.html"
+        ],
+        "repositoryTree": "6a919b9d8e949f54938265ce9eaa703651483e88",
+        "sitemapRoutes": []
+      },
+      "sourceApprovalMeaning": "Immutable source configuration only; does not authorize a public release.",
+      "captures": [
+        {
+          "route": "/",
+          "path": "screenshots/320/home.jpg",
+          "sha256": "834acfaa2f9e8b9fe28c336e61b120e04ac8f7da5523e242c8416067626ab1fc",
+          "width": 320,
+          "height": 4509,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/",
+          "path": "screenshots/320/regions.jpg",
+          "sha256": "7ab487bdf3cba69d4819e4f4f01d1c9398ab251b4641041e88a1df4d000a6caa",
+          "width": 320,
+          "height": 2079,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/geumcheon-funeral-wreath/",
+          "path": "screenshots/320/regions--geumcheon-funeral-wreath.jpg",
+          "sha256": "0ab679dc77f8aa8fe21ad696ed97fcccd84e0d69a9d284fc0a3e1f443b6d1722",
+          "width": 320,
+          "height": 10971,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/404.html",
+          "path": "screenshots/320/404-html.jpg",
+          "sha256": "6538d2a5e38eb4ed898d2ca1c612602994630a78bb22281621911b2f3424a02e",
+          "width": 320,
+          "height": 1045,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/",
+          "path": "screenshots/390/home.jpg",
+          "sha256": "fc67eba4db29b847f4398ccd8367e1946be549ef9f5285e0de4ccbc17413bdc1",
+          "width": 390,
+          "height": 4158,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/",
+          "path": "screenshots/390/regions.jpg",
+          "sha256": "0fcf5ad4a58fc5cf9ff0c9030f23f04f997ce01b91bc2d9bd3cac0f01fed7c57",
+          "width": 390,
+          "height": 1871,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/geumcheon-funeral-wreath/",
+          "path": "screenshots/390/regions--geumcheon-funeral-wreath.jpg",
+          "sha256": "80ac9854452a200e2e06f51094529c8d73dd45231cec090718bb4165535efff4",
+          "width": 390,
+          "height": 9578,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/404.html",
+          "path": "screenshots/390/404-html.jpg",
+          "sha256": "c151bc9c6c42b45ad3984559911be04fb4a95e869ff605b45b77ae206f080412",
+          "width": 390,
+          "height": 969,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/",
+          "path": "screenshots/1280/home.jpg",
+          "sha256": "2d056763ffb11447546841540b322f73fc98c5d6cba1be4cbcba53325abc3bc6",
+          "width": 1280,
+          "height": 3990,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/",
+          "path": "screenshots/1280/regions.jpg",
+          "sha256": "bfe2a41e0063e8ba4f9dc647c9921e1425cf73c2b305f763ad9371fb72290464",
+          "width": 1280,
+          "height": 1478,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/regions/geumcheon-funeral-wreath/",
+          "path": "screenshots/1280/regions--geumcheon-funeral-wreath.jpg",
+          "sha256": "3090eea05ce4946bd83da309a5e6a2998572799546bd1acfe45f148426336c93",
+          "width": 1280,
+          "height": 7653,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        },
+        {
+          "route": "/404.html",
+          "path": "screenshots/1280/404-html.jpg",
+          "sha256": "3457b87a18265ee0a2758b25f7baab262a19308d42300b6cba201dff3a3f84ce",
+          "width": 1280,
+          "height": 900,
+          "pixelReview": "PASS",
+          "pixelReviewScope": "Full-page composition, images, banner presence and responsive layout directly inspected. All 320px detail pages and Geumcheon 390px detail were additionally read in continuous original-width crops through body, products, FAQ and footer."
+        }
+      ],
+      "originalEvidenceManifestSha256": "55826afdf1eac2d4e4c17894a23972129cdef8df4e657b63841e6e58dc7b229a",
+      "originalEvidenceHashes": {
+        "browser-console.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "capture-results.json": "b04e51753911a77b663c107406013c6030d5af07aa7698e45abbd6cea5a8119f",
+        "dist/404.html": "b16e60b4fdf720a5165fbc5518706307579d1c7d3c96637bedfb0c5f9b713307",
+        "dist/_astro/BaseLayout.DeABFOxw.css": "c5912b1d2ee07e2fa35462bf40fdc1e3c017ba8147a6b7e117c08025316d0079",
+        "dist/_headers": "3831fc6cebb82f8b15db4a56d950b93a878b1eb7d2bd47a8adff888353dead43",
+        "dist/favicon.svg": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+        "dist/images/editorial/opening-wreath-illustration-v1.webp": "cd6ca9f33f39c0568b7acc67e7fa17d2993a75da50cee237e735c8490624c8b8",
+        "dist/images/products/funeral-basic.jpg": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+        "dist/images/products/funeral-large.jpg": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+        "dist/images/products/funeral-premium.jpg": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+        "dist/images/products/funeral-xl.jpg": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+        "dist/images/shared-banners/flower-budget.webp": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df",
+        "dist/images/shared-banners/flower-consultation.webp": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b",
+        "dist/images/shared-banners/flower-message.webp": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253",
+        "dist/index.html": "cb5cd1309a15e2db1de3b7d0339df75aa1cda9d42a549cd31b97347b007aa4ae",
+        "dist/regions/geumcheon-funeral-wreath/index.html": "0501630c8b7237f59d8b109572826027ae34f08211f1d2b5a6d4beec8163b91a",
+        "dist/regions/index.html": "0276a1682d4c9b349f6d1e7a87388314caaf08b4d33fa8468dc5674dc2ab5376",
+        "dist/robots.txt": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1",
+        "logs/browser-capture.log": "5798ebaff74c66406ca405ab0c976dae49f91a73b5a18c11a8a6fb5d3c764256",
+        "logs/control-tests.log": "a808282c5bcac3676e53dc20c099adcc3f2e2b734c4e299646c7bd15d6178ec0",
+        "logs/first.manifest.json": "ebcb4fedf90989a7aa9347a9e98385dad2a0fe8a01344680f7fc50df1f0ae05f",
+        "logs/font-match.txt": "ac9be2a1fbc08bb6bd4aa30122a4180d4a2780fbb87c6dbc888f1541afe540aa",
+        "logs/native-build-first.log": "0c56fdb27fc745a992e5829f2c31f377a541bbc46060e08da39631ae9cc498fa",
+        "logs/native-build-second.log": "b26c8c9842b676b9e76741eaf5ba751a0a790fd0d7d74ae4616ce7edda46f01b",
+        "logs/native-qa-first.log": "543ae38eca93a67e50f421b67605a4ef0abb69b205a824f832f2e588a8f8bdcb",
+        "logs/native-qa-second.log": "e2d7dace83433de895e0d7ac055941df03e221a4b07446099c5e30c1ce5896a8",
+        "logs/native-tests-first.log": "77ab413133586a95a115677fb1e1520f0d43379976f0726002c2bb50f0e24d09",
+        "logs/native-tests-second.log": "c0d235d324cd2137e60964c05d6b1c3c32fea54468ad046ad55f1c04f9e38d14",
+        "logs/second.manifest.json": "ebcb4fedf90989a7aa9347a9e98385dad2a0fe8a01344680f7fc50df1f0ae05f",
+        "native/detail-1280-body.png": "796d2a815466d5be04c88168ceebd7114cde71c2a24a742aba421aa7dc27d501",
+        "native/detail-1280-faq.png": "43cc07ee16e20a9ed6e487abcf7823bffe2b9b270bbc03a7a517bb54775fac2e",
+        "native/detail-1280-top.png": "723e21bc7b4613afdd2f00962248881cb44c63c4d2588c6aa51f6fd4ace77602",
+        "native/detail-390-body.png": "33819b9c38ea9825b381e7ba996810d15570102c5151cf0b04c00fb63d78a5c8",
+        "native/detail-390-faq.png": "1effb4ef13cfb1e6f951f5548beec5f71bad8b2efe880528996424a44f948cec",
+        "native/detail-390-top.png": "6247d9a80e99256a144e80fa1d0bdda658300e6490e0f7d3dbb4265dae3dc0b5",
+        "native/home-mobile.png": "f5199da28e3bb9f7b95c517837a420c79e2dadc04063ed27491e2f4d7795ee29",
+        "native/report.json": "6cb997cd7a460a736dd20ca35e2d287eb0f27b76bd107bca2913cf082771e17d",
+        "network.json": "98214da5d3905ddf1a7261e3625905896913920a81434536888426f2d83eaa5f",
+        "page-errors.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "screenshots/1280/404-html.jpg": "3457b87a18265ee0a2758b25f7baab262a19308d42300b6cba201dff3a3f84ce",
+        "screenshots/1280/home.jpg": "2d056763ffb11447546841540b322f73fc98c5d6cba1be4cbcba53325abc3bc6",
+        "screenshots/1280/regions--geumcheon-funeral-wreath.jpg": "3090eea05ce4946bd83da309a5e6a2998572799546bd1acfe45f148426336c93",
+        "screenshots/1280/regions.jpg": "bfe2a41e0063e8ba4f9dc647c9921e1425cf73c2b305f763ad9371fb72290464",
+        "screenshots/320/404-html.jpg": "6538d2a5e38eb4ed898d2ca1c612602994630a78bb22281621911b2f3424a02e",
+        "screenshots/320/home.jpg": "834acfaa2f9e8b9fe28c336e61b120e04ac8f7da5523e242c8416067626ab1fc",
+        "screenshots/320/regions--geumcheon-funeral-wreath.jpg": "0ab679dc77f8aa8fe21ad696ed97fcccd84e0d69a9d284fc0a3e1f443b6d1722",
+        "screenshots/320/regions.jpg": "7ab487bdf3cba69d4819e4f4f01d1c9398ab251b4641041e88a1df4d000a6caa",
+        "screenshots/390/404-html.jpg": "c151bc9c6c42b45ad3984559911be04fb4a95e869ff605b45b77ae206f080412",
+        "screenshots/390/home.jpg": "fc67eba4db29b847f4398ccd8367e1946be549ef9f5285e0de4ccbc17413bdc1",
+        "screenshots/390/regions--geumcheon-funeral-wreath.jpg": "80ac9854452a200e2e06f51094529c8d73dd45231cec090718bb4165535efff4",
+        "screenshots/390/regions.jpg": "0fcf5ad4a58fc5cf9ff0c9030f23f04f997ce01b91bc2d9bd3cac0f01fed7c57",
+        "source-readback.json": "d5fcf999619b2f79246d402579355f79bcf5c41eb60ac8ca50930f3e4f3988b5"
+      },
+      "nativeNpmTestLogSummaries": {
+        "first": {
+          "tests": [
+            131,
+            116
+          ],
+          "pass": [
+            131,
+            116
+          ],
+          "fail": [
+            0,
+            0
+          ]
+        },
+        "second": {
+          "tests": [
+            131,
+            116
+          ],
+          "pass": [
+            131,
+            116
+          ],
+          "fail": [
+            0,
+            0
+          ]
+        }
+      }
+    }
+  },
+  "pixelJudgment": {
+    "status": "PASS",
+    "blockingDefects": [],
+    "checked": "Images are painted, layouts are coherent at 320/390/1280px, no observed horizontal clipping/overflow, required banners visible on intended routes; 404 pages have no shared banners, long content/products/FAQs/footer available. Gangseo listing has the expected 2+2 distribution separated by the middle banner.",
+    "nonblockingObservations": [
+      {
+        "site": "geumcheon",
+        "finding": "The single home guide card retains a narrow/half-width mobile column with unused space beside it; text remains visible. This is preserved native source layout."
+      }
+    ]
+  },
+  "limitations": [
+    "Public URLs, live HTTP response behavior, hosting, production availability, DNS, release permission and IndexNow were not tested or authorized by this QA.",
+    "Full-page screenshots show a fixed mobile CTA near the initial viewport bottom; they are not proof that every dynamic scrolled viewport is free of occlusion. No independent interactive real-device scrolling test was performed.",
+    "The original native element-level FAQ PNG samples contain sticky-header/fixed-CTA overlays over some text. They alone are not sufficient unclipped-FAQ evidence. The supplemental full-page JPEG sections show the FAQ content without those element-capture overlays.",
+    "390px and 1280px captures were directly inspected for layout and image integrity; this does not claim exhaustive character-by-character proofreading of all rendered text at every size.",
+    "Native PNG hashes were checked for every file, but actual native PNG pixel inspection covered six samples, not every native PNG.",
+    "Original capture-results.json and evidence-manifest.json retain pixelReview:pending because they predate this independent pixel review; this separate review supplies the later verdict without rewriting artifact bytes.",
+    "CI browser facts and navigation/back/reload assertions are recorded runner telemetry independently inspected as files, not a second browser execution by this reviewer."
+  ],
+  "actions": {
+    "reviewerModifiedAuthorCode": false,
+    "reviewerPushed": false,
+    "reviewerStartedJobs": false,
+    "deployed": false,
+    "sourceOrApprovalChanged": false,
+    "publicHttpVerified": false,
+    "productionReleaseAuthorized": false,
+    "phoneOrShopNavigated": false
+  },
+  "evidenceFilesSha256": {
+    "prepush-checks-v2.json": "9caa1a269a0bc22f11fc969bca4099c71aef54b0ea3b0c2cec5e08cab031eba3",
+    "prepared-artifact-check-v2.json": "3f964b35dff0d0c172baa70eb323625bfa00195e0c5c21f17075918d52fdaeef",
+    "control-tests-v2.log": "876d4459874d6d1dd39c4f9f64e6c10ac2f848d1e98619801001670b74524b04",
+    "existing-trigger-audit.json": "4f932b6041410c87495bf1606619ca2ef54797efbb52a52f8b9e48ca2c6e0c2e",
+    "remote-control-readback.json": "ab17677009c7ad86d2f359d4974630d62ff3e0d5d5be0f488db0ee0840634b74",
+    "remote-diff-readback.json": "4a225cf5736f889bc21cf9378b2273637d69788d9b4155d673037cb17ed35e38",
+    "artifacts-api-initial.json": "909788ffd87d775c2ba74aca68fdfd25c14440df7ccf6380050ac33d39e927bc",
+    "ci-byte-checks.json": "fdb141b1ae1c58f4b65f1e53053106de77fae261de0ebcf34e90694bccce75b1",
+    "run-final.json": "de562dfa7a830f64145271fc0c610140a8e33e849396358c654f6c7856b7a1fc",
+    "jobs-final.json": "ecc02dd7998d6d28173dd71afef6cac49d6612ea42d7c41091306f2fa9a06f12",
+    "main-final.json": "5f07fc453243fc9821a2e4d2944ee50cdbf0c43410c315727ba30eec0b66ae42",
+    "pixel-sheet-index.json": "056f61950c5216c125b3675c057609b115b3c96771e79ff93cf283698b88af94"
+  }
+}

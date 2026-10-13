@@ -1,0 +1,63 @@
+
+> build
+> node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_links.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py
+
+[2m22:48:39[22m [34m[types][39m Generated [2m54ms[22m
+[2m22:48:39[22m [34m[check][39m Getting diagnostics for Astro files in /home/runner/work/fwith-site-factory/fwith-site-factory/source/site-factory/seoul-gangseo-flower...
+Result (47 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+[2m22:48:43[22m [34m[types][39m Generated [2m42ms[22m
+[2m22:48:43[22m [34m[build][39m output: [34m"static"[39m
+[2m22:48:43[22m [34m[build][39m mode: [34m"static"[39m
+[2m22:48:43[22m [34m[build][39m directory: [34m/home/runner/work/fwith-site-factory/fwith-site-factory/source/site-factory/seoul-gangseo-flower/dist/[39m
+[2m22:48:43[22m [34m[build][39m Collecting build info...
+[2m22:48:43[22m [34m[build][39m [32m✓ Completed in 86ms.[39m
+[2m22:48:44[22m [34m[build][39m Building static entrypoints...
+[2m22:48:44[22m [34m[vite][39m [32m✓ built in 172ms[39m
+[2m22:48:44[22m [34m[vite][39m [32m✓ built in 18ms[39m
+[2m22:48:44[22m [34m[build][39m Rearranging server assets...
+
+[42m[30m generating static routes [39m[49m
+[2m22:48:44[22m   [34m├─[39m [2m/404.html[22m [2m(+14ms)[22m 
+[2m22:48:44[22m   [34m├─[39m [2m/robots.txt[22m [2m(+2ms)[22m 
+[2m22:48:44[22m   [34m├─[39m [2m/regions/magok-dong-ewha-seoul-funeral-wreath/index.html[22m [2m(+11ms)[22m 
+[2m22:48:44[22m   [34m├─[39m [2m/regions/oebalsan-dong-mayfield-wedding-wreath/index.html[22m [2m(+3ms)[22m 
+[2m22:48:44[22m   [34m├─[39m [2m/regions/magok-dong-mplus-office-congrats-wreath/index.html[22m [2m(+3ms)[22m 
+[2m22:48:44[22m   [34m├─[39m [2m/regions/hwagok-dong-gangseo-artrium-performance-wreath/index.html[22m [2m(+3ms)[22m 
+[2m22:48:44[22m   [34m├─[39m [2m/regions/index.html[22m [2m(+4ms)[22m 
+[2m22:48:44[22m   [34m├─[39m [2m/index.html[22m [2m(+3ms)[22m 
+[2m22:48:44[22m [32m✓ Completed in 65ms.
+[39m
+[2m22:48:44[22m [34m[build][39m [32m✓ Completed in 292ms.[39m
+[2m22:48:44[22m [34m[@astrojs/sitemap][39m `sitemap-index.xml` created at `dist`
+[2m22:48:44[22m [34m[build][39m 7 page(s) built in [1m395ms[22m
+[2m22:48:44[22m [34m[build][39m [1mComplete![22m
+STATIC QA PASSED: 4 details, 6 HTML routes; indexable=True; exact metadata/sitemap/snapshot/link parity
+GRAPH QA PASSED { pages: 4, hubs: 1 }
+FAQ / PRODUCT QA: 4 details, 17 visible FAQs, 28 exact product links
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.176s
+
+OK
+FAQ / PRODUCT QA: 4 details, 17 visible FAQs, 28 exact product links
+FAQ / PRODUCT QA: 4 details, 17 visible FAQs, 28 exact product links
+SHARED BANNER QA: 6 customer pages, 18 banners; headings, alt, exact assets and links checked
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.276s
+
+OK
+SHARED BANNER QA: 6 customer pages, 18 banners; headings, alt, exact assets and links checked
+SHARED BANNER QA: 7 customer pages, 18 banners; headings, alt, exact assets and links checked
+DIRECTORY QA: 20 administrative entries; 19 exact purchase links; all same-dong intents retained
+DIRECTORY SPACING QA: {"cards": 4, "districts": 1, "eligible": true, "bannerKinds": ["message", "budget", "consultation"], "visibleCardsBetweenBanners": [2, 2], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.051s
+
+OK
+DIRECTORY SPACING QA: {"cards": 4, "districts": 1, "eligible": true, "bannerKinds": ["message", "budget", "consultation"], "visibleCardsBetweenBanners": [2, 2], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}

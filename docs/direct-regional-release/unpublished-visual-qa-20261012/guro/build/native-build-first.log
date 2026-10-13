@@ -1,0 +1,68 @@
+
+> build
+> node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && python3 scripts/test_output_bindings.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_links.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py
+
+[2m22:48:30[22m [34m[types][39m Generated [2m77ms[22m
+[2m22:48:30[22m [34m[check][39m Getting diagnostics for Astro files in /home/runner/work/fwith-site-factory/fwith-site-factory/source/site-factory/seoul-guro-flower...
+Result (51 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+[2m22:48:34[22m [34m[types][39m Generated [2m31ms[22m
+[2m22:48:34[22m [34m[build][39m output: [34m"static"[39m
+[2m22:48:34[22m [34m[build][39m mode: [34m"static"[39m
+[2m22:48:34[22m [34m[build][39m directory: [34m/home/runner/work/fwith-site-factory/fwith-site-factory/source/site-factory/seoul-guro-flower/dist/[39m
+[2m22:48:34[22m [34m[build][39m Collecting build info...
+[2m22:48:34[22m [34m[build][39m [32m✓ Completed in 72ms.[39m
+[2m22:48:34[22m [34m[build][39m Building static entrypoints...
+[2m22:48:34[22m [34m[vite][39m [32m✓ built in 146ms[39m
+[2m22:48:34[22m [34m[vite][39m [32m✓ built in 13ms[39m
+[2m22:48:34[22m [34m[build][39m Rearranging server assets...
+
+[42m[30m generating static routes [39m[49m
+[2m22:48:34[22m   [34m├─[39m [2m/404.html[22m [2m(+12ms)[22m 
+[2m22:48:34[22m   [34m├─[39m [2m/robots.txt[22m [2m(+2ms)[22m 
+[2m22:48:34[22m   [34m├─[39m [2m/regions/guro-funeral-hospitals-condolence-wreath/index.html[22m [2m(+9ms)[22m 
+[2m22:48:34[22m   [34m├─[39m [2m/regions/guro-wedding-venues-congrats-wreath/index.html[22m [2m(+3ms)[22m 
+[2m22:48:34[22m   [34m├─[39m [2m/regions/guro-dong-digital-valley-office-wreath/index.html[22m [2m(+3ms)[22m 
+[2m22:48:34[22m   [34m├─[39m [2m/regions/index.html[22m [2m(+4ms)[22m 
+[2m22:48:34[22m   [34m├─[39m [2m/index.html[22m [2m(+2ms)[22m 
+[2m22:48:34[22m [32m✓ Completed in 52ms.
+[39m
+[2m22:48:34[22m [34m[build][39m [32m✓ Completed in 239ms.[39m
+[2m22:48:34[22m [34m[@astrojs/sitemap][39m `sitemap-index.xml` created at `dist`
+[2m22:48:34[22m [34m[build][39m 6 page(s) built in [1m320ms[22m
+[2m22:48:34[22m [34m[build][39m [1mComplete![22m
+STATIC QA PASSED: 3 details, 5 HTML routes; indexable=False; exact metadata/sitemap/snapshot/link parity
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.085s
+
+OK
+STATIC QA PASSED: 3 details, 5 HTML routes; indexable=False; exact metadata/sitemap/snapshot/link parity
+GRAPH QA PASSED { pages: 3, hubs: 1 }
+FAQ / PRODUCT QA: 3 details, 9 visible FAQs, 24 exact product links
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.106s
+
+OK
+FAQ / PRODUCT QA: 3 details, 9 visible FAQs, 24 exact product links
+FAQ / PRODUCT QA: 3 details, 9 visible FAQs, 24 exact product links
+SHARED BANNER QA: 5 customer pages, 15 banners; headings, alt, exact assets and links checked
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.610s
+
+OK
+SHARED BANNER QA: 5 customer pages, 15 banners; headings, alt, exact assets and links checked
+SHARED BANNER QA: 6 customer pages, 15 banners; headings, alt, exact assets and links checked
+DIRECTORY QA: 16 administrative entries; 24 exact destination links; grouped=True; all named destination anchors checked
+DIRECTORY SPACING QA: {"cards": 3, "districts": 1, "eligible": true, "bannerKinds": ["message", "budget", "consultation"], "visibleCardsBetweenBanners": [2, 1], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.056s
+
+OK
+DIRECTORY SPACING QA: {"cards": 3, "districts": 1, "eligible": true, "bannerKinds": ["message", "budget", "consultation"], "visibleCardsBetweenBanners": [2, 1], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}

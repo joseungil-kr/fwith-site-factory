@@ -4,8 +4,8 @@
   "officialCode": "11545",
   "scopeKey": "seoul-geumcheon-direct-independent-preparation-20261012",
   "mode": "direct-github-static",
-  "updatedAt": "2026-10-12T21:59:42.550494+00:00",
-  "status": "prepared_unpublished_exact_source_static_verified_visual_pending",
+  "updatedAt": "2026-10-13T01:48:31Z",
+  "status": "prepared_unpublished_exact_source_static_and_runner_visual_verified",
   "owner": {
     "name": "implement_geumcheon_regional_site",
     "active": false,
@@ -46,7 +46,7 @@
     "finalCopy": "PASS_EXACT_REV3_TEXT_AND_RENDERED_HTML",
     "implementation": "PASS_SOURCE_STATIC_ONLY",
     "build": "PASS_EXACT_SOURCE_SHA",
-    "renderedScreen": "UNVERIFIED_CHROMIUM_SOCKET_PERMISSION_ERROR",
+    "renderedScreen": "PASS_PINNED_SOURCE_RUNNER_LOOPBACK_VISUAL_ONLY",
     "publicHttp": "NOT_PUBLISHED",
     "copySha256": "01f9e71d13ad3a11122b832d649f60b6da976c85513ee90b6ccb531737fb7455",
     "copyReviewSha256": "fd1a09b38acb21c708d5f418e6a293aac8b9dbb37cfeb49191595e807b87acc9",
@@ -72,9 +72,8 @@
     "GscSubmitted": false,
     "url": null
   },
-  "lastSuccessfulStage": "exact_remote_source_readback_rebuild_static_and_independent_review",
+  "lastSuccessfulStage": "exact_pinned_source_actions_browser_and_independent_pixel_review",
   "remainingStages": [
-    "Actual wide/narrow browser visual QA in a permitted environment",
     "Separate explicit publication authorization and preflight after Gangseo priority",
     "Public HTTP/provider404/core behavior and separately authorized indexing verification"
   ],
@@ -121,5 +120,27 @@
     "exactSource": "implementation/exact-source-verification.json",
     "readback": "implementation/source-ref-readback.json",
     "artifact": "implementation/static-artifact/"
+  },
+  "visualQa": {
+    "status": "PASS_PINNED_SOURCE_RUNNER_LOOPBACK_VISUAL_ONLY",
+    "verifiedAt": "2026-10-12T23:02:00Z",
+    "sourceRevision": "bbb016305dd2fe29f7d985a669acaa02224a9f2f",
+    "controlRevision": "a12c406b2d6b4254a7a5541e7d1e631bf09701f2",
+    "runId": 38318719004,
+    "runAttempt": 1,
+    "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38318719004",
+    "nativeAndCaptureViewportWidths": [
+      320,
+      390,
+      1280
+    ],
+    "routeViewportCaptures": 12,
+    "evidence": "../unpublished-visual-qa-20261012/geumcheon/capture-results.json",
+    "independentPixelReview": "../unpublished-visual-qa-20261012/independent-visual-review.json",
+    "scope": "Immutable unpublished source; GitHub Actions runner loopback only; all source routes and native browser assertions retained",
+    "publicHttpVerified": false,
+    "public404Verified": false,
+    "publicationApprovalChanged": false,
+    "sourceApprovalChanged": false
   }
 }

@@ -1,0 +1,36 @@
+
+> qa
+> python3 scripts/qa_static.py && python3 scripts/test_output_bindings.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_links.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py
+
+STATIC QA PASSED: 3 details, 5 HTML routes; indexable=False; exact metadata/sitemap/snapshot/link parity
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.108s
+
+OK
+STATIC QA PASSED: 3 details, 5 HTML routes; indexable=False; exact metadata/sitemap/snapshot/link parity
+GRAPH QA PASSED { pages: 3, hubs: 1 }
+FAQ / PRODUCT QA: 3 details, 9 visible FAQs, 24 exact product links
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.108s
+
+OK
+FAQ / PRODUCT QA: 3 details, 9 visible FAQs, 24 exact product links
+FAQ / PRODUCT QA: 3 details, 9 visible FAQs, 24 exact product links
+SHARED BANNER QA: 5 customer pages, 15 banners; headings, alt, exact assets and links checked
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.185s
+
+OK
+SHARED BANNER QA: 5 customer pages, 15 banners; headings, alt, exact assets and links checked
+SHARED BANNER QA: 6 customer pages, 15 banners; headings, alt, exact assets and links checked
+DIRECTORY QA: 16 administrative entries; 24 exact destination links; grouped=True; all named destination anchors checked
+DIRECTORY SPACING QA: {"cards": 3, "districts": 1, "eligible": true, "bannerKinds": ["message", "budget", "consultation"], "visibleCardsBetweenBanners": [2, 1], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.042s
+
+OK
+DIRECTORY SPACING QA: {"cards": 3, "districts": 1, "eligible": true, "bannerKinds": ["message", "budget", "consultation"], "visibleCardsBetweenBanners": [2, 1], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
