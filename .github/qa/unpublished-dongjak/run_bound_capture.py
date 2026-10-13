@@ -10,7 +10,7 @@ from threading import Thread
 import argparse, json, os, sys, traceback
 from adapter import (HERE, SITE_PATH, ROUTES, load, validate_spec, validate_environment,
                      verify_upstream, verify_frozen_bytes, expectations,
-                     validate_extra_facts, assert_focus, assert_footer_content, screenshot_selection, validate_supplemental_evidence, write)
+                     validate_extra_facts, validate_not_found_facts, assert_focus, assert_footer_content, screenshot_selection, validate_supplemental_evidence, write)
 import controls, capture
 
 EXTRA_FACTS = r'''() => ({
@@ -219,6 +219,22 @@ def supplemental(source, spec, output, expected):
     write(output/'supplemental-results.json',result);return passed
 
 
+# The immutable upstream helper assumes a storefront anchor on every page.
+# Dongjak's approved 404 instead has a strictly source-bound guide/phone/home
+# contract. Never alter DOM/facts or suppress any other assertion.
+ORIGINAL_ASSERT_FACTS=capture.assert_facts
+
+def assert_bound_facts(facts, specification, route, faq, width, expected):
+    if route=='/404.html':validate_not_found_facts(facts,expected)
+    try:
+        ORIGINAL_ASSERT_FACTS(facts,specification,route,faq,width)
+    except AssertionError as error:
+        if route!='/404.html' or error.args!=('CTA order href',):raise
+        # Exact source anchor equality above forbids storefront/external anchors.
+        # Upstream's only assertion after order href must still execute here.
+        assert facts['fontStatus']=='loaded', 'Fonts incomplete'
+    validate_extra_facts(facts['extra'],expected,route)
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--binding',type=Path,required=True)
@@ -229,11 +245,9 @@ def main():
     source=Path(os.environ['SOURCE_ROOT']).resolve();output=Path(os.environ['EVIDENCE_ROOT']).resolve()
     verify_frozen_bytes(source,allow_generated=True);expected=expectations(source/SITE_PATH)
     # Add checks without altering original on-disk scripts or removing any original assertion.
-    original_assert=capture.assert_facts
     capture.FACTS='() => ({...('+capture.FACTS+')(),extra:('+EXTRA_FACTS+')()})'
     def assert_all(facts,specification,route,faq,width):
-        original_assert(facts,specification,route,faq,width)
-        validate_extra_facts(facts['extra'],expected,route)
+        assert_bound_facts(facts,specification,route,faq,width,expected)
     capture.assert_facts=assert_all
     def only_bound_site(key):
         assert key=='dongjak','Unexpected execution scope';return spec

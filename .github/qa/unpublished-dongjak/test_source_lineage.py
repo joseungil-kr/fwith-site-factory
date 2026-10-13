@@ -41,7 +41,7 @@ class SourceLineageTests(unittest.TestCase):
   from test_dongjak_binding import DongjakBindingTests
   helper=DongjakBindingTests();data=json.dumps({'revision':'1570f3866985a1434c2847604840926db92e300b'},indent=2).encode()
   with self.assertRaisesRegex(AssertionError,'Generated revision bytes differ'):helper.check_bytes(data)
- def test_capture_and_upstream_unchanged(self):
+ def test_current_capture_pin_and_upstream_unchanged(self):
   adapter.verify_upstream()
-  self.assertEqual(adapter.sha((adapter.HERE/'run_bound_capture.py').read_bytes()),'c0e56d687db4aacc119fca9fff1edd2afe2d820f08b366d60fc749c32d406bd0')
+  self.assertEqual(adapter.sha((adapter.HERE/'run_bound_capture.py').read_bytes()),'8e0e95cbb73d761e00faa03768a939d5a6c014222bfba124a3dc1d5f8f9362ce')
 if __name__=='__main__':unittest.main()

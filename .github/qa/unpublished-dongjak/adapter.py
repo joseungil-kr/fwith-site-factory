@@ -93,6 +93,31 @@ def verify_frozen_bytes(root, allow_generated=False):
         rows.append({'path':e['path'],'sha256':e['sha256'],'gitBlobSha':blob})
     return {'files':len(rows),'bytes':sum(e['bytes'] for e in frozen_entries()),'manifestSha256':MANIFEST_SHA,'verified':True}
 
+
+def not_found_contract(site):
+    common=load(Path(site)/'src/data/dongjak-common-copy.json')
+    ui=load(Path(site)/'src/data/dongjak-ui-copy.json')
+    nf=common['notFound'];footer=common['footer']
+    anchors=[{'href':'#main-content','text':ui['accessibility']['skip']},
+             {'href':'/','text':'✿'+common['brandName']}]
+    anchors += [{'href':x['href'],'text':x['label']}for x in common['navigation']]
+    anchors += [{'href':'/regions/','text':ui['directory']['navLabel']},
+                {'href':common['phoneHref'],'text':common['phoneLabel']},
+                {'href':nf['href'],'text':nf['linkText']},
+                {'href':common['phoneHref'],'text':footer['phoneLinkText']},
+                {'href':footer['homeHref'],'text':footer['homeLinkText']},
+                {'href':common['phoneHref'],'text':footer['phoneLinkText']},
+                {'href':'/regions/','text':ui['directory']['navLabel']}]
+    assert len(anchors)==11 and all(x['href'].startswith(('/','#','tel:'))for x in anchors)
+    return {'h1':[nf['title']],'anchors':anchors}
+
+def validate_not_found_facts(facts, expected):
+    contract=expected['notFoundContract']
+    assert facts['h1']==contract['h1'], '404 heading differs from approved source'
+    assert facts['anchors']==contract['anchors'], '404 link href/text/order differs from approved source'
+    assert facts['robots']=='noindex,nofollow,noarchive' and facts['canonical'] is None, '404 indexability/canonical drift'
+    assert facts['banners']==0 and facts['faq']==[] and facts['images']==[], '404 content scope drift'
+
 def expectations(site):
     site=Path(site); pages=load(site/'src/data/pages.json'); coverage=load(site/'src/data/region-coverage.json')
     products=load(site/'src/data/products.json'); banner=load(site/'src/data/shared-banner-manifest.json')
@@ -106,7 +131,7 @@ def expectations(site):
     assert (plan['originalPlanN'],plan['originalCandidateN'],plan['activeCandidateN'],plan['heldCandidateN'])==(1,12,2,10)
     def chosen(p):
         return [{'key':x['key'],'sku':x['officialSku'],'href':x['orderUrl'],'priceLabel':x['priceLabel']} for sku in p['productCardSkus'] for x in products if x['officialSku']==sku]
-    return {'routes':ROUTES,'customerRoutes':ROUTES[:-1], 'viewports':[list(x) for x in controls.VIEWPORTS],
+    return {'notFoundContract':not_found_contract(site),'routes':ROUTES,'customerRoutes':ROUTES[:-1], 'viewports':[list(x) for x in controls.VIEWPORTS],
         'captureCount':12,'customerCaptureCount':9,'productionApproved':False,'indexable':False,'sitemapRoutes':[],
         'homeProducts':[{'key':p['key'],'href':p['orderUrl'],'priceLabel':p['priceLabel']}for p in products],
         'pages':{p['url']:{'faq':p['faq'],'facilities':p['facilityAnchors'],'products':chosen(p)} for p in pages},
