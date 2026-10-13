@@ -94,6 +94,8 @@ def inspect(root=Path('.'),write=True):
    assert [(n['text'],n['attrs']['href']) for n in descendants(node) if n['tag']=='a']==[(approved['buttonLabel'],approved['href'])],'Product CTA drift'
    assert hashlib.sha256((dist/p['img'].lstrip('/')).read_bytes()).hexdigest()==approved['imageSha256'],'Product byte drift'
   banners=doc.where(key='data-shared-flower-banner');assert [n['attrs']['data-shared-flower-banner'] for n in banners]==['message','budget','consultation'],'Banner order drift'
+  assert not any(n['tag']=='figcaption' for banner in banners for n in descendants(banner)),'Shared banner caption reintroduced'
+  assert '꽃이랑 공통 안내 이미지 · 실제 판매상품 사진이 아닌 AI 생성 이미지입니다.' not in norm((dist/rel).read_text()),'Removed shared caption reintroduced'
   pos=[doc.nodes.index(n) for n in banners];assert pos[0]<doc.nodes.index(cards[0])<doc.nodes.index(cards[-1])<pos[1],'Banner/product spacing drift'
   if rel==detail_rel:
    assert pos[1]<doc.nodes.index(doc.where('section',key='id',value='places')[0])<doc.nodes.index(doc.where(key='data-visible-faq')[0])<pos[2]<doc.nodes.index(doc.cls('source-references')[0]),'Detail banner/FAQ/source order drift'
@@ -116,8 +118,13 @@ def inspect(root=Path('.'),write=True):
   names=[next(u['name'] for u in c['units'] if u['unitKey']==rel['unitKey'])+(' '+ui['directory']['partialLabel'] if rel['scope']=='partial' else '') for rel in admin['relations']];assert norm(row[0]['text'])==admin['name']+': '+' · '.join(names),'Official administrative relation text drift'
  assert sum(len(a['relations']) for a in c['administrativeCrosswalk'])==18,'Official relationship count drift'
  nf=docs['404.html'];assert not nf.where(key='data-shared-flower-banner') and not nf.where(key='data-order-banner'),'404 marketing forbidden';assert nf.where('h1')[0]['text']==common['notFound']['title'],'404 copy drift';assert any(n['text']==common['notFound']['text'] for n in nf.where('p')),'404 paragraph drift'
+ approval_bytes=(data/'release-approval.json').read_bytes()
+ assert hashlib.sha256(approval_bytes).hexdigest()=='966d6182cc46714eb5f124ae229d487748f493b16b8680b8da270eda255030d5','Release approval byte drift'
+ approval=json.loads(approval_bytes);overlay_bytes=(root/approval['requestedCustomerContentOverlay']['path']).read_bytes()
+ assert hashlib.sha256(overlay_bytes).hexdigest()==approval['requestedCustomerContentOverlay']['sha256'],'Banner overlay byte drift'
+ overlay=json.loads(overlay_bytes)
  for banner in common['bannerPolicy']['banners']:
-  path='/images/shared-banners/'+banner['file'];assert hashlib.sha256((dist/path.lstrip('/')).read_bytes()).hexdigest()==banner['sha256'],'Banner byte drift';assert asset_counts[path]==2,'Banner route count drift'
+  path='/images/shared-banners/'+banner['file'];replacement=overlay['replacements']['public'+path];assert replacement['beforeSha256']==banner['sha256'],'Historical banner pin drift';assert hashlib.sha256((dist/path.lstrip('/')).read_bytes()).hexdigest()==replacement['afterSha256'],'Banner byte drift';assert asset_counts[path]==2,'Banner route count drift'
   for doc in docs.values():
    for n in doc.where('img',key='src',value=path):assert n['attrs']['alt']==banner['alt'],'Banner alt drift'
  assert config['productionApproved'] is True and config['hostnameOwnershipVerified'] is False,'Publication guard drift'

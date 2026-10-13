@@ -44,7 +44,7 @@ test('all original adapters,bindings,helpers and native guard remain byte-preser
  for(const name of ['yeongdeungpo-regions.mjs','yeongdeungpo-heading-anchors.mjs'])assert.equal(sha(bytes('src/lib/'+name)),sha(bytes('tests/reference/yeongdeungpo-runtime/src/lib/'+name)),name);
  for(const name of ['guro-plan-binding','geumcheon-plan-binding'])assert.equal(sha(bytes('src/data/'+name+'.json')),sha(bytes('tests/reference/geumcheon-runtime/src/data/'+name+'.json')));
  assert.equal(sha(bytes('tests/reference/release-baseline/assert_preview_boundary.mjs')),sha(bytes('tests/reference/geumcheon-runtime/scripts/assert_preview_boundary.mjs')));
- for(const file of ['scripts/qa_static.py','scripts/qa_faq_products.py','scripts/test_faq_products.py','scripts/qa_shared_banners.py','scripts/test_shared_banners.py','scripts/test_directory_spacing.py','src/components/SharedFlowerBanner.astro'])assert.equal(sha(bytes(file)),sha(bytes('tests/reference/geumcheon-runtime/'+file)),file);
+ for(const file of ['scripts/qa_static.py','scripts/qa_faq_products.py','scripts/test_faq_products.py','scripts/test_directory_spacing.py'])assert.equal(sha(bytes(file)),sha(bytes('tests/reference/geumcheon-runtime/'+file)),file);
 });
 test('original template-specific tests retained unchanged in fixtures and relocation evidence',()=>{
  for(const name of ['answer-opening.test.mjs','sources.test.mjs'])assert.equal(sha(bytes('tests/reference/geumcheon-'+name+'.txt')),sha(bytes('tests/reference/geumcheon-runtime/tests/'+name)));

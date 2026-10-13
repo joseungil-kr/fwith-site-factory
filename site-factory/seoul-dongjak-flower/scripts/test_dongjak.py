@@ -49,6 +49,10 @@ class Mutations(unittest.TestCase):
   self.mutate(self.home,'href="/">꽃이랑 홈','href="https://fwith.co.kr">꽃이랑 홈');self.fail('Footer destination')
  def test_product_bytes(self):
   f=self.r/'dist/images/products/funeral-basic.jpg';f.write_bytes(f.read_bytes()+b'x');self.fail('Product byte drift')
+ def test_shared_caption_reintroduced(self):
+  self.mutate(self.detail,'</figure>','<figcaption>꽃이랑 공통 안내 이미지 · 실제 판매상품 사진이 아닌 AI 생성 이미지입니다.</figcaption></figure>');self.fail('caption reintroduced')
+ def test_banner_overlay_bytes(self):
+  f=self.r/'src/data/shared-banner-requested-change.json';f.write_text(f.read_text()+' ');self.fail('overlay byte drift')
  def test_banner_bytes(self):
   f=self.r/'dist/images/shared-banners/flower-message.webp';f.write_bytes(f.read_bytes()+b'x');self.fail('Banner byte drift')
 if __name__=='__main__':unittest.main()
