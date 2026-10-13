@@ -1,0 +1,709 @@
+diff --git a/.github/qa/unpublished-dongjak/adapter.py b/.github/qa/unpublished-dongjak/adapter.py
+index 72ebef84b3a805d2a1c671ef2f9e353e869371b3..e588c1c6dead3db67ddaade03ba3612bf0ad2478 100644
+--- a/.github/qa/unpublished-dongjak/adapter.py
++++ b/.github/qa/unpublished-dongjak/adapter.py
+@@ -93,6 +93,31 @@ def verify_frozen_bytes(root, allow_generated=False):
+         rows.append({'path':e['path'],'sha256':e['sha256'],'gitBlobSha':blob})
+     return {'files':len(rows),'bytes':sum(e['bytes'] for e in frozen_entries()),'manifestSha256':MANIFEST_SHA,'verified':True}
+ 
++
++def not_found_contract(site):
++    common=load(Path(site)/'src/data/dongjak-common-copy.json')
++    ui=load(Path(site)/'src/data/dongjak-ui-copy.json')
++    nf=common['notFound'];footer=common['footer']
++    anchors=[{'href':'#main-content','text':ui['accessibility']['skip']},
++             {'href':'/','text':'✿'+common['brandName']}]
++    anchors += [{'href':x['href'],'text':x['label']}for x in common['navigation']]
++    anchors += [{'href':'/regions/','text':ui['directory']['navLabel']},
++                {'href':common['phoneHref'],'text':common['phoneLabel']},
++                {'href':nf['href'],'text':nf['linkText']},
++                {'href':common['phoneHref'],'text':footer['phoneLinkText']},
++                {'href':footer['homeHref'],'text':footer['homeLinkText']},
++                {'href':common['phoneHref'],'text':footer['phoneLinkText']},
++                {'href':'/regions/','text':ui['directory']['navLabel']}]
++    assert len(anchors)==11 and all(x['href'].startswith(('/','#','tel:'))for x in anchors)
++    return {'h1':[nf['title']],'anchors':anchors}
++
++def validate_not_found_facts(facts, expected):
++    contract=expected['notFoundContract']
++    assert facts['h1']==contract['h1'], '404 heading differs from approved source'
++    assert facts['anchors']==contract['anchors'], '404 link href/text/order differs from approved source'
++    assert facts['robots']=='noindex,nofollow,noarchive' and facts['canonical'] is None, '404 indexability/canonical drift'
++    assert facts['banners']==0 and facts['faq']==[] and facts['images']==[], '404 content scope drift'
++
+ def expectations(site):
+     site=Path(site); pages=load(site/'src/data/pages.json'); coverage=load(site/'src/data/region-coverage.json')
+     products=load(site/'src/data/products.json'); banner=load(site/'src/data/shared-banner-manifest.json')
+@@ -106,7 +131,7 @@ def expectations(site):
+     assert (plan['originalPlanN'],plan['originalCandidateN'],plan['activeCandidateN'],plan['heldCandidateN'])==(1,12,2,10)
+     def chosen(p):
+         return [{'key':x['key'],'sku':x['officialSku'],'href':x['orderUrl'],'priceLabel':x['priceLabel']} for sku in p['productCardSkus'] for x in products if x['officialSku']==sku]
+-    return {'routes':ROUTES,'customerRoutes':ROUTES[:-1], 'viewports':[list(x) for x in controls.VIEWPORTS],
++    return {'notFoundContract':not_found_contract(site),'routes':ROUTES,'customerRoutes':ROUTES[:-1], 'viewports':[list(x) for x in controls.VIEWPORTS],
+         'captureCount':12,'customerCaptureCount':9,'productionApproved':False,'indexable':False,'sitemapRoutes':[],
+         'homeProducts':[{'key':p['key'],'href':p['orderUrl'],'priceLabel':p['priceLabel']}for p in products],
+         'pages':{p['url']:{'faq':p['faq'],'facilities':p['facilityAnchors'],'products':chosen(p)} for p in pages},
+diff --git a/.github/qa/unpublished-dongjak/run_bound_capture.py b/.github/qa/unpublished-dongjak/run_bound_capture.py
+index 232be6253d326268cd3509d13a2cdeed0884550f..74c40e9aa423fb300aedf5fdbc1186468eeffc40 100644
+--- a/.github/qa/unpublished-dongjak/run_bound_capture.py
++++ b/.github/qa/unpublished-dongjak/run_bound_capture.py
+@@ -10,7 +10,7 @@ from threading import Thread
+ import argparse, json, os, sys, traceback
+ from adapter import (HERE, SITE_PATH, ROUTES, load, validate_spec, validate_environment,
+                      verify_upstream, verify_frozen_bytes, expectations,
+-                     validate_extra_facts, assert_focus, assert_footer_content, screenshot_selection, validate_supplemental_evidence, write)
++                     validate_extra_facts, validate_not_found_facts, assert_focus, assert_footer_content, screenshot_selection, validate_supplemental_evidence, write)
+ import controls, capture
+ 
+ EXTRA_FACTS = r'''() => ({
+@@ -219,6 +219,22 @@ def supplemental(source, spec, output, expected):
+     write(output/'supplemental-results.json',result);return passed
+ 
+ 
++# The immutable upstream helper assumes a storefront anchor on every page.
++# Dongjak's approved 404 instead has a strictly source-bound guide/phone/home
++# contract. Never alter DOM/facts or suppress any other assertion.
++ORIGINAL_ASSERT_FACTS=capture.assert_facts
++
++def assert_bound_facts(facts, specification, route, faq, width, expected):
++    if route=='/404.html':validate_not_found_facts(facts,expected)
++    try:
++        ORIGINAL_ASSERT_FACTS(facts,specification,route,faq,width)
++    except AssertionError as error:
++        if route!='/404.html' or error.args!=('CTA order href',):raise
++        # Exact source anchor equality above forbids storefront/external anchors.
++        # Upstream's only assertion after order href must still execute here.
++        assert facts['fontStatus']=='loaded', 'Fonts incomplete'
++    validate_extra_facts(facts['extra'],expected,route)
++
+ def main():
+     parser=argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('--binding',type=Path,required=True)
+@@ -229,11 +245,9 @@ def main():
+     source=Path(os.environ['SOURCE_ROOT']).resolve();output=Path(os.environ['EVIDENCE_ROOT']).resolve()
+     verify_frozen_bytes(source,allow_generated=True);expected=expectations(source/SITE_PATH)
+     # Add checks without altering original on-disk scripts or removing any original assertion.
+-    original_assert=capture.assert_facts
+     capture.FACTS='() => ({...('+capture.FACTS+')(),extra:('+EXTRA_FACTS+')()})'
+     def assert_all(facts,specification,route,faq,width):
+-        original_assert(facts,specification,route,faq,width)
+-        validate_extra_facts(facts['extra'],expected,route)
++        assert_bound_facts(facts,specification,route,faq,width,expected)
+     capture.assert_facts=assert_all
+     def only_bound_site(key):
+         assert key=='dongjak','Unexpected execution scope';return spec
+diff --git a/.github/qa/unpublished-dongjak/run_offline_tests.py b/.github/qa/unpublished-dongjak/run_offline_tests.py
+index d46ce805cdfcff0c7afe19e0e0d71865825cf6bc..82f3834b1f951e76e1f20c2efb01cc5415de25b2 100644
+--- a/.github/qa/unpublished-dongjak/run_offline_tests.py
++++ b/.github/qa/unpublished-dongjak/run_offline_tests.py
+@@ -5,11 +5,11 @@ Upstream SourceTest intentionally excluded: its fixtures would create Git commit
+ import json, os, socket, sys, unittest
+ from pathlib import Path
+ from unittest.mock import patch
+-import adapter, test_adapter, test_revision2, test_dongjak_binding, test_source_lineage
++import adapter, test_adapter, test_revision2, test_dongjak_binding, test_source_lineage, test_404_contract
+ sys.path.insert(0,str(Path(__file__).resolve().parent/'upstream'))
+ import test_controls
+ suite=unittest.TestSuite()
+-for cls in (test_controls.ControlsTest,test_controls.BrowserAssertionsTest,test_adapter.AdapterTests,test_revision2.Revision2Tests,test_dongjak_binding.DongjakBindingTests,test_source_lineage.SourceLineageTests):
++for cls in (test_controls.ControlsTest,test_controls.BrowserAssertionsTest,test_adapter.AdapterTests,test_revision2.Revision2Tests,test_dongjak_binding.DongjakBindingTests,test_source_lineage.SourceLineageTests,test_404_contract.NotFoundContractTests):
+     suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(cls))
+ with patch.object(socket,'socket',side_effect=AssertionError('Network/socket use prohibited in offline preparation tests')):
+     result=unittest.TextTestRunner(verbosity=2).run(suite)
+diff --git a/.github/qa/unpublished-dongjak/test_source_lineage.py b/.github/qa/unpublished-dongjak/test_source_lineage.py
+index 624e2e2a5d1391c3039de24c6e9e3b5f0d259540..16733395f44123d98521e4f70dc4aa6ccbbb479c 100644
+--- a/.github/qa/unpublished-dongjak/test_source_lineage.py
++++ b/.github/qa/unpublished-dongjak/test_source_lineage.py
+@@ -41,7 +41,7 @@ class SourceLineageTests(unittest.TestCase):
+   from test_dongjak_binding import DongjakBindingTests
+   helper=DongjakBindingTests();data=json.dumps({'revision':'1570f3866985a1434c2847604840926db92e300b'},indent=2).encode()
+   with self.assertRaisesRegex(AssertionError,'Generated revision bytes differ'):helper.check_bytes(data)
+- def test_capture_and_upstream_unchanged(self):
++ def test_current_capture_pin_and_upstream_unchanged(self):
+   adapter.verify_upstream()
+-  self.assertEqual(adapter.sha((adapter.HERE/'run_bound_capture.py').read_bytes()),'c0e56d687db4aacc119fca9fff1edd2afe2d820f08b366d60fc749c32d406bd0')
++  self.assertEqual(adapter.sha((adapter.HERE/'run_bound_capture.py').read_bytes()),'8e0e95cbb73d761e00faa03768a939d5a6c014222bfba124a3dc1d5f8f9362ce')
+ if __name__=='__main__':unittest.main()
+diff --git a/.github/qa/unpublished-dongjak/frozen-inputs/observed-404-facts.run38341440858.json b/.github/qa/unpublished-dongjak/frozen-inputs/observed-404-facts.run38341440858.json
+new file mode 100644
+index 0000000..c094bba
+--- /dev/null
++++ b/.github/qa/unpublished-dongjak/frozen-inputs/observed-404-facts.run38341440858.json
+@@ -0,0 +1,515 @@
++{
++  "sourceSha": "430dada32f3f8b53f24aec8d9fdf3724529604e1",
++  "controlSha": "57b63dc8a037b7a25e55c1cd40f2af5ed0ef54b3",
++  "runId": "38341440858",
++  "stateAtCapture": "FAILED_ORIGINAL_UPSTREAM_ORDER_PRESENCE_ASSERTION",
++  "observedRows": [
++    {
++      "route": "/404.html",
++      "width": 320,
++      "height": 740,
++      "issues": [
++        "Traceback (most recent call last):\n  File \"/home/runner/work/fwith-site-factory/fwith-site-factory/control/.github/qa/unpublished-dongjak/upstream/capture.py\", line 134, in main\n    assert_facts(facts,spec,route,expected.get('faq',[]),width)\n  File \"/home/runner/work/fwith-site-factory/fwith-site-factory/control/.github/qa/unpublished-dongjak/run_bound_capture.py\", line 235, in assert_all\n    original_assert(facts,specification,route,faq,width)\n  File \"/home/runner/work/fwith-site-factory/fwith-site-factory/control/.github/qa/unpublished-dongjak/upstream/capture.py\", line 64, in assert_facts\n    assert orders and all(h=='https://fwith.co.kr' or h.startswith('https://fwith.co.kr/') for h in orders), 'CTA order href'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: CTA order href\n"
++      ],
++      "facts": {
++        "url": "http://127.0.0.1:37867/404.html",
++        "scrollX": 0,
++        "scrollY": 0,
++        "viewport": 320,
++        "scrollWidth": 320,
++        "h1": [
++          "찾으시는 안내가 없습니다"
++        ],
++        "robots": "noindex,nofollow,noarchive",
++        "canonical": null,
++        "revision": "430dada32f3f8b53f24aec8d9fdf3724529604e1",
++        "faq": [],
++        "overflow": [],
++        "images": [],
++        "anchors": [
++          {
++            "href": "#main-content",
++            "text": "본문 바로가기"
++          },
++          {
++            "href": "/",
++            "text": "✿꽃이랑"
++          },
++          {
++            "href": "/",
++            "text": "홈"
++          },
++          {
++            "href": "/regions/dongjak-funeral-wreath/",
++            "text": "동작구 근조화환"
++          },
++          {
++            "href": "/regions/",
++            "text": "안내 목록"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644"
++          },
++          {
++            "href": "/regions/dongjak-funeral-wreath/",
++            "text": "근조화환 안내로 이동"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644 전화 상담"
++          },
++          {
++            "href": "/",
++            "text": "꽃이랑 홈"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644 전화 상담"
++          },
++          {
++            "href": "/regions/",
++            "text": "안내 목록"
++          }
++        ],
++        "banners": 0,
++        "fixedBar": true,
++        "bodyFont": "Arial, \"Noto Sans KR\", sans-serif",
++        "fontStatus": "loaded",
++        "extra": {
++          "banners": [],
++          "faq": [],
++          "products": [],
++          "facilities": [],
++          "guideLinks": [],
++          "legalUnits": [],
++          "legalLinks": [],
++          "adminRows": [],
++          "adminFacilityLinks": []
++        }
++      },
++      "finalScreenshotFacts": {
++        "url": "http://127.0.0.1:37867/404.html",
++        "scrollX": 0,
++        "scrollY": 0,
++        "viewport": 320,
++        "scrollWidth": 320,
++        "h1": [
++          "찾으시는 안내가 없습니다"
++        ],
++        "robots": "noindex,nofollow,noarchive",
++        "canonical": null,
++        "revision": "430dada32f3f8b53f24aec8d9fdf3724529604e1",
++        "faq": [],
++        "overflow": [],
++        "images": [],
++        "anchors": [
++          {
++            "href": "#main-content",
++            "text": "본문 바로가기"
++          },
++          {
++            "href": "/",
++            "text": "✿꽃이랑"
++          },
++          {
++            "href": "/",
++            "text": "홈"
++          },
++          {
++            "href": "/regions/dongjak-funeral-wreath/",
++            "text": "동작구 근조화환"
++          },
++          {
++            "href": "/regions/",
++            "text": "안내 목록"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644"
++          },
++          {
++            "href": "/regions/dongjak-funeral-wreath/",
++            "text": "근조화환 안내로 이동"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644 전화 상담"
++          },
++          {
++            "href": "/",
++            "text": "꽃이랑 홈"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644 전화 상담"
++          },
++          {
++            "href": "/regions/",
++            "text": "안내 목록"
++          }
++        ],
++        "banners": 0,
++        "fixedBar": true,
++        "bodyFont": "Arial, \"Noto Sans KR\", sans-serif",
++        "fontStatus": "loaded",
++        "extra": {
++          "banners": [],
++          "faq": [],
++          "products": [],
++          "facilities": [],
++          "guideLinks": [],
++          "legalUnits": [],
++          "legalLinks": [],
++          "adminRows": [],
++          "adminFacilityLinks": []
++        }
++      },
++      "screenshot": "screenshots/320/404-html.jpg",
++      "screenshotSha256": "4f99383905925189b05a76881892ed26db235957e582afdb8d708e529cbcf5a8",
++      "screenshotDimensions": {
++        "width": 320,
++        "height": 848
++      },
++      "imageReadiness": "decode-completed-and-two-paint-frames-awaited"
++    },
++    {
++      "route": "/404.html",
++      "width": 390,
++      "height": 844,
++      "issues": [
++        "Traceback (most recent call last):\n  File \"/home/runner/work/fwith-site-factory/fwith-site-factory/control/.github/qa/unpublished-dongjak/upstream/capture.py\", line 134, in main\n    assert_facts(facts,spec,route,expected.get('faq',[]),width)\n  File \"/home/runner/work/fwith-site-factory/fwith-site-factory/control/.github/qa/unpublished-dongjak/run_bound_capture.py\", line 235, in assert_all\n    original_assert(facts,specification,route,faq,width)\n  File \"/home/runner/work/fwith-site-factory/fwith-site-factory/control/.github/qa/unpublished-dongjak/upstream/capture.py\", line 64, in assert_facts\n    assert orders and all(h=='https://fwith.co.kr' or h.startswith('https://fwith.co.kr/') for h in orders), 'CTA order href'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: CTA order href\n"
++      ],
++      "facts": {
++        "url": "http://127.0.0.1:37867/404.html",
++        "scrollX": 0,
++        "scrollY": 0,
++        "viewport": 390,
++        "scrollWidth": 390,
++        "h1": [
++          "찾으시는 안내가 없습니다"
++        ],
++        "robots": "noindex,nofollow,noarchive",
++        "canonical": null,
++        "revision": "430dada32f3f8b53f24aec8d9fdf3724529604e1",
++        "faq": [],
++        "overflow": [],
++        "images": [],
++        "anchors": [
++          {
++            "href": "#main-content",
++            "text": "본문 바로가기"
++          },
++          {
++            "href": "/",
++            "text": "✿꽃이랑"
++          },
++          {
++            "href": "/",
++            "text": "홈"
++          },
++          {
++            "href": "/regions/dongjak-funeral-wreath/",
++            "text": "동작구 근조화환"
++          },
++          {
++            "href": "/regions/",
++            "text": "안내 목록"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644"
++          },
++          {
++            "href": "/regions/dongjak-funeral-wreath/",
++            "text": "근조화환 안내로 이동"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644 전화 상담"
++          },
++          {
++            "href": "/",
++            "text": "꽃이랑 홈"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644 전화 상담"
++          },
++          {
++            "href": "/regions/",
++            "text": "안내 목록"
++          }
++        ],
++        "banners": 0,
++        "fixedBar": true,
++        "bodyFont": "Arial, \"Noto Sans KR\", sans-serif",
++        "fontStatus": "loaded",
++        "extra": {
++          "banners": [],
++          "faq": [],
++          "products": [],
++          "facilities": [],
++          "guideLinks": [],
++          "legalUnits": [],
++          "legalLinks": [],
++          "adminRows": [],
++          "adminFacilityLinks": []
++        }
++      },
++      "finalScreenshotFacts": {
++        "url": "http://127.0.0.1:37867/404.html",
++        "scrollX": 0,
++        "scrollY": 0,
++        "viewport": 390,
++        "scrollWidth": 390,
++        "h1": [
++          "찾으시는 안내가 없습니다"
++        ],
++        "robots": "noindex,nofollow,noarchive",
++        "canonical": null,
++        "revision": "430dada32f3f8b53f24aec8d9fdf3724529604e1",
++        "faq": [],
++        "overflow": [],
++        "images": [],
++        "anchors": [
++          {
++            "href": "#main-content",
++            "text": "본문 바로가기"
++          },
++          {
++            "href": "/",
++            "text": "✿꽃이랑"
++          },
++          {
++            "href": "/",
++            "text": "홈"
++          },
++          {
++            "href": "/regions/dongjak-funeral-wreath/",
++            "text": "동작구 근조화환"
++          },
++          {
++            "href": "/regions/",
++            "text": "안내 목록"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644"
++          },
++          {
++            "href": "/regions/dongjak-funeral-wreath/",
++            "text": "근조화환 안내로 이동"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644 전화 상담"
++          },
++          {
++            "href": "/",
++            "text": "꽃이랑 홈"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644 전화 상담"
++          },
++          {
++            "href": "/regions/",
++            "text": "안내 목록"
++          }
++        ],
++        "banners": 0,
++        "fixedBar": true,
++        "bodyFont": "Arial, \"Noto Sans KR\", sans-serif",
++        "fontStatus": "loaded",
++        "extra": {
++          "banners": [],
++          "faq": [],
++          "products": [],
++          "facilities": [],
++          "guideLinks": [],
++          "legalUnits": [],
++          "legalLinks": [],
++          "adminRows": [],
++          "adminFacilityLinks": []
++        }
++      },
++      "screenshot": "screenshots/390/404-html.jpg",
++      "screenshotSha256": "615f8d55ef6e1ef39baed06dd933f8d0e66a1c5749b6e8e8fef65b9e7503822d",
++      "screenshotDimensions": {
++        "width": 390,
++        "height": 844
++      },
++      "imageReadiness": "decode-completed-and-two-paint-frames-awaited"
++    },
++    {
++      "route": "/404.html",
++      "width": 1280,
++      "height": 900,
++      "issues": [
++        "Traceback (most recent call last):\n  File \"/home/runner/work/fwith-site-factory/fwith-site-factory/control/.github/qa/unpublished-dongjak/upstream/capture.py\", line 134, in main\n    assert_facts(facts,spec,route,expected.get('faq',[]),width)\n  File \"/home/runner/work/fwith-site-factory/fwith-site-factory/control/.github/qa/unpublished-dongjak/run_bound_capture.py\", line 235, in assert_all\n    original_assert(facts,specification,route,faq,width)\n  File \"/home/runner/work/fwith-site-factory/fwith-site-factory/control/.github/qa/unpublished-dongjak/upstream/capture.py\", line 64, in assert_facts\n    assert orders and all(h=='https://fwith.co.kr' or h.startswith('https://fwith.co.kr/') for h in orders), 'CTA order href'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: CTA order href\n"
++      ],
++      "facts": {
++        "url": "http://127.0.0.1:37867/404.html",
++        "scrollX": 0,
++        "scrollY": 0,
++        "viewport": 1280,
++        "scrollWidth": 1280,
++        "h1": [
++          "찾으시는 안내가 없습니다"
++        ],
++        "robots": "noindex,nofollow,noarchive",
++        "canonical": null,
++        "revision": "430dada32f3f8b53f24aec8d9fdf3724529604e1",
++        "faq": [],
++        "overflow": [],
++        "images": [],
++        "anchors": [
++          {
++            "href": "#main-content",
++            "text": "본문 바로가기"
++          },
++          {
++            "href": "/",
++            "text": "✿꽃이랑"
++          },
++          {
++            "href": "/",
++            "text": "홈"
++          },
++          {
++            "href": "/regions/dongjak-funeral-wreath/",
++            "text": "동작구 근조화환"
++          },
++          {
++            "href": "/regions/",
++            "text": "안내 목록"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644"
++          },
++          {
++            "href": "/regions/dongjak-funeral-wreath/",
++            "text": "근조화환 안내로 이동"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644 전화 상담"
++          },
++          {
++            "href": "/",
++            "text": "꽃이랑 홈"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644 전화 상담"
++          },
++          {
++            "href": "/regions/",
++            "text": "안내 목록"
++          }
++        ],
++        "banners": 0,
++        "fixedBar": false,
++        "bodyFont": "Arial, \"Noto Sans KR\", sans-serif",
++        "fontStatus": "loaded",
++        "extra": {
++          "banners": [],
++          "faq": [],
++          "products": [],
++          "facilities": [],
++          "guideLinks": [],
++          "legalUnits": [],
++          "legalLinks": [],
++          "adminRows": [],
++          "adminFacilityLinks": []
++        }
++      },
++      "finalScreenshotFacts": {
++        "url": "http://127.0.0.1:37867/404.html",
++        "scrollX": 0,
++        "scrollY": 0,
++        "viewport": 1280,
++        "scrollWidth": 1280,
++        "h1": [
++          "찾으시는 안내가 없습니다"
++        ],
++        "robots": "noindex,nofollow,noarchive",
++        "canonical": null,
++        "revision": "430dada32f3f8b53f24aec8d9fdf3724529604e1",
++        "faq": [],
++        "overflow": [],
++        "images": [],
++        "anchors": [
++          {
++            "href": "#main-content",
++            "text": "본문 바로가기"
++          },
++          {
++            "href": "/",
++            "text": "✿꽃이랑"
++          },
++          {
++            "href": "/",
++            "text": "홈"
++          },
++          {
++            "href": "/regions/dongjak-funeral-wreath/",
++            "text": "동작구 근조화환"
++          },
++          {
++            "href": "/regions/",
++            "text": "안내 목록"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644"
++          },
++          {
++            "href": "/regions/dongjak-funeral-wreath/",
++            "text": "근조화환 안내로 이동"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644 전화 상담"
++          },
++          {
++            "href": "/",
++            "text": "꽃이랑 홈"
++          },
++          {
++            "href": "tel:18440644",
++            "text": "1844-0644 전화 상담"
++          },
++          {
++            "href": "/regions/",
++            "text": "안내 목록"
++          }
++        ],
++        "banners": 0,
++        "fixedBar": false,
++        "bodyFont": "Arial, \"Noto Sans KR\", sans-serif",
++        "fontStatus": "loaded",
++        "extra": {
++          "banners": [],
++          "faq": [],
++          "products": [],
++          "facilities": [],
++          "guideLinks": [],
++          "legalUnits": [],
++          "legalLinks": [],
++          "adminRows": [],
++          "adminFacilityLinks": []
++        }
++      },
++      "screenshot": "screenshots/1280/404-html.jpg",
++      "screenshotSha256": "2a5035259918a1e79041813ccfc07efd4f144879ef26ddc6d40971971b7d7ec3",
++      "screenshotDimensions": {
++        "width": 1280,
++        "height": 900
++      },
++      "imageReadiness": "decode-completed-and-two-paint-frames-awaited"
++    }
++  ]
++}
+diff --git a/.github/qa/unpublished-dongjak/test_404_contract.py b/.github/qa/unpublished-dongjak/test_404_contract.py
+new file mode 100644
+index 0000000..246b6e7
+--- /dev/null
++++ b/.github/qa/unpublished-dongjak/test_404_contract.py
+@@ -0,0 +1,56 @@
++"""Exact observed 404 replay and negative regressions; no browser/network/DOM edits."""
++import copy,unittest
++from unittest.mock import patch
++import adapter,run_bound_capture
++from test_adapter import SOURCE
++
++class NotFoundContractTests(unittest.TestCase):
++ @classmethod
++ def setUpClass(cls):
++  cls.expected=adapter.expectations(SOURCE/adapter.SITE_PATH)
++  cls.spec=adapter.load(adapter.HERE/'bound-spec.json')
++  cls.observed=adapter.load(adapter.HERE/'frozen-inputs/observed-404-facts.run38341440858.json')
++ def facts(self,width=320):return copy.deepcopy(next(x['facts']for x in self.observed['observedRows']if x['width']==width))
++ def check(self,facts,route='/404.html',width=320):run_bound_capture.assert_bound_facts(facts,self.spec,route,[],width,self.expected)
++ def mutate(self,fn):
++  facts=self.facts();fn(facts)
++  with self.assertRaises(AssertionError):self.check(facts)
++ def test_original_failure_is_reproducible_all_widths(self):
++  for w in (320,390,1280):
++   with self.subTest(width=w),self.assertRaisesRegex(AssertionError,'CTA order href'):run_bound_capture.ORIGINAL_ASSERT_FACTS(self.facts(w),self.spec,'/404.html',[],w)
++ def test_actual_source_contract_passes_without_fact_mutation(self):
++  for w in (320,390,1280):
++   facts=self.facts(w);before=copy.deepcopy(facts);self.check(facts,width=w);self.assertEqual(facts,before)
++ def test_non404_missing_store_still_fails(self):
++  for route in ('/','/regions/','/regions/dongjak-funeral-wreath/'):
++   f=self.facts();f['canonical']=adapter.SITE_URL+route
++   with self.subTest(route=route),self.assertRaisesRegex(AssertionError,'CTA order href'):self.check(f,route=route)
++ def test_missing_phone_rejected(self):self.mutate(lambda f:f.update(anchors=[x for x in f['anchors']if not x['href'].startswith('tel:')]))
++ def test_wrong_phone_rejected(self):self.mutate(lambda f:f['anchors'][5].update(href='tel:123'))
++ def test_missing_guide_rejected(self):self.mutate(lambda f:f['anchors'].pop(6))
++ def test_missing_home_rejected(self):self.mutate(lambda f:f['anchors'].pop(8))
++ def test_missing_directory_rejected(self):self.mutate(lambda f:f['anchors'].pop(-1))
++ def test_wrong_link_text_rejected(self):self.mutate(lambda f:f['anchors'][6].update(text='임의 문구'))
++ def test_wrong_h1_rejected(self):self.mutate(lambda f:f.update(h1=['다른 안내']))
++ def test_external_or_unexpected_store_link_rejected(self):
++  for href in ['https://evil.invalid/','https://fwith.co.kr/','https://fwith.co.kr.evil.invalid/']:
++   with self.subTest(href=href):self.mutate(lambda f:f['anchors'].append({'href':href,'text':'추가'}))
++ def test_bad_host_on_customer_route_still_fails(self):
++  f=self.facts();f['canonical']=adapter.SITE_URL+'/';f['anchors'].append({'href':'https://fwith.co.kr.evil.invalid/','text':'주문'})
++  with self.assertRaisesRegex(AssertionError,'CTA order href'):self.check(f,route='/')
++ def test_fonts_after_order_assertion_remain_required(self):self.mutate(lambda f:f.update(fontStatus='loading'))
++ def test_horizontal_overflow_still_fails(self):self.mutate(lambda f:f.update(scrollWidth=330))
++ def test_wrong_revision_still_fails(self):self.mutate(lambda f:f.update(revision='wrong'))
++ def test_404_indexable_canonical_banner_mutations_fail(self):
++  for key,value in [('robots','index,follow'),('canonical',adapter.SITE_URL+'/404.html'),('banners',1),('images',[{'src':'fake'}])]:
++   with self.subTest(key=key):self.mutate(lambda f:f.update({key:value}))
++ def test_other_assertion_is_never_suppressed(self):
++  for error in [AssertionError('Fonts incomplete'),AssertionError('CTA phone href'),AssertionError('CTA order href','extra')]:
++   with patch.object(run_bound_capture,'ORIGINAL_ASSERT_FACTS',side_effect=error),self.assertRaises(AssertionError):self.check(self.facts())
++ def test_nonassertion_is_never_suppressed(self):
++  with patch.object(run_bound_capture,'ORIGINAL_ASSERT_FACTS',side_effect=RuntimeError('unexpected')),self.assertRaises(RuntimeError):self.check(self.facts())
++ def test_fixture_is_exact_failed_original_run(self):
++  self.assertEqual(self.observed['sourceSha'],adapter.SOURCE_SHA);self.assertEqual(self.observed['runId'],'38341440858')
++  self.assertTrue(all(r['issues']for r in self.observed['observedRows']))
++
++if __name__=='__main__':unittest.main()
