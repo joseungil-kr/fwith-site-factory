@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import crypto from 'node:crypto';
 import assert from 'node:assert/strict';
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
-const EXPECTED_APPROVAL_SHA='f252c7e631b202c330a25f1f3774734c56b1fad410b326452c5145ba2932c74a';
+const EXPECTED_APPROVAL_SHA='bc1d106a18e525361707193cd96cc130ee577d1a38b2126ca2863c1f42d8d2f5';
 const APPROVED_ORIGIN='https://seoul-geumcheon.fwith.kr';
 export function validateRelease(read) {
  const raw=read('src/data/release-approval.json');
