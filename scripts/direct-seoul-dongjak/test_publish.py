@@ -564,9 +564,38 @@ class ProductionReviewTests(ArtifactTests):
         with tempfile.TemporaryDirectory() as temp, patch.object(pub, '__file__', str(Path(temp) / 'publish.py')), patch.dict(os.environ, {'REQUIRE_REVIEWED_PRODUCTION':'true'}):
             with self.assertRaisesRegex(ValueError,'independent_production_review_required'):pub.artifact()
 
+
+
+
+
+
+
+class RequestedBannerOverlayTests(unittest.TestCase):
+    def setUp(self):
+        directory=Path(pub.__file__).parent
+        self.contract=json.loads((directory/'source-contract.json').read_text())
+        self.historical=json.loads((directory/'source-contract.before-banner-phone.json').read_text())
+    def test_exact_overlay_preserves_old_map_and_adds_only_named_successor_files(self):
+        result=pub.apply_requested_source_overlay(self.contract,self.historical)
+        self.assertEqual(self.contract['files'],self.historical['files'])
+        self.assertEqual(set(result)-set(self.historical['files']),{
+            'src/data/shared-banner-requested-change.json',
+            'tests/reference/release-baseline/release-approval.before-banner-phone.json',
+            'tests/shared-banner-requested-change.test.mjs'})
+        for path in set(self.historical['files'])-set(pub.REQUESTED_CHANGE_PATHS):
+            self.assertEqual(result[path],self.historical['files'][path])
+    def test_extra_missing_wrong_baseline_and_empty_overlay_fail_closed(self):
+        import copy
+        changes=[
+            lambda c:c['requestedChangeOverlay']['changes'].update({'src/data/pages.json':{'beforeSha256':'0'*64,'afterSha256':'1'*64}}),
+            lambda c:c['requestedChangeOverlay']['changes'].pop('src/components/SharedFlowerBanner.astro'),
+            lambda c:c['requestedChangeOverlay']['changes']['src/components/SharedFlowerBanner.astro'].update(beforeSha256='0'*64),
+            lambda c:c['requestedChangeOverlay'].update(changes={}),
+            lambda c:c['files'].update({'src/data/pages.json':'0'*64}),
+        ]
+        for change in changes:
+            candidate=copy.deepcopy(self.contract);change(candidate)
+            with self.assertRaises(ValueError):pub.apply_requested_source_overlay(candidate,self.historical)
+
 if __name__ == '__main__':
     unittest.main()
-
-
-
-

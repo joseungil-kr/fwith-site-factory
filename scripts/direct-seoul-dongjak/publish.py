@@ -27,6 +27,9 @@ HOSTNAME = 'seoul-dongjak.fwith.kr'
 ORIGIN = 'https://' + HOSTNAME
 WORKER = 'seoul-dongjak-flower-guide'
 RECEIPT_ISSUE = 266
+EXPECTED_SOURCE_CONTRACT_SHA = 'f4b3a0c6dadc4230ee437eb56b88571f7fc2b9bf997e41065b919b71e6fcedc5'
+HISTORICAL_SOURCE_CONTRACT_SHA = '0eca393be4e4c424e2fe64d799211dc7ec969399f277bafb45a6a7cf24cc0496'
+REQUESTED_CHANGE_PATHS = ('public/images/shared-banners/flower-budget.webp', 'public/images/shared-banners/flower-consultation.webp', 'public/images/shared-banners/flower-message.webp', 'scripts/assert_release_approval.mjs', 'scripts/qa_dongjak.py', 'scripts/qa_shared_banners.py', 'scripts/test_dongjak.py', 'scripts/test_shared_banners.py', 'src/components/SharedFlowerBanner.astro', 'src/data/release-approval.json', 'src/data/shared-banner-manifest.json', 'src/data/shared-banner-requested-change.json', 'tests/dongjak-grouped.test.mjs', 'tests/reference/release-baseline/release-approval.before-banner-phone.json', 'tests/release-approval.test.mjs', 'tests/shared-banner-requested-change.test.mjs')
 SLUGS = ['dongjak-funeral-wreath']
 DEFERRED_SLUGS = set([])
 REGION_ROUTES = {'/regions/' + slug + '/' for slug in SLUGS if slug not in DEFERRED_SLUGS}
@@ -89,17 +92,43 @@ def identity():
                 origin=ORIGIN, worker=WORKER, indexable=True)
 
 
+def apply_requested_source_overlay(contract, historical):
+    # Historical seals stay unchanged; only the exact reviewed successor file set is admitted.
+    require(all(contract.get(key) == value for key, value in historical.items()), 'historical_source_contract_changed')
+    overlay = contract.get('requestedChangeOverlay', {})
+    require(overlay.get('schemaVersion') == 1 and overlay.get('changeId') == 'shared-banner-phone-20261013'
+            and overlay.get('sourceRevisionBeforeChange') == 'bdfb4ae78640a95aa6001581da552a7329fb4775', 'requested_source_overlay_identity_mismatch')
+    changes = overlay.get('changes', {})
+    require(set(changes) == set(REQUESTED_CHANGE_PATHS), 'requested_source_overlay_scope_mismatch')
+    expected = dict(historical['files'])
+    for path, replacement in changes.items():
+        require(set(replacement) == {'beforeSha256', 'afterSha256'}
+                and replacement['beforeSha256'] == expected.get(path), 'requested_source_overlay_baseline_mismatch')
+        digest = replacement['afterSha256']
+        require(isinstance(digest, str) and re.fullmatch(r'[0-9a-f]{64}', digest)
+                and digest != replacement['beforeSha256'], 'requested_source_overlay_digest_invalid')
+        expected[path] = digest
+    return expected
+
+
 def source_contract(source, phase='prebuild'):
     require(phase in ('prebuild', 'postbuild'), 'invalid_source_phase')
     source = Path(source)
     require(not any(p.is_symlink() for p in [source, *source.parents]), 'source_ancestor_symlink_forbidden')
     require(source.is_dir() and not source.is_symlink(), 'invalid_source_root')
-    contract = json.loads(Path(__file__).with_name('source-contract.json').read_text())
+    raw = Path(__file__).with_name('source-contract.json').read_bytes()
+    require(sha(raw) == EXPECTED_SOURCE_CONTRACT_SHA, 'source_contract_seal_changed')
+    contract = json.loads(raw)
+    historical_ref = contract['requestedChangeOverlay']['historicalContract']
+    require(historical_ref == {'file': 'source-contract.before-banner-phone.json', 'sha256': HISTORICAL_SOURCE_CONTRACT_SHA}, 'historical_source_contract_reference_changed')
+    historical_raw = Path(__file__).with_name(historical_ref['file']).read_bytes()
+    require(sha(historical_raw) == HISTORICAL_SOURCE_CONTRACT_SHA, 'historical_source_contract_seal_changed')
+    historical = json.loads(historical_raw)
     require(contract['repository'] == REPOSITORY and contract['branch'] == BRANCH
             and contract['root'] == SOURCE_ROOT and contract['origin'] == ORIGIN
             and contract['worker'] == WORKER, 'source_contract_identity_mismatch')
     require(contract['originalPlanN'] == len(SLUGS), 'frozen_plan_mismatch')
-    expected = contract['files']; observed = set()
+    expected = apply_requested_source_overlay(contract, historical); observed = set()
     generated = 'src/data/build-revision.json'
     build_roots = {'node_modules', 'dist', '.astro'}
     build_reports = {'faq-product-qa.json', 'shared-banner-qa.json', 'directory-spacing-qa.json', 'dongjak-static-qa.json'}
