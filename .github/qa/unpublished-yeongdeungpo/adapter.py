@@ -14,7 +14,9 @@ import controls
 SITE_PATH = 'site-factory/seoul-yeongdeungpo-flower'
 SITE_URL = 'https://seoul-yeongdeungpo.fwith.kr'
 ROUTES = ['/', '/regions/', '/regions/yeongdeungpo-funeral-wreath/', '/regions/yeongdeungpo-wedding-wreath/', '/404.html']
-MANIFEST_SHA = '34358c68173778906dcf4844badcb92675b9af41338b203048d4e67c4653c959'
+ORIGINAL_MANIFEST_SHA = '34358c68173778906dcf4844badcb92675b9af41338b203048d4e67c4653c959'
+MANIFEST_SHA = '156424c8f32e84ea62f1513d88b90295ef1dbc42097968b5d5b3710a833c3433'
+SOURCE_FIX_LINEAGE_SHA = '091045f6ff3806e907f45ec2303d4f7d211ebe7274c22681806256bb514de133'
 CANDIDATE_SHA = 'c6b40f1bc520220de52652992df4285ea1fbe149a770cc0b725b9bfb1e95d652'
 
 
@@ -24,10 +26,28 @@ def write(path, value):
     p=Path(path); p.parent.mkdir(parents=True,exist_ok=True)
     p.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n')
 
+def validate_snapshot_lineage(original, corrected, lineage):
+    assert lineage['originalManifestSha256']==ORIGINAL_MANIFEST_SHA and lineage['correctedManifestSha256']==MANIFEST_SHA, 'Snapshot lineage manifest mismatch'
+    assert len(original)==len(corrected)==308 and [e['path'] for e in original]==[e['path'] for e in corrected], 'Snapshot path set changed'
+    changed=[(old,new) for old,new in zip(original,corrected) if old!=new]
+    assert len(changed)==1, 'Correction must change exactly one reviewed source file'
+    old,new=changed[0]
+    assert old['path']==new['path']==lineage['changedPath']==SITE_PATH+'/src/styles/global.css', 'Unexpected correction scope'
+    assert old['sha256']==lineage['originalCssSha256'] and new['sha256']==lineage['correctedCssSha256'], 'CSS lineage mismatch'
+    assert new['existingBlob'] is None and new['previousSnapshot']=={'sourceSha':lineage['originalSourceCommit'],'sha256':old['sha256'],'gitBlobSha':old['gitBlobSha']}, 'Historical CSS provenance mismatch'
+    assert lineage['unchangedSourceFiles']==307 and lineage['changedSourceFiles']==1 and lineage['originalCopyAndApprovalRecordsPreserved'] is True, 'Correction source count or copy preservation mismatch'
+    assert lineage['publicationAuthorization']=='not-issued' and lineage['browserCorrectionVerified'] is False, 'Source review cannot authorize publication or claim browser correction'
+    return True
+
 def frozen_entries():
-    path=HERE/'frozen-inputs/source-file-manifest.final.json'
+    original_path=HERE/'frozen-inputs/source-file-manifest.final.json'
+    assert sha(original_path.read_bytes())==ORIGINAL_MANIFEST_SHA, 'Historical authoritative manifest drift'
+    lineage_path=HERE/'source-fix-lineage.json'
+    assert sha(lineage_path.read_bytes())==SOURCE_FIX_LINEAGE_SHA, 'Independent correction lineage drift'
+    path=HERE/'frozen-inputs/source-file-manifest.visual-fix.json'
     assert sha(path.read_bytes()) == MANIFEST_SHA, 'Authoritative manifest drift'
     entries=load(path)
+    validate_snapshot_lineage(load(original_path),entries,load(lineage_path))
     assert len(entries)==308 and len({e['path'] for e in entries})==308, 'Frozen scope count'
     assert all(e['path'].startswith(SITE_PATH+'/') and '..' not in Path(e['path']).parts for e in entries), 'Unsafe manifest scope'
     return entries
@@ -91,6 +111,7 @@ def make_binding(root, source_sha):
     verify_upstream(); root=Path(root).resolve()
     assert re.fullmatch(r'[0-9a-f]{40}',source_sha or '') and source_sha!='0'*40, 'A real saved Git SHA is required'
     assert controls.git(root,'rev-parse','HEAD')==source_sha, 'Source HEAD differs'
+    assert source_sha==load(HERE/'source-fix-lineage.json')['correctedSourceCommit'], 'Saved correction commit differs from independent lineage'
     verify_frozen_bytes(root)
     # Every and only the reviewed 308 files must occur in the committed site tree.
     data=subprocess.check_output(['git','-C',str(root),'ls-tree','-rz',source_sha,'--',SITE_PATH])
