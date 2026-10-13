@@ -31,3 +31,12 @@ h1,h2,h3,p,a,li,span,strong,small,figcaption{word-break:keep-all;overflow-wrap:b
 }
 
 .administrative-purchase-links a{overflow-wrap:anywhere}.decision-list li{line-height:1.8}
+
+/* Facility anchors need the same clearance as H2s below the sticky header. */
+.markdown-content h3[id]{scroll-margin-top:90px}
+/* Let narrow hero tracks and their price text shrink and wrap, without clipping. */
+@media(max-width:420px){
+  .hero-products{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero-product{min-width:0}
+  .hero-product strong{white-space:normal}
+}
