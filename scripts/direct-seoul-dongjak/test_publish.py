@@ -560,7 +560,8 @@ class SourcePhaseTests(SourceContractTests):
 
 class ProductionReviewTests(ArtifactTests):
     def test_publication_requires_independent_actual_output_binding(self):
-        with patch.dict(os.environ, {'REQUIRE_REVIEWED_PRODUCTION':'true'}):
+        # Keep the missing-contract negative isolated after a real contract is saved.
+        with tempfile.TemporaryDirectory() as temp, patch.object(pub, '__file__', str(Path(temp) / 'publish.py')), patch.dict(os.environ, {'REQUIRE_REVIEWED_PRODUCTION':'true'}):
             with self.assertRaisesRegex(ValueError,'independent_production_review_required'):pub.artifact()
 
 if __name__ == '__main__':
