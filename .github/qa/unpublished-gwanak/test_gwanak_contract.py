@@ -166,6 +166,69 @@ class GwanakContract(unittest.TestCase):
    (site/'unreviewed-root.json').write_text('{}')
    for phase in [False,True]:
     with self.assertRaises(AssertionError):a.verify_scoped_source_tree(root,phase)
+ def native_output_fixture(self,site,evidence):
+  generated=site/'browser-rendering-qa';generated.mkdir();evidence.mkdir(parents=True)
+  def chunk(kind,data):return a.struct.pack('>I',len(data))+kind+data+a.struct.pack('>I',a.zlib.crc32(kind+data)&0xffffffff)
+  png=b'\x89PNG\r\n\x1a\n'+chunk(b'IHDR',a.struct.pack('>IIBBBBB',1,1,8,2,0,0,0))+chunk(b'IDAT',a.zlib.compress(b'\0\0\0\0'))+chunk(b'IEND',b'')
+  report={'localOrigin':'http://127.0.0.1:32123','scope':'Local static artifact only; not public HTTP verification','checks':[{'route':route,'width':w,'height':h,'http':200,'issues':[]}for w,h in a.controls.VIEWPORTS for route in a.ROUTES],'errors':[]}
+  for name in a.native_output_names():
+   raw=json.dumps(report).encode()if name=='report.json'else png
+   (generated/name).write_bytes(raw);(evidence/name).write_bytes(raw)
+  return generated
+ def test_native_evidence_is_explicit_postcapture_only_and_source_stays_frozen(self):
+  source=Path(os.environ['SOURCE_ROOT'])
+  with tempfile.TemporaryDirectory()as tmp:
+   root=Path(tmp)/'repo';site=root/a.SITE_PATH;evidence=Path(tmp)/'evidence/native'
+   for e in a.frozen_entries():
+    dest=root/e['path'];dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(source/e['path'],dest)
+   generated=self.native_output_fixture(site,evidence)
+   for phase in [False,True]:
+    with self.assertRaises(AssertionError):a.verify_scoped_source_tree(root,phase)
+   with self.assertRaises(AssertionError):a.verify_scoped_source_tree(root,False,native_evidence=evidence)
+   a.verify_scoped_source_tree(root,True,native_evidence=evidence)
+   exact='1'*40;(root/a.GENERATED_REVISION).write_bytes(json.dumps({'revision':exact},indent=2).encode())
+   with patch.object(a,'saved',return_value={'sourceSha':exact}),patch.object(a.controls,'git',return_value=exact):
+    a.verify_frozen_bytes(root,True,native_evidence=evidence)
+    changed=site/'src/pages/404.astro';changed.write_bytes(changed.read_bytes()+b' ')
+    with self.assertRaises(AssertionError):a.verify_frozen_bytes(root,True,native_evidence=evidence)
+ def test_native_output_mutations_links_specials_and_report_are_rejected(self):
+  cases=['missing','extra','changed-copy','not-png','png-crc','png-tail','report-errors','report-grid','report-http','report-origin','root-link','copy-link','file-link','nested-dir','fifo']
+  with tempfile.TemporaryDirectory()as tmp:
+   for case in cases:
+    with self.subTest(case=case):
+     base=Path(tmp)/case;site=base/'site';site.mkdir(parents=True);evidence=base/'evidence/native';generated=self.native_output_fixture(site,evidence);p=generated/'home-320.png'
+     if case=='missing':p.unlink()
+     elif case=='extra':(generated/'unreviewed.py').write_text('inert fixture')
+     elif case=='changed-copy':(evidence/'home-320.png').write_bytes(b'changed')
+     elif case in ['not-png','png-crc','png-tail']:
+      raw=b'inert'if case=='not-png'else(p.read_bytes()[:-1]+b'x'if case=='png-crc'else p.read_bytes()+b'extra')
+      p.write_bytes(raw);(evidence/p.name).write_bytes(raw)
+     elif case.startswith('report-'):
+      report=a.load(generated/'report.json')
+      if case=='report-errors':report['errors']=['failed']
+      elif case=='report-grid':report['checks'].pop()
+      elif case=='report-http':report['checks'][0]['http']=500
+      elif case=='report-origin':report['localOrigin']='https://seoul-gwanak.fwith.kr'
+      for folder in [generated,evidence]:(folder/'report.json').write_text(json.dumps(report))
+     elif case in ['root-link','copy-link']:
+      target=generated if case=='root-link'else evidence;moved=target.with_name(target.name+'-real');target.rename(moved);target.symlink_to(moved,target_is_directory=True)
+     elif case=='file-link':p.unlink();p.symlink_to(evidence/p.name)
+     elif case=='nested-dir':p.unlink();p.mkdir()
+     elif case=='fifo':p.unlink();os.mkfifo(p)
+     with self.assertRaises(AssertionError):a.verify_native_output(site,evidence)
+     with self.assertRaises(AssertionError):a.verify_native_output(site,generated)
+     with self.assertRaises(AssertionError):a.verify_native_output(site,generated/'..'/'browser-rendering-qa')
+ def test_native_capture_wrapper_keeps_initial_guard_and_two_phases(self):
+  output=Path('/tmp/synthetic-evidence');verify=runner.native_capture_verifier(output)
+  with patch.object(runner,'bound_verify_source',return_value='site')as guard:
+   self.assertEqual(verify('root',{}),'site');self.assertIsNone(guard.call_args.kwargs['native_evidence'])
+   self.assertEqual(verify('root',{}),'site');self.assertEqual(guard.call_args.kwargs['native_evidence'],output/'native')
+   with self.assertRaises(AssertionError):verify('root',{})
+  verify=runner.native_capture_verifier(output)
+  with patch.object(runner,'bound_verify_source',side_effect=AssertionError('original failure'))as guard:
+   for _ in range(2):
+    with self.assertRaisesRegex(AssertionError,'original failure'):verify('root',{})
+    self.assertIsNone(guard.call_args.kwargs['native_evidence'])
  def test_production_capable_source_stays_nonindexable_loopback_qa(self):
   source=Path(os.environ['SOURCE_ROOT'])/a.SITE_PATH
   result=a.verify_approved_render_boundary(source)

@@ -282,7 +282,7 @@ def supplemental(source, spec, output, expected):
     except Exception: fatal_error=traceback.format_exc()
     finally:server.shutdown();server.server_close()
     try:
-        verify_frozen_bytes(source,allow_generated=True);bound_verify_source(source,spec)
+        verify_frozen_bytes(source,allow_generated=True,native_evidence=output/'native');bound_verify_source(source,spec,native_evidence=output/'native')
         assert validate_bound_build(site,spec)==before,'Built bytes changed during supplemental capture'
         coverage=validate_supplemental_evidence(rows,flow_rows,expected,output)
     except Exception: fatal_error=(fatal_error or '')+traceback.format_exc()
@@ -325,6 +325,19 @@ def assert_bound_facts(facts,spec,route,faq,width,expected):
   assert facts['fontStatus']=='loaded','Fonts incomplete'
  validate_extra_facts(facts['extra'],expected,route)
 
+def native_capture_verifier(output):
+ # Upstream invokes source verification exactly before and after native capture.
+ # The initial strict guard cannot accept a pre-existing browser output folder.
+ calls=0
+ def verify(root,spec):
+  nonlocal calls
+  assert calls<2,'Unexpected upstream source verification phase'
+  evidence=None if calls==0 else Path(output)/'native'
+  result=bound_verify_source(root,spec,native_evidence=evidence)
+  calls+=1
+  return result
+ return verify
+
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--binding',type=Path,required=True);p.add_argument('--allow-loopback-runner',action='store_true');a=p.parse_args()
  assert a.allow_loopback_runner and os.environ.get('GITHUB_ACTIONS')=='true','Deferred authorized GitHub runner only; local browser prohibited'
@@ -332,7 +345,7 @@ def main():
  source=Path(os.environ['SOURCE_ROOT']).resolve();output=Path(os.environ['EVIDENCE_ROOT']).resolve()
  verify_frozen_bytes(source,allow_generated=True);expected=expectations(source/SITE_PATH)
  capture.FACTS='() => ({...('+capture.FACTS+')(),extra:('+EXTRA_FACTS+')()})'
- capture.verify_source=bound_verify_source
+ capture.verify_source=native_capture_verifier(output)
  capture.validate_build=validate_bound_build
  capture.assert_facts=lambda facts,spec,route,faq,width:assert_bound_facts(facts,spec,route,faq,width,expected)
  def only_bound_site(key):
