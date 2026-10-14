@@ -1,0 +1,2225 @@
+Warning: truncated output (original token count: 28148)
+Total output lines: 2462
+
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-10-14T17:11:25.381044+00:00",
+  "review_kind": "independent_local_artifact_pixel_review",
+  "review_status": "independent_pixel_review_complete_no_blocking_visual_defect_identified",
+  "source_revision": "5f27c11cc0aa3c22c2793d9e0a6cd0aa6e350cc6",
+  "source_branch_recorded": "source/seoul-gangdong-production-successor-20261014",
+  "control_revision_recorded": "71657b1a14c011c8df1fa67939216f99ca4ed3bf",
+  "source_binding_evidence": "selected-source.json; revision linkage is artifact metadata, not independent remote Git verification",
+  "github_run_id": "38603054270",
+  "artifact_zip_sha256": "e5030d3506505d508ce4d570f228cd5e3f135ba5792761bd578a090c434d66ae",
+  "original_machine_status": "captured-awaiting-independent-pixel-review",
+  "original_machine_status_preserved": true,
+  "public_http_verified": false,
+  "publication_verified": false,
+  "counts": {
+    "available_screenshot_files": 87,
+    "integrity_verified_files": 87,
+    "pixel_inspected_source_files": 59,
+    "required_full_page_images": 15,
+    "required_focused_banner_images": 27,
+    "required_images_pixel_inspected": 42,
+    "keyboard_images_pixel_inspected": 15,
+    "other_images_pixel_inspected": 2,
+    "other_images_integrity_only": 28,
+    "route_viewport_pairs": 15,
+    "banner_placements": 9,
+    "banner_placement_viewport_instances": 27,
+    "visible_product_card_instances": 48,
+    "runner_product_assertions_failed": 0,
+    "runner_route_viewport_pairs_failed": 0,
+    "byte_identical_to_previous_run": 86,
+    "fresh_changed_images_inspected": 1,
+    "prior_inspected_images_reused_exactly": 58
+  },
+  "method": {
+    "browser_launched": false,
+    "source_or_control_edited": false,
+    "pixel_tools": "tools.view_image, original detail",
+    "derivatives": "Pillow native-resolution tiling/cropping with grey file/coordinate labels, no resampling; originals untouched",
+    "full_page_ranges": "All full-page pixels covered by non-overlapping source-coordinate tiles. Tiles may split text at artificial boundaries; reviewed across adjacent tiles. Fixed-position overlays are part of the source screenshot.",
+    "successor_method": "Compared all 87 original screenshots by SHA-256, dimensions and decoded RGB bytes; opened the sole changed original and old/new native-size crop. No tolerance-based automatic acceptance was used."
+  },
+  "verdict": "Independent pixel review is complete for the required 42 screenshots and all 15 keyboard-first samples. The 58 previously reviewed source images are exactly byte- and RGB-identical; one changed additional image was freshly inspected. No blocking visual defect identified. New runner report has 15 checks without issues and errors=[], but behavior not independently reproduced remains tool-report evidence. Public deployment is not verified by this review.",
+  "findings": [
+    {
+      "id": "PX-01",
+      "category": "directly_verified",
+      "subject": "Coverage and integrity",
+      "result": "87 new-run image files decode and match manifest SHA-256. All 42 required images, all 15 keyboard-first images and home-mobile.png exactly match previously inspected bytes and pixels. Freshly inspected regions-1280.png brings covered new-run source images to 59.",
+      "evidence": [
+        "image-inventory.json"
+      ]
+    },
+    {
+      "id": "PX-02",
+      "category": "directly_verified",
+      "subject": "Responsive text and composition",
+      "result": "All 15 route/viewport pairs are represented. Native-pixel full-page review found no horizontal clipping of page layout, broken Korean glyphs, collapsed text, intersecting cards, or price labels wrapping across lines. Desktop two-column product/category cards become one column on mobile. Header branding and menu-open control remain readable at 320 and 390 px.",
+      "evidence": [
+        "screenshots/1280/404-html/full.jpg",
+        "screenshots/1280/home/full.jpg",
+        "screenshots/1280/regions/full.jpg",
+        "screenshots/1280/regions--gangdong-condolence-wreath/full.jpg",
+        "screenshots/1280/regions--gangdong-wedding-wreath/full.jpg",
+        "screenshots/320/404-html/full.jpg",
+        "screenshots/320/home/full.jpg",
+        "screenshots/320/regions/full.jpg",
+        "screenshots/320/regions--gangdong-condolence-wreath/full.jpg",
+        "screenshots/320/regions--gangdong-wedding-wreath/full.jpg",
+        "screenshots/390/404-html/full.jpg",
+        "screenshots/390/home/full.jpg",
+        "screenshots/390/regions/full.jpg",
+        "screenshots/390/regions--gangdong-condolence-wreath/full.jpg",
+        "screenshots/390/regions--gangdong-wedding-wreath/full.jpg"
+      ]
+    },
+    {
+      "id": "PX-03",
+      "category": "directly_verified",
+      "subject": "Nine banner placements across three widths",
+      "result": "All 27 focused captures show their banner fully within the visible middle region, with preserved 2:1 composition, readable main headline/phone number, intact floral imagery, and no duplicate text caption beneath the banner. Message appears after opening/purpose content and before products; budget follows products and precedes venue guidance; consultation follows FAQ and precedes sources.",
+      "evidence": [
+        "screenshots/1280/home/budget.jpg",
+        "screenshots/1280/home/consultation.jpg",
+        "screenshots/1280/home/message.jpg",
+        "screenshots/1280/regions--gangdong-condolence-wreath/budget.jpg",
+        "screenshots/1280/regions--gangdong-condolence-wreath/consultation.jpg",
+        "screenshots/1280/regions--gangdong-condolence-wreath/message.jpg",
+        "screenshots/1280/regions--gangdong-wedding-wreath/budget.jpg",
+        "screenshots/1280/regions--gangdong-wedding-wreath/consultation.jpg",
+        "screenshots/1280/regions--gangdong-wedding-wreath/message.jpg",
+        "screenshots/320/home/budget.jpg",
+        "screenshots/320/home/consultation.jpg",
+        "screenshots/320/home/message.jpg",
+        "screenshots/320/regions--gangdong-condolence-wreath/budget.jpg",
+        "screenshots/320/regions--gangdong-condolence-wreath/consultation.jpg",
+        "screenshots/320/regions--gangdong-condolence-wreath/message.jpg",
+        "screenshots/320/regions--gangdong-wedding-wreath/budget.jpg",
+        "screenshots/320/regions--gangdong-wedding-wreath/consultation.jpg",
+        "screenshots/320/regions--gangdong-wedding-wreath/message.jpg",
+        "screenshots/390/home/budget.jpg",
+        "screenshots/390/home/consultation.jpg",
+        "screenshots/390/home/message.jpg",
+        "screenshots/390/regions--gangdong-condolence-wreath/budget.jpg",
+        "screenshots/390/regions--gangdong-condolence-wreath/consultation.jpg",
+        "screenshots/390/regions--gangdong-condolence-wreath/message.jpg",
+        "screenshots/390/regions--gangdong-wedding-wreath/budget.jpg",
+        "screenshots/390/regions--gangdong-wedding-wreath/consultation.jpg",
+        "screenshots/390/regions--gangdong-wedding-wreath/message.jpg"
+      ]
+    },
+    {
+      "id": "PX-04",
+      "category": "directly_verified",
+      "subject": "Product photographs, prices and CTA labels",
+      "result": "Home shows all eight products; each detail page shows the appropriate four. All 48 card appearances across three widths contain visibly loaded photographs, product names, SKU labels, single-line base prices, and readable underlined detail CTA labels. C204 and C205 images are visibly present. Screenshot pixels alone do not validate href targets or destination availability.",
+      "products": {
+        "B201": "59,000원",
+        "B203": "79,000원",
+        "B205": "109,000원",
+        "B060": "149,000원",
+        "C200": "59,000원",
+        "C203": "79,000원",
+        "C204": "99,000원",
+        "C205": "149,000원"
+      },
+      "evidence": [
+        "screenshots/1280/home/full.jpg",
+        "screenshots/1280/regions--gangdong-condolence-wreath/full.jpg",
+        "screenshots/1280/regions--gangdong-wedding-wreath/full.jpg",
+        "screenshots/320/home/full.jpg",
+        "screenshots/320/regions--gangdong-condolence-wreath/full.jpg",
+        "screenshots/320/regions--gangdong-wedding-wreath/full.jpg",
+        "screenshots/390/home/full.jpg",
+        "screenshots/390/regions--gangdong-condolence-wreath/full.jpg",
+        "screenshots/390/regions--gangdong-wedding-wreath/full.jpg"
+      ]
+    },
+    {
+      "id": "PX-05",
+      "category": "directly_verified",
+      "subject": "FAQ, source sections, footer and recovery page",
+      "result": "All three main content pages show expanded readable FAQ answers, separated questions, source links and bottom consultation CTA. The dark footer and its links are visible in full-page captures, except some pixels obscured by the fixed mobile bar in the 390 px 404 full-page composite. 404 recovery actions are present. Reading the pixels does not independently verify the real-world business facts stated in page copy.",
+      "evidence": [
+        "screenshots/1280/404-html/full.jpg",
+        "screenshots/1280/home/full.jpg",
+        "screenshots/1280/regions/full.jpg",
+        "screenshots/1280/regions--gangdong-condolence-wreath/full.jpg",
+        "screenshots/1280/regions--gangdong-wedding-wreath/full.jpg",
+        "screenshots/320/404-html/full.jpg",
+        "screenshots/320/home/full.jpg",
+        "screenshots/320/regions/full.jpg",
+        "screenshots/320/regions--gangdong-condolence-wreath/full.jpg",
+        "screenshots/320/regions--gangdong-wedding-wreath/full.jpg",
+        "screenshots/390/404-html/full.jpg",
+        "screenshots/390/home/full.jpg",
+        "screenshots/390/regions/full.jpg",
+        "screenshots/390/regions--gangdong-condolence-wreath/full.jpg",
+        "screenshots/390/regions--gangdong-wedding-wreath/full.jpg"
+      ]
+    },
+    {
+      "id": "PX-06",
+      "category": "directly_verified",
+      "subject": "Keyboard focus appearance",
+      "result": "All 15 keyboard-first captures show a clear rose-colored focus outline. Home focuses the first opening CTA; other routes focus the breadcrumb Home link. Focused target is visibly clear of the fixed header and mobile action bar in each sample.",
+      "evidence": [
+        "keyboard-first-1280-404-html.png",
+        "keyboard-first-1280-home.png",
+        "keyboard-first-1280-regions-gangdong-condolence-wreath.png",
+        "keyboard-first-1280-regions-gangdong-wedding-wreath.png",
+        "keyboard-first-1280-regions.png",
+        "keyboard-first-320-404-html.png",
+        "keyboard-first-320-home.png",
+        "keyboard-first-320-regions-gangdong-condolence-wreath.png",
+        "keyboard-first-320-regions-gangdong-wedding-wreath.png",
+        "keyboard-first-320-regions.png",
+        "keyboard-first-390-404-html.png",
+        "keyboard-first-390-home.png",
+        "keyboard-first-390-regions-gangdong-condolence-wreath.png",
+        "keyboard-first-390-regions-gangdong-wedding-wreath.png",
+        "keyboard-first-390-regions.png"
+      ]
+    },
+    {
+      "id": "PX-07",
+      "category": "tool_report",
+      "subject": "Interaction behavior",
+      "result": "report.json records 351 keyboard samples, passing Space/Enter open-close sequences for all 10 mobile route/viewport pairs, and footer visibility checks. The pixel reviewer did not run a browser or independently reproduce those interactions. The five desktop menu checks are inapplicable menu-hidden checks, not five additional mobile tests.",
+      "evidence": [
+        "report.json"
+      ]
+    },
+    {
+      "id": "PX-08",
+      "category": "unverified",
+      "subject": "Missing dynamic screenshot evidence",
+      "result": "No expanded-menu screenshot or dedicated final-scroll mobile-footer screenshot was identified. Current full-page mobile captures retain the fixed bottom bar at initial viewport coordinates, obscuring the underlying band of content in the composite. This is a capture limitation and is not, by itself, proof of permanently inaccessible content. Full keyboard traversal and skip-link behavior are runner-report-only.",
+      "evidence": [
+        "screenshots/390/404-html/full.jpg",
+        "keyboard-first-390-404-html.png",
+        "report.json"
+      ]
+    },
+    {
+      "id": "PX-09",
+      "category": "tool_report",
+      "subject": "New machine gate versus historical failure",
+      "result": "New report.json records captured-awaiting-independent-pixel-review, errors=[], 15 checks with empty issues. Old run 38601567663 remains machine-qa-failed and its sealed report is preserved. Pixel reviewer read these results but did not rerun browser interactions.",
+      "evidence": [
+        "report.json",
+        "../pixel-review.json"
+      ]
+    },
+    {
+      "id": "PX-10",
+      "category": "directly_verified",
+      "subject": "One changed screenshot",
+      "result": "regions-1280.png freshly inspected. Exactly 11 pixels changed, maximum RGB channel delta 1/255, confined to x160..624,y637..650 near a rounded card border. No visible layout/text/focus defect.",
+      "evidence": [
+        "regions-1280.png",
+        "changed-region-comparison.png",
+        "image-equivalence.json"
+      ]
+    }
+  ],
+  "failed_assertions": [],
+  "route_viewport_coverage": [
+    {
+      "route": "/",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "full_page": {
+        "screenshot": "screenshots/320/home/full.jpg",
+        "screenshotSha256": "c840a2a818721f56fce435f07cd904d42972b5b7418cf565b27795969f3d5695",
+        "dimensions": {
+          "width": 320,
+          "height": 11404
+        }
+      },
+      "banner_files": [
+        "screenshots/320/home/message.jpg",
+        "screenshots/320/home/budget.jpg",
+        "screenshots/320/home/consultation.jpg"
+      ]
+    },
+    {
+      "route": "/regions/",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "full_page": {
+        "screenshot": "screenshots/320/regions/full.jpg",
+        "screenshotSha256": "1fbfb039c3059c72ce76766b4a3dc5d25338e597d45f6e2e82fadd420fc8c68f",
+        "dimensions": {
+          "width": 320,
+          "height": 1678
+        }
+      },
+      "banner_files": []
+    },
+    {
+      "route": "/regions/gangdong-condolence-wreath/",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "full_page": {
+        "screenshot": "screenshots/320/regions--gangdong-condolence-wreath/full.jpg",
+        "screenshotSha256": "1739bb8ed6dee55c415785a2abec1bf0614dc8a30e4255082d77d5e012a571b0",
+        "dimensions": {
+          "width": 320,
+          "height": 11542
+        }
+      },
+      "banner_files": [
+        "screenshots/320/regions--gangdong-condolence-wreath/message.jpg",
+        "screenshots/320/regions--gangdong-condolence-wreath/budget.jpg",
+        "screenshots/320/regions--gangdong-condolence-wreath/consultation.jpg"
+      ]
+    },
+    {
+      "route": "/regions/gangdong-wedding-wreath/",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "full_page": {
+        "screenshot": "screenshots/320/regions--gangdong-wedding-wreath/full.jpg",
+        "screenshotSha256": "883e7c9dd1501845d883f1b4b4b427c6261094bd7232c0a08f00384cf60cfa2f",
+        "dimensions": {
+          "width": 320,
+          "height": 11605
+        }
+      },
+      "banner_files": [
+        "screenshots/320/regions--gangdong-wedding-wreath/message.jpg",
+        "screenshots/320/regions--gangdong-wedding-wreath/budget.jpg",
+        "screenshots/320/regions--gangdong-wedding-wreath/consultation.jpg"
+      ]
+    },
+    {
+      "route": "/404.html",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "full_page": {
+        "screenshot": "screenshots/320/404-html/full.jpg",
+        "screenshotSha256": "a5ec0bc9b47456230349d017b65ef53051c53efaa318e37771c1e6824d77bade",
+        "dimensions": {
+          "width": 320,
+          "height": 1103
+        }
+      },
+      "banner_files": []
+    },
+    {
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "full_page": {
+        "screenshot": "screenshots/390/home/full.jpg",
+        "screenshotSha256": "1df60af0def323e69727705863c259f241f1293a6afc157a8241d2b871871ac4",
+        "dimensions": {
+          "width": 390,
+          "height": 11013
+        }
+      },
+      "banner_files": [
+        "screenshots/390/home/message.jpg",
+        "screenshots/390/home/budget.jpg",
+        "screenshots/390/home/consultation.jpg"
+      ]
+    },
+    {
+      "route": "/regions/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "full_page": {
+        "screenshot": "screenshots/390/regions/full.jpg",
+        "screenshotSha256": "ff263dcfc541e9b1e3365f999a44fe0db966e967892be60492b0c260c88c5575",
+        "dimensions": {
+          "width": 390,
+          "height": 1530
+        }
+      },
+      "banner_files": []
+    },
+    {
+      "route": "/regions/gangdong-condolence-wreath/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "full_page": {
+        "screenshot": "screenshots/390/regions--gangdong-condolence-wreath/full.jpg",
+        "screenshotSha256": "5406d15bbf75738e6e5d3d6d9e7e1b65258d24e554744f0d5f34a67392430228",
+        "dimensions": {
+          "width": 390,
+          "height": 10577
+        }
+      },
+      "banner_files": [
+        "screenshots/390/regions--gangdong-condolence-wreath/message.jpg",
+        "screenshots/390/regions--gangdong-condolence-wreath/budget.jpg",
+        "screenshots/390/regions--gangdong-condolence-wreath/consultation.jpg"
+      ]
+    },
+    {
+      "route": "/regions/gangdong-wedding-wreath/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "full_page": {
+        "screenshot": "screenshots/390/regions--gangdong-wedding-wreath/full.jpg",
+        "screenshotSha256": "6052fdaf9dcf23e3b06ac302db62398c6842c12ab69f6048430541c4e51070d5",
+        "dimensions": {
+          "width": 390,
+          "height": 10477
+        }
+      },
+      "banner_files": [
+        "screenshots/390/regions--gangdong-wedding-wreath/message.jpg",
+        "screenshots/390/regions--gangdong-wedding-wreath/budget.jpg",
+        "screenshots/390/regions--gangdong-wedding-wreath/consultation.jpg"
+      ]
+    },
+    {
+      "route": "/404.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "full_page": {
+        "screenshot": "screenshots/390/404-html/full.jpg",
+        "screenshotSha256": "9b624bc462c159d96d779cee10c8f9806a6426441d4d9fe2b32b09b02ad4ef89",
+        "dimensions": {
+          "width": 390,
+          "height": 1053
+        }
+      },
+      "banner_files": []
+    },
+    {
+      "route": "/",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "full_page": {
+        "screenshot": "screenshots/1280/home/full.jpg",
+        "screenshotSha256": "e8fa859b53edfe79b01d8679a44fc574fb3f0380462fe0d81690e6e52b0c1b17",
+        "dimensions": {
+          "width": 1280,
+          "height": 8077
+        }
+      },
+      "banner_files": [
+        "screenshots/1280/home/message.jpg",
+        "screenshots/1280/home/budget.jpg",
+        "screenshots/1280/home/consultation.jpg"
+      ]
+    },
+    {
+      "route": "/regions/",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "full_page": {
+        "screenshot": "screenshots/1280/regions/full.jpg",
+        "screenshotSha256": "ba943e6f295301eec312083f521ab7e356997eb44c512eb17d22eae14b1fe4aa",
+        "dimensions": {
+          "width": 1280,
+          "height": 958
+        }
+      },
+      "banner_files": []
+    },
+    {
+      "route": "/regions/gangdong-condolence-wreath/",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "full_page": {
+        "screenshot": "screenshots/1280/regions--gangdong-condolence-wreath/full.jpg",
+        "screenshotSha256": "65cc863c25cbc97d9e9c1181a92d6f4f5faf60f8e09b5ae16ef738e9d942fff7",
+        "dimensions": {
+          "width": 1280,
+          "height": 7772
+        }
+      },
+      "banner_files": [
+        "screenshots/1280/regions--gangdong-condolence-wreath/message.jpg",
+        "screenshots/1280/regions--gangdong-condolence-wreath/budget.jpg",
+        "screenshots/1280/regions--gangdong-condolence-wreath/consultation.jpg"
+      ]
+    },
+    {
+      "route": "/regions/gangdong-wedding-wreath/",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "full_page": {
+        "screenshot": "screenshots/1280/regions--gangdong-wedding-wreath/full.jpg",
+        "screenshotSha256": "f4b5809ce7517cfd0a2036492b05b09898ff3a34e9cf915788a8bfe9378aefa0",
+        "dimensions": {
+          "width": 1280,
+          "height": 7616
+        }
+      },
+      "banner_files": [
+        "screenshots/1280/regions--gangdong-wedding-wreath/message.jpg",
+        "screenshots/1280/regions--gangdong-wedding-wreath/budget.jpg",
+        "screenshots/1280/regions--gangdong-wedding-wreath/consultation.jpg"
+      ]
+    },
+    {
+      "route": "/404.html",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "full_page": {
+        "screenshot": "screenshots/1280/404-html/full.jpg",
+        "screenshotSha256": "581e4681405e9882517f638254626940c365d68455c2d7ef3cdafc5fdda0e03e",
+        "dimensions": {
+          "width": 1280,
+          "height": 900
+        }
+      },
+      "banner_files": []
+    }
+  ],
+  "images": [
+    {
+      "file": "404-html-1280.png",
+      "sha256": "dbb73575c01f1977f9262d6a88d4505d27ace62cd300570d8c3e5416731818b9",
+      "pixel_sha256_rgb": "37e7ee09f146de6e7e37c58a4e425b9c993fdf3d61e02ee4ddb2753320bc5adf",
+      "width": 1280,
+      "height": 900,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "404-html-320.png",
+      "sha256": "67f07517fc145fc34ab4cb5c32fa2504886f90d74a4a681bbadd6116c12cb683",
+      "pixel_sha256_rgb": "31409a0ba24605b4b2d7ff1e809e46e69d2018dc696fa338d641642dcb8ee790",
+      "width": 320,
+      "height": 740,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "404-html-390.png",
+      "sha256": "d50068d7b9bae525dfd2a40d56c3fd44f958ef0524754feda3ed848b686053e8",
+      "pixel_sha256_rgb": "f216a998ec76a27c73914c5364e48adcad1891493f53e271fa6ae5f514fc3d89",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "detail-1280-body-1.png",
+      "sha256": "8d3a96cd1f8c339e84e3d8f090ded6fec2b665118ee229198777a7062577a267",
+      "pixel_sha256_rgb": "f8916ce2dce420433c0b075490a1fde54dd483714b02a26f95b8b9c891a2445d",
+      "width": 960,
+      "height": 2064,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "detail-1280-body-2.png",
+      "sha256": "4906e834be9e9820f28b829399ef0d80bf6fc0e41196e21c384712ac1d712bf1",
+      "pixel_sha256_rgb": "9a1fba23153ad06d7f9952f4b9732d109ec1474040f8fca722258e642b87a19e",
+      "width": 960,
+      "height": 424,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "detail-1280-body-3.png",
+      "sha256": "160558145e643a30f69d0d3007c724d24d08b06ccf7c2cbb93c9c101b43d383f",
+      "pixel_sha256_rgb": "5f61f2d93414394d7aed6ef9a9ac0e9d5ca238898989d8010a2a6924c72f1048",
+      "width": 960,
+      "height": 330,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "detail-1280-body-4.png",
+      "sha256": "ec59dfa5d8ffa6d2ba1e2b2f80d90ca6276f37579c57b9535fd7c13cb10aa1d7",
+      "pixel_sha256_rgb": "bae4024dca46b5310e07c78577dc0a281df44ebc61ac1fc2b2abb5ef34e23932",
+      "width": 960,
+      "height": 330,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "detail-1280-body-5.png",
+      "sha256": "8ba0c22057b19d20e6d915e81a5da8626c1e81c3b21b8dd0c6797c3557fc8820",
+      "pixel_sha256_rgb": "9748da4728508135cc4f64e6dd8d21bbf5acd18cf29a9dc4088daa7e05069525",
+      "width": 960,
+      "height": 268,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "detail-1280-faq.png",
+      "sha256": "29795b10c7326936c52e30eeb7a2d310ae76f96f0fdb69608c288ee6b2cbdac0",
+      "pixel_sha256_rgb": "fedae85fd97e85101a5b8c54b1bf48f526db0648c5112b331bcf2f439298bfbf",
+      "width": 960,
+      "height": 731,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "detail-1280-top.png",
+      "sha256": "e0de4412c49886729dd657664822146c81a428abdbe5e7dc7c52af639920e1e4",
+      "pixel_sha256_rgb": "49789cd6a67fe907d6074ffba195375a514a39f2849e123029b8df0f0c91baab",
+      "width": 1280,
+      "height": 900,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "detail-390-body-1.png",
+      "sha256": "7d9897f8810b86539ea3076aaed40bf0a5252c131d5c2dd497a07b8726857737",
+      "pixel_sha256_rgb": "cee5191968c7449ea30a65beb7756700eaa5f647a3a8b3711d28503b04cc9665",
+      "width": 362,
+      "height": 3559,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "detail-390-body-2.png",
+      "sha256": "ed653586fb537a177f934e928e39eccb26bbc8ab090ce192f186115a40902627",
+      "pixel_sha256_rgb": "e34ba2b07bc8dd83322b820ec92c38c9c74b09cda4db0e3c6710b9e75a0861da",
+      "width": 362,
+      "height": 820,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "detail-390-body-3.png",
+      "sha256": "23569acc0b400b412ac9cff249070714741dcbb2be642cc1755be454ad1c8b47",
+      "pixel_sha256_rgb": "da5e2acf7888c14c30f1ee371d091b1bb72f57439ab2cd57867d2da05dcbf3f0",
+      "width": 362,
+      "height": 635,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "detail-390-body-4.png",
+      "sha256": "b235799418763d3eace0bb6c87eff565f0a3bc5d347301b2b43991f71f2483bc",
+      "pixel_sha256_rgb": "5d1831af93d0cdfbc6bbc70b508a5211dfcf708a907385794a66731a956e46c8",
+      "width": 362,
+      "height": 600,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "detail-390-body-5.png",
+      "sha256": "7f8bdc10cf7cb4b53c2a11fa1fc7630b0ee56b9c02918355e7245b718f248a83",
+      "pixel_sha256_rgb": "d53d8dd58868ce0eff5750742cc1e49e5adf6f69da4deca197664dab255ba3c0",
+      "width": 362,
+      "height": 445,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "detail-390-faq.png",
+      "sha256": "c0845ee1776a9ab6dfd2d0acfc5699195930ad76384020cdebabbea5d6ec6729",
+      "pixel_sha256_rgb": "7bec2c507d3462830a762e7c745697c97b3c08dbce0d174e31c3823b1727b6a8",
+      "width": 362,
+      "height": 1231,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "detail-390-top.png",
+      "sha256": "28a7ab7e975e4981c0428bcbfa99059d217c9323f71b1c83a0183d1b0797352e",
+      "pixel_sha256_rgb": "755227151dcfee0c28c29143ed17e9c207cc44224ac67403090654941f79267c",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "home-1280.png",
+      "sha256": "6007b2985611f84304ce57fb227ada267541b028ccce0cde34f77e514befcc16",
+      "pixel_sha256_rgb": "048fc9001ece268386fec8a1f8f797fae5b7cfdf5ffc7b8101173c7c2e0e036d",
+      "width": 1280,
+      "height": 900,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "home-320.png",
+      "sha256": "401a4a60ee9e770e04060c48a9649e433aac8c393913ae9ad32df7f3eb1f625f",
+      "pixel_sha256_rgb": "68c9db8d1d17b8e91402652e5372cac348077ce3b48c6c072c6dba898e82c533",
+      "width": 320,
+      "height": 740,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "home-390.png",
+      "sha256": "cc8d1c45529a62d0c956455c9ac90865d3d88d6ed87b7264195dccec21f91fa0",
+      "pixel_sha256_rgb": "eff0b73b8ed29e0bfcf07f88067cce901d9060ec7883661c0af09304f63c3388",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "home-mobile.png",
+      "sha256": "a77f05177e9cb1684f493f83886f392a06c1302e6edf66ec4407c5e12cb4a3f3",
+      "pixel_sha256_rgb": "66ea95009ed1029dd7147f454fb838a68a9efbb0274591d2076b49fdb584f188",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "keyboard-first-1280-404-html.png",
+      "sha256": "0e99ae30638453297451899077bd6170dc9803ff60041d24a714d5e9c9d2087c",
+      "pixel_sha256_rgb": "abe5c27f93042a1d85fac17f8a7fa96459b435ff73d32344e404c98edc6f6981",
+      "width": 1280,
+      "height": 900,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "keyboard-first-1280-home.png",
+      "sha256": "019bf71c7790b59767be9d29c03ba740611c700afe4a4a9316ec0abb546cc4df",
+      "pixel_sha256_rgb": "27a31ff3762c1915fc5f5297a36319488b68dbf4668a15baa4f357867e2f1a99",
+      "width": 1280,
+      "height": 900,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "keyboard-first-1280-regions-gangdong-condolence-wreath.png",
+      "sha256": "570d20e3a27bde98b38dd0303a411bd51d232152c71cb53d61c068ec662bcffa",
+      "pixel_sha256_rgb": "80e883dcb91d4c109ef2e047aa0e09c253fb133d74e8e3cd5c5f821a26aec015",
+      "width": 1280,
+      "height": 900,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "keyboard-first-1280-regions-gangdong-wedding-wreath.png",
+      "sha256": "4f48bf452f0beedfb57ef512881b05b0eed575f5317dc652032377ce34fbd356",
+      "pixel_sha256_rgb": "37f297b993aed3c47f3874c2c69290cf103b75672cb6fcc95d9e413daecead26",
+      "width": 1280,
+      "height": 900,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "keyboard-first-1280-regions.png",
+      "sha256": "e09dfb0e16ba7b938e87a0bca255e879983d7868245cb3850323d1d2d7055537",
+      "pixel_sha256_rgb": "9c14b6337e6bcbb6d9d906e7736faeeaa168f2cf0a3e9197673149eb2a3de625",
+      "width": 1280,
+      "height": 900,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "keyboard-first-320-404-html.png",
+      "sha256": "7e912a6f8f6b897a8f3f25839590bf256aa78ebfc069dbeedaa3f3b6dee3fc6d",
+      "pixel_sha256_rgb": "2f25cb06517459a5d979469d3fb11a0c3a34d261ea40e0c92ef15299ae57bfcc",
+      "width": 320,
+      "height": 740,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "keyboard-first-320-home.png",
+      "sha256": "63c3a11b9a80286936ee702df3c45f6de9b65f16a657eb5773f14e93b2a2b0ba",
+      "pixel_sha256_rgb": "8e8b1f0a6701085e29e6763af4f12ba000e6b645266c3a9cc4fd75b146bcdfa9",
+      "width": 320,
+      "height": 740,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "keyboard-first-320-regions-gangdong-condolence-wreath.png",
+      "sha256": "052873068f347063645011666bcb255996ceb68d0f09fadf12704abd8d948f79",
+      "pixel_sha256_rgb": "9ea01109d57517f5c955845302a16d97dd8ba6617e8017f4d72cf8f8ab0df314",
+      "width": 320,
+      "height": 740,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "keyboard-first-320-regions-gangdong-wedding-wreath.png",
+      "sha256": "72d21638bdc44c12711aecc007e968c54db372620d486c7a954a5347a3c80693",
+      "pixel_sha256_rgb": "8fd5079c5ce2f754c741c66ba56eee9cf7c5e5cd7a15a2ddf55ed2776f26f212",
+      "width": 320,
+      "height": 740,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "keyboard-first-320-regions.png",
+      "sha256": "f061ffdeaefc3c65249d951fe048d2bd0752b0a1bca2072e13ec0feab21bc8b0",
+      "pixel_sha256_rgb": "6d7f2092868ce9b00312f824e950a19fb538aa60c7345abd958817b0ecdb826a",
+      "width": 320,
+      "height": 740,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "keyboard-first-390-404-html.png",
+      "sha256": "f12a17d6c19ed4eab24d1eada8c21e2aec9f33af61b926bc3c6d69adee2dae73",
+      "pixel_sha256_rgb": "bc3e9abdc39897b82fb773391091f8972b3aced5e3f814e0c47425b65d62deb0",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "keyboard-first-390-home.png",
+      "sha256": "701779e8bd2c975b9a6bc1f8a2c96251732df0deb6dbead0b1be748c6d35d6ec",
+      "pixel_sha256_rgb": "3d493f7cc79ae53a956f54a14b0d9709fdc9985e613ea82b416d5934c50d26ed",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "keyboard-first-390-regions-gangdong-condolence-wreath.png",
+      "sha256": "e2385159ca83963f886a2326afb1402ab508cc054514f26405a00240dc174ca3",
+      "pixel_sha256_rgb": "7ca1c96b56a52b242765d2394f0cf8396b08f9b752c5f3d6c2959fa0fb605e8a",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "keyboard-first-390-regions-gangdong-wedding-wreath.png",
+      "sha256": "50ae5f24ae3605a2944d953d42b1f66281fc231170876ca3c54c88fbc420cd23",
+      "pixel_sha256_rgb": "0c52582aba7ff402f7abe84969dcf4b297d5135430a202f79eec667e5bb15a33",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "keyboard-first-390-regions.png",
+      "sha256": "2d8b48f31457f164a03e5beb54815c4e4353e282b51f5aafc172ade349026f87",
+      "pixel_sha256_rgb": "f07043e8e80cddeba1e485097197220472e9e68c377a14f1a06638b2cdfe340e",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "regions-1280.png",
+      "sha256": "454cc7edf40213ac781ccb99f70e2a200acbcde1ab23bc7a34184a6087f1a7a2",
+      "pixel_sha256_rgb": "69613672d68edfb5209f841bf3005c5a9495d864368410fb61690e623fdffb77",
+      "width": 1280,
+      "height": 900,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": true,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "fresh original image and comparison crop inspected"
+    },
+    {
+      "file": "regions-320.png",
+      "sha256": "d74aa1c1d3bbb1ce592b27f3e84906a34e276f3ec548bce738cba3be80dd3378",
+      "pixel_sha256_rgb": "2df160ce8de3d7570ec1e88c218774006aded0e2a1205110e03657293418c64b",
+      "width": 320,
+      "height": 740,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "regions-390.png",
+      "sha256": "f59899d5d429b21d2cd4b17657d554a02cbbbd88633b74de139c54d4546dbcf9",
+      "pixel_sha256_rgb": "43fb9d92a65ed88bd1064c4b34f8f497495a357d8683531bba9f143778473304",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "regions-gangdong-condolence-wreath-1280.png",
+      "sha256": "9fc8f8f48ac78113d51e1b04e4dcdd4b122915c80302e2953229a9c8f0e66523",
+      "pixel_sha256_rgb": "4041f3d31f3766a696c6b9258fc1dc0419ed9c9977b323e5544c545b0c901394",
+      "width": 1280,
+      "height": 900,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "regions-gangdong-condolence-wreath-320.png",
+      "sha256": "3afbcb7619d673e935cc436737a521d071358de8554f5f643475b642631a07f0",
+      "pixel_sha256_rgb": "f9cd1a663faec84f89228c2e05bb0751a9cfaa3471bf1e82e06707dc91f8aa1b",
+      "width": 320,
+      "height": 740,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "regions-gangdong-condolence-wreath-390.png",
+      "sha256": "e260887d8911354cc4a49c85e13caffc8d6719373c013c2e039cd1aa87935c46",
+      "pixel_sha256_rgb": "bc4fb31e7890f0f5d596b79ac2151c6d76d18c5addb9df8cc5d3c37b4abeb94b",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "regions-gangdong-wedding-wreath-1280.png",
+      "sha256": "fca6428a3ad8d5875c5033e020d32b784e95e82650384a3fb64baebe05ffe457",
+      "pixel_sha256_rgb": "09251cdb3850e891e48217b4493b02de5077de7f11267dfaf42ecde7b730d594",
+      "width": 1280,
+      "height": 900,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "regions-gangdong-wedding-wreath-320.png",
+      "sha256": "0da5edf1d18304ae3720dfa84da84896197e2352d855b41d669213a3d9cdf2ca",
+      "pixel_sha256_rgb": "1861815fce18c7d6ae120b637a8af6cd9df406e27092cdbc2506eb6d0d6c1e42",
+      "width": 320,
+      "height": 740,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "regions-gangdong-wedding-wreath-390.png",
+      "sha256": "ee6ba4fab4b57ddb909854070a15bad354e3c961c368c94666508007fdef80ca",
+      "pixel_sha256_rgb": "50faad9a9c50ed2f1ef48e30f7cd757b17ff62ae4c59cd4a84142719b1636fa7",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": false,
+      "pixel_inspected": false,
+      "inspection_method": "file integrity/dimensions only; pixels not reviewed",
+      "review_basis": "integrity and equivalence only; pixels not reviewed"
+    },
+    {
+      "file": "screenshots/1280/404-html/full.jpg",
+      "sha256": "581e4681405e9882517f638254626940c365d68455c2d7ef3cdafc5fdda0e03e",
+      "pixel_sha256_rgb": "d949c866a056fc9b9818050afa66d9ea7eecbd88a7c1ac766828f2073bb644fa",
+      "width": 1280,
+      "height": 900,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/1280/home/budget.jpg",
+      "sha256": "2e4a7533842495f7b5916bb64c7085af0e24cf22dc72c1673eb87ccb7133f690",
+      "pixel_sha256_rgb": "384411a4b06498c04ec64283471443a07d836bb6e86228915768695685a028b9",
+      "width": 1280,
+      "height": 900,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/1280/home/consultation.jpg",
+      "sha256": "a966f5944e9301b23a19ac724122a04d109bbb7003d511b9e0c0e810284cb77c",
+      "pixel_sha256_rgb": "0ccde990490e214fc7d2c495da1cdcb5999cff3a9fa092df5e14b9ec8f18a91e",
+      "width": 1280,
+      "height": 900,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/1280/home/full.jpg",
+      "sha256": "e8fa859b53edfe79b01d8679a44fc574fb3f0380462fe0d81690e6e52b0c1b17",
+      "pixel_sha256_rgb": "a62688744232db5202c96e3f312bdeed5655c652cfa949cd3447afcdb9a74c5a",
+      "width": 1280,
+      "height": 8077,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/1280/home/message.jpg",
+      "sha256": "71284110c8e0a787c1e4e9659352ccd191a33e5e2e21e63f52f9ffbfaff943dc",
+      "pixel_sha256_rgb": "4f0ebce916e350a220d3ac86e406a81c976937bd86b3e56748e63b8b5915a12a",
+      "width": 1280,
+      "height": 900,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/1280/regions/full.jpg",
+      "sha256": "ba943e6f295301eec312083f521ab7e356997eb44c512eb17d22eae14b1fe4aa",
+      "pixel_sha256_rgb": "277bb959439b8a0b934d3b9f8885059790719cb7ba224dd5e511d90210dc5504",
+      "width": 1280,
+      "height": 958,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+     …3148 tokens truncated…g-wedding-wreath/full.jpg",
+      "sha256": "883e7c9dd1501845d883f1b4b4b427c6261094bd7232c0a08f00384cf60cfa2f",
+      "pixel_sha256_rgb": "585905d240dc448a68bb5bc31b210b6ab6ae7214f862d63033a39cd0921cf631",
+      "width": 320,
+      "height": 11605,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/320/regions--gangdong-wedding-wreath/message.jpg",
+      "sha256": "2ab17a55e50915c2d8030d294da661b16dfa75c9719496c4e5f083224847bac5",
+      "pixel_sha256_rgb": "ae004864cefb9b636136bf50587586df6be0ec25dda64c742b293d0ea051cd8b",
+      "width": 320,
+      "height": 740,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/390/404-html/full.jpg",
+      "sha256": "9b624bc462c159d96d779cee10c8f9806a6426441d4d9fe2b32b09b02ad4ef89",
+      "pixel_sha256_rgb": "daeaf5f23e6ee74e4a3c96e3765b13490e3f55dd4f75a98a9303e5d97cea7e76",
+      "width": 390,
+      "height": 1053,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/390/home/budget.jpg",
+      "sha256": "0bdd958d93fff413bacfa3c5c0d8ddfa5eeabb9165e4d12691b8f975b5310c96",
+      "pixel_sha256_rgb": "1f3ec80963e7dcf104258174540dd0418bbee259351e9377094d19a41b9b600b",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/390/home/consultation.jpg",
+      "sha256": "82c9676dd385059de60b6b11f5180825faac7440838f739cb539b1f0c9721c8f",
+      "pixel_sha256_rgb": "c11c17fe1b8d92039de6464582e12448b7a6600d45ed3c717ba9ea081743d767",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/390/home/full.jpg",
+      "sha256": "1df60af0def323e69727705863c259f241f1293a6afc157a8241d2b871871ac4",
+      "pixel_sha256_rgb": "7aeafc7778922e0ac23142f7b1f2a2b471a74c15f08afc0ed0e0f27da6987f8f",
+      "width": 390,
+      "height": 11013,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/390/home/message.jpg",
+      "sha256": "15e39038b7b79e5febe2ab57f41e1dbbefb682cf91940ddb8e03e46874ea1210",
+      "pixel_sha256_rgb": "2942bce4dab047612294d6bc1f34ebe170694bf94b90f4e87597cf9012d9bfd0",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/390/regions/full.jpg",
+      "sha256": "ff263dcfc541e9b1e3365f999a44fe0db966e967892be60492b0c260c88c5575",
+      "pixel_sha256_rgb": "810a15783221d518b923ab75facc41c43d2e8c9e6214061e01dacbabdb5bd3c6",
+      "width": 390,
+      "height": 1530,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/390/regions--gangdong-condolence-wreath/budget.jpg",
+      "sha256": "37637763174e17721e0b753fde6cd32d4f32986c2c7346c7867f68789c0e8172",
+      "pixel_sha256_rgb": "2e0b540b0e1662f795e49fd1514a86b10c80b50ce0141d093d6ccb444d5df52a",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/390/regions--gangdong-condolence-wreath/consultation.jpg",
+      "sha256": "ddac42e7c2fc5008f35fd6fc85acd8f6c497128e9ef2fe89d840d6feea0b38d4",
+      "pixel_sha256_rgb": "bda250853af52bdb477377332069c28e4b6bf6cca43936fcdbe37136fbd3e4c0",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/390/regions--gangdong-condolence-wreath/full.jpg",
+      "sha256": "5406d15bbf75738e6e5d3d6d9e7e1b65258d24e554744f0d5f34a67392430228",
+      "pixel_sha256_rgb": "9796a6376c0c9a8641647b97575c24d56612c0462d0dd562f83ea4a9f40187dc",
+      "width": 390,
+      "height": 10577,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/390/regions--gangdong-condolence-wreath/message.jpg",
+      "sha256": "f579379e4d6dfd36c5348b6003b1801b3ebde33481d23aad16bc00c7505ef555",
+      "pixel_sha256_rgb": "cdb5c065585c1ec6827cad9cb5a17f42b1463e0caea6a95c3ad74430ba99d65e",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/390/regions--gangdong-wedding-wreath/budget.jpg",
+      "sha256": "c2d80bc0435f3f4c5370a8e7a01554546ea70178167df75ca162da9649953888",
+      "pixel_sha256_rgb": "f926f0890a7d67c9c2c2de6e98cd8d491b45bd36636f41ae9326f50ceec7413b",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/390/regions--gangdong-wedding-wreath/consultation.jpg",
+      "sha256": "99ac283b86e7f5c1010a56f7a3e078ae60d01929f99fe8797221438ee1b06227",
+      "pixel_sha256_rgb": "801bb6a717df1a79e89a67cecac22ec4bb06b2a21ba17640641c27ca3515ac7b",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/390/regions--gangdong-wedding-wreath/full.jpg",
+      "sha256": "6052fdaf9dcf23e3b06ac302db62398c6842c12ab69f6048430541c4e51070d5",
+      "pixel_sha256_rgb": "c757c9a3d6c6674b324b001e32001c6cb9e8e77fbf8217a53cea6dcfcf92f12b",
+      "width": 390,
+      "height": 10477,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    },
+    {
+      "file": "screenshots/390/regions--gangdong-wedding-wreath/message.jpg",
+      "sha256": "e3c6f2cb31dc8388f2cd6a69ee0d6730517e590dc597f39ae3aa7bd62753200a",
+      "pixel_sha256_rgb": "f119c0ee3344bfa1820f28fe6c75f3cbddce5f5b40c4dfae48550e9b7c35a6cb",
+      "width": 390,
+      "height": 844,
+      "manifest_matches": true,
+      "required": true,
+      "pixel_inspected": true,
+      "inspection_method": "original decoded pixels displayed directly or native-resolution non-overlapping tiled crops; no resampling",
+      "review_basis": "inherited from original pixel inspection after exact byte and RGB equality"
+    }
+  ],
+  "supporting_artifact_hashes": {
+    "report.json": "e5872c5d7c832f5e3445822354c448bd7e28948d0c6dcf93966f690924fd7ce0",
+    "capture-status.json": "649a9fffdfc003f83e13af62e55eb4f6c6471486dd9de73467bf857f480cf9d1",
+    "artifact-manifest.json": "26f434457542edc8c263ceaf643074e7df6a69837ad3a89a00c466fad678ded4",
+    "source-before-capture.json": "3465c898e7b5dfd3d6589286eeb3a4dd6d7f3fee9a62d78d9178a5b150929747",
+    "source-after-capture.json": "3465c898e7b5dfd3d6589286eeb3a4dd6d7f3fee9a62d78d9178a5b150929747"
+  },
+  "source_before_after_files_identical": true,
+  "reuse_rule": "A later successful run may inherit only findings supported by identical screenshot bytes or identical decoded RGB dimensions and pixels, with an explicit per-file comparison record. Source revision and route/viewport roles must still match. Changed image files require renewed pixel inspection. Unverified dynamic behavior never becomes directly verified through screenshot reuse.",
+  "prior_failed_run": {
+    "run": "38601567663",
+    "machine_status": "machine-qa-failed",
+    "product_assertions": 17,
+    "route_viewport_pairs": 7,
+    "sealed_review": "../pixel-review.json",
+    "sealed_report": "../pixel-review-report.ko.md"
+  },
+  "equivalence": {
+    "previous_run": "38601567663",
+    "new_run": "38603054270",
+    "source_revision_same": true,
+    "compared_files": 87,
+    "byte_identical": 86,
+    "rgb_pixel_identical": 86,
+    "changed_files": 1,
+    "required_42_identical": true,
+    "keyboard_15_identical": true,
+    "files": [
+      {
+        "file": "404-html-1280.png",
+        "old_sha256": "dbb73575c01f1977f9262d6a88d4505d27ace62cd300570d8c3e5416731818b9",
+        "new_sha256": "dbb73575c01f1977f9262d6a88d4505d27ace62cd300570d8c3e5416731818b9",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "404-html-320.png",
+        "old_sha256": "67f07517fc145fc34ab4cb5c32fa2504886f90d74a4a681bbadd6116c12cb683",
+        "new_sha256": "67f07517fc145fc34ab4cb5c32fa2504886f90d74a4a681bbadd6116c12cb683",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "404-html-390.png",
+        "old_sha256": "d50068d7b9bae525dfd2a40d56c3fd44f958ef0524754feda3ed848b686053e8",
+        "new_sha256": "d50068d7b9bae525dfd2a40d56c3fd44f958ef0524754feda3ed848b686053e8",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "detail-1280-body-1.png",
+        "old_sha256": "8d3a96cd1f8c339e84e3d8f090ded6fec2b665118ee229198777a7062577a267",
+        "new_sha256": "8d3a96cd1f8c339e84e3d8f090ded6fec2b665118ee229198777a7062577a267",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "detail-1280-body-2.png",
+        "old_sha256": "4906e834be9e9820f28b829399ef0d80bf6fc0e41196e21c384712ac1d712bf1",
+        "new_sha256": "4906e834be9e9820f28b829399ef0d80bf6fc0e41196e21c384712ac1d712bf1",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "detail-1280-body-3.png",
+        "old_sha256": "160558145e643a30f69d0d3007c724d24d08b06ccf7c2cbb93c9c101b43d383f",
+        "new_sha256": "160558145e643a30f69d0d3007c724d24d08b06ccf7c2cbb93c9c101b43d383f",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "detail-1280-body-4.png",
+        "old_sha256": "ec59dfa5d8ffa6d2ba1e2b2f80d90ca6276f37579c57b9535fd7c13cb10aa1d7",
+        "new_sha256": "ec59dfa5d8ffa6d2ba1e2b2f80d90ca6276f37579c57b9535fd7c13cb10aa1d7",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "detail-1280-body-5.png",
+        "old_sha256": "8ba0c22057b19d20e6d915e81a5da8626c1e81c3b21b8dd0c6797c3557fc8820",
+        "new_sha256": "8ba0c22057b19d20e6d915e81a5da8626c1e81c3b21b8dd0c6797c3557fc8820",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "detail-1280-faq.png",
+        "old_sha256": "29795b10c7326936c52e30eeb7a2d310ae76f96f0fdb69608c288ee6b2cbdac0",
+        "new_sha256": "29795b10c7326936c52e30eeb7a2d310ae76f96f0fdb69608c288ee6b2cbdac0",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "detail-1280-top.png",
+        "old_sha256": "e0de4412c49886729dd657664822146c81a428abdbe5e7dc7c52af639920e1e4",
+        "new_sha256": "e0de4412c49886729dd657664822146c81a428abdbe5e7dc7c52af639920e1e4",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "detail-390-body-1.png",
+        "old_sha256": "7d9897f8810b86539ea3076aaed40bf0a5252c131d5c2dd497a07b8726857737",
+        "new_sha256": "7d9897f8810b86539ea3076aaed40bf0a5252c131d5c2dd497a07b8726857737",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "detail-390-body-2.png",
+        "old_sha256": "ed653586fb537a177f934e928e39eccb26bbc8ab090ce192f186115a40902627",
+        "new_sha256": "ed653586fb537a177f934e928e39eccb26bbc8ab090ce192f186115a40902627",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "detail-390-body-3.png",
+        "old_sha256": "23569acc0b400b412ac9cff249070714741dcbb2be642cc1755be454ad1c8b47",
+        "new_sha256": "23569acc0b400b412ac9cff249070714741dcbb2be642cc1755be454ad1c8b47",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "detail-390-body-4.png",
+        "old_sha256": "b235799418763d3eace0bb6c87eff565f0a3bc5d347301b2b43991f71f2483bc",
+        "new_sha256": "b235799418763d3eace0bb6c87eff565f0a3bc5d347301b2b43991f71f2483bc",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "detail-390-body-5.png",
+        "old_sha256": "7f8bdc10cf7cb4b53c2a11fa1fc7630b0ee56b9c02918355e7245b718f248a83",
+        "new_sha256": "7f8bdc10cf7cb4b53c2a11fa1fc7630b0ee56b9c02918355e7245b718f248a83",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "detail-390-faq.png",
+        "old_sha256": "c0845ee1776a9ab6dfd2d0acfc5699195930ad76384020cdebabbea5d6ec6729",
+        "new_sha256": "c0845ee1776a9ab6dfd2d0acfc5699195930ad76384020cdebabbea5d6ec6729",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "detail-390-top.png",
+        "old_sha256": "28a7ab7e975e4981c0428bcbfa99059d217c9323f71b1c83a0183d1b0797352e",
+        "new_sha256": "28a7ab7e975e4981c0428bcbfa99059d217c9323f71b1c83a0183d1b0797352e",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "home-1280.png",
+        "old_sha256": "6007b2985611f84304ce57fb227ada267541b028ccce0cde34f77e514befcc16",
+        "new_sha256": "6007b2985611f84304ce57fb227ada267541b028ccce0cde34f77e514befcc16",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "home-320.png",
+        "old_sha256": "401a4a60ee9e770e04060c48a9649e433aac8c393913ae9ad32df7f3eb1f625f",
+        "new_sha256": "401a4a60ee9e770e04060c48a9649e433aac8c393913ae9ad32df7f3eb1f625f",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "home-390.png",
+        "old_sha256": "cc8d1c45529a62d0c956455c9ac90865d3d88d6ed87b7264195dccec21f91fa0",
+        "new_sha256": "cc8d1c45529a62d0c956455c9ac90865d3d88d6ed87b7264195dccec21f91fa0",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "home-mobile.png",
+        "old_sha256": "a77f05177e9cb1684f493f83886f392a06c1302e6edf66ec4407c5e12cb4a3f3",
+        "new_sha256": "a77f05177e9cb1684f493f83886f392a06c1302e6edf66ec4407c5e12cb4a3f3",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "keyboard-first-1280-404-html.png",
+        "old_sha256": "0e99ae30638453297451899077bd6170dc9803ff60041d24a714d5e9c9d2087c",
+        "new_sha256": "0e99ae30638453297451899077bd6170dc9803ff60041d24a714d5e9c9d2087c",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "keyboard-first-1280-home.png",
+        "old_sha256": "019bf71c7790b59767be9d29c03ba740611c700afe4a4a9316ec0abb546cc4df",
+        "new_sha256": "019bf71c7790b59767be9d29c03ba740611c700afe4a4a9316ec0abb546cc4df",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "keyboard-first-1280-regions-gangdong-condolence-wreath.png",
+        "old_sha256": "570d20e3a27bde98b38dd0303a411bd51d232152c71cb53d61c068ec662bcffa",
+        "new_sha256": "570d20e3a27bde98b38dd0303a411bd51d232152c71cb53d61c068ec662bcffa",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "keyboard-first-1280-regions-gangdong-wedding-wreath.png",
+        "old_sha256": "4f48bf452f0beedfb57ef512881b05b0eed575f5317dc652032377ce34fbd356",
+        "new_sha256": "4f48bf452f0beedfb57ef512881b05b0eed575f5317dc652032377ce34fbd356",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "keyboard-first-1280-regions.png",
+        "old_sha256": "e09dfb0e16ba7b938e87a0bca255e879983d7868245cb3850323d1d2d7055537",
+        "new_sha256": "e09dfb0e16ba7b938e87a0bca255e879983d7868245cb3850323d1d2d7055537",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "keyboard-first-320-404-html.png",
+        "old_sha256": "7e912a6f8f6b897a8f3f25839590bf256aa78ebfc069dbeedaa3f3b6dee3fc6d",
+        "new_sha256": "7e912a6f8f6b897a8f3f25839590bf256aa78ebfc069dbeedaa3f3b6dee3fc6d",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "keyboard-first-320-home.png",
+        "old_sha256": "63c3a11b9a80286936ee702df3c45f6de9b65f16a657eb5773f14e93b2a2b0ba",
+        "new_sha256": "63c3a11b9a80286936ee702df3c45f6de9b65f16a657eb5773f14e93b2a2b0ba",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "keyboard-first-320-regions-gangdong-condolence-wreath.png",
+        "old_sha256": "052873068f347063645011666bcb255996ceb68d0f09fadf12704abd8d948f79",
+        "new_sha256": "052873068f347063645011666bcb255996ceb68d0f09fadf12704abd8d948f79",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "keyboard-first-320-regions-gangdong-wedding-wreath.png",
+        "old_sha256": "72d21638bdc44c12711aecc007e968c54db372620d486c7a954a5347a3c80693",
+        "new_sha256": "72d21638bdc44c12711aecc007e968c54db372620d486c7a954a5347a3c80693",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "keyboard-first-320-regions.png",
+        "old_sha256": "f061ffdeaefc3c65249d951fe048d2bd0752b0a1bca2072e13ec0feab21bc8b0",
+        "new_sha256": "f061ffdeaefc3c65249d951fe048d2bd0752b0a1bca2072e13ec0feab21bc8b0",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "keyboard-first-390-404-html.png",
+        "old_sha256": "f12a17d6c19ed4eab24d1eada8c21e2aec9f33af61b926bc3c6d69adee2dae73",
+        "new_sha256": "f12a17d6c19ed4eab24d1eada8c21e2aec9f33af61b926bc3c6d69adee2dae73",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "keyboard-first-390-home.png",
+        "old_sha256": "701779e8bd2c975b9a6bc1f8a2c96251732df0deb6dbead0b1be748c6d35d6ec",
+        "new_sha256": "701779e8bd2c975b9a6bc1f8a2c96251732df0deb6dbead0b1be748c6d35d6ec",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "keyboard-first-390-regions-gangdong-condolence-wreath.png",
+        "old_sha256": "e2385159ca83963f886a2326afb1402ab508cc054514f26405a00240dc174ca3",
+        "new_sha256": "e2385159ca83963f886a2326afb1402ab508cc054514f26405a00240dc174ca3",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "keyboard-first-390-regions-gangdong-wedding-wreath.png",
+        "old_sha256": "50ae5f24ae3605a2944d953d42b1f66281fc231170876ca3c54c88fbc420cd23",
+        "new_sha256": "50ae5f24ae3605a2944d953d42b1f66281fc231170876ca3c54c88fbc420cd23",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "keyboard-first-390-regions.png",
+        "old_sha256": "2d8b48f31457f164a03e5beb54815c4e4353e282b51f5aafc172ade349026f87",
+        "new_sha256": "2d8b48f31457f164a03e5beb54815c4e4353e282b51f5aafc172ade349026f87",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "regions-1280.png",
+        "old_sha256": "2cc0d3b998943853b465b436d85b2d65d1b56ce7058ec92711f2e5e886a2a237",
+        "new_sha256": "454cc7edf40213ac781ccb99f70e2a200acbcde1ab23bc7a34184a6087f1a7a2",
+        "byte_identical": false,
+        "rgb_pixel_identical": false,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": true,
+        "changed_pixels": 11,
+        "max_channel_difference": 1,
+        "difference_bbox_exclusive": [
+          160,
+          637,
+          625,
+          651
+        ],
+        "fresh_visual_result": "No visible layout, text or focus defect; tiny border-pixel change independently inspected."
+      },
+      {
+        "file": "regions-320.png",
+        "old_sha256": "d74aa1c1d3bbb1ce592b27f3e84906a34e276f3ec548bce738cba3be80dd3378",
+        "new_sha256": "d74aa1c1d3bbb1ce592b27f3e84906a34e276f3ec548bce738cba3be80dd3378",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "regions-390.png",
+        "old_sha256": "f59899d5d429b21d2cd4b17657d554a02cbbbd88633b74de139c54d4546dbcf9",
+        "new_sha256": "f59899d5d429b21d2cd4b17657d554a02cbbbd88633b74de139c54d4546dbcf9",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "regions-gangdong-condolence-wreath-1280.png",
+        "old_sha256": "9fc8f8f48ac78113d51e1b04e4dcdd4b122915c80302e2953229a9c8f0e66523",
+        "new_sha256": "9fc8f8f48ac78113d51e1b04e4dcdd4b122915c80302e2953229a9c8f0e66523",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "regions-gangdong-condolence-wreath-320.png",
+        "old_sha256": "3afbcb7619d673e935cc436737a521d071358de8554f5f643475b642631a07f0",
+        "new_sha256": "3afbcb7619d673e935cc436737a521d071358de8554f5f643475b642631a07f0",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "regions-gangdong-condolence-wreath-390.png",
+        "old_sha256": "e260887d8911354cc4a49c85e13caffc8d6719373c013c2e039cd1aa87935c46",
+        "new_sha256": "e260887d8911354cc4a49c85e13caffc8d6719373c013c2e039cd1aa87935c46",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "regions-gangdong-wedding-wreath-1280.png",
+        "old_sha256": "fca6428a3ad8d5875c5033e020d32b784e95e82650384a3fb64baebe05ffe457",
+        "new_sha256": "fca6428a3ad8d5875c5033e020d32b784e95e82650384a3fb64baebe05ffe457",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "regions-gangdong-wedding-wreath-320.png",
+        "old_sha256": "0da5edf1d18304ae3720dfa84da84896197e2352d855b41d669213a3d9cdf2ca",
+        "new_sha256": "0da5edf1d18304ae3720dfa84da84896197e2352d855b41d669213a3d9cdf2ca",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "regions-gangdong-wedding-wreath-390.png",
+        "old_sha256": "ee6ba4fab4b57ddb909854070a15bad354e3c961c368c94666508007fdef80ca",
+        "new_sha256": "ee6ba4fab4b57ddb909854070a15bad354e3c961c368c94666508007fdef80ca",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": false,
+        "new_pixel_review_covered": false
+      },
+      {
+        "file": "screenshots/1280/404-html/full.jpg",
+        "old_sha256": "581e4681405e9882517f638254626940c365d68455c2d7ef3cdafc5fdda0e03e",
+        "new_sha256": "581e4681405e9882517f638254626940c365d68455c2d7ef3cdafc5fdda0e03e",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/1280/home/budget.jpg",
+        "old_sha256": "2e4a7533842495f7b5916bb64c7085af0e24cf22dc72c1673eb87ccb7133f690",
+        "new_sha256": "2e4a7533842495f7b5916bb64c7085af0e24cf22dc72c1673eb87ccb7133f690",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/1280/home/consultation.jpg",
+        "old_sha256": "a966f5944e9301b23a19ac724122a04d109bbb7003d511b9e0c0e810284cb77c",
+        "new_sha256": "a966f5944e9301b23a19ac724122a04d109bbb7003d511b9e0c0e810284cb77c",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/1280/home/full.jpg",
+        "old_sha256": "e8fa859b53edfe79b01d8679a44fc574fb3f0380462fe0d81690e6e52b0c1b17",
+        "new_sha256": "e8fa859b53edfe79b01d8679a44fc574fb3f0380462fe0d81690e6e52b0c1b17",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/1280/home/message.jpg",
+        "old_sha256": "71284110c8e0a787c1e4e9659352ccd191a33e5e2e21e63f52f9ffbfaff943dc",
+        "new_sha256": "71284110c8e0a787c1e4e9659352ccd191a33e5e2e21e63f52f9ffbfaff943dc",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/1280/regions/full.jpg",
+        "old_sha256": "ba943e6f295301eec312083f521ab7e356997eb44c512eb17d22eae14b1fe4aa",
+        "new_sha256": "ba943e6f295301eec312083f521ab7e356997eb44c512eb17d22eae14b1fe4aa",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/1280/regions--gangdong-condolence-wreath/budget.jpg",
+        "old_sha256": "2a22f4bf039f22f98d8852df3ca2ca41e4e50d5534781d166316a99cd4319675",
+        "new_sha256": "2a22f4bf039f22f98d8852df3ca2ca41e4e50d5534781d166316a99cd4319675",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/1280/regions--gangdong-condolence-wreath/consultation.jpg",
+        "old_sha256": "4db972da2941d2f71ece464d058256d0243dc62109ea060e1cf9dcb3e2352de4",
+        "new_sha256": "4db972da2941d2f71ece464d058256d0243dc62109ea060e1cf9dcb3e2352de4",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/1280/regions--gangdong-condolence-wreath/full.jpg",
+        "old_sha256": "65cc863c25cbc97d9e9c1181a92d6f4f5faf60f8e09b5ae16ef738e9d942fff7",
+        "new_sha256": "65cc863c25cbc97d9e9c1181a92d6f4f5faf60f8e09b5ae16ef738e9d942fff7",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/1280/regions--gangdong-condolence-wreath/message.jpg",
+        "old_sha256": "53b3112dc7a296264c839ee0cc592a48e00eeacc276240e67b5e5e8402410cac",
+        "new_sha256": "53b3112dc7a296264c839ee0cc592a48e00eeacc276240e67b5e5e8402410cac",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/1280/regions--gangdong-wedding-wreath/budget.jpg",
+        "old_sha256": "4f846453646bbf68903077a3e51151f570412bcc545af93efb733aa0a53073b9",
+        "new_sha256": "4f846453646bbf68903077a3e51151f570412bcc545af93efb733aa0a53073b9",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/1280/regions--gangdong-wedding-wreath/consultation.jpg",
+        "old_sha256": "ec89a6d9aebc5916ff3c216d798e6274c30d26ada7400ca894a4a7eacd3f653b",
+        "new_sha256": "ec89a6d9aebc5916ff3c216d798e6274c30d26ada7400ca894a4a7eacd3f653b",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/1280/regions--gangdong-wedding-wreath/full.jpg",
+        "old_sha256": "f4b5809ce7517cfd0a2036492b05b09898ff3a34e9cf915788a8bfe9378aefa0",
+        "new_sha256": "f4b5809ce7517cfd0a2036492b05b09898ff3a34e9cf915788a8bfe9378aefa0",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/1280/regions--gangdong-wedding-wreath/message.jpg",
+        "old_sha256": "41807784eadf6a0b1490b38976ef7bd9f3825efbe254644f5b05dedf6f01efa4",
+        "new_sha256": "41807784eadf6a0b1490b38976ef7bd9f3825efbe254644f5b05dedf6f01efa4",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/320/404-html/full.jpg",
+        "old_sha256": "a5ec0bc9b47456230349d017b65ef53051c53efaa318e37771c1e6824d77bade",
+        "new_sha256": "a5ec0bc9b47456230349d017b65ef53051c53efaa318e37771c1e6824d77bade",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/320/home/budget.jpg",
+        "old_sha256": "52834db6530278995057348e6551783c2b1162e8bac8f130187076e9d781fa53",
+        "new_sha256": "52834db6530278995057348e6551783c2b1162e8bac8f130187076e9d781fa53",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/320/home/consultation.jpg",
+        "old_sha256": "8f80e8551dc6dbc2083008b13ad9919c0389210f9ef40ec7c80b5a4139a1ced2",
+        "new_sha256": "8f80e8551dc6dbc2083008b13ad9919c0389210f9ef40ec7c80b5a4139a1ced2",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/320/home/full.jpg",
+        "old_sha256": "c840a2a818721f56fce435f07cd904d42972b5b7418cf565b27795969f3d5695",
+        "new_sha256": "c840a2a818721f56fce435f07cd904d42972b5b7418cf565b27795969f3d5695",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/320/home/message.jpg",
+        "old_sha256": "eeb3ad51425c8940ac2d7b2ffb7f7bb727fce7c79eb485146bf83c3f9824f95a",
+        "new_sha256": "eeb3ad51425c8940ac2d7b2ffb7f7bb727fce7c79eb485146bf83c3f9824f95a",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/320/regions/full.jpg",
+        "old_sha256": "1fbfb039c3059c72ce76766b4a3dc5d25338e597d45f6e2e82fadd420fc8c68f",
+        "new_sha256": "1fbfb039c3059c72ce76766b4a3dc5d25338e597d45f6e2e82fadd420fc8c68f",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/320/regions--gangdong-condolence-wreath/budget.jpg",
+        "old_sha256": "a5b9cc947aef4fc925d0a56c37be7d162a41241ec90b90c26806d3c2ae706523",
+        "new_sha256": "a5b9cc947aef4fc925d0a56c37be7d162a41241ec90b90c26806d3c2ae706523",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/320/regions--gangdong-condolence-wreath/consultation.jpg",
+        "old_sha256": "515f97c4791fc6c1bb5d3085af51b17efe3dd7d673c24f76024fb925eb47d1c8",
+        "new_sha256": "515f97c4791fc6c1bb5d3085af51b17efe3dd7d673c24f76024fb925eb47d1c8",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/320/regions--gangdong-condolence-wreath/full.jpg",
+        "old_sha256": "1739bb8ed6dee55c415785a2abec1bf0614dc8a30e4255082d77d5e012a571b0",
+        "new_sha256": "1739bb8ed6dee55c415785a2abec1bf0614dc8a30e4255082d77d5e012a571b0",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/320/regions--gangdong-condolence-wreath/message.jpg",
+        "old_sha256": "3cb9821c8acf104c4348ba4fd9dedb48afaf179192f7888563f060fd9096157e",
+        "new_sha256": "3cb9821c8acf104c4348ba4fd9dedb48afaf179192f7888563f060fd9096157e",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/320/regions--gangdong-wedding-wreath/budget.jpg",
+        "old_sha256": "4f88b57b1395c333f31a8498a9f03110bafa972d972efeec9fe203af2b0ef224",
+        "new_sha256": "4f88b57b1395c333f31a8498a9f03110bafa972d972efeec9fe203af2b0ef224",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/320/regions--gangdong-wedding-wreath/consultation.jpg",
+        "old_sha256": "24a7f12bddd7b5c355dfc7c99f4c82f508fa7cce693922671f461f19739a6603",
+        "new_sha256": "24a7f12bddd7b5c355dfc7c99f4c82f508fa7cce693922671f461f19739a6603",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/320/regions--gangdong-wedding-wreath/full.jpg",
+        "old_sha256": "883e7c9dd1501845d883f1b4b4b427c6261094bd7232c0a08f00384cf60cfa2f",
+        "new_sha256": "883e7c9dd1501845d883f1b4b4b427c6261094bd7232c0a08f00384cf60cfa2f",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/320/regions--gangdong-wedding-wreath/message.jpg",
+        "old_sha256": "2ab17a55e50915c2d8030d294da661b16dfa75c9719496c4e5f083224847bac5",
+        "new_sha256": "2ab17a55e50915c2d8030d294da661b16dfa75c9719496c4e5f083224847bac5",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/390/404-html/full.jpg",
+        "old_sha256": "9b624bc462c159d96d779cee10c8f9806a6426441d4d9fe2b32b09b02ad4ef89",
+        "new_sha256": "9b624bc462c159d96d779cee10c8f9806a6426441d4d9fe2b32b09b02ad4ef89",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/390/home/budget.jpg",
+        "old_sha256": "0bdd958d93fff413bacfa3c5c0d8ddfa5eeabb9165e4d12691b8f975b5310c96",
+        "new_sha256": "0bdd958d93fff413bacfa3c5c0d8ddfa5eeabb9165e4d12691b8f975b5310c96",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/390/home/consultation.jpg",
+        "old_sha256": "82c9676dd385059de60b6b11f5180825faac7440838f739cb539b1f0c9721c8f",
+        "new_sha256": "82c9676dd385059de60b6b11f5180825faac7440838f739cb539b1f0c9721c8f",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/390/home/full.jpg",
+        "old_sha256": "1df60af0def323e69727705863c259f241f1293a6afc157a8241d2b871871ac4",
+        "new_sha256": "1df60af0def323e69727705863c259f241f1293a6afc157a8241d2b871871ac4",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/390/home/message.jpg",
+        "old_sha256": "15e39038b7b79e5febe2ab57f41e1dbbefb682cf91940ddb8e03e46874ea1210",
+        "new_sha256": "15e39038b7b79e5febe2ab57f41e1dbbefb682cf91940ddb8e03e46874ea1210",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/390/regions/full.jpg",
+        "old_sha256": "ff263dcfc541e9b1e3365f999a44fe0db966e967892be60492b0c260c88c5575",
+        "new_sha256": "ff263dcfc541e9b1e3365f999a44fe0db966e967892be60492b0c260c88c5575",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/390/regions--gangdong-condolence-wreath/budget.jpg",
+        "old_sha256": "37637763174e17721e0b753fde6cd32d4f32986c2c7346c7867f68789c0e8172",
+        "new_sha256": "37637763174e17721e0b753fde6cd32d4f32986c2c7346c7867f68789c0e8172",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/390/regions--gangdong-condolence-wreath/consultation.jpg",
+        "old_sha256": "ddac42e7c2fc5008f35fd6fc85acd8f6c497128e9ef2fe89d840d6feea0b38d4",
+        "new_sha256": "ddac42e7c2fc5008f35fd6fc85acd8f6c497128e9ef2fe89d840d6feea0b38d4",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/390/regions--gangdong-condolence-wreath/full.jpg",
+        "old_sha256": "5406d15bbf75738e6e5d3d6d9e7e1b65258d24e554744f0d5f34a67392430228",
+        "new_sha256": "5406d15bbf75738e6e5d3d6d9e7e1b65258d24e554744f0d5f34a67392430228",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/390/regions--gangdong-condolence-wreath/message.jpg",
+        "old_sha256": "f579379e4d6dfd36c5348b6003b1801b3ebde33481d23aad16bc00c7505ef555",
+        "new_sha256": "f579379e4d6dfd36c5348b6003b1801b3ebde33481d23aad16bc00c7505ef555",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/390/regions--gangdong-wedding-wreath/budget.jpg",
+        "old_sha256": "c2d80bc0435f3f4c5370a8e7a01554546ea70178167df75ca162da9649953888",
+        "new_sha256": "c2d80bc0435f3f4c5370a8e7a01554546ea70178167df75ca162da9649953888",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/390/regions--gangdong-wedding-wreath/consultation.jpg",
+        "old_sha256": "99ac283b86e7f5c1010a56f7a3e078ae60d01929f99fe8797221438ee1b06227",
+        "new_sha256": "99ac283b86e7f5c1010a56f7a3e078ae60d01929f99fe8797221438ee1b06227",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/390/regions--gangdong-wedding-wreath/full.jpg",
+        "old_sha256": "6052fdaf9dcf23e3b06ac302db62398c6842c12ab69f6048430541c4e51070d5",
+        "new_sha256": "6052fdaf9dcf23e3b06ac302db62398c6842c12ab69f6048430541c4e51070d5",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      },
+      {
+        "file": "screenshots/390/regions--gangdong-wedding-wreath/message.jpg",
+        "old_sha256": "e3c6f2cb31dc8388f2cd6a69ee0d6730517e590dc597f39ae3aa7bd62753200a",
+        "new_sha256": "e3c6f2cb31dc8388f2cd6a69ee0d6730517e590dc597f39ae3aa7bd62753200a",
+        "byte_identical": true,
+        "rgb_pixel_identical": true,
+        "dimensions_equal": true,
+        "prior_pixel_inspected": true,
+        "new_pixel_review_covered": true
+      }
+    ]
+  }
+}
