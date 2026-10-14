@@ -113,6 +113,10 @@ def inspect(dist,out,pages,revision,spec,executable_path=None):
                             if parsed.fragment!='main-content' and link['anchor'].get('top',-1)<link['anchor'].get('headerBottom',0)-1:issue.append('Native anchor first landing covered by header: '+target)
                         checks['links'].append(link)
                     page.goto(origin+route,wait_until='networkidle')
+                    # Internal-link checks created a new document. Network idle does
+                    # not load below-fold lazy images; settle this document before
+                    # checking intrinsic dimensions, without weakening image gates.
+                    settle(page)
                     checks['productLinks']=page.locator('[data-product-sku]').evaluate_all("""cards=>cards.map(el=>({sku:el.dataset.productSku,links:[...el.querySelectorAll('a[data-order-product-sku]')].map(a=>({sku:a.dataset.orderProductSku,href:a.getAttribute('href'),label:a.textContent.trim()})),image:el.querySelector('img').getAttribute('src'),fit:getComputedStyle(el.querySelector('img')).objectFit,naturalWidth:el.querySelector('img').naturalWidth,naturalHeight:el.querySelector('img').naturalHeight}))""")
                     expected_skus=[]
                     for section in expected.get('sections',[]):
