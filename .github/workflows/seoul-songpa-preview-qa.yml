@@ -1,0 +1,87 @@
+name: Seoul Songpa pinned preview build and loopback QA
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+concurrency:
+  group: seoul-songpa-direct-public-release
+  cancel-in-progress: false
+jobs:
+  preview_qa:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.title == '[SONGPA-PREVIEW-QA] accessibility-20261014' && github.event.issue.user.login == 'joseungil-kr'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_RELEASE_MODE: preview
+      SITE_INDEXABLE: 'false'
+      SITE_URL: https://seoul-songpa.local.invalid
+      SITE_FACTORY_REVISION: 34c78310942910c9622784680cedcbfbb5dbf898
+      SITE_RELEASE_BINDING_PATH: ''
+      SITE_RELEASE_BINDING_SHA256: ''
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - name: Authorize exact owner, source, main and first-attempt request
+        run: python3 control/scripts/direct-seoul-songpa/preview_qa.py select --report selected-source.json
+      - name: Recheck frozen source branch head
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {data} = await github.rest.git.getRef({...context.repo, ref:'heads/source/seoul-songpa-preview-accessibility-20261014'});
+            if (data.object.type !== 'commit' || data.object.sha !== process.env.SITE_FACTORY_REVISION) throw new Error('Frozen source branch moved');
+      - uses: actions/checkout@v4
+        with:
+          ref: 34c78310942910c9622784680cedcbfbb5dbf898
+          path: target
+          persist-credentials: false
+      - name: Verify all 69 exact source files and preview-only identity
+        run: python3 control/scripts/direct-seoul-songpa/preview_qa.py prebuild --checkout target --report source-prebuild.json
+      - name: Test nonpublishing control boundaries offline
+        run: python3 -m unittest discover -s control/scripts/direct-seoul-songpa -p 'test_*.py' -v
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Build exact frozen preview and run native tests
+        working-directory: target/site-factory/seoul-songpa-flower
+        run: |
+          set -euo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/evidence/logs"
+          npm ci --no-audit --no-fund 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/npm-ci.log"
+          npm run build 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/build.log"
+          npm test 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/test.log"
+      - name: Verify exact 21-file noindex artifact and preserved source
+        run: python3 control/scripts/direct-seoul-songpa/preview_qa.py postbuild --checkout target --report preview-output.json
+      - name: Install existing pinned browser tooling and Korean fonts
+        run: |
+          python3 -m pip install 'playwright==1.63.0'
+          python3 -m playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          fc-match 'Noto Sans CJK KR' | tee evidence/logs/font-match.txt
+      - name: Inspect exact preview on runner loopback only
+        run: |
+          set -euo pipefail
+          python3 control/scripts/direct-seoul-songpa/capture.py --checkout target --output evidence 2>&1 | tee evidence/logs/capture.log
+      - name: Seal retained screenshots and reports
+        if: always()
+        run: python3 control/scripts/direct-seoul-songpa/capture.py --seal --output evidence
+      - name: Retain actual preview and evidence for independent review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seoul-songpa-preview-qa-${{ github.run_id }}-${{ github.sha }}
+          path: |
+            target/site-factory/seoul-songpa-flower/dist/
+            selected-source.json
+            source-prebuild.json
+            preview-output.json
+            evidence/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
