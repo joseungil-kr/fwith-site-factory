@@ -94,12 +94,33 @@ def opaque_field(data, key):
             'sha256': hashlib.sha256(encoded).hexdigest(), 'isEmpty': value is None or value == ''}
 
 
+def handlers_field(data):
+    value = data.get('handlers')
+    identity = opaque_field(data, 'handlers')
+    known = None
+    if isinstance(value, list) and all(isinstance(item, str) for item in value):
+        known = sorted({item if item in HANDLERS else 'unrecognized' for item in value})
+    return {'present': identity['present'], 'type': identity['type'], 'sha256': identity['sha256'],
+            'count': len(value) if isinstance(value, list) else None, 'knownValues': known}
+
+
+def canonical_sha256(value):
+    try:
+        encoded = json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=False, allow_nan=False).encode('utf-8')
+    except (ValueError, TypeError):
+        raise Rejected('canonical_metadata_invalid') from None
+    return hashlib.sha256(encoded).hexdigest()
+
+
 def selected(data, fields):
     require(isinstance(data, dict), 'identity_object_invalid')
     out = {}
     for key in fields:
         if key == 'etag':
             out[key] = opaque_field(data, key)
+            continue
+        if key == 'handlers':
+            out[key] = handlers_field(data)
             continue
         if key not in data:
             continue
@@ -110,11 +131,12 @@ def selected(data, fields):
             require(type(value) is bool, 'identity_boolean_invalid')
             out[key] = value
         elif key in {'source', 'last_deployed_from'}:
-            require(isinstance(value, str), 'identity_source_invalid')
-            out[key] = value if value in SOURCES else 'unrecognized'
-        elif key == 'handlers':
-            require(isinstance(value, list) and len(value) <= 32 and all(isinstance(x, str) for x in value), 'identity_handlers_invalid')
-            out[key] = sorted({x if x in HANDLERS else 'unrecognized' for x in value})
+            if value is None:
+                out[key] = None
+            elif isinstance(value, str):
+                out[key] = value if value in SOURCES else 'unrecognized'
+            else:
+                out[key] = {'unrecognizedValue': opaque_field(data, key)}
     return out
 
 
@@ -266,7 +288,7 @@ def inspect(account, transport, report=None):
     # Independent GETs first: assets-only/unsupported version reads still retain useful observations.
     try:
         raw_settings = result(transport('GET', worker_path + '/settings'))
-        report['rawSettingsSha256'] = hashlib.sha256(json.dumps(raw_settings, sort_keys=True, separators=(',', ':'), ensure_ascii=False, allow_nan=False).encode('utf-8')).hexdigest()
+        report['rawSettingsSha256'] = canonical_sha256(raw_settings)
         report['settings'] = {'assets': assets(raw_settings.get('assets')), 'bindingTypes': binding_types(raw_settings.get('bindings'))}
     except Rejected as error:
         errors['settings'] = str(error)
@@ -285,7 +307,9 @@ def inspect(account, transport, report=None):
         raise Rejected('uploaded_identity_incomplete') from None
     version_id = deployment['versions'][0]['version_id']
     try:
-        report['version'] = inspect_version(result(transport('GET', worker_path + '/versions/' + version_id)), version_id, script)
+        raw_version = result(transport('GET', worker_path + '/versions/' + version_id))
+        report['rawVersionSha256'] = canonical_sha256(raw_version)
+        inspect_version(raw_version, version_id, script, report)
     except Rejected as error:
         errors['version'] = str(error)
     if errors:
@@ -295,16 +319,33 @@ def inspect(account, transport, report=None):
     return report
 
 
-def inspect_version(raw_version, version_id, script):
+def inspect_version(raw_version, version_id, script, report=None):
     require(raw_version.get('id') == version_id and type(raw_version.get('number')) is int and raw_version['number'] >= 1, 'version_identity_mismatch')
+    version = {'id': version_id, 'number': raw_version['number'], 'metadata': {}}
+    if report is not None:
+        report['version'] = version
+    metadata = raw_version.get('metadata')
+    require(isinstance(metadata, dict), 'version_metadata_invalid')
+    # Creation time is required provenance; preserve it before optional fields.
+    version['metadata']['created_on'] = timestamp(metadata.get('created_on'))
     resources = raw_version.get('resources')
     require(isinstance(resources, dict), 'version_resources_invalid')
     raw_script = resources.get('script')
     require(raw_script is None or isinstance(raw_script, dict), 'version_resources_invalid')
-    version = {'id': version_id, 'number': raw_version['number'],
-               'metadata': selected(raw_version.get('metadata', {}), ['created_on', 'modified_on', 'source']),
-               'script': selected(raw_script or {}, ['etag', 'handlers', 'last_deployed_from']),
-               'assets': assets(resources.get('assets')), 'bindingTypes': binding_types(resources.get('bindings'))}
+    version['script'] = {}
+    version['scriptRepresentation'] = opaque_field(resources, 'script')
+    for target, data, fields in [(version['metadata'], metadata, ['modified_on', 'source']),
+                                 (version['script'], raw_script or {}, ['etag', 'handlers', 'last_deployed_from'])]:
+        for field in fields:
+            try:
+                if field == 'modified_on' and field in data and data[field] is None:
+                    target[field] = None
+                else:
+                    target.update(selected(data, [field]))
+            except Rejected as error:
+                version.setdefault('optionalMetadataErrors', {})[field] = str(error)
+    version['assets'] = assets(resources.get('assets'))
+    version['bindingTypes'] = binding_types(resources.get('bindings'))
     return version
 
 

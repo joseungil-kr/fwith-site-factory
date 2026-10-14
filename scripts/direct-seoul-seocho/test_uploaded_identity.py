@@ -146,6 +146,46 @@ class InspectorTests(unittest.TestCase):
         self.assertEqual(r['scriptMetadataErrors'],{'created_on':'identity_timestamp_invalid'})
         self.assertIn('settings',r);self.assertIn('version',r);self.assertEqual(len(calls),7)
 
+    def test_optional_handlers_null_absent_empty_and_unknown_are_distinct(self):
+        values=[None,[],['fetch'],MARKER,{'private':MARKER}]
+        fingerprints=[]
+        for value in values:
+            data=fixtures();data[VERSION_PATH]['result']['resources']['script']['handlers']=value
+            r=m.inspect(ACCOUNT,transport_for(data,[]));handlers=r['version']['script']['handlers']
+            self.assertEqual(handlers,m.handlers_field({'handlers':value}))
+            self.assertEqual(r['rawVersionSha256'],m.canonical_sha256(data[VERSION_PATH]['result']))
+            self.assertNotIn(MARKER,json.dumps(r));fingerprints.append(handlers['sha256'])
+        self.assertEqual(len(set(fingerprints)),len(values))
+        data=fixtures();del data[VERSION_PATH]['result']['resources']['script']['handlers']
+        r=m.inspect(ACCOUNT,transport_for(data,[]))
+        self.assertEqual(r['version']['script']['handlers'],{'present':False,'type':'absent','sha256':None,'count':None,'knownValues':None})
+
+    def test_assets_only_optional_null_metadata_is_preserved(self):
+        data=fixtures();version=data[VERSION_PATH]['result']
+        version['metadata'].update(source=None,modified_on=None)
+        version['resources']['script'].update(etag='',handlers=None,last_deployed_from=None)
+        data[PREFIX+'/workers/scripts']['result'][0]['last_deployed_from']=None
+        r=m.inspect(ACCOUNT,transport_for(data,[]))
+        self.assertIsNone(r['version']['metadata']['source']);self.assertIsNone(r['version']['metadata']['modified_on'])
+        self.assertIsNone(r['version']['script']['last_deployed_from']);self.assertIsNone(r['script']['last_deployed_from'])
+        self.assertEqual(r['version']['metadata']['created_on'],STAMP)
+        self.assertEqual(r['version']['script']['handlers']['type'],'null')
+
+    def test_raw_version_hash_pins_unknown_metadata_without_values(self):
+        data=fixtures();before=m.inspect(ACCOUNT,transport_for(data,[]))
+        data[VERSION_PATH]['result']['unknown']={'secret':MARKER}
+        after=m.inspect(ACCOUNT,transport_for(data,[]))
+        self.assertNotEqual(before['rawVersionSha256'],after['rawVersionSha256'])
+        self.assertNotIn(MARKER,json.dumps(after))
+
+    def test_critical_creation_time_stays_strict_and_identity_survives_failure(self):
+        for created in [None,'invalid']:
+            data=fixtures();data[VERSION_PATH]['result']['metadata']['created_on']=created;r={}
+            with self.assertRaises(m.Rejected):m.inspect(ACCOUNT,transport_for(data,[]),r)
+            self.assertEqual(r['version']['id'],VERSION);self.assertEqual(r['version']['number'],1)
+            self.assertIn('rawVersionSha256',r);self.assertIn('settings',r)
+            self.assertEqual(r['state'],'uploaded_worker_identity_partial')
+
     def test_deployment_shape_and_traffic(self):
         for rows in [[],[{},{}],[{'id':DEPLOYMENT,'created_on':STAMP,'strategy':'percentage','versions':[]}]]:
             with self.assertRaises(m.Rejected): m.active_deployment(payload({'deployments':rows}))
