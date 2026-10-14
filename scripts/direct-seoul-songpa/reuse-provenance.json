@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "repository": "joseungil-kr/fwith-site-factory",
+  "scope": "Local-only Songpa preview QA preparation. No remote writes, Actions trigger, publication, provider, hostname, credentials or IndexNow action.",
+  "frozenBaselineSourceRevision": "823c99cd8e5162e5890d24df1b89a2aadcb145a3",
+  "proposedSourceBranch": "source/seoul-songpa-preview-accessibility-20261014",
+  "sourceRevision": null,
+  "sourceTree": null,
+  "remotePinsFinalized": false,
+  "selectionFailsClosedUntilPinsFinalized": true,
+  "localSuccessorSourceManifestSha256": "68eb4202af15643688b8a5bc7ab51c4ed1378a750db3de4256a73ea2404c0bd6",
+  "localSuccessorSourceFiles": 69,
+  "reuseSource": "gangnam-web-preparation-20261014/r2-controls",
+  "upstreamLocalFiles": [
+    {
+      "path": ".github/workflows/seoul-gangnam-preview-qa.yml",
+      "sha256": "59400f24c8657cd76e8099eb66ad11cccddb6d7725405c2db10612f3da332a88"
+    },
+    {
+      "path": "scripts/direct-seoul-gangnam/browser_rendering.py",
+      "sha256": "e20cb787b4663e177a7a6e2616557db5db33ab689b14543a820287a5db8e74b1"
+    },
+    {
+      "path": "scripts/direct-seoul-gangnam/capture.py",
+      "sha256": "adcf8a197471eb98afe7fc4f56527e206ca8c82cdea80d9c77ee73517b3f61f8"
+    },
+    {
+      "path": "scripts/direct-seoul-gangnam/capture_checks.py",
+      "sha256": "4d66002ae282d8c7bdcfd61dc65fd152520d636714a505b63358ccb42f207544"
+    },
+    {
+      "path": "scripts/direct-seoul-gangnam/preview_qa.py",
+      "sha256": "bf4da67f260f149b5a0f70a581f5c89eec3dc51dcf6f8e32c8f01421beedf3aa"
+    },
+    {
+      "path": "scripts/direct-seoul-gangnam/reuse-provenance.json",
+      "sha256": "e3e6f27a8904cae8c8da3c24b97fac6599498e5d13bdec73f399f0244e35b30d"
+    },
+    {
+      "path": "scripts/direct-seoul-gangnam/reused.py",
+      "sha256": "9a1e99a53c5e28e348032ff5618dba7856fa1b2ed7e3740d5a8a3b3c68f8cf14"
+    },
+    {
+      "path": "scripts/direct-seoul-gangnam/test_preview_qa.py",
+      "sha256": "349820fc1644b4d02090494e925a296bb0ebc0a515b16e7c3efa7aad173a376c"
+    }
+  ],
+  "safePrimitivesByteIdentical": true,
+  "adaptations": [
+    "Five exact Songpa routes and69-file accessibility successor; exact tracked bytes in both prebuild and postbuild; reject unexpected source files including ignored .env.",
+    "Use frozen songpa-runtime.json for pages, FAQ, product CTA and11 image hashes.",
+    "Preserve empty sitemap.xml and absent site-factory-revision metadata; exact21 static output paths including one hashed CSS file.",
+    "Directory and404 have no banners; only404 omits canonical.",
+    "Require320/390/1280 capture across15 route-viewport pairs and42 full/banner screenshots plus keyboard/detail evidence.",
+    "Retain loopback-only GET/HEAD network guard and WebSocket blocking; Chromium sandbox explicitly enabled.",
+    "Add native mobile-menu Space/Enter repeated toggle checks and first menu Tab target; exact product CTA labels/URLs, image containment, internal links and anchors.",
+    "Skip-link programmatic focus and83px desktop native clearance gate; actual native keyboard clearance checks remain required."
+  ],
+  "licenseReview": "Same user-owned repository reuse; no third-party application source, new framework, dependency graph or images added. Existing locked Astro and previously used Actions/Playwright setup retained.",
+  "maintenanceReview": "Inspected exact local Gangnam r2 control source and Songpa frozen source/readiness audit. Historical upstream runner success is not asserted as Songpa browser evidence.",
+  "verified": [
+    "56 synthetic/offline regression tests passed.",
+    "Actual local successor69 source files rehashed before and after blocked browser attempt.",
+    "Actual21 static artifact GET bodies matched bytes;4 route HEAD responses200; missing404, traversal403, POST405.",
+    "11 image assets matched frozen runtime SHA256."
+  ],
+  "unverified": [
+    "Remote successor commit/tree pins and remote save",
+    "Git-pinned prebuild/postbuild execution against final remote successor",
+    "Actions execution and clean runner npm ci",
+    "Actual Chromium browser rendering and screenshot pixel review: launch failed on socket() Operation not permitted even after reviewed escalation",
+    "Production/public HTTP and custom404 routing",
+    "Deployment, hostname/Worker binding, IndexNow"
+  ],
+  "browserAttemptEvidence": [
+    "local-browser-default.log",
+    "local-browser-reviewed.log",
+    "local-browser/report.json"
+  ],
+  "localHttpNote": "Static helper serves the real404.html as200; missing paths return its generic404. This is not production custom404 verification."
+}
