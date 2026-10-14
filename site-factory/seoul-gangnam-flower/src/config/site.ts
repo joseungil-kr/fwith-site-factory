@@ -2,10 +2,12 @@ import truth from '../data/business-truth.json';
 import architecture from '../data/architecture.json';
 import pages from '../data/pages.json';
 import config from '../data/site-config.json';
-const domain = (import.meta.env.SITE_URL || config.previewUrl).replace(/\/$/, '');
+import {resolveGangnamRelease} from '../../scripts/gangnam_release.mjs';
+const release=resolveGangnamRelease(process.env,process.cwd());
+const domain=release.origin;
 export const site = {
  brand:truth.brand,region:config.region,domain,
- indexable:import.meta.env.SITE_INDEXABLE==='true'&&config.productionApproved===true,
+ indexable:release.indexable,
  phone:truth.phone,phoneHref:truth.phoneHref,orderUrl:truth.onlineOrderUrl,
  deliveryNotice:truth.deliveryNotice,productVariationNotice:truth.productVariationNotice,
  naverVerification:config.naverVerification||''
