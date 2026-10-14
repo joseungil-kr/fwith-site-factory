@@ -18,7 +18,7 @@ const canonical=new URL(page.path,runtime.origin).href;
 <nav class="desktop-navigation" aria-label={common.mobileMenu.label}>{common.navigation.map(link=><a href={link.href}>{link.label}</a>)}</nav>
 <details class="mobile-menu"><summary><span class="menu-open">{common.mobileMenu.open}</span><span class="menu-close">{common.mobileMenu.close}</span></summary><nav aria-label={common.mobileMenu.label}>{common.navigation.map(link=><a href={link.href}>{link.label}</a>)}</nav></details>
 </div></header>
-<main id="main-content"><slot/></main>
+<main id="main-content" tabindex="-1"><slot/></main>
 <footer><div><strong>{footer.brandLine}</strong><a href={common.phone.href}>{footer.phoneLabel}</a><span>{common.phone.hours}</span><a href={footer.catalogSourceLink.href}>{footer.catalogSourceLink.label}</a><a href={footer.directoryLink.href}>{footer.directoryLink.label}</a><a href={footer.homeLink.href}>{footer.homeLink.label}</a></div></footer>
 <div class="mobile-bar"><a href={common.navigation[0].href}>{common.navigation[0].label}</a><a href={common.phone.href}>{common.phone.label}</a></div>
 </body></html>
