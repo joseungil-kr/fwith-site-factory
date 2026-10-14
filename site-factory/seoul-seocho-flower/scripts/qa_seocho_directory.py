@@ -2,6 +2,7 @@
 import json,os
 from pathlib import Path
 from qa_seocho import Surface,read,norm,within,hidden
+from release_mode import release_mode
 
 def inspect(root=Path('.')):
  root=Path(root);data=root/'src/data';pages=read(data/'pages.json');common=read(data/'seocho-copy.json')['common'];doc=Surface((root/'dist/regions/index.html').read_text())
@@ -17,7 +18,9 @@ def inspect(root=Path('.')):
  assert len(doc.where(key='data-region-district'))==1,'Single district geography group required'
  assert len(doc.where(key='data-legal-unit'))==10 and len(doc.where(key='data-administrative-unit'))==23,'Full official membership denominator required'
  meta={n['attrs'].get('name'):n['attrs'].get('content') for n in doc.where('meta')}
- assert meta['robots']=='noindex,nofollow,noarchive','Local N2 preview must stay noindex'
+ mode=release_mode(root)
+ expected_robots='noindex,follow' if mode['mode']=='production' else 'noindex,nofollow,noarchive'
+ assert meta['robots']==expected_robots,'N2 directory robots must match the verified release mode'
  source=(root/'src/pages/[category]/index.astro').read_text()
  assert 'noindex={items.length<3}' in source and 'showBanners={items.length>=3}' in source,'Original threshold must not change to helper capability'
  result={'cards':2,'districts':1,'eligible':False,'bannerKinds':[],'visibleCardsBetweenBanners':[],'orderedCardsPreserved':True,'inlineCtaPositionPreserved':True,'inlineCtaCount':0,'note':'N2 approved grouped layout has no InlineOrderBanner; generic legacy fixtures remain unchanged.'}
