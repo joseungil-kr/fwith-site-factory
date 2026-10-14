@@ -1,7 +1,7 @@
 """Source-link-only effective-copy and rendered snapshot assertions, offline."""
 from pathlib import Path
 import json
-from qa_gwanak import Surface
+from html_surface import Surface
 from minimal_source_evidence import load_amendment, effective_articles, AMENDMENT_SHA256, MINIMAL_AMENDMENT_SHA256, EXTRACT_SELECTION_SHA256, NEW, OLD
 
 def read(p):return json.loads(p.read_text())
