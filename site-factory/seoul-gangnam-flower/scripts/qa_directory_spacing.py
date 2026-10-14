@@ -79,7 +79,7 @@ def validate(html,contract,globally_indexable=True):
 
 
 def validate_gangnam(html,contract,globally_indexable=False):
- from qa_gwanak import Surface,norm,within,hidden
+ from html_surface import Surface,norm,within,hidden
  assert contract['originalPlanN']==3 and contract['eligible'] and contract['districtKey']=='seoul-gangnam-gu'
  d=Surface(html);cards=d.cls('page-card');expected=contract['cards'];assert len(cards)==len(expected)==3,'Gangnam exact three actual cards required'
  for card,e in zip(cards,expected):
@@ -92,8 +92,8 @@ def validate_gangnam(html,contract,globally_indexable=False):
  for key in ['data-directory-geography','data-directory-facilities']:
   sections=d.where('section',key);assert len(sections)==1 and sections[0]['i']<banners[2]['i'],'Gangnam consultation must follow geography/facilities'
  assert not d.where(key='data-order-banner',value='inline'),'Gangnam has no reviewed inherited InlineOrderBanner'
- assert not globally_indexable and [n['attrs'].get('content') for n in d.where('meta','name','robots')]==['noindex,nofollow,noarchive'],'Gangnam LOCAL eligibility drift'
- return {'mode':contract['mode'],'cards':3,'districts':1,'eligible':True,'bannerKinds':['message','budget','consultation'],'visibleCardsBetweenBanners':[2,1],'orderedCardsPreserved':True,'inlineCtaPositionPreserved':True,'inlineCtaCount':0,'localOnly':True}
+ assert [n['attrs'].get('content') for n in d.where('meta','name','robots')]==(['index,follow'] if globally_indexable else ['noindex,nofollow,noarchive']),'Gangnam exact release eligibility drift'
+ return {'mode':contract['mode'],'cards':3,'districts':1,'eligible':True,'bannerKinds':['message','budget','consultation'],'visibleCardsBetweenBanners':[2,1],'orderedCardsPreserved':True,'inlineCtaPositionPreserved':True,'inlineCtaCount':0,'localOnly':not globally_indexable}
 
 def inspect(root=Path('.')):
  result=validate((root/'dist/regions/index.html').read_text(),source_contract(root),os.environ.get('SITE_INDEXABLE')=='true')
