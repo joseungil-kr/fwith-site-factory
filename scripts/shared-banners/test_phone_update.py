@@ -11,7 +11,11 @@ class PhoneSourceBoundary(unittest.TestCase):
   self.temp=tempfile.TemporaryDirectory();self.root=Path(self.temp.name);shutil.copytree(ROOT/phone.DIRECTORY,self.root/phone.DIRECTORY)
   for region in ['anseong','seoul-guro']:
    p=self.root/f'scripts/direct-{region}/publish.py';p.parent.mkdir(parents=True);shutil.copyfile(ROOT/f'scripts/direct-{region}/publish.py',p)
-  self.catalogPath=self.root/phone.DIRECTORY/'targets.json';self.data=json.loads(self.catalogPath.read_text());self.target=self.data['targets']['anseong'];self.revision=self.target['revision'];self.env=patch.dict(os.environ,REVISION=self.revision,GITHUB_REPOSITORY='joseungil-kr/fwith-site-factory',GITHUB_RUN_ATTEMPT='1');self.env.start()
+  self.catalogPath=self.root/phone.DIRECTORY/'targets.json';self.data=json.loads(self.catalogPath.read_text());
+  # Preserve original-lineage unit fixtures even after a real successor is selected.
+  for target in self.data['targets'].values():
+   target.pop('nativeSuccessor',None);target['revision']=json.loads((self.root/target['sourceReadback']).read_text())['sourceCommit'];target['releaseReview']=None;target['releaseReviewSha256']=None
+  self.save();self.target=self.data['targets']['anseong'];self.revision=self.target['revision'];self.env=patch.dict(os.environ,REVISION=self.revision,GITHUB_REPOSITORY='joseungil-kr/fwith-site-factory',GITHUB_RUN_ATTEMPT='1');self.env.start()
  def tearDown(self):self.env.stop();self.temp.cleanup()
  def save(self):self.catalogPath.write_text(json.dumps(self.data))
  def reject(self,code):
@@ -173,4 +177,5 @@ class WorkflowBoundary(unittest.TestCase):
    build=s.split('  publish:\n')[0];self.assertNotIn('secrets.',build);self.assertIn('group: '+region+'-direct-public-release',s)
  def test_guro_existing_full_source_gate_retained(self):
   s=(ROOT/'.github/workflows/seoul-guro-direct-publish.yml').read_text();self.assertIn('publish.py source --source target/site-factory/seoul-guro-flower',s);self.assertIn('DIRECT_SOURCE_ROOT:',s)
+from test_phone_native_successor import NativeEvidenceBoundary,NativeGitBoundary,FrozenNativeBoundary
 if __name__=='__main__':unittest.main()

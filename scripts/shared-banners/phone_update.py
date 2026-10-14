@@ -6,8 +6,11 @@ VERSION='phone-20261013'
 DIRECTORY='docs/shared-banner-phone-20261013'
 PLAN_SHA256='c06421db6e4c3244a491aac1a98a5f7da1bc3b8631a082c8947f2dffd0bd478b'
 REVIEW_SHA256='70fa687a556c75ab43d9d0a47c9088c19813d9fdd8b8a6590f14e4512e106f71'
+NATIVE_PLAN_SHA256='4ccca466849f2df2158af564dd96a82b9bb3b0221b82706fcae4ef68ecf92c87'
 ASSETS_SHA256='6586d75a83366fbe261782648db1aec96d46790ef724e34c4b6e70025d1568ff'
 REGIONS=frozenset('anseong dongducheon gapyeong gimpo gunpo guri gwacheon gwangju hanam icheon jongno osan paju pocheon seoul-dobong seoul-dongdaemun seoul-gangbuk seoul-gangseo seoul-guro seoul-gwangjin seoul-jung seoul-jungnang seoul-nowon seoul-seongbuk seoul-seongdong seoul-yangcheon seoul-yongsan siheung uijeongbu uiwang yangju yangpyeong yeoncheon'.split())
+NATIVE_REGIONS=REGIONS-frozenset(['seoul-gangseo','seoul-guro','seoul-yangcheon'])
+NATIVE_PATHS=('tests/fixtures/shared-banner-phone-successor.json','tests/historical/shared-banner-amendment.original.mjs','tests/shared-banner-amendment.mjs','tests/shared-banner-phone-successor.mjs','tests/shared-banner-phone-successor.test.mjs')
 def require(value,code):
  if not value:raise ValueError(code)
 def sha(data):return hashlib.sha256(data).hexdigest()
@@ -21,6 +24,33 @@ def plans(root):
  raw=checked_file(root,DIRECTORY+'/source-plans.json',PLAN_SHA256);rows=json.loads(raw)
  require(len(rows)==33 and {p['region']for p in rows}==REGIONS,'phone_exact_allowlist_required')
  return {p['region']:p for p in rows}
+def native_plan(root,region,target,original):
+ """Opt in only with new evidence; the shipping catalog contains no successors."""
+ if 'nativeSuccessor' not in target:return None
+ require(region in NATIVE_REGIONS and isinstance(target['nativeSuccessor'],dict),'phone_native_target_forbidden')
+ rows=json.loads(checked_file(root,DIRECTORY+'/native-successor-plans.json',NATIVE_PLAN_SHA256))
+ require(len(rows)==30 and {r['region']for r in rows}==NATIVE_REGIONS,'phone_native_exact_allowlist_required')
+ plan=next(r for r in rows if r['region']==region);native=target['nativeSuccessor']
+ require(plan['root']==original['root'] and plan['previousPublicRevision']==original['parentCommit'],'phone_native_original_identity_mismatch')
+ require(native.get('sourceParentRevision')==plan['sourceParentRevision'] and target['revision']!=plan['sourceParentRevision'],'phone_native_parent_mismatch')
+ require(target.get('sourceReadback')==plan['originalSourceReadback'] and target.get('sourceReadbackSha256')==plan['originalSourceReadbackSha256'],'phone_native_original_readback_changed')
+ require([r['path']for r in plan['changedFiles']]==[plan['root']+'/'+p for p in NATIVE_PATHS] and plan['customerFilesChanged']==0 and plan['historicalFixtureAndTestsUnchanged']is True,'phone_native_exact_qa_scope_required')
+ return plan
+
+def native_evidence(root,region,target,plan):
+ native=target['nativeSuccessor'];evidence=json.loads(checked_file(root,native.get('sourceReadback'),native.get('sourceReadbackSha256')))
+ require(evidence.get('sourceCommit')==target['revision'] and evidence.get('parentCommit')==plan['sourceParentRevision'] and evidence.get('previousPublicRevision')==target['previousRevision'] and evidence.get('allFilesMatch')is True,'phone_native_readback_identity_mismatch')
+ expected={r['path']:(r['newSha256'],r['newGitBlob'])for r in plan['changedFiles']};rows=evidence.get('remoteChangedFiles',[])
+ require(len(rows)==5 and len({r.get('path')for r in rows})==5,'phone_native_readback_path_set_mismatch')
+ require({r.get('path'):(r.get('sha256'),r.get('gitBlob'))for r in rows}==expected and all(r.get('remoteBytesMatch')is True for r in rows),'phone_native_readback_exact_hash_mismatch')
+ review=json.loads(checked_file(root,native.get('independentReview'),native.get('independentReviewSha256')))
+ identity={'verdict':'PASS_NATIVE_SOURCE_BUILD_ONLY','region':region,'repository':target['repository'],'branch':target['branch'],'root':target['root'],'sourceCommit':target['revision'],'sourceParentRevision':plan['sourceParentRevision'],'previousPublicRevision':target['previousRevision'],'originalSourcePlanSha256':PLAN_SHA256,'nativeSuccessorPlanSha256':NATIVE_PLAN_SHA256,'originalSourceReadbackSha256':target['sourceReadbackSha256'],'sourceReadbackSha256':native['sourceReadbackSha256']}
+ require(all(review.get(k)==v for k,v in identity.items()),'phone_native_independent_review_identity_mismatch')
+ require(review.get('independentlyReviewed')is True and review.get('exactChangedFileCount')==5 and review.get('customerFilesChanged')==0 and review.get('historicalFixtureAndTestsUnchanged')is True and review.get('nativeTestsPassed')is True,'phone_native_independent_review_required')
+ proofs=review.get('evidence',[]);require({r.get('kind')for r in proofs}>={'native-tests','source-scope'},'phone_native_review_proofs_missing')
+ for proof in proofs:checked_file(root,proof.get('path'),proof.get('sha256'))
+ return review
+
 def catalog(root):
  path=root/DIRECTORY/'targets.json'
  if not path.is_file():return None
@@ -37,11 +67,13 @@ def load(root,region,require_release=False):
  require(re.fullmatch('[0-9a-f]{40}',target.get('revision')or '')and target['revision']!=plan['parentCommit']and target['revision']==os.environ.get('REVISION'),'phone_new_revision_mismatch')
  require(target.get('changedFileCount')==len(plan['changedFiles'])and target.get('exactChangedPaths')==[r['path']for r in plan['changedFiles']],'phone_exact_change_scope_required')
  review=checked_file(root,DIRECTORY+'/source-review.md',REVIEW_SHA256);require(b'PASS_SOURCE_SAVE_BUILD_ONLY'in review,'phone_source_review_verdict_missing')
+ native=native_plan(root,region,target,plan)
  evidence=json.loads(checked_file(root,target.get('sourceReadback'),target.get('sourceReadbackSha256')))
- require(evidence.get('sourceCommit')==target['revision']and evidence.get('parentCommit')==plan['parentCommit']and evidence.get('allFilesMatch')is True,'phone_remote_readback_identity_mismatch')
+ require(evidence.get('sourceCommit')==(native['sourceParentRevision']if native else target['revision'])and evidence.get('parentCommit')==plan['parentCommit']and evidence.get('allFilesMatch')is True,'phone_remote_readback_identity_mismatch')
  expected={r['path']:(r['newSha256'],r['newGitBlob'])for r in plan['changedFiles']};rows=evidence.get('remoteChangedFiles',[])
  require(len(rows)==len(expected)and len({r.get('path')for r in rows})==len(expected),'phone_readback_path_set_mismatch')
  require({r.get('path'):(r.get('sha256'),r.get('gitBlob'))for r in rows}==expected and all(r.get('remoteBytesMatch')is True for r in rows),'phone_readback_exact_hash_mismatch')
+ if native:native_evidence(root,region,target,native)
  pubpath=root/f'scripts/direct-{region}/publish.py';spec=importlib.util.spec_from_file_location('phone_fixed_'+region.replace('-','_'),pubpath);pub=importlib.util.module_from_spec(spec);spec.loader.exec_module(pub)
  identity={'repository':pub.REPOSITORY,'branch':pub.BRANCH,'root':pub.SOURCE_ROOT,'hostname':pub.HOSTNAME,'worker':pub.WORKER}
  require(all(target.get(k)==v for k,v in identity.items())and target['branch']==plan['branch']and target['root']==plan['root']and target['hostname']==plan['hostname'],'phone_fixed_identity_mismatch')
@@ -53,6 +85,9 @@ def load(root,region,require_release=False):
 def release_review(root,target):
  review=json.loads(checked_file(root,target.get('releaseReview'),target.get('releaseReviewSha256')))
  require(review.get('verdict')=='PASS_PUBLIC_UPDATE'and review.get('sourceCommit')==target['revision']and review.get('previousRevision')==target['previousRevision']and review.get('sourcePlanSha256')==PLAN_SHA256,'phone_release_review_identity_mismatch')
+ if 'nativeSuccessor'in target:
+  native=target['nativeSuccessor'];binding={'nativeSuccessorPlanSha256':NATIVE_PLAN_SHA256,'sourceParentRevision':native['sourceParentRevision'],'nativeSourceReadbackSha256':native['sourceReadbackSha256'],'nativeSourceReviewSha256':native['independentReviewSha256']}
+  require(all(review.get(k)==v for k,v in binding.items()),'phone_native_release_binding_required')
  require(review.get('allRouteOutputVerified')is True and review.get('nativeTestsPassed')is True and review.get('mobileAndDesktopPixelsVerified')is True,'phone_actual_build_and_pixel_review_required')
  require(re.fullmatch('[0-9]+',str(review.get('buildRunId','')))and re.fullmatch('[0-9]+',str(review.get('artifactId','')))and re.fullmatch('[0-9a-f]{64}',review.get('outputFilesSha256','')),'phone_actual_build_binding_required')
  proofs=review.get('evidence',[]);require(len(proofs)>=3,'phone_release_proofs_missing')
@@ -64,6 +99,7 @@ def source(root,region,checkout):
  target,pub=load(root,region);plan=plans(root)[region];checkout=Path(checkout)
  def git(*args):return subprocess.check_output(['git','-C',str(checkout),*args],env={**os.environ,'GIT_NO_LAZY_FETCH':'1','GIT_OPTIONAL_LOCKS':'0'})
  require(git('rev-parse','HEAD').decode().strip()==target['revision'],'phone_checkout_revision_mismatch')
+ if 'nativeSuccessor'in target:return native_source(root,region,target,plan,checkout,git)
  require(git('rev-list','--parents','-n','1','HEAD').decode().split()==[target['revision'],target['previousRevision']],'phone_single_exact_parent_required')
  require(not git('status','--porcelain','--untracked-files=all').strip(),'phone_source_checkout_not_clean')
  changed=git('diff','--name-only','-z',target['previousRevision'],target['revision'],'--').decode().rstrip('\0').split('\0');expected=[r['path']for r in plan['changedFiles']]
@@ -72,6 +108,30 @@ def source(root,region,checkout):
   path=checkout/row['path'];require(path.is_file()and not path.is_symlink()and sha(path.read_bytes())==row['newSha256'],'phone_source_bytes_mismatch')
   require(git('rev-parse','HEAD:'+row['path']).decode().strip()==row['newGitBlob'],'phone_source_git_blob_mismatch')
  return {'state':'exact_phone_source_successor_verified','revision':target['revision'],'previousRevision':target['previousRevision'],'changedFiles':len(expected),'scopeSha256':PLAN_SHA256}
+
+def native_source(root,region,target,original,checkout,git):
+ """Validate two full-repository edges. The public baseline never becomes R2."""
+ plan=native_plan(root,region,target,original);parent=plan['sourceParentRevision'];previous=target['previousRevision'];revision=target['revision']
+ require(not git('status','--porcelain','--untracked-files=all').strip(),'phone_source_checkout_not_clean')
+ def tree_bytes(commit,row,prefix):
+  path=row['path'];tree=git('ls-tree','-z',commit,'--',path).decode();blob=row[prefix+'GitBlob'];digest=row[prefix+'Sha256']
+  if blob is None or digest is None:
+   require(blob is None and digest is None and not tree,'phone_native_added_path_preexists');return
+  require(tree=='100644 blob '+blob+'\t'+path+'\0','phone_native_git_blob_or_mode_mismatch')
+  require(sha(git('cat-file','blob',commit+':'+path))==digest,'phone_native_historical_bytes_mismatch')
+ def edge(before,after,rows):
+  require(git('rev-list','--parents','-n','1',after).decode().split()==[after,before],'phone_native_single_exact_parent_required')
+  changed=git('diff','--name-only','-z',before,after,'--').decode().rstrip('\0').split('\0');expected=[r['path']for r in rows]
+  require(len(changed)==len(expected) and set(changed)==set(expected),'phone_native_git_delta_scope_mismatch')
+  for row in rows:tree_bytes(before,row,'old');tree_bytes(after,row,'new')
+ edge(previous,parent,original['changedFiles']);edge(parent,revision,plan['changedFiles'])
+ rows=original['changedFiles']+plan['changedFiles'];require(len(rows)==12 and len({r['path']for r in rows})==12,'phone_native_disjoint_scope_required')
+ changed=git('diff','--name-only','-z',previous,revision,'--').decode().rstrip('\0').split('\0')
+ require(len(changed)==12 and set(changed)=={r['path']for r in rows},'phone_native_combined_scope_mismatch')
+ for row in rows:
+  tree_bytes(revision,row,'new');path=checkout/row['path']
+  require(path.is_file() and not path.is_symlink() and sha(path.read_bytes())==row['newSha256'],'phone_source_bytes_mismatch')
+ return {'state':'exact_phone_native_source_successor_verified','revision':revision,'sourceParentRevision':parent,'previousRevision':previous,'changedFiles':12,'originalChangedFiles':7,'nativeChangedFiles':5,'scopeSha256':PLAN_SHA256,'nativeScopeSha256':NATIVE_PLAN_SHA256}
 
 def artifact(root,target,pub,for_public=False):
  manifest=json.loads(Path('release/release.json').read_text());require(manifest.get('revision')==target['revision']and manifest.get('worker')==pub.WORKER and manifest.get('origin')==pub.ORIGIN,'phone_artifact_identity_mismatch')

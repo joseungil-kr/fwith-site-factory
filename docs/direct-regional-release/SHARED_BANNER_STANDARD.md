@@ -4,26 +4,26 @@
 
 ## 승인된 이미지 정본
 
-세 이미지는 지역에 관계없이 같은 파일을 사용한다. 지역명·시설명·검색어를 이미지나 파일명·alt에 억지로 추가하지 않는다. 원본은 AI 생성 분위기 이미지이며 실제 판매상품 사진이나 현장 납품사진이 아니다. 디자인·문구·비율을 바꾸지 않는다.
+세 이미지는 지역에 관계없이 같은 파일을 사용한다. 지역명·시설명·검색어를 이미지나 파일명·alt에 억지로 추가하지 않는다. 원본은 AI 생성 분위기 이미지이며 실제 판매상품 사진이나 현장 납품사진이 아니다. 2026-10-13 사용자 요청에 따라 세 이미지에 전화번호 1844-0644가 포함된 후속 정본을 사용한다. 이후 임의 디자인·문구·비율 변경이나 지역별 재생성은 하지 않는다.
 
 | 파일 | 크기 | SHA-256 |
 |---|---|---|
-| flower-message.webp | 1774 × 887 | b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253 |
-| flower-budget.webp | 1774 × 887 | bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df |
-| flower-consultation.webp | 1774 × 887 | 4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b |
+| flower-message.webp | 1774 × 887 | a5ecdeb1914566a32d45b084351e2782fc8b234e9a4fbb8635a60a9921cac5f5 |
+| flower-budget.webp | 1774 × 887 | 081198095eb005603721be7c778f4d477f4dd93dcf96f0c261f18bf06bb91421 |
+| flower-consultation.webp | 1774 × 887 | d6654aa44c365f64e330d0be2042972d3320fad54231425aaffca1dfdcd25ebc |
 
-WebP quality 90 포맷 압축만 적용했다. 합계 379,610바이트이며 원본 크기와 구도·문구를 유지한다. 각 소스의 src/data/shared-banner-manifest.json에서 PNG 원본 SHA와 비교한다.
+현재 정본은 각각 171,698 / 145,664 / 126,306바이트, 합계 443,668바이트다. 승인된 [전화번호 배너 자산 기록](../shared-banner-phone-20261013/approved-assets.json)의 SHA·크기와 실제 bytes를 비교한다. 각 지역의 src/data/shared-banner-manifest.json도 이 동일한 정본에 결속한다. 과거 approved-assets.json과 공개 증거는 역사 기록으로 보존하며 새 페이지의 자산 선택 기준으로 사용하지 않는다.
 
 ## 공통 컴포넌트와 배치
 
-SharedFlowerBanner.astro와 public/images/shared-banners의 정본을 재사용한다. 이미지마다 구체적인 alt를 쓰고 width=1774, height=887, 반응형 width:100% / height:auto, loading=lazy, decoding=async를 포함한다. 첫 화면의 주요 이미지에는 무조건 지연 로딩을 적용하지 않는다. 이 공통 배너는 기존 hero 이후의 본문 흐름에 놓인다.
+SharedFlowerBanner.astro와 public/images/shared-banners의 정본을 재사용한다. 이미지마다 기존 구체적인 설명을 유지한 alt 끝에 ‘전화 1844-0644.’를 정확히 한 번 붙이고 width=1774, height=887, 반응형 width:100% / height:auto, loading=lazy, decoding=async를 포함한다. 첫 화면의 주요 이미지에는 무조건 지연 로딩을 적용하지 않는다. 이 공통 배너는 기존 hero 이후의 본문 흐름에 놓인다.
 
 홈·목록·상세의 내용 흐름 사이에 message → budget → consultation을 분산한다. 본문·상품·목록·출처와 같은 실질 콘텐츠를 사이에 두고 세 장을 연속으로 쌓지 않는다. 본문과 상품 정보는 텍스트로 남기고 이미지를 제목이나 설명의 대체재로 사용하지 않는다. 404와 검색 제외된 빈 목록에는 마케팅 배너를 넣지 않는다.
 
 ## 제목·검색 기본 구조
 
 - 고객 HTML에 H1은 정확히 하나. 내용의 H2와 하위 H3의 순서를 지킨다.
-- 배너는 figure/img/figcaption으로 작성하고 장식 이미지에 별도 H1/H2를 추가하지 않는다.
+- 공통 배너는 figure/img로 작성한다. 사용자 요청으로 ‘꽃이랑 공통 안내 이미지 · 실제 판매상품 사진이 아닌 AI 생성 이미지입니다.’ 문구와 해당 figcaption은 삭제하며, alt나 다른 visible text로 옮겨 다시 넣지 않는다. 실제 판매상품 사진의 별도 고지·설명은 유지한다. 장식 이미지에 별도 H1/H2를 추가하지 않는다.
 - 출처 영역은 H2 ‘출처 및 확인 정보’ 하나로 묶고 출처명은 H3 또는 문단으로 둔다. 원래 출처 URL·이름·확인일은 보존한다.
 - 고유 title, meta description, 자기 URL canonical, robots, sitemap 일치, 내부 링크, 모든 이미지 alt를 실제 생성 HTML에서 검사한다.
 - 이미지 요청의 HTTP 200, image/webp MIME, 승인된 SHA를 공개 주소에서 재확인한다.
@@ -31,7 +31,7 @@ SharedFlowerBanner.astro와 public/images/shared-banners의 정본을 재사용�
 
 ## 검증과 배포
 
-코드 작성만으로 완료 처리하지 않는다. source test, 실제 static build, qa_shared_banners.py, 잘못된 src/variant·canonical·자산·heading·alt를 거부하는 negative test를 실행한다. 실제 고객 HTML 경로 전체를 분모로 유지하고 noindex/404 제외 사유를 남긴다.
+코드 작성만으로 완료 처리하지 않는다. source test, 실제 static build, qa_shared_banners.py, 잘못된 src/variant·canonical·자산·heading·alt, 전화번호 누락/오번호(1844-0645)/중복, 삭제한 공통 캡션의 본문·alt 재삽입을 거부하는 negative test를 실행한다. 실제 고객 HTML 경로 전체를 분모로 유지하고 noindex/404 제외 사유를 남긴다.
 
 소규모 canary부터 공개 배포하고 원격 source SHA, Actions run, 공개 HTTP/자산 SHA, heading·메타·배너, 기존 본문 보존을 검증한 다음 동일 패치를 전파한다. 현재 공개 branch와 미배포 문체교정 branch를 혼동하지 않는다.
 
@@ -53,3 +53,7 @@ trusted targets manifest에 결속된 배너 revision은 기존 사이트 업데
 
 새 페이지 제작 시 helper 단위시험과 scripts/qa_directory_spacing.py, scripts/test_directory_spacing.py를 build/qa에 연결한다. 실제 HTML에서 순서가 유지된 카드가 message–budget과 budget–consultation 사이에 각각 최소 1개 있는지 확인한다. 기존 공개31곳의 이전 revision은 별도 후속 배포 전까지 그대로이며, 새 구현의 로컬/소스 검수 결과를 그 공개 페이지에 적용됐다고 표현하지 않는다.
 
+
+### 2026-10-13 적용 상태와 신규 지역
+
+이 기준은 앞으로의 신규 지역 소스와 페이지에도 같은 세 파일·설명적 전화번호 alt·공통 캡션 삭제를 적용한다. [후속 적용 기록](../shared-banner-phone-20261013/application-policy.json)은 자산 선택 기준과 검증 단계를 구분한다. 기준이나 source 저장만으로 기존 사이트의 공개 적용 완료를 주장하지 않는다. 현재 배너가 없는 기존 15곳을 이 기록만으로 발행 대상에 추가하지 않는다.
