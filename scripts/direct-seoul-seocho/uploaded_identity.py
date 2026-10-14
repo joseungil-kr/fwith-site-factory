@@ -22,7 +22,6 @@ TITLE = '[SEOCHO-UPLOADED-IDENTITY-READONLY] 20261014'
 SOURCE_SHA = '52741146f4147f64d6804a757f560db0acf0d92c'
 PRIOR_RUN_ID = '38532307939'
 UUID = r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
-HASH = r'[0-9a-fA-F]{16,128}'
 SOURCES = {'api', 'wrangler', 'dash', 'dashboard', 'terraform', 'unknown', 'pages', 'version_upload', 'deployment'}
 HANDLERS = {'fetch', 'scheduled', 'queue', 'email', 'tail', 'trace', 'test', 'alarm',
             'webSocketMessage', 'webSocketClose', 'webSocketError', 'connect'}
@@ -76,22 +75,37 @@ def uuid(value):
     return value
 
 
-def digest(value):
-    require(isinstance(value, str) and re.fullmatch(HASH, value) is not None, 'identity_digest_invalid')
-    return value
+def opaque_field(data, key):
+    """Fingerprint an optional provider value without assuming a digest encoding.
+
+    SHA256 covers canonical JSON, not script content or deployed asset bytes.
+    No original value is returned, including opaque strings or unexpected types.
+    """
+    if key not in data:
+        return {'present': False, 'type': 'absent', 'length': None, 'sha256': None, 'isEmpty': None}
+    value = data[key]
+    types = {str: 'string', type(None): 'null', bool: 'boolean', int: 'number', float: 'number', list: 'array', dict: 'object'}
+    require(type(value) in types, 'opaque_metadata_invalid')
+    try:
+        encoded = json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=False, allow_nan=False).encode('utf-8')
+    except (ValueError, TypeError):
+        raise Rejected('opaque_metadata_invalid') from None
+    return {'present': True, 'type': types[type(value)], 'length': len(value) if isinstance(value, str) else None,
+            'sha256': hashlib.sha256(encoded).hexdigest(), 'isEmpty': value is None or value == ''}
 
 
 def selected(data, fields):
     require(isinstance(data, dict), 'identity_object_invalid')
     out = {}
     for key in fields:
+        if key == 'etag':
+            out[key] = opaque_field(data, key)
+            continue
         if key not in data:
             continue
         value = data[key]
         if key in {'created_on', 'modified_on'}:
             out[key] = timestamp(value)
-        elif key == 'etag':
-            out[key] = digest(value)
         elif key == 'has_assets':
             require(type(value) is bool, 'identity_boolean_invalid')
             out[key] = value
@@ -149,8 +163,8 @@ def assets(value):
                'not_found_handling': {'none', '404-page', 'single-page-application'}}
     for key in ['hash', 'etag']:
         if key in value:
-            out['hashes'][key] = digest(value[key])
-            out['allowedFieldTypes'][key] = 'string'
+            out['hashes'][key] = opaque_field(value, key)
+            out['allowedFieldTypes'][key] = out['hashes'][key]['type']
     for key in ['config', 'configuration']:
         if key in value:
             out['allowedFieldTypes'][key] = type(value[key]).__name__
@@ -226,12 +240,19 @@ def inspect(account, transport, report=None):
             domain_rows.extend(base.single_page(payload))
         return payload
     inventory = base.inspect(account, capture)
-    require(inventory['workerExists'], 'uploaded_worker_absent')
-    raw_script = next(row for row in script_rows if row['id'] == WORKER)
-    script = {'id': WORKER, **selected(raw_script, ['etag', 'created_on', 'modified_on', 'has_assets', 'last_deployed_from'])}
-    report.update({**inventory, 'state': 'uploaded_worker_identity_partial', 'script': script,
+    report.update({**inventory, 'state': 'uploaded_worker_identity_partial',
                    'uploadedContentMatchesExpectedSource': False, 'publicHTTPVerified': False,
                    'identityLimitation': 'Provider version metadata does not establish Git revision or exact deployed asset bytes.'})
+    require(inventory['workerExists'], 'uploaded_worker_absent')
+    raw_script = next(row for row in script_rows if row['id'] == WORKER)
+    script = {'id': WORKER}
+    report['script'] = script
+    # Optional inventory metadata must not prevent the independent exact GETs.
+    for field in ['etag', 'created_on', 'modified_on', 'has_assets', 'last_deployed_from']:
+        try:
+            script.update(selected(raw_script, [field]))
+        except Rejected as error:
+            report.setdefault('scriptMetadataErrors', {})[field] = str(error)
     exact_domains = [row for row in domain_rows if row['hostname'].lower() == HOSTNAME and row['service'] == WORKER]
     if exact_domains:
         row = exact_domains[0]
@@ -277,14 +298,13 @@ def inspect(account, transport, report=None):
 def inspect_version(raw_version, version_id, script):
     require(raw_version.get('id') == version_id and type(raw_version.get('number')) is int and raw_version['number'] >= 1, 'version_identity_mismatch')
     resources = raw_version.get('resources')
-    require(isinstance(resources, dict) and isinstance(resources.get('script'), dict), 'version_resources_invalid')
+    require(isinstance(resources, dict), 'version_resources_invalid')
+    raw_script = resources.get('script')
+    require(raw_script is None or isinstance(raw_script, dict), 'version_resources_invalid')
     version = {'id': version_id, 'number': raw_version['number'],
                'metadata': selected(raw_version.get('metadata', {}), ['created_on', 'modified_on', 'source']),
-               'script': selected(resources['script'], ['etag', 'handlers', 'last_deployed_from']),
+               'script': selected(raw_script or {}, ['etag', 'handlers', 'last_deployed_from']),
                'assets': assets(resources.get('assets')), 'bindingTypes': binding_types(resources.get('bindings'))}
-    require('etag' in version['script'], 'version_etag_missing')
-    if 'etag' in script:
-        require(script['etag'] == version['script']['etag'], 'script_version_etag_mismatch')
     return version
 
 

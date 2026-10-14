@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "runId": "38534845841",
+  "issueNumber": 321,
+  "controlSha": "ca3737df1e1dda5da1e18dea7de48756e64f31d4",
+  "state": "read_only_local_parser_failed",
+  "code": "identity_digest_invalid",
+  "failureLocation": "script inventory ETag parser before settings/subdomain/deployment/version GET",
+  "httpStatus": {
+    "account": 200,
+    "scripts": 200,
+    "domains": 200
+  },
+  "providerPermissionDenied": false,
+  "mutationsPerformed": false,
+  "workerRedeployed": false,
+  "domainAttached": false,
+  "indexNowSubmitted": false,
+  "artifactId": "11878844230",
+  "artifactArchiveSha256": "7e3091b7f53992febae31bcf7f1aa2ef9e6fe2d47a06baffe4f9dee51c9ff458",
+  "source": "Actual job 115755117370 logs and retained artifact metadata",
+  "repairBasis": "Official API defines ETag as an optional string with no hexadecimal format contract. Observe bounded opaque-value fingerprint instead of exposing raw values. This parser correction does not relax the sealed release artifact allowlist.",
+  "officialDocumentation": "https://developers.cloudflare.com/api/resources/workers/subresources/scripts/methods/list/"
+}

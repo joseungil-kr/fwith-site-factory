@@ -94,7 +94,7 @@ class InspectorTests(unittest.TestCase):
         calls=[]; r=m.inspect(ACCOUNT,transport_for(fixtures(),calls))
         self.assertEqual(calls,[('GET',p,None) for p in [PREFIX,PREFIX+'/workers/scripts',PREFIX+'/workers/domains',WORKER_PATH+'/settings',WORKER_PATH+'/subdomain',DEPLOYMENTS_PATH,VERSION_PATH]])
         self.assertEqual(r['state'],'uploaded_worker_identity_observed')
-        self.assertEqual(r['version']['id'],VERSION); self.assertEqual(r['version']['script']['etag'],ETAG)
+        self.assertEqual(r['version']['id'],VERSION); self.assertEqual(r['version']['script']['etag'],m.opaque_field({'etag':ETAG},'etag'))
         self.assertEqual(r['version']['bindingTypes'],['secret_text'])
         self.assertEqual(r['settings']['bindingTypes'],['assets'])
         self.assertEqual(r['settings']['assets']['hashes'],{})
@@ -115,12 +115,36 @@ class InspectorTests(unittest.TestCase):
         self.assertIn('version',r); self.assertIn('subdomain',r); self.assertNotIn('settings',r)
         self.assertEqual(r['inspectionErrors'],{'settings':'provider_http_unverified'})
 
-    def test_wrong_version_or_etag(self):
+    def test_wrong_version_identity_still_rejected(self):
         for key,value in [('id',DEPLOYMENT),('number',True),('number',0)]:
             data=fixtures(); data[VERSION_PATH]['result'][key]=value
             with self.subTest(key=key),self.assertRaises(m.Rejected): m.inspect(ACCOUNT,transport_for(data,[]))
-        data=fixtures(); data[VERSION_PATH]['result']['resources']['script']['etag']='d'*64
-        with self.assertRaises(m.Rejected): m.inspect(ACCOUNT,transport_for(data,[]))
+
+    def test_opaque_empty_null_missing_etags_do_not_block_exact_reads(self):
+        for value in [MARKER, 'W/"opaque-version-42"', '', None, 7, {'private':MARKER}]:
+            with self.subTest(valueType=type(value).__name__):
+                data=fixtures(); data[PREFIX+'/workers/scripts']['result'][0]['etag']=value
+                data[VERSION_PATH]['result']['resources']['script']['etag']=value
+                calls=[];r=m.inspect(ACCOUNT,transport_for(data,calls))
+                self.assertEqual(len(calls),7);self.assertEqual(r['state'],'uploaded_worker_identity_observed')
+                self.assertEqual(r['script']['etag'],m.opaque_field({'etag':value},'etag'))
+                self.assertNotIn(MARKER,json.dumps(r));self.assertNotIn('opaque-version-42',json.dumps(r))
+        data=fixtures();del data[PREFIX+'/workers/scripts']['result'][0]['etag'];del data[VERSION_PATH]['result']['resources']['script']
+        r=m.inspect(ACCOUNT,transport_for(data,[]))
+        self.assertFalse(r['script']['etag']['present']);self.assertFalse(r['version']['script']['etag']['present'])
+
+    def test_different_etags_are_observed_not_misrepresented_as_source_proof(self):
+        data=fixtures();data[VERSION_PATH]['result']['resources']['script']['etag']='different-opaque-tag'
+        r=m.inspect(ACCOUNT,transport_for(data,[]))
+        self.assertNotEqual(r['script']['etag']['sha256'],r['version']['script']['etag']['sha256'])
+        self.assertFalse(r['uploadedContentMatchesExpectedSource'])
+
+    def test_inventory_survives_bad_optional_metadata_and_reads_continue(self):
+        data=fixtures();data[PREFIX+'/workers/scripts']['result'][0]['created_on']=None
+        calls=[];r=m.inspect(ACCOUNT,transport_for(data,calls))
+        self.assertTrue(r['workerExists']);self.assertTrue(r['script']['has_assets'])
+        self.assertEqual(r['scriptMetadataErrors'],{'created_on':'identity_timestamp_invalid'})
+        self.assertIn('settings',r);self.assertIn('version',r);self.assertEqual(len(calls),7)
 
     def test_deployment_shape_and_traffic(self):
         for rows in [[],[{},{}],[{'id':DEPLOYMENT,'created_on':STAMP,'strategy':'percentage','versions':[]}]]:
@@ -152,9 +176,13 @@ class InspectorTests(unittest.TestCase):
 
     def test_assets_hash_optional_and_values_restricted(self):
         self.assertEqual(m.assets(None)['present'],False)
-        self.assertEqual(m.assets({'hash':'a'*64})['hashes'],{'hash':'a'*64})
+        self.assertEqual(m.assets({'hash':'a'*64})['hashes'],{'hash':m.opaque_field({'hash':'a'*64},'hash')})
+        for value in [None, '', MARKER, 'W/"opaque"']:
+            result=m.assets({'hash':value,'etag':value})
+            self.assertEqual(result['hashes']['hash'],m.opaque_field({'hash':value},'hash'))
+            self.assertNotIn(MARKER,json.dumps(result))
         self.assertEqual(m.assets({'config':{'run_worker_first':['/private']}})['configuration'],{})
-        for value in [{'hash':MARKER},{'config':{'html_handling':MARKER}},{'config':{'run_worker_first':MARKER}},MARKER]:
+        for value in [{'config':{'html_handling':MARKER}},{'config':{'run_worker_first':MARKER}},MARKER]:
             with self.assertRaises(m.Rejected): m.assets(value)
 
     def test_inventory_collision_absence_and_pagination(self):
