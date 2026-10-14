@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "originalNativeReviewPath": "site-factory/seoul-seocho-flower/scripts/qa_browser_rendering.py",
+  "originalNativeReviewSha256": "b7ad3e4e69a7d0e5017ce214d2d1e08e77d00bbe7b28a3d198bbec9107d6c6fb",
+  "adaptedNativeReviewSha256": "f95991fdb92de2ed323b211b902ae8b75348a04ac63353fc142785d3a09d48f3",
+  "nativeCheckFamiliesPreserved": [
+    "FAQ visibility",
+    "price line wrapping",
+    "native anchor first landing without corrected scroll",
+    "skip link",
+    "native keyboard targets",
+    "footer sticky clearance"
+  ],
+  "changes": [
+    "checks['keyboard'].append(focus) => checks['keyboard'].append(focus)\n                        if len(checks['keyboard'])==1:page.screenshot(path=str(out/f'keyboard-first-{width}-{route.strip(\"/\").replace(\"/\",\"-\").replace(\".\",\"-\") or \"home\"}.png'))",
+    "\"\"\"Deferred Seocho browser QA for an authorized browser executor. Not executed in the current LOCAL task.\"\"\" => \"\"\"Reviewed Seocho native render checks, adapted only for sealed artifact QA. See reuse-provenance.json.\"\"\"",
+    "from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler => from reused import SafeServer,SafeHandler,settle,write_json\nfrom capture_checks import configure_context,capture_page,assert_capture_coverage",
+    "def inspect(root=Path('.')):\n    root=root.resolve();dist=root/'dist';out=root/'browser-rendering-qa';out.mkdir(exist_ok=True)\n    pages=json.loads((root/'src/d => def inspect(dist,out,pages,revision,spec):\n    dist=Path(dist).resolve();out=Path(out).resolve();out.mkdir(parents=True,exist_ok=True)",
+    "server=ThreadingHTTPServer(('127.0.0.1',0),partial(SimpleHTTPRequestHandler,directory=str(dist))) => server=SafeServer(('127.0.0.1',0),partial(SafeHandler,directory=str(dist)))",
+    "rows=[];errors=[] => rows=[];errors=[];network=[];console=[];page_errors=[];captures=[];browser_version=None",
+    "browser=playwright.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH','/usr/bin/chromium'),headless=True) => browser=playwright.chromium.launch(headless=True);browser_version=browser.version",
+    "context=browser.new_context(viewport={'width':width,'height':height},device_scale_factor=1)\n                page=context.new_page() => context=browser.new_context(viewport={'width':width,'height':height},device_scale_factor=1,locale='ko-KR',reduced_motion='reduce',service_workers='block',accept_downloads=False)\n                configure_context(context,",
+    "response=page.goto(origin+route,wait_until='networkidle');page.locator('main').wait_for() => response=page.goto(origin+route,wait_until='networkidle');page.locator('main').wait_for();settle(page)",
+    "if len(checks['faq'])!=len(expected.get('faq',[])):issue.append('FAQ count differs from source') => if len(checks['faq'])!=len(expected.get('faq',[])):issue.append('FAQ count differs from source')\n                    if [{k:f[k] for k in ('question','answer')} for f in checks['faq']] != [{k:f[k] for k in ('question','a",
+    "if route=='/404.html' and checks['banners']:issue.append('404 has shared banners') => if route in ('/404.html','/regions/') and checks['banners']:issue.append('Thin/404 has shared banners')",
+    "row={'route':route,'width':width,'height':height,'http':response.status,**checks,'issues':issue};rows.append(row) => captures.append(capture_page(page,route,width,height,origin,revision,spec,out))\n                    row={'route':route,'width':width,'height':height,'http':response.status,**checks,'issues':issue};rows.append(row)",
+    "    except Exception as exc:\n        (out/'report.json').write_text(json.dumps({'status':'blocked','scope':'Local static artifact only; not public HTTP verifica =>     except Exception as exc:\n        write_json(out/'report.json',{'status':'blocked','scope':'Sealed artifact loopback only','error':str(exc),'checks':rows,'captures':captures,'pixelReview':'pending','publicHTTPVerified",
+    "'status':'LOCAL_BROWSER_PASS' if not errors else 'LOCAL_BROWSER_FAIL','sourceRevision':json.loads((root/'src/data/build-revision.json').read_text()) => 'status':'captured-awaiting-independent-pixel-review' if not errors else 'machine-qa-failed','sourceRevision':revision,'captures':captures,'coverage':coverage,'browserVersion':browser_version,'pixelReview':'pending','pub",
+    "if __name__=='__main__':inspect() => # Runner entry point is capture.py; this module is not a source/build command."
+  ],
+  "safetyReusePath": ".github/qa/shared-banner-phone-20261013/reused.py",
+  "safetyReuseSha256": "5761fdf4bdf6fbf30f939f7270bb9008382f5176a8ab3f94250887bd290f51cd",
+  "sourceOrArtifactRebuild": false,
+  "preservedNativeJavaScriptSha256": [
+    "c5272bd4bf7b7bf36fd045405fd8f008a0f0d2cf5510814f885f11887f27dbfa",
+    "fc673905c46a2652c5925f20135d0a96cccb834838f0571efcfee0df2ec150bf",
+    "edf56bacc61cbdf1e8687047acbfd2a2871f2f86a7b365cd934dcc318f6f99d7",
+    "85b866ca73b01117c4c7595954ca4bd6f4573acdcf9687f4e69f0c4fd572272d"
+  ],
+  "preservedNativeAnchorLoopAstSha256": "db88829fc781752b18b2e2f5ed9bd28999ecca429445e82f15a93849e77e000c"
+}

@@ -1,0 +1,74 @@
+name: Seocho sealed production artifact browser QA only
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: seoul-seocho-production-artifact-qa
+  cancel-in-progress: false
+jobs:
+  capture:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.title == '[SEOCHO-PRODUCTION-ARTIFACT-QA] 20261014' && github.event.issue.user.login == 'joseungil-kr' && github.event.issue.user.type == 'User'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: qa
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate exact owner issue and immutable production inputs
+        run: python3 qa/scripts/direct-seoul-seocho/browser_qa/artifact_bind.py
+      - name: Offline binding, loopback, archive and coverage boundary tests
+        run: python3 -m unittest discover -s qa/scripts/direct-seoul-seocho/browser_qa -p 'test_*.py' -v
+      - name: GET only the exact selected successful production build artifact
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const b = JSON.parse(fs.readFileSync('qa/scripts/direct-seoul-seocho/browser_qa/bindings.json', 'utf8'));
+            const run = await github.rest.actions.getWorkflowRun({...context.repo, run_id:Number(b.runId)});
+            const artifact = await github.rest.actions.getArtifact({...context.repo, artifact_id:Number(b.artifactId)});
+            if (run.data.head_sha !== b.buildControlSha || run.data.head_branch !== 'main' || run.data.path !== '.github/workflows/seoul-seocho-production-build-only.yml' || run.data.run_attempt !== 1 || run.data.status !== 'completed' || run.data.conclusion !== 'success' || run.data.event !== 'issues') throw new Error('Production build identity mismatch');
+            if (run.data.repository.full_name !== 'joseungil-kr/fwith-site-factory' || run.data.actor.login !== 'joseungil-kr' || run.data.triggering_actor.login !== 'joseungil-kr') throw new Error('Build owner mismatch');
+            if (artifact.data.name !== 'seoul-seocho-production-build-' + b.runId || artifact.data.digest !== 'sha256:' + b.archiveSha256 || artifact.data.expired || artifact.data.workflow_run.id !== Number(b.runId) || artifact.data.workflow_run.head_sha !== b.buildControlSha || artifact.data.size_in_bytes > 33554432) throw new Error('Artifact binding mismatch');
+            fs.mkdirSync('inputs', {recursive:true});
+            fs.writeFileSync('inputs/run.json', JSON.stringify(run.data,null,2));
+            fs.writeFileSync('inputs/artifact.json', JSON.stringify(artifact.data,null,2));
+            const archive = await github.rest.actions.downloadArtifact({...context.repo, artifact_id:Number(b.artifactId), archive_format:'zip'});
+            fs.writeFileSync('inputs/artifact.zip', Buffer.from(archive.data));
+      - name: Install pinned browser and Korean fonts
+        run: |
+          set -euo pipefail
+          python3 -m pip install 'playwright==1.63.0'
+          python3 -m playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          mkdir -p evidence/logs
+          fc-match 'Noto Sans CJK KR' | tee evidence/logs/font-match.txt
+      - name: Inspect exact existing dist with no rebuild or provider credentials
+        run: |
+          set -euo pipefail
+          python3 qa/scripts/direct-seoul-seocho/browser_qa/capture.py \
+            --inputs "$GITHUB_WORKSPACE/inputs" --output "$GITHUB_WORKSPACE/evidence" \
+            2>&1 | tee evidence/logs/capture.log
+      - name: Seal all retained screenshot and report bytes
+        if: always()
+        run: python3 qa/scripts/direct-seoul-seocho/browser_qa/capture.py --seal --output "$GITHUB_WORKSPACE/evidence"
+      - name: Retain evidence pending independent human/model pixel review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seoul-seocho-production-qa-${{ github.run_id }}-${{ github.sha }}
+          path: evidence/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
