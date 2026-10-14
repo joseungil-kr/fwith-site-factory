@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "region": "seoul-gangdong",
+  "sourceCommit": "5f27c11cc0aa3c22c2793d9e0a6cd0aa6e350cc6",
+  "bindingSha256": "227c7e02638b017b3889b583971acd408e2c5b6c66411aafab8a93dc4a6cb789",
+  "sourceContractSha256": "9b2dc35709aa9ed3de0396536eec93fb54dba505e331ec119f1d9d25a3d6e825",
+  "allRouteOutputVerified": true,
+  "nativeTestsPassed": true,
+  "mobileAndDesktopPixelsVerified": true,
+  "publicHttpVerified": false,
+  "verdict": "PASS_GANGDONG_PRODUCTION_ARTIFACT_REVIEW",
+  "reviewer": "inspect_gangdong_runner_pixels and parent independent exact artifact rehash",
+  "buildRunId": 38603054270,
+  "artifactId": 11914361861,
+  "qaRunId": 38603054270,
+  "buildControlSha": "71657b1a14c011c8df1fa67939216f99ca4ed3bf",
+  "artifactDigest": "sha256:e5030d3506505d508ce4d570f228cd5e3f135ba5792761bd578a090c434d66ae",
+  "outputFilesSha256": "3fbb00ed52e4b2f2e8f37b4b69f0014b2be1557dff7871fc749df16cf6995cae",
+  "releaseManifestSha256": "7c0ed2ddf036531c7c5cfcd8ff1b50d3da0813b81fe240f92ca0d4ee5b32d5ff",
+  "evidence": [
+    {
+      "kind": "all-route-output",
+      "path": "docs/direct-seoul-gangdong/production-output-review-20261014.json",
+      "sha256": "1e3a75a1fb3c773f5c3d9bc55bf1f8427a5ae6bfb1a35607d3674bf5e8c73615"
+    },
+    {
+      "kind": "mobile-pixels",
+      "path": "docs/direct-seoul-gangdong/production-pixel-review-20261014.json",
+      "sha256": "9b359980a25c6f5eb36aef3fe4180dfe8ba7ae8d145de5e3233c9f643c14251a"
+    },
+    {
+      "kind": "desktop-pixels",
+      "path": "docs/direct-seoul-gangdong/production-pixel-review-20261014.json",
+      "sha256": "9b359980a25c6f5eb36aef3fe4180dfe8ba7ae8d145de5e3233c9f643c14251a"
+    },
+    {
+      "kind": "independent-release-gate",
+      "path": "docs/direct-seoul-gangdong/independent-production-review-20261014.json",
+      "sha256": "abf84cb6ef41f1937137b59d439f5f7c55a3bc940c4e454106f9c6aedcf6ec4e"
+    }
+  ],
+  "pixelReuse": {
+    "previousFailedRunId": 38601567663,
+    "unchangedSource": true,
+    "allScreenshotFilesCompared": 87,
+    "byteIdenticalScreenshots": 86,
+    "priorInspectedScreenshotsReusedExactly": 58,
+    "freshChangedAdditionalImageInspected": 1,
+    "requiredScreenshotsReviewed": 42,
+    "keyboardScreenshotsReviewed": 15
+  },
+  "limitations": [
+    "Public deployment, HTTP and IndexNow not yet performed.",
+    "Expanded mobile menu and final-scroll footer have runner assertions but no dedicated screenshot. Full-page fixed bar composite limitations explicitly retained.",
+    "External commerce availability and transaction not tested.",
+    "Prior run38601567663 failed lazy-image timing; original failed evidence retained. Corrected controller142tests and actualrun38603054270 passed."
+  ]
+}
