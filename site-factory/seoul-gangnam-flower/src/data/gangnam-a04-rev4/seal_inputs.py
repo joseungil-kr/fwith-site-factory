@@ -1,0 +1,11 @@
+from pathlib import Path
+import json,hashlib,datetime
+O=Path(__file__).parent;R=O/'revised-input';B=Path('/workspace/shared/gangnam-plan-copy-20261013')
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+def bind(p):return {'path':str(p),'bytes':p.stat().st_size,'sha256':sha(p)}
+def write(p,x):p.write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+now=datetime.datetime.now(datetime.timezone.utc).isoformat()
+base={'root':str(B),'manifest':bind(B/'delivery-manifest.json'),'frozenPlan':bind(B/'plan/fixed-plan.json'),'originalArticle':bind(B/'copy/article-copy.final.json'),'originalCommon':bind(B/'copy/common-visible-copy.final.json'),'originalRuntime':bind(B/'handoff/runtime-input.json')}
+manifest={'schemaVersion':1,'createdAt':now,'status':'LOCAL_REV4_SUPPLEMENTAL_INPUT_MANIFEST','articleRevision':4,'commonRevision':2,'originalPlanN':3,'routeDenominator':6,'a04PrimaryDenominator':4,'a04NonPrimaryDenominator':2,'baseBundle':base,'logicalInputOverrides':{'copy/article-copy.final.json':bind(R/'copy/article-copy.rev4.json'),'copy/article-copy.final.txt':bind(R/'copy/article-copy.rev4.txt'),'handoff/runtime-input.json':bind(R/'handoff/runtime-input.rev4.json')},'newSidecars':{'a04-keyword-mapping.json':bind(O/'mapping/keyword-mapping.rev4.final.json'),'claim-evidence-addendum.rev4.json':bind(R/'copy/claim-evidence-addendum.rev4.json')},'unchangedBaseInputs':[bind(B/q) for q in ['plan/fixed-plan.json','copy/common-visible-copy.final.json','handoff/approved-assets.json','handoff/directory-input.json','plan/fact-clarifications.json']],'exactDiffs':[bind(R/q) for q in ['exact-change.json','article-copy.rev3-to-rev4.diff','runtime-input.rev3-to-rev4.diff']],'frozenRubric':bind(O/'rubric/A04_RUBRIC_v1.md'),'frozenTargets':bind(O/'assessment/targets.frozen.json'),'reviewInputsManifest':bind(R/'review-input-manifest.rev4.json'),'reviewFiles':[bind(R/'review'/q) for q in ['first-assessment.rev4.json','second-assessment.rev4.json','second-exact-copy-review.rev4.json','reproduction-comparison.rev4.json']],'scope':'Overlay input contract only. Preserve original base bytes; import new article/runtime plus keyword sidecar under future authorized implementation. No source modification, publication or remote execution is asserted.'}
+write(R/'input-manifest.rev4.json',manifest)
+print('INPUT',sha(R/'input-manifest.rev4.json'))

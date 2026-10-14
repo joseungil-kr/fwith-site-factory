@@ -1,0 +1,174 @@
+{
+  "checkedAtUTC": "2026-10-13T07:35:57.355877+00:00",
+  "verdict": "PASS_LOCAL_HANDOFF_EXACT_PROJECTION",
+  "classification": "직접 확인: parsed full JSON equality and independently recalculated hashes; handoff text read.",
+  "files": {
+    "handoff/runtime-input.json": "4b19af806098c2cd89ce661a975693adbe5d05a6ed99ea1faacddd77608c32db",
+    "handoff/directory-input.json": "6ad12465e97664aa1ddb79a701bfb0344d8fdae3905fb7b2cbc09fe1b0c73904",
+    "handoff/input-bindings.json": "eee9f5c04630e9b62e5bf5fcfa47659e101dd35cc61fa1842ac15ac21868cca1",
+    "handoff/IMPLEMENTATION-HANDOFF.txt": "46b7ce7af515cf78c7673536cf431af5804763677e7039e81b11f441c6948d2e"
+  },
+  "tests": [
+    {
+      "check": "runtime articles exact parsed equality to independently approved rev3",
+      "pass": true
+    },
+    {
+      "check": "runtime common exact parsed equality to independently approved rev2",
+      "pass": true
+    },
+    {
+      "check": "runtime sourceImplementation false",
+      "pass": true
+    },
+    {
+      "check": "directory legalUnits exact equality",
+      "pass": true
+    },
+    {
+      "check": "directory administrativeUnits exact equality",
+      "pass": true
+    },
+    {
+      "check": "directory relations exact equality",
+      "pass": true
+    },
+    {
+      "check": "directory cards exact common articleCards",
+      "pass": true
+    },
+    {
+      "check": "only 3 physical anchors",
+      "pass": true
+    },
+    {
+      "check": "only 1 nonfacility occasion",
+      "pass": true
+    },
+    {
+      "check": "existing anchor seoul-st-mary-funeral",
+      "pass": true
+    },
+    {
+      "check": "exact anchor path seoul-st-mary-funeral",
+      "pass": true
+    },
+    {
+      "check": "no administrative inference seoul-st-mary-funeral",
+      "pass": true
+    },
+    {
+      "check": "existing anchor eltower",
+      "pass": true
+    },
+    {
+      "check": "exact anchor path eltower",
+      "pass": true
+    },
+    {
+      "check": "no administrative inference eltower",
+      "pass": true
+    },
+    {
+      "check": "existing anchor at-center-exhibition",
+      "pass": true
+    },
+    {
+      "check": "exact anchor path at-center-exhibition",
+      "pass": true
+    },
+    {
+      "check": "no administrative inference at-center-exhibition",
+      "pass": true
+    },
+    {
+      "check": "existing anchor opening-relocation",
+      "pass": true
+    },
+    {
+      "check": "exact anchor path opening-relocation",
+      "pass": true
+    },
+    {
+      "check": "no administrative inference opening-relocation",
+      "pass": true
+    },
+    {
+      "check": "legalDong binding seoul-st-mary-funeral",
+      "pass": true
+    },
+    {
+      "check": "admission remains unverified seoul-st-mary-funeral",
+      "pass": true
+    },
+    {
+      "check": "legalDong binding eltower",
+      "pass": true
+    },
+    {
+      "check": "admission remains unverified eltower",
+      "pass": true
+    },
+    {
+      "check": "legalDong binding at-center-exhibition",
+      "pass": true
+    },
+    {
+      "check": "admission remains unverified at-center-exhibition",
+      "pass": true
+    },
+    {
+      "check": "route denominator exact",
+      "pass": true
+    },
+    {
+      "check": "no final remote source SHA",
+      "pass": true
+    },
+    {
+      "check": "binding plan/fixed-plan.json",
+      "pass": true
+    },
+    {
+      "check": "binding copy/article-copy.rev3.json",
+      "pass": true
+    },
+    {
+      "check": "binding copy/common-visible-copy.rev2.json",
+      "pass": true
+    },
+    {
+      "check": "binding handoff/approved-assets.json",
+      "pass": true
+    },
+    {
+      "check": "binding handoff/runtime-input.json",
+      "pass": true
+    },
+    {
+      "check": "binding handoff/directory-input.json",
+      "pass": true
+    },
+    {
+      "check": "runtime binding article final hash",
+      "pass": true
+    },
+    {
+      "check": "runtime binding common exact hash",
+      "pass": true
+    }
+  ],
+  "checkCount": 37,
+  "failureCount": 0,
+  "copyVerdict": {
+    "path": "independent-copy-review/verdict.rev3.json",
+    "sha256": "f1cac8693c2b34a7202bbc34efbbd164126c25b0ab711e8b0ba37b4d81e539fb"
+  },
+  "manualHandoffReading": "The handoff explicitly preserves 2 articles/5 planned routes, 10/18/23 geographic sets, held facility scopes, noindex list/banner threshold, exact source strings and pending actual QA. It does not treat Gwanak failed QA as a verified runtime template.",
+  "notVerified": [
+    "No implementation or actual generated/customer HTML",
+    "No actual links or keyboard navigation",
+    "No final source/remote refs, build, browser QA or deployment",
+    "No approval of actions outside local handoff review"
+  ]
+}

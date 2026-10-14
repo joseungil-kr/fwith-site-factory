@@ -1,0 +1,13 @@
+---
+import {normalizeFaq} from './faq.mjs';
+import InlineText from './InlineText.astro';
+const {items, title='자주 묻는 질문'}=Astro.props;
+const questions=normalizeFaq(items);
+---
+{questions.length>0 && <section class="faq" data-visible-faq aria-labelledby="faq-title">
+  <h2 id="faq-title">{title}</h2>
+  {questions.map(({question,answer})=><div data-faq-entry>
+    <h3 data-faq-question><InlineText text={question}/></h3>
+    <p data-faq-answer><InlineText text={answer}/></p>
+  </div>)}
+</section>}

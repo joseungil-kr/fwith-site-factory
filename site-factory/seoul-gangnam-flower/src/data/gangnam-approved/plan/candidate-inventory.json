@@ -1,0 +1,494 @@
+{
+  "schemaVersion": 1,
+  "region": "서울특별시 강남구",
+  "regionCode": "11680",
+  "researchDateUTC": "2026-10-13",
+  "scope": "Research-only local evidence; no generated website, publication, Git writes, provider contact, orders or account changes.",
+  "evidenceCategories": {
+    "직접 확인": "Original official HTML, static source-published branch metadata, downloaded PDFs and identified images inspected. Confirms what a source publishes, not actual successful flower delivery.",
+    "도구 보고": "HTTP status/error and search discovery reports. Search snippets never treated as original venue policy.",
+    "추정·판단": "Candidate/hold rationale and buyer questions; no claim of search volume, demand, actual opening/relocation, or delivery capability.",
+    "미확인": "No phone confirmation, delivery receipt, real-time capacity, order, on-site visit or recipient access test."
+  },
+  "administrativeDongAssignment": null,
+  "administrativeDongNote": "No administrative dong inferred from station, venue brand, legal-dong wording or street address. Legal dong set only when printed as part of the verified address; marketing descriptions alone do not suffice.",
+  "facilities": [
+    {
+      "id": "samsung-seoul-funeral",
+      "displayName": "삼성서울병원 장례식장",
+      "intents": [
+        "근조"
+      ],
+      "decision": "candidate_for_factual_purchase_guide; admission_quantity_material_hold",
+      "roadAddress": "서울특별시 강남구 일원로 81",
+      "legalDong": null,
+      "legalDongNote": "Checked current funeral/hospital pages print road address; 일원동 is not inferred from 일원로.",
+      "districtEvidence": [
+        "samsung-procedure",
+        "samsung-flower",
+        "samsung-map"
+      ],
+      "publicBusinessPhone": "02-3410-3151~3",
+      "directFacts": [
+        {
+          "fact": "Official static funeral procedure page prints the funeral consultation number 02-3410-3151~3 (24-hour consultation); hospital footer general line is 1599-3114, a different number.",
+          "sourceIds": [
+            "samsung-procedure"
+          ]
+        },
+        {
+          "fact": "The procedure page limits 조화 display to inside the mourning room. The official flower-shop page additionally limits display to no more than 10.",
+          "sourceIds": [
+            "samsung-procedure",
+            "samsung-flower"
+          ],
+          "purchaseValue": "Room identity, available display capacity and acceptance matter before dispatch."
+        },
+        {
+          "fact": "Official on-site flower-shop contact is 02-3410-0465, with published hours 07:00–22:00.",
+          "sourceIds": [
+            "samsung-flower"
+          ],
+          "purchaseValue": "This is not the seller order number and does not establish external delivery hours."
+        }
+      ],
+      "wreathPolicy": {
+        "status": "직접 확인; material_and_fulfillment_unverified",
+        "checkedSourceIds": [
+          "samsung-procedure",
+          "samsung-flower",
+          "samsung-faq"
+        ],
+        "finding": "Display location and quantity restrictions directly confirmed. The word 조화 in this funeral context does not establish artificial-material permission or prohibition. External supplier admission, exact composition, dimensions, remaining room capacity, receipt time and removal arrangements are unverified."
+      },
+      "buyerQuestions": [
+        "빈소 번호와 층을 정확히 확인했나요?",
+        "이미 진열된 화환 수와 추가 수령 가능 여부가 확인됐나요?",
+        "생화·인조꽃 혼합 상품의 반입 가능 여부를 별도로 확인했나요?",
+        "병원 대표 접수가 아닌 해당 빈소에서 받을 수 있는 시각과 위치가 확인됐나요?"
+      ],
+      "privacy": "Only static procedure, flower-shop, FAQ and hospital map pages captured; live obituary/search endpoints not captured or used. No deceased/family identities or personal schedules in the packet."
+    },
+    {
+      "id": "yonsei-gangnam-funeral",
+      "displayName": "연세대학교 강남장례식장 (강남세브란스병원)",
+      "intents": [
+        "근조"
+      ],
+      "decision": "candidate_for_factual_purchase_guide; lot_number_and_admission_hold",
+      "roadAddress": "서울특별시 강남구 언주로 211",
+      "legalDong": "도곡동",
+      "administrativeDong": null,
+      "districtEvidence": [
+        "yonsei-route",
+        "gs-hospital-about"
+      ],
+      "publicBusinessPhone": "02-2019-4000",
+      "directFacts": [
+        {
+          "fact": "Official directions body and footer agree on 강남구 언주로 211 and 02-2019-4000. The legal dong 도곡동 appears in both.",
+          "sourceIds": [
+            "yonsei-route"
+          ]
+        },
+        {
+          "fact": "The same original page disagrees internally on lot number: body 도곡동 146-92; footer 도곡동 146-2. Neither lot number is selected as verified canonical address.",
+          "sourceIds": [
+            "yonsei-route"
+          ],
+          "purchaseValue": "Use verified road address; resolve the lot-number discrepancy before any lot-based routing."
+        },
+        {
+          "fact": "Official floor page labels 지하2층 and rooms 1, 2, 3 and 5, plus lobby.",
+          "sourceIds": [
+            "yonsei-floors"
+          ],
+          "purchaseValue": "Room labels are static facility information, not a live occupancy claim."
+        },
+        {
+          "fact": "The hospital about page links to the Yonsei funeral website; the Gangnam funeral static pages distinguish Gangnam, Sinchon, Yongin and Wonju branches.",
+          "sourceIds": [
+            "gs-hospital-about",
+            "yonsei-route"
+          ]
+        }
+      ],
+      "wreathPolicy": {
+        "status": "미확인",
+        "checkedSourceIds": [
+          "yonsei-use",
+          "yonsei-route",
+          "yonsei-floors"
+        ],
+        "finding": "No explicit external wreath intake, allowed dimensions/material, placement, cleanup or delivery-time rule found in these checked static pages. A floorplan or general funeral service description is not acceptance evidence."
+      },
+      "buyerQuestions": [
+        "연세대학교 강남장례식장인지 신촌·용인·원주 지점인지 확인했나요?",
+        "도로명 언주로 211과 지하2층 해당 빈소 번호가 맞나요?",
+        "외부 화환 반입·혼합 소재·설치 위치와 수령 시각을 확인했나요?"
+      ],
+      "privacy": "Static facility pages only; no obituary list captured. General funeral procedure text contains no actual deceased/family records."
+    },
+    {
+      "id": "grandhill-convention",
+      "displayName": "그랜드힐 컨벤션",
+      "intents": [
+        "웨딩",
+        "기업행사",
+        "축하"
+      ],
+      "decision": "candidate_for_factual_purchase_guide; wreath_admission_hold",
+      "roadAddress": "서울특별시 강남구 역삼로 607",
+      "legalDong": "대치동",
+      "districtEvidence": [
+        "grandhill-route"
+      ],
+      "publicBusinessPhone": "02-6964-7889",
+      "directFacts": [
+        {
+          "fact": "Official directions print 강남구 역삼로 607(대치동), with 대치동 1004-3 specifically labelled as navigation entrance guidance.",
+          "sourceIds": [
+            "grandhill-route"
+          ],
+          "purchaseValue": "Venue entrance data differ from third-party search results; do not silently substitute 1004-1."
+        },
+        {
+          "fact": "Official hall pages/navigation identify 1F FLORIA, 2F SABRINA and 3F GRAND BALLROOM. Official banquet page offers event/seminar/performance use.",
+          "sourceIds": [
+            "grandhill-home",
+            "grandhill-floor3",
+            "grandhill-banquet"
+          ],
+          "purchaseValue": "Ask exact event, hall and floor, not just venue brand."
+        },
+        {
+          "fact": "Official construction-notice image was directly viewed: planned works 2026-07-22 through 2026-08-20 on 1F lobby/entrance/common areas and external facilities. It says hall interiors/structure/location stay the same and contracted ceremonies are planned to continue.",
+          "sourceIds": [
+            "grandhill-improvement",
+            "grandhill-improvement-image"
+          ],
+          "purchaseValue": "These dates are past at research time. The notice is not independent proof of actual completion or current delivery route."
+        },
+        {
+          "fact": "The same 3F page has 600-person and 700-person text versions. Capacity is not used as a verified purchase-guide fact.",
+          "sourceIds": [
+            "grandhill-floor3"
+          ]
+        }
+      ],
+      "wreathPolicy": {
+        "status": "미확인",
+        "checkedSourceIds": [
+          "grandhill-route",
+          "grandhill-home",
+          "grandhill-floor3",
+          "grandhill-banquet",
+          "grandhill-improvement-image"
+        ],
+        "finding": "No explicit external-wreath or fresh/artificial material rule found. Describing the venue’s own 생화장식 is not permission for an outside mixed-material wreath. Delivery entrance/time/placement/removal remain unverified."
+      },
+      "buyerQuestions": [
+        "1층 플로리아·2층 사브리나·3층 그랜드볼룸 중 어느 홀인가요?",
+        "예식 또는 행사 날짜·시작 시각·수령 위치가 정확한가요?",
+        "행사 담당자가 외부 화환의 크기와 소재를 허용했나요?",
+        "공사 공지를 현재 출입 제한으로 오인하지 않고 실제 사용할 반입 동선을 확인했나요?"
+      ]
+    },
+    {
+      "id": "coex",
+      "displayName": "코엑스",
+      "intents": [
+        "전시 축하",
+        "기업행사"
+      ],
+      "decision": "candidate_for_event_specific_purchase_guide; blanket_delivery_claim_hold",
+      "roadAddress": "서울특별시 강남구 영동대로 513",
+      "legalDong": "삼성동",
+      "districtEvidence": [
+        "coex-navigation",
+        "coex-business"
+      ],
+      "publicBusinessPhone": "02-6000-0114",
+      "directFacts": [
+        {
+          "fact": "Official Coex visitor/business pages print 강남구 영동대로 513 (삼성동, 코엑스), 02-6000-0114; site separately links Coex Magok.",
+          "sourceIds": [
+            "coex-navigation",
+            "coex-business"
+          ],
+          "purchaseValue": "Do not merge 삼성동 Coex with 코엑스마곡 or a similarly named hotel."
+        },
+        {
+          "fact": "Currently linked official meeting-room guide listing includes 행사 준비 가이드 dated 2026-03-18. Its PDF page12 (printed10), directly rendered and viewed, states post-event banners, installations, wreaths and other waste incur disposal cost.",
+          "sourceIds": [
+            "coex-meeting-guide-list",
+            "coex-prep-guide"
+          ],
+          "purchaseValue": "Removal responsibility and cost need event confirmation. Disposal provisions do not establish unconditional wreath admission."
+        },
+        {
+          "fact": "Currently linked exhibition operating rules are labelled 2023-01. Article24 keeps evacuation passages clear; Article39 limits loading docks to cargo handling and excludes ordinary passenger vehicles; Article46 requires removal of exhibition waste.",
+          "sourceIds": [
+            "coex-exhibition-guide-list",
+            "coex-exhibition-rules"
+          ],
+          "purchaseValue": "Do not equate ordinary visitor access or parking with authorized delivery/loading access."
+        },
+        {
+          "fact": "Organizer-owned Frieze Seoul 2026 FAQ locates the event at Coex 3F C/D Halls and lists large wreaths among items whose entry may be restricted. The event dates are 2026-09-02–05, already past.",
+          "sourceIds": [
+            "frieze-2026-faq"
+          ],
+          "purchaseValue": "An event-specific historical restriction disproves blanket assumptions; it does not establish an all-Coex permanent ban."
+        }
+      ],
+      "wreathPolicy": {
+        "status": "직접 확인; event_specific_admission_unverified",
+        "checkedSourceIds": [
+          "coex-prep-guide",
+          "coex-exhibition-rules",
+          "frieze-2026-faq"
+        ],
+        "finding": "Specific disposal obligation and past event large-wreath entry restriction verified. No current universal Coex flower-type/material/height acceptance policy established. Conference, exhibition and organizer conditions must be separated."
+      },
+      "buyerQuestions": [
+        "삼성동 코엑스인지 코엑스마곡인지 확인했나요?",
+        "전시·회의명, 날짜, 홀·층·부스 또는 회의실 번호가 있나요?",
+        "해당 주최자가 이 상품의 크기·소재와 설치 장소를 허용했나요?",
+        "반입 시간·출입증·차량 동선·수령 담당이 확인됐나요?",
+        "행사 후 회수 또는 폐기 담당과 비용 부담이 정해졌나요?"
+      ]
+    },
+    {
+      "id": "setec",
+      "displayName": "SETEC (서울무역전시장)",
+      "intents": [
+        "전시 축하",
+        "기업행사"
+      ],
+      "decision": "candidate_for_event_specific_purchase_guide; blanket_delivery_claim_hold",
+      "roadAddress": "서울특별시 강남구 남부순환로 3104",
+      "legalDong": null,
+      "districtEvidence": [
+        "setec-parking",
+        "setec-form-list"
+      ],
+      "publicBusinessPhone": "02-2187-4600",
+      "directFacts": [
+        {
+          "fact": "Official SETEC page prints 강남구 남부순환로 3104 and representative phone 02-2187-4600.",
+          "sourceIds": [
+            "setec-parking",
+            "setec-form-list"
+          ]
+        },
+        {
+          "fact": "Official operational PDF cover says 2024.10. Original page13 (printed12), rendered and viewed, has Article42 exhibition-goods reporting by organizers and Article43 waste removal/remaining-item duties.",
+          "sourceIds": [
+            "setec-operations"
+          ],
+          "purchaseValue": "General exhibition logistics are not automatically the exact process for a flower courier."
+        },
+        {
+          "fact": "The official form list includes exhibition goods and furniture/equipment entry/exit forms.",
+          "sourceIds": [
+            "setec-form-list"
+          ]
+        },
+        {
+          "fact": "Organizer Hobby Fair 2026 guide states wreaths or large bouquets placed outside booth space are not allowed, separately restricts loading-gate times and requires name badges/participant checks. Event date was June6–7, 2026, already past.",
+          "sourceIds": [
+            "hobbyfair-2026-guide"
+          ],
+          "purchaseValue": "Past event scope only. Neither a universal ban nor permission to place a wreath inside every booth follows."
+        }
+      ],
+      "wreathPolicy": {
+        "status": "직접 확인; event_specific_admission_unverified",
+        "checkedSourceIds": [
+          "setec-operations",
+          "setec-form-list",
+          "setec-parking",
+          "hobbyfair-2026-guide"
+        ],
+        "finding": "General venue operating logistics plus a past event’s outside-booth prohibition verified. Current event-specific intake, materials, dimensions, designated location and removal cost remain unverified."
+      },
+      "buyerQuestions": [
+        "SETEC 전시명과 전시실·부스 번호가 정확한가요?",
+        "주최자 승인과 행사별 반입 시간·화물 출입구가 확인됐나요?",
+        "부스 밖이나 통로가 아닌 허용된 설치 장소가 있나요?",
+        "외부 화환 소재·크기, 회수 시각과 폐기 책임을 확인했나요?"
+      ]
+    },
+    {
+      "id": "sparkplus-seolleung",
+      "displayName": "스파크플러스 선릉점",
+      "intents": [
+        "개업·이전 축하",
+        "기업행사"
+      ],
+      "decision": "candidate_for_office_address_checks; flower_receipt_and_actual_opening_hold",
+      "roadAddress": "서울 강남구 테헤란로 415",
+      "legalDong": null,
+      "legalDongNote": "Only source metadata marketing description mentions 삼성동 or 역삼동; not treated as legal-dong address evidence.",
+      "districtEvidence": [
+        "sparkplus-seolleung",
+        "sparkplus-branch-data"
+      ],
+      "publicBusinessPhone": "02-555-3477 (brand-wide 입주문의; not verified branch delivery line)",
+      "directFacts": [
+        {
+          "fact": "Official visible page identifies an office with a 2F event hall; original server-rendered branch metadata explicitly gives the branch road address. Metadata calls the building L7강남타워, distinct from corporate footer address 테헤란로 201.",
+          "sourceIds": [
+            "sparkplus-seolleung",
+            "sparkplus-branch-data"
+          ]
+        }
+      ],
+      "wreathPolicy": {
+        "status": "미확인",
+        "checkedSourceIds": [
+          "sparkplus-seolleung",
+          "sparkplus-branch-data"
+        ],
+        "finding": "No external flower/plant/wreath delivery, unmanned receipt, after-hours staff receipt, materials, floor/tenant destination or corridor placement policy established. An office amenity, parcel machine, 24-hour membership access, or corporate footer does not imply delivery acceptance."
+      },
+      "buyerQuestions": [
+        "브랜드와 정확한 지점명, 입주 회사명이 맞나요?",
+        "본사 주소가 아니라 해당 지점 주소를 입력했나요?",
+        "회사 층·호실과 실제 받을 담당자가 정해졌나요?",
+        "외부 기사 출입·사전 등록·수령 시간·공용부 설치를 확인했나요?",
+        "공유오피스가 실제로 개업·이전 중인지 수령인이 확인했나요?"
+      ],
+      "demandLimit": "Facility existence and business use only. No individual tenant move, new business opening, customer relationship or flower demand verified."
+    },
+    {
+      "id": "sparkplus-gangnam3",
+      "displayName": "스파크플러스 강남3호점",
+      "intents": [
+        "개업·이전 축하",
+        "기업행사"
+      ],
+      "decision": "candidate_for_office_address_checks; flower_receipt_and_actual_opening_hold",
+      "roadAddress": "서울 강남구 테헤란로 123",
+      "legalDong": null,
+      "legalDongNote": "Only source metadata marketing description mentions 삼성동 or 역삼동; not treated as legal-dong address evidence.",
+      "districtEvidence": [
+        "sparkplus-gangnam3",
+        "sparkplus-branch-data"
+      ],
+      "publicBusinessPhone": "02-555-3477 (brand-wide 입주문의; not verified branch delivery line)",
+      "directFacts": [
+        {
+          "fact": "Official visible page identifies an office with lounge/seminar and studio facilities. Original server-rendered branch metadata explicitly gives the branch address; corporate footer 테헤란로 201 is not this branch address.",
+          "sourceIds": [
+            "sparkplus-gangnam3",
+            "sparkplus-branch-data"
+          ]
+        }
+      ],
+      "wreathPolicy": {
+        "status": "미확인",
+        "checkedSourceIds": [
+          "sparkplus-gangnam3",
+          "sparkplus-branch-data"
+        ],
+        "finding": "No external flower/plant/wreath delivery, unmanned receipt, after-hours staff receipt, materials, floor/tenant destination or corridor placement policy established. An office amenity, parcel machine, 24-hour membership access, or corporate footer does not imply delivery acceptance."
+      },
+      "buyerQuestions": [
+        "브랜드와 정확한 지점명, 입주 회사명이 맞나요?",
+        "본사 주소가 아니라 해당 지점 주소를 입력했나요?",
+        "회사 층·호실과 실제 받을 담당자가 정해졌나요?",
+        "외부 기사 출입·사전 등록·수령 시간·공용부 설치를 확인했나요?",
+        "공유오피스가 실제로 개업·이전 중인지 수령인이 확인했나요?"
+      ],
+      "demandLimit": "Facility existence and business use only. No individual tenant move, new business opening, customer relationship or flower demand verified."
+    }
+  ],
+  "nonlocalExclusions": [
+    {
+      "name": "스파크플러스 강남점",
+      "publishedAddress": "서울 서초구 강남대로 327",
+      "reason": "Official public branch metadata explicitly says 서초구; 강남 brand/market-area name is not Gangnam district membership.",
+      "sourceIds": [
+        "sparkplus-branch-data"
+      ]
+    },
+    {
+      "name": "스파크플러스 강남2호점",
+      "publishedAddress": "서울 서초구 서초대로 396",
+      "reason": "Official public branch metadata explicitly says 서초구.",
+      "sourceIds": [
+        "sparkplus-branch-data"
+      ]
+    },
+    {
+      "name": "스파크플러스 강남4호점",
+      "publishedAddress": "서울 서초구 서초대로77길 17",
+      "reason": "Official public branch metadata explicitly says 서초구. Do not confuse brand numbering with FASTFIVE 강남4호점.",
+      "sourceIds": [
+        "sparkplus-branch-data"
+      ]
+    }
+  ],
+  "heldDiscoveries": [
+    {
+      "name": "패스트파이브 역삼2호점 / 강남4호점",
+      "status": "미확인",
+      "reason": "Original branch requests returned HTTP403. A meeting-room URL returned only a JavaScript shell/corporate footer, not verified branch content. Search-index descriptions not promoted to direct evidence.",
+      "sourceIds": [
+        "fastfive-yeoksam2",
+        "fastfive-gangnam4",
+        "fastfive-yeoksam2-meeting"
+      ]
+    },
+    {
+      "name": "WeWork 삼성역",
+      "status": "직접 확인; address_hold",
+      "reason": "Original official page has a malformed combined address string: 테헤란로 507 지하 1층 테헤란로5길 7, 10층 서울, Seoul 06168. Do not guess which floor/street belongs to this facility. Staff hours are not flower delivery hours. Reviews removed from retained provenance.",
+      "sourceIds": [
+        "wework-samseong"
+      ]
+    }
+  ],
+  "mixedMaterialRule": {
+    "category": "추정·판단",
+    "instruction": "No current fresh-only or artificial-only material rule was verified for these candidates. Do not invent one. Where supplier products mix fresh/artificial flowers, all material compatibility remains unverified until a venue/event-specific policy supports acceptance. If a later explicit fresh-only rule conflicts with a product, hold that product; do not silently claim it is all-fresh. Samsung 조화 display wording is not material evidence."
+  },
+  "editorialDecision": {
+    "category": "추정·판단",
+    "recommendation": "Research proposal only, not a publication approval decision. Use directly verified facts and restrictions in accurate buyer guidance; unresolved order-specific receipt details can be confirmed during order consultation. Do not promise unrestricted admission, guaranteed timing or material suitability. Hold a proposed claim or use case when an explicit prohibition, missing essential fact or unresolved contradiction would make it misleading. Candidate selection does not require separate pages or justify neighborhood cloning; this packet adds no approval requirement.",
+    "doNotClaim": [
+      "당일/2~3시간/24시간 배송 보장",
+      "해당 시설 제휴·공식 꽃집·지정 공급자 관계",
+      "외부 화환 무조건 반입 가능",
+      "혼합 생화/조화 제품이 생화 전용 조건을 충족",
+      "시설이 있다고 실제 개업·이전 수요가 확인됨",
+      "지하철역·브랜드명 또는 법정동만으로 행정동 확정",
+      "Search snippet, legacy URL or third-party flower-shop claim proves current venue policy"
+    ]
+  },
+  "verificationLimits": [
+    "Current as captured UTC timestamps, not permanent policy. No provider contacted and no actual delivery tested.",
+    "SETEC 2024.10 rules and Coex 2023.01 rules have explicit document dates; current official lists were checked where recorded, but no promise these exhaust unpublished/event-specific rules.",
+    "Past Frieze/Hobby Fair event conditions are separate from current blanket venue policy.",
+    "HTML sanitizer initially removed whole form wrappers on batch1. SETEC form list recaptured as setec-form-list with wrappers unwrapped so list content is retained; setec-forms kept as a limited historical capture only.",
+    "One guessed SETEC path produced HTTP404; actual published trafficInfo.do link was subsequently followed and its result recorded.",
+    "Samsung HTTPS request follows source-controlled redirect to HTTP in capture; no authentication data used and no certificate/security warning bypassed.",
+    "PDF visual review completed only for the specified material pages; other text searched is distinguished from inspected rendered pages."
+  ],
+  "decisionSemantics": "candidate/hold terms are research/editorial scope: candidate means useful factual buyer-guide evidence; admission/material/fulfillment holds mean unsupported guarantees are withheld. They do not require approval or live confirmation of every order before factual content may be drafted. A concrete future order still needs its actual recipient/venue logistics checked as part of fulfillment.",
+  "funeralDocumentGrouping": {
+    "category": "추정·판단",
+    "recommended": "One two-facility Gangnam funeral buyer guide, with a Samsung-specific constraint section.",
+    "canonicalFacilityCount": 2,
+    "aliasNormalization": "연세대학교 강남장례식장 and the Gangnam Severance funeral reference point to the same facility. Do not count them twice.",
+    "identitySourceIds": [
+      "yonsei-use",
+      "yonsei-route",
+      "gs-hospital-about"
+    ],
+    "whyNotSplitYet": "Samsung has a substantiated quantity/location difference. No additional distinct external-admission, mixed-material, timing or fulfillment facts currently support separate thin venue sales pages. This is an editorial proposal, not a search-demand finding.",
+    "customerAddressTreatment": "Use 언주로 211 for Yonsei Gangnam; omit conflicting lot numbers from customer wording while retaining their source discrepancy in research evidence."
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "checkedAtUTC": "2026-10-13T07:44:59.520306+00:00",
+  "verdict": "PASS_EXACT_REV3_TO_REV4_DELTA",
+  "classification": "직접 확인: independently reconstructed entire parsed rev4 object and checked exact original bytes; editorial notes separately labeled.",
+  "oldArticleSHA": "cd0d68f391c97d8eceb407390aebb90f6f84aeeab99fec47971c478512af28b0",
+  "newArticleSHA": "78bc5af47bf4d1b8bd4c17e4cedd34ecd857c763e79c90df53607d1849c1623f",
+  "commonSHA": "22b4b6d12142767cee9dbba40c31db290675f942000a6b86338fbf29b4a3b4cb",
+  "expectedSentenceReplacements": [
+    {
+      "article": "funeral",
+      "section": "seoul-st-mary-funeral",
+      "old": "화환을 사양하는 장례라면 유족의 뜻에 맞춰 인사를 전하시기 바랍니다.",
+      "new": "유족께서 화환을 사양하신 경우에는 그 뜻을 존중해 화환 주문을 진행하지 않습니다."
+    },
+    {
+      "article": "celebration",
+      "section": "venue-restrictions",
+      "old": "해당 공간의 전시를 축하하실 때는 화환 주문을 진행하지 않고, 받는 분의 안내에 맞는 인사 방법을 정하시기 바랍니다.",
+      "new": "전시를 축하하시는 경우에도, 해당 공간으로 보내는 화환 주문은 진행해 드릴 수 없습니다."
+    },
+    {
+      "article": "celebration",
+      "section": "at-center-exhibition",
+      "old": "aT센터 예식으로 이 상품을 보내려는 경우에는 생화·조화 혼합 구성에 대한 현재 예식장 반입 조건을 먼저 확인한 뒤 주문 여부를 상담합니다.",
+      "new": "이 상품은 생화와 조화를 함께 사용하며, aT센터 예식장의 현재 반입 가능 여부가 확인되지 않아 해당 예식장 주문은 안내해 드리지 않습니다."
+    }
+  ],
+  "checks": [
+    {
+      "check": "submitted article exact hash",
+      "pass": true
+    },
+    {
+      "check": "common rev2 unchanged",
+      "pass": true
+    },
+    {
+      "check": "exactly one prior paragraph sentence seoul-st-mary-funeral",
+      "pass": true
+    },
+    {
+      "check": "one prior markdown sentence seoul-st-mary-funeral",
+      "pass": true
+    },
+    {
+      "check": "exactly one prior paragraph sentence venue-restrictions",
+      "pass": true
+    },
+    {
+      "check": "one prior markdown sentence venue-restrictions",
+      "pass": true
+    },
+    {
+      "check": "exactly one prior paragraph sentence at-center-exhibition",
+      "pass": true
+    },
+    {
+      "check": "one prior markdown sentence at-center-exhibition",
+      "pass": true
+    },
+    {
+      "check": "entire rev4 equals old exact object plus three requested replacements and metadata counts",
+      "pass": true
+    },
+    {
+      "check": "all titles meta H1 cards firstanswers unchanged",
+      "pass": true
+    },
+    {
+      "check": "FAQ no regression",
+      "pass": true
+    },
+    {
+      "check": "two article intent/url/skus unchanged",
+      "pass": true
+    },
+    {
+      "check": "no root-era instruction remains",
+      "pass": true
+    },
+    {
+      "check": "earlier acceptance archived and still local",
+      "pass": true
+    },
+    {
+      "check": "current implementation explicitly pending new review",
+      "pass": true
+    },
+    {
+      "check": "source originals unchanged since prior review",
+      "pass": true
+    }
+  ],
+  "checkCount": 16,
+  "failureCount": 0,
+  "semanticReview": [
+    {
+      "location": "funeral / seoul-st-mary-funeral",
+      "classification": "추정·판단",
+      "verdict": "PASS",
+      "finding": "유족의 사양이 알려진 경우에 판매자가 주문을 진행하지 않는 경계를 말한다. 고객에게 다른 인사를 고르라고 가르치지 않고, 유족 의사 조회·시설 확인 대행·실제 전달을 약속하지 않는다. 이를 서울성모의 시설 전체 금지로 일반화하지 않는다."
+    },
+    {
+      "location": "celebration / venue-restrictions",
+      "classification": "직접 확인 + 추정·판단",
+      "verdict": "PASS",
+      "finding": "원본 제2조의 세 미술관/박물관 전시장·로비 범위 및 제11조 화환 반입금지를 그대로 유지하면서 판매자가 그 공간 주문을 진행할 수 없다고 밝힌다. 임의의 대체 꽃·로비 우회·확인 대행·배송 약속이 없다."
+    },
+    {
+      "location": "celebration / at-center-exhibition",
+      "classification": "직접 확인 + 추정·판단",
+      "verdict": "PASS",
+      "finding": "혼합 소재는 판매자 원문과 일치한다. aT 예식장 현재 반입 미확정이므로 현재 주문안내를 제공하지 않는 보류를 분명히 한다. 2017 계획을 영구금지 또는 현재 일괄금지로 바꾸지 않는다. 전시행사 문단의 조건부 상담과 예식장 보류가 분리된다."
+    },
+    {
+      "location": "full article pair and unchanged intended common UI",
+      "classification": "추정·판단",
+      "verdict": "PASS",
+      "finding": "최종 두 전문을 다시 읽었다. 제한은 필요한 장소의 짧은 문장이고 상품·예산·보내는 뜻·상담보다 우세하지 않다. 근조의 차분한 조건형 공감과 축하의 짧은 인사가 유지된다. 목소리는 판매자로 더 명확해졌고 주문 가능성 보장은 추가되지 않았다."
+    }
+  ],
+  "originalsReopened": [
+    {
+      "path": "/workspace/shared/seocho-research-20261013/raw/order-policy.jpg",
+      "sha256": "24c11e1cc413d3f64ad05145fdc0fb4171c8f3e618d4351609777f8e2ff43bc3"
+    },
+    {
+      "path": "/workspace/shared/seocho-research-20261013/facilities/raw/sac-museum-rules.html",
+      "sha256": "f705bcaa31cded968da3dadd6f325d13ea9b326bf548cd1c12e9f4846eed5199"
+    },
+    {
+      "path": "/workspace/shared/seocho-research-20261013/facilities/raw/at-2017-wreath.html",
+      "sha256": "f68288553c57af7bf3ec60e774e41a20d4b7c537374420177b28434429c13fff"
+    }
+  ],
+  "scope": "Local exact-copy acceptance only. Updated runtime handoff projection must be reviewed separately after regeneration."
+}

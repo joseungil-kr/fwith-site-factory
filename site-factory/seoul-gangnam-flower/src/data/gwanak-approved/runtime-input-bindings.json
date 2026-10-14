@@ -1,0 +1,489 @@
+{
+  "kind": "LOCAL_IMPLEMENTATION_INPUT_NOT_RUNTIME_SCHEMA",
+  "recommendedProjectPath": "site-factory/seoul-gwanak-flower/",
+  "recommendedEvidencePath": "docs/direct-regional-release/seoul-gwanak/",
+  "originalPlanN": 2,
+  "coreInputs": {
+    "plan": {
+      "path": "/workspace/shared/gwanak-plan-copy-20261013/plan/fixed-plan.json",
+      "bytes": 20392,
+      "sha256": "e68fa31eee4b3d375fb5a73cf8652828ef01e8c34ab6648bc0d6c44e8786a522"
+    },
+    "articles": {
+      "path": "/workspace/shared/gwanak-plan-copy-20261013/copy/article-copy.rev4.json",
+      "bytes": 38860,
+      "sha256": "e51f8afdf54145750ce88e3f9c35924ec11671a047090f9d457e23eeacdd5969"
+    },
+    "common": {
+      "path": "/workspace/shared/gwanak-plan-copy-20261013/copy/common-visible-copy.rev3.json",
+      "bytes": 14121,
+      "sha256": "a433bc613087ad61ce4f2a044e6a06e827b5fc726db141c3b9a31ea19c9ee96b"
+    },
+    "membership": {
+      "path": "/workspace/shared/gwanak-plan-copy-20261013/plan/membership.json",
+      "bytes": 8835,
+      "sha256": "5327b48e818dd13094d3cd9ee1b6e343c810c18d9f91567d80c114caed5f21a8"
+    },
+    "candidateInventory": {
+      "path": "/workspace/shared/gwanak-plan-copy-20261013/plan/candidate-inventory.json",
+      "bytes": 24178,
+      "sha256": "21c65e56b849cb9c7f09be8676e8673111bfd69c9f83709607d94f6b2ce64634"
+    }
+  },
+  "routes": [
+    {
+      "path": "/",
+      "role": "home",
+      "countsInN": false
+    },
+    {
+      "path": "/regions/",
+      "role": "region-directory",
+      "countsInN": false
+    },
+    {
+      "path": "/regions/gwanak-funeral-wreath/",
+      "role": "rich-purchase",
+      "countsInN": true
+    },
+    {
+      "path": "/regions/gwanak-celebration-wreath/",
+      "role": "rich-purchase",
+      "countsInN": true
+    },
+    {
+      "path": "/404.html",
+      "role": "404",
+      "countsInN": false
+    }
+  ],
+  "articles": [
+    {
+      "id": "funeral",
+      "slug": "gwanak-funeral-wreath",
+      "url": "/regions/gwanak-funeral-wreath/",
+      "intentKey": "gwanak-condolence-purchase",
+      "queryClass": "local-commercial",
+      "primaryKeyword": "관악구 근조화환",
+      "candidateIds": [
+        "wooshin-funeral"
+      ],
+      "productSkus": [
+        "B201",
+        "B203",
+        "B205",
+        "B060"
+      ],
+      "productFamily": "funeral",
+      "firstSectionId": "condolence",
+      "productSectionId": "products",
+      "sectionOrder": [
+        "condolence",
+        "products",
+        "wooshin-funeral",
+        "ribbon",
+        "order",
+        "materials",
+        "changes"
+      ],
+      "faqCount": 2,
+      "sourceCount": 3,
+      "productHeroSku": "B201",
+      "sourceFieldMappings": {
+        "metaDescription": "runtime description without text rewrite",
+        "sourceLinks.name": "display label/name without URL or text rewrite",
+        "common.brand": "template brandName if required, exact same value",
+        "common.navigation": "object labels mapped to exact known routes; do not import prior-region array content"
+      },
+      "bodyOrderRule": "Preserve firstAnswer once and all sections/paragraphs in exact reviewed order. Product cards integrate at explicit products section, not first section position; do not repeat text through both sections and contentMarkdown."
+    },
+    {
+      "id": "celebration",
+      "slug": "gwanak-celebration-wreath",
+      "url": "/regions/gwanak-celebration-wreath/",
+      "intentKey": "gwanak-celebration-purchase",
+      "queryClass": "local-commercial",
+      "primaryKeyword": "관악구 축하화환",
+      "candidateIds": [
+        "snu-faculty",
+        "snu-research-park",
+        "nakseongdae-traditional",
+        "gwanak-opening-occasion"
+      ],
+      "productSkus": [
+        "C200",
+        "C203",
+        "C204",
+        "C205"
+      ],
+      "productFamily": "congrats",
+      "firstSectionId": "celebrate",
+      "productSectionId": "products",
+      "sectionOrder": [
+        "celebrate",
+        "products",
+        "wedding-words",
+        "snu-faculty",
+        "snu-research-park",
+        "nakseongdae-traditional",
+        "opening-occasion",
+        "order",
+        "changes"
+      ],
+      "faqCount": 2,
+      "sourceCount": 7,
+      "productHeroSku": "C200",
+      "sourceFieldMappings": {
+        "metaDescription": "runtime description without text rewrite",
+        "sourceLinks.name": "display label/name without URL or text rewrite",
+        "common.brand": "template brandName if required, exact same value",
+        "common.navigation": "object labels mapped to exact known routes; do not import prior-region array content"
+      },
+      "bodyOrderRule": "Preserve firstAnswer once and all sections/paragraphs in exact reviewed order. Product cards integrate at explicit products section, not first section position; do not repeat text through both sections and contentMarkdown."
+    }
+  ],
+  "facilityDestinations": [
+    {
+      "candidateId": "wooshin-funeral",
+      "articleId": "funeral",
+      "anchor": "wooshin-funeral",
+      "heading": "우신장례식장으로 전하실 때",
+      "href": "/regions/gwanak-funeral-wreath/#wooshin-funeral",
+      "address": "서울특별시 관악구 시흥대로572 B1",
+      "legalDong": "신림동",
+      "legalCode": "1162010200",
+      "administrativeDong": null,
+      "directoryPlacement": "legal-dong-facility-list"
+    },
+    {
+      "candidateId": "snu-faculty",
+      "articleId": "celebration",
+      "anchor": "snu-faculty",
+      "heading": "서울대학교 교수회관 65동",
+      "href": "/regions/gwanak-celebration-wreath/#snu-faculty",
+      "address": "서울특별시 관악구 관악로1 서울대학교65동 교수회관",
+      "legalDong": null,
+      "legalCode": null,
+      "administrativeDong": null,
+      "directoryPlacement": "district-level-unassigned-facility-list"
+    },
+    {
+      "candidateId": "snu-research-park",
+      "articleId": "celebration",
+      "anchor": "snu-research-park",
+      "heading": "서울대학교 연구공원 웨딩홀",
+      "href": "/regions/gwanak-celebration-wreath/#snu-research-park",
+      "address": "서울특별시 관악구 관악로1 서울대학교 연구공원 본관",
+      "legalDong": "봉천동",
+      "legalCode": "1162010100",
+      "administrativeDong": null,
+      "directoryPlacement": "legal-dong-facility-list"
+    },
+    {
+      "candidateId": "nakseongdae-traditional",
+      "articleId": "celebration",
+      "anchor": "nakseongdae-traditional",
+      "heading": "낙성대 전통혼례",
+      "href": "/regions/gwanak-celebration-wreath/#nakseongdae-traditional",
+      "address": "서울특별시 관악구 낙성대로3길45(봉천동)",
+      "legalDong": "봉천동",
+      "legalCode": "1162010100",
+      "administrativeDong": null,
+      "directoryPlacement": "legal-dong-facility-list"
+    }
+  ],
+  "buyerOccasion": {
+    "candidateId": "gwanak-opening-occasion",
+    "contextType": "buyer-occasion",
+    "articleId": "celebration",
+    "anchor": "opening-occasion",
+    "href": "/regions/gwanak-celebration-wreath/#opening-occasion",
+    "physicalAddress": null,
+    "legalCode": null,
+    "administrativeCode": null,
+    "rule": "Occasion content inside existing celebration page. Never fabricate a physical facility/unitKey to satisfy old adapters."
+  },
+  "geography": {
+    "source": {
+      "path": "/workspace/shared/gwanak-plan-copy-20261013/plan/membership.json",
+      "bytes": 8835,
+      "sha256": "5327b48e818dd13094d3cd9ee1b6e343c810c18d9f91567d80c114caed5f21a8"
+    },
+    "legal": [
+      {
+        "code": "1162010100",
+        "name": "봉천동"
+      },
+      {
+        "code": "1162010200",
+        "name": "신림동"
+      },
+      {
+        "code": "1162010300",
+        "name": "남현동"
+      }
+    ],
+    "administrative": [
+      {
+        "code": "1162052500",
+        "name": "보라매동"
+      },
+      {
+        "code": "1162054500",
+        "name": "청림동"
+      },
+      {
+        "code": "1162056500",
+        "name": "성현동"
+      },
+      {
+        "code": "1162057500",
+        "name": "행운동"
+      },
+      {
+        "code": "1162058500",
+        "name": "낙성대동"
+      },
+      {
+        "code": "1162059500",
+        "name": "청룡동"
+      },
+      {
+        "code": "1162060500",
+        "name": "은천동"
+      },
+      {
+        "code": "1162061500",
+        "name": "중앙동"
+      },
+      {
+        "code": "1162062500",
+        "name": "인헌동"
+      },
+      {
+        "code": "1162063000",
+        "name": "남현동"
+      },
+      {
+        "code": "1162064500",
+        "name": "서원동"
+      },
+      {
+        "code": "1162065500",
+        "name": "신원동"
+      },
+      {
+        "code": "1162066500",
+        "name": "서림동"
+      },
+      {
+        "code": "1162068500",
+        "name": "신사동"
+      },
+      {
+        "code": "1162069500",
+        "name": "신림동"
+      },
+      {
+        "code": "1162071500",
+        "name": "난향동"
+      },
+      {
+        "code": "1162072500",
+        "name": "조원동"
+      },
+      {
+        "code": "1162073500",
+        "name": "대학동"
+      },
+      {
+        "code": "1162074500",
+        "name": "삼성동"
+      },
+      {
+        "code": "1162076500",
+        "name": "미성동"
+      },
+      {
+        "code": "1162077500",
+        "name": "난곡동"
+      }
+    ],
+    "relationships": [
+      {
+        "administrativeCode": "1162052500",
+        "administrativeName": "보라매동",
+        "legalCode": "1162010100",
+        "legalName": "봉천동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162054500",
+        "administrativeName": "청림동",
+        "legalCode": "1162010100",
+        "legalName": "봉천동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162056500",
+        "administrativeName": "성현동",
+        "legalCode": "1162010100",
+        "legalName": "봉천동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162057500",
+        "administrativeName": "행운동",
+        "legalCode": "1162010100",
+        "legalName": "봉천동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162058500",
+        "administrativeName": "낙성대동",
+        "legalCode": "1162010100",
+        "legalName": "봉천동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162059500",
+        "administrativeName": "청룡동",
+        "legalCode": "1162010100",
+        "legalName": "봉천동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162060500",
+        "administrativeName": "은천동",
+        "legalCode": "1162010100",
+        "legalName": "봉천동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162061500",
+        "administrativeName": "중앙동",
+        "legalCode": "1162010100",
+        "legalName": "봉천동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162062500",
+        "administrativeName": "인헌동",
+        "legalCode": "1162010100",
+        "legalName": "봉천동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162063000",
+        "administrativeName": "남현동",
+        "legalCode": "1162010300",
+        "legalName": "남현동",
+        "created": "19880423"
+      },
+      {
+        "administrativeCode": "1162064500",
+        "administrativeName": "서원동",
+        "legalCode": "1162010200",
+        "legalName": "신림동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162065500",
+        "administrativeName": "신원동",
+        "legalCode": "1162010200",
+        "legalName": "신림동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162066500",
+        "administrativeName": "서림동",
+        "legalCode": "1162010200",
+        "legalName": "신림동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162068500",
+        "administrativeName": "신사동",
+        "legalCode": "1162010200",
+        "legalName": "신림동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162069500",
+        "administrativeName": "신림동",
+        "legalCode": "1162010200",
+        "legalName": "신림동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162071500",
+        "administrativeName": "난향동",
+        "legalCode": "1162010200",
+        "legalName": "신림동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162072500",
+        "administrativeName": "조원동",
+        "legalCode": "1162010200",
+        "legalName": "신림동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162073500",
+        "administrativeName": "대학동",
+        "legalCode": "1162010200",
+        "legalName": "신림동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162074500",
+        "administrativeName": "삼성동",
+        "legalCode": "1162010200",
+        "legalName": "신림동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162076500",
+        "administrativeName": "미성동",
+        "legalCode": "1162010200",
+        "legalName": "신림동",
+        "created": "20080901"
+      },
+      {
+        "administrativeCode": "1162077500",
+        "administrativeName": "난곡동",
+        "legalCode": "1162010200",
+        "legalName": "신림동",
+        "created": "20080901"
+      }
+    ],
+    "counts": {
+      "legal": 3,
+      "administrative": 21,
+      "relationships": 21
+    },
+    "noAdministrativeFacilityAssignment": true,
+    "noVerifiedFacilityInLegalNamhyeon": true,
+    "unassignedFacultyRemainsDistrictLevel": true
+  },
+  "thinDirectory": {
+    "actualGuideCards": 2,
+    "cardDuplicatesAllowed": false,
+    "noindex": true,
+    "indexableProductionRobots": "noindex,follow",
+    "previewRobots": "noindex,nofollow,noarchive",
+    "sitemapIncluded": false,
+    "sharedBannerCount": 0,
+    "existingMenuThresholdReached": false,
+    "explicitUtilityDirectoryLinksAllowed": true,
+    "meaning": "N is rich articles only. Legal/admin text and facility anchors cannot inflate children count; no new third card to trigger banners/indexing."
+  },
+  "publicationBoundary": {
+    "productionApproved": false,
+    "hostnameOwnershipVerified": false,
+    "sourceOwnershipGrantedByThisFile": false,
+    "noProductionHostChosen": true,
+    "previewOnlyUntilSeparatelyAuthorized": true
+  }
+}

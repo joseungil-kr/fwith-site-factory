@@ -1,0 +1,281 @@
+{
+  "schemaVersion": 1,
+  "region": "서울특별시 강남구",
+  "officialCode": "11680",
+  "nationalOrder": 23,
+  "preparedAt": "2026-10-13T08:52:28.020548+00:00",
+  "classification": "추정·판단: 직접 확인된 원문을 결합한 미동결 구매의도 계획안",
+  "status": "PROPOSED_RESEARCH_PLAN_ONLY_NOT_FROZEN",
+  "originalPlanN": null,
+  "proposedPageGroupCount": 3,
+  "pageCountRationale": "근조, 결혼, 전시·기업행사는 보내는 목적과 필요한 현장 조건이 다르다. 이 세 구매군을 독립 검토 대상으로 제안한다. 시설 수·동 수·검색어 수를 글 수로 삼지 않으며 후속 원고에서 고유 답변을 충족하지 못하는 군은 통합·보류한다. 최종 N과 URL은 아직 동결하지 않는다.",
+  "evidenceFiles": [
+    "selection-audit.json",
+    "membership.json",
+    "catalog-policy-evidence.json",
+    "facilities/facility-evidence.json",
+    "purchase/purchase-evidence.json",
+    "purchase/query-log.json",
+    "purchase/recurring-urls.json",
+    "reuse-plan.json"
+  ],
+  "groups": [
+    {
+      "id": "gangnam-funeral",
+      "primaryKeyword": "강남구 근조화환",
+      "secondaryKeywords": [
+        "삼성서울병원 장례식장 근조화환",
+        "강남세브란스 근조화환",
+        "연세대학교 강남장례식장 화환"
+      ],
+      "queryClass": "local-commercial",
+      "decision": "propose_combined_purchase_page",
+      "workingTitle": "강남구 근조화환 | 삼성서울·강남세브란스 주문 상담",
+      "titleIsFrozen": false,
+      "proposedSlug": null,
+      "intent": "조문과 위로의 뜻을 전할 근조상품·예산·빈소 목적지·전달 희망 시점을 정하는 결정",
+      "facilityIds": [
+        "samsung-seoul-funeral",
+        "yonsei-gangnam-funeral"
+      ],
+      "facilityCount": 2,
+      "mergeReason": "강남세브란스병원 장례식장과 연세대학교 강남장례식장은 공식 이용안내·병원 연결상 같은 시설 맥락이므로 별도 시설/페이지로 세지 않는다. 삼성의 진열 제한은 같은 구매문서 내 별도 시설 안내로 설명할 수 있다. 상품·문구·상담 절차가 같은 전문 두 개를 만들지 않는다.",
+      "uniqueFacts": [
+        {
+          "fact": "삼성서울병원은 빈소 안 조화 진열 및10개 이내 제한을 공식 안내한다.",
+          "sources": [
+            "samsung-procedure",
+            "samsung-flower"
+          ],
+          "scope": "진열 위치·수량. 조화라는 단어를 인조소재 허용/금지로 해석하지 않는다."
+        },
+        {
+          "fact": "연세대학교 강남장례식장은 강남구 언주로211로 표시되며, 강남세브란스병원 이용안내와 연결된다.",
+          "sources": [
+            "yonsei-route",
+            "yonsei-use",
+            "gs-hospital-about"
+          ],
+          "scope": "도로명과 동일시설 관계. 146-92/146-2 지번 충돌은 연구에 보존하되 고객 주소에는 쓰지 않는다."
+        }
+      ],
+      "firstAnswerGoal": "차분한 위로의 상황에 맞춰 검증된 근조상품 선택과 주문 상담을 안내하고 삼성의 수량·진열 제한을 가까운 위치에 짧게 알린다. 배송 완료나 현장 확인대행을 약속하지 않는다.",
+      "answerSequence": [
+        "목적에 맞는 짧은 첫 답변과 주문 상담",
+        "근조4종 실제사진·상품명·59,000/79,000/109,000/149,000원 기본가격",
+        "삼성서울과 연세 강남장례식장2곳의 실질적인 주문 차이",
+        "장례식장 정식명칭·빈소·희망 전달일시·리본문구·보내는 이름을 한곳에 묶기",
+        "기본가/최종금액과 제작상태별 변경·취소 문의",
+        "본문에서 덜 다룬 질문에만 FAQ와 간결한 공식 출처"
+      ],
+      "productSkus": [
+        "B201",
+        "B203",
+        "B205",
+        "B060"
+      ],
+      "unknowns": [
+        "현재 빈소 수용량",
+        "외부 화환의 개별 반입·혼합소재 허용",
+        "실제 배송가능시간·최종금액",
+        "정시·설치·회수·사진 제공"
+      ],
+      "doNotCreate": [
+        "삼성서울/서울삼성/삼성의료원 동의어별 URL",
+        "강남세브란스와 연세강남장례식장 중복 URL",
+        "단독 강남 근조가격·리본문구 quota 문서"
+      ],
+      "splitReconsideration": "삼성만의 충분하고 검증된 별도 구매결정 답변이 후속조사에서 늘어나는 경우에만 재검토. 현재는 한 문서 제안."
+    },
+    {
+      "id": "gangnam-wedding",
+      "primaryKeyword": "강남구 결혼식 축하화환",
+      "secondaryKeywords": [
+        "강남 예식장 화환",
+        "그랜드힐 컨벤션 축하화환"
+      ],
+      "queryClass": "work-commercial",
+      "decision": "propose_wedding_purchase_page",
+      "workingTitle": "강남구 결혼식 축하화환 | 예산별 상품과 예식장 주문",
+      "titleIsFrozen": false,
+      "proposedSlug": null,
+      "intent": "결혼하는 두 사람을 축하하는 상품·예산·문구와 정확한 예식 회차를 정하는 결정",
+      "facilityIds": [
+        "grandhill-convention"
+      ],
+      "uniqueFacts": [
+        {
+          "fact": "그랜드힐 컨벤션은 강남구 역삼로607(대치동),1F 플로리아·2F 사브리나·3F 그랜드볼룸을 공식 안내한다.",
+          "sources": [
+            "grandhill-route",
+            "grandhill-home",
+            "grandhill-floor3"
+          ],
+          "scope": "예식장·층·홀 식별. 웨딩홀 자체 생화장식은 외부 화환 허용 근거가 아니다."
+        }
+      ],
+      "firstAnswerGoal": "반가운 결혼 소식과 축하의 목적에서 상품/예산 상담으로 자연스럽게 이어진다. 고객의 가상 기억이나 정형 감성 문장을 넣지 않는다.",
+      "answerSequence": [
+        "축하 목적에 맞는 첫 답변",
+        "축하4종 실제사진과59,000/79,000/99,000/149,000원 기본가격",
+        "공식 확인된 그랜드힐 홀명/층 정보는 짧고 실용적으로",
+        "예식장·홀·예식일시·수령 식별과 리본 문구/보내는 이름을 한곳에 묶기",
+        "상품 기본가·개별 배송가능 여부·변경취소 안내",
+        "실제 남은 구매질문 FAQ와 출처"
+      ],
+      "productSkus": [
+        "C200",
+        "C203",
+        "C204",
+        "C205"
+      ],
+      "unknowns": [
+        "외부 화환의 소재/크기/반입 규칙",
+        "예식별 진열장소/수령자/반입 시간",
+        "정시 도착·설치·폐기 서비스"
+      ],
+      "omitFromCustomerBody": [
+        "과거 공사 공지를 현재 진행중으로 표기",
+        "공식3F페이지의600/700명 수용인원 충돌",
+        "배송과 무관한 연회장 규모·교통 설명 반복"
+      ],
+      "linkBoundary": "코엑스의 예식용 경쟁사 페이지를 전시장 정책으로 인용하지 않는다. 일반 축하상품은 같아도 전시·기업행사와 수령/반출 질문은 분리한다."
+    },
+    {
+      "id": "gangnam-exhibition-event",
+      "primaryKeyword": "강남구 행사 화환",
+      "secondaryKeywords": [
+        "코엑스 전시회 화환",
+        "SETEC 전시회 화환",
+        "강남 기업행사 축하화환"
+      ],
+      "queryClass": "work-commercial",
+      "decision": "propose_event_purchase_page_with_explicit_conditions",
+      "workingTitle": "강남구 행사 화환 | 코엑스·SETEC 전시와 기업행사",
+      "titleIsFrozen": false,
+      "proposedSlug": null,
+      "intent": "기업·전시 참가의 성과를 응원하되 해당 행사에서 수령·진열·반출할 수 있는 축하상품인지 결정",
+      "facilityIds": [
+        "coex",
+        "setec"
+      ],
+      "uniqueFacts": [
+        {
+          "fact": "코엑스는 삼성동 영동대로513이며 코엑스마곡과 구분한다. 현재 공식 목록의2026.03 행사준비가이드는 행사 후 화환 등 폐기물 처리비용을 안내한다.",
+          "sources": [
+            "coex-navigation",
+            "coex-business",
+            "coex-meeting-guide-list",
+            "coex-prep-guide"
+          ],
+          "scope": "회의실 행사 안내 문맥. 전시관 모든 주문의 동일 비용/요금을 확정하지 않는다."
+        },
+        {
+          "fact": "SETEC은 강남구 남부순환로3104이며 현재 연결된2024.10운영규정에 전시품 반출입 및 폐기물 반출책임이 있다.",
+          "sources": [
+            "setec-parking",
+            "setec-form-list",
+            "setec-operations"
+          ],
+          "scope": "주최자/사용자 운영규정. 개별 화환배송기사가 특정서류를 반드시 제출해야 한다는 새규칙으로 바꾸지 않는다."
+        }
+      ],
+      "historicalExamplesOnly": [
+        {
+          "id": "frieze-2026-faq",
+          "eventEnded": "2026-09-05",
+          "finding": "대형화환 반입 제한 가능",
+          "notAllowedInference": "코엑스 상시/전면금지 또는 현재행사 동일규칙"
+        },
+        {
+          "id": "hobbyfair-2026-guide",
+          "eventEnded": "2026-06-07",
+          "finding": "부스 밖 화환·대형꽃다발 불허",
+          "notAllowedInference": "SETEC 상시 전면금지나 모든부스 내부반입허용"
+        }
+      ],
+      "firstAnswerGoal": "기업과 행사에 전할 축하 목적을 먼저 설명하되 주최자 조건에 따라 화환 반입이 제한될 수 있음을 짧게 안내한다. 부적합한 행사에 주문을 유도하지 않는다.",
+      "answerSequence": [
+        "전시·기업행사의 축하 목적과 조건부 상품 상담",
+        "같은축하4상품 중 실제사진·가격으로 예산 선택",
+        "코엑스/SETEC의 행사별 수령·진열·반출이라는 고유결정",
+        "행사명·날짜·홀/부스/회의실·수령담당·희망시각을 한곳에 묶기",
+        "꽃이랑은 화환 수거를 별도로 하지 않는다는 확인정책과 행사측 반출책임",
+        "현재 행사별 조건과 변경·취소 관련 필수질문만 짧게 FAQ"
+      ],
+      "productSkus": [
+        "C200",
+        "C203",
+        "C204",
+        "C205"
+      ],
+      "unknowns": [
+        "현재 행사 주최자의 반입/소재/크기규칙",
+        "담당자수령·출입증·차량동선·반입시간",
+        "행사후누가회수/폐기할지와실제비용",
+        "상품배송이행·설치·완료사진"
+      ],
+      "pageCondition": "사실을 설명하는 상담용 계획안이다. 시설이나 주최자가 허용했다고 단정하는 판매문구는 사용할 수 없다. 개별수령확인이나 전화통화 모두를 새로운사이트발행승인조건으로 만들지 않는다. 명시적금지 또는핵심정보부족으로 오도할때 해당주문/주장을보류한다.",
+      "whySeparateFromWedding": "전시명·홀/부스·반출/폐기책임이라는 구매결정은 예식일시·홀·축하대상 중심 질문과 다르다. 경쟁사코엑스예식페이지정책을 가져오지않아야 하며 실제공식원문으로 차이를설명할수있다."
+    }
+  ],
+  "inventoryAccounting": {
+    "source": "facilities/facility-evidence.json",
+    "verifiedLocalFacilityCount": 7,
+    "activeFactualAnchorCount": 5,
+    "localOfficeAddressOnlyHoldCount": 2,
+    "nonlocalExcludedCount": 3,
+    "unresolvedDiscoveryGroupCount": 2,
+    "totalFacilityDiscoveryGroups": 12,
+    "groupsAreNotFinalPages": true
+  },
+  "holdsAndMerges": [
+    {
+      "id": "office-opening-relocation",
+      "decision": "hold_standalone_gangnam_page",
+      "reason": "스파크플러스선릉·강남3호점은 주소/업무공간만 확인. 실제개업·이전사실이나 화환수령규칙은없고 현재관엽/난카탈로그도 검증하지않았다. 고객상황의축하문구예시는가능하지만 지점존재만으로별도richpage를 만들지않는다."
+    },
+    {
+      "id": "samsung-standalone",
+      "decision": "merge_into_funeral",
+      "reason": "진열제한은중요하므로가까이설명하되,상품·주문흐름이같은별도장문을복제하지않는다."
+    },
+    {
+      "id": "synonyms-and-dongs",
+      "decision": "no_quota_pages",
+      "reason": "법정14/행정22/관계31·별칭은페이지할당량아님. 각동/가격/리본문구/당일의동일본문URL분리금지."
+    },
+    {
+      "id": "gangnam-stmary",
+      "decision": "exclude_from_gangnam_facility_inventory",
+      "reason": "경쟁페이지는강남성모라는제목에서서초구주소를표시한다. 서울성모병원공식원문도서초구반포대로222임을freshGET로확인. 별칭의정확한역사적관계는이조사에서확정하지않는다. 서초기존로컬문서를중복제작하지않고미공개URL에링크하지않는다.",
+      "sources": [
+        "purchase/raw/flora-stmary.txt",
+        "raw/seoul-stmary-official.txt"
+      ],
+      "officialSource": "https://www.cmcseoul.or.kr/hospitalguide.phone_num.sp"
+    },
+    {
+      "id": "office-nonlocal",
+      "decision": "exclude_3_seocho_branches",
+      "reason": "스파크플러스강남·강남2·강남4호점은공식branchdata가서초구주소를표시. 강남이라는상표로강남구분류하지않는다."
+    },
+    {
+      "id": "unresolved-offices",
+      "decision": "hold_2_discovery_groups",
+      "reason": "FASTFIVE2지점원문403/JS shell과WeWork삼성역주소문자열혼합오류를추정으로채우지않는다."
+    }
+  ],
+  "copyAndSearchAcceptance": {
+    "firstAnswer": "Title/H1/첫120~180자 핵심구매의도 정렬. 내부정렬점수는실제문장과독립rubric가있을때만기록한다.",
+    "depth": "고유본문약2500~3000자는기본초안목표이며순위공식/기계통과선아님. 근거있는실제질문에충분히답하고반복으로분량을늘리지않는다.",
+    "providerVoice": "판매자의상품선택·주문·리본문구상담범위에서친절하게쓴다. 현장조율·대신확인·설치·회수서비스를발명하지않는다.",
+    "ribbon": "판매자원문들의좌우배치가상충하므로자사양식확정전좌우를보편규칙으로쓰지않는다. 문구와보내는이름을명확히받는다.",
+    "duplicateReview": "서초원고·관악원고와실제전문을대조하며지명치환·감성틀·동일CTA만남는문서검출. 근조2곳합치기및행사/예식분리의실제정보차이를독립평가한다.",
+    "internalLinks": "홈/목록은상황선택. 상세는관련상품URL/실제상담으로이어짐. 관련없는시설·전국footer링크확장없음. 서초미공개경로링크없음.",
+    "photosAndBanners": "실제사진8개와동일승인공통배너3개만재사용. 분위기AI배너를실제상품/납품사진으로표시하지않음.",
+    "renderChecks": "FAQ질문/답변·상품별CTA·H1하나·H2/H3·title/meta/canonical/robots/sitemap/404·전체route·이미지alt·배너분산을실제HTML로검사. 실화면미검수는PASS아님.",
+    "publication": "source검증/빌드/공개HTTP/영수증/실제색인/순위는별도상태. 이계획은공개나새provider/auth/IndexNow승인을뜻하지않는다."
+  },
+  "nextStage": "독립연구검토의결함을수정한후부모에게handoff. 후속담당자가현재소유권/규칙/사실을재조회하고실제계획·N/URL·원고를별도로검토·동결한다. 본작업은고객원고·사이트구현·sourceclaim·배포를수행하지않는다."
+}

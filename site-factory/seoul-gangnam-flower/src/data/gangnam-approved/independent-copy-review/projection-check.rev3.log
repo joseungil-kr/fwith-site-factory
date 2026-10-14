@@ -1,0 +1,201 @@
+{
+  "reviewedAt": "2026-10-13T09:40:08.043000+00:00",
+  "reviewer": "independent copy reviewer",
+  "verdict": "PASS_LOCAL_EXACT_PROJECTION",
+  "scope": "Independent local data/object/field/asset readback only. No renderer, generated HTML, build, public HTTP, provider, IndexNow, or live CTA action tested. Human-read handoff instructions do not authorize unreviewed customer text.",
+  "checks": [
+    {
+      "check": "wholeArticleObjectsExactlyMatch",
+      "pass": true
+    },
+    {
+      "check": "wholeCommonObjectExactlyMatches",
+      "pass": true
+    },
+    {
+      "check": "wholeDirectoryObjectExactlyMatches",
+      "pass": true
+    },
+    {
+      "check": "wholeAssetsObjectExactlyMatches",
+      "pass": true
+    },
+    {
+      "check": "frozenOriginalNAndSixRoutes",
+      "pass": true
+    },
+    {
+      "check": "noCommitOrPublicVerificationClaim",
+      "pass": true
+    },
+    {
+      "check": "visibleFieldsHaveUniquePaths",
+      "pass": true
+    },
+    {
+      "check": "allCustomerProseFieldsExactlyInventoried",
+      "pass": true,
+      "detail": {
+        "independentCount": 246,
+        "inventoryCount": 246,
+        "missing": [],
+        "extra": [],
+        "changed": []
+      }
+    },
+    {
+      "check": "allFunctionalTargetsExactlyInventoried",
+      "pass": true,
+      "detail": {
+        "independentCount": 44,
+        "inventoryCount": 44,
+        "missing": [],
+        "extra": [],
+        "changed": []
+      }
+    },
+    {
+      "check": "all12ProductCardDataReferencesExactlyInventoried",
+      "pass": true
+    },
+    {
+      "check": "inventoryHashesBindCurrentArticleAndCommon",
+      "pass": true
+    },
+    {
+      "check": "all11PackagedImageHashesMatch",
+      "pass": true
+    },
+    {
+      "check": "threeApprovedBannersPreserved",
+      "pass": true
+    },
+    {
+      "check": "planPhysicalAnchorsExactlyPreserved",
+      "pass": true
+    },
+    {
+      "check": "directoryArticleCardsMatchCommon",
+      "pass": true
+    },
+    {
+      "check": "allHandoffBindingsMatchExactLocalFiles",
+      "pass": true
+    },
+    {
+      "check": "runtimeBindingsMatchHandoff",
+      "pass": true
+    }
+  ],
+  "assetResults": [
+    {
+      "path": "handoff/assets/products/B201.jpg",
+      "matches": true,
+      "sha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3"
+    },
+    {
+      "path": "handoff/assets/products/B203.jpg",
+      "matches": true,
+      "sha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114"
+    },
+    {
+      "path": "handoff/assets/products/B205.jpg",
+      "matches": true,
+      "sha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e"
+    },
+    {
+      "path": "handoff/assets/products/B060.jpg",
+      "matches": true,
+      "sha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3"
+    },
+    {
+      "path": "handoff/assets/products/C200.jpg",
+      "matches": true,
+      "sha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905"
+    },
+    {
+      "path": "handoff/assets/products/C203.jpg",
+      "matches": true,
+      "sha256": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a"
+    },
+    {
+      "path": "handoff/assets/products/C204.jpg",
+      "matches": true,
+      "sha256": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d"
+    },
+    {
+      "path": "handoff/assets/products/C205.jpg",
+      "matches": true,
+      "sha256": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9"
+    },
+    {
+      "path": "handoff/assets/banners/flower-message.webp",
+      "matches": true,
+      "sha256": "b8d973861fe81839ec7765d9dd506deb9d1055614c200479aa72a632cf0c5253"
+    },
+    {
+      "path": "handoff/assets/banners/flower-budget.webp",
+      "matches": true,
+      "sha256": "bc782e91dadd7d07840ea9cbe6154fb21941dd7f9bf32c53bb2991bc301439df"
+    },
+    {
+      "path": "handoff/assets/banners/flower-consultation.webp",
+      "matches": true,
+      "sha256": "4cae6c69e4c6549ed277fd3b2acc32c9a797a570de194bc48a6045b50f28283b"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "copy/article-copy.final.json",
+      "sha256": "6aa8e1f7acefaed276486ebefbb93bddb1e9b5eb1b15023ed9d7fda3ec3daeb3",
+      "bytes": 36841
+    },
+    {
+      "path": "copy/common-visible-copy.final.json",
+      "sha256": "da15580bb4f05ae39a60a51d6bdc3fe9fcc65d9e2d738dcd573ebc483aa70cdd",
+      "bytes": 16217
+    },
+    {
+      "path": "plan/fixed-plan.json",
+      "sha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3",
+      "bytes": 17622
+    },
+    {
+      "path": "handoff/runtime-input.json",
+      "sha256": "a1cbb9a616a3558afc2d3e037e8ca6d6297591ae0d4c2ad14f2d5e80b88635e3",
+      "bytes": 84138
+    },
+    {
+      "path": "handoff/visible-copy-inventory.json",
+      "sha256": "eab9b38c6597fe8c79ee474091bafa504208144b64c6b56483a717d351ac6faa",
+      "bytes": 57926
+    },
+    {
+      "path": "handoff/directory-input.json",
+      "sha256": "fdfb903a200d1add7ac769efbd1dbe28b3afce35c1a539a7db73bf1b3a31fea1",
+      "bytes": 16169
+    },
+    {
+      "path": "handoff/approved-assets.json",
+      "sha256": "cdc9c486ad7f141c42abf4ad89c68293eeba5277203edafb8ab0da39e87ad511",
+      "bytes": 13250
+    },
+    {
+      "path": "handoff/input-bindings.json",
+      "sha256": "fde3c4c9ef96f7c4cbc365a104a154e4a3e386f5f6ee0fffd0abce77cf194589",
+      "bytes": 875
+    },
+    {
+      "path": "handoff/IMPLEMENTATION-HANDOFF.txt",
+      "sha256": "11926642b5537f3446621a7bb730e19b2bd8e0907331415161bfcd454b8a3fd2",
+      "bytes": 12324
+    }
+  ],
+  "unverified": [
+    "Future renderer selects only visible fields and no internal metadata",
+    "Actual DOM FAQ/card/button/banner rendering and navigation",
+    "Canonical/robots/sitemap/404 behavior",
+    "Public delivery and indexing"
+  ],
+  "proseInventoryBoundary": "Article and common authored prose only. Geographic unit names and physical addresses are preserved in separately equal directory objects; not counted as 246 authored prose fields."
+}

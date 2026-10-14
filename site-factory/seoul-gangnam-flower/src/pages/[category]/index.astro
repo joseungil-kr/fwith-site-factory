@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import pages from '../../data/pages.json';
+import products from '../../data/products.json';
+import approvedCopy from '../../data/gangnam-copy.json';
+import ui from '../../data/gangnam-ui-copy.json';
+import {groups} from '../../config/site';
+import RegionDirectory from '../../components/RegionDirectory.astro';
+export function getStaticPaths(){return groups.filter(g=>g.cat==='regions').map(group=>({params:{category:group.cat},props:{group}}));}
+const {group}=Astro.props;
+const items=pages.filter(p=>p.category===group.cat),common=approvedCopy.common,copy=common.directory;
+const hero=products.find(p=>p.officialSku==='B201');
+---
+<BaseLayout title={copy.title} description={copy.metaDescription} canonicalPath={group.url} noindex={items.length<3} socialProduct={hero} socialImageAlt={hero?.imageAlt}>
+<nav class="breadcrumb" aria-label={ui.accessibility.breadcrumb}><a href="/">{common.navigation.home}</a><span>›</span><span>{common.navigation.regions}</span></nav>
+<RegionDirectory pages={items} showBanners={items.length>=3}/>
+</BaseLayout>

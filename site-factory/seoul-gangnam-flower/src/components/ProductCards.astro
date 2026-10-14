@@ -1,0 +1,4 @@
+---
+const {products=[]}=Astro.props;
+---
+<div class="product-grid">{products.map((p:any)=><article class="product-card" data-product-family={p.family} data-product-key={p.key} data-product-sku={p.officialSku}><img src={p.img} alt={p.imageAlt} loading="lazy" width="500" height="500"/><div><h3>{p.name}</h3><strong>{p.priceLabel}</strong><p>{p.desc}</p><a href={p.orderUrl} data-order-product-key={p.key}>{p.ctaLabel}</a><p class="product-notice">{p.photoCaption}</p></div></article>)}</div>

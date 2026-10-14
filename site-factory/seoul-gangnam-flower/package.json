@@ -1,0 +1,21 @@
+{
+  "name": "flower-direct-static-gangnam-successor",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "generate": "node scripts/generate_gangnam_minimized_source.mjs",
+    "build": "node scripts/assert_preview_boundary.mjs && node scripts/generate_gangnam_minimized_source.mjs --check && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && npm run qa",
+    "dev": "astro dev",
+    "test": "node scripts/test_inherited_regressions.mjs && node scripts/test_yeongdeungpo_original.mjs && node scripts/test_gangnam_runtime.mjs && python3 scripts/test_gangnam.py",
+    "qa": "node scripts/generate_gangnam_minimized_source.mjs --check && python3 scripts/qa_gangnam.py && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py && python3 scripts/qa_source_link_amendment.py && python3 scripts/test_source_link_amendment.py",
+    "typecheck": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.0.0",
+    "astro": "^7.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.0",
+    "typescript": "^5.9.0"
+  }
+}

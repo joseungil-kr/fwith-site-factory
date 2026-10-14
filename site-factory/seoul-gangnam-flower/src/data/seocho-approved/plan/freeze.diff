@@ -1,0 +1,79 @@
+--- candidate-plan.json
++++ fixed-plan.json
+@@ -4,10 +4,10 @@
+   "regionKey": "seocho",
+   "nationalOrder": 22,
+   "officialCode": "11650",
+-  "status": "CANDIDATE_PENDING_INDEPENDENT_PLAN_REVIEW",
+-  "originalPlanN": null,
++  "status": "LOCAL_PLAN_FROZEN_AFTER_INDEPENDENT_REVIEW",
++  "originalPlanN": 2,
+   "proposedN": 2,
+-  "frozen": false,
++  "frozen": true,
+   "createdAt": "2026-10-13T07:11:46.281414+00:00",
+   "scope": "Local planning and customer copy only. No source implementation, remote writes, ownership, release or indexing. Gwanak unfinished source and failed QA remain separate priority.",
+   "inputManifest": {
+@@ -343,7 +343,7 @@
+       "/404.html"
+     ],
+     "articleCount": 2,
+-    "articleCountDefinition": "Purchase-detail URLs only; originalPlanN may be frozen only after independent plan review. Home, list,404, physical anchors and held candidates are separate retained denominators.",
++    "articleCountDefinition": "Frozen purchase-detail URL denominator2. Home, list,404, physical anchors and retained/held candidates stay separate. Planned routes have not yet been built.",
+     "candidateLedgerCount": 8,
+     "retainedGroupsIncludingHolds": 8
+   },
+@@ -387,18 +387,6 @@
+     "Every visible string including common UI, cards, FAQ, disclaimers and buttons gets independent exact-text review.",
+     "Four real product cards per article, eight on home, exact individual URLs and real photos; banners retain bytes/wording/ratio/AI disclosure.",
+     "Costs, mixed fresh/artificial flowers, no collection and conditional changes must be clear, not redundantly repeated."
+-  ],
+-  "unverified": [
+-    "Final customer copy",
+-    "Approved/frozen article N",
+-    "Seocho implementation",
+-    "Remote Git writes",
+-    "Source ownership claim",
+-    "Deployment",
+-    "Order or payment",
+-    "Indexing or ranking verification",
+-    "Actual facility intake, order inventory, fulfillment, total price, placement and arrival",
+-    "Actual final implementation, runtime HTML, accessibility, viewport QA, public HTTP and indexing"
+   ],
+   "facilityAnchors": [
+     {
+@@ -499,5 +487,34 @@
+       "id": "other-venues-and-dong-pages",
+       "reason": "Official originals or distinct purchase need not established. Preserve candidate ledger and query records."
+     }
++  ],
++  "frozenAt": "2026-10-13T07:18:08.043788+00:00",
++  "candidatePlanSha256": "42e80f9b020cdba3eb451d939c30cace578925ff1a402344edbc464b2a4f1559",
++  "independentReview": {
++    "path": "/workspace/shared/seocho-plan-copy-20261013/independent-plan-review/plan-review-verdict.json",
++    "sha256": "6fc6c8c19a5093a93497a7b08b22c727a74ccda350bd06c7a6bee0f408fe3df4"
++  },
++  "historicalResearchNotDone": [
++    "Final customer copy",
++    "Approved/frozen article N",
++    "Seocho implementation",
++    "Remote Git writes",
++    "Source ownership claim",
++    "Deployment",
++    "Order or payment",
++    "Indexing or ranking verification",
++    "Actual facility intake, order inventory, fulfillment, total price, placement and arrival",
++    "Actual final implementation, runtime HTML, accessibility, viewport QA, public HTTP and indexing"
++  ],
++  "unverified": [
++    "Final customer copy",
++    "Seocho implementation",
++    "Remote Git writes",
++    "Source ownership claim",
++    "Deployment",
++    "Order or payment",
++    "Indexing or ranking verification",
++    "Actual facility intake, order inventory, fulfillment, total price, placement and arrival",
++    "Actual final implementation, runtime HTML, accessibility, viewport QA, public HTTP and indexing"
+   ]
+ }

@@ -1,0 +1,858 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-10-13T10:13:52.189823+00:00",
+  "status": "METADATA_MAPPING_DRAFT_UNSCORED",
+  "scope": "A04 supplementary metadata only; no modification of immutable plan, accepted copy, source or route count. New editorial tier and home cluster explicitly identified.",
+  "records": [
+    {
+      "id": "home",
+      "url": "/",
+      "primary_keyword": "강남구 화환",
+      "primary_keyword_origin": {
+        "file": "/workspace/shared/gangnam-plan-copy-20261013/copy/common-visible-copy.final.json",
+        "sha256": "da15580bb4f05ae39a60a51d6bdc3fe9fcc65d9e2d738dcd573ebc483aa70cdd",
+        "jsonPointer": "/common/home/primaryKeyword"
+      },
+      "secondary_keywords": [
+        "강남구 화환 주문",
+        "강남구 화환 가격"
+      ],
+      "secondary_keyword_support": [
+        {
+          "term": "강남구 화환 주문",
+          "origin": {
+            "file": "/workspace/shared/gangnam-research-20261013/purchase/query-log.json",
+            "queryIds": [
+              "Q03",
+              "Q18"
+            ],
+            "sha256": "5814eedbc5cfe3198f1fbac518d8d9e7228427f8203af2d9098b564d318b8a1f"
+          },
+          "exactlyQueriedInSelectedEvidence": true,
+          "exactQueryIds": [
+            "Q03"
+          ],
+          "interpretation": "Exact query observed in existing saved log; frequency/volume/rank still unmeasured."
+        },
+        {
+          "term": "강남구 화환 가격",
+          "origin": {
+            "file": "/workspace/shared/gangnam-research-20261013/purchase/query-log.json",
+            "queryIds": [
+              "Q03",
+              "Q18"
+            ],
+            "sha256": "5814eedbc5cfe3198f1fbac518d8d9e7228427f8203af2d9098b564d318b8a1f"
+          },
+          "exactlyQueriedInSelectedEvidence": true,
+          "exactQueryIds": [
+            "Q18"
+          ],
+          "interpretation": "Exact query observed in existing saved log; frequency/volume/rank still unmeasured."
+        }
+      ],
+      "keyword_cluster": "gangnam-wreath-overview",
+      "keyword_cluster_origin": {
+        "classification": "추정·판단: new explicit name for existing home overview intent",
+        "file": "/workspace/shared/gangnam-plan-copy-20261013/copy/common-visible-copy.final.json",
+        "jsonPointer": "/common/home/intro",
+        "sha256": "da15580bb4f05ae39a60a51d6bdc3fe9fcc65d9e2d738dcd573ebc483aa70cdd"
+      },
+      "query_class": "core-commercial",
+      "query_class_origin": "추정·판단: regional representative-service overview, following v1.1 core-commercial definition",
+      "query_priority": 1,
+      "query_priority_semantics": {
+        "classification": "추정·판단: newly explicit editorial tier, not a recovered old numerical priority",
+        "tierMeaning": "First commercial-primary tier; all four targets tied",
+        "relativeRankWithinTier": null,
+        "basis": "v1.1/A03 commercial-first and the already selected direct product/order intents. No support-info document added. This supplement does not claim a measured order of demand, urgency, traffic or conversions.",
+        "notMeasured": [
+          "volume",
+          "rank",
+          "impressions",
+          "clicks",
+          "conversion"
+        ]
+      },
+      "query_evidence": [
+        {
+          "type": "observed-query",
+          "value": {
+            "queryId": "Q03",
+            "exactQuery": "강남구 화환 주문",
+            "sourceFile": "/workspace/shared/gangnam-research-20261013/purchase/query-log.json",
+            "sourceSha256": "5814eedbc5cfe3198f1fbac518d8d9e7228427f8203af2d9098b564d318b8a1f",
+            "jsonPointer": "/queries/1",
+            "rawFile": "/workspace/shared/gangnam-research-20261013/purchase/queries/Q03.json",
+            "rawSha256": "a75dcda58af48d6b6c287b1c169461d202dc25cec1848dabb6bc3bb9fd424a19",
+            "observedAt": "2026-10-13T08:35:55.889Z",
+            "evidenceKind": "도구 보고: saved search result observation, not demand measurement",
+            "resultCountObserved": 10,
+            "notMeasured": [
+              "search volume",
+              "Google/Naver rank",
+              "impressions",
+              "clicks",
+              "conversions"
+            ]
+          }
+        },
+        {
+          "type": "observed-query",
+          "value": {
+            "queryId": "Q18",
+            "exactQuery": "강남구 화환 가격",
+            "sourceFile": "/workspace/shared/gangnam-research-20261013/purchase/query-log.json",
+            "sourceSha256": "5814eedbc5cfe3198f1fbac518d8d9e7228427f8203af2d9098b564d318b8a1f",
+            "jsonPointer": "/queries/16",
+            "rawFile": "/workspace/shared/gangnam-research-20261013/purchase/queries/Q18.json",
+            "rawSha256": "664a696af99cb7ee5efb5b9d00aeb50df2ed0502c40b0bca073aba8fd9f9bdcc",
+            "observedAt": "2026-10-13T08:40:33.143Z",
+            "evidenceKind": "도구 보고: saved search result observation, not demand measurement",
+            "resultCountObserved": 9,
+            "notMeasured": [
+              "search volume",
+              "Google/Naver rank",
+              "impressions",
+              "clicks",
+              "conversions"
+            ]
+          }
+        },
+        {
+          "type": "accepted-intent-decision",
+          "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/fixed-plan.json",
+          "sha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3",
+          "jsonPointer": null,
+          "explanation": "Existing home intro and product/occasion cards support broad regional flower-wreath discovery and choice; home is not a fourth regional article."
+        },
+        {
+          "type": "accepted-copy-and-full-intent-review",
+          "file": "/workspace/shared/gangnam-plan-copy-20261013/independent-copy-review/editorial-verdict.json",
+          "sha256": "34dd6190687a47488466e0ec4df217f36788958b58cbf5f8215a9fabc4485f2b",
+          "scope": "Existing independent full-copy/intent finding only; this is not the new A04 score."
+        },
+        {
+          "type": "seller-original-products-and-policies",
+          "file": "/workspace/shared/gangnam-research-20261013/catalog-policy-evidence.json",
+          "sha256": "6ba70183e0642bdc9844a5be4f159a5870bea15790c95b56c7e5b3adcfd492f2",
+          "skus": [
+            "B201",
+            "B203",
+            "B205",
+            "B060",
+            "C200",
+            "C203",
+            "C204",
+            "C205"
+          ],
+          "scope": "Basic prices, actual sale-image snapshots, mixed material and seller policies; not final total or venue acceptance."
+        },
+        {
+          "type": "competitor-original-review",
+          "file": "/workspace/shared/gangnam-research-20261013/purchase/purchase-evidence.json",
+          "sha256": "5908cceb64ebb065575aa5b3baa7c32759ded35db2275e83e52392aa3ab9d0bc",
+          "competitorIds": [
+            "js-gangnam"
+          ],
+          "scope": "Prior original-page reading supports questions and gaps; competitor claims are not seller service promises. No rank, popularity or conversion inference."
+        }
+      ],
+      "title_alignment_score": null,
+      "title_alignment_status": "NOT_EVALUATED_PENDING_FROZEN_INDEPENDENT_RUBRIC",
+      "actualTextEvidence": {
+        "sourceFile": "/workspace/shared/gangnam-plan-copy-20261013/copy/common-visible-copy.final.json",
+        "sourceSha256": "da15580bb4f05ae39a60a51d6bdc3fe9fcc65d9e2d738dcd573ebc483aa70cdd",
+        "title": {
+          "jsonPointer": "/common/home/title",
+          "text": "강남구 화환 | 근조·결혼·행사 상품과 상담 | 꽃이랑"
+        },
+        "h1": {
+          "jsonPointer": "/common/home/h1",
+          "text": "강남구 화환, 조의와 축하에 맞춰 준비하는 꽃"
+        },
+        "firstAnswer": {
+          "jsonPointer": "/common/home/intro",
+          "text": "강남구에 보낼 근조·축하화환을 기본가격 59,000원부터 소개합니다. 빈소에 전하는 위로, 결혼하는 두 분의 축하, 전시와 기업행사의 응원에 맞춰 꽃이랑의 여덟 상품과 리본 문구를 상담합니다.",
+          "charactersIncludingSpaces": 107,
+          "first180Characters": "강남구에 보낼 근조·축하화환을 기본가격 59,000원부터 소개합니다. 빈소에 전하는 위로, 결혼하는 두 분의 축하, 전시와 기업행사의 응원에 맞춰 꽃이랑의 여덟 상품과 리본 문구를 상담합니다.",
+          "scope": "First paragraph before any short talk, CTA, product cards or subsequent section. If shorter than180, preserve actual text without padding."
+        }
+      },
+      "countsTowardFrozenArticleN": false,
+      "frozenPageDenominator": 3
+    },
+    {
+      "id": "funeral",
+      "url": "/regions/gangnam-funeral-wreath/",
+      "primary_keyword": "강남구 근조화환",
+      "primary_keyword_origin": {
+        "file": "/workspace/shared/gangnam-plan-copy-20261013/copy/article-copy.final.json",
+        "sha256": "6aa8e1f7acefaed276486ebefbb93bddb1e9b5eb1b15023ed9d7fda3ec3daeb3",
+        "jsonPointer": "/articles/0/primaryKeyword"
+      },
+      "secondary_keywords": [
+        "삼성서울병원 장례식장 근조화환",
+        "강남세브란스 근조화환",
+        "연세대학교 강남장례식장 화환"
+      ],
+      "secondary_keyword_support": [
+        {
+          "term": "삼성서울병원 장례식장 근조화환",
+          "origin": {
+            "file": "/workspace/shared/gangnam-research-20261013/proposed-page-intents.json",
+            "jsonPointer": "/groups/0/secondaryKeywords",
+            "sha256": "2258df384a2e0b9be3be21e45d89821f7b2f2ce9bc7b1af0f5f0c5de1f47b893"
+          },
+          "exactlyQueriedInSelectedEvidence": false,
+          "exactQueryIds": [],
+          "interpretation": "Previously proposed editorial target phrase supported by original facility/intent evidence; not claimed as an executed exact query or measured demand."
+        },
+        {
+          "term": "강남세브란스 근조화환",
+          "origin": {
+            "file": "/workspace/shared/gangnam-research-20261013/proposed-page-intents.json",
+            "jsonPointer": "/groups/0/secondaryKeywords",
+            "sha256": "2258df384a2e0b9be3be21e45d89821f7b2f2ce9bc7b1af0f5f0c5de1f47b893"
+          },
+          "exactlyQueriedInSelectedEvidence": false,
+          "exactQueryIds": [],
+          "interpretation": "Previously proposed editorial target phrase supported by original facility/intent evidence; not claimed as an executed exact query or measured demand."
+        },
+        {
+          "term": "연세대학교 강남장례식장 화환",
+          "origin": {
+            "file": "/workspace/shared/gangnam-research-20261013/proposed-page-intents.json",
+            "jsonPointer": "/groups/0/secondaryKeywords",
+            "sha256": "2258df384a2e0b9be3be21e45d89821f7b2f2ce9bc7b1af0f5f0c5de1f47b893"
+          },
+          "exactlyQueriedInSelectedEvidence": false,
+          "exactQueryIds": [],
+          "interpretation": "Previously proposed editorial target phrase supported by original facility/intent evidence; not claimed as an executed exact query or measured demand."
+        }
+      ],
+      "keyword_cluster": "gangnam-condolence-purchase",
+      "keyword_cluster_origin": {
+        "classification": "Direct field mapping",
+        "file": "/workspace/shared/gangnam-plan-copy-20261013/copy/article-copy.final.json",
+        "jsonPointer": "/articles/0/intentKey",
+        "sha256": "6aa8e1f7acefaed276486ebefbb93bddb1e9b5eb1b15023ed9d7fda3ec3daeb3"
+      },
+      "query_class": "local-commercial",
+      "query_class_origin": "Preserve frozen page queryClass",
+      "query_priority": 1,
+      "query_priority_semantics": {
+        "classification": "추정·판단: newly explicit editorial tier, not a recovered old numerical priority",
+        "tierMeaning": "First commercial-primary tier; all four targets tied",
+        "relativeRankWithinTier": null,
+        "basis": "v1.1/A03 commercial-first and the already selected direct product/order intents. No support-info document added. This supplement does not claim a measured order of demand, urgency, traffic or conversions.",
+        "notMeasured": [
+          "volume",
+          "rank",
+          "impressions",
+          "clicks",
+          "conversion"
+        ]
+      },
+      "query_evidence": [
+        {
+          "type": "observed-query",
+          "value": {
+            "queryId": "Q02",
+            "exactQuery": "강남 세브란스 장례식장 화환",
+            "sourceFile": "/workspace/shared/gangnam-research-20261013/purchase/query-log.json",
+            "sourceSha256": "5814eedbc5cfe3198f1fbac518d8d9e7228427f8203af2d9098b564d318b8a1f",
+            "jsonPointer": "/queries/0",
+            "rawFile": "/workspace/shared/gangnam-research-20261013/purchase/queries/Q02.json",
+            "rawSha256": "2daf0ab22f9b4609c30c00beac574be82b177c3dd4a465f457528ba9201fdf8c",
+            "observedAt": "2026-10-13T08:35:39.599Z",
+            "evidenceKind": "도구 보고: saved search result observation, not demand measurement",
+            "resultCountObserved": 12,
+            "notMeasured": [
+              "search volume",
+              "Google/Naver rank",
+              "impressions",
+              "clicks",
+              "conversions"
+            ]
+          }
+        },
+        {
+          "type": "observed-query",
+          "value": {
+            "queryId": "Q04",
+            "exactQuery": "삼성서울병원장례식장 근조화환",
+            "sourceFile": "/workspace/shared/gangnam-research-20261013/purchase/query-log.json",
+            "sourceSha256": "5814eedbc5cfe3198f1fbac518d8d9e7228427f8203af2d9098b564d318b8a1f",
+            "jsonPointer": "/queries/2",
+            "rawFile": "/workspace/shared/gangnam-research-20261013/purchase/queries/Q04.json",
+            "rawSha256": "15826d06bf5d6a30b30118c52aba1b8d2096a50d1c9873fb4b0ac1cef1d0b627",
+            "observedAt": "2026-10-13T08:35:58.516Z",
+            "evidenceKind": "도구 보고: saved search result observation, not demand measurement",
+            "resultCountObserved": 5,
+            "notMeasured": [
+              "search volume",
+              "Google/Naver rank",
+              "impressions",
+              "clicks",
+              "conversions"
+            ]
+          }
+        },
+        {
+          "type": "observed-query",
+          "value": {
+            "queryId": "Q13",
+            "exactQuery": "강남세브란스장례식장 화환",
+            "sourceFile": "/workspace/shared/gangnam-research-20261013/purchase/query-log.json",
+            "sourceSha256": "5814eedbc5cfe3198f1fbac518d8d9e7228427f8203af2d9098b564d318b8a1f",
+            "jsonPointer": "/queries/11",
+            "rawFile": "/workspace/shared/gangnam-research-20261013/purchase/queries/Q13.json",
+            "rawSha256": "bc7a134b8ad54b4e97d920e54bc96c3e782d0492a3a66dd38021237bfef2a751",
+            "observedAt": "2026-10-13T08:37:04.966Z",
+            "evidenceKind": "도구 보고: saved search result observation, not demand measurement",
+            "resultCountObserved": 9,
+            "notMeasured": [
+              "search volume",
+              "Google/Naver rank",
+              "impressions",
+              "clicks",
+              "conversions"
+            ]
+          }
+        },
+        {
+          "type": "observed-query",
+          "value": {
+            "queryId": "Q17",
+            "exactQuery": "강남구 근조화환 배달",
+            "sourceFile": "/workspace/shared/gangnam-research-20261013/purchase/query-log.json",
+            "sourceSha256": "5814eedbc5cfe3198f1fbac518d8d9e7228427f8203af2d9098b564d318b8a1f",
+            "jsonPointer": "/queries/15",
+            "rawFile": "/workspace/shared/gangnam-research-20261013/purchase/queries/Q17.json",
+            "rawSha256": "10007f234b91bac7e5d4e0e6d1782eaf94789f82a5b8ce1287411c8982c5e90a",
+            "observedAt": "2026-10-13T08:40:30.487Z",
+            "evidenceKind": "도구 보고: saved search result observation, not demand measurement",
+            "resultCountObserved": 10,
+            "notMeasured": [
+              "search volume",
+              "Google/Naver rank",
+              "impressions",
+              "clicks",
+              "conversions"
+            ]
+          }
+        },
+        {
+          "type": "accepted-intent-decision",
+          "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/fixed-plan.json",
+          "sha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3",
+          "jsonPointer": "/pages/0",
+          "explanation": "조문과 위로의 뜻을 전할 근조상품·예산·빈소 목적지·전달 희망 시점을 정하는 결정"
+        },
+        {
+          "type": "accepted-copy-and-full-intent-review",
+          "file": "/workspace/shared/gangnam-plan-copy-20261013/independent-copy-review/editorial-verdict.json",
+          "sha256": "34dd6190687a47488466e0ec4df217f36788958b58cbf5f8215a9fabc4485f2b",
+          "scope": "Existing independent full-copy/intent finding only; this is not the new A04 score."
+        },
+        {
+          "type": "official-facility-evidence",
+          "file": "/workspace/shared/gangnam-research-20261013/facilities/facility-evidence.json",
+          "sha256": "c4f10d104402b5c7635141b7fc7de4130e1be5a44c6046c202edfdbe71a45175",
+          "facilityIds": [
+            "samsung-seoul-funeral",
+            "yonsei-gangnam-funeral"
+          ],
+          "facts": [
+            {
+              "fact": "삼성서울병원은 빈소 안 조화 진열 및10개 이내 제한을 공식 안내한다.",
+              "sources": [
+                "samsung-procedure",
+                "samsung-flower"
+              ],
+              "scope": "진열 위치·수량. 조화라는 단어를 인조소재 허용/금지로 해석하지 않는다."
+            },
+            {
+              "fact": "연세대학교 강남장례식장은 강남구 언주로211로 표시되며, 강남세브란스병원 이용안내와 연결된다.",
+              "sources": [
+                "yonsei-route",
+                "yonsei-use",
+                "gs-hospital-about"
+              ],
+              "scope": "도로명과 동일시설 관계. 146-92/146-2 지번 충돌은 연구에 보존하되 고객 주소에는 쓰지 않는다."
+            }
+          ],
+          "caution": "Historical proposed facts retained; final copy Coex guide date is clarified in plan/fact-clarifications.json. No live receipt, stock, time or delivery guarantee established."
+        },
+        {
+          "type": "seller-original-products-and-policies",
+          "file": "/workspace/shared/gangnam-research-20261013/catalog-policy-evidence.json",
+          "sha256": "6ba70183e0642bdc9844a5be4f159a5870bea15790c95b56c7e5b3adcfd492f2",
+          "skus": [
+            "B201",
+            "B203",
+            "B205",
+            "B060"
+          ],
+          "scope": "Basic prices, actual sale-image snapshots, mixed material and seller policies; not final total or venue acceptance."
+        },
+        {
+          "type": "competitor-original-review",
+          "file": "/workspace/shared/gangnam-research-20261013/purchase/purchase-evidence.json",
+          "sha256": "5908cceb64ebb065575aa5b3baa7c32759ded35db2275e83e52392aa3ab9d0bc",
+          "competitorIds": [
+            "js-condolence",
+            "flora-stmary"
+          ],
+          "scope": "Prior original-page reading supports questions and gaps; competitor claims are not seller service promises. No rank, popularity or conversion inference."
+        }
+      ],
+      "title_alignment_score": null,
+      "title_alignment_status": "NOT_EVALUATED_PENDING_FROZEN_INDEPENDENT_RUBRIC",
+      "actualTextEvidence": {
+        "sourceFile": "/workspace/shared/gangnam-plan-copy-20261013/copy/article-copy.final.json",
+        "sourceSha256": "6aa8e1f7acefaed276486ebefbb93bddb1e9b5eb1b15023ed9d7fda3ec3daeb3",
+        "title": {
+          "jsonPointer": "/articles/0/title",
+          "text": "강남구 근조화환 | 삼성서울·강남세브란스 상품 안내 | 꽃이랑"
+        },
+        "h1": {
+          "jsonPointer": "/articles/0/h1",
+          "text": "강남구 근조화환, 빈소에 전하는 조용한 위로"
+        },
+        "firstAnswer": {
+          "jsonPointer": "/articles/0/firstAnswer",
+          "text": "강남구 장례식장에 보낼 근조화환은 기본가격 59,000원부터 149,000원까지 네 가지로 안내합니다. 꽃이랑에서 예산과 조의를 전할 문구를 상담해 드립니다. 삼성서울병원은 빈소 안 진열과 10개 이내 제한이 있어, 받는 빈소의 수령 여건에 따라 주문 가능 여부가 달라집니다.",
+          "charactersIncludingSpaces": 154,
+          "first180Characters": "강남구 장례식장에 보낼 근조화환은 기본가격 59,000원부터 149,000원까지 네 가지로 안내합니다. 꽃이랑에서 예산과 조의를 전할 문구를 상담해 드립니다. 삼성서울병원은 빈소 안 진열과 10개 이내 제한이 있어, 받는 빈소의 수령 여건에 따라 주문 가능 여부가 달라집니다.",
+          "scope": "First paragraph before any short talk, CTA, product cards or subsequent section. If shorter than180, preserve actual text without padding."
+        }
+      },
+      "countsTowardFrozenArticleN": true,
+      "frozenPageDenominator": 3
+    },
+    {
+      "id": "wedding",
+      "url": "/regions/gangnam-wedding-wreath/",
+      "primary_keyword": "강남구 결혼식 축하화환",
+      "primary_keyword_origin": {
+        "file": "/workspace/shared/gangnam-plan-copy-20261013/copy/article-copy.final.json",
+        "sha256": "6aa8e1f7acefaed276486ebefbb93bddb1e9b5eb1b15023ed9d7fda3ec3daeb3",
+        "jsonPointer": "/articles/1/primaryKeyword"
+      },
+      "secondary_keywords": [
+        "강남 예식장 화환",
+        "그랜드힐 컨벤션 축하화환"
+      ],
+      "secondary_keyword_support": [
+        {
+          "term": "강남 예식장 화환",
+          "origin": {
+            "file": "/workspace/shared/gangnam-research-20261013/proposed-page-intents.json",
+            "jsonPointer": "/groups/1/secondaryKeywords",
+            "sha256": "2258df384a2e0b9be3be21e45d89821f7b2f2ce9bc7b1af0f5f0c5de1f47b893"
+          },
+          "exactlyQueriedInSelectedEvidence": false,
+          "exactQueryIds": [],
+          "interpretation": "Previously proposed editorial target phrase supported by original facility/intent evidence; not claimed as an executed exact query or measured demand."
+        },
+        {
+          "term": "그랜드힐 컨벤션 축하화환",
+          "origin": {
+            "file": "/workspace/shared/gangnam-research-20261013/proposed-page-intents.json",
+            "jsonPointer": "/groups/1/secondaryKeywords",
+            "sha256": "2258df384a2e0b9be3be21e45d89821f7b2f2ce9bc7b1af0f5f0c5de1f47b893"
+          },
+          "exactlyQueriedInSelectedEvidence": false,
+          "exactQueryIds": [],
+          "interpretation": "Previously proposed editorial target phrase supported by original facility/intent evidence; not claimed as an executed exact query or measured demand."
+        }
+      ],
+      "keyword_cluster": "gangnam-wedding-purchase",
+      "keyword_cluster_origin": {
+        "classification": "Direct field mapping",
+        "file": "/workspace/shared/gangnam-plan-copy-20261013/copy/article-copy.final.json",
+        "jsonPointer": "/articles/1/intentKey",
+        "sha256": "6aa8e1f7acefaed276486ebefbb93bddb1e9b5eb1b15023ed9d7fda3ec3daeb3"
+      },
+      "query_class": "work-commercial",
+      "query_class_origin": "Preserve frozen page queryClass",
+      "query_priority": 1,
+      "query_priority_semantics": {
+        "classification": "추정·판단: newly explicit editorial tier, not a recovered old numerical priority",
+        "tierMeaning": "First commercial-primary tier; all four targets tied",
+        "relativeRankWithinTier": null,
+        "basis": "v1.1/A03 commercial-first and the already selected direct product/order intents. No support-info document added. This supplement does not claim a measured order of demand, urgency, traffic or conversions.",
+        "notMeasured": [
+          "volume",
+          "rank",
+          "impressions",
+          "clicks",
+          "conversion"
+        ]
+      },
+      "query_evidence": [
+        {
+          "type": "observed-query",
+          "value": {
+            "queryId": "Q06",
+            "exactQuery": "강남 결혼식 화환",
+            "sourceFile": "/workspace/shared/gangnam-research-20261013/purchase/query-log.json",
+            "sourceSha256": "5814eedbc5cfe3198f1fbac518d8d9e7228427f8203af2d9098b564d318b8a1f",
+            "jsonPointer": "/queries/4",
+            "rawFile": "/workspace/shared/gangnam-research-20261013/purchase/queries/Q06.json",
+            "rawSha256": "d77285547fe8132d09cbf90f366b1bd10e326d79d2cb4fbc34a02e69e5bb5742",
+            "observedAt": "2026-10-13T08:36:03.819Z",
+            "evidenceKind": "도구 보고: saved search result observation, not demand measurement",
+            "resultCountObserved": 11,
+            "notMeasured": [
+              "search volume",
+              "Google/Naver rank",
+              "impressions",
+              "clicks",
+              "conversions"
+            ]
+          }
+        },
+        {
+          "type": "observed-query",
+          "value": {
+            "queryId": "Q16",
+            "exactQuery": "강남 결혼 축하화환",
+            "sourceFile": "/workspace/shared/gangnam-research-20261013/purchase/query-log.json",
+            "sourceSha256": "5814eedbc5cfe3198f1fbac518d8d9e7228427f8203af2d9098b564d318b8a1f",
+            "jsonPointer": "/queries/14",
+            "rawFile": "/workspace/shared/gangnam-research-20261013/purchase/queries/Q16.json",
+            "rawSha256": "1b1bd04b5301ac30f493327ac9f32a001000d192ba27871a69e85f06ff5dd346",
+            "observedAt": "2026-10-13T08:37:14.538Z",
+            "evidenceKind": "도구 보고: saved search result observation, not demand measurement",
+            "resultCountObserved": 6,
+            "notMeasured": [
+              "search volume",
+              "Google/Naver rank",
+              "impressions",
+              "clicks",
+              "conversions"
+            ]
+          }
+        },
+        {
+          "type": "accepted-intent-decision",
+          "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/fixed-plan.json",
+          "sha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3",
+          "jsonPointer": "/pages/1",
+          "explanation": "결혼하는 두 사람을 축하하는 상품·예산·문구와 정확한 예식 회차를 정하는 결정"
+        },
+        {
+          "type": "accepted-copy-and-full-intent-review",
+          "file": "/workspace/shared/gangnam-plan-copy-20261013/independent-copy-review/editorial-verdict.json",
+          "sha256": "34dd6190687a47488466e0ec4df217f36788958b58cbf5f8215a9fabc4485f2b",
+          "scope": "Existing independent full-copy/intent finding only; this is not the new A04 score."
+        },
+        {
+          "type": "official-facility-evidence",
+          "file": "/workspace/shared/gangnam-research-20261013/facilities/facility-evidence.json",
+          "sha256": "c4f10d104402b5c7635141b7fc7de4130e1be5a44c6046c202edfdbe71a45175",
+          "facilityIds": [
+            "grandhill-convention"
+          ],
+          "facts": [
+            {
+              "fact": "그랜드힐 컨벤션은 강남구 역삼로607(대치동),1F 플로리아·2F 사브리나·3F 그랜드볼룸을 공식 안내한다.",
+              "sources": [
+                "grandhill-route",
+                "grandhill-home",
+                "grandhill-floor3"
+              ],
+              "scope": "예식장·층·홀 식별. 웨딩홀 자체 생화장식은 외부 화환 허용 근거가 아니다."
+            }
+          ],
+          "caution": "Historical proposed facts retained; final copy Coex guide date is clarified in plan/fact-clarifications.json. No live receipt, stock, time or delivery guarantee established."
+        },
+        {
+          "type": "seller-original-products-and-policies",
+          "file": "/workspace/shared/gangnam-research-20261013/catalog-policy-evidence.json",
+          "sha256": "6ba70183e0642bdc9844a5be4f159a5870bea15790c95b56c7e5b3adcfd492f2",
+          "skus": [
+            "C200",
+            "C203",
+            "C204",
+            "C205"
+          ],
+          "scope": "Basic prices, actual sale-image snapshots, mixed material and seller policies; not final total or venue acceptance."
+        },
+        {
+          "type": "competitor-original-review",
+          "file": "/workspace/shared/gangnam-research-20261013/purchase/purchase-evidence.json",
+          "sha256": "5908cceb64ebb065575aa5b3baa7c32759ded35db2275e83e52392aa3ab9d0bc",
+          "competitorIds": [
+            "thewreath-wedding"
+          ],
+          "scope": "Prior original-page reading supports questions and gaps; competitor claims are not seller service promises. No rank, popularity or conversion inference."
+        }
+      ],
+      "title_alignment_score": null,
+      "title_alignment_status": "NOT_EVALUATED_PENDING_FROZEN_INDEPENDENT_RUBRIC",
+      "actualTextEvidence": {
+        "sourceFile": "/workspace/shared/gangnam-plan-copy-20261013/copy/article-copy.final.json",
+        "sourceSha256": "6aa8e1f7acefaed276486ebefbb93bddb1e9b5eb1b15023ed9d7fda3ec3daeb3",
+        "title": {
+          "jsonPointer": "/articles/1/title",
+          "text": "강남구 결혼식 축하화환 | 그랜드힐 홀·상품 안내 | 꽃이랑"
+        },
+        "h1": {
+          "jsonPointer": "/articles/1/h1",
+          "text": "강남구 결혼식 축하화환, 두 분의 시작을 축하하며"
+        },
+        "firstAnswer": {
+          "jsonPointer": "/articles/1/firstAnswer",
+          "text": "결혼하는 두 분께 전할 강남구 축하화환을 기본가격 59,000원·79,000원·99,000원·149,000원의 네 상품으로 소개합니다. 꽃이랑에서 준비하신 예산과 축하 인사에 맞춰 상품을 상담하며, 그랜드힐 컨벤션의 홀 안내도 함께 담았습니다.",
+          "charactersIncludingSpaces": 136,
+          "first180Characters": "결혼하는 두 분께 전할 강남구 축하화환을 기본가격 59,000원·79,000원·99,000원·149,000원의 네 상품으로 소개합니다. 꽃이랑에서 준비하신 예산과 축하 인사에 맞춰 상품을 상담하며, 그랜드힐 컨벤션의 홀 안내도 함께 담았습니다.",
+          "scope": "First paragraph before any short talk, CTA, product cards or subsequent section. If shorter than180, preserve actual text without padding."
+        }
+      },
+      "countsTowardFrozenArticleN": true,
+      "frozenPageDenominator": 3
+    },
+    {
+      "id": "event",
+      "url": "/regions/gangnam-event-wreath/",
+      "primary_keyword": "강남구 행사 화환",
+      "primary_keyword_origin": {
+        "file": "/workspace/shared/gangnam-plan-copy-20261013/copy/article-copy.final.json",
+        "sha256": "6aa8e1f7acefaed276486ebefbb93bddb1e9b5eb1b15023ed9d7fda3ec3daeb3",
+        "jsonPointer": "/articles/2/primaryKeyword"
+      },
+      "secondary_keywords": [
+        "코엑스 전시회 화환",
+        "SETEC 전시회 화환",
+        "강남 기업행사 축하화환"
+      ],
+      "secondary_keyword_support": [
+        {
+          "term": "코엑스 전시회 화환",
+          "origin": {
+            "file": "/workspace/shared/gangnam-research-20261013/proposed-page-intents.json",
+            "jsonPointer": "/groups/2/secondaryKeywords",
+            "sha256": "2258df384a2e0b9be3be21e45d89821f7b2f2ce9bc7b1af0f5f0c5de1f47b893"
+          },
+          "exactlyQueriedInSelectedEvidence": false,
+          "exactQueryIds": [],
+          "interpretation": "Previously proposed editorial target phrase supported by original facility/intent evidence; not claimed as an executed exact query or measured demand."
+        },
+        {
+          "term": "SETEC 전시회 화환",
+          "origin": {
+            "file": "/workspace/shared/gangnam-research-20261013/proposed-page-intents.json",
+            "jsonPointer": "/groups/2/secondaryKeywords",
+            "sha256": "2258df384a2e0b9be3be21e45d89821f7b2f2ce9bc7b1af0f5f0c5de1f47b893"
+          },
+          "exactlyQueriedInSelectedEvidence": false,
+          "exactQueryIds": [],
+          "interpretation": "Previously proposed editorial target phrase supported by original facility/intent evidence; not claimed as an executed exact query or measured demand."
+        },
+        {
+          "term": "강남 기업행사 축하화환",
+          "origin": {
+            "file": "/workspace/shared/gangnam-research-20261013/proposed-page-intents.json",
+            "jsonPointer": "/groups/2/secondaryKeywords",
+            "sha256": "2258df384a2e0b9be3be21e45d89821f7b2f2ce9bc7b1af0f5f0c5de1f47b893"
+          },
+          "exactlyQueriedInSelectedEvidence": false,
+          "exactQueryIds": [],
+          "interpretation": "Previously proposed editorial target phrase supported by original facility/intent evidence; not claimed as an executed exact query or measured demand."
+        }
+      ],
+      "keyword_cluster": "gangnam-exhibition-corporate-purchase",
+      "keyword_cluster_origin": {
+        "classification": "Direct field mapping",
+        "file": "/workspace/shared/gangnam-plan-copy-20261013/copy/article-copy.final.json",
+        "jsonPointer": "/articles/2/intentKey",
+        "sha256": "6aa8e1f7acefaed276486ebefbb93bddb1e9b5eb1b15023ed9d7fda3ec3daeb3"
+      },
+      "query_class": "work-commercial",
+      "query_class_origin": "Preserve frozen page queryClass",
+      "query_priority": 1,
+      "query_priority_semantics": {
+        "classification": "추정·판단: newly explicit editorial tier, not a recovered old numerical priority",
+        "tierMeaning": "First commercial-primary tier; all four targets tied",
+        "relativeRankWithinTier": null,
+        "basis": "v1.1/A03 commercial-first and the already selected direct product/order intents. No support-info document added. This supplement does not claim a measured order of demand, urgency, traffic or conversions.",
+        "notMeasured": [
+          "volume",
+          "rank",
+          "impressions",
+          "clicks",
+          "conversion"
+        ]
+      },
+      "query_evidence": [
+        {
+          "type": "observed-query",
+          "value": {
+            "queryId": "Q07",
+            "exactQuery": "코엑스 화환",
+            "sourceFile": "/workspace/shared/gangnam-research-20261013/purchase/query-log.json",
+            "sourceSha256": "5814eedbc5cfe3198f1fbac518d8d9e7228427f8203af2d9098b564d318b8a1f",
+            "jsonPointer": "/queries/5",
+            "rawFile": "/workspace/shared/gangnam-research-20261013/purchase/queries/Q07.json",
+            "rawSha256": "0e29c5d3899db4ec12d94629367820e28093bcf9d9871e5b53a29a6bfb688c04",
+            "observedAt": "2026-10-13T08:36:07.535Z",
+            "evidenceKind": "도구 보고: saved search result observation, not demand measurement",
+            "resultCountObserved": 8,
+            "notMeasured": [
+              "search volume",
+              "Google/Naver rank",
+              "impressions",
+              "clicks",
+              "conversions"
+            ]
+          }
+        },
+        {
+          "type": "observed-query",
+          "value": {
+            "queryId": "Q12",
+            "exactQuery": "코엑스 전시회 화환 배송",
+            "sourceFile": "/workspace/shared/gangnam-research-20261013/purchase/query-log.json",
+            "sourceSha256": "5814eedbc5cfe3198f1fbac518d8d9e7228427f8203af2d9098b564d318b8a1f",
+            "jsonPointer": "/queries/10",
+            "rawFile": "/workspace/shared/gangnam-research-20261013/purchase/queries/Q12.json",
+            "rawSha256": "215b4ce595525fab5874c97261c590b00990866c4dc7c37c03d06681d687fc75",
+            "observedAt": "2026-10-13T08:37:02.229Z",
+            "evidenceKind": "도구 보고: saved search result observation, not demand measurement",
+            "resultCountObserved": 8,
+            "notMeasured": [
+              "search volume",
+              "Google/Naver rank",
+              "impressions",
+              "clicks",
+              "conversions"
+            ]
+          }
+        },
+        {
+          "type": "observed-query",
+          "value": {
+            "queryId": "Q20",
+            "exactQuery": "코엑스 축하화환 주문",
+            "sourceFile": "/workspace/shared/gangnam-research-20261013/purchase/query-log.json",
+            "sourceSha256": "5814eedbc5cfe3198f1fbac518d8d9e7228427f8203af2d9098b564d318b8a1f",
+            "jsonPointer": "/queries/18",
+            "rawFile": "/workspace/shared/gangnam-research-20261013/purchase/queries/Q20.json",
+            "rawSha256": "5c038f840a9ab32b366ad2f6a3eedb4cc7dd98f8aa8ab1e2158f74fb4ea8cc19",
+            "observedAt": "2026-10-13T08:40:39.925Z",
+            "evidenceKind": "도구 보고: saved search result observation, not demand measurement",
+            "resultCountObserved": 7,
+            "notMeasured": [
+              "search volume",
+              "Google/Naver rank",
+              "impressions",
+              "clicks",
+              "conversions"
+            ]
+          }
+        },
+        {
+          "type": "accepted-intent-decision",
+          "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/fixed-plan.json",
+          "sha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3",
+          "jsonPointer": "/pages/2",
+          "explanation": "기업·전시 참가의 성과를 응원하되 해당 행사에서 수령·진열·반출할 수 있는 축하상품인지 결정"
+        },
+        {
+          "type": "accepted-copy-and-full-intent-review",
+          "file": "/workspace/shared/gangnam-plan-copy-20261013/independent-copy-review/editorial-verdict.json",
+          "sha256": "34dd6190687a47488466e0ec4df217f36788958b58cbf5f8215a9fabc4485f2b",
+          "scope": "Existing independent full-copy/intent finding only; this is not the new A04 score."
+        },
+        {
+          "type": "official-facility-evidence",
+          "file": "/workspace/shared/gangnam-research-20261013/facilities/facility-evidence.json",
+          "sha256": "c4f10d104402b5c7635141b7fc7de4130e1be5a44c6046c202edfdbe71a45175",
+          "facilityIds": [
+            "coex",
+            "setec"
+          ],
+          "facts": [
+            {
+              "fact": "코엑스는 삼성동 영동대로513이며 코엑스마곡과 구분한다. 현재 공식 목록의2026.03 행사준비가이드는 행사 후 화환 등 폐기물 처리비용을 안내한다.",
+              "sources": [
+                "coex-navigation",
+                "coex-business",
+                "coex-meeting-guide-list",
+                "coex-prep-guide"
+              ],
+              "scope": "회의실 행사 안내 문맥. 전시관 모든 주문의 동일 비용/요금을 확정하지 않는다."
+            },
+            {
+              "fact": "SETEC은 강남구 남부순환로3104이며 현재 연결된2024.10운영규정에 전시품 반출입 및 폐기물 반출책임이 있다.",
+              "sources": [
+                "setec-parking",
+                "setec-form-list",
+                "setec-operations"
+              ],
+              "scope": "주최자/사용자 운영규정. 개별 화환배송기사가 특정서류를 반드시 제출해야 한다는 새규칙으로 바꾸지 않는다."
+            }
+          ],
+          "caution": "Historical proposed facts retained; final copy Coex guide date is clarified in plan/fact-clarifications.json. No live receipt, stock, time or delivery guarantee established."
+        },
+        {
+          "type": "seller-original-products-and-policies",
+          "file": "/workspace/shared/gangnam-research-20261013/catalog-policy-evidence.json",
+          "sha256": "6ba70183e0642bdc9844a5be4f159a5870bea15790c95b56c7e5b3adcfd492f2",
+          "skus": [
+            "C200",
+            "C203",
+            "C204",
+            "C205"
+          ],
+          "scope": "Basic prices, actual sale-image snapshots, mixed material and seller policies; not final total or venue acceptance."
+        },
+        {
+          "type": "competitor-original-review",
+          "file": "/workspace/shared/gangnam-research-20261013/purchase/purchase-evidence.json",
+          "sha256": "5908cceb64ebb065575aa5b3baa7c32759ded35db2275e83e52392aa3ab9d0bc",
+          "competitorIds": [
+            "chukha-coex",
+            "flora-coex"
+          ],
+          "scope": "Prior original-page reading supports questions and gaps; competitor claims are not seller service promises. No rank, popularity or conversion inference."
+        }
+      ],
+      "title_alignment_score": null,
+      "title_alignment_status": "NOT_EVALUATED_PENDING_FROZEN_INDEPENDENT_RUBRIC",
+      "actualTextEvidence": {
+        "sourceFile": "/workspace/shared/gangnam-plan-copy-20261013/copy/article-copy.final.json",
+        "sourceSha256": "6aa8e1f7acefaed276486ebefbb93bddb1e9b5eb1b15023ed9d7fda3ec3daeb3",
+        "title": {
+          "jsonPointer": "/articles/2/title",
+          "text": "강남구 행사 화환 | 코엑스·SETEC 상품·반출 안내 | 꽃이랑"
+        },
+        "h1": {
+          "jsonPointer": "/articles/2/h1",
+          "text": "강남구 행사 화환, 전시의 시작과 기업의 도약을 응원하며"
+        },
+        "firstAnswer": {
+          "jsonPointer": "/articles/2/firstAnswer",
+          "text": "전시 참가와 기업행사를 축하하는 화환은 기본가격 59,000원부터 149,000원의 네 상품으로 안내합니다. 꽃이랑에서 행사에 전할 인사와 예산을 상담합니다. 코엑스·SETEC은 행사별로 화환 반입이 제한될 수 있어, 수령과 진열이 가능한 행사를 대상으로 주문을 상담합니다.",
+          "charactersIncludingSpaces": 153,
+          "first180Characters": "전시 참가와 기업행사를 축하하는 화환은 기본가격 59,000원부터 149,000원의 네 상품으로 안내합니다. 꽃이랑에서 행사에 전할 인사와 예산을 상담합니다. 코엑스·SETEC은 행사별로 화환 반입이 제한될 수 있어, 수령과 진열이 가능한 행사를 대상으로 주문을 상담합니다.",
+          "scope": "First paragraph before any short talk, CTA, product cards or subsequent section. If shorter than180, preserve actual text without padding."
+        }
+      },
+      "countsTowardFrozenArticleN": true,
+      "frozenPageDenominator": 3
+    }
+  ],
+  "pendingRoleApplicability": [
+    "Home and three primary purchase articles are proposed assessment targets; independent rubric must confirm applicability.",
+    "Directory and404 remain separate route inventory with explicit role-based reasons, not scores100."
+  ],
+  "originalFixedPlanSha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3",
+  "originalArticleSha256": "6aa8e1f7acefaed276486ebefbb93bddb1e9b5eb1b15023ed9d7fda3ec3daeb3",
+  "originalCommonSha256": "da15580bb4f05ae39a60a51d6bdc3fe9fcc65d9e2d738dcd573ebc483aa70cdd",
+  "rootRequirement": "Record actual evidence, numeric result only from frozen rubric, independent reproduction; noforced90/noinventedsearchperformance."
+}

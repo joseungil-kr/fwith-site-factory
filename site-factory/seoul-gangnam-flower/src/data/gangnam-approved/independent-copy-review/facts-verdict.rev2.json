@@ -1,0 +1,93 @@
+{
+  "reviewedAt": "2026-10-13T09:32:22.153639+00:00",
+  "reviewer": "independent fact/data/source reviewer",
+  "verdict": "CHANGES_REQUIRED",
+  "revision": 2,
+  "independent": true,
+  "classification": "직접 확인",
+  "scope": "All customer-visible copy facts, source-link correspondence, original policy/images/PDFs, approved assets and directory preservation; local saved evidence only.",
+  "reviewedFiles": [
+    {
+      "path": "/workspace/shared/gangnam-plan-copy-20261013/copy/article-copy.final.json",
+      "sha256": "ea5da7f60a8f8dc54b416375958792b4b88d1701903fde5b607cf28d913a56bd"
+    },
+    {
+      "path": "/workspace/shared/gangnam-plan-copy-20261013/copy/common-visible-copy.final.json",
+      "sha256": "da15580bb4f05ae39a60a51d6bdc3fe9fcc65d9e2d738dcd573ebc483aa70cdd"
+    },
+    {
+      "path": "/workspace/shared/gangnam-plan-copy-20261013/copy/claim-evidence-map.json",
+      "sha256": "768d02f9e224c8abd725daedc903fda10f1c0bfd9f997757f7ea251625439475"
+    },
+    {
+      "path": "/workspace/shared/gangnam-plan-copy-20261013/copy/intent-completion-matrix.json",
+      "sha256": "38f4a2ecf0e51bcac4ee370045da9cf4aeb41f5399c9e185004092b8eb96a984"
+    },
+    {
+      "path": "/workspace/shared/gangnam-plan-copy-20261013/plan/fixed-plan.json",
+      "sha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3"
+    },
+    {
+      "path": "/workspace/shared/gangnam-plan-copy-20261013/handoff/approved-assets.json",
+      "sha256": "cdc9c486ad7f141c42abf4ad89c68293eeba5277203edafb8ab0da39e87ad511"
+    },
+    {
+      "path": "/workspace/shared/gangnam-plan-copy-20261013/handoff/directory-input.json",
+      "sha256": "fdfb903a200d1add7ac769efbd1dbe28b3afce35c1a539a7db73bf1b3a31fea1"
+    },
+    {
+      "path": "/workspace/shared/gangnam-plan-copy-20261013/copy/review-input-manifest.json",
+      "sha256": "5d53483c3fb2e12a65868f97401a72304c8dd8929e051794fa435e0b87f43fb7"
+    }
+  ],
+  "automatedChecks": {
+    "passed": 47,
+    "total": 47,
+    "report": "/workspace/shared/gangnam-plan-copy-20261013/independent-copy-review/facts/automated-checks.json"
+  },
+  "manualReview": "/workspace/shared/gangnam-plan-copy-20261013/independent-copy-review/facts/manual-factual-audit.rev2.json",
+  "issues": [
+    {
+      "id": "F1",
+      "severity": "medium",
+      "type": "material-policy-omission",
+      "status": "revision_required",
+      "locations": [
+        "articles.funeral.sections.changes",
+        "articles.wedding.sections.changes",
+        "articles.event.sections.changes"
+      ],
+      "finding": "The refund summaries include favorable refund cases and production/address/refusal restrictions but omit the source-published restriction after one day has elapsed following delivery.",
+      "directSource": "/workspace/shared/gangnam-research-20261013/raw/change-policy.jpg",
+      "sourceSha256": "02701dd33c2a09258a882873df005dbe616842c2add159a08d618b68a934944c",
+      "sourceText": "교환/환불 불가: 배송 완료 후 하루 이상 지났을 경우",
+      "requiredChange": "Include that seller-published time restriction briefly with explicit attribution; do not assert its legal enforceability or resolve individual-order priority conflicts."
+    },
+    {
+      "id": "F2",
+      "severity": "low",
+      "type": "date-attribution-ambiguity",
+      "status": "revision_required",
+      "locations": [
+        "articles.event.sections.coex.paragraphs[1]",
+        "articles.event.sourceNote"
+      ],
+      "finding": "2026년 3월 행사 준비 가이드 could be read as a document edition date. The listing says 2026.03.18; the actual PDF cover says V01, JUNE, Q2-25FY and PDF metadata creation date is 2026-04-01.",
+      "directSources": [
+        "/workspace/shared/gangnam-research-20261013/facilities/raw/coex-meeting-guide-list.html",
+        "/workspace/shared/gangnam-research-20261013/facilities/raw/coex-prep-guide.pdf"
+      ],
+      "requiredChange": "Use the official meeting-room guide name without edition/date language, or attribute 2026.03.18 explicitly to the official listing publication field. Preserve document content and meeting-room scope."
+    }
+  ],
+  "unverified": [
+    "Read-only local audit. No fresh remote GET, Git request/write, provider contact, IndexNow, AI API, v2 or Airtable operation occurred.",
+    "Source HTTP 200/status and capture timestamps are historical tool reports in original source indexes. This reviewer verified saved bytes and content, not current network responses.",
+    "Static source publication supports factual copy only; actual delivery/acceptance/installation/removal/photo provision/current stock/total/individual refund handling remain unverified.",
+    "No rendered implementation exists in this task, so visibility, CSS layout, clicks, live page response and publication remain unverified. Local internal links are matched to planned routes/anchors, not claimed reachable.",
+    "Seller refund policy is reported as seller publication. No legal conclusion on enforceability or precedence between potentially conflicting source rules was made.",
+    "Source-date phrasing must be adjusted as F2. Asset/hash/member/link agreement does not override factual policy omission F1."
+  ],
+  "readyForImplementation": false,
+  "note": "Changes required is limited to F1 policy time limitation and F2 date attribution. Otherwise factual/byte/data checks passed for exact revision 2. Re-review exact final changed content and regenerated map/matrix after repair."
+}

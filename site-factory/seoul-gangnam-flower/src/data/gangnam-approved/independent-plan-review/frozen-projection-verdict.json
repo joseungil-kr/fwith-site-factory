@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-13T09:20:56.585281+00:00",
+  "verdict": "FROZEN_PROJECTION_ACCEPTED",
+  "classification": "직접 확인",
+  "scope": "Small local readback of frozen plan and its inventory/provenance projection. No renewed remote research; no customer-copy, render or publication quality approval.",
+  "fixedPlanFile": "/workspace/shared/gangnam-plan-copy-20261013/plan/fixed-plan.json",
+  "fixedPlanSha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3",
+  "independentPlanVerdictSha256": "dda7236eb54057e55011a667cbf24792bbb66ed46d028b8e67d60707a5eb3a53",
+  "originalPlanN": 3,
+  "exactUrls": [
+    "/regions/gangnam-funeral-wreath/",
+    "/regions/gangnam-wedding-wreath/",
+    "/regions/gangnam-event-wreath/"
+  ],
+  "inputDigests": [
+    {
+      "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/candidate-ledger.json",
+      "sha256": "3a7b49bbe46b8593f7a1db45edc2089374357e7fdb0ad781dfd70b93f12630af"
+    },
+    {
+      "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/candidate-inventory.json",
+      "sha256": "c4f10d104402b5c7635141b7fc7de4130e1be5a44c6046c202edfdbe71a45175"
+    },
+    {
+      "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/candidate-hold-rationale.json",
+      "sha256": "81e8b2e12651d4ef561edd8a1016a275bff5dba719fdeb970d47c69d0a5bc26c"
+    },
+    {
+      "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/membership.json",
+      "sha256": "38232426ff252a356e0ed2655577316292d57daaa57dd9d5334141131559d685"
+    }
+  ],
+  "checks": [
+    {
+      "id": "P01_expected_fixed_plan_digest",
+      "pass": true,
+      "detail": "Exact supplied fixed-plan bytes independently rehashed."
+    },
+    {
+      "id": "P02_three_urls",
+      "pass": true,
+      "detail": "Three exact URLs equal independent recommendation; no extra purchase article."
+    },
+    {
+      "id": "P03_unique_urls",
+      "pass": true,
+      "detail": "Unique /regions/ paths and matching slugs."
+    },
+    {
+      "id": "P04_final_verdict_bound",
+      "pass": true,
+      "detail": "Frozen plan binds real final-verdict, not only received worker message."
+    },
+    {
+      "id": "P05_review_file_final-verdict.json",
+      "pass": true,
+      "detail": "Read actual referenced file and recomputed digest."
+    },
+    {
+      "id": "P05_review_file_verdict-received-message.json",
+      "pass": true,
+      "detail": "Read actual referenced file and recomputed digest."
+    },
+    {
+      "id": "P06_research_input",
+      "pass": true,
+      "detail": "Research snapshot consistent across frozen plan and independent review."
+    },
+    {
+      "id": "P07_proposal_bound",
+      "pass": true,
+      "detail": "Exact earlier candidate plan is bound."
+    },
+    {
+      "id": "P08_inventory_unchanged",
+      "pass": true,
+      "detail": "All original facility inventory values including facts, unknowns, legal fields and exclusions retained exactly."
+    },
+    {
+      "id": "P09_holds_unchanged",
+      "pass": true,
+      "detail": "All original candidate/hold/exclusion rationale values retained exactly."
+    },
+    {
+      "id": "P10_ledger_digest",
+      "pass": true,
+      "detail": "Frozen plan binds actual candidate ledger."
+    },
+    {
+      "id": "P11_twelve_groups",
+      "pass": true,
+      "detail": "Seven local facilities, three nonlocal exclusions and two unresolved discovery groups retained as twelve groups."
+    },
+    {
+      "id": "P12_status_accounting",
+      "pass": true,
+      "detail": {
+        "active_factual_anchor": 5,
+        "hold_office_address_only": 2,
+        "excluded_nonlocal": 3,
+        "hold_original_access_or_address": 2
+      }
+    },
+    {
+      "id": "P13_local_samsung-seoul-funeral",
+      "pass": true,
+      "detail": "Name, original decision, road/legal address and non-assignment preserved; no separate facility URL."
+    },
+    {
+      "id": "P13_local_yonsei-gangnam-funeral",
+      "pass": true,
+      "detail": "Name, original decision, road/legal address and non-assignment preserved; no separate facility URL."
+    },
+    {
+      "id": "P13_local_grandhill-convention",
+      "pass": true,
+      "detail": "Name, original decision, road/legal address and non-assignment preserved; no separate facility URL."
+    },
+    {
+      "id": "P13_local_coex",
+      "pass": true,
+      "detail": "Name, original decision, road/legal address and non-assignment preserved; no separate facility URL."
+    },
+    {
+      "id": "P13_local_setec",
+      "pass": true,
+      "detail": "Name, original decision, road/legal address and non-assignment preserved; no separate facility URL."
+    },
+    {
+      "id": "P13_local_sparkplus-seolleung",
+      "pass": true,
+      "detail": "Name, original decision, road/legal address and non-assignment preserved; no separate facility URL."
+    },
+    {
+      "id": "P13_local_sparkplus-gangnam3",
+      "pass": true,
+      "detail": "Name, original decision, road/legal address and non-assignment preserved; no separate facility URL."
+    },
+    {
+      "id": "P14_excluded_nonlocal",
+      "pass": true,
+      "detail": "Every original group record preserved in same order."
+    },
+    {
+      "id": "P14_hold_original_access_or_address",
+      "pass": true,
+      "detail": "Every original group record preserved in same order."
+    },
+    {
+      "id": "P15_five_anchors",
+      "pass": true,
+      "detail": "Only five active verified factual anchors projected; address-only offices omitted from customer anchors."
+    },
+    {
+      "id": "P16_alias_merge",
+      "pass": true,
+      "detail": "One Yonsei Gangnam/Gangnam Severance anchor, no duplicate facility."
+    },
+    {
+      "id": "P17_anchor_samsung-seoul-funeral",
+      "pass": true,
+      "detail": "Road/legal facts match input; legal code only maps explicit source dong; admin remains null; article/anchor projection correct."
+    },
+    {
+      "id": "P17_anchor_yonsei-gangnam-funeral",
+      "pass": true,
+      "detail": "Road/legal facts match input; legal code only maps explicit source dong; admin remains null; article/anchor projection correct."
+    },
+    {
+      "id": "P17_anchor_grandhill-convention",
+      "pass": true,
+      "detail": "Road/legal facts match input; legal code only maps explicit source dong; admin remains null; article/anchor projection correct."
+    },
+    {
+      "id": "P17_anchor_coex",
+      "pass": true,
+      "detail": "Road/legal facts match input; legal code only maps explicit source dong; admin remains null; article/anchor projection correct."
+    },
+    {
+      "id": "P17_anchor_setec",
+      "pass": true,
+      "detail": "Road/legal facts match input; legal code only maps explicit source dong; admin remains null; article/anchor projection correct."
+    },
+    {
+      "id": "P18_explicit_nulls",
+      "pass": true,
+      "detail": "Samsung and SETEC legalDong/legalDongCode remain null, no road-name inference."
+    },
+    {
+      "id": "P19_membership_preserved",
+      "pass": true,
+      "detail": "All 14 legal units, 22 administrative units and 31 relations preserved as full original JSON, not merely counts."
+    },
+    {
+      "id": "P20_directory_counts",
+      "pass": true,
+      "detail": "Directory counts separate from three article denominator; all facility administrative assignments absent."
+    },
+    {
+      "id": "P21_holds_merges",
+      "pass": true,
+      "detail": "All six proposal hold/merge records retained unchanged including opening/relocation, standalone Samsung, synonym/dong quotas, St Mary, nonlocal offices and unresolved offices."
+    },
+    {
+      "id": "P22_early_purchase_history",
+      "pass": true,
+      "detail": "Eight earlier purchase candidates remain in the hash-verified research snapshot; no replacement or dropped history."
+    },
+    {
+      "id": "P23_page_funeral",
+      "pass": true,
+      "detail": "Exact facility/product/factual-scoping/unknown/buyer-decision projection from proposal."
+    },
+    {
+      "id": "P23_page_wedding",
+      "pass": true,
+      "detail": "Exact facility/product/factual-scoping/unknown/buyer-decision projection from proposal."
+    },
+    {
+      "id": "P23_page_event",
+      "pass": true,
+      "detail": "Exact facility/product/factual-scoping/unknown/buyer-decision projection from proposal."
+    },
+    {
+      "id": "P24_route_denominator",
+      "pass": true,
+      "detail": "Six technical routes properly distinct from N=3 purchase articles. No assumed live routes."
+    },
+    {
+      "id": "P25_local_only",
+      "pass": true,
+      "detail": "Local frozen-plan status and proposed prepublication settings retained; actual rendered settings not checked here."
+    }
+  ],
+  "checkCount": 39,
+  "failedChecks": [],
+  "noFixedPlanChanges": true,
+  "unverified": [
+    "Chronological authorship is reported by author; this projection check does not prove creation timing from mutable filesystem metadata. FrozenAt and prior review time are recorded evidence only.",
+    "New article rev1 content, layout, actual anchor presence and customer-copy suitability were not inspected in this narrow check.",
+    "No public HTTP, provider, Git source or IndexNow verification."
+  ],
+  "note": "A pass here means the immutable research/decision projection is faithful. It is not a final copy or site completion verdict."
+}

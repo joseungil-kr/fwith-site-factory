@@ -1,0 +1,28 @@
+강남 A04 보완과 행사 첫 답변 rev4 인계
+
+결론
+새 입력은 원래 동결 N=3, 세 상세 URL, 공통 문구, 상품·정책·자산을 유지하며 행사 첫 답변의 지역만 명확히 한다. 원래 원고에서 행사 A04 결과는 raw95/effective89 REVISE였고 그 평가를 보존했다. rev4는 사전 동결 rubric·target을 그대로 적용한 두 독립 평가에서 홈/근조/결혼/행사 각각100으로 재현됐다. 이 숫자는 내부 정렬 검토 결과이며 검색수요·순위·전환·배포 성능을 뜻하지 않는다.
+
+입력 선택
+1. 원본 봉인 bundle은 /workspace/shared/gangnam-plan-copy-20261013 이다. delivery-manifest SHA256은 2af6d2b07e668177bd271b9b4cfc6cb751ffdedfd96ae8d975e5d3dd83979214이다. 수정하거나 그 해시에 새 파일을 끼워 넣지 않는다.
+2. revised-input/input-manifest.rev4.json의 baseBundle 및 logicalInputOverrides를 따른다. copy/article-copy.final.json의 논리 입력은 revised-input/copy/article-copy.rev4.json으로, handoff/runtime-input.json의 논리 입력은 revised-input/handoff/runtime-input.rev4.json으로 교체한다. 원본 공통 원고·계획·directory·approved assets는 그대로 사용한다.
+3. mapping/keyword-mapping.rev4.final.json이 최신 A04 sidecar다. 기록은 홈+세 상세의 4개 primary이고 원래 본문 글 수 N3와 구분한다. primary_keyword, secondary_keywords, keyword_cluster, query_class, query_priority, query_evidence, title_alignment_score를 해당 URL별 데이터/검증 입력에 연결한다. title_alignment_raw_score, title_alignment_status, gate, rubric·assessment·reproduction 결속도 함께 보존한다.
+4. query_priority=1은 네 primary가 동일 commercial-first 편집 계층이라는 신규 명시값이다. 순위·검색량·실제 수요 우선순위가 아니며 차등 순서를 주장하지 않는다. 홈 cluster/class는 원래 홈 역할의 명시적 분석이고, 상세 cluster/class는 기존 intentKey/queryClass에서 직접 매핑했다. 과거에 필드가 모두 있었다거나 최초 Query-first 순서를 소급 입증했다고 하지 않는다.
+5. 목록 /regions/는 근거 있는 navigation-only non-primary 분류다. 조건부 indexable 규정 자체를 없애지 않는다. 목록이나 404를0점/100점으로 채우지 않는다. 독립 검색타깃/primary 역할로 바뀌면 역할부터 다시 판정한다.
+
+정확한 문구 변경
+경로: /articles/2/firstAnswer
+이전 첫 문장: 전시 참가와 기업행사를 축하하는 화환은 기본가격 59,000원부터 149,000원의 네 상품으로 안내합니다.
+새 첫 문장: 강남구 전시와 기업행사를 축하하는 화환은 기본가격 59,000원부터 149,000원의 네 상품으로 안내합니다.
+나머지 첫 답변과 본문/FAQ/CTA/카드/Title/H1은 동일하다. 첫 답변153→154자, 본문2760→2761자이며 길이는 점수 또는 SEO hard gate가 아니다. revised-input/exact-change.json과 두 .diff에 파생 count/metadata 변경도 별도 명시했다.
+
+검토와 아직 남은 검증
+- rubric/A04_RUBRIC_v1.md와 assessment/targets.frozen.json은 문구 평가 전에 고정됐다. 새 문구를 위해 alias, 가중치, 임계값을 바꾸지 않았다.
+- assessment/와 independent-review/는 원래 rev3 평가 및 재현 기록이다. revised-input/review/는 rev4 평가, exact-copy/projection 및 재현 기록이다. 원래의89점을 새100점으로 덮어쓰지 않는다.
+- 이 addendum 작성자는 봉인된 source를 수정하지 않았다. 현재 기존 HTML은 행사 구문153자 그대로이며 rev4 반영 증거로 사용할 수 없다. 수정 입력은 아직 render/build/browser/public HTTP 검증 전이다.
+- 구현 담당자는 승인된 범위에서 새 입력을 source에 적용한 후 source digest·실제 HTML의 Title/H1/첫 보이는 답변·메타데이터 연결을 재검증해야 한다. 적용 후의 산출물과 독립 QA는 새 입력 manifest/acceptance/A04 mapping의 hash에 결속한다. 기존 화면 PASS를 새 문구 반영 PASS로 재사용하지 않는다.
+- 점수/evidence/rubric/내부 경로/검토 문구는 고객화면에 표시하지 않는다. 정확한 고객 원고와 기존 visibilityContract만 렌더한다.
+- 기존 noindex/nofollow/noarchive, 빈 sitemap, 공개 hostname/ownership 미확인, 원격 Git 필수 승인 보류를 유지한다. 이 문서는 원격 Git/provider/IndexNow 또는 공개 배포 권한을 추가하지 않는다.
+
+별도 진척
+관악 미완료 우선 순서, 서초 로컬 정적 산출물 미발행 상태, 강남 소유권·배포 상태는 변경하지 않았다.

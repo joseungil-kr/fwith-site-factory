@@ -1,0 +1,29 @@
+---
+import {groupsFor,coverage as sourceCoverage} from '../lib/regional-runtime.mjs';
+import SharedFlowerBanner from './SharedFlowerBanner.astro';
+import {planDirectoryBannerSplit} from '../lib/directory-banner-split.mjs';
+import approvedCopy from '../data/gangnam-copy.json';
+const {pages,showBanners=false}=Astro.props;
+const common=approvedCopy.common,copy=common.directory,coverage=sourceCoverage as any;
+const districts=groupsFor(pages) as any[];
+if(pages.length!==3||!showBanners||common.articleCards.length!==3)throw new Error('Gangnam frozen N3 directory requires exactly three cards and three banners');
+const split=planDirectoryBannerSplit([common.articleCards.length],showBanners);
+const anchors=districts.flatMap(d=>d.items.flatMap((entry:any)=>entry.representative.facilityAnchors));
+if(anchors.length!==5||anchors.filter(a=>a.unitKey===null).length!==2)throw new Error('Gangnam exact five facility anchors required');
+---
+<section class="category-hero"><span class="eyebrow">{common.brand}</span><h1>{copy.h1}</h1><p>{copy.intro}</p></section>
+<SharedFlowerBanner variant="message"/>
+<section data-directory-purchase><div class="section-title"><h2>{copy.purchaseHeading}</h2></div>
+<div class="card-grid big">{common.articleCards.slice(0,split.splitAfter!).map(card=><a class="page-card" href={card.href}><strong>{card.title}</strong><span>{card.summary}</span><em>{card.ctaLabel}</em></a>)}</div>
+<SharedFlowerBanner variant="budget"/>
+<div class="card-grid big">{common.articleCards.slice(split.splitAfter!).map(card=><a class="page-card" href={card.href}><strong>{card.title}</strong><span>{card.summary}</span><em>{card.ctaLabel}</em></a>)}</div></section>
+{districts.map(district=><section id={district.key} data-region-district={district.key}>
+<section class="content-card" data-directory-geography><h2>{copy.legalHeading}</h2><p>{copy.relationNote}</p>
+{coverage.units.map((unit:any)=><section class="legal-region-row" data-legal-unit={unit.unitKey}><h3>{unit.name}</h3><dl><dt>{copy.legalColumn}</dt><dd>{unit.name}</dd><dt>{copy.administrativeColumn}</dt><dd><ul>{coverage.administrativeCrosswalk.filter((admin:any)=>admin.relations.some((relation:any)=>relation.unitKey===unit.unitKey)).map((admin:any)=><li data-administrative-unit={admin.aliasKey} data-administrative-code={admin.administrativeCode}>{admin.name}</li>)}</ul></dd></dl>
+<div class="actions" data-general-purchase-links>{(['funeral','wedding','event'] as const).map(id=><a href={`/regions/gangnam-${id}-wreath/`}>{copy.generalLinkLabels[id]}</a>)}</div></section>)}
+<p>{copy.districtGuideNote}</p></section>
+<section class="content-card" data-directory-facilities><h2>{copy.facilityHeading}</h2><p>{copy.facilityScopeNote}</p>
+{coverage.units.filter((unit:any)=>anchors.some(a=>a.unitKey===unit.unitKey)).map((unit:any)=><section data-facility-legal-unit={unit.unitKey}><h3>{unit.name}</h3><ul>{anchors.filter(a=>a.unitKey===unit.unitKey).map(a=><li><a href={a.href} data-candidate-id={a.candidateId}>{a.heading}</a></li>)}</ul></section>)}
+<section data-unassigned-facilities><h3>{copy.ungroupedFacilityHeading}</h3><p>{copy.ungroupedFacilityNote}</p><ul>{anchors.filter(a=>a.unitKey===null).map(a=><li><a href={a.href} data-candidate-id={a.candidateId}>{a.heading}</a></li>)}</ul></section>
+</section></section>)}
+<SharedFlowerBanner variant="consultation"/>

@@ -1,0 +1,49 @@
+---
+import SharedFlowerBanner from '../../components/SharedFlowerBanner.astro';
+import FaqSection from '../../components/FaqSection.astro';
+import InlineOrderBanner from '../../components/InlineOrderBanner.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MarkdownContent from '../../components/MarkdownContent.astro';
+import ProductCards from '../../components/ProductCards.astro';
+import pages from '../../data/pages.json';
+import products from '../../data/products.json';
+import approvedCopy from '../../data/geumcheon-copy.json';
+import {selectProducts,productFamilies} from '../../lib/catalog.mjs';
+import {pageSources} from '../../lib/sources.mjs';
+import {groupsFor,assertRegionalInput} from '../../lib/regional-runtime.mjs';
+assertRegionalInput(pages);
+export function getStaticPaths(){return (pages as any[]).map(p=>({params:{category:p.category,slug:p.slug},props:{page:p}}));}
+const {page}=Astro.props;
+const copy=approvedCopy.article;
+const common=approvedCopy.common;
+const navigation=common.navigation;
+const district=groupsFor(pages).find((d:any)=>d.items.some((item:any)=>item.page.pageKey===page.pageKey));
+const regionalSocialProduct=products.find(p=>p.img===page.ogImage);
+if(!regionalSocialProduct)throw new Error('Regional social image has no verified product binding');
+const productSet=selectProducts(page,products,page.productCardLimit===4||productFamilies(page).length>3?4:3);
+const hero=productSet[0];
+const sources=pageSources(page);
+const approvedSourceNames=new Map([
+ ...copy.sourceLinks.map(source=>[source.url,source.label] as const),
+ ...common.productCards.map(product=>[product.officialUrl,product.name] as const)
+]);
+for(const source of sources)if(!approvedSourceNames.has(source.url))throw new Error('Missing approved source display label: '+source.url);
+const snapshotId=page.snapshotId;
+---
+<BaseLayout title={page.title} description={page.description} canonicalPath={page.url} socialProduct={regionalSocialProduct} socialImageAlt={page.ogImageAlt}>
+<article data-snapshot-id={snapshotId} data-page-key={page.pageKey} data-page-type={page.pageType} data-query-class={page.queryClass} data-visual-intent={page.visualIntent} data-asset-slot={page.assetSlot}>
+<nav class="breadcrumb" aria-label="현재 위치"><a href="/">{navigation.breadcrumbs[0]}</a><span>›</span><a href="/regions/">{navigation.breadcrumbs[1]}</a><span>›</span>{district && <><a href={`/regions/#${district.key}`}>{district.name}</a><span>›</span></>}<span>{page.primaryKeyword}</span></nav>
+<section class="detail-hero"><div><span class="eyebrow">{common.home.eyebrow}</span><h1>{page.h1}</h1><p>{page.firstAnswer}</p><div class="actions"><a class="btn primary" href={copy.primaryCta.href}>{copy.primaryCta.label}</a><a class="btn dark" href={copy.secondaryCta.href} data-order-product-key={hero?.key}>{copy.secondaryCta.label}</a></div><div class="facts">{common.home.facts.map(fact=><span>{fact}</span>)}</div></div>
+{hero && <div class="detail-product" data-product-family={hero.family} data-product-key={hero.key}><img src={hero.img} alt={hero.imageAlt} loading="eager" width="500" height="500"/><strong>{hero.name}</strong><span>{hero.priceLabel}</span></div>}
+</section>
+<SharedFlowerBanner variant="message"/>
+<MarkdownContent content={page.contentMarkdown} firstAnswer={page.firstAnswer} facilityAnchors={page.facilityAnchors}/>
+<SharedFlowerBanner variant="budget"/>
+<InlineOrderBanner compact={true}/>
+{productSet.length>0 && <section class="product-section compact"><h2>{common.home.productSection.heading}</h2><ProductCards products={productSet} noticeMode="body-covered"/></section>}
+{sources.length>0 && <section class="source-references" aria-labelledby="source-references-title"><h2 id="source-references-title">출처 및 확인 정보</h2><p>{copy.sourceNote}</p>
+{sources.map(source => <section class="source-card" data-source-type={source.type} data-source-name={source.name} data-source-verified-at={source.verifiedAt}><h3><a href={source.url} rel="nofollow" aria-label={approvedSourceNames.get(source.url)}>{approvedSourceNames.get(source.url)}</a></h3><small><time datetime={source.verifiedAt}>{source.verifiedAt}</time></small></section>)}
+</section>}
+<FaqSection items={page.faq} title={`${page.primaryKeyword} 자주 묻는 질문`}/>
+<SharedFlowerBanner variant="consultation"/>
+</article></BaseLayout>

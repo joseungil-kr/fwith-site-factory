@@ -1,0 +1,17 @@
+강남 A04 보완 범위와 기존 입력의 공백
+
+[직접 확인]
+현재 캐시 원문 COMBINED_RULES.md A04와 PRECEDENCE_AND_COVERAGE.md A04는 secondary_keywords, keyword_cluster, query_class, query_priority, query_evidence, title_alignment_score를 기록하고 실제 Title/H1/첫 답변과 재현 가능한 rubric을 요구한다. 원문 v1.1의 90점 기준은 indexable primary 문서의 Production PASS 조건이며, 결합 규칙은 이를 내부 정렬 검토 기준이라고 한정한다. v1.2가 우선하므로 exact-match 반복을 순위 공식으로 취급하지 않는다.
+기존 봉인 계획과 원고에는 대표키워드, queryClass, intentKey, 시설·구매 결정의 근거, 정확한 Title/H1/첫 답변이 있다. 다만 필수 snake_case 필드의 일관된 매핑, 명시적인 우선순위 의미, title_alignment_score와 재현 rubric은 없었다. 기존 문체·구매의도 PASS와 길이·해시 검사로 이 공백을 소급해 채웠다고 하지 않는다.
+로컬 실제 HTML 6개를 읽었다. 홈 및 세 상세의 Title/H1/첫 문단은 승인 원고의 해당 값과 정확히 일치한다. 이 검사에서 공개 주소, 화면, 클릭 동작을 검증하지 않았다. 현재 noindex 상태는 A04의 향후 primary 문서 진단을 생략할 이유가 되지 않는다.
+
+[추정·판단]
+새 보완물은 기존 target과 evidence를 명시 필드에 연결한다. 상세 cluster는 기존 intentKey를 그대로 사용한다. 홈은 기존 상품·목적 안내의 개요 역할을 gangnam-wreath-overview라는 추가 식별자로 명시한다. 이 필드가 원래 초안에 있었다고 주장하지 않는다.
+query_priority=1은 이미 선택된 네 primary 대상에 동일하게 부여하는 commercial-first 편집 계층이다. 모두 동순위이며 검색량·순위·전환율로 차등화하지 않았다. 본문 세 편의 동결 N=3에 홈을 추가해서 글 수를 늘리는 판단이 아니다.
+세부키워드는 기존 미동결 제안의 실제 필드와 기존 검색 로그를 연결한다. 실행한 검색문자열과 다른 편집 표준형은 별도로 표시한다. SETEC·그랜드힐처럼 시설 원문 근거가 있으나 해당 exact query가 실행되지 않은 문구를 실제 검색수요가 확인된 키워드로 표시하지 않는다.
+
+[미확인 및 남은 범위]
+검색량·Google/Naver 순위·노출·클릭·전환은 측정하지 않았다. 관측된 검색결과의 개수나 반복 URL 수로 수요·우선순위를 계산하지 않는다. 조회 로그는 당시 도구 보고이며 새 검색을 실행하지 않았다.
+별도 독립검토자가 대상 문구를 보기 전에 동결한 operational rubric을 적용한다. 가중치는 공식 규칙이나 SEO 계수가 아니다. 점수가 90 미만이거나 hard gate가 실패하면 그대로 REVISE로 남긴다. 이를 맞추기 위해 기준·대상·본문을 몰래 바꾸지 않는다. 문구 변경이 필요하면 먼저 부모에게 정확한 범위를 보고한다.
+디렉터리와 404의 적용 여부는 역할 증거로 판정하며 점수를 100으로 채우거나 평균에 포함하지 않는다. 단순히 데이터가 비어 있다는 이유로 NOT_APPLICABLE을 선언하지 않는다.
+이 보완물은 기존 bundle과 source 바깥에만 작성한다. 원본 plan/copy/runtime/manifest는 그대로이며, 이후 승인된 통합에서만 새 보완물의 정확한 hash를 소비할 수 있다. A04 충족 여부와 전체 production readiness·구현·배포·화면·실제 검색 성과는 별개의 결과다.

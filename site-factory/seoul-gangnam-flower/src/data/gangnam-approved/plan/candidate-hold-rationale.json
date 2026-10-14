@@ -1,0 +1,132 @@
+{
+  "scope": "candidate/hold terms are research/editorial scope: candidate means useful factual buyer-guide evidence; admission/material/fulfillment holds mean unsupported guarantees are withheld. They do not require approval or live confirmation of every order before factual content may be drafted. A concrete future order still needs its actual recipient/venue logistics checked as part of fulfillment.",
+  "category": "추정·판단",
+  "candidates": [
+    {
+      "id": "samsung-seoul-funeral",
+      "displayName": "삼성서울병원 장례식장",
+      "decision": "candidate_for_factual_purchase_guide; admission_quantity_material_hold",
+      "whyUseful": [
+        "Room identity, available display capacity and acceptance matter before dispatch.",
+        "This is not the seller order number and does not establish external delivery hours."
+      ],
+      "unknowns": "Display location and quantity restrictions directly confirmed. The word 조화 in this funeral context does not establish artificial-material permission or prohibition. External supplier admission, exact composition, dimensions, remaining room capacity, receipt time and removal arrangements are unverified."
+    },
+    {
+      "id": "yonsei-gangnam-funeral",
+      "displayName": "연세대학교 강남장례식장 (강남세브란스병원)",
+      "decision": "candidate_for_factual_purchase_guide; lot_number_and_admission_hold",
+      "whyUseful": [
+        "Use verified road address; resolve the lot-number discrepancy before any lot-based routing.",
+        "Room labels are static facility information, not a live occupancy claim."
+      ],
+      "unknowns": "No explicit external wreath intake, allowed dimensions/material, placement, cleanup or delivery-time rule found in these checked static pages. A floorplan or general funeral service description is not acceptance evidence."
+    },
+    {
+      "id": "grandhill-convention",
+      "displayName": "그랜드힐 컨벤션",
+      "decision": "candidate_for_factual_purchase_guide; wreath_admission_hold",
+      "whyUseful": [
+        "Venue entrance data differ from third-party search results; do not silently substitute 1004-1.",
+        "Ask exact event, hall and floor, not just venue brand.",
+        "These dates are past at research time. The notice is not independent proof of actual completion or current delivery route."
+      ],
+      "unknowns": "No explicit external-wreath or fresh/artificial material rule found. Describing the venue’s own 생화장식 is not permission for an outside mixed-material wreath. Delivery entrance/time/placement/removal remain unverified."
+    },
+    {
+      "id": "coex",
+      "displayName": "코엑스",
+      "decision": "candidate_for_event_specific_purchase_guide; blanket_delivery_claim_hold",
+      "whyUseful": [
+        "Do not merge 삼성동 Coex with 코엑스마곡 or a similarly named hotel.",
+        "Removal responsibility and cost need event confirmation. Disposal provisions do not establish unconditional wreath admission.",
+        "Do not equate ordinary visitor access or parking with authorized delivery/loading access.",
+        "An event-specific historical restriction disproves blanket assumptions; it does not establish an all-Coex permanent ban."
+      ],
+      "unknowns": "Specific disposal obligation and past event large-wreath entry restriction verified. No current universal Coex flower-type/material/height acceptance policy established. Conference, exhibition and organizer conditions must be separated."
+    },
+    {
+      "id": "setec",
+      "displayName": "SETEC (서울무역전시장)",
+      "decision": "candidate_for_event_specific_purchase_guide; blanket_delivery_claim_hold",
+      "whyUseful": [
+        "General exhibition logistics are not automatically the exact process for a flower courier.",
+        "Past event scope only. Neither a universal ban nor permission to place a wreath inside every booth follows."
+      ],
+      "unknowns": "General venue operating logistics plus a past event’s outside-booth prohibition verified. Current event-specific intake, materials, dimensions, designated location and removal cost remain unverified."
+    },
+    {
+      "id": "sparkplus-seolleung",
+      "displayName": "스파크플러스 선릉점",
+      "decision": "candidate_for_office_address_checks; flower_receipt_and_actual_opening_hold",
+      "whyUseful": [],
+      "unknowns": "No external flower/plant/wreath delivery, unmanned receipt, after-hours staff receipt, materials, floor/tenant destination or corridor placement policy established. An office amenity, parcel machine, 24-hour membership access, or corporate footer does not imply delivery acceptance."
+    },
+    {
+      "id": "sparkplus-gangnam3",
+      "displayName": "스파크플러스 강남3호점",
+      "decision": "candidate_for_office_address_checks; flower_receipt_and_actual_opening_hold",
+      "whyUseful": [],
+      "unknowns": "No external flower/plant/wreath delivery, unmanned receipt, after-hours staff receipt, materials, floor/tenant destination or corridor placement policy established. An office amenity, parcel machine, 24-hour membership access, or corporate footer does not imply delivery acceptance."
+    }
+  ],
+  "exclusions": [
+    {
+      "name": "스파크플러스 강남점",
+      "publishedAddress": "서울 서초구 강남대로 327",
+      "reason": "Official public branch metadata explicitly says 서초구; 강남 brand/market-area name is not Gangnam district membership.",
+      "sourceIds": [
+        "sparkplus-branch-data"
+      ]
+    },
+    {
+      "name": "스파크플러스 강남2호점",
+      "publishedAddress": "서울 서초구 서초대로 396",
+      "reason": "Official public branch metadata explicitly says 서초구.",
+      "sourceIds": [
+        "sparkplus-branch-data"
+      ]
+    },
+    {
+      "name": "스파크플러스 강남4호점",
+      "publishedAddress": "서울 서초구 서초대로77길 17",
+      "reason": "Official public branch metadata explicitly says 서초구. Do not confuse brand numbering with FASTFIVE 강남4호점.",
+      "sourceIds": [
+        "sparkplus-branch-data"
+      ]
+    }
+  ],
+  "heldDiscoveries": [
+    {
+      "name": "패스트파이브 역삼2호점 / 강남4호점",
+      "status": "미확인",
+      "reason": "Original branch requests returned HTTP403. A meeting-room URL returned only a JavaScript shell/corporate footer, not verified branch content. Search-index descriptions not promoted to direct evidence.",
+      "sourceIds": [
+        "fastfive-yeoksam2",
+        "fastfive-gangnam4",
+        "fastfive-yeoksam2-meeting"
+      ]
+    },
+    {
+      "name": "WeWork 삼성역",
+      "status": "직접 확인; address_hold",
+      "reason": "Original official page has a malformed combined address string: 테헤란로 507 지하 1층 테헤란로5길 7, 10층 서울, Seoul 06168. Do not guess which floor/street belongs to this facility. Staff hours are not flower delivery hours. Reviews removed from retained provenance.",
+      "sourceIds": [
+        "wework-samseong"
+      ]
+    }
+  ],
+  "funeralGrouping": {
+    "category": "추정·판단",
+    "recommended": "One two-facility Gangnam funeral buyer guide, with a Samsung-specific constraint section.",
+    "canonicalFacilityCount": 2,
+    "aliasNormalization": "연세대학교 강남장례식장 and the Gangnam Severance funeral reference point to the same facility. Do not count them twice.",
+    "identitySourceIds": [
+      "yonsei-use",
+      "yonsei-route",
+      "gs-hospital-about"
+    ],
+    "whyNotSplitYet": "Samsung has a substantiated quantity/location difference. No additional distinct external-admission, mixed-material, timing or fulfillment facts currently support separate thin venue sales pages. This is an editorial proposal, not a search-demand finding.",
+    "customerAddressTreatment": "Use 언주로 211 for Yonsei Gangnam; omit conflicting lot numbers from customer wording while retaining their source discrepancy in research evidence."
+  }
+}

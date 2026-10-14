@@ -1,0 +1,384 @@
+--- /workspace/shared/gangnam-a04-addendum-20261013/mapping/keyword-mapping.draft.json
++++ /workspace/shared/gangnam-a04-addendum-20261013/mapping/keyword-mapping.metadata-refined.json
+@@ -1,7 +1,7 @@
+ {
+   "schemaVersion": 1,
+   "createdAt": "2026-10-13T10:13:52.189823+00:00",
+-  "status": "METADATA_MAPPING_DRAFT_UNSCORED",
++  "status": "METADATA_PROVENANCE_REFINED_UNSCORED",
+   "scope": "A04 supplementary metadata only; no modification of immutable plan, accepted copy, source or route count. New editorial tier and home cluster explicitly identified.",
+   "records": [
+     {
+@@ -59,7 +59,22 @@
+         "sha256": "da15580bb4f05ae39a60a51d6bdc3fe9fcc65d9e2d738dcd573ebc483aa70cdd"
+       },
+       "query_class": "core-commercial",
+-      "query_class_origin": "추정·판단: regional representative-service overview, following v1.1 core-commercial definition",
++      "query_class_origin": {
++        "classification": "추정·판단: existing home role classified using core-commercial definition",
++        "roleSource": {
++          "file": "/workspace/shared/gangnam-plan-copy-20261013/copy/common-visible-copy.final.json",
++          "sha256": "da15580bb4f05ae39a60a51d6bdc3fe9fcc65d9e2d738dcd573ebc483aa70cdd",
++          "jsonPointer": "/common/home"
++        },
++        "ruleSource": {
++          "file": "/workspace/shared/gangnam-evidence/rules-at-pinned-main/site_factory_query_first_v1_1_test.md",
++          "sha256": "2a5ccd0a033f832df02f172cc3f09445f03c7d18b44af722264fad275d46488f",
++          "lines": [
++            15,
++            17
++          ]
++        }
++      },
+       "query_priority": 1,
+       "query_priority_semantics": {
+         "classification": "추정·판단: newly explicit editorial tier, not a recovered old numerical priority",
+@@ -72,7 +87,20 @@
+           "impressions",
+           "clicks",
+           "conversion"
+-        ]
++        ],
++        "ruleSource": {
++          "file": "/workspace/shared/gangnam-evidence/rules-at-pinned-main/COMBINED_RULES.md",
++          "sha256": "356666a7067218942a115ca8115823b6276d4526f3f8795cbbed8dc7546007bf",
++          "lines": [
++            237,
++            237
++          ]
++        },
++        "selectionSource": {
++          "file": "/workspace/shared/gangnam-plan-copy-20261013/copy/common-visible-copy.final.json",
++          "sha256": "da15580bb4f05ae39a60a51d6bdc3fe9fcc65d9e2d738dcd573ebc483aa70cdd",
++          "jsonPointer": "/common/home"
++        }
+       },
+       "query_evidence": [
+         {
+@@ -121,16 +149,16 @@
+         },
+         {
+           "type": "accepted-intent-decision",
+-          "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/fixed-plan.json",
+-          "sha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3",
+-          "jsonPointer": null,
+-          "explanation": "Existing home intro and product/occasion cards support broad regional flower-wreath discovery and choice; home is not a fourth regional article."
++          "file": "/workspace/shared/gangnam-plan-copy-20261013/copy/common-visible-copy.final.json",
++          "sha256": "da15580bb4f05ae39a60a51d6bdc3fe9fcc65d9e2d738dcd573ebc483aa70cdd",
++          "jsonPointer": "/common/home",
++          "explanation": "Existing accepted home intro, purposes and product choices support the regional flower-wreath overview. The separately frozen article denominator remains N3."
+         },
+         {
+           "type": "accepted-copy-and-full-intent-review",
+           "file": "/workspace/shared/gangnam-plan-copy-20261013/independent-copy-review/editorial-verdict.json",
+           "sha256": "34dd6190687a47488466e0ec4df217f36788958b58cbf5f8215a9fabc4485f2b",
+-          "scope": "Existing independent full-copy/intent finding only; this is not the new A04 score."
++          "scope": "Existing independent exact revision3 full-copy/intent finding only; not a numeric A04 score and not automatically a revision4 acceptance."
+         },
+         {
+           "type": "seller-original-products-and-policies",
+@@ -180,7 +208,20 @@
+         }
+       },
+       "countsTowardFrozenArticleN": false,
+-      "frozenPageDenominator": 3
++      "frozenPageDenominator": 3,
++      "keyword_cluster_definition": {
++        "region": "강남구",
++        "service": "화환",
++        "essentialModifiers": [],
++        "intentKey": "gangnam-wreath-overview",
++        "pageRole": "commercial overview home",
++        "expectedCustomerQuestion": "강남구에 보낼 화환을 목적에 따라 어떻게 고르고 상품과 예산을 비교할 수 있는가?",
++        "source": {
++          "file": "/workspace/shared/gangnam-a04-addendum-20261013/assessment/targets.frozen.json",
++          "sha256": "4611ebfbf5515a22dc264e3b2b9a86a23f75caec615d0e1bcf6e5fba324b5f8e",
++          "jsonPointer": "/records/0/evaluationTarget"
++        }
++      }
+     },
+     {
+       "id": "funeral",
+@@ -239,7 +280,15 @@
+         "sha256": "6aa8e1f7acefaed276486ebefbb93bddb1e9b5eb1b15023ed9d7fda3ec3daeb3"
+       },
+       "query_class": "local-commercial",
+-      "query_class_origin": "Preserve frozen page queryClass",
++      "query_class_origin": {
++        "classification": "직접 확인: unchanged frozen queryClass mapped to snake_case",
++        "source": {
++          "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/fixed-plan.json",
++          "sha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3",
++          "jsonPointer": "/pages/0/queryClass"
++        },
++        "value": "local-commercial"
++      },
+       "query_priority": 1,
+       "query_priority_semantics": {
+         "classification": "추정·판단: newly explicit editorial tier, not a recovered old numerical priority",
+@@ -252,7 +301,20 @@
+           "impressions",
+           "clicks",
+           "conversion"
+-        ]
++        ],
++        "ruleSource": {
++          "file": "/workspace/shared/gangnam-evidence/rules-at-pinned-main/COMBINED_RULES.md",
++          "sha256": "356666a7067218942a115ca8115823b6276d4526f3f8795cbbed8dc7546007bf",
++          "lines": [
++            237,
++            237
++          ]
++        },
++        "selectionSource": {
++          "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/fixed-plan.json",
++          "sha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3",
++          "jsonPointer": "/pages/0/buyerDecision"
++        }
+       },
+       "query_evidence": [
+         {
+@@ -354,7 +416,7 @@
+           "type": "accepted-copy-and-full-intent-review",
+           "file": "/workspace/shared/gangnam-plan-copy-20261013/independent-copy-review/editorial-verdict.json",
+           "sha256": "34dd6190687a47488466e0ec4df217f36788958b58cbf5f8215a9fabc4485f2b",
+-          "scope": "Existing independent full-copy/intent finding only; this is not the new A04 score."
++          "scope": "Existing independent exact revision3 full-copy/intent finding only; not a numeric A04 score and not automatically a revision4 acceptance."
+         },
+         {
+           "type": "official-facility-evidence",
+@@ -383,7 +445,12 @@
+               "scope": "도로명과 동일시설 관계. 146-92/146-2 지번 충돌은 연구에 보존하되 고객 주소에는 쓰지 않는다."
+             }
+           ],
+-          "caution": "Historical proposed facts retained; final copy Coex guide date is clarified in plan/fact-clarifications.json. No live receipt, stock, time or delivery guarantee established."
++          "caution": "Facility claims remain bounded to their original context. No live receipt, stock, final total or delivery guarantee established.",
++          "factsOrigin": {
++            "file": "/workspace/shared/gangnam-research-20261013/proposed-page-intents.json",
++            "sha256": "2258df384a2e0b9be3be21e45d89821f7b2f2ce9bc7b1af0f5f0c5de1f47b893",
++            "jsonPointer": "/groups/0/uniqueFacts"
++          }
+         },
+         {
+           "type": "seller-original-products-and-policies",
+@@ -430,7 +497,20 @@
+         }
+       },
+       "countsTowardFrozenArticleN": true,
+-      "frozenPageDenominator": 3
++      "frozenPageDenominator": 3,
++      "keyword_cluster_definition": {
++        "region": "강남구",
++        "service": "근조화환",
++        "essentialModifiers": [],
++        "intentKey": "gangnam-condolence-purchase",
++        "pageRole": "regional condolence purchase article",
++        "expectedCustomerQuestion": "강남구 장례식장에 보낼 근조상품과 예산을 어떻게 고르고 빈소 목적지와 희망 전달 시점을 정하는가?",
++        "source": {
++          "file": "/workspace/shared/gangnam-a04-addendum-20261013/assessment/targets.frozen.json",
++          "sha256": "4611ebfbf5515a22dc264e3b2b9a86a23f75caec615d0e1bcf6e5fba324b5f8e",
++          "jsonPointer": "/records/1/evaluationTarget"
++        }
++      }
+     },
+     {
+       "id": "wedding",
+@@ -477,7 +557,15 @@
+         "sha256": "6aa8e1f7acefaed276486ebefbb93bddb1e9b5eb1b15023ed9d7fda3ec3daeb3"
+       },
+       "query_class": "work-commercial",
+-      "query_class_origin": "Preserve frozen page queryClass",
++      "query_class_origin": {
++        "classification": "직접 확인: unchanged frozen queryClass mapped to snake_case",
++        "source": {
++          "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/fixed-plan.json",
++          "sha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3",
++          "jsonPointer": "/pages/1/queryClass"
++        },
++        "value": "work-commercial"
++      },
+       "query_priority": 1,
+       "query_priority_semantics": {
+         "classification": "추정·판단: newly explicit editorial tier, not a recovered old numerical priority",
+@@ -490,7 +578,20 @@
+           "impressions",
+           "clicks",
+           "conversion"
+-        ]
++        ],
++        "ruleSource": {
++          "file": "/workspace/shared/gangnam-evidence/rules-at-pinned-main/COMBINED_RULES.md",
++          "sha256": "356666a7067218942a115ca8115823b6276d4526f3f8795cbbed8dc7546007bf",
++          "lines": [
++            237,
++            237
++          ]
++        },
++        "selectionSource": {
++          "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/fixed-plan.json",
++          "sha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3",
++          "jsonPointer": "/pages/1/buyerDecision"
++        }
+       },
+       "query_evidence": [
+         {
+@@ -548,7 +649,7 @@
+           "type": "accepted-copy-and-full-intent-review",
+           "file": "/workspace/shared/gangnam-plan-copy-20261013/independent-copy-review/editorial-verdict.json",
+           "sha256": "34dd6190687a47488466e0ec4df217f36788958b58cbf5f8215a9fabc4485f2b",
+-          "scope": "Existing independent full-copy/intent finding only; this is not the new A04 score."
++          "scope": "Existing independent exact revision3 full-copy/intent finding only; not a numeric A04 score and not automatically a revision4 acceptance."
+         },
+         {
+           "type": "official-facility-evidence",
+@@ -568,7 +669,12 @@
+               "scope": "예식장·층·홀 식별. 웨딩홀 자체 생화장식은 외부 화환 허용 근거가 아니다."
+             }
+           ],
+-          "caution": "Historical proposed facts retained; final copy Coex guide date is clarified in plan/fact-clarifications.json. No live receipt, stock, time or delivery guarantee established."
++          "caution": "Facility claims remain bounded to their original context. No live receipt, stock, final total or delivery guarantee established.",
++          "factsOrigin": {
++            "file": "/workspace/shared/gangnam-research-20261013/proposed-page-intents.json",
++            "sha256": "2258df384a2e0b9be3be21e45d89821f7b2f2ce9bc7b1af0f5f0c5de1f47b893",
++            "jsonPointer": "/groups/1/uniqueFacts"
++          }
+         },
+         {
+           "type": "seller-original-products-and-policies",
+@@ -614,7 +720,22 @@
+         }
+       },
+       "countsTowardFrozenArticleN": true,
+-      "frozenPageDenominator": 3
++      "frozenPageDenominator": 3,
++      "keyword_cluster_definition": {
++        "region": "강남구",
++        "service": "축하화환",
++        "essentialModifiers": [
++          "결혼식"
++        ],
++        "intentKey": "gangnam-wedding-purchase",
++        "pageRole": "regional wedding purchase article",
++        "expectedCustomerQuestion": "강남구 결혼식에 보낼 축하상품과 예산 문구를 어떻게 고르고 정확한 예식 회차를 정하는가?",
++        "source": {
++          "file": "/workspace/shared/gangnam-a04-addendum-20261013/assessment/targets.frozen.json",
++          "sha256": "4611ebfbf5515a22dc264e3b2b9a86a23f75caec615d0e1bcf6e5fba324b5f8e",
++          "jsonPointer": "/records/2/evaluationTarget"
++        }
++      }
+     },
+     {
+       "id": "event",
+@@ -673,7 +794,15 @@
+         "sha256": "6aa8e1f7acefaed276486ebefbb93bddb1e9b5eb1b15023ed9d7fda3ec3daeb3"
+       },
+       "query_class": "work-commercial",
+-      "query_class_origin": "Preserve frozen page queryClass",
++      "query_class_origin": {
++        "classification": "직접 확인: unchanged frozen queryClass mapped to snake_case",
++        "source": {
++          "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/fixed-plan.json",
++          "sha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3",
++          "jsonPointer": "/pages/2/queryClass"
++        },
++        "value": "work-commercial"
++      },
+       "query_priority": 1,
+       "query_priority_semantics": {
+         "classification": "추정·판단: newly explicit editorial tier, not a recovered old numerical priority",
+@@ -686,7 +815,20 @@
+           "impressions",
+           "clicks",
+           "conversion"
+-        ]
++        ],
++        "ruleSource": {
++          "file": "/workspace/shared/gangnam-evidence/rules-at-pinned-main/COMBINED_RULES.md",
++          "sha256": "356666a7067218942a115ca8115823b6276d4526f3f8795cbbed8dc7546007bf",
++          "lines": [
++            237,
++            237
++          ]
++        },
++        "selectionSource": {
++          "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/fixed-plan.json",
++          "sha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3",
++          "jsonPointer": "/pages/2/buyerDecision"
++        }
+       },
+       "query_evidence": [
+         {
+@@ -766,7 +908,7 @@
+           "type": "accepted-copy-and-full-intent-review",
+           "file": "/workspace/shared/gangnam-plan-copy-20261013/independent-copy-review/editorial-verdict.json",
+           "sha256": "34dd6190687a47488466e0ec4df217f36788958b58cbf5f8215a9fabc4485f2b",
+-          "scope": "Existing independent full-copy/intent finding only; this is not the new A04 score."
++          "scope": "Existing independent exact revision3 full-copy/intent finding only; not a numeric A04 score and not automatically a revision4 acceptance."
+         },
+         {
+           "type": "official-facility-evidence",
+@@ -778,7 +920,7 @@
+           ],
+           "facts": [
+             {
+-              "fact": "코엑스는 삼성동 영동대로513이며 코엑스마곡과 구분한다. 현재 공식 목록의2026.03 행사준비가이드는 행사 후 화환 등 폐기물 처리비용을 안내한다.",
++              "fact": "코엑스는 삼성동 영동대로513이며 코엑스마곡과 구분한다. 공식 회의실 행사준비가이드는 행사 후 화환 등 폐기물 처리비용을 안내한다.",
+               "sources": [
+                 "coex-navigation",
+                 "coex-business",
+@@ -797,7 +939,18 @@
+               "scope": "주최자/사용자 운영규정. 개별 화환배송기사가 특정서류를 반드시 제출해야 한다는 새규칙으로 바꾸지 않는다."
+             }
+           ],
+-          "caution": "Historical proposed facts retained; final copy Coex guide date is clarified in plan/fact-clarifications.json. No live receipt, stock, time or delivery guarantee established."
++          "caution": "Facility claims remain bounded to their original context. No live receipt, stock, final total or delivery guarantee established.",
++          "factsOrigin": {
++            "file": "/workspace/shared/gangnam-research-20261013/proposed-page-intents.json",
++            "sha256": "2258df384a2e0b9be3be21e45d89821f7b2f2ce9bc7b1af0f5f0c5de1f47b893",
++            "jsonPointer": "/groups/2/uniqueFacts"
++          },
++          "dateClarification": {
++            "file": "/workspace/shared/gangnam-plan-copy-20261013/plan/fact-clarifications.json",
++            "sha256": "4d597c7d7a5ee69a8a50183c5cc827cfce0a278216aa5e5770fa4153f0d75945",
++            "jsonPointer": "/coexGuideDate",
++            "explanation": "2026.03.18 is the official download-list posting date, not an asserted PDF edition. The earlier proposal wording is not adopted as a current guide-edition claim."
++          }
+         },
+         {
+           "type": "seller-original-products-and-policies",
+@@ -844,7 +997,22 @@
+         }
+       },
+       "countsTowardFrozenArticleN": true,
+-      "frozenPageDenominator": 3
++      "frozenPageDenominator": 3,
++      "keyword_cluster_definition": {
++        "region": "강남구",
++        "service": "화환",
++        "essentialModifiers": [
++          "행사"
++        ],
++        "intentKey": "gangnam-exhibition-corporate-purchase",
++        "pageRole": "regional exhibition corporate purchase article",
++        "expectedCustomerQuestion": "강남구 기업 전시 행사에 보낼 축하상품을 어떻게 고르고 수령 진열 반출 조건을 확인하는가?",
++        "source": {
++          "file": "/workspace/shared/gangnam-a04-addendum-20261013/assessment/targets.frozen.json",
++          "sha256": "4611ebfbf5515a22dc264e3b2b9a86a23f75caec615d0e1bcf6e5fba324b5f8e",
++          "jsonPointer": "/records/3/evaluationTarget"
++        }
++      }
+     }
+   ],
+   "pendingRoleApplicability": [
+@@ -854,5 +1022,10 @@
+   "originalFixedPlanSha256": "82bf53fb58d01c65d7fe87e730fcaf39ec60620603f671696074ba41510e68c3",
+   "originalArticleSha256": "6aa8e1f7acefaed276486ebefbb93bddb1e9b5eb1b15023ed9d7fda3ec3daeb3",
+   "originalCommonSha256": "da15580bb4f05ae39a60a51d6bdc3fe9fcc65d9e2d738dcd573ebc483aa70cdd",
+-  "rootRequirement": "Record actual evidence, numeric result only from frozen rubric, independent reproduction; noforced90/noinventedsearchperformance."
++  "rootRequirement": "Record actual evidence, numeric result only from frozen rubric, independent reproduction; noforced90/noinventedsearchperformance.",
++  "metadataRefinedAt": "2026-10-13T10:26:47.278793+00:00",
++  "refinesMapping": {
++    "file": "/workspace/shared/gangnam-a04-addendum-20261013/mapping/keyword-mapping.draft.json",
++    "sha256": "ba60da475ed97875da868fa0f3d656edd94fddedefdad485307fd6bd4d9ac637"
++  }
+ }
