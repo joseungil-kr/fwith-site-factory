@@ -1,0 +1,8 @@
+---
+import runtime from '../data/gangdong-runtime.json';
+import {normalizeFaq} from './faq.mjs';
+import CopyLinks from './CopyLinks.astro';
+const {items=[],title}=Astro.props;
+const questions=normalizeFaq(items);
+---
+{questions.length>0&&<section id="faq" class="faq" data-visible-faq aria-label={runtime.common.faqLabel}><h2 id="faq-title">{title}</h2>{questions.map(({question,answer},i)=><div data-faq-entry><h3 data-faq-question>{question}</h3><p data-faq-answer>{answer}</p><CopyLinks links={items[i].links}/></div>)}</section>}

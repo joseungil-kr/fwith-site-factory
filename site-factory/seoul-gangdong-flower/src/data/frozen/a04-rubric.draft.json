@@ -1,0 +1,168 @@
+{
+  "schema": "gangdong-a04-rubric-v1",
+  "createdUTC": "2026-10-14T01:49:14.656663+00:00",
+  "status": "AUTHOR_DRAFT_NOT_FROZEN",
+  "maximumScore": 100,
+  "minimumPerPrimaryRoute": 90,
+  "allScoresNow": null,
+  "aggregation": "Each of3primary routes must independently achieve>=90 AND all hard gates; averaging or dropping home forbidden. No discretionary partial points. Each criterion either earns its full weight or0 with exact span/rationale.",
+  "normalization": {
+    "text": "Decode HTML entities; Unicode NFC; replace every Unicode whitespace run with ASCII single space; trim ends; retain punctuation; count Unicode code points, not bytes. Do not remove brand or punctuation for length.",
+    "title": "Read actual rendered <title>. Allowed separators for front position: |, ｜, ·, —. First-half endpoint is floor(codepointCount/2); geography+service must both end at/before it AND before first separator if present.",
+    "h1": "Exactly one visible main H1; read rendered text. Header logo/nav not included.",
+    "firstAnswer": "The first actual visible customer-facing prose after the page H1 in main DOM reading order is the firstAnswer. The author-marked first-answer element must start there. No earlier unscored hero lead, sales paragraph, greeting or explanatory prose may intervene. Extract visible textContent in reading order, excluding heading/nav/breadcrumb/button/hidden/script/style text. Author field and rendered text must match normalized digest. Earlier prose makes the extraction gate FAIL, not an ignored prefix.",
+    "first120and180": "Store normalized full firstAnswer, first120 code points and first180 code points; direct core answer begins within first120 and all scored content is assessed in first180. Target full firstAnswer120–180characters; if longer or shorter, reviewer records reason rather than fabricating text for length. No length points; missing direct answer is F02=0 and hard-gate review."
+  },
+  "criteria": [
+    {
+      "id": "T01",
+      "weight": 10,
+      "field": "title",
+      "passCondition": "Contains allowed geography token",
+      "score": null,
+      "evidenceSpan": null
+    },
+    {
+      "id": "T02",
+      "weight": 10,
+      "field": "title",
+      "passCondition": "Contains allowed service combination; wedding requires explicit wedding/ceremony semantics",
+      "score": null,
+      "evidenceSpan": null
+    },
+    {
+      "id": "T03",
+      "weight": 10,
+      "field": "title",
+      "passCondition": "Contains allowed purchase decision token, not unrelated informational intent",
+      "score": null,
+      "evidenceSpan": null
+    },
+    {
+      "id": "T04",
+      "weight": 10,
+      "field": "title",
+      "passCondition": "Geography and service form a direct core combination without unnecessary promotional modifiers; both finish within the first half of the normalized title, and before first brand separator if present.",
+      "score": null,
+      "evidenceSpan": null
+    },
+    {
+      "id": "H01",
+      "weight": 10,
+      "field": "h1",
+      "passCondition": "Contains same allowed geography",
+      "score": null,
+      "evidenceSpan": null
+    },
+    {
+      "id": "H02",
+      "weight": 10,
+      "field": "h1",
+      "passCondition": "Contains same allowed service; no scope drift",
+      "score": null,
+      "evidenceSpan": null
+    },
+    {
+      "id": "H03",
+      "weight": 5,
+      "field": "h1",
+      "passCondition": "Continues same buyer decision as title and intentKey",
+      "score": null,
+      "evidenceSpan": null
+    },
+    {
+      "id": "F01",
+      "weight": 5,
+      "field": "first180",
+      "passCondition": "Contains explicit same geography and service; synonyms limited to frozen target map",
+      "score": null,
+      "evidenceSpan": null
+    },
+    {
+      "id": "F02",
+      "weight": 10,
+      "field": "first180",
+      "passCondition": "Directly answers target buyer decision; not only greeting/question/checklist",
+      "score": null,
+      "evidenceSpan": null
+    },
+    {
+      "id": "F03",
+      "weight": 5,
+      "field": "first180",
+      "passCondition": "States a supported actual-product selection benefit (photo/basic-price comparison or bounded order consultation), not invented quality/fulfillment",
+      "score": null,
+      "evidenceSpan": null
+    },
+    {
+      "id": "F04",
+      "weight": 5,
+      "field": "first180",
+      "passCondition": "If price appears it is identified as basic price and exact supported amount/range; if no price, uses another precise supported selection fact",
+      "score": null,
+      "evidenceSpan": null
+    },
+    {
+      "id": "F05",
+      "weight": 5,
+      "field": "first180",
+      "passCondition": "Does not imply guaranteed venue acceptance/arrival; any immediately necessary qualifier of a stated claim is present locally",
+      "score": null,
+      "evidenceSpan": null
+    },
+    {
+      "id": "F06",
+      "weight": 5,
+      "field": "first180",
+      "passCondition": "Provider voice offers evidenced selection/order help and a relevant next step without commanding/repeated warnings",
+      "score": null,
+      "evidenceSpan": null
+    }
+  ],
+  "hardGates": [
+    "primary family/occasion or geography mismatch",
+    "unsupported price/spec/quality/free/time/stock/installation/collection/refund/partner claim",
+    "facility existence or interior flowers asserted as external wreath permission",
+    "Gangdong institutional address/floor/hall mix-up; shared Kyunghee FAQ or internal florist/altar service asserted as current external-wreath permission",
+    "Title/H1/first answer maps to different intent or same-intent duplicate URL",
+    "no exact retained source binding for factual firstAnswer claim",
+    "customer-facing internal production/SEO/research failure language",
+    "home omitted, route denominator reduced or writer self-score treated as review",
+    "customer copy existed before reviewer target/rubric freeze",
+    "any visible unscored lead/hero/customer prose between H1 and selected firstAnswer",
+    "missing or mismatched core geography/service in any Title, H1 or first180 first-answer window, even if total score is90orhigher",
+    "missing direct answer to the frozen buyer decision within the first180window, with its core answer beginning within first120; greeting-only/question-only/checklist-only prose fails regardlessofscore",
+    "required Title front-half geography+service combination absent, misplaced afterfirstseparator, or separated by unnecessary promotional modifiers; score cannot override"
+  ],
+  "separateNonA04Gates": [
+    "cardSummary must not start primary keyword; common leading title substring >8 chars revise; cardSummary/firstAnswer similarity>=70% revise; regional-name-only sibling summaries revise",
+    "full body information completeness and facility/source specificity",
+    "friendly provider/empathy/smalltalk full-text review; not replaced by score",
+    "visible FAQ, actual CTA functionality, photos, banners and rendered technical QA",
+    "future full current-source/publication verification separate from this plan"
+  ],
+  "requiredLaterReviewerRecord": [
+    "reviewer identifier independent of writer",
+    "frozen target-map and rubric SHA256 before copy",
+    "actual copy/source files SHA256 and source commit when exists",
+    "rendered title/H1/firstAnswer exact text and extraction locators",
+    "per-criterion yes/no score, quoted original span and source-claim ID",
+    "each hard gate yes/no with reason",
+    "separate content/tone/technical decisions",
+    "changed text invalidates affected prior score"
+  ],
+  "freezeDecision": null,
+  "summaryChecks": {
+    "normalization": "Use the same Unicode NFC/entity decode/whitespace normalization as A04; retain punctuation. Compare Unicode code points.",
+    "startsPrimary": "cardSummary starts with normalized primary_keyword => FAIL.",
+    "commonLeadingTitle": "Compute literal common prefix length of normalized cardSummary and title; >8codepoints => REVISE.",
+    "firstAnswerSimilarity": "Compute LCS (longest common subsequence) length L on normalized complete cardSummary and complete firstAnswer. similarity=2L/(len(cardSummary)+len(firstAnswer)); if both empty, similarity=1. Ratio>=0.70 => REVISE. Record both normalized strings, lengths, L and ratio.",
+    "siblingTemplate": "Compare summaries after masking only the explicit region/facility entity strings listed in target map/source assignments. Identical remaining text => REVISE; near-template judgments must quote the repeated span and explain. No automatic rewriting or lexeme padding."
+  },
+  "reusedSchemaSource": {
+    "path": "songpa-purchase-plan-local-20261013/a04-rubric.draft.json",
+    "sha256": "0ead2ccba20647f863aa982f10706ba684b01cbf11884c11874f57f54abc4b6a",
+    "bytes": 8537
+  },
+  "scopeNote": "Planning rubric only, no score has been assigned. Title40/H125/first-answer35; each3primary independently >=90 plus hard gates. No mandatory character padding."
+}

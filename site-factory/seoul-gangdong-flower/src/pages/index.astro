@@ -1,0 +1,6 @@
+---
+import runtime from '../data/gangdong-runtime.json';
+import CopyPage from '../components/CopyPage.astro';
+const page=runtime.pages.find(p=>p.id==='home');
+---
+<CopyPage page={page}/>

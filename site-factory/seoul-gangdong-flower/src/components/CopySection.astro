@@ -1,0 +1,18 @@
+---
+import ProductCards from './ProductCards.astro';
+import CopyLinks from './CopyLinks.astro';
+import CopyCards from './CopyCards.astro';
+import runtime from '../data/gangdong-runtime.json';
+const {section:s}=Astro.props;
+---
+<section id={s.id} class="content-card copy-section" data-copy-section={s.id}>
+<h2>{s.heading}</h2>
+{s.paragraphs?.map((p:string,i:number)=><p id={s.id==='facilities'&&i<3?['bohun','kyunghee','sacred-heart'][i]:undefined}>{p}</p>)}
+{s.subsections?.map((sub:any)=><section class="copy-subsection"><h3>{sub.heading}</h3>{sub.paragraphs?.map((p:string)=><p>{p}</p>)}<CopyLinks links={sub.links}/></section>)}
+{s.productSKUs&&<ProductCards skus={s.productSKUs}/>}
+{s.productGroups?.map((group:any)=><section class="product-group" aria-label={runtime.common.productLabels[group.skus[0].startsWith('B')?'condolence':'congratulation']}><h3>{group.heading}</h3><ProductCards skus={group.skus} headingLevel={4}/></section>)}
+{s.listItems&&<ul class="decision-list">{s.listItems.map((p:string)=><li>{p}</li>)}</ul>}
+{s.closingParagraphs?.map((p:string)=><p>{p}</p>)}
+{s.cards&&<CopyCards cards={s.cards}/>}
+<CopyLinks links={s.links}/>
+</section>

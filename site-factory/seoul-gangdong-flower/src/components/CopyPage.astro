@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SharedFlowerBanner from './SharedFlowerBanner.astro';
+import CopySection from './CopySection.astro';
+import CopyLinks from './CopyLinks.astro';
+import CopyCards from './CopyCards.astro';
+import FaqSection from './FaqSection.astro';
+import runtime from '../data/gangdong-runtime.json';
+const {page:p}=Astro.props;const common=runtime.common;
+const bannerAfter=(id:string)=>p.bannerPlacement.find((b:any)=>b.after===id)?.banner;
+---
+<BaseLayout page={p}><article data-page-id={p.id} data-copy-sha={runtime.inputSHA256}>
+{p.id!=='home'&&<nav class="breadcrumb" aria-label={common.breadcrumbs.directory}><a href="/">{common.breadcrumbs.home}</a><span aria-hidden="true">›</span>{['condolence','wedding'].includes(p.id)?<><a href="/regions/">{common.breadcrumbs.directory}</a><span aria-hidden="true">›</span><span>{p.h1}</span></>:<span>{p.h1}</span>}</nav>}
+<section id="opening" class="category-hero"><h1>{p.h1}</h1><p data-first-answer>{p.firstAnswer}</p>{p.openingParagraphs?.map((text:string)=><p>{text}</p>)}<CopyLinks links={p.openingActions} buttons/></section>
+{(bannerAfter('opening')||bannerAfter('openingParagraphs'))&&<SharedFlowerBanner variant={bannerAfter('opening')||bannerAfter('openingParagraphs')}/>}
+{p.sections?.map((s:any)=><><CopySection section={s}/>{bannerAfter(s.id)&&<SharedFlowerBanner variant={bannerAfter(s.id)}/>}</>)}
+{p.cards&&<CopyCards cards={p.cards} headingLevel={2}/>}
+{p.closingParagraph&&<p class="directory-closing">{p.closingParagraph}</p>}
+{p.faqs&&<FaqSection items={p.faqs} title={p.faqHeading}/>}
+{bannerAfter('faq')&&<SharedFlowerBanner variant="consultation"/>}
+{p.sourcesHeading&&<section id="sources" class="source-card" data-source-references><h2>{p.sourcesHeading}</h2><p>{p.sourceNote}</p><CopyLinks links={p.officialSources}/></section>}
+{p.relatedLinks&&<section class="related"><h2>{common.supplementaryLinksLabel}</h2><CopyLinks links={p.relatedLinks}/></section>}
+<CopyLinks links={p.links} buttons/>
+{p.finalAction&&<div class="final-action"><a class="btn dark" href={p.finalAction.href}>{p.finalAction.label}</a></div>}
+</article></BaseLayout>

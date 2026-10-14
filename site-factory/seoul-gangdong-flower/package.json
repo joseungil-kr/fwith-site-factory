@@ -1,0 +1,20 @@
+{
+  "name": "flower-direct-static-gwanak",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "generate": "node scripts/generate_gangdong_runtime.mjs",
+    "typecheck": "astro check",
+    "build": "node scripts/assert_preview_boundary.mjs && node scripts/generate_gangdong_runtime.mjs --check && astro check && astro build && python3 scripts/qa_gangdong.py",
+    "test": "node --test tests/*.test.mjs && python3 scripts/test_gangdong.py",
+    "qa": "node scripts/generate_gangdong_runtime.mjs --check && python3 scripts/qa_gangdong.py"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.0.0",
+    "astro": "^7.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.0",
+    "typescript": "^5.9.0"
+  }
+}

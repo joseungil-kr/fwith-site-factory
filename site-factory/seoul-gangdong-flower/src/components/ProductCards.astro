@@ -1,0 +1,8 @@
+---
+import runtime from '../data/gangdong-runtime.json';
+const {skus=[],headingLevel=3}=Astro.props;
+const products=skus.map((sku:string)=>{const p=runtime.products.find(p=>p.sku===sku);if(!p)throw new Error('Unknown product');return p;});
+const Heading=headingLevel===4?'h4':'h3';const labels=runtime.common.productLabels;
+---
+<div class="product-grid">{products.map((p:any)=><article class="product-card" data-product-family={p.family} data-product-sku={p.sku}>
+<img src={p.img} alt={p.alt} loading="lazy" decoding="async" width={p.width} height={p.height}/><div><Heading>{p.name}</Heading><span class="price-label">{labels.basePrice}</span><strong>{p.priceText}</strong><p class="product-sku">{labels.sku} {p.sku}</p><p>{p.description}</p><a href={p.cta.href} data-order-product-sku={p.sku}>{p.cta.label}</a><p class="product-notice">{labels.samplePhoto}</p></div></article>)}</div>

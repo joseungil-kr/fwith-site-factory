@@ -1,0 +1,7 @@
+---
+import runtime from '../../data/gangdong-runtime.json';
+import CopyPage from '../../components/CopyPage.astro';
+export function getStaticPaths(){return runtime.pages.filter(p=>['condolence','wedding'].includes(p.id)).map(page=>({params:{slug:page.path.split('/')[2]},props:{page}}));}
+const {page}=Astro.props;
+---
+<CopyPage page={page}/>

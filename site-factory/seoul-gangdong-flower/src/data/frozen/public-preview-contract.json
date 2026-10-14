@@ -1,0 +1,81 @@
+{
+  "schema": "gangdong-public-preview-contract-v1",
+  "createdUTC": "2026-10-14T01:49:14.656663+00:00",
+  "state": "PLANNED_ONLY_NO_BUILD_OR_DEPLOY",
+  "verifiedProductionOrigin": null,
+  "previewOrigin": null,
+  "routes": [
+    {
+      "path": "/",
+      "role": "commercial-home",
+      "productionRobots": "index,follow",
+      "inProductionSitemap": true,
+      "expectedHTTP": 200,
+      "canonical": "verified production origin + exact path, only after origin verified"
+    },
+    {
+      "path": "/regions/gangdong-condolence-wreath/",
+      "role": "regional-service purchase guide",
+      "productionRobots": "index,follow",
+      "inProductionSitemap": true,
+      "expectedHTTP": 200,
+      "canonical": "verified production origin + exact path, only after origin verified"
+    },
+    {
+      "path": "/regions/gangdong-wedding-wreath/",
+      "role": "regional-service purchase guide",
+      "productionRobots": "index,follow",
+      "inProductionSitemap": true,
+      "expectedHTTP": 200,
+      "canonical": "verified production origin + exact path, only after origin verified"
+    },
+    {
+      "path": "/regions/",
+      "role": "support-navigation",
+      "productionRobots": "noindex,follow",
+      "inProductionSitemap": false,
+      "expectedHTTP": 200,
+      "canonical": "verified production origin + /regions/"
+    },
+    {
+      "path": "/404.html",
+      "role": "utility",
+      "productionRobots": "noindex,follow",
+      "inProductionSitemap": false,
+      "expectedHTTP": "actual invalid URL must return404; static404file response not substitute",
+      "canonical": "omit on404 to avoid declaring error page a primary canonical"
+    }
+  ],
+  "preview": {
+    "robotsMeta": "noindex,nofollow",
+    "robotsTxt": "User-agent: *; Disallow: /",
+    "sitemapSubmission": false,
+    "indexability": "preview cannot claim production indexability or override noindex",
+    "privacy": "robots is not access control; no personal/private data in preview",
+    "canonical": "Local isolated preview uses its explicitly configured local origin only; never guessed public hostname. A later separately authorized preview must preserve noindex and document canonical contract before run.",
+    "originBuildSwitch": "Future implementation must explicitly select preview/public mode. Public mode fails if verified origin missing; default cannot silently publish."
+  },
+  "allCustomerHTMLChecks": [
+    "1visibleH1; coherentH2/H3; source section once",
+    "unique actual title and meta; title/H1/firstanswer intent aligned",
+    "normalized firstanswer starts with first visible prose after H1",
+    "plannedanchor ids unique and links resolve",
+    "FAQ questions AND answers in output HTML and visible rendered reading flow, not data-only",
+    "product card8distinct sourceURLs matching correctSKU/family; no allcards-home regression",
+    "phone HTML href normalized tel:18440644 accessible by keyboard; image phone alone insufficient",
+    "allsample/moodimages alt/dimensions/role; three approved banner bytes and2:1nocrop",
+    "inboundlink each primary, noorphans, no placeholder futurelinks",
+    "rendered public sitemap exactly3primary absolute URLs; support/404 excluded",
+    "negative tests reject wrongsku/family, missingFAQ, brokenanchor, malformedcanonical, wrongbannerSHA and unsupported claims"
+  ],
+  "futurePublicEvidence": [
+    "remote exactsourcecommit and finaldraft digest",
+    "Actions/build artifact and checks for exactsource",
+    "fresh public GETs of3primary+directory+trueinvalidroute+robots+sitemap",
+    "image HTTP200 MIMEimage/webp exactSHA forapproved3; actualphoto images checked",
+    "core CTA destination read/check without submitting order or dialing",
+    "IndexNow/GSC receipts only after actual authorized submission; receipt not crawl/index/rank"
+  ],
+  "visualDeferral": "Actual desktop/narrow screen QA may be deferred under existing policy and marked unverified, never PASS. FAQ/CTA/canonical/content failures remain mandatory blockers; do not hide as visual-only.",
+  "noPublicationAuthorityAdded": true
+}
