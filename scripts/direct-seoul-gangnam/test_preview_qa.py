@@ -174,4 +174,16 @@ class CaptureFailureTests(unittest.TestCase):
     def test_success_keeps_pixel_review_pending(self):self.assertEqual(self.exercise()['pixelReview'],'pending')
 
 
+class AccessibilityRegressionTests(unittest.TestCase):
+    layout='<main id="main-content" tabindex="-1">'
+    css='@media(min-width:861px){html{scroll-padding-block-start:83px}}'
+    def test_exact_fix(self):q.accessibility_contract(self.layout,self.css)
+    def test_missing_tabindex_rejected(self):
+        with self.assertRaises(ValueError):q.accessibility_contract('<main id="main-content">',self.css)
+    def test_positive_tabindex_rejected(self):
+        with self.assertRaises(ValueError):q.accessibility_contract(self.layout.replace('-1','1'),self.css)
+    def test_mobile_only_clearance_rejected(self):
+        with self.assertRaises(ValueError):q.accessibility_contract(self.layout,self.css.replace('min-width:861px','max-width:860px'))
+
+
 if __name__=='__main__':unittest.main()
