@@ -5,9 +5,11 @@
   "scripts": {
     "generate": "node scripts/generate_gangdong_runtime.mjs",
     "typecheck": "astro check",
-    "build": "node scripts/assert_preview_boundary.mjs && node scripts/generate_gangdong_runtime.mjs --check && astro check && astro build && python3 scripts/qa_gangdong.py",
+    "build": "node scripts/verify_reuse_provenance.mjs && node scripts/gangdong_release.mjs && node scripts/generate_gangdong_runtime.mjs --check && astro check && astro build && node scripts/write_gangdong_release_files.mjs && python3 scripts/qa_gangdong.py",
     "test": "node --test tests/*.test.mjs && python3 scripts/test_gangdong.py",
-    "qa": "node scripts/generate_gangdong_runtime.mjs --check && python3 scripts/qa_gangdong.py"
+    "qa": "node scripts/generate_gangdong_runtime.mjs --check && python3 scripts/qa_gangdong.py",
+    "test:production": "npm test && python3 scripts/test_gangdong_release_output.py",
+    "verify:provenance": "node scripts/verify_reuse_provenance.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.0.0",
