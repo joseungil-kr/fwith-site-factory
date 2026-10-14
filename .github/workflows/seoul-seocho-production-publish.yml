@@ -1,15 +1,15 @@
-name: SeoulSeocho reviewed fixed production publish
+name: Seoul Seocho or Gangnam reviewed fixed production publish
 on:
   issues:
     types: [opened]
 permissions:
   contents: read
 concurrency:
-  group: seoul-seocho-direct-public-release
+  group: ${{ github.event.issue.title == '[GANGNAM-PRODUCTION-PUBLISH] 20261014' && 'seoul-gangnam-direct-public-release' || 'seoul-seocho-direct-public-release' }}
   cancel-in-progress: false
 jobs:
   publish:
-    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[SEOCHO-PRODUCTION-PUBLISH] 20261014' && github.actor == 'joseungil-kr' && github.event.issue.user.login == 'joseungil-kr'
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && (github.event.issue.title == '[SEOCHO-PRODUCTION-PUBLISH] 20261014' || github.event.issue.title == '[GANGNAM-PRODUCTION-PUBLISH] 20261014') && github.actor == 'joseungil-kr' && github.event.issue.user.login == 'joseungil-kr'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -18,6 +18,8 @@ jobs:
       issues: write
     env:
       PYTHONDONTWRITEBYTECODE: '1'
+      REGION: ${{ github.event.issue.title == '[GANGNAM-PRODUCTION-PUBLISH] 20261014' && 'seoul-gangnam' || 'seoul-seocho' }}
+      CONTROL_DIR: ${{ github.event.issue.title == '[GANGNAM-PRODUCTION-PUBLISH] 20261014' && 'control/scripts/direct-seoul-gangnam' || 'control/scripts/direct-seoul-seocho' }}
       REVISION: ${{ fromJSON(github.event.issue.body).source_revision }}
     steps:
       - uses: actions/checkout@v4
@@ -27,15 +29,24 @@ jobs:
           persist-credentials: false
       - name: Authorize exact owner, main, first attempt, binding and source
         id: source
-        run: python3 control/scripts/direct-seoul-seocho/production_build.py select --request-mode publish --report selected-source.json
+        run: |
+          if [ "$REGION" = seoul-gangnam ]; then
+            python3 "$CONTROL_DIR/publish.py" authorize --report selected-source.json
+          else
+            python3 "$CONTROL_DIR/production_build.py" select --request-mode publish --report selected-source.json
+          fi
       - name: Run fixed control safety tests without provider credentials
         run: |
-          python3 control/scripts/direct-seoul-seocho/test_production_build.py -v
-          python3 control/scripts/direct-seoul-seocho/test_production_output.py -v
-          python3 control/scripts/direct-seoul-seocho/test_publish.py -v
+          if [ "$REGION" = seoul-gangnam ]; then
+            python3 -m unittest discover -s "$CONTROL_DIR" -p 'test_*.py' -v
+          else
+            python3 "$CONTROL_DIR/test_production_build.py" -v
+            python3 "$CONTROL_DIR/test_production_output.py" -v
+            python3 "$CONTROL_DIR/test_publish.py" -v
+          fi
       - name: Require sealed all-route output and independent mobile and desktop review
         id: release
-        run: python3 control/scripts/direct-seoul-seocho/publish.py select --report selected-release.json
+        run: python3 "$CONTROL_DIR/publish.py" select --report selected-release.json
       - name: Verify actual successful build and exact retained artifact metadata
         uses: actions/github-script@v7
         env:
@@ -44,21 +55,39 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const desc = JSON.parse(fs.readFileSync('control/scripts/direct-seoul-seocho/production-release-review-binding.json'));
+            const desc = JSON.parse(fs.readFileSync(process.env.CONTROL_DIR + '/production-release-review-binding.json'));
             const review = JSON.parse(fs.readFileSync('control/' + desc.path));
             const {data: run} = await github.rest.actions.getWorkflowRun({...context.repo, run_id: Number(process.env.BUILD_RUN_ID)});
-            if (run.id !== Number(review.buildRunId) || run.run_attempt !== 1 || run.status !== 'completed' || run.conclusion !== 'success' || run.event !== 'issues' || run.head_branch !== 'main' || run.head_sha !== review.buildControlSha || run.path !== '.github/workflows/seoul-seocho-production-build-only.yml' || run.repository.full_name !== 'joseungil-kr/fwith-site-factory') throw new Error('Build identity mismatch');
+            if (run.id !== Number(review.buildRunId) || run.run_attempt !== 1 || run.status !== 'completed' || run.conclusion !== 'success' || run.event !== 'issues' || run.head_branch !== 'main' || run.head_sha !== review.buildControlSha || run.path !== '.github/workflows/' + process.env.REGION + '-production-build-only.yml' || run.repository.full_name !== 'joseungil-kr/fwith-site-factory') throw new Error('Build identity mismatch');
             const {data: artifact} = await github.rest.actions.getArtifact({...context.repo, artifact_id: Number(process.env.BUILD_ARTIFACT_ID)});
-            if (artifact.expired || artifact.name !== 'seoul-seocho-production-build-' + review.buildRunId || artifact.workflow_run.id !== run.id || artifact.workflow_run.head_sha !== run.head_sha) throw new Error('Artifact identity mismatch');
+            if (artifact.expired || artifact.name !== process.env.REGION + '-production-build-' + review.buildRunId + (process.env.REGION === 'seoul-gangnam' ? '-' + review.buildControlSha : '') || artifact.workflow_run.id !== run.id || artifact.workflow_run.head_sha !== run.head_sha) throw new Error('Artifact identity mismatch');
+            if (process.env.REGION === 'seoul-gangnam') {
+              if (artifact.digest !== review.artifactDigest || String(run.id) !== String(review.qaRunId)) throw new Error('Gangnam archive or combined browser run mismatch');
+              const publication = JSON.parse(fs.readFileSync(process.env.CONTROL_DIR + '/production-publication.json'));
+              const {data: journal} = await github.rest.issues.get({...context.repo, issue_number: publication.receiptIssue});
+              if (journal.number !== publication.receiptIssue || journal.pull_request || journal.state !== 'open' || journal.user.login !== 'joseungil-kr' || journal.title !== '[GANGNAM-INDEXNOW-RECEIPTS] 20261014' || journal.repository_url !== 'https://api.github.com/repos/joseungil-kr/fwith-site-factory') throw new Error('Gangnam receipt issue identity mismatch');
+            }
       - uses: actions/download-artifact@v4
         with:
           artifact-ids: ${{ steps.release.outputs.artifact_id }}
           run-id: ${{ steps.release.outputs.build_run_id }}
           github-token: ${{ github.token }}
           merge-multiple: true
-          path: release
+          path: ${{ env.REGION == 'seoul-gangnam' && 'gangnam-retained' || 'release' }}
+      - name: Stage only the retained Gangnam static release package
+        if: env.REGION == 'seoul-gangnam'
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import shutil
+          root = Path('gangnam-retained/release')
+          assert root.is_dir() and not root.is_symlink()
+          assert not any(p.is_symlink() for p in root.rglob('*'))
+          assert not Path('release').exists()
+          shutil.copytree(root, 'release', symlinks=True)
+          PY
       - name: Rehash exact reviewed static output and generate fixed route-less configuration
-        run: python3 control/scripts/direct-seoul-seocho/publish.py artifact --report artifact-check.json
+        run: python3 "$CONTROL_DIR/publish.py" artifact --report artifact-check.json
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -76,7 +105,7 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: python3 control/scripts/direct-seoul-seocho/publish.py preflight --report binding-before.json
+        run: python3 "$CONTROL_DIR/publish.py" preflight --report binding-before.json
       - name: Deploy fixed route-less static assets once
         id: deploy
         continue-on-error: true
@@ -86,9 +115,9 @@ jobs:
           WRANGLER_LOG_SANITIZE: 'true'
           WRANGLER_SEND_METRICS: 'false'
         run: |
-          wrangler_workdir="$(mktemp -d "$RUNNER_TEMP/seocho-wrangler.XXXXXX")"
+          wrangler_workdir="$(mktemp -d "$RUNNER_TEMP/regional-wrangler.XXXXXX")"
           cd "$wrangler_workdir"
-          if ! npx --yes wrangler@4.148.0 deploy --config "$GITHUB_WORKSPACE/release/wrangler.publish.json" > "$RUNNER_TEMP/seocho-production-upload.log" 2>&1; then
+          if ! npx --yes wrangler@4.148.0 deploy --config "$GITHUB_WORKSPACE/release/wrangler.publish.json" > "$RUNNER_TEMP/regional-production-upload.log" 2>&1; then
             echo 'Upload failed or uncertain. Inspect GET and HTTP evidence before recovery.'
             exit 1
           fi
@@ -99,7 +128,7 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: python3 control/scripts/direct-seoul-seocho/publish.py attach --report domain-attach.json
+        run: python3 "$CONTROL_DIR/publish.py" attach --report domain-attach.json
       - name: GET-only binding readback, including after an uncertain upload
         id: binding
         if: ${{ always() && steps.preflight.outcome == 'success' && (steps.deploy.outcome == 'success' || steps.deploy.outcome == 'failure') }}
@@ -107,24 +136,24 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: python3 control/scripts/direct-seoul-seocho/publish.py readback --report binding-after.json
-      - name: Verify every public output byte, exact SEO, thin noindex and real 404
+        run: python3 "$CONTROL_DIR/publish.py" readback --report binding-after.json
+      - name: Verify every public output byte, region-specific robots and real 404
         id: http
         if: ${{ always() && steps.binding.outcome == 'success' }}
         continue-on-error: true
-        run: python3 control/scripts/direct-seoul-seocho/publish.py http --report public-http.json
-      - name: Finalize exactly three URLs through existing idempotent journal 266
+        run: python3 "$CONTROL_DIR/publish.py" http --report public-http.json
+      - name: Finalize the exact regional sitemap through its idempotent journal
         id: indexnow
         if: ${{ always() && steps.deploy.outcome == 'success' && steps.attach.outcome == 'success' && steps.binding.outcome == 'success' && steps.http.outcome == 'success' }}
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 control/scripts/direct-seoul-seocho/publish.py indexnow --report indexnow-receipt.json
+        run: python3 "$CONTROL_DIR/publish.py" indexnow --report indexnow-receipt.json
       - name: Retain verification evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: seoul-seocho-production-result-${{ github.run_id }}
+          name: ${{ env.REGION }}-production-result-${{ github.run_id }}
           path: |
             selected-source.json
             selected-release.json
