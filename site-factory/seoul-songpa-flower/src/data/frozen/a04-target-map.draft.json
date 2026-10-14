@@ -1,0 +1,384 @@
+{
+  "schema": "songpa-a04-target-map-v1",
+  "createdUTC": "2026-10-13T21:40:30Z",
+  "status": "AUTHOR_DRAFT_NOT_FROZEN",
+  "primaryDenominator": 3,
+  "substantiveArticleDenominator": 2,
+  "includeHome": true,
+  "targets": [
+    {
+      "id": "home",
+      "proposedURL": "/",
+      "primary_keyword": "송파구 화환 주문",
+      "secondary_keywords": [
+        "송파구 화환 가격",
+        "송파구 꽃배달"
+      ],
+      "query_class": "core-commercial",
+      "keyword_cluster": "songpa-flower-purchase-navigation",
+      "query_priority": "P0 purchase navigation; editorial priority, no volume claim",
+      "query_evidence": {
+        "candidates": [
+          {
+            "id": "songpa-purchase-navigation",
+            "queryEvidence": {
+              "historical_query_ids": [
+                "Q01",
+                "Q21"
+              ],
+              "historical_record": "historical-query-locators.json",
+              "historical_limit": "Original30queryresponseslost; reconstructionlocators only. Notfreshqueryresults.",
+              "fresh_batch_records": [
+                "queries-1.tool.json"
+              ],
+              "batch_limit": "Each3-query batch has combined returnedURLs; no individualquery attribution/rank/volume."
+            },
+            "originalEvidence": [
+              {
+                "source_id": "js-songpa",
+                "url": "https://js-flower-seoul.kr/songpa-wreath/",
+                "path": "raw/js-songpa.txt",
+                "sha256": "4c2066e2c785e57877991ee52451db7b011fe997e5d98e940fe73c69a27349ab"
+              }
+            ]
+          }
+        ],
+        "limitations": "6 exact queries in2 mixed batches; no individual ranking/volume; prior30 responses lost; editorial prioritization only"
+      },
+      "intentKey": "songpa-wreath-select-and-order",
+      "firstAnswerRequirements": {
+        "directAnswer": "송파 화환을 근조/축하 실제 상품과 기본가격으로 선택하고 주문 상담/상품상세로 이동할 수 있음",
+        "essentialBoundary": "표시가가 기본가격이라는 점, 지역 전체의 동일 배송조건 보장 없음",
+        "notRequiredInFirst180": "전체 시설 목록·8개SKU 이름·모든 정책·보류 사유"
+      },
+      "requiredSourceClaims": [
+        "P01-catalog",
+        "P02-price",
+        "P03-material",
+        "P04-collection",
+        "P05-phone",
+        "P06-unresolved",
+        "P07-cancel",
+        "F03-asan-inpatient",
+        "F06-parkhabio",
+        "F07-lotte-ban",
+        "F08-olympic-ban"
+      ],
+      "allowedSemanticEquivalents": {
+        "geography": [
+          "송파구",
+          "송파"
+        ],
+        "service": [
+          "화환"
+        ],
+        "intent": [
+          "주문",
+          "상품 선택",
+          "가격 비교"
+        ],
+        "firstAnswerDecision": [
+          "근조와 축하 화환 선택",
+          "실제 상품 기본가격 비교",
+          "상품 상세 또는 전화 주문상담"
+        ]
+      },
+      "forbiddenPrimaryIntent": [
+        "꽃다발/난/화분의 판매 약속",
+        "시설별 전체본문"
+      ],
+      "copyFields": {
+        "title": null,
+        "h1": null,
+        "firstAnswer": null,
+        "title_alignment_score": null
+      },
+      "reviewState": "UNSCORED_PRECOPY_FREEZE_REQUIRED"
+    },
+    {
+      "id": "condolence",
+      "proposedURL": "/regions/songpa-condolence-wreath/",
+      "primary_keyword": "송파 근조화환",
+      "secondary_keywords": [
+        "송파구 근조 화환 배달",
+        "서울아산병원 장례식장 근조화환",
+        "서울아산병원 화환 주문"
+      ],
+      "query_class": "work-commercial",
+      "keyword_cluster": "songpa-condolence-order",
+      "query_priority": "P1 distinct buying purpose and verified Asan restriction; no volume claim",
+      "query_evidence": {
+        "candidates": [
+          {
+            "id": "songpa-condolence",
+            "queryEvidence": {
+              "historical_query_ids": [
+                "Q02",
+                "Q26"
+              ],
+              "historical_record": "historical-query-locators.json",
+              "historical_limit": "Original30queryresponseslost; reconstructionlocators only. Notfreshqueryresults.",
+              "fresh_batch_records": [
+                "queries-1.tool.json"
+              ],
+              "batch_limit": "Each3-query batch has combined returnedURLs; no individualquery attribution/rank/volume."
+            },
+            "originalEvidence": [
+              {
+                "source_id": "js-funeral",
+                "url": "https://js-flower-seoul.kr/songpa-condolence-wreath/",
+                "path": "raw/js-funeral.txt",
+                "sha256": "323880d7cf808a2d4670016e17dc1a1be23fbf87a9ef1d8a3ae54416973d9b4f"
+              },
+              {
+                "source_id": "oneul-asan",
+                "url": "https://oneulkkot.com/funeral-halls/seoul-asan-funeral-hall",
+                "path": "raw/oneul-asan.txt",
+                "sha256": "b4fc8d1fcb1372066c756a1eb469e356670b09a119536f1ab3ed99eaa4ae456a"
+              }
+            ]
+          },
+          {
+            "id": "asan-condolence",
+            "queryEvidence": {
+              "historical_query_ids": [
+                "Q03",
+                "Q30"
+              ],
+              "historical_record": "historical-query-locators.json",
+              "historical_limit": "Original30queryresponseslost; reconstructionlocators only. Notfreshqueryresults.",
+              "fresh_batch_records": [
+                "queries-1.tool.json"
+              ],
+              "batch_limit": "Each3-query batch has combined returnedURLs; no individualquery attribution/rank/volume."
+            },
+            "originalEvidence": [
+              {
+                "source_id": "oneul-asan",
+                "url": "https://oneulkkot.com/funeral-halls/seoul-asan-funeral-hall",
+                "path": "raw/oneul-asan.txt",
+                "sha256": "b4fc8d1fcb1372066c756a1eb469e356670b09a119536f1ab3ed99eaa4ae456a"
+              },
+              {
+                "source_id": "js-funeral",
+                "url": "https://js-flower-seoul.kr/songpa-condolence-wreath/",
+                "path": "raw/js-funeral.txt",
+                "sha256": "323880d7cf808a2d4670016e17dc1a1be23fbf87a9ef1d8a3ae54416973d9b4f"
+              }
+            ]
+          }
+        ],
+        "limitations": "6 exact queries in2 mixed batches; no individual ranking/volume; prior30 responses lost; editorial prioritization only"
+      },
+      "intentKey": "songpa-condolence-purchase",
+      "firstAnswerRequirements": {
+        "directAnswer": "송파 근조용 실제4상품을 기본가격 기준으로 비교하고 주문상담할 수 있음",
+        "essentialBoundary": "서울아산 장례식장으로 보내는 경우 진열 공간에 따라 리본만 전시될 수 있다는 조건을 첫 관련 시설 단락에서 즉시 제시",
+        "notRequiredInFirst180": "빈소호수 전체·정확한 주소·병동 병문안 안내·반복 체크리스트"
+      },
+      "requiredSourceClaims": [
+        "P01-catalog",
+        "P02-price",
+        "P03-material",
+        "P04-collection",
+        "P05-phone",
+        "P06-unresolved",
+        "P07-cancel",
+        "F01-asan-display",
+        "F02-asan-place",
+        "F03-asan-inpatient"
+      ],
+      "allowedSemanticEquivalents": {
+        "geography": [
+          "송파구",
+          "송파"
+        ],
+        "service": [
+          "근조화환",
+          "근조 화환"
+        ],
+        "intent": [
+          "주문",
+          "상품 선택",
+          "기본가격 비교"
+        ],
+        "firstAnswerDecision": [
+          "근조용 실제 상품 선택",
+          "예산/샘플 비교",
+          "빈소와 희망시간을 포함한 주문상담"
+        ]
+      },
+      "forbiddenPrimaryIntent": [
+        "병문안 꽃 배달",
+        "예식/개업 축하"
+      ],
+      "copyFields": {
+        "title": null,
+        "h1": null,
+        "firstAnswer": null,
+        "title_alignment_score": null
+      },
+      "reviewState": "UNSCORED_PRECOPY_FREEZE_REQUIRED"
+    },
+    {
+      "id": "wedding",
+      "proposedURL": "/regions/songpa-wedding-wreath/",
+      "primary_keyword": "송파구 결혼 축하화환",
+      "secondary_keywords": [
+        "송파 결혼식 화환",
+        "잠실 축하화환",
+        "더컨벤션 송파문정 화환",
+        "더컨벤션 잠실 화환",
+        "파크하비오 결혼 화환"
+      ],
+      "query_class": "work-commercial",
+      "keyword_cluster": "songpa-wedding-order",
+      "query_priority": "P1 distinct buying purpose and verified branch/event fields; no volume claim",
+      "query_evidence": {
+        "candidates": [
+          {
+            "id": "songpa-wedding",
+            "queryEvidence": {
+              "historical_query_ids": [
+                "Q23",
+                "Q06",
+                "Q07"
+              ],
+              "historical_record": "historical-query-locators.json",
+              "historical_limit": "Original30queryresponseslost; reconstructionlocators only. Notfreshqueryresults.",
+              "fresh_batch_records": [
+                "queries-2.tool.json"
+              ],
+              "batch_limit": "Each3-query batch has combined returnedURLs; no individualquery attribution/rank/volume."
+            },
+            "originalEvidence": [
+              {
+                "source_id": "js-wedding",
+                "url": "https://js-flower-seoul.kr/songpa-wedding-wreath/",
+                "path": "raw/js-wedding.txt",
+                "sha256": "846a0e6cc0e3a1be285aa7b4bf7ac354f4eef67024b289c664b19ffd6c04ca73"
+              },
+              {
+                "source_id": "thewreath-wedding",
+                "url": "https://xn--9m1bt77dma.com/area/songpa/wedding",
+                "path": "raw/thewreath-wedding.txt",
+                "sha256": "46ba927446f6307030e99400c1de1e26e467d51edd46c5d18b12aaac27731c86"
+              },
+              {
+                "source_id": "yedo-wedding",
+                "url": "https://xn--hq1bj06a.kr/wedding-wreath/seocho-songpa",
+                "path": "raw/yedo-wedding.txt",
+                "sha256": "c255b11ae118cf4363d11690423a5e998f69048644919ee899bd3537445c155d"
+              },
+              {
+                "source_id": "flora-munjeong",
+                "url": "https://theconventionmj.theflora.co.kr/portfolio_page/",
+                "path": "raw/flora-munjeong.txt",
+                "sha256": "8b10c1c17c65209f922af9667b639bc98490439d43eac575f39e86ff13c83a06"
+              }
+            ]
+          },
+          {
+            "id": "theconvention-branches",
+            "queryEvidence": {
+              "historical_query_ids": [
+                "Q09",
+                "Q27"
+              ],
+              "historical_record": "historical-query-locators.json",
+              "historical_limit": "Original30queryresponseslost; reconstructionlocators only. Notfreshqueryresults.",
+              "fresh_batch_records": [
+                "queries-2.tool.json"
+              ],
+              "batch_limit": "Each3-query batch has combined returnedURLs; no individualquery attribution/rank/volume."
+            },
+            "originalEvidence": [
+              {
+                "source_id": "flora-munjeong",
+                "url": "https://theconventionmj.theflora.co.kr/portfolio_page/",
+                "path": "raw/flora-munjeong.txt",
+                "sha256": "8b10c1c17c65209f922af9667b639bc98490439d43eac575f39e86ff13c83a06"
+              },
+              {
+                "source_id": "thewreath-wedding",
+                "url": "https://xn--9m1bt77dma.com/area/songpa/wedding",
+                "path": "raw/thewreath-wedding.txt",
+                "sha256": "46ba927446f6307030e99400c1de1e26e467d51edd46c5d18b12aaac27731c86"
+              }
+            ]
+          }
+        ],
+        "limitations": "6 exact queries in2 mixed batches; no individual ranking/volume; prior30 responses lost; editorial prioritization only"
+      },
+      "intentKey": "songpa-wedding-congratulation-purchase",
+      "firstAnswerRequirements": {
+        "directAnswer": "송파 결혼식에 전할 실제축하4상품을 기본가격으로 비교하고 지점·홀·예식시각에 맞춘 주문상담으로 연결",
+        "essentialBoundary": "시설 존재가 외부화환 허용/정시 도착 보장 아님. 반입이 정해지지 않은 시설은 관련 장소 단락에서 간단히 표시",
+        "notRequiredInFirst180": "시설3곳의 전체명/주소·11층 설명·모든 주문 필드"
+      },
+      "requiredSourceClaims": [
+        "P01-catalog",
+        "P02-price",
+        "P03-material",
+        "P04-collection",
+        "P05-phone",
+        "P06-unresolved",
+        "P07-cancel",
+        "F04-convention-jamsil",
+        "F05-convention-songpa",
+        "F06-parkhabio"
+      ],
+      "allowedSemanticEquivalents": {
+        "geography": [
+          "송파구",
+          "송파"
+        ],
+        "service": [
+          "결혼 축하화환",
+          "결혼식 화환",
+          "예식 축하화환"
+        ],
+        "intent": [
+          "주문",
+          "상품 선택",
+          "기본가격 비교"
+        ],
+        "firstAnswerDecision": [
+          "결혼 축하용 실제 상품 선택",
+          "기본가격/샘플 비교",
+          "지점·홀·예식시각을 포함한 주문상담"
+        ]
+      },
+      "forbiddenPrimaryIntent": [
+        "개업/이전 기업행사 중심",
+        "공연장 무조건 반입"
+      ],
+      "copyFields": {
+        "title": null,
+        "h1": null,
+        "firstAnswer": null,
+        "title_alignment_score": null
+      },
+      "reviewState": "UNSCORED_PRECOPY_FREEZE_REQUIRED"
+    }
+  ],
+  "directoryRoleReview": {
+    "URL": "/regions/",
+    "notPrimaryReason": "two-child noindex support listing; no competing keyword target",
+    "checks": [
+      "truthful list scope",
+      "both live frozen children only",
+      "no home/guide firstAnswer repetition",
+      "no unsupported keyword/service claims"
+    ]
+  },
+  "freezeRequiredBefore": [
+    "Title",
+    "H1",
+    "firstAnswer",
+    "metaDescription",
+    "cardSummary",
+    "body prose"
+  ],
+  "postFreezeChangeRule": "Any changed target, route, synonym set, criterion, weight or extraction rule requires a new reviewer freeze and rescoring all affected actual copy. Do not adjust rubric to fit a written title."
+}

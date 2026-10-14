@@ -1,0 +1,24 @@
+---
+import '../styles/global.css';
+import '../styles/songpa.css';
+import runtime from '../data/songpa-runtime.json';
+const {page}=Astro.props;
+const common=runtime.common,footer=common.footer;
+const canonical=new URL(page.path,runtime.origin).href;
+---
+<!doctype html><html lang="ko"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>{page.title}</title><meta name="description" content={page.metaDescription}/><meta name="robots" content="noindex,nofollow,noarchive"/>
+{page.id!=='404'&&<link rel="canonical" href={canonical}/>}<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+{page.id!=='404'&&<><meta property="og:type" content="website"/><meta property="og:title" content={page.title}/><meta property="og:description" content={page.metaDescription}/><meta property="og:url" content={canonical}/><meta property="og:locale" content="ko_KR"/>
+</>}
+<meta name="theme-color" content="#3a214f"/>
+</head><body>
+<a class="skip-link" href="#main-content">{common.skipLink}</a>
+<header class="site-header"><div class="header-inner"><a class="brand" href="/"><span class="brand-icon" aria-hidden="true">✿</span><span><b>{common.brand}</b><small>{common.siteLabel}</small></span></a>
+<nav class="desktop-navigation" aria-label={common.mobileMenu.label}>{common.navigation.map(link=><a href={link.href}>{link.label}</a>)}</nav>
+<details class="mobile-menu"><summary><span class="menu-open">{common.mobileMenu.open}</span><span class="menu-close">{common.mobileMenu.close}</span></summary><nav aria-label={common.mobileMenu.label}>{common.navigation.map(link=><a href={link.href}>{link.label}</a>)}</nav></details>
+</div></header>
+<main id="main-content"><slot/></main>
+<footer><div><strong>{footer.brandLine}</strong><a href={common.phone.href}>{footer.phoneLabel}</a><span>{common.phone.hours}</span><a href={footer.catalogSourceLink.href}>{footer.catalogSourceLink.label}</a><a href={footer.directoryLink.href}>{footer.directoryLink.label}</a><a href={footer.homeLink.href}>{footer.homeLink.label}</a></div></footer>
+<div class="mobile-bar"><a href={common.navigation[0].href}>{common.navigation[0].label}</a><a href={common.phone.href}>{common.phone.label}</a></div>
+</body></html>

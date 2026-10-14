@@ -1,0 +1,5 @@
+---
+const {cards=[],headingLevel=3}=Astro.props;
+const Heading=headingLevel===2?'h2':'h3';
+---
+<div class="card-grid journey-grid" data-purchase-cards>{cards.map((card:any)=><article class="page-card"><Heading>{card.heading}</Heading><p>{card.summary}</p><a href={card.href}>{card.ctaLabel}</a></article>)}</div>

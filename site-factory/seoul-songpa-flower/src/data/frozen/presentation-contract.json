@@ -1,0 +1,454 @@
+{
+  "schema": "songpa-copy-presentation-contract-v1",
+  "scope": "Copy data only. No application, branch, build, browser, approval, publication or IndexNow performed.",
+  "immutableInput": "songpa-purchase-plan-independent-20261013/reviewed-plan-manifest.json",
+  "counts": {
+    "N_substantive_purchase_articles": 2,
+    "N_indexable_primary_including_home": 3,
+    "support_directories": 1,
+    "total_content_HTML_routes": 4,
+    "utility_404_not_counted": 1,
+    "geographic_or_facility_alias_pages": 0
+  },
+  "files": {
+    "home": "home-copy.json",
+    "condolence": "condolence-copy.json",
+    "wedding": "wedding-copy.json",
+    "directory": "directory-copy.json",
+    "404": "404-copy.json",
+    "common": "common-copy.json",
+    "products": "product-copy.json"
+  },
+  "readingOrder": [
+    "breadcrumb",
+    "h1",
+    "firstAnswer",
+    "openingParagraphs",
+    "openingActions",
+    "sections in array order",
+    "visible faqs question and answer",
+    "sourceNote and officialSources under sourcesHeading",
+    "relatedLinks",
+    "finalAction"
+  ],
+  "firstAnswerRule": "No preceding customer prose after H1; firstAnswer is first prose, before openingParagraphs and banners. No alternative hero lead.",
+  "sectionReadingOrder": [
+    "heading",
+    "paragraphs",
+    "subsections in array order (heading then paragraphs then links)",
+    "productSKUs or productGroups resolved into product-copy cards",
+    "listItems",
+    "closingParagraphs",
+    "cards",
+    "links"
+  ],
+  "anchorMaps": {
+    "home": {
+      "opening": "opening",
+      "purchase-directory": "purchase-directory",
+      "catalog": "catalog",
+      "other-occasions": "other-occasions",
+      "special-purpose-boundary": "special-purpose-boundary",
+      "order-contact": "order-contact"
+    },
+    "condolence": {
+      "opening": "opening",
+      "products": "products",
+      "asan": "asan",
+      "cost-and-time": "cost-and-time",
+      "ribbon-and-order": "ribbon-and-order",
+      "change-and-aftercare": "change-and-aftercare",
+      "faq-and-sources": "faq-and-sources",
+      "order": "ribbon-and-order"
+    },
+    "wedding": {
+      "opening": "opening",
+      "products": "products",
+      "venues": "venues",
+      "timing-and-total": "timing-and-total",
+      "ribbon-and-order": "ribbon-and-order",
+      "change-and-removal": "change-and-removal",
+      "faq-and-sources": "faq-and-sources",
+      "order": "ribbon-and-order"
+    }
+  },
+  "aliasRule": "#order is a distinct alias at the start of the ribbon-and-order section; do not create duplicate DOM ids. faq-and-sources wraps the FAQ and source blocks. opening includes H1/firstAnswer/opening content. Home order-contact-and-faqs placement means after both order-contact and visible FAQ, before final real phone CTA.",
+  "indexability": {
+    "/": "index,follow",
+    "/regions/songpa-condolence-wreath/": "index,follow",
+    "/regions/songpa-wedding-wreath/": "index,follow",
+    "/regions/": "noindex,follow; omit from sitemap and primary navigation",
+    "/404.html": "noindex; real HTTP404 later"
+  },
+  "canonicalHostname": null,
+  "canonicalNote": "Do not invent public host; verify in later authorized implementation/publication.",
+  "productRule": "Preserve exact 8 SKU/name/basic-price/CTA/photo/SHA; 1:1 uncropped source photo. Home displays all; each article only matching4. Descriptions/alt may not be substituted with banner art.",
+  "bannerRule": "Use the three current1844-0644 assets frozen in banner-successor-binding.json;2:1 no crop; no rendered captions; role AI mood banner remains metadata; no banners on noindex directory/404. Actual accessible HTML tel CTA is mandatory.",
+  "sourceHeading": "출처 및 확인 정보",
+  "facilityAssignments": [
+    {
+      "id": "asan-funeral",
+      "name": "서울아산병원 장례식장",
+      "address": "서울특별시 송파구 올림픽로43길 88",
+      "addressScope": "병원 도로명 주소; 장례식장 별관 빈소를 따로 식별",
+      "parkAddress": null,
+      "legalDong": "풍납동",
+      "administrativeDong": null,
+      "status": "시설·진열 조건 확인 / 외부 주문 수령은 주문별 확인",
+      "sourceIds": [
+        "asan-wreath-faq",
+        "asan-room-list",
+        "asan-phone",
+        "asan-route-faq",
+        "songpa-hospital-directory"
+      ],
+      "assignment": "condolence",
+      "scopeLimits": [
+        "조화진열은 조문용 꽃 진열이며 인공소재 허용 근거가 아니다.",
+        "수량 무제한 반입·전량 전시·배송 성공으로 바꾸어 쓰지 않는다.",
+        "24시간 운영 FAQ는 판매자의24시간 주문·배송 근거가 아니다."
+      ],
+      "evidenceLocators": [
+        {
+          "sourceId": "asan-wreath-faq",
+          "textLines": [
+            3,
+            5
+          ]
+        },
+        {
+          "sourceId": "asan-route-faq",
+          "textLines": [
+            3,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "asan-inpatient-flower-exclusion",
+      "name": "서울아산병원 입원·병문안",
+      "address": "서울특별시 송파구 올림픽로43길 88",
+      "addressScope": null,
+      "parkAddress": null,
+      "legalDong": "풍납동",
+      "administrativeDong": null,
+      "status": "장례 공간과 별개 반입 제한",
+      "sourceIds": [
+        "asan-inpatient-guide",
+        "songpa-hospital-directory"
+      ],
+      "assignment": "condolence scope-boundary FAQ / home restriction support; not a sales page",
+      "scopeLimits": [
+        "장례식장 FAQ를 병동에 적용하지 않는다.",
+        "원내 화원 홍보의 병실 배달 문구를 현재 병동 반입 허용으로 사용하지 않는다.",
+        "안내문을 읽었으며 연결 영상은 시청하지 않았다."
+      ],
+      "evidenceLocators": [
+        {
+          "sourceId": "asan-inpatient-guide",
+          "textLines": [
+            72,
+            84
+          ]
+        }
+      ]
+    },
+    {
+      "id": "police-funeral",
+      "name": "경찰병원 장례식장",
+      "address": "송파구 송이로 123 (가락동)",
+      "addressScope": "송파구 공식 병원 목록의 병원 주소; 장례식장 출입구·층은 미확인",
+      "parkAddress": null,
+      "legalDong": "가락동",
+      "administrativeDong": null,
+      "status": "HOLD",
+      "sourceIds": [
+        "songpa-hospital-directory",
+        "police-official-root-https"
+      ],
+      "assignment": "HOLD",
+      "scopeLimits": [
+        "일반 병원 대표전화나 과거 비공식 안내를 현재 장례식장 연락처로 대체하지 않는다.",
+        "목록의 행정동 열 이름만 보고 행정동을 배정하지 않는다."
+      ],
+      "evidenceLocators": []
+    },
+    {
+      "id": "theconvention-jamsil",
+      "name": "더컨벤션 잠실",
+      "address": "서울 송파구 올림픽로 319 3F",
+      "addressScope": null,
+      "parkAddress": null,
+      "legalDong": "신천동",
+      "administrativeDong": null,
+      "status": "웨딩 시설 식별 확인 / 외부 화환 정책 미확인",
+      "sourceIds": [
+        "theconvention-jamsil"
+      ],
+      "assignment": "wedding",
+      "scopeLimits": [
+        "3F는 공식 주소 표기이며 다른 홀별 층을 추정하지 않는다.",
+        "웨딩 시설 존재가 외부 화환 허용을 뜻하지 않는다."
+      ],
+      "evidenceLocators": [
+        {
+          "sourceId": "theconvention-jamsil",
+          "textLines": [
+            64,
+            65
+          ]
+        },
+        {
+          "sourceId": "theconvention-jamsil",
+          "textLines": [
+            94,
+            95
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theconvention-songpa",
+      "name": "더컨벤션 송파문정",
+      "address": "서울 송파구 송파대로 155 NH송파농협",
+      "addressScope": null,
+      "parkAddress": null,
+      "legalDong": null,
+      "administrativeDong": null,
+      "status": "웨딩 시설 식별 확인 / 외부 화환 정책 미확인",
+      "sourceIds": [
+        "theconvention-songpa"
+      ],
+      "assignment": "wedding",
+      "scopeLimits": [
+        "소개문 문정동과 정확한 주소 필드는 구분하여 legalDong을 보수적으로null로 두었다.",
+        "11층 연회장 정보를 예식홀 층으로 옮기지 않는다.",
+        "자체 플라워 스타일링이 외부 꽃 반입 허용을 뜻하지 않는다."
+      ],
+      "evidenceLocators": [
+        {
+          "sourceId": "theconvention-songpa",
+          "textLines": [
+            51,
+            54
+          ]
+        },
+        {
+          "sourceId": "theconvention-songpa",
+          "textLines": [
+            109,
+            110
+          ]
+        }
+      ]
+    },
+    {
+      "id": "parkhabio",
+      "name": "호텔 파크하비오",
+      "address": "서울특별시 송파구 송파대로 111, 파크하비오 204동",
+      "addressScope": null,
+      "parkAddress": null,
+      "legalDong": "문정동",
+      "administrativeDong": null,
+      "status": "웨딩·기업행사 시설 식별 확인 / 실제 행사·반입 미확인",
+      "sourceIds": [
+        "parkhabio-contact",
+        "parkhabio-meeting",
+        "parkhabio-wedding"
+      ],
+      "assignment": "wedding; home corporate question",
+      "scopeLimits": [
+        "320평 소개와340평 상세 수치, 웨딩520명 이상과 라운드식 최대520명 수치는 문맥이 달라 구매 문구에서 생략한다.",
+        "좌석·면적을 화환 수용량으로 환산하지 않는다.",
+        "자체 생화 장식은 외부 꽃 반입 허용이 아니다.",
+        "시설 용도만으로 실제 개업·이전·입주사·행사 수요를 만들지 않는다."
+      ],
+      "evidenceLocators": [
+        {
+          "sourceId": "parkhabio-contact",
+          "textLines": [
+            37,
+            38
+          ]
+        },
+        {
+          "sourceId": "parkhabio-meeting",
+          "textLines": [
+            39,
+            64
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lotte-concert-hall",
+      "name": "롯데콘서트홀",
+      "address": "서울특별시 송파구 올림픽로 300",
+      "addressScope": "공식 대관 사이트 주소; 이번 새 관측에서 입장층·법정동은 별도 입증하지 않음",
+      "parkAddress": null,
+      "legalDong": null,
+      "administrativeDong": null,
+      "status": "화환·유사 설치물 반입 금지 근거 확인",
+      "sourceIds": [
+        "lotteconcert-revision-notice-data",
+        "lotteconcert-notice-list-data",
+        "lotteconcert-rules2026-rev3",
+        "lotteconcert-html-terms"
+      ],
+      "assignment": "home restriction support",
+      "scopeLimits": [
+        "꽃다발·기타 선물 허용은 미확인이다.",
+        "HTML에도 같은 화환 조항이 있으나 부칙은2023년1월1일, PDF24쪽은개정일 이후로 달라 전체 문서 동일성을 주장하지 않는다.",
+        "관측일이 특정 공연의 인계 성공이나 현재/향후 행사 수용을 보장하지 않는다."
+      ],
+      "evidenceLocators": [
+        {
+          "sourceId": "lotteconcert-rules2026-rev3",
+          "pdfPhysicalPage": 22,
+          "printedPage": 22,
+          "clause": "제21조 1항 ⑨",
+          "visualFile": "visual/lotteconcert-rules2026-rev3-p22.png"
+        },
+        {
+          "sourceId": "lotteconcert-revision-notice-data",
+          "field": "contentText"
+        }
+      ]
+    },
+    {
+      "id": "lotte-hotel-world",
+      "name": "롯데호텔 월드",
+      "address": "서울특별시 송파구 올림픽로 240",
+      "addressScope": null,
+      "parkAddress": null,
+      "legalDong": null,
+      "administrativeDong": null,
+      "status": "HOLD",
+      "sourceIds": [
+        "lotteworld-eshop-address",
+        "lotteworld-official-hotel"
+      ],
+      "assignment": "HOLD",
+      "scopeLimits": [
+        "라세느2층은 레스토랑 위치이며 예식장·화환 인계 층이 아니다.",
+        "과거 델리카한스 원문과는 다른 공식 페이지를 새로 읽었으므로 과거 정제 해시와 비교할 수 없다.",
+        "콘서트홀300과 호텔240을 혼동하지 않는다."
+      ],
+      "evidenceLocators": []
+    },
+    {
+      "id": "kspo-dome",
+      "name": "KSPO DOME",
+      "address": null,
+      "addressScope": null,
+      "parkAddress": "서울특별시 송파구 올림픽로 424",
+      "legalDong": null,
+      "administrativeDong": null,
+      "status": "시설 식별 및 올림픽 일반FAQ 정책 근거",
+      "sourceIds": [
+        "olympic-venue-guide",
+        "olympic-general-faq",
+        "olympic-map-page"
+      ],
+      "assignment": "home restriction support / not a sales page",
+      "scopeLimits": [],
+      "evidenceLocators": []
+    },
+    {
+      "id": "olympic-hall",
+      "name": "올림픽홀",
+      "address": null,
+      "addressScope": null,
+      "parkAddress": "서울특별시 송파구 올림픽로 424",
+      "legalDong": null,
+      "administrativeDong": null,
+      "status": "시설 식별 및 올림픽 일반FAQ 정책 근거",
+      "sourceIds": [
+        "olympic-hall",
+        "olympic-general-faq",
+        "olympic-map-page"
+      ],
+      "assignment": "home restriction support / not a sales page",
+      "scopeLimits": [
+        "이번 자료의 공원 공통주소를 정확한 홀 개별주소로 승격하지 않았다."
+      ],
+      "evidenceLocators": []
+    },
+    {
+      "id": "woori-art-hall",
+      "name": "우리금융아트홀",
+      "address": "서울특별시 송파구 올림픽로 424",
+      "addressScope": null,
+      "parkAddress": null,
+      "legalDong": "방이동",
+      "administrativeDong": null,
+      "status": "시설 식별 및 올림픽 일반FAQ 정책 근거",
+      "sourceIds": [
+        "olympic-woori",
+        "olympic-map-page",
+        "olympic-general-faq"
+      ],
+      "assignment": "home restriction support / not a sales page",
+      "scopeLimits": [],
+      "evidenceLocators": []
+    },
+    {
+      "id": "k-art-hall",
+      "name": "K-아트홀",
+      "address": null,
+      "addressScope": null,
+      "parkAddress": "서울특별시 송파구 올림픽로 424",
+      "legalDong": null,
+      "administrativeDong": null,
+      "status": "안내도에 시설 존재 확인 / 현재 대관·행사 미확인",
+      "sourceIds": [
+        "olympic-map-page",
+        "olympic-general-faq"
+      ],
+      "assignment": "home restriction support / not a sales page",
+      "scopeLimits": [
+        "개별 메뉴가 보이지 않는다고 폐관이나 대관 가능 여부를 단정하지 않는다."
+      ],
+      "evidenceLocators": []
+    },
+    {
+      "id": "apelgamo-jamsil",
+      "name": "아펠가모 잠실",
+      "status": "HOLD",
+      "address": null,
+      "legalDong": null,
+      "administrativeDong": null,
+      "sourceIds": [
+        "apelgamo-shell"
+      ],
+      "reason": "공식 경로에서 제목 아펠가모만 있는 동적 shell 확인. 잠실 지점 원문을 확인하지 못함.",
+      "nextEvidenceNeeded": "지점 공식 주소·공간·접수 안내",
+      "assignment": "HOLD"
+    },
+    {
+      "id": "seoul-wedding-tower",
+      "name": "서울웨딩타워",
+      "status": "HOLD / 공식 원본 미조사",
+      "address": null,
+      "legalDong": null,
+      "administrativeDong": null,
+      "sourceIds": [],
+      "reason": "이전 검색 발견 후보를 유지. 이번 공개 검색에서도 사용할 공식 원본을 식별하지 못해 원본 사실로 채택하지 않음.",
+      "nextEvidenceNeeded": "실제로 열린 공식 시설 원문; 검색·제3자 주소만으로 보충하지 않음",
+      "assignment": "HOLD"
+    }
+  ],
+  "pendingVerification": [
+    "Independent full-copy factual/tone review and A04 source-only scoring",
+    "Actual HTML extraction/heading structure, visibility, FAQ answers and CTA destinations",
+    "Banner/photo use, mobile readability and keyboard/touch behavior",
+    "Public URL, HTTP, self-canonical, robots, sitemap and404"
+  ],
+  "heldFacilitiesExcludedFromCustomerCopy": [
+    "police-funeral",
+    "lotte-hotel-world",
+    "apelgamo-jamsil",
+    "seoul-wedding-tower"
+  ]
+}
