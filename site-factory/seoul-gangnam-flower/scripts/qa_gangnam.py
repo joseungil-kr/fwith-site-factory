@@ -3,8 +3,8 @@ Offline only. Original-source recovery, fresh factual research, visual/public QA
 """
 from pathlib import Path
 from urllib.parse import urlsplit,unquote
-import hashlib,json,re,xml.etree.ElementTree as ET
-from qa_gwanak import Surface,norm,within,hidden,exactly,link_exact
+import hashlib,json,re,subprocess,xml.etree.ElementTree as ET
+from html_surface import Surface,norm,within,hidden,exactly,link_exact
 from qa_faq_products import Output,normalize_faq
 from banner_phone_amendment import load_amendment
 from minimal_source_evidence import effective_articles, AMENDMENT_SHA256 as SOURCE_LINK_AMENDMENT_SHA256
@@ -38,7 +38,9 @@ def verify_inputs(root):
  return approved,common,coverage,pages,checks
 
 def inspect(root=Path('.'),write_report=True):
- root=Path(root);data=root/'src/data';dist=root/'dist';approved,common,coverage,pages,input_checks=verify_inputs(root)
+ root=Path(root).resolve();data=root/'src/data';dist=root/'dist';approved,common,coverage,pages,input_checks=verify_inputs(root)
+ try:mode=json.loads(subprocess.check_output(['node',str(Path(__file__).resolve().parent/'gangnam_release.mjs'),'--json','--root',str(root)],cwd=root,text=True,stderr=subprocess.PIPE))
+ except subprocess.CalledProcessError as error:raise AssertionError('Gangnam release boundary rejected: '+error.stderr) from error
  products=read(data/'products.json');assert len(products)==8
  assets=read(data/'gangnam-approved/handoff/approved-assets.json')['assets']
  for asset in assets:
@@ -54,7 +56,7 @@ def inspect(root=Path('.'),write_report=True):
   html=path.read_text();doc=Surface(html);docs[route]=doc
   assert len(doc.where('h1'))==1,'Single H1 required '+route
   metas={n['attrs'].get('name',n['attrs'].get('property')):n['attrs'].get('content') for n in doc.where('meta')}
-  assert metas.get('robots')=='noindex,nofollow,noarchive','Local noindex boundary failed '+route
+  assert metas.get('robots')==('index,follow' if mode['indexable'] and route!='/404.html' else 'noindex,nofollow,noarchive'),'Exact release robots failed '+route
   meta_copy=(common['home'] if route=='/' else common['directory'] if route=='/regions/' else common['notFound'] if route=='/404.html' else next(a for a in approved if a['url']==route))
   expected_description=meta_copy.get('metaDescription',meta_copy.get('text'))
   assert metas.get('description')==expected_description,'Exact meta description drift '+route
@@ -71,7 +73,7 @@ def inspect(root=Path('.'),write_report=True):
   visible=' '.join(t for n,t in doc.text_events if not hidden(n))
   for token in ['관악구','서초구','A04','LOCAL_','/workspace/','REV4','REVIEW_PENDING','도구 보고','실제 판매상품 사진이 아닌 AI 생성 이미지']:
    assert token not in visible,'Internal/foreign/old caption text leaked '+token
-  canonical=[n['attrs']['href'] for n in doc.where('link','rel','canonical')];assert canonical==([] if route=='/404.html' else ['https://seoul-gangnam.local.invalid'+route]),'Canonical drift '+route
+  canonical=[n['attrs']['href'] for n in doc.where('link','rel','canonical')];assert canonical==([] if route=='/404.html' else [mode['origin']+route]),'Canonical drift '+route
   levels=[int(n['tag'][1]) for n in doc.nodes if re.fullmatch('h[1-6]',n['tag'])];assert all(b<=a+1 for a,b in zip(levels,levels[1:])),'Heading level jump'
   for link in doc.where('a'):
    href=link['attrs'].get('href','');u=urlsplit(href)
@@ -126,12 +128,15 @@ def inspect(root=Path('.'),write_report=True):
  for legal in d.where('section','data-legal-unit'):
   links=within(legal,'div','data-general-purchase-links');assert len(links)==1 and [n['attrs']['href'] for n in within(links[0],'a')]==[a['url'] for a in approved]
  d=docs['/404.html'];assert d.text('title')==[common['notFound']['title']] and d.text('h1')==[common['notFound']['h1']]
- assert 'Disallow: /' in (dist/'robots.txt').read_text() and 'Sitemap:' not in (dist/'robots.txt').read_text()
- assert 'X-Robots-Tag: noindex, nofollow, noarchive' in (dist/'_headers').read_text()
- for sitemap in dist.glob('sitemap*.xml'):
-  e=ET.fromstring(sitemap.read_text());assert not [x for x in e.iter() if x.tag.split('}')[-1] in ['url','sitemap']],'Local sitemap must be empty'
- result={'status':'PASS_LOCAL_STATIC_ONLY','sealedReferenceChecks':input_checks,'routes':report,'articleN':3,'htmlN':6,'observedBodyCodePoints':{a['id']:a['uniqueBodyCharsIncludingFirstAnswer'] for a in approved},'lengthInterpretation':'2500-3000 aim only; exact approved copy retained, no minimum or quality gate','visibleFaqCount':sum(len(a['faq']) for a in approved),'bannerCount':15,'originalSourceRecovered':False,'source1474':'unverified_not_recovered','sourceLinkAmendmentSha256':SOURCE_LINK_AMENDMENT_SHA256,'customerBodySentencesChanged':0,'customerSourceUrlsChanged':1,'research331':'not_recovered','buildEvidence':'separate executable build log required','browserVisualQa':'unverified','publicHttp':'not_run','ownership':'unverified','publication':'not_authorized','indexNow':'not_run'}
+ if mode['indexable']:
+  from gangnam_release_output import inspect_dist
+  inspect_dist(dist,mode)
+ else:
+  assert (dist/'robots.txt').read_text()=='User-agent: *\nDisallow: /\n'
+  assert 'X-Robots-Tag: noindex, nofollow, noarchive' in (dist/'_headers').read_text()
+  assert not list(dist.glob('sitemap*.xml')),'Preview sitemap forbidden'
+ result={'status':'PASS_PRODUCTION_STATIC_ONLY' if mode['indexable'] else 'PASS_LOCAL_STATIC_ONLY','sealedReferenceChecks':input_checks,'routes':report,'articleN':3,'htmlN':6,'observedBodyCodePoints':{a['id']:a['uniqueBodyCharsIncludingFirstAnswer'] for a in approved},'lengthInterpretation':'2500-3000 aim only; exact approved copy retained, no minimum or quality gate','visibleFaqCount':sum(len(a['faq']) for a in approved),'bannerCount':15,'originalSourceRecovered':False,'source1474':'unverified_not_recovered','sourceLinkAmendmentSha256':SOURCE_LINK_AMENDMENT_SHA256,'customerBodySentencesChanged':0,'customerSourceUrlsChanged':1,'research331':'not_recovered','buildEvidence':'separate executable build log required','browserVisualQa':'unverified','publicHttp':'not_run','ownership':'unverified','publication':'not_performed','indexNow':'not_run'}
  if write_report:(root/'gangnam-static-qa.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
- print('Gangnam LOCAL static QA: exact copy, 6 routes, 15 banners, sealed inputs, FAQ/CTA/geography/SEO passed')
+ print('Gangnam '+mode['mode']+' static QA: exact copy, 6 routes, 15 banners, sealed inputs, FAQ/CTA/geography/SEO passed')
  return result
 if __name__=='__main__':inspect()
