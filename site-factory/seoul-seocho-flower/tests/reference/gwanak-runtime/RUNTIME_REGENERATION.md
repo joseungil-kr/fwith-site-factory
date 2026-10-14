@@ -1,0 +1,11 @@
+# Exact approved input regeneration
+
+The immutable packet is src/data/gwanak-approved/, including its42-file seal manifest. PLAN SHA256 e68fa31eee4b3d375fb5a73cf8652828ef01e8c34ab6648bc0d6c44e8786a522; article revision4 SHA256 e51f8afdf54145750ce88e3f9c35924ec11671a047090f9d457e23eeacdd5969; common revision3 SHA256 a433bc613087ad61ce4f2a044e6a06e827b5fc726db141c3b9a31ea19c9ee96b. Status text inside approved originals is preserved as history; acceptance.json carries the current approval.
+
+src/data/gwanak-copy.json is an exact structured projection of approved articles and common copy. scripts/generate_gwanak_runtime.mjs maps approved fields and regional metadata to pages, architecture, page-map and publish-manifest; it generates no prose. Each page selects its exact slug, not array position. Explicit products section receives exactly its4approved SKUs after the true introductory section; contentMarkdown is retained as original evidence and is not additionally rendered. Facility section anchors are H2; product/source/FAQ children are H3.
+
+The Gwanak adapter independently pins its frozen transform, original source hashes, all3/21/21geography values, facility/occasion boundaries and eight-product catalog. Unknown opt-in, null geometry outside the faculty exception, source/address/SKU changes, invented facilities or altered N fail closed. Source snapshot IDs are SHA256-sorted-UTF8-JSON bindings. Source commit revision remains local until a later assigned source stage.
+
+Approved8product photos and3shared banners are exact bytes in public/images. Product names/descriptions/prices/alt/CTA/photo captions are exact common-copy values. Banner wording/alt/AI-disclosure and1774x887ratio are unchanged. Current source and output verification results must be re-bound after any edit, including an authorized publication-host change. No approval or generated metadata grants publication/security permission.
+
+The compiled customer-surface extraction and full HTML checks live in scripts/qa_gwanak.py. Its accompanying mutation suite verifies missing/duplicated text, unsafe rendering, all product/source/address/route/banners, the empty sitemap and unindexed boundary. Legacy source-contract tests run on immutable fixtures; replacement semantic Gwanak assertions run on current output. Browser validation remains a distinct, uncompleted stage.

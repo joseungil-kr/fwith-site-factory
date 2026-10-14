@@ -1,0 +1,21 @@
+---
+import {publishedDestinationsByUnit,publishedUnassignedDistrictDestinations} from '../lib/directory-links.mjs';
+import {groupsFor,coverage as sourceCoverage} from '../lib/regional-runtime.mjs';
+import approvedCopy from '../data/gwanak-copy.json';
+const {pages,showBanners=false}=Astro.props;
+const common=approvedCopy.common,copy=common.directory,coverage=sourceCoverage as any;
+const districts=groupsFor(pages) as any[];
+if(pages.length!==2||showBanners)throw new Error('Gwanak frozen N2 directory cannot promote cards or banners');
+const destinations=publishedDestinationsByUnit(districts) as Map<string,{href:string;name:string;candidateId:string}[]>;
+const unassigned=publishedUnassignedDistrictDestinations(districts) as Map<string,{href:string;name:string;candidateId:string}[]>;
+---
+<section class="category-hero"><span class="eyebrow">{common.brand}</span><h1>{copy.h1}</h1><p>{copy.intro}</p></section>
+<section data-directory-purchase><div class="section-title"><h2>{copy.purchaseHeading}</h2></div><div class="card-grid big">{common.articleCards.map(card=><a class="page-card" href={card.href}><strong>{card.title}</strong><span>{card.summary}</span><em>{card.ctaLabel}</em></a>)}</div></section>
+{districts.map(district=><section id={district.key} data-region-district={district.key}>
+<section class="content-card" data-directory-geography><h2>{copy.legalHeading}</h2><p>{copy.relationNote}</p>
+{coverage.units.map((unit:any)=><section class="legal-region-row" data-legal-unit={unit.unitKey}><h3>{unit.name}</h3><dl><dt>{copy.legalColumn}</dt><dd>{unit.name}</dd><dt>{copy.administrativeColumn}</dt><dd><ul>{coverage.administrativeCrosswalk.filter((admin:any)=>admin.relations.some((relation:any)=>relation.unitKey===unit.unitKey)).map((admin:any)=><li data-administrative-unit={admin.aliasKey} data-administrative-code={admin.administrativeCode}>{admin.name}</li>)}</ul></dd></dl></section>)}
+<div class="actions" data-general-purchase-links><a href={common.articleCards[0].href}>{copy.generalLinkLabels.funeral}</a><a href={common.articleCards[1].href}>{copy.generalLinkLabels.celebration}</a></div></section>
+<section class="content-card" data-directory-facilities><h2>{copy.facilityHeading}</h2><p>{copy.facilityScopeNote}</p>
+{coverage.units.filter((unit:any)=>(destinations.get(unit.unitKey)||[]).length).map((unit:any)=><section data-facility-legal-unit={unit.unitKey}><h3>{unit.name}</h3><ul>{(destinations.get(unit.unitKey)||[]).map(entry=><li><a href={entry.href} data-candidate-id={entry.candidateId}>{entry.name}</a></li>)}</ul></section>)}
+<section data-district-unassigned><h3>{copy.unassignedFacilityHeading}</h3><ul>{(unassigned.get(district.key)||[]).map(entry=><li><a href={entry.href} data-candidate-id={entry.candidateId}>{entry.name}</a></li>)}</ul></section>
+</section></section>)}

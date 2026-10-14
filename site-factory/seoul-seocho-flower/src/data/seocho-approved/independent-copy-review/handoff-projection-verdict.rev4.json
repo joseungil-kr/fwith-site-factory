@@ -1,0 +1,200 @@
+{
+  "checkedAtUTC": "2026-10-13T07:47:10.864976+00:00",
+  "revision": 4,
+  "verdict": "PASS_LOCAL_HANDOFF_EXACT_PROJECTION",
+  "classification": "직접 확인: full parsed JSON equality, all handoff bytes and independently recomputed bindings.",
+  "files": {
+    "handoff/runtime-input.json": "4c745c0e299f22c7f978ff14d364b881fafdb53bdfbb36521f50aaa1fea79383",
+    "handoff/directory-input.json": "6ad12465e97664aa1ddb79a701bfb0344d8fdae3905fb7b2cbc09fe1b0c73904",
+    "handoff/input-bindings.json": "a67cbb85772831d4f141661e1a735db4b9d271f67bc437cd82da27cc3fbe125d",
+    "handoff/IMPLEMENTATION-HANDOFF.txt": "d7e000f434ee8f2adeb157ff3045cff9775d58d84eb8bc40c8b2778215468682"
+  },
+  "tests": [
+    {
+      "check": "submitted exact hash handoff/runtime-input.json",
+      "pass": true
+    },
+    {
+      "check": "submitted exact hash handoff/directory-input.json",
+      "pass": true
+    },
+    {
+      "check": "submitted exact hash handoff/input-bindings.json",
+      "pass": true
+    },
+    {
+      "check": "submitted exact hash handoff/IMPLEMENTATION-HANDOFF.txt",
+      "pass": true
+    },
+    {
+      "check": "runtime articles full exact object equality to approved rev4",
+      "pass": true
+    },
+    {
+      "check": "runtime common full exact object equality to approved rev2",
+      "pass": true
+    },
+    {
+      "check": "runtime sourceImplementation false",
+      "pass": true
+    },
+    {
+      "check": "directory legalUnits exact equality",
+      "pass": true
+    },
+    {
+      "check": "directory administrativeUnits exact equality",
+      "pass": true
+    },
+    {
+      "check": "directory relations exact equality",
+      "pass": true
+    },
+    {
+      "check": "directory cards exact common articleCards",
+      "pass": true
+    },
+    {
+      "check": "only 3 physical anchors",
+      "pass": true
+    },
+    {
+      "check": "only 1 nonfacility occasion",
+      "pass": true
+    },
+    {
+      "check": "existing anchor seoul-st-mary-funeral",
+      "pass": true
+    },
+    {
+      "check": "exact anchor path seoul-st-mary-funeral",
+      "pass": true
+    },
+    {
+      "check": "no administrative inference seoul-st-mary-funeral",
+      "pass": true
+    },
+    {
+      "check": "existing anchor eltower",
+      "pass": true
+    },
+    {
+      "check": "exact anchor path eltower",
+      "pass": true
+    },
+    {
+      "check": "no administrative inference eltower",
+      "pass": true
+    },
+    {
+      "check": "existing anchor at-center-exhibition",
+      "pass": true
+    },
+    {
+      "check": "exact anchor path at-center-exhibition",
+      "pass": true
+    },
+    {
+      "check": "no administrative inference at-center-exhibition",
+      "pass": true
+    },
+    {
+      "check": "existing anchor opening-relocation",
+      "pass": true
+    },
+    {
+      "check": "exact anchor path opening-relocation",
+      "pass": true
+    },
+    {
+      "check": "no administrative inference opening-relocation",
+      "pass": true
+    },
+    {
+      "check": "legalDong binding seoul-st-mary-funeral",
+      "pass": true
+    },
+    {
+      "check": "admission remains unverified seoul-st-mary-funeral",
+      "pass": true
+    },
+    {
+      "check": "legalDong binding eltower",
+      "pass": true
+    },
+    {
+      "check": "admission remains unverified eltower",
+      "pass": true
+    },
+    {
+      "check": "legalDong binding at-center-exhibition",
+      "pass": true
+    },
+    {
+      "check": "admission remains unverified at-center-exhibition",
+      "pass": true
+    },
+    {
+      "check": "route denominator exact",
+      "pass": true
+    },
+    {
+      "check": "no final remote source SHA",
+      "pass": true
+    },
+    {
+      "check": "binding plan/fixed-plan.json",
+      "pass": true
+    },
+    {
+      "check": "binding copy/article-copy.rev4.json",
+      "pass": true
+    },
+    {
+      "check": "binding copy/common-visible-copy.rev2.json",
+      "pass": true
+    },
+    {
+      "check": "binding handoff/approved-assets.json",
+      "pass": true
+    },
+    {
+      "check": "binding handoff/runtime-input.json",
+      "pass": true
+    },
+    {
+      "check": "binding handoff/directory-input.json",
+      "pass": true
+    },
+    {
+      "check": "runtime binding exact article final hash",
+      "pass": true
+    },
+    {
+      "check": "runtime binding exact common hash",
+      "pass": true
+    },
+    {
+      "check": "directory unchanged against prior reviewed artifact",
+      "pass": true
+    },
+    {
+      "check": "three old instructions absent in projected bodies",
+      "pass": true
+    }
+  ],
+  "checkCount": 43,
+  "failureCount": 0,
+  "copyVerdict": {
+    "path": "independent-copy-review/verdict.rev4.json",
+    "sha256": "1c453653be429299e2b7285b4499f6dfa65031f51ce03ddf46d516dc6dacda7d"
+  },
+  "manualHandoffReading": "Compared complete handoff text with preserved rev3. The only prose change clarifies aT wedding order guidance withheld, no customer checking task or promised seller confirmation service, and no revival of the 2017 planned rule as a current blanket prohibition. Other boundaries and implementation verification duties remain intact.",
+  "statusInterpretation": "Carrier runtime status remains conservatively pending. This verdict verifies exact projection only; final acceptance sealing is separate and cannot authorize source/publication.",
+  "notVerified": [
+    "Source implementation, final source commit and remote refs",
+    "Actual HTML, FAQ visibility, keyboard navigation and browser/viewport QA",
+    "Build/deployment/public HTTP/indexing",
+    "Actual facility admission, stock, order or fulfillment"
+  ]
+}

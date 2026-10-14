@@ -1,0 +1,694 @@
+{
+  "schemaVersion": 1,
+  "reviewId": "seocho-current-facts-independent-20261013",
+  "status": "REVISE_ONE_UNSUPPORTED_FLOOR_CLAIM",
+  "scope": "Independent factual review of frozen Seocho customer copy against current reacquired official source bytes; not code, build, deployment, permission or provider approval.",
+  "reviewedAtUTC": "2026-10-13T18:17:38Z",
+  "freezePolicy": "Do not overwrite this review for a corrected candidate. Produce a separate successor review keyed to its new candidate SHA256. No source, main, QA, or provider writes were performed by this reviewer.",
+  "frozenInputs": [
+    {
+      "path": "seocho-banner-successor-local-20261013/source/src/data/seocho-copy.json",
+      "sha256": "969ba9a80160dd808f9652a0e2ca66e920228f7532dbe44cdd726ec1a3139cf4"
+    },
+    {
+      "path": "seocho-banner-successor-local-20261013/source/src/data/seocho-ui-copy.json",
+      "sha256": "a7699c9a3a28665a606ee07951f083dd6571bd84405ba95dcba171dc9c1f6e92"
+    },
+    {
+      "path": "seocho-banner-successor-local-20261013/source/src/data/seocho-approved/plan/evidence-registry.json",
+      "sha256": "710a20c75e9f4541e85d64160bc33703f64cdc2fd64d55b0191bc455b0bd7ce2"
+    },
+    {
+      "path": "seocho-current-facts-recheck-20261013/fetch-results.json",
+      "sha256": "f946bdc9f26645858f7ce096bb40b3dcb90796e69f348051b7fa6078bc535513"
+    },
+    {
+      "path": "seocho-current-facts-recheck-20261013/current-product-photo-readback.json",
+      "sha256": "0bafaa3a6051a8453280a24f1839ac0f1130c3ebd3450f77fd1ac30eb8348179"
+    },
+    {
+      "path": "seocho-current-facts-recheck-20261013/current-floor-image-readback.json",
+      "sha256": "b345f42e16251021abf29467dba312f9efd7c2b8acc7fba7957dcb296a43ca87"
+    }
+  ],
+  "candidateSha256": "969ba9a80160dd808f9652a0e2ca66e920228f7532dbe44cdd726ec1a3139cf4",
+  "candidateUiSha256": "a7699c9a3a28665a606ee07951f083dd6571bd84405ba95dcba171dc9c1f6e92",
+  "passLimitedToCheckedFacts": false,
+  "requiredClaimCorrections": 1,
+  "requiredTextOccurrences": 2,
+  "claims": [
+    {
+      "id": "eight_sku_names_prices_shipping_contact",
+      "classification": "DIRECTLY_VERIFIED",
+      "verdict": "PASS_CHECKED_PUBLISHED_FACTS_ONLY",
+      "evidenceKeys": [
+        "B201",
+        "B203",
+        "B205",
+        "B060",
+        "C200",
+        "C203",
+        "C204",
+        "C205"
+      ],
+      "finding": "Eight official published product names and prices match. Every product HTML states shipping paid at order, possible additional shipping by destination, and seller phone 1844-0644. No inventory, fulfillment, or final order total verified."
+    },
+    {
+      "id": "eight_product_photos",
+      "classification": "DIRECTLY_VERIFIED",
+      "verdict": "PASS_CHECKED_PHOTOS_ONLY",
+      "finding": "All eight image files were visually inspected and independently hashed. Each matches frozen customer copy and preserved registry. Color descriptions are supported; no dimensions, quantity or fulfilled order guarantee inferred."
+    },
+    {
+      "id": "materials_collection_change_refund",
+      "classification": "DIRECTLY_VERIFIED",
+      "verdict": "PASS_SELLER_PUBLISHED_TEXT_ONLY",
+      "evidenceKeys": [
+        "order-policy",
+        "change-policy"
+      ],
+      "finding": "Actual policy JPEGs were viewed. Mixed fresh/artificial flowers, regional backing-paper variation, no separate collection, seasonal/regional substitutions, refund limitations, defective/damaged/wrong item refund, full refund if undeliverable/no stock, post-dispatch cancellation excluding delivery fee, and approximately one-week card cancellation processing match candidate. No legal entitlement for any specific order concluded."
+    },
+    {
+      "id": "funeral_address_phone",
+      "classification": "DIRECTLY_VERIFIED",
+      "verdict": "PASS_CHECKED_FACTS_ONLY",
+      "evidenceKeys": [
+        "funeral-route",
+        "hospital-phone"
+      ],
+      "finding": "Banpo-daero 222, Banpo-dong 505, and 02-2258-5940 match official HTML."
+    },
+    {
+      "id": "funeral_floor_tabs",
+      "classification": "DIRECTLY_VERIFIED",
+      "verdict": "PASS_FLOOR_TABS_ONLY",
+      "evidenceKeys": [
+        "funeral-facilities"
+      ],
+      "finding": "Official facilities HTML lines 592-619 shows facility categories, ground floor 1/2/3 tabs and linked map images. It does not directly associate funeral rooms with those floors."
+    },
+    {
+      "id": "funeral_rooms_on_all_three_floors",
+      "classification": "UNVERIFIED",
+      "verdict": "REVISE_UNSUPPORTED_CLAIM",
+      "evidenceKeys": [
+        "funeral-facilities"
+      ],
+      "finding": "The current sentence asserts funeral rooms on floors 1 through 3. Map images are WAF HTML and facilities text does not contain a room-floor table. Evidence supports floor information, not actual funeral-room distribution.",
+      "currentText": "공식 시설 안내에는 지상 1층부터 3층까지의 빈소가 나뉘어 있습니다.",
+      "recommendedMinimumText": "공식 시설 안내에서는 지상 1층부터 3층까지의 층별 정보를 안내합니다.",
+      "affectedJsonPointers": [
+        "/articles/0/sections/2/paragraphs/0",
+        "/articles/0/contentMarkdown"
+      ],
+      "countInCopyJson": 2
+    },
+    {
+      "id": "eltower_address_halls_preagreement",
+      "classification": "DIRECTLY_VERIFIED",
+      "verdict": "PASS_CHECKED_FACTS_ONLY",
+      "evidenceKeys": [
+        "eltower-route",
+        "eltower-wedding",
+        "eltower-faq"
+      ],
+      "finding": "Gangnam-daero 213/Yangjae-dong 24; Grand 7F, Grace 6F, Orce 5F, Elhouse 8F match. FAQ offers pre-agreed storage with event details. This does not establish unconditional wreath admission."
+    },
+    {
+      "id": "at_exhibition_location_floors",
+      "classification": "DIRECTLY_VERIFIED",
+      "verdict": "PASS_CHECKED_FACTS_ONLY",
+      "evidenceKeys": [
+        "at-hall1",
+        "at-hall2",
+        "at-operating-guideline-2026"
+      ],
+      "finding": "Gangnam-daero 27/Yangjae-dong 232, Exhibition Hall 1 on 1F and Hall 2 on 3F match."
+    },
+    {
+      "id": "at_historical_wedding_vs_current_exhibition",
+      "classification": "DIRECTLY_VERIFIED_AND_INFERENCE_LIMITED",
+      "verdict": "PASS_HISTORICAL_SCOPE_AND_CANDIDATE_CAUTION",
+      "evidenceKeys": [
+        "at-2017-wreath",
+        "at-convenience",
+        "at-operating-guideline-2026"
+      ],
+      "finding": "The 2017-07-20 official article describes planned exclusion of artificial-flower three-tier wreaths in the wedding hall. It is not current all-venue prohibition or current admission proof. Current convenience page identifies wedding usage; operating guideline regulates exhibition goods admission but does not establish current mixed-wreath permission. Candidate appropriately distinguishes exhibition organizer conditions and unverified wedding-hall admission."
+    },
+    {
+      "id": "sac_wreath_restriction_and_periods",
+      "classification": "DIRECTLY_VERIFIED",
+      "verdict": "PASS_CHECKED_RESTRICTION_AND_2026_SOURCE_NOTE",
+      "evidenceKeys": [
+        "sac-museum-rules"
+      ],
+      "finding": "Both current 2026 and 2027 rule tabs prohibit wreaths in exhibition areas, defined to include rooms and rentable indoor ancillary spaces such as lobbies. 2026 text covers usage 2026-04-01 through 2027-03-31. 2027 text covers 2027-01-01 through 2028-03-31 and preserves 2026-rule contracts for use through 2027-03-31; use portions from 2027-04-01 follow 2027 rules. Candidate sourceNote accurately names the 2026 source period; do not characterize that as the sole rule for every 2027 contract."
+    }
+  ],
+  "reacquisitionSummary": {
+    "totalCurrentSourceFiles": 23,
+    "htmlPdfCount": 21,
+    "htmlPdfExactHistoricalFingerprintMatches": 9,
+    "htmlPdfHistoricalFingerprintMismatches": 12,
+    "policyImagesExactHistoricalFingerprintMatches": 2,
+    "productPhotosMatchingSavedCandidateAndRegistry": 8,
+    "historicalOriginalFilesLocatedAtRegistryPaths": 0,
+    "localFileHashesValidated": 23,
+    "retrievalSuccessNotIndependentlyAssertedFromHttp200": true,
+    "wholeHistoricalSnapshotRecoveryClaimPermitted": false
+  },
+  "sources": [
+    {
+      "key": "funeral-route",
+      "url": "http://kfh.catholicfuneral.co.kr/phgrp/cnts/CntsFrntView.do?cntsId=CFV_1040000&menuNo=1040000",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/funeral-route.html",
+      "currentSha256": "d40ca7a34a6559604139badf4b1a806de717951391e44c3944e9d4c1f7fee378",
+      "historicalRegistrySha256": "d40ca7a34a6559604139badf4b1a806de717951391e44c3944e9d4c1f7fee378",
+      "historicalFingerprintMatchesCurrentBytes": true,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 33544,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:35:56.727506+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "funeral-facilities",
+      "url": "http://kfh.catholicfuneral.co.kr/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2030000&menuNo=2030000",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/funeral-facilities.html",
+      "currentSha256": "541a1e4e801de407558be6a35bd109ca857e245f36aa82424648c41da68fd7b5",
+      "historicalRegistrySha256": "541a1e4e801de407558be6a35bd109ca857e245f36aa82424648c41da68fd7b5",
+      "historicalFingerprintMatchesCurrentBytes": true,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 29759,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:35:56.728210+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "hospital-phone",
+      "url": "https://www.cmcseoul.or.kr/hospitalguide.phone_num.sp",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/hospital-phone.html",
+      "currentSha256": "c482094ed7afc3f91e2792a8d76e55e35c3db84ff59715842fc36211d46cd494",
+      "historicalRegistrySha256": "b5c6acd61feff56722c19df22b790b6594114c48b96e303b23270957af38444d",
+      "historicalFingerprintMatchesCurrentBytes": false,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 156700,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:35:56.729104+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "eltower-route",
+      "url": "https://www.eltower.com/brand/route/",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/eltower-route.html",
+      "currentSha256": "4c29eec4ee7386d23c2fc09060fad3fa2082312ddd782f62826a277964fc9180",
+      "historicalRegistrySha256": "4c29eec4ee7386d23c2fc09060fad3fa2082312ddd782f62826a277964fc9180",
+      "historicalFingerprintMatchesCurrentBytes": true,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 19084,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:35:56.729691+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "eltower-wedding",
+      "url": "https://www.eltower.com/wedding/info/",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/eltower-wedding.html",
+      "currentSha256": "d99b3bc1c0630bd3ae88c9fdb245343ab1d355fb7bbf2f248f2669120ed4d269",
+      "historicalRegistrySha256": "d99b3bc1c0630bd3ae88c9fdb245343ab1d355fb7bbf2f248f2669120ed4d269",
+      "historicalFingerprintMatchesCurrentBytes": true,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 37006,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:35:56.730343+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "eltower-faq",
+      "url": "https://www.eltower.com/concierge/faq/",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/eltower-faq.html",
+      "currentSha256": "b2cd3066ff3fd4fb67c2ea4a270127c38a4219cb637250661bea4f156dbc8750",
+      "historicalRegistrySha256": "b2cd3066ff3fd4fb67c2ea4a270127c38a4219cb637250661bea4f156dbc8750",
+      "historicalFingerprintMatchesCurrentBytes": true,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 51333,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:03.036884+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "at-hall1",
+      "url": "https://www.at.or.kr/contents/acko321111/view.action",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/at-hall1.html",
+      "currentSha256": "4cf3448724d4f12eca72818b1373d365dec74271a7128a5f1d4216237e48fc1c",
+      "historicalRegistrySha256": "4cf3448724d4f12eca72818b1373d365dec74271a7128a5f1d4216237e48fc1c",
+      "historicalFingerprintMatchesCurrentBytes": true,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 50782,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:03.037258+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "at-hall2",
+      "url": "https://www.at.or.kr/contents/acko321121/view.action",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/at-hall2.html",
+      "currentSha256": "514a3bc7fa4036c8b311d02047aa0b315c4172b46ff06a24588ab112b8a63a34",
+      "historicalRegistrySha256": "514a3bc7fa4036c8b311d02047aa0b315c4172b46ff06a24588ab112b8a63a34",
+      "historicalFingerprintMatchesCurrentBytes": true,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 50450,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:05.236577+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "at-operating-guideline-2026",
+      "url": "https://www.at.or.kr/file/center/conv04_260107.pdf",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/at-operating-guideline-2026.pdf",
+      "currentSha256": "803bccd25efe22968e241fbebc0c6b37a013725fc428cb655bbb2b2d22f658f8",
+      "historicalRegistrySha256": "803bccd25efe22968e241fbebc0c6b37a013725fc428cb655bbb2b2d22f658f8",
+      "historicalFingerprintMatchesCurrentBytes": true,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 615330,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:07.714213+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "at-convenience",
+      "url": "https://www.at.or.kr/contents/acko333100/view.action",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/at-convenience.html",
+      "currentSha256": "d6cdc9bd72c38438935be441f0a6b06e247c675ba8e03ff2b203adda1385e533",
+      "historicalRegistrySha256": "d6cdc9bd72c38438935be441f0a6b06e247c675ba8e03ff2b203adda1385e533",
+      "historicalFingerprintMatchesCurrentBytes": true,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 57005,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:07.721412+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "at-2017-wreath",
+      "url": "https://www.at.or.kr/article/apko341b10/view.action?articleId=29423",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/at-2017-wreath.html",
+      "currentSha256": "ab3bc26ac6c938e5d004f473166e85e699fd052b676033ceb971950bfea7d93e",
+      "historicalRegistrySha256": "f68288553c57af7bf3ec60e774e41a20d4b7c537374420177b28434429c13fff",
+      "historicalFingerprintMatchesCurrentBytes": false,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 103046,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:08.320753+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "sac-museum-rules",
+      "url": "https://www.sac.or.kr/site/main/content/museumRentalAgreement",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/sac-museum-rules.html",
+      "currentSha256": "f7be712ea261ea1b37704449c20593543eeb8335a7c64b1645912ebacb856905",
+      "historicalRegistrySha256": "f705bcaa31cded968da3dadd6f325d13ea9b326bf548cd1c12e9f4846eed5199",
+      "historicalFingerprintMatchesCurrentBytes": false,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 593541,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:12.290261+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "B201",
+      "url": "https://fwith.co.kr/shop/item.php?it_id=B201",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/B201.html",
+      "currentSha256": "d5e2ffec12030ef8bff561f173747bb5673b4c13ea7c6e64a0477afe61435a53",
+      "historicalRegistrySha256": "28beebe534884e071090bd5044b593670c8fc8d9b8f02ebb5fe33cce7a9d800d",
+      "historicalFingerprintMatchesCurrentBytes": false,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 96424,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:12.473181+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "B203",
+      "url": "https://fwith.co.kr/shop/item.php?it_id=B203",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/B203.html",
+      "currentSha256": "bf30871684574aa2c416250c33ff2ba0a83f5d9064afd09df871326a510b97b6",
+      "historicalRegistrySha256": "464393f66e923e326f3a077f161cd0bd28a79ec10fa5c6f6e8af9f041d8c76b6",
+      "historicalFingerprintMatchesCurrentBytes": false,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 96053,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:12.567148+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "B205",
+      "url": "https://fwith.co.kr/shop/item.php?it_id=B205",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/B205.html",
+      "currentSha256": "6d3e39e2eb3403dd1c55f070cc99b6c3d8455369c6cd596740c3bde6c0e3b706",
+      "historicalRegistrySha256": "0c3cc1347ea25f42fb145136d1fb771223443e72f0b0bc668cde356bf8b722d4",
+      "historicalFingerprintMatchesCurrentBytes": false,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 95523,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:13.029893+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "B060",
+      "url": "https://fwith.co.kr/shop/item.php?it_id=B060",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/B060.html",
+      "currentSha256": "b9bfbf4710bc3d611df0a2fa9ec7dde1379ac6f66ab35b5f8bf71aae2b7fd84a",
+      "historicalRegistrySha256": "d6c618f12c773e71a79ad6598850a6da65cf643aaa8c2f326a1f66b00fc9054e",
+      "historicalFingerprintMatchesCurrentBytes": false,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 93686,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:14.759020+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "C200",
+      "url": "https://fwith.co.kr/shop/item.php?it_id=C200",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/C200.html",
+      "currentSha256": "66fcdc6b423d97a37b47b2f643f6a807c726826b0b70cef1fe2d954045636113",
+      "historicalRegistrySha256": "6282016f1df8a7e2482d90ba08be221c706e9ade4927a453884e7b20c68ab9be",
+      "historicalFingerprintMatchesCurrentBytes": false,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 96970,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:17.775241+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "C203",
+      "url": "https://fwith.co.kr/shop/item.php?it_id=C203",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/C203.html",
+      "currentSha256": "c5524d0593903e93e4c60ee90a9a04de768427f0d0296bc1ef1b5978c9ce847e",
+      "historicalRegistrySha256": "16f604a8d1d405e9d04fc76a2eb3dc3dc1ee13cf9242b1d3144e14f138f8c02d",
+      "historicalFingerprintMatchesCurrentBytes": false,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 93667,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:17.813452+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "C204",
+      "url": "https://fwith.co.kr/shop/item.php?it_id=C204",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/C204.html",
+      "currentSha256": "bed53813e9b9d70816dec81d80da33ba4c4e7537a658290abfc3812e0691a09f",
+      "historicalRegistrySha256": "d73d7e9f0146e0dffa55fd8f370e9d0837704b969b6a227b7e8552c1e2566c81",
+      "historicalFingerprintMatchesCurrentBytes": false,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 94848,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:17.863662+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "C205",
+      "url": "https://fwith.co.kr/shop/item.php?it_id=C205",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/C205.html",
+      "currentSha256": "ffc33cbb03108ee46b1a274d89b495896fd86db40dc97368c4e2e06c802b552c",
+      "historicalRegistrySha256": "7b4c5bf08264aed7803e264bfe67c95928d5056f89ecf7bbd78fb9ff45b3a1d4",
+      "historicalFingerprintMatchesCurrentBytes": false,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 93169,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:17.902626+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "order-policy",
+      "url": "https://fwith.co.kr/shop/img/order-top2.jpg",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/order-policy.jpg",
+      "currentSha256": "24c11e1cc413d3f64ad05145fdc0fb4171c8f3e618d4351609777f8e2ff43bc3",
+      "historicalRegistrySha256": "24c11e1cc413d3f64ad05145fdc0fb4171c8f3e618d4351609777f8e2ff43bc3",
+      "historicalFingerprintMatchesCurrentBytes": true,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 122654,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:23.853815+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "change-policy",
+      "url": "https://fwith.co.kr/data/common/flower379/de_change_content.jpg",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/change-policy.jpg",
+      "currentSha256": "02701dd33c2a09258a882873df005dbe616842c2add159a08d618b68a934944c",
+      "historicalRegistrySha256": "02701dd33c2a09258a882873df005dbe616842c2add159a08d618b68a934944c",
+      "historicalFingerprintMatchesCurrentBytes": true,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 146560,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:24.855015+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    },
+    {
+      "key": "eltower-home",
+      "url": "https://www.eltower.com/index.jsp",
+      "currentLocalPath": "seocho-current-facts-recheck-20261013/raw/eltower-home.html",
+      "currentSha256": "98b85317058017cc246b81964aa95b8e05002d9b6c6b54a3fa8665a9e10966f7",
+      "historicalRegistrySha256": "e3c209faa49f7cc7dd3b10df7a84a370ca84217818c10431f7bb3799ecf7c7d5",
+      "historicalFingerprintMatchesCurrentBytes": false,
+      "historicalOriginalPathCurrentlyExists": false,
+      "bytes": 35639,
+      "localBytesAndSha256IndependentlyVerified": true,
+      "retrievalClassification": "TOOL_REPORTED_REACQUISITION",
+      "reportedHttpStatus": 200,
+      "reportedFetchedAtUTC": "2026-10-13T17:36:24.906984+00:00",
+      "wholeHistoricalSnapshotRecovered": false
+    }
+  ],
+  "productPhotosAndPrices": [
+    {
+      "sku": "B201",
+      "name": "근조 3단 화환",
+      "priceKRW": 59000,
+      "productUrl": "https://fwith.co.kr/shop/item.php?it_id=B201",
+      "photoUrl": "https://fwith.co.kr/data/item/flower379/B201/thumb-1_500x500.jpg",
+      "localPath": "seocho-current-facts-recheck-20261013/raw/B201-current-photo.jpg",
+      "photoSha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+      "photoMatchesFrozenCandidateAndRegistry": true,
+      "actualPhotoPixelsViewed": true,
+      "candidateColorDescriptionSupported": true,
+      "publishedPriceNameShippingContactMatched": true,
+      "inventoryOrFulfillmentVerified": false
+    },
+    {
+      "sku": "B203",
+      "name": "근조 고급 3단 화환",
+      "priceKRW": 79000,
+      "productUrl": "https://fwith.co.kr/shop/item.php?it_id=B203",
+      "photoUrl": "https://fwith.co.kr/data/item/flower379/B203/thumb-1_500x500.jpg",
+      "localPath": "seocho-current-facts-recheck-20261013/raw/B203-current-photo.jpg",
+      "photoSha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+      "photoMatchesFrozenCandidateAndRegistry": true,
+      "actualPhotoPixelsViewed": true,
+      "candidateColorDescriptionSupported": true,
+      "publishedPriceNameShippingContactMatched": true,
+      "inventoryOrFulfillmentVerified": false
+    },
+    {
+      "sku": "B205",
+      "name": "근조 특대 3단 화환",
+      "priceKRW": 109000,
+      "productUrl": "https://fwith.co.kr/shop/item.php?it_id=B205",
+      "photoUrl": "https://fwith.co.kr/data/item/flower379/B205/thumb-1_500x500.jpg",
+      "localPath": "seocho-current-facts-recheck-20261013/raw/B205-current-photo.jpg",
+      "photoSha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+      "photoMatchesFrozenCandidateAndRegistry": true,
+      "actualPhotoPixelsViewed": true,
+      "candidateColorDescriptionSupported": true,
+      "publishedPriceNameShippingContactMatched": true,
+      "inventoryOrFulfillmentVerified": false
+    },
+    {
+      "sku": "B060",
+      "name": "근조 특특대 3단 화환",
+      "priceKRW": 149000,
+      "productUrl": "https://fwith.co.kr/shop/item.php?it_id=B060",
+      "photoUrl": "https://fwith.co.kr/data/item/flower379/B060/thumb-1_500x500.jpg",
+      "localPath": "seocho-current-facts-recheck-20261013/raw/B060-current-photo.jpg",
+      "photoSha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+      "photoMatchesFrozenCandidateAndRegistry": true,
+      "actualPhotoPixelsViewed": true,
+      "candidateColorDescriptionSupported": true,
+      "publishedPriceNameShippingContactMatched": true,
+      "inventoryOrFulfillmentVerified": false
+    },
+    {
+      "sku": "C200",
+      "name": "축하 3단 화환",
+      "priceKRW": 59000,
+      "productUrl": "https://fwith.co.kr/shop/item.php?it_id=C200",
+      "photoUrl": "https://fwith.co.kr/data/item/flower379/C200/thumb-1_500x500.jpg",
+      "localPath": "seocho-current-facts-recheck-20261013/raw/C200-current-photo.jpg",
+      "photoSha256": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+      "photoMatchesFrozenCandidateAndRegistry": true,
+      "actualPhotoPixelsViewed": true,
+      "candidateColorDescriptionSupported": true,
+      "publishedPriceNameShippingContactMatched": true,
+      "inventoryOrFulfillmentVerified": false
+    },
+    {
+      "sku": "C203",
+      "name": "축하 고급 3단 화환",
+      "priceKRW": 79000,
+      "productUrl": "https://fwith.co.kr/shop/item.php?it_id=C203",
+      "photoUrl": "https://fwith.co.kr/data/item/flower379/C203/thumb-1_500x500.jpg",
+      "localPath": "seocho-current-facts-recheck-20261013/raw/C203-current-photo.jpg",
+      "photoSha256": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+      "photoMatchesFrozenCandidateAndRegistry": true,
+      "actualPhotoPixelsViewed": true,
+      "candidateColorDescriptionSupported": true,
+      "publishedPriceNameShippingContactMatched": true,
+      "inventoryOrFulfillmentVerified": false
+    },
+    {
+      "sku": "C204",
+      "name": "축하 특대 3단 화환",
+      "priceKRW": 99000,
+      "productUrl": "https://fwith.co.kr/shop/item.php?it_id=C204",
+      "photoUrl": "https://fwith.co.kr/data/item/flower379/C204/thumb-1_500x500.jpg",
+      "localPath": "seocho-current-facts-recheck-20261013/raw/C204-current-photo.jpg",
+      "photoSha256": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+      "photoMatchesFrozenCandidateAndRegistry": true,
+      "actualPhotoPixelsViewed": true,
+      "candidateColorDescriptionSupported": true,
+      "publishedPriceNameShippingContactMatched": true,
+      "inventoryOrFulfillmentVerified": false
+    },
+    {
+      "sku": "C205",
+      "name": "축하 특특대 3단 화환",
+      "priceKRW": 149000,
+      "productUrl": "https://fwith.co.kr/shop/item.php?it_id=C205",
+      "photoUrl": "https://fwith.co.kr/data/item/flower379/C205/thumb-1_500x500.jpg",
+      "localPath": "seocho-current-facts-recheck-20261013/raw/C205-current-photo.jpg",
+      "photoSha256": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+      "photoMatchesFrozenCandidateAndRegistry": true,
+      "actualPhotoPixelsViewed": true,
+      "candidateColorDescriptionSupported": true,
+      "publishedPriceNameShippingContactMatched": true,
+      "inventoryOrFulfillmentVerified": false
+    }
+  ],
+  "floorImageFailures": [
+    {
+      "url": "http://kfh.catholicfuneral.co.kr/_00.upload/ckImgReal/p09/cntsImg/20230418/facility_bg_1.jpg",
+      "localPath": "seocho-current-facts-recheck-20261013/raw/funeral-floor-1.jpg",
+      "bytes": 175,
+      "sha256": "96f9fe3fd96dda5c2f4f3664e014f8bdb64cb3aa05533e0c0ab465945933f743",
+      "reportedHttpStatus": 200,
+      "actualContentKind": "HTML_WAF_BLOCK_NOT_IMAGE",
+      "decodedBlockText": "<br/><br/><div style=\"text-align:center\"><strong><font size=3>[웹방화벽] 비정상적인 접근으로 인해 차단되었습니다. (Web Application Firewall page block)\r\n</font></strong></div>",
+      "imagePixelsVerified": false,
+      "reason": "Image viewer rejected unsupported data; file inspection identifies text; actual bytes contain Web Application Firewall page block."
+    },
+    {
+      "url": "http://kfh.catholicfuneral.co.kr/_00.upload/ckImgReal/p09/cntsImg/20230628/facility_bg_2.png",
+      "localPath": "seocho-current-facts-recheck-20261013/raw/funeral-floor-2.png",
+      "bytes": 175,
+      "sha256": "96f9fe3fd96dda5c2f4f3664e014f8bdb64cb3aa05533e0c0ab465945933f743",
+      "reportedHttpStatus": 200,
+      "actualContentKind": "HTML_WAF_BLOCK_NOT_IMAGE",
+      "decodedBlockText": "<br/><br/><div style=\"text-align:center\"><strong><font size=3>[웹방화벽] 비정상적인 접근으로 인해 차단되었습니다. (Web Application Firewall page block)\r\n</font></strong></div>",
+      "imagePixelsVerified": false,
+      "reason": "Image viewer rejected unsupported data; file inspection identifies text; actual bytes contain Web Application Firewall page block."
+    },
+    {
+      "url": "http://kfh.catholicfuneral.co.kr/_00.upload/ckImgReal/p09/cntsImg/20230418/facility_bg_3.jpg",
+      "localPath": "seocho-current-facts-recheck-20261013/raw/funeral-floor-3.jpg",
+      "bytes": 175,
+      "sha256": "96f9fe3fd96dda5c2f4f3664e014f8bdb64cb3aa05533e0c0ab465945933f743",
+      "reportedHttpStatus": 200,
+      "actualContentKind": "HTML_WAF_BLOCK_NOT_IMAGE",
+      "decodedBlockText": "<br/><br/><div style=\"text-align:center\"><strong><font size=3>[웹방화벽] 비정상적인 접근으로 인해 차단되었습니다. (Web Application Firewall page block)\r\n</font></strong></div>",
+      "imagePixelsVerified": false,
+      "reason": "Image viewer rejected unsupported data; file inspection identifies text; actual bytes contain Web Application Firewall page block."
+    }
+  ],
+  "pdfVerification": {
+    "path": "seocho-current-facts-recheck-20261013/raw/at-operating-guideline-2026.pdf",
+    "sha256": "803bccd25efe22968e241fbebc0c6b37a013725fc428cb655bbb2b2d22f658f8",
+    "freshPdftotextExit": 0,
+    "freshExtractionEqualsSavedText": true,
+    "suppliedRendersVisuallyInspected": [
+      "at-guideline-page1.png",
+      "at-guideline-page3.png",
+      "at-guideline-page6.png"
+    ],
+    "allPdfPagesVisuallyReviewed": false,
+    "currentWreathAdmissionInferred": false
+  },
+  "toolReports": {
+    "classification": "TOOL_REPORTED",
+    "scope": "Original current-download HTTP status and fetchedAt timestamps are acquisition tool reports. Independently checked local bytes, hashes and specified content are distinguished above. Web tool separately corroborated El Tower wedding/FAQ and SAC rules; funeral web fetch failed 502 and several aT fetches returned internal errors.",
+    "floorHttp200DoesNotMeanImageSuccess": true
+  },
+  "inferencesAndRecommendations": {
+    "classification": "INFERENCE_JUDGMENT",
+    "minimumCorrection": "공식 시설 안내에서는 지상 1층부터 3층까지의 층별 정보를 안내합니다.",
+    "reason": "Do not extend floor-tab evidence into funeral-room distribution. No other substantive conflict found within enumerated checks.",
+    "atCurrentAdmission": "Unknown; historical planned prohibition is not sufficient current permission evidence.",
+    "sacRuleApplication": "Preserve year and transition distinctions; no individual contract application conclusion."
+  },
+  "unverified": [
+    "Actual floor-map contents, funeral-room layout and room distribution",
+    "Current aT wedding-hall mixed fresh/artificial wreath admission",
+    "Product inventory, actual delivery ability, receipt at any venue, final order totals, fulfillment history",
+    "Individual-order legal entitlement or individual venue-contract applicability",
+    "Publication, deployment, QA status, domain/proof approval",
+    "Whole source-tree immutability; review is bound to the two candidate files and listed evidence digests"
+  ],
+  "sourceTreeScopeNote": "945 was the source manifest scope. A raw find count of 977 may include build/cache artifacts, and is not classified as source drift. No whole-tree comparison was conducted.",
+  "independentFollowupRequired": "After minimum floor sentence correction, inspect successor candidate and verify exact diff, two occurrences, no unsupported assertion, and new hashes. Keep this review unchanged.",
+  "reviewMarkdownSha256": "f9f554de244da9f1e9d9267f8c8620a3d78f80e0f41133d5e9bc39b00de502f0"
+}

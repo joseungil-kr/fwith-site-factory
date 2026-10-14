@@ -1,0 +1,40 @@
+---
+import SharedFlowerBanner from '../../components/SharedFlowerBanner.astro';
+import FaqSection from '../../components/FaqSection.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductCards from '../../components/ProductCards.astro';
+import pages from '../../data/pages.json';
+import products from '../../data/products.json';
+import approvedCopy from '../../data/seocho-copy.json';
+import ui from '../../data/seocho-ui-copy.json';
+import {selectProducts} from '../../lib/catalog.mjs';
+import {pageSources} from '../../lib/seocho-sources.mjs';
+import {assertRegionalInput} from '../../lib/regional-runtime.mjs';
+assertRegionalInput(pages);
+export function getStaticPaths(){return pages.map(page=>({params:{category:page.category,slug:page.slug},props:{page}}));}
+const {page}=Astro.props;
+const matches=approvedCopy.articles.filter(a=>a.slug===page.slug);
+if(matches.length!==1)throw new Error('Missing exact approved article');
+const copy=matches[0],common=approvedCopy.common;
+const productSet=selectProducts(page,products,4),hero=productSet[0];
+if(JSON.stringify(productSet.map(p=>p.officialSku))!==JSON.stringify(copy.productSkus))throw new Error('Article SKU mismatch');
+const sources=pageSources(page);
+if(JSON.stringify(sources.map(({name,url})=>({name,url})))!==JSON.stringify(copy.sourceLinks))throw new Error('Approved source mapping mismatch');
+---
+<BaseLayout title={page.title} description={page.description} canonicalPath={page.url} socialProduct={hero} socialImageAlt={page.ogImageAlt}>
+<article data-snapshot-id={page.snapshotId} data-page-key={page.pageKey} data-page-type={page.pageType} data-query-class={page.queryClass} data-visual-intent={page.visualIntent} data-asset-slot={page.assetSlot}>
+<nav class="breadcrumb" aria-label={ui.accessibility.breadcrumb}><a href="/">{common.navigation.home}</a><span>›</span><a href="/regions/">{common.navigation.regions}</a><span>›</span><span>{page.h1}</span></nav>
+<section class="detail-hero"><div><span class="eyebrow">{common.brand}</span><h1>{page.h1}</h1><p>{page.firstAnswer}</p><div class="actions"><a class="btn primary" href={copy.primaryCta.href}>{copy.primaryCta.label}</a><a class="btn dark" href={hero.orderUrl} data-order-product-key={hero.key}>{hero.ctaLabel}</a></div></div>
+<div class="detail-product" data-product-family={hero.family} data-product-key={hero.key}><img src={hero.img} alt={hero.imageAlt} loading="eager" width="500" height="500"/><strong>{hero.name}</strong><span>{hero.priceLabel}</span></div>
+</section>
+{copy.sections.map((section,index)=><>
+<section class="content-card markdown-content" data-approved-section={section.id}><h2 id={section.id}>{section.heading}</h2>{section.paragraphs.map(paragraph=><p>{paragraph}</p>)}
+{section.productCardSkus&&<ProductCards products={productSet.filter(p=>section.productCardSkus?.includes(p.officialSku))}/>}</section>
+{index===0&&<SharedFlowerBanner variant="message"/>}
+{section.id==='products'&&<SharedFlowerBanner variant="budget"/>}
+</>)}
+<SharedFlowerBanner variant="consultation"/>
+<section class="source-references" aria-labelledby="source-references-title"><h2 id="source-references-title">{common.sourceHeading}</h2><p>{copy.sourceNote}</p>{sources.map(source=><section class="source-card" data-source-type={source.type} data-source-name={source.name} data-source-verified-at={source.verifiedAt}><h3><a href={source.url} rel="nofollow" aria-label={source.name}>{source.name}</a></h3></section>)}</section>
+<FaqSection items={page.faq} title={common.faqHeading}/>
+<div class="journey-link" data-related-link><h2>{common.articleUi.relatedHeading}</h2><p>{copy.relatedLink.intro}</p><a href={copy.relatedLink.href}>{copy.relatedLink.label}</a><a href="/regions/">{common.articleUi.directoryLinkLabel}</a></div>
+</article></BaseLayout>

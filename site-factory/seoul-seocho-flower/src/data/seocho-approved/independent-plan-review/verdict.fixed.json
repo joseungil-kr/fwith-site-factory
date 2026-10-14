@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "reviewedAtUTC": "2026-10-13T07:19:15.364015+00:00",
+  "verdict": "VERIFIED_LOCAL_FROZEN_PLAN_BINDING",
+  "classification": "직접 확인: saved exact bytes, parsed objects and recomputed diff compared independently.",
+  "fixedPlan": {
+    "path": "/workspace/shared/seocho-plan-copy-20261013/plan/fixed-plan.json",
+    "sha256": "5675a7cc1cf5b142458133cb2fc55ce7224ca5e819b2e11f6684bc2d59728318"
+  },
+  "candidatePlan": {
+    "path": "/workspace/shared/seocho-plan-copy-20261013/plan/candidate-plan.json",
+    "sha256": "42e80f9b020cdba3eb451d939c30cace578925ff1a402344edbc464b2a4f1559"
+  },
+  "independentPlanReview": {
+    "path": "/workspace/shared/seocho-plan-copy-20261013/independent-plan-review/plan-review-verdict.json",
+    "sha256": "6fc6c8c19a5093a93497a7b08b22c727a74ccda350bd06c7a6bee0f408fe3df4"
+  },
+  "freezeDiff": {
+    "path": "/workspace/shared/seocho-plan-copy-20261013/plan/freeze.diff",
+    "sha256": "40cc6ad44db93e57f7bf5e491ed2632c367ceb40cab4dc32e9e9869829164c66"
+  },
+  "originalPlanN": 2,
+  "changedTopLevelFields": [
+    "candidatePlanSha256",
+    "frozen",
+    "frozenAt",
+    "historicalResearchNotDone",
+    "independentReview",
+    "originalPlanN",
+    "routeDenominator",
+    "status",
+    "unverified"
+  ],
+  "checks": {
+    "fixedPlanHashMatchesSubmitted": true,
+    "candidateUnchanged": true,
+    "candidateBindingCorrect": true,
+    "reviewPathCorrect": true,
+    "reviewHashCorrect": true,
+    "approvedCountFrozen": true,
+    "onlyApprovedStatusFieldsChanged": true,
+    "pagesUnchanged": true,
+    "candidateLedgerUnchanged": true,
+    "heldPageDecisionsUnchanged": true,
+    "geographyDirectoryUnchanged": true,
+    "facilityAnchorsUnchanged": true,
+    "occasionAnchorsUnchanged": true,
+    "routesAndCountsUnchanged": true,
+    "restrictionsBoundariesUnchanged": true,
+    "historicalUnknownsPreserved": true,
+    "onlyResolvedCountRemovedFromCurrentUnknowns": true,
+    "researchManifestUnchanged": true,
+    "inputBindingsUnchanged": true,
+    "candidateInventoryUnchanged": true,
+    "savedDiffMatchesIndependentDiff": true
+  },
+  "blockingDefects": [],
+  "acceptedStatusClarifications": [
+    "The old pending article count was moved into the preserved historical unknowns and removed only from current unknowns.",
+    "The route denominator text now explicitly says intended routes have not been built. This clarification changes no route, page, count or acceptance scope."
+  ],
+  "retainedDenominators": {
+    "purchaseArticles": 2,
+    "plannedRoutes": 5,
+    "candidateLedgerGroups": 8,
+    "heldPageDecisions": 7,
+    "legalDongs": 10,
+    "administrativeDongs": 18,
+    "geographicRelationships": 23,
+    "facilityAnchors": 3,
+    "assignedFacilityAdministrativeDongs": 0
+  },
+  "scope": "Local originalPlanN and plan binding only. Drafting may use this frozen plan. Copy, implementation, rendering, deployment, actual venue admission, order fulfillment and indexing remain unverified and require their own evidence."
+}

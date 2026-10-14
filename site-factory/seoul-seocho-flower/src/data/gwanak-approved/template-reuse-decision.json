@@ -1,0 +1,49 @@
+{
+  "classification": "추정·판단 based on directly read and blob-verified source",
+  "preferredBase": {
+    "commit": "ca5c98b12420212d0aa8dd0c9a742f3e94237c07",
+    "projectPath": "site-factory/seoul-yeongdeungpo-flower/",
+    "readback": {
+      "path": "/workspace/shared/gwanak-plan-copy-20261013/handoff/yeongdeungpo-template-readback.json",
+      "bytes": 7717,
+      "sha256": "7dddb586808434adbd4ff6031551f323fdac2a814b697ba56c14f4737a4e8583"
+    },
+    "why": [
+      "Existing two-article routing uses approvedCopy.articles.find by slug and refuses missing exact article.",
+      "Existing home presents both product families and all8SKU; detail selects4 approved family products.",
+      "FirstAnswer is separate from full Markdown body and product module, so does not assume first section=products.",
+      "Existing category directory uses items.length<3 noindex, items.length>=3 banner eligibility and architecture sitemap filter."
+    ]
+  },
+  "selectiveDongjakReuse": {
+    "commit": "430dada32f3f8b53f24aec8d9fdf3724529604e1",
+    "projectPath": "site-factory/seoul-dongjak-flower/",
+    "readback": {
+      "path": "/workspace/shared/gwanak-plan-copy-20261013/handoff/template-readback.json",
+      "bytes": 16519,
+      "sha256": "906739216a74d18db0061bfa7e55f15b1b823baa5b0b29d84438b54398fd9f61"
+    },
+    "cssOriginalResponse": {
+      "path": "/workspace/shared/gwanak-plan-copy-20261013/handoff/template-global-css.response.json",
+      "bytes": 12469,
+      "sha256": "0a32e748a24d338ca87924fc11c6e006b771d3000b804d3dd4994cf4e42b6a0f"
+    },
+    "use": [
+      "Exact H3[id] scroll-margin-top:90px fix and corresponding sticky-header visual checks.",
+      "404 no canonical/social/schema and no marketing-banner policy.",
+      "Exact approved-copy HTML surface, source-label and product-byte QA approach."
+    ],
+    "doNotUse": [
+      "Single approvedCopy.article selection and N1-only home/card/photo assumptions.",
+      "Destructuring first section as productSection; Gwanak has introductory condolence/celebrate section first.",
+      "Old unverified phone/online hours or inherited customer text/region/canonical/data/expected SHA."
+    ]
+  },
+  "requiredNewAdapterBoundary": [
+    "Existing Yeongdeungpo physical registry requires non-null unitKey and exactly8facilities; not valid for Gwanak4physical+1buyer occasion.",
+    "Gwanak faculty stays legal/admin null and district-level; research/nakseong are Bongcheon; Wooshin is Sillim; no facility assigned to Namhyeon.",
+    "Existing area-context branch forbids mixed facility+area groups; do not label opening as an area to pass. Model buyer-occasion separately inside celebration without creating a fifth physical anchor.",
+    "Preserve legacy adapters and fixtures. Add explicit Gwanak mode/frozen-plan bindings with fail-closed cross-site guards and negative tests.",
+    "Directory facility grouping and general regional navigation must be separate so unknown unitKey cannot either disappear or be guessed."
+  ]
+}

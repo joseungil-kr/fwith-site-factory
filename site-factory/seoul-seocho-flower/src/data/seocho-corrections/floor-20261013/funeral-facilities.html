@@ -1,0 +1,706 @@
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <title>시설안내 | 서울성모장례식장</title>
+    <meta name="description" content="" />	
+
+	
+
+
+
+
+
+    <meta charset="utf-8" /> 
+    <meta content="text/html;" http-equiv="Content-Type" />
+    <meta name="description" content="" />	        
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />  
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+	<meta name = "format-detection" content = "telephone=no" />    
+	<link rel="stylesheet" href="/sitedeploy/p09/css/normalize.css" />
+	<link rel="stylesheet" href="/sitedeploy/p09/css/common.css" />
+	<link rel="stylesheet" href="/sitedeploy/p09/css/content.css" />  
+	   
+
+	<!--[if lt IE 8]>   
+	    <script src="js/ie8.js"></script>
+	<![endif]-->	  
+
+    <script type="text/javascript" src="/sitedeploy/p09/js/html5shiv.js"></script>
+	<script type="text/javascript" src="/sitedeploy/p09/js/jquery-1.10.1.min.js"></script>	  
+	<script type="text/javascript" src="/sitedeploy/p09/js/common.js"></script>    			 
+	<script type="text/javascript" src="/sitedeploy/p09/js/jquery.easing.js"></script>   
+	<script type="text/javascript" src="/sitedeploy/p09/js/jquery.scroll.pack.js"></script>   
+	<script type="text/javascript" src="/sitedeploy/p09/js/jquery.customSelect.min.js"></script>   
+	<script type="text/javascript" src="/sitedeploy/p09/js/jquery.bxslider.min.js"></script>  
+
+	
+	<!-- google Map -->
+	<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	<script type=”text/javascript”>
+		function callNumber(num){
+			location.href=”tel:”+num;
+		}
+	</script>
+	<script type="text/javascript"> 
+		function initialize() {
+	  		var myLatlng = new google.maps.LatLng(37.482829, 127.012756);
+	  		var myOptions = {
+	   			zoom: 15, 
+	   			center: myLatlng
+	  		}
+	  		var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	 
+	  		var marker = new google.maps.Marker({
+	   			position: myLatlng, 
+	   			map: map, 
+	   			title:"서초평화빌딩"
+	  		});   
+	 
+	  		var infowindow = new google.maps.InfoWindow({
+	   			content: "서울시 서초구 반포대로 22 (서초동) 서초평화빌딩 14층"
+	  		});
+	 
+	  		infowindow.open(map,marker);
+	 	}	
+	 
+	 	window.onload=function(){
+	  		initialize();
+	  		init();
+	 	}
+	</script>
+	
+
+</head>
+
+<script type=”text/javascript”>
+function callNumber(num){
+ location.href=”tel:”+num;
+}
+</script>
+
+<body>
+
+<!-- skip네비게이션 -->
+<dl id="skipToContent">
+<dt><strong class="hid">바로가기 메뉴</strong></dt>
+<dd>
+<a title="주메뉴바로가기" class="skip01" href="#gnb">주메뉴 바로가기</a></dd>
+<a title="본문바로가기" class="skip02" href="#content">본문 바로가기</a></dd>
+</dl>
+<!-- /////////////skip네비게이션 -->
+
+<!--  wrap  -->
+<div id="wrap">
+
+	<!-- header -->
+	
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+function getLastLink(menuNo){
+	var searchMode = "";
+	var tNode = new Array;
+
+	var depth2Upper = "";
+	var depth3Upper = "";
+	
+	for(var i = 0; i < document.menuListForm.tmp_menuNm.length; i++){
+		tNode[i] = document.menuListForm.tmp_menuNm[i].value;
+		var nValue = tNode[i].split("|");
+		if( nValue[0] == menuNo ){
+			if(nValue[5]!="dir" && nValue[5]!="" && nValue[5]!="/"){    		
+        		return nValue[5];
+        	}
+		}
+		if( nValue[1] == menuNo && depth2Upper == "" ){
+			searchMode = "2depth_upper";
+    		depth2Upper = nValue[0];
+    		//alert("1.. tNode[i]="+tNode[i]);
+    		break;
+		}
+	}
+	
+	//alert("menuNo="+menuNo+", searchMode="+searchMode+", depth2Upper="+depth2Upper+", depth3Upper="+depth3Upper );
+	
+	for(var i = 0; i < document.menuListForm.tmp_menuNm.length; i++){
+		tNode[i] = document.menuListForm.tmp_menuNm[i].value;
+		var nValue = tNode[i].split("|");
+		if( nValue[0] == depth2Upper ){
+			if(nValue[5]!="dir" && nValue[5]!="" && nValue[5]!="/"){    		
+        		return nValue[5];
+        	}
+		}
+		if( nValue[1] == depth2Upper && depth3Upper == "" ){
+			searchMode = "3depth_upper";
+    		depth3Upper = nValue[0];
+    		//alert("2.. tNode[i]="+tNode[i]);
+    		break;
+		}
+	}
+	
+	//alert("menuNo="+menuNo+", searchMode="+searchMode+", depth2Upper="+depth2Upper+", depth3Upper="+depth3Upper );
+	
+	// 2차 메뉴에서 못찾으면... 3차에서 메뉴에서.
+	for(var i = 0; i < document.menuListForm.tmp_menuNm.length; i++){
+		tNode[i] = document.menuListForm.tmp_menuNm[i].value;
+		var nValue = tNode[i].split("|");
+        if( nValue[0] == depth3Upper ){
+        	if(nValue[5]!="dir" && nValue[5]!="" && nValue[5]!="/"){
+        		return nValue[5];
+        	}
+        }
+	}
+	
+}
+
+function isMobileDevice() { 
+	var phoneArray = new Array(
+			'samsung-', 'sch-', 'shw-', 'sph-', 'sgh-', 'lg-'
+			, 'canu', 'im-', 'ev-', 'iphone', 'nokia', 'blackberry'
+			, 'lgtelecom', 'natebrowser', 'sonyericsson', 'mobile'
+			, 'android', 'ipad');
+	for (i = 0; i < phoneArray.length; i++) { 
+		if (navigator.userAgent.toLowerCase().indexOf(phoneArray[i]) > -1) { 
+			return true; 
+		} 
+	} return false; 
+} 
+
+function isTabletDevice() { 
+	if (!isMobileDevice()) { 
+		return false; 
+	} 
+	// 태블릿검사 
+	if ( navigator.userAgent.toLowerCase().indexOf('ipad') > -1 || (navigator.userAgent.toLowerCase().indexOf('android') > -1 && navigator.userAgent.toLowerCase().indexOf('mobile') == -1) ) {
+		//return true;
+		return false;
+	} 
+	// 갤럭시 탭만을 위한 리다이렉트. Mobile 이라는 단어가 안들어오게 되면 지우셔도 됨 
+	var galaxyTabModel = new Array('shw-'); 
+	for (i = 0; i < galaxyTabModel.length; i++) { 
+		if (navigator.userAgent.toLowerCase().indexOf(galaxyTabModel[i]) > -1) { 
+			//return true; 
+			return false;
+		} 
+	} 
+	return false; 
+} 
+
+
+/*
+function goMenuPage(menuNo){
+	//alert("call getLastLink("+menuNo+")="+ getLastLink(menuNo) );
+	document.getElementById("menuNo").value=menuNo;
+	document.getElementById("link").value="forward:"+getLastLink(menuNo);
+	document.menuListForm.action = "/EgovPageLink.do";
+	document.menuListForm.submit();
+}
+*/
+
+function goMenuPage(menuNo){
+	
+	//alert("call getLastLink("+menuNo+")="+ getLastLink(menuNo) );
+	//document.getElementById("menuNo").value=menuNo;
+	//document.getElementById("link").value="forward:"+getLastLink(menuNo);
+	//document.menuListForm.action = "/EgovPageLink.do";
+	//document.menuListForm.submit();
+	
+	// 자식 메뉴가 있는 경우는 타블렛[모바일]에서는 클릭 금지
+	if( isTabletDevice() ){
+		if( getIsChildMenu(menuNo) ){
+			// 타블렛[모바일] 디바이스인 경우 실제 메뉴만 클릭 이벤트 처리
+		}else{
+			var url = "/"+getLastLink(menuNo);
+			if( url.indexOf('?') > 0 ){
+				url = "/"+getLastLink(menuNo)+"&menuNo="+menuNo;
+			}else{
+				url = "/"+getLastLink(menuNo)+"?menuNo="+menuNo;
+			}
+			url = url.replace("//","/");
+			//alert( "goMenuPage="+url );
+			//document.menuForm.menuNo.value=menuNo;
+			document.menuForm.action = url;
+			document.menuForm.submit();
+		}		
+	}else{
+		var url = "/"+getLastLink(menuNo);
+		if( url.indexOf('?') > 0 ){
+			url = "/"+getLastLink(menuNo)+"&menuNo="+menuNo;
+		}else{
+			url = "/"+getLastLink(menuNo)+"?menuNo="+menuNo;
+		}
+		url = url.replace("//","/");
+		//alert( "goMenuPage="+url );
+		//document.menuForm.menuNo.value=menuNo;
+		document.menuForm.action = url;
+		document.menuForm.submit();
+	}
+	
+}
+
+
+function actionLogout(){
+	document.selectOne.action = "/uat/uia/actionLogout.do";
+	document.selectOne.submit();
+}
+
+function goMenu(firstMenuNo, secondMenuNo, thirdMenuNo, chkUrl){
+	document.menuListForm.firstMenuNo.value = firstMenuNo;
+	document.menuListForm.secondMenuNo.value = secondMenuNo;
+	document.menuListForm.thirdMenuNo.value = thirdMenuNo;
+	if( secondMenuNo == '' && thirdMenuNo == '' ){
+		goMenuPage(firstMenuNo);
+	}else if( thirdMenuNo == '' ){
+		goMenuPage(secondMenuNo);
+	}else{
+		goMenuPage(thirdMenuNo);
+	}
+}
+    
+function goHome(){
+	document.menuListForm.menuNo.value = null;
+    document.menuListForm.firstMenuNo.value = null;
+    document.menuListForm.secondMenuNo.value = null;
+    document.menuListForm.thirdMenuNo.value = null;
+    document.menuListForm.action = "/index.jsp";
+    document.menuListForm.submit();
+}
+
+function fn_egov_select_noticeView(nttId, bbsId){
+	if(bbsId == 'BBSMSTR_2017P06B0001'){				//수주소식
+		document.frm.menuNo.value = "3020000";
+		document.frm.firstMenuNo.value = "3000000";
+		document.frm.secondMenuNo.value = "3020000";
+	} else if(bbsId == 'BBSMSTR_2017P06C0001'){			//갤러리
+		document.frm.menuNo.value = "3040000";
+		document.frm.firstMenuNo.value = "3000000";
+		document.frm.secondMenuNo.value = "3040000";
+	}
+	
+	document.frm.nttId.value = nttId;
+	document.frm.bbsId.value = bbsId;
+	document.frm.action = "/cop/bbs/selectBoardArticle.do";
+	document.frm.submit();
+}
+
+function fn_egov_downFile(atchFileId, fileSn){
+	window.open("/cmm/fms/anymusFileDown.do?atchFileId="+atchFileId+"&fileSn="+fileSn);
+}	
+    
+</script>
+
+<form name="menuForm" action ="/sym/mnu/mpm/EgovMenuListSelect.do" method="post">
+</form>
+
+<form name="menuListForm" action ="/sym/mnu/mpm/EgovMenuListSelect.do" method="post">
+    <input type="hidden" id="menuNo" name="menuNo" value="" />
+    <input type="hidden" id="firstMenuNo" name="firstMenuNo" value="" />
+    <input type="hidden" id="secondMenuNo" name="secondMenuNo" value="" />
+    <input type="hidden" id="thirdMenuNo" name="thirdMenuNo" value="" />
+    <input type="hidden" id="link" name="link" value="" />
+    <div style="width:0px; height:0px;">
+    
+        <input type="hidden" name="tmp_menuNm" value="1000000|0|장례식장안내|/|/|/|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="1010000|1000000|인사말|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_1010000|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="1020000|1000000|식장안내|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_1020000|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="1030000|1000000|문의전화|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_1030000|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="1040000|1000000|오시는길|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_1040000|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="1050000|1000000|공지사항|||/cop/bbs/selectBoardList.do?bbsId=BBSMSTR_2017P09A0001|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="1060000|1000000|개인정보처리방침|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_1060000|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="2000000|0|이용안내|/|/|/|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="2010000|2000000|이용절차|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2010000|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="2020000|2000000|이용요금|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2020000|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="2030000|2000000|시설안내|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2030000|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="2040000|2000000|장례푸드|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2040000|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="2050000|2000000|주차시설안내|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2050000|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="3000000|0|고인검색|/|/|/|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="3010000|3000000|고인검색|/|/|/phgrp/ginfo/EgovGinfoList.do|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="3020000|3000000|지난고인검색|/|/|/phgrp/ginfo/EgovOldGinfoList.do|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="4000000|0|장례정보|/|/|/|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="4010000|4000000|사망신고|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_4010000|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="4020000|4000000|장례예절|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_4020000|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="4030000|4000000|종교별장례예절|/|/|/|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="4030100|4030000|천주교|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_4030100|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="4030200|4030000|개신교|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_4030200|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="4030300|4030000|불교|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_4030300|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="4030400|4030000|원불교|/|/|/phgrp/cnts/CntsFrntView.do?cntsId=CFV_4030400|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="4040000|4000000|일반장사시설안내|/|/|http://www.15774129.go.kr/main.do|" />
+    
+        <input type="hidden" name="tmp_menuNm" value="4050000|4000000|서식자료실|/|/|/cop/bbs/selectBoardList.do?bbsId=BBSMSTR_2017P09C0001|" />
+    
+    </div>
+</form>
+
+<!-- header -->
+<div class="header sub">
+
+	<div class="familyShow"><!-- familyShow -->
+		<div class="boxShow"><!-- boxShow -->
+
+			<div class="imgShow"></div>
+
+
+			<ul>                     
+				 	<li class="first"><a class="family_01" href="http://www.catholicfound.org/" target="_blank;">학교법인 가톨릭학원</a></li>
+				 	<li><a class="family_02" href="http://phdream.co.kr/" target="_blank;">㈜평화드림</a></li>
+				 	<li><a class="family_03" href="http://www.phis.co.kr/" target="_blank;">㈜평화이즈</a></li>
+				 	<li><a class="family_04" href="https://www.phnuri.co.kr/" target="_blank;">(주)평화누리</a></li>
+				 	<li class="first"><a class="family_09" href="http://michelfood.co.kr/" target="_blank;">㈜미셸푸드</a></li>
+				 	<li><a class="family_06" href="http://www.phcst.co.kr/" target="_blank;">㈜평화종합건설</a></li>
+				 	<li><a class="family_08" href="http://www.pharum.co.kr/" target="_blank;">㈜평화아름</a></li> 
+				 	<li><a class="family_07" href="http://www.phspo.com/" target="_blank;">평화스포웰빙</a></li>
+				 	<li class="first"><a class="family_05" href="http://kfh.catholic.ac.kr/" target="_blank;">장례식장</a></li> 
+				 	<li><a class="family_10" href="http://www.peacemakers.kr/" target="_blank;">피스메이커스</a></li>	
+			 </ul>
+
+		</div><!-- ////////////boxShow -->
+	</div><!-- /////////////familyShow -->
+	
+	<div class="familyBlock">
+		<a href="javascript:;"></a>
+	</div>
+	  
+	<div class="gnb">
+	<div class="gnbBlock">		
+		<h1 class="logo">
+			<a href="javascript:goHome();"></a>
+			<button><span></span></button>	
+		</h1>
+		<div class="hospital">
+			<div class="hlist">
+				<ul>
+					<li><a href="http://kfh.catholicfuneral.co.kr/cmm/main/mainPage.do" class="active"  >서울성모<span>장례식장</span></a></li>
+					<li><a href="http://yfh.catholicfuneral.co.kr/cmm/main/mainPage.do" >여의도성모<span>장례식장</span></a></li>
+					<!--<li><a href="http://efh.catholicfuneral.co.kr/cmm/main/mainPage.do">의정부성모<span>장례식장</span></a></li>-->
+					<li><a href="http://bfh.catholicfuneral.co.kr/cmm/main/mainPage.do">부천성모<span>장례식장</span></a></li>
+					<li><a href="http://epfh.catholicfuneral.co.kr/cmm/main/mainPage.do">은평성모<span>장례식장</span></a></li>
+					<!--
+					<li><a href="http://icfh.catholicfuneral.co.kr/cmm/main/mainPage.do" >인천성모<span>장례식장</span></a></li>
+					<li><a href="http://kjfh.catholicfuneral.co.kr/cmm/main/mainPage.do">국제성모<span>장례식장</span></a></li>
+					-->
+					<li><a href="http://vfh.catholicfuneral.co.kr/cmm/main/mainPage.do">성빈센트병원<span>장례식장</span></a></li>
+				</ul>
+			</div>
+		</div>
+		<a href="javascript:;" class="ham"><img src="/sitedeploy/p09/images/common/tablet/ham_btn.png" alt="" /><span>메뉴</span></a>
+		
+	<ul class="gnbList">
+		<li class="tabletBtn">
+			<a href="javascript:;" class="ham0"><img src="/sitedeploy/p09/images/common/tablet/ham_btn.png" alt="" /><span>메뉴</span></a>
+			<a href="javascript:;" class="hamClose"><img src="/sitedeploy/p09/images/common/tablet/t_close.png" alt="" /></a>
+		</li>
+
+
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<li class="gnb1depth" ><a href="javascript:goMenu('0','1000000','','/');">장례식장안내</a><a href="javascript:;" class='gnb_TA'>&nbsp;</a><!-- 1레벨 메뉴 -->
+	<ul class="gnb2depth" ><!-- 2레벨 메뉴 -->
+		<li ><a href="javascript:goMenu('1000000','1010000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_1010000');">인사말</a></li><!-- 2레벨 메뉴x -->
+		<li ><a href="javascript:goMenu('1000000','1020000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_1020000');">식장안내</a></li><!-- 2레벨 메뉴x -->
+		<li ><a href="javascript:goMenu('1000000','1030000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_1030000');">문의전화</a></li><!-- 2레벨 메뉴x -->
+		<li ><a href="javascript:goMenu('1000000','1040000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_1040000');">오시는길</a></li><!-- 2레벨 메뉴x -->
+		<li ><a href="javascript:goMenu('1000000','1050000','','/cop/bbs/selectBoardList.do?bbsId=BBSMSTR_2017P09A0001');">공지사항</a></li><!-- 2레벨 메뉴x -->
+		<li ><a href="javascript:goMenu('1000000','1060000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_1060000');">개인정보처리방침</a></li><!-- 2레벨 메뉴x -->
+	</ul >
+<li class="gnb1depth active" ><a href="javascript:goMenu('0','2000000','','/');">이용안내</a><a href="javascript:;" class='gnb_TA'>&nbsp;</a><!-- 1레벨 메뉴 -->
+	<ul class="gnb2depth" ><!-- 2레벨 메뉴 -->
+		<li ><a href="javascript:goMenu('2000000','2010000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2010000');">이용절차</a></li><!-- 2레벨 메뉴x -->
+		<li ><a href="javascript:goMenu('2000000','2020000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2020000');">이용요금</a></li><!-- 2레벨 메뉴x -->
+		<li ><a href="javascript:goMenu('2000000','2030000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2030000');">시설안내</a></li><!-- 2레벨 메뉴x -->
+		<li ><a href="javascript:goMenu('2000000','2040000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2040000');">장례푸드</a></li><!-- 2레벨 메뉴x -->
+		<li ><a href="javascript:goMenu('2000000','2050000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2050000');">주차시설안내</a></li><!-- 2레벨 메뉴x -->
+	</ul >
+<li class="gnb1depth" ><a href="javascript:goMenu('0','3000000','','/');">고인검색</a><a href="javascript:;" class='gnb_TA'>&nbsp;</a><!-- 1레벨 메뉴 -->
+	<ul class="gnb2depth" ><!-- 2레벨 메뉴 -->
+		<li ><a href="javascript:goMenu('3000000','3010000','','/phgrp/ginfo/EgovGinfoList.do');">고인검색</a></li><!-- 2레벨 메뉴x -->
+		<li ><a href="javascript:goMenu('3000000','3020000','','/phgrp/ginfo/EgovOldGinfoList.do');">지난고인검색</a></li><!-- 2레벨 메뉴x -->
+	</ul >
+<li class="gnb1depth" ><a href="javascript:goMenu('0','4000000','','/');">장례정보</a><a href="javascript:;" class='gnb_TA'>&nbsp;</a><!-- 1레벨 메뉴 -->
+	<ul class="gnb2depth" ><!-- 2레벨 메뉴 -->
+		<li ><a href="javascript:goMenu('4000000','4010000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_4010000');">사망신고</a></li><!-- 2레벨 메뉴x -->
+		<li ><a href="javascript:goMenu('4000000','4020000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_4020000');">장례예절</a></li><!-- 2레벨 메뉴x -->
+		<li class="parent"><a href="javascript:goMenu('4000000','4030000','','/');">종교별장례예절</a><a href="javascript:;" class='moreIcon'>&nbsp;</a><!-- 2레벨 메뉴. -->
+			<ul class="gnb3depth" >
+				<li ><a href="javascript:goMenu('4030000','4030100','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_4030100');">천주교</a></li><!-- 3레벨 메뉴 -->
+				<li ><a href="javascript:goMenu('4030000','4030200','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_4030200');">개신교</a></li><!-- 3레벨 메뉴 -->
+				<li ><a href="javascript:goMenu('4030000','4030300','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_4030300');">불교</a></li><!-- 3레벨 메뉴 -->
+				<li ><a href="javascript:goMenu('4030000','4030400','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_4030400');">원불교</a></li><!-- 3레벨 메뉴 -->
+			</ul >
+		<li ><a href="http://www.15774129.go.kr/main.do" target="_blank" >일반장사시설안내</a></li><!-- 2레벨 메뉴x -->
+		<li ><a href="javascript:goMenu('4000000','4050000','','/cop/bbs/selectBoardList.do?bbsId=BBSMSTR_2017P09C0001');">서식자료실</a></li><!-- 2레벨 메뉴x -->
+	</ul >
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+</ul>
+
+		</div>
+	</div>
+	
+	<div class="gnbBg"></div>
+	<a class="suggestionIcon bidding" href="/cop/bbs/selectBoardList.do?bbsId=BBSMSTR_000000000001&menuNo=1070000"><span>
+	<img src="/sitedeploy/p09/images/common/suggestion_Icon02.png" alt="" /></span>입찰공고</a>
+	<a class="suggestionIcon" href="http://kfh.catholicfuneral.co.kr/phgrp/ethics/EgovEthics2.do"><span>
+	<img src="/sitedeploy/p09/images/common/suggestion_Icon.png" alt="" /></span>고객의<br />소리함</a>	
+</div><!-- ////////////////header -->	  
+ <script>
+$('.gnbBlock h1 button').on('click',function(){
+	if($(this).hasClass('active')){
+		$(this).removeClass('active');
+		$('.gnbBlock').removeClass('active');
+	}else{
+		$(this).addClass('active');
+		$('.gnbBlock').addClass('active');
+		$('.gnbBlock').on('mouseleave',function(){
+		$('.gnbBlock h1 button').removeClass('active');
+		$('.gnbBlock').removeClass('active');
+   });
+}
+});
+</script>
+	<!-- ////////////////header -->	  
+	
+	
+	
+		
+			<!-- subvisual -->
+			<div class="subVisual subVisual2"></div>
+			<!-- ////////////subvisual -->
+		
+		
+		
+		
+		
+		
+	
+	<!-- container -->
+	<div id="container" class="sub"> 
+
+		<!-- leftmenu -->
+		
+
+
+
+
+
+
+
+
+
+
+<!-- //////////////////////////////////////////// -->
+
+ <div id="leftcolumn"> <!-- leftcolumn --> 
+ 	<div class="lnbTit">이용안내</div> 
+ 	<div id="left_area"> <!-- leftmenu --> 
+ 	<ul class="left_menu"> 
+<li class="first " ><a href="javascript:goMenu('2000000','2010000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2010000');">이용절차</a></li><!-- 2st -->
+<li><a href="javascript:goMenu('2000000','2020000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2020000');">이용요금</a></li><!-- 2st -->
+<li class="active " ><a href="javascript:goMenu('2000000','2030000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2030000');">시설안내</a></li><!-- 2st -->
+<li><a href="javascript:goMenu('2000000','2040000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2040000');">장례푸드</a></li><!-- 2st -->
+<li><a href="javascript:goMenu('2000000','2050000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_2050000');">주차시설안내</a></li><!-- 2st -->
+ 	</ul> 
+ 	</div> 
+</div> 
+
+<!-- //////////////////////////////////////////// -->
+
+		<!-- /////////////////leftmenu -->
+
+		<!-- contents --> 
+		<div class="contents">
+
+			
+ <div class="sub_title"> 
+ <h2>시설안내</h2> 
+  <ul class="location"> 
+   <li><a href="javascript:goHome();"><img src="/sitedeploy/p09/images/common/location_home_icon.gif" alt="home"/></a></li> 
+   <li >이용안내</li> 
+   <li class="now" >시설안내</li> 
+  </ul>
+ </div>
+			
+			<div class="conBlock" id="printArea">
+
+				
+					
+						<div class="sisulBlock sisulBlock_1">
+	<div>
+		<img alt="" src="/_00.upload/ckImgReal/p09/cntsImg/20170414/sisul01.jpg" /> <a class="sisulClose" href="javascript:;"><img alt="" src="/_00.upload/ckImgReal/p09/cntsImg/20170414/layer_close2.gif" /></a></div>
+</div>
+<div class="sisulBlock sisulBlock_2">
+	<div>
+		<img alt="" src="/_00.upload/ckImgReal/p09/cntsImg/20170414/sisul02.jpg" /> <a class="sisulClose" href="javascript:;"><img alt="" src="/_00.upload/ckImgReal/p09/cntsImg/20170414/layer_close2.gif" /></a></div>
+</div>
+<div class="sisulBlock sisulBlock_3">
+	<div>
+		<img alt="" src="/_00.upload/ckImgReal/p09/cntsImg/20170414/sisul03.jpg" /> <a class="sisulClose" href="javascript:;"><img alt="" src="/_00.upload/ckImgReal/p09/cntsImg/20170414/layer_close2.gif" /></a></div>
+</div>
+<div class="sisulBlock sisulBlock_4">
+	<div>
+		<img alt="" src="/_00.upload/ckImgReal/p09/cntsImg/20170414/sisul04.jpg" /> <a class="sisulClose" href="javascript:;"><img alt="" src="/_00.upload/ckImgReal/p09/cntsImg/20170414/layer_close2.gif" /></a></div>
+</div>
+<div class="conBlock">
+	<h3>
+		고품격 장례를 위해 최고의 시설에서 모시겠습니다.</h3>
+	<div class="imgGuide_block">
+		<ul>
+			<li>
+				<a class="sisul_1" href="javascript:;"><img alt="제단" src="/_00.upload/ckImgReal/p09/cntsImg/20170601/155642481_kn.jpg" /></a></li>
+			<li>
+				<a class="sisul_2" href="javascript:;"><img alt="접객실" src="/_00.upload/ckImgReal/p09/cntsImg/20170414/facility_img02.jpg" /></a></li>
+			<li>
+				<a class="sisul_3" href="javascript:;"><img alt="예식실" src="/_00.upload/ckImgReal/p09/cntsImg/20170414/facility_img03.jpg" /></a></li>
+			<li>
+				<a class="sisul_4" href="javascript:;"><img alt="휴게공간" src="/_00.upload/ckImgReal/p09/cntsImg/20170414/facility_img04.jpg" /></a></li>
+		</ul>
+	</div>
+	<div class="mapGuide_block">
+		<ul class="sub_tab1 tab3">
+			<li class="active f1">
+				<a href="javascript:;">지상1층</a></li>
+			<li class="f2">
+				<a href="javascript:;">지상2층</a></li>
+			<li class="f3">
+				<a href="javascript:;">지상3층</a></li>
+		</ul>
+		<div class="mapG">
+			<!-- <img alt="1층지도" class="f_1" src="/_00.upload/ckImgReal/p09/cntsImg/20170414/facility_bg_1.jpg" /> 
+			<img alt="2층지도" class="f_2" src="/_00.upload/ckImgReal/p09/cntsImg/20170414/facility_bg_2.jpg" /> 
+			<img alt="3층지도" class="f_3" src="/_00.upload/ckImgReal/p09/cntsImg/20170414/facility_bg_3.jpg" /> --><img alt="1층지도" class="f_1" src="/_00.upload/ckImgReal/p09/cntsImg/20230418/facility_bg_1.jpg" /> <img alt="2층지도" class="f_2" src="/_00.upload/ckImgReal/p09/cntsImg/20230628/facility_bg_2.png" /> <img alt="3층지도" class="f_3" src="/_00.upload/ckImgReal/p09/cntsImg/20230418/facility_bg_3.jpg" /></div>
+	</div>
+</div>
+<p>
+	&nbsp;</p>
+
+					
+					
+				
+
+			</div>
+
+		</div><!-- /////////////contents -->
+	 
+	</div><!-- /////////////////////////container -->
+
+	</div>
+
+	<!-- footer -->
+	
+
+
+
+
+<!-- 통계 -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-90435852-9', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<script type="text/javascript" src="http://wcs.naver.net/wcslog.js"></script>
+<script type="text/javascript"> 
+	if(!wcs_add) var wcs_add = {}; 
+	wcs_add["wa"] = "21b600e1771d84"; 
+	wcs_do(); 
+</script>
+
+<!-- topkMenu -->
+<script>
+//<![CDATA[
+	$(function(){$("#toTop").scrollToTop({speed:1000,ease:"easeOutBack",start:400})});
+//]]>
+</script>
+<!-- //////topkMenu -->
+<div id="footer">
+	<div class="foot">
+		<div id="toTop">
+			<ul>
+				<li class="last"><a href="javascript:;" onclick="go_top();" title="top" ><img src="/sitedeploy/p09/images/common/topUp.gif" alt="" /></a></li>
+			</ul>
+		</div>
+		<ul>
+			<li><a href="/siteMap.do">SITEMAP</a></li>
+			<li><a href="javascript:goMenu('1000000','1040000','','/phgrp/cnts/CntsFrntView.do?cntsId=CFV_1040000');">오시는길</a></li>
+			<li><a href="https://www.redwhistle.org/report/report7.asp?organ=7625" target="_blank">사이버감사실</a></li>
+			<li><a href="http://www.catholicfound.org/phgrp/ethics/EgovEthics.do" target="_blank">윤리강령 위반제보</a></li>
+			<li><a href="/phgrp/cnts/CntsFrntView.do?cntsId=CFV_1060000&menuNo=1060000"  style="font-weight:bold;color:#fff;">개인정보처리방침</a></li>
+			<li><a href="/phgrp/cnts/CntsFrntView.do?cntsId=CFV_1060000&menuNo=1060000"  style="font-weight:bold;color:#fff;">영상정보처리기기 운영방침</a></li>
+			<div class="clear"></div>
+		</ul>
+		<p class="address">
+			서울시 서초구 반포대로 222 (반포동) 학교법인가톨릭학원 서울성모장례식장<span class="airBlock"></span><span class="mr5 ml5">TEL</span><span style="color:#d2d2d2;">02 - 2258 - 5940</span><span class="mr5 ml5">FAX</span><span style="color:#d2d2d2;">02 - 2258 - 5943</span>
+			<br/>
+			<span class="copy">COPYRIGHT ⓒ2017 CATHOLIC EDUCATION FOUNDATION SEOUL ST.MARY’S FUNERAL HALL.   ALL RIGHTS RESERVED.</span>
+		</p>
+		<a class="footBanner" href="http://www.ehaneul.go.kr"><img src="/sitedeploy/p09/images/common/foot_esky01.png" alt="e하늘 보건복지부 장사정보시스템" /></a>
+	</div>
+</div>
+<!-- /////////////footer -->
+
+	<!-- /////////////footer -->
+
+</div><!--  ////////////////wrap  -->
+
+
+
+
+
+
+</body>
+
+</html>

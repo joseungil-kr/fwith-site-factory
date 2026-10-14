@@ -1,0 +1,6 @@
+---
+import approvedCopy from '../data/yeongdeungpo-copy.json';
+const {products=[],noticeMode="full"}=Astro.props;
+---
+<div class="product-grid">{products.map((p:any)=><article class="product-card" data-product-family={p.family} data-product-key={p.key}><img src={p.img} alt={p.imageAlt} loading="lazy" width="500" height="500"/><div><h3>{p.name}</h3><strong>{p.priceLabel}</strong><p>{p.desc}</p><a href={p.orderUrl} data-order-product-key={p.key}>{p.ctaLabel}</a></div></article>)}</div>
+{noticeMode==='full' && <><p class="product-notice">{approvedCopy.common.home.priceDeliveryNote}</p><p class="product-notice">{approvedCopy.common.home.materialsAndCollectionNote}</p></>}

@@ -1,0 +1,21 @@
+{
+  "name": "flower-direct-static-seocho",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py && python3 scripts/qa_seocho.py && python3 scripts/test_seocho.py",
+    "dev": "astro dev",
+    "test": "node scripts/test_inherited_regressions.mjs && node scripts/test_yeongdeungpo_original.mjs && node scripts/test_gwanak_original.mjs && node scripts/test_seocho_runtime.mjs",
+    "qa": "python3 scripts/qa_static.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py && python3 scripts/qa_seocho.py && python3 scripts/test_seocho.py",
+    "qa:browser": "python3 scripts/qa_browser_rendering.py",
+    "typecheck": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.0.0",
+    "astro": "^7.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.0",
+    "typescript": "^5.9.0"
+  }
+}

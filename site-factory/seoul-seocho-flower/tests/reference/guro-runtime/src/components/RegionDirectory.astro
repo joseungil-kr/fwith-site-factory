@@ -1,0 +1,40 @@
+---
+import {planDirectoryBannerSplit} from '../lib/directory-banner-split.mjs';
+import {site} from '../config/site';
+import {publishedDestinationsByUnit} from '../lib/directory-links.mjs';
+import {groupsFor,coverage as sourceCoverage} from '../lib/regional-runtime.mjs';
+import SharedFlowerBanner from './SharedFlowerBanner.astro';
+import InlineOrderBanner from './InlineOrderBanner.astro';
+const {pages,showBanners=true}=Astro.props;
+const coverage=sourceCoverage as any;
+const districts=groupsFor(pages) as any[];
+const directoryBannerPlan=planDirectoryBannerSplit(districts.map(d=>d.items.length),showBanners);
+const destinations=publishedDestinationsByUnit(districts) as Map<string,{href:string;name:string;candidateId:string}[]>;
+---
+<section class="category-hero">
+ <span class="eyebrow">{site.brand} {site.region}</span>
+ <h1>구로구 장소별 화환 주문 안내</h1>
+ <p>부고에 적힌 장례식장, 청첩장의 예식장, 새 출발을 앞둔 사무실. 전하고 싶은 마음에 맞춰 실제 상품과 예산, 리본 문구를 안내해 드립니다.</p>
+ <div class="actions"><a class="btn primary" href={site.phoneHref}>전화 상담·주문</a><a class="btn dark" href={site.orderUrl}>온라인 주문</a></div>
+</section>
+{showBanners && <SharedFlowerBanner variant="message"/>}
+{districts.map((district,index)=><section id={district.key} data-region-district={district.key}>
+ <div class="section-title"><h2>{district.name}</h2><p>아래 안내에서 받는 장소를 찾아보세요. 상품 선택부터 수령 일정까지 꽃이랑에서 함께 상담해 드립니다.</p></div>
+ {(index===directoryBannerPlan.districtIndex ? [district.items.slice(0,directoryBannerPlan.itemIndex),district.items.slice(directoryBannerPlan.itemIndex)].filter(items=>items.length>0) : [district.items]).map((items,segmentIndex)=><>
+ <div class="card-grid big">{items.map(({representative,page}:any)=><a class="page-card" href={page.url} data-region-unit={representative.unitKeys.join('|')}><strong>{page.primaryKeyword}</strong><span>{page.cardSummary}</span><em>주문 안내 보기 →</em></a>)}</div>
+ {index===directoryBannerPlan.districtIndex && segmentIndex===0 && <SharedFlowerBanner variant="budget"/>}
+ </>)}
+ <section class="content-card"><h3>법정동과 장소 이름으로 찾기</h3>
+ <ul class="decision-list">{coverage.units.filter((u:any)=>u.districtKeys.includes(district.key)).map((u:any)=><li data-legal-unit={u.unitKey}><strong>{u.name}</strong>{(destinations.get(u.unitKey)||[]).length ? (destinations.get(u.unitKey)||[]).map((entry,index)=><>{index>0?' / ':' · '}<a href={entry.href} data-candidate-id={entry.candidateId}>{entry.name}</a></>) : <span> (개별 안내 준비 중)</span>}</li>)}</ul></section>
+ <InlineOrderBanner/>
+ <details class="content-card"><summary>행정구역 이름으로 찾기</summary>
+ <p>법정동 {coverage.units.length}개와 행정동 {coverage.administrativeCrosswalk.length}개를 함께 표시했습니다. ‘일부’는 한 법정동이 여러 행정동에 걸친 경우입니다. 아래 연결은 법정동 기준의 장소 안내이며, 특정 건물의 행정동 관할을 뜻하지 않습니다. 개별 주문 안내는 준비된 곳만 연결하며, 배송 가능 여부는 실제 주소로 상담해 주세요.</p>
+ <ul class="decision-list">{coverage.administrativeCrosswalk.filter((a:any)=>a.districtKey===district.key).map((admin:any)=><li data-administrative-unit={admin.aliasKey}><strong>{admin.name}</strong>: {admin.relations.map((relation:any,index:number)=>{
+ const unit=coverage.units.find((unit:any)=>unit.unitKey===relation.unitKey),entries=destinations.get(relation.unitKey)||[];
+ if(!unit)throw new Error('Administrative relation lacks a legal unit');
+ return <>{index>0?' · ':''}<span>{unit.name}{relation.scope==='partial'?' 일부':''}</span>{entries.length>0?<span class="administrative-purchase-links">{entries.map((entry,entryIndex)=><>{entryIndex>0?' / ':' · '}<a href={entry.href}>{entry.name}</a></>)}</span>:<span> (개별 안내 준비 중)</span>}</>;
+ })}</li>)}</ul>
+ <a href={district.sourceUrl} rel="nofollow">{district.name} 공식 관할 안내</a>
+ </details>
+</section>)}
+{showBanners && <SharedFlowerBanner variant="consultation"/>}

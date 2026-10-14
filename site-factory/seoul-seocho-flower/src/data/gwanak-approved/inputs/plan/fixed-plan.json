@@ -1,0 +1,416 @@
+{
+  "schemaVersion": 1,
+  "kind": "local-regional-plan-candidate",
+  "region": "서울특별시 관악구",
+  "regionKey": "seoul-gwanak",
+  "officialCode": "11620",
+  "nationalOrder": 21,
+  "mainBaseRevision": "f86ba6f1e643d979e467b52c948f18e404901478",
+  "status": "LOCAL_PLAN_FROZEN_AFTER_INDEPENDENT_REVIEW",
+  "frozen": true,
+  "proposedArticleN": 2,
+  "originalPlanN": 2,
+  "nationalDenominator": 230,
+  "recordedReleasedCountCarriedForward": 48,
+  "candidateInventoryN": 15,
+  "activeCandidateN": 5,
+  "activePhysicalFacilityN": 4,
+  "activeBuyerOccasionN": 1,
+  "heldCandidateN": 10,
+  "definitionOfN": "구매 의도가 독립된 상세 문서 수. 홈·목록·404·동명·시설 앵커·상품 카드 수는 N에 포함하지 않는다. 독립 PLAN 검수 후 첫 동결에 originalPlanN을 기록한다.",
+  "selectionRationale": [
+    "근조와 축하는 상품군·받는 상황·리본·시간 정보가 달라 분리한다.",
+    "축하의 예식과 개업은 수령 정보가 다르지만 현재 동일한 4개 SKU·가격·상품 CTA를 공유하고, 개업만의 공식 지역 시설·규칙 근거는 부족하다. 한 축하 글에서 두 상황을 분명하게 구분해 먼저 통합한다.",
+    "시설 4개를 각각 글로 분할하면 상품·가격·주문 정책이 반복된다. 시설별 고유 조건은 앵커로 제공한다.",
+    "법정동 3개·행정동 21개와 지역 검색의 반복 URL은 글 수 할당량이 아니다."
+  ],
+  "alternativesRejected": [
+    {
+      "N": 1,
+      "reason": "근조와 축하의 상품·표현·수령 상황이 달라 한 글에 혼합하면 선택에 도움이 적다."
+    },
+    {
+      "N": 3,
+      "reason": "예식과 개업은 의도 차이가 있지만 현재 개업의 고유 지역 근거보다 공통 상품·정책의 중복이 커서 별도 글 3편을 미리 확정하지 않는다."
+    },
+    {
+      "N": "시설별4또는동별21",
+      "reason": "물리적 시설·동의어·행정 단위가 페이지 분모는 아니며 독자적인 구매 질문이 부족하다."
+    }
+  ],
+  "articles": [
+    {
+      "id": "funeral",
+      "slug": "gwanak-funeral-wreath",
+      "url": "/regions/gwanak-funeral-wreath/",
+      "primaryKeyword": "관악구 근조화환",
+      "queryClass": "local-commercial",
+      "secondaryKeywords": [
+        "우신장례식장 근조화환",
+        "관악구 조의화환",
+        "신림동 근조화환",
+        "봉천동 근조화환",
+        "남현동 근조화환"
+      ],
+      "keywordCluster": "condolence-wreath-purchase",
+      "intentKey": "gwanak-condolence-purchase",
+      "queryPriority": 1,
+      "queryEvidence": [
+        "base:query-observations.json[우신장례식장 근조화환]",
+        "addendum:query-execution-log.json B0-0/B0-2/B1-0/B1-2",
+        "addendum:G0/G1/G2/G3 same funeral URL"
+      ],
+      "queryPriorityMeaning": "집필 순서 내부우선순위이며 검색량/순위가 아님.",
+      "titleDirection": "관악구 근조화환 | 우신장례식장 상품·가격 안내",
+      "h1Direction": "관악구 근조화환, 우신장례식장에 전하는 위로",
+      "firstAnswerGoal": "조문을 대신하거나 위로를 전할 근조 상품 4종의 기본가격과 상담 도움을 먼저 제시한다. 시설 주소 경고로 시작하지 않는다.",
+      "candidateIds": [
+        "wooshin-funeral"
+      ],
+      "products": [
+        "B201",
+        "B203",
+        "B205",
+        "B060"
+      ],
+      "buyerDecision": "조의를 전할 근조상품을 예산·사진으로 선택하고 부고에 있는 정확한 빈소·일정·받는 정보를 한 번에 상담한다.",
+      "questionAnswerEvidenceNextAction": [
+        {
+          "question": "어떤 근조상품을 어느 예산으로 주문할 수 있나요?",
+          "answerBasis": "4개 SKU 공식명·실제 사진·59,000/79,000/109,000/149,000원 기본가. 높이·꽃수·품질차이를 추정하지 않음.",
+          "evidence": "base:catalog-policy-evidence.json",
+          "nextAction": "각SKU 상세URL 또는1844-0644 상품 상담"
+        },
+        {
+          "question": "우신장례식장 주소와 주문에 필요한 빈소정보는 무엇인가요?",
+          "answerBasis": "시흥대로572 B1 및 시설 공식이름. B1은 건물층이고 빈소호실을 대신하지 않음. 실제 부고의 빈소·상주/고인 식별·날짜시간은 상담 입력.",
+          "evidence": [
+            "base:official XLSX",
+            "location:mohw-wooshin-location"
+          ],
+          "nextAction": "시설 앵커 후 한곳에 묶인 주문정보로 상담"
+        },
+        {
+          "question": "리본에 조의와 보내는 이름을 어떻게 적나요?",
+          "answerBasis": "창작 문구 예시는 일반적인 조의·보내는 이 예시임을 명확히 하며 종교·이름·회사선호를 강요하지 않음.",
+          "evidence": "seller 상담 CTA + editorial examples, not facility rule",
+          "nextAction": "원하는 문구와 보내는 이름을 상담"
+        },
+        {
+          "question": "급한 일정·배송총액·제작 후 변경은 어떻게 상담하나요?",
+          "answerBasis": "희망 시각과 발인 일정은 접수시 상담. 기본가·배송비·원본 정책의 환불제한 및 하자예외를 구분.",
+          "evidence": "base:catalog-policy-evidence.json policy",
+          "nextAction": "주문별 최종조건 상담; 온라인제출 자체를 도착확정으로 보지 않음"
+        }
+      ],
+      "sectionOrder": [
+        "차분한 즉답·짧은 공감·상품/전화상담",
+        "근조4SKU 선택 이유와 실제 사진·기본가",
+        "우신 시설 앵커와 짧은 목적지 설명",
+        "조의를 전하는 리본 문구 예시·보내는 이름",
+        "주문 준비정보 한묶음과 일정/총액",
+        "소재 변동·수거 없음·변경/하자정책",
+        "중복 없는 FAQ·출처/확인일"
+      ],
+      "localEvidenceLimit": "구청 게시글·첨부 날짜 불일치는 출처 표시 및 연구 근거에 남기고 고객 본문의 분량 채우기 소재로 쓰지 않는다. 현장 반입·도착·별도 설치를 보장하지 않는다.",
+      "faqCandidates": [
+        "종교를 모를 때 리본 문구는 어떻게 상담하나요?",
+        "빈소나 전달 희망일이 바뀌면 무엇을 알려야 하나요?",
+        "상주 이름과 고인 이름 중 무엇을 준비하면 되나요?"
+      ],
+      "relatedLinkRule": "축하상품이 필요한 방문자에게만 축하글 링크. 인접지역/다른병원 안내를 주문 필수단계처럼 나열하지 않음."
+    },
+    {
+      "id": "celebration",
+      "slug": "gwanak-celebration-wreath",
+      "url": "/regions/gwanak-celebration-wreath/",
+      "primaryKeyword": "관악구 축하화환",
+      "queryClass": "local-commercial",
+      "secondaryKeywords": [
+        "관악구 결혼식 화환",
+        "관악구 개업화환",
+        "서울대 교수회관 화환",
+        "서울대 연구공원 웨딩홀 화환",
+        "낙성대 전통혼례 화환",
+        "봉천동 축하화환",
+        "신림동 축하화환",
+        "남현동 축하화환"
+      ],
+      "keywordCluster": "celebration-wreath-purchase",
+      "intentKey": "gwanak-celebration-purchase",
+      "queryPriority": 2,
+      "queryEvidence": [
+        "base:3wedding facility queries",
+        "addendum:8purchase/4geographic queries, opening/wedding original distinction",
+        "addendum:crossPageSharedOrderURLs"
+      ],
+      "titleDirection": "관악구 축하화환 | 결혼식·개업 상품과 주문 안내",
+      "h1Direction": "관악구 축하화환, 결혼과 새로운 출발에 보내는 꽃",
+      "firstAnswerGoal": "반가운 결혼·개업 소식에 맞는 축하 4개 SKU와 59,000~149,000원 기본가, 예산·문구 상담을 즉답한다. 고객의 기억·납품 경험을 꾸미지 않는다.",
+      "candidateIds": [
+        "snu-faculty",
+        "snu-research-park",
+        "nakseongdae-traditional",
+        "gwanak-opening-occasion"
+      ],
+      "products": [
+        "C200",
+        "C203",
+        "C204",
+        "C205"
+      ],
+      "buyerDecision": "예식 또는 매장개업 목적에 맞는 축하상품·리본문구를 선택하고 실제받는 장소·일정·현장조건에 맞춰 상담한다.",
+      "questionAnswerEvidenceNextAction": [
+        {
+          "question": "결혼식과 개업에 어떤 축하상품을 고를 수 있나요?",
+          "answerBasis": "동일 축하4SKU 사진/명칭·59,000/79,000/99,000/149,000원 기본가. 수신상황별 문구·수령정보가 다름.",
+          "evidence": [
+            "base:catalog-policy-evidence.json",
+            "addendum:opening and celebration original pages"
+          ],
+          "nextAction": "SKU상세 선택 또는 예산/문구 상담"
+        },
+        {
+          "question": "서울대 교수회관·호암·연구공원을 어떻게 구분하나요?",
+          "answerBasis": "교수회관 65동과 연구공원 본관은 별도 명칭이다. 교수회관 공식 안내는 호암과 다름을 명시한다. 호암 판매 안내는 보류한다.",
+          "evidence": [
+            "base:faculty-location",
+            "base:research-location"
+          ],
+          "nextAction": "청첩장의 정확한 시설명·홀·예식 시각으로 상담"
+        },
+        {
+          "question": "예식장 화환을 원하는 자리에 설치할 수 있나요?",
+          "answerBasis": "연구공원은 예식장 사업자가 배치·관리·처분한다. 교수회관의 꽃장식 외부 플라워 제한 문맥을 축하화환 허용으로 가정하지 않는다. 낙성대의 현장 수용 조건은 미확인이다.",
+          "evidence": [
+            "base:research-current-terms",
+            "base:faculty-faq",
+            "base:nakseongdae-official"
+          ],
+          "nextAction": "해당 예식의 접수 가능 여부와 인수 방법을 주문 상담에서 다루며 자리를 보장하지 않는다."
+        },
+        {
+          "question": "개업·이전하는 매장에는 어떤 정보를 전하면 되나요?",
+          "answerBasis": "받는 매장명·도로명과 층호·수령 연락처·희망 일시·상품과 문구를 한 번에 준비한다. 일반 주문 준비 안내이며 특정 상권 수요나 현장 설치 대행을 주장하지 않는다.",
+          "evidence": [
+            "addendum:thewreath-opening",
+            "addendum:js-gwanak-celebration",
+            "base:verified seller contact/catalog"
+          ],
+          "nextAction": "개업·이전 목적과 실제 받는 곳을 기준으로 상담"
+        },
+        {
+          "question": "사진/최종금액/변경조건은 무엇인가요?",
+          "answerBasis": "공식 소재 변동·생화와 조화 혼합·기본가와 배송 총액·별도 수거 없음·변경과 하자 예외를 적절한 위치에 간단히 제시한다.",
+          "evidence": "base:catalog-policy-evidence.json",
+          "nextAction": "주문별 조건을 확인한 뒤 상품 선택"
+        }
+      ],
+      "sectionOrder": [
+        "축하의 즉답·짧고 자연스러운 공감·4개 SKU 선택",
+        "예식·개업별 리본 문구와 수령 정보 차이",
+        "검증된 예식 시설 3곳 앵커와 핵심 조건",
+        "개업·이전한 매장으로 보낼 때 한곳에 묶은 주문 정보",
+        "소재·총액·변경 정책과 실제 CTA",
+        "본문과 중복되지 않는 FAQ·출처·확인일"
+      ],
+      "localEvidenceLimit": "시설 운영자의 명칭·장식 규칙과 판매자의 이행 서비스를 구분한다. 보류한 호암·그레이스·문화 시설을 공개 판매 목록에 넣지 않는다.",
+      "faqCandidates": [
+        "개업식이 아닌 이전을 축하할 때 문구는 어떻게 쓰나요?",
+        "서울대라는 이름만 알아도 예식장 주문이 가능한가요?",
+        "연구공원 예식에 보내는 화환의 배치는 누가 정하나요?"
+      ],
+      "relatedLinkRule": "조의 목적인 경우 근조 안내로 연결한다. 예식 시설 3곳은 같은 글의 앵커이며 시설별 중복 URL을 만들지 않는다."
+    }
+  ],
+  "architecture": {
+    "plannedRoutes": [
+      {
+        "path": "/",
+        "role": "home",
+        "countsInN": false
+      },
+      {
+        "path": "/regions/",
+        "role": "region-directory",
+        "countsInN": false
+      },
+      {
+        "path": "/regions/gwanak-funeral-wreath/",
+        "role": "rich-purchase",
+        "countsInN": true
+      },
+      {
+        "path": "/regions/gwanak-celebration-wreath/",
+        "role": "rich-purchase",
+        "countsInN": true
+      },
+      {
+        "path": "/404.html",
+        "role": "404",
+        "countsInN": false
+      }
+    ],
+    "actualRichCards": 2,
+    "facilityStandaloneURLs": false,
+    "legalDongStandaloneURLs": false,
+    "administrativeDongStandaloneURLs": false,
+    "directory": "구매 카드 2개는 한 번씩만 표시한다. 법정동 3개·행정동 21개·관계 21개는 지역명 안내로 보존하고 같은 구매 글로의 내부 링크임을 구분한다. 시설 앵커는 실제 근거가 있는 법정동에만 배정한다. 교수회관 65동은 구 단위 별도 시설 안내로 남긴다.",
+    "facilityGeography": {
+      "wooshin-funeral": {
+        "address": "서울특별시 관악구 시흥대로572 B1",
+        "legalDong": "신림동",
+        "legalCode": "1162010200",
+        "administrativeDong": null,
+        "sourceIds": [
+          "base:gwanak-funeral-official",
+          "mohw-wooshin-location"
+        ],
+        "scope": "MOHW 지하층(신림동)과 구청시트 B1을 함께 기록하되 빈소/화환 자리로 확대하지 않음."
+      },
+      "snu-faculty": {
+        "address": "서울특별시 관악구 관악로1 서울대학교65동 교수회관",
+        "legalDong": null,
+        "legalCode": null,
+        "administrativeDong": null,
+        "sourceIds": [
+          "base:faculty-location",
+          "base:faculty-faq-page2"
+        ],
+        "scope": "도로명·65동·2층홀 정적 사실만. 호암과 다른시설. 세부 법정/행정동 미배정."
+      },
+      "snu-research-park": {
+        "address": "서울특별시 관악구 관악로1 서울대학교 연구공원 본관",
+        "legalDong": "봉천동",
+        "legalCode": "1162010100",
+        "administrativeDong": null,
+        "sourceIds": [
+          "base:research-location",
+          "snu-research-main-legal-dong"
+        ],
+        "scope": "봉천동은 동일 연구공원 본관 건물의 공식 주소로 결속. 입주기관2층을 웨딩홀층으로 바꾸지 않음."
+      },
+      "nakseongdae-traditional": {
+        "address": "서울특별시 관악구 낙성대로3길45(봉천동)",
+        "legalDong": "봉천동",
+        "legalCode": "1162010100",
+        "administrativeDong": null,
+        "sourceIds": [
+          "base:nakseongdae-official"
+        ],
+        "scope": "공식 구청 시설표시 법정동. 낙성대동이라는 행정동을 이름만 보고 배정하지 않음."
+      }
+    },
+    "representedLegalDongsByVerifiedFacilities": [
+      "봉천동",
+      "신림동"
+    ],
+    "unrepresentedLegalDongs": [
+      "남현동"
+    ],
+    "administrativeFacilityAssignments": [],
+    "regionalNavigationIsNotDeliveryGuarantee": true
+  },
+  "fiveFieldContract": {
+    "fields": [
+      "title",
+      "h1",
+      "metaDescription",
+      "cardSummary",
+      "firstAnswer"
+    ],
+    "cardSummaryCannotStartWithPrimaryKeyword": true,
+    "maxCommonTitlePrefixChars": 8,
+    "cardSummaryFirstAnswerSimilarityThreshold": 0.7,
+    "siblingsMustNotUseNameSwapTemplate": true,
+    "alignmentRubric": "지역 40점·서비스 40점·구매 목적 20점. 실제 Title·H1·첫 120~180자 근거를 각각 대조한다. 90점 이상은 내부 정렬 기준이며 검색 순위 점수가 아니다. 작성자의 자기 점수로 독립 검수를 대체하지 않는다."
+  },
+  "draftLengthGoal": {
+    "uniqueBodyCharacters": "글당 약 2,500~3,000자",
+    "excluded": [
+      "shared menu",
+      "common product cards",
+      "footer",
+      "shared policy UI",
+      "banner captions"
+    ],
+    "notHardMinimum": true,
+    "notRankFormula": true,
+    "fallback": "정보 공백과 반복을 검토하고 필요한 만큼 설명한다. 길이를 확보하기 위한 주소 설명·관광·가상 경험·경고 반복은 금지한다."
+  },
+  "sharedVisibleCopyRequired": [
+    "home title/H1/summary/first answer",
+    "2article cards",
+    "8product descriptions/alt/exact product CTA",
+    "phone/product button labels",
+    "FAQ questions+answers",
+    "price/material/cancellation notices",
+    "3approved banner alt/AI caption",
+    "regional directory headings/relationship labels",
+    "footer/404 copy"
+  ],
+  "businessTruthBoundary": {
+    "brand": "꽃이랑",
+    "phone": "1844-0644",
+    "phoneHref": "tel:1844-0644",
+    "shop": "https://fwith.co.kr/",
+    "operatingHours": "not independently established in this packet; omit",
+    "facts": "Frozen8officialSKU plus seller policies only. Supplier claims differ from physically verified fulfillment.",
+    "uncertainPerOrder": [
+      "current stock",
+      "acceptance at specific venue",
+      "delivery time",
+      "delivery total",
+      "specific placement/removal/photo service"
+    ],
+    "customerTone": "상품·예산·리본 문구·주문 상담은 제공자 시점으로 돕는다. 확인 책임을 여러 번 넘기거나 확인되지 않은 현장 업무 대행을 약속하지 않는다."
+  },
+  "bannerReuse": {
+    "source": "base:reuse-plan.json",
+    "files": [
+      "flower-message.webp",
+      "flower-budget.webp",
+      "flower-consultation.webp"
+    ],
+    "homeAndDetails": "message → budget → consultation 사이에 실질적인 본문·상품·출처를 배치한다. 공통 이미지·문구·비율·alt·AI 설명을 변경하지 않는다.",
+    "directory": "실제 카드 2개이므로 기존 items.length >= 3 적용 조건은 false다. 목록 배너는 0개를 유지하며 가짜 카드나 시설별 카드 복제로 배너 수를 늘리지 않는다.",
+    "404": "no marketing banners",
+    "runtimeWorkNotStarted": true
+  },
+  "independentReviewSequence": [
+    "exact LOCAL plan inputs and intent/geography/held review",
+    "freeze reviewed first N and URLs preserving candidate bytes",
+    "write LOCAL customer copy only",
+    "independent provider-tone and factual/completeness review exact finalcopy/commonUI digests",
+    "future runtime/build/screen/publish each separate permitted assignment"
+  ],
+  "authorizationScope": {
+    "localPlanAndCopy": true,
+    "runtimeSource": false,
+    "mainOrSourceBranchWrite": false,
+    "deploymentHere": false,
+    "IndexNowOrHostProof": false,
+    "note": "This task boundary does not deny the user existing national publication instruction. Mandatory host-proof approval and other active regions remain separate."
+  },
+  "notVerified": [
+    "customer draft until afterPLANPASS",
+    "HTML/build/FAQ visibility",
+    "source commit",
+    "browser screen",
+    "publicHTTP",
+    "IndexNow receipt",
+    "indexing/ranking"
+  ],
+  "heldPolicy": "보류는 미운영·폐업·모든 반입 금지의 확정이 아니다. 아트홀은 공연장 내부 금지 범위만 유지한다. 최초 N 동결 전 제외한 이유와 다른 목적지의 중복 방지 이력을 보존한다.",
+  "frozenAt": "2026-10-13T04:15:30.774922+00:00",
+  "approval": {
+    "gate": "LOCAL_PLAN_ONLY",
+    "verdict": "PASS",
+    "reviewFile": "/workspace/shared/gwanak-plan-independent-review-20261013/verdict.candidate.json",
+    "reviewSha256": "27c96edee626a95afcfa642c00552de8184a71f8962c3053b2ba25d860e6444c",
+    "reviewedCandidateFile": "candidate-plan.json",
+    "reviewedCandidateSha256": "02816cbf4880242968d74d43846f357068fb9ff47a070e02e802305ccdac2818",
+    "reviewedInputManifestSha256": "bbbfbf0b12521cf8f1491de238aefebfe1e85e24c8fd894e68666a2e6bc53ba1",
+    "nextScope": "LOCAL customer copy and independent factual/completeness/style review. No source, main, deploy, IndexNow or host-proof operations."
+  }
+}

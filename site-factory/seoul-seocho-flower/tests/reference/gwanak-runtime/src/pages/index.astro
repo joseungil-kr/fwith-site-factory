@@ -1,0 +1,26 @@
+---
+import SharedFlowerBanner from '../components/SharedFlowerBanner.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCards from '../components/ProductCards.astro';
+import pages from '../data/pages.json';
+import products from '../data/products.json';
+import approvedCopy from '../data/gwanak-copy.json';
+import {assertRegionalInput} from '../lib/regional-runtime.mjs';
+assertRegionalInput(pages);
+const common=approvedCopy.common;
+const copy=common.home;
+const featured=['B201','C200'].map(sku=>{const matches=products.filter(p=>p.officialSku===sku);if(matches.length!==1)throw new Error('Missing exact featured SKU');return matches[0];});
+---
+<BaseLayout title={copy.title} description={copy.metaDescription} canonicalPath="/" socialProduct={featured[0]} socialImageAlt={featured[0].imageAlt}>
+<section class="home-hero">
+ <div class="hero-copy"><span class="eyebrow">{common.brand}</span><h1>{copy.h1}</h1><p>{copy.intro}</p>
+ <div class="actions"><a class="btn primary" href={copy.phoneCta.href}>{copy.phoneCta.label}</a><a class="btn dark" href={copy.shopCta.href}>{copy.shopCta.label}</a></div></div>
+ <div class="hero-products" aria-label={copy.productHeading}>{featured.map(p=><a class="hero-product" href={p.orderUrl} data-product-family={p.family} data-product-key={p.key}><img src={p.img} alt={p.imageAlt} loading="eager" width="500" height="500"/><span>{p.name}<strong>{p.priceLabel}</strong></span></a>)}</div>
+</section>
+<SharedFlowerBanner variant="message"/>
+<section class="purpose-navigation" data-region-navigation><div class="section-title"><h2>{copy.articleHeading}</h2></div><div class="purpose-grid">{common.articleCards.map(card=><a class="page-card purpose-card" href={card.href}><strong>{card.title}</strong><span>{card.summary}</span><em>{card.ctaLabel}</em></a>)}</div></section>
+<SharedFlowerBanner variant="budget"/>
+<section class="product-section" data-home-selection><div class="section-title"><h2>{copy.productHeading}</h2></div><ProductCards products={products}/><p class="product-notice">{copy.priceNote}</p></section>
+<section class="content-card" data-home-place><h2>{copy.placeHeading}</h2><a href="/regions/">{common.navigation.regions}</a><p>{copy.shortTalk}</p></section>
+<SharedFlowerBanner variant="consultation"/>
+</BaseLayout>

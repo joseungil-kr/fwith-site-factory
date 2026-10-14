@@ -1,0 +1,31 @@
+---
+import SharedFlowerBanner from '../components/SharedFlowerBanner.astro';
+import InlineOrderBanner from '../components/InlineOrderBanner.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCards from '../components/ProductCards.astro';
+import pages from '../data/pages.json';
+import products from '../data/products.json';
+import approvedCopy from '../data/geumcheon-copy.json';
+import {assertRegionalInput} from '../lib/regional-runtime.mjs';
+assertRegionalInput(pages);
+const copy=approvedCopy.common.home;
+const featured=copy.productSection.productCardKeys.map(key=>{
+ const product=products.find(product=>product.key===key);
+ if(!product||product.family!=='funeral')throw new Error('Approved home product binding missing: '+key);
+ return product;
+});
+---
+<BaseLayout title={copy.title} description={copy.description} canonicalPath="/" socialProduct={featured[0]}>
+<section class="home-hero">
+ <div class="hero-copy"><span class="eyebrow">{copy.eyebrow}</span><h1>{copy.h1}</h1><p>{copy.intro}</p>
+ <div class="actions"><a class="btn primary" href={copy.primaryCta.href}>{copy.primaryCta.label}</a><a class="btn dark" href={copy.secondaryCta.href}>{copy.secondaryCta.label}</a></div>
+ <div class="facts">{copy.facts.map(fact=><span>{fact}</span>)}</div></div>
+ <div class="hero-products" aria-label={copy.productSection.heading}>{featured.map((p:any)=><a class="hero-product" href={p.orderUrl} data-product-family={p.family} data-product-key={p.key}><img src={p.img} alt={p.imageAlt} loading="eager" width="500" height="500"/><span>{p.name}<strong>{p.priceLabel}</strong></span></a>)}</div>
+</section>
+<SharedFlowerBanner variant="message"/>
+<section class="purpose-navigation" data-region-navigation><div class="section-title"><h2>{copy.venueSection.heading}</h2><p>{copy.venueSection.text}</p></div><div class="purpose-grid"><a class="page-card purpose-card" href={copy.venueSection.cardHref}><strong>{copy.venueSection.cardTitle}</strong><span>{copy.venueSection.cardText}</span></a></div></section>
+<SharedFlowerBanner variant="budget"/>
+<section class="product-section" data-home-selection><div class="section-title"><h2>{copy.productSection.heading}</h2><p>{copy.productSection.text}</p></div><ProductCards products={featured}/></section>
+<SharedFlowerBanner variant="consultation"/>
+<InlineOrderBanner/>
+</BaseLayout>
