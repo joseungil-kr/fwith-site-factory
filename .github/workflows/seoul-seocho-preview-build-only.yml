@@ -1,0 +1,92 @@
+name: SeoulSeocho pinned preview build only
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+concurrency:
+  group: seoul-seocho-direct-public-release
+  cancel-in-progress: false
+jobs:
+  build_only:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[SEOCHO-PREVIEW-BUILD] 20261014' && github.actor == 'joseungil-kr' && github.event.issue.user.login == 'joseungil-kr'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_RELEASE_MODE: preview
+      SITE_INDEXABLE: 'false'
+      SITE_URL: https://seoul-seocho.local.invalid
+      SITE_RELEASE_BINDING_PATH: ''
+      SITE_RELEASE_BINDING_SHA256: ''
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - name: Authorize exact owner/main/first-attempt preview request
+        id: select
+        run: python3 control/scripts/direct-seoul-seocho/preview_build_only.py select --report selected-seocho-source.json
+      - name: Recheck the fixed source branch head
+        uses: actions/github-script@v7
+        env:
+          SOURCE_BRANCH: ${{ steps.select.outputs.source_branch }}
+          SOURCE_REVISION: ${{ steps.select.outputs.source_revision }}
+        with:
+          script: |
+            if (process.env.GITHUB_RUN_ATTEMPT !== '1') throw new Error('Reruns forbidden');
+            const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/' + process.env.SOURCE_BRANCH});
+            if (data.object.type !== 'commit' || data.object.sha !== process.env.SOURCE_REVISION) throw new Error('Pinned source branch moved');
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.select.outputs.source_revision }}
+          path: target
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify frozen ancestry, 98 pins, exact protected bytes and source inventory
+        env:
+          SITE_FACTORY_REVISION: ${{ steps.select.outputs.source_revision }}
+        run: python3 control/scripts/direct-seoul-seocho/preview_build_only.py prebuild --checkout target --report seocho-source-prebuild.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install locked dependencies and run actual preview build and all gates
+        working-directory: target/site-factory/seoul-seocho-flower
+        env:
+          SITE_FACTORY_REVISION: ${{ steps.select.outputs.source_revision }}
+          SEOCHO_QA_REPORT_PATH: ${{ github.workspace }}/evidence/seocho-static-qa.json
+        run: |
+          set -euo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/evidence"
+          npm ci --no-audit --no-fund 2>&1 | tee "$GITHUB_WORKSPACE/evidence/npm-ci.log"
+          for script in build test qa test:release; do
+            npm run "$script" 2>&1 | tee "$GITHUB_WORKSPACE/evidence/${script//:/-}.log"
+          done
+      - name: Verify preserved source and bind exact noindex preview output
+        env:
+          SITE_FACTORY_REVISION: ${{ steps.select.outputs.source_revision }}
+        run: python3 control/scripts/direct-seoul-seocho/preview_build_only.py postbuild --checkout target --report seocho-preview-output.json
+      - name: Retain actual static output for independent pixel review
+        uses: actions/upload-artifact@v4
+        with:
+          name: seoul-seocho-preview-build-${{ github.run_id }}
+          path: |
+            target/site-factory/seoul-seocho-flower/dist/
+            seocho-preview-output.json
+          include-hidden-files: true
+          if-no-files-found: error
+      - name: Retain actual execution logs and verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seoul-seocho-preview-evidence-${{ github.run_id }}
+          path: |
+            selected-seocho-source.json
+            seocho-source-prebuild.json
+            seocho-preview-output.json
+            evidence/
+            target/site-factory/seoul-seocho-flower/*-qa.json
+            target/site-factory/seoul-seocho-flower/faq-visible-html-review.json
+          if-no-files-found: warn
