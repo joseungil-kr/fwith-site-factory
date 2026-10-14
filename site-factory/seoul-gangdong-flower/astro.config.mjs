@@ -1,5 +1,4 @@
 import {defineConfig} from 'astro/config';
-import {assertBoundary,ORIGIN,validateRuntime} from './src/lib/gangdong-runtime.mjs';
-import runtime from './src/data/gangdong-runtime.json' with {type:'json'};
-assertBoundary();validateRuntime(runtime);
-export default defineConfig({site:ORIGIN,output:'static',trailingSlash:'always'});
+import {resolveGangdongRelease} from './scripts/gangdong_release.mjs';
+const release=resolveGangdongRelease();
+export default defineConfig({site:release.origin,output:'static',trailingSlash:'always'});
