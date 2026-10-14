@@ -10,11 +10,11 @@ from pathlib import Path
 
 REPOSITORY = 'joseungil-kr/fwith-site-factory'
 OWNER = 'joseungil-kr'
-TITLE = '[GANGNAM-PREVIEW-QA] 20261014'
-BRANCH = 'source/seoul-gangnam-frozen-git-push-20261014'
-REVISION = 'b2c63dc3fd44da869e3c8ebe2ebe7a083054d3bf'
+TITLE = '[GANGNAM-PREVIEW-QA] accessibility-20261014'
+BRANCH = 'source/seoul-gangnam-preview-accessibility-20261014'
+REVISION = '0952966db104f562467d26fdc91ab13c46c0366a'
 ROOT = 'site-factory/seoul-gangnam-flower'
-TREE = 'bdd0d85113eb568ce17e30d386dd255a2836f678'
+TREE = 'c76786865fdd529e4fd618edb20d6326809e2c1f'
 ORIGIN = 'https://seoul-gangnam.local.invalid'
 ROUTES = {'index.html':'/', 'regions/index.html':'/regions/', '404.html':None,
           **{f'regions/gangnam-{p}-wreath/index.html':f'/regions/gangnam-{p}-wreath/' for p in ('funeral','wedding','event')}}
@@ -62,6 +62,11 @@ def preview_environment(env):
     require(not env.get('SITE_RELEASE_BINDING_PATH') and not env.get('SITE_RELEASE_BINDING_SHA256'), 'release_binding_forbidden')
 
 
+def accessibility_contract(layout, css):
+    require('<main id="main-content" tabindex="-1">' in layout, 'skip_target_not_programmatically_focusable')
+    require('@media(min-width:861px){html{scroll-padding-block-start:83px}}' in css, 'desktop_native_focus_clearance_missing')
+
+
 def source(checkout, phase, env):
     require(phase in ('prebuild','postbuild'), 'invalid_phase'); preview_environment(env)
     checkout = Path(checkout).resolve(); root = checkout / ROOT
@@ -83,6 +88,7 @@ def source(checkout, phase, env):
     require(config['siteKey']=='seoul-gangnam-flower-direct' and config['worker'] is None
             and config['productionApproved'] is False and config['hostnameOwnershipVerified'] is False
             and config['previewUrl']==ORIGIN and config['canonicalHostname'] is None, 'preview_config_changed')
+    accessibility_contract(read(root/'src/layouts/BaseLayout.astro').decode(), read(root/'src/styles/global.css').decode())
     # The historical Gwanak release module is retained, never imported or invoked.
     result = {'state':phase+'_verified','sourceRevision':REVISION,'sourceTree':TREE,'sourceFiles':1045,
               'publicationAuthorized':False,'providerCredentialsUsed':False,'publicHTTPVerified':False}
