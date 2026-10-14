@@ -50,8 +50,10 @@ def assert_facts(facts,route,width,origin,revision,spec):
     require(facts['url']==origin+route,'rendered route identity')
     require(facts['viewport']==width and facts['scrollWidth']<=width+1,'horizontal overflow')
     require(facts['revisions']==[revision],'rendered source revision')
-    require(facts['canonical']==([] if route=='/404.html' else [ORIGIN+route]),'rendered canonical')
-    robots='noindex,nofollow,noarchive'
+    mode=spec.get('releaseMode','preview');require(mode in {'preview','production'},'exact capture release mode')
+    canonical_origin=ORIGIN if mode=='preview' else 'https://seoul-gangnam.fwith.kr'
+    require(facts['canonical']==([] if route=='/404.html' else [canonical_origin+route]),'rendered canonical')
+    robots='index,follow' if mode=='production' and route!='/404.html' else 'noindex,nofollow,noarchive'
     require(facts['robots']==[robots],'rendered robots')
     require(len(facts['h1'])==1 and facts['h1'][0] and facts['title'] and len(facts['descriptions'])==1 and facts['descriptions'][0],'headings/title/description')
     kinds=banner_kinds(route)
