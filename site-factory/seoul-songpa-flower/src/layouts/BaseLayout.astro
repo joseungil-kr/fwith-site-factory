@@ -2,12 +2,14 @@
 import '../styles/global.css';
 import '../styles/songpa.css';
 import runtime from '../data/songpa-runtime.json';
+import {resolveSongpaRelease,robotsForRoute} from '../../scripts/songpa_release.mjs';
+const release=resolveSongpaRelease(process.env,process.cwd());
 const {page}=Astro.props;
 const common=runtime.common,footer=common.footer;
-const canonical=new URL(page.path,runtime.origin).href;
+const canonical=new URL(page.path,release.origin).href;
 ---
 <!doctype html><html lang="ko"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>{page.title}</title><meta name="description" content={page.metaDescription}/><meta name="robots" content="noindex,nofollow,noarchive"/>
+<title>{page.title}</title><meta name="description" content={page.metaDescription}/><meta name="robots" content={robotsForRoute(page.path,release)}/><meta name="site-factory-revision" content={release.revision}/>
 {page.id!=='404'&&<link rel="canonical" href={canonical}/>}<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
 {page.id!=='404'&&<><meta property="og:type" content="website"/><meta property="og:title" content={page.title}/><meta property="og:description" content={page.metaDescription}/><meta property="og:url" content={canonical}/><meta property="og:locale" content="ko_KR"/>
 </>}
