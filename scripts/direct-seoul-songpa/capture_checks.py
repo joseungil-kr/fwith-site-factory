@@ -49,9 +49,11 @@ def banner_kinds(route):return [] if route in ('/regions/','/404.html') else ['m
 def assert_facts(facts,route,width,origin,revision,spec):
     require(facts['url']==origin+route,'rendered route identity')
     require(facts['viewport']==width and facts['scrollWidth']<=width+1,'horizontal overflow')
-    require(facts['revisions']==[],'rendered source revision')
-    require(facts['canonical']==([] if route=='/404.html' else [ORIGIN+route]),'rendered canonical')
-    robots='noindex,nofollow,noarchive'
+    mode=spec.get('releaseMode','preview');require(mode in ('preview','production'),'invalid_release_mode')
+    require(facts['revisions']==([revision] if mode=='production' else []),'rendered source revision')
+    site='https://seoul-songpa.fwith.kr' if mode=='production' else ORIGIN
+    require(facts['canonical']==([] if route=='/404.html' else [site+route]),'rendered canonical')
+    robots='noindex,nofollow,noarchive' if mode=='preview' or route=='/404.html' else 'noindex,follow' if route=='/regions/' else 'index,follow'
     require(facts['robots']==[robots],'rendered robots')
     require(len(facts['h1'])==1 and facts['h1'][0] and facts['title'] and len(facts['descriptions'])==1 and facts['descriptions'][0],'headings/title/description')
     kinds=banner_kinds(route)
