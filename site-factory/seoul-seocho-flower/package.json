@@ -3,12 +3,13 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py && python3 scripts/qa_seocho.py && python3 scripts/test_seocho.py",
+    "build": "node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py && python3 scripts/qa_seocho.py && python3 scripts/test_seocho.py && python3 scripts/qa_release_output.py && python3 scripts/test_release_output.py",
     "dev": "astro dev",
     "test": "node scripts/test_inherited_regressions.mjs && node scripts/test_yeongdeungpo_original.mjs && node scripts/test_gwanak_original.mjs && node scripts/test_seocho_runtime.mjs",
-    "qa": "python3 scripts/qa_static.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py && python3 scripts/qa_seocho.py && python3 scripts/test_seocho.py",
+    "qa": "python3 scripts/qa_static.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py && python3 scripts/qa_seocho.py && python3 scripts/test_seocho.py && python3 scripts/qa_release_output.py && python3 scripts/test_release_output.py",
     "qa:browser": "python3 scripts/qa_browser_rendering.py",
-    "typecheck": "astro check"
+    "typecheck": "astro check",
+    "test:release": "node --test tests/release-mode.test.mjs && python3 scripts/test_release_output.py"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.0.0",

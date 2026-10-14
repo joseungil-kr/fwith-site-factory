@@ -3,6 +3,7 @@ from pathlib import Path
 from html.parser import HTMLParser
 from urllib.parse import urlparse, unquote, urljoin
 import json, os, re, xml.etree.ElementTree as ET
+from release_mode import release_mode
 
 class Document(HTMLParser):
     def __init__(self, text):
@@ -101,6 +102,8 @@ def check(root=Path('.')):
     site_config=json.loads((data/'site-config.json').read_text())
     base=(os.environ.get('SITE_URL') or site_config['previewUrl']).rstrip('/')
     indexable=os.environ.get('SITE_INDEXABLE')=='true' and site_config['productionApproved'] is True
+    if site_config.get('siteKey')=='seoul-seocho-flower-direct':
+        effective=release_mode(root);base=effective['origin'];indexable=effective['indexable']
     expected={'/'}|{p['url'] for p in pages}|{h['url'] for h in arch['hubs'] if any(p['category']==h['category'] for p in pages)}
     thin_hubs={h['url'] for h in arch['hubs'] if sum(p['category']==h['category'] for p in pages)<3}
     docs={};titles=set();descriptions=set();incoming={u:set() for u in expected}

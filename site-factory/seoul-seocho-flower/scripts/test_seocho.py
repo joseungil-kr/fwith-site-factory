@@ -4,8 +4,10 @@ No browser, remote write, deployment, or source mutation occurs in these tests.
 from pathlib import Path
 import copy, html, json, os, re, shutil, tempfile, unittest
 from qa_seocho import inspect, read
+from release_mode import release_mode
 
 SOURCE=Path.cwd()
+RELEASE_MODE=release_mode(SOURCE)
 # Expected current paragraphs include only the separately sealed two-field correction.
 # inspect() independently reconstructs them from unchanged historical approval bytes.
 ARTICLES=read(SOURCE/'src/data/seocho-copy.json')['articles']
@@ -120,7 +122,9 @@ class SeochoMutations(unittest.TestCase):
  def test_404_social_forbidden(self):self.replace('dist/404.html','</head>','<meta property="og:title" content="꽃이랑"></head>');self.rejected()
  def test_404_schema_forbidden(self):self.replace('dist/404.html','</head>','<script type="application/ld+json">{}</script></head>');self.rejected()
  def test_404_home_link_wrong(self):self.replace('dist/404.html','href="/">'+COMMON['notFound']['homeLabel'],'href="https://fwith.co.kr/">'+COMMON['notFound']['homeLabel']);self.rejected()
- def test_preview_robots(self):self.replace(self.detail,'noindex,nofollow,noarchive','index,follow');self.rejected()
+ def test_preview_robots(self):
+  old,new=('index,follow','noindex,nofollow,noarchive') if RELEASE_MODE['indexable'] else ('noindex,nofollow,noarchive','index,follow')
+  self.replace(self.detail,old,new);self.rejected()
  def test_preview_sitemap_not_empty(self):
   (self.root/'dist/sitemap-mutated.xml').write_text('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://seoul-seocho.local.invalid/regions/</loc></url></urlset>');self.rejected()
  def test_extra_seller_facility_address_schema(self):self.replace(self.home,'"@type":"Florist"','"@type":"Florist","address":"서울특별시 관악구 시흥대로572 B1"');self.rejected()
