@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "verdict": "PASS_COMPLETION_CODE_REVIEW_PENDING_REAL_IDENTITY_BINDING",
+  "reviewer": "banner_batch1_body_review",
+  "reviewedFiles": [
+    {
+      "path": ".github/workflows/seoul-seocho-complete-uploaded.yml",
+      "sha256": "b1bb75778e1b0c824647af29a9e63c0176734b81e69eed07cc10e24bbdc24b55"
+    },
+    {
+      "path": "scripts/direct-seoul-seocho/complete_uploaded.py",
+      "sha256": "1169b6f17337981775eaca65d79362e1851e4a4243de5a85ea201c6714a8df49"
+    },
+    {
+      "path": "scripts/direct-seoul-seocho/completion_evidence.cjs",
+      "sha256": "2ebbe845f30a119be115b72a4442e0e530a931c544849104ddf5ae1c23decffa"
+    },
+    {
+      "path": "scripts/direct-seoul-seocho/test_complete_uploaded.py",
+      "sha256": "c9b9e99f460fbdfd08a7f4396382062fb7f9802cd699f9d39510c967d49ff45f"
+    },
+    {
+      "path": "scripts/direct-seoul-seocho/test_completion_evidence.cjs",
+      "sha256": "03b187d6322776aa67a4a89f9499ec513c80ae573c5941c42e7be7e4a8b9a67f"
+    },
+    {
+      "path": "scripts/direct-seoul-seocho/uploaded-worker-identity-binding.json",
+      "sha256": "85536c001de339b8c6e31f9f076d51c3c3fedc716fc071e286a920b89060eed3"
+    }
+  ],
+  "deploymentPathAbsent": true,
+  "freshArtifactPathsRequired": true,
+  "exactPriorRunArtifactJobAndActualOutcomesBound": true,
+  "priorActualOutcomesIndependentlyObserved": "actual-prior-outcome-observation.json",
+  "strictArtifactGateAndManualReviewReused": true,
+  "identityBeforeAfterAndBeforeIndexNowRequired": true,
+  "exactIdentityProjectionIncludesVersionDeploymentEtagAssetsRawSettingsBindingsSubdomain": true,
+  "explicitAttachFailurePreservedAndBlocks": true,
+  "uncertainAttachUsesGetOnlyNoRetry": true,
+  "atMostOnePutPerFirstAttemptJob": true,
+  "alreadyBoundNeverPuts": true,
+  "workflowErrorsNotMasked": true,
+  "evidenceRetainedOnFailure": true,
+  "indexnowExistingJournal266Reused": true,
+  "siteContentRewritten": false,
+  "tests": {
+    "completionPython": 17,
+    "publisherPython": 16,
+    "javascriptNegativeLogCases": 8,
+    "independentIdentityRejectCases": 11
+  },
+  "limitations": [
+    "Actual uploaded-worker-identity-binding.json remains pending; no publication-ready runtime identity pin approval is issued.",
+    "Local attach marker prevents duplicate PUT within one job. After an unresolved attempt, a new job must be separately reviewed; this code is not automatic cross-run replay permission.",
+    "Provider metadata is continuity evidence, not exact source/assets byte proof; public sealed-byte HTTP verification remains mandatory.",
+    "Windows reviewer used LF-only JSON output serialization to match the Ubuntu workflow; customer artifact bytes and input hashes were unchanged."
+  ],
+  "evidence": [
+    {
+      "path": "actual-prior-outcome-observation.json",
+      "sha256": "7ec059ee001bb653acda65bd405ec1626f5ac7f29d101a94b95368f9acf72053"
+    },
+    {
+      "path": "completion-integration-review.json",
+      "sha256": "049d2d2ff4cdb52602f64b2fe8fdc15b05b47da7f0cf235885c2083d13069515"
+    },
+    {
+      "path": "completion-final-tests.log",
+      "sha256": "83386c84f3478b721cef1c818d648df6f82bb622715de9923f8e060d2950b563"
+    },
+    {
+      "path": "completion-raw-version-tests.log",
+      "sha256": "baf54b11b30fba6af2727b5dd28d396209a8ee92cb68a94d5a572a3f51618ef8"
+    },
+    {
+      "path": "identity-transport-review.json",
+      "sha256": "5940118fe246f79906ec1f6b2dede6bf18d28bde1e52ca42230f63a09dc63f27"
+    }
+  ],
+  "gitWrites": false,
+  "providerRequestsPerformedByReviewer": false,
+  "remoteWrites": false,
+  "positiveAssetsPresenceRequired": true,
+  "partialInspectorErrorsBlockCompletion": true,
+  "opaqueVersionEtagShapeRequired": true,
+  "rawVersionSha256RequiredAndExactProjectionPinned": true
+}

@@ -1,0 +1,106 @@
+name: SeoulSeocho complete one already-uploaded release
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+concurrency:
+  group: seoul-seocho-direct-public-release
+  cancel-in-progress: false
+jobs:
+  complete:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[SEOCHO-COMPLETE-UPLOADED] 20261014' && github.actor == 'joseungil-kr' && github.event.issue.user.login == 'joseungil-kr'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      REVISION: 52741146f4147f64d6804a757f560db0acf0d92c
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - name: Authorize exact owner main first-attempt completion request
+        run: python3 control/scripts/direct-seoul-seocho/complete_uploaded.py select --report completion-selected.json
+      - name: Test fixed completion gates without provider credentials
+        run: |
+          python3 control/scripts/direct-seoul-seocho/test_complete_uploaded.py -v
+          node control/scripts/direct-seoul-seocho/test_completion_evidence.cjs
+          python3 control/scripts/direct-seoul-seocho/test_publish.py -v
+      - name: GET exact prior upload actual outcomes and retained build identities
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await require('./control/scripts/direct-seoul-seocho/completion_evidence.cjs').run({github, token: process.env.GITHUB_TOKEN});
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Require clean new artifact destinations
+        run: test ! -e release && test ! -e prior-result
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '11877630325'
+          run-id: '38529418686'
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: release
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '11877743999'
+          run-id: '38532307939'
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: prior-result
+      - name: Rehash clean reviewed output and every pinned prior report
+        id: artifact
+        run: python3 control/scripts/direct-seoul-seocho/complete_uploaded.py artifact --report completion-artifact.json
+      - name: Recheck exact source branch before any provider mutation
+        uses: actions/github-script@v7
+        with:
+          script: |
+            if (process.env.GITHUB_RUN_ATTEMPT !== '1') throw new Error('Reruns forbidden');
+            const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/source/seoul-seocho-production-successor-20261014'});
+            if (data.object.type !== 'commit' || data.object.sha !== '52741146f4147f64d6804a757f560db0acf0d92c') throw new Error('Source branch moved');
+      - name: Fresh identity GET then at most one no-override attach and identity readback
+        id: binding
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 control/scripts/direct-seoul-seocho/complete_uploaded.py complete-binding --report completion-binding.json
+      - name: Fresh identity GET and public exact bytes SEO thin directory real 404
+        id: http
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 control/scripts/direct-seoul-seocho/complete_uploaded.py http --report completion-public-http.json
+      - name: Fresh identity and public checks then existing idempotent journal 266
+        id: indexnow
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          GH_TOKEN: ${{ github.token }}
+        run: python3 control/scripts/direct-seoul-seocho/complete_uploaded.py indexnow --report completion-indexnow.json
+      - name: Retain completion evidence without raw logs or credentials
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seoul-seocho-completion-result-${{ github.run_id }}
+          path: |
+            completion-*.json
+            prior-upload-api.json
+            http-contract.json
+            indexnow-http-observations.json
+            release/release.json
+          if-no-files-found: warn
+      - name: Require completed binding public checks and journal result
+        if: always()
+        env:
+          ARTIFACT: ${{ steps.artifact.outcome }}
+          BINDING: ${{ steps.binding.outcome }}
+          HTTP: ${{ steps.http.outcome }}
+          INDEXNOW: ${{ steps.indexnow.outcome }}
+        run: test "$ARTIFACT" = success && test "$BINDING" = success && test "$HTTP" = success && test "$INDEXNOW" = success
