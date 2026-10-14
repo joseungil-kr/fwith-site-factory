@@ -34,7 +34,7 @@ const revision=buildRevision.revision || 'local';
 <a class="skip-link" href="#main-content">{ui.accessibility.skip}</a>
 <header class="site-header"><div class="header-inner"><a class="brand" href="/"><span class="brand-icon" aria-hidden="true">✿</span><span><b>{common.brand}</b></span></a>
 <nav aria-label={ui.accessibility.navigation}>{navigation.map(link=><a href={link.href}>{link.label}</a>)}</nav><a class="phone" href={footer.phoneHref}>{common.navigation.phone}</a></div></header>
-<main id="main-content"><slot/></main>
+<main id="main-content" tabindex="-1"><slot/></main>
 <footer><div><strong>{footer.brandLine}</strong><a href={footer.phoneHref}>{footer.phoneLabel}</a><a href={footer.shopHref}>{footer.shopLabel}</a><a href="/">{footer.homeLinkLabel}</a></div></footer>
 <div class="mobile-bar"><a href={footer.phoneHref}>{common.navigation.phone}</a><a href="/regions/">{common.navigation.regions}</a></div>
 </body></html>
