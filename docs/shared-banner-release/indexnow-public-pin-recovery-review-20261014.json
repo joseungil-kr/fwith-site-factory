@@ -1,0 +1,45 @@
+{
+  "reviewedAt": "2026-10-14T06:17:57.085646+00:00",
+  "baseRevision": "d8c40e41c1dfacef47f43bf0b463919f330a48a5",
+  "verdict": "PASS_SCOPED_CODE_REVIEW",
+  "scope": "exact seven historical published revisions; does not establish Linux build, current public HTTP or IndexNow receipt",
+  "blockingFindings": [],
+  "resolvedFindings": [
+    {
+      "finding": "Phone/native negative tests initially used the same native SHA.",
+      "resolution": "Parent changed phone to nativeSuccessor.sourceParentRevision and native to revision; independently re-read and reran corrected suite."
+    }
+  ],
+  "independentChecks": {
+    "nodeTestsPassed": 57,
+    "workflowBoundaryTestsPassed": 6,
+    "actualIntermediatePhonePinsRejectedInDispatch": 7,
+    "dispatchManualProbeNetworkQueries": 0,
+    "publishJobsUnchangedFromBase": 7,
+    "publicHttpProbeSubmissionSequencesUnchanged": 7,
+    "finalizerProviderSecretsAbsent": 7,
+    "sharedFinalizerAndVerifyUpdateBytesUnchanged": true,
+    "targetsAndRuntimeEvidenceBytesUnchanged": true
+  },
+  "preservedBoundaries": [
+    "Recovery selects trusted exact issue title or explicit typed dispatch indexnow_only.",
+    "Only immutable historical public revision accepted; phone/native successor rejected.",
+    "Repository/main/actor/run attempt/source ref type and identity/ancestor constraints retained.",
+    "Ordinary publish still requires exact branch HEAD and existing provider safeguards.",
+    "Full live bytes, proof, sitemap, robots and journal remain required. Accepted receipts skip replay; uncertain receipts fail closed."
+  ],
+  "reviewedFilesSha256": {
+    "scripts/shared-banners/indexnow_recovery.cjs": "d64e380108697926705acb9aef68050b122704961782d4d45eb2922478b306d8",
+    "scripts/shared-banners/test_indexnow_recovery.cjs": "94a561f42404a54fac6af344ef28b530c1f77f61b23c16ae523824a6652757fd",
+    "scripts/shared-banners/test_indexnow_recovery.py": "8b7f58590221bb2a460bcc34ece8d884faa05475681110fbb7cc1bbb71829222",
+    ".github/workflows/gwacheon-direct-publish.yml": "5983712663450b4ce1a1351eeefac8d9ee975919ce89c2a1ee3c5a6a5916b19d",
+    ".github/workflows/gwangju-direct-publish.yml": "bb1d25e07cb08e7c70a1a8e9cf861e7bf345b3f6274a366ea7d50c74eafbffa1",
+    ".github/workflows/jongno-direct-publish.yml": "b49f5deb0485a0ba3b10e3537061fd5f2acd6b77002a000e993b3a6c04f62263",
+    ".github/workflows/seoul-yongsan-direct-publish.yml": "85d697473ddbee5dc5f831313c03789ab3e00aca3c941d296fe5955cbdcca182",
+    ".github/workflows/seoul-jungnang-direct-publish.yml": "b4275c52a5e673386a2a09881da186641212dbef00eaae869be24e2c7d1c0264",
+    ".github/workflows/yangju-direct-publish.yml": "19aeac3080a459ec3c46757b2004376292722cbe6ecc4b1c58193630072a9bfd",
+    ".github/workflows/yangpyeong-direct-publish.yml": "700cdd2b75932c833cb04dc01aff109a28e1c416f2fed700b6016bf7aba08d12"
+  },
+  "remoteWritesPerformed": false,
+  "codeEditsPerformed": false
+}

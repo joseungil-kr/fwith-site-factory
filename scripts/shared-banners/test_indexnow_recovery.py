@@ -40,7 +40,8 @@ class RecoveryBoundary(unittest.TestCase):
     for mode in ('artifact','http','indexnow-probe','indexnow'):
      self.assertIn(f'control/scripts/direct-{r}/publish.py {mode} --report ',final)
     self.assertIn(f'verify_update.py artifact --region {r}',final)
-    self.assertIn('data.object.sha !== process.env.REVISION',final)
+    self.assertIn(f"recovery.authorizeRecovery({{github, context, region: '{r}', ref: data, controlRoot:",final)
+    self.assertIn('recovery-authorization.json',final)
     self.assertIn('test "$GITHUB_RUN_ATTEMPT" = 1',final)
     self.assertIn('banner-artifact.json',final)
  def test_concurrency_and_dispatch_only_option_preserved(self):
@@ -51,5 +52,20 @@ class RecoveryBoundary(unittest.TestCase):
     self.assertIn('cancel-in-progress: false',w)
     self.assertIn('  workflow_dispatch:',w)
     self.assertIn('      indexnow_only:',w)
+ def test_recovery_helper_is_control_pinned_and_deploy_still_requires_head(self):
+  for r in REGIONS:
+   with self.subTest(region=r):
+    w=self.workflow(r);build=w.split('  publish:',1)[0]
+    self.assertLess(build.index('path: control'),build.index('Authorize exact source'))
+    self.assertIn('ref: ${{ github.sha }}',build)
+    self.assertIn(f"recovery.isIndexNowOnly(context, '{r}')",build)
+    self.assertIn(f"recovery.authorizeRecovery({{github, context, region: '{r}'",build)
+    self.assertIn('node --test control/scripts/shared-banners/test_indexnow_recovery.cjs',build)
+    self.assertIn('git merge-base --is-ancestor "$REVISION" origin/site-factory-'+r+'-direct',build)
+    publish=w.split('  publish:\n',1)[1].split('  finalize_indexnow:',1)[0]
+    self.assertIn("if (data.object.type !== 'commit' || data.object.sha !== process.env.REVISION) throw new Error('Source branch moved; do not publish stale source');",publish)
+    final=w.split('  finalize_indexnow:\n',1)[1]
+    banner=final.split('Verify reviewed shared-banner identity',1)[1].split('      - name:',1)[0]
+    self.assertNotIn('        if:',banner)
 
 if __name__=='__main__':unittest.main()

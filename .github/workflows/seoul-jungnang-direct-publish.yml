@@ -32,6 +32,11 @@ jobs:
       artifact_id: ${{ steps.artifact.outputs.artifact-id }}
       release_sha256: ${{ steps.package.outputs.release_sha256 }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
       - name: Authorize exact source and first attempt
         uses: actions/github-script@v7
         env:
@@ -46,17 +51,19 @@ jobs:
               if (!['admin', 'maintain', 'write'].includes(data.permission)) throw new Error('Untrusted actor');
             }
             const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/site-factory-seoul-jungnang-direct'});
-            if (data.object.type !== 'commit' || data.object.sha !== process.env.REVISION) throw new Error('Not the exact SeoulJungnang branch head');
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-          path: control
-          persist-credentials: false
+            const recovery = require(process.cwd() + '/control/scripts/shared-banners/indexnow_recovery.cjs');
+            if (recovery.isIndexNowOnly(context, 'seoul-jungnang')) {
+              const result = await recovery.authorizeRecovery({github, context, region: 'seoul-jungnang', ref: data, controlRoot: process.cwd() + '/control'});
+              core.info(JSON.stringify(result));
+            } else {
+              if (data.object.type !== 'commit' || data.object.sha !== process.env.REVISION) throw new Error('Not the exact SeoulJungnang branch head');
+            }
       - name: Test fixed publisher safety contracts
         run: |
           python3 control/scripts/direct-seoul-jungnang/test_publish.py -v
           python3 control/scripts/shared-banners/test_verify_update.py -v
           python3 control/scripts/shared-banners/test_indexnow_recovery.py -v
+          node --test control/scripts/shared-banners/test_indexnow_recovery.cjs
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).revisions['seoul-jungnang'] || inputs.expected_revision }}
@@ -263,18 +270,19 @@ jobs:
           artifact-ids: ${{ needs.build.outputs.artifact_id }}
           merge-multiple: true
           path: release
-      - name: Recheck exact branch before finalization
+      - name: Recheck pinned public revision and current branch ancestry
         uses: actions/github-script@v7
         with:
           script: |
             const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/site-factory-seoul-jungnang-direct'});
-            if (data.object.type !== 'commit' || data.object.sha !== process.env.REVISION) throw new Error('Source branch moved; do not finalize stale source');
+            const recovery = require(process.cwd() + '/control/scripts/shared-banners/indexnow_recovery.cjs');
+            const result = await recovery.authorizeRecovery({github, context, region: 'seoul-jungnang', ref: data, controlRoot: process.cwd() + '/control'});
+            require('node:fs').writeFileSync('recovery-authorization.json', JSON.stringify(result, null, 2) + '\n');
       - name: Verify exact rebuilt static artifact
         env:
           RELEASE_SHA256: ${{ needs.build.outputs.release_sha256 }}
         run: python3 control/scripts/direct-seoul-jungnang/publish.py artifact --report artifact-check.json
-      - name: Verify reviewed shared-banner identity for issue-only recovery
-        if: github.event_name == 'issues' && github.event.issue.title == '[REGIONAL-INDEXNOW-ONLY] batch'
+      - name: Verify reviewed shared-banner identity for pinned public recovery
         run: python3 control/scripts/shared-banners/verify_update.py artifact --region seoul-jungnang --report banner-artifact.json
       - name: Verify all live source bytes and real 404s without provider credentials
         run: python3 control/scripts/direct-seoul-jungnang/publish.py http --report public-http.json
@@ -291,6 +299,7 @@ jobs:
         with:
           name: seoul-jungnang-indexnow-result-${{ github.run_id }}
           path: |
+            recovery-authorization.json
             artifact-check.json
             banner-artifact.json
             http-contract.json
