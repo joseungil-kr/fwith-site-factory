@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "state": "PASS_PINNED_TMP_FUNCTION_REPRODUCTION",
+  "sourceCommit": "540f0844667abacb36dee94c078d403192bab1bd",
+  "nodeVersion": "v24.19.0",
+  "upstreamTmpSha256": "685043d7265f07676aec4fba9860f72241597bf6851f474ce1a5babbbc5bc50a",
+  "upstreamGitBlobHashesVerified": true,
+  "executionScope": "Exact upstream temp function bodies with TypeScript types stripped; signal-exit registration shim; scoped fs.rmSync uses upstream options. Not a full Wrangler CLI dry-run.",
+  "sourceMapping": {
+    "assetsOnlyEntry": "resolveEntryWithAssets returns no projectRoot; entry.ts falls back to cwd",
+    "configAssetResolution": "assets.ts resolves configured assets relative to config.configPath",
+    "outdirOnlyInsufficient": "bundle.ts unconditionally requests projectRoot bundle temp directory"
+  },
+  "old": {
+    "rootBefore": [
+      "dist",
+      "release.json",
+      "wrangler.publish.json"
+    ],
+    "rootAfter": [
+      ".wrangler",
+      "dist",
+      "release.json",
+      "wrangler.publish.json"
+    ],
+    "tempPathsDuring": [
+      "old\\release\\.wrangler\\tmp\\deploy-b6yZwb",
+      "old\\release\\.wrangler\\tmp\\bundle-KJQUdI"
+    ],
+    "parentStillPresent": ".wrangler/tmp",
+    "childrenAfterCleanup": [],
+    "originalAllowlistWouldReject": true
+  },
+  "outdirOnly": {
+    "bundleStillCreates": ".wrangler/tmp"
+  },
+  "fixed": {
+    "cwdOutsideArtifact": true,
+    "configPathAbsolute": true,
+    "assetsPathResolvesToOriginalDist": true,
+    "artifactBefore": {
+      "dist/_astro/BaseLayout.3Zigabuu.css": "b9cd8acb73e33f8c748d45150c7ce8bd0721b11000e9bee58eec9c91b603f801",
+      "dist/_headers": "1b27a67288f21cf98b19d15cef8fa084bf7d7ca7a0f89975dd48ba51f90ed015",
+      "dist/39c4ed924bc6084c670a963c26d9f018.txt": "5da3864d5327c6e4e41e6eef12510004b2302f55c3bc61593d7d49c1797739b5",
+      "dist/404.html": "e1744fcf74653893ea701df4450d5f1ac85f16eb79ee65f197fa1128a074decf",
+      "dist/favicon.svg": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+      "dist/images/products/B060.jpg": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+      "dist/images/products/B201.jpg": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+      "dist/images/products/B203.jpg": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+      "dist/images/products/B205.jpg": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+      "dist/images/products/C200.jpg": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+      "dist/images/products/C203.jpg": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+      "dist/images/products/C204.jpg": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+      "dist/images/products/C205.jpg": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+      "dist/images/shared-banners/flower-budget.webp": "081198095eb005603721be7c778f4d477f4dd93dcf96f0c261f18bf06bb91421",
+      "dist/images/shared-banners/flower-consultation.webp": "d6654aa44c365f64e330d0be2042972d3320fad54231425aaffca1dfdcd25ebc",
+      "dist/images/shared-banners/flower-message.webp": "a5ecdeb1914566a32d45b084351e2782fc8b234e9a4fbb8635a60a9921cac5f5",
+      "dist/index.html": "fc1bf16b038282b0a158c6de6ad60b4908c5a37a07c5c46963eac2c026566294",
+      "dist/regions/index.html": "b8732bcb3205c160703e3afa2b1e67a883fe2324309c6f0d6b63b7f64b34bc91",
+      "dist/regions/seocho-celebration-wreath/index.html": "e0789898a41d1df1e13de0c9093cddf5c66d1591c24dc39404686e5dabd5d50d",
+      "dist/regions/seocho-funeral-wreath/index.html": "5bb679a8444be62f3141fe8e525ffea182cf5aa062df165471c8822389af8c8f",
+      "dist/robots.txt": "ed84d0bbe2b64028ca020a7206eb236b8c8f5876e3d3918954884c34bc446f80",
+      "dist/sitemap-0.xml": "e9ce4f21101f7ff3b58825ac6de6c229ba1f115fd0da6e6f95454e8d7b698417",
+      "dist/sitemap-index.xml": "24bbc850a178c8b9949eff549bb8905176b33ae078ba48c6857b4df2b420c027",
+      "release.json": "d02507a8684efe6c27c24eebf30f6b98379284b8d5b8ceb33a72f9866d52dd4e",
+      "wrangler.publish.json": "2c22a9eec4da8513a6822f7c3ceebf99418850fdc31b915ac38b30ecdd032446"
+    },
+    "artifactAfter": {
+      "dist/_astro/BaseLayout.3Zigabuu.css": "b9cd8acb73e33f8c748d45150c7ce8bd0721b11000e9bee58eec9c91b603f801",
+      "dist/_headers": "1b27a67288f21cf98b19d15cef8fa084bf7d7ca7a0f89975dd48ba51f90ed015",
+      "dist/39c4ed924bc6084c670a963c26d9f018.txt": "5da3864d5327c6e4e41e6eef12510004b2302f55c3bc61593d7d49c1797739b5",
+      "dist/404.html": "e1744fcf74653893ea701df4450d5f1ac85f16eb79ee65f197fa1128a074decf",
+      "dist/favicon.svg": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4",
+      "dist/images/products/B060.jpg": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+      "dist/images/products/B201.jpg": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+      "dist/images/products/B203.jpg": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+      "dist/images/products/B205.jpg": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+      "dist/images/products/C200.jpg": "0e5c0e37f5a02b0448a0dd9b3aa48c4bd1ebe38862a9dde662ef2e1c14eee905",
+      "dist/images/products/C203.jpg": "d3bd30015f4465f6db3d43c37a3088d383173e1bc0b46ff429ed24b9c251625a",
+      "dist/images/products/C204.jpg": "05a71d0a3a624c7e27e0575baab02c21f87cc409a1de5389bd4c42b2789dc16d",
+      "dist/images/products/C205.jpg": "b0fa2c913adf258617e34ce0175cbdc282b83e6b47db556234380353c047d5e9",
+      "dist/images/shared-banners/flower-budget.webp": "081198095eb005603721be7c778f4d477f4dd93dcf96f0c261f18bf06bb91421",
+      "dist/images/shared-banners/flower-consultation.webp": "d6654aa44c365f64e330d0be2042972d3320fad54231425aaffca1dfdcd25ebc",
+      "dist/images/shared-banners/flower-message.webp": "a5ecdeb1914566a32d45b084351e2782fc8b234e9a4fbb8635a60a9921cac5f5",
+      "dist/index.html": "fc1bf16b038282b0a158c6de6ad60b4908c5a37a07c5c46963eac2c026566294",
+      "dist/regions/index.html": "b8732bcb3205c160703e3afa2b1e67a883fe2324309c6f0d6b63b7f64b34bc91",
+      "dist/regions/seocho-celebration-wreath/index.html": "e0789898a41d1df1e13de0c9093cddf5c66d1591c24dc39404686e5dabd5d50d",
+      "dist/regions/seocho-funeral-wreath/index.html": "5bb679a8444be62f3141fe8e525ffea182cf5aa062df165471c8822389af8c8f",
+      "dist/robots.txt": "ed84d0bbe2b64028ca020a7206eb236b8c8f5876e3d3918954884c34bc446f80",
+      "dist/sitemap-0.xml": "e9ce4f21101f7ff3b58825ac6de6c229ba1f115fd0da6e6f95454e8d7b698417",
+      "dist/sitemap-index.xml": "24bbc850a178c8b9949eff549bb8905176b33ae078ba48c6857b4df2b420c027",
+      "release.json": "d02507a8684efe6c27c24eebf30f6b98379284b8d5b8ceb33a72f9866d52dd4e",
+      "wrangler.publish.json": "2c22a9eec4da8513a6822f7c3ceebf99418850fdc31b915ac38b30ecdd032446"
+    },
+    "allFileBytesUnchanged": true,
+    "distFileCount": 23,
+    "rootAfter": [
+      "dist",
+      "release.json",
+      "wrangler.publish.json"
+    ]
+  },
+  "limitations": [
+    "Original run 38532307939 did not retain its directory inventory; .wrangler is reproduced/source-proven, not directly observed on that runner.",
+    "No full CLI process or live deployment executed."
+  ],
+  "liveDeployment": false,
+  "credentialsRead": false,
+  "networkCalls": 0,
+  "scratchDirectory": "C:\\Users\\FIREBAT AM02\\Documents\\Codex\\2026-10-14\\task\\seocho-production-review\\independent-recovery-review-20261014\\tmp-repro-5tDaLi"
+}

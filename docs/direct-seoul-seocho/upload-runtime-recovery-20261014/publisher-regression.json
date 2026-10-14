@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "state": "PASS_UNCHANGED_PUBLISHER_REGRESSION",
+  "publisherPath": "release-execution-20261014\\scripts\\direct-seoul-seocho\\publish.py",
+  "publisherSha256": "ff695e5fc01ca5cb15a0a7102a8f347931464773a7aae42554853347a2ed761f",
+  "releaseReviewPatched": false,
+  "gatePatched": false,
+  "actualProductionManifestSha256": "d02507a8684efe6c27c24eebf30f6b98379284b8d5b8ceb33a72f9866d52dd4e",
+  "pinnedFunctionReproductionSha256": "722aefc41814181078d3bd29d125096f6e6b6df8944c9ed9421219e6a296ddf7",
+  "cases": [
+    {
+      "case": "old",
+      "error": "unexpected_release_files",
+      "rejected": true
+    },
+    {
+      "case": "fixed",
+      "state": "reviewed_production_artifact_verified",
+      "all23DistHashesMatch": true
+    },
+    {
+      "case": "unexpected_file_after_fix",
+      "error": "unexpected_release_files",
+      "rejected": true
+    }
+  ],
+  "distFileCount": 23,
+  "artifactAllowlistUnchanged": true,
+  "sourceModified": false,
+  "networkCalls": 0,
+  "liveDeployment": false
+}

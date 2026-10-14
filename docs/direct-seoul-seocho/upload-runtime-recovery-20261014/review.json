@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "verdict": "PASS_PINNED_WRANGLER_TEMP_REPRODUCTION_AND_MINIMAL_FIX",
+  "reviewer": "banner_batch1_body_review",
+  "sourceTag": "wrangler@4.148.0",
+  "sourceCommit": "540f0844667abacb36dee94c078d403192bab1bd",
+  "officialSourceLines": [
+    {
+      "path": "packages/wrangler/src/deployment-bundle/merge-config-args.ts",
+      "url": "https://github.com/cloudflare/workers-sdk/blob/540f0844667abacb36dee94c078d403192bab1bd/packages/wrangler/src/deployment-bundle/merge-config-args.ts",
+      "matches": [
+        {
+          "line": 123,
+          "text": "destination: args.outdir ?? getWranglerTmpDir(entry.projectRoot, \"deploy\"),"
+        },
+        {
+          "line": 226,
+          "text": "destination.remove();"
+        }
+      ],
+      "sha256": "f529a12f2695e2bb4983f88207b6c4fc69908f17487758a9211d62593ab1e36d"
+    },
+    {
+      "path": "packages/workers-utils/src/wrangler-tmp-dir.ts",
+      "url": "https://github.com/cloudflare/workers-sdk/blob/540f0844667abacb36dee94c078d403192bab1bd/packages/workers-utils/src/wrangler-tmp-dir.ts",
+      "matches": [
+        {
+          "line": 22,
+          "text": "return path.join(projectRoot, \".wrangler\");"
+        },
+        {
+          "line": 87,
+          "text": "fs.mkdirSync(tmpRoot, { recursive: true });"
+        },
+        {
+          "line": 96,
+          "text": "removeDirSync(tmpDir);"
+        }
+      ],
+      "sha256": "685043d7265f07676aec4fba9860f72241597bf6851f474ce1a5babbbc5bc50a"
+    },
+    {
+      "path": "packages/wrangler/src/deployment-bundle/entry.ts",
+      "url": "https://github.com/cloudflare/workers-sdk/blob/540f0844667abacb36dee94c078d403192bab1bd/packages/wrangler/src/deployment-bundle/entry.ts",
+      "matches": [
+        {
+          "line": 50,
+          "text": "paths = resolveEntryWithAssets();"
+        },
+        {
+          "line": 107,
+          "text": "const projectRoot = paths.projectRoot ?? process.cwd();"
+        }
+      ],
+      "sha256": "8a41a837bab4e0c5d99d443c7fd18dae93512f02b4321b1eba10ba862b53f885"
+    },
+    {
+      "path": "packages/wrangler/src/assets.ts",
+      "url": "https://github.com/cloudflare/workers-sdk/blob/540f0844667abacb36dee94c078d403192bab1bd/packages/wrangler/src/assets.ts",
+      "matches": [
+        {
+          "line": 28,
+          "text": ": path.resolve(path.dirname(config.configPath ?? \"wrangler.toml\"));"
+        },
+        {
+          "line": 79,
+          "text": "const directory = path.resolve(assetsBasePath, assets.directory);"
+        }
+      ],
+      "sha256": "23de8a9e785b139e4ac131439615cf2b447a8e4d60b49020c1b148008e7c9115"
+    },
+    {
+      "path": "packages/wrangler/src/deployment-bundle/bundle.ts",
+      "url": "https://github.com/cloudflare/workers-sdk/blob/540f0844667abacb36dee94c078d403192bab1bd/packages/wrangler/src/deployment-bundle/bundle.ts",
+      "matches": [
+        {
+          "line": 190,
+          "text": "const tmpDir = getWranglerTmpDir(projectRoot, \"bundle\");"
+        }
+      ],
+      "sha256": "25d00b7f19217af1f6bbf77a96eb9575201621e7d7b62752153ba799e4e0cd77"
+    }
+  ],
+  "actualFailedRun": "38532307939",
+  "observedRunnerExtraFilename": null,
+  "reproducedExtraTopLevelDirectory": ".wrangler",
+  "remainingParentAfterCleanup": ".wrangler/tmp",
+  "originalFailedRunDirectoryInventoryAvailable": false,
+  "proofScope": "Official pinned source with blob hashes verified plus exact temp-function execution and unchanged real publisher artifact gate; no full CLI dry-run or provider operation",
+  "outdirOnlySufficient": false,
+  "outdirOnlyReason": "bundle.ts creates a separate getWranglerTmpDir(projectRoot, bundle) even when deploy destination is explicit",
+  "minimalFix": "Execute pinned Wrangler from a new RUNNER_TEMP mktemp directory; absolute original release/wrangler.publish.json config keeps assets resolution bound to original dist. Keep artifact gate unchanged.",
+  "workflowOnlyChanges": "Remove release working-directory; create and cd to isolated runtime directory; absolute --config path. All other parsed YAML fields unchanged.",
+  "publisherModified": false,
+  "newTests": 2,
+  "publisherTestsPassed": 16,
+  "pinnedFunctionAndRealArtifactRegressionPassed": true,
+  "actualDistFilesRehashed": 23,
+  "manualReviewAndGateUnmockedInRealArtifactRegression": true,
+  "unexpectedFileStillRejected": true,
+  "networkDuringReproduction": 0,
+  "deploymentExecuted": false,
+  "providerCredentialsRead": false,
+  "remoteWrites": false,
+  "gitCommands": false,
+  "currentRecoveryMustNotRedeploy": true,
+  "evidence": [
+    {
+      "path": "pinned-source.json",
+      "sha256": "295cf2e2de029ff874b562c32b1f500234381f96bef559956bf64d52c6f34ee4"
+    },
+    {
+      "path": "reproduce_tmp.mjs",
+      "sha256": "73481ec5add91e0bf8f60e5f8d73cec75ee4487ce67be1ebc4e7b3ec40e41445"
+    },
+    {
+      "path": "tmp-reproduction.json",
+      "sha256": "722aefc41814181078d3bd29d125096f6e6b6df8944c9ed9421219e6a296ddf7"
+    },
+    {
+      "path": "verify_publisher_regression.py",
+      "sha256": "8d27dd4ec08f9ed3195ca3b50e483b2db4fa559bacfee223fa293dda2ee4ec23"
+    },
+    {
+      "path": "publisher-regression.json",
+      "sha256": "3d493db53a73649b51e1358303418ad7edd557c3585468d3e08f805d4f22ecf7"
+    },
+    {
+      "path": "isolate-wrangler.patch",
+      "sha256": "bc8417286d91cfd60cc51c5a744facc3c730e33e8b3345d2087501bd8ad8ad15"
+    },
+    {
+      "path": "general-fix-files.json",
+      "sha256": "be4802c0baf475a04de615838b4874657adea34d1fd55d871407d7d81eb5e42d"
+    },
+    {
+      "path": "general-fix-tests.log",
+      "sha256": "c6e9aa9ea3056ee15bf365854014176cd7d06a6433641d5c36aece40ab77333b"
+    }
+  ]
+}

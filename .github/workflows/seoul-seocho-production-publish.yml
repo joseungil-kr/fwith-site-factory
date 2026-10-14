@@ -80,14 +80,15 @@ jobs:
       - name: Deploy fixed route-less static assets once
         id: deploy
         continue-on-error: true
-        working-directory: release
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           WRANGLER_LOG_SANITIZE: 'true'
           WRANGLER_SEND_METRICS: 'false'
         run: |
-          if ! npx --yes wrangler@4.148.0 deploy --config wrangler.publish.json > "$RUNNER_TEMP/seocho-production-upload.log" 2>&1; then
+          wrangler_workdir="$(mktemp -d "$RUNNER_TEMP/seocho-wrangler.XXXXXX")"
+          cd "$wrangler_workdir"
+          if ! npx --yes wrangler@4.148.0 deploy --config "$GITHUB_WORKSPACE/release/wrangler.publish.json" > "$RUNNER_TEMP/seocho-production-upload.log" 2>&1; then
             echo 'Upload failed or uncertain. Inspect GET and HTTP evidence before recovery.'
             exit 1
           fi

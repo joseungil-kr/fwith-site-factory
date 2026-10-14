@@ -1,0 +1,40 @@
+name: SeoulSeocho uploaded Worker identity GET-only inspection
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+concurrency:
+  group: seoul-seocho-uploaded-identity-readonly
+  cancel-in-progress: false
+jobs:
+  inspect:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[SEOCHO-UPLOADED-IDENTITY-READONLY] 20261014' && github.actor == 'joseungil-kr' && github.event.issue.user.login == 'joseungil-kr' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Authorize exact read-only request without credentials
+        run: python3 scripts/direct-seoul-seocho/uploaded_identity.py authorize
+      - name: Test original and extended read-only boundaries without credentials
+        run: |
+          python3 scripts/direct-seoul-seocho/test_provider_readonly.py
+          python3 scripts/direct-seoul-seocho/test_uploaded_identity.py
+      - name: GET exact uploaded Worker metadata without mutation
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 scripts/direct-seoul-seocho/uploaded_identity.py inspect
+      - name: Retain only whitelisted identity report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seoul-seocho-uploaded-identity-${{ github.run_id }}
+          path: seoul-seocho-uploaded-identity.json
+          if-no-files-found: error
+          retention-days: 14

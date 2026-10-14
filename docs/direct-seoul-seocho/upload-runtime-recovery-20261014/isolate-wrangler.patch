@@ -1,0 +1,54 @@
+--- a/.github/workflows/seoul-seocho-production-publish.yml
++++ b/.github/workflows/seoul-seocho-production-publish.yml
+@@ -80,14 +80,15 @@
+       - name: Deploy fixed route-less static assets once
+         id: deploy
+         continue-on-error: true
+-        working-directory: release
+         env:
+           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+           WRANGLER_LOG_SANITIZE: 'true'
+           WRANGLER_SEND_METRICS: 'false'
+         run: |
+-          if ! npx --yes wrangler@4.148.0 deploy --config wrangler.publish.json > "$RUNNER_TEMP/seocho-production-upload.log" 2>&1; then
++          wrangler_workdir="$(mktemp -d "$RUNNER_TEMP/seocho-wrangler.XXXXXX")"
++          cd "$wrangler_workdir"
++          if ! npx --yes wrangler@4.148.0 deploy --config "$GITHUB_WORKSPACE/release/wrangler.publish.json" > "$RUNNER_TEMP/seocho-production-upload.log" 2>&1; then
+             echo 'Upload failed or uncertain. Inspect GET and HTTP evidence before recovery.'
+             exit 1
+           fi
+--- a/scripts/direct-seoul-seocho/test_publish.py
++++ b/scripts/direct-seoul-seocho/test_publish.py
+@@ -50,6 +50,31 @@
+         self.assertEqual(set(config),{'name','compatibility_date','workers_dev','assets'})
+         self.assertFalse(config['workers_dev']);self.assertEqual(config['name'],'seoul-seocho-flower-guide')
+         self.assertEqual(config['assets']['not_found_handling'],'404-page')
++    def test_wrangler_runtime_files_do_not_relax_sealed_artifact_contract(self):
++        self.assertEqual(p.artifact()['htmlFiles'],5)
++        files=p.gate.inventory(Path('release/dist'))
++        # Wrangler 4.148.0 tmp cleanup retains .wrangler/tmp; independently
++        # reproduced with the exact pinned upstream function bodies.
++        runtime=Path('release/.wrangler/tmp');runtime.mkdir(parents=True)
++        with self.assertRaisesRegex(ValueError,'^unexpected_release_files$'):p.artifact()
++        cleanup=runtime.parent.resolve()
++        self.assertTrue(cleanup.is_relative_to(self.cwd.resolve()) and cleanup.name=='.wrangler')
++        shutil.rmtree(cleanup)
++        (self.cwd/'isolated-wrangler/.wrangler/tmp').mkdir(parents=True)
++        self.assertEqual(p.artifact()['htmlFiles'],5)
++        self.assertEqual(p.gate.inventory(Path('release/dist')),files)
++        rogue=Path('release/UNEXPECTED.txt');rogue.write_text('offline regression')
++        with self.assertRaisesRegex(ValueError,'^unexpected_release_files$'):p.artifact()
++        rogue.unlink()
++        self.assertEqual(p.gate.inventory(Path('release/dist')),files)
++    def test_workflow_runs_wrangler_outside_immutable_release(self):
++        root=Path(__file__).resolve().parents[2]
++        workflow=(root/'.github/workflows/seoul-seocho-production-publish.yml').read_text()
++        deploy=workflow.split('      - name: Deploy fixed route-less static assets once\n',1)[1].split('      - name:',1)[0]
++        self.assertNotIn('working-directory: release',deploy)
++        self.assertIn('mktemp -d "$RUNNER_TEMP/seocho-wrangler.XXXXXX"',deploy)
++        self.assertIn('cd "$wrangler_workdir"',deploy)
++        self.assertIn('wrangler@4.148.0 deploy --config "$GITHUB_WORKSPACE/release/wrangler.publish.json"',deploy)
+     def test_manifest_changed_rejected(self):
+         q=Path('release/release.json');q.write_bytes(q.read_bytes()+b' ')
+         with self.assertRaises(ValueError):p.artifact()
