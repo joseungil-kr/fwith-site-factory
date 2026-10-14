@@ -54,3 +54,6 @@ h1,h2,h3,p,a,li,span,strong,small,figcaption{word-break:keep-all;overflow-wrap:b
 @media(max-width:860px){
   html{scroll-padding-block-start:75px;scroll-padding-block-end:calc(var(--mobile-order-bar-height) + var(--mobile-order-safe-area) + 12px)}
 }
+
+/* Keep desktop native focus scrolling below the 71px sticky header. */
+@media(min-width:861px){html{scroll-padding-block-start:83px}}
