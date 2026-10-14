@@ -43,7 +43,7 @@ jobs:
           path: target
           fetch-depth: 0
           persist-credentials: false
-      - name: Verify frozen ancestry, 98 pins, exact protected bytes and source inventory
+      - name: Verify frozen ancestry, 98 pins, 945 protected files, exact QA amendment and source inventory
         env:
           SITE_FACTORY_REVISION: ${{ steps.select.outputs.source_revision }}
           SITE_RELEASE_BINDING_PATH: ${{ github.workspace }}/control/scripts/direct-seoul-seocho/production-binding.json

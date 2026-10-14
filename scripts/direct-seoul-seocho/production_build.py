@@ -15,6 +15,9 @@ OWNER = frozen.OWNER
 BRANCH = frozen.BRANCH
 SOURCE_ROOT = frozen.SOURCE_ROOT
 SUCCESSOR = '23bc1f2a42b0a6a01c41e8fe8a1f417f36122fa8'
+PROOF_SUCCESSOR = '4c2907d2ec09136b88dc27c9de99e14b852246b8'
+RUNTIME_QA_EXCEPTION = 'scripts/qa_seocho_directory.py'
+EXISTING_PROOF_SHA256 = '5da3864d5327c6e4e41e6eef12510004b2302f55c3bc61593d7d49c1797739b5'
 HOSTNAME = 'seoul-seocho.fwith.kr'
 ORIGIN = 'https://' + HOSTNAME
 WORKER = 'seoul-seocho-flower-guide'
@@ -31,13 +34,20 @@ def load():
     contract_raw = read(DIRECTORY / 'production-source-contract.json')
     contract = json.loads(contract_raw)
     for key in ['schemaVersion', 'repository', 'sourceRoot', 'sourceBranch', 'frozenSourceRevision',
-                'customerCopySha256', 'protectedFiles', 'sealedPins']:
+                'customerCopySha256', 'sealedPins']:
         require(contract.get(key) == baseline[key], 'frozen_contract_changed')
+    protected = {name:digest for name,digest in baseline['protectedFiles'].items() if name != RUNTIME_QA_EXCEPTION}
+    require(len(protected) == 945 and contract.get('protectedFiles') == protected, 'exact_runtime_qa_exception_required')
+    amendment = dict(parentRevision=PROOF_SUCCESSOR, path=RUNTIME_QA_EXCEPTION,
+                     beforeSha256='67db7b2298cd4e75fd7c23ec15d52026a20f891c7b1e22c5cadfaf1fedae9824',
+                     afterSha256='7f66dca9628b58c49ed3168d28091558c622d1bda1e5ca7b61934fb89ca09919')
+    require(contract.get('productionRuntimeAmendment') == amendment and baseline['protectedFiles'][RUNTIME_QA_EXCEPTION] == amendment['beforeSha256'], 'exact_runtime_qa_amendment_required')
+    require(contract.get('allowedModifiedOriginalPaths') == baseline['allowedModifiedOriginalPaths'] + [RUNTIME_QA_EXCEPTION], 'runtime_qa_modification_scope_required')
     revision = contract.get('expectedSourceRevision', '')
-    require(re.fullmatch('[0-9a-f]{40}', revision) and revision != SUCCESSOR, 'proof_successor_revision_required')
+    require(re.fullmatch('[0-9a-f]{40}', revision) and revision not in {SUCCESSOR, PROOF_SUCCESSOR}, 'proof_successor_revision_required')
     proof = contract.get('proof', {})
     require(proof.get('origin') == ORIGIN and re.fullmatch('/[A-Za-z0-9-]{8,128}[.]txt', proof.get('path', ''))
-            and re.fullmatch('[0-9a-f]{64}', proof.get('sha256', '')), 'exact_existing_proof_required')
+            and proof.get('sha256') == EXISTING_PROOF_SHA256, 'exact_existing_proof_required')
     proof_source = 'public' + proof['path']
     paths = contract.get('expectedSourcePaths', [])
     require(len(paths) == len(set(paths)) and set(paths) == set(baseline['expectedSourcePaths']) | {proof_source}
@@ -45,6 +55,7 @@ def load():
     hashes = contract.get('sourceFilesSha256', {})
     require(set(hashes) == set(paths) and all(re.fullmatch('[0-9a-f]{64}', v) for v in hashes.values()), 'complete_source_hashes_required')
     require(hashes[proof_source] == proof['sha256'], 'source_proof_hash_mismatch')
+    require(hashes[RUNTIME_QA_EXCEPTION] == amendment['afterSha256'], 'reviewed_runtime_qa_bytes_required')
     binding_raw = read(DIRECTORY / 'production-binding.json')
     binding = json.loads(binding_raw)
     required = dict(schemaVersion=1, state='approved', repository=REPOSITORY, sourceRoot=SOURCE_ROOT,
@@ -96,11 +107,16 @@ def verify_source(checkout, contract, phase):
     revision = contract['expectedSourceRevision']
     require(phase in {'prebuild', 'postbuild'}, 'phase_invalid')
     require(git(checkout, 'rev-parse', 'HEAD').decode().strip() == revision, 'checkout_revision_mismatch')
-    require(git(checkout, 'rev-list', '--parents', '-n', '1', revision).decode().split() == [revision, SUCCESSOR], 'exact_proof_successor_parent_required')
+    require(git(checkout, 'rev-list', '--parents', '-n', '1', revision).decode().split() == [revision, PROOF_SUCCESSOR], 'exact_runtime_qa_successor_parent_required')
     git(checkout, 'merge-base', '--is-ancestor', frozen.FROZEN_REVISION, revision)
-    changed = [x.decode() for x in git(checkout, 'diff', '--name-only', '-z', SUCCESSOR, revision, '--').split(b'\0') if x]
+    require(git(checkout, 'rev-list', '--parents', '-n', '1', PROOF_SUCCESSOR).decode().split() == [PROOF_SUCCESSOR, SUCCESSOR], 'exact_proof_successor_parent_required')
+    changed = [x.decode() for x in git(checkout, 'diff', '--name-only', '-z', SUCCESSOR, PROOF_SUCCESSOR, '--').split(b'\0') if x]
     allowed = {'scripts/qa_release_output.py', 'scripts/release_mode.mjs', 'scripts/test_release_output.py', 'tests/release-mode.test.mjs', 'PRODUCTION_SUCCESSOR.md', 'public' + contract['proof']['path']}
     require(len(changed) == len(set(changed)) and set(changed) == {SOURCE_ROOT + '/' + name for name in allowed}, 'whole_repository_exact_release_successor_delta_required')
+    runtime_changed = [x.decode() for x in git(checkout, 'diff', '--name-only', '-z', PROOF_SUCCESSOR, revision, '--').split(b'\0') if x]
+    require(runtime_changed == [SOURCE_ROOT + '/' + RUNTIME_QA_EXCEPTION], 'exact_runtime_qa_only_delta_required')
+    amendment = contract['productionRuntimeAmendment']
+    require(sha(git(checkout, 'show', PROOF_SUCCESSOR + ':' + SOURCE_ROOT + '/' + RUNTIME_QA_EXCEPTION)) == amendment['beforeSha256'], 'historical_runtime_qa_bytes_mismatch')
     tracked = [x.decode()[len(SOURCE_ROOT)+1:] for x in git(checkout, 'ls-files', '-z', '--', SOURCE_ROOT).split(b'\0') if x]
     require(len(tracked) == len(set(tracked)) and set(tracked) == set(contract['expectedSourcePaths']), 'source_inventory_mismatch')
     if phase == 'prebuild':
@@ -113,7 +129,7 @@ def verify_source(checkout, contract, phase):
     frozen.preserved_inputs(source, contract, phase, revision)
     proof = read(source / ('public' + contract['proof']['path']))
     require(sha(proof) == contract['proof']['sha256'] and proof.decode('utf-8') == Path(contract['proof']['path']).stem + '\n', 'proof_body_mismatch')
-    return dict(state='production_' + phase + '_source_verified', revision=revision, protectedFiles=946,
+    return dict(state='production_' + phase + '_source_verified', revision=revision, protectedFiles=len(contract['protectedFiles']), runtimeQaException=RUNTIME_QA_EXCEPTION,
                 sealedPins=98, exactSourceFiles=len(tracked), customerCopySha256=frozen.COPY_SHA,
                 providerCredentialsUsed=False, remoteMutationsPerformed=False)
 
