@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "scope": "Observed-only next first-attachment source scope; not the existing Gimpo/Gunpo/Guri banner batch",
+  "verdict": "EXACT_PUBLIC_HOST_WORKER_PAIRS_NOT_ESTABLISHED_IN_INSPECTED_SOURCES",
+  "regions": [
+    {
+      "region": "seoul-gangnam",
+      "sourceCommit": "b2c63dc3fd44da869e3c8ebe2ebe7a083054d3bf",
+      "observedLocalRefBranch": "source/seoul-gangnam-frozen-git-push-20261014",
+      "observedProductionHostname": null,
+      "observedWorkerBinding": null,
+      "firstAttachmentScopeConfirmed": false,
+      "networkQueriesPerformed": false,
+      "sourceMode": "local-preparation",
+      "workerField": null,
+      "canonicalHostnameField": null,
+      "productionApproved": false,
+      "hostnameOwnershipVerified": false,
+      "publicationAuthorized": false,
+      "evidence": [
+        {
+          "commit": "b2c63dc3fd44da869e3c8ebe2ebe7a083054d3bf",
+          "repoPath": "site-factory/seoul-gangnam-flower/src/data/site-config.json",
+          "sha256": "dbdccb6fc9b688cc4c1cbeb33f69707c9165abef47aa7d1df21e363273d029a4"
+        },
+        {
+          "commit": "b2c63dc3fd44da869e3c8ebe2ebe7a083054d3bf",
+          "repoPath": "site-factory/seoul-gangnam-flower/src/data/publish-manifest.json",
+          "sha256": "f10ff112756c4d3191f9d18d34d49398eefdc0a52c2bf033a67cd07120dec8ca"
+        },
+        {
+          "commit": "b2c63dc3fd44da869e3c8ebe2ebe7a083054d3bf",
+          "repoPath": "site-factory/seoul-gangnam-flower/scripts/release_mode.py",
+          "sha256": "a15ca7c905b0e4dca1bbb2e9a1af4870c24d4ba3b6bb7dbcc081563919ecea10"
+        }
+      ],
+      "caveat": "Inherited scripts/release_mode.py still names seoul-gwanak-flower-direct / seoul-gwanak-flower-guide and Gwanak routes; this is not a Gangnam target binding.",
+      "localOrigin": "https://seoul-gangnam.local.invalid"
+    },
+    {
+      "region": "seoul-songpa",
+      "sourceCommit": "823c99cd8e5162e5890d24df1b89a2aadcb145a3",
+      "observedLocalRefBranch": "source/seoul-songpa-frozen-git-push-20261014",
+      "observedProductionHostname": null,
+      "observedWorkerBinding": null,
+      "firstAttachmentScopeConfirmed": false,
+      "networkQueriesPerformed": false,
+      "sourceMode": {
+        "mode": "LOCAL_PREVIEW",
+        "approvalScope": "Assigned local implementation only",
+        "publicPresentationContract": "preserved unchanged as future intended public semantics",
+        "override": "all 5 routes noindex,nofollow,noarchive; empty sitemap; reserved invalid origin; utility404 omits canonical/social tags",
+        "futurePublicMode": "not implemented; separate exact source, hostname authorization and public QA required"
+      },
+      "productionApproved": false,
+      "ownershipVerified": false,
+      "evidence": [
+        {
+          "commit": "823c99cd8e5162e5890d24df1b89a2aadcb145a3",
+          "repoPath": "site-factory/seoul-songpa-flower/src/data/songpa-runtime.json",
+          "sha256": "0f3acd7e99a91169fdafefac47ce1bfa8cd614d3a875beeee62dc48e898bc037"
+        },
+        {
+          "commit": "823c99cd8e5162e5890d24df1b89a2aadcb145a3",
+          "repoPath": "site-factory/seoul-songpa-flower/src/lib/songpa-runtime.mjs",
+          "sha256": "4b6e9573cc700270d368c0034719c9288efbcfc05affcff3e885c6ea072605c1"
+        },
+        {
+          "commit": "823c99cd8e5162e5890d24df1b89a2aadcb145a3",
+          "repoPath": "site-factory/seoul-songpa-flower/astro.config.mjs",
+          "sha256": "39906473c37d09425fbb751a86412cd06c0efd5cac3fe1452e24bd15391487d0"
+        }
+      ],
+      "boundary": "Runtime rejects public SITE_URL, SITE_INDEXABLE true and production/ownership/IndexNow/public flags; future public mode is not implemented.",
+      "localOrigin": "https://seoul-songpa.local.invalid"
+    },
+    {
+      "region": "seoul-gangdong",
+      "sourceCommit": "9c044584505eec60c71f2bc7add497f0902f5424",
+      "observedLocalRefBranch": "site-factory-seoul-gangdong-direct",
+      "observedProductionHostname": null,
+      "observedWorkerBinding": null,
+      "firstAttachmentScopeConfirmed": false,
+      "networkQueriesPerformed": false,
+      "sourceMode": {
+        "mode": "LOCAL_PREVIEW",
+        "approvalScope": "Assigned local implementation only",
+        "publicPresentationContract": "preserved unchanged as future intended public semantics",
+        "override": "all 5 routes noindex,nofollow,noarchive; empty sitemap; reserved invalid origin; utility404 omits canonical/social tags",
+        "futurePublicMode": "not implemented; separate exact source, hostname authorization and public QA required"
+      },
+      "productionApproved": false,
+      "ownershipVerified": false,
+      "evidence": [
+        {
+          "commit": "9c044584505eec60c71f2bc7add497f0902f5424",
+          "repoPath": "site-factory/seoul-gangdong-flower/src/data/gangdong-runtime.json",
+          "sha256": "91de4df55bcafc061c79ca4b02499415ebb79c23e8a9b2a09e9e173df14c5e42"
+        },
+        {
+          "commit": "9c044584505eec60c71f2bc7add497f0902f5424",
+          "repoPath": "site-factory/seoul-gangdong-flower/src/lib/gangdong-runtime.mjs",
+          "sha256": "1daa80415320b88f3b819136bfbcce730efb7dc7ae6f02a0fc60d9ebcc8b6743"
+        },
+        {
+          "commit": "9c044584505eec60c71f2bc7add497f0902f5424",
+          "repoPath": "site-factory/seoul-gangdong-flower/astro.config.mjs",
+          "sha256": "5697023cd5d22c06de8b8d11efeebf121f8e7bd56e08bee187f5623309ce94d9"
+        }
+      ],
+      "boundary": "Runtime rejects public SITE_URL, SITE_INDEXABLE true and production/ownership/IndexNow/public flags; future public mode is not implemented.",
+      "localOrigin": "https://seoul-gangdong.local.invalid",
+      "existingLoopbackQa": {
+        "evidence": {
+          "commit": "550db2077962f5b47455b8b2a55acd61c3c52d6b",
+          "repoPath": "docs/direct-regional-release/seoul-gangdong/loopback-qa-38509445907-summary.json",
+          "sha256": "4bd8d0c06a5375c1a5d5aaf29ae23f8d050d88bedc0e287a94dd57b6f696db8e"
+        },
+        "sourceCommit": "9c044584505eec60c71f2bc7add497f0902f5424",
+        "runId": 38509445907,
+        "stage": "loopback-qa-only",
+        "publicHTTPVerified": false,
+        "domainConnected": false,
+        "indexNowSubmitted": false
+      }
+    }
+  ],
+  "limitations": [
+    "Read only existing local Git objects at the listed exact commits; no remote current-HEAD refresh.",
+    "No production hostname or Worker name was inferred from region naming conventions.",
+    "These are source-state findings, not a claim that no separate user authorization exists elsewhere."
+  ],
+  "requiredNextEvidence": "Separate exact hostname/Worker proposal and authorization binding for each region before first attachment; preserve frozen source while preparing reviewed production successors."
+}

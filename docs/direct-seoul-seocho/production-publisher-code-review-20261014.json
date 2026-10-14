@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "verdict": "PASS_INDEPENDENT_PUBLISHER_CODE_REVIEW_AFTER_CTA_FIX",
+  "reviewer": "banner_batch1_body_review",
+  "scope": "Reviewed proposal code and offline fixtures only; no source/main/remote writes, provider calls, real public HTTP or IndexNow submissions.",
+  "reviewedFiles": {
+    "scripts/direct-seoul-seocho/publish.py": "ff695e5fc01ca5cb15a0a7102a8f347931464773a7aae42554853347a2ed761f",
+    "scripts/direct-seoul-seocho/test_publish.py": "15ceb47be0e306c87df7bf6a19ab321d2d410d7b8b4bc315815b5c153099da95",
+    ".github/workflows/seoul-seocho-production-publish.yml": "91184360ebb9c0a2c4e4fde09748f7cc49c2f32fec7a7136adb8de6812db0cd3",
+    "scripts/direct-seoul-seocho/production_build.py": "890abb16a51543c055c72c35e2877388cf75d89ec02596a16c7f3057429327c9",
+    "scripts/direct-seoul-seocho/production_output.py": "e8f041b5a4fae0b541872b2d054d03ae1df40367ffed4032f6722ee5b78c419a"
+  },
+  "resolvedFindings": [
+    {
+      "severity": "blocking",
+      "location": "scripts/direct-seoul-seocho/publish.py:150 and :281; test_publish.py fixture",
+      "problem": "Artifact/live CTA checks required tel:18440644 and https://fwith.co.kr, differing from accepted Seocho tel:1844-0644 and https://fwith.co.kr/.",
+      "independentBeforeFix": "Sealed fixture using accepted CTA rejected with cta_mismatch and live_cta_mismatch. Actual accepted preview four customer HTML pages have the preserved forms.",
+      "fix": "Both publisher checks and fixtures now use the preserved exact Seocho links. Customer source unchanged.",
+      "verification": "Independent accepted-CTA fixture now passes artifact and injected HTTP checks; 16 old-CTA substitutions across four customer routes are rejected by regression tests."
+    }
+  ],
+  "unresolvedBlockingFindings": [],
+  "confirmed": {
+    "fixedScope": {
+      "hostname": "seoul-seocho.fwith.kr",
+      "worker": "seoul-seocho-flower-guide",
+      "repository": "joseungil-kr/fwith-site-factory"
+    },
+    "authorization": {
+      "commit": "0906606d701864affaf59879dd59fb3e006cc319",
+      "path": "docs/direct-seoul-seocho/production-authorization-20261014.json",
+      "sha256": "5d394f55f7004509a40d3747cd38c3f72999354cb9de288708bce6f412157d26",
+      "localBlobMatchesPinnedCommit": true
+    },
+    "manualReview": "Required verdict/source/binding/source-contract/build/artifact/QA IDs and full output/release-manifest digests; committed evidence paths hashed before selection. Missing descriptor blocks normally.",
+    "artifact": "No source checkout/build in publisher. Selected successful first-attempt build control and artifact IDs checked; exact release identity and all dist bytes rehashed before every provider/HTTP/IndexNow mode.",
+    "provider": "Three fixed GET paths; only fixed custom-domain PUT body, all three override flags false. Account verified, incomplete/duplicate/colliding inventory blocks, unbound existing Worker blocks; readback requires exact binding.",
+    "credentialScope": "Provider secrets only preflight/deploy/attach/readback steps; no source code execution there. GH_TOKEN only finalizer step. Deployment log not uploaded.",
+    "publicHTTP": "All four customer HTML routes, every non-HTML output except nonservable _headers, and unknown real-404 body checked against sealed bytes; exact canonical/revision/robots/CTA, all asset hashes and proof checked.",
+    "beacon": "Single recognized empty Cloudflare beacon only; resulting bytes must equal expected SHA. Function SHA256 c8d48ad03cfb19e9060606600f0f609c4979a1eac5cdf798b2643913a67b27b1 matches reviewed reuse.",
+    "indexNow": "Existing finalizer with fixed journal issue 266; local/live exact three sitemap URLs; started record before POST; already received and uncertain outcomes block duplicate POST; receipt is not a search-indexing claim."
+  },
+  "tests": {
+    "build": 8,
+    "output": 9,
+    "publisher": 14,
+    "totalPassed": 31,
+    "failed": 0,
+    "independentProviderInvalidOperationsRejected": 8,
+    "independentSimulatedIndexNowUrlCount": 3,
+    "realNetworkCalls": 0,
+    "realJournalWrites": 0
+  },
+  "remainingExecutionGates": [
+    "Successful final production artifact/source/control pins",
+    "Independent rendered browser and actual mobile/desktop pixel review",
+    "Actual committed production release-review descriptor/evidence",
+    "Exact owner/main/first-attempt publication issue"
+  ],
+  "publicHTTPVerified": false,
+  "pixelsReviewedForThisRelease": false,
+  "publicationAuthorizedByThisReview": false,
+  "deploymentExecuted": false,
+  "indexNowSubmitted": false,
+  "evidenceFiles": {
+    "boundary-checks.json": "5f7192a0c6e440ec46e627527240339b62a5977e239a8dfab989d0545006b69e",
+    "boundary_checks.py": "921c7f80e78b1e8056e18f88e3dfca3f8256b96684617078d1642a05a8c8af21",
+    "counterexamples.py": "76a288611a0810c4861adc41a2c12f211e0f4f867a6b226b91084d1fc0ea41c7",
+    "cta-counterexample-before-fix.json": "4c800f6b143dbec4e04e589e7ce20db6c9a7e449ed4d872e7363ab746f82fd43",
+    "cta-counterexample.json": "dbe451f272fd6dcb89e7da470e7fd12d86f880f9eb6a8b31ec8d76be2062924f",
+    "reviewed-files-after-fix.json": "252d34f548e7efb9c5d1e08b22cd799ab8e9fb73ae10413f9d053f60c4bff4c2",
+    "reviewed-files-before-fix.json": "58b7a5dab6e2da82a1df12fb950bcf1978df41ed2fd1b810af4f28d64e3a0a06",
+    "test_production_build.py.after-fix.log": "d5a9f1d88c7c927b5a77aa4c9a82d2dac97db2105a703c51b0a39211c51aa7b8",
+    "test_production_build.py.log": "e717d3488f48a7c20192de5a2618bc9fa8844225a42bbb88ee3c4d7616b6ad76",
+    "test_production_output.py.after-fix.log": "10a10ceaceb09f25bcee82f73c97ef5d59f3946a054a3d78dfda53ccde4d80c8",
+    "test_production_output.py.log": "3465494197637aa62f5ba3a3ed29cc041822ba2e061d05e1231eed8adae2e73c",
+    "test_publish.py.after-fix.log": "cc55d6adfd9b2f863cb8d7d938a1df97184c2ea151f399f2b59f680efea05040",
+    "test_publish.py.log": "4dde524cf9296ca6997148c5acc52e0332b9e901c451911937699a08f9ecfae4"
+  }
+}

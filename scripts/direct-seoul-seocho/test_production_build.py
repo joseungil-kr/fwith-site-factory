@@ -48,6 +48,43 @@ class BuildTests(unittest.TestCase):
     def test_binding_and_contract_required(self):
         with tempfile.TemporaryDirectory() as tmp, patch.object(b,'DIRECTORY',Path(tmp)):
             with self.assertRaises((ValueError,FileNotFoundError)):b.load()
+    def contract_fixture(self,directory):
+        baseline=b.frozen.load_contract();contract=copy.deepcopy(baseline)
+        contract['expectedSourceRevision']='a'*40
+        contract['protectedFiles'].pop(b.RUNTIME_QA_EXCEPTION)
+        contract['allowedModifiedOriginalPaths'].append(b.RUNTIME_QA_EXCEPTION)
+        contract['productionRuntimeAmendment']=dict(parentRevision=b.PROOF_SUCCESSOR,path=b.RUNTIME_QA_EXCEPTION,
+            beforeSha256='67db7b2298cd4e75fd7c23ec15d52026a20f891c7b1e22c5cadfaf1fedae9824',
+            afterSha256='7f66dca9628b58c49ed3168d28091558c622d1bda1e5ca7b61934fb89ca09919')
+        contract['proof']=dict(origin=b.ORIGIN,path='/TEST-ONLY-NOT-FOR-PUBLICATION.txt',sha256=b.EXISTING_PROOF_SHA256)
+        contract['expectedSourcePaths'].append('public'+contract['proof']['path'])
+        contract['sourceFilesSha256']={name:'0'*64 for name in contract['expectedSourcePaths']}
+        contract['sourceFilesSha256']['public'+contract['proof']['path']]=b.EXISTING_PROOF_SHA256
+        contract['sourceFilesSha256'][b.RUNTIME_QA_EXCEPTION]=contract['productionRuntimeAmendment']['afterSha256']
+        binding=dict(schemaVersion=1,state='approved',repository=b.REPOSITORY,sourceRoot=b.SOURCE_ROOT,
+            siteKey='seoul-seocho-flower-direct',hostname=b.HOSTNAME,origin=b.ORIGIN,worker=b.WORKER,
+            frozenSourceRevision=b.frozen.FROZEN_REVISION,customerCopySha256=b.frozen.COPY_SHA,sourceRevision='a'*40,
+            proof=contract['proof'],sitemapRoutes=b.output.ROUTES,notFoundStatus=404,thinDirectoryRobots='noindex,follow',
+            approvals=dict(hostBinding=True,indexNowProof=True,publication=True),
+            evidenceReferences={k:'https://github.com/'+b.REPOSITORY+'/issues/1' for k in ['hostBinding','indexNowProof','publication']})
+        def save():
+            raw=json.dumps(contract).encode();(directory/'production-source-contract.json').write_bytes(raw)
+            binding['sourceContractSha256']=b.sha(raw)
+            (directory/'production-binding.json').write_text(json.dumps(binding))
+        save();return contract,binding,save
+    def test_explicit_binding_and_amendment_contract(self):
+        with tempfile.TemporaryDirectory() as temp:
+            directory=Path(temp);contract,binding,save=self.contract_fixture(directory)
+            with patch.object(b,'DIRECTORY',directory):
+                self.assertEqual(len(b.load()[0]['protectedFiles']),945)
+                for mutate in [lambda:binding['approvals'].update(publication=False),
+                               lambda:binding.update(worker='other'),lambda:binding.update(thinDirectoryRobots='index,follow'),
+                               lambda:contract['productionRuntimeAmendment'].update(afterSha256='0'*64),
+                               lambda:contract['protectedFiles'].pop(next(iter(contract['protectedFiles']))),
+                               lambda:contract['sourceFilesSha256'].pop(next(iter(contract['sourceFilesSha256'])))]:
+                    oldc,oldb=copy.deepcopy(contract),copy.deepcopy(binding);mutate();save()
+                    with self.assertRaises(ValueError):b.load()
+                    contract.clear();contract.update(oldc);binding.clear();binding.update(oldb);save()
     def test_fixed_workflow_separates_preview_regression_and_production_output(self):
         text=(Path(__file__).resolve().parents[2]/'.github/workflows/seoul-seocho-production-build-only.yml').read_text()
         self.assertNotIn('secrets.',text);self.assertNotIn('issues: write',text)

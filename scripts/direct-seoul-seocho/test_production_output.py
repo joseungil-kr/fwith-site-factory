@@ -62,6 +62,13 @@ class OutputContractTests(unittest.TestCase):
         (self.root / self.proof['path'].lstrip('/')).unlink()
         with self.assertRaises(AssertionError): self.check()
 
+    def test_proof_requires_exact_single_lf_even_with_matching_digest(self):
+        path=self.root/self.proof['path'].lstrip('/')
+        for suffix in ['', '\r\n', '\n\n', ' \n']:
+            raw=(path.stem+suffix).encode('utf-8');path.write_bytes(raw)
+            self.proof['sha256']=hashlib.sha256(raw).hexdigest()
+            with self.subTest(suffix=suffix),self.assertRaises(AssertionError):self.check()
+
     def test_extra_html_and_worker(self):
         for name in ['extra.html', '_worker.js']:
             (self.root / name).write_text('test', encoding='utf-8')

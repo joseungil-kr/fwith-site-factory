@@ -1,0 +1,825 @@
+{
+  "schemaVersion": 1,
+  "region": "seoul-seocho",
+  "verdict": "PASS_INDEPENDENT_PRODUCTION_DESKTOP_PIXEL_REVIEW",
+  "reviewer": "/root/seocho_production_review",
+  "reviewedAtUtc": "2026-10-14T08:00:03.178373+00:00",
+  "sourceCommit": "52741146f4147f64d6804a757f560db0acf0d92c",
+  "buildRunId": "38529418686",
+  "buildArtifactId": "11877630325",
+  "buildControlSha": "17b0120247c2561591fdfd0b6cfd54d6642d1a80",
+  "qaRunId": "38530584980",
+  "qaArtifactId": "11878520053",
+  "qaControlSha": "912b46fc9fac974f6a1767e68fab89205c691e7a",
+  "qaRunAttempt": "1",
+  "qaArchiveSha256ReportedByRoot": "0a103510ca4e7b4d1dcd7297306145600946b0d52a585a1e9f57b3f0a27e1406",
+  "artifactRoot": "C:\\Users\\FIREBAT AM02\\Documents\\Codex\\2026-10-14\\task\\seocho-production-runtime-20261014\\qa",
+  "artifactBindings": {
+    "schemaVersion": 1,
+    "repository": "joseungil-kr/fwith-site-factory",
+    "sourceBranch": "source/seoul-seocho-production-successor-20261014",
+    "sourceRoot": "site-factory/seoul-seocho-flower",
+    "sourceSha": "52741146f4147f64d6804a757f560db0acf0d92c",
+    "buildControlSha": "17b0120247c2561591fdfd0b6cfd54d6642d1a80",
+    "runId": "38529418686",
+    "artifactId": "11877630325",
+    "archiveSha256": "2869763b5413c999e83f571f8ee7aef87fd1080f9671a3bc4c9fbf6740421ff4",
+    "releaseManifestSha256": "d02507a8684efe6c27c24eebf30f6b98379284b8d5b8ceb33a72f9866d52dd4e",
+    "outputFilesSha256": "39bd6bb60c211f1f09edf5beb50d6fb7e7828fbec0c33c3d78b113c65fbaf3d8",
+    "bindingSha256": "46b852e1fa80cfd4965f9e5abb2e5087c17cff4b42b6be2df76c43de342b87e3",
+    "sourceContractSha256": "905ff30fe7ae7ac5ae995174b002ee75010c6c9da038157f34d1b8bb9f22b68a",
+    "uiSpecSha256": "7a1af9272c411f2c494adc7f770d324d3f28215022807da74412592409717f87"
+  },
+  "publicHttpVerified": false,
+  "publicHTTPVerified": false,
+  "publicationAuthorizedByThisReview": false,
+  "desktopPixelsVerified": true,
+  "mobilePixelsReviewedByThisReviewer": false,
+  "scope": "All 37 requested 1280 desktop original image files, exact sealed production artifact served on loopback. No public-site or provider verification.",
+  "coverage": {
+    "originalFilesActuallyViewed": 37,
+    "fullAndBannerJpegs": 14,
+    "additionalPngs": 23,
+    "routes": 5,
+    "focusedBanners": 9,
+    "anchorScreenshots": 4,
+    "firstKeyboardFocusScreenshots": 5,
+    "detailScreenshots": 9
+  },
+  "integrity": {
+    "manifestPath": "evidence-manifest.json",
+    "manifestSha256": "00e3f2dfaa74246250a7d7290daffb73b9ccdcbe0c59f93120b05b0c9988c5df",
+    "allManifestFilesHashed": 137,
+    "hashMismatches": [],
+    "allReviewedImagesMatchSealedManifest": true
+  },
+  "blockingFindings": [],
+  "nonblockingObservations": [
+    {
+      "id": "ELEMENT_CAPTURE_FIXED_HEADER",
+      "artifactPath": "rendering/detail-1280-body-2.png",
+      "finding": "Observed limitation: a fixed-navigation strip crosses this 1732px-tall element screenshot around y=380-450, hiding the last part of the preceding paragraph and upper parts of the first-row product images. This image alone does not prove that covered content is unobscured.",
+      "assessment": "Compared with the original funeral full-page JPEG, where the same entire product section is present without that mid-section header. This is consistent with a long element screenshot capturing the fixed header; recorded as a nonblocking capture limitation, not silently classified as a clean image."
+    }
+  ],
+  "visualFindings": [
+    "All nine focused banners have readable 1844-0644, complete Korean headline/support copy and proportionate flower images, with no banner clipping or obstruction.",
+    "Home and both article full pages retain separate hero/content/product/reference/footer regions. Directory has no common banner; 404 has a clear recovery CTA.",
+    "All four target anchor headings clear the fixed top header. All five first-focus captures show an explicit visible focus ring.",
+    "No removed common-image caption is visible in the reviewed banner surroundings. Product/material disclaimers remain visible as expected."
+  ],
+  "limitations": [
+    "Long original full-page images were opened directly; the viewing surface reduces the tallest page displays. Overall layout was judged from these, while focused/viewport/detail images supported fine inspection. This is not a claim that every glyph in each full-page image was read at 1:1.",
+    "The body-2 element screenshot has the documented header occlusion. Original images were not edited, cropped, or synthesized to conceal it.",
+    "Desktop-only review: mobile sticky clearance is outside this reviewer scope; desktop native checks report no mobile bottom bar.",
+    "Machine DOM/SEO/hit-test facts below are read from the sealed native report and are separate from manual pixel observations. /404.html was served as a file with local HTTP 200; public missing-path real-404 verification must occur during the separate publish gate.",
+    "No source/configuration/Git/provider mutation, new browser execution, token access, or remote publication occurred in this task."
+  ],
+  "nativeReport": {
+    "path": "rendering/report.json",
+    "sha256": "2ef98a48e8285178788745826e39b530e2ba55ec5c32bb98943681a6eea1f587",
+    "sourceRevision": "52741146f4147f64d6804a757f560db0acf0d92c",
+    "browserVersion": "153.0.8010.12",
+    "machineChecksPassed": true,
+    "errors": [],
+    "desktop": [
+      {
+        "route": "/",
+        "viewport": [
+          1280,
+          900
+        ],
+        "scrollWidth": 1280,
+        "localStaticHttp": 200,
+        "h1Count": 1,
+        "robots": [
+          "index,follow"
+        ],
+        "canonical": [
+          "https://seoul-seocho.fwith.kr/"
+        ],
+        "fontStatus": "loaded",
+        "removedCaptionOccurrences": 0,
+        "sharedImageCount": 3,
+        "overflow": [],
+        "issues": [],
+        "loadedImageInstances": 13,
+        "allImagesLoaded": true,
+        "mobileFixedBarPresent": false,
+        "priceRuns": 10,
+        "allPricesValid": true,
+        "anchors": [],
+        "keyboardChecks": 25,
+        "allKeyboardVisible": true,
+        "allKeyboardHitTestsPassed": true,
+        "footerAllVisible": true
+      },
+      {
+        "route": "/regions/",
+        "viewport": [
+          1280,
+          900
+        ],
+        "scrollWidth": 1280,
+        "localStaticHttp": 200,
+        "h1Count": 1,
+        "robots": [
+          "noindex,follow"
+        ],
+        "canonical": [
+          "https://seoul-seocho.fwith.kr/regions/"
+        ],
+        "fontStatus": "loaded",
+        "removedCaptionOccurrences": 0,
+        "sharedImageCount": 0,
+        "overflow": [],
+        "issues": [],
+        "loadedImageInstances": 0,
+        "allImagesLoaded": true,
+        "mobileFixedBarPresent": false,
+        "priceRuns": 0,
+        "allPricesValid": true,
+        "anchors": [],
+        "keyboardChecks": 18,
+        "allKeyboardVisible": true,
+        "allKeyboardHitTestsPassed": true,
+        "footerAllVisible": true
+      },
+      {
+        "route": "/regions/seocho-funeral-wreath/",
+        "viewport": [
+          1280,
+          900
+        ],
+        "scrollWidth": 1280,
+        "localStaticHttp": 200,
+        "h1Count": 1,
+        "robots": [
+          "index,follow"
+        ],
+        "canonical": [
+          "https://seoul-seocho.fwith.kr/regions/seocho-funeral-wreath/"
+        ],
+        "fontStatus": "loaded",
+        "removedCaptionOccurrences": 0,
+        "sharedImageCount": 3,
+        "overflow": [],
+        "issues": [],
+        "loadedImageInstances": 8,
+        "allImagesLoaded": true,
+        "mobileFixedBarPresent": false,
+        "priceRuns": 5,
+        "allPricesValid": true,
+        "anchors": [
+          {
+            "id": "seoul-st-mary-funeral",
+            "count": 1,
+            "tag": "H2",
+            "text": "서울성모장례식장의 빈소 안내",
+            "top": 176.140625,
+            "bottom": 212.140625,
+            "headerBottom": 71,
+            "safeBottom": 900,
+            "visible": true
+          }
+        ],
+        "keyboardChecks": 23,
+        "allKeyboardVisible": true,
+        "allKeyboardHitTestsPassed": true,
+        "footerAllVisible": true
+      },
+      {
+        "route": "/regions/seocho-celebration-wreath/",
+        "viewport": [
+          1280,
+          900
+        ],
+        "scrollWidth": 1280,
+        "localStaticHttp": 200,
+        "h1Count": 1,
+        "robots": [
+          "index,follow"
+        ],
+        "canonical": [
+          "https://seoul-seocho.fwith.kr/regions/seocho-celebration-wreath/"
+        ],
+        "fontStatus": "loaded",
+        "removedCaptionOccurrences": 0,
+        "sharedImageCount": 3,
+        "overflow": [],
+        "issues": [],
+        "loadedImageInstances": 8,
+        "allImagesLoaded": true,
+        "mobileFixedBarPresent": false,
+        "priceRuns": 5,
+        "allPricesValid": true,
+        "anchors": [
+          {
+            "id": "eltower",
+            "count": 1,
+            "tag": "H2",
+            "text": "엘타워 결혼식에 전할 축복",
+            "top": 175.828125,
+            "bottom": 211.828125,
+            "headerBottom": 71,
+            "safeBottom": 900,
+            "visible": true
+          },
+          {
+            "id": "at-center-exhibition",
+            "count": 1,
+            "tag": "H2",
+            "text": "aT센터 전시행사의 참가자에게 보내는 경우",
+            "top": 175.890625,
+            "bottom": 211.890625,
+            "headerBottom": 71,
+            "safeBottom": 900,
+            "visible": true
+          },
+          {
+            "id": "opening-relocation",
+            "count": 1,
+            "tag": "H2",
+            "text": "개업과 이전을 응원하는 꽃",
+            "top": 175.859375,
+            "bottom": 211.859375,
+            "headerBottom": 71,
+            "safeBottom": 900,
+            "visible": true
+          }
+        ],
+        "keyboardChecks": 27,
+        "allKeyboardVisible": true,
+        "allKeyboardHitTestsPassed": true,
+        "footerAllVisible": true
+      },
+      {
+        "route": "/404.html",
+        "viewport": [
+          1280,
+          900
+        ],
+        "scrollWidth": 1280,
+        "localStaticHttp": 200,
+        "h1Count": 1,
+        "robots": [
+          "noindex,nofollow,noarchive"
+        ],
+        "canonical": [],
+        "fontStatus": "loaded",
+        "removedCaptionOccurrences": 0,
+        "sharedImageCount": 0,
+        "overflow": [],
+        "issues": [],
+        "loadedImageInstances": 0,
+        "allImagesLoaded": true,
+        "mobileFixedBarPresent": false,
+        "priceRuns": 0,
+        "allPricesValid": true,
+        "anchors": [],
+        "keyboardChecks": 11,
+        "allKeyboardVisible": true,
+        "allKeyboardHitTestsPassed": true,
+        "footerAllVisible": true
+      }
+    ],
+    "browserConsole": [],
+    "pageErrors": []
+  },
+  "screenshots": [
+    {
+      "artifactPath": "rendering/404-html-1280.png",
+      "sha256": "634c98f6dd842600bef57b5dac9cfb66ec6aaf76f136ca581c8564f797e65c95",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Missing-page message and return-home CTA are readable; top consultation CTA has an unobscured focus ring; header and footer show no clipping."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/anchor-at-center-exhibition-1280.png",
+      "sha256": "679cd6077ab9954c82d5de471c8c4e4766dab8ce3d1098f9c6909b5ffe68ebcd",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "aT-center exhibition heading is fully below the sticky header; address/floor text and exhibition-versus-wedding caveat are readable. Next ribbon-order section is separated. A sliver of the preceding section is behind the fixed header, not the target heading."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/anchor-eltower-1280.png",
+      "sha256": "b6e6a37a70cc4db50cc902eae3d06918140471c5cdd7b5d1bef50a1e373b1f4f",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Eltower heading is fully below the sticky header; address, hall floors and advance receipt consultation text are readable. Opening/relocation section follows with adequate separation."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/anchor-opening-relocation-1280.png",
+      "sha256": "611409c3e0f2fda6e20694743da514bf7a32b6ba4a2a364316c7d466deb47a6e",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Opening/relocation target heading is fully visible below the fixed header; two paragraphs and subsequent aT-center heading/body are readable. A sliver of preceding content under the sticky header is outside the target section."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/anchor-seoul-st-mary-funeral-1280.png",
+      "sha256": "9a31fa01b69299522eeb8a7123a128dd410c7bdab38e48a77f2c204cf673b741",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Seoul St Mary funeral target heading is fully visible below the header; road/lot address, floor and refusal/respect guidance are legible. Following ribbon section remains separated."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/detail-1280-body-1.png",
+      "sha256": "f4eb1dcd7f8b8d65a83a1c6aed8a5dc3dee40f2a1dfd0ca1f419962d0afac19e",
+      "dimensions": {
+        "width": 900,
+        "height": 330
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Entire condolence-introduction card is legible with two complete paragraphs, title and interior margins; no text collision or clipping."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/detail-1280-body-2.png",
+      "sha256": "d427d09fe6f2566caef8550b10b3453af5173cd573863e04d7b835f72f680b12",
+      "dimensions": {
+        "width": 900,
+        "height": 1732
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Product-comparison heading and most pricing paragraphs, four 3+1 product cards, prices and links are readable.",
+        "Observed limitation: a fixed-navigation strip crosses this 1732px-tall element screenshot around y=380-450, hiding the last part of the preceding paragraph and upper parts of the first-row product images. This image alone does not prove that covered content is unobscured.",
+        "Compared with the original funeral full-page JPEG, where the same entire product section is present without that mid-section header. This is consistent with a long element screenshot capturing the fixed header; recorded as a nonblocking capture limitation, not silently classified as a clean image."
+      ],
+      "result": "PASS_WITH_CAPTURE_LIMITATION"
+    },
+    {
+      "artifactPath": "rendering/detail-1280-body-3.png",
+      "sha256": "483ddac525e77127844cd86ff0c5a835b9d8949936b79b9cade75bd082674cf0",
+      "dimensions": {
+        "width": 900,
+        "height": 298
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Funeral-venue card title and both address/receiving-conditions paragraphs are fully legible, including respect for families declining wreaths; no clipping."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/detail-1280-body-4.png",
+      "sha256": "b87e67f63978bd98cf440deedc0ebbda83eec5a457e29dea7c71b230f90411bd",
+      "dimensions": {
+        "width": 900,
+        "height": 331
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Ribbon-message title, example condolence phrases and sender-name consultation paragraphs are fully legible with adequate line spacing."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/detail-1280-body-5.png",
+      "sha256": "f9cb36ba9ccc98c9b8c38182838be733e87a404fa92036eaed63d6e21537eb0e",
+      "dimensions": {
+        "width": 900,
+        "height": 330
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Order-consultation checklist begins with 1844-0644 and both paragraphs fit fully; no clipped line endings or overlap."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/detail-1280-body-6.png",
+      "sha256": "c51e61c4676ca775e90797ff16bb6df82a745f34767de54c8049a21397fb98aa",
+      "dimensions": {
+        "width": 900,
+        "height": 298
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Product/material-variation and no-collection information is readable in two complete paragraphs; retained product disclaimer is not the removed banner caption."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/detail-1280-body-7.png",
+      "sha256": "33ff403ffd610444669a375b162fab79b8d15d18da2f81d246b49ffc5e43762e",
+      "dimensions": {
+        "width": 900,
+        "height": 330
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Change/cancellation guidance appears as two complete readable paragraphs within the card; no clipping or collision."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/detail-1280-faq.png",
+      "sha256": "2801e3df0a0ef90810f44e000020aad5797688854fb197fc1529d396731536ee",
+      "dimensions": {
+        "width": 900,
+        "height": 255
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "FAQ question and expanded answer are readable. Venue information phone 02-2258-5940 and flower-order phone 1844-0644 are visibly distinguished. No collapsed or truncated answer."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/detail-1280-top.png",
+      "sha256": "d46dc11e1310004fe6867007ceb86f4aa96eda6f23d3aa399304ef2347d9461d",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Funeral hero and introduction are legible in the unfocused top viewport; product image is proportionate and the CTA row is unclipped."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/home-1280.png",
+      "sha256": "028e91b307b4371a47230bf20f50949163d2915bbf8404cbbc90a603f8f29eb8",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Hero title and description, 1844-0644 order CTA, official-shop CTA, two hero product cards and two situation cards are readable and fit. A visible focus ring surrounds the top-navigation consultation CTA."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/keyboard-first-1280-404-html.png",
+      "sha256": "1144893c92a51bac5c74c6b4849a2d75ba1b94bff063ed8b611ed0b5e6dcc015",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Magenta focus outline visibly surrounds the central return-home button; button text and outline are unobscured."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/keyboard-first-1280-home.png",
+      "sha256": "689a90fbe500e4c9b35c107d74f4a10f532a14eacae16733518a733900bdd5c1",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Magenta focus outline visibly surrounds the hero 1844-0644 order-consultation button, clear of the sticky header and neighboring shop button."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/keyboard-first-1280-regions-seocho-celebration-wreath.png",
+      "sha256": "7bfde5da23ef6ffc6250472588af257b46436b624653881a15d4624fbccb3feb",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "The celebration article first breadcrumb home link has a clear magenta focus rectangle below the header. Hero copy and product panel remain readable."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/keyboard-first-1280-regions-seocho-funeral-wreath.png",
+      "sha256": "f46e5ca1ca04bf36d382d11cbbb21ab13596fa4bb6b981b440f493139e6b931b",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "The funeral article first breadcrumb home link has a clear magenta focus rectangle below the header. Hero copy and product panel remain readable."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/keyboard-first-1280-regions.png",
+      "sha256": "045ed91db59b0ae07484a4e6e0ed0aff87f135884169602ebce85c3d649a3f25",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Magenta focus rectangle visibly surrounds the first breadcrumb home link below the header, without covering text."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/regions-1280.png",
+      "sha256": "d7ca69da945a62d5e90d7bb99fc7b2947c1b74a727b99e9ab20a19cc87814a8c",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Directory heading, introduction, two guide cards and the start of the legal/administrative section fit without collision; header consultation focus ring is visible."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/regions-seocho-celebration-wreath-1280.png",
+      "sha256": "994477dadb6e43275b61d15323055337071e4221d1cb78d9543b77f3247dd4bc",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Celebration hero wraps cleanly into two title lines; product photo, 59,000-won basic price, consultation/product CTAs and introduction are readable. Header consultation focus ring is visible."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/regions-seocho-funeral-wreath-1280.png",
+      "sha256": "1204a8e7b72bf75c49c6c82f0ad1374281021261ee66ea1ac2b813f785e8815d",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Funeral hero wraps cleanly into three title lines; product photograph, 59,000-won basic price and two CTAs remain separate and readable. Header consultation focus ring is visible."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/screenshots/1280/404-html/full.jpg",
+      "sha256": "658a1124a7b7d61c9b53ae4043149a84e78caf8bc0d52eb66e9985150179fb44",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Missing-page heading, explanatory sentence and yellow return-home button are centered and readable. Header/footer are intact, no shared banners. Blank space below the footer is visible and nonblocking.",
+        "This image verifies appearance only; the local static /404.html screenshot does not prove the public missing-path HTTP status."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/screenshots/1280/home/budget.jpg",
+      "sha256": "4e2e8da6109dc35cc91612680d0ef4876100936b75ca261ac8428a1f5608042f",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "The complete banner rectangle, phone 1844-0644 and Korean headline/supporting copy are legible. No banner clipping, stretching, overlap or removed common-image caption is visible.",
+        "White ranunculus composition; headline is flower choice within budget; supporting copy asks visitors to compare product photographs and prices. Product disclaimer above remains separate from the removed banner caption."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/screenshots/1280/home/consultation.jpg",
+      "sha256": "61cb05715242a5c579607ed58b94766f3f52afcd2901a01bc50da4f8b0c9341d",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "The complete banner rectangle, phone 1844-0644 and Korean headline/supporting copy are legible. No banner clipping, stretching, overlap or removed common-image caption is visible.",
+        "White lisianthus composition; headline is order consultation; supporting copy covers product selection through ribbon wording. The next footer/source section is separate and does not cover the banner."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/screenshots/1280/home/full.jpg",
+      "sha256": "f4f71ef6d13237bee2803f2a3bfd16535e9ad641694bf3f1dec18e89923cb45e",
+      "dimensions": {
+        "width": 1280,
+        "height": 4428
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Viewed the original full-page JPEG: hero with two product cards; two situation links; three banners separated by eight-product grid, price/disclaimer text and local-directory card; footer reached. No horizontal clipping or intersecting sections visible.",
+        "Full-page overall layout review; fine typography assessment uses the separate native viewport images, not this long-page display alone."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/screenshots/1280/home/message.jpg",
+      "sha256": "2dc751dc9663566ecb10acf9b968389a075982376a2090fbb3b993619d900436",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "The complete banner rectangle, phone 1844-0644 and Korean headline/supporting copy are legible. No banner clipping, stretching, overlap or removed common-image caption is visible.",
+        "White rose composition; headline means flowers convey the heart; supporting copy offers flowers suited to the intended sentiment. Fixed top navigation clears the banner."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/screenshots/1280/regions--seocho-celebration-wreath/budget.jpg",
+      "sha256": "cdb305ff151b0784573ce545ebe3ba19804137f958293c9a97a5cb61e44bba8f",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "The complete banner rectangle, phone 1844-0644 and Korean headline/supporting copy are legible. No banner clipping, stretching, overlap or removed common-image caption is visible.",
+        "White ranunculus composition; headline is flower choice within budget; supporting copy asks visitors to compare product photographs and prices. Product disclaimer above remains separate from the removed banner caption."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/screenshots/1280/regions--seocho-celebration-wreath/consultation.jpg",
+      "sha256": "badd1d17f20ff83151cb2bb2a27582c9421ae685302913bf72b9f9e8c4ee235f",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "The complete banner rectangle, phone 1844-0644 and Korean headline/supporting copy are legible. No banner clipping, stretching, overlap or removed common-image caption is visible.",
+        "White lisianthus composition; headline is order consultation; supporting copy covers product selection through ribbon wording. The next footer/source section is separate and does not cover the banner."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/screenshots/1280/regions--seocho-celebration-wreath/full.jpg",
+      "sha256": "85e13260e6f92f712f8954258d835904462709866575af26931228244009ed12",
+      "dimensions": {
+        "width": 1280,
+        "height": 7780
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Viewed the original full-page JPEG: celebration hero, introductory paragraph, three banners, four product cards in a 3+1 grid, venue/occasion sections, references, visible FAQ and related links, then footer. Overall alignment and section spacing are consistent.",
+        "This 7780px-tall source is displayed reduced by the viewing surface. It supports overall layout, not an assertion that every small glyph was independently read at 1:1. Separate focused banners, top and anchor captures were read for detail."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/screenshots/1280/regions--seocho-celebration-wreath/message.jpg",
+      "sha256": "7d131c4908a60e88380b2eb95180d50db252068e37e75ffc61413b690e01a295",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "The complete banner rectangle, phone 1844-0644 and Korean headline/supporting copy are legible. No banner clipping, stretching, overlap or removed common-image caption is visible.",
+        "White rose composition; headline means flowers convey the heart; supporting copy offers flowers suited to the intended sentiment. Fixed top navigation clears the banner."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/screenshots/1280/regions--seocho-funeral-wreath/budget.jpg",
+      "sha256": "c03cd1d5430139458928f0a909281025b870c17bc8231cfdb6662cee8a7600c5",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "The complete banner rectangle, phone 1844-0644 and Korean headline/supporting copy are legible. No banner clipping, stretching, overlap or removed common-image caption is visible.",
+        "White ranunculus composition; headline is flower choice within budget; supporting copy asks visitors to compare product photographs and prices. Product disclaimer above remains separate from the removed banner caption."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/screenshots/1280/regions--seocho-funeral-wreath/consultation.jpg",
+      "sha256": "970516ee3dd83363303721478d0a19d946e84458afca3d8876eff4194711e99c",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "The complete banner rectangle, phone 1844-0644 and Korean headline/supporting copy are legible. No banner clipping, stretching, overlap or removed common-image caption is visible.",
+        "White lisianthus composition; headline is order consultation; supporting copy covers product selection through ribbon wording. The next footer/source section is separate and does not cover the banner."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/screenshots/1280/regions--seocho-funeral-wreath/full.jpg",
+      "sha256": "743cb5fbc3d48558185e908af693608f64b3e0df2accbf29718229bd57e0968a",
+      "dimensions": {
+        "width": 1280,
+        "height": 7108
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Viewed the original full-page JPEG: funeral hero, introduction, three banners, four product cards in a 3+1 grid, seven body sections, references, visible FAQ and related links, then footer. No sticky header is repeated over the product section in this full-page capture.",
+        "This 7108px-tall source is displayed reduced by the viewing surface. Fine body text was also inspected in supplied detail captures, with the body-2 capture limitation recorded separately."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/screenshots/1280/regions--seocho-funeral-wreath/message.jpg",
+      "sha256": "a236c58f8025fdda2a78fccb71b1a3db47341cdf5e8ba5f873a040012c1830b2",
+      "dimensions": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "The complete banner rectangle, phone 1844-0644 and Korean headline/supporting copy are legible. No banner clipping, stretching, overlap or removed common-image caption is visible.",
+        "White rose composition; headline means flowers convey the heart; supporting copy offers flowers suited to the intended sentiment. Fixed top navigation clears the banner."
+      ],
+      "result": "PASS"
+    },
+    {
+      "artifactPath": "rendering/screenshots/1280/regions/full.jpg",
+      "sha256": "f46d14ee1423102a0e425032b49b246dd4303544348b2c02d63e6398b104ef54",
+      "dimensions": {
+        "width": 1280,
+        "height": 3295
+      },
+      "viewedOriginal": true,
+      "viewMethod": "tools.view_image(detail=original), no edit/crop/composite",
+      "facts": [
+        "Viewed the original full-page JPEG: directory hero, exactly two product-guide cards, ten separated legal-neighborhood rows with administrative names, three venue links and footer. No shared banners or repeated order banners appear. No clipped columns or overlapping row labels visible.",
+        "Overall layout and visible row structure reviewed; exact relationship counts are data/DOM assertions, not inferred from a thumbnail."
+      ],
+      "result": "PASS"
+    }
+  ]
+}
