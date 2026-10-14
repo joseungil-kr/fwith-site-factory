@@ -2,12 +2,14 @@
 import '../styles/global.css';
 import '../styles/gangdong.css';
 import runtime from '../data/gangdong-runtime.json';
+import {resolveGangdongRelease,robotsForRoute} from '../../scripts/gangdong_release.mjs';
+const release=resolveGangdongRelease(process.env,process.cwd());
 const {page}=Astro.props;
 const common=runtime.common,footer=common.footer;
-const canonical=new URL(page.path,runtime.origin).href;
+const canonical=new URL(page.path,release.origin).href;
 ---
 <!doctype html><html lang="ko"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>{page.title}</title><meta name="description" content={page.metaDescription}/><meta name="robots" content="noindex,nofollow,noarchive"/>
+<title>{page.title}</title><meta name="description" content={page.metaDescription}/><meta name="robots" content={robotsForRoute(page.path,release)}/><meta name="site-factory-revision" content={release.revision}/>
 {page.id!=='404'&&<link rel="canonical" href={canonical}/>}<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
 {page.id!=='404'&&<><meta property="og:type" content="website"/><meta property="og:title" content={page.title}/><meta property="og:description" content={page.metaDescription}/><meta property="og:url" content={canonical}/><meta property="og:locale" content="ko_KR"/>
 </>}
@@ -18,7 +20,7 @@ const canonical=new URL(page.path,runtime.origin).href;
 <nav class="desktop-navigation" aria-label={common.mobileMenu.label}>{common.navigation.map(link=><a href={link.href}>{link.label}</a>)}</nav>
 <details class="mobile-menu"><summary><span class="menu-open">{common.mobileMenu.open}</span><span class="menu-close">{common.mobileMenu.close}</span></summary><nav aria-label={common.mobileMenu.label}>{common.navigation.map(link=><a href={link.href}>{link.label}</a>)}</nav></details>
 </div></header>
-<main id="main-content"><slot/></main>
+<main id="main-content" tabindex="-1"><slot/></main>
 <footer><div><strong>{footer.brandLine}</strong><a href={common.phone.href}>{footer.phoneLabel}</a><span>{common.phone.hours}</span><a href={footer.catalogSourceLink.href}>{footer.catalogSourceLink.label}</a><a href={footer.directoryLink.href}>{footer.directoryLink.label}</a><a href={footer.homeLink.href}>{footer.homeLink.label}</a></div></footer>
 <div class="mobile-bar"><a href={common.navigation[0].href}>{common.navigation[0].label}</a><a href={common.phone.href}>{common.phone.label}</a></div>
 </body></html>
