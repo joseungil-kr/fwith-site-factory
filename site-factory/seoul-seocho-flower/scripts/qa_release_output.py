@@ -101,7 +101,7 @@ def inspect_dist(dist, mode, proof):
     assert proof['origin'] == ORIGIN
     name = proof['path'].lstrip('/')
     assert name in inventory and inventory[name] == proof['sha256'], 'Copied proof missing or changed'
-    assert (dist / name).read_text(encoding='utf-8') == Path(name).stem, 'Copied proof body mismatch'
+    assert (dist / name).read_bytes() == (Path(name).stem + '\n').encode('utf-8'), 'Copied proof body mismatch'
     return {'state': 'production_artifact_contract_verified', 'publicHTTPVerified': False,
             'origin': ORIGIN, 'revision': mode['revision'], 'htmlFiles': 5, 'sitemapUrls': sorted(urls),
             'thinDirectory': {'path': '/regions/', 'robots': 'noindex,follow', 'sitemapIncluded': False},

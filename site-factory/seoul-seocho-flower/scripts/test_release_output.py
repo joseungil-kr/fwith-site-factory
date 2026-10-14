@@ -11,13 +11,13 @@ class OutputContractTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory(); self.root = Path(self.temp.name)
         self.mode = dict(mode='production', indexable=True, origin=ORIGIN, revision='a' * 40)
         key = 'TEST-ONLY-NOT-FOR-PUBLICATION'
-        self.proof = dict(origin=ORIGIN, path='/' + key + '.txt', sha256=hashlib.sha256(key.encode()).hexdigest())
+        self.proof = dict(origin=ORIGIN, path='/' + key + '.txt', sha256=hashlib.sha256((key + '\n').encode()).hexdigest())
         for name, route in FILES.items():
             path = self.root / name; path.parent.mkdir(parents=True, exist_ok=True)
             robots = 'noindex,nofollow,noarchive' if route == '/404.html' else 'noindex,follow' if route == '/regions/' else 'index,follow'
             canonical = '' if route == '/404.html' else '<link rel="canonical" href="' + ORIGIN + route + '">'
             path.write_text('<!doctype html><html><head><meta name="robots" content="' + robots + '"><meta name="site-factory-revision" content="' + self.mode['revision'] + '">' + canonical + '</head><body><h1>Test fixture only</h1></body></html>', encoding='utf-8')
-        (self.root / (key + '.txt')).write_text(key, encoding='utf-8')
+        (self.root / (key + '.txt')).write_bytes((key + '\n').encode('utf-8'))
         (self.root / 'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: ' + ORIGIN + '/sitemap-index.xml\n', encoding='utf-8')
         (self.root / '_headers').write_text('/*\n  X-Content-Type-Options: nosniff\n', encoding='utf-8')
         (self.root / 'sitemap-index.xml').write_text('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><sitemap><loc>' + ORIGIN + '/sitemap-0.xml</loc></sitemap></sitemapindex>', encoding='utf-8')
@@ -61,6 +61,15 @@ class OutputContractTests(unittest.TestCase):
     def test_missing_proof(self):
         (self.root / self.proof['path'].lstrip('/')).unlink()
         with self.assertRaises(AssertionError): self.check()
+
+    def test_proof_exact_existing_lf_even_with_matching_hash(self):
+        path = self.root / self.proof['path'].lstrip('/')
+        for suffix in ['', '\r\n', '\n\n', ' \n']:
+            with self.subTest(suffix=suffix):
+                body = (path.stem + suffix).encode('utf-8')
+                path.write_bytes(body)
+                self.proof['sha256'] = hashlib.sha256(body).hexdigest()
+                with self.assertRaises(AssertionError): self.check()
 
     def test_extra_html_and_worker(self):
         for name in ['extra.html', '_worker.js']:

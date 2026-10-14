@@ -14,13 +14,13 @@ function fixture(t) {
   mkdirSync(join(root, 'src/data'), {recursive: true}); mkdirSync(join(root, 'public'));
   for (const name of ['site-config.json', 'production-target.json', 'seocho-copy.json'])
     writeFileSync(join(root, 'src/data', name), readFileSync(new URL('../src/data/' + name, import.meta.url)));
-  writeFileSync(join(root, 'public', fixtureProof + '.txt'), fixtureProof);
+  writeFileSync(join(root, 'public', fixtureProof + '.txt'), fixtureProof + '\n');
   const reference = 'https://github.com/joseungil-kr/fwith-site-factory/blob/' + 'b'.repeat(40) + '/TEST-ONLY.json';
   const binding = {schemaVersion: 1, state: 'approved', ...TARGET,
     sourceRevision: 'a'.repeat(40), sourceContractSha256: 'c'.repeat(64),
     approvals: {publication: true, hostBinding: true, indexNowProof: true},
     evidenceReferences: {publication: reference, hostBinding: reference, indexNowProof: reference},
-    proof: {origin: TARGET.origin, path: '/' + fixtureProof + '.txt', sha256: sha(fixtureProof)},
+    proof: {origin: TARGET.origin, path: '/' + fixtureProof + '.txt', sha256: sha(fixtureProof + '\n')},
     sitemapRoutes: [...SITEMAP_ROUTES], notFoundStatus: 404, thinDirectoryRobots: 'noindex,follow'};
   const env = {SITE_RELEASE_MODE: 'production', SITE_INDEXABLE: 'true', SITE_URL: TARGET.origin,
     SITE_FACTORY_REVISION: binding.sourceRevision, SITE_RELEASE_BINDING_PATH: join(root, 'TEST-ONLY-binding.json')};
@@ -90,6 +90,14 @@ test('matching proof hash cannot disguise incorrect proof body', t => {
   const f = fixture(t); writeFileSync(join(f.root, 'public', fixtureProof + '.txt'), 'wrong');
   f.binding.proof.sha256 = sha('wrong'); f.save(); assert.throws(() => getReleaseMode(f.root, f.env), /body_mismatch/);
 });
+for (const suffix of ['', '\r\n', '\n\n', ' \n']) {
+  test('proof keeps exact existing LF bytes: reject ' + JSON.stringify(suffix), t => {
+    const f = fixture(t); const body = fixtureProof + suffix;
+    writeFileSync(join(f.root, 'public', fixtureProof + '.txt'), body);
+    f.binding.proof.sha256 = sha(body); f.save();
+    assert.throws(() => getReleaseMode(f.root, f.env), /body_mismatch/);
+  });
+}
 test('proposed target cannot promote itself to approval', t => {
   const f = fixture(t); const path = join(f.root, 'src/data/production-target.json');
   const proposal = JSON.parse(readFileSync(path)); proposal.publicationApproved = true;

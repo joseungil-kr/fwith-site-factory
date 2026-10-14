@@ -73,7 +73,7 @@ export function getReleaseMode(root = ROOT, env = process.env) {
   require(hash(regularBytes(resolve(root, 'src/data/seocho-copy.json'))) === TARGET.customerCopySha256, 'release_customer_copy_changed');
   const proof = regularBytes(resolve(root, 'public', binding.proof.path.slice(1)));
   require(hash(proof) === binding.proof.sha256, 'release_proof_digest_mismatch');
-  require(proof.toString('utf8') === binding.proof.path.slice(1, -4), 'release_proof_body_mismatch');
+  require(proof.toString('utf8') === binding.proof.path.slice(1, -4) + '\n', 'release_proof_body_mismatch');
   return {mode, origin: TARGET.origin, indexable: true, revision: binding.sourceRevision,
     sitemapRoutes: SITEMAP_ROUTES, thinDirectoryRobots: 'noindex,follow', notFoundStatus: 404,
     bindingSha256: env.SITE_RELEASE_BINDING_SHA256};
