@@ -69,7 +69,7 @@ test('unchanged and adapted reuse provenance matches actual source and rejects s
  const temp=fs.mkdtempSync(path.join(os.tmpdir(),'gangdong-provenance-'));
  try{
   const provenance=JSON.parse(fs.readFileSync(new URL('src/data/template-provenance.json',root),'utf8'));
-  for(const row of [...provenance.reusedUnchanged,...provenance.adaptedFrom,{path:'src/data/template-provenance.json'}]){
+  for(const row of [...provenance.reusedUnchanged,...provenance.adaptedFrom,{path:'src/data/template-provenance.json'},{path:'release/successor-provenance.json'}]){
    const dest=path.join(temp,row.path);fs.mkdirSync(path.dirname(dest),{recursive:true});fs.copyFileSync(new URL(row.path,root),dest);
   }
   assert.doesNotThrow(()=>verifyReuse(temp));
