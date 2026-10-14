@@ -1,0 +1,101 @@
+name: SeoulSeocho pinned production build only
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+concurrency:
+  group: seoul-seocho-direct-public-release
+  cancel-in-progress: false
+jobs:
+  build_only:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[SEOCHO-PRODUCTION-BUILD] 20261014' && github.actor == 'joseungil-kr' && github.event.issue.user.login == 'joseungil-kr'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_RELEASE_MODE: production
+      SITE_INDEXABLE: 'true'
+      SITE_URL: https://seoul-seocho.fwith.kr
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - name: Authorize exact owner/main/first-attempt production request
+        id: select
+        run: python3 control/scripts/direct-seoul-seocho/production_build.py select --report selected-seocho-source.json
+      - name: Recheck the fixed source branch head
+        uses: actions/github-script@v7
+        env:
+          SOURCE_BRANCH: ${{ steps.select.outputs.source_branch }}
+          SOURCE_REVISION: ${{ steps.select.outputs.source_revision }}
+        with:
+          script: |
+            if (process.env.GITHUB_RUN_ATTEMPT !== '1') throw new Error('Reruns forbidden');
+            const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/' + process.env.SOURCE_BRANCH});
+            if (data.object.type !== 'commit' || data.object.sha !== process.env.SOURCE_REVISION) throw new Error('Pinned source branch moved');
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.select.outputs.source_revision }}
+          path: target
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify frozen ancestry, 98 pins, exact protected bytes and source inventory
+        env:
+          SITE_FACTORY_REVISION: ${{ steps.select.outputs.source_revision }}
+          SITE_RELEASE_BINDING_PATH: ${{ github.workspace }}/control/scripts/direct-seoul-seocho/production-binding.json
+          SITE_RELEASE_BINDING_SHA256: ${{ steps.select.outputs.binding_sha256 }}
+        run: python3 control/scripts/direct-seoul-seocho/production_build.py prebuild --checkout target --report seocho-source-prebuild.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install locked dependencies and run actual production build and all gates
+        working-directory: target/site-factory/seoul-seocho-flower
+        env:
+          SITE_FACTORY_REVISION: ${{ steps.select.outputs.source_revision }}
+          SITE_RELEASE_BINDING_PATH: ${{ github.workspace }}/control/scripts/direct-seoul-seocho/production-binding.json
+          SITE_RELEASE_BINDING_SHA256: ${{ steps.select.outputs.binding_sha256 }}
+          SEOCHO_QA_REPORT_PATH: ${{ github.workspace }}/evidence/seocho-static-qa.json
+        run: |
+          set -euo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/evidence"
+          npm ci --no-audit --no-fund 2>&1 | tee "$GITHUB_WORKSPACE/evidence/npm-ci.log"
+          # Frozen historical preview-boundary assertions run with their original preview environment.
+          for script in build test qa test:release; do
+            env SITE_RELEASE_MODE=preview SITE_INDEXABLE=false SITE_URL=https://seoul-seocho.local.invalid SITE_RELEASE_BINDING_PATH= SITE_RELEASE_BINDING_SHA256= npm run "$script" 2>&1 | tee "$GITHUB_WORKSPACE/evidence/preview-${script//:/-}.log"
+          done
+          # Production build includes compiled mutation tests; production QA and release tests follow.
+          for script in build qa test:release; do
+            npm run "$script" 2>&1 | tee "$GITHUB_WORKSPACE/evidence/production-${script//:/-}.log"
+          done
+      - name: Verify preserved source and bind exact production output
+        env:
+          SITE_FACTORY_REVISION: ${{ steps.select.outputs.source_revision }}
+          SITE_RELEASE_BINDING_PATH: ${{ github.workspace }}/control/scripts/direct-seoul-seocho/production-binding.json
+          SITE_RELEASE_BINDING_SHA256: ${{ steps.select.outputs.binding_sha256 }}
+        run: NATIVE_GATES_PASSED=true python3 control/scripts/direct-seoul-seocho/production_build.py postbuild --checkout target --report seocho-production-output.json
+      - name: Retain actual static output for independent pixel review
+        uses: actions/upload-artifact@v4
+        with:
+          name: seoul-seocho-production-build-${{ github.run_id }}
+          path: release/
+          include-hidden-files: true
+          if-no-files-found: error
+      - name: Retain actual execution logs and verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seoul-seocho-production-build-evidence-${{ github.run_id }}
+          path: |
+            selected-seocho-source.json
+            seocho-source-prebuild.json
+            seocho-production-output.json
+            evidence/
+            control/scripts/direct-seoul-seocho/production-source-contract.json
+            control/scripts/direct-seoul-seocho/production-binding.json
+            target/site-factory/seoul-seocho-flower/*-qa.json
+            target/site-factory/seoul-seocho-flower/faq-visible-html-review.json
+          if-no-files-found: warn
