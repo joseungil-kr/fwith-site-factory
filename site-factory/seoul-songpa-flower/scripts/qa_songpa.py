@@ -2,10 +2,11 @@ from pathlib import Path
 from html_surface import BeautifulSoup
 from urllib.parse import urljoin,urlsplit
 from collections import Counter
-import json,hashlib,sys,re
+import json,hashlib,sys,re,subprocess
 ROOT=Path(__file__).resolve().parents[1]
 
 def inspect(dist=None,root=ROOT):
+ release=json.loads(subprocess.check_output(["node",str(root/"scripts/songpa_release.mjs"),"--root",str(root),"--json"],text=True));production=release["mode"]=="production"
  dist=Path(dist or root/'dist');r=json.loads((root/'src/data/songpa-runtime.json').read_text());errors=[];checks=[];extract=[];docs={}
  def ok(value,label):
   checks.append({'check':label,'passed':bool(value)})
@@ -24,8 +25,8 @@ def inspect(dist=None,root=ROOT):
   ok(len(s.find_all('h1'))==1 and exact(h1,p['h1']),p['id']+' one exact H1')
   ok(exact(s.title,p['title']),p['id']+' exact title')
   ok(s.select_one('meta[name=description]')['content']==p['metaDescription'],p['id']+' exact meta description')
-  ok(s.select_one('meta[name=robots]')['content']=='noindex,nofollow,noarchive',p['id']+' local robots')
-  ok((not s.select('link[rel=canonical]') and not any(n.get('property','').startswith('og:') for n in s.find_all('meta'))) if p['id']=='404' else s.select_one('link[rel=canonical]')['href']==urljoin(r['origin'],p['path']),p['id']+' local canonical / utility404 exclusion')
+  ok(s.select_one('meta[name=robots]')['content']==('noindex,nofollow,noarchive' if not production or p['id']=='404' else 'noindex,follow' if p['id']=='directory' else 'index,follow'),p['id']+' mode-specific robots')
+  ok((not s.select('link[rel=canonical]') and not any(n.get('property','').startswith('og:') for n in s.find_all('meta'))) if p['id']=='404' else s.select_one('link[rel=canonical]')['href']==urljoin(release['origin'],p['path']),p['id']+' mode-specific canonical / utility404 exclusion')
   first=h1.find_next_sibling();ok(exact(first,p['firstAnswer']) and first.name=='p' and readable(first),p['id']+' first answer immediately after H1')
   ok(sum(txt(x)==p['firstAnswer'] for x in article.find_all('p'))==1,p['id']+' first answer single rendering')
   ok(not s.select('meta[name=naver-site-verification],script[type="application/ld+json"]'),p['id']+' no ownership or unsupported schema')
@@ -97,14 +98,18 @@ def inspect(dist=None,root=ROOT):
    if u.path!=page:inbound[u.path]+=1
  for p in ['/','/regions/','/regions/songpa-condolence-wreath/','/regions/songpa-wedding-wreath/']:ok(inbound[p]>0,'inbound '+p)
  ok(len({txt(s.title) for s in docs.values()})==5,'unique titles');ok(len({s.select_one('meta[name=description]')['content'] for s in docs.values()})==5,'unique descriptions')
- ok((dist/'robots.txt').read_text()=='User-agent: *\nDisallow: /\n','robots disallow all')
- ok(not BeautifulSoup((dist/'sitemap.xml').read_text(),'xml').find_all('loc'),'empty sitemap')
- ok('X-Robots-Tag: noindex, nofollow, noarchive' in (dist/'_headers').read_text(),'static response noindex contract')
+ if production:
+  from songpa_release_output import inspect_dist
+  inspect_dist(dist,release)
+ else:
+  ok((dist/'robots.txt').read_text()=='User-agent: *\nDisallow: /\n','robots disallow all')
+  ok(not BeautifulSoup((dist/'sitemap.xml').read_text(),'xml').find_all('loc'),'empty sitemap')
+  ok('X-Robots-Tag: noindex, nofollow, noarchive' in (dist/'_headers').read_text(),'static response noindex contract')
  expected_assets={a['path'].removeprefix('public/') for a in r['assets']}
  for a in r['assets']:
   f=dist/a['path'].removeprefix('public/');ok(f.is_file() and hashlib.sha256(f.read_bytes()).hexdigest()==a['sha256'],'output asset bytes '+a['path'])
  ok({str(p.relative_to(dist)) for p in (dist/'images').rglob('*') if p.is_file()}==expected_assets,'only 11 approved images')
- ok(not any(p.name.startswith(('google','naver')) or (p.suffix=='.txt' and p.name!='robots.txt') for p in dist.iterdir() if p.is_file()),'no ownership files')
+ ok(not any(p.name.startswith(('google','naver')) or (p.suffix=='.txt' and p.name not in (['robots.txt','39c4ed924bc6084c670a963c26d9f018.txt'] if production else ['robots.txt'])) for p in dist.iterdir() if p.is_file()),'no ownership files')
  css='\n'.join(p.read_text() for p in (dist/'_astro').glob('*.css'))
  ok('object-fit:contain' in css and re.search(r'aspect-ratio:1(?:/1)?[;}]',css) and re.search(r'aspect-ratio:2(?:/1)?[;}]',css),'responsive uncropped image CSS source')
  hidden_rules=[]
