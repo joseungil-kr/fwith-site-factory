@@ -1,10 +1,11 @@
 name: Unpublished regional loopback visual QA only
 on:
   push:
-    branches: [qa/unpublished-regional-visual-20261012]
+    branches: [qa/unpublished-regional-visual-20261012, qa/gangdong-local-preview-20261014]
     paths:
       - '.github/workflows/unpublished-regional-visual-qa.yml'
       - '.github/qa/unpublished-regional/**'
+      - '.github/qa/unpublished-gangdong/**'
 permissions:
   contents: read
 jobs:
@@ -155,5 +156,314 @@ jobs:
         with:
           name: unpublished-${{ matrix.key }}-1280-${{ github.sha }}-${{ github.run_attempt }}
           path: evidence/${{ matrix.key }}/screenshots/1280/
+          if-no-files-found: error
+          retention-days: 7
+  gangdong-local-preview:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/qa/gangdong-local-preview-20261014' && github.event_name == 'push' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+      SOURCE_ROOT: ${{ github.workspace }}/source
+      EVIDENCE_ROOT: ${{ github.workspace }}/evidence/gangdong
+      SITE_FACTORY_REVISION: 9c044584505eec60c71f2bc7add497f0902f5424
+      SITE_URL: https://seoul-gangdong.local.invalid
+      SITE_ORIGIN: https://seoul-gangdong.local.invalid
+      SITE_INDEXABLE: 'false'
+      PRODUCTION_APPROVED: 'false'
+      PUBLIC_APPROVED: 'false'
+      OWNERSHIP_VERIFIED: 'false'
+      INDEXNOW_ENABLED: 'false'
+    steps:
+      - name: Check out exact QA control commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - name: Check out immutable Gangdong source
+        uses: actions/checkout@v4
+        with:
+          ref: 9c044584505eec60c71f2bc7add497f0902f5424
+          fetch-depth: 2
+          path: source
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact source and controls before dependency installation
+        shell: bash
+        run: |
+          set -euo pipefail
+          controls="$GITHUB_WORKSPACE/control/.github/qa/unpublished-gangdong"
+          python3 "$controls/adapter.py" source
+          python3 "$controls/test_controls.py" -v 2>&1 | tee "$EVIDENCE_ROOT/logs/control-tests.log"
+      - name: Install exact locked native dependencies on runner only
+        working-directory: source/site-factory/seoul-gangdong-flower
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Run unchanged Gangdong native gates and exact two-build comparison
+        working-directory: source/site-factory/seoul-gangdong-flower
+        shell: bash
+        run: |
+          set -euo pipefail
+          controls="$GITHUB_WORKSPACE/control/.github/qa/unpublished-gangdong"
+          for attempt in first second; do
+            npm run build 2>&1 | tee "$EVIDENCE_ROOT/logs/native-build-$attempt.log"
+            npm test 2>&1 | tee "$EVIDENCE_ROOT/logs/native-tests-$attempt.log"
+            npm run qa 2>&1 | tee "$EVIDENCE_ROOT/logs/native-qa-$attempt.log"
+            python3 "$controls/adapter.py" manifest "$EVIDENCE_ROOT/logs/$attempt.manifest.json"
+          done
+          cmp "$EVIDENCE_ROOT/logs/first.manifest.json" "$EVIDENCE_ROOT/logs/second.manifest.json"
+          cp -a dist "$EVIDENCE_ROOT/dist"
+      - name: Install official pinned browser tooling on runner only
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install 'playwright==1.63.0'
+          python3 -m playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          fc-match 'Noto Sans CJK KR' | tee "$EVIDENCE_ROOT/logs/font-match.txt"
+      - name: Capture only runner loopback and fail on missing evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 control/.github/qa/unpublished-gangdong/run_capture.py --allow-loopback-runner 2>&1 | tee "$EVIDENCE_ROOT/logs/browser-capture.log"
+      - name: Seal source-bound report and screenshot bytes after logs close
+        if: always()
+        run: python3 control/.github/qa/unpublished-gangdong/adapter.py seal
+      - name: Partition every evidence path into bounded download groups
+        id: gangdong_groups
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 control/.github/qa/unpublished-gangdong/prepare_artifacts.py 2>&1 | tee "$GITHUB_WORKSPACE/evidence/gangdong-grouping.log"
+      - name: Retain bounded reports evidence
+        id: upload_reports
+        if: always() && steps.gangdong_groups.outputs.reports == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-reports-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/reports/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded dist evidence
+        id: upload_dist
+        if: always() && steps.gangdong_groups.outputs.dist == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-dist-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/dist/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded screen_320_home evidence
+        id: upload_screen_320_home
+        if: always() && steps.gangdong_groups.outputs.screen_320_home == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-screen_320_home-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/screen_320_home/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded screen_320_regions__gangdong_condolence_wreath evidence
+        id: upload_screen_320_regions__gangdong_condolence_wreath
+        if: always() && steps.gangdong_groups.outputs.screen_320_regions__gangdong_condolence_wreath == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-screen_320_regions__gangdong_condolence_wreath-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/screen_320_regions__gangdong_condolence_wreath/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded screen_320_regions__gangdong_wedding_wreath evidence
+        id: upload_screen_320_regions__gangdong_wedding_wreath
+        if: always() && steps.gangdong_groups.outputs.screen_320_regions__gangdong_wedding_wreath == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-screen_320_regions__gangdong_wedding_wreath-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/screen_320_regions__gangdong_wedding_wreath/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded screen_320_regions evidence
+        id: upload_screen_320_regions
+        if: always() && steps.gangdong_groups.outputs.screen_320_regions == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-screen_320_regions-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/screen_320_regions/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded screen_320_404_html evidence
+        id: upload_screen_320_404_html
+        if: always() && steps.gangdong_groups.outputs.screen_320_404_html == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-screen_320_404_html-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/screen_320_404_html/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded screen_390_home evidence
+        id: upload_screen_390_home
+        if: always() && steps.gangdong_groups.outputs.screen_390_home == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-screen_390_home-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/screen_390_home/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded screen_390_regions__gangdong_condolence_wreath evidence
+        id: upload_screen_390_regions__gangdong_condolence_wreath
+        if: always() && steps.gangdong_groups.outputs.screen_390_regions__gangdong_condolence_wreath == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-screen_390_regions__gangdong_condolence_wreath-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/screen_390_regions__gangdong_condolence_wreath/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded screen_390_regions__gangdong_wedding_wreath evidence
+        id: upload_screen_390_regions__gangdong_wedding_wreath
+        if: always() && steps.gangdong_groups.outputs.screen_390_regions__gangdong_wedding_wreath == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-screen_390_regions__gangdong_wedding_wreath-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/screen_390_regions__gangdong_wedding_wreath/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded screen_390_regions evidence
+        id: upload_screen_390_regions
+        if: always() && steps.gangdong_groups.outputs.screen_390_regions == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-screen_390_regions-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/screen_390_regions/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded screen_390_404_html evidence
+        id: upload_screen_390_404_html
+        if: always() && steps.gangdong_groups.outputs.screen_390_404_html == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-screen_390_404_html-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/screen_390_404_html/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded screen_1280_home evidence
+        id: upload_screen_1280_home
+        if: always() && steps.gangdong_groups.outputs.screen_1280_home == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-screen_1280_home-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/screen_1280_home/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded screen_1280_regions__gangdong_condolence_wreath evidence
+        id: upload_screen_1280_regions__gangdong_condolence_wreath
+        if: always() && steps.gangdong_groups.outputs.screen_1280_regions__gangdong_condolence_wreath == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-screen_1280_regions__gangdong_condolence_wreath-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/screen_1280_regions__gangdong_condolence_wreath/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded screen_1280_regions__gangdong_wedding_wreath evidence
+        id: upload_screen_1280_regions__gangdong_wedding_wreath
+        if: always() && steps.gangdong_groups.outputs.screen_1280_regions__gangdong_wedding_wreath == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-screen_1280_regions__gangdong_wedding_wreath-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/screen_1280_regions__gangdong_wedding_wreath/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded screen_1280_regions evidence
+        id: upload_screen_1280_regions
+        if: always() && steps.gangdong_groups.outputs.screen_1280_regions == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-screen_1280_regions-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/screen_1280_regions/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded screen_1280_404_html evidence
+        id: upload_screen_1280_404_html
+        if: always() && steps.gangdong_groups.outputs.screen_1280_404_html == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-screen_1280_404_html-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-groups/screen_1280_404_html/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Record separate per-group GitHub upload receipts
+        if: always() && steps.gangdong_groups.outcome == 'success'
+        env:
+          EVIDENCE_ARTIFACTS_JSON: >-
+            {
+              "reports": {"id": "${{ steps.upload_reports.outputs.artifact-id }}", "url": "${{ steps.upload_reports.outputs.artifact-url }}", "digest": "${{ steps.upload_reports.outputs.artifact-digest }}"},
+              "dist": {"id": "${{ steps.upload_dist.outputs.artifact-id }}", "url": "${{ steps.upload_dist.outputs.artifact-url }}", "digest": "${{ steps.upload_dist.outputs.artifact-digest }}"},
+              "screen_320_home": {"id": "${{ steps.upload_screen_320_home.outputs.artifact-id }}", "url": "${{ steps.upload_screen_320_home.outputs.artifact-url }}", "digest": "${{ steps.upload_screen_320_home.outputs.artifact-digest }}"},
+              "screen_320_regions__gangdong_condolence_wreath": {"id": "${{ steps.upload_screen_320_regions__gangdong_condolence_wreath.outputs.artifact-id }}", "url": "${{ steps.upload_screen_320_regions__gangdong_condolence_wreath.outputs.artifact-url }}", "digest": "${{ steps.upload_screen_320_regions__gangdong_condolence_wreath.outputs.artifact-digest }}"},
+              "screen_320_regions__gangdong_wedding_wreath": {"id": "${{ steps.upload_screen_320_regions__gangdong_wedding_wreath.outputs.artifact-id }}", "url": "${{ steps.upload_screen_320_regions__gangdong_wedding_wreath.outputs.artifact-url }}", "digest": "${{ steps.upload_screen_320_regions__gangdong_wedding_wreath.outputs.artifact-digest }}"},
+              "screen_320_regions": {"id": "${{ steps.upload_screen_320_regions.outputs.artifact-id }}", "url": "${{ steps.upload_screen_320_regions.outputs.artifact-url }}", "digest": "${{ steps.upload_screen_320_regions.outputs.artifact-digest }}"},
+              "screen_320_404_html": {"id": "${{ steps.upload_screen_320_404_html.outputs.artifact-id }}", "url": "${{ steps.upload_screen_320_404_html.outputs.artifact-url }}", "digest": "${{ steps.upload_screen_320_404_html.outputs.artifact-digest }}"},
+              "screen_390_home": {"id": "${{ steps.upload_screen_390_home.outputs.artifact-id }}", "url": "${{ steps.upload_screen_390_home.outputs.artifact-url }}", "digest": "${{ steps.upload_screen_390_home.outputs.artifact-digest }}"},
+              "screen_390_regions__gangdong_condolence_wreath": {"id": "${{ steps.upload_screen_390_regions__gangdong_condolence_wreath.outputs.artifact-id }}", "url": "${{ steps.upload_screen_390_regions__gangdong_condolence_wreath.outputs.artifact-url }}", "digest": "${{ steps.upload_screen_390_regions__gangdong_condolence_wreath.outputs.artifact-digest }}"},
+              "screen_390_regions__gangdong_wedding_wreath": {"id": "${{ steps.upload_screen_390_regions__gangdong_wedding_wreath.outputs.artifact-id }}", "url": "${{ steps.upload_screen_390_regions__gangdong_wedding_wreath.outputs.artifact-url }}", "digest": "${{ steps.upload_screen_390_regions__gangdong_wedding_wreath.outputs.artifact-digest }}"},
+              "screen_390_regions": {"id": "${{ steps.upload_screen_390_regions.outputs.artifact-id }}", "url": "${{ steps.upload_screen_390_regions.outputs.artifact-url }}", "digest": "${{ steps.upload_screen_390_regions.outputs.artifact-digest }}"},
+              "screen_390_404_html": {"id": "${{ steps.upload_screen_390_404_html.outputs.artifact-id }}", "url": "${{ steps.upload_screen_390_404_html.outputs.artifact-url }}", "digest": "${{ steps.upload_screen_390_404_html.outputs.artifact-digest }}"},
+              "screen_1280_home": {"id": "${{ steps.upload_screen_1280_home.outputs.artifact-id }}", "url": "${{ steps.upload_screen_1280_home.outputs.artifact-url }}", "digest": "${{ steps.upload_screen_1280_home.outputs.artifact-digest }}"},
+              "screen_1280_regions__gangdong_condolence_wreath": {"id": "${{ steps.upload_screen_1280_regions__gangdong_condolence_wreath.outputs.artifact-id }}", "url": "${{ steps.upload_screen_1280_regions__gangdong_condolence_wreath.outputs.artifact-url }}", "digest": "${{ steps.upload_screen_1280_regions__gangdong_condolence_wreath.outputs.artifact-digest }}"},
+              "screen_1280_regions__gangdong_wedding_wreath": {"id": "${{ steps.upload_screen_1280_regions__gangdong_wedding_wreath.outputs.artifact-id }}", "url": "${{ steps.upload_screen_1280_regions__gangdong_wedding_wreath.outputs.artifact-url }}", "digest": "${{ steps.upload_screen_1280_regions__gangdong_wedding_wreath.outputs.artifact-digest }}"},
+              "screen_1280_regions": {"id": "${{ steps.upload_screen_1280_regions.outputs.artifact-id }}", "url": "${{ steps.upload_screen_1280_regions.outputs.artifact-url }}", "digest": "${{ steps.upload_screen_1280_regions.outputs.artifact-digest }}"},
+              "screen_1280_404_html": {"id": "${{ steps.upload_screen_1280_404_html.outputs.artifact-id }}", "url": "${{ steps.upload_screen_1280_404_html.outputs.artifact-url }}", "digest": "${{ steps.upload_screen_1280_404_html.outputs.artifact-digest }}"}
+            }
+        run: python3 control/.github/qa/unpublished-gangdong/artifact_receipt.py
+      - name: Keep bounded diagnostics even when grouping or upload fails
+        if: always()
+        env:
+          GROUPING_OUTCOME: ${{ steps.gangdong_groups.outcome }}
+        run: python3 control/.github/qa/unpublished-gangdong/write_diagnostics.py
+      - name: Retain group index, upload receipts and bounded diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gangdong-loopback-receipts-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/gangdong-artifact-metadata/
           if-no-files-found: error
           retention-days: 7
