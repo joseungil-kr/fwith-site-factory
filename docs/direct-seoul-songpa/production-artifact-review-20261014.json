@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "region": "seoul-songpa",
+  "sourceCommit": "b8707da0005ca9eea83b3f36956b775de0801f9f",
+  "bindingSha256": "1457d2e62583644f86b9f722874b60c9750a5b2120a3b1b7c82a12544902946b",
+  "sourceContractSha256": "21f6f816bc903f26ade5243d9b6fd0feabf2609f61edc019b94a304c96ca47a1",
+  "allRouteOutputVerified": true,
+  "nativeTestsPassed": true,
+  "mobileAndDesktopPixelsVerified": true,
+  "publicHttpVerified": false,
+  "verdict": "PASS_SONGPA_PRODUCTION_ARTIFACT_REVIEW",
+  "reviewer": "review_songpa_runner_pixels + verify_songpa_production_artifact; parent verified exact byte linkage",
+  "buildRunId": 38592611775,
+  "artifactId": 11907804893,
+  "qaRunId": 38592611775,
+  "buildControlSha": "aa22ef4c80ede8603874c933971fb7c5c7ef858a",
+  "artifactDigest": "sha256:470233adf2085283b0b395ab3400acb2da971f395ba11e3106c87c3c422bfb02",
+  "outputFilesSha256": "99f3b588b96d8ee240c3572553041e4b7f356d5a6be8e2e7c86b67a0782381ae",
+  "releaseManifestSha256": "fa9d336c8d527573e346a91418b8e750ed78dd514a92d1da188e56aaf7c01331",
+  "evidence": [
+    {
+      "kind": "all-route-output",
+      "path": "docs/direct-seoul-songpa/production-output-review-20261014.json",
+      "sha256": "3fdcd5d7c5b35369a3094b12659765291c473fc5c1ae97960db238285f3b3d77"
+    },
+    {
+      "kind": "mobile-pixels",
+      "path": "docs/direct-seoul-songpa/preview-review-20261014.json",
+      "sha256": "1ff233316c93829c1d970b1bd4c33b1904e8bc7fb5c2f8dfc611fb66129d8410"
+    },
+    {
+      "kind": "desktop-pixels",
+      "path": "docs/direct-seoul-songpa/preview-review-20261014.json",
+      "sha256": "1ff233316c93829c1d970b1bd4c33b1904e8bc7fb5c2f8dfc611fb66129d8410"
+    },
+    {
+      "kind": "independent-release-gate",
+      "path": "docs/direct-seoul-songpa/independent-production-review-20261014.json",
+      "sha256": "0ed30ca0e27c9df8fc2ef6374477c62bfac06c40b901d05af806abb986522c45"
+    }
+  ],
+  "pixelReuse": {
+    "previewRunId": 38591020039,
+    "actualProductionImagesByteIdentical": 87,
+    "reviewedRequiredScreenshots": 42,
+    "reviewedKeyboardScreenshots": 15,
+    "htmlBodiesByteIdentical": 5,
+    "visualAssetsByteIdentical": 13
+  },
+  "limitations": [
+    "Not yet deployed; public HTTP, real missing-route404 and IndexNow pending.",
+    "Menu-open and skip-focused states have runner assertion evidence, no dedicated screenshots.",
+    "External product destinations not freshly requested; exact approved href bindings verified."
+  ]
+}
