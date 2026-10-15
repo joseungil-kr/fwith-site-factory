@@ -1,0 +1,24 @@
+---
+import '../styles/global.css';
+import '../styles/gangdong.css';
+import '../styles/mokpo.css';
+import '../styles/yeosu.css';
+import {assertBoundary,pages} from '../lib/yeosu-runtime.mjs';
+assertBoundary();
+const {page}=Astro.props;
+const navigation=pages.filter((p:any)=>['home','article'].includes(p.id)).map((p:any)=>({label:p.h1,href:p.path}));
+---
+<!doctype html><html lang="ko"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>{page.title}</title><meta name="description" content={page.metaDescription}/><meta name="robots" content="noindex,follow"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<meta property="og:type" content="website"/><meta property="og:title" content={page.title}/><meta property="og:description" content={page.metaDescription}/><meta property="og:locale" content="ko_KR"/><meta name="theme-color" content="#3a214f"/>
+</head><body>
+<a class="skip-link" href="#main-content">본문으로 바로 가기</a>
+<header class="site-header"><div class="header-inner"><a class="brand" href="/"><span class="brand-icon" aria-hidden="true">✿</span><span><b>꽃이랑</b><small>여수 근조화환</small></span></a>
+<nav class="desktop-navigation" aria-label="주요 메뉴">{navigation.map((link:any)=><a href={link.href}>{link.label}</a>)}</nav>
+<details class="mobile-menu"><summary><span class="menu-open">메뉴 열기</span><span class="menu-close">메뉴 닫기</span></summary><nav aria-label="주요 메뉴">{navigation.map((link:any)=><a href={link.href}>{link.label}</a>)}</nav></details>
+</div></header>
+<main id="main-content" tabindex="-1"><slot/></main>
+<footer><div><strong>꽃이랑 · 여수 근조화환</strong><a href="tel:18440644">주문 상담 1844-0644</a><a href="/">여수 근조화환 홈</a></div></footer>
+<div class="mobile-bar"><a href="/">여수 근조화환 홈</a><a href="tel:18440644">전화로 주문 상담</a></div>
+</body></html>
