@@ -84,6 +84,36 @@ class PublisherTests(unittest.TestCase):
 
     def authorize(self,env,event):return p.authorize(self.c,p.gate.load()[2],env,event)
 
+    def fixture_ctas(self,route):
+        if route == '/404.html': return '<a href="/">Home</a>'
+        child='/regions/hankook-hospital-funeral-wreath/'
+        if route == '/regions/': return '<a href="'+child+'">Child</a>'
+        text='<a href="tel:18440644">Telephone</a>'*(1 if route=='/' else 2)
+        for sku in ['B201','B203','B205','B060']:
+            href='https://fwith.co.kr/shop/item.php?it_id='+sku
+            text+='<a href="'+href+'">SKU text</a><a data-order-product-sku="'+sku+'" href="'+href+'">Product detail</a>'
+        text+='<a href="'+(child if route=='/' else '/regions/')+'">Related page</a>'
+        return text
+
+    def test_exact_reviewed_conversion_routes_accept_no_catalog_home_link(self):
+        for route in sorted(p.ROUTES):
+            page=p.Page('<main>'+self.fixture_ctas(route)+'</main>')
+            self.assertNotIn('https://fwith.co.kr/',page.links)
+            p.validate_conversion_paths(page,route)
+
+    def test_wrong_missing_or_header_only_conversion_ctas_rejected(self):
+        home=self.fixture_ctas('/')
+        variants=[home.replace('tel:18440644','tel:00000000'),home.replace('<a href="tel:18440644">Telephone</a>',''),home.replace('it_id=B201','it_id=B999'),home.replace('https://fwith.co.kr/shop/item.php?it_id=B201','https://fwith.co.kr/'),home.replace('data-order-product-sku="B201"','data-order-product-sku="B999"'),home.replace('data-order-product-sku="B201"',''),home+'<a href="https://fwith.co.kr/">Unreviewed catalog link</a>',home.replace('href="/regions/hankook-hospital-funeral-wreath/"','href="/regions/"')]
+        for i,body in enumerate(variants):
+            with self.subTest(variant=i),self.assertRaises(ValueError):
+                p.validate_conversion_paths(p.Page('<header><a href="tel:18440644">Telephone</a></header><main>'+body+'</main>'),'/')
+
+    def test_support_requires_actual_body_child_and_no_product_cta(self):
+        child=self.fixture_ctas('/regions/')
+        for body in ['',child.replace('hankook-hospital-funeral-wreath','wrong'),child+'<a href="tel:18440644">Telephone</a>',child+'<a data-order-product-sku="B201" href="https://fwith.co.kr/shop/item.php?it_id=B201">Buy</a>']:
+            with self.subTest(body=body),self.assertRaises(ValueError):
+                p.validate_conversion_paths(p.Page('<nav>'+child+'</nav><main>'+body+'</main>'),'/regions/')
+
     def fixture_release(self):
         release=self.root/'release';dist=release/'dist';dist.mkdir(parents=True)
         for name,route in p.output.FILES.items():
@@ -95,7 +125,7 @@ class PublisherTests(unittest.TestCase):
                 tw={'twitter:card':'summary','twitter:title':'Fixture','twitter:description':'Fixture description','twitter:image':p.ORIGIN+p.output.SOCIAL_IMAGE_PATH,'twitter:image:alt':p.output.SOCIAL_IMAGE_ALT}
                 text+=''.join('<meta property="'+key+'" content="'+value+'">' for key,value in og.items())
                 text+=''.join('<meta name="'+key+'" content="'+value+'">' for key,value in tw.items())
-            text+='</head><body><main id="main-content" tabindex="-1"><h1>Fixture</h1><a href="tel:18440644">전화</a><a href="https://fwith.co.kr/">주문</a></main></body></html>'
+            text+='</head><body><a href="tel:18440644">header telephone</a><main id="main-content" tabindex="-1"><h1>Fixture</h1>'+self.fixture_ctas(route)+'</main></body></html>'
             file=dist/name;file.parent.mkdir(parents=True,exist_ok=True);file.write_text(text)
         (dist/'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: '+p.ORIGIN+'/sitemap-index.xml\n')
         (dist/'_headers').write_text('/*\n')
