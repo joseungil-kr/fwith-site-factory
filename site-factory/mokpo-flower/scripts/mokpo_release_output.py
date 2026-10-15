@@ -101,7 +101,7 @@ def inspect_dist(dist, mode, proof=PROOF):
             assert [m.get('content') for m in doc.social if m.get('property')=='og:url'] == [ORIGIN+route], 'Exact og:url required'
     urls = reachable_sitemap_urls(dist, inventory)
     assert (dist / 'robots.txt').read_text(encoding='utf-8') == 'User-agent: *\nAllow: /\nSitemap: ' + ORIGIN + '/sitemap-index.xml\n'
-    assert 'x-robots-tag:' not in (dist / '_headers').read_text(encoding='utf-8').lower(), 'Global response indexing override forbidden'
+    assert (dist / '_headers').read_bytes() == b'/*\n', 'Exact inert production headers required'
     assert proof == PROOF, 'Exact Mokpo existing proof binding required'
     name = proof['path'].lstrip('/')
     assert name in inventory and inventory[name] == proof['sha256'], 'Copied proof missing or changed'
