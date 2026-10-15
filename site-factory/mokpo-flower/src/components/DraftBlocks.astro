@@ -1,0 +1,6 @@
+---
+const {blocks=[]}=Astro.props;
+// URLs in source prose become exact anchors; surrounding original text is preserved.
+const tokens=(text:string)=>text.split(/(https:\/\/[^\s]+)/g).map(s=>({text:s,url:s.startsWith('https://')}));
+---
+{blocks.map((b:any)=>b.kind==='h3'?<h3 data-faq-question>{b.text}</h3>:b.kind==='action'?<div class="actions"><a class="btn primary" href={b.href}>{b.label}</a></div>:<p data-reviewed-paragraph>{tokens(b.text).map((t:any)=>t.url?<a href={t.text}>{t.text}</a>:t.text)}</p>)}
