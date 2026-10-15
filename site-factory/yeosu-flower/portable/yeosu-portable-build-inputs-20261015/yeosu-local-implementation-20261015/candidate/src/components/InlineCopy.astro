@@ -1,0 +1,5 @@
+---
+import {inline} from '../lib/yeosu-runtime.mjs';
+const {text}=Astro.props;
+---
+{inline(text).map(t=>t.kind==='link'?<a href={t.href}>{t.text}</a>:t.text)}
