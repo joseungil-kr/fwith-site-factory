@@ -1,0 +1,4 @@
+---
+import {products} from '../lib/suncheon-runtime.mjs';
+---
+<div class="product-grid" data-products>{products.map((p:any)=><article class="product-card" data-product-sku={p.sku}><h3 data-reviewed-block>{p.name} {p.sku}</h3><img data-reviewed-image src={`/images/products/${p.sku}.jpg`} alt={p.photoAlt} width="500" height="500" loading="lazy" decoding="async"/><p class="product-price" data-reviewed-block>{p.priceLabel}</p><a data-reviewed-block data-required-cta data-order-product-sku={p.sku} href={p.ctaHref}>{p.ctaLabel}</a></article>)}</div>
