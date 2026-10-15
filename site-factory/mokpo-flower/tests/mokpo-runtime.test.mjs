@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {assertBoundary,previewConfig,verifyFrozenInputs,parseDraft,validateRuntime,pageMap,supportBannerPlan,products,spec,pages} from '../src/lib/mokpo-runtime.mjs';
+import {normalizeFaq} from '../src/components/faq.mjs';
+test('reviewed spec and original draft bytes are frozen',()=>assert.equal(verifyFrozenInputs(),true));
+test('runtime remains a four HTML one article narrow preview',()=>{assert.equal(validateRuntime(),true);assert.equal(pageMap.allHtmlCount,4);assert.equal(pageMap.articleCount,1);assert.equal(pageMap.coreHubLaunchStatus,'NOT_ASSESSED');assert.equal(pageMap.fullLaunchStatus,'NOT_ASSESSED');});
+test('support role uses one real child without triggering banners',()=>{assert.equal(supportBannerPlan.enabled,false);assert.equal(supportBannerPlan.totalCards,1);const p=pages.find(p=>p.id==='regions-support');assert.equal(p.contentCards.length,1);assert.equal(p.childPaths[0],p.contentCards[0].href);assert.equal(p.mainMenuIncluded,false);});
+test('origin and production enablement fail closed',()=>{for(const update of [{origin:'https://example.com'},{productionEnabled:true},{mode:'production'},{coreHubLaunchStatus:'PASS'},{fullLaunchStatus:'PASS'}])assert.throws(()=>assertBoundary({...previewConfig,...update},{}),/boundary/);});
+test('environment cannot silently select a host or activate deploy',()=>{for(const k of ['SITE_ORIGIN','SITE_URL','PUBLIC_SITE_URL','PRODUCTION_ORIGIN','DEPLOY_ENV','DEPLOY_TARGET','ALLOW_PRODUCTION'])assert.throws(()=>assertBoundary(previewConfig,{[k]:'x'}),/boundary/);});
+test('build NODE_ENV is not mistaken for publication approval',()=>assert.equal(assertBoundary(previewConfig,{NODE_ENV:'production'}),true));
+test('four FAQ objects have exact answers and legacy FAQ arrays remain supported',()=>{assert.deepEqual(normalizeFaq(spec.faqs),spec.faqs.map(({question,answer})=>({question,answer})));assert.deepEqual(normalizeFaq([['질문','답변']]),[{question:'질문',answer:'답변'}]);assert.throws(()=>normalizeFaq([{question:'Q'}]));});
+test('exact SKU destinations and base prices',()=>{assert.deepEqual(products.map(p=>[p.sku,p.basePriceKRW]),[['B201',59000],['B203',79000],['B205',109000],['B060',149000]]);for(const p of products)assert.equal(p.cta.href,`https://fwith.co.kr/shop/item.php?it_id=${p.sku}`);});
+test('draft grammar rejects unknown controls and duplicate h1',()=>{assert.throws(()=>parseDraft('# H\n\n버튼: 다른 주소'));assert.throws(()=>parseDraft('# H\n\n# Second'));assert.throws(()=>parseDraft('No heading'));});
+test('first answers and all FAQ are projections, not extra body text',()=>{for(const p of pages.filter(p=>p.draft))assert.equal(p.content.firstAnswer,p.draft.opening[0].text);const faq=pages.find(p=>p.article).draft.sections.find(s=>s.heading==='자주 묻는 질문');assert.equal(faq.blocks.filter(b=>b.kind==='h3').length,4);});
