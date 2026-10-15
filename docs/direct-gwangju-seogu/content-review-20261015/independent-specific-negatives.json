@@ -1,0 +1,153 @@
+{
+  "result": "PASS_SPECIFIC_NEGATIVE_TESTS",
+  "scope": "Actual frozen candidate Python predicates and actual output mutations; separate tests from the author suite",
+  "facilityCardIdPositiveWithReorderedArray": true,
+  "wrongOrderRejectedByFullSchema": true,
+  "facilityCardNegatives": [
+    {
+      "name": "zero facility",
+      "rejected": true,
+      "reason": "UNIQUE_FACILITY_CARD: "
+    },
+    {
+      "name": "duplicate facility no card",
+      "rejected": true,
+      "reason": "UNIQUE_FACILITY_CARD: "
+    },
+    {
+      "name": "duplicate facility card",
+      "rejected": true,
+      "reason": "UNIQUE_FACILITY_CARD: "
+    },
+    {
+      "name": "wrong ID",
+      "rejected": true,
+      "reason": "UNIQUE_FACILITY_CARD: "
+    },
+    {
+      "name": "wrong ID case",
+      "rejected": true,
+      "reason": "UNIQUE_FACILITY_CARD: "
+    },
+    {
+      "name": "null ID",
+      "rejected": true,
+      "reason": "UNIQUE_FACILITY_CARD: "
+    },
+    {
+      "name": "card missing",
+      "rejected": true,
+      "reason": "UNIQUE_FACILITY_CARD: "
+    },
+    {
+      "name": "card null",
+      "rejected": true,
+      "reason": "FACILITY_CARD_SHAPE_TARGET: "
+    },
+    {
+      "name": "extra null card",
+      "rejected": true,
+      "reason": "UNIQUE_FACILITY_CARD: "
+    },
+    {
+      "name": "wrong href",
+      "rejected": true,
+      "reason": "FACILITY_CARD_SHAPE_TARGET: "
+    },
+    {
+      "name": "missing title",
+      "rejected": true,
+      "reason": "FACILITY_CARD_SHAPE_TARGET: "
+    },
+    {
+      "name": "extra field",
+      "rejected": true,
+      "reason": "FACILITY_CARD_SHAPE_TARGET: "
+    },
+    {
+      "name": "empty CTA",
+      "rejected": true,
+      "reason": "FACILITY_CARD_SHAPE_TARGET: "
+    }
+  ],
+  "exactOriginalHTTPAcceptedByFullQA": true,
+  "httpVariants": [
+    {
+      "name": "host",
+      "mutatedURL": "http://evil.xn--3e0b88rflct6dcsophb454d.com/bbs/content.php?code=company_03",
+      "rejected": true,
+      "reason": "LINK_SAFETY: "
+    },
+    {
+      "name": "path",
+      "mutatedURL": "http://www.xn--3e0b88rflct6dcsophb454d.com/other/content.php?code=company_03",
+      "rejected": true,
+      "reason": "LINK_SAFETY: "
+    },
+    {
+      "name": "query value",
+      "mutatedURL": "http://www.xn--3e0b88rflct6dcsophb454d.com/bbs/content.php?code=company_02",
+      "rejected": true,
+      "reason": "LINK_SAFETY: "
+    },
+    {
+      "name": "query key",
+      "mutatedURL": "http://www.xn--3e0b88rflct6dcsophb454d.com/bbs/content.php?Code=company_03",
+      "rejected": true,
+      "reason": "LINK_SAFETY: "
+    },
+    {
+      "name": "extra query",
+      "mutatedURL": "http://www.xn--3e0b88rflct6dcsophb454d.com/bbs/content.php?code=company_03&extra=1",
+      "rejected": true,
+      "reason": "LINK_SAFETY: "
+    },
+    {
+      "name": "fragment",
+      "mutatedURL": "http://www.xn--3e0b88rflct6dcsophb454d.com/bbs/content.php?code=company_03#fragment",
+      "rejected": true,
+      "reason": "LINK_SAFETY: "
+    },
+    {
+      "name": "scheme case",
+      "mutatedURL": "HTTP://www.xn--3e0b88rflct6dcsophb454d.com/bbs/content.php?code=company_03",
+      "rejected": true,
+      "reason": "LINK_SAFETY: "
+    },
+    {
+      "name": "port",
+      "mutatedURL": "http://www.xn--3e0b88rflct6dcsophb454d.com:80/bbs/content.php?code=company_03",
+      "rejected": true,
+      "reason": "LINK_SAFETY: "
+    },
+    {
+      "name": "no www",
+      "mutatedURL": "http://xn--3e0b88rflct6dcsophb454d.com/bbs/content.php?code=company_03",
+      "rejected": true,
+      "reason": "LINK_SAFETY: "
+    },
+    {
+      "name": "userinfo",
+      "mutatedURL": "http://user@www.xn--3e0b88rflct6dcsophb454d.com/bbs/content.php?code=company_03",
+      "rejected": true,
+      "reason": "LINK_SAFETY: "
+    },
+    {
+      "name": "encoded query",
+      "mutatedURL": "http://www.xn--3e0b88rflct6dcsophb454d.com/bbs/content.php?code=company_%30%33",
+      "rejected": true,
+      "reason": "LINK_SAFETY: "
+    },
+    {
+      "name": "other HTTP site",
+      "mutatedURL": "http://example.com/",
+      "rejected": true,
+      "reason": "LINK_SAFETY: "
+    }
+  ],
+  "httpVariantsAllFailAtLinkSafetyGate": true,
+  "sourceSHA256": "e2a7cdaf642e10910f93eb342fcc6d3a994b97682c4f9335f784e19e81e77e5f",
+  "securitySettingsChanged": false,
+  "browserWarningBypassed": false,
+  "externalNetworkRequests": 0
+}

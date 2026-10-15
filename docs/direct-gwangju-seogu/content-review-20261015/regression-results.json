@@ -1,0 +1,106 @@
+[
+  {
+    "name": "verify-inputs",
+    "command": [
+      "node",
+      "scripts/verify_inputs.mjs"
+    ],
+    "cwd": "replay/source/candidate",
+    "exitCode": 0,
+    "log": "evidence/verify-inputs.log"
+  },
+  {
+    "name": "typecheck",
+    "command": [
+      "node",
+      "node_modules/astro/bin/astro.mjs",
+      "check"
+    ],
+    "cwd": "replay/source/candidate",
+    "exitCode": 0,
+    "log": "evidence/typecheck.log"
+  },
+  {
+    "name": "build",
+    "command": [
+      "node",
+      "node_modules/astro/bin/astro.mjs",
+      "build"
+    ],
+    "cwd": "replay/source/candidate",
+    "exitCode": 0,
+    "log": "evidence/build.log"
+  },
+  {
+    "name": "private-qa",
+    "command": [
+      "python3",
+      "scripts/qa_donggu.py"
+    ],
+    "cwd": "replay/source/candidate",
+    "exitCode": 0,
+    "log": "evidence/private-qa.log"
+  },
+  {
+    "name": "private-node",
+    "command": [
+      "node",
+      "--test",
+      "tests/donggu-runtime.test.mjs"
+    ],
+    "cwd": "replay/source/candidate",
+    "exitCode": 0,
+    "log": "evidence/private-node.log"
+  },
+  {
+    "name": "private-python",
+    "command": [
+      "python3",
+      "scripts/test_donggu.py"
+    ],
+    "cwd": "replay/source/candidate",
+    "exitCode": 0,
+    "log": "evidence/private-python.log"
+  },
+  {
+    "name": "adapter-node",
+    "command": [
+      "node",
+      "--test",
+      "../release-adapter/release-tests/seogu-release.test.mjs"
+    ],
+    "cwd": "replay/source/candidate",
+    "exitCode": 0,
+    "log": "evidence/adapter-node.log"
+  },
+  {
+    "name": "adapter-python",
+    "command": [
+      "python3",
+      "../release-adapter/scripts/test_seogu_adapter.py"
+    ],
+    "cwd": "replay/source/candidate",
+    "exitCode": 0,
+    "log": "evidence/adapter-python.log"
+  },
+  {
+    "name": "output-python",
+    "command": [
+      "python3",
+      "../release-adapter/scripts/test_seogu_release_output.py"
+    ],
+    "cwd": "replay/source/candidate",
+    "exitCode": 0,
+    "log": "evidence/output-python.log"
+  },
+  {
+    "name": "node-python-parity",
+    "command": [
+      "python3",
+      "../release-adapter/scripts/test_seogu_node_python_parity.py"
+    ],
+    "cwd": "replay/source/candidate",
+    "exitCode": 0,
+    "log": "evidence/node-python-parity.log"
+  }
+]

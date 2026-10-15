@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "region": "seogu",
+  "officialCode": "12240",
+  "nationalOrder": 32,
+  "reviewedUTC": "2026-10-15T20:44:57.605816+00:00",
+  "revision": "seogu-copy-r2-20261015",
+  "assessmentScope": "MANUSCRIPT_AND_RENDER_PLAN_ONLY",
+  "customerCopySHA256": "ecf53e7cc0ede77e9a4e85d19fb6f8a78e1f0e196813e2b7832fc20c173e4404",
+  "renderPlanSHA256": "fadf9c15b8171e8764f75d7c48bea64ecc3dcbafe44336375b0988630a37b4a5",
+  "purchaseIntentMetadataSHA256": "3586753418b55524cb7b5e0931302c4e67cd4fe134d5a5e2d1c66543e88525f7",
+  "guidanceSourceCommit": "33ff2bb8dc969e8e43399f593541db0fd9f7a11d",
+  "sourceCommit": null,
+  "actualHTMLChecked": false,
+  "actualBuildChecked": false,
+  "actualBrowserChecked": false,
+  "actualPublicHTTPChecked": false,
+  "publicationEligible": false,
+  "coreHubLaunchStatus": "NOT_ASSESSED",
+  "fullLaunchStatus": "NOT_ASSESSED",
+  "status": "ALL_ACTUAL_OUTPUT_CHECKS_PENDING",
+  "checks": [
+    {
+      "id": "exact_binding",
+      "requiredVerification": "Every consumed copy, render plan, metadata and7asset bytes match the reviewed SHA. Bind actual source commit and review digest; any content change invalidates this exact review.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "id_based_home",
+      "requiredVerification": "Find home section id=facility-guide; do not assume sections[0]. Preserve budget→facility-guide→consultation order and render the actual card once.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "id_based_detail",
+      "requiredVerification": "Find sections by id. Product cards immediately after products prose once; order list/afterList are rendered once. Preserve budget→products→ribbon→facility→order.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "full_text",
+      "requiredVerification": "Compare all114 ordered authored leaf strings, including metadata/accessibility and visible copy; separately inspect actual rendered visible text and duplicates.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "faq_visible",
+      "requiredVerification": "Render3FAQ Q/A always visibly exactly once after order section; contentMarkdown must not suppress or duplicate it. H3 under one FAQ H2.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "titles",
+      "requiredVerification": "Unique title/meta matching source; H1 exactly1 per4routes; H2 sections/sources; product/card/FAQ H3 nested correctly, sources only1H2.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "banners",
+      "requiredVerification": "home/detail each exactly3message→budget→consultation with substantial prose/cards between; support/404zero. Exact SHA,1774x887,img,altphone1844-0644exactly1,lazy belowhero,async,uncropped ratio.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "deleted_caption",
+      "requiredVerification": "Reject deleted AI/common-image caption in visible text or alt; do not generate extra headings for banners.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "product_cards",
+      "requiredVerification": "FourSKU-specific real500x500photos, name/baseprice/shipping separate, imgcontain/no crop/meaningfulalt, exact individual item.php URLs, sample notice once.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "real_cta",
+      "requiredVerification": "ActualHTML a href tel:18440644; verified4SKU hyperlinks. Do not count navigation/image text as Action CTA; no order submit/call required for read-only check.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "breadcrumb",
+      "requiredVerification": "Visible home→/regions/→current detail and home→current support; correct aria-current, links/focus, support minimum1 inbound and detail minimum2 distinct authored sources.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "all_links",
+      "requiredVerification": "All local targets/fragments exist; #sources one valid anchor; no placeholder facility URLs, duplicate slug or nationwide footer expansion.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "support_policy",
+      "requiredVerification": "One realchild; noindex,follow; no mainmenu/sitemap; no marketingbanner; not broadhub completion.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "preview_policy",
+      "requiredVerification": "All routes noindex,nofollow,noarchive plus Disallow:/; no sitemapURLs orIndexNow. Preview policy overrides production404requiredElement wording.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "production_identity",
+      "requiredVerification": "Verify origin/domain/namespace ownership separately; null now. No provider state inferred from candidate string.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "canonical_robots",
+      "requiredVerification": "Productionhome/detail ownabsolute canonical and index,follow; support ownabsolute canonical and noindex,follow;404no canonical/OG/Twitter and noindex. robots permits exactly intended routes.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "social",
+      "requiredVerification": "home/detail/support B201500x500,ogtypewebsite,locale ko_KR,onceeach title/desc/absoluteURL/image/alt,widthheight,Twitter summary.404none. Use verifiedorigin; no generatedimage.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "sitemap",
+      "requiredVerification": "Exactly2indexable home/detail URLs, no support/404; manifest/page-map/architecture/renderedHTML/sitemap agree.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "http",
+      "requiredVerification": "3normalpages200, real unknownroute404, HTML content-type, all7images200withMIME/dimensions/exacthash. /404.html file existence alone insufficient.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "build_artifact",
+      "requiredVerification": "Actual source tests and static build; inspect exact artifact output, Actions run/source control binding. Toolsuccess alone insufficient.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "viewport_pixels",
+      "requiredVerification": "Read actual mobile/tablet/desktop screenshots allroutes; wholepage and focus/menus/CTA/FAQ/cards/banner overflow/cropping. Sourceimage inspection is not renderedQA.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "keyboard",
+      "requiredVerification": "Keyboard focus visibility/order, menu open/close/Escape and navigation; repeated clicks/Back/Forward where applicable. State limited sample coverage honestly.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "public_evidence",
+      "requiredVerification": "After authorized publication, independently GET publicURL and staticassets; preserve rawbytes, only separately authorized narrow normalization; inspect real404 and headers.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "search_states",
+      "requiredVerification": "IndexNow originalreceipt/journal after actualpublic QA, exactly2URL; do not equate submitted with crawled/indexed/impression/ranking.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    },
+    {
+      "id": "business_limits",
+      "requiredVerification": "Do not let template add free/deliverytime/installation/photo-report/24hstock/partnership claims. Policy conflicts remain order-specific, governmentdate4/1 and KSTcheck10/16 distinct.",
+      "status": "PENDING_ACTUAL_OUTPUT"
+    }
+  ]
+}
