@@ -544,7 +544,7 @@ class PublisherTests(unittest.TestCase):
 
     def test_workflow_is_fixed_retained_artifact_publication_only(self):
         workflow=Path(__file__).resolve().parents[2]/'.github/workflows/naju-production-publish.yml'
-        s=workflow.read_text()
+        s=workflow.read_text().split('  finalize_indexnow:\n',1)[0]
         self.assertEqual(s.count('wrangler@4.148.0 deploy'),1)
         self.assertEqual(s.count('actions/checkout@'),1)
         self.assertIn("github.run_attempt == 1",s)

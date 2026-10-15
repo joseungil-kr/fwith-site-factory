@@ -169,3 +169,143 @@ jobs:
           INDEXNOW: ${{ steps.indexnow.outcome }}
         run: test "$DEPLOY" = success && test "$ATTACH" = success && test "$BINDING" = success && test "$HTTP" = success && test "$INDEXNOW" = success
 
+
+  finalize_indexnow:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[NAJU-INDEXNOW-FINALIZE] 20261015' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.user.login == 'joseungil-kr'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      REGION: naju
+      CONTROL_DIR: control/scripts/direct-naju
+      REVISION: ${{ fromJSON(github.event.issue.body).source_revision }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Authorize exact owner, main, first attempt, binding and source
+        id: source
+        run: |
+          python3 "$CONTROL_DIR/publish.py" authorize --report selected-source.json
+      - name: Run fixed control safety tests without provider credentials
+        run: |
+          python3 -m unittest discover -s "$CONTROL_DIR" -p 'test_*.py' -v
+      - name: Require sealed all-route output and independent mobile and desktop review
+        id: release
+        run: python3 "$CONTROL_DIR/publish.py" select --report selected-release.json
+      - name: Verify actual successful build and exact retained artifact metadata
+        uses: actions/github-script@v7
+        env:
+          BUILD_RUN_ID: ${{ steps.release.outputs.build_run_id }}
+          BUILD_ARTIFACT_ID: ${{ steps.release.outputs.artifact_id }}
+        with:
+          script: |
+            const fs = require('fs');
+            const desc = JSON.parse(fs.readFileSync(process.env.CONTROL_DIR + '/production-release-review-binding.json'));
+            const review = JSON.parse(fs.readFileSync('control/' + desc.path));
+            const {data: run} = await github.rest.actions.getWorkflowRun({...context.repo, run_id: Number(process.env.BUILD_RUN_ID)});
+            if (run.id !== Number(review.buildRunId) || run.run_attempt !== 1 || run.status !== 'completed' || run.conclusion !== 'success' || run.event !== 'issues' || run.head_branch !== 'main' || run.head_sha !== review.buildControlSha || run.path !== '.github/workflows/' + process.env.REGION + '-production-build-only.yml' || run.repository.full_name !== 'joseungil-kr/fwith-site-factory' || run.actor?.login !== 'joseungil-kr' || run.triggering_actor?.login !== 'joseungil-kr') throw new Error('Build identity mismatch');
+            const {data: artifact} = await github.rest.actions.getArtifact({...context.repo, artifact_id: Number(process.env.BUILD_ARTIFACT_ID)});
+            if (artifact.id !== Number(review.artifactId) || artifact.expired || artifact.name !== process.env.REGION + '-production-build-' + review.buildRunId + ('-' + review.buildControlSha) || artifact.workflow_run.id !== run.id || artifact.workflow_run.head_sha !== run.head_sha || artifact.workflow_run.head_branch !== 'main') throw new Error('Artifact identity mismatch');
+            if (process.env.REGION === 'naju') {
+              if (artifact.digest !== review.artifactDigest || String(run.id) !== String(review.qaRunId)) throw new Error('Naju archive or combined browser run mismatch');
+              const publication = JSON.parse(fs.readFileSync(process.env.CONTROL_DIR + '/production-publication.json'));
+              const {data: journal} = await github.rest.issues.get({...context.repo, issue_number: publication.receiptIssue});
+              if (journal.number !== publication.receiptIssue || journal.pull_request || journal.state !== 'open' || journal.user.login !== 'joseungil-kr' || journal.title !== '[NAJU-INDEXNOW-RECEIPTS] 20261015' || journal.repository_url !== 'https://api.github.com/repos/joseungil-kr/fwith-site-factory') throw new Error('Naju receipt issue identity mismatch');
+            }
+      - name: Verify the original publication failed before any IndexNow submission
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {data: run} = await github.rest.actions.getWorkflowRun({...context.repo, run_id: 38791481463});
+            if (run.id !== 38791481463 || run.run_attempt !== 1 || run.status !== 'completed' || run.conclusion !== 'failure' || run.event !== 'issues' || run.head_branch !== 'main' || run.head_sha !== '80c5d6a0822349111614d0d6af4bd6a254684220' || run.path !== '.github/workflows/naju-production-publish.yml' || run.repository.full_name !== 'joseungil-kr/fwith-site-factory' || run.actor?.login !== 'joseungil-kr' || run.triggering_actor?.login !== 'joseungil-kr') throw new Error('Original publication identity mismatch');
+            const {data: artifact} = await github.rest.actions.getArtifact({...context.repo, artifact_id: 12000462220});
+            if (artifact.id !== 12000462220 || artifact.expired || artifact.name !== 'naju-production-result-38791481463' || artifact.digest !== 'sha256:3c0f6797e7ddffa1815e4dc481ee9f93650c568feafaeefddda67db08443fd7e' || artifact.workflow_run.id !== run.id || artifact.workflow_run.head_sha !== run.head_sha) throw new Error('Original publication evidence mismatch');
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: 12000462220
+          run-id: 38791481463
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: original-publication
+      - name: Verify exact failure, successful public bytes and GET-only observations
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('original-publication')
+          receipt=json.loads((root/'indexnow-receipt.json').read_text())
+          assert receipt == {'code':'robots_not_public','mode':'indexnow','state':'blocked_or_failed'}
+          obs=json.loads((root/'indexnow-http-observations.json').read_text())
+          assert len(obs)==4 and all(x['method']=='GET' for x in obs)
+          assert [x['httpStatus'] for x in obs]==[200,200,200,500]
+          assert obs[-1]['url']=='https://naju.fwith.kr/robots.txt'
+          public=json.loads((root/'public-http.json').read_text())
+          assert public['state']=='public_release_verified' and public['revision']=='21ebc3cffc12df8977e8209bc4fc3139e084fa8b' and public['checkedPaths']==17 and public['unknownHttpStatus']==404
+          binding=json.loads((root/'binding-after.json').read_text())
+          assert binding['state']=='binding_verified' and binding['hostname']=='naju.fwith.kr' and binding['worker']=='naju-flower-guide' and binding['revision']==public['revision']
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.release.outputs.artifact_id }}
+          run-id: ${{ steps.release.outputs.build_run_id }}
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: naju-retained
+      - name: Stage only the retained Naju static release package
+        if: env.REGION == 'naju'
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import shutil
+          root = Path('naju-retained/release')
+          assert root.is_dir() and not root.is_symlink()
+          assert not any(p.is_symlink() for p in root.rglob('*'))
+          assert not Path('release').exists()
+          shutil.copytree(root, 'release', symlinks=True)
+          PY
+      - name: Rehash exact reviewed static output and generate fixed route-less configuration
+        run: python3 "$CONTROL_DIR/publish.py" artifact --report artifact-check.json
+      - name: Recheck fixed source branch before finalization
+        uses: actions/github-script@v7
+        env:
+          SOURCE_BRANCH: ${{ steps.source.outputs.source_branch }}
+        with:
+          script: |
+            if (process.env.GITHUB_RUN_ATTEMPT !== '1') throw new Error('Reruns forbidden');
+            const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/' + process.env.SOURCE_BRANCH});
+            if (data.object.type !== 'commit' || data.object.sha !== process.env.REVISION) throw new Error('Source branch moved');
+      - name: Verify every public output byte, region-specific robots and real 404
+        id: http
+        run: python3 "$CONTROL_DIR/publish.py" http --report public-http.json
+      - name: Verify the same live IndexNow user agent before any journal or POST
+        run: python3 "$CONTROL_DIR/publish.py" indexnow-probe --report indexnow-probe.json
+      - name: Finalize the exact regional sitemap through its idempotent journal
+        id: indexnow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 "$CONTROL_DIR/publish.py" indexnow --report indexnow-receipt.json
+      - name: Retain verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.REGION }}-indexnow-finalization-${{ github.run_id }}
+          path: |
+            selected-source.json
+            selected-release.json
+            artifact-check.json
+            http-contract.json
+            public-http.json
+            indexnow-probe.json
+            indexnow-receipt.json
+            indexnow-http-observations.json
+            release/release.json
+            release/wrangler.publish.json
+          if-no-files-found: warn
