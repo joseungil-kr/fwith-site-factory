@@ -92,7 +92,7 @@ class PublisherTests(unittest.TestCase):
             text+='</head><body><main id="main-content" tabindex="-1"><h1>Fixture</h1><a href="tel:18440644">전화</a><a href="https://fwith.co.kr/">주문</a></main></body></html>'
             file=dist/name;file.parent.mkdir(parents=True,exist_ok=True);file.write_text(text)
         (dist/'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: '+p.ORIGIN+'/sitemap-index.xml\n')
-        (dist/'_headers').write_text('/*\n  X-Content-Type-Options: nosniff\n')
+        (dist/'_headers').write_text('/*\n')
         ns='http://www.sitemaps.org/schemas/sitemap/0.9'
         (dist/'sitemap-index.xml').write_text('<sitemapindex xmlns="'+ns+'"><sitemap><loc>'+p.ORIGIN+'/sitemap-0.xml</loc></sitemap></sitemapindex>')
         (dist/'sitemap-0.xml').write_text('<urlset xmlns="'+ns+'">'+''.join('<url><loc>'+p.ORIGIN+r+'</loc></url>' for r in p.output.ROUTES)+'</urlset>')
@@ -220,6 +220,16 @@ class PublisherTests(unittest.TestCase):
         self.assertEqual(set(config),{'name','compatibility_date','workers_dev','assets'})
         self.assertFalse(config['workers_dev']);self.assertEqual(config['name'],p.WORKER)
         self.assertEqual(config['assets']['not_found_handling'],'404-page')
+
+    def test_refresh_header_rejected_before_provider(self):
+        release,dist=self.fixture_release();(dist/'_headers').write_text('/*\n Refresh: 0;url=https://wrong.invalid\n')
+        with working(self.root),self.assertRaisesRegex(AssertionError,'Exact inert production headers required'):
+            p.artifact()
+
+    def test_extra_header_rejected_before_provider(self):
+        release,dist=self.fixture_release();(dist/'_headers').write_text('/*\n X-Content-Type-Options: nosniff\n')
+        with working(self.root),self.assertRaisesRegex(AssertionError,'Exact inert production headers required'):
+            p.artifact()
 
     def test_manifest_foreign_worker_rejected(self):
         release,dist=self.fixture_release();m=json.loads((release/'release.json').read_text());m['worker']='seoul-seocho-flower-guide';p.save(release/'release.json',m)
