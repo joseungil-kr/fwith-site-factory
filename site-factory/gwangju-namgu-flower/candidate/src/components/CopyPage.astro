@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SharedFlowerBanner from './SharedFlowerBanner.astro';
+import ProductCards from './ProductCards.astro';
+import {copy,home,detail,ui,copySHA,mapTarget,routes} from '../lib/donggu-runtime.mjs';
+const {page:p}=Astro.props;
+const c=copy[p.copyKey as keyof typeof copy] as any;
+const breadcrumbs=p.id==='article'?[{label:ui.homeLink,href:routes.home},{label:copy.support.h1,href:routes.support},{label:detail.h1}]:p.id==='support'?[{label:ui.homeLink,href:routes.home},{label:copy.support.h1}]:[];
+---
+<BaseLayout page={p}>{breadcrumbs.length>0&&<nav class="breadcrumb" aria-label={ui.breadcrumbLabel}>{breadcrumbs.map((b:any,i:number)=><>{i>0&&<span aria-hidden="true">›</span>}{b.href?<a href={b.href}>{b.label}</a>:<span aria-current="page">{b.label}</span>}</>)}</nav>}<article data-page-id={p.id} data-page-role={p.role} data-copy-sha={copySHA[p.id as keyof typeof copySHA]}><div data-reviewed-body>
+<section id="opening" class="category-hero"><h1 data-reviewed-block>{c.h1}</h1>{['home','article'].includes(p.id)?(Array.isArray(c.lead)?c.lead:[c.lead]).map((t:string,i:number)=><p data-reviewed-block data-first-answer={i===0||undefined}>{t}</p>):<p data-reviewed-block>{c.body}</p>}</section>
+{['home','article'].includes(p.id)?<>
+<SharedFlowerBanner variant="message"/>
+{p.id==='home'?<>
+{home.sections.map((s:any)=><>{s.id==='facility-guide'&&<SharedFlowerBanner variant="budget"/>}<section id={s.id} class="content-card copy-section"><h2 data-reviewed-block>{s.h2}</h2>{s.paragraphs.map((t:string)=><p data-reviewed-block>{t}</p>)}{s.card&&<article class="page-card" data-content-card><h3 data-reviewed-block>{s.card.title}</h3><p data-reviewed-block>{s.card.summary}</p><a data-reviewed-block data-required-cta href={mapTarget(s.card)}>{s.card.ctaLabel}</a></article>}</section></>)}
+<SharedFlowerBanner variant="consultation"/>
+<div class="actions final-action"><a class="btn dark" data-reviewed-block data-required-cta href={home.cta.href}>{home.cta.label}</a></div>
+<section id="sources" class="source-card" data-source-references><h2 data-reviewed-block>{home.sourceHeading}</h2><p data-reviewed-block>{home.sourceIntro}</p><a data-reviewed-block href={mapTarget(home.sourceLink)}>{home.sourceLink.label}</a></section>
+</>:<>
+{detail.sections.map((s:any)=><>{s.id==='facility'&&<SharedFlowerBanner variant="budget"/>}<section id={s.id} class="content-card copy-section"><h2 data-reviewed-block>{s.h2}</h2>{s.paragraphs.map((t:string)=><p data-reviewed-block>{t}</p>)}{s.id==='products'&&<ProductCards/>}{s.list&&<ul>{s.list.map((t:string)=><li data-reviewed-block>{t}</li>)}</ul>}{s.afterList?.map((t:string)=><p data-reviewed-block>{t}</p>)}</section></>)}
+<section id="faq" class="faq" data-visible-faq><h2 data-reviewed-block>{detail.faqHeading}</h2>{detail.faq.map((f:any)=><div class="faq-pair"><h3 data-reviewed-block data-faq-question>{f.question}</h3><p data-reviewed-block data-faq-answer>{f.answer}</p></div>)}</section>
+<SharedFlowerBanner variant="consultation"/>
+<div class="directory-closing"><p data-reviewed-block>{detail.closing}</p></div><div class="actions final-action"><a class="btn dark" data-reviewed-block data-required-cta href={detail.cta.href}>{detail.cta.label}</a></div>
+<section id="sources" class="source-card" data-source-references><h2 data-reviewed-block>{detail.sourceHeading}</h2><p data-reviewed-block>{detail.sourceIntro}</p><ul>{detail.sources.map((s:any)=><li><a data-reviewed-block href={s.url}>{s.label}</a></li>)}</ul></section>
+</>}
+</>:p.id==='support'?<div class="card-grid journey-grid" data-purchase-cards><article class="page-card" data-content-card><h2 data-reviewed-block>{c.card.title}</h2><p data-reviewed-block>{c.card.summary}</p><a data-reviewed-block data-required-cta href={mapTarget(c.card)}>{c.card.ctaLabel}</a></article></div>:<div class="actions final-action"><a class="btn dark" data-reviewed-block data-required-cta href={mapTarget(c.cta)}>{c.cta.label}</a></div>}
+</div></article></BaseLayout>
