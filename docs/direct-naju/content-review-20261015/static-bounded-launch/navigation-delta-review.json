@@ -1,0 +1,648 @@
+{
+  "schemaVersion": 1,
+  "assessmentScope": "navigation-delta-static-only",
+  "verdict": "PASS_EXACT_LOCAL_NAVIGATION_DELTA_ONLY",
+  "baselineSourceCommit": "33e1e2f745218958aebd692b9d21c25cf6b901aa",
+  "successorSourceCommit": null,
+  "sourceTreeSHA256": "ccce5ad30b22ce40f7061b7e186279724a5fd43f086fea2232f1708b17695454",
+  "sourceFileCount": 69,
+  "changedSourceFiles": [
+    "candidate/scripts/qa_naju.py",
+    "candidate/scripts/test_naju.py",
+    "candidate/src/components/CopyPage.astro",
+    "release-adapter/release/bounded-contract.json",
+    "release-adapter/release/preview-equivalence.json",
+    "release-adapter/release/private-source-manifest.json",
+    "release-adapter/scripts/naju_adapter.py",
+    "release-adapter/scripts/naju_release.mjs",
+    "release-adapter/scripts/naju_release_output.py"
+  ],
+  "customerCopySHA256": "ae92f1762be8bdf0ef7e4193c8c03094e9484d2d31eaae6f1e27f545a94c2698",
+  "newCustomerStringFields": 0,
+  "requiredCopyChanges": 0,
+  "requiredStaticNavigationChangesRemaining": 0,
+  "sourceImplementationIssuesResolved": [
+    "NAJU-GRAPH-01",
+    "NAJU-GRAPH-02"
+  ],
+  "sourceManifestSHA256": "ea1c5ea73c1b52b2d43596a8aab9fea5bad0456bf1df5a53f46e415b2c6aa850",
+  "sourceDiffSHA256": "ed8ccdcd16cccdafb2552afb09c1bab10761c741513cfd97f9994c39a578f987",
+  "checkedOutput": [
+    {
+      "path": "index.html",
+      "beforeSHA256": "7f039dcf81f4de49957c282a330702e10a7d97c96f44ec84efc6484a398e78e4",
+      "afterSHA256": "7f039dcf81f4de49957c282a330702e10a7d97c96f44ec84efc6484a398e78e4",
+      "onlyApprovedBreadcrumbInsertion": false,
+      "unchanged": true,
+      "breadcrumb": null
+    },
+    {
+      "path": "regions/index.html",
+      "beforeSHA256": "62a4a821c0b70b31885c1483fcabbc0897b117e8107582f066ff4ed9b7ff135a",
+      "afterSHA256": "50bcb68f2dd64d7a3a1b66d6ad53523f9758b54e0f44dce4f9627a598fa6aba4",
+      "onlyApprovedBreadcrumbInsertion": true,
+      "unchanged": false,
+      "breadcrumb": {
+        "ariaLabel": "나주 근조화환 안내 바로가기",
+        "text": "나주 근조화환 홈 › 나주 근조화환 안내 바로가기",
+        "links": [
+          "/"
+        ]
+      }
+    },
+    {
+      "path": "regions/naju-hospital-funeral-wreath/index.html",
+      "beforeSHA256": "719bdfca33b0a7f4a6bc24154f5e9538ede7bde0742f315bd8569b58ab3274da",
+      "afterSHA256": "308fb676b4f5a0c205e11fc3f358d18ad66368d49ca2d9b4afe5e6e94e5201d5",
+      "onlyApprovedBreadcrumbInsertion": true,
+      "unchanged": false,
+      "breadcrumb": {
+        "ariaLabel": "나주 근조화환 안내 바로가기",
+        "text": "나주 근조화환 홈 › 나주 근조화환 안내 바로가기 › 나주종합병원장례식장 근조화환",
+        "links": [
+          "/",
+          "/regions/"
+        ]
+      }
+    },
+    {
+      "path": "404.html",
+      "beforeSHA256": "708b7f417286d319f7a0d1c36c8c69982612622a0d5c646e47802d1be15c69c0",
+      "afterSHA256": "708b7f417286d319f7a0d1c36c8c69982612622a0d5c646e47802d1be15c69c0",
+      "onlyApprovedBreadcrumbInsertion": false,
+      "unchanged": true,
+      "breadcrumb": null
+    }
+  ],
+  "checks": [
+    {
+      "id": "source:SOURCE-SAVE.ko.md",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/README.md",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/astro.config.mjs",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/package-lock.json",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/package.json",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/public/_headers",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/public/favicon.svg",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/public/images/products/B060.jpg",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/public/images/products/B201.jpg",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/public/images/products/B203.jpg",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/public/images/products/B205.jpg",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/public/images/shared-banners/flower-budget.webp",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/public/images/shared-banners/flower-consultation.webp",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/public/images/shared-banners/flower-message.webp",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/public/robots.txt",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/public/sitemap.xml",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/scripts/html_surface.py",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/scripts/qa_naju.py",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/scripts/test_naju.py",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/scripts/verify_inputs.mjs",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/components/CopyPage.astro",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/components/ProductCards.astro",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/components/SharedFlowerBanner.astro",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/data/input-binding.json",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/data/page-map.json",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/data/reuse-provenance.json",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/layouts/BaseLayout.astro",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/lib/naju-runtime.mjs",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/pages/404.astro",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/pages/index.astro",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/pages/regions/index.astro",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/pages/regions/naju-hospital-funeral-wreath.astro",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/styles/gangdong.css",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/styles/global.css",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/styles/mokpo.css",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/styles/naju.css",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/styles/suncheon.css",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/src/styles/yeosu.css",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/tests/naju-runtime.test.mjs",
+      "passed": true
+    },
+    {
+      "id": "source:candidate/tsconfig.json",
+      "passed": true
+    },
+    {
+      "id": "source:inputs/required-originals.json",
+      "passed": true
+    },
+    {
+      "id": "source:inputs/reviewed-copy/ALL-VISIBLE-STRINGS.ko.md",
+      "passed": true
+    },
+    {
+      "id": "source:inputs/reviewed-copy/PURCHASE-PLAN.ko.md",
+      "passed": true
+    },
+    {
+      "id": "source:inputs/reviewed-copy/SOURCE-MAP.ko.md",
+      "passed": true
+    },
+    {
+      "id": "source:inputs/reviewed-copy/body-count-and-overlap.json",
+      "passed": true
+    },
+    {
+      "id": "source:inputs/reviewed-copy/customer-copy.json",
+      "passed": true
+    },
+    {
+      "id": "source:inputs/reviewed-copy/drafts/404.ko.md",
+      "passed": true
+    },
+    {
+      "id": "source:inputs/reviewed-copy/drafts/home.ko.md",
+      "passed": true
+    },
+    {
+      "id": "source:inputs/reviewed-copy/drafts/naju-hospital-funeral.ko.md",
+      "passed": true
+    },
+    {
+      "id": "source:inputs/reviewed-copy/drafts/support.ko.md",
+      "passed": true
+    },
+    {
+      "id": "source:inputs/reviewed-copy/evidence/source-facts.json",
+      "passed": true
+    },
+    {
+      "id": "source:inputs/reviewed-copy/render-plan.json",
+      "passed": true
+    },
+    {
+      "id": "source:inputs/reviewed-copy/reviews/implementation-review-binding.json",
+      "passed": true
+    },
+    {
+      "id": "source:inputs/reviewed-copy/reviews/independent-copy-review-r2.json",
+      "passed": true
+    },
+    {
+      "id": "source:release-adapter/README.ko.md",
+      "passed": true
+    },
+    {
+      "id": "source:release-adapter/release-tests/naju-release.test.mjs",
+      "passed": true
+    },
+    {
+      "id": "source:release-adapter/release/bounded-contract.json",
+      "passed": true
+    },
+    {
+      "id": "source:release-adapter/release/existing-indexnow-proof.txt",
+      "passed": true
+    },
+    {
+      "id": "source:release-adapter/release/preview-equivalence.json",
+      "passed": true
+    },
+    {
+      "id": "source:release-adapter/release/private-source-manifest.json",
+      "passed": true
+    },
+    {
+      "id": "source:release-adapter/scripts/build_naju_release.mjs",
+      "passed": true
+    },
+    {
+      "id": "source:release-adapter/scripts/naju_adapter.py",
+      "passed": true
+    },
+    {
+      "id": "source:release-adapter/scripts/naju_release.mjs",
+      "passed": true
+    },
+    {
+      "id": "source:release-adapter/scripts/naju_release_output.py",
+      "passed": true
+    },
+    {
+      "id": "source:release-adapter/scripts/test_naju_adapter.py",
+      "passed": true
+    },
+    {
+      "id": "source:release-adapter/scripts/test_naju_node_python_parity.py",
+      "passed": true
+    },
+    {
+      "id": "source:release-adapter/scripts/test_naju_release_output.py",
+      "passed": true
+    },
+    {
+      "id": "source:release-adapter/scripts/test_naju_runner_output.py",
+      "passed": true
+    },
+    {
+      "id": "source:release-adapter/scripts/write_naju_release_files.mjs",
+      "passed": true
+    },
+    {
+      "id": "only-nine-reported-source-changes",
+      "passed": true
+    },
+    {
+      "id": "exact-tree",
+      "passed": true
+    },
+    {
+      "id": "copy-unchanged",
+      "passed": true
+    },
+    {
+      "id": "required-original:candidate/public/images/products/B060.jpg",
+      "passed": true
+    },
+    {
+      "id": "required-original:candidate/public/images/products/B201.jpg",
+      "passed": true
+    },
+    {
+      "id": "required-original:candidate/public/images/products/B203.jpg",
+      "passed": true
+    },
+    {
+      "id": "required-original:candidate/public/images/products/B205.jpg",
+      "passed": true
+    },
+    {
+      "id": "required-original:candidate/public/images/shared-banners/flower-budget.webp",
+      "passed": true
+    },
+    {
+      "id": "required-original:candidate/public/images/shared-banners/flower-consultation.webp",
+      "passed": true
+    },
+    {
+      "id": "required-original:candidate/public/images/shared-banners/flower-message.webp",
+      "passed": true
+    },
+    {
+      "id": "required-original:inputs/reviewed-copy/ALL-VISIBLE-STRINGS.ko.md",
+      "passed": true
+    },
+    {
+      "id": "required-original:inputs/reviewed-copy/PURCHASE-PLAN.ko.md",
+      "passed": true
+    },
+    {
+      "id": "required-original:inputs/reviewed-copy/SOURCE-MAP.ko.md",
+      "passed": true
+    },
+    {
+      "id": "required-original:inputs/reviewed-copy/body-count-and-overlap.json",
+      "passed": true
+    },
+    {
+      "id": "required-original:inputs/reviewed-copy/customer-copy.json",
+      "passed": true
+    },
+    {
+      "id": "required-original:inputs/reviewed-copy/drafts/404.ko.md",
+      "passed": true
+    },
+    {
+      "id": "required-original:inputs/reviewed-copy/drafts/home.ko.md",
+      "passed": true
+    },
+    {
+      "id": "required-original:inputs/reviewed-copy/drafts/naju-hospital-funeral.ko.md",
+      "passed": true
+    },
+    {
+      "id": "required-original:inputs/reviewed-copy/drafts/support.ko.md",
+      "passed": true
+    },
+    {
+      "id": "required-original:inputs/reviewed-copy/evidence/source-facts.json",
+      "passed": true
+    },
+    {
+      "id": "required-original:inputs/reviewed-copy/render-plan.json",
+      "passed": true
+    },
+    {
+      "id": "required-original:inputs/reviewed-copy/reviews/implementation-review-binding.json",
+      "passed": true
+    },
+    {
+      "id": "required-original:inputs/reviewed-copy/reviews/independent-copy-review-r2.json",
+      "passed": true
+    },
+    {
+      "id": "index.html:exact-delta",
+      "passed": true
+    },
+    {
+      "id": "index.html:nav-count",
+      "passed": true
+    },
+    {
+      "id": "index.html:reviewed-blocks-unchanged",
+      "passed": true
+    },
+    {
+      "id": "index.html:faq-unchanged",
+      "passed": true
+    },
+    {
+      "id": "index.html:images-unchanged",
+      "passed": true
+    },
+    {
+      "id": "regions/index.html:exact-delta",
+      "passed": true
+    },
+    {
+      "id": "regions/index.html:nav-count",
+      "passed": true
+    },
+    {
+      "id": "regions/index.html:reviewed-blocks-unchanged",
+      "passed": true
+    },
+    {
+      "id": "regions/index.html:faq-unchanged",
+      "passed": true
+    },
+    {
+      "id": "regions/index.html:images-unchanged",
+      "passed": true
+    },
+    {
+      "id": "regions/index.html:nav-links",
+      "passed": true
+    },
+    {
+      "id": "regions/index.html:aria-label",
+      "passed": true
+    },
+    {
+      "id": "regions/index.html:current-label",
+      "passed": true
+    },
+    {
+      "id": "regions/index.html:position",
+      "passed": true
+    },
+    {
+      "id": "regions/index.html:no-hidden-navigation",
+      "passed": true
+    },
+    {
+      "id": "regions/naju-hospital-funeral-wreath/index.html:exact-delta",
+      "passed": true
+    },
+    {
+      "id": "regions/naju-hospital-funeral-wreath/index.html:nav-count",
+      "passed": true
+    },
+    {
+      "id": "regions/naju-hospital-funeral-wreath/index.html:reviewed-blocks-unchanged",
+      "passed": true
+    },
+    {
+      "id": "regions/naju-hospital-funeral-wreath/index.html:faq-unchanged",
+      "passed": true
+    },
+    {
+      "id": "regions/naju-hospital-funeral-wreath/index.html:images-unchanged",
+      "passed": true
+    },
+    {
+      "id": "regions/naju-hospital-funeral-wreath/index.html:nav-links",
+      "passed": true
+    },
+    {
+      "id": "regions/naju-hospital-funeral-wreath/index.html:aria-label",
+      "passed": true
+    },
+    {
+      "id": "regions/naju-hospital-funeral-wreath/index.html:current-label",
+      "passed": true
+    },
+    {
+      "id": "regions/naju-hospital-funeral-wreath/index.html:position",
+      "passed": true
+    },
+    {
+      "id": "regions/naju-hospital-funeral-wreath/index.html:no-hidden-navigation",
+      "passed": true
+    },
+    {
+      "id": "404.html:exact-delta",
+      "passed": true
+    },
+    {
+      "id": "404.html:nav-count",
+      "passed": true
+    },
+    {
+      "id": "404.html:reviewed-blocks-unchanged",
+      "passed": true
+    },
+    {
+      "id": "404.html:faq-unchanged",
+      "passed": true
+    },
+    {
+      "id": "404.html:images-unchanged",
+      "passed": true
+    },
+    {
+      "id": "static-asset:robots.txt",
+      "passed": true
+    },
+    {
+      "id": "static-asset:_headers",
+      "passed": true
+    },
+    {
+      "id": "static-asset:sitemap-0.xml",
+      "passed": true
+    },
+    {
+      "id": "static-asset:favicon.svg",
+      "passed": true
+    },
+    {
+      "id": "static-asset:39c4ed924bc6084c670a963c26d9f018.txt",
+      "passed": true
+    },
+    {
+      "id": "static-asset:sitemap-index.xml",
+      "passed": true
+    },
+    {
+      "id": "static-asset:_astro/CopyPage.BudSIMTy.css",
+      "passed": true
+    },
+    {
+      "id": "static-asset:images/products/B205.jpg",
+      "passed": true
+    },
+    {
+      "id": "static-asset:images/products/B201.jpg",
+      "passed": true
+    },
+    {
+      "id": "static-asset:images/products/B060.jpg",
+      "passed": true
+    },
+    {
+      "id": "static-asset:images/products/B203.jpg",
+      "passed": true
+    },
+    {
+      "id": "static-asset:images/shared-banners/flower-message.webp",
+      "passed": true
+    },
+    {
+      "id": "static-asset:images/shared-banners/flower-consultation.webp",
+      "passed": true
+    },
+    {
+      "id": "static-asset:images/shared-banners/flower-budget.webp",
+      "passed": true
+    },
+    {
+      "id": "support-inbound-from-detail",
+      "passed": true
+    }
+  ],
+  "checksPassed": 137,
+  "testsReportedByAuthor": 224,
+  "testSuiteRerunByThisReviewer": false,
+  "scoreEffect": {
+    "SEO_S05": {
+      "before": 0,
+      "after": 10,
+      "status": "PASS_STATIC"
+    },
+    "SEO_staticEachPrimary": 70,
+    "SEO_final": null,
+    "A04_eachPrimary": 100,
+    "GEO_documentEachPrimary": 100,
+    "AEO_staticEachPrimary": 90
+  },
+  "actualRunArtifactVerified": false,
+  "browserPixelsVerified": false,
+  "publicHTTPVerified": false,
+  "publicationEligible": false,
+  "coreHubLaunchStatus": "NOT_ASSESSED",
+  "fullLaunchStatus": "NOT_ASSESSED"
+}

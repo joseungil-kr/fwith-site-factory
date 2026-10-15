@@ -1,0 +1,398 @@
+{
+  "schemaVersion": 1,
+  "assessmentScope": "static-bounded-launch",
+  "region": "naju",
+  "path": "/regions/naju-hospital-funeral-wreath/",
+  "reviewedUTC": "2026-10-15T15:42:06.567183+00:00",
+  "sourceCommit": "21ebc3cffc12df8977e8209bc4fc3139e084fa8b",
+  "customerCopySHA256": "ae92f1762be8bdf0ef7e4193c8c03094e9484d2d31eaae6f1e27f545a94c2698",
+  "bindingSha256": null,
+  "sourceContractSha256": null,
+  "boundedContractSha256": null,
+  "buildRunId": null,
+  "artifactId": null,
+  "artifactDigest": null,
+  "buildControlSha": null,
+  "verdict": "STATIC_TEXT_ASSESSED_PRODUCTION_GATE_PENDING",
+  "A04AlignmentAssessment": {
+    "id": "detail",
+    "path": "/regions/naju-hospital-funeral-wreath/",
+    "primaryQuery": "나주종합병원장례식장 근조화환",
+    "allowedGeography": [
+      "나주종합병원장례식장"
+    ],
+    "service": "근조화환",
+    "purchaseDecisionTokens": [
+      "가격",
+      "배송비",
+      "상품",
+      "상담"
+    ],
+    "intentKey": "naju:facility-wreath-selection-and-order",
+    "targetStatus": "RETROSPECTIVE_EXPLICIT_TARGET_NOT_CLAIMED_PREWRITING_FREEZE",
+    "queryEvidence": "Retained dated search-observation and purchase-plan records. No keyword volume, position or current market-price claim.",
+    "title": "나주종합병원장례식장 근조화환 가격·배송비 | 꽃이랑",
+    "h1": "나주종합병원장례식장 근조화환",
+    "firstAnswer": "나주종합병원장례식장으로 조의를 전할 근조화환을 찾으시면, 꽃이랑에서 상품과 주문 상담을 도와드립니다. 위로의 말을 길게 적기 어려우셔도 괜찮습니다. 짧은 인사와 보내시는 분의 이름을 담는 리본 문구부터 함께 상담해 드립니다.",
+    "first120": "나주종합병원장례식장으로 조의를 전할 근조화환을 찾으시면, 꽃이랑에서 상품과 주문 상담을 도와드립니다. 위로의 말을 길게 적기 어려우셔도 괜찮습니다. 짧은 인사와 보내시는 분의 이름을 담는 리본 문구부터 함께 상담해 ",
+    "first180": "나주종합병원장례식장으로 조의를 전할 근조화환을 찾으시면, 꽃이랑에서 상품과 주문 상담을 도와드립니다. 위로의 말을 길게 적기 어려우셔도 괜찮습니다. 짧은 인사와 보내시는 분의 이름을 담는 리본 문구부터 함께 상담해 드립니다.",
+    "coreAnswer": "꽃이랑에서 상품과 주문 상담을 도와드립니다.",
+    "coreStartsAtCodepoint": 32,
+    "firstAnswerCompletesAtCodepoint": 125,
+    "criteria": [
+      {
+        "id": "T01",
+        "weight": 10,
+        "field": "title",
+        "passCondition": "Contains allowed geography token",
+        "points": 10,
+        "status": "PASS_STATIC",
+        "reason": "Title contains explicit 나주종합병원장례식장."
+      },
+      {
+        "id": "T02",
+        "weight": 10,
+        "field": "title",
+        "passCondition": "Contains exact service combination 근조화환 in this retrospective target map.",
+        "points": 10,
+        "status": "PASS_STATIC",
+        "reason": "Title contains exact 근조화환."
+      },
+      {
+        "id": "T03",
+        "weight": 10,
+        "field": "title",
+        "passCondition": "Contains allowed purchase decision token, not unrelated informational intent",
+        "points": 10,
+        "status": "PASS_STATIC",
+        "reason": "Title names 가격·배송비, a supported purchase decision."
+      },
+      {
+        "id": "T04",
+        "weight": 10,
+        "field": "title",
+        "passCondition": "Title begins at codepoint 0 with the complete primary query, without promotional modifiers between geography/facility and service. It precedes the purchase explanation and brand. For any later non-prefix proposal, fail this criterion pending review.",
+        "points": 10,
+        "status": "PASS_STATIC",
+        "reason": "Exact query 나주종합병원장례식장 근조화환 begins title at codepoint0, before price/brand."
+      },
+      {
+        "id": "H01",
+        "weight": 10,
+        "field": "h1",
+        "passCondition": "Contains same allowed geography",
+        "points": 10,
+        "status": "PASS_STATIC",
+        "reason": "H1 explicitly names 나주종합병원장례식장."
+      },
+      {
+        "id": "H02",
+        "weight": 10,
+        "field": "h1",
+        "passCondition": "Contains same allowed service; no scope drift",
+        "points": 10,
+        "status": "PASS_STATIC",
+        "reason": "H1 preserves the same condolence wreath service."
+      },
+      {
+        "id": "H03",
+        "weight": 5,
+        "field": "h1",
+        "passCondition": "Continues same buyer decision as title and intentKey",
+        "points": 5,
+        "status": "PASS_STATIC",
+        "reason": "H1 opens the same product/budget/order decision; it is not a separate informational article."
+      },
+      {
+        "id": "F01",
+        "weight": 5,
+        "field": "first180",
+        "passCondition": "Contains explicit same geography/service. Allowed target synonyms are fixed in this retrospective supplement, not asserted to be a prewriting freeze.",
+        "points": 5,
+        "status": "PASS_STATIC",
+        "reason": "Complete first answer contains 나주종합병원장례식장 and 근조화환."
+      },
+      {
+        "id": "F02",
+        "weight": 10,
+        "field": "first180",
+        "passCondition": "Directly answers target buyer decision; not only greeting/question/checklist",
+        "points": 10,
+        "status": "PASS_STATIC",
+        "reason": "Provider consultation core begins at codepoint32; full first paragraph completes at125 (<=180)."
+      },
+      {
+        "id": "F03",
+        "weight": 5,
+        "field": "first180",
+        "passCondition": "States a supported actual-product selection benefit (photo/basic-price comparison or bounded order consultation), not invented quality/fulfillment",
+        "points": 5,
+        "status": "PASS_STATIC",
+        "reason": "Provider offers actual product/ribbon/order consultation; no invented fulfillment benefit."
+      },
+      {
+        "id": "F04",
+        "weight": 5,
+        "field": "first180",
+        "passCondition": "If price appears it is identified as basic price and exact supported amount/range; if no price, uses another precise supported selection fact",
+        "points": 5,
+        "status": "PASS_STATIC",
+        "reason": "Home explicitly separates product basic price and supported Naju surcharge10000; detail specifies sender-name/ribbon consultation, with no price claim requiring a hidden qualifier."
+      },
+      {
+        "id": "F05",
+        "weight": 5,
+        "field": "first180",
+        "passCondition": "Does not imply guaranteed venue acceptance/arrival; any immediately necessary qualifier of a stated claim is present locally",
+        "points": 5,
+        "status": "PASS_STATIC",
+        "reason": "Opening contains no promised arrival, admission or confirmed order; later conditions remain explicit."
+      },
+      {
+        "id": "F06",
+        "weight": 5,
+        "field": "first180",
+        "passCondition": "Provider voice offers evidenced selection/order help and a relevant next step without commanding/repeated warnings",
+        "points": 5,
+        "status": "PASS_STATIC",
+        "reason": "Helpful provider-led consultation and a concrete product/ribbon next step; no checklist-only lead."
+      }
+    ],
+    "score": 100,
+    "maximum": 100,
+    "threshold": 90,
+    "staticHardGateFailure": false,
+    "actualBrowserVisibility": "PENDING",
+    "boundary": "Title/H1/early-answer text alignment only. No browser visibility, final production binding or search performance is implied."
+  },
+  "scores": {
+    "SEO": {
+      "verifiedPoints": 70,
+      "maximum": 100,
+      "threshold": 90,
+      "numericThresholdMetInStaticEvidence": false,
+      "allRequiredCriteriaVerified": false,
+      "finalProductionScore": null,
+      "criteria": [
+        {
+          "id": "S01",
+          "weight": 10,
+          "criterion": "One defined primary query/intent and traceable query evidence; missing keyword metadata explicitly supplemented and hash-bound in this review.",
+          "points": 10,
+          "status": "PASS_STATIC",
+          "reason": "One retrospective primary query and intent key per primary page; retained search observations and purchase plan, no search-volume claim."
+        },
+        {
+          "id": "S02",
+          "weight": 15,
+          "criterion": "A04 static title/H1/firstAnswer >=90 and no hard alignment failure.",
+          "points": 15,
+          "status": "PASS_STATIC",
+          "reason": "Exact title/H1/first paragraph and13criterion A04 assessment100/100; first answer complete within180 and core begins within120."
+        },
+        {
+          "id": "S03",
+          "weight": 10,
+          "criterion": "Unique title/meta, one H1, coherent H2/H3; actual used summary passes separation rules.",
+          "points": 10,
+          "status": "PASS_STATIC",
+          "reason": "Four unique title/meta/H1; coherent headings; two actually used article-card summaries pass exact-prefix/common-prefix/LCS rules."
+        },
+        {
+          "id": "S04",
+          "weight": 10,
+          "criterion": "Actual local/vertical facts and supported catalog; no invented claim.",
+          "points": 10,
+          "status": "PASS_STATIC",
+          "reason": "Unchanged catalog prices, Naju10000 surcharge, distinct venue phone/address and conditional policy reuse hash-bound original factual review."
+        },
+        {
+          "id": "S05",
+          "weight": 10,
+          "criterion": "Real internal targets/inbound/breadcrumb and distinct home/detail buyer decisions.",
+          "points": 10,
+          "status": "PASS_STATIC",
+          "reason": "Home/detail distinct buyer decisions and real HTML links; article inbound from home/support, support inbound from detail. Successor adds explicit home/support/detail breadcrumb using approved labels only; technical404 is not an indexable content page."
+        },
+        {
+          "id": "S06",
+          "weight": 10,
+          "criterion": "Provider-led full-copy information and real HTML phone/SKU action links, not image-only actions.",
+          "points": 10,
+          "status": "PASS_STATIC",
+          "reason": "All114 reviewed fields present on intended HTML surfaces; seller phone and four exact SKU anchors are real HTML; no image-only buying step."
+        },
+        {
+          "id": "S07",
+          "weight": 5,
+          "criterion": "Local assets exist; descriptive alt/sample labeling; exact approved banner exception.",
+          "points": 5,
+          "status": "PASS_STATIC",
+          "reason": "All7 local image bytes match approved originals; meaningful alt/sample qualifiers and exact shared-banner exception retained. No current runtime scaling claim."
+        },
+        {
+          "id": "S08",
+          "weight": 10,
+          "criterion": "Production canonical/robots/OG/Twitter/sitemap/map agree for approved origin.",
+          "points": 0,
+          "status": "PENDING_REQUIRED",
+          "reason": "Offline canonical/robots/OG/Twitter/sitemap pass static inspection, but actual production artifact/control/approved-origin binding is absent. Zero until that artifact is inspected."
+        },
+        {
+          "id": "S09",
+          "weight": 10,
+          "criterion": "Actual production HTTP200/404 and correct resource/CTA endpoint responses verified against this output.",
+          "points": 0,
+          "status": "PENDING_REQUIRED",
+          "reason": "No public response/real404/resource MIME/current endpoint verification in this scope."
+        },
+        {
+          "id": "S10",
+          "weight": 10,
+          "criterion": "Browser mobile/desktop readability, computed FAQ visibility and action usability verified.",
+          "points": 0,
+          "status": "PENDING_REQUIRED",
+          "reason": "No actual production browser/mobile/desktop pixel or computed visibility inspection in this scope."
+        }
+      ],
+      "meaning": "Document/evidence coverage under the disclosed independent rubric, not measured ranking, AI citation, conversion or launch permission."
+    },
+    "GEO": {
+      "verifiedPoints": 100,
+      "maximum": 100,
+      "threshold": 85,
+      "numericThresholdMetInStaticEvidence": true,
+      "allRequiredCriteriaVerified": true,
+      "finalProductionScore": null,
+      "criteria": [
+        {
+          "id": "G01",
+          "weight": 20,
+          "criterion": "Provider, venue and service entities unambiguous; provider contact distinguished from facility contacts.",
+          "points": 20,
+          "status": "PASS_STATIC",
+          "reason": "Seller1844-0644 is distinct from facility061-332-4461 and hospital representative061-330-6114; provider/facility roles are unambiguous."
+        },
+        {
+          "id": "G02",
+          "weight": 25,
+          "criterion": "Every material venue/catalog/policy assertion traced to inspected primary-source content; original dates and source level retained.",
+          "points": 25,
+          "status": "PASS_STATIC",
+          "reason": "Hash-retained official SKU HTML, government facility record, HIRA corroboration and policy-image inspection support material claims; source dates and dataset2026-04-01 retained."
+        },
+        {
+          "id": "G03",
+          "weight": 20,
+          "criterion": "Useful local/order content, not place-name substitution or decorative local history.",
+          "points": 20,
+          "status": "PASS_STATIC",
+          "reason": "Naju10000 delivery surcharge and four budget sums, government-confirmed facility address and dedicated phone, recipient/ribbon/order conditions give local buying usefulness."
+        },
+        {
+          "id": "G04",
+          "weight": 20,
+          "criterion": "Conditions and uncertainty explicit; prices not total, sample not exact fulfillment, no fake delivery/refund/affiliation proof.",
+          "points": 20,
+          "status": "PASS_STATIC",
+          "reason": "Basic prices and arithmetic reference budgets not final quotes; sample material variation, no guaranteed arrival/admission, no invented refund amounts/deadlines or affiliation."
+        },
+        {
+          "id": "G05",
+          "weight": 15,
+          "criterion": "Readable semantic source/answer sections and meaningful, non-conflicting page roles; no invented review/schema evidence.",
+          "points": 15,
+          "status": "PASS_STATIC",
+          "reason": "Semantic headings/answers and sources; home discovery, detail ordering, one noindex support and technical404 have separate roles; no invented review/schema."
+        }
+      ],
+      "meaning": "Document/evidence coverage under the disclosed independent rubric, not measured ranking, AI citation, conversion or launch permission."
+    },
+    "AEO": {
+      "verifiedPoints": 90,
+      "maximum": 100,
+      "threshold": 90,
+      "numericThresholdMetInStaticEvidence": true,
+      "allRequiredCriteriaVerified": false,
+      "finalProductionScore": null,
+      "criteria": [
+        {
+          "id": "A01",
+          "weight": 20,
+          "criterion": "Within180 codepoints first answer states actual relevant offer and buyer step; core answer begins within120.",
+          "points": 20,
+          "status": "PASS_STATIC",
+          "reason": "Actual static first paragraph is complete within180 with direct provider offer beginning within120; exact strings and indices recorded."
+        },
+        {
+          "id": "A02",
+          "weight": 25,
+          "criterion": "Role-specific questions answered: home discovery/price/contact, detail venue/product/price/ribbon/order/change/collection; no word-count filler.",
+          "points": 25,
+          "status": "PASS_STATIC",
+          "reason": "Home answers product discovery, baseprice/shipping budget, ribbon and consultation. Detail answers facility,4products,4prices+surcharge, ribbon, order inputs/timing, change/cancellation and collection; no filler quota."
+        },
+        {
+          "id": "A03",
+          "weight": 15,
+          "criterion": "Answer facts and conditional policies have primary evidence without overclaiming.",
+          "points": 15,
+          "status": "PASS_STATIC",
+          "reason": "Original-source facts and conditional policies retained by unchanged copy hash; limits do not erase required material-difference cancellation restriction."
+        },
+        {
+          "id": "A04",
+          "weight": 15,
+          "criterion": "Main HTML contains complete answers with sensible headings, and each specified FAQ appears once; home has no quota FAQ requirement.",
+          "points": 15,
+          "status": "PASS_STATIC",
+          "reason": "Complete source-mapped text in actual static HTML. Detail has exactly3 expanded question/answer pairs once; no home FAQ quota and no duplicate product grid."
+        },
+        {
+          "id": "A05",
+          "weight": 15,
+          "criterion": "Actionable next step uses exact seller phone or SKU destination and helpful provider tone.",
+          "points": 15,
+          "status": "PASS_STATIC",
+          "reason": "Exact seller phone and four SKU destinations provide useful next steps; professional whole-copy review retained with0 mandatory changes."
+        },
+        {
+          "id": "A06",
+          "weight": 10,
+          "criterion": "Actual browser computed visibility/readability confirms static answer/FAQ/CTA extraction.",
+          "points": 0,
+          "status": "PENDING_REQUIRED",
+          "reason": "Static HTML cannot establish computed visibility, readability or usable actions; actual artifact browser evidence is pending."
+        }
+      ],
+      "meaning": "Document/evidence coverage under the disclosed independent rubric, not measured ranking, AI citation, conversion or launch permission."
+    }
+  },
+  "rubric": {
+    "path": "rubric.json",
+    "bytes": 9987,
+    "sha256": "f19e2bbf6543f00075b56beadf10d090f4c7abb7ef1ff52a6a3c0dafdaba31c9"
+  },
+  "staticObservations": {
+    "path": "static-observations.json",
+    "bytes": 95592,
+    "sha256": "8b596429d922ef7e65bdd3ba5cb2938177681c13e0d7361214fc57db9e180417"
+  },
+  "retainedEvidence": {
+    "path": "source-and-content-retention.json",
+    "bytes": 28997,
+    "sha256": "6238eaeaaca384465eccf0931d946d96c573144e836a0d75c984f12ef02af340"
+  },
+  "sourceImplementationIssues": [],
+  "requiredProductionEvidence": {
+    "path": "pending-production-evidence.json",
+    "bytes": 2276,
+    "sha256": "4e5383129fcccf551f2c1ad725d6dba5ac3f4c6b8b2d030b941a4dcb8c6b9ee1"
+  },
+  "publicHttpVerified": false,
+  "browserPixelsVerified": false,
+  "actualRunnerArtifactVerified": false,
+  "publicationEligible": false,
+  "coreHubLaunchStatus": "NOT_ASSESSED",
+  "fullLaunchStatus": "NOT_ASSESSED"
+}

@@ -1,0 +1,279 @@
+{
+  "schemaVersion": 1,
+  "kind": "independent-regional-customer-copy-review",
+  "reviewer": "review_naju_customer_copy",
+  "author": "draft_naju_customer_pages",
+  "reviewedAtUTC": "2026-10-15T14:33:00Z",
+  "result": "PASS_EXACT_FINAL_COPY_ONLY",
+  "toneReview": "PASS",
+  "searchIntentAndInformationCompleteness": "PASS",
+  "mandatoryChangesRemaining": 0,
+  "copyPath": "naju-customer-copy-20261015/customer-copy.json",
+  "copyRevision": "naju-r2-20261015",
+  "copySHA256": "ae92f1762be8bdf0ef7e4193c8c03094e9484d2d31eaae6f1e27f545a94c2698",
+  "sourceCommit": null,
+  "sourceCommitBoundary": "No Naju source commit exists in this review scope. Later implementation must bind the exact reviewed JSON and this review digest to its actual source commit. This copy-only PASS does not cover implementation or publication.",
+  "currentMainReference": "ee2317123eb12fd46c6d0bce605c3ad8fbd7eeab",
+  "currentMainDirectRead": {
+    "criteriaAndFixedPlanByteIdenticalToAuthorPinnedSources": true,
+    "recordedReleasedRegionCount": 59,
+    "plannedRegionCount": 230,
+    "remainingRegionCount": 171,
+    "nextNewRegion": "나주시",
+    "officialCode": "12170",
+    "nationalOrder": 29,
+    "boundary": "Read repository record only; not a fresh independent audit of 59 public hosts."
+  },
+  "reviewScope": {
+    "entirePlannedCustomerCopyRead": true,
+    "customerStringFieldsBound": 114,
+    "pages": [
+      "home",
+      "detail: naju-hospital-funeral",
+      "support",
+      "404"
+    ],
+    "included": [
+      "all titles and meta descriptions",
+      "H1/H2/H3",
+      "all opening paragraphs, body paragraphs, lists and closing",
+      "all four product names, prices, shipping labels, descriptions, photo alt and CTA labels/URLs",
+      "all three FAQ questions and answers",
+      "home and support cards",
+      "telephone CTA, navigation and accessibility strings",
+      "all source headings, introductions and link labels",
+      "three shared banner alt strings and actual approved image wording"
+    ],
+    "planningDocumentsRead": [
+      "PURCHASE-PLAN.ko.md",
+      "SOURCE-MAP.ko.md",
+      "render-plan.json",
+      "ALL-VISIBLE-STRINGS.ko.md"
+    ],
+    "actualAppHTMLOrMobilePixels": false,
+    "publicHTTPVerified": false
+  },
+  "requiredCorrectionsResolved": [
+    {
+      "path": "/detail/sections/4/afterList/1",
+      "issue": "Third-person 안내받은 뒤 wording",
+      "resolution": "Seller now offers final cost and delivery-possibility consultation directly."
+    },
+    {
+      "path": "/detail/sections/5/paragraphs/0",
+      "issue": "Third-person 상담하실 수 있습니다 wording",
+      "resolution": "Seller now offers the possible change range based on order progress."
+    },
+    {
+      "path": "/detail/sections/1/paragraphs/1",
+      "issue": "Internal no-invented-specification editing rule exposed to customer",
+      "resolution": "Deleted the sentence about not explaining flower count/height from price; no replacement padding."
+    },
+    {
+      "path": "/detail/sections/5/paragraphs/1",
+      "issue": "Omitted explicit materials-only cancellation/refund restriction",
+      "resolution": "Restored the official-source restriction while retaining order-specific consultation and no promised refund amount/deadline."
+    }
+  ],
+  "deltaRecheck": {
+    "changedCustomerParagraphs": 4,
+    "otherChangedFields": [
+      "revision"
+    ],
+    "unexpectedChanges": 0,
+    "evidence": "evidence/independent-delta.json"
+  },
+  "toneFindings": [
+    {
+      "criterion": "provider voice and helpfulness",
+      "result": "PASS",
+      "finding": "Opening and order sections explain the seller’s product/ribbon/price consultation. The two third-person transitions were corrected; they do not promise facility management or installation."
+    },
+    {
+      "criterion": "empathy and short natural conversational context",
+      "result": "PASS",
+      "finding": "The opening respects difficulty finding a short condolence phrase and connects it to ribbon consultation. No invented customer memory, emotion, delivery experience or testimonial."
+    },
+    {
+      "criterion": "teaching tone and repeated homework",
+      "result": "PASS",
+      "finding": "No sequence of instructional headings or repeated 확인하세요 directives. Required order details are grouped once in four bullets. FAQ adds unresolved-room/ribbon-photo/collection answers."
+    },
+    {
+      "criterion": "disclaimers versus useful selling information",
+      "result": "PASS",
+      "finding": "Prices, photos, total-budget arithmetic and ribbon examples lead. Unconfirmed arrival/entry conditions appear at the relevant order section. Product sample notices stay beside actual photos."
+    },
+    {
+      "criterion": "pressure, superiority, guarantees and fake emotional templates",
+      "result": "PASS",
+      "finding": "No forced higher budget for company orders, size/quality inference, free delivery, same-day deadline, fixed arrival, partnership, installation, collection, stock or refund promise."
+    },
+    {
+      "criterion": "all shared and technical-page language",
+      "result": "PASS",
+      "finding": "Home/support card, 404, menu labels, phone links, metadata and descriptive banner alt fit their functions. Exact approved banner bytes retained; no new generated imagery or deleted caption reinserted."
+    }
+  ],
+  "informationFindings": [
+    {
+      "question": "What can I buy and how much should I budget?",
+      "answer": "Four exact products and photographs; basic prices 59000/79000/109000/149000 KRW, Naju additional shipping 10000 KRW, sums 69000/89000/119000/159000 explicitly called budget arithmetic. Final order total is subject to consultation.",
+      "evidence": "evidence/independent-product-bindings.json",
+      "result": "PASS"
+    },
+    {
+      "question": "Which funeral facility and which phone?",
+      "answer": "Naju General Hospital Funeral Hall, 나주시 영산로 5419 (성북동), funeral facility 061-332-4461 distinguished from hospital representative 061-330-6114 and flower consultation 1844-0644.",
+      "evidence": "Government CSV original row 744 and preserved HIRA original HTML inspected.",
+      "result": "PASS"
+    },
+    {
+      "question": "What can I put on a ribbon and what do I need to order?",
+      "answer": "Short Korean/Chinese condolence examples and name examples, one four-item order checklist, unfinished room information handled by consultation. Religion is not requested.",
+      "result": "PASS"
+    },
+    {
+      "question": "Can it arrive, enter or be installed at a chosen time?",
+      "answer": "Desired time is a consultation input. No actual arrival, entry or installation authorization asserted; facility delivery conditions remain unconfirmed.",
+      "result": "PASS_CONDITIONAL_SCOPE"
+    },
+    {
+      "question": "Can I change/cancel, and who collects afterward?",
+      "answer": "Order-progress based change/cancellation consultation; explicit official materials-only restriction; no fabricated refund amount or timing; separate wreath collection not provided.",
+      "evidence": "de_change_content.jpg and order-top2.jpg full pixels inspected.",
+      "result": "PASS_CONDITIONAL_SCOPE"
+    },
+    {
+      "question": "Is the page distinct and is the next action useful?",
+      "answer": "One facility purchase intent combines verified local surcharge and government identification. Full sibling manuscripts and two competitor text originals were read; no duplicate URL or keyword-only variation proposed. Four CTA destinations are exact SKU URLs, with separate telephone and source links.",
+      "result": "PASS"
+    }
+  ],
+  "metrics": {
+    "definition": "Unicode code points including spaces and one newline between selected fields. Main = detail.lead + all section paragraphs/list/afterList. FAQ = questions and answers. Complete = main + FAQ + closing. Headings/cards/menu/CTA/sources/footer excluded. Draft target, never a hard gate.",
+    "mainProseChars": 2582,
+    "mainProseNonWhitespaceChars": 1993,
+    "faqChars": 358,
+    "mainPlusFAQAndClosingChars": 3026,
+    "homeProseChars": 621,
+    "comparisons": [
+      {
+        "reference": "mokpo-content-preparation-20261014/drafts/condolence.ko.md",
+        "sha256": "f3ccc94cd20e3d62618a3ae64cde7774aac91ac9ff9e162f82c50867a1792d01",
+        "literalRatio": 0.002159,
+        "entityMaskedRatio": 0.002192
+      },
+      {
+        "reference": "yeosu-customer-copy-20261014/drafts/yeosu-jeonnam-hospital-funeral.ko.md",
+        "sha256": "6815d1d6e6fbc03e8976e914f656062a2cb7e85eab93def67067edafbd63b8a9",
+        "literalRatio": 0.003886,
+        "entityMaskedRatio": 0.003946
+      },
+      {
+        "reference": "suncheon-customer-copy-20261015/drafts/suncheon-stcarollo-funeral.ko.md",
+        "sha256": "58b8bec4dab3b4854999dccbad58c68ea2709dba39124b9df336162259accd03",
+        "literalRatio": 0.005613,
+        "entityMaskedRatio": 0.005699
+      }
+    ],
+    "semanticReview": "Common product facts and practical ordering questions naturally overlap. Naju pricing includes a verified 10000 KRW surcharge and per-SKU sums; facility identification is government-record based and distinct from Mokpo address/parking, Yeosu dual addresses and Suncheon room/religious-service descriptions. Independent full-text semantic review found no place-name-only substitution."
+  },
+  "metricInterpretation": "Original R1 measured 2590 main / 3034 with FAQ and closing. Final R2 is 2582 / 3026. The 2500–3000 target applies to unique detail-body draft sufficiency, not a ranking formula or hard min/max; 3026 including FAQ/closing is not a failure. Home 621 characters is a navigation/consultation page, not another long article.",
+  "evidenceClassification": {
+    "directlyInspected": [
+      "Final canonical JSON and all four Markdown drafts; metadata/UI inventory",
+      "Current-main criteria and fixed plan via GitHub connector, exact Git blob SHA recalculation",
+      "Four preserved official HTML bodies, prices, matching Naju shipping rows and image URLs",
+      "Government CSV facility row and HIRA road address/phone original",
+      "Four product photo pixels, two full policy image pixels, three approved banner pixels",
+      "Final changed text, entire JSON delta, 40 independent binding checks and 114 string fields",
+      "Mokpo/Yeosu/Suncheon full comparison manuscripts; two competitor text pages via web extraction"
+    ],
+    "toolReportedOnly": [
+      "Original product/CSV/HIRA GET status and timestamps, independently bound to stored body SHA but not reissued by this reviewer",
+      "Author reports 78 checks; not used as a substitute for independent review",
+      "Competitor web crawl label is six months ago; no current market price or real-time ordering verification"
+    ],
+    "judgment": [
+      "Tone and information-completeness verdicts are editorial judgments based on the inspected evidence",
+      "Low 20-character lexical overlap does not itself prove semantic originality; full text was separately compared"
+    ],
+    "unverified": [
+      "Current facility operation, telephone connection, entry/receiving time and location, stock and actual order total",
+      "SKU time-policy and overlapping completed-production/post-dispatch refund-rule application",
+      "App implementation, rendered HTML, actual mobile layout/buttons, public URL/HTTP/404, source-save commit, CI, release, IndexNow and real indexing/rank"
+    ]
+  },
+  "boundFiles": [
+    {
+      "path": "naju-customer-copy-20261015/customer-copy.json",
+      "bytes": 20159,
+      "sha256": "ae92f1762be8bdf0ef7e4193c8c03094e9484d2d31eaae6f1e27f545a94c2698"
+    },
+    {
+      "path": "naju-customer-copy-20261015/drafts/home.ko.md",
+      "bytes": 2225,
+      "sha256": "62e5584537cd07cc6cbfd2b6a6ccd5dbccd26843cc0d1b62f070f0c41e9a3935"
+    },
+    {
+      "path": "naju-customer-copy-20261015/drafts/naju-hospital-funeral.ko.md",
+      "bytes": 11003,
+      "sha256": "c60e4672f88bc3221159707815cab77f15842df1eab72952f2dfa7b2432ea2ba"
+    },
+    {
+      "path": "naju-customer-copy-20261015/drafts/support.ko.md",
+      "bytes": 321,
+      "sha256": "44286b8b6ec534aef3b2ae5b9bd2753bf343df3cd1aa4635ac53a4c987991bdb"
+    },
+    {
+      "path": "naju-customer-copy-20261015/drafts/404.ko.md",
+      "bytes": 237,
+      "sha256": "d89a55058ba7bcc00e84df4c4c7e617b3bd824d1c595154fc1751a3046e4b85c"
+    },
+    {
+      "path": "naju-customer-copy-20261015/ALL-VISIBLE-STRINGS.ko.md",
+      "bytes": 2338,
+      "sha256": "9e6881422b03eaec6e43f62fa720fb83b511115b9e446eeda5cb4355e8d78205"
+    },
+    {
+      "path": "naju-customer-copy-20261015/PURCHASE-PLAN.ko.md",
+      "bytes": 7651,
+      "sha256": "61908ee01f2c40f5ce3424cbaf933e7ea6186161149d0bb1ef13a34c93d6b748"
+    },
+    {
+      "path": "naju-customer-copy-20261015/SOURCE-MAP.ko.md",
+      "bytes": 8561,
+      "sha256": "db87277d41f41d86570a34ae751c8562b633a54dd85300c9aa2444b267a553bc"
+    },
+    {
+      "path": "naju-customer-copy-20261015/render-plan.json",
+      "bytes": 7715,
+      "sha256": "cbc094f22a64a9b6291397ee022ca77f212b3cb19a168f022915cb28706936bc"
+    },
+    {
+      "path": "naju-customer-copy-20261015/body-count-and-overlap.json",
+      "bytes": 3673,
+      "sha256": "543d3d7181d87d3af23a2a1d2ff8c358bd33a9b76619003403a8d94be3bd3c3c"
+    }
+  ],
+  "independentChecks": {
+    "path": "evidence/independent-checks.json",
+    "passed": 40,
+    "failures": 0
+  },
+  "restrictions": {
+    "remoteWritesPerformed": false,
+    "appImplementationPerformed": false,
+    "imagesGenerated": false,
+    "blockedOperatorSitesOrGoogleCAPTCHARevisited": false,
+    "approvalOrPublicationClaim": false
+  },
+  "implementationHandoff": [
+    "Use this exact JSON as the sole customer-text source; no Markdown double-rendering. Any customer wording change invalidates this copy digest and requires changed-text review.",
+    "Bind final source commit to exact JSON and review artifact SHA; do not edit frozen proof records merely to pass tests.",
+    "Render three FAQ pairs once and always visible, four exact-SKU product cards with shipping labels, planned home/detail three banners, and support/404 zero banners.",
+    "Check actual title/meta/H1/H2/H3, links, canonicals, robots, sitemap exclusion, true 404 and the approved banner assets in implementation/output QA.",
+    "This is a copy-only PASS with mandatoryChangesRemaining=0, not a release PASS."
+  ]
+}
