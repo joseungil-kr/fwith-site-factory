@@ -1,0 +1,6 @@
+{
+ "name":"flower-direct-static-yeosu-private","type":"module","private":true,
+ "scripts":{"typecheck":"astro check","build":"node scripts/verify_inputs.mjs && astro check && astro build && python3 scripts/qa_yeosu.py","test":"node scripts/verify_inputs.mjs && node --test tests/*.test.mjs && python3 scripts/test_yeosu.py","qa":"python3 scripts/qa_yeosu.py"},
+ "dependencies":{"@astrojs/sitemap":"^3.0.0","astro":"^7.3.5"},
+ "devDependencies":{"@astrojs/check":"^0.9.0","typescript":"^5.9.0"}
+}
