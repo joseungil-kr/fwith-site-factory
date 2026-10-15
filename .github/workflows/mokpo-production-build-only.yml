@@ -84,7 +84,11 @@ jobs:
       - name: Inspect production artifact on runner loopback only
         run: |
           set -euo pipefail
-          python3 control/scripts/direct-mokpo/production_capture.py --checkout target --output evidence/browser 2>&1 | tee evidence/logs/capture.log
+          env -i PATH="$PATH" HOME="$HOME" LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 ASTRO_TELEMETRY_DISABLED=1 \
+            SITE_RELEASE_MODE="$SITE_RELEASE_MODE" SITE_INDEXABLE="$SITE_INDEXABLE" SITE_URL="$SITE_URL" \
+            SITE_FACTORY_REVISION="$SITE_FACTORY_REVISION" SITE_RELEASE_BINDING_PATH="$SITE_RELEASE_BINDING_PATH" \
+            SITE_RELEASE_BINDING_SHA256="$SITE_RELEASE_BINDING_SHA256" \
+            python3 control/scripts/direct-mokpo/production_capture.py --checkout target --output evidence/browser 2>&1 | tee evidence/logs/capture.log
       - name: Seal retained screenshots and reports
         if: always()
         run: python3 control/scripts/direct-mokpo/production_capture.py --seal --output evidence/browser
