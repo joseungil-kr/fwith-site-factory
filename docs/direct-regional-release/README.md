@@ -4,7 +4,19 @@ Before any resume or new-region selection, read `national/fixed-plan.json`, `nat
 
 The historical checkpoint is retained without rewriting its large history. Some legacy `current` and national progress fields are stale. `latest-progress.json` is a compact reconciliation supplement, not permission to skip checking actual source/main commits, active ownership, Actions runs, artifacts, public HTTP, and IndexNow receipts. Never republish a completed region solely because a legacy field says incomplete. If evidence conflicts, resolve the conflict before claiming completion or selecting a new region.
 
-## Current release boundary, 2026-10-15 (Dong-gu completion)
+## Current release boundary, 2026-10-15 UTC / 2026-10-16 KST (Seo-gu completion)
+
+Seo-gu is publicly released at https://gwangju-seogu.fwith.kr/. See `../direct-gwangju-seogu/release-completion-20261015.json`, `../direct-gwangju-seogu/public-http-verification-20261015.json` and `gwangju-seogu/progress.json`. Source `d9aee87097bceac7311268502f54f0d0438e9089` has79 fully read-back files. Actual QA38810748895 and its independently reviewed18 output files/36 PNGs/15 DOM snapshots are bound to publication38813662500 at control `ae19e5c305fec9e4fda60f0e8d39d635e1b5730c`. The complete16-file publication result archive, provider binding and original receipt journal were inspected.
+
+Independent public verification covers17 paths:16 HTTP200 and one real missing-route404. Twelve raw responses match exactly; four HTML responses match only after the strict single Cloudflare beacon transformation; robots is exactly the fixed2676-byte managed prefix plus unchanged81-byte source suffix. The original114 authored strings, all ordered body/chrome, products/FAQ, metadata, images and internal targets/fragments were independently checked. No bot/security policy was changed.
+
+Original two-URL IndexNow HTTP200 receipt: https://github.com/joseungil-kr/fwith-site-factory/issues/365#issuecomment-6203139812 . Started then received journal entries and fingerprint were checked; actual observations contain12 GETs and one POST. Receipt acceptance does not prove indexing or ranking. Run started21:57:03UTC, receipt recorded21:58:34.358637UTC, and independent public HTTP observed21:58:31.225572–21:59:35.339096UTC on October15. These are distinct observations, not an asserted exact first-publication time. No new live-public browser screenshot, exhaustive Tab/every-scroll-state or external order/call completion is claimed. CoreHubLaunch and FullLaunch remain NOT_ASSESSED.
+
+Only `gwangju-seogu.fwith.kr` is added to the fresh62-host union:63 of230 recorded releases,167 remaining. Earlier62 retain carried-forward evidence, not63 simultaneous fresh checks. Never redeploy or resubmit received batches merely to refresh records. Next fixed-plan selection is Nam-gu(order33, code12270); research/manuscript preparation is separate and is not declared unstarted or release-complete here. Selection order does not impose publication order. Other regions, fixed plan, checkpoint, prior verification gaps and banner followups remain unchanged.
+
+## Previous release boundary, 2026-10-15 (Dong-gu completion snapshot)
+
+The following62-count and Seo-gu-pending statements are retained history, superseded by the current63-host reconciliation above. They are not current retry or publication-order instructions.
 
 Dong-gu is publicly released at https://gwangju-donggu.fwith.kr/. See `../direct-gwangju-donggu/release-completion-20261015.json`, `../direct-gwangju-donggu/public-http-verification-20261015.json` and `gwangju-donggu/progress.json`. Source `a2e19b4d7e53681adf5749188bbcf6ea472319ee` has76 fully read-back files. Actual QA38792477864 and its independently reviewed18 output files/36 PNGs/15 DOM snapshots are bound to publication38797328467 at control `2c5feb90dd964b4b8d19eca4483f37e3eaf8ebe8`. The complete16-file publication result archive was inspected, including fixed provider binding and the original receipt journal.
 
