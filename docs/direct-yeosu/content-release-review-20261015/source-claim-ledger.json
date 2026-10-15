@@ -1,0 +1,463 @@
+{
+  "reviewedUTC": "2026-10-15T12:07:41.654227+00:00",
+  "sourceLevels": "Official public PDF; retained official tool extraction; retained selected official SKU HTML; retained original images; editorial advice. No competitor policy transferred.",
+  "claims": [
+    {
+      "id": "F01",
+      "claims": [
+        "여수전남병원장례식장 주소 광무1길 28-6(광무동)",
+        "2025-12-31 기준 표"
+      ],
+      "usedAt": [
+        "home facility section",
+        "article 배송지 안내",
+        "source sections"
+      ],
+      "evidence": [
+        {
+          "path": "yeosu-research-preparation-20261014/evidence/yeosu-2026-plan1.pdf",
+          "bytes": 5990996,
+          "sha256": "75401814de9e0759a25e59e0a2defac24d555aae198f876efdb7c849dce99a83"
+        },
+        {
+          "path": "yeosu-customer-copy-20261014/evidence/yeosu-funeral-table-page472.png",
+          "bytes": 245234,
+          "sha256": "2c26ff19f084e3dd6bcbdb10a13eb6b1cae7fc80cbf86e26820aeb509f20ed4c"
+        },
+        {
+          "path": "yeosu-content-release-review-20261015/pdf-page472-independent.txt",
+          "bytes": 3270,
+          "sha256": "8ddf8ce59897e003996d7070fd57eedd442751109a9c2ed4e3d0241ac45d8673"
+        }
+      ],
+      "verificationClass": "DIRECT_RETAINED_PRIMARY",
+      "sourceAge": {
+        "tableAsOf": "2025-12-31",
+        "daysAtReviewDate": 288,
+        "originalRetrieved": "2026-10-14",
+        "originalURL": "https://www.yeosu.go.kr/contents/88/2026_plan1.pdf"
+      },
+      "limits": "Retained full PDF bytes inspected by pdfinfo and page472 independently extracted with pdftotext. Page472 image visually read; print468. Not all666 pages read; no current admission/receipt/hours/installation proof."
+    },
+    {
+      "id": "F02",
+      "claims": [
+        "병원 홈페이지에 표시된 주소 좌수영로49",
+        "장례식장 주소와 한 번 구분; 본관 아님"
+      ],
+      "usedAt": [
+        "article 배송지 안내"
+      ],
+      "evidence": [
+        {
+          "path": "yeosu-customer-copy-20261014/evidence/hospital-homepage.web.json",
+          "bytes": 25424,
+          "sha256": "793e6b1ebdfd3ab02ee9b866dddde010ef999d5c6f94c0adf3f38a0fae9f3cac",
+          "selector": "L539",
+          "exactEvidence": "(59718)전남 여수시 좌수영로 49 (광무동 175-2)",
+          "url": "https://www.yscnhosp.com/"
+        }
+      ],
+      "verificationClass": "DIRECT_READ_OF_RETAINED_PRIMARY_TOOL_TEXT",
+      "sourceAge": {
+        "observedUTC": "2026-10-14T23:33Z",
+        "crawlerLabelAtObservation": "today",
+        "freshRequestPerformed": false
+      },
+      "limits": "Retained tool-extracted official text, not independent raw HTTP or current pixels. 본관 is unsupported and absent from current draft/HTML. Planning file’s historical wording is not customer evidence."
+    },
+    {
+      "id": "P-B201",
+      "claims": [
+        "근조 3단 화환",
+        "59,000원",
+        "상담번호1844-0644",
+        "배송지별 추가배송비 가능"
+      ],
+      "usedAt": [
+        "home price overview",
+        "article comparison/card/cost",
+        "exact SKU CTA"
+      ],
+      "evidence": [
+        {
+          "path": "yeosu-customer-copy-20261014/evidence/B201-selected.html",
+          "bytes": 10166,
+          "sha256": "0bbe5835bc75a1c3f292b0dd60b80e824ab3328f5bd1bc43ad0cb9ec3f5efadd",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B201",
+          "selectors": [
+            "#sit_title",
+            "#sit_ov",
+            "#sit_inf_open",
+            "#sit_dvr"
+          ],
+          "directFields": {
+            "판매가격": "59,000원",
+            "배송비결제": "주문시 결제",
+            "품명": "근조 3단 화환",
+            "소비자상담 관련 전화번호": "1844-0644"
+          }
+        }
+      ],
+      "verificationClass": "DIRECT_RETAINED_PRIMARY",
+      "sourceAge": {
+        "originalObservedUTC": "2026-10-13T12:21:29.214045+00:00",
+        "ageHoursAtInspection": 47.73
+      },
+      "limits": "Selected official HTML only, not full raw response; live stock/checkout/current price not verified. Delivery table has no Yeosu line, which does not establish zero fee."
+    },
+    {
+      "id": "IMAGE-B201",
+      "claims": [
+        "Sample photo and bounded color/ribbon/top-decoration description",
+        "Sample is not exact future fulfillment"
+      ],
+      "usedAt": [
+        "article prose/product image/alt"
+      ],
+      "evidence": [
+        {
+          "path": "yeosu-customer-copy-20261014/assets/B201-photo.jpg",
+          "bytes": 75206,
+          "sha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3"
+        },
+        {
+          "path": "yeosu-production-preparation-20261015/source/portable/yeosu-portable-build-inputs-20261015/yeosu-local-implementation-20261015/candidate/dist/images/products/B201.jpg",
+          "bytes": 75206,
+          "sha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3"
+        }
+      ],
+      "verificationClass": "DIRECT_RETAINED_PRIMARY",
+      "sourceAge": {
+        "originalDate": "2026-10-13"
+      },
+      "limits": "All500×500 original pixels viewed individually; copied bytes match. No measured flower counts/size/quality/lifespan or artificial/fresh ratio claimed. Source capture2026-10-13 retained."
+    },
+    {
+      "id": "P-B203",
+      "claims": [
+        "근조 고급 3단 화환",
+        "79,000원",
+        "상담번호1844-0644",
+        "배송지별 추가배송비 가능"
+      ],
+      "usedAt": [
+        "home price overview",
+        "article comparison/card/cost",
+        "exact SKU CTA"
+      ],
+      "evidence": [
+        {
+          "path": "yeosu-customer-copy-20261014/evidence/B203-selected.html",
+          "bytes": 10194,
+          "sha256": "a3bef6cc1fac727673fa59a513d4253070dc06d809ecae4b18e9410862724984",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B203",
+          "selectors": [
+            "#sit_title",
+            "#sit_ov",
+            "#sit_inf_open",
+            "#sit_dvr"
+          ],
+          "directFields": {
+            "판매가격": "79,000원",
+            "배송비결제": "주문시 결제",
+            "품명": "근조 고급 3단 화환",
+            "소비자상담 관련 전화번호": "1844-0644"
+          }
+        }
+      ],
+      "verificationClass": "DIRECT_RETAINED_PRIMARY",
+      "sourceAge": {
+        "originalObservedUTC": "2026-10-13T12:21:29.175357+00:00",
+        "ageHoursAtInspection": 47.73
+      },
+      "limits": "Selected official HTML only, not full raw response; live stock/checkout/current price not verified. Delivery table has no Yeosu line, which does not establish zero fee."
+    },
+    {
+      "id": "IMAGE-B203",
+      "claims": [
+        "Sample photo and bounded color/ribbon/top-decoration description",
+        "Sample is not exact future fulfillment"
+      ],
+      "usedAt": [
+        "article prose/product image/alt"
+      ],
+      "evidence": [
+        {
+          "path": "yeosu-customer-copy-20261014/assets/B203-photo.jpg",
+          "bytes": 79304,
+          "sha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114"
+        },
+        {
+          "path": "yeosu-production-preparation-20261015/source/portable/yeosu-portable-build-inputs-20261015/yeosu-local-implementation-20261015/candidate/dist/images/products/B203.jpg",
+          "bytes": 79304,
+          "sha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114"
+        }
+      ],
+      "verificationClass": "DIRECT_RETAINED_PRIMARY",
+      "sourceAge": {
+        "originalDate": "2026-10-13"
+      },
+      "limits": "All500×500 original pixels viewed individually; copied bytes match. No measured flower counts/size/quality/lifespan or artificial/fresh ratio claimed. Source capture2026-10-13 retained."
+    },
+    {
+      "id": "P-B205",
+      "claims": [
+        "근조 특대 3단 화환",
+        "109,000원",
+        "상담번호1844-0644",
+        "배송지별 추가배송비 가능"
+      ],
+      "usedAt": [
+        "home price overview",
+        "article comparison/card/cost",
+        "exact SKU CTA"
+      ],
+      "evidence": [
+        {
+          "path": "yeosu-customer-copy-20261014/evidence/B205-selected.html",
+          "bytes": 10195,
+          "sha256": "6c4792de52a15e1b3cb4ecf096f8ddf0616ff0df2aaaa9b27061c27396929bab",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B205",
+          "selectors": [
+            "#sit_title",
+            "#sit_ov",
+            "#sit_inf_open",
+            "#sit_dvr"
+          ],
+          "directFields": {
+            "판매가격": "109,000원",
+            "배송비결제": "주문시 결제",
+            "품명": "근조 특대 3단 화환",
+            "소비자상담 관련 전화번호": "1844-0644"
+          }
+        }
+      ],
+      "verificationClass": "DIRECT_RETAINED_PRIMARY",
+      "sourceAge": {
+        "originalObservedUTC": "2026-10-13T12:21:29.228383+00:00",
+        "ageHoursAtInspection": 47.73
+      },
+      "limits": "Selected official HTML only, not full raw response; live stock/checkout/current price not verified. Delivery table has no Yeosu line, which does not establish zero fee."
+    },
+    {
+      "id": "IMAGE-B205",
+      "claims": [
+        "Sample photo and bounded color/ribbon/top-decoration description",
+        "Sample is not exact future fulfillment"
+      ],
+      "usedAt": [
+        "article prose/product image/alt"
+      ],
+      "evidence": [
+        {
+          "path": "yeosu-customer-copy-20261014/assets/B205-photo.jpg",
+          "bytes": 86279,
+          "sha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e"
+        },
+        {
+          "path": "yeosu-production-preparation-20261015/source/portable/yeosu-portable-build-inputs-20261015/yeosu-local-implementation-20261015/candidate/dist/images/products/B205.jpg",
+          "bytes": 86279,
+          "sha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e"
+        }
+      ],
+      "verificationClass": "DIRECT_RETAINED_PRIMARY",
+      "sourceAge": {
+        "originalDate": "2026-10-13"
+      },
+      "limits": "All500×500 original pixels viewed individually; copied bytes match. No measured flower counts/size/quality/lifespan or artificial/fresh ratio claimed. Source capture2026-10-13 retained."
+    },
+    {
+      "id": "P-B060",
+      "claims": [
+        "근조 특특대 3단 화환",
+        "149,000원",
+        "상담번호1844-0644",
+        "배송지별 추가배송비 가능"
+      ],
+      "usedAt": [
+        "home price overview",
+        "article comparison/card/cost",
+        "exact SKU CTA"
+      ],
+      "evidence": [
+        {
+          "path": "yeosu-customer-copy-20261014/evidence/B060-selected.html",
+          "bytes": 10207,
+          "sha256": "96eb271d959215261fddab480115be4fac95ecc1821512ac741077b899e4f53c",
+          "url": "https://fwith.co.kr/shop/item.php?it_id=B060",
+          "selectors": [
+            "#sit_title",
+            "#sit_ov",
+            "#sit_inf_open",
+            "#sit_dvr"
+          ],
+          "directFields": {
+            "판매가격": "149,000원",
+            "배송비결제": "주문시 결제",
+            "품명": "근조 특특대 3단 화환",
+            "소비자상담 관련 전화번호": "1844-0644"
+          }
+        }
+      ],
+      "verificationClass": "DIRECT_RETAINED_PRIMARY",
+      "sourceAge": {
+        "originalObservedUTC": "2026-10-13T12:21:29.254883+00:00",
+        "ageHoursAtInspection": 47.73
+      },
+      "limits": "Selected official HTML only, not full raw response; live stock/checkout/current price not verified. Delivery table has no Yeosu line, which does not establish zero fee."
+    },
+    {
+      "id": "IMAGE-B060",
+      "claims": [
+        "Sample photo and bounded color/ribbon/top-decoration description",
+        "Sample is not exact future fulfillment"
+      ],
+      "usedAt": [
+        "article prose/product image/alt"
+      ],
+      "evidence": [
+        {
+          "path": "yeosu-customer-copy-20261014/assets/B060-photo.jpg",
+          "bytes": 84178,
+          "sha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3"
+        },
+        {
+          "path": "yeosu-production-preparation-20261015/source/portable/yeosu-portable-build-inputs-20261015/yeosu-local-implementation-20261015/candidate/dist/images/products/B060.jpg",
+          "bytes": 84178,
+          "sha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3"
+        }
+      ],
+      "verificationClass": "DIRECT_RETAINED_PRIMARY",
+      "sourceAge": {
+        "originalDate": "2026-10-13"
+      },
+      "limits": "All500×500 original pixels viewed individually; copied bytes match. No measured flower counts/size/quality/lifespan or artificial/fresh ratio claimed. Source capture2026-10-13 retained."
+    },
+    {
+      "id": "POLICY-01",
+      "claims": [
+        "생화와 조화 혼합",
+        "별도 화환 수거 없음"
+      ],
+      "usedAt": [
+        "FAQ Q1 andQ3"
+      ],
+      "evidence": [
+        {
+          "path": "yeosu-customer-copy-20261014/assets/order-top2.jpg",
+          "bytes": 122654,
+          "sha256": "24c11e1cc413d3f64ad05145fdc0fb4171c8f3e618d4351609777f8e2ff43bc3",
+          "exactEvidence": [
+            "화환수거는 따로 하지 않습니다.",
+            "본상품은 생화와 조화를 적절히 혼합 사용합니다."
+          ],
+          "scope": "entire800×340 image visually read",
+          "url": "https://fwith.co.kr/shop/img/order-top2.jpg"
+        }
+      ],
+      "verificationClass": "DIRECT_RETAINED_PRIMARY",
+      "sourceAge": {
+        "originalDate": "2026-10-13"
+      },
+      "limits": "Does not establish facility disposal service, installation, ratio or exact future materials."
+    },
+    {
+      "id": "POLICY-02",
+      "claims": [
+        "계절·지역 소재 변화",
+        "변경/취소는 상태별 개별 상담"
+      ],
+      "usedAt": [
+        "FAQ Q1",
+        "주문 후 내용이 달라졌을 때"
+      ],
+      "evidence": [
+        {
+          "path": "yeosu-customer-copy-20261014/assets/de_change_content.jpg",
+          "bytes": 146560,
+          "sha256": "02701dd33c2a09258a882873df005dbe616842c2add159a08d618b68a934944c",
+          "scope": "entire960×760 image visually read",
+          "url": "https://fwith.co.kr/data/common/flower379/de_change_content.jpg"
+        },
+        {
+          "path": "yeosu-research-preparation-20261014/inputs/retained-policy-review.ko.md",
+          "bytes": 13257,
+          "sha256": "abcf91417d3eb87b5c783b3c7f1a13a4162a4ad67b15a9ab5ff82d1711fb3ab2"
+        }
+      ],
+      "verificationClass": "DIRECT_RETAINED_PRIMARY",
+      "sourceAge": {
+        "originalDate": "2026-10-13"
+      },
+      "limits": "Image contains potentially conflicting 제작완료 exchange/refund exclusion and 출고후 cancellation less shipping language. Review does not reconcile or invent refund amount. Exact copy requests consultation only.19/21hours/weekends/holidays unresolved; no numeric promise in copy."
+    },
+    {
+      "id": "EDIT-01",
+      "claims": [
+        "7만원 example is budget discussion, not checkout total",
+        "Two condolence ribbon wording suggestions; Korean/Hanja optional advice",
+        "Order inputs grouped once; familiar sender guidance"
+      ],
+      "usedAt": [
+        "cost/order/FAQ"
+      ],
+      "evidence": [
+        {
+          "path": "yeosu-customer-copy-20261014/drafts/yeosu-jeonnam-hospital-funeral.ko.md",
+          "bytes": 7959,
+          "sha256": "6815d1d6e6fbc03e8976e914f656062a2cb7e85eab93def67067edafbd63b8a9"
+        }
+      ],
+      "verificationClass": "EDITORIAL_JUDGMENT_NOT_EXTERNAL_FACT",
+      "sourceAge": null,
+      "limits": "Editorial practical guidance, not venue mandatory religious rule, actual order, actual customer sentiment, past performance or additional service commitment."
+    },
+    {
+      "id": "BANNER-01",
+      "claims": [
+        "Exact shared3 atmosphere assets and1844-0644",
+        "No venue/product-delivery proof"
+      ],
+      "usedAt": [
+        "home/detail banner slots"
+      ],
+      "evidence": [
+        {
+          "path": "mokpo-content-preparation-20261014/inputs/SHARED_BANNER_STANDARD.md",
+          "bytes": 8249,
+          "sha256": "0f9962ece0175eff30e0177819652b0edfa6478c3c62ae53f5ac3adfebbb4f21"
+        },
+        {
+          "path": "yeosu-production-preparation-20261015/source/portable/yeosu-portable-build-inputs-20261015/yeosu-local-implementation-20261015/candidate/dist/images/shared-banners/flower-message.webp",
+          "bytes": 171698,
+          "sha256": "a5ecdeb1914566a32d45b084351e2782fc8b234e9a4fbb8635a60a9921cac5f5"
+        },
+        {
+          "path": "yeosu-production-preparation-20261015/source/portable/yeosu-portable-build-inputs-20261015/yeosu-local-implementation-20261015/candidate/dist/images/shared-banners/flower-budget.webp",
+          "bytes": 145664,
+          "sha256": "081198095eb005603721be7c778f4d477f4dd93dcf96f0c261f18bf06bb91421"
+        },
+        {
+          "path": "yeosu-production-preparation-20261015/source/portable/yeosu-portable-build-inputs-20261015/yeosu-local-implementation-20261015/candidate/dist/images/shared-banners/flower-consultation.webp",
+          "bytes": 126306,
+          "sha256": "d6654aa44c365f64e330d0be2042972d3320fad54231425aaffca1dfdcd25ebc"
+        }
+      ],
+      "verificationClass": "DIRECT_RETAINED_PRIMARY",
+      "sourceAge": {
+        "standardUpdated": "2026-10-13"
+      },
+      "limits": "Visually read all3 original1774×887 pixels. Specific later approved phone exception controls C10; no extension to new baked prices/region/CTA. Browser crop/readability remains pending."
+    }
+  ],
+  "knownUnknowns": [
+    "Current product price/stock/HTTP and telephone connection",
+    "Current venue reception/binso/receipt permissions and actual delivery",
+    "19/21hour/weekend/holiday and exact cancellation/refund business boundaries",
+    "Actual remote successor/control runner and public artifact",
+    "Search submission receipt, actual crawl/index/impressions/ranking"
+  ],
+  "sourceFreshnessPolicy": "2026-10-15 local re-read does not replace original2026-10-13/14 observation dates or2025-12-31 table date. Fresh response verification is pending before actual release.",
+  "customerCopiesUnchanged": true
+}

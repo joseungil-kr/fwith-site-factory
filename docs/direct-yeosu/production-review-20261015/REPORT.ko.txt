@@ -1,0 +1,25 @@
+여수 실제 산출물 독립 검수
+
+[직접 확인]
+- 실제 QA run 38742707182의 artifact 11977150196 ZIP 13,463,467바이트와 95개 항목을 검사했습니다. SHA256: bef0bebed3fb8bed3610fd3c368f525f6c906422907a8ad193eea8798a3fbc0b.
+- source 472c54a40cf873c925ed2d314748351381ee8682, control 917ad675b873a1922b7d24241e1a65e193b007fd에 결속된 85개 소스·18개 출력·64개 브라우저 증거 파일을 재대조했습니다.
+- 4개 전체 본문, 정규화한 head, 9개 시각 자산의 동결본 보존을 재검증했습니다. 4개 경로를 320·390·1280px에서 검사한 DOM과 PNG 36개(고유 픽셀 해시 26개)를 직접 검수했습니다.
+- 실제 loopback HTTP200 및 존재하지 않는 경로의 404 응답 3개를 출력 해시와 대조했습니다. 공개 주소의 HTTP 확인과는 별개입니다.
+- 실제 식별자·검수 descriptor·bounded18항목으로 publisher의 release_review()와 artifact() 전체 경로를 격리 복사본에서 실행했습니다. 18개 출력은 바뀌지 않았으며 provider 요청은 없었습니다.
+
+[도구 보고]
+- GitHub API의 실제 run 상태는 success입니다. 독립 검수는 상태 문자열만을 근거로 하지 않고 다운로드된 ZIP·산출물·실행 로그를 대조했습니다.
+- 키보드 실행 기록은 native skip Tab/Enter, 모바일 메뉴 click/Space/Enter 반복, 내부 탐색·뒤로·앞으로 범위입니다. 전면적인 키보드 접근성 또는 보조기기 적합성을 주장하지 않습니다.
+
+[추정·판단]
+- 승인된 한정 범위의 공개 작업을 시작할 산출물 요건은 충족합니다. 기존 정적 내용 검수를 해시 일치로 재사용하고 S08·S10·AEO-A06 실제 증거를 추가했습니다. 두 primary의 고정 분모100 점수는 SEO90/GEO100/AEO100입니다. 점수는 검색 순위·인용 성과가 아닌 내부 증거 충족도입니다.
+- 제품·FAQ 요소 캡처에는 고정 헤더와 하단바가 겹친 장면이 있습니다. 해당 사진을 무가림으로 판정하지 않았습니다. 전체페이지와 DOM에서 모든 답변·CTA를 대조했으며 스크롤하여 읽는 구조의 한계가 pixel-review.json에 기록돼 있습니다.
+
+[미확인 및 남은 작업]
+- S09는 0점/PENDING입니다. provider 부재·충돌 사전 확인, 공개 URL의 실제 HTTP/자산 MIME/404/전체 바이트, 외부 상품 URL의 최신 응답, 기존 proof의 공개 검증과 IndexNow 접수는 후속 필수 항목입니다.
+- 전화 연결·실제 주문·현재 재고/가격·수신 일정·검색 색인·노출·순위는 확인하지 않았습니다.
+- CoreHubLaunch와 FullLaunch는 NOT_ASSESSED입니다.
+
+검증 증거
+- https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38742707182
+- review.json, all-route-output.json, pixel-review.json, actual-quality-scores.json, bounded-gate-evidence.json, bounded-launch-assessment.json, actual-publisher-validation.json

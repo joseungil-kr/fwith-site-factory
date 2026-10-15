@@ -1,0 +1,123 @@
+{
+  "schema": "yeosu-independent-content-release-review/v1",
+  "reviewedUTC": "2026-10-15T12:07:41.654227+00:00",
+  "verdict": "CONTENT_STATIC_ACCEPTED_PRODUCTION_GATE_PENDING",
+  "scope": "Final local content preparation for region12130/order27; not final runner/pixel/HTTP/remote release review",
+  "sourceTreeSHA256": "4df5f0dc1d7803d23fca19df1ff91622fe8b5417bb7b6cede7ad5aa83bad7c7c",
+  "controlTreeSHA256": "07720aef23bb2d9b097c4b7ce6e8401fb751c0ce61e705a26d1dbbc32be20109",
+  "outputTreeSHA256": "c2beb639c4ef57ef958bc0da5d6f1a543e6d16c466dbd57aa5d6e2fdc6b23795",
+  "inputSetSHA256": "73ab0309174863420c27070555789987a7dc0df2698e2761ee7314fdd5fafabd",
+  "frozenRemotePredecessor": "708611e4bca85ae66931ca0ab5fc2ad49e8b55d1",
+  "actualRemoteSuccessor": null,
+  "specSHA256": "b7fd276f969d473b60619cafca6ed160a442fdf5feb36b1bb1addccdaeb96b1f",
+  "rubricSHA256": "6973e1100dbd2351dfb48c5b0e39318e98fcb629553ad511b5e038501cece976",
+  "staticChecks": {
+    "total": 198,
+    "passCount": 198,
+    "failCount": 0
+  },
+  "contentRevisionBlockers": [],
+  "resolvedStaticDefects": [
+    {
+      "id": "YEO-S08-TWITTER",
+      "finding": "Initial local production head omitted required Twitter metadata.",
+      "initialEvidence": "initial-twitter-defect.json",
+      "fixedBy": "Parent technical adapter; this content reviewer made no source edits.",
+      "verified": "Independently read 12 exact OG/Twitter fields on all three non-404 pages, exact B201 image/alt, final source/control hashes and unchanged four bodies/nine assets.",
+      "scope": "Local fixture only."
+    }
+  ],
+  "perPageScores": [
+    {
+      "id": "home",
+      "A04": 100,
+      "SEO_verified": 80,
+      "SEO_final": null,
+      "GEO_document": 100,
+      "AEO_verified": 90,
+      "AEO_final": null
+    },
+    {
+      "id": "article",
+      "A04": 100,
+      "SEO_verified": 80,
+      "SEO_final": null,
+      "GEO_document": 100,
+      "AEO_verified": 90,
+      "AEO_final": null
+    }
+  ],
+  "unresolvedBusinessPolicyBlocksThisExactBoundedCopy": false,
+  "numericThresholdNeverOverridesRequiredPending": true,
+  "productionGateStatus": "PENDING",
+  "publicationExecuted": false,
+  "publicHTTPVerified": false,
+  "browserPixelsVerified": false,
+  "actualRunnerArtifactVerified": false,
+  "coreHubLaunchStatus": "NOT_ASSESSED",
+  "fullLaunchStatus": "NOT_ASSESSED",
+  "directlyVerified": [
+    "Read original full customer copy, contracts and retained primary sources, with source hashes.",
+    "Independently matched all 85 source files and 23 control files to the final manifests.",
+    "Confirmed all 75 frozen portable files, original 40 source files and 26 sibling inputs remain unchanged.",
+    "Compared all 4 full customer bodies and 9 static assets against the frozen preview: exact bytes preserved.",
+    "Extracted exact title, H1, first 120/180 codepoints, all 3 FAQ answers, 4 SKU cards and destination links.",
+    "Verified planned-origin local canonical/robots/sitemap and 12 exact OG/Twitter fields on each of 3 non-404 pages.",
+    "198 independent local static checks passed. This is not runner, browser or public HTTP evidence."
+  ],
+  "toolReportedOnly": [
+    "Parent reports build/adapter/output/control test success; this worker did not rerun those suites.",
+    "Historical HTTP acquisition and GitHub readbacks are retained tool reports, not current network verification.",
+    "Prior cross-region overlap metrics were read but not rerun; no market-demand measurement was performed."
+  ],
+  "notVerified": [
+    "Actual remote successor commit/tree and saved content-review binding.",
+    "Actual clean runner install/build/run/artifact and all-route 320/390/1280 browser captures.",
+    "Independent browser pixel review and computed FAQ/CTA visibility or interaction.",
+    "Current product prices, stock, telephone connection, destination responses and venue conditions.",
+    "Actual approved hostname/provider ownership/collision/attachment, public HTTP200/404 and asset MIME.",
+    "Actual Mokpo26 predecessor public completion and authorization/receipt bindings.",
+    "IndexNow receipt, crawling, indexing, impressions, CTR and ranking."
+  ],
+  "requiredNextEvidence": [
+    "Bind this exact review/rubric/A04 supplement to the actual runner artifact and source/control commits, preserving frozen content.",
+    "Review all four routes at 320/390/1280 and computed FAQ/CTA visibility; leave S10 and AEO-A06 pending until that evidence exists.",
+    "Verify public bytes, HTTP200, real unknown-path404, resource MIME and exact product destinations; leave S09 pending until verified.",
+    "Reconcile scope-matched release/origin authorization and prior Mokpo26 public evidence.",
+    "Track submission, crawl, index and ranking as separate states."
+  ],
+  "scopeCounters": {
+    "remoteWrites": 0,
+    "providerRequests": 0,
+    "browserLaunches": 0,
+    "socketUse": 0,
+    "installs": 0,
+    "sourceOrControlEdits": 0,
+    "newBuilds": 0,
+    "newNetworkRequests": 0
+  },
+  "files": {
+    "REPORT.ko.txt": "658f9379409c09821e3234bbb4ab865acabb30cda7b23ee0cfd7893f01590cc6",
+    "a04-targets-and-scores.json": "d08020ee2df6c860e26ddc53012d4f7294ad67eea2433c0a805b21543ec48dbe",
+    "assemble_review.py": "09dd8d1c026c0ec87f31b3cd9d8a0b4e4813739f4cf9ffb4fe5ac02d5a4b6805",
+    "contract-applicability.json": "292c928c885a207cec7c93846fab0c3b4db606f36828c3e59ec26c2621269fa3",
+    "contract-integrity.json": "4927bed56fa168fd601185c6185cf422e788bbf0244dfd00eca6500f068c4606",
+    "finalize_review.py": "21d3b856deece58c9b1fdbc07ade2bade6aa54a0c8b2d9cc9579ef21830b1803",
+    "head-change-comparison.json": "bb4703375cdaaeb2cb5014aa490e97d722ac6109cbe4aab1231e38d04e227283",
+    "initial-twitter-defect.json": "f6d8d3eab616440065bba68e7abd03d793a3cb09c310fdae01ab09019e8c6ffb",
+    "input-binding.json": "cd872a524092b1796b65f6472a47f33e7d43c949fa241e7816505fd3ce5507e0",
+    "inspect_content.py": "3a70b45dfb27a8ad13de9de9fa28b711b05140243accb760a336732ed8d0e379",
+    "original-preservation.json": "ff85befb9198b854ce517c8ee2021133370ca214089e34b21fdf304583634ec9",
+    "output-manifest.json": "75c674678b4f3d68e0f561f455868dc31247123bcf0a430f3406d9af8ccf3a4d",
+    "pdf-page472-independent.txt": "8ddf8ce59897e003996d7070fd57eedd442751109a9c2ed4e3d0241ac45d8673",
+    "production-page-projection.json": "1894524554cb32a099176239d4cfd9f335980a9f545b6d2613b191d443e825b0",
+    "research-reuse-review.json": "18b287db6504f3ba99f5d0959f04c151d9bb35644103cac796bb4804faa6ea74",
+    "rubric.json": "6973e1100dbd2351dfb48c5b0e39318e98fcb629553ad511b5e038501cece976",
+    "scores.json": "954f341e41bfb877a3c03b1fcd79adc529abf082e21052cbda626d41adc2af84",
+    "source-claim-ledger.json": "26d134154985c7cc336f0f85943458de32c7020b934dcc644bce2ca8b0dfec9c",
+    "static-observations.json": "edeb923f19c1e2e9d7d8231838134629ce345414103ed5812e1139c78f636779",
+    "tone-review.json": "1b03964c827258a42ed8dd2444ea56e8de23308cf4c14cb365d8c84450f2f7f4",
+    "verification-method-notes.json": "80986a879d3f5d9db6ae29fd9e7126f4c0b22124ae435d668071418f422b8aba"
+  },
+  "publicationAuthorizationVerified": false
+}
