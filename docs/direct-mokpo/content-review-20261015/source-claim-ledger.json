@@ -1,0 +1,105 @@
+[
+  {
+    "id": "venue",
+    "claims": [
+      "목포한국병원 장례식장",
+      "목포시 영산로 483",
+      "장례식장 옆 주차장",
+      "주간061-270-5444/야간061-270-5440"
+    ],
+    "source": "https://www.hank.co.kr/bbs/content.php?co_id=3_4_4",
+    "evidence": "evidence/facility-web-tool-response.json",
+    "checked": "Fresh web tool returned original page text lines176–189 and346; no HTTP status/pixels observed.",
+    "sourceLevel": "official_facility_source",
+    "unsupportedNotInferred": [
+      "외부 화환 허가",
+      "접수시간",
+      "지정 배송업체",
+      "진입 출입구",
+      "설치 위치"
+    ]
+  },
+  {
+    "id": "catalog",
+    "claims": {
+      "B201": {
+        "name": "근조 3단 화환",
+        "basePriceKRW": 59000,
+        "url": "https://fwith.co.kr/shop/item.php?it_id=B201",
+        "photoSHA256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3"
+      },
+      "B203": {
+        "name": "근조 고급 3단 화환",
+        "basePriceKRW": 79000,
+        "url": "https://fwith.co.kr/shop/item.php?it_id=B203",
+        "photoSHA256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114"
+      },
+      "B205": {
+        "name": "근조 특대 3단 화환",
+        "basePriceKRW": 109000,
+        "url": "https://fwith.co.kr/shop/item.php?it_id=B205",
+        "photoSHA256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e"
+      },
+      "B060": {
+        "name": "근조 특특대 3단 화환",
+        "basePriceKRW": 149000,
+        "url": "https://fwith.co.kr/shop/item.php?it_id=B060",
+        "photoSHA256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3"
+      }
+    },
+    "evidence": "candidate/src/data/frozen/current-products/*-selected.html plus current-product-readback.json; original observation2026-10-15 about00:35UTC",
+    "checked": "Selected official HTML directly parsed; actual local photo pixels inspected; price/SKU/phone/additional-fee labels compared with every rendered card. HTTP200 is retained tool report, not my fresh HTTP GET.",
+    "sourceLevel": "official_business_source_retained",
+    "unverified": [
+      "stock",
+      "checkout",
+      "destination total",
+      "arrival time",
+      "telephone connection"
+    ]
+  },
+  {
+    "id": "material-collection",
+    "claims": [
+      "생화·조화 혼합",
+      "별도 화환 수거 없음"
+    ],
+    "evidence": "gangdong-purchase-evidence-supplement-20261014/products/retained-originals/images/order-top2.jpg",
+    "checked": "Entire retained original image pixels directly read; source observation2026-10-13.",
+    "sourceLevel": "official_business_source_retained"
+  },
+  {
+    "id": "refund",
+    "claims": [
+      "불량·파손·주문과 전혀 다른 상품 환불 가능이라는 공식 안내",
+      "계절·지역 소재 차이에 따른 사진 차이 사유 취소·환불 제한",
+      "제작 완료된 꽃 상품 제한",
+      "제작/배송 상태별 상담"
+    ],
+    "evidence": "gangdong-purchase-evidence-supplement-20261014/products/retained-originals/images/de_change_content.jpg",
+    "checked": "Entire retained original policy image pixels read. Overlap between completed-production limit and post-dispatch shipping-fee-deducted refund is unresolved; draft does not resolve it. This is policy quotation assessment, not legal enforceability advice.",
+    "sourceLevel": "official_business_source_retained"
+  },
+  {
+    "id": "friendly-style",
+    "claims": [
+      "calm condolence empathy",
+      "seller offers product/ribbon help",
+      "uncertain items welcomed rather than repeated homework",
+      "no fake personal memory or promised fulfillment"
+    ],
+    "evidence": "Actual all4mainHTML, navigation/footer, 4product cards and3bannerpixels read.",
+    "sourceLevel": "independent_editorial_judgment"
+  },
+  {
+    "id": "banners",
+    "claims": [
+      "Exact approved common3assets",
+      "phone1844-0644 baked per later specific standard",
+      "not shown as actual delivered SKU/venue proof"
+    ],
+    "evidence": "SHARED_BANNER_STANDARD.md plus inspected local banner bytes/pixels",
+    "sourceLevel": "retained_specific_user_approved_standard",
+    "scopeNote": "The baked phone is a specific retained exception to v1.2 general dynamic-text restriction. Do not generalize to other assets or remove the required actual HTML tel links."
+  }
+]
