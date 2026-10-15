@@ -4,7 +4,20 @@ Before any resume or new-region selection, read `national/fixed-plan.json`, `nat
 
 The historical checkpoint is retained without rewriting its large history. Some legacy `current` and national progress fields are stale. `latest-progress.json` is a compact reconciliation supplement, not permission to skip checking actual source/main commits, active ownership, Actions runs, artifacts, public HTTP, and IndexNow receipts. Never republish a completed region solely because a legacy field says incomplete. If evidence conflicts, resolve the conflict before claiming completion or selecting a new region.
 
-## Current release boundary, 2026-10-14
+## Current release boundary, 2026-10-15
+
+Mokpo is publicly released at https://mokpo.fwith.kr/. Completion and scope are recorded in `../direct-mokpo/release-completion-20261015.json` and `mokpo/progress.json`. Source `e144887a2612f22f333a9b71a8f76e4d5adbc3e7` preserves all frozen customer text and original assets. Actual sandboxed build/QA run 38738826152 and independent review cover the final 18-file artifact and 39 screenshots. Publication run 38742434163 completed with verified first host attachment, public HTTP and the original two-URL Naver IndexNow HTTP 200 receipt.
+
+Independent public GETs verified all 17 paths: 16 HTTP 200 responses plus a real missing-route 404. Every raw body exactly matches the reviewed artifact without normalization. Home and the hospital article are indexable; `/regions/` is support navigation with noindex, excluded from sitemap and main menu. This bounded two-primary/one-article release does not declare a broader core hub or full-service launch. Live public-browser rendering and actual search indexing/ranking remain unverified. IndexNow receipt: https://github.com/joseungil-kr/fwith-site-factory/issues/342#issuecomment-6193170615 .
+
+The reconciled count is 57 of the frozen 230 regions ; 173 remain. Only Mokpo adds one new host; earlier 56 retain carried-forward evidence, not 57 simultaneous fresh checks. Do not recreate or republish completed regions or repeat received batches merely to refresh records.
+
+Yeosu(order27) already has saved production source and successful QA run 38742707182, with independent pixel review in progress; reuse it. Suncheon(order28) has saved production source/control and actual QA run 38743886937 in progress. Naju(order29) has partial research only, with customer copy not started and operator-original evidence unverified. These are selection/work-state pointers, not publication-order holds; each region may publish when its own gates and approvals are satisfied. Reconcile current remote state before resuming. Existing banner followups remain separate.
+
+## Previous release boundary, 2026-10-14 (historical snapshot)
+
+The following 56-region and next-Mokpo statements are retained history and are superseded by the current Mokpo completion above and latest-progress.json. They are not current scheduling or publication instructions. Historical verification gaps remain unchanged.
+
 
 Gangdong public release and the original three-URL IndexNow HTTP 200 receipt are verified in `../direct-seoul-gangdong/release-completion-20261014.json`. Source `5f27c11cc0aa3c22c2793d9e0a6cd0aa6e350cc6` preserves the frozen customer data and images. Actual build run 38603054270 has 23 release files and successful sandboxed runner QA; the required 42 screenshots and 15 keyboard-focus samples were independently reviewed. Publication run 38605093414 has an inspected 12-file result archive and verifies 22 public paths, including a real 404, with five strictly bounded Cloudflare beacon normalizations.
 
