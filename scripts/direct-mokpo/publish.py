@@ -5,6 +5,7 @@ Reuses the existing native Custom Domains no-override operation and the standalo
 IndexNow receipt function. Source code never runs with provider credentials.
 """
 import argparse
+from collections import Counter
 import hashlib
 from html.parser import HTMLParser
 import json
@@ -133,10 +134,12 @@ class Page(HTMLParser):
     def __init__(self, text):
         super().__init__()
         self.meta, self.canon, self.links, self.assets, self.images, self.og_urls = {}, [], [], set(), [], []
+        self.in_main, self.main_links, self.product_ctas = False, [], []
         self.feed(text)
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
+        if tag == 'main': self.in_main = True
         if tag == 'meta' and a.get('name'):
             key = a['name'].lower()
             require(key not in self.meta, 'duplicate_metadata')
@@ -147,12 +150,44 @@ class Page(HTMLParser):
             self.canon.append(a.get('href', ''))
         if tag == 'a':
             self.links.append(a.get('href', ''))
+            if self.in_main:
+                self.main_links.append(a.get('href', ''))
+                if 'data-order-product-sku' in a:
+                    self.product_ctas.append((a['data-order-product-sku'], a.get('href', '')))
         if tag == 'img':
             self.images.append(a)
         if tag in ('img', 'script', 'source') and a.get('src'):
             self.assets.add(a['src'])
         if tag == 'link' and any(r in a.get('rel', '').split() for r in ('stylesheet', 'icon', 'preload', 'modulepreload')) and a.get('href'):
             self.assets.add(a['href'])
+
+
+    def handle_endtag(self, tag):
+        if tag == 'main': self.in_main = False
+
+
+def validate_conversion_paths(page, route):
+    """Match the reviewed Mokpo main-body CTAs, not a legacy catalog-home link.
+
+    Frozen primaries each have four SKU text links plus four product-card links;
+    support has one real child-card link and no purchase/telephone body CTA.
+    Header/footer links cannot stand in for the reviewed body actions.
+    """
+    require(route in ROUTES, 'cta_route_mismatch')
+    primary = route in SITEMAP_ROUTES
+    skus = ('B201', 'B203', 'B205', 'B060')
+    expected_products = [(sku, 'https://fwith.co.kr/shop/item.php?it_id=' + sku) for sku in skus] if primary else []
+    require(page.product_ctas == expected_products, 'product_cta_mismatch')
+    expected_shop = Counter({href:2 for _,href in expected_products})
+    actual_shop = Counter(href for href in page.main_links if urlsplit(href).hostname in {'fwith.co.kr','www.fwith.co.kr'})
+    require(actual_shop == expected_shop, 'product_conversion_path_mismatch')
+    expected_phone = Counter({'tel:18440644':1 if route == '/' else 2}) if primary else Counter()
+    require(Counter(href for href in page.main_links if href.lower().startswith('tel:')) == expected_phone, 'body_telephone_cta_mismatch')
+    child = '/regions/hankook-hospital-funeral-wreath/'
+    if route in {'/', '/regions/'}:
+        require(page.main_links.count(child) == 1, 'body_child_cta_mismatch')
+    else:
+        require(page.main_links.count('/regions/') == 1, 'body_parent_link_mismatch')
 
 
 def release_review():
@@ -253,7 +288,7 @@ def artifact():
         p=Page(gate.read(root/file).decode('utf-8'))
         require(p.og_urls == ([] if route == '/404.html' else [ORIGIN+route]), 'artifact_og_url_mismatch')
         if route!='/404.html':
-            require('tel:18440644' in p.links and 'https://fwith.co.kr/' in p.links,'cta_mismatch')
+            validate_conversion_paths(p, route)
             require(all(i.get('alt','').strip() for i in p.images),'image_alt_missing')
             for href in p.links:
                 if href.startswith('/') or href.startswith(ORIGIN):
@@ -403,7 +438,7 @@ def http_once(contract):
         require(set(item['robots']) == expected_robots(item['path']) and
                 set(re.split(r'\s*,\s*', p.meta.get('robots', '').lower())) == expected_robots(item['path']), 'live_meta_robots_mismatch')
         require(not re.search(r'\b(noindex|nofollow|none)\b', ','.join(headers.get_all('X-Robots-Tag', [])), re.I), 'live_header_not_indexable')
-        require('tel:18440644' in p.links and 'https://fwith.co.kr/' in p.links, 'live_cta_mismatch')
+        validate_conversion_paths(p, item['path'])
         if sha(body) != contract['files'][item['file']]:
             body = strip_one_cf_beacon(body, contract['files'][item['file']]); normalized += 1
         require(sha(body) == contract['files'][item['file']], 'live_html_digest_mismatch')
