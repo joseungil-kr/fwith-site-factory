@@ -4,7 +4,22 @@ Before any resume or new-region selection, read `national/fixed-plan.json`, `nat
 
 The historical checkpoint is retained without rewriting its large history. Some legacy `current` and national progress fields are stale. `latest-progress.json` is a compact reconciliation supplement, not permission to skip checking actual source/main commits, active ownership, Actions runs, artifacts, public HTTP, and IndexNow receipts. Never republish a completed region solely because a legacy field says incomplete. If evidence conflicts, resolve the conflict before claiming completion or selecting a new region.
 
-## Current release boundary, 2026-10-15 (Yeosu completion)
+## Current release boundary, 2026-10-15 (Suncheon completion)
+
+Suncheon is publicly released at https://suncheon.fwith.kr/. See `../direct-suncheon/release-completion-20261015.json` and `suncheon/progress.json`. Source `b5e8d623915a9a1b8b9b9720dfbe4e0c51b384f1` preserves55 frozen portable files and adds14 production adapter files. Actual QA38743886937 and independently reviewed36 PNGs/15 DOM snapshots are bound to publication38747389930 at control `69fd83616c1eb194e8b5b284d6a40052b09f8ae8`.
+
+Independent GETs at14:01:48-14:02:07UTC verified all17 raw public responses:16 HTTP200 plus a real missing-route404, exact bytes without normalization. Original2URL Naver IndexNow HTTP200 receipt: https://github.com/joseungil-kr/fwith-site-factory/issues/347#issuecomment-6193893135 . Four original external SKU GETs at13:49:49-13:49:55UTC were reused by directly rehashing and reading their original evidence; displayed base prices match. No purchase, call, stock or final-delivery check was performed.
+
+Home/detail are indexable. The single-child `/regions/` is noindex support excluded from sitemap/main menu;404 is noindex. CoreHubLaunch and FullLaunch remain NOT_ASSESSED. Actual sandboxed browser review and exact public responses do not claim live public-browser rendering or actual search indexing/rankings.
+
+Recorded releases are59 of230;171 remain. Only Suncheon adds one unique host to earlier58 carried-forward evidence. Mokpo, Yeosu and Suncheon are complete; do not rebuild, redeploy or resubmit received batches solely to refresh records. Separate reviewer's four GETs overlap these routes and do not add four unique paths.
+
+Naju (order29) government facility CSV and current HIRA cross-check are complete. Customer-copy preparation started at14:05UTC; no copy artifact, source save or publication yet. Facility entry times remain unverified and conditional. Each region publishes when its own gates pass. Order applies only to new-region selection; coordinate conflicting shared main writes. Existing banner followups and historical evidence gaps remain separate.
+
+## Previous release boundary, 2026-10-15 (Yeosu completion snapshot)
+
+The following58-count and Suncheon-pending statements are retained history, superseded by the current59-count and Suncheon completion above. They are not current retry or publication-order instructions.
+
 
 Yeosu is publicly released at https://yeosu.fwith.kr/. See `../direct-yeosu/release-completion-20261015.json` and `yeosu/progress.json`. Verified source `472c54a40cf873c925ed2d314748351381ee8682` preserves 75 frozen portable files. Actual sandboxed QA run 38742707182 and independent review cover 18 output files, 36 PNGs and 12 route/viewport combinations. Publication run 38745536071 verified the initial no-override host attachment and original two-URL Naver IndexNow HTTP 200 receipt: https://github.com/joseungil-kr/fwith-site-factory/issues/346#issuecomment-6193618056 .
 
