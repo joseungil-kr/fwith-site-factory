@@ -1,0 +1,13 @@
+# Mokpo separate technical successor
+
+This successor preserves all 71 frozen private files except `package.json`, whose original build and tests remain explicit and unchanged commands. The original private candidate is not modified. The private runtime, specification, layout, copy, images, business facts, source evidence, checks, lockfile and dependencies are unchanged.
+
+The build entrypoint first checks the separate external SHA-bound release binding. It always runs the original private build and static QA in the original private environment. Production then changes generated head metadata/control files plus exactly one `tabindex="-1"` on each existing `main#main-content` for native keyboard skip-link focus: two indexable targets, noindex support navigation, noindex canonical-free 404, exact two-URL sitemap and a reused public IndexNow proof. All body bytes must match the reviewed private baseline after removing only that declared focus attribute; all customer text and otherwise all structure remain byte-identical. All visual asset bytes must match exactly. This is an explicit separate release mode, not removal or weakening of the private production refusal.
+
+`release/bounded-contract.json` binds the one-article structural applicability decision. It is not a Launch Gate PASS. Existing v1.2 Production Gate and Blueprint Batch Quality Gate remain required. The narrow first release includes no core hub and makes no core/full launch completion claim. Their statuses remain NOT_ASSESSED. Promotion of support to core/index/menu or broader launch scope requires a new reviewed contract.
+
+Run `npm run build` and `npm test` without release variables for the preserved private regression. Production requires externally stored production-binding.json, its exact SHA256, the full successor revision, approved fixed origin and explicit mode/index flag. Then run `npm run build` and `npm run test:production`. No source code runs with provider credentials. Tests use synthetic IDs only and never authorize publication.
+
+The build runner uses Node24, clean npm ci and a sandbox-enabled Playwright browser. Publish-only tooling uses Node22. Actual 320/390/1280 captures and real missing-path404 are required, followed by independent pixel and per-clause/scored content assessment bound to the exact successful run/artifact. Local browser execution remains blocked by the previously observed socket restriction and was not retried.
+
+Remote predecessor/source/tree/authorization, review, receipt issue and provider collision evidence remain unresolved until independently observed. Pending JSON controls intentionally fail closed. No remote save, provider call, browser attempt, deployment or IndexNow request was performed by this local preparation.
