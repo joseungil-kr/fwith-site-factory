@@ -1,0 +1,6 @@
+---
+import CopyPage from '../../components/CopyPage.astro';
+import {pages} from '../../lib/suncheon-runtime.mjs';
+const page=pages.find((p:any)=>p.id==='support');
+---
+<CopyPage page={page}/>
