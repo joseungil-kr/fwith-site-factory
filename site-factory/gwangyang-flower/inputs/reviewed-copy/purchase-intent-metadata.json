@@ -1,0 +1,106 @@
+{
+  "status": "PLANNED_NOT_IMPLEMENTED",
+  "region": {
+    "name": "광양시",
+    "officialCode": "12190",
+    "nationalOrder": 30
+  },
+  "queryResearch": "evidence/research/PURCHASE-INTENT-PLAN.ko.md and original research packet search-observations.json",
+  "measuredSearchVolume": null,
+  "measuredSearchRanking": null,
+  "pages": [
+    {
+      "pageId": "home",
+      "role": "REGION_SERVICE_LANDING",
+      "primaryKeyword": "광양 근조화환",
+      "secondaryKeywords": [
+        "광양 화환 상품",
+        "광양 화환 예산 상담"
+      ],
+      "intentKey": "gwangyang:condolence-wreath:consultation-start",
+      "queryClass": "core-commercial",
+      "queryPriority": "Regional entry only; detailed fixed-facility decision delegated to the one detail page.",
+      "expectedDecision": "Understand the available consultation and open the real facility guide.",
+      "nextActions": [
+        "detail page",
+        "tel:18440644"
+      ]
+    },
+    {
+      "pageId": "detail",
+      "role": "PLACE_LANDING",
+      "primaryKeyword": "광양장례식장 근조화환",
+      "secondaryKeywords": [
+        "광양장례식장 화환 가격",
+        "광양장례식장 배송비",
+        "광양장례식장 화환 주문",
+        "광양장례식장 리본 문구"
+      ],
+      "keywordCluster": [
+        "(주)광양장례식장 근조화환",
+        "광양 장례식장 화환",
+        "덕례리 광양장례식장 조화"
+      ],
+      "intentKey": "gwangyang-funeral-897:condolence-wreath:select-budget-order",
+      "queryClass": "local-commercial",
+      "queryPriority": "Primary facility purchase decision for this manuscript.",
+      "expectedDecision": "Compare four actual SKUs and Gwangyang listed surcharge, then consult on the recipient room, time and ribbon.",
+      "nextActions": [
+        "https://fwith.co.kr/shop/item.php?it_id=B201",
+        "https://fwith.co.kr/shop/item.php?it_id=B203",
+        "https://fwith.co.kr/shop/item.php?it_id=B205",
+        "https://fwith.co.kr/shop/item.php?it_id=B060",
+        "tel:18440644"
+      ]
+    },
+    {
+      "pageId": "support",
+      "role": "SUPPORT_NAVIGATION",
+      "queryClass": null,
+      "intentKey": null,
+      "noindex": true,
+      "reason": "Only one real child; no additional indexable intent or core hub is invented.",
+      "nextActions": [
+        "detail page"
+      ]
+    },
+    {
+      "pageId": "notFound",
+      "role": "TECHNICAL_404",
+      "queryClass": null,
+      "intentKey": null,
+      "noindex": true,
+      "reason": "Recovery route, not a search landing.",
+      "nextActions": [
+        "home"
+      ]
+    }
+  ],
+  "titleAlignmentReview": {
+    "status": "PENDING_INDEPENDENT_QUALITATIVE_REVIEW",
+    "rubric": [
+      "Place/service/decision align across title, H1 and first answer",
+      "Meta description gives useful price/shipping/order information without copying title",
+      "Card summary is separate from title and first answer",
+      "CTA delivers the actual product or consultation decision",
+      "No guaranteed delivery or unverified current field in keyword targeting"
+    ],
+    "selfAssignedScore": null
+  },
+  "overlapReview": "body-count-and-overlap.json; no score alone establishes semantic uniqueness",
+  "sourceLevels": {
+    "facilityIdentity": "official_government_source",
+    "productPricesPhotosAndShipping": "official_business_source_retained_timestamped_originals",
+    "ribbonExamples": "editorial_suggestion",
+    "serviceTimeAndOutsideFlowerPolicy": "unknown_conditional_consultation_only",
+    "competitorClaims": "research_observation_not_own_service_truth"
+  },
+  "humanChecksRequiredBeforeClaiming": [
+    "Actual received order, quote, inventory and delivery",
+    "Current entry permission/hours/installation",
+    "Unresolved refund-rule applicability"
+  ],
+  "mandatoryInputQuestionForThisDraft": null,
+  "copySHA256": "45a635ec0fff5c94a990814dfdd52b7a844687d558e5e7fcba29f8eba26b10cf",
+  "renderPlanSHA256": "b97eb621fced61c67596a6ba9c8e1f765dc7e0e0e3189da66d0821bdb3bf8c6d"
+}
