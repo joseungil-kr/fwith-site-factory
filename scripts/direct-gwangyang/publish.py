@@ -29,6 +29,9 @@ WORKER = 'gwangyang-flower-guide'
 DIRECTORY = Path(__file__).resolve().parent
 TITLE = '[GWANGYANG-PRODUCTION-PUBLISH] 20261015'
 RECEIPT_TITLE = '[GWANGYANG-INDEXNOW-RECEIPTS] 20261015'
+FINALIZE_TITLE = '[GWANGYANG-INDEXNOW-FINALIZE] 20261015'
+ORIGINAL_PUBLISH_RUN = 38793139574
+FINALIZE_MODES = {'authorize', 'select', 'artifact', 'http', 'indexnow-probe', 'indexnow'}
 SLUGS = ['gwangyang-funeral-wreath']
 DEFERRED_SLUGS = set()
 REGION_ROUTES = {'/regions/' + slug + '/' for slug in SLUGS}
@@ -38,6 +41,7 @@ SITEMAP_ROUTES = {'/'} | ARTICLE_ROUTES
 ROUTES = SITEMAP_ROUTES | THIN_HUB_ROUTES
 import production_build as gate
 import production_output as output
+import managed_robots
 
 
 def expected_robots(route):
@@ -105,7 +109,7 @@ def publication_config():
     return c
 
 
-def authorize(contract, binding_sha, env, event):
+def authorize(contract, binding_sha, env, event, *, finalize_only=False):
     # Historical order labels in the frozen source contract are not release dependencies.
     config=publication_config()
     require(env.get('GITHUB_REPOSITORY')==REPOSITORY and env.get('GITHUB_REF')=='refs/heads/main', 'owner_main_required')
@@ -116,13 +120,14 @@ def authorize(contract, binding_sha, env, event):
     repo,issue=event.get('repository',{}),event.get('issue',{})
     require(repo.get('full_name')==REPOSITORY and repo.get('owner',{}).get('login')==gate.OWNER
             and repo.get('owner',{}).get('type')=='User','repository_owner_mismatch')
-    require(issue.get('title')==TITLE and issue.get('user',{}).get('login')==gate.OWNER, 'exact_issue_required')
+    require(issue.get('title')==(FINALIZE_TITLE if finalize_only else TITLE) and issue.get('user',{}).get('login')==gate.OWNER, 'exact_issue_required')
     raw=issue.get('body');require(isinstance(raw,str) and len(raw)<2048, 'invalid_body')
     body=json.loads(raw)
-    expected=dict(schemaVersion=1,mode='publish',source_branch=BRANCH,
+    expected=dict(schemaVersion=1,mode='indexnow-finalize' if finalize_only else 'publish',source_branch=BRANCH,
         source_revision=contract['sourceRevision'],expected_control_revision=env['GITHUB_SHA'],
         binding_sha256=binding_sha,receipt_issue=config['receiptIssue'],
         release_review_sha256=sha(gate.read(DIRECTORY/'production-release-review-binding.json')))
+    if finalize_only: expected['original_publish_run_id']=ORIGINAL_PUBLISH_RUN
     require(isinstance(body,dict) and json.dumps(body,sort_keys=True)==json.dumps(expected,sort_keys=True), 'exact_request_required')
     return dict(state='exact_production_request_selected',sourceBranch=BRANCH,
                 sourceRevision=contract['sourceRevision'],controlRevision=env['GITHUB_SHA'],bindingSha256=binding_sha)
@@ -396,7 +401,7 @@ def get(path, status=200):
 
 
 def http_once(contract):
-    checked = 0; normalized = 0
+    checked = 0; normalized = 0; robots_evidence = None
     require(contract.get('origin') == ORIGIN and contract.get('revision') == revision() and contract.get('ownershipFile') == output.PROOF['path'].lstrip('/'), 'http_contract_identity_mismatch')
     require(len(contract['pages']) == len(ROUTES) and {item['path'] for item in contract['pages']} == ROUTES,
             'http_contract_routes_mismatch')
@@ -418,7 +423,13 @@ def http_once(contract):
         checked += 1
     for path in sorted('/' + name for name in contract['files'] if not name.endswith('.html') and name != '_headers'):
         body, headers = get(path)
-        require(sha(body) == contract['files'][path.lstrip('/')], 'live_asset_digest_mismatch')
+        if path == '/robots.txt':
+            managed_robots.verify_headers(headers)
+            robots_evidence = managed_robots.verify(body, contract['files']['robots.txt'], ORIGIN, contract['sitemapUrls'])
+            Path('public-robots.txt').write_bytes(body)
+            save(Path('public-robots-headers.json'), {k:v for k,v in headers.items() if k.lower() in ('content-type','x-robots-tag','cf-mitigated','content-length')})
+        else:
+            require(sha(body) == contract['files'][path.lstrip('/')], 'live_asset_digest_mismatch')
         if path.startswith('/images/'):
             require(headers.get('Content-Type', '').lower().startswith('image/'), 'image_content_type')
         checked += 1
@@ -432,7 +443,7 @@ def http_once(contract):
         checked += 1
     return dict(state='public_release_verified', revision=revision(), regionCount=len(REGION_ROUTES), articleCount=len(ARTICLE_ROUTES), htmlRoutes=len(ROUTES),
                 noindexHubs=len(THIN_HUB_ROUTES), sitemapUrls=len(SITEMAP_ROUTES),
-                checkedPaths=checked, normalizedCloudflareBeacons=normalized, unknownHttpStatus=404)
+                checkedPaths=checked, normalizedCloudflareBeacons=normalized, unknownHttpStatus=404, robotsVerification=robots_evidence)
 
 
 def public_http():
@@ -479,11 +490,26 @@ def observed_indexnow_request(method, url, payload=None):
                       cfMitigated=headers.get('cf-mitigated', ''),
                       bodySha256=sha(body.encode('utf-8')))
         save(path, previous + [record])
-        return status, body, headers
     except Exception as error:
         record.update(httpStatus=None, errorType=type(error).__name__)
         save(path, previous + [record])
         raise
+    if method == 'GET':
+        contract=json.loads(Path('http-contract.json').read_text())
+        require(contract.get('origin')==ORIGIN and contract.get('revision')==revision(), 'indexnow_contract_identity_mismatch')
+        expected_paths={output.PROOF['path'], '/robots.txt', '/sitemap-index.xml', '/sitemap-0.xml'}
+        if local_path(url) in expected_paths:
+            expected=contract['files'][local_path(url).lstrip('/')]
+            require(status==200, 'indexnow_static_not_http200')
+            if local_path(url) == '/robots.txt':
+                managed_robots.verify_headers(headers)
+                record['robotsVerification']=managed_robots.verify(body.encode('utf-8'), expected, ORIGIN, contract['sitemapUrls'])
+                Path('indexnow-robots.txt').write_bytes(body.encode('utf-8'))
+                save(Path('indexnow-robots-headers.json'), {k:v for k,v in headers.items() if k.lower() in ('content-type','x-robots-tag','cf-mitigated','content-length')})
+                save(path, previous + [record])
+            else:
+                require(sha(body.encode('utf-8'))==expected, 'indexnow_static_digest_mismatch')
+    return status, body, headers
 
 
 def indexnow_probe():
@@ -511,7 +537,10 @@ def main():
     try:
         gate.trusted_control(os.environ)
         contract,binding,binding_sha=gate.load()
-        selected=authorize(contract,binding_sha,os.environ,json.loads(Path(os.environ['GITHUB_EVENT_PATH']).read_text()))
+        event=json.loads(Path(os.environ['GITHUB_EVENT_PATH']).read_text())
+        finalize_only=event.get('issue',{}).get('title')==FINALIZE_TITLE
+        require(not finalize_only or args.mode in FINALIZE_MODES, 'finalize_provider_operation_forbidden')
+        selected=authorize(contract,binding_sha,os.environ,event,finalize_only=finalize_only)
         require(revision()==contract['sourceRevision'],'source_revision_mismatch')
         review=release_review()
         if args.mode=='authorize':

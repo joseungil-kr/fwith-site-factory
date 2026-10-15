@@ -154,6 +154,10 @@ jobs:
             domain-attach.json
             binding-after.json
             public-http.json
+            public-robots.txt
+            public-robots-headers.json
+            indexnow-robots.txt
+            indexnow-robots-headers.json
             indexnow-receipt.json
             indexnow-http-observations.json
             release/release.json
@@ -169,3 +173,158 @@ jobs:
           INDEXNOW: ${{ steps.indexnow.outcome }}
         run: test "$DEPLOY" = success && test "$ATTACH" = success && test "$BINDING" = success && test "$HTTP" = success && test "$INDEXNOW" = success
 
+
+
+  finalize_indexnow:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[GWANGYANG-INDEXNOW-FINALIZE] 20261015' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.user.login == 'joseungil-kr'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      REGION: gwangyang
+      CONTROL_DIR: control/scripts/direct-gwangyang
+      REVISION: ${{ fromJSON(github.event.issue.body).source_revision }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Authorize exact owner, main, first attempt, binding and source
+        id: source
+        run: |
+          python3 "$CONTROL_DIR/publish.py" authorize --report selected-source.json
+      - name: Run fixed control safety tests without provider credentials
+        run: |
+          python3 -m unittest discover -s "$CONTROL_DIR" -p 'test_*.py' -v
+      - name: Require sealed all-route output and independent mobile and desktop review
+        id: release
+        run: python3 "$CONTROL_DIR/publish.py" select --report selected-release.json
+      - name: Verify actual successful build and exact retained artifact metadata
+        uses: actions/github-script@v7
+        env:
+          BUILD_RUN_ID: ${{ steps.release.outputs.build_run_id }}
+          BUILD_ARTIFACT_ID: ${{ steps.release.outputs.artifact_id }}
+        with:
+          script: |
+            const fs = require('fs');
+            const desc = JSON.parse(fs.readFileSync(process.env.CONTROL_DIR + '/production-release-review-binding.json'));
+            const review = JSON.parse(fs.readFileSync('control/' + desc.path));
+            const {data: run} = await github.rest.actions.getWorkflowRun({...context.repo, run_id: Number(process.env.BUILD_RUN_ID)});
+            if (run.id !== Number(review.buildRunId) || run.run_attempt !== 1 || run.status !== 'completed' || run.conclusion !== 'success' || run.event !== 'issues' || run.head_branch !== 'main' || run.head_sha !== review.buildControlSha || run.path !== '.github/workflows/' + process.env.REGION + '-production-build-only.yml' || run.repository.full_name !== 'joseungil-kr/fwith-site-factory' || run.actor?.login !== 'joseungil-kr' || run.triggering_actor?.login !== 'joseungil-kr') throw new Error('Build identity mismatch');
+            const {data: artifact} = await github.rest.actions.getArtifact({...context.repo, artifact_id: Number(process.env.BUILD_ARTIFACT_ID)});
+            if (artifact.id !== Number(review.artifactId) || artifact.expired || artifact.name !== process.env.REGION + '-production-build-' + review.buildRunId + ('-' + review.buildControlSha) || artifact.workflow_run.id !== run.id || artifact.workflow_run.head_sha !== run.head_sha || artifact.workflow_run.head_branch !== 'main') throw new Error('Artifact identity mismatch');
+            if (process.env.REGION === 'gwangyang') {
+              if (artifact.digest !== review.artifactDigest || String(run.id) !== String(review.qaRunId)) throw new Error('Gwangyang archive or combined browser run mismatch');
+              const publication = JSON.parse(fs.readFileSync(process.env.CONTROL_DIR + '/production-publication.json'));
+              const {data: journal} = await github.rest.issues.get({...context.repo, issue_number: publication.receiptIssue});
+              if (journal.number !== publication.receiptIssue || journal.pull_request || journal.state !== 'open' || journal.user.login !== 'joseungil-kr' || journal.title !== '[GWANGYANG-INDEXNOW-RECEIPTS] 20261015' || journal.repository_url !== 'https://api.github.com/repos/joseungil-kr/fwith-site-factory') throw new Error('Gwangyang receipt issue identity mismatch');
+            }
+      - name: Verify the original publication failed before any IndexNow submission
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {data: run} = await github.rest.actions.getWorkflowRun({...context.repo, run_id: 38793139574});
+            if (run.id !== 38793139574 || run.run_attempt !== 1 || run.status !== 'completed' || run.conclusion !== 'failure' || run.event !== 'issues' || run.head_branch !== 'main' || run.head_sha !== 'd05c5009f29da5bcb7febf9e9444184fa67b9df8' || run.path !== '.github/workflows/gwangyang-production-publish.yml' || run.repository.full_name !== 'joseungil-kr/fwith-site-factory' || run.actor?.login !== 'joseungil-kr' || run.triggering_actor?.login !== 'joseungil-kr') throw new Error('Original publication identity mismatch');
+            const {data: artifact} = await github.rest.actions.getArtifact({...context.repo, artifact_id: 12001425800});
+            if (artifact.id !== 12001425800 || artifact.expired || artifact.name !== 'gwangyang-production-result-38793139574' || artifact.digest !== 'sha256:954a6b89aaddb9f7cd1fff2f0ecf7da56de4f3bfb143cb6648f3f48c3b5682ee' || artifact.workflow_run.id !== run.id || artifact.workflow_run.head_sha !== run.head_sha) throw new Error('Original publication evidence mismatch');
+            const {data: jobs} = await github.rest.actions.listJobsForWorkflowRun({...context.repo, run_id: run.id, filter: 'all', per_page: 100});
+            if (jobs.total_count !== 1 || jobs.jobs.length !== 1) throw new Error('Original publication jobs mismatch');
+            const job=jobs.jobs[0];
+            if (job.id !== 116622567148 || job.run_id !== run.id || job.run_attempt !== 1 || job.head_sha !== run.head_sha || job.name !== 'publish' || job.status !== 'completed' || job.conclusion !== 'failure') throw new Error('Original publication job identity mismatch');
+            for (const name of ['Deploy fixed route-less static assets once','Attach only approved fixed hostname with every override false','GET-only binding readback, including after an uncertain upload']) {
+              const steps=job.steps.filter(s=>s.name===name);
+              if (steps.length !== 1 || steps[0].conclusion !== 'success') throw new Error('Original deployment or binding incomplete');
+            }
+            const indexnowSteps=job.steps.filter(s=>s.name==='Finalize the exact regional sitemap through its idempotent journal');
+            if (indexnowSteps.length !== 1 || indexnowSteps[0].conclusion !== 'skipped') throw new Error('Original IndexNow was not skipped');
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: 12001425800
+          run-id: 38793139574
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: original-publication
+      - name: Verify exact HTTP failure, completed binding and absent IndexNow evidence
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('original-publication')
+          expected={'public-http.json','release/wrangler.publish.json','release/release.json','artifact-check.json','selected-release.json','binding-after.json','selected-source.json','binding-before.json','domain-attach.json','http-contract.json'}
+          assert {p.relative_to(root).as_posix() for p in root.rglob('*') if p.is_file()}==expected
+          assert not any(p.is_symlink() for p in root.rglob('*'))
+          assert not (root/'indexnow-receipt.json').exists() and not (root/'indexnow-http-observations.json').exists()
+          public=json.loads((root/'public-http.json').read_text())
+          assert public=={'code':'live_asset_digest_mismatch','mode':'http','state':'blocked_or_failed'}
+          manifest=json.loads((root/'release/release.json').read_text())
+          assert manifest['revision']=='78382db9e684e61ff40d3e6720c7c68e1995168b'
+          binding=json.loads((root/'binding-after.json').read_text())
+          assert binding['state']=='binding_verified' and binding['hostname']=='gwangyang.fwith.kr' and binding['worker']=='gwangyang-flower-guide' and binding['revision']==manifest['revision']
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.release.outputs.artifact_id }}
+          run-id: ${{ steps.release.outputs.build_run_id }}
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: gwangyang-retained
+      - name: Stage only the retained Gwangyang static release package
+        if: env.REGION == 'gwangyang'
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import shutil
+          root = Path('gwangyang-retained/release')
+          assert root.is_dir() and not root.is_symlink()
+          assert not any(p.is_symlink() for p in root.rglob('*'))
+          assert not Path('release').exists()
+          shutil.copytree(root, 'release', symlinks=True)
+          PY
+      - name: Rehash exact reviewed static output and generate fixed route-less configuration
+        run: python3 "$CONTROL_DIR/publish.py" artifact --report artifact-check.json
+      - name: Recheck fixed source branch before finalization
+        uses: actions/github-script@v7
+        env:
+          SOURCE_BRANCH: ${{ steps.source.outputs.source_branch }}
+        with:
+          script: |
+            if (process.env.GITHUB_RUN_ATTEMPT !== '1') throw new Error('Reruns forbidden');
+            const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/' + process.env.SOURCE_BRANCH});
+            if (data.object.type !== 'commit' || data.object.sha !== process.env.REVISION) throw new Error('Source branch moved');
+      - name: Verify every public output byte, region-specific robots and real 404
+        id: http
+        run: python3 "$CONTROL_DIR/publish.py" http --report public-http.json
+      - name: Verify the same live IndexNow user agent before any journal or POST
+        run: python3 "$CONTROL_DIR/publish.py" indexnow-probe --report indexnow-probe.json
+      - name: Finalize the exact regional sitemap through its idempotent journal
+        id: indexnow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 "$CONTROL_DIR/publish.py" indexnow --report indexnow-receipt.json
+      - name: Retain verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.REGION }}-indexnow-finalization-${{ github.run_id }}
+          path: |
+            selected-source.json
+            selected-release.json
+            artifact-check.json
+            http-contract.json
+            public-http.json
+            public-robots.txt
+            public-robots-headers.json
+            indexnow-robots.txt
+            indexnow-robots-headers.json
+            indexnow-probe.json
+            indexnow-receipt.json
+            indexnow-http-observations.json
+            release/release.json
+            release/wrangler.publish.json
+          if-no-files-found: warn
