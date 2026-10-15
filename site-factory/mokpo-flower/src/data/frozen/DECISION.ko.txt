@@ -1,0 +1,87 @@
+목포 한 글 단계의 부모 허브와 발행 분모 독립 검토
+2026-10-14 UTC
+
+판정 요약
+
+[추정·판단] 권고안은 홈 + 한국병원 장례식장 상세 1개 + 실제 카드 1개의 /regions/ 보조목록 + 기술 404다. 부모 허브 조건을 없애거나 상세 글을 3개로 늘리지 않는다. 이 안은 좁은 목포 첫 콘텐츠 단계의 구조적 후보로 적합하다. 구현·발행 승인 또는 Production/Launch Gate PASS 판정은 아니다.
+
+핵심 허브의 3개 자식 조건은 유지한다. 현재 /regions/는 독립 검색 의도·index·메인메뉴·광범위한 서비스 체계를 맡지 않는 보조 탐색 노드로 한정한다. 따라서 이 노드의 1개 실제 자식에는 Blueprint §8의 1–2개 정책을 적용하고, ‘핵심 허브 launch 완료’ 조건은 이 좁은 단계의 완료 주장에 적용하지 않는다. 이는 계약에 명시된 목포 예외의 발견이 아니라, 조건의 대상과 현재 범위를 대조한 독립 적용 판단이다.
+
+핵심 허브가 하나라도 발행 범위에 포함되거나 전체 다중 허브 launch 완료를 주장하면 3개 자식 조건이 다시 REQUIRED가 된다. 한 카드의 /regions/를 이름만 바꿔 핵심 기능을 맡기거나 ‘전체 launch passed’로 처리해서는 안 된다. Blueprint §6의 production 전 Launch Gate는 별도로 남으며 이 문서로 통과하지 않는다.
+
+1 직접 확인한 자료와 범위
+
+[직접 확인] 다음 로컬 원문을 열어 읽었다.
+- mokpo-release-readiness-20261014/READINESS.ko.txt 전체
+- 같은 폴더 inputs의 Core, Flower Blueprint, v1.2, precedence 전체와 통합 규칙의 관련 본문·보완 조항, Content Writing Contract, 직접 공개 README
+- mokpo-content-preparation-20261014/page-plan.md, 최종 home.ko.md와 condolence.ko.md 전체
+- SEARCH_CONTENT_STRATEGY.md, SALES_COPY_ACCEPTANCE.md, search-intent.md, final-review-binding.json
+
+보존 current-contract-readback.json의 sourceRef는 693f53f2d2f802e3cfcf0be3e3ec40efc658a32a다. 8개 계약 파일 모두 로컬 bytes가 보존 API 본문과 동일하고, 본문에서 재계산한 Git blob SHA-1이 보존 응답의 SHA와 일치했다. 이것은 보존 원문 무결성 확인이다. 이번 검토에서 원격 main·API·현재 사이트를 새로 조회하지 않았다.
+
+[도구 보고] 현재 main이 변하지 않았다는 점과 기존 API/첫 hostname 승인·사업 정책 질문이 대기 중이라는 점은 의뢰한 부모의 보고를 사용했다. 기존 전문·집중 문체 리뷰 결과는 기록으로 읽었고 실제 최종 원고 bytes를 다시 계산했다. 이전 리뷰 PASS를 이 문서의 기술·발행 PASS로 승격하지 않았다.
+
+2 원문 조항과 적용 결정
+
+이 절의 경로는 site-factory/contracts/ 기준이며 행 번호는 inputs에 저장된 실제 원문의 번호다.
+
+A 부모 허브는 유지
+- 02_VERTICAL_BLUEPRINT_FLOWER.md §10, 111–122행: 공개 후보의 최소 1 inbound와 parent hub 존재.
+- 같은 문서 §8, 94–99행: 0개 허브 금지, 1–2개 noindex,follow·sitemap 제외·메인메뉴 비노출, 핵심 허브는 launch 완료 전 최소 3개 실제 자식.
+- 01_SITE_FACTORY_CORE.md §1, 17–23행과 §4, 60–68행: 실제 inbound는 MUST, 계층은 SHOULD/권장 논리 구조이며 실제 URL 모양보다 링크·breadcrumb·역할 분리가 중요.
+- 00_SITE_FACTORY_SEO_DESIGN_RULES_V1_2.md §11, 147–153행 및 rules/PRECEDENCE_AND_COVERAGE.md X02, 46행: 구매동선 우선이지만 트리와 breadcrumb 계층은 유지.
+판정: page-plan의 ‘상세 하나이면 목록 생략’ 제안은 채택하지 않는다. /regions/를 보존하면 부모 조건을 설명 없는 NOT_APPLICABLE로 지울 필요가 없다. 홈에서 상세로 직접 이동하도록 하여 보조목록을 강제 경유시키지 않는다.
+
+B 3개 자식은 모든 허브의 공개 최소치가 아님
+- Blueprint §8, 95–99행은 1–2개 상태와 핵심 허브 launch 완료 조건을 함께 명시한다. 따라서 모든 parent hub에 3개가 필요하다는 해석도, noindex이면 모든 핵심 허브 완료 조건이 없어졌다는 해석도 채택하지 않는다.
+- v1.2 §1, 3–6행 및 §5, 90–93행: 목적은 검색어·문서 적합성과 전환이며 허브를 먼저 만들고 글 수를 채우는 방식 금지.
+- Blueprint §6, 65–70행: 30–49는 ‘보통’ 초기 운영목표, production은 Launch Gate 통과 후. §7, 83–92행: 비율은 고정 개수가 아닌 다양성 가이드.
+- SEARCH_CONTENT_STRATEGY.md 11·15·24–25행: 허브/수량 선결 금지, 2,500–3,000자는 기본 초안 목표이며 최소선 아님, FAQ/관련 링크 개수 채우기 금지.
+판정: 현재 의도에 맞는 상세 1개를 유지한다. 핵심 허브를 먼저 선언한 뒤 채울 자식 2개를 발명하지 않는다. 본 단계에는 핵심 허브 launch 완료 주장을 두지 않는다. 전체 서비스 구조·전체 launch의 완료 여부는 NOT_ASSESSED로 남긴다.
+
+C /regions/의 비핵심 판정 조건
+다음 다섯 조건을 구조·manifest에 함께 결속해야 한다.
+1. 유일한 실제 자식은 한국병원 상세이며 홈·상품카드·404·보류 시설을 자식 수에 포함하지 않는다.
+2. page role은 support-navigation, 검색용 primary가 아니며 독립적인 광역 서비스·시설망 완성을 약속하지 않는다.
+3. production robots는 noindex,follow, sitemap과 메인메뉴 제외. noindex 지시를 읽지 못하게 해당 경로를 robots.txt로 막지 않는다.
+4. 홈페이지→실제 상세의 직접 링크, 상세→홈과 /regions/의 breadcrumb, /regions/→실제 상세를 둔다. 고객 본문에 내부 허브 설계 설명은 노출하지 않는다.
+5. core hub로 승격·index·메인메뉴 노출·전체 launch 완료를 계획하면 §8을 다시 적용한다. 3개 자식이어도 메인메뉴는 안 되고, 메인메뉴 허용은 5개부터다.
+
+Core §4의 권장 계층과 Blueprint §5의 기본 breadcrumb는 단일 지역·한 의도 단계에 맞게 HOME → 보조목록 → DETAIL로 압축한다. 독립 정보 의도가 없는 /목포꽃배달/, /funeral/ 등을 별도 만들지 않는다. 이 압축은 v1.2 §5와 Core §4에 따른 범위 적용 판단이며, 기존 실제 경로나 이미 동결된 허브를 삭제하는 허가가 아니다.
+
+Blueprint §12의 existing-city adapter는 특정 기존 source opt-in에 한정된다. 목포의 자동 opt-in이나 신규 허브 예외 근거로 사용하지 않았다. 직접 공개 README 13–15·27행에 따라 기존 완료 지역 확장, 기존 분모 축소, 보류 후보 삭제도 하지 않는다.
+
+3 동결할 수 있는 경로와 정확한 분모
+
+다음은 권고 페이지 맵이다. 아직 실제 HTML이 존재한다는 뜻은 아니다.
+
+- / : 지역 근조 상품 탐색·상담 홈. primary 1, article 0. production index 대상, sitemap 포함. root이므로 parent_hub=null, root exemption을 기록.
+- /regions/hankook-hospital-funeral-wreath/ : 한국병원 장례식장 근조 상품·주문결정. primary 1, article 1. parent_hub=/regions/. production index 대상, sitemap 포함.
+- /regions/ : 실제 승인 상세 카드 1개만 있는 보조목록. primary 0, article 0, support 1. parent=/. noindex,follow, sitemap 제외, 메인메뉴 비노출, 마케팅 배너 0개.
+- /404.html : 기술 HTML 1개. 콘텐츠·primary·article에서 제외. noindex, sitemap·canonical 정본·마케팅 배너 제외. 실제 존재하지 않는 URL의 HTTP 404는 별도 검사.
+
+합계: article N=1, primary=2, support=1, 콘텐츠 HTML=3, 기술 HTML=1, 전체 HTML=4. 계획상 production index 대상 URL=2, noindex HTML=2, sitemap URL=2. 실제 검색엔진에 색인된 URL 수는 미확인이며 ‘2개 색인됨’이라고 보고하지 않는다.
+
+production sitemap 집합은 승인된 origin + / 와 승인된 origin + /regions/hankook-hospital-funeral-wreath/의 두 URL만이다. origin은 현재 미정이므로 후보 hostname을 canonical로 확정하지 않는다. preview 단계의 indexable URL은 0이며 위 2개는 승인 후 production 목표다. 현재 제출·색인 수에 더하지 않는다.
+
+4 남은 실제 차단과 후속 기준
+
+- 적용성 결정의 결속: 이 별도 검토를 실제 Mokpo manifest/architecture/page-map의 역할·분모·허브 상태와 결속해야 한다. core hub launch 및 전체 launch를 PASS로 오기하면 이 권고는 무효다. 배포 코드가 전체 launch만 지원한다면 표현만 바꾸어 통과시키지 말고 기존 실행 계약과의 차이를 먼저 해결해야 한다.
+- metadata와 독립 품질 평가: 각 primary의 query/intent/Title/H1/첫 답변, 별도 meta와 card summary, A04 재현 가능한 정렬 평가, 해당 SEO/GEO/AEO 항목 적용 결과가 아직 없다. 최종 원고의 문체 리뷰는 이를 대신하지 않는다. 근거: precedence A04·O02, v1.2 §17, Blueprint §10.
+- 기존 대기사항: GitHub 저장/API·첫 Worker/hostname 승인과 배송·취소 운영 답변은 그대로 대기한다. 재질의하지 않았다. 불확실한 19/21시·주말/공휴일·환불 수치를 공개하지 않는 현 원고 검수는 계속 가능하며, 미답변을 이유로 허구의 정책을 채우지 않는다. 필요한 고객결정을 조건부 상담 문장으로 충족하는지는 별도 최종 내용 검수다.
+- 실행 증거: 목포 구현·테스트·build·실제 HTML·모바일 화면·현재 상품 목적지 응답·provider 충돌·원격 저장·배포·공개 HTTP·IndexNow는 이 검토에서 수행하지 않았다. 기사 수와 허브 적용성 해결로 이 단계들이 완료되지는 않는다.
+
+이 단계에서 추가 글, 기존 사이트 확장, 새 시장 조사, 코드 수정, 원격 저장 또는 배포를 시작할 필요는 없다. 현재 가능한 다음 작업은 정확한 맵과 metadata를 원고 digest에 결속하는 준비다.
+
+5 검증 증거
+
+원본은 변경하지 않았다. 읽은 세 핵심 파일의 SHA-256:
+- page-plan.md: 0c6aa33d14790aceea0421fc89a18f67752ba531710a84843f3b5434378680b7
+- drafts/home.ko.md: c232a824dbcc9add5bc6caf7b264978947eeedeb2ecb61b4808977a616652be4
+- drafts/condolence.ko.md: f3ccc94cd20e3d62618a3ae64cde7774aac91ac9ff9e162f82c50867a1792d01
+- Blueprint: 250c60d317fcaef35a6953c299dde89be52b24f9be51048475aeb868625579e5
+- Core: f447587111896f980a163838256fa8dc45de23f7855a354a6b7cb6b5d958ffb9
+- v1.2: 2f29da4d7b4f1b1c6debd6a821ce28bf7a349b892cc12007836600408f9766ae
+- Precedence: c1663ca7fa0b99a10adf484bfa73ab5a563e9a19aa4a2161d81585c9d1984cd4
+
+판정 상태: 구조 적용성 검토 수행됨·로컬 원문 및 분모 재검증됨. 계획 미동결. 구현·Production·핵심 허브 launch·전체 launch PASS 없음.
