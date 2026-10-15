@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SharedFlowerBanner from './SharedFlowerBanner.astro';
+import DraftBlocks from './DraftBlocks.astro';
+import {SPEC_SHA,spec,supportSummary} from '../lib/yeosu-runtime.mjs';
+const {page:p}=Astro.props;
+const bannerBefore=(heading:string)=>Object.entries(p.bannersBeforeH2||{}).find(([,h])=>h===heading)?.[0];
+---
+<BaseLayout page={p}><article data-page-id={p.id} data-page-role={p.role} data-copy-sha={SPEC_SHA} data-original-draft-sha={p.sourceSHA||undefined}>
+{p.breadcrumbs&&<nav class="breadcrumb" aria-label="현재 위치">{p.breadcrumbs.map((b:any,i:number)=><>{i>0&&<span aria-hidden="true">›</span>}{b.href?<a href={b.href}>{b.label}</a>:<span aria-current="page">{b.label}</span>}</>)}</nav>}
+<div data-reviewed-body={p.draft?true:undefined}>
+<section id="opening" class="category-hero"><h1 data-reviewed-block={p.draft?true:undefined}>{p.h1}</h1>
+{p.draft?<DraftBlocks blocks={p.draft.opening} opening/>:p.body&&<p>{p.body}</p>}
+</section>
+{p.draft?.sections.map((s:any,i:number)=><>
+{bannerBefore(s.heading)&&<SharedFlowerBanner variant={bannerBefore(s.heading)}/>}
+<section id={s.heading==='출처 및 확인 정보'?'sources':s.heading==='자주 묻는 질문'?'faq':`section-${i+1}`} class={s.heading==='출처 및 확인 정보'?'source-card':s.heading==='자주 묻는 질문'?'faq':'content-card copy-section'} data-source-references={s.heading==='출처 및 확인 정보'||undefined} data-visible-faq={s.heading==='자주 묻는 질문'||undefined}>
+<h2 data-reviewed-block>{s.heading}</h2><DraftBlocks blocks={s.blocks} faq={s.heading==='자주 묻는 질문'}/>
+</section>
+</>)}
+</div>
+{p.id==='support'&&<div class="card-grid journey-grid" data-purchase-cards><article class="page-card" data-content-card><h2>{p.cardHeading}</h2><p>{supportSummary}</p><a data-required-cta href={p.cta.href}>{p.cta.label}</a></article></div>}
+{p.id==='not-found'&&<div class="actions final-action"><a class="btn dark" data-required-cta href="/">{spec.newCopyRequiringIndependentReview.notFound.ctaLabel}</a></div>}
+</article></BaseLayout>
