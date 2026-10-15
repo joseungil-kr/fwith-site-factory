@@ -1,0 +1,4 @@
+---
+const {links=[],buttons=false}=Astro.props;
+---
+<div class={buttons?'actions':'copy-links'}>{links.map((link:any)=><a href={link.href} class={buttons?'btn primary':undefined}>{link.label}</a>)}</div>
