@@ -8,6 +8,8 @@ import re
 import xml.etree.ElementTree as ET
 
 ORIGIN = 'https://mokpo.fwith.kr'
+SOCIAL_IMAGE_PATH = '/images/products/B201.jpg'
+SOCIAL_IMAGE_ALT = '근조 3단 화환 B201 샘플, 흰 꽃과 노란 꽃 및 흰 리본'
 ROUTES = ['/', '/regions/hankook-hospital-funeral-wreath/']
 FILES = {'index.html':'/', 'regions/index.html':'/regions/', '404.html':'/404.html', **{route.strip('/')+'/index.html':route for route in ROUTES[1:]}}
 PROOF = {'origin':ORIGIN,'path':'/39c4ed924bc6084c670a963c26d9f018.txt','sha256':'5da3864d5327c6e4e41e6eef12510004b2302f55c3bc61593d7d49c1797739b5'}
@@ -19,19 +21,29 @@ class Metadata(HTMLParser):
         self.robots, self.revisions, self.canonical, self.social, self.schemas = [], [], [], [], []
         self.h1 = 0
         self.main_targets = []
+        self.title_parts, self.descriptions = [], []
+        self.in_title = False
         self.feed(text)
 
     def handle_starttag(self, tag, attrs):
         values = dict(attrs)
         assert len(values) == len(attrs), 'Duplicate HTML attribute'
         if tag == 'meta':
+            if values.get('name') == 'description': self.descriptions.append(values.get('content'))
             if values.get('name') == 'robots': self.robots.append(values.get('content'))
             if values.get('name') == 'site-factory-revision': self.revisions.append(values.get('content'))
-            if values.get('property', values.get('name', '')).startswith(('og:', 'twitter:')): self.social.append(values)
+            if any(values.get(attr, '').startswith(('og:', 'twitter:')) for attr in ('property','name')): self.social.append(values)
         if tag == 'link' and values.get('rel') == 'canonical': self.canonical.append(values.get('href'))
         if tag == 'script' and values.get('type') == 'application/ld+json': self.schemas.append(values)
         if tag == 'h1': self.h1 += 1
         if tag == 'main': self.main_targets.append(values)
+        if tag == 'title': self.in_title = True
+
+    def handle_data(self, data):
+        if self.in_title: self.title_parts.append(data)
+
+    def handle_endtag(self, tag):
+        if tag == 'title': self.in_title = False
 
 
 def sha(data):
@@ -99,6 +111,16 @@ def inspect_dist(dist, mode, proof=PROOF):
         if route == '/404.html': assert not doc.schemas and not doc.social, '404 schema/social forbidden'
         else:
             assert [m.get('content') for m in doc.social if m.get('property')=='og:url'] == [ORIGIN+route], 'Exact og:url required'
+            title = ''.join(doc.title_parts)
+            assert title and len(doc.descriptions) == 1 and doc.descriptions[0], 'Social title and description source required'
+            expected_og = {'og:type':'website', 'og:title':title, 'og:description':doc.descriptions[0], 'og:locale':'ko_KR', 'og:url':ORIGIN+route, 'og:image':ORIGIN+SOCIAL_IMAGE_PATH, 'og:image:alt':SOCIAL_IMAGE_ALT}
+            expected_twitter = {'twitter:card':'summary', 'twitter:title':title, 'twitter:description':doc.descriptions[0], 'twitter:image':ORIGIN+SOCIAL_IMAGE_PATH, 'twitter:image:alt':SOCIAL_IMAGE_ALT}
+            og = [m for m in doc.social if m.get('property','').startswith('og:')]
+            twitter = [m for m in doc.social if m.get('name','').startswith('twitter:')]
+            assert len(og) == len(expected_og) and {m['property']:m.get('content') for m in og} == expected_og, 'Exact reviewed OG metadata required'
+            assert len(twitter) == len(expected_twitter) and {m['name']:m.get('content') for m in twitter} == expected_twitter, 'Exact reviewed Twitter metadata required'
+            assert len(doc.social) == len(og) + len(twitter) and all(set(m) == {'property','content'} for m in og) and all(set(m) == {'name','content'} for m in twitter), 'Social metadata attributes invalid'
+            assert SOCIAL_IMAGE_PATH.lstrip('/') in inventory, 'Local social image missing'
     urls = reachable_sitemap_urls(dist, inventory)
     assert (dist / 'robots.txt').read_text(encoding='utf-8') == 'User-agent: *\nAllow: /\nSitemap: ' + ORIGIN + '/sitemap-index.xml\n'
     assert (dist / '_headers').read_bytes() == b'/*\n', 'Exact inert production headers required'
