@@ -31,6 +31,8 @@ class OutputTests(unittest.TestCase):
  def test_orphan_xml(self):(self.root/'orphan.xml').write_text('<urlset/>');self.reject()
  def test_robots_block(self):(self.root/'robots.txt').write_text('User-agent: *\nDisallow: /\n');self.reject()
  def test_global_noindex(self):(self.root/'_headers').write_text('/*\n X-Robots-Tag: noindex\n');self.reject()
+ def test_header_refresh(self):(self.root/'_headers').write_text('/*\n Refresh: 0;url=https://wrong.invalid\n');self.reject()
+ def test_header_extra(self):(self.root/'_headers').write_text('/*\n X-Content-Type-Options: nosniff\n');self.reject()
  def test_proof_bytes(self):(self.root/o.PROOF['path'].lstrip('/')).write_text('altered\n');self.reject()
  def test_symlink(self):
   p=self.root/'favicon.svg';p.unlink();p.symlink_to(self.root/'robots.txt');self.reject()
