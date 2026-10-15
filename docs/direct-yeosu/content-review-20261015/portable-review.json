@@ -1,0 +1,257 @@
+{
+  "schema": "yeosu-portable-independent-review/v1",
+  "status": "PASS_FOR_PORTABLE_SOURCE_INPUTS_AND_STATIC_REBUILD_SCOPE",
+  "createdUTC": "2026-10-15T06:47:12.870093+00:00",
+  "archive": {
+    "archiveSHA256": "8e46868e2d1ab7d3175e1d51145503ddf367a9074ad01d5eedc4c41f271f7f4a",
+    "archiveBytes": 1716364,
+    "archiveEntries": 75,
+    "payloadFiles": 73,
+    "payloadTreeSHA256": "64e83668c74351831f4cc73664b65e867843ee1996dcd93edce35987cbd11e96"
+  },
+  "directlyVerified": {
+    "all75ZipEntriesRegularUniqueSafeCRCAndBytes": true,
+    "complete74ChecksumRows": true,
+    "exact40OriginalSourceFiles": true,
+    "sourceTreeSHA256": "9bf690107d7c1523b2fed72bc53af280c822aaa78615415aceb1f7c012f200a5",
+    "exact26OriginalSiblingInputs": true,
+    "inputOriginSplit": {
+      "prior313Baseline": 23,
+      "reuseBoundBannerFiles": 3
+    },
+    "minimalBuildInputClosure": {
+      "runtime": "src/lib/yeosu-runtime.mjs:7-27,60-64",
+      "integrityGate": "scripts/verify_inputs.mjs:5-9",
+      "qa": "scripts/qa_yeosu.py:7,51-53,66,122,134",
+      "testPrerequisite": "scripts/test_yeosu.py:6 requires build before test",
+      "outputDirectoryFix": "candidate/evidence/.gitkeep supplies qa_yeosu.py:141 parent directory"
+    },
+    "actualRebuiltOutputFiles": 16,
+    "outputTreeSHA256": "25e600971b1d38bb9a1036ab7825f9ae590d96069077ad4d031f25d990d31522",
+    "rebuiltBytesMatchPriorAndReadinessCopy": true,
+    "finalExtractedVerifierBuiltOutputExit": 0,
+    "finalBuildAndTestLogs": {
+      "buildExit": 0,
+      "testsExit": 0,
+      "typecheckErrors": 0,
+      "typecheckWarnings": 0,
+      "typecheckHints": 0,
+      "htmlFiles": 4,
+      "nodeTestsPassed": 34,
+      "pythonTestsPassed": 51
+    },
+    "independentHTMLParse": [
+      {
+        "path": "404.html",
+        "robots": [
+          "noindex,follow"
+        ],
+        "canonicalLinks": 0,
+        "scriptsFormsIframes": 0,
+        "productCards": 0,
+        "faqAnswers": 0,
+        "banners": 0
+      },
+      {
+        "path": "index.html",
+        "robots": [
+          "noindex,follow"
+        ],
+        "canonicalLinks": 0,
+        "scriptsFormsIframes": 0,
+        "productCards": 0,
+        "faqAnswers": 0,
+        "banners": 3
+      },
+      {
+        "path": "regions/index.html",
+        "robots": [
+          "noindex,follow"
+        ],
+        "canonicalLinks": 0,
+        "scriptsFormsIframes": 0,
+        "productCards": 0,
+        "faqAnswers": 0,
+        "banners": 0
+      },
+      {
+        "path": "regions/yeosu-jeonnam-hospital-funeral-wreath/index.html",
+        "robots": [
+          "noindex,follow"
+        ],
+        "canonicalLinks": 0,
+        "scriptsFormsIframes": 0,
+        "productCards": 4,
+        "faqAnswers": 3,
+        "banners": 3
+      }
+    ],
+    "inputReadAudit": {
+      "build": {
+        "requiredInputsSeen": 26,
+        "requiredInputsMissing": [],
+        "blockedEvents": 0,
+        "eventCount": 29284
+      },
+      "tests": {
+        "requiredInputsSeen": 26,
+        "requiredInputsMissing": [],
+        "blockedEvents": 0,
+        "eventCount": 8217
+      }
+    },
+    "negativeControls": {
+      "nodeBlocked": true,
+      "pythonBlocked": true
+    },
+    "dependencySymlinks": {
+      "count": 21,
+      "outsideCopiedDependencyTree": 0
+    },
+    "original313InputsUnchanged": true,
+    "originalZipAndFreezeUnchanged": true,
+    "finalZipReproductionByteIdentical": true,
+    "portableDocumentationCaveatsAccurate": "README.portable.ko.txt:5-7,18,20-31 states 23+3 scope, retained historical references, build-before-test, omitted evidence/dependencies, historical sealer exclusion, no fresh install/browser/public-release claim."
+  },
+  "checkerReview": {
+    "oldArchiveSHA256": "ad4fab28bafb3d382a1053296531da6427334c298b0b9f286db6c3a1baeb427b",
+    "oldFlawDirectlyReproduced": "A disposable extraction with an empty SHA256SUMS exited 0 and reported EXACT_BYTES_VERIFIED.",
+    "fixDirectlyReviewed": "verify_bundle.py:14-42 rejects unsafe/symlink/duplicate/invalid manifest entries; lines68-71 require the complete expected checksum text including MANIFEST.json.",
+    "changedArchivePaths": [
+      "yeosu-portable-build-inputs-20261015/MANIFEST.json",
+      "yeosu-portable-build-inputs-20261015/SHA256SUMS",
+      "yeosu-portable-build-inputs-20261015/verify_bundle.py"
+    ],
+    "positiveAndNegativeControls": [
+      {
+        "name": "positive_exact_archive",
+        "exitCode": 0,
+        "expectedAccepted": true,
+        "lastLine": "}"
+      },
+      {
+        "name": "empty_checksum_file",
+        "exitCode": 1,
+        "expectedAccepted": false,
+        "lastLine": "AssertionError: SHA256SUMS must exactly cover the payload and MANIFEST.json, once each"
+      },
+      {
+        "name": "truncated_checksum_file",
+        "exitCode": 1,
+        "expectedAccepted": false,
+        "lastLine": "AssertionError: SHA256SUMS must exactly cover the payload and MANIFEST.json, once each"
+      },
+      {
+        "name": "duplicate_checksum_row",
+        "exitCode": 1,
+        "expectedAccepted": false,
+        "lastLine": "AssertionError: SHA256SUMS must exactly cover the payload and MANIFEST.json, once each"
+      },
+      {
+        "name": "duplicate_manifest_path",
+        "exitCode": 1,
+        "expectedAccepted": false,
+        "lastLine": "AssertionError: Manifest paths must be sorted and unique"
+      },
+      {
+        "name": "unsafe_manifest_path",
+        "exitCode": 1,
+        "expectedAccepted": false,
+        "lastLine": "AssertionError: Unsafe or noncanonical manifest path: ../outside"
+      },
+      {
+        "name": "invalid_manifest_bytes_type",
+        "exitCode": 1,
+        "expectedAccepted": false,
+        "lastLine": "AssertionError: Invalid manifest record"
+      },
+      {
+        "name": "mutated_source_bytes",
+        "exitCode": 1,
+        "expectedAccepted": false,
+        "lastLine": "AssertionError: Manifest file bytes differ"
+      },
+      {
+        "name": "mutated_input_bytes",
+        "exitCode": 1,
+        "expectedAccepted": false,
+        "lastLine": "AssertionError: Manifest file bytes differ"
+      },
+      {
+        "name": "missing_input",
+        "exitCode": 1,
+        "expectedAccepted": false,
+        "lastLine": "AssertionError: Missing or non-regular bundled file: yeosu-customer-copy-20261014/product-cards.json"
+      },
+      {
+        "name": "unexpected_file",
+        "exitCode": 1,
+        "expectedAccepted": false,
+        "lastLine": "AssertionError: Unexpected file: extra-private-note.txt"
+      },
+      {
+        "name": "input_symlink",
+        "exitCode": 1,
+        "expectedAccepted": false,
+        "lastLine": "AssertionError: Symlink in bundled path: yeosu-customer-copy-20261014/product-cards.json"
+      }
+    ],
+    "remainingScope": "Internal checksums are consistency checks, not a digital signature. The separately recorded final ZIP SHA256 is the archive identity anchor."
+  },
+  "toolReportedNotIndependentlyReexecuted": [
+    "Parent reports strace failed before build with PTRACE_TRACEME/PTRACE_SETOPTIONS Operation not permitted and was not retried. This review did not repeat tracing or any denied operation."
+  ],
+  "limitations": [
+    "Final build/test processes were run by the packaging worker; this reviewer independently inspected stable raw logs, file-access audit rows, extracted source/input bytes, generated HTML and all16 output bytes. No second build was requested or run by this reviewer.",
+    "Node fs hooks and CPython audit are application-level observations, with lexical /workspace blocking. Native/internal filesystem accesses are not exhaustively traced; this is not syscall-level isolation or an OS security sandbox.",
+    "Source/read-path analysis,26 observed extracted input reads per command,no external dependency symlink targets,and exact output reproduction jointly support the bounded portability conclusion.",
+    "Node24.19.0/npm11.9.0/Python3.12.14 with copied existing Astro7.3.5/check0.9.10/TypeScript5.9.3 dependencies only. New install,other OS,Node22 are unverified.",
+    "No browser,mobile/computed visibility,HTTP404,public HTTP,commercial availability,remote write or deploy verification. Scope remains private preparation.",
+    "Required SOURCE-MAP and scoped-copy-review retain limited historical review context. Their omitted evidence links are not newly revalidated; the bundle is not free of all audit history."
+  ],
+  "documentationFollowup": "Resolved and independently read back: verification-result.json now records the initial reusable-checker flaw and harmless lockfile path-scan false positive; REPORT.ko.txt explicitly points to checker-hardening-diff.json.",
+  "evidence": {
+    "rawFinalLogs": {
+      "build.log": {
+        "bytes": 4188,
+        "sha256": "b64c4cef23c34c49c1f0fff377da066fa1a51b8c26af6fe0c98bf85dfd0d8b81"
+      },
+      "tests.log": {
+        "bytes": 6816,
+        "sha256": "f407d992c08b6aab339725ee8752546e7fb4aff0c8f822e996441129b98c5f1c"
+      },
+      "exit-codes.json": {
+        "bytes": 74,
+        "sha256": "391b5bf43915a8e241811716e4b3fadac3eb5fb2d4eaaa6455128c655d398787"
+      },
+      "build.node.jsonl": {
+        "bytes": 6671828,
+        "sha256": "6224cf73399279a10e9fa59a1f94906afb67a2d4f4a9db024b788e9c35685feb"
+      },
+      "build.python.jsonl": {
+        "bytes": 18720,
+        "sha256": "1a3b7218507ddfacb7b61d06055e6973b2efe6c418ebe4bdbca4cc9e318d3413"
+      },
+      "tests.node.jsonl": {
+        "bytes": 103340,
+        "sha256": "0c3fa99a22ffb67332eff2de8ae4b92fd885dbd75dad172fa61abff77b1f312d"
+      },
+      "tests.python.jsonl": {
+        "bytes": 1137027,
+        "sha256": "aa8bfeda6eecbda58111a4994b54f40ebf1c64390947b781b97ab0eeceda9dec"
+      },
+      "negative.node.jsonl": {
+        "bytes": 400,
+        "sha256": "27aa32441300c8b931de49e8a6450a6909b7738c38da8c7182fbfec7184f6b06"
+      },
+      "negative.python.jsonl": {
+        "bytes": 529,
+        "sha256": "143d419c62d8db703fd4797f274a36bb2a4a8b9afe812c5d55499a818f9100ff"
+      }
+    },
+    "readbackData": "independent-readback-data.json",
+    "generatedOutputCheck": "independent-generated-output-check.json",
+    "verifierTests": "12 controls:1 accepted exact archive and11 rejected mutations",
+    "priorOriginalZipSHA256": "579a751ada6bb17c17974b43357cec60774c086125a2e22a78a3ae13cfffee4f"
+  }
+}

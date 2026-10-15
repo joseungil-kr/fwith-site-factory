@@ -1,0 +1,371 @@
+{
+  "reviewedAtUTC": "2026-10-14T23:40:21.402595+00:00",
+  "reviewerRole": "independent reviewer; not author; draft files not modified",
+  "verdict": {
+    "scope": "LOCAL_CUSTOMER_COPY_ONLY",
+    "factSupport": "acceptable_after_resolved_precision_fix",
+    "tone": "acceptable_after_redundancy_removed",
+    "searchIntentAndCompleteness": "acceptable_for_single_intent_draft_with_explicit_policy_boundaries",
+    "releaseReadiness": "NOT_ASSESSED_AND_NOT_APPROVED",
+    "openCritical": 0,
+    "openHigh": 0,
+    "openMedium": 0,
+    "openLowOptional": 0
+  },
+  "reviewedFileSHA256": {
+    "drafts/home.ko.md": "3b5e5b50f67f32f82851fab6f1e4224ad26cbabd27f804c976a0ba9036089683",
+    "drafts/yeosu-jeonnam-hospital-funeral.ko.md": "6815d1d6e6fbc03e8976e914f656062a2cb7e85eab93def67067edafbd63b8a9",
+    "customer-copy-metadata.json": "dcf82151d35008575d433da53e292e097bbb1f15fb63bf04e6195738f52abd9a",
+    "product-cards.json": "6d8fd606698d368a3a9bcd05e784daba238c6303f09445b92bccbd66aafd2ea8",
+    "SOURCE-MAP.ko.md": "f96774104f8576e79b5bd7c7071acdae91cda6681a1d5fc6a1ca71ed3d715662"
+  },
+  "initialReview": {
+    "homeSHA256": "3b5e5b50f67f32f82851fab6f1e4224ad26cbabd27f804c976a0ba9036089683",
+    "articleSHA256": "a4932587a05ca2a8bf357a7c463cd3ae84cb21cbd66a395353efa8f20ed3cedb",
+    "issuesSentToAuthor": [
+      "YEO-01",
+      "YEO-02"
+    ]
+  },
+  "issues": [
+    {
+      "id": "YEO-01",
+      "severity": "medium",
+      "status": "resolved",
+      "initialLocations": [
+        "drafts/yeosu-jeonnam-hospital-funeral.ko.md:57",
+        "drafts/yeosu-jeonnam-hospital-funeral.ko.md:94"
+      ],
+      "initialArticleSHA256": "a4932587a05ca2a8bf357a7c463cd3ae84cb21cbd66a395353efa8f20ed3cedb",
+      "finding": "홈페이지 보존 추출문은 병원 주소를 표시하지만 건물명 본관을 입증하지 않음.",
+      "requestedChange": "본관 주소를 병원 공식 홈페이지에 표시된 주소로 한정",
+      "resolution": "본문과 출처 라벨을 다시 읽어 수정 확인; SOURCE-MAP F02도 같은 범위로 한정됨."
+    },
+    {
+      "id": "YEO-02",
+      "severity": "low",
+      "status": "resolved",
+      "locations": [
+        "drafts/yeosu-jeonnam-hospital-funeral.ko.md:13",
+        "drafts/yeosu-jeonnam-hospital-funeral.ko.md:53"
+      ],
+      "finding": "정성은 가격으로 정할 필요 없다는 문장과 높은 가격부터 고를 필요 없다는 문장이 같은 예산 안심을 두 번 설명함.",
+      "suggestion": "한쪽을 덜어 흐름을 더 자연스럽게 만들 수 있음. 분량 때문에 유지하거나 늘릴 필요 없음.",
+      "blocksCopyAcceptance": false,
+      "resolution": "작성자가 두 예산 안심 문장을 삭제한 뒤 최종 전문을 다시 읽음. 상품/총액 안내와 문맥에 정보 공백 없음."
+    }
+  ],
+  "contentMetrics": {
+    "method": "Remove PRODUCT_CARDS block and source footer, strip Markdown heading marks and link URLs, collapse whitespace to one space. Includes headings and final CTA unless noted.",
+    "articleUniqueVisibleCharactersIncludingSpaces": 2616,
+    "articleUniqueVisibleCharactersExcludingHeadings": 2427,
+    "targetIsNotHardMinimum": true,
+    "exactSharedFullSentencesWithMokpoUsingNormalizedText": [],
+    "qualitativeDuplicationJudgment": "같은 4개 SKU·기본가격·일반 정책의 재사용은 존재하나 사진별 관찰, 7만원 총예산 예시, 실제 여수 주소 구분, 생화/한자 FAQ가 달라 시설명 치환형 복제로 판단하지 않음. 문장 수치만으로 원작성·SEO 성과를 증명하지 않음."
+  },
+  "scopeByCriterion": {
+    "titleAndOpening": "목적·시설·상품·상담의 다음 행동 명확. 주소/금지 목록부터 시작하지 않음.",
+    "providerVoiceAndEmpathy": "판매자가 상품·문구·주문 상담을 제공하는 화자. 처음 주문의 낯섦은 가능성으로만 표현. 가상 경험·고객 감정·납품실적을 발명하지 않음.",
+    "productComparison": "네 실제 로컬 사진 및 SKU·명칭·기본가격·상세 CTA 일치. 사진에서 보이는 색/리본/장식만 기술. 고급/특대는 공식 상품명으로 제한.",
+    "priceAndSchedule": "기본가와 총액·추가배송비 구별. 7만원은 상담 예시이며 확정 총액 아님. 배송 여부·희망시각은 상담으로 한정. 현재 가격·재고 보장 없음.",
+    "facilityFacts": "2025-12-31 표의 광무1길 28-6과 홈페이지 표시 좌수영로 49만 사용. 본관 표현 수정. 현재 반입·수령 승인 주장 없음.",
+    "orderInput": "주문정보를 한 문단에 모음. 리본 문구는 선택 예시이고 한글/한자 상담이 인쇄 보장으로 확장되지 않음.",
+    "changeCancellation": "개별 진행 상태 및 처리 범위 상담만 안내. 미해결 환불 조항을 임의 확정하지 않음.",
+    "faqDistinctness": "혼합 소재, 한글/한자 선택, 별도 수거 없음의 3개 서로 다른 질문. 소재와 수거는 본문에 반복되지 않고 한자 질문도 앞의 예문보다 추가 결정에 답함.",
+    "homeAndMetadata": "홈은 짧은 진입 역할. 상세·전화 링크 역할 구분, 미확인 보류 시설 추가 없음. 메타 제목/설명·CTA가 본문과 부합하며 domain/canonical/robots null로 공개 주장 안 함.",
+    "promiseScan": "배송시간·당일/정시·무료·품질/크기/수량/재고·현장 설치·반입 수령·환불액·운영시간의 새 확정 약속을 발견하지 못함.",
+    "localLinkAndStructure": "홈→상세 로컬 링크 존재, 각 MD H1 1개, 논리적 H2/H3 및 4개 SKU별 CTA. 공개 HTML·모바일·실제 버튼 동작은 검사하지 않음."
+  },
+  "productCardReadback": [
+    {
+      "sku": "B201",
+      "namePresent": true,
+      "pricePresent": true,
+      "photoPathPresent": true,
+      "photoExists": true,
+      "photoHashMatches": true,
+      "ctaExactPerSKU": true,
+      "metadataCTAMatches": true,
+      "liveResponseOrCheckoutVerified": false
+    },
+    {
+      "sku": "B203",
+      "namePresent": true,
+      "pricePresent": true,
+      "photoPathPresent": true,
+      "photoExists": true,
+      "photoHashMatches": true,
+      "ctaExactPerSKU": true,
+      "metadataCTAMatches": true,
+      "liveResponseOrCheckoutVerified": false
+    },
+    {
+      "sku": "B205",
+      "namePresent": true,
+      "pricePresent": true,
+      "photoPathPresent": true,
+      "photoExists": true,
+      "photoHashMatches": true,
+      "ctaExactPerSKU": true,
+      "metadataCTAMatches": true,
+      "liveResponseOrCheckoutVerified": false
+    },
+    {
+      "sku": "B060",
+      "namePresent": true,
+      "pricePresent": true,
+      "photoPathPresent": true,
+      "photoExists": true,
+      "photoHashMatches": true,
+      "ctaExactPerSKU": true,
+      "metadataCTAMatches": true,
+      "liveResponseOrCheckoutVerified": false
+    }
+  ],
+  "retainedByteChecks": [
+    {
+      "path": "evidence/B201-selected.html",
+      "sha256": "0bbe5835bc75a1c3f292b0dd60b80e824ab3328f5bd1bc43ad0cb9ec3f5efadd",
+      "manifestHashMatches": true,
+      "priorRetainedBytesEqual": true,
+      "priorPath": "gangdong-purchase-evidence-supplement-20261014/products/retained-originals/observations/B201-selected.html",
+      "sourceOriginalURL": "https://fwith.co.kr/shop/item.php?it_id=B201",
+      "observedUTCReported": "2026-10-13T12:21:29.214045+00:00"
+    },
+    {
+      "path": "assets/B201-photo.jpg",
+      "sha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+      "manifestHashMatches": true,
+      "priorRetainedBytesEqual": true,
+      "priorPath": "gangdong-purchase-evidence-supplement-20261014/products/retained-originals/images/B201-photo.jpg",
+      "sourceOriginalURL": "https://fwith.co.kr/data/item/flower379/B201/thumb-1_500x500.jpg",
+      "observedUTCReported": "2026-10-13T12:22:10.240643+00:00"
+    },
+    {
+      "path": "evidence/B203-selected.html",
+      "sha256": "a3bef6cc1fac727673fa59a513d4253070dc06d809ecae4b18e9410862724984",
+      "manifestHashMatches": true,
+      "priorRetainedBytesEqual": true,
+      "priorPath": "gangdong-purchase-evidence-supplement-20261014/products/retained-originals/observations/B203-selected.html",
+      "sourceOriginalURL": "https://fwith.co.kr/shop/item.php?it_id=B203",
+      "observedUTCReported": "2026-10-13T12:21:29.175357+00:00"
+    },
+    {
+      "path": "assets/B203-photo.jpg",
+      "sha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+      "manifestHashMatches": true,
+      "priorRetainedBytesEqual": true,
+      "priorPath": "gangdong-purchase-evidence-supplement-20261014/products/retained-originals/images/B203-photo.jpg",
+      "sourceOriginalURL": "https://fwith.co.kr/data/item/flower379/B203/thumb-1_500x500.jpg",
+      "observedUTCReported": "2026-10-13T12:22:10.254452+00:00"
+    },
+    {
+      "path": "evidence/B205-selected.html",
+      "sha256": "6c4792de52a15e1b3cb4ecf096f8ddf0616ff0df2aaaa9b27061c27396929bab",
+      "manifestHashMatches": true,
+      "priorRetainedBytesEqual": true,
+      "priorPath": "gangdong-purchase-evidence-supplement-20261014/products/retained-originals/observations/B205-selected.html",
+      "sourceOriginalURL": "https://fwith.co.kr/shop/item.php?it_id=B205",
+      "observedUTCReported": "2026-10-13T12:21:29.228383+00:00"
+    },
+    {
+      "path": "assets/B205-photo.jpg",
+      "sha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+      "manifestHashMatches": true,
+      "priorRetainedBytesEqual": true,
+      "priorPath": "gangdong-purchase-evidence-supplement-20261014/products/retained-originals/images/B205-photo.jpg",
+      "sourceOriginalURL": "https://fwith.co.kr/data/item/flower379/B205/thumb-1_500x500.jpg",
+      "observedUTCReported": "2026-10-13T12:22:10.702351+00:00"
+    },
+    {
+      "path": "evidence/B060-selected.html",
+      "sha256": "96eb271d959215261fddab480115be4fac95ecc1821512ac741077b899e4f53c",
+      "manifestHashMatches": true,
+      "priorRetainedBytesEqual": true,
+      "priorPath": "gangdong-purchase-evidence-supplement-20261014/products/retained-originals/observations/B060-selected.html",
+      "sourceOriginalURL": "https://fwith.co.kr/shop/item.php?it_id=B060",
+      "observedUTCReported": "2026-10-13T12:21:29.254883+00:00"
+    },
+    {
+      "path": "assets/B060-photo.jpg",
+      "sha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+      "manifestHashMatches": true,
+      "priorRetainedBytesEqual": true,
+      "priorPath": "gangdong-purchase-evidence-supplement-20261014/products/retained-originals/images/B060-photo.jpg",
+      "sourceOriginalURL": "https://fwith.co.kr/data/item/flower379/B060/thumb-1_500x500.jpg",
+      "observedUTCReported": "2026-10-13T12:22:21.759934+00:00"
+    },
+    {
+      "path": "assets/order-top2.jpg",
+      "sha256": "24c11e1cc413d3f64ad05145fdc0fb4171c8f3e618d4351609777f8e2ff43bc3",
+      "manifestHashMatches": true,
+      "priorRetainedBytesEqual": true,
+      "priorPath": "gangdong-purchase-evidence-supplement-20261014/products/retained-originals/images/order-top2.jpg",
+      "sourceOriginalURL": "https://fwith.co.kr/shop/img/order-top2.jpg",
+      "observedUTCReported": "2026-10-13T12:22:10.695624+00:00"
+    },
+    {
+      "path": "assets/de_change_content.jpg",
+      "sha256": "02701dd33c2a09258a882873df005dbe616842c2add159a08d618b68a934944c",
+      "manifestHashMatches": true,
+      "priorRetainedBytesEqual": true,
+      "priorPath": "gangdong-purchase-evidence-supplement-20261014/products/retained-originals/images/de_change_content.jpg",
+      "sourceOriginalURL": "https://fwith.co.kr/data/common/flower379/de_change_content.jpg",
+      "observedUTCReported": "2026-10-13T12:22:10.695680+00:00"
+    }
+  ],
+  "sourceReviewScope": [
+    {
+      "path": "yeosu-research-preparation-20261014/inputs/SEARCH_CONTENT_STRATEGY.md",
+      "sha256": "13fc4251b51326f03914417d1feb5143f2dec8622e0a86f023af5af888487a74",
+      "reviewScope": "전문 독립 검토 기준으로 읽음",
+      "evidenceClass": "direct_local_read"
+    },
+    {
+      "path": "yeosu-research-preparation-20261014/inputs/SALES_COPY_ACCEPTANCE.md",
+      "sha256": "e355a1fece02ccd0cc20be31238b9519cf895656e611af50eebc45c62b6dcfbe",
+      "reviewScope": "전문 독립 검토 기준으로 읽음",
+      "evidenceClass": "direct_local_read"
+    },
+    {
+      "path": "yeosu-research-preparation-20261014/RESEARCH.ko.md",
+      "sha256": "d40120ede9f795efbcb0ce6a9e18b910f1ec23632e24c30acd51f5b728bd04f2",
+      "reviewScope": "전문 읽음; 기존 연구자의 외부 조회 결과는 이번 검토자의 새로운 실행 증거로 승격하지 않음",
+      "evidenceClass": "direct_local_read_of_prior_research"
+    },
+    {
+      "path": "yeosu-research-preparation-20261014/INTENT-PLAN.ko.md",
+      "sha256": "f3d679393d73a807141d5702f2a41f896ab3616a87182c9a9a3750bbd891b6ac",
+      "reviewScope": "전문 읽음; 기존 연구자의 외부 조회 결과는 이번 검토자의 새로운 실행 증거로 승격하지 않음",
+      "evidenceClass": "direct_local_read_of_prior_research"
+    },
+    {
+      "path": "yeosu-research-preparation-20261014/inputs/retained-policy-review.ko.md",
+      "sha256": "abcf91417d3eb87b5c783b3c7f1a13a4162a4ad67b15a9ab5ff82d1711fb3ab2",
+      "reviewScope": "전문 및 미해결 19/21시·주말·환불 범위 확인; 질문 재전송 안 함",
+      "evidenceClass": "direct_local_read_of_prior_research"
+    },
+    {
+      "path": "yeosu-research-preparation-20261014/inputs/retained-products/B201-selected.html",
+      "sha256": "0bbe5835bc75a1c3f292b0dd60b80e824ab3328f5bd1bc43ad0cb9ec3f5efadd",
+      "reviewScope": "보존 선택 HTML의 상품명·SKU·가격·상담번호·추가배송비 안내 직접 읽음; 전체 HTTP 응답·구매 폼 제외",
+      "evidenceClass": "direct_local_read"
+    },
+    {
+      "path": "yeosu-customer-copy-20261014/assets/B201-photo.jpg",
+      "sha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3",
+      "reviewScope": "500×500 전체 사진 직접 열어 색·리본·장식·alt와 본문 묘사 대조",
+      "evidenceClass": "direct_local_read"
+    },
+    {
+      "path": "yeosu-research-preparation-20261014/inputs/retained-products/B203-selected.html",
+      "sha256": "a3bef6cc1fac727673fa59a513d4253070dc06d809ecae4b18e9410862724984",
+      "reviewScope": "보존 선택 HTML의 상품명·SKU·가격·상담번호·추가배송비 안내 직접 읽음; 전체 HTTP 응답·구매 폼 제외",
+      "evidenceClass": "direct_local_read"
+    },
+    {
+      "path": "yeosu-customer-copy-20261014/assets/B203-photo.jpg",
+      "sha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114",
+      "reviewScope": "500×500 전체 사진 직접 열어 색·리본·장식·alt와 본문 묘사 대조",
+      "evidenceClass": "direct_local_read"
+    },
+    {
+      "path": "yeosu-research-preparation-20261014/inputs/retained-products/B205-selected.html",
+      "sha256": "6c4792de52a15e1b3cb4ecf096f8ddf0616ff0df2aaaa9b27061c27396929bab",
+      "reviewScope": "보존 선택 HTML의 상품명·SKU·가격·상담번호·추가배송비 안내 직접 읽음; 전체 HTTP 응답·구매 폼 제외",
+      "evidenceClass": "direct_local_read"
+    },
+    {
+      "path": "yeosu-customer-copy-20261014/assets/B205-photo.jpg",
+      "sha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e",
+      "reviewScope": "500×500 전체 사진 직접 열어 색·리본·장식·alt와 본문 묘사 대조",
+      "evidenceClass": "direct_local_read"
+    },
+    {
+      "path": "yeosu-research-preparation-20261014/inputs/retained-products/B060-selected.html",
+      "sha256": "96eb271d959215261fddab480115be4fac95ecc1821512ac741077b899e4f53c",
+      "reviewScope": "보존 선택 HTML의 상품명·SKU·가격·상담번호·추가배송비 안내 직접 읽음; 전체 HTTP 응답·구매 폼 제외",
+      "evidenceClass": "direct_local_read"
+    },
+    {
+      "path": "yeosu-customer-copy-20261014/assets/B060-photo.jpg",
+      "sha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3",
+      "reviewScope": "500×500 전체 사진 직접 열어 색·리본·장식·alt와 본문 묘사 대조",
+      "evidenceClass": "direct_local_read"
+    },
+    {
+      "path": "yeosu-customer-copy-20261014/assets/order-top2.jpg",
+      "sha256": "24c11e1cc413d3f64ad05145fdc0fb4171c8f3e618d4351609777f8e2ff43bc3",
+      "reviewScope": "전체 이미지 직접 열어 소재·수거·교환/환불 원문 범위 대조",
+      "evidenceClass": "direct_local_read"
+    },
+    {
+      "path": "yeosu-customer-copy-20261014/assets/de_change_content.jpg",
+      "sha256": "02701dd33c2a09258a882873df005dbe616842c2add159a08d618b68a934944c",
+      "reviewScope": "전체 이미지 직접 열어 소재·수거·교환/환불 원문 범위 대조",
+      "evidenceClass": "direct_local_read"
+    },
+    {
+      "path": "yeosu-research-preparation-20261014/evidence/yeosu-2026-plan1.pdf",
+      "sha256": "75401814de9e0759a25e59e0a2defac24d555aae198f876efdb7c849dce99a83",
+      "reviewScope": "pdfinfo 및 보존 원 PDF에서 pdftotext로 실제 472쪽 새 추출. 666쪽 전체를 읽지 않음",
+      "evidenceClass": "direct_local_read"
+    },
+    {
+      "path": "yeosu-research-preparation-20261014/evidence/yeosu-funeral-table-page472.png",
+      "sha256": "2c26ff19f084e3dd6bcbdb10a13eb6b1cae7fc80cbf86e26820aeb509f20ed4c",
+      "reviewScope": "실제 472쪽·인쇄 468쪽 전체 이미지에서 해당 장례식장 행 및 2025-12-31 기준일 직접 확인",
+      "evidenceClass": "direct_local_read"
+    },
+    {
+      "path": "yeosu-customer-copy-20261014/evidence/hospital-homepage.web.json",
+      "sha256": "793e6b1ebdfd3ab02ee9b866dddde010ef999d5c6f94c0adf3f38a0fae9f3cac",
+      "reviewScope": "보존 웹 추출문에서 539줄 좌수영로 49와 본관 표기 부재 대조. HTTP·원 HTML·현 화면 독립 조회 아님",
+      "evidenceClass": "direct_local_read_of_tool_report"
+    },
+    {
+      "path": "yeosu-customer-copy-20261014/evidence/retained-source-provenance.json",
+      "sha256": "3248dfd652fad71b75ff4884f970f00a4931493a64d08564836b3d1acdeb5b1b",
+      "reviewScope": "10개 HTML/이미지의 원 URL·관찰시각·해시를 읽고 기존 보존 파일과 바이트 비교",
+      "evidenceClass": "direct_local_read"
+    },
+    {
+      "path": "gangdong-purchase-evidence-supplement-20261014/products/source-manifest.json",
+      "sha256": "d38ae285cf5793fe63b9e86bb825edaff62ca462adec929dabbead68b8916f7f",
+      "reviewScope": "선택 원본 위치 확인 및 사본 바이트 비교 근거. 원 취득 당시 HTTP는 보존 도구 메타데이터",
+      "evidenceClass": "direct_local_read_of_prior_manifest"
+    },
+    {
+      "path": "mokpo-content-preparation-20261014/drafts/condolence.ko.md",
+      "sha256": "f3ccc94cd20e3d62618a3ae64cde7774aac91ac9ff9e162f82c50867a1792d01",
+      "reviewScope": "전문 질적 대조 및 문장 비교; 원고를 변경하지 않음",
+      "evidenceClass": "direct_local_read"
+    }
+  ],
+  "unverified": [
+    "새 현재 상품 가격·재고·정책의 원격 재취득",
+    "전화 연결·주문 제출·결제·제작·배송·취소 수행",
+    "현재 빈소·화환 반입·수령 조건·현장 승인",
+    "실제 웹 렌더·FAQ 표시·공통 배너 3종·모바일·이미지/버튼 동작",
+    "현재 Git 커밋·공개 URL·HTTP·canonical·robots·sitemap·404·검색 접수/색인/순위"
+  ],
+  "recoveredErrors": [
+    {
+      "attempt": "Python bs4로 HTML 추출",
+      "error": "ModuleNotFoundError: No module named bs4",
+      "recovery": "패키지 설치 없이 표준 라이브러리 HTMLParser로 보존 HTML을 직접 읽음",
+      "remainingImpact": "none"
+    }
+  ],
+  "externalWritesOrDeploymentsPerformed": false,
+  "draftMutationsPerformed": false,
+  "finalReReview": {
+    "articleSHA256": "6815d1d6e6fbc03e8976e914f656062a2cb7e85eab93def67067edafbd63b8a9",
+    "fullArticleReadAgain": true,
+    "correctionsVerified": [
+      "YEO-01",
+      "YEO-02"
+    ],
+    "authorMetricsReadback": "body-count-and-overlap.json의 최종 원고 SHA256와 2,616자/2,427자가 독립 재계산과 일치. 다른 작성자 검사 성공을 이 검토자의 실제 수행으로 대체하지 않음."
+  }
+}
