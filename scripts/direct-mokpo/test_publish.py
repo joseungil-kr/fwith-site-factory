@@ -4,6 +4,7 @@ import copy
 from email.message import Message
 import json
 import os
+import re
 from pathlib import Path
 import socket
 import tempfile
@@ -87,8 +88,13 @@ class PublisherTests(unittest.TestCase):
         release=self.root/'release';dist=release/'dist';dist.mkdir(parents=True)
         for name,route in p.output.FILES.items():
             notfound=route=='/404.html'
-            text='<html><head><meta name="site-factory-revision" content="'+self.c['sourceRevision']+'"><meta name="robots" content="'+('noindex,follow' if notfound or route == '/regions/' else 'index,follow')+'">'
-            if not notfound:text+='<link rel="canonical" href="'+p.ORIGIN+route+'"><meta property="og:url" content="'+p.ORIGIN+route+'">'
+            text='<html><head><title>Fixture</title><meta name="description" content="Fixture description"><meta name="site-factory-revision" content="'+self.c['sourceRevision']+'"><meta name="robots" content="'+('noindex,follow' if notfound or route == '/regions/' else 'index,follow')+'">'
+            if not notfound:
+                text+='<link rel="canonical" href="'+p.ORIGIN+route+'">'
+                og={'og:type':'website','og:title':'Fixture','og:description':'Fixture description','og:locale':'ko_KR','og:url':p.ORIGIN+route,'og:image':p.ORIGIN+p.output.SOCIAL_IMAGE_PATH,'og:image:alt':p.output.SOCIAL_IMAGE_ALT}
+                tw={'twitter:card':'summary','twitter:title':'Fixture','twitter:description':'Fixture description','twitter:image':p.ORIGIN+p.output.SOCIAL_IMAGE_PATH,'twitter:image:alt':p.output.SOCIAL_IMAGE_ALT}
+                text+=''.join('<meta property="'+key+'" content="'+value+'">' for key,value in og.items())
+                text+=''.join('<meta name="'+key+'" content="'+value+'">' for key,value in tw.items())
             text+='</head><body><main id="main-content" tabindex="-1"><h1>Fixture</h1><a href="tel:18440644">전화</a><a href="https://fwith.co.kr/">주문</a></main></body></html>'
             file=dist/name;file.parent.mkdir(parents=True,exist_ok=True);file.write_text(text)
         (dist/'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: '+p.ORIGIN+'/sitemap-index.xml\n')
@@ -97,7 +103,8 @@ class PublisherTests(unittest.TestCase):
         (dist/'sitemap-index.xml').write_text('<sitemapindex xmlns="'+ns+'"><sitemap><loc>'+p.ORIGIN+'/sitemap-0.xml</loc></sitemap></sitemapindex>')
         (dist/'sitemap-0.xml').write_text('<urlset xmlns="'+ns+'">'+''.join('<url><loc>'+p.ORIGIN+r+'</loc></url>' for r in p.output.ROUTES)+'</urlset>')
         proof=dist/p.output.PROOF['path'].lstrip('/');proof.write_text(proof.stem+'\n')
-        for i in range(9):(dist/('fixture-asset-'+str(i)+'.css')).write_text('/* fixture */')
+        social_image=dist/p.output.SOCIAL_IMAGE_PATH.lstrip('/');social_image.parent.mkdir(parents=True);social_image.write_bytes(b'fixture image')
+        for i in range(8):(dist/('fixture-asset-'+str(i)+'.css')).write_text('/* fixture */')
         facts=p.output.inspect_dist(dist,dict(mode='production',indexable=True,origin=p.ORIGIN,revision=self.c['sourceRevision']))
         manifest=dict(schemaVersion=1,repository=p.REPOSITORY,sourceBranch=p.BRANCH,sourceRoot=p.SOURCE_ROOT,
             revision=self.c['sourceRevision'],controlRevision=self.review['buildControlSha'],runId=self.review['buildRunId'],
@@ -231,6 +238,16 @@ class PublisherTests(unittest.TestCase):
         with working(self.root),self.assertRaisesRegex(AssertionError,'Exact inert production headers required'):
             p.artifact()
 
+    def test_twitter_metadata_missing_duplicate_and_wrong_rejected(self):
+        release,dist=self.fixture_release();file=dist/'index.html';original=file.read_text()
+        for key in ['card','title','description','image','image:alt']:
+            tag=re.search(r'<meta name="twitter:'+re.escape(key)+r'" content="[^"]*">',original).group()
+            for variant in ['',tag*2,'<meta name="twitter:'+key+'" content="wrong">']:
+                with self.subTest(key=key,variant=variant):
+                    file.write_text(original.replace(tag,variant,1))
+                    with working(self.root),self.assertRaisesRegex(AssertionError,'Exact reviewed Twitter metadata required'):p.artifact()
+                    file.write_text(original)
+
     def test_manifest_foreign_worker_rejected(self):
         release,dist=self.fixture_release();m=json.loads((release/'release.json').read_text());m['worker']='seoul-seocho-flower-guide';p.save(release/'release.json',m)
         self.review['releaseManifestSha256']=p.sha((release/'release.json').read_bytes());self.seal_review()
@@ -357,7 +374,7 @@ class PublisherTests(unittest.TestCase):
             if status==404:name='404.html'
             elif path.endswith('/'):name=path.lstrip('/')+'index.html'
             else:name=path.lstrip('/')
-            headers['Content-Type']='text/html' if name.endswith('.html') else 'text/plain'
+            headers['Content-Type']='text/html' if name.endswith('.html') else 'image/jpeg' if name.endswith('.jpg') else 'text/plain'
             return (dist/name).read_bytes(),headers
         with patch.object(p,'get',side_effect=get):result=p.http_once(contract)
         self.assertEqual(result['htmlRoutes'],3);self.assertEqual(result['sitemapUrls'],2);self.assertEqual(result['unknownHttpStatus'],404)
