@@ -23,6 +23,7 @@ import time
 import urllib.error
 import urllib.request
 from urllib.parse import urlsplit
+from production_output import SOCIAL_IMAGE_PATH, SOCIAL_IMAGE_ALT
 
 ROOT = 'site-factory/mokpo-flower'
 ORIGIN = 'https://mokpo.fwith.kr'
@@ -146,8 +147,16 @@ def metadata_issues(metrics, expected, revision):
     for name, target in targets.items():
         if metrics.get(name) != target:
             issues.append('Exact metadata mismatch: ' + name)
-    if route == '/404.html' and metrics.get('ogProperties'):
+    if route == '/404.html' and (metrics.get('ogProperties') or metrics.get('twitterProperties')):
         issues.append('404 contains social metadata')
+    if route != '/404.html':
+        title, description = expected['content']['title'], expected['content']['metaDescription']
+        social = {'ogProperties': {'og:type':'website', 'og:title':title, 'og:description':description, 'og:locale':'ko_KR', 'og:url':ORIGIN+route, 'og:image':ORIGIN+SOCIAL_IMAGE_PATH, 'og:image:alt':SOCIAL_IMAGE_ALT},
+                  'twitterProperties': {'twitter:card':'summary', 'twitter:title':title, 'twitter:description':description, 'twitter:image':ORIGIN+SOCIAL_IMAGE_PATH, 'twitter:image:alt':SOCIAL_IMAGE_ALT}}
+        for name, expected_values in social.items():
+            rows = metrics.get(name, [])
+            if len(rows) != len(expected_values) or {r.get('name'):r.get('content') for r in rows} != expected_values:
+                issues.append('Exact social metadata mismatch: ' + name)
     if metrics.get('title') != expected['content']['title'] or metrics.get('description') != [expected['content']['metaDescription']]:
         issues.append('Title or description differs from frozen source')
     return issues
@@ -282,6 +291,7 @@ METRICS_JS = r'''() => {
   canonical:all('link[rel="canonical"]').map(e=>e.href),
   ogUrl:all('meta[property="og:url"]').map(e=>e.content),
   ogProperties:all('meta[property^="og:"]').map(e=>({name:e.getAttribute('property'),content:e.content})),
+  twitterProperties:all('meta[name^="twitter:"]').map(e=>({name:e.getAttribute('name'),content:e.content})),
   revision:all('meta[name="site-factory-revision"]').map(e=>e.content),
   banners:all('[data-shared-flower-banner]').map(e=>e.getAttribute('data-shared-flower-banner')),
   images:all('img').map(i=>({src:i.getAttribute('src'),alt:i.alt,loaded:i.complete&&i.naturalWidth>0,
