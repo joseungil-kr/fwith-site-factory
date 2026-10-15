@@ -1,0 +1,761 @@
+{
+  "artifactDigest": "sha256:01486aae87c6d58b7358d6b2f7ea5c827b5a9b61f62794d91cbce947ef9532ca",
+  "artifactId": "12013945576",
+  "assessmentScope": "bounded-launch",
+  "bindingSha256": "164b4b2ff14f38eeb39e5b845d8b4ec2dec0d34897c30060a1f723f9079359b5",
+  "boundedContractSha256": "8de2d9ebbe3db1a9fbea00dbc042b91724ec5203cdfb3bdee12648e637dee33d",
+  "buildControlSha": "4fb255a725e3b988ef4bd7eec66032ea8c241f91",
+  "buildRunId": "38821426561",
+  "checks": {
+    "actual_cta": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "The actual HTML contains tel:18440644 and four exact SKU destinations. Required body CTA heights are at least 44 pixels in the bound runtime metrics. External navigation, phone calls and purchases were not executed.",
+      "originalClauseRefs": [
+        {
+          "line": 35,
+          "lineSHA256": "5819403cdc6fe233da2246334a215ab17ec65add57b4603e1234d39a400cc720",
+          "sourcePath": "evidence/main-guidance/SEARCH_CONTENT_STRATEGY.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "architecture_manifest_page_map_html_sitemap": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "The actual 18-file manifest, four HTML pages, two indexable URLs and two sitemap entries agree. No missing article, fabricated child or extra slug was found.",
+      "originalClauseRefs": [
+        {
+          "line": 28,
+          "lineSHA256": "aab4276598936626eb6fc22715c1d6311b89db47dc7702d45bbd72a72980bb7d",
+          "sourcePath": "evidence/main-guidance/SHARED_BANNER_STANDARD.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "bounded_support_navigation_scope": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "The single-child support page is usable, noindex and excluded from the sitemap and main menu, with no banners. Home and detail each have three banners separated by substantive content. The scope remains four HTML pages; broader Core Hub and Full Launch are not assessed.",
+      "originalClauseRefs": [
+        {
+          "line": 21,
+          "lineSHA256": "dbc343635800001f2e80721c9e9ce4563ff116fe0ad3a4af97b8c0c304a5d1d9",
+          "sourcePath": "evidence/main-guidance/SHARED_BANNER_STANDARD.md"
+        },
+        {
+          "line": 50,
+          "lineSHA256": "69e348f79e34d5338c59cbb9c2aaf8d08fcd00571f46fcfd9032a7bc14be0437",
+          "sourcePath": "evidence/main-guidance/SHARED_BANNER_STANDARD.md"
+        },
+        {
+          "line": 52,
+          "lineSHA256": "b9e5bb7af4439285160442c81a4d4abf90634244d016775c3f8f5c536abb61e9",
+          "sourcePath": "evidence/main-guidance/SHARED_BANNER_STANDARD.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "build_and_expected_http_paths": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "The actual runner build, native tests, 12 sealed loopback page responses and three unknown-path 404 observations are bound to the 18 release files. Public-host HTTP remains a required post-publication check.",
+      "originalClauseRefs": [
+        {
+          "line": 38,
+          "lineSHA256": "c784fcdc28c09662273a6a066d9be02b96dc31806a948b2a1cc65bc04a80e073",
+          "sourcePath": "evidence/main-guidance/SEARCH_CONTENT_STRATEGY.md"
+        },
+        {
+          "line": 40,
+          "lineSHA256": "4693e69acddfde2491a88979e9260e77cc39647e197c869806c29bb0438cd617",
+          "sourcePath": "evidence/main-guidance/SEARCH_CONTENT_STRATEGY.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "business_truth": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "Namgu shipping cost remains unknown. The 59,000, 79,000, 109,000 and 149,000 KRW amounts are basic prices. No fixed shipping, free delivery, arrival, affiliation or stock claims were found. The 13 policy clauses on two original images were reread without deciding the priority of potentially conflicting refund conditions.",
+      "originalClauseRefs": [
+        {
+          "line": 21,
+          "lineSHA256": "2d08a7f4278445ca1cc7fb50e719f7915c0f153f38f85baa228406b3851ca436",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        },
+        {
+          "line": 37,
+          "lineSHA256": "af08c0906002a4ce00f6cfa6d81870320f72d1b3ba3ea792a48ae176e40092b1",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        },
+        {
+          "line": 40,
+          "lineSHA256": "701bcf3bcb9e913aeee905ad7c77f1bf973bce13bff070e0be4aa5d0f1978d29",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "content_writing_contract": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "The original 149 guidance rows and 13 policy clauses, and the path-only 80e7 successor binding, remain byte-identical. All 112 customer strings and four ordered HTML bodies preserve r2. Fresh sales, search and banner originals match the closed review. No word-count padding was found.",
+      "originalClauseRefs": [
+        {
+          "line": 44,
+          "lineSHA256": "ab4e1aff4bb447a63c8b4a353d0420f83dee4b275155dfeee3f344a397074b33",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        },
+        {
+          "line": 69,
+          "lineSHA256": "9029e155bb52ddcabe939f1a74b78b049c5fa476fd6d2303e9aa625905036ac9",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        },
+        {
+          "line": 73,
+          "lineSHA256": "84e46d75ee97385bd223381ccabaf391d25c84fcba5d82a4517199008cc68ca3",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "image_local_reuse_safety": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "All seven actual assets were rehashed and decoded: four original 500×500 catalog photos and three approved 1774×887 banners. All 30 rendered occurrences preserve natural aspect ratio and descriptive alt text.",
+      "originalClauseRefs": [
+        {
+          "line": 7,
+          "lineSHA256": "6b897f1c418697242640f4b513a6214a30b0264d5b964edf1e1b0522fff20f1e",
+          "sourcePath": "evidence/main-guidance/SHARED_BANNER_STANDARD.md"
+        },
+        {
+          "line": 15,
+          "lineSHA256": "10eea0c07cd86ee5964b9ffff29d5b77761aa3e8aadc1e4238bdb5c0e8d3ac8e",
+          "sourcePath": "evidence/main-guidance/SHARED_BANNER_STANDARD.md"
+        },
+        {
+          "line": 19,
+          "lineSHA256": "32e0f8fa723e930cdf5a7bdafd0adb6106c319b186aee7c911fd4ba269413942",
+          "sourcePath": "evidence/main-guidance/SHARED_BANNER_STANDARD.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "image_origin_classification": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "Approved shared banners remain atmosphere images rather than delivery or product evidence. Catalog photos retain the sample and material-variation notice. The prohibited common caption was not reinserted.",
+      "originalClauseRefs": [
+        {
+          "line": 7,
+          "lineSHA256": "6b897f1c418697242640f4b513a6214a30b0264d5b964edf1e1b0522fff20f1e",
+          "sourcePath": "evidence/main-guidance/SHARED_BANNER_STANDARD.md"
+        },
+        {
+          "line": 26,
+          "lineSHA256": "d923bc7a6ab109899b82c9526dbd90e50d37ac3ddf997c643c73e8473586f4ae",
+          "sourcePath": "evidence/main-guidance/SHARED_BANNER_STANDARD.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "inbound_links_and_parent_hub": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "The home and support detail links and detail breadcrumbs resolve. Bound runner observations cover direct, inbound and back/forward navigation at three widths. Support is not a core hub.",
+      "originalClauseRefs": [
+        {
+          "line": 25,
+          "lineSHA256": "5d0a7a452292ab0feee82ccedea4599de8d84b4a3b6adef906214b726b7d64da",
+          "sourcePath": "evidence/main-guidance/SEARCH_CONTENT_STRATEGY.md"
+        },
+        {
+          "line": 36,
+          "lineSHA256": "5ea9f77c9696a0645cde1eac028017f5892f89d2fb3bc91f072543f233b54994",
+          "sourcePath": "evidence/main-guidance/SEARCH_CONTENT_STRATEGY.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "local_evidence": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "The dated MOHW CSV contains 1,080 data rows and one matching Nammoon facility, road address and 062-675-5000 phone number. Current operation and entry remain unverified.",
+      "originalClauseRefs": [
+        {
+          "line": 19,
+          "lineSHA256": "10ee5f1521349579d5d4bca7b82dab395d67c4f2307a5e91ded6f8af6c1a31e2",
+          "sourcePath": "evidence/main-guidance/SEARCH_CONTENT_STRATEGY.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "no_duplicate_intent_or_cluster": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "The metadata defines two distinct primary intent keys. Nammoon synonyms occupy one detail URL. Support and 404 pages do not create separate search clusters. This bounded architecture check does not establish zero semantic overlap across all sites.",
+      "originalClauseRefs": [
+        {
+          "line": 8,
+          "lineSHA256": "0ce888027c23cb5863374d4d7834ac0aaf86f376a3d3e8544df9e6335a8227b0",
+          "sourcePath": "evidence/main-guidance/SEARCH_CONTENT_STRATEGY.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "no_duplicate_slug": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "Only the nammoon-funeral-wreath article slug occurs within the four HTML pages and two sitemap entries. No synonym-specific duplicate page was found.",
+      "originalClauseRefs": [
+        {
+          "line": 8,
+          "lineSHA256": "0ce888027c23cb5863374d4d7834ac0aaf86f376a3d3e8544df9e6335a8227b0",
+          "sourcePath": "evidence/main-guidance/SEARCH_CONTENT_STRATEGY.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "provider_voice": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "The complete actual home, detail, support and 404 copy and all 112 customer strings were read. The seller explains budget, product and ribbon help, uses a brief condolence greeting and groups order information once. No presumed emotions or invented services were found.",
+      "originalClauseRefs": [
+        {
+          "line": 48,
+          "lineSHA256": "dae84bd54c69357799dd2d81291a95b32d185a840582c68b4f74adfa9b977138",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        },
+        {
+          "line": 50,
+          "lineSHA256": "750a661b3cbf974b456f597a0d9cd5ba0044c6fd0d845f5f61ae558e7cd49821",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        },
+        {
+          "line": 51,
+          "lineSHA256": "e0a478ba74c87ed11e599f435ea4a413c2e828242c8ed379047923ed04c9aae8",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        },
+        {
+          "line": 52,
+          "lineSHA256": "4ddcd8e69f19b723fc2b739db6bda0b5565c0a828a4a5b353bce3a6c337a58b2",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        },
+        {
+          "line": 53,
+          "lineSHA256": "d6576e11b33b5a4f8d504a96d9e72e3faaf3814ca7706746e4fb3ad93e79efe1",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        },
+        {
+          "line": 54,
+          "lineSHA256": "8dd1059c587d4339c654f768014b2648cdf7efa288e208cd8a38077cf73cdb8d",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        },
+        {
+          "line": 55,
+          "lineSHA256": "4d61b969a431e52ed83d2a9861e3523843c29704d37ae2e56720f99cbecb290e",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        },
+        {
+          "line": 56,
+          "lineSHA256": "9b03a182fe06f8f57496651cfa7943469d816aea722686b4044ba6d8a972f430",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "purchase_conversion_path": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "The home budget and ribbon entry links to one detail page. Its photos and prices lead to the exact four SKU destinations and seller phone. The support child and source anchors resolve.",
+      "originalClauseRefs": [
+        {
+          "line": 11,
+          "lineSHA256": "a1aeac5e4cf7ba9ea8d9aed4073e9d95d43abbd27dd05e50720e2dd1347b96de",
+          "sourcePath": "evidence/main-guidance/SEARCH_CONTENT_STRATEGY.md"
+        },
+        {
+          "line": 25,
+          "lineSHA256": "5d0a7a452292ab0feee82ccedea4599de8d84b4a3b6adef906214b726b7d64da",
+          "sourcePath": "evidence/main-guidance/SEARCH_CONTENT_STRATEGY.md"
+        },
+        {
+          "line": 36,
+          "lineSHA256": "5ea9f77c9696a0645cde1eac028017f5892f89d2fb3bc91f072543f233b54994",
+          "sourcePath": "evidence/main-guidance/SEARCH_CONTENT_STRATEGY.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "query_title_h1_intent_alignment": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "Both titles and their single H1 match the exact primary query and complete first answer. The r2 home copy locates photo comparison on the detail page. A new five-criterion alignment assessment is disclosed separately.",
+      "originalClauseRefs": [
+        {
+          "line": 6,
+          "lineSHA256": "e95e316dbf8e3bc6d69312e38674fdb76a6fcc57196503b4abc679f13e97ae45",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        },
+        {
+          "line": 24,
+          "lineSHA256": "7c5c5037d75b42d49d1ef930131f44ad59f61e5407d328f673172b62f4ca9449",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "route_aware_indexability_and_canonical": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "Home and detail use index,follow. Support and 404 use noindex,follow. Support is excluded from the sitemap and main menu. Canonical, Open Graph and Twitter values match the intended host; 404 has no canonical. Public-host binding is pending.",
+      "originalClauseRefs": [
+        {
+          "line": 28,
+          "lineSHA256": "aab4276598936626eb6fc22715c1d6311b89db47dc7702d45bbd72a72980bb7d",
+          "sourcePath": "evidence/main-guidance/SHARED_BANNER_STANDARD.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "source_classification": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "Government facility facts, merchant catalog and policy evidence, sample product photos, approved AI atmosphere banners, editorial ribbon examples and uncertain fees or timing remain distinguishable.",
+      "originalClauseRefs": [
+        {
+          "line": 12,
+          "lineSHA256": "ef07a147795339e4e3eaca22e0202e7129323d3d7e309de96b9a728420ed0458",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        },
+        {
+          "line": 28,
+          "lineSHA256": "4dc262320050bfe2c868b100cfc07ad0dc56e4d44efb1fc76b400a711cd3b5e2",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    },
+    "vertical_specificity": {
+      "actualEvidence": [
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/actual-content-and-original-policy.json",
+          "sha256": "efd14d739b6067b701acfb8e03e5cf71b10a1b3d0ff8011e09b22f4ba97de96b"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/all-route-output.json",
+          "sha256": "7128de36b71d592fce870318ef82bd353ef40d8c471938763ae32fa756c0a728"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/mobile-pixels.json",
+          "sha256": "c0a67d3ce0f4d43f53112afd7acce8cf0a4edadf5e19a6f932cd86f4a6b47da7"
+        },
+        {
+          "path": "docs/direct-gwangju-namgu/release-review-38821426561/desktop-pixels.json",
+          "sha256": "3e2bc6d63f602222daef9e887f33a2334b032b3a530b4909be16aa8c78a57ca1"
+        }
+      ],
+      "finding": "Four condolence-wreath SKU photos, basic prices and ribbon consultation match this vertical. No wedding, tourism, quality-by-price or invented product dimensions were found.",
+      "originalClauseRefs": [
+        {
+          "line": 7,
+          "lineSHA256": "d754182342abfd2a6725bff592ca11097018529363616792963e094dc2549b62",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        },
+        {
+          "line": 8,
+          "lineSHA256": "ff9f7075c2cdc5e17be592317a9acd4339c01c1e01d38deb0a836d029ee3a1a2",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        },
+        {
+          "line": 10,
+          "lineSHA256": "c8a41c0ec5922d39409f7db8f74ff619c713dfafdfaccc6998c356b2ecc82571",
+          "sourcePath": "evidence/main-guidance/SALES_COPY_ACCEPTANCE.md"
+        }
+      ],
+      "retainedEvidence": {
+        "path": "docs/direct-gwangju-namgu/release-review-38821426561/source-and-content-retention.json",
+        "sha256": "17c85b95cd2ca888167c9105bb214634f44eeda2cd05a703d49ed60bfe90d0cc"
+      },
+      "status": "PASS_WITH_DISCLOSED_PREPUBLICATION_SCOPE"
+    }
+  },
+  "coreHubLaunchStatus": "NOT_ASSESSED",
+  "definition": "These 18 executable publisher gate names are newly mapped to the actual artifact and original 149 guidance rows and 13 policy clauses. This is not a replacement 18-clause manuscript review. Original reviewed records remain unchanged.",
+  "fullLaunchStatus": "NOT_ASSESSED",
+  "namespace": "gwangju-namgu",
+  "nationalOrder": 33,
+  "officialCode": "12270",
+  "originalClauseAssessment": {
+    "path": "docs/direct-gwangju-namgu/content-review-20261015/original-clause-assessment.json",
+    "sha256": "8c8fc81c841fc6984a48e5ae8a5adfe8593260c10d4aec50e529e69fd7f4f8b9"
+  },
+  "originalCopyAndSchema": {
+    "path": "docs/direct-gwangju-namgu/content-review-20261015/independent-copy-review-r2.json",
+    "sha256": "c446871b38a2e53b5433a8b1ed7089d97fd3ddbcba4c2a766174ee464d0f96b3"
+  },
+  "originalGuidanceRows": 149,
+  "originalManuscriptScores": {
+    "AEO": null,
+    "GEO": null,
+    "SEO": null
+  },
+  "originalPolicyClauses": 13,
+  "originalPolicyImages": 2,
+  "publicHttpVerified": false,
+  "region": "namgu",
+  "remainingMandatoryPostPublication": [
+    "Fixed provider account, worker and hostname target binding",
+    "Exact public pages, assets, robots, sitemap, proof responses and genuine unknown-path 404",
+    "External SKU HTTP endpoints",
+    "Original receipt journal and IndexNow acceptance, separate from actual indexing and ranking"
+  ],
+  "reviewedUTC": "2026-10-15T23:20:00+00:00",
+  "reviewer": "Independent Namgu artifact and pixel reviewer",
+  "schemaVersion": 1,
+  "sourceCommit": "22e4e03de9177eb624d6fb0a0651109da4881ac5",
+  "sourceContractSha256": "8fd940b8eedc84e8ec727c03b8c83533150115c9e383926d592c3a4ae8f60cf3",
+  "status": "PASS_BOUNDED_PREPUBLICATION_GATE_MAPPING"
+}
