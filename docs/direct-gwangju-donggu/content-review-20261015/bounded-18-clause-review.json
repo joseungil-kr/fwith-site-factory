@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "region": "donggu",
+  "officialCode": "12210",
+  "nationalOrder": 31,
+  "reviewedUTC": "2026-10-15T18:05:36.131631+00:00",
+  "assessmentScope": "MANUSCRIPT_AND_RENDER_PLAN_ONLY",
+  "customerCopySHA256": "9f4643d1aa73945983497c953296716bbe0449ce93960a1a3427a6a6933d7687",
+  "renderPlanSHA256": "15667a76349c650f4bdc9974bb892f68ea8823a44f07b44365a1597a19a0b36c",
+  "sourceCommit": null,
+  "actualHTMLChecked": false,
+  "actualBuildChecked": false,
+  "actualBrowserChecked": false,
+  "actualPublicHTTPChecked": false,
+  "publicationEligible": false,
+  "coreHubLaunchStatus": "NOT_ASSESSED",
+  "fullLaunchStatus": "NOT_ASSESSED",
+  "definitionSource": {
+    "path": "gwangyang-customer-plan-review-20261015/bounded-18-clause-review.json",
+    "bytes": 10190,
+    "sha256": "ebea8975eb856b87fd39909fd5fb672692f7c411eecb2d7aca10e2389738ab04"
+  },
+  "definitionUse": "Existing18 IDs and contract citations only; all Dong-gu evidence and assessments independently performed. No previous PASS copied.",
+  "independentContractReadback": {
+    "path": "donggu-customer-plan-review-20261015/evidence/contract-binding.json",
+    "bytes": 4309,
+    "sha256": "22923d1165563fbfd0451125df5a6f5ea5e9fe1459e75ed3e24d2dd0b7af2ec4"
+  },
+  "checkCount": 18,
+  "checks": [
+    {
+      "id": "query_title_h1_intent_alignment",
+      "contract": "Core1/7; C03/C04; A04; Blueprint4/10",
+      "manuscriptOrPlanStatus": "SATISFIED_IN_MANUSCRIPT",
+      "finding": "지역 홈과 특정 장례식장 상세의 Title/H1/첫 답변을 실제 대조했다. 홈 95 / 상세 100은 아래 A04 원고 정렬 rubric 결과이며 기술 점수나 순위가 아니다.",
+      "evidence": "a04-manuscript-assessment.json",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "vertical_specificity",
+      "contract": "C01/C07; Blueprint3/4",
+      "manuscriptOrPlanStatus": "SATISFIED_IN_MANUSCRIPT",
+      "finding": "실제 근조 4개 SKU·사진·기본가·리본 예시·빈소·발인 일정·혼합소재·별도수거없음·변경정책이 꽃 구매 의도에 대응한다. 다른 업종으로 치환 가능한 일반론만으로 구성하지 않았다.",
+      "evidence": "REVIEW.ko.md",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "local_evidence",
+      "contract": "C08; A06; Blueprint4/11",
+      "manuscriptOrPlanStatus": "SATISFIED_FOR_CONDITIONAL_MANUSCRIPT",
+      "finding": "정부CSV227행의 2026-04-01 명칭·필문대로365·전화3352와 대학 지도를 직접 확인했다. 현재 운영·반입은 미확인이다. PDF 운영 개선 논의와502를 영업/폐쇄 확정으로 바꾸지 않았다. 동구 배송비는 미정이다.",
+      "evidence": "evidence/direct-source-findings.json",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "provider_voice",
+      "contract": "C05; ContentWriting2/3; SalesCopy",
+      "manuscriptOrPlanStatus": "SATISFIED_AFTER_REVISION",
+      "finding": "문자열 114개와 4페이지 전문를 읽었다. 판매자 상품·예산·리본 상담, 짧고 차분한 공감을 유지한다. 작성 사정과 목록 반복 2문단을 작성자가 수정했고 정확한 diff를 재검증했다.",
+      "evidence": "evidence/revision-diff.json",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "source_classification",
+      "contract": "C02; A10; Core5/11",
+      "manuscriptOrPlanStatus": "SATISFIED_IN_MANUSCRIPT",
+      "finding": "정부·대학은 시설 식별, 공식몰은 상품·정책, 리본은 일반 예시, 현재운영·반입·최종배송비는 미확인으로 분리했다. 수집 HTTP 상태/시간은 보존도구 보고로 제한한다.",
+      "evidence": "evidence/direct-source-findings.json",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "purchase_conversion_path",
+      "contract": "C09; X02; ContentWriting6/7",
+      "manuscriptOrPlanStatus": "SATISFIED_IN_PLAN",
+      "finding": "지역홈→한 시설 상세→개별SKU 또는 주문전화라는 다음 구매결정 동선이다. 시설동의어를 한 URL로 묶고 전남대/금호/남도로 확장하지 않는다.",
+      "evidence": "evidence/planned-graph-and-pointers.json",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "actual_cta",
+      "contract": "C13; Core12; Blueprint9/10",
+      "manuscriptOrPlanStatus": "PLANNED_ONLY",
+      "finding": "전화 tel:18440644와4개 정확한 item.php?it_id 목적지가 데이터에 있다. 실제HTML의 a/href·접근성·모바일동작·외부현재응답은 아직 검증하지 않았다.",
+      "evidence": "render-checklist.json",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "image_local_reuse_safety",
+      "contract": "C10/C11; SharedBanner current exception",
+      "manuscriptOrPlanStatus": "ORIGINAL_ASSETS_CHECKED_OUTPUT_PENDING",
+      "finding": "상품 사진 4장과 승인 배너 3장의 원본 전체를 열람했다. SHA·바이트·JPEG500x500/WEBP1774x887를 검증했다. 실제화면의 자르기·글자크기·지연로딩·overflow는 미검증이다.",
+      "evidence": "evidence/direct-source-findings.json",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "image_origin_classification",
+      "contract": "C12; Core11; Blueprint9",
+      "manuscriptOrPlanStatus": "SATISFIED_IN_MANUSCRIPT",
+      "finding": "실제 게시 상품예시 사진과 승인된 분위기배너를 구분했다. 배너를 실제 배송/시설/실적 증거로 쓰지 않는다. 전화 포함 최신3정본 예외와 삭제캡션 금지를 보존한다.",
+      "evidence": "REVIEW.ko.md",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "no_duplicate_intent_or_cluster",
+      "contract": "C03/C06/C07; A05/A07",
+      "manuscriptOrPlanStatus": "SATISFIED_WITH_BOUNDED_COMPARISON",
+      "finding": "광양·나주·순천 전문을 비교했다. 동일 상품·정책 의미는 공통이며, 동구의 조건부 시설상담·배송비미정·단일대학시설 식별을 구별한다. 여수·목포는 기계비교만 했고 의미독창성0%나 전저장소 부재를 주장하지 않는다.",
+      "evidence": "evidence/independent-metrics.json",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "architecture_manifest_page_map_html_sitemap",
+      "contract": "C14; Core7/8/12; Blueprint8",
+      "manuscriptOrPlanStatus": "PLAN_CONSISTENT_OUTPUT_PENDING",
+      "finding": "4예정경로=home/detail 2primary+한자식 support+technical404. sitemap은home/detail 2URL. 실제app architecture/manifest/HTML/sitemap은 아직 없다.",
+      "evidence": "render-checklist.json",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "build_and_expected_http_paths",
+      "contract": "Core12; A08",
+      "manuscriptOrPlanStatus": "PENDING_NOT_IMPLEMENTED",
+      "finding": "실제앱·build·Actions·artifact·공개HTTP는 수행하지 않았다.3콘텐츠200과 임의missing route의 실제404를 나중에 확인해야 한다.",
+      "evidence": "render-checklist.json",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "route_aware_indexability_and_canonical",
+      "contract": "Core7/8; A08; Blueprint8",
+      "manuscriptOrPlanStatus": "PLAN_CONSISTENT_OUTPUT_PENDING",
+      "finding": "preview 전체noindex,nofollow,noarchive/Disallow:/, production home/detail index, support noindex follow.404는canonical/social을 생략한다.실제origin은null이다.",
+      "evidence": "render-checklist.json",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "inbound_links_and_parent_hub",
+      "contract": "Core1/8/12; A07; X02; SEO S05",
+      "manuscriptOrPlanStatus": "PLAN_CONSISTENT_OUTPUT_PENDING",
+      "finding": "상세의 보이는 home→support→current breadcrumb가 support inbound1을 계획한다. home/support가 detail로 연결돼detail inbound2다. noindex는orphan 예외가 아니며404만유입예외다.",
+      "evidence": "evidence/planned-graph-and-pointers.json",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "no_duplicate_slug",
+      "contract": "Core12; A07",
+      "manuscriptOrPlanStatus": "SATISFIED_IN_PLAN",
+      "finding": "4개 경로가 서로 다르고 동의어 URL을 추가하지 않는다.현재 모든 원격 브랜치의 중복 부재를 증명한 것은 아니다.",
+      "evidence": "evidence/planned-graph-and-pointers.json",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "business_truth",
+      "contract": "Core5/11; Blueprint9; SalesCopy",
+      "manuscriptOrPlanStatus": "SATISFIED_BY_RETAINED_ORIGINALS",
+      "finding": "기본가 59/79/109/149천원. 동구 행 없음은 무료 또는 1만원의 근거가 아니다. 혼합 소재·계절 변동·수거 없음, 제작 완료 제외와 상품 출고 후 취소의 두 조항을 정확히 분리한다. 현재운영·시간·반입·환불을 보장하지 않는다.",
+      "evidence": "evidence/direct-source-findings.json",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "content_writing_contract",
+      "contract": "Core14; C05/C06; ContentWriting; SalesCopy; SearchContent",
+      "manuscriptOrPlanStatus": "SATISFIED_AFTER_REVISION",
+      "finding": "차분한 공감·짧은 스몰토크·제공자 시점과 질문별 정보완결성을 별도로 검토했다. 고유 본문 2,322자, FAQ·마무리 포함 3,015자이며 목표보다 짧다는 이유로 반복문을 복원하지 않는다.",
+      "evidence": "REVIEW.ko.md",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    },
+    {
+      "id": "bounded_support_navigation_scope",
+      "contract": "Blueprint8; Core7/8",
+      "manuscriptOrPlanStatus": "PLAN_CONSISTENT_OUTPUT_PENDING",
+      "finding": "support 실제자식1계획,noindex·sitemap/메뉴제외·배너0.404는상품/마케팅/social/canonical 없음. CoreHubLaunch/FullLaunch는NOT_ASSESSED다.",
+      "evidence": "render-checklist.json",
+      "productionStatus": "PENDING_IMPLEMENTATION_AND_OUTPUT_VERIFICATION",
+      "technicalOutputPoints": 0
+    }
+  ],
+  "verdict": "MANUSCRIPT_AND_SPEC_READY_FOR_IMPLEMENTATION_NOT_PRODUCTION_PASS"
+}
