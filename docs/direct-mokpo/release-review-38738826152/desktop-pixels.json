@@ -1,0 +1,213 @@
+{
+  "actualNativeFlows": [
+    {
+      "articleUrl": "http://127.0.0.1:43817/regions/hankook-hospital-funeral-wreath/",
+      "backUrl": "http://127.0.0.1:43817/",
+      "bodyInboundUrl": "http://127.0.0.1:43817/regions/hankook-hospital-funeral-wreath/",
+      "breadcrumbHomeUrl": "http://127.0.0.1:43817/",
+      "breadcrumbParentUrl": "http://127.0.0.1:43817/regions/",
+      "firstKeyboardHref": "#main-content",
+      "forwardUrl": "http://127.0.0.1:43817/regions/hankook-hospital-funeral-wreath/",
+      "issues": [],
+      "skipActiveId": "main-content",
+      "skipHash": "#main-content",
+      "steps": [],
+      "supportChildUrl": "http://127.0.0.1:43817/regions/hankook-hospital-funeral-wreath/",
+      "visible": false,
+      "width": 1280
+    }
+  ],
+  "allFourHTMLBodiesAndFourteenNonHTMLFilesIdenticalToDiagnostic": true,
+  "artifactDigest": "sha256:2f1227efa8e18a7cb57a6c643260497146ff56e99884850e0774885b8c58dd8c",
+  "artifactId": "11975065395",
+  "assessmentScope": "bounded-launch",
+  "bindingSha256": "2970be22f6df16c24e89293f894b4502afa1b365186596fd6c21e79671b7b450",
+  "boundedContractSha256": "29c01a09a26786e5ad302b4e6334001c05c403810a36b358edb69fd5a1b0c948",
+  "buildControlSha": "cc7906092f219f4bb5d6ec3d7c8863a09fc2bc49",
+  "buildRunId": "38738826152",
+  "computedLayoutAndFAQCTAValuesIdenticalAfterMetadataNormalization": true,
+  "coreHubLaunchStatus": "NOT_ASSESSED",
+  "finalBrowserReportSha256": "2cb17cd25352b0298310ed1d9fad72a2053a5ed0a195c24e8fc4ee0d8532ca77",
+  "finalInputAfterSha256": "5fd7d230f1ef90509e67a3b46bba1ec828f9ce2e7396a82188130cd2d653cbae",
+  "finalInputBeforeSha256": "5fd7d230f1ef90509e67a3b46bba1ec828f9ce2e7396a82188130cd2d653cbae",
+  "findings": [
+    {
+      "area": "Home first answer and conversion",
+      "evidence": "320/390/1280 viewport and complete full captures: Korean first answer, basic-price qualifier, facility CTA, four product cards and consultation CTA are legible; no horizontal clipping. Customer prose matches accepted output byte-for-byte.",
+      "status": "PASS"
+    },
+    {
+      "area": "Detail complete prose and provider voice",
+      "evidence": "Read the complete first answer, budget, facility, ribbon, required-order inputs, sample/material, change/cancellation, FAQ and sources in full screenshots and DOM. Calm provider voice; no new delivery/refund/stock promise. Facility and seller contacts remain distinct.",
+      "status": "PASS"
+    },
+    {
+      "area": "All four products",
+      "evidence": "Both primary pages show B201 59,000 / B203 79,000 / B205 109,000 / B060 149,000 won as product base prices, real sample photos, distinct exact SKU URLs, SKU-specific accessible labels, and 44px-minimum measured action height.",
+      "status": "PASS"
+    },
+    {
+      "area": "FAQ actual visibility",
+      "evidence": "All four exact pairs appear once in article DOM; computed question/answer visibility true and collapsed false at three widths. Read full-page and dedicated FAQ captures. Home/support/404 have no manufactured FAQ.",
+      "status": "PASS"
+    },
+    {
+      "area": "Three approved banners",
+      "evidence": "Exact accepted three image SHAs, 1774x887 intrinsic dimensions, explanatory alt ending once in 전화 1844-0644., lazy/async attributes, loaded contain layout, 2:1 rendered ratio and distributed message-budget-consultation order. No inserted AI caption; no banners on support/404.",
+      "status": "PASS"
+    },
+    {
+      "area": "Logical heading hierarchy",
+      "evidence": "Direct DOM parse: one H1 on each route, coherent H2 sections, product and FAQ H3 subheadings, no forward skipped level. Sources use one H2.",
+      "status": "PASS"
+    },
+    {
+      "area": "Mobile menu and navigation",
+      "evidence": "Source and runner report show native click/Space/Enter repeated open-close, label and two-link visibility, native article/back/forward and body/support/breadcrumb loops. At 1280 mobile menu hidden, desktop links used.",
+      "status": "PASS_WITH_EXACT_COVERAGE"
+    },
+    {
+      "area": "CTA and keyboard",
+      "evidence": "Actual DOM anchors, tel:18440644, exact SKU destinations, per-SKU labels and computed visible geometry inspected. Native Tab/Enter skip-link focus was exercised. Sequential focus/activation of every product/phone/footer CTA and a focused screenshot were not captured; no claim is made for them. These are optional expanded interaction evidence, not a newly imposed gate.",
+      "status": "PASS_BOUNDED_REQUIRED_CHECKS"
+    },
+    {
+      "area": "Footer, support and 404",
+      "evidence": "All three widths inspected. Footer contains same seller/phone/home actions, support has one real detail card and breadcrumb, error page has visible home recovery. Unknown-path screenshot bytes equal /404 captures; actual runner recorded unknown path404 and recovery. Public 404 still pending.",
+      "status": "PASS_BOUNDED_REQUIRED_CHECKS"
+    },
+    {
+      "area": "Screenshot overlays",
+      "evidence": "Dedicated long element captures include fixed header/mobile bar across some lines because those overlays remain at viewport coordinates while capturing a taller element. Matching full-page captures expose those same copy regions, so omitted/hidden FAQ was not inferred from the cropped capture. No full footer-focus/occlusion-at-every-scroll-position audit is claimed.",
+      "status": "EVIDENCE_LIMITATION_NOT_CONFIRMED_SITE_DEFECT"
+    },
+    {
+      "area": "Nonblocking copy note",
+      "evidence": "Preserved home phrase 실제 카드의 상세 버튼은 해당 상품으로 연결합니다 is slightly implementation-like, as recorded in accepted review; accurate and not a new publication blocker. No unauthorized copy change made.",
+      "status": "OPTIONAL_EDIT_ONLY"
+    }
+  ],
+  "fullLaunchStatus": "NOT_ASSESSED",
+  "notClaimed": [
+    "public HTTP",
+    "telephone connection",
+    "external SKU page navigation",
+    "screen reader audit",
+    "all-scroll-position fixed-bar occlusion audit"
+  ],
+  "optionalUnperformed": [
+    "Sequential native keyboard focus/activation of every customer CTA/footer link",
+    "focused-CTA/footer screenshots"
+  ],
+  "pixelEvidence": [
+    {
+      "bytes": 96477,
+      "diagnosticSha256": "c7fc1eacb200a099202db084183e86bdab39758b4a6338f93568fb906c1fcdd5",
+      "file": "hankook-hospital-article-1280-faq.png",
+      "finalSha256": "c7fc1eacb200a099202db084183e86bdab39758b4a6338f93568fb906c1fcdd5",
+      "identical": true
+    },
+    {
+      "bytes": 3178744,
+      "diagnosticSha256": "146dbabfe9f5328a0b5b2eb9a8cd5a319cfab5ac55832eef954233bee842d5df",
+      "file": "hankook-hospital-article-1280-full.png",
+      "finalSha256": "146dbabfe9f5328a0b5b2eb9a8cd5a319cfab5ac55832eef954233bee842d5df",
+      "identical": true
+    },
+    {
+      "bytes": 1032871,
+      "diagnosticSha256": "a9d266f8fd6cbf359d6997f8dcac76a92ba08bcadac88c564585e58a1e4e047f",
+      "file": "hankook-hospital-article-1280-products.png",
+      "finalSha256": "a9d266f8fd6cbf359d6997f8dcac76a92ba08bcadac88c564585e58a1e4e047f",
+      "identical": true
+    },
+    {
+      "bytes": 305749,
+      "diagnosticSha256": "68d64e06e4d8a99e31b9d4cbb109bf416cbb91171f9bf671244b0a2a54e2746e",
+      "file": "hankook-hospital-article-1280-viewport.png",
+      "finalSha256": "68d64e06e4d8a99e31b9d4cbb109bf416cbb91171f9bf671244b0a2a54e2746e",
+      "identical": true
+    },
+    {
+      "bytes": 2804320,
+      "diagnosticSha256": "7fa6b2f836c737dd068759158c2b5bff3e712398eda03bc45706fb09ba27163f",
+      "file": "home-1280-full.png",
+      "finalSha256": "7fa6b2f836c737dd068759158c2b5bff3e712398eda03bc45706fb09ba27163f",
+      "identical": true
+    },
+    {
+      "bytes": 1034691,
+      "diagnosticSha256": "7f6a1fde44331167d6ac37ede39ebf952c09937995479980bd63772a991841fb",
+      "file": "home-1280-products.png",
+      "finalSha256": "7f6a1fde44331167d6ac37ede39ebf952c09937995479980bd63772a991841fb",
+      "identical": true
+    },
+    {
+      "bytes": 405436,
+      "diagnosticSha256": "cd04e475e651769443fca2d65d1eeec1454cee9197b5397c15dac429fac12411",
+      "file": "home-1280-viewport.png",
+      "finalSha256": "cd04e475e651769443fca2d65d1eeec1454cee9197b5397c15dac429fac12411",
+      "identical": true
+    },
+    {
+      "bytes": 48300,
+      "diagnosticSha256": "44270b31d7fdd1cca89e1762a81ccfc47026b2e5e0c26d20b0651210d5fa84a9",
+      "file": "not-found-1280-full.png",
+      "finalSha256": "44270b31d7fdd1cca89e1762a81ccfc47026b2e5e0c26d20b0651210d5fa84a9",
+      "identical": true
+    },
+    {
+      "bytes": 48300,
+      "diagnosticSha256": "44270b31d7fdd1cca89e1762a81ccfc47026b2e5e0c26d20b0651210d5fa84a9",
+      "file": "not-found-1280-viewport.png",
+      "finalSha256": "44270b31d7fdd1cca89e1762a81ccfc47026b2e5e0c26d20b0651210d5fa84a9",
+      "identical": true
+    },
+    {
+      "bytes": 59591,
+      "diagnosticSha256": "11cd2d6382e34e8309f05782a826beae94b7686d1bc14ab7a260df9703d35ed0",
+      "file": "regions-support-1280-full.png",
+      "finalSha256": "11cd2d6382e34e8309f05782a826beae94b7686d1bc14ab7a260df9703d35ed0",
+      "identical": true
+    },
+    {
+      "bytes": 59591,
+      "diagnosticSha256": "11cd2d6382e34e8309f05782a826beae94b7686d1bc14ab7a260df9703d35ed0",
+      "file": "regions-support-1280-viewport.png",
+      "finalSha256": "11cd2d6382e34e8309f05782a826beae94b7686d1bc14ab7a260df9703d35ed0",
+      "identical": true
+    },
+    {
+      "bytes": 48300,
+      "diagnosticSha256": "44270b31d7fdd1cca89e1762a81ccfc47026b2e5e0c26d20b0651210d5fa84a9",
+      "file": "unknown-path-1280-full.png",
+      "finalSha256": "44270b31d7fdd1cca89e1762a81ccfc47026b2e5e0c26d20b0651210d5fa84a9",
+      "identical": true
+    },
+    {
+      "bytes": 48300,
+      "diagnosticSha256": "44270b31d7fdd1cca89e1762a81ccfc47026b2e5e0c26d20b0651210d5fa84a9",
+      "file": "unknown-path-1280-viewport.png",
+      "finalSha256": "44270b31d7fdd1cca89e1762a81ccfc47026b2e5e0c26d20b0651210d5fa84a9",
+      "identical": true
+    }
+  ],
+  "priorDiagnostic": {
+    "archiveSha256": "000c41aae609935de9de3f6834ae9b2ebd1e304c54acb40557f7807c0bea1cb6",
+    "manualVisualReviewSha256": "9339a197f700b79d441c1e7adaf1ff802ebb1dca62a60d57861ae16d53e51138",
+    "method": "Actual 29 distinct PNG byte sets inspected, including lossless full-resolution long-image crops; 10 duplicates checked by exact bytes. All39 final screenshots are now byte-for-byte equal. No changed pixels need fresh manual inspection.",
+    "runId": "38728654738",
+    "sourceCommit": "c3e2d7c03f2419aa94c9b55a6c12d69b8d3e75c1"
+  },
+  "publicHttpVerified": false,
+  "region": "mokpo",
+  "reviewedUTC": "2026-10-15T13:19:55+00:00",
+  "reviewer": "Independent Mokpo release reviewer",
+  "schemaVersion": 1,
+  "sourceCommit": "e144887a2612f22f333a9b71a8f76e4d5adbc3e7",
+  "sourceContractSha256": "d901eac7cab22b36ee7e0d612d2c68776564464cc9cab5a1f14785674fa3c0b0",
+  "verdict": "PASS_EXACT_FINAL_PIXELS",
+  "viewports": [
+    1280
+  ]
+}
