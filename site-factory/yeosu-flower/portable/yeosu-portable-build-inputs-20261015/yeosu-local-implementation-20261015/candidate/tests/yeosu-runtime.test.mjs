@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {assertBoundary,previewConfig,verifyInputs,parseDraft,validateRuntime,pageMap,products,spec,pages,inline,mapHref,sha256} from '../src/lib/yeosu-runtime.mjs';
+test('reviewed original draft and scoped-copy bytes bound',()=>assert.equal(verifyInputs(),true));
+test('four HTML one detail independent preparation only',()=>{assert.equal(validateRuntime(),true);assert.equal(pageMap.allHtmlCount,4);assert.equal(pageMap.articleCount,1);assert.equal(pageMap.launchOrder.MokpoStillPending,true);assert.equal(pageMap.launchOrder.YeosuIndependentPreparationOnly,true);});
+test('private mode cannot become public via config',()=>{for(const update of [{origin:'https://example.com'},{domain:'example.com'},{canonical:'x'},{productionEnabled:true},{mode:'production'},{coreHubLaunchStatus:'PASS'},{fullLaunchStatus:'PASS'}])assert.throws(()=>assertBoundary({...previewConfig,...update},{}),/boundary/);});
+test('origin/deploy environment fails closed',()=>{for(const k of ['SITE_ORIGIN','SITE_URL','PUBLIC_SITE_URL','PRODUCTION_ORIGIN','DEPLOY_ENV','DEPLOY_TARGET','ALLOW_PRODUCTION'])assert.throws(()=>assertBoundary(previewConfig,{[k]:'x'}),/boundary/);});
+test('NODE_ENV build is not permission to publish',()=>assert.equal(assertBoundary(previewConfig,{NODE_ENV:'production'}),true));
+test('support has one child, no menu or banner promotion',()=>{const p=pageMap.pages.find(p=>p.id==='support');assert.equal(p.actualChildCount,1);assert.equal(p.mainMenuIncluded,false);assert.equal(p.marketingBannerCount,0);assert.equal(p.coreHub,false);});
+test('home no cards, article four SKUs only',()=>{assert.equal(pages[0].productCardCount,0);assert.equal(pages[1].productCardCount,4);assert.deepEqual(products.map(p=>[p.sku,p.basePriceKRW]),[['B201',59000],['B203',79000],['B205',109000],['B060',149000]]);});
+test('three FAQ answers projected exactly once',()=>{const faq=pages[1].draft.sections.find(s=>s.heading==='자주 묻는 질문');assert.equal(faq.blocks.filter(b=>b.kind==='h3').length,3);for(const [i,f] of spec.faqBinding.items.entries())assert.equal(sha256(faq.blocks[2*i+1].text),f.answerUTF8SHA256);});
+test('parser rejects duplicate H1 and absent H1',()=>{assert.throws(()=>parseDraft('# A\n\n# B'));assert.throws(()=>parseDraft('text'));});
+test('parser rejects unsupported headings and HTML',()=>{assert.throws(()=>parseDraft('# A\n\n#### B'));assert.throws(()=>parseDraft('# A\n\n<!-- arbitrary -->'));assert.throws(()=>inline('<script>bad</script>'));});
+test('parser rejects invalid product boundaries',()=>{assert.throws(()=>parseDraft('# A\n\n<!-- PRODUCT_CARDS_END -->'));assert.throws(()=>parseDraft('# A\n\n<!-- PRODUCT_CARDS_START -->'));});
+test('inline source labels and href remain exact',()=>assert.deepEqual(inline('출처 [여수시](https://www.yeosu.go.kr/) 확인.'),[{kind:'text',text:'출처 '},{kind:'link',text:'여수시',href:'https://www.yeosu.go.kr/'},{kind:'text',text:' 확인.'}]));
+test('only declared local draft path is mapped',()=>{assert.equal(mapHref('yeosu-jeonnam-hospital-funeral.ko.md'),'/regions/yeosu-jeonnam-hospital-funeral-wreath/');assert.throws(()=>inline('[bad](javascript:bad)'));assert.throws(()=>inline('[bad](other.md)'));});
+test('source heading order preserved',()=>{for(const p of pages.filter(p=>p.draft))assert.deepEqual(p.draft.sections.map(s=>s.heading),p.h2Order);});
