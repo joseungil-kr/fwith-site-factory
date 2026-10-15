@@ -1,0 +1,92 @@
+{
+  "schema": "scoped-ui-copy-independent-review/v1",
+  "reviewer": "/root/implement_suncheon_private_candidate/review_suncheon_private_candidate",
+  "reviewedAtUTC": "2026-10-15T09:28:36Z",
+  "outcome": "ACCEPTED_SCOPED_UI_COPY_ONLY",
+  "requiredChanges": [],
+  "scope": "All 15 string fields in actual ui-copy.json, read in full, including chrome, support title/H1/description, and 404 title/H1/description/body/CTA. This is independent copy review, not rendered-output or runtime acceptance.",
+  "source": {
+    "path": "../candidate/src/data/ui-copy.json",
+    "sha256": "3055c693a9d8d4963be0e5379cd76340b05fe7e58ed40a2a18570599326ae13b",
+    "bytes": 1007
+  },
+  "uiCopySHA256": "3055c693a9d8d4963be0e5379cd76340b05fe7e58ed40a2a18570599326ae13b",
+  "reviewedAllText": true,
+  "reviewedFields": {
+    "brand": "꽃이랑",
+    "skipLink": "본문으로 바로 가기",
+    "menuLabel": "주요 메뉴",
+    "menuOpen": "메뉴 열기",
+    "menuClose": "메뉴 닫기",
+    "homeLink": "상품·주문 상담 홈으로",
+    "phoneLink": "주문 상담 1844-0644",
+    "support.title": "근조화환 안내 바로가기 | 꽃이랑",
+    "support.h1": "근조화환 안내 바로가기",
+    "support.description": "성가롤로병원 장례식장으로 보내실 근조화환의 사진·기본가격과 주문 상담 안내로 이동하세요.",
+    "notFound.title": "이 주소에서 페이지를 찾지 못했습니다 | 꽃이랑",
+    "notFound.h1": "이 주소에서 페이지를 찾지 못했습니다",
+    "notFound.description": "아래 홈 링크에서 근조화환 상품과 주문 상담 안내를 다시 찾아보실 수 있습니다.",
+    "notFound.body": "아래 홈 링크에서 근조화환 상품과 주문 상담 안내를 다시 찾아보실 수 있습니다.",
+    "notFound.ctaLabel": "상품·주문 상담 홈으로"
+  },
+  "visibleChromeAndBodyFields": [
+    "brand",
+    "skipLink",
+    "menuLabel",
+    "menuOpen",
+    "menuClose",
+    "homeLink",
+    "phoneLink",
+    "support.h1",
+    "support.description",
+    "notFound.h1",
+    "notFound.body",
+    "notFound.ctaLabel"
+  ],
+  "documentTitleOrMetadataFields": [
+    "support.title",
+    "support.description",
+    "notFound.title",
+    "notFound.description"
+  ],
+  "directlyChecked": [
+    "Read all 15 strings in ui-copy.json and all actual Suncheon home/detail JSON copy; opened prior Yeosu scoped review and Suncheon render contract.",
+    "Suncheon support description matches the facility naming and product-photo/basic-price/order-consultation scope of the reviewed home/detail copy.",
+    "Brand and order-consultation number 1844-0644 agree with Suncheon reviewed home/detail CTA.",
+    "404 title, H1, description/body and CTA match the prior reviewed neutral Yeosu 404 text exactly. Support H1 matches; description is facility-localized; title is newly generalized and separately reviewed here."
+  ],
+  "assessment": [
+    "Neutral navigation and technical 404 wording is clear and appropriate, without manufactured grief, unverified delivery guarantees, prices, opening hours, affiliation or new policy claims.",
+    "The newly generalized support title accurately describes navigation; naming the facility in the description provides context without turning the short support route into a second detail page.",
+    "Chrome strings provide concise menu/skip/navigation and consultation cues. No required copy changes found within this limited scope."
+  ],
+  "referencesRead": [
+    {
+      "path": "yeosu-page-spec-addendum-20261015/scoped-copy-review.json",
+      "sha256": "c3d6b18dcc6648ebaaa96731570a692d40733cedf45954deedce20bd1dafaa0e"
+    },
+    {
+      "path": "suncheon-local-implementation-20261015/bundle/inputs/reviewed-copy/home-copy.json",
+      "sha256": "f3140f5dccf98bee46c2242c44d686bd9f1397cc1f7aff66bfbe2f6887a5ac13"
+    },
+    {
+      "path": "suncheon-local-implementation-20261015/bundle/inputs/reviewed-copy/detail-copy.json",
+      "sha256": "32f06ff6574b752c61c519479a3d7018e4bf60e87137373afb7570cccd096d4f"
+    },
+    {
+      "path": "suncheon-local-implementation-20261015/bundle/inputs/reviewed-copy/render-plan.json",
+      "sha256": "da4b2384be998a60a11faa932c95e751b3a97edbe4111dde3dcfdfc38de14edb"
+    },
+    {
+      "path": "suncheon-local-implementation-20261015/bundle/inputs/reviewed-copy/reviews/independent-review-final.ko.md",
+      "sha256": "c0019e6f92a5e33f43f0f7b5b700ae2a35169b416c4e388d0b5f80f37706169f"
+    }
+  ],
+  "findingClass": "직접 확인: actual local bytes and all listed text read; 추정·판단: editorial acceptance within stated scope.",
+  "limits": [
+    "No rendered HTML checked in this scoped pass.",
+    "No actual browser, mobile, keyboard runtime, HTTP, publication, IndexNow, crawl or search result verified.",
+    "Existing factual claims are context from already reviewed inputs, not fresh external-source verification."
+  ],
+  "bindingRule": "This acceptance applies only to the exact source SHA256 above. Any customer-facing text change requires a new scoped review."
+}
