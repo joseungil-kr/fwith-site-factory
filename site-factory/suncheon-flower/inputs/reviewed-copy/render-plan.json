@@ -1,0 +1,141 @@
+{
+  "status": "RENDER_PLAN_ONLY_NOT_EXECUTED",
+  "pageCount": 2,
+  "detailIntentCount": 1,
+  "faq": {
+    "sourceFile": "detail-copy.json",
+    "sourceField": "faq",
+    "count": 3,
+    "visibleInstancesPerQuestion": 1,
+    "renderWhenContentMarkdownExists": true,
+    "alwaysVisibleText": true,
+    "accordion": false,
+    "schema": "Do not add a second visible FAQ from structured data; no rich-result or indexing claim"
+  },
+  "headings": {
+    "perPageH1": 1,
+    "sectionH2": true,
+    "productsH3UnderSingleProductsH2": true,
+    "faqH3UnderSingleFAQH2": true,
+    "sourcesSingleH2": "출처 및 확인 정보",
+    "noPerSourceH2": true,
+    "bannerAddsHeading": false
+  },
+  "commonBanners": [
+    {
+      "variant": "message",
+      "reuseExistingPath": "/workspace/scratch/e695498f2eb8/gangdong-local-implementation-20261014/candidate/public/images/shared-banners/flower-message.webp",
+      "assetName": "flower-message.webp",
+      "bytes": 171698,
+      "sha256": "a5ecdeb1914566a32d45b084351e2782fc8b234e9a4fbb8635a60a9921cac5f5",
+      "width": 1774,
+      "height": 887,
+      "alt": "흰 장미와 잎을 배경으로 꽃으로 전하는 마음을 안내하는 꽃이랑 배너. 전화 1844-0644.",
+      "caption": null,
+      "newGeneration": false,
+      "copiedIntoThisDraft": false,
+      "plannedElement": "figure/img",
+      "loading": "lazy below hero",
+      "decoding": "async"
+    },
+    {
+      "variant": "budget",
+      "reuseExistingPath": "/workspace/scratch/e695498f2eb8/gangdong-local-implementation-20261014/candidate/public/images/shared-banners/flower-budget.webp",
+      "assetName": "flower-budget.webp",
+      "bytes": 145664,
+      "sha256": "081198095eb005603721be7c778f4d477f4dd93dcf96f0c261f18bf06bb91421",
+      "width": 1774,
+      "height": 887,
+      "alt": "겹겹의 흰 꽃을 배경으로 상품 사진과 가격 비교를 안내하는 꽃이랑 배너. 전화 1844-0644.",
+      "caption": null,
+      "newGeneration": false,
+      "copiedIntoThisDraft": false,
+      "plannedElement": "figure/img",
+      "loading": "lazy below hero",
+      "decoding": "async"
+    },
+    {
+      "variant": "consultation",
+      "reuseExistingPath": "/workspace/scratch/e695498f2eb8/gangdong-local-implementation-20261014/candidate/public/images/shared-banners/flower-consultation.webp",
+      "assetName": "flower-consultation.webp",
+      "bytes": 126306,
+      "sha256": "d6654aa44c365f64e330d0be2042972d3320fad54231425aaffca1dfdcd25ebc",
+      "width": 1774,
+      "height": 887,
+      "alt": "흰 꽃과 봉오리를 배경으로 상품 선택과 리본 문구 상담을 안내하는 꽃이랑 배너. 전화 1844-0644.",
+      "caption": null,
+      "newGeneration": false,
+      "copiedIntoThisDraft": false,
+      "plannedElement": "figure/img",
+      "loading": "lazy below hero",
+      "decoding": "async"
+    }
+  ],
+  "placement": {
+    "home": [
+      "H1 + lead",
+      "message",
+      "facility section + actual detail card",
+      "budget",
+      "budget section + ribbon consultation section",
+      "consultation",
+      "phone CTA + combined sources"
+    ],
+    "detail": [
+      "H1 + lead",
+      "message",
+      "ribbon section + product prose + four actual cards",
+      "budget",
+      "facility + budget/time + order + change + visible FAQ",
+      "consultation",
+      "closing + phone CTA + combined sources"
+    ]
+  },
+  "links": {
+    "draftRelativeOnly": true,
+    "publicRouteNotAssigned": true,
+    "productDestinations": [
+      {
+        "sku": "B201",
+        "url": "https://fwith.co.kr/shop/item.php?it_id=B201"
+      },
+      {
+        "sku": "B203",
+        "url": "https://fwith.co.kr/shop/item.php?it_id=B203"
+      },
+      {
+        "sku": "B205",
+        "url": "https://fwith.co.kr/shop/item.php?it_id=B205"
+      },
+      {
+        "sku": "B060",
+        "url": "https://fwith.co.kr/shop/item.php?it_id=B060"
+      }
+    ],
+    "phone": "tel:18440644",
+    "facilityPhonesNotSalesCTAs": true
+  },
+  "technicalPending": [
+    "public canonical and routes",
+    "robots and sitemap",
+    "actual static build HTML",
+    "FAQ actual HTML and screen visibility",
+    "mobile reading and button layout",
+    "image/CTA public HTTP",
+    "404 and internal link regression",
+    "source commit and deploy binding",
+    "IndexNow/GSC/crawl/index/ranking"
+  ],
+  "uiMessages": {
+    "noAdditionalInventedNavOrFooterText": true,
+    "allNewVisibleTextMustBeReReviewed": true
+  },
+  "renderSourceContract": {
+    "runtimeCanonical": "Structured JSON only: home-copy.json or detail-copy.json; product-cards.json is inserted exactly once at products.productCardsAfterParagraph.",
+    "markdownRole": "drafts/*.ko.md are full-copy review artifacts only. Do not render them together with the JSON runtime.",
+    "faq": "Render detail-copy.json.faq once as visible H3 question plus paragraph answer under one H2. A contentMarkdown field must not suppress this canonical JSON FAQ.",
+    "cardsAndSources": "Render the four product cards once in the planned position and the combined sources section once. Do not append a second data-derived copy after complete Markdown.",
+    "alternateMarkdownFlow": "If later implementation explicitly chooses Markdown as the canonical runtime instead, that requires a reviewed mapping change; its existing FAQ/cards/sources must not be followed by duplicate modules.",
+    "actualOutputVerification": "Before any release count every question and answer in actual HTML once and inspect visible screen; not performed in this draft."
+  }
+}
