@@ -1,0 +1,5 @@
+---
+import {products} from '../lib/mokpo-runtime.mjs';
+---
+<div class="product-grid">{products.map(p=><article class="product-card" data-product-family={p.family} data-product-sku={p.sku}>
+<img src={p.img} alt={p.alt} loading="lazy" decoding="async" width={p.width} height={p.height}/><div><h3>{p.name}</h3><span class="price-label">상품 기본가격</span><strong>{p.priceText}</strong><p class="product-sku">상품번호 {p.sku}</p><p>{p.description}</p><a href={p.cta.href} aria-label={p.cta.accessibleLabel} data-order-product-sku={p.sku}>{p.cta.label}</a><p class="product-notice">상품 샘플 사진</p></div></article>)}</div>
