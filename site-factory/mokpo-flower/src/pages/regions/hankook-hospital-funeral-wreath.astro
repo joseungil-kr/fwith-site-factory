@@ -1,0 +1,6 @@
+---
+import CopyPage from '../../components/CopyPage.astro';
+import {pages} from '../../lib/mokpo-runtime.mjs';
+const page=pages.find(p=>p.id==='hankook-hospital-article');
+---
+<CopyPage page={page}/>
