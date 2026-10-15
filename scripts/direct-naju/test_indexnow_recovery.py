@@ -64,10 +64,10 @@ class RecoveryTests(unittest.TestCase):
             p.artifact()
             for path in [p.output.PROOF['path'],'/robots.txt','/sitemap-index.xml','/sitemap-0.xml']:
                 exact=(Path('release/dist')/path.lstrip('/')).read_text()
-                with self.subTest(path=path),patch.object(n,'request',return_value=(200,exact,{})):
+                with self.subTest(path=path),patch.object(n,'request',return_value=(200,exact,{'content-type':'text/plain'})):
                     self.assertEqual(p.observed_indexnow_request('GET',p.ORIGIN+path)[0],200)
                 for status,body in [(500,exact),(302,exact),(200,exact+'\n')]:
-                    with self.subTest(path=path,status=status),patch.object(n,'request',return_value=(status,body,{})),self.assertRaises(ValueError):
+                    with self.subTest(path=path,status=status),patch.object(n,'request',return_value=(status,body,{'content-type':'text/plain'})),self.assertRaises(ValueError):
                         p.observed_indexnow_request('GET',p.ORIGIN+path)
                     rows=json.loads(Path('indexnow-http-observations.json').read_text())
                     self.assertEqual(rows[-1]['httpStatus'],status)
