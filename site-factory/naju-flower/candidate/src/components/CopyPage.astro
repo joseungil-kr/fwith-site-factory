@@ -2,11 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SharedFlowerBanner from './SharedFlowerBanner.astro';
 import ProductCards from './ProductCards.astro';
-import {copy,home,detail,copySHA,mapTarget} from '../lib/naju-runtime.mjs';
+import {copy,home,detail,ui,copySHA,mapTarget} from '../lib/naju-runtime.mjs';
 const {page:p}=Astro.props;
 const c=copy[p.copyKey as keyof typeof copy] as any;
+const breadcrumbs=p.id==='article'?[{label:ui.homeLink,href:home.proposedPath},{label:copy.support.h1,href:copy.support.proposedPath},{label:detail.h1}]:p.id==='support'?[{label:ui.homeLink,href:home.proposedPath},{label:copy.support.h1}]:[];
 ---
-<BaseLayout page={p}><article data-page-id={p.id} data-page-role={p.role} data-copy-sha={copySHA[p.id as keyof typeof copySHA]}><div data-reviewed-body>
+<BaseLayout page={p}>{breadcrumbs.length>0&&<nav class="breadcrumb" aria-label={copy.support.h1}>{breadcrumbs.map((b:any,i:number)=><>{i>0&&<span aria-hidden="true">›</span>}{b.href?<a href={b.href}>{b.label}</a>:<span aria-current="page">{b.label}</span>}</>)}</nav>}<article data-page-id={p.id} data-page-role={p.role} data-copy-sha={copySHA[p.id as keyof typeof copySHA]}><div data-reviewed-body>
 <section id="opening" class="category-hero"><h1 data-reviewed-block>{c.h1}</h1>{['home','article'].includes(p.id)?(Array.isArray(c.lead)?c.lead:[c.lead]).map((t:string,i:number)=><p data-reviewed-block data-first-answer={i===0||undefined}>{t}</p>):<p data-reviewed-block>{c.body}</p>}</section>
 {['home','article'].includes(p.id)?<>
 <SharedFlowerBanner variant="message"/>

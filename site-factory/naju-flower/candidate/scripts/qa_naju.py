@@ -53,7 +53,9 @@ HIDDEN=re.compile(r'(?:^|;)\s*(?:display\s*:\s*none\b|visibility\s*:\s*(?:hidden
 def visible(node,dom,css,code):
  must(node is not None,code,'Missing node')
  chain=[node,*node.parents,*node.descendants()]
- for n in chain:must(not any(n.has_attr(k) for k in ['hidden','inert']) and n.get('aria-hidden','').lower()!='true' and n.name not in ['template','details'] and not HIDDEN.search(n.get('style','')),code,str(n.attrs))
+ for n in chain:
+  decorative=code=='MAIN_VISIBLE_STATIC' and n.name=='span' and n.get('aria-hidden')=='true' and n.get_text()=='›' and n.parent.name=='nav' and n.parent.get('class')=='breadcrumb'
+  must(not any(n.has_attr(k) for k in ['hidden','inert']) and (n.get('aria-hidden','').lower()!='true' or decorative) and n.name not in ['template','details'] and not HIDDEN.search(n.get('style','')),code,str(n.attrs))
  for selector,decl in re.findall(r'([^{}]+)\{([^{}]*)\}',css):
   if not HIDDEN.search(decl):continue
   for branch in selector.split(','):
@@ -80,7 +82,7 @@ def check(root=None):
  must({str(p.relative_to(root)) for p in root.rglob('*.xml')}=={'sitemap.xml'} and len(ET.parse(root/'sitemap.xml').getroot())==0,'EMPTY_PREVIEW_SITEMAP')
  must((root/'_headers').read_text()=='/*\n  X-Robots-Tag: noindex, follow\n','HEADERS_NOINDEX')
  must(not any((root/n).exists() for n in ['_worker.js','_redirects','_routes.json']),'NO_ROUTING_ADAPTER')
- results=[];titles=[];descs=[]
+ results=[];titles=[];descs=[];inbound={c[key]['proposedPath']:set() for key in ['home','detail','support']}
  for id,key,role in expected:
   p=c[key];route=p['proposedPath'];entry=pm['pages'][expected.index((id,key,role))];must(entry=={'id':id,'copyKey':key,'path':route,'role':role,'title':p['title'],'description':p['description'],'h1':p['h1'],'robots':'noindex,follow','canonical':None,'sitemapIncluded':False,'mainMenuIncluded':key in ['home','detail'],'actualChildCount':1 if key=='support' else 0,'marketingBannerCount':3 if key in ['home','detail'] else 0,'coreHub':False},'MAP_EXACT_PAGE')
   primary=key in ['home','detail'];text=(root/htmlpath(route)).read_text();dom=BeautifulSoup(text);body=dom.find('body');article=dom.select_one('[data-page-id]');surface=norm(body.get_text(' ',True));blocks,links=projection(key,c)
@@ -105,6 +107,23 @@ def check(root=None):
    elif href.startswith('tel:'):must(href=='tel:18440644','ONLY_SALES_PHONE_CTA')
    else:must(href.startswith('https://'),'LINK_SAFETY')
   for nav in dom.select('header nav'):must([a.get('href') for a in nav.find_all('a')]==['/',c['detail']['proposedPath']],'MAIN_MENU')
+  crumbs=dom.select('nav.breadcrumb');crumbtext=[]
+  expectedcrumbs=[(c['home']['proposedPath'],ui['homeLink']),(c['support']['proposedPath'],c['support']['h1']),(None,c['detail']['h1'])] if key=='detail' else [(c['home']['proposedPath'],ui['homeLink']),(None,c['support']['h1'])] if key=='support' else []
+  must(len(crumbs)==(1 if expectedcrumbs else 0),'BREADCRUMB_DENOMINATOR')
+  if expectedcrumbs:
+   crumb=crumbs[0];must(crumb.get('aria-label')==c['support']['h1'] and crumb.parent is dom.find('main') and crumb.find_next_sibling() is article,'BREADCRUMB_POSITION_AND_LABEL')
+   must([(a.get('href'),a.get_text()) for a in crumb.find_all('a')]==expectedcrumbs[:-1],'BREADCRUMB_PARENT_LINKS')
+   current=crumb.select('[aria-current]');must(len(current)==1 and current[0].name=='span' and current[0].get('aria-current')=='page' and current[0].get_text()==expectedcrumbs[-1][1] and not current[0].has_attr('href'),'BREADCRUMB_CURRENT_PAGE')
+   separators=crumb.select('[aria-hidden]');must(len(separators)==len(expectedcrumbs)-1 and all(n.name=='span' and n.get('aria-hidden')=='true' and n.get_text()=='›' for n in separators),'BREADCRUMB_SEPARATORS')
+   for i,(_,label) in enumerate(expectedcrumbs):
+    if i:crumbtext.append('›')
+    crumbtext.append(label)
+   must(norm(crumb.get_text(' ',True))==norm(' '.join(crumbtext)),'BREADCRUMB_EXACT_TEXT')
+   for n in [*crumb.find_all('a'),current[0]]:visible(n,dom,css,'BREADCRUMB_VISIBLE_STATIC')
+  if key!='notFound':
+   for a in dom.find_all('a'):
+    targetroute=urlsplit(a.get('href','')).path
+    if targetroute in inbound and targetroute!=route:inbound[targetroute].add(route)
   for img in dom.find_all('img'):must(img.get('alt') and img.get('width') and img.get('height') and img.get('loading')=='lazy' and img.get('decoding')=='async' and img.get('src','').startswith('/') and (root/img['src'].lstrip('/')).is_file(),'IMAGE_ATTRIBUTES')
   banners=dom.select('[data-shared-flower-banner]');must([b.get('data-shared-flower-banner') for b in banners]==(['message','budget','consultation'] if primary else []),'BANNER_SET')
   nextids=['facility-guide','budget',None] if key=='home' else ['budget','facility',None]
@@ -126,13 +145,15 @@ def check(root=None):
   must(all(not isinstance(child,str) or not child.strip() or any(n.has_attr('data-reviewed-block') for n in [node,*node.parents]) for node in [render,*render.descendants()] for child in node.children),'BODY_TEXT_PARITY')
   chrome_start=[ui['skipLink'],'✿',ui['brand'],ui['homeLink'],ui['detailLink'],ui['menuOpen'],ui['menuClose'],ui['homeLink'],ui['detailLink']]
   chrome_end=[ui['brand'],ui['phoneLink'],ui['homeLink'],ui['homeLink'],ui['phoneLink']]
-  must(surface==norm(' '.join(chrome_start+[v for _,v in blocks]+chrome_end)),'ALL_BODY_TEXT_PARITY')
+  must(surface==norm(' '.join(chrome_start+crumbtext+[v for _,v in blocks]+chrome_end)),'ALL_BODY_TEXT_PARITY')
   must(len(dom.select('[data-source-references]'))==(1 if primary else 0),'SOURCES_ONCE')
   visible(dom.find('main'),dom,css,'MAIN_VISIBLE_STATIC')
   for forbidden in ['순천','성가롤로','여수','목포','강동','061-720','061-640','무료배송','100% 환불','당일배송','AI 생성 이미지','Launch Gate']:must(forbidden not in surface+title+desc,'REGIONAL_COPY_REGRESSION',forbidden)
   results.append({'id':id,'copyKey':key,'path':route,'sha256':sha(text.encode()),'products':len(cards),'faqPairsInStaticHTML':len(qs),'banners':len(banners),'requiredCTAs':len(article.select('[data-required-cta]')),'robots':'noindex,follow','canonical':None})
  must(len(set(titles))==len(set(descs))==4,'UNIQUE_METADATA')
- return {'status':'PASS_PRIVATE_STATIC_ONLY','renderSource':'REVIEWED_SINGLE_JSON_ONLY','customerCopySHA256':binding['customerCopySHA256'],'pages':results,'origin':None,'productionEnabled':False,'limitations':['Static HTML and simple hiding styles only; browser/computed CSS/mobile not verified','No public HTTP/real404/provider/IndexNow/checkout/telephone execution']}
+ for route,sources in inbound.items():
+  if route!='/':must(len(sources)>=1,'NONHOME_CONTENT_INBOUND',route)
+ return {'status':'PASS_PRIVATE_STATIC_ONLY','renderSource':'REVIEWED_SINGLE_JSON_ONLY','customerCopySHA256':binding['customerCopySHA256'],'pages':results,'internalInboundSources':{r:sorted(s) for r,s in inbound.items()},'breadcrumbPages':[c['detail']['proposedPath'],c['support']['proposedPath']],'origin':None,'productionEnabled':False,'limitations':['Static HTML and simple hiding styles only; browser/computed CSS/mobile not verified','No public HTTP/real404/provider/IndexNow/checkout/telephone execution']}
 if __name__=='__main__':
  try:
   result=check(Path(sys.argv[1]) if len(sys.argv)>1 else None);(C/'evidence').mkdir(exist_ok=True);(C/'evidence/static-qa.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n');print(json.dumps(result,ensure_ascii=False,indent=2))

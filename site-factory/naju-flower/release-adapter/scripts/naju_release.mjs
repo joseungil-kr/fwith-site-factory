@@ -13,7 +13,7 @@ export const HOSTNAME='naju.fwith.kr',ORIGIN='https://'+HOSTNAME,WORKER='naju-fl
 export const ROUTES=['/','/regions/naju-hospital-funeral-wreath/'];
 export const HTML_ROUTES=['/','/regions/',ROUTES[1],'/404.html'];
 export const PROOF={origin:ORIGIN,path:'/39c4ed924bc6084c670a963c26d9f018.txt',sha256:'5da3864d5327c6e4e41e6eef12510004b2302f55c3bc61593d7d49c1797739b5'};
-export const PRIVATE_TREE_SHA='ca9ec91bb323567db3decf02e71825201b12057242649b7255d14c0baa8bd136';
+export const PRIVATE_TREE_SHA='ff7f0c444fe58e774f447f37bdc286a90a0a2d8fdbae7dda1f879ae5eb1caaa5';
 export const sha=b=>createHash('sha256').update(b).digest('hex');
 export const require=(ok,reason)=>{if(!ok)throw new Error(reason)};
 const same=isDeepStrictEqual;

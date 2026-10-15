@@ -1,6 +1,6 @@
 """Real-output mutations. Every mutation starts from an exact private build copy."""
 from pathlib import Path
-import json,shutil,tempfile,unittest
+import json,re,shutil,tempfile,unittest
 import qa_naju as q
 class TestPrivateOutput(unittest.TestCase):
  @classmethod
@@ -57,4 +57,23 @@ class TestPrivateOutput(unittest.TestCase):
  def test_broken_anchor(self):self.mutate(self.home,lambda s:s.replace('#sources','#missing',1))
  def test_skip_target(self):self.mutate(self.home,lambda s:s.replace('href="#main-content"','href="#absent"',1))
  def test_focusability(self):self.mutate(self.home,lambda s:s.replace('tabindex="-1"','tabindex="0"',1))
+ def test_detail_breadcrumb_missing(self):self.mutate(self.detail,lambda s:re.sub(r'<nav class="breadcrumb".*?</nav>','',s,count=1))
+ def test_support_breadcrumb_missing(self):self.mutate(self.support,lambda s:re.sub(r'<nav class="breadcrumb".*?</nav>','',s,count=1))
+ def test_breadcrumb_hidden(self):self.mutate(self.detail,lambda s:s.replace('class="breadcrumb"','class="breadcrumb" hidden',1))
+ def test_breadcrumb_css_hidden(self):self.mutate(self.detail,lambda s:s.replace('</head>','<style>.breadcrumb{display:none}</style></head>'))
+ def test_breadcrumb_wrong_parent(self):self.mutate(self.detail,lambda s:s.replace('href="/regions/"','href="/"',1))
+ def test_breadcrumb_self_parent(self):self.mutate(self.detail,lambda s:s.replace('href="/regions/"','href="'+self.c['detail']['proposedPath']+'"',1))
+ def test_breadcrumb_unreviewed_label(self):self.mutate(self.detail,lambda s:s.replace(self.c['support']['h1'],'나주 전체 장례식장',1))
+ def test_breadcrumb_wrong_aria_label(self):self.mutate(self.detail,lambda s:s.replace('aria-label="'+self.c['support']['h1']+'"','aria-label="주요 메뉴"',1))
+ def test_breadcrumb_current_missing(self):self.mutate(self.detail,lambda s:s.replace('aria-current="page"','data-not-current="page"',1))
+ def test_breadcrumb_current_wrong(self):self.mutate(self.support,lambda s:s.replace('aria-current="page"','aria-current="step"',1))
+ def test_breadcrumb_current_link(self):self.mutate(self.detail,lambda s:s.replace('<span aria-current="page">'+self.c['detail']['h1']+'</span>','<a aria-current="page" href="'+self.c['detail']['proposedPath']+'">'+self.c['detail']['h1']+'</a>',1))
+ def test_breadcrumb_current_hidden(self):self.mutate(self.detail,lambda s:s.replace('aria-current="page"','aria-current="page" style="opacity:0"',1))
+ def test_breadcrumb_separator_exposed(self):self.mutate(self.detail,lambda s:s.replace('aria-hidden="true">›','aria-hidden="false">›',1))
+ def test_breadcrumb_duplicate(self):self.mutate(self.detail,lambda s:re.sub(r'(<nav class="breadcrumb".*?</nav>)',r'\1\1',s,count=1))
+ def test_breadcrumb_after_article(self):
+  def move(s):
+   crumb=re.search(r'<nav class="breadcrumb".*?</nav>',s).group();return s.replace(crumb,'',1).replace('</main>',crumb+'</main>',1)
+  self.mutate(self.detail,move)
+ def test_support_kept_out_main_menu(self):self.mutate(self.home,lambda s:s.replace('<nav class="desktop-navigation" aria-label="주요 메뉴">','<nav class="desktop-navigation" aria-label="주요 메뉴"><a href="/regions/">'+self.c['support']['h1']+'</a>',1))
 if __name__=='__main__':unittest.main(verbosity=2)

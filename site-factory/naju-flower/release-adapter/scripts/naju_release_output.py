@@ -8,7 +8,7 @@ import os
 import re
 import xml.etree.ElementTree as ET
 
-EQUIVALENCE_SHA='6bdb2597b348a6224d98ae13f2bb0d3916fd32cd839a13d18c7e01f59f98497a'
+EQUIVALENCE_SHA='b694b114c305500967a1752b5a0a70c5d4922b2d6aa21c2924a7488f0b57610f'
 EQUIVALENCE_PATH=Path(__file__).resolve().parents[1]/'release/preview-equivalence.json'
 
 ORIGIN = 'https://naju.fwith.kr'
