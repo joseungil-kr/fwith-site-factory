@@ -1,0 +1,6 @@
+---
+import CopyPage from '../components/CopyPage.astro';
+import {pages} from '../lib/yeosu-runtime.mjs';
+const page=pages.find((p:any)=>p.id==='home');
+---
+<CopyPage page={page}/>
