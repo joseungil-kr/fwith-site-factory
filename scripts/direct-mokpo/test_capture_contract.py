@@ -13,6 +13,8 @@ import json
 from pathlib import Path
 import sys
 import tempfile
+import subprocess
+import shlex
 import types
 import unittest
 from unittest.mock import patch
@@ -143,6 +145,31 @@ class PureHelpers(unittest.TestCase):
         for key in ('CLOUDFLARE_API_TOKEN', 'CF_API_TOKEN', 'AWS_ACCESS_KEY_ID', 'VERCEL_TOKEN', 'NETLIFY_AUTH_TOKEN'):
             with self.assertRaisesRegex(RuntimeError, 'provider_credentials_forbidden'):
                 CAP.reject_provider_credentials({key: 'test-value'})
+
+    def test_workflow_capture_controller_environment_is_empty_then_allowlisted(self):
+        workflow = (HERE.parents[1] / '.github/workflows/mokpo-production-build-only.yml').read_text()
+        section = workflow.split('      - name: Inspect production artifact on runner loopback only\n', 1)[1].split('      - name:', 1)[0]
+        command = section.split('          env -i ', 1)[1].split('            python3 control/scripts/direct-mokpo/production_capture.py', 1)[0]
+        # Execute the exact shell environment prefix, replacing only the capture
+        # program with a no-launch reader. Values are synthetic and never secrets.
+        command = 'env -i ' + command + 'python3 -c ' + shlex.quote('import os,json;print(json.dumps(dict(os.environ)))')
+        supplied = {'PATH': os.environ['PATH'], 'HOME': '/tmp/mokpo-capture-test-home',
+            'SITE_RELEASE_MODE': 'production', 'SITE_INDEXABLE': 'true', 'SITE_URL': CAP.ORIGIN,
+            'SITE_FACTORY_REVISION': REVISION, 'SITE_RELEASE_BINDING_PATH': '/tmp/mokpo-binding.json',
+            'SITE_RELEASE_BINDING_SHA256': 'b' * 64,
+            'CLOUDFLARE_API_TOKEN': 'synthetic', 'AZURE_HTTP_USER_AGENT': 'synthetic',
+            'AWS_ACCESS_KEY_ID': 'synthetic', 'GITHUB_TOKEN': 'synthetic',
+            'NODE_OPTIONS': '--require=synthetic', 'LD_PRELOAD': '', 'HTTPS_PROXY': 'synthetic'}
+        result = subprocess.run(['bash', '-c', command], env=supplied, capture_output=True, text=True, check=True)
+        actual = json.loads(result.stdout)
+        essentials = {'PATH', 'HOME', 'LANG', 'PYTHONDONTWRITEBYTECODE', 'ASTRO_TELEMETRY_DISABLED'}
+        bindings = {k for k in supplied if k.startswith('SITE_')}
+        # Python may add LC_CTYPE during locale coercion on minimal systems.
+        self.assertLessEqual(set(actual), essentials | bindings | {'LC_CTYPE'})
+        self.assertTrue(essentials | bindings <= set(actual))
+        self.assertEqual({k: actual[k] for k in bindings}, {k: supplied[k] for k in bindings})
+        CAP.reject_provider_credentials(actual)
+        self.assertIn('reject_provider_credentials(os.environ)', SOURCE)
 
     def test_frozen_page_metadata_denominators(self):
         for route in CAP.ROUTES:
