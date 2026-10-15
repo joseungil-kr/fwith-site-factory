@@ -33,6 +33,30 @@ class OutputTests(unittest.TestCase):
  def test_global_noindex(self):(self.root/'_headers').write_text('/*\n X-Robots-Tag: noindex\n');self.reject()
  def test_header_refresh(self):(self.root/'_headers').write_text('/*\n Refresh: 0;url=https://wrong.invalid\n');self.reject()
  def test_header_extra(self):(self.root/'_headers').write_text('/*\n X-Content-Type-Options: nosniff\n');self.reject()
+ def test_twitter_missing_duplicate_and_wrong(self):
+  for name in ['index.html','regions/index.html','regions/hankook-hospital-funeral-wreath/index.html']:
+   path=self.root/name;original=path.read_text()
+   for key in ['card','title','description','image','image:alt']:
+    match=re.search(r'<meta name="twitter:'+re.escape(key)+r'" content="[^"]*">',original);self.assertIsNotNone(match)
+    for variant in ['',match.group()*2,'<meta name="twitter:'+key+'" content="wrong">']:
+     with self.subTest(page=name,key=key,variant=variant):path.write_text(original.replace(match.group(),variant,1));self.reject();path.write_text(original)
+ def test_og_image_missing_duplicate_and_wrong(self):
+  for name in ['index.html','regions/index.html','regions/hankook-hospital-funeral-wreath/index.html']:
+   path=self.root/name;original=path.read_text()
+   for key in ['image','image:alt']:
+    match=re.search(r'<meta property="og:'+re.escape(key)+r'" content="[^"]*">',original);self.assertIsNotNone(match)
+    for variant in ['',match.group()*2,'<meta property="og:'+key+'" content="wrong">']:
+     with self.subTest(page=name,key=key,variant=variant):path.write_text(original.replace(match.group(),variant,1));self.reject();path.write_text(original)
+ def test_social_attribute_and_account_injection(self):
+  path=self.root/'index.html';original=path.read_text()
+  variants=[original.replace('name="twitter:card"','property="twitter:card"'),original.replace('name="twitter:card"','name="twitter:card" property="other"'),original.replace('property="og:image"','name="og:image"'),original.replace('</head>','<meta name="twitter:site" content="@invented"></head>'),original.replace('</head>','<meta name="twitter:site" property="other" content="@invented"></head>')]
+  for i,text in enumerate(variants):
+   with self.subTest(variant=i):path.write_text(text);self.reject();path.write_text(original)
+ def test_social_image_foreign_relative_or_missing(self):
+  p=self.root/'index.html';original=p.read_text()
+  for image in ['https://wrong.invalid/images/products/B201.jpg','/images/products/B201.jpg','']:
+   with self.subTest(image=image):p.write_text(original.replace(o.ORIGIN+o.SOCIAL_IMAGE_PATH,image));self.reject();p.write_text(original)
+ def test_404_twitter_forbidden(self):self.edit('404.html','</head>','<meta name="twitter:card" content="summary"></head>');self.reject()
  def test_proof_bytes(self):(self.root/o.PROOF['path'].lstrip('/')).write_text('altered\n');self.reject()
  def test_symlink(self):
   p=self.root/'favicon.svg';p.unlink();p.symlink_to(self.root/'robots.txt');self.reject()
