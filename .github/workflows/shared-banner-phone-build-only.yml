@@ -15,7 +15,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: ${{ github.event_name == 'issues' && fromJSON(github.event.issue.body).region || inputs.region }}-direct-public-release
+  group: ${{ github.event_name == 'issues' && github.event.issue.title == '[REGIONAL-BANNER-BUILD]' && fromJSON(github.event.issue.body).region || inputs.region }}-direct-public-release
   cancel-in-progress: false
 jobs:
   build_only:
