@@ -1,0 +1,113 @@
+{
+  "status": "PLANNED_NOT_IMPLEMENTED",
+  "region": {
+    "name": "동구",
+    "officialCode": "12210",
+    "legalCode": "1221000000",
+    "officialParent": "전남광주통합특별시",
+    "customerQueryName": "광주 동구",
+    "nationalOrder": 31
+  },
+  "queryResearch": "evidence/research/PURCHASE-INTENT-PLAN.ko.md; evidence/research/search-observations.json",
+  "measuredSearchVolume": null,
+  "measuredSearchRanking": null,
+  "pages": [
+    {
+      "pageId": "home",
+      "role": "REGION_SERVICE_LANDING",
+      "primaryKeyword": "광주 동구 근조화환",
+      "secondaryKeywords": [
+        "광주 동구 화환 가격",
+        "광주 동구 근조화환 상담"
+      ],
+      "intentKey": "donggu-12210:condolence-wreath:consultation-entry",
+      "queryClass": "core-commercial",
+      "queryPriority": "지역 문의 진입과 한 실제 시설 상담 안내의 발견",
+      "expectedDecision": "상품 기본가 범위를 알고 시설 상세 또는 전화 상담으로 이동",
+      "nextActions": [
+        "detail",
+        "tel:18440644"
+      ]
+    },
+    {
+      "pageId": "detail",
+      "role": "PLACE_LANDING",
+      "primaryKeyword": "조선대학교병원 장례식장 근조화환",
+      "secondaryKeywords": [
+        "조선대병원 장례식장 화환 가격",
+        "조대병원 근조화환 주문",
+        "조선대학교병원 장례식장 리본 문구"
+      ],
+      "keywordCluster": [
+        "조선대병원 장례식장 화환",
+        "조대병원 장례식장 화환",
+        "조선대학교병원장례식장 근조화환"
+      ],
+      "intentKey": "chosun-hospital-funeral-365:condolence-wreath:product-and-order-consultation",
+      "queryClass": "local-commercial",
+      "queryPriority": "시설 식별은 공식자료로 하되 현행 운영·반입·시간을 확정하지 않는 구매상담",
+      "expectedDecision": "4SKU를 예산/사진으로 비교하고 미정 배송비·해당 주문 전달 가능 여부를 상담. 리본과 변경조건까지 한 문서에서 해결.",
+      "nextActions": [
+        "https://fwith.co.kr/shop/item.php?it_id=B201",
+        "https://fwith.co.kr/shop/item.php?it_id=B203",
+        "https://fwith.co.kr/shop/item.php?it_id=B205",
+        "https://fwith.co.kr/shop/item.php?it_id=B060",
+        "tel:18440644"
+      ]
+    },
+    {
+      "pageId": "support",
+      "role": "SUPPORT_NAVIGATION",
+      "primaryKeyword": null,
+      "queryClass": null,
+      "intentKey": null,
+      "noindex": true,
+      "reason": "자식 1개. 별도 검색 의도나 핵심허브 완성을 발명하지 않음.",
+      "nextActions": [
+        "detail"
+      ]
+    },
+    {
+      "pageId": "notFound",
+      "role": "TECHNICAL_404",
+      "primaryKeyword": null,
+      "queryClass": null,
+      "intentKey": null,
+      "noindex": true,
+      "reason": "오류 복구 전용. 공개 콘텐츠로 링크하지 않음.",
+      "nextActions": [
+        "home"
+      ]
+    }
+  ],
+  "titleAlignmentReview": {
+    "status": "PENDING_INDEPENDENT_QUALITATIVE_REVIEW",
+    "rubric": [
+      "Title/H1/첫120~180자에 시설·근조화환·상담 의도 정렬",
+      "Title/summary/첫답변 독립 역할",
+      "현행운영·당일가능·무료배송 보장 금지",
+      "상품별 목적지와 전화상담 실질적 다음 행동",
+      "홈과 상세 의도 분리, 동의어는 상세 한 URL"
+    ],
+    "selfAssignedScore": null
+  },
+  "sourceLevels": {
+    "facilityIdentity": "official_government_source + official_university_map",
+    "productPricesAndPhotos": "official_business_source",
+    "shippingFinalTotal": "unknown",
+    "ribbonExamples": "editorial_suggestion",
+    "currentOperationAndEntry": "unknown",
+    "competitorServiceClaims": "research-only; not adopted"
+  },
+  "humanChecksRequiredBeforeClaiming": [
+    "현재 시설 운영",
+    "해당 빈소 반입/수령과 전달 일정",
+    "동구 적용 배송비와 최종금액",
+    "제작완료/상품출고후 정책의 해당 주문 적용",
+    "실제 전화연결/주문/재고/배송"
+  ],
+  "mandatoryInputQuestionForThisDraft": null,
+  "overlapReview": "body-count-and-overlap.json; lexical scores do not prove semantic originality",
+  "copySHA256": "9f4643d1aa73945983497c953296716bbe0449ce93960a1a3427a6a6933d7687",
+  "renderPlanSHA256": "15667a76349c650f4bdc9974bb892f68ea8823a44f07b44365a1597a19a0b36c"
+}
