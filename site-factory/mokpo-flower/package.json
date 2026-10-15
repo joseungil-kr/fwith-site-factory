@@ -1,13 +1,4 @@
 {
-  "name": "flower-direct-static-mokpo-private",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "typecheck": "astro check",
-    "build": "node scripts/verify_reuse_provenance.mjs && node scripts/assert_preview_boundary.mjs && astro check && astro build && python3 scripts/qa_mokpo.py",
-    "test": "node scripts/verify_reuse_provenance.mjs && node --test tests/*.test.mjs && python3 scripts/test_mokpo.py",
-    "qa": "python3 scripts/qa_mokpo.py"
-  },
   "dependencies": {
     "@astrojs/sitemap": "^3.0.0",
     "astro": "^7.3.5"
@@ -15,5 +6,16 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.0",
     "typescript": "^5.9.0"
-  }
+  },
+  "name": "flower-direct-static-mokpo-private",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build_mokpo_release.mjs",
+    "build:private": "node scripts/verify_reuse_provenance.mjs && node scripts/assert_preview_boundary.mjs && astro check && astro build && python3 scripts/qa_mokpo.py",
+    "qa": "python3 scripts/qa_mokpo.py",
+    "test": "node scripts/verify_reuse_provenance.mjs && node --test tests/*.test.mjs && python3 scripts/test_mokpo.py",
+    "test:production": "node --test release-tests/*.test.mjs && python3 scripts/test_mokpo_release_output.py",
+    "typecheck": "astro check"
+  },
+  "type": "module"
 }
