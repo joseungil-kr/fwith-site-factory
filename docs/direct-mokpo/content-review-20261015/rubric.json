@@ -1,0 +1,243 @@
+{
+  "schema": "mokpo-content-release-evidence-rubric/v1",
+  "createdUTC": "2026-10-15T04:29:44.576311+00:00",
+  "status": "POST_COPY_INDEPENDENT_REVIEW_RUBRIC_NOT_A_PREWRITING_FREEZE",
+  "inputSetSHA256": "8fd964b6be8830b0afc1aeefcb0371de92eeae00a5fde20ab5708648bd34c3b2",
+  "notRankingFormula": true,
+  "contractFacts": {
+    "Blueprint10": "Each public candidate SEO>=90/GEO>=85/AEO>=90 plus source/truth/collision/inbound/parent/technical gates. Numeric weighting formula is not supplied by the retained contracts.",
+    "A04": "Each primary title_alignment_score>=90; exact evidence and reproducible rubric; arbitrary author self-score insufficient.",
+    "v12_17": "All named content, CTA, image and architecture/HTML/sitemap gates remain mandatory. A score cannot offset one."
+  },
+  "reuse": {
+    "path": "gangdong-purchase-plan-local-20261014/a04-rubric.draft.json",
+    "sha256": "32f3f08b088492d461ffcfc11638801336f1ab855b869775b8f55456056f956a",
+    "retained": "Title40/H125/first-answer35, all-or-zero weights; NFC/whitespace/codepoint rules; per-criterion evidence; LCS summary comparison.",
+    "adaptations": [
+      "No Gangdong/wedding/floor/hall rules are imported.",
+      "Previous Gangdong planning-only before-copy freeze is not falsely asserted for this already-written Mokpo draft.",
+      "Previous exact end<=floor(titleLength/2) proxy is not imported. The retained v1.2 rule says core query in the title front; the complete Mokpo query is the literal prefix. Detail query ends at16 of31 codepoints. Padding the title to game the proxy would not improve alignment. The interpretation is explicit and does not change the retained contract."
+    ]
+  },
+  "normalization": "HTML entity decode; Unicode NFC; all whitespace runs to one ASCII space; trim. Retain punctuation and count Unicode codepoints. Exact original strings and first120/first180 are stored in static-observations.json.",
+  "scoring": "Only directly inspected evidence earns full criterion weight; FAIL earns0; untested REQUIRED earns0 verified points and remains PENDING. Never rebase denominator to tested-only criteria or pass by averaging pages. Verified points are review coverage under this disclosed internal rubric, not Google/Naver/LLM performance.",
+  "titleAlignment": {
+    "max": 100,
+    "threshold": 90,
+    "criteria": [
+      {
+        "id": "T01",
+        "weight": 10,
+        "field": "title",
+        "passCondition": "Contains allowed geography token"
+      },
+      {
+        "id": "T02",
+        "weight": 10,
+        "field": "title",
+        "passCondition": "Contains the frozen exact service combination 근조화환."
+      },
+      {
+        "id": "T03",
+        "weight": 10,
+        "field": "title",
+        "passCondition": "Contains allowed purchase decision token, not unrelated informational intent"
+      },
+      {
+        "id": "T04",
+        "weight": 10,
+        "field": "title",
+        "passCondition": "Title begins at codepoint 0 with the complete primary query, without promotional modifiers between geography/facility and service. It precedes the purchase explanation and brand. For any later non-prefix proposal, fail this criterion pending review."
+      },
+      {
+        "id": "H01",
+        "weight": 10,
+        "field": "h1",
+        "passCondition": "Contains same allowed geography"
+      },
+      {
+        "id": "H02",
+        "weight": 10,
+        "field": "h1",
+        "passCondition": "Contains same allowed service; no scope drift"
+      },
+      {
+        "id": "H03",
+        "weight": 5,
+        "field": "h1",
+        "passCondition": "Continues same buyer decision as title and intentKey"
+      },
+      {
+        "id": "F01",
+        "weight": 5,
+        "field": "first180",
+        "passCondition": "Contains explicit same geography and service; synonyms limited to frozen target map"
+      },
+      {
+        "id": "F02",
+        "weight": 10,
+        "field": "first180",
+        "passCondition": "Directly answers target buyer decision; not only greeting/question/checklist"
+      },
+      {
+        "id": "F03",
+        "weight": 5,
+        "field": "first180",
+        "passCondition": "States a supported actual-product selection benefit (photo/basic-price comparison or bounded order consultation), not invented quality/fulfillment"
+      },
+      {
+        "id": "F04",
+        "weight": 5,
+        "field": "first180",
+        "passCondition": "If price appears it is identified as basic price and exact supported amount/range; if no price, uses another precise supported selection fact"
+      },
+      {
+        "id": "F05",
+        "weight": 5,
+        "field": "first180",
+        "passCondition": "Does not imply guaranteed venue acceptance/arrival; any immediately necessary qualifier of a stated claim is present locally"
+      },
+      {
+        "id": "F06",
+        "weight": 5,
+        "field": "first180",
+        "passCondition": "Provider voice offers evidenced selection/order help and a relevant next step without commanding/repeated warnings"
+      }
+    ],
+    "scope": "Source plus compiled HTML text, not visibility in a running browser.",
+    "hardGates": [
+      "Wrong geography/family/intent",
+      "Unsupported factual/price/fulfillment claim",
+      "Missing directly supported first answer within180 with core answer beginning within120",
+      "Title/H1/firstAnswer drift",
+      "Hidden or skipped earlier static lead",
+      "Same-intent duplicate URL",
+      "Unbound source/changed text"
+    ]
+  },
+  "SEO": {
+    "threshold": 90,
+    "criteria": [
+      {
+        "id": "S01",
+        "weight": 10,
+        "criterion": "One defined primary query/intent and traceable query evidence; missing keyword metadata explicitly supplemented and hash-bound in this review."
+      },
+      {
+        "id": "S02",
+        "weight": 15,
+        "criterion": "A04 static title/H1/firstAnswer >=90 and no hard alignment failure."
+      },
+      {
+        "id": "S03",
+        "weight": 10,
+        "criterion": "Unique title/meta, one H1, coherent H2/H3; actual used summary passes separation rules."
+      },
+      {
+        "id": "S04",
+        "weight": 10,
+        "criterion": "Actual local/vertical facts and supported catalog; no invented claim."
+      },
+      {
+        "id": "S05",
+        "weight": 10,
+        "criterion": "Real internal targets/inbound/breadcrumb and distinct home/detail buyer decisions."
+      },
+      {
+        "id": "S06",
+        "weight": 10,
+        "criterion": "Provider-led full-copy information and real HTML phone/SKU action links, not image-only actions."
+      },
+      {
+        "id": "S07",
+        "weight": 5,
+        "criterion": "Local assets exist; descriptive alt/sample labeling; exact approved banner exception."
+      },
+      {
+        "id": "S08",
+        "weight": 10,
+        "criterion": "Production canonical/robots/OG/Twitter/sitemap/map agree for approved origin."
+      },
+      {
+        "id": "S09",
+        "weight": 10,
+        "criterion": "Actual production HTTP200/404 and correct resource/CTA endpoint responses verified against this output."
+      },
+      {
+        "id": "S10",
+        "weight": 10,
+        "criterion": "Browser mobile/desktop readability, computed FAQ visibility and action usability verified."
+      }
+    ]
+  },
+  "GEO": {
+    "threshold": 85,
+    "meaning": "Internal source-grounded, attributable document quality for generative use; not a measurement of AI citation/ranking and not a claim that GEO is only geographic optimization.",
+    "criteria": [
+      {
+        "id": "G01",
+        "weight": 20,
+        "criterion": "Provider, venue and service entities unambiguous; provider contact distinguished from facility contacts."
+      },
+      {
+        "id": "G02",
+        "weight": 25,
+        "criterion": "Every material venue/catalog/policy assertion traced to inspected primary-source content; original dates and source level retained."
+      },
+      {
+        "id": "G03",
+        "weight": 20,
+        "criterion": "Useful local/order content, not place-name substitution or decorative local history."
+      },
+      {
+        "id": "G04",
+        "weight": 20,
+        "criterion": "Conditions and uncertainty explicit; prices not total, sample not exact fulfillment, no fake delivery/refund/affiliation proof."
+      },
+      {
+        "id": "G05",
+        "weight": 15,
+        "criterion": "Readable semantic source/answer sections and meaningful, non-conflicting page roles; no invented review/schema evidence."
+      }
+    ]
+  },
+  "AEO": {
+    "threshold": 90,
+    "criteria": [
+      {
+        "id": "A01",
+        "weight": 20,
+        "criterion": "Within180 codepoints first answer states actual relevant offer and buyer step; core answer begins within120."
+      },
+      {
+        "id": "A02",
+        "weight": 25,
+        "criterion": "Role-specific questions answered: home discovery/price/contact, detail venue/product/price/ribbon/order/change/collection; no word-count filler."
+      },
+      {
+        "id": "A03",
+        "weight": 15,
+        "criterion": "Answer facts and conditional policies have primary evidence without overclaiming."
+      },
+      {
+        "id": "A04",
+        "weight": 15,
+        "criterion": "Main HTML contains complete answers with sensible headings, and each specified FAQ appears once; home has no quota FAQ requirement."
+      },
+      {
+        "id": "A05",
+        "weight": 15,
+        "criterion": "Actionable next step uses exact seller phone or SKU destination and helpful provider tone."
+      },
+      {
+        "id": "A06",
+        "weight": 10,
+        "criterion": "Actual browser computed visibility/readability confirms static answer/FAQ/CTA extraction."
+      }
+    ]
+  },
+  "notApplicablePages": {
+    "regions-support": "One noindex support child only, no independent query; content/link/robots and used article card checked, not scored as a third primary.",
+    "not-found": "Technical error recovery, not scored as content/article; real HTTP404 remains mandatory technical verification."
+  }
+}
