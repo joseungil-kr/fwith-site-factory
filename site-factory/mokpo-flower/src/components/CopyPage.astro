@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SharedFlowerBanner from './SharedFlowerBanner.astro';
+import ProductCards from './ProductCards.astro';
+import DraftBlocks from './DraftBlocks.astro';
+import {REVIEWED_SPEC_SHA256,spec} from '../lib/mokpo-runtime.mjs';
+const {page:p}=Astro.props;
+const d=p.draft;
+const isHome=p.id==='home';
+const bannerAfter=(heading:string)=>isHome?(heading==='예산별 근조 상품'?'budget':heading==='주문이 처음이어도 편하게 문의해 주세요'?'consultation':null):(heading==='예산에 맞는 근조화환'?'budget':heading==='자주 묻는 질문'?'consultation':null);
+---
+<BaseLayout page={p}><article data-page-id={p.id} data-page-role={p.role} data-copy-sha={REVIEWED_SPEC_SHA256}>
+{p.breadcrumbVisible&&<nav class="breadcrumb" aria-label="현재 위치">{p.breadcrumbs.map((b:any,i:number)=><>{i>0&&<span aria-hidden="true">›</span>}{b.href?<a href={b.href}>{b.label}</a>:<span aria-current="page">{b.label}</span>}</>)}</nav>}
+<section id="opening" class="category-hero"><h1>{p.content.h1}</h1>
+{d?<><p data-first-answer data-reviewed-paragraph>{d.opening[0].text}</p><DraftBlocks blocks={d.opening.slice(1)}/>{p.article&&<div class="actions"><a class="btn primary" href="tel:18440644">{p.ctas[0].label}</a></div>}</>:<p data-first-answer>{p.content.firstAnswer}</p>}
+</section>
+{d&&<SharedFlowerBanner variant="message"/>}
+{d?.sections.map((s:any,i:number)=><>
+<section id={s.heading==='출처 및 확인 정보'?'sources':s.heading==='자주 묻는 질문'?'faq':`section-${i+1}`} class={s.heading==='출처 및 확인 정보'?'source-card':s.heading==='자주 묻는 질문'?'faq':'content-card copy-section'} data-source-references={s.heading==='출처 및 확인 정보'||undefined} data-visible-faq={s.heading==='자주 묻는 질문'||undefined}>
+<h2>{s.heading}</h2>
+{s.heading==='자주 묻는 질문'?<>{spec.faqs.map(f=><div data-faq-entry><h3 data-faq-question>{f.question}</h3><p data-faq-answer data-reviewed-paragraph>{f.answer}</p></div>)}<DraftBlocks blocks={s.blocks.filter((b:any)=>b.kind==='action')}/></>:<DraftBlocks blocks={s.blocks}/>}
+{(s.heading==='예산별 근조 상품'||s.heading==='예산에 맞는 근조화환')&&<ProductCards/>}
+{s.heading==='출처 및 확인 정보'&&<div class="copy-links">{p.sourceDisplay.map((source:any)=><a href={source.href}>{source.label}</a>)}</div>}
+</section>
+{bannerAfter(s.heading)&&<SharedFlowerBanner variant={bannerAfter(s.heading)}/>}
+</>)}
+{p.id==='regions-support'&&<div class="card-grid journey-grid" data-purchase-cards>{p.contentCards.map((card:any)=><article class="page-card" data-content-card><h2>{card.title}</h2><p>{card.summary}</p><a href={card.href}>{card.ctaLabel}</a></article>)}</div>}
+{p.id==='not-found'&&<div class="actions final-action"><a class="btn dark" href={p.ctas[0].href}>{p.ctas[0].label}</a></div>}
+</article></BaseLayout>
