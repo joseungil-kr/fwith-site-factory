@@ -1,0 +1,1027 @@
+{
+  "A04AlignmentAssessment": {
+    "actualBrowserVisibility": "VERIFIED_ACTUAL_BOUND_PIXELS_AND_DOM",
+    "actualHTMLStatus": "VERIFIED_ACTUAL_ARTIFACT",
+    "boundary": "Original Dong-gu A04 scores/reasons unchanged; not measured search performance.",
+    "coreAnswerStartsAtCodepoint": 0,
+    "criteria": [
+      {
+        "field": "title",
+        "id": "T01",
+        "passCondition": "Contains allowed geography token",
+        "points": 10,
+        "reason": "Title에 대상 조선대학교병원 장례식장가 명시되어 있다.",
+        "status": "SATISFIED_IN_MANUSCRIPT",
+        "weight": 10
+      },
+      {
+        "field": "title",
+        "id": "T02",
+        "passCondition": "Contains exact service combination 근조화환 in this retrospective target map.",
+        "points": 10,
+        "reason": "Title에 근조화환이 명시되어 있다.",
+        "status": "SATISFIED_IN_MANUSCRIPT",
+        "weight": 10
+      },
+      {
+        "field": "title",
+        "id": "T03",
+        "passCondition": "Contains allowed purchase decision token, not unrelated informational intent",
+        "points": 10,
+        "reason": "Title에 가격/주문 상담 구매의도가 있다.",
+        "status": "SATISFIED_IN_MANUSCRIPT",
+        "weight": 10
+      },
+      {
+        "field": "title",
+        "id": "T04",
+        "passCondition": "Title begins at codepoint 0 with the complete primary query, without promotional modifiers between geography/facility and service. It precedes the purchase explanation and brand. For any later non-prefix proposal, fail this criterion pending review.",
+        "points": 10,
+        "reason": "Title은 완전한 primaryKeyword로 시작한다.",
+        "status": "SATISFIED_IN_MANUSCRIPT",
+        "weight": 10
+      },
+      {
+        "field": "h1",
+        "id": "H01",
+        "passCondition": "Contains same allowed geography",
+        "points": 10,
+        "reason": "H1에 동일 대상 조선대학교병원 장례식장가 있다.",
+        "status": "SATISFIED_IN_MANUSCRIPT",
+        "weight": 10
+      },
+      {
+        "field": "h1",
+        "id": "H02",
+        "passCondition": "Contains same allowed service; no scope drift",
+        "points": 10,
+        "reason": "H1에 동일한 근조화환이 있다.",
+        "status": "SATISFIED_IN_MANUSCRIPT",
+        "weight": 10
+      },
+      {
+        "field": "h1",
+        "id": "H03",
+        "passCondition": "Continues same buyer decision as title and intentKey",
+        "points": 5,
+        "reason": "상세 H1은 가격과 주문 상담을 명시한다.",
+        "status": "SATISFIED_IN_MANUSCRIPT",
+        "weight": 5
+      },
+      {
+        "field": "first180",
+        "id": "F01",
+        "passCondition": "Contains explicit same geography/service. Allowed target synonyms are fixed in this retrospective supplement, not asserted to be a prewriting freeze.",
+        "points": 5,
+        "reason": "첫180자 안에 동일 대상과 근조화환이 명시된다.",
+        "status": "SATISFIED_IN_MANUSCRIPT",
+        "weight": 5
+      },
+      {
+        "field": "first180",
+        "id": "F02",
+        "passCondition": "Directly answers target buyer decision; not only greeting/question/checklist",
+        "points": 10,
+        "reason": "첫문단은 실제 상품·사진·가격 또는 리본 상담을 직접 답하며 인사말만으로 끝나지 않는다.",
+        "status": "SATISFIED_IN_MANUSCRIPT",
+        "weight": 10
+      },
+      {
+        "field": "first180",
+        "id": "F03",
+        "passCondition": "States a supported actual-product selection benefit (photo/basic-price comparison or bounded order consultation), not invented quality/fulfillment",
+        "points": 5,
+        "reason": "공식 4개 SKU와 확인된 상담 범위 안의 상품선택 도움이다. 품질·배송실적을 발명하지 않는다.",
+        "status": "SATISFIED_IN_MANUSCRIPT",
+        "weight": 5
+      },
+      {
+        "field": "first180",
+        "id": "F04",
+        "passCondition": "If price appears it is identified as basic price and exact supported amount/range; if no price, uses another precise supported selection fact",
+        "points": 5,
+        "reason": "상세는 기본가59,000~149,000원으로 구분한다. 홈 첫문단은 금액을 만들지 않고 가격/사진/리본의 상담 내용을 특정한다.",
+        "status": "SATISFIED_IN_MANUSCRIPT",
+        "weight": 5
+      },
+      {
+        "field": "first180",
+        "id": "F05",
+        "passCondition": "Does not imply guaranteed venue acceptance/arrival; any immediately necessary qualifier of a stated claim is present locally",
+        "points": 5,
+        "reason": "전하려는 고객의 상품상담 의도이며 전달/현재운영 보장이 아니다. 바로 다음 도입에 주문별 반입·수령·일정조건을 둔다.",
+        "status": "SATISFIED_IN_MANUSCRIPT",
+        "weight": 5
+      },
+      {
+        "field": "first180",
+        "id": "F06",
+        "passCondition": "Provider voice offers evidenced selection/order help and a relevant next step without commanding/repeated warnings",
+        "points": 5,
+        "reason": "꽃이랑이 상담·안내하는 제공자 시점이며 고객의 감정을 단정하거나 확인 숙제를 나열하지 않는다.",
+        "status": "SATISFIED_IN_MANUSCRIPT",
+        "weight": 5
+      }
+    ],
+    "expectedDecision": "4SKU를 예산/사진으로 비교하고 미정 배송비·해당 주문 전달 가능 여부를 상담. 리본과 변경조건까지 한 문서에서 해결.",
+    "first120": "조선대학교병원 장례식장에 조의의 꽃을 전하려는 분께 근조화환 네 가지를 안내합니다. 부고를 접하고 바로 조문하기 어려우실 때에도, 전하고 싶은 인사부터 생각하셔도 좋습니다. 꽃이랑에서 기본가 59,000~149,00",
+    "first180": "조선대학교병원 장례식장에 조의의 꽃을 전하려는 분께 근조화환 네 가지를 안내합니다. 부고를 접하고 바로 조문하기 어려우실 때에도, 전하고 싶은 인사부터 생각하셔도 좋습니다. 꽃이랑에서 기본가 59,000~149,000원의 상품과 리본 문구를 상담해 드립니다.",
+    "firstAnswer": "조선대학교병원 장례식장에 조의의 꽃을 전하려는 분께 근조화환 네 가지를 안내합니다. 부고를 접하고 바로 조문하기 어려우실 때에도, 전하고 싶은 인사부터 생각하셔도 좋습니다. 꽃이랑에서 기본가 59,000~149,000원의 상품과 리본 문구를 상담해 드립니다.",
+    "h1": "조선대학교병원 장례식장 근조화환 가격과 주문 상담",
+    "intentKey": "chosun-hospital-funeral-365:condolence-wreath:product-and-order-consultation",
+    "keywordCluster": [
+      "조선대병원 장례식장 화환",
+      "조대병원 장례식장 화환",
+      "조선대학교병원장례식장 근조화환"
+    ],
+    "maximum": 100,
+    "nextActions": [
+      "https://fwith.co.kr/shop/item.php?it_id=B201",
+      "https://fwith.co.kr/shop/item.php?it_id=B203",
+      "https://fwith.co.kr/shop/item.php?it_id=B205",
+      "https://fwith.co.kr/shop/item.php?it_id=B060",
+      "tel:18440644"
+    ],
+    "pageId": "detail",
+    "primaryKeyword": "조선대학교병원 장례식장 근조화환",
+    "queryClass": "local-commercial",
+    "queryEvidence": "Preserved research query observations and original competitor pages; same-day research source-evidence SHA de8b8bfc… . This explicit alignment supplement records review targets, not measured search demand or a retroactive prewriting freeze.",
+    "queryPriority": "시설 식별은 공식자료로 하되 현행 운영·반입·시간을 확정하지 않는 구매상담",
+    "role": "PLACE_LANDING",
+    "scope": "ACTUAL_ARTIFACT_TEXT_AND_PIXEL_ALIGNMENT",
+    "secondaryKeywords": [
+      "조선대병원 장례식장 화환 가격",
+      "조대병원 근조화환 주문",
+      "조선대학교병원 장례식장 리본 문구"
+    ],
+    "threshold": 90,
+    "title": "조선대학교병원 장례식장 근조화환 가격·주문 | 꽃이랑",
+    "title_alignment_score": 100
+  },
+  "artifactDigest": "sha256:6f65795e2742c9c8a169d3965b2ff4c2fe0abf559f0e1502f9f4b24ac7c2889c",
+  "artifactId": "12000563715",
+  "assessmentScope": "bounded-launch",
+  "bindingSha256": "94068d25df55cc62b5e1106dcdd823cc1eaee3dd1d3ea82beb5b068d28fc8b93",
+  "boundedContractSha256": "2f4217d49c3693081387086ce86cfa7e85f83390abb9296fd8c07d0707c5715f",
+  "buildControlSha": "ae183b9fc3b660ea15199dee94213cc513ade488",
+  "buildRunId": "38792477864",
+  "coreHubLaunchStatus": "NOT_ASSESSED",
+  "fullLaunchStatus": "NOT_ASSESSED",
+  "namespace": "gwangju-donggu",
+  "nationalOrder": 31,
+  "officialCode": "12210",
+  "outputEvidence": {
+    "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+    "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+  },
+  "path": "/regions/chosun-hospital-funeral-wreath/",
+  "pixelEvidence": [
+    {
+      "path": "docs/direct-gwangju-donggu/release-review-38792477864/mobile-pixels.json",
+      "sha256": "eb583b2fe66f92d38eaf92d57d9cf5aa286fbc0493c0708a67ebc84cce73a1f0"
+    },
+    {
+      "path": "docs/direct-gwangju-donggu/release-review-38792477864/desktop-pixels.json",
+      "sha256": "5a9be012c347686ac96ee7ff66190aa32f18bcd7b918d8cffc3ad41cb176317a"
+    }
+  ],
+  "publicHttpVerified": false,
+  "region": "donggu",
+  "requiredClauseEvidence": {
+    "path": "docs/direct-gwangju-donggu/release-review-38792477864/bounded-clause-evidence.json",
+    "sha256": "2b8ac5c3756edd49c900f6c4d169be01a7581c327bfc68355132693c9a7fc7b1"
+  },
+  "retainedEvidence": {
+    "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+    "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+  },
+  "retainedManuscriptAssessment": {
+    "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+    "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+  },
+  "reviewedUTC": "2026-10-15T19:27:16.612725+00:00",
+  "reviewer": "Independent Donggu artifact and pixel reviewer",
+  "rubricDefinition": {
+    "content": {
+      "AEO": {
+        "criteria": [
+          {
+            "criterion": "Within180 codepoints first answer states actual relevant offer and buyer step; core answer begins within120.",
+            "id": "A01",
+            "weight": 20
+          },
+          {
+            "criterion": "Role-specific questions answered: home discovery/price/contact, detail venue/product/price/ribbon/order/change/collection; no word-count filler.",
+            "id": "A02",
+            "weight": 25
+          },
+          {
+            "criterion": "Answer facts and conditional policies have primary evidence without overclaiming.",
+            "id": "A03",
+            "weight": 15
+          },
+          {
+            "criterion": "Main HTML contains complete answers with sensible headings, and each specified FAQ appears once; home has no quota FAQ requirement.",
+            "id": "A04",
+            "weight": 15
+          },
+          {
+            "criterion": "Actionable next step uses exact seller phone or SKU destination and helpful provider tone.",
+            "id": "A05",
+            "weight": 15
+          },
+          {
+            "criterion": "Actual browser computed visibility/readability confirms static answer/FAQ/CTA extraction.",
+            "id": "A06",
+            "weight": 10
+          }
+        ],
+        "threshold": 90
+      },
+      "GEO": {
+        "criteria": [
+          {
+            "criterion": "Provider, venue and service entities unambiguous; provider contact distinguished from facility contacts.",
+            "id": "G01",
+            "weight": 20
+          },
+          {
+            "criterion": "Every material venue/catalog/policy assertion traced to inspected primary-source content; original dates and source level retained.",
+            "id": "G02",
+            "weight": 25
+          },
+          {
+            "criterion": "Useful local/order content, not place-name substitution or decorative local history.",
+            "id": "G03",
+            "weight": 20
+          },
+          {
+            "criterion": "Conditions and uncertainty explicit; prices not total, sample not exact fulfillment, no fake delivery/refund/affiliation proof.",
+            "id": "G04",
+            "weight": 20
+          },
+          {
+            "criterion": "Readable semantic source/answer sections and meaningful, non-conflicting page roles; no invented review/schema evidence.",
+            "id": "G05",
+            "weight": 15
+          }
+        ],
+        "meaning": "Internal source-grounded, attributable document quality for generative use; not a measurement of AI citation/ranking and not a claim that GEO is only geographic optimization.",
+        "threshold": 85
+      },
+      "SEO": {
+        "criteria": [
+          {
+            "criterion": "One defined primary query/intent and traceable query evidence; missing keyword metadata explicitly supplemented and hash-bound in this review.",
+            "id": "S01",
+            "weight": 10
+          },
+          {
+            "criterion": "A04 static title/H1/firstAnswer >=90 and no hard alignment failure.",
+            "id": "S02",
+            "weight": 15
+          },
+          {
+            "criterion": "Unique title/meta, one H1, coherent H2/H3; actual used summary passes separation rules.",
+            "id": "S03",
+            "weight": 10
+          },
+          {
+            "criterion": "Actual local/vertical facts and supported catalog; no invented claim.",
+            "id": "S04",
+            "weight": 10
+          },
+          {
+            "criterion": "Real internal targets/inbound/breadcrumb and distinct home/detail buyer decisions.",
+            "id": "S05",
+            "weight": 10
+          },
+          {
+            "criterion": "Provider-led full-copy information and real HTML phone/SKU action links, not image-only actions.",
+            "id": "S06",
+            "weight": 10
+          },
+          {
+            "criterion": "Local assets exist; descriptive alt/sample labeling; exact approved banner exception.",
+            "id": "S07",
+            "weight": 5
+          },
+          {
+            "criterion": "Production canonical/robots/OG/Twitter/sitemap/map agree for approved origin.",
+            "id": "S08",
+            "weight": 10
+          },
+          {
+            "criterion": "Actual production HTTP200/404 and correct resource/CTA endpoint responses verified against this output.",
+            "id": "S09",
+            "weight": 10
+          },
+          {
+            "criterion": "Browser mobile/desktop readability, computed FAQ visibility and action usability verified.",
+            "id": "S10",
+            "weight": 10
+          }
+        ],
+        "threshold": 90
+      },
+      "contractFacts": {
+        "A04": "Each primary title_alignment_score>=90; exact evidence and reproducible rubric; arbitrary author self-score insufficient.",
+        "Blueprint10": "Each public candidate SEO>=90/GEO>=85/AEO>=90 plus source/truth/collision/inbound/parent/technical gates. Numeric weighting formula is not supplied by the retained contracts.",
+        "v12_17": "All named content, CTA, image and architecture/HTML/sitemap gates remain mandatory. A score cannot offset one."
+      },
+      "createdUTC": "2026-10-15T15:30:26.811510+00:00",
+      "definitionReuse": {
+        "earlierRegionalRubricSHA256": "d7b26eeefef5e15e440e493ec0a2a28533a92dd3620376d4a2940cd544634f62",
+        "priorRegionalRubricSHA256": "6973e1100dbd2351dfb48c5b0e39318e98fcb629553ad511b5e038501cece976",
+        "retained": "Same criterion IDs, weights, fixed100 denominators, thresholds, zero-for-pending, exact primary-query prefix interpretation and LCS summary test. No prior regional text or scores imported."
+      },
+      "normalization": "HTML entity decode; Unicode NFC; all whitespace runs to one ASCII space; trim. Retain punctuation and count Unicode codepoints. Exact original strings and first120/first180 are stored in static-observations.json.",
+      "notApplicablePages": {
+        "not-found": "Technical error recovery, not scored as content/article; real HTTP404 remains mandatory technical verification.",
+        "regions-support": "One noindex support child only, no independent query; content/link/robots and used article card checked, not scored as a third primary."
+      },
+      "notRankingFormula": true,
+      "runtimeBoundary": "SEO S08/S09/S10 and AEO A06 remain0/PENDING until exact production artifact, browser and public evidence is reviewed. Numeric threshold never clears a pending mandatory gate.",
+      "schema": "naju-static-bounded-evidence-rubric/v1",
+      "scoreMeaning": "Verified evidence points under this disclosed internal review rubric, not search demand, Google/Naver ranking, AI citation probability, or launch permission.",
+      "scoring": "Only directly inspected evidence earns full criterion weight; FAIL earns0; untested REQUIRED earns0 verified points and remains PENDING. Never rebase denominator to tested-only criteria or pass by averaging pages. Verified points are review coverage under this disclosed internal rubric, not Google/Naver/LLM performance.",
+      "status": "RETROSPECTIVE_STATIC_REVIEW_NOT_PREWRITING_FREEZE",
+      "titleAlignment": {
+        "criteria": [
+          {
+            "field": "title",
+            "id": "T01",
+            "passCondition": "Contains allowed geography token",
+            "weight": 10
+          },
+          {
+            "field": "title",
+            "id": "T02",
+            "passCondition": "Contains exact service combination 근조화환 in this retrospective target map.",
+            "weight": 10
+          },
+          {
+            "field": "title",
+            "id": "T03",
+            "passCondition": "Contains allowed purchase decision token, not unrelated informational intent",
+            "weight": 10
+          },
+          {
+            "field": "title",
+            "id": "T04",
+            "passCondition": "Title begins at codepoint 0 with the complete primary query, without promotional modifiers between geography/facility and service. It precedes the purchase explanation and brand. For any later non-prefix proposal, fail this criterion pending review.",
+            "weight": 10
+          },
+          {
+            "field": "h1",
+            "id": "H01",
+            "passCondition": "Contains same allowed geography",
+            "weight": 10
+          },
+          {
+            "field": "h1",
+            "id": "H02",
+            "passCondition": "Contains same allowed service; no scope drift",
+            "weight": 10
+          },
+          {
+            "field": "h1",
+            "id": "H03",
+            "passCondition": "Continues same buyer decision as title and intentKey",
+            "weight": 5
+          },
+          {
+            "field": "first180",
+            "id": "F01",
+            "passCondition": "Contains explicit same geography/service. Allowed target synonyms are fixed in this retrospective supplement, not asserted to be a prewriting freeze.",
+            "weight": 5
+          },
+          {
+            "field": "first180",
+            "id": "F02",
+            "passCondition": "Directly answers target buyer decision; not only greeting/question/checklist",
+            "weight": 10
+          },
+          {
+            "field": "first180",
+            "id": "F03",
+            "passCondition": "States a supported actual-product selection benefit (photo/basic-price comparison or bounded order consultation), not invented quality/fulfillment",
+            "weight": 5
+          },
+          {
+            "field": "first180",
+            "id": "F04",
+            "passCondition": "If price appears it is identified as basic price and exact supported amount/range; if no price, uses another precise supported selection fact",
+            "weight": 5
+          },
+          {
+            "field": "first180",
+            "id": "F05",
+            "passCondition": "Does not imply guaranteed venue acceptance/arrival; any immediately necessary qualifier of a stated claim is present locally",
+            "weight": 5
+          },
+          {
+            "field": "first180",
+            "id": "F06",
+            "passCondition": "Provider voice offers evidenced selection/order help and a relevant next step without commanding/repeated warnings",
+            "weight": 5
+          }
+        ],
+        "hardGates": [
+          "Wrong geography/family/intent",
+          "Unsupported factual/price/fulfillment claim",
+          "Missing directly supported first answer within180 with core answer beginning within120",
+          "Title/H1/firstAnswer drift",
+          "Hidden or skipped earlier static lead",
+          "Same-intent duplicate URL",
+          "Unbound source/changed text"
+        ],
+        "max": 100,
+        "scope": "Source plus compiled HTML text, not visibility in a running browser.",
+        "threshold": 90
+      }
+    },
+    "definitionOnlyReuse": true,
+    "provenance": "Dong-gu original A04 references Gwangyang definition; that exact Gwangyang file references this fixed100 criterion table. This table is explicitly reused as definition, not represented as an earlier Dong-gu numeric table.",
+    "sha256": "40a863ba589a1e854ba39269f2e02212fe51cbd60d5b2461bf1cd2cbcba2c728"
+  },
+  "schemaVersion": 1,
+  "scoreConstruction": {
+    "newActualEvidencePoints": {
+      "AEO": 10,
+      "GEO": 0,
+      "SEO": 20
+    },
+    "note": "Static subtotal is transparently reconstructed from own Dong-gu original evidence under the unchanged disclosed definition; it is not a historical numeric assessment.",
+    "pendingRequiredPublicS09": 10,
+    "priorNumericDongguFullQualityTableExisted": false,
+    "priorRegionalScoresImported": false,
+    "retainedDongguStaticEvidenceMappedUnderUnchangedRubric": {
+      "AEO": 90,
+      "GEO": 100,
+      "SEO": 70
+    }
+  },
+  "scores": {
+    "AEO": {
+      "allRequiredCriteriaVerified": true,
+      "criteria": [
+        {
+          "criterion": "Within180 codepoints first answer states actual relevant offer and buyer step; core answer begins within120.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "A01",
+          "points": 20,
+          "reason": "Both own firstanswers complete within180, core starts within120, actual data-first-answer nodes exact. Home concise offer and detail product/basicprice/ribbon consultation.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 20
+        },
+        {
+          "criterion": "Role-specific questions answered: home discovery/price/contact, detail venue/product/price/ribbon/order/change/collection; no word-count filler.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "A02",
+          "points": 25,
+          "reason": "Home discovery/price/contact and detail facility/product/price/ribbon/order/change/collection answered in full. Own manuscript revision removes repetitive filler while preserving useful support.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 25
+        },
+        {
+          "criterion": "Answer facts and conditional policies have primary evidence without overclaiming.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "A03",
+          "points": 15,
+          "reason": "Primary records substantiate actual answer claims; currentoperations/admission/delivery/fees not inferred. Exact 상품 출고 후 and production-completed exclusion separately qualify cancellation.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 15
+        },
+        {
+          "criterion": "Main HTML contains complete answers with sensible headings, and each specified FAQ appears once; home has no quota FAQ requirement.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "A04",
+          "points": 15,
+          "reason": "Complete main HTML answers with sensible headings and3specified FAQ each once, no hidden/collapsed content. Home no artificial FAQ quota.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 15
+        },
+        {
+          "criterion": "Actionable next step uses exact seller phone or SKU destination and helpful provider tone.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "A05",
+          "points": 15,
+          "reason": "Exact sellerphone/4SKU destinations and non-coercive patient store-provider tone; no invented emotion or compulsory advance detail.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 15
+        },
+        {
+          "criterion": "Actual browser computed visibility/readability confirms static answer/FAQ/CTA extraction.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/mobile-pixels.json",
+              "sha256": "eb583b2fe66f92d38eaf92d57d9cf5aa286fbc0493c0708a67ebc84cce73a1f0"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/desktop-pixels.json",
+              "sha256": "5a9be012c347686ac96ee7ff66190aa32f18bcd7b918d8cffc3ad41cb176317a"
+            }
+          ],
+          "id": "A06",
+          "points": 10,
+          "reason": "Actual firstanswer/FAQ3/CTA pixels plus runtime computedvisibility agree with exact static extraction at3widths. Fullpage/cross-width coverage resolves crop overlay gaps; external actions not inferred.",
+          "status": "PASS_ACTUAL_ARTIFACT",
+          "weight": 10
+        }
+      ],
+      "finalProductionScore": 100,
+      "maximum": 100,
+      "meaning": "Evidence coverage under disclosed fixed rubric, not ranking/citation/conversion/launch permission.",
+      "threshold": 90,
+      "thresholdMetForPrepublication": true,
+      "verifiedPoints": 100
+    },
+    "GEO": {
+      "allRequiredCriteriaVerified": true,
+      "criteria": [
+        {
+          "criterion": "Provider, venue and service entities unambiguous; provider contact distinguished from facility contacts.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "G01",
+          "points": 20,
+          "reason": "Store 꽃이랑 and Chosun facility distinct; seller1844-0644 versus facility062-220-3352. Dated 필문대로365 address. No CNUH conflation.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 20
+        },
+        {
+          "criterion": "Every material venue/catalog/policy assertion traced to inspected primary-source content; original dates and source level retained.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "G02",
+          "points": 25,
+          "reason": "Government2026-04-01CSV/campusHTML support facility identity;4original SKU HTMLs basicprices and original policy pixels inspected. Meeting discussion does not establish current operation; dates/limits visible.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 25
+        },
+        {
+          "criterion": "Useful local/order content, not place-name substitution or decorative local history.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "G03",
+          "points": 20,
+          "reason": "Buyer-relevant Dong-gu conditional facility consultation, uncertain shipping-inclusive total, specific4SKU/photo/budget/ribbon/order information. Own manuscript and earlier bounded comparison retained; no generic city-history filler.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 20
+        },
+        {
+          "criterion": "Conditions and uncertainty explicit; prices not total, sample not exact fulfillment, no fake delivery/refund/affiliation proof.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "G04",
+          "points": 20,
+          "reason": "Basicprice distinguished from final amount, no free/fixed shipping assumption, sample/materialmix/variation/no-collection visible. Currentoperation/entry/schedule and changes/refund qualified, no fabricated affiliation.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 20
+        },
+        {
+          "criterion": "Readable semantic source/answer sections and meaningful, non-conflicting page roles; no invented review/schema evidence.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "G05",
+          "points": 15,
+          "reason": "Semantic heading/source/answer sections present with nonconflicting home/detail/support/404 roles and no fabricated testimonial/schema.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 15
+        }
+      ],
+      "finalProductionScore": 100,
+      "maximum": 100,
+      "meaning": "Evidence coverage under disclosed fixed rubric, not ranking/citation/conversion/launch permission.",
+      "threshold": 85,
+      "thresholdMetForPrepublication": true,
+      "verifiedPoints": 100
+    },
+    "SEO": {
+      "allRequiredCriteriaVerified": false,
+      "criteria": [
+        {
+          "criterion": "One defined primary query/intent and traceable query evidence; missing keyword metadata explicitly supplemented and hash-bound in this review.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "S01",
+          "points": 10,
+          "reason": "Dong-gu retained purchase intent/query evidence and own A04 explicit target map hash-bound; observed competitor/source research, no search volume/rank claim.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 10
+        },
+        {
+          "criterion": "A04 static title/H1/firstAnswer >=90 and no hard alignment failure.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "S02",
+          "points": 15,
+          "reason": "Own Dong-gu A04home95/detail100, homeH03zero retained; actual titles/H1/first answers exact and primary-query prefix confirmed. No hard alignment failure.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 15
+        },
+        {
+          "criterion": "Unique title/meta, one H1, coherent H2/H3; actual used summary passes separation rules.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "S03",
+          "points": 10,
+          "reason": "4actual titles/descriptions unique,1H1 each, coherentH2/H3; Dong-gu original summaries differ from actual lead and pass retained separation audit.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 10
+        },
+        {
+          "criterion": "Actual local/vertical facts and supported catalog; no invented claim.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "S04",
+          "points": 10,
+          "reason": "Dated Chosun facility identity plus4official catalog basicprices supported by reread original bytes. Current facility operation/admission and Dong-gu shipping remain explicitly unknown.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 10
+        },
+        {
+          "criterion": "Real internal targets/inbound/breadcrumb and distinct home/detail buyer decisions.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "S05",
+          "points": 10,
+          "reason": "Actual home/support→detail and detailbreadcrumb→home/support graph with inbound support1/detail2. Local consultation-entry and facility purchase intent distinct.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 10
+        },
+        {
+          "criterion": "Provider-led full-copy information and real HTML phone/SKU action links, not image-only actions.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "S06",
+          "points": 10,
+          "reason": "114Dong-gu strings and complete prose retained; seller phone and4SKU are actual HTMLanchors, not image-only calls. Helpful budget/ribbon consultation offers.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 10
+        },
+        {
+          "criterion": "Local assets exist; descriptive alt/sample labeling; exact approved banner exception.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/source-and-content-retention.json",
+              "sha256": "72892ab2ec91e3582c49d5d0a5c4fc32c09c151d55491992df5f6d3da08efc72"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/bounded-18-clause-review.json",
+              "sha256": "d940d80f9e6d838a04b5bae55f378b6bbac5ea5aaf0af780858a2e8e17bf9842"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/content-review-20261015/a04-manuscript-assessment.json",
+              "sha256": "b2940911248ea8a128869042d65f163c28a4699ea4840f86bfd73028f64c28e2"
+            }
+          ],
+          "id": "S07",
+          "points": 5,
+          "reason": "All4catalog/3banner original hashes, descriptivealt, sample notice and approved marketing banner classification verified.",
+          "status": "PASS_DONGGU_RETAINED_AND_RECHECKED_STATIC_EVIDENCE",
+          "weight": 5
+        },
+        {
+          "criterion": "Production canonical/robots/OG/Twitter/sitemap/map agree for approved origin.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/mobile-pixels.json",
+              "sha256": "eb583b2fe66f92d38eaf92d57d9cf5aa286fbc0493c0708a67ebc84cce73a1f0"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/desktop-pixels.json",
+              "sha256": "5a9be012c347686ac96ee7ff66190aa32f18bcd7b918d8cffc3ad41cb176317a"
+            }
+          ],
+          "id": "S08",
+          "points": 10,
+          "reason": "Actual release18/source76/controlGitproof/DOM15 establishes canonical/robots/OG/Twitter/twoURL sitemap consistency for intended host. Public hostname binding is separate.",
+          "status": "PASS_ACTUAL_ARTIFACT",
+          "weight": 10
+        },
+        {
+          "criterion": "Actual production HTTP200/404 and correct resource/CTA endpoint responses verified against this output.",
+          "evidence": [],
+          "id": "S09",
+          "points": 0,
+          "reason": "Required public hostname all-byteHTTP200/true404/resources and externalSKU endpoint verification pending. Loopback cannot earn publicS09.",
+          "status": "PENDING_POST_PUBLICATION",
+          "weight": 10
+        },
+        {
+          "criterion": "Browser mobile/desktop readability, computed FAQ visibility and action usability verified.",
+          "evidence": [
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/all-route-output.json",
+              "sha256": "1c5acc897354351b421ec32e90095814220902df1d62913a30f24c28ed195897"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/mobile-pixels.json",
+              "sha256": "eb583b2fe66f92d38eaf92d57d9cf5aa286fbc0493c0708a67ebc84cce73a1f0"
+            },
+            {
+              "path": "docs/direct-gwangju-donggu/release-review-38792477864/desktop-pixels.json",
+              "sha256": "5a9be012c347686ac96ee7ff66190aa32f18bcd7b918d8cffc3ad41cb176317a"
+            }
+          ],
+          "id": "S10",
+          "points": 10,
+          "reason": "OriginalPNG36 coverage320/390/1280 andDOM15/computedvisibility/flow records show readable pages, expandedFAQ and local menu/skip/navigation. Capture overlay strips and missing fullTab/occlusion testing disclosed.",
+          "status": "PASS_ACTUAL_ARTIFACT",
+          "weight": 10
+        }
+      ],
+      "finalProductionScore": null,
+      "maximum": 100,
+      "meaning": "Evidence coverage under disclosed fixed rubric, not ranking/citation/conversion/launch permission.",
+      "threshold": 90,
+      "thresholdMetForPrepublication": true,
+      "verifiedPoints": 90
+    }
+  },
+  "sourceCommit": "a2e19b4d7e53681adf5749188bbcf6ea472319ee",
+  "sourceContractSha256": "e3f101c95dc3908bc83839236802b87dac67f4ec75ad2a8e4f0f6ac76784d140",
+  "stage": "ActualS08/S10/A06 evidenced; required publicS09pending0/10",
+  "status": "PASS_PREPUBLICATION_THRESHOLD_ONLY",
+  "unconfirmed": [
+    "Provider/publicHTTP/externalSKU/dial/checkout",
+    "Currentfacilityoperation/entry/stock/ordercost/timing",
+    "FullTab/focuspixels/all-scrollhit-testing",
+    "IndexNow/indexing/ranking"
+  ]
+}

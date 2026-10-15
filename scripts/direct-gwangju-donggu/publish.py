@@ -38,6 +38,7 @@ SITEMAP_ROUTES = {'/'} | ARTICLE_ROUTES
 ROUTES = SITEMAP_ROUTES | THIN_HUB_ROUTES
 import production_build as gate
 import production_output as output
+import managed_robots
 
 
 def expected_robots(route):
@@ -396,7 +397,7 @@ def get(path, status=200):
 
 
 def http_once(contract):
-    checked = 0; normalized = 0
+    checked = 0; normalized = 0; robots_evidence = None
     require(contract.get('origin') == ORIGIN and contract.get('revision') == revision() and contract.get('ownershipFile') == output.PROOF['path'].lstrip('/'), 'http_contract_identity_mismatch')
     require(len(contract['pages']) == len(ROUTES) and {item['path'] for item in contract['pages']} == ROUTES,
             'http_contract_routes_mismatch')
@@ -418,7 +419,13 @@ def http_once(contract):
         checked += 1
     for path in sorted('/' + name for name in contract['files'] if not name.endswith('.html') and name != '_headers'):
         body, headers = get(path)
-        require(sha(body) == contract['files'][path.lstrip('/')], 'live_asset_digest_mismatch')
+        if path == '/robots.txt':
+            managed_robots.verify_headers(headers)
+            robots_evidence = managed_robots.verify(body, contract['files']['robots.txt'], ORIGIN, contract['sitemapUrls'])
+            Path('public-robots.txt').write_bytes(body)
+            save(Path('public-robots-headers.json'), {k:v for k,v in headers.items() if k.lower() in ('content-type','x-robots-tag','cf-mitigated','content-length')})
+        else:
+            require(sha(body) == contract['files'][path.lstrip('/')], 'live_asset_digest_mismatch')
         if path.startswith('/images/'):
             require(headers.get('Content-Type', '').lower().startswith('image/'), 'image_content_type')
         checked += 1
@@ -432,7 +439,7 @@ def http_once(contract):
         checked += 1
     return dict(state='public_release_verified', revision=revision(), regionCount=len(REGION_ROUTES), articleCount=len(ARTICLE_ROUTES), htmlRoutes=len(ROUTES),
                 noindexHubs=len(THIN_HUB_ROUTES), sitemapUrls=len(SITEMAP_ROUTES),
-                checkedPaths=checked, normalizedCloudflareBeacons=normalized, unknownHttpStatus=404)
+                checkedPaths=checked, normalizedCloudflareBeacons=normalized, unknownHttpStatus=404, robotsVerification=robots_evidence)
 
 
 def public_http():
@@ -479,11 +486,26 @@ def observed_indexnow_request(method, url, payload=None):
                       cfMitigated=headers.get('cf-mitigated', ''),
                       bodySha256=sha(body.encode('utf-8')))
         save(path, previous + [record])
-        return status, body, headers
     except Exception as error:
         record.update(httpStatus=None, errorType=type(error).__name__)
         save(path, previous + [record])
         raise
+    if method == 'GET':
+        contract=json.loads(Path('http-contract.json').read_text())
+        require(contract.get('origin')==ORIGIN and contract.get('revision')==revision(), 'indexnow_contract_identity_mismatch')
+        expected_paths={output.PROOF['path'], '/robots.txt', '/sitemap-index.xml', '/sitemap-0.xml'}
+        if local_path(url) in expected_paths:
+            expected=contract['files'][local_path(url).lstrip('/')]
+            require(status==200, 'indexnow_static_not_http200')
+            if local_path(url) == '/robots.txt':
+                managed_robots.verify_headers(headers)
+                record['robotsVerification']=managed_robots.verify(body.encode('utf-8'), expected, ORIGIN, contract['sitemapUrls'])
+                Path('indexnow-robots.txt').write_bytes(body.encode('utf-8'))
+                save(Path('indexnow-robots-headers.json'), {k:v for k,v in headers.items() if k.lower() in ('content-type','x-robots-tag','cf-mitigated','content-length')})
+                save(path, previous + [record])
+            else:
+                require(sha(body.encode('utf-8'))==expected, 'indexnow_static_digest_mismatch')
+    return status, body, headers
 
 
 def indexnow_probe():
