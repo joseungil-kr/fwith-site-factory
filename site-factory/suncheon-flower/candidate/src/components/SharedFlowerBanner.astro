@@ -1,0 +1,8 @@
+---
+import {banners} from '../lib/suncheon-runtime.mjs';
+const {variant}=Astro.props;
+const banner=banners.find((b:any)=>b.id===variant);
+if(!banner)throw new Error('Unknown shared flower banner');
+---
+<figure class="shared-flower-banner" data-shared-flower-banner={variant}><img src={banner.renderSrc} alt={banner.alt} width={banner.width} height={banner.height} loading="lazy" decoding="async"/></figure>
+<style>.shared-flower-banner{margin:2rem auto;width:100%;max-width:60rem}.shared-flower-banner img{display:block;width:100%;height:auto;aspect-ratio:2/1;object-fit:contain;border-radius:1rem}@media(max-width:600px){.shared-flower-banner{margin:1.5rem auto}.shared-flower-banner img{border-radius:.625rem}}</style>
