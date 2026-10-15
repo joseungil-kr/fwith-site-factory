@@ -1,0 +1,484 @@
+{
+  "A04AlignmentAssessment": {
+    "actualBrowserVisibility": "VERIFIED_ACTUAL_BOUND_PIXELS_AND_DOM",
+    "allowedGeography": [
+      "나주"
+    ],
+    "boundary": "Same retained text-only alignment rubric and score, exact actual output now checked; no search performance claim.",
+    "coreAnswer": "꽃이랑이 상품과 리본 문구를 상담해 드립니다.",
+    "coreStartsAtCodepoint": 23,
+    "criteria": [
+      {
+        "field": "title",
+        "id": "T01",
+        "passCondition": "Contains allowed geography token",
+        "points": 10,
+        "reason": "Title contains explicit 나주.",
+        "status": "PASS_STATIC",
+        "weight": 10
+      },
+      {
+        "field": "title",
+        "id": "T02",
+        "passCondition": "Contains exact service combination 근조화환 in this retrospective target map.",
+        "points": 10,
+        "reason": "Title contains exact 근조화환.",
+        "status": "PASS_STATIC",
+        "weight": 10
+      },
+      {
+        "field": "title",
+        "id": "T03",
+        "passCondition": "Contains allowed purchase decision token, not unrelated informational intent",
+        "points": 10,
+        "reason": "Title names 가격·배송비, a supported purchase decision.",
+        "status": "PASS_STATIC",
+        "weight": 10
+      },
+      {
+        "field": "title",
+        "id": "T04",
+        "passCondition": "Title begins at codepoint 0 with the complete primary query, without promotional modifiers between geography/facility and service. It precedes the purchase explanation and brand. For any later non-prefix proposal, fail this criterion pending review.",
+        "points": 10,
+        "reason": "Exact query 나주 근조화환 begins title at codepoint0, before price/brand.",
+        "status": "PASS_STATIC",
+        "weight": 10
+      },
+      {
+        "field": "h1",
+        "id": "H01",
+        "passCondition": "Contains same allowed geography",
+        "points": 10,
+        "reason": "H1 explicitly names 나주.",
+        "status": "PASS_STATIC",
+        "weight": 10
+      },
+      {
+        "field": "h1",
+        "id": "H02",
+        "passCondition": "Contains same allowed service; no scope drift",
+        "points": 10,
+        "reason": "H1 preserves the same condolence wreath service.",
+        "status": "PASS_STATIC",
+        "weight": 10
+      },
+      {
+        "field": "h1",
+        "id": "H03",
+        "passCondition": "Continues same buyer decision as title and intentKey",
+        "points": 5,
+        "reason": "H1 opens the same product/budget/order decision; it is not a separate informational article.",
+        "status": "PASS_STATIC",
+        "weight": 5
+      },
+      {
+        "field": "first180",
+        "id": "F01",
+        "passCondition": "Contains explicit same geography/service. Allowed target synonyms are fixed in this retrospective supplement, not asserted to be a prewriting freeze.",
+        "points": 5,
+        "reason": "Complete first answer contains 나주 and 근조화환.",
+        "status": "PASS_STATIC",
+        "weight": 5
+      },
+      {
+        "field": "first180",
+        "id": "F02",
+        "passCondition": "Directly answers target buyer decision; not only greeting/question/checklist",
+        "points": 10,
+        "reason": "Provider consultation core begins at codepoint23; full first paragraph completes at101 (<=180).",
+        "status": "PASS_STATIC",
+        "weight": 10
+      },
+      {
+        "field": "first180",
+        "id": "F03",
+        "passCondition": "States a supported actual-product selection benefit (photo/basic-price comparison or bounded order consultation), not invented quality/fulfillment",
+        "points": 5,
+        "reason": "Provider offers actual product/ribbon/order consultation; no invented fulfillment benefit.",
+        "status": "PASS_STATIC",
+        "weight": 5
+      },
+      {
+        "field": "first180",
+        "id": "F04",
+        "passCondition": "If price appears it is identified as basic price and exact supported amount/range; if no price, uses another precise supported selection fact",
+        "points": 5,
+        "reason": "Home explicitly separates product basic price and supported Naju surcharge10000; detail specifies sender-name/ribbon consultation, with no price claim requiring a hidden qualifier.",
+        "status": "PASS_STATIC",
+        "weight": 5
+      },
+      {
+        "field": "first180",
+        "id": "F05",
+        "passCondition": "Does not imply guaranteed venue acceptance/arrival; any immediately necessary qualifier of a stated claim is present locally",
+        "points": 5,
+        "reason": "Opening contains no promised arrival, admission or confirmed order; later conditions remain explicit.",
+        "status": "PASS_STATIC",
+        "weight": 5
+      },
+      {
+        "field": "first180",
+        "id": "F06",
+        "passCondition": "Provider voice offers evidenced selection/order help and a relevant next step without commanding/repeated warnings",
+        "points": 5,
+        "reason": "Helpful provider-led consultation and a concrete product/ribbon next step; no checklist-only lead.",
+        "status": "PASS_STATIC",
+        "weight": 5
+      }
+    ],
+    "first120": "조의의 마음을 꽃으로 전하고 싶으실 때, 꽃이랑이 상품과 리본 문구를 상담해 드립니다. 나주 근조화환은 상품 기본가격에 추가배송비 10,000원을 더해 예산을 살펴보실 수 있습니다.",
+    "first180": "조의의 마음을 꽃으로 전하고 싶으실 때, 꽃이랑이 상품과 리본 문구를 상담해 드립니다. 나주 근조화환은 상품 기본가격에 추가배송비 10,000원을 더해 예산을 살펴보실 수 있습니다.",
+    "firstAnswer": "조의의 마음을 꽃으로 전하고 싶으실 때, 꽃이랑이 상품과 리본 문구를 상담해 드립니다. 나주 근조화환은 상품 기본가격에 추가배송비 10,000원을 더해 예산을 살펴보실 수 있습니다.",
+    "firstAnswerCompletesAtCodepoint": 101,
+    "h1": "나주 근조화환, 상품과 배송비 안내",
+    "id": "home",
+    "intentKey": "naju:regional-wreath-budget-and-consultation",
+    "maximum": 100,
+    "path": "/",
+    "primaryQuery": "나주 근조화환",
+    "purchaseDecisionTokens": [
+      "가격",
+      "배송비",
+      "상품",
+      "상담"
+    ],
+    "queryEvidence": "Retained dated search-observation and purchase-plan records. No keyword volume, position or current market-price claim.",
+    "score": 100,
+    "service": "근조화환",
+    "staticHardGateFailure": false,
+    "targetStatus": "RETROSPECTIVE_EXPLICIT_TARGET_NOT_CLAIMED_PREWRITING_FREEZE",
+    "threshold": 90,
+    "title": "나주 근조화환 가격·배송비 상담 | 꽃이랑"
+  },
+  "artifactDigest": "sha256:d936fafd3ee72a1772dae6d7b456dfdbb6679684c9aa4aca29a65b99f01cf8cd",
+  "artifactId": "11998891427",
+  "assessmentScope": "bounded-launch",
+  "bindingSha256": "3db5606a065b24823914e927e8f7f46c0de04c46d3c45b1f353dfb16a777fa2c",
+  "boundedContractSha256": "27d1f72b29fd8183d86d65230552f2fed5a9968d44f3f9359eae104b10082bfd",
+  "buildControlSha": "6437592a2889186de89b4fee35016743787d2d22",
+  "buildRunId": "38788952274",
+  "coreHubLaunchStatus": "NOT_ASSESSED",
+  "fullLaunchStatus": "NOT_ASSESSED",
+  "outputEvidence": {
+    "path": "docs/direct-naju/release-review-38788952274/all-route-output.json",
+    "sha256": "da24c890bc3ca0cfa1c0bffe580a312aa1e510306604dd596d49d667ad528ed0"
+  },
+  "path": "/",
+  "pixelEvidence": [
+    {
+      "path": "docs/direct-naju/release-review-38788952274/mobile-pixels.json",
+      "sha256": "5ff340a543715ad0b81282fd09c398df7519051f9a5e80727bd688d8fe8cc0f2"
+    },
+    {
+      "path": "docs/direct-naju/release-review-38788952274/desktop-pixels.json",
+      "sha256": "4fff0fc2f4d8997780703929d29a86cbe747b141eb4b68f41581ecfbfdf65165"
+    }
+  ],
+  "publicHttpVerified": false,
+  "region": "naju",
+  "requiredClauseEvidence": {
+    "path": "docs/direct-naju/release-review-38788952274/bounded-clause-evidence.json",
+    "sha256": "6dbe2d3f2a2fd6f6c68a8657e8a894a122e3e9153bf80c06a4103f3b689e2573"
+  },
+  "retainedEvidence": {
+    "path": "docs/direct-naju/release-review-38788952274/source-and-content-retention.json",
+    "sha256": "55e11593ee3ef7b119c9628820a6b2773b7c45a7a05ba3d8f8353af514e88d9b"
+  },
+  "retainedStaticAssessment": {
+    "path": "docs/direct-naju/content-review-20261015/static-bounded-launch/primary-home-quality.json",
+    "sha256": "26a5a07daade93313f33a543ff4d25f7f50e23302eddf451164bd8300d534159"
+  },
+  "reviewedUTC": "2026-10-15T19:03:19.717251+00:00",
+  "reviewer": "Independent Naju artifact and pixel reviewer",
+  "schemaVersion": 1,
+  "scoreDelta": {
+    "AEO": {
+      "newlyEvidenceSupported": 10,
+      "now": 100,
+      "previousStatic": 90
+    },
+    "GEO": {
+      "now": 100,
+      "previousRetained": 100
+    },
+    "SEO": {
+      "newlyEvidenceSupported": 20,
+      "now": 90,
+      "pendingS09": 10,
+      "previousStatic": 70
+    }
+  },
+  "scores": {
+    "AEO": {
+      "allRequiredCriteriaVerified": true,
+      "criteria": [
+        {
+          "criterion": "Within180 codepoints first answer states actual relevant offer and buyer step; core answer begins within120.",
+          "id": "A01",
+          "points": 20,
+          "reason": "Actual static first paragraph is complete within180 with direct provider offer beginning within120; exact strings and indices recorded.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 20
+        },
+        {
+          "criterion": "Role-specific questions answered: home discovery/price/contact, detail venue/product/price/ribbon/order/change/collection; no word-count filler.",
+          "id": "A02",
+          "points": 25,
+          "reason": "Home answers product discovery, baseprice/shipping budget, ribbon and consultation. Detail answers facility,4products,4prices+surcharge, ribbon, order inputs/timing, change/cancellation and collection; no filler quota.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 25
+        },
+        {
+          "criterion": "Answer facts and conditional policies have primary evidence without overclaiming.",
+          "id": "A03",
+          "points": 15,
+          "reason": "Original-source facts and conditional policies retained by unchanged copy hash; limits do not erase required material-difference cancellation restriction.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 15
+        },
+        {
+          "criterion": "Main HTML contains complete answers with sensible headings, and each specified FAQ appears once; home has no quota FAQ requirement.",
+          "id": "A04",
+          "points": 15,
+          "reason": "Complete source-mapped text in actual static HTML. Detail has exactly3 expanded question/answer pairs once; no home FAQ quota and no duplicate product grid.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 15
+        },
+        {
+          "criterion": "Actionable next step uses exact seller phone or SKU destination and helpful provider tone.",
+          "id": "A05",
+          "points": 15,
+          "reason": "Exact seller phone and four SKU destinations provide useful next steps; professional whole-copy review retained with0 mandatory changes.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 15
+        },
+        {
+          "criterion": "Actual browser computed visibility/readability confirms static answer/FAQ/CTA extraction.",
+          "evidence": [
+            {
+              "path": "docs/direct-naju/release-review-38788952274/all-route-output.json",
+              "sha256": "da24c890bc3ca0cfa1c0bffe580a312aa1e510306604dd596d49d667ad528ed0"
+            },
+            {
+              "path": "docs/direct-naju/release-review-38788952274/mobile-pixels.json",
+              "sha256": "5ff340a543715ad0b81282fd09c398df7519051f9a5e80727bd688d8fe8cc0f2"
+            },
+            {
+              "path": "docs/direct-naju/release-review-38788952274/desktop-pixels.json",
+              "sha256": "4fff0fc2f4d8997780703929d29a86cbe747b141eb4b68f41581ecfbfdf65165"
+            }
+          ],
+          "id": "A06",
+          "points": 10,
+          "reason": "Actual first answers visible at320/390/1280; all3FAQexpanded and actions readable in full-page pixels and recorded geometry. Product/FAQcrop overlays resolved using full originals, cross-viewport coverage and exactDOM; no external action completion claimed.",
+          "status": "PASS_ACTUAL_ARTIFACT",
+          "weight": 10
+        }
+      ],
+      "finalProductionScore": 100,
+      "maximum": 100,
+      "meaning": "Evidence coverage under unchanged disclosed Naju rubric, not measured search rank, AI citation, conversion or full launch.",
+      "threshold": 90,
+      "thresholdMetForPrepublication": true,
+      "verifiedPoints": 100
+    },
+    "GEO": {
+      "allRequiredCriteriaVerified": true,
+      "criteria": [
+        {
+          "criterion": "Provider, venue and service entities unambiguous; provider contact distinguished from facility contacts.",
+          "id": "G01",
+          "points": 20,
+          "reason": "Seller1844-0644 is distinct from facility061-332-4461 and hospital representative061-330-6114; provider/facility roles are unambiguous.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 20
+        },
+        {
+          "criterion": "Every material venue/catalog/policy assertion traced to inspected primary-source content; original dates and source level retained.",
+          "id": "G02",
+          "points": 25,
+          "reason": "Hash-retained official SKU HTML, government facility record, HIRA corroboration and policy-image inspection support material claims; source dates and dataset2026-04-01 retained.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 25
+        },
+        {
+          "criterion": "Useful local/order content, not place-name substitution or decorative local history.",
+          "id": "G03",
+          "points": 20,
+          "reason": "Naju10000 delivery surcharge and four budget sums, government-confirmed facility address and dedicated phone, recipient/ribbon/order conditions give local buying usefulness.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 20
+        },
+        {
+          "criterion": "Conditions and uncertainty explicit; prices not total, sample not exact fulfillment, no fake delivery/refund/affiliation proof.",
+          "id": "G04",
+          "points": 20,
+          "reason": "Basic prices and arithmetic reference budgets not final quotes; sample material variation, no guaranteed arrival/admission, no invented refund amounts/deadlines or affiliation.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 20
+        },
+        {
+          "criterion": "Readable semantic source/answer sections and meaningful, non-conflicting page roles; no invented review/schema evidence.",
+          "id": "G05",
+          "points": 15,
+          "reason": "Semantic headings/answers and sources; home discovery, detail ordering, one noindex support and technical404 have separate roles; no invented review/schema.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 15
+        }
+      ],
+      "finalProductionScore": 100,
+      "maximum": 100,
+      "meaning": "Evidence coverage under unchanged disclosed Naju rubric, not measured search rank, AI citation, conversion or full launch.",
+      "threshold": 85,
+      "thresholdMetForPrepublication": true,
+      "verifiedPoints": 100
+    },
+    "SEO": {
+      "allRequiredCriteriaVerified": false,
+      "criteria": [
+        {
+          "criterion": "One defined primary query/intent and traceable query evidence; missing keyword metadata explicitly supplemented and hash-bound in this review.",
+          "id": "S01",
+          "points": 10,
+          "reason": "One retrospective primary query and intent key per primary page; retained search observations and purchase plan, no search-volume claim.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 10
+        },
+        {
+          "criterion": "A04 static title/H1/firstAnswer >=90 and no hard alignment failure.",
+          "id": "S02",
+          "points": 15,
+          "reason": "Exact title/H1/first paragraph and13criterion A04 assessment100/100; first answer complete within180 and core begins within120.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 15
+        },
+        {
+          "criterion": "Unique title/meta, one H1, coherent H2/H3; actual used summary passes separation rules.",
+          "id": "S03",
+          "points": 10,
+          "reason": "Four unique title/meta/H1; coherent headings; two actually used article-card summaries pass exact-prefix/common-prefix/LCS rules.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 10
+        },
+        {
+          "criterion": "Actual local/vertical facts and supported catalog; no invented claim.",
+          "id": "S04",
+          "points": 10,
+          "reason": "Unchanged catalog prices, Naju10000 surcharge, distinct venue phone/address and conditional policy reuse hash-bound original factual review.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 10
+        },
+        {
+          "criterion": "Real internal targets/inbound/breadcrumb and distinct home/detail buyer decisions.",
+          "id": "S05",
+          "points": 10,
+          "reason": "Home/detail distinct buyer decisions and real HTML links; article inbound from home/support, support inbound from detail. Successor adds explicit home/support/detail breadcrumb using approved labels only; technical404 is not an indexable content page.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 10
+        },
+        {
+          "criterion": "Provider-led full-copy information and real HTML phone/SKU action links, not image-only actions.",
+          "id": "S06",
+          "points": 10,
+          "reason": "All114 reviewed fields present on intended HTML surfaces; seller phone and four exact SKU anchors are real HTML; no image-only buying step.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 10
+        },
+        {
+          "criterion": "Local assets exist; descriptive alt/sample labeling; exact approved banner exception.",
+          "id": "S07",
+          "points": 5,
+          "reason": "All7 local image bytes match approved originals; meaningful alt/sample qualifiers and exact shared-banner exception retained. No current runtime scaling claim.",
+          "retentionBasis": "FrozenNaju assessment reused only after fresh69sourceGitBlob,18retained-review,4body and9asset hash identity. Current rendered text inspected; no new third-party fact acquisition claimed.",
+          "status": "PASS_EXACT_RETAINED_TEXT_AND_REVIEW",
+          "weight": 5
+        },
+        {
+          "criterion": "Production canonical/robots/OG/Twitter/sitemap/map agree for approved origin.",
+          "evidence": [
+            {
+              "path": "docs/direct-naju/release-review-38788952274/all-route-output.json",
+              "sha256": "da24c890bc3ca0cfa1c0bffe580a312aa1e510306604dd596d49d667ad528ed0"
+            },
+            {
+              "path": "docs/direct-naju/release-review-38788952274/mobile-pixels.json",
+              "sha256": "5ff340a543715ad0b81282fd09c398df7519051f9a5e80727bd688d8fe8cc0f2"
+            },
+            {
+              "path": "docs/direct-naju/release-review-38788952274/desktop-pixels.json",
+              "sha256": "4fff0fc2f4d8997780703929d29a86cbe747b141eb4b68f41581ecfbfdf65165"
+            }
+          ],
+          "id": "S08",
+          "points": 10,
+          "reason": "Direct actual18-file/4HTML/15DOM inspection and fresh source/control Git identity: exact production canonical/robots/social, two-primary sitemap, support and404noindex. All4bodies and9assets equal frozen review. Public host binding is not inferred.",
+          "status": "PASS_ACTUAL_ARTIFACT",
+          "weight": 10
+        },
+        {
+          "criterion": "Actual production HTTP200/404 and correct resource/CTA endpoint responses verified against this output.",
+          "id": "S09",
+          "points": 0,
+          "reason": "Public hostname/all-byte HTTP and true public404have not been checked. Loopback404cannot earnS09. Keep required0/10until actual public verification, including relevant external SKU responses.",
+          "status": "PENDING_POST_PUBLICATION",
+          "weight": 10
+        },
+        {
+          "criterion": "Browser mobile/desktop readability, computed FAQ visibility and action usability verified.",
+          "evidence": [
+            {
+              "path": "docs/direct-naju/release-review-38788952274/all-route-output.json",
+              "sha256": "da24c890bc3ca0cfa1c0bffe580a312aa1e510306604dd596d49d667ad528ed0"
+            },
+            {
+              "path": "docs/direct-naju/release-review-38788952274/mobile-pixels.json",
+              "sha256": "5ff340a543715ad0b81282fd09c398df7519051f9a5e80727bd688d8fe8cc0f2"
+            },
+            {
+              "path": "docs/direct-naju/release-review-38788952274/desktop-pixels.json",
+              "sha256": "4fff0fc2f4d8997780703929d29a86cbe747b141eb4b68f41581ecfbfdf65165"
+            }
+          ],
+          "id": "S10",
+          "points": 10,
+          "reason": "Direct original36PNG coverage reviewed at320/390/1280, with15DOM semantic equivalence. Bound interaction report covers skip focus/menuClick/Space/Enter, home/article/support/breadcrumb and history. Source focus/scroll-padding/footer clearance read. Sticky overlay capture limitations disclosed; no full Tab or per-scroll occlusion test claimed.",
+          "status": "PASS_ACTUAL_ARTIFACT",
+          "weight": 10
+        }
+      ],
+      "finalProductionScore": null,
+      "maximum": 100,
+      "meaning": "Evidence coverage under unchanged disclosed Naju rubric, not measured search rank, AI citation, conversion or full launch.",
+      "threshold": 90,
+      "thresholdMetForPrepublication": true,
+      "verifiedPoints": 90
+    }
+  },
+  "sourceCommit": "21ebc3cffc12df8977e8209bc4fc3139e084fa8b",
+  "sourceContractSha256": "2f0aad3ef92970d739bc33bf4c47d4843bba6c42c8f78ee619d529b0466c55c3",
+  "stage": "S08/S10/AEO_A06 evidenced now; publicS09required and pending",
+  "status": "PASS_PREPUBLICATION_THRESHOLD_ONLY",
+  "unchangedRubric": {
+    "path": "docs/direct-naju/content-review-20261015/static-bounded-launch/rubric.json",
+    "sha256": "f19e2bbf6543f00075b56beadf10d090f4c7abb7ef1ff52a6a3c0dafdaba31c9"
+  },
+  "unconfirmed": [
+    "PublicHTTP/provider/hostname state, externalSKUHTTP/dial/checkout, live stock, per-order final cost/timing/admission, completeTabtraversal/focuspixels, IndexNow/indexing/ranking"
+  ]
+}
