@@ -55,6 +55,12 @@ def fixture_metrics(route='/'):
          'navigation': [{'label': '목포 근조화환 홈', 'href': '/'}, {'label': '목포한국병원 장례식장', 'href': CAP.ARTICLE}],
          'breadcrumbs': [], 'internalLinks': [], 'supportCards': [], 'ctas': [{'href': '/', 'height': 44}],
          'bodyCtas': [{'label': 'Fixture body action', 'href': 'tel:18440644', 'visible': True, 'width': 200, 'height': 44}]}
+    metrics['twitterProperties'] = []
+    if route != '/404.html':
+        og={'og:type':'website','og:title':'Fixture title','og:description':'Fixture description','og:locale':'ko_KR','og:url':CAP.ORIGIN+route,'og:image':CAP.ORIGIN+CAP.SOCIAL_IMAGE_PATH,'og:image:alt':CAP.SOCIAL_IMAGE_ALT}
+        tw={'twitter:card':'summary','twitter:title':'Fixture title','twitter:description':'Fixture description','twitter:image':CAP.ORIGIN+CAP.SOCIAL_IMAGE_PATH,'twitter:image:alt':CAP.SOCIAL_IMAGE_ALT}
+        metrics['ogProperties'] = [{'name':key,'content':value} for key,value in og.items()]
+        metrics['twitterProperties'] = [{'name':key,'content':value} for key,value in tw.items()]
     metrics['mobileNavigation'] = deepcopy(metrics['navigation'])
     if primary:
         metrics['images'] = [{'src': '/images/shared-banners/flower-' + name + '.webp', 'loaded': True, 'objectFit': 'contain',
@@ -170,6 +176,20 @@ class PureHelpers(unittest.TestCase):
         self.assertEqual({k: actual[k] for k in bindings}, {k: supplied[k] for k in bindings})
         CAP.reject_provider_credentials(actual)
         self.assertIn('reject_provider_credentials(os.environ)', SOURCE)
+
+    def test_browser_social_metadata_missing_duplicate_and_wrong_rejected(self):
+        for kind in ['ogProperties','twitterProperties']:
+            baseline=fixture_metrics()
+            for index in range(len(baseline[kind])):
+                for change in ['missing','duplicate','wrong']:
+                    metrics=deepcopy(baseline)
+                    if change=='missing':metrics[kind].pop(index)
+                    elif change=='duplicate':metrics[kind].append(deepcopy(metrics[kind][index]))
+                    else:metrics[kind][index]['content']='wrong'
+                    with self.subTest(kind=kind,index=index,change=change):
+                        self.assertIn('Exact social metadata mismatch: '+kind,CAP.metadata_issues(metrics,fixture_page(),REVISION))
+        metrics=fixture_metrics('/404.html');metrics['twitterProperties']=[{'name':'twitter:card','content':'summary'}]
+        self.assertIn('404 contains social metadata',CAP.metadata_issues(metrics,fixture_page('/404.html'),REVISION))
 
     def test_frozen_page_metadata_denominators(self):
         for route in CAP.ROUTES:
