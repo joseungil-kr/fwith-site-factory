@@ -4,7 +4,20 @@ Before any resume or new-region selection, read `national/fixed-plan.json`, `nat
 
 The historical checkpoint is retained without rewriting its large history. Some legacy `current` and national progress fields are stale. `latest-progress.json` is a compact reconciliation supplement, not permission to skip checking actual source/main commits, active ownership, Actions runs, artifacts, public HTTP, and IndexNow receipts. Never republish a completed region solely because a legacy field says incomplete. If evidence conflicts, resolve the conflict before claiming completion or selecting a new region.
 
-## Current release boundary, 2026-10-15
+## Current release boundary, 2026-10-15 (Yeosu completion)
+
+Yeosu is publicly released at https://yeosu.fwith.kr/. See `../direct-yeosu/release-completion-20261015.json` and `yeosu/progress.json`. Verified source `472c54a40cf873c925ed2d314748351381ee8682` preserves 75 frozen portable files. Actual sandboxed QA run 38742707182 and independent review cover 18 output files, 36 PNGs and 12 route/viewport combinations. Publication run 38745536071 verified the initial no-override host attachment and original two-URL Naver IndexNow HTTP 200 receipt: https://github.com/joseungil-kr/fwith-site-factory/issues/346#issuecomment-6193618056 .
+
+Independent GETs verified all 17 raw public responses: 16 HTTP 200 plus a real missing-route 404, exact bytes without normalization. Four original external SKU destinations also returned HTTP 200 at 13:49 UTC; displayed base prices matched the retained copy. No order, telephone call, stock or final-delivery validation was performed. Home/detail are indexable; single-child `/regions/` is noindex support excluded from sitemap/main menu. CoreHubLaunch and FullLaunch remain NOT_ASSESSED. Sandbox browser review and exact public responses do not claim live public-browser rendering or search indexing/rankings.
+
+Recorded releases are 58 of 230; 172 remain. Only Yeosu adds one unique host to earlier 57 carried-forward evidence. Do not rebuild, redeploy or resubmit received batches merely to refresh records.
+
+Suncheon (order 28) has saved source/control and successful actual QA 38743886937; independent final review and publisher validation passed. Actual publication run 38747389930 has succeeded at control 69fd83616c1eb194e8b5b284d6a40052b09f8ae8. Its independent public-response and receipt reconciliation has not yet been added to this 58-host snapshot. Its owner will record that result separately; do not repeat the release. Naju (order 29) has partial research only, customer copy not started, and operator-original evidence unverified. Each region may publish when its own gates pass; order applies only to new-region selection. Existing banner followups and historical evidence gaps remain separate.
+
+## Previous release boundary, 2026-10-15 (Mokpo completion snapshot)
+
+The following 57-count and Yeosu-in-progress statements are retained history, superseded by the current 58-count and Yeosu completion above. They are not current publication-order instructions.
+
 
 Mokpo is publicly released at https://mokpo.fwith.kr/. Completion and scope are recorded in `../direct-mokpo/release-completion-20261015.json` and `mokpo/progress.json`. Source `e144887a2612f22f333a9b71a8f76e4d5adbc3e7` preserves all frozen customer text and original assets. Actual sandboxed build/QA run 38738826152 and independent review cover the final 18-file artifact and 39 screenshots. Publication run 38742434163 completed with verified first host attachment, public HTTP and the original two-URL Naver IndexNow HTTP 200 receipt.
 
