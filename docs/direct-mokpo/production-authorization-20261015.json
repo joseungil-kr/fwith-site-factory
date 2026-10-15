@@ -1,0 +1,82 @@
+{
+  "authorization": [
+    {
+      "answer": "승인한다",
+      "answerAt": "2026-10-15T04:18:53.955129+00:00",
+      "answerMessageId": "Sentinel_a13a153714648191af22fe65376fcd48",
+      "question": "네. 목포의 두 단계가 승인 대기입니다.\n1. GitHub 파일 수정 API로 준비된 소스 저장\n2. mokpo.fwith.kr을 목포 전용 서버에 처음 연결\n\n두 항목을 승인하시면 저장과 배포 검증을 이어갑니다. 별도로 배송·취소 기준 답변과 실제 화면 검증도 남아 있어, 승인만으로 바로 배포 완료가 되는 것은 아닙니다.\n\n목포 두 항목을 승인하시겠어요?",
+      "questionAt": "2026-10-15T04:17:26.762148+00:00",
+      "questionMessageId": "Sentinel_fb8d86062d3c8191942d2f4f86bcd740",
+      "scope": [
+        "Contents API source storage",
+        "first mokpo.fwith.kr host connection"
+      ]
+    },
+    {
+      "answer": "저장 공개 배포 밀려있는거 전체 시작. \nsite: 검색으로 네이버와 구글 검색 색인 되는 목록 보고",
+      "answerAt": "2026-10-15T11:05:00+00:00",
+      "answerMessageId": "Sentinel_a40e691707f8819181e7eea488b7a8de",
+      "scope": [
+        "resume queued storage and public deployment"
+      ],
+      "timestampPrecision": "minute from parent verified transcript"
+    },
+    {
+      "answer": "재시도 승인, 업로드와 모든 요청 승인함",
+      "answerAt": "2026-10-15T11:15:46+00:00",
+      "answerMessageId": "Sentinel_6647359f45e481919e90c1ef7abdc8e3",
+      "scope": [
+        "retry cancelled commit and resume requested uploads/publication"
+      ]
+    }
+  ],
+  "constraints": [
+    "Preserve frozen private source",
+    "No provider override or existing host takeover",
+    "No new credentials, permission or security changes",
+    "No create_blob, Codex/Work task or user computer",
+    "Actual runner, independent artifact review, provider preflight, public HTTP and IndexNow receipt remain required"
+  ],
+  "coreHubLaunchStatus": "NOT_ASSESSED",
+  "existingIndexNowProof": {
+    "currentMokpoProofPubliclyVerified": false,
+    "historicalBuildRunId": 38603054270,
+    "historicalPublishRunId": 38605093414,
+    "interpretation": "Reuse existing public proof bytes in the authorized existing publication and IndexNow path; no separate Mokpo-proof-specific answer is claimed",
+    "newKeyGenerated": false,
+    "publicFilename": "39c4ed924bc6084c670a963c26d9f018.txt",
+    "sha256": "5da3864d5327c6e4e41e6eef12510004b2302f55c3bc61593d7d49c1797739b5"
+  },
+  "fullLaunchStatus": "NOT_ASSESSED",
+  "hostname": "mokpo.fwith.kr",
+  "notEvidenceOfExecution": true,
+  "productionSuccessor": {
+    "commit": "c3e2d7c03f2419aa94c9b55a6c12d69b8d3e75c1",
+    "sourceFiles": 81,
+    "sourceTree": "0a46e7707d5785c0dc7b609a54ec1719305f1b47",
+    "sourceTreeSha256": "0dbf4b10d866fc1f33fcb754f43326f6ed2221fd81e18b8dc66e1799b52c0442"
+  },
+  "purpose": "Record scoped owner authorization for existing direct-github-static publication after evidence gates",
+  "region": "mokpo",
+  "repository": "joseungil-kr/fwith-site-factory",
+  "schemaVersion": 1,
+  "sourceBranch": "source/mokpo-production-successor-20261015",
+  "sourceRoot": "site-factory/mokpo-flower",
+  "taskInstructions": [
+    {
+      "provenance": "Owner task quote relayed by parent; exact original timestamp not retained here",
+      "quote": "현재 direct-github-static 경로와 검증된 기존 코드·템플릿·이미지·배포 workflow를 재사용하고 과거 v2/Airtable 경로는 부활시키지 않는다."
+    },
+    {
+      "provenance": "Owner task quote relayed by parent; exact original timestamp not retained here",
+      "quote": "기존 승인된 발행 경로 배포 → 실제 공개 HTTP·내용·내부링크·canonical·robots·sitemap 검사 → IndexNow 접수 증거까지 수행한다."
+    }
+  ],
+  "verifiedFrozenSource": {
+    "commit": "200e5001efc11bacbbc6cb0dca1277b69539844b",
+    "sourceFiles": 71,
+    "sourceTree": "22c7cee7927135ff334ecad4631fb5c35ce05e4b",
+    "sourceTreeSha256": "271e834444f31e479024764d3ae9f30fbb6816f89a90ce41458a654e31877311"
+  },
+  "worker": "mokpo-flower-guide"
+}
