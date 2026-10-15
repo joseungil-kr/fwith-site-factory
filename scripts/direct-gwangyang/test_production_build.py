@@ -16,7 +16,7 @@ class ProductionTests(unittest.TestCase):
   for name in ['bounded-contract.json','source-manifest.json','adapter-manifest.json','private-source-manifest.json','preview-equivalence.json']:
    (d/name).write_bytes((original/name).read_bytes())
   authpath=d.parents[1]/'docs/direct-gwangyang/production-authorization-20261015.json';authpath.parent.mkdir(parents=True,exist_ok=True)
-  a={**b.authorization_template(c),'authorizationEvidence':[dict(messageId='OFFLINE_FIXTURE_ONLY',verbatimUserAnswer='OFFLINE TEST AUTHORIZATION; NEVER RELEASE EVIDENCE')]}
+  a={**b.authorization_template(c),'authorizationEvidence':[b.public_issue_approval_evidence()]}
   authpath.write_text(json.dumps(a));b.save(d/'authorization-binding.json',dict(schemaVersion=1,path='docs/direct-gwangyang/production-authorization-20261015.json',sha256=b.sha(authpath.read_bytes()),revision='c'*40,publicIssuesApproved=True))
   original=Path(__file__).resolve().parent
   (d/'content-review-binding.json').write_bytes((original/'content-review-binding.json').read_bytes())
@@ -28,6 +28,17 @@ class ProductionTests(unittest.TestCase):
  def test_exact_pinned_contract(self):
   with temporary_control_directory() as d,patch.object(b,'DIRECTORY',Path(d)):
    self.fixture(Path(d));self.assertEqual(b.load()[1]['worker'],'gwangyang-flower-guide')
+ def test_public_safe_authorization_evidence_exact_and_private_fields_rejected(self):
+  with temporary_control_directory() as d,patch.object(b,'DIRECTORY',Path(d)):
+   self.fixture(Path(d));path=d.parents[1]/'docs/direct-gwangyang/production-authorization-20261015.json';original=json.loads(path.read_text());descriptor=json.loads((d/'authorization-binding.json').read_text())
+   accepted=b.public_issue_approval_evidence();mutations=[[],None,[accepted,accepted]]
+   for key,value in [('approved',False),('approved',1),('approvedAtUTC','2026-10-15T18:24:16Z'),('scope','all-actions'),('publicData',['site-url','commit','qa-and-receipt-results','private-message']),('secretsExcluded',False),('messageId','PRIVATE_FIELD_FORBIDDEN'),('verbatimUserAnswer','PRIVATE_FIELD_FORBIDDEN')]:
+    mutations.append([{**accepted,key:value}])
+   for evidence in mutations:
+    with self.subTest(evidence=evidence):
+     changed={**original,'authorizationEvidence':evidence};b.save(path,changed);b.save(d/'authorization-binding.json',{**descriptor,'sha256':b.sha(path.read_bytes())})
+     with self.assertRaisesRegex(ValueError,'exact_public_safe_approval_evidence_required'):b.load()
+   b.save(path,original);b.save(d/'authorization-binding.json',{**descriptor,'sha256':b.sha(path.read_bytes())});self.assertEqual(b.load()[1]['worker'],'gwangyang-flower-guide')
  def test_binding_mutations(self):
   with temporary_control_directory() as d,patch.object(b,'DIRECTORY',Path(d)):
    c,v,save=self.fixture(Path(d))

@@ -31,7 +31,7 @@ class LocalGitTests(unittest.TestCase):
  def bind_source(self):
   self.source_commit=self.command(self.target,'rev-parse','HEAD');self.env['SITE_FACTORY_REVISION']=self.source_commit
   c={**b.contract_template(),'sourceRevision':self.source_commit,'sourceTree':self.command(self.target,'rev-parse','HEAD:'+b.ROOT)};b.save(self.d/'production-source-contract.json',c)
-  auth={**b.authorization_template(c),'authorizationEvidence':[dict(messageId='OFFLINE_FIXTURE_ONLY',verbatimUserAnswer='SYNTHETIC TEST ONLY; NOT USER APPROVAL')]}
+  auth={**b.authorization_template(c),'authorizationEvidence':[b.public_issue_approval_evidence()]}
   name='docs/direct-gwangyang/production-authorization-20261015.json';b.save(self.control/name,auth)
   auth_commit=self.commit(self.control,'local authorization fixture')
   b.save(self.d/'authorization-binding.json',dict(schemaVersion=1,path=name,sha256=b.sha((self.control/name).read_bytes()),revision=auth_commit,publicIssuesApproved=True))
