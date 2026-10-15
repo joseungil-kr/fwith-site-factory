@@ -1,0 +1,81 @@
+import unittest,tempfile,shutil,json,re
+from pathlib import Path
+from qa_suncheon import check,C,QAError
+ARTICLE='regions/suncheon-stcarollo-funeral-wreath/index.html'
+class MutationTests(unittest.TestCase):
+ def setUp(self):self.tmp=tempfile.TemporaryDirectory();self.root=Path(self.tmp.name)/'dist';shutil.copytree(C/'dist',self.root)
+ def tearDown(self):self.tmp.cleanup()
+ def mutate(self,path,old,new):
+  p=self.root/path;s=p.read_text();self.assertIn(old,s);p.write_text(s.replace(old,new,1))
+ def reject(self,code):
+  with self.assertRaisesRegex(QAError,code):check(self.root)
+ def test_baseline(self):self.assertEqual(check(self.root)['status'],'PASS_PRIVATE_STATIC_ONLY')
+ def test_extra_html(self):(self.root/'extra.html').write_text('x');self.reject('HTML_DENOMINATOR')
+ def test_index_enabled(self):self.mutate('index.html','noindex,follow','index,follow');self.reject('ROBOTS_META')
+ def test_duplicate_robots(self):self.mutate('index.html','</head>','<meta name="robots" content="index,follow"></head>');self.reject('ROBOTS_META')
+ def test_canonical(self):self.mutate('index.html','</head>','<link rel="canonical" href="https://example.com/"></head>');self.reject('NO_ABSOLUTE_METADATA')
+ def test_social_origin(self):self.mutate('index.html','</head>','<meta property="og:url" content="https://example.com/"></head>');self.reject('NO_ABSOLUTE_METADATA')
+ def test_sitemap_host(self):self.mutate('sitemap.xml','</urlset>','<url><loc>https://example.com/</loc></url></urlset>');self.reject('EMPTY_PREVIEW_SITEMAP')
+ def test_orphan_sitemap(self):(self.root/'extra.xml').write_text('<urlset/>');self.reject('EMPTY_PREVIEW_SITEMAP')
+ def test_robots_block(self):(self.root/'robots.txt').write_text('User-agent: *\nDisallow: /\n');self.reject('ROBOTS_READABLE')
+ def test_skip_focus_regression(self):self.mutate('index.html','tabindex="-1"','tabindex="0"');self.reject('MAIN_FOCUS_TARGET')
+ def test_missing_skip_target(self):self.mutate('index.html','tabindex="-1"','');self.reject('MAIN_FOCUS_TARGET')
+ def test_banner_alt_phone(self):self.mutate('index.html','전화 1844-0644.','전화 1844-0645.');self.reject('BANNER_ALT_SRC')
+ def test_banner_duplicate_phone(self):self.mutate('index.html','전화 1844-0644.','전화 1844-0644. 전화 1844-0644.');self.reject('BANNER_ALT_SRC')
+ def test_banner_bytes(self):p=self.root/'images/shared-banners/flower-message.webp';p.write_bytes(p.read_bytes()+b'x');self.reject('BANNER_BYTES')
+ def test_banner_caption(self):self.mutate('index.html','</figure>','<figcaption>추가 문구</figcaption></figure>');self.reject('BANNER_WRAPPER')
+ def test_banner_variant(self):self.mutate('index.html','data-shared-flower-banner="message"','data-shared-flower-banner="budget"');self.reject('BANNER_SET')
+ def test_banner_dimensions(self):self.mutate('index.html','width="1774"','width="1500"');self.reject('BANNER_DIMENSIONS')
+ def test_product_fallback(self):self.mutate(ARTICLE,'https://fwith.co.kr/shop/item.php?it_id=B201','https://fwith.co.kr/');self.reject('PRODUCT_CTA')
+ def test_product_photo(self):p=self.root/'images/products/B201.jpg';p.write_bytes(p.read_bytes()+b'x');self.reject('PRODUCT_IMAGE_BYTES')
+ def test_product_hidden_link(self):self.mutate(ARTICLE,'data-order-product-sku="B201"','data-order-product-sku="B201" hidden');self.reject('PRODUCT_CTA_VISIBLE')
+ def test_phone_hidden_link(self):self.mutate(ARTICLE,'href="tel:18440644">성가롤로병원 장례식장 근조화환 문의','hidden href="tel:18440644">성가롤로병원 장례식장 근조화환 문의');self.reject('REQUIRED_CTA_VISIBLE')
+ def test_phone_removed(self):self.mutate(ARTICLE,'data-required-cta href="tel:18440644"','href="tel:18440644"');self.reject('REQUIRED_CTA_SET')
+ def test_faq_marker_missing(self):self.mutate(ARTICLE,'data-faq-answer','data-removed-answer');self.reject('FAQ_COUNT')
+ def test_faq_answer_hidden(self):self.mutate(ARTICLE,'data-faq-answer','data-faq-answer hidden');self.reject('FAQ_VISIBLE_STATIC')
+ def test_faq_answer_aria_hidden(self):self.mutate(ARTICLE,'data-faq-answer','data-faq-answer aria-hidden="true"');self.reject('FAQ_VISIBLE_STATIC')
+ def test_faq_answer_opacity(self):self.mutate(ARTICLE,'data-faq-answer','data-faq-answer style="opacity:0"');self.reject('FAQ_VISIBLE_STATIC')
+ def test_faq_answer_visibility(self):self.mutate(ARTICLE,'data-faq-answer','data-faq-answer style="visibility:hidden"');self.reject('FAQ_VISIBLE_STATIC')
+ def test_faq_answer_display(self):self.mutate(ARTICLE,'data-faq-answer','data-faq-answer style="display:none"');self.reject('FAQ_VISIBLE_STATIC')
+ def test_faq_answer_zero_width(self):self.mutate(ARTICLE,'data-faq-answer','data-faq-answer style="width:0"');self.reject('FAQ_VISIBLE_STATIC')
+ def test_faq_answer_scale_zero(self):self.mutate(ARTICLE,'data-faq-answer','data-faq-answer style="transform:scale(0)"');self.reject('FAQ_VISIBLE_STATIC')
+ def test_faq_nested_hidden_text(self):
+  from html_surface import BeautifulSoup
+  answer=BeautifulSoup((self.root/ARTICLE).read_text()).select_one('[data-faq-answer]').get_text();self.mutate(ARTICLE,answer,'<span hidden>'+answer+'</span>');self.reject('FAQ_VISIBLE_STATIC')
+ def test_cta_nested_hidden_text(self):self.mutate(ARTICLE,'B201 상품 상세 보기','<span hidden>B201 상품 상세 보기</span>');self.reject('PRODUCT_CTA_VISIBLE')
+ def test_faq_opacity_fraction_zero(self):self.mutate(ARTICLE,'data-faq-answer','data-faq-answer style="opacity:.0"');self.reject('FAQ_VISIBLE_STATIC')
+ def test_faq_opacity_exponent_zero(self):self.mutate(ARTICLE,'data-faq-answer','data-faq-answer style="opacity:0e2"');self.reject('FAQ_VISIBLE_STATIC')
+ def test_faq_pseudo_first_of_type(self):self.mutate(ARTICLE,'</head>','<style>#faq p:first-of-type{display:none}</style></head>');self.reject('VISIBLE')
+ def test_faq_pseudo_where(self):self.mutate(ARTICLE,'</head>','<style>:where([data-faq-answer]){display:none}</style></head>');self.reject('VISIBLE')
+ def test_cta_pseudo_first_child(self):self.mutate(ARTICLE,'</head>','<style>#faq .actions a:first-child{display:none}</style></head>');self.reject('VISIBLE')
+ def test_faq_question_hidden(self):self.mutate(ARTICLE,'data-faq-question','data-faq-question hidden');self.reject('FAQ_VISIBLE_STATIC')
+ def test_faq_parent_hidden(self):self.mutate(ARTICLE,'data-visible-faq','data-visible-faq hidden');self.reject('REQUIRED_CTA_VISIBLE|FAQ_VISIBLE_STATIC')
+ def test_faq_css_hidden(self):self.mutate(ARTICLE,'</head>','<style>[data-faq-answer]{display:none}</style></head>');self.reject('FAQ_VISIBLE_STATIC')
+ def test_phone_css_hidden(self):self.mutate(ARTICLE,'</head>','<style>[data-required-cta]{opacity:0}</style></head>');self.reject('PRODUCT_CTA_VISIBLE|REQUIRED_CTA_VISIBLE')
+ def test_hidden_ancestor(self):self.mutate(ARTICLE,'data-page-id="article"','data-page-id="article" inert');self.reject('BANNER_VISIBLE_STATIC|PRODUCT_CTA_VISIBLE|REQUIRED_CTA_VISIBLE|FAQ_VISIBLE_STATIC')
+ def test_duplicate_faq_answer(self):
+  from html_surface import BeautifulSoup
+  answer=BeautifulSoup((self.root/ARTICLE).read_text()).select_one('[data-faq-answer]').get_text();self.mutate(ARTICLE,'</main>','<p>'+answer+'</p></main>');self.reject('FAQ_ONCE')
+ def test_duplicate_body(self):self.mutate('index.html','</section>','<p>추가 본문</p></section>');self.reject('BODY_TEXT_PARITY')
+ def test_body_changed(self):self.mutate('index.html','조문할 자리에 꽃을 보내려는 분께','부고를 확인한 뒤');self.reject('BODY_BLOCK_SEQUENCE')
+ def test_product_duplicate_on_home(self):self.mutate('index.html','</main>','<img src="/images/products/B201.jpg" width="500" height="500" alt="B201" loading="lazy" decoding="async"></main>');self.reject('PRODUCT_IMAGE_COUNT')
+ def test_support_banner_added(self):self.mutate('regions/index.html','</main>','<img src="/images/shared-banners/flower-message.webp" width="1774" height="887" alt="배너" loading="lazy" decoding="async"></main>');self.reject('BANNER_IMAGE_COUNT')
+ def test_support_in_menu(self):self.mutate('index.html','href="/regions/suncheon-stcarollo-funeral-wreath/"','href="/regions/"');self.reject('MAIN_MENU')
+ def test_new_script(self):self.mutate('index.html','</head>','<script>alert(1)</script></head>');self.reject('NO_ACTIVE_TRANSMISSION')
+ def test_origin_change(self):
+  m=json.loads((C/'src/data/page-map.json').read_text());m['origin']='https://example.com'
+  with self.assertRaisesRegex(QAError,'BOUNDARY'):check(self.root,m)
+ def test_launch_promotion(self):
+  m=json.loads((C/'src/data/page-map.json').read_text());m['coreHubLaunchStatus']='PASS'
+  with self.assertRaisesRegex(QAError,'BOUNDARY'):check(self.root,m)
+ def test_extra_body_outside_article(self):self.mutate('index.html','</main>','<p>검토되지 않은 문구</p></main>');self.reject('ALL_BODY_TEXT_PARITY')
+ def test_neutral_chrome_change(self):self.mutate('index.html','메뉴 열기','판매 보장');self.reject('ALL_BODY_TEXT_PARITY')
+ def test_support_unreviewed_text(self):self.mutate('regions/index.html','</main>','<p>새로운 서비스</p></main>');self.reject('ALL_BODY_TEXT_PARITY')
+ def test_404_unreviewed_text(self):self.mutate('404.html','</main>','<p>새로운 약속</p></main>');self.reject('ALL_BODY_TEXT_PARITY')
+ def test_source_anchor_broken(self):self.mutate('index.html','#sources','#missing');self.reject('ANCHOR_TARGET')
+ def test_facility_phone_as_cta(self):self.mutate('index.html','tel:18440644','tel:0617224444');self.reject('ONLY_SALES_PHONE_CTA')
+ def test_duplicate_id(self):self.mutate('index.html','</main>','<div id="main-content"></div></main>');self.reject('DUPLICATE_ID')
+ def test_first_answer_hidden(self):self.mutate('index.html','data-first-answer','data-first-answer hidden');self.reject('MAIN_VISIBLE_STATIC')
+ def test_source_heading_hidden(self):self.mutate('index.html','<h2 data-reviewed-block>출처 및 확인 정보','<h2 hidden data-reviewed-block>출처 및 확인 정보');self.reject('MAIN_VISIBLE_STATIC')
+ def test_product_image_hidden(self):self.mutate(ARTICLE,'data-reviewed-image','data-reviewed-image hidden');self.reject('MAIN_VISIBLE_STATIC')
+if __name__=='__main__':unittest.main(verbosity=2)
