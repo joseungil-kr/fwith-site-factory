@@ -28,6 +28,15 @@
       "scope": [
         "retry cancelled commit and resume requested uploads/publication"
       ]
+    },
+    {
+      "answer": "직접 취소하는 경우는 없으니 이유를 찾아라\n배포 직전 재검증 하더라도 다음 작업은 미루지 말고 하라\n공개에 순서는 없다. 완료되면 바로 공개한다.",
+      "answerAt": "2026-10-15T12:43:59+00:00",
+      "answerMessageId": "Sentinel_a761661766d481919a9aaedfaec25550",
+      "quoteScope": "Relevant publication instruction excerpt; no claim that the MCP cancellation identified its actor",
+      "scope": [
+        "Continue requested storage and publication when evidence gates pass"
+      ]
     }
   ],
   "constraints": [
@@ -51,16 +60,16 @@
   "hostname": "mokpo.fwith.kr",
   "notEvidenceOfExecution": true,
   "priorProductionSuccessor": {
-    "commit": "c3e2d7c03f2419aa94c9b55a6c12d69b8d3e75c1",
-    "sourceFiles": 81,
-    "sourceTree": "0a46e7707d5785c0dc7b609a54ec1719305f1b47",
-    "sourceTreeSha256": "0dbf4b10d866fc1f33fcb754f43326f6ed2221fd81e18b8dc66e1799b52c0442"
-  },
-  "productionSuccessor": {
     "commit": "1fac997b690c3a07ff957422a2019e4f860c95ca",
     "sourceFiles": 81,
     "sourceTree": "0314899e9f2791a16ccae8caf1289348cdb511e8",
     "sourceTreeSha256": "8b4b4bd15b84fb41c6221c0dcf58d0da0ff09a34aa8843de5ea1951ac2703e31"
+  },
+  "productionSuccessor": {
+    "commit": "e144887a2612f22f333a9b71a8f76e4d5adbc3e7",
+    "sourceFiles": 81,
+    "sourceTree": "a54904df8d988e69ec8677b8b3e0ddcc2096763d",
+    "sourceTreeSha256": "dc56a792b88c82480ce5e64854b4cc69aeec3264656f8d41b7ac3a2ea72ee8be"
   },
   "purpose": "Record scoped owner authorization for existing direct-github-static publication after evidence gates",
   "region": "mokpo",
@@ -81,8 +90,9 @@
   "technicalCorrection": {
     "customerContentChanged": false,
     "frozenPrivateSourceChanged": false,
-    "independentReview": "root-exact-header-review.json, source24 and control97 tests passed",
-    "scope": "Require exact inert _headers bytes and reject appended response directives"
+    "independentReview": "root-exact-header-review.json and root-twitter-repair-review.json; source29 and control99 passed",
+    "rootTwitterReviewSha256": "39c6d8e704357c35c381eda7956dd0e20594529b6c8d6b452d2777ca06d3f150",
+    "scope": "Exact inert headers plus frozen-title/description and existing B201 social metadata; strict missing/duplicate/mutation gates"
   },
   "verifiedFrozenSource": {
     "commit": "200e5001efc11bacbbc6cb0dca1277b69539844b",
