@@ -401,4 +401,125 @@ class DomainNullEnvelopeCompatibility(unittest.TestCase):
 def re_match_selected(path):
  return '/deployments/' in path
 
+class StateShapeDiagnostics(unittest.TestCase):
+ def env(self):return {'CLOUDFLARE_ACCOUNT_ID':ACCOUNT,'CLOUDFLARE_API_TOKEN':'fixture-token'}
+ def paths(self):return ['/accounts/'+ACCOUNT,'/accounts/'+ACCOUNT+'/workers/scripts','/accounts/'+ACCOUNT+'/workers/domains',SCRIPT+'/settings',SCRIPT+'/subdomain',SCRIPT+'/deployments?page=1&per_page=1',SCRIPT+'/deployments/'+DEP,SCRIPT+'/versions/'+VID]
+ def run_sweep(self,f=None,responses=None):
+  f=f or fixtures();opener=R2Regressions().opener(responses if responses is not None else [f[path] for path in self.paths()])
+  with patch.object(b,'ACCOUNT_SHA',SHA):result=b.state_diagnostic_sweep(self.env(),opener)
+  return result,opener
+ def assert_safe(self,value):
+  if type(value) is dict:
+   for k,v in value.items():self.assertIs(type(k),str);self.assert_safe(v)
+  else:self.assertIn(type(value),(bool,str))
+ def test_full_sweep_is_bounded_get_only_never_baseline(self):
+  result,op=self.run_sweep();self.assertEqual(len(op.requests),8);self.assertEqual(result['state'],'BOUNDED_DIAGNOSTIC_SWEEP_FINISHED_NOT_A_BASELINE');self.assert_safe(result)
+  for request in op.requests:self.assertEqual(request.get_method(),'GET');self.assertIsNone(request.data)
+  for flag in ('baselineAccepted','publicationEligible','providerMutationsPerformed'):self.assertFalse(result[flag])
+  raw=json.dumps(result)
+  for forbidden in [ACCOUNT,DEP,VID,'fixture-token','not-retained','do-not-retain','do-not-use-as-assets-digest']:self.assertNotIn(forbidden,raw)
+ def test_bad_opaque_id_is_diagnosed_without_acceptance_or_pattern_change(self):
+  f=fixtures();f['/accounts/'+ACCOUNT+'/workers/domains']['result'][0].update(id='opaque-fixture-value-not-a-uuid',zone_id='A'*64)
+  with patch.object(b,'ACCOUNT_SHA',SHA),self.assertRaisesRegex(ValueError,'opaque_domain_zone_identity_required'):b.current_state(ACCOUNT,get_for(f))
+  result,op=self.run_sweep(f);self.assertEqual(len(op.requests),8);fields=result['endpoints']['domains-list']['shape']['fields'];self.assertFalse(fields['domainIdPattern']['currentOpaquePattern']);self.assertFalse(fields['zoneIdPattern']['currentOpaquePattern']);self.assertTrue(fields['zoneIdPattern']['hex64']);self.assertNotIn('opaque-fixture',json.dumps(result));self.assertFalse(result['baselineAccepted'])
+ def test_prefix_identity_failures_stop_all_later_requests(self):
+  cases=[(lambda f:f['/accounts/'+ACCOUNT]['result'].update(id='other'),1),(lambda f:f['/accounts/'+ACCOUNT+'/workers/scripts']['result'].clear(),2),(lambda f:f['/accounts/'+ACCOUNT+'/workers/domains']['result'][0].update(service='other'),3),(lambda f:f['/accounts/'+ACCOUNT+'/workers/domains']['result'][0].update(zone_name='other'),3),(lambda f:f['/accounts/'+ACCOUNT+'/workers/domains'].update(result_info={'total_pages':2}),3)]
+  for mutate,n in cases:
+   with self.subTest(requests=n):
+    f=fixtures();mutate(f);result,op=self.run_sweep(f);self.assertEqual(len(op.requests),n);self.assertFalse(result['baselineAccepted']);self.assertEqual(result['endpoints']['selected-version']['status'],'not_requested')
+ def test_every_transport_or_envelope_failure_stops_without_retry(self):
+  for i in range(8):
+   for bad in [b'not-json',{'success':False,'errors':[],'result':{}},{'success':True,'errors':['fixture-private'],'result':{}}]:
+    with self.subTest(index=i,bad=type(bad).__name__):
+     f=fixtures();responses=[f[path] for path in self.paths()];responses[i]=bad;result,op=self.run_sweep(responses=responses);self.assertEqual(len(op.requests),i+1);self.assertEqual(result['state'],'request_or_selection_gate_failed');self.assertNotIn('fixture-private',json.dumps(result))
+ def test_all_http_and_network_failures_stop_without_retry(self):
+  for status in [301,401,403,404,429,500]:
+   with self.subTest(status=status),patch.object(b,'ACCOUNT_SHA',SHA):
+    op=R2Regressions().opener([ok({})],status=status);result=b.state_diagnostic_sweep(self.env(),op);self.assertEqual(len(op.requests),1);self.assertEqual(result['state'],'request_or_selection_gate_failed')
+  class Failed:
+   def __init__(self):self.requests=[]
+   def open(self,request,timeout):self.requests.append(request);raise RuntimeError('fixture-private-transport')
+  op=Failed()
+  with patch.object(b,'ACCOUNT_SHA',SHA):result=b.state_diagnostic_sweep(self.env(),op)
+  self.assertEqual(len(op.requests),1);self.assertNotIn('fixture-private',json.dumps(result))
+ def test_invalid_active_selection_keeps_snapshot_and_zero_dynamic_calls(self):
+  for percentage in [50,True,None,'100']:
+   with self.subTest(percentage=percentage):
+    f=fixtures();f[SCRIPT+'/deployments?page=1&per_page=1']['result']['deployments'][0]['versions'][0]['percentage']=percentage;result,op=self.run_sweep(f);self.assertEqual(len(op.requests),6);row=result['endpoints']['active-deployment-list'];self.assertEqual(row['status'],'selection_rejected_stop');self.assertFalse(row['shape']['checks']['unchangedActiveIdentityPasses']);self.assertEqual(result['endpoints']['selected-deployment']['status'],'not_requested');self.assertEqual(result['endpoints']['selected-version']['status'],'not_requested')
+ def test_recorder_disabled_in_normal_transport_and_resets_before_failure(self):
+  with patch.object(b,'ACCOUNT_SHA',SHA),patch.object(b,'provider_shape_diagnostic',side_effect=RuntimeError('must not run')):
+   get=b.provider_get(self.env(),R2Regressions().opener([ok({'id':ACCOUNT})]))[1];self.assertEqual(get('/accounts/'+ACCOUNT),ok({'id':ACCOUNT}));self.assertFalse(hasattr(get,'shape_snapshot'))
+  op=R2Regressions().opener([ok({'id':ACCOUNT}),b'bad-json'])
+  with patch.object(b,'ACCOUNT_SHA',SHA):get=b.provider_get(self.env(),op,diagnostic=True)[1]
+  get('/accounts/'+ACCOUNT);self.assertEqual(get.shape_snapshot['endpoint'],'account')
+  with self.assertRaises(ValueError):get('/accounts/'+ACCOUNT+'/workers/scripts')
+  self.assertIsNone(get.shape_snapshot);self.assertFalse(get.diagnostic_transport_passed)
+ def test_projection_failure_is_fixed_and_preserves_original_failure(self):
+  with patch.object(b,'provider_shape_diagnostic',side_effect=RuntimeError('fixture-private')):result,op=self.run_sweep()
+  self.assertEqual(len(op.requests),1);self.assertEqual(result['state'],'request_or_selection_gate_failed');self.assertNotIn('fixture-private',json.dumps(result))
+  with patch.object(b,'current_state',side_effect=ValueError('opaque_domain_zone_identity_required')),patch.object(b,'state_diagnostic_sweep',return_value=result),self.assertRaises(b.ProviderStateDiagnosticError) as caught:b.state_with_diagnostics(self.env(),ACCOUNT,lambda p:None)
+  self.assertEqual(caught.exception.original_code,'opaque_domain_zone_identity_required');self.assertFalse(caught.exception.diagnostic['baselineAccepted'])
+ def test_wrapper_never_sweeps_for_transport_envelope_unknown_or_other_exceptions(self):
+  failures=[ValueError('provider_get_failed_no_response_disclosed'),ValueError('provider_get_http_status'),ValueError('provider_json_invalid'),ValueError('provider_get_endpoint_forbidden'),b.ProviderEnvelopeError({'safe':True}),ValueError('private provider text'),RuntimeError('private')]
+  for failure in failures:
+   with self.subTest(kind=type(failure).__name__),patch.object(b,'current_state',side_effect=failure),patch.object(b,'state_diagnostic_sweep') as sweep,self.assertRaises(type(failure)):b.state_with_diagnostics(self.env(),ACCOUNT,None)
+   sweep.assert_not_called()
+ def test_all_fixed_fields_project_types_and_booleans_without_values_or_aliases(self):
+  canary='fixture-secret-canary-123';samples=[None,False,0,1,3.5,'',canary,[],[canary],{}, {'unknown-private-key':canary}]
+  for path in fixtures():
+   for value in samples:
+    with self.subTest(path=path,value=type(value).__name__):
+     obj=ok(copy.deepcopy(value));original=copy.deepcopy(obj);out=b.provider_shape_diagnostic(ACCOUNT,path,obj);self.assertEqual(obj,original);self.assert_safe(out);serialized=json.dumps(out);self.assertNotIn(canary,serialized);self.assertNotIn('unknown-private-key',serialized);self.assertNotIn(ACCOUNT,serialized)
+  f=fixtures()
+  for path,obj in f.items():
+   original=copy.deepcopy(obj);out=b.provider_shape_diagnostic(ACCOUNT,path,obj);self.assertEqual(obj,original);obj.clear();self.assert_safe(out);self.assertNotIn('not-retained',json.dumps(out))
+ def test_later_state_anomalies_are_shape_only_not_silently_accepted(self):
+  f=fixtures();f[SCRIPT+'/settings']['result'].update(tags=None,tail_consumers=None,logpush=None);f[SCRIPT+'/versions/'+VID]['result'].update(startup_time_ms=1,annotations={'private':'fixture-secret'});f[SCRIPT+'/versions/'+VID]['result']['resources']['script'].update(handlers=None,placement_mode='fixture-private');f[SCRIPT+'/versions/'+VID]['result']['resources']['script_runtime'].update(containers=[{'value':'fixture-secret'}]);result,op=self.run_sweep(f);self.assertEqual(len(op.requests),8);self.assertFalse(result['endpoints']['script-settings']['shape']['checks']['existingSettingsProjectionExactlyExpected']);self.assertFalse(result['endpoints']['selected-version']['shape']['checks']['onlyPriorVersionKeys']);self.assertFalse(result['endpoints']['selected-version']['shape']['checks']['staticHandlersAllowed']);self.assertNotIn('fixture-secret',json.dumps(result));self.assertNotIn('fixture-private',json.dumps(result));self.assertFalse(result['baselineAccepted'])
+ def test_main_retains_original_failure_and_only_safe_diagnostics(self):
+  diagnostic={'schema':'fixture-safe','baselineAccepted':False};failure=b.ProviderStateDiagnosticError('opaque_domain_zone_identity_required',diagnostic)
+  with tempfile.TemporaryDirectory() as td:
+   p=Path(td)/'report.json'
+   with patch.object(b.sys,'argv',['provider_baseline.py','observe','--report',str(p)]),patch.dict(b.os.environ,{'GITHUB_EVENT_PATH':'fixture-event'}),patch.object(b,'load_policy'),patch.object(b,'read',return_value=b'{}'),patch.object(b,'observe',side_effect=failure),patch('sys.stdout',new_callable=io.StringIO):self.assertEqual(b.main(),1)
+   report=json.loads(p.read_text());self.assertEqual(report['code'],'opaque_domain_zone_identity_required');self.assertEqual(report['stateDiagnostics'],diagnostic);self.assertFalse(report['baselineAccepted']);self.assertNotIn('currentProviderState',report)
+
+ def test_selected_identity_mismatch_stops_and_suppresses_nested_attribution(self):
+  for endpoint,n in [('selected-deployment',7),('selected-version',8)]:
+   with self.subTest(endpoint=endpoint):
+    f=fixtures();path=SCRIPT+'/deployments/'+DEP if endpoint=='selected-deployment' else SCRIPT+'/versions/'+VID;f[path]['result']['id']='33333333-3333-3333-3333-333333333333';result,op=self.run_sweep(f);self.assertEqual(len(op.requests),n);self.assertEqual(result['endpoints'][endpoint]['status'],'identity_mismatch_stop')
+    if endpoint=='selected-deployment':self.assertEqual(result['endpoints']['selected-version']['status'],'not_requested')
+    else:self.assertNotIn('resources',result['endpoints'][endpoint]['shape']['fields']);self.assertNotIn('metadata',result['endpoints'][endpoint]['shape']['fields']);self.assertFalse(result['endpoints'][endpoint]['shape']['checks']['versionIdMatchesRequested'])
+ def test_unexpected_sweep_exception_cannot_replace_original_failure(self):
+  with patch.object(b,'current_state',side_effect=ValueError('opaque_domain_zone_identity_required')),patch.object(b,'state_diagnostic_sweep',side_effect=RuntimeError('fixture-private-failure')),self.assertRaises(b.ProviderStateDiagnosticError) as caught:b.state_with_diagnostics(self.env(),ACCOUNT,None)
+  self.assertEqual(caught.exception.original_code,'opaque_domain_zone_identity_required');self.assertEqual(caught.exception.diagnostic['state'],'diagnostic_unexpected_failure');self.assertNotIn('fixture-private',json.dumps(caught.exception.diagnostic))
+ def test_empty_inventory_and_missing_domain_checks_are_explicit(self):
+  for path in ['/accounts/'+ACCOUNT+'/workers/scripts','/accounts/'+ACCOUNT+'/workers/domains']:
+   out=b.provider_shape_diagnostic(ACCOUNT,path,ok([]));self.assertFalse(out['checks']['rowsNonempty'])
+   if path.endswith('/domains'):self.assertFalse(out['checks']['selectedDomainChecksEvaluated']);self.assertNotIn('environmentAllowed',out['checks'])
+
+ def test_missing_or_malformed_parent_checks_are_unevaluated_not_true(self):
+  version_path=SCRIPT+'/versions/'+VID
+  for parent in [None,False,0,'fixture-private',[],{}]:
+   with self.subTest(parent=type(parent).__name__):
+    f=fixtures();f[version_path]['result']['resources']=parent;out=b.provider_shape_diagnostic(ACCOUNT,version_path,f[version_path]);real=type(parent) is dict
+    for key in ('onlyPriorScriptKeys','staticHandlersAllowed','namedHandlersAllowed','etagAbsentOrAllowedPattern','onlyPriorRuntimeKeys','exportsAbsentOrExactEmpty','limitsAbsentOrExactEmpty','migration_tagAbsentOrExactEmpty'):
+     self.assertEqual(out['checkEvaluated'][key],real)
+     if not real:self.assertNotIn(key,out['checks'])
+    self.assertEqual(out['checks']['scriptDefaultUsed'],real);self.assertEqual(out['checks']['runtimeDefaultUsed'],real)
+  for parent in [None,False,0,'fixture-private',[]]:
+   out=b.provider_shape_diagnostic(ACCOUNT,SCRIPT+'/settings',ok(parent))
+   for key in ('observabilityAbsentOrExactDisabled','migrationsAbsentOrEmpty'):
+    self.assertFalse(out['checkEvaluated'][key]);self.assertNotIn(key,out['checks'])
+ def test_wrong_optional_script_runtime_objects_do_not_use_empty_defaults(self):
+  path=SCRIPT+'/versions/'+VID
+  for key,check,default in [('script','staticHandlersAllowed','scriptDefaultUsed'),('script_runtime','exportsAbsentOrExactEmpty','runtimeDefaultUsed')]:
+   for value in [None,False,0,'fixture-private',[]]:
+    with self.subTest(member=key,value=type(value).__name__):
+     f=fixtures();f[path]['result']['resources'][key]=value;out=b.provider_shape_diagnostic(ACCOUNT,path,f[path]);self.assertFalse(out['checkEvaluated'][check]);self.assertNotIn(check,out['checks']);self.assertFalse(out['checks'][default]);self.assertNotIn('fixture-private',json.dumps(out))
+ def test_runtime_settings_comparison_requires_real_parent_or_valid_default(self):
+  path=SCRIPT+'/versions/'+VID
+  for value in [None,False,0,'fixture-private',[]]:
+   f=fixtures();f[path]['result']['resources']=value;out,op=self.run_sweep(f);self.assertEqual(len(op.requests),8)
+   for key in ('compatibility_date','compatibility_flags','usage_model'):
+    name='runtime_'+key+'_AbsentOrMatchesSettings';self.assertFalse(out['checkEvaluated'][name]);self.assertNotIn(name,out['checks'])
+
 if __name__=='__main__':unittest.main(verbosity=2)

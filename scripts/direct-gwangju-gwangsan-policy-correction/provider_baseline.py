@@ -96,12 +96,90 @@ def domain_null_envelope(account,path,obj):
   and obj['success'] is True and obj['errors'] is None and obj['messages'] is None
   and type(obj['result']) is list and type(obj['result_info']) is dict)
 
-def provider_get(env,opener=None):
+def diagnostic_type(value):
+ return {dict:'object',list:'array',str:'string',bool:'boolean',int:'number',float:'number',type(None):'null'}.get(type(value),'other')
+
+def diagnostic_fields(value,names):
+ obj=type(value) is dict
+ return {name:{'present':obj and name in value,'type':diagnostic_type(value[name]) if obj and name in value else 'absent'} for name in names.split()}
+
+def diagnostic_predicate(fn):
+ try:return bool(fn())
+ except Exception:return False
+
+def diagnostic_string(value):
+ string=type(value) is str
+ return {'nonemptyString':string and bool(value),'hex32':string and bool(re.fullmatch('[0-9a-fA-F]{32}',value)),'hex64':string and bool(re.fullmatch('[0-9a-fA-F]{64}',value)),'lowercaseUUID':string and bool(re.fullmatch(UUID,value)),'caseInsensitiveUUID':string and bool(re.fullmatch(UUID,value,re.I)),'asciiGraphic1To128':string and 1<=len(value)<=128 and all(33<=ord(c)<=126 for c in value),'currentOpaquePattern':string and bool(re.fullmatch(r'(?:[0-9a-fA-F]{32}|'+UUID+r')',value))}
+
+def diagnostic_evaluated(report,contexts):
+ # Only fixed predicate names produced by trusted projections are considered.
+ report['checkEvaluated']={name:bool(contexts.get(name,True)) for name in report['checks']}
+ for name,evaluated in report['checkEvaluated'].items():
+  if not evaluated:report['checks'].pop(name)
+ return report
+
+def provider_shape_diagnostic(account,path,obj):
+ # The result has only predetermined keys, fixed type labels and booleans.
+ # Never retain values, unknown key names, counts, identifiers or identifier digests.
+ envelope=envelope_diagnostic(account,path,obj);label=envelope['endpoint'];result=obj.get('result') if type(obj) is dict else None
+ out={'endpoint':label,'resultType':diagnostic_type(result),'envelope':envelope,'fields':{},'checks':{}}
+ fields=out['fields'];checks=out['checks'];contexts={};mapping=result if type(result) is dict else {};info=obj.get('result_info') if type(obj) is dict else None
+ fields['pagination']=diagnostic_fields(info,'page total_pages count total_count per_page')
+ checks['paginationStrictlyValid']=diagnostic_predicate(lambda:pagination(obj,single=label!='active-deployment-list') is not None)
+ if label=='account':
+  fields['result']=diagnostic_fields(result,'id');checks['exactAccountIdentity']=type(result) is dict and result.get('id')==account;contexts['exactAccountIdentity']=type(result) is dict
+ elif label=='scripts-list':
+  rows=result if type(result) is list else [];names=[r.get('id') if type(r) is dict else None for r in rows]
+  checks.update(rowsArray=type(result) is list,rowsNonempty=type(result) is list and bool(result),singlePageComplete=diagnostic_predicate(lambda:single_page(obj) is not None),allRowsNonemptyStringId=all(type(n) is str and bool(n) for n in names),idsUnique=diagnostic_predicate(lambda:len(names)==len(set(names))),fixedWorkerExactlyOnce=names.count(WORKER)==1)
+  contexts.update({key:type(result) is list for key in ('allRowsNonemptyStringId','idsUnique','fixedWorkerExactlyOnce')})
+ elif label=='domains-list':
+  rows=result if type(result) is list else [];checks['rowsArray']=type(result) is list;checks['rowsNonempty']=type(result) is list and bool(result);checks['singlePageComplete']=diagnostic_predicate(lambda:single_page(obj) is not None);checks['inventoryRequiredStrings']=all(type(r) is dict and all(type(r.get(k)) is str and bool(r[k]) for k in ('id','hostname','service','zone_id')) for r in rows)
+  matches=[r for r in rows if type(r) is dict and ((type(r.get('hostname')) is str and r['hostname'].lower()==HOST) or r.get('service')==WORKER)];checks['oneRelevantRow']=len(matches)==1;row=matches[0] if len(matches)==1 else {};fields['selectedDomain']=diagnostic_fields(row,'id hostname service zone_id zone_name environment enabled previews_enabled cert_id');fields['domainIdPattern']=diagnostic_string(row.get('id'));fields['zoneIdPattern']=diagnostic_string(row.get('zone_id'));checks['selectedDomainChecksEvaluated']=len(matches)==1
+  if len(matches)!=1:
+   contexts.update({key:type(result) is list for key in ('inventoryRequiredStrings','oneRelevantRow')});return diagnostic_evaluated(out,contexts)
+  checks.update(exactHostWorker=row.get('hostname')==HOST and row.get('service')==WORKER,onlyAllowedDomainKeys=set(row)<={'id','hostname','service','zone_id','zone_name','environment','enabled','previews_enabled','cert_id'},exactZoneName=row.get('zone_name')=='fwith.kr',environmentAllowed=row.get('environment') in (None,'production'),enabledAllowed='enabled' not in row or row['enabled'] is True,previewsAllowed='previews_enabled' not in row or row['previews_enabled'] is False,certificatePatternAllowed='cert_id' not in row or (type(row['cert_id']) is str and bool(re.fullmatch(r'[A-Za-z0-9_-]{1,128}',row['cert_id']))))
+  contexts.update({key:type(result) is list for key in ('inventoryRequiredStrings','oneRelevantRow')})
+ elif label=='script-settings':
+  names='bindings compatibility_date compatibility_flags usage_model limits logpush observability placement tail_consumers tags cache_options annotations migrations exports exports_reconciliation';fields['settings']=diagnostic_fields(result,names);fields['observability']=diagnostic_fields(mapping.get('observability'),'enabled');checks['onlyPriorAllowedSettingsKeys']=type(result) is dict and set(result)<={'bindings','compatibility_date','compatibility_flags','usage_model','limits','logpush','observability','placement','tail_consumers','tags','cache_options','annotations','migrations'}
+  for key in ('bindings','compatibility_flags','tail_consumers','tags'):checks[key+'EmptyArray']=type(mapping.get(key)) is list and not mapping[key]
+  checks.update(exactCompatibilityDate=mapping.get('compatibility_date')=='2026-10-09',logpushExplicitFalse=mapping.get('logpush') is False,observabilityAbsentOrExactDisabled='observability' not in mapping or canonical(mapping['observability'])==canonical({'enabled':False}),placementEmptyObject=type(mapping.get('placement')) is dict and not mapping['placement'],usageModelStandard=mapping.get('usage_model')=='standard',migrationsAbsentOrEmpty=not mapping.get('migrations'))
+  import existing_provider as pc
+  checks['existingSettingsProjectionExactlyExpected']=diagnostic_predicate(lambda:canonical(pc.settings(result))==canonical({'bindings':[],'compatibility_date':'2026-10-09','compatibility_flags':[],'logpush':False,'placement':{},'tags':[],'tail_consumers':[],'usage_model':'standard'}))
+  contexts.update({key:type(result) is dict for key in checks if key not in ('paginationStrictlyValid','onlyPriorAllowedSettingsKeys','existingSettingsProjectionExactlyExpected')})
+ elif label=='script-exposure':
+  fields['exposure']=diagnostic_fields(result,'enabled previews_enabled');checks.update(exactExposureKeys=type(result) is dict and set(result)=={'enabled','previews_enabled'},bothFlagsTypedBoolean=type(result) is dict and all(type(result.get(k)) is bool for k in ('enabled','previews_enabled')),workersDevDisabled=mapping.get('enabled') is False,previewsDisabled=mapping.get('previews_enabled') is False)
+  contexts.update({key:type(result) is dict for key in ('workersDevDisabled','previewsDisabled')})
+ elif label in ('active-deployment-list','selected-deployment'):
+  active=result
+  if label=='active-deployment-list':
+   fields['result']=diagnostic_fields(result,'deployments');rows=mapping.get('deployments');checks['exactlyOneDeployment']=type(rows) is list and len(rows)==1;active=rows[0] if checks['exactlyOneDeployment'] else None;checks['unchangedActiveIdentityPasses']=diagnostic_predicate(lambda:active_identity(obj) is not None)
+  row=active if type(active) is dict else {};fields['deployment']=diagnostic_fields(active,'id created_on source strategy versions');fields['deploymentIdPattern']=diagnostic_string(row.get('id'));checks.update(deploymentAllowedKeys=type(active) is dict and set(active)<={'id','created_on','source','strategy','versions','annotations','author_email'},deploymentRequiredKeys=type(active) is dict and {'id','created_on','source','strategy','versions'}<=set(active),deploymentTimestampValid=diagnostic_predicate(lambda:timestamp(row.get('created_on')) is not None),percentageStrategy=row.get('strategy')=='percentage')
+  versions=row.get('versions');checks['exactlyOneVersion']=type(versions) is list and len(versions)==1;version=versions[0] if checks['exactlyOneVersion'] and type(versions[0]) is dict else {};fields['selectedVersionEntry']=diagnostic_fields(version,'version_id percentage');fields['selectedVersionIdPattern']=diagnostic_string(version.get('version_id'));checks.update(exactVersionEntryKeys=set(version)=={'version_id','percentage'},typedFullTraffic=type(version.get('percentage')) in (int,float) and version['percentage']==100)
+  contexts.update({key:type(active) is dict for key in ('deploymentTimestampValid','percentageStrategy')});contexts.update({key:type(versions) is list and len(versions)==1 and type(versions[0]) is dict for key in ('exactVersionEntryKeys','typedFullTraffic')})
+ elif label=='selected-version':
+  fields['version']=diagnostic_fields(result,'id metadata number resources annotations startup_time_ms');fields['versionIdPattern']=diagnostic_string(mapping.get('id'));checks.update(onlyPriorVersionKeys=type(result) is dict and set(result)<={'id','metadata','number','resources'},versionNumberPositiveInteger=type(mapping.get('number')) is int and mapping['number']>0,versionIdMatchesRequested=type(result) is dict and mapping.get('id')==path.rsplit('/',1)[-1])
+  if not checks['versionIdMatchesRequested']:return diagnostic_evaluated(out,contexts)
+  meta=mapping.get('metadata');fields['metadata']=diagnostic_fields(meta,'created_on modified_on source hasPreview');metadata=meta if type(meta) is dict else {};checks.update(onlyPriorMetadataKeys=type(meta) is dict and set(meta)<={'author_email','author_id','created_on','hasPreview','modified_on','source'},versionTimestampValid=diagnostic_predicate(lambda:timestamp(metadata.get('created_on')) is not None),knownVersionSource=type(metadata.get('source')) is str and metadata['source'] in {'unknown','api','wrangler','terraform','dash','cf_cli','dash_template','integration','quick_editor','playground','workersci'})
+  resources=mapping.get('resources');res=resources if type(resources) is dict else {};fields['resources']=diagnostic_fields(resources,'bindings script script_runtime');checks.update(onlyPriorResourceKeys=type(resources) is dict and set(resources)<={'bindings','script','script_runtime'},bindingsEmptyArray=type(res.get('bindings')) is list and not res['bindings'])
+  script=res.get('script',{});runtime=res.get('script_runtime',{});sm=script if type(script) is dict else {};rt=runtime if type(runtime) is dict else {};fields['script']=diagnostic_fields(script,'etag handlers last_deployed_from named_handlers placement_mode');fields['runtime']=diagnostic_fields(runtime,'compatibility_date compatibility_flags exports limits migration_tag usage_model containers');checks.update(onlyPriorScriptKeys=type(script) is dict and set(script)<={'etag','handlers','last_deployed_from','named_handlers'},onlyPriorRuntimeKeys=type(runtime) is dict and set(runtime)<={'compatibility_date','compatibility_flags','exports','limits','migration_tag','usage_model'},staticHandlersAllowed='handlers' not in sm or (type(sm['handlers']) is list and sm['handlers'] in ([],['fetch'])),namedHandlersAllowed='named_handlers' not in sm or (type(sm['named_handlers']) is list and not sm['named_handlers']))
+  for key,empty in [('exports',{}),('limits',{}),('migration_tag','')]:checks[key+'AbsentOrExactEmpty']=key not in rt or canonical(rt[key])==canonical(empty)
+  for key,pattern in [('etag',r'[A-Za-z0-9_.:"-]{1,128}'),('last_deployed_from',r'[A-Za-z0-9_.-]{1,64}')]:checks[key+'AbsentOrAllowedPattern']=key not in sm or (type(sm[key]) is str and bool(re.fullmatch(pattern,sm[key])))
+  resources_ok=type(resources) is dict;script_ok=resources_ok and ('script' not in resources or type(resources['script']) is dict);runtime_ok=resources_ok and ('script_runtime' not in resources or type(resources['script_runtime']) is dict)
+  checks.update(resourcesObject=resources_ok,scriptDefaultUsed=resources_ok and 'script' not in resources,runtimeDefaultUsed=resources_ok and 'script_runtime' not in resources,scriptContextAvailable=script_ok,runtimeContextAvailable=runtime_ok)
+  contexts.update({key:type(meta) is dict for key in ('versionTimestampValid','knownVersionSource')});contexts['bindingsEmptyArray']=resources_ok
+  contexts.update({key:script_ok for key in ('onlyPriorScriptKeys','staticHandlersAllowed','namedHandlersAllowed','etagAbsentOrAllowedPattern','last_deployed_fromAbsentOrAllowedPattern')})
+  contexts.update({key:runtime_ok for key in ('onlyPriorRuntimeKeys','exportsAbsentOrExactEmpty','limitsAbsentOrExactEmpty','migration_tagAbsentOrExactEmpty')})
+ return diagnostic_evaluated(out,contexts)
+
+
+def provider_get(env,opener=None,diagnostic=False):
+ require(type(diagnostic) is bool,'diagnostic_mode_type_required')
  account=env.get('CLOUDFLARE_ACCOUNT_ID','');token=env.get('CLOUDFLARE_API_TOKEN','')
  require(re.fullmatch('[0-9a-fA-F]{32}',account) and sha(account.encode())==ACCOUNT_SHA,'accepted_account_configuration_required')
  require(isinstance(token,str) and token and token==token.strip() and not any(c in token for c in '\r\n'),'existing_provider_configuration_required')
  opener=opener or build_opener(NoRedirect());selected={};active_path='/accounts/'+account+'/workers/scripts/'+WORKER+'/deployments?page=1&per_page=1'
  def get(path):
+  if diagnostic:get.shape_snapshot=None;get.diagnostic_transport_passed=False
   require(allowed_path(account,path,selected),'provider_get_endpoint_forbidden')
   req=Request('https://api.cloudflare.com/client/v4'+path,method='GET',headers={'Authorization':'Bearer '+token,'Accept':'application/json'})
   try:
@@ -126,11 +204,16 @@ def provider_get(env,opener=None):
    require((type(obj) is dict and set(obj)<={'success','errors','messages','result','result_info'} and obj.get('success') is True and obj.get('errors')==[] and 'result' in obj and ('messages' not in obj or type(obj['messages']) is list)) or nullable_domain,'provider_response_unverified')
   except ValueError:raise ProviderEnvelopeError(envelope_diagnostic(account,path,obj)) from None
   if nullable_domain:get.envelope_compatibility['domainsListNullPairObserved']=True
+  if diagnostic:
+   try:get.shape_snapshot=json.loads(canonical(provider_shape_diagnostic(account,path,obj)))
+   except Exception:raise ValueError('diagnostic_projection_failed') from None
+   get.diagnostic_transport_passed=True
   if path==active_path:
    active=active_identity(obj);new={'deployments':active['id'],'versions':active['versions'][0]['version_id']}
    require(not selected or selected==new,'active_identity_changed_during_transport');selected.update(new)
   return obj
  get.envelope_compatibility={'domainsListNullPairObserved':False}
+ if diagnostic:get.shape_snapshot=None;get.diagnostic_transport_passed=False
  return account,get
 
 def pagination(obj,single=True):
@@ -208,8 +291,76 @@ def old_public(p):
  import previous_public as prior
  contract=json.loads(read(ROOT/p['previousPublicContractPath']));require(contract['revision']==PREVIOUS and len(contract['files'])==18,'prior_public_inventory_mismatch');report=prior.http_once(contract);require(report['checkedPaths']==17 and report['unknownHttpStatus']==404,'complete_prior_public_http_required');return report
 
+class ProviderStateDiagnosticError(ValueError):
+ def __init__(self,code,diagnostic):
+  super().__init__(code);self.original_code=code;self.diagnostic=diagnostic
+
+STATE_DIAGNOSTIC_CODES=frozenset({
+ 'historical_account_digest_mismatch','account_identity_mismatch','existing_worker_missing_or_ambiguous','domain_inventory_schema','exact_existing_binding_required','binding_configuration_requires_review','opaque_domain_zone_identity_required','invalid_optional_certificate_identity','explicit_typed_logpush_required','typed_disabled_observability_required','nondefault_provider_settings_require_review','explicit_exposure_flags_required','historical_workers_dev_exposure_changed','provider_envelope_schema','provider_pagination_schema','provider_page_identity','provider_list_completeness_unverified','provider_list_schema','deployment_list_schema','active_deployment_ambiguous_or_missing','active_deployment_schema','active_deployment_identity','single_full_traffic_version_required','deployment_page_identity','invalid_provider_timestamp','provider_timestamp_timezone_required','active_deployment_detail_changed','version_identity_or_schema','version_metadata_schema','unreviewed_version_source','version_number_required','version_resource_schema_requires_review','version_script_schema_requires_review','version_runtime_schema_requires_review','unexpected_version_capability','active_version_runtime_settings_disagree','static_only_version_handlers_required','static_only_named_handlers_required','version_script_metadata_type_required','active_deployment_changed_during_observation','active_identity_changed_during_transport',
+ 'Missing Worker settings','Unexpected runtime bindings: stop without exposing values','Unexpected runtime resource capability','Unreviewed provider settings shape','Missing compatibility date'})
+
+def state_diagnostic_sweep(env,opener=None):
+ # Bounded fresh GET-only diagnostic transport. This function never accepts a state.
+ labels=('account','scripts-list','domains-list','script-settings','script-exposure','active-deployment-list','selected-deployment','selected-version')
+ report={'schema':'gwangsan-safe-state-shape-diagnostic/v1','state':'DIAGNOSTIC_ONLY_NOT_A_BASELINE','endpoints':{label:{'status':'not_requested'} for label in labels},'checks':{},'baselineAccepted':False,'publicationEligible':False,'providerMutationsPerformed':False};evaluation={}
+ try:account,get=provider_get(env,opener=opener,diagnostic=True)
+ except Exception:report['state']='configuration_gate_failed';return diagnostic_evaluated(report,evaluation)
+ base='/accounts/'+account;script=base+'/workers/scripts/'+WORKER
+ class StopSweep(Exception):pass
+ def request(label,path):
+  try:obj=get(path)
+  except Exception as exc:
+   row={'status':'request_failed_stop'}
+   if type(exc) is ProviderEnvelopeError:row={'status':'envelope_rejected_stop','envelope':exc.diagnostic}
+   elif get.diagnostic_transport_passed and get.shape_snapshot is not None:row={'status':'selection_rejected_stop','shape':get.shape_snapshot}
+   report['endpoints'][label]=row;report['state']='request_or_selection_gate_failed';raise StopSweep() from None
+  report['endpoints'][label]={'status':'observed_shape_only','shape':get.shape_snapshot};return obj
+ try:
+  acct=request('account',base).get('result');account_ok=type(acct) is dict and acct.get('id')==account;report['checks']['accountIdentityGate']=account_ok
+  if not account_ok:report['state']='account_identity_gate_failed';return diagnostic_evaluated(report,evaluation)
+  scripts_obj=request('scripts-list',base+'/workers/scripts')
+  try:
+   scripts=single_page(scripts_obj);names=[r.get('id') if isinstance(r,dict) else None for r in scripts];worker_ok=all(isinstance(n,str) and n for n in names) and len(names)==len(set(names)) and names.count(WORKER)==1
+  except Exception:worker_ok=False
+  report['checks']['fixedWorkerInventoryGate']=bool(worker_ok)
+  if not worker_ok:report['state']='worker_inventory_gate_failed';return diagnostic_evaluated(report,evaluation)
+  domains_obj=request('domains-list',base+'/workers/domains')
+  try:
+   domains=single_page(domains_obj);schema_ok=all(type(r) is dict and all(isinstance(r.get(k),str) and r[k] for k in ['id','hostname','service','zone_id']) for r in domains);matches=[r for r in domains if r['hostname'].lower()==HOST or r['service']==WORKER] if schema_ok else [];bound=len(matches)==1 and matches[0]['hostname']==HOST and matches[0]['service']==WORKER;row=matches[0] if bound else {};prefix_ok=bound and set(row)<={'id','hostname','service','zone_id','zone_name','environment','enabled','previews_enabled','cert_id'} and row.get('zone_name')=='fwith.kr' and row.get('environment') in (None,'production') and ('enabled' not in row or row['enabled'] is True) and ('previews_enabled' not in row or row['previews_enabled'] is False)
+  except Exception:prefix_ok=False
+  report['checks']['exactHostWorkerZonePrefixGate']=bool(prefix_ok)
+  if not prefix_ok:report['state']='existing_binding_prefix_gate_failed';return diagnostic_evaluated(report,evaluation)
+  settings_obj=request('script-settings',script+'/settings');raw_settings=settings_obj.get('result')
+  request('script-exposure',script+'/subdomain')
+  active_obj=request('active-deployment-list',script+'/deployments?page=1&per_page=1')
+  # provider_get already applied this exact validator before assigning selected IDs.
+  active=active_identity(active_obj);vid=active['versions'][0]['version_id']
+  detail=request('selected-deployment',script+'/deployments/'+active['id']).get('result');report['checks']['selectedDetailMatchesActive']=detail==active
+  if detail!=active:report['endpoints']['selected-deployment']['status']='identity_mismatch_stop';report['state']='selected_deployment_identity_gate_failed';return diagnostic_evaluated(report,evaluation)
+  version=request('selected-version',script+'/versions/'+vid).get('result');report['checks']['selectedVersionIdMatchesActive']=type(version) is dict and version.get('id')==vid
+  if not report['checks']['selectedVersionIdMatchesActive']:report['endpoints']['selected-version']['status']='identity_mismatch_stop';report['state']='selected_version_identity_gate_failed';return diagnostic_evaluated(report,evaluation)
+  resources=version.get('resources') if type(version) is dict else None;runtime=resources.get('script_runtime',{}) if type(resources) is dict else None
+  runtime_context=type(resources) is dict and ('script_runtime' not in resources or type(resources['script_runtime']) is dict)
+  for key in ('compatibility_date','compatibility_flags','usage_model'):
+   name='runtime_'+key+'_AbsentOrMatchesSettings';evaluation[name]=runtime_context and (key not in runtime or type(raw_settings) is dict);report['checks'][name]=runtime_context and (key not in runtime or (type(raw_settings) is dict and key in raw_settings and canonical(runtime[key])==canonical(raw_settings[key])))
+  report['state']='BOUNDED_DIAGNOSTIC_SWEEP_FINISHED_NOT_A_BASELINE'
+ except StopSweep:pass
+ except Exception:report['state']='diagnostic_local_check_failed'
+ return diagnostic_evaluated(report,evaluation)
+
+def state_with_diagnostics(env,account,get):
+ try:return current_state(account,get)
+ except ValueError as exc:
+  # Exact local validation codes only. Never retry a transport/envelope/access failure.
+  if type(exc) is not ValueError or str(exc) not in STATE_DIAGNOSTIC_CODES:raise
+  try:diagnostic=state_diagnostic_sweep(env)
+  except Exception:diagnostic={'schema':'gwangsan-safe-state-shape-diagnostic/v1','state':'diagnostic_unexpected_failure','baselineAccepted':False,'publicationEligible':False,'providerMutationsPerformed':False}
+  code=str(exc) if re.fullmatch('[a-z0-9_]+',str(exc)) else 'ValueError'
+  raise ProviderStateDiagnosticError(code,diagnostic) from None
+
+
 def observe(env,event):
- p=load_policy();identity=authorize(env,event);trusted_control(env);account,get=provider_get(env);first=current_state(account,get);public=old_public(p);second=current_state(account,get);require(first==second,'provider_changed_across_full_public_check')
+ p=load_policy();identity=authorize(env,event);trusted_control(env);account,get=provider_get(env);first=state_with_diagnostics(env,account,get);public=old_public(p);second=state_with_diagnostics(env,account,get);require(first==second,'provider_changed_across_full_public_check')
  result={'schema':'gwangsan-current-provider-baseline-observation/v1','state':'OBSERVED_NOT_ACCEPTED_FOR_MUTATION','observedAtUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'identity':identity,'policySHA256':POLICY_SHA,'previousSourceRevision':PREVIOUS,'correctionSourceRevision':CURRENT,'previousPublicationRunId':38843104514,'historicalProviderVersionKnown':False,'currentProviderState':first,'currentProviderStateSHA256':digest(first),'previousPublicHTTP':public,'providerMethods':['GET'],'providerMutationsPerformed':False,'IndexNowSubmitted':False,'baselineAccepted':False,'publicationEligible':False,'providerEnvelopeCompatibility':dict(get.envelope_compatibility)}
  save('previous-public-http.json',public);return result
 
@@ -219,6 +370,7 @@ def main():
   load_policy();event=json.loads(read(os.environ['GITHUB_EVENT_PATH']));result=authorize(os.environ,event) if a.mode=='authorize' else observe(os.environ,event);save(a.report,result);print(json.dumps({'state':result.get('state','READ_ONLY_REQUEST_SELECTED'),'providerMutationsPerformed':False}));return 0
  except Exception as e:
   code=str(e) if type(e) in (ValueError,ProviderEnvelopeError) and re.fullmatch('[a-z0-9_]+',str(e)) else type(e).__name__;report={'state':'BLOCKED_WITH_NO_PROVIDER_MUTATION','code':code,'providerMutationsPerformed':False,'baselineAccepted':False}
+  if type(e) is ProviderStateDiagnosticError:report['code']=e.original_code;code=e.original_code;report['stateDiagnostics']=e.diagnostic
   if type(e) is ProviderEnvelopeError:report['diagnostic']=e.diagnostic
   save(a.report,report);print('Read-only baseline blocked: '+code);return 1
 if __name__=='__main__':sys.exit(main())
