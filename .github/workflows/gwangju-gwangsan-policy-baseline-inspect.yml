@@ -1,0 +1,47 @@
+name: Gwangsan exact existing-host GET-only baseline inspection
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+concurrency:
+  group: gwangsan-direct-public-release
+  cancel-in-progress: false
+jobs:
+  inspect:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[GWANGJU-GWANGSAN-POLICY-BASELINE-INSPECT] 20261016' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.user.login == 'joseungil-kr'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      CONTROL_DIR: control/scripts/direct-gwangju-gwangsan-policy-correction
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Verify exact owner main first attempt and fixed GET-only request
+        run: python3 "$CONTROL_DIR/provider_baseline.py" authorize --report baseline-selected.json
+      - name: Run synthetic safety regressions without provider credentials
+        run: python3 "$CONTROL_DIR/test_provider_baseline.py"
+      - name: Observe fixed historical account and exact existing host through allowlisted GET only
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 "$CONTROL_DIR/provider_baseline.py" observe --report baseline-observation.json
+      - name: Retain sanitized observation, never raw provider response or credentials
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gwangsan-policy-baseline-${{ github.run_id }}-${{ github.sha }}
+          path: |
+            baseline-selected.json
+            baseline-observation.json
+            previous-public-http.json
+            public-robots.txt
+            public-robots-headers.json
+          if-no-files-found: error
