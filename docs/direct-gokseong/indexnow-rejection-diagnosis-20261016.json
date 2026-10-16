@@ -1,0 +1,204 @@
+{
+  "actualPOST": {
+    "bodySha256": "f83a31d1f1f5f393a40a2bebd8f43ed5cc2b9fa2fee784b8efb126860af0e508",
+    "cfMitigated": "",
+    "contentType": "text/plain;charset=UTF-8",
+    "httpStatus": 422,
+    "method": "POST",
+    "observedAt": 1792166452,
+    "url": "https://searchadvisor.naver.com/indexnow",
+    "userAgent": "SiteFactory-IndexNow/2.0",
+    "xRobotsTag": ""
+  },
+  "authorLiveGETAttempt": {
+    "completedObservations": 1,
+    "error": "Tunnel connection failed: 403 Forbidden",
+    "failingPath": "/049d6c691d2c4cb824d23f82e9883ce4.txt",
+    "retryPerformed": false,
+    "state": "partial_failed"
+  },
+  "checkedAtUTC": "2026-10-16T16:08:25.688710+00:00",
+  "codeSHA256": {
+    "indexnow_finalize.py": "55f5274d3fcc713e82fd8ce18e280447e68e9e460bc1ff3f9bf5cc683834935f",
+    "publish.py": "33c6b65330ec4fd0b1b85e10445b78832df4dde0ae27a2349a23153b762b8001"
+  },
+  "constraints": {
+    "newIndexNowPOSTs": 0,
+    "newKeys": 0,
+    "providerWrites": 0,
+    "redeployments": 0
+  },
+  "controlRevision": "8379c174156518f2435481cc767c14b64f50b3ef",
+  "diagnosis": {
+    "confirmed": "Naver rejected the single submitted home URL with HTTP 422 despite matching source/build/public proof and target-guarded payload.",
+    "notEstablished": [
+      "Shared-key reuse caused this rejection",
+      "Propagation delay caused this rejection",
+      "This rejection proves the cause of the separate Damyang rejection"
+    ],
+    "unknown": [
+      "Original response body text",
+      "Original wire request body and all headers",
+      "Naver-side key validation state",
+      "Specific remote rejection cause"
+    ]
+  },
+  "indexNowAccepted": false,
+  "originalJournalComments": [
+    {
+      "commentCreatedAtUTC": "2026-10-16T16:00:51Z",
+      "commentURL": "https://github.com/joseungil-kr/fwith-site-factory/issues/399#issuecomment-6219442529",
+      "record": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "1210c3960ef5fd7e8059ffc6eebe685ceb7147718189b858f6fcb7e4a1209b8b",
+        "origin": "https://gokseong.fwith.kr",
+        "recordedAt": "2026-10-16T16:00:51.516573+00:00",
+        "revision": "7e6573e2eb97ac5473622d37478729ee43b565f1",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38928433446",
+        "siteKey": "gokseong-flower-direct",
+        "state": "started",
+        "urlCount": 1,
+        "urlSetSha256": "32c8232c2a0044033654e7a1ce5bd6e5d4378194856c7d68db7fe0f8ca609195"
+      }
+    },
+    {
+      "commentCreatedAtUTC": "2026-10-16T16:00:53Z",
+      "commentURL": "https://github.com/joseungil-kr/fwith-site-factory/issues/399#issuecomment-6219443018",
+      "record": {
+        "attempt": 1,
+        "endpoint": "https://searchadvisor.naver.com/indexnow",
+        "fingerprint": "1210c3960ef5fd7e8059ffc6eebe685ceb7147718189b858f6fcb7e4a1209b8b",
+        "httpStatus": 422,
+        "origin": "https://gokseong.fwith.kr",
+        "recordedAt": "2026-10-16T16:00:51.516573+00:00",
+        "revision": "7e6573e2eb97ac5473622d37478729ee43b565f1",
+        "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38928433446",
+        "siteKey": "gokseong-flower-direct",
+        "state": "rejected",
+        "urlCount": 1,
+        "urlSetSha256": "32c8232c2a0044033654e7a1ce5bd6e5d4378194856c7d68db7fe0f8ca609195"
+      }
+    }
+  ],
+  "originalResponse": {
+    "bodyRetained": false,
+    "bodySHA256": "f83a31d1f1f5f393a40a2bebd8f43ed5cc2b9fa2fee784b8efb126860af0e508",
+    "contentType": "text/plain;charset=UTF-8",
+    "errorTextUnknown": true,
+    "status": 422
+  },
+  "proof": {
+    "bytes": 33,
+    "key": "049d6c691d2c4cb824d23f82e9883ce4",
+    "path": "/049d6c691d2c4cb824d23f82e9883ce4.txt",
+    "runnerPrePOSTHTTP200Observations": [
+      {
+        "bodySha256": "6b2ca7c4565ff09d97fa259ca5df416fdcb8408e92b0f0edf3dcf7af3a1fdcc4",
+        "cfMitigated": "",
+        "contentType": "text/plain",
+        "httpStatus": 200,
+        "method": "GET",
+        "observedAt": 1792166448,
+        "url": "https://gokseong.fwith.kr/[ownership-proof]",
+        "userAgent": "SiteFactory-IndexNow/2.0",
+        "xRobotsTag": ""
+      },
+      {
+        "bodySha256": "6b2ca7c4565ff09d97fa259ca5df416fdcb8408e92b0f0edf3dcf7af3a1fdcc4",
+        "cfMitigated": "",
+        "contentType": "text/plain",
+        "httpStatus": 200,
+        "method": "GET",
+        "observedAt": 1792166451,
+        "url": "https://gokseong.fwith.kr/[ownership-proof]",
+        "userAgent": "SiteFactory-IndexNow/2.0",
+        "xRobotsTag": ""
+      }
+    ],
+    "sha256": "6b2ca7c4565ff09d97fa259ca5df416fdcb8408e92b0f0edf3dcf7af3a1fdcc4",
+    "sourceBuildAndIndependentLiveBytesEqual": true
+  },
+  "publicReleaseVerified": true,
+  "publicationRunConclusion": "failure",
+  "publicationRunId": 38928433446,
+  "receiptFingerprintRecomputed": "1210c3960ef5fd7e8059ffc6eebe685ceb7147718189b858f6fcb7e4a1209b8b",
+  "reconstructedRequest": {
+    "endpoint": "https://searchadvisor.naver.com/indexnow",
+    "keyDerivedFromActualDistProof": true,
+    "method": "POST",
+    "originalRequestBodyBytesRetained": false,
+    "originalTransportHeadersRetained": false,
+    "payload": {
+      "host": "gokseong.fwith.kr",
+      "key": "049d6c691d2c4cb824d23f82e9883ce4",
+      "keyLocation": "https://gokseong.fwith.kr/049d6c691d2c4cb824d23f82e9883ce4.txt",
+      "urlList": [
+        "https://gokseong.fwith.kr/"
+      ]
+    },
+    "payloadExactlyMatchesRegionGuard": true,
+    "provenance": "Reconstructed locally from executed helper serialization and exact region guard; not a retained original wire request",
+    "serializationBytes": 196,
+    "serializationSha256": "247e3f4628205514f3c1faf995ad9bd5fbf2f5f71629deac0993c3f1261ce719",
+    "sharedKeyConstantInExecutedModules": false
+  },
+  "retainedIndependentPublicGETs": {
+    "bodyHashesReverified": 15,
+    "evidenceDirectory": "docs/direct-gokseong/publication-review-20261016",
+    "freshNetworkRequestsInThisScript": 0,
+    "localReplay": {
+      "articleCount": 0,
+      "checkedPaths": 15,
+      "htmlFiles": 2,
+      "htmlRoutes": 1,
+      "noindexHubs": 0,
+      "normalizedCloudflareBeacons": 2,
+      "purchaseHomeCount": 1,
+      "regionCount": 1,
+      "revision": "7e6573e2eb97ac5473622d37478729ee43b565f1",
+      "robotsVerification": {
+        "checkedUrls": [
+          "https://gokseong.fwith.kr/",
+          "https://gokseong.fwith.kr/robots.txt",
+          "https://gokseong.fwith.kr/sitemap-0.xml",
+          "https://gokseong.fwith.kr/sitemap-index.xml"
+        ],
+        "managedComposites": 1,
+        "managedPrefixBytes": 2676,
+        "managedPrefixSha256": "3073d1e371afb3271c7666148766fedc5145f7d8440f7114062db79b7bd58add",
+        "rawBodyBytes": 2752,
+        "rawBodySha256": "524bb594b275e564e80b949fd343c0fadbff21994e17e79aa8b21df016f2d9f0",
+        "rawBodyUnmodified": true,
+        "searchAgentsChecked": [
+          "*",
+          "Googlebot",
+          "Yeti",
+          "bingbot",
+          "IndexNow"
+        ],
+        "sourceSuffixBytes": 76,
+        "sourceSuffixSha256": "d9b66f9b5fcb44d03a5a0cd3e1de9714aeb03c9ba7d0a7612032a5e3a5e365ce",
+        "state": "exact_managed_composite_verified"
+      },
+      "sitemapUrls": 1,
+      "state": "public_release_verified",
+      "unknownHttpStatus": 404
+    },
+    "evidencePath": "docs/direct-gokseong/publication-review-20261016/public-get-evidence.json"
+  },
+  "schema": "gokseong-indexnow-rejection-diagnosis/v1",
+  "sourceRevision": "7e6573e2eb97ac5473622d37478729ee43b565f1",
+  "sources": [
+    {
+      "facts": "Per-domain separate key, UTF-8, hex/dash length8–128 and root key-name.txt",
+      "url": "https://searchadvisor.naver.com/guide/indexnow-api-key"
+    },
+    {
+      "facts": "POST host/key/keyLocation/urlList;422 documents a URL/key information mismatch, without specifying this actual rejection cause",
+      "url": "https://searchadvisor.naver.com/guide/indexnow-request"
+    }
+  ],
+  "urlSetSHA256": "32c8232c2a0044033654e7a1ce5bd6e5d4378194856c7d68db7fe0f8ca609195",
+  "publicProjectionNote": "Raw HTTP headers, runner logs, private approval message IDs and workspace paths are omitted. Request bytes are a local reconstruction, not an original wire capture."
+}
