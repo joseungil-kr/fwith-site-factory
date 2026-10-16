@@ -71,7 +71,7 @@ class DamyangBaselineContract(unittest.TestCase):
     with self.assertRaises(ValueError):get(SCRIPT+suffix)
    self.assertEqual(len(op.requests),1)
  def test_original_first_publish_job_preserved_and_new_job_get_only(self):
-  wf=(b.ROOT/'.github/workflows/damyang-production-publish.yml').read_text();parts=wf.split('  inspect_existing_baseline:\n');self.assertEqual(len(parts),2);job=parts[1]
+  wf=(b.ROOT/'.github/workflows/damyang-production-publish.yml').read_text();parts=wf.split('  inspect_existing_baseline:\n');self.assertEqual(len(parts),2);job=parts[1].split('\n  recovery_static_update:\n',1)[0]
   self.assertIn('  group: damyang-direct-public-release\n  cancel-in-progress: false',parts[0]);self.assertIn('    permissions:\n      contents: read\n    env:',job);self.assertIn('github.run_attempt == 1',job);self.assertIn(b.TITLE,job)
   self.assertEqual(job.count('CLOUDFLARE_API_TOKEN:'),1);self.assertEqual(job.count('CLOUDFLARE_ACCOUNT_ID:'),1)
   self.assertLess(job.index(' authorize '),job.index('unittest'));self.assertLess(job.index('unittest'),job.index('CLOUDFLARE_API_TOKEN:'));self.assertLess(job.index('CLOUDFLARE_API_TOKEN:'),job.index(' observe '))
@@ -100,8 +100,11 @@ class StrictRequestJSON(unittest.TestCase):
  def test_duplicate_nested_and_nonfinite_event_parser_rejected(self):
   for raw in ['{"issue":{"body":0,"body":1}}','{"issue":{"user":{"login":"other","login":"joseungil-kr"}}}','{"x":NaN}','{"x":Infinity}','{"x":-Infinity}']:
    with self.subTest(raw=raw),self.assertRaises(ValueError):b.strict_json(raw)
- def test_unused_asset_helper_not_in_phase1_policy(self):
-  self.assertEqual(set(b.load_policy()['helpersSHA256']),{'existing_provider.py'});self.assertFalse((b.D/'assets_only.py').exists())
+ def test_baseline_policy_does_not_consume_update_asset_helper(self):
+  self.assertEqual(set(b.load_policy()['helpersSHA256']),{'existing_provider.py'})
+  tree=ast.parse(b.read(b.D/'provider_baseline.py'))
+  imports=[name.name for node in ast.walk(tree) if isinstance(node,ast.Import) for name in node.names]+[node.module for node in ast.walk(tree) if isinstance(node,ast.ImportFrom)]
+  self.assertNotIn('assets_only',imports)
 
 class PreviouslyObservedVersionShape(unittest.TestCase):
  # Values and unknown-key names below are invented canaries, never captured provider data.
@@ -246,11 +249,11 @@ class DamyangSelectedAssetsBoundary(unittest.TestCase):
    f=self.case();mutate(f);seen=[]
    with self.subTest(code=code),patch.object(b,'ACCOUNT_SHA',SHA),patch.object(b,'state_diagnostic_sweep') as sweep,self.assertRaisesRegex(ValueError,'^'+code+'$') as caught:b.state_with_diagnostics({},ACCOUNT,get_for(f,seen))
    self.assertNotIn(code,b.STATE_DIAGNOSTIC_CODES);self.assertNotIn(beta,seen);self.assertNotIn(canary,str(caught.exception));sweep.assert_not_called()
- def test_actual_old_phase1_binding_rejects_this_new_three_file_candidate(self):
+ def test_old_phase1_binding_rejects_baseline_and_additive_workflow(self):
   import recovery_build as q
   review=json.loads(b.read(b.ROOT/'docs/direct-damyang-recovery/phase1-control-review-20261016.json'))
   mismatch={row['path'] for row in review['controlFiles'] if b.sha(b.read(b.ROOT/row['path']))!=row['sha256']}
-  self.assertEqual(mismatch,{'scripts/direct-damyang-recovery/'+name for name in ('provider_baseline.py','test_provider_baseline.py','test_damyang_baseline.py')})
+  self.assertEqual(mismatch,{'scripts/direct-damyang-recovery/'+name for name in ('provider_baseline.py','test_provider_baseline.py','test_damyang_baseline.py')}|{'.github/workflows/damyang-production-publish.yml'})
   with patch.object(q,'git') as git,self.assertRaisesRegex(ValueError,'reviewed_control_file_changed'):q.activation(b.ROOT)
   git.assert_not_called()
  def test_beta_fixed_error_reports_do_not_retain_raw_values(self):

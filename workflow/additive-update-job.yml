@@ -1,0 +1,317 @@
+
+  recovery_static_update:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[DAMYANG-EXISTING-STATIC-UPDATE] 20261016' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.user.login == 'joseungil-kr'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      CONTROL_DIR: control/scripts/direct-damyang-recovery
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Run trusted control regressions without credentials or site code
+        run: |
+          env -i PATH="$PATH" HOME="$HOME" LANG="$LANG" PYTHONDONTWRITEBYTECODE=1 \
+            PYTHONPATH="$CONTROL_DIR" python3 -m unittest test_update_caller test_existing_update test_provider_baseline test_damyang_baseline -v
+      - name: Require actual baseline acceptance and reviewed metadata before retrieval
+        id: selected
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          env -i \
+            PATH="${PATH}" \
+            HOME="${HOME}" \
+            LANG="${LANG}" \
+            PYTHONDONTWRITEBYTECODE="${PYTHONDONTWRITEBYTECODE}" \
+            GH_TOKEN="${GH_TOKEN}" \
+            GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
+            GITHUB_REF="${GITHUB_REF}" \
+            GITHUB_ACTOR="${GITHUB_ACTOR}" \
+            GITHUB_TRIGGERING_ACTOR="${GITHUB_TRIGGERING_ACTOR}" \
+            GITHUB_RUN_ATTEMPT="${GITHUB_RUN_ATTEMPT}" \
+            GITHUB_EVENT_NAME="${GITHUB_EVENT_NAME}" \
+            GITHUB_JOB="${GITHUB_JOB}" \
+            RUNNER_ENVIRONMENT="${RUNNER_ENVIRONMENT}" \
+            GITHUB_SHA="${GITHUB_SHA}" \
+            GITHUB_RUN_ID="${GITHUB_RUN_ID}" \
+            GITHUB_EVENT_PATH="${GITHUB_EVENT_PATH}" \
+            GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
+            GITHUB_WORKSPACE="${GITHUB_WORKSPACE}" \
+            RUNNER_TEMP="${RUNNER_TEMP}" \
+            python3 "$CONTROL_DIR/publish_existing_update.py" prepare --report update-selection.json
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.selected.outputs.build_artifact_id }}
+          run-id: ${{ steps.selected.outputs.build_run_id }}
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: damyang-recovery-build
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.selected.outputs.baseline_artifact_id }}
+          run-id: ${{ steps.selected.outputs.baseline_run_id }}
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: damyang-recovery-baseline
+      - name: Read exact actual build24 and baseline artifact then copy release17 only
+        id: artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          env -i \
+            PATH="${PATH}" \
+            HOME="${HOME}" \
+            LANG="${LANG}" \
+            PYTHONDONTWRITEBYTECODE="${PYTHONDONTWRITEBYTECODE}" \
+            GH_TOKEN="${GH_TOKEN}" \
+            GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
+            GITHUB_REF="${GITHUB_REF}" \
+            GITHUB_ACTOR="${GITHUB_ACTOR}" \
+            GITHUB_TRIGGERING_ACTOR="${GITHUB_TRIGGERING_ACTOR}" \
+            GITHUB_RUN_ATTEMPT="${GITHUB_RUN_ATTEMPT}" \
+            GITHUB_EVENT_NAME="${GITHUB_EVENT_NAME}" \
+            GITHUB_JOB="${GITHUB_JOB}" \
+            RUNNER_ENVIRONMENT="${RUNNER_ENVIRONMENT}" \
+            GITHUB_SHA="${GITHUB_SHA}" \
+            GITHUB_RUN_ID="${GITHUB_RUN_ID}" \
+            GITHUB_EVENT_PATH="${GITHUB_EVENT_PATH}" \
+            GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
+            GITHUB_WORKSPACE="${GITHUB_WORKSPACE}" \
+            RUNNER_TEMP="${RUNNER_TEMP}" \
+            python3 "$CONTROL_DIR/publish_existing_update.py" artifact --report update-artifact-check.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: GET accepted current target and old public15 before and after
+        id: preflight
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          env -i \
+            PATH="${PATH}" \
+            HOME="${HOME}" \
+            LANG="${LANG}" \
+            PYTHONDONTWRITEBYTECODE="${PYTHONDONTWRITEBYTECODE}" \
+            GH_TOKEN="${GH_TOKEN}" \
+            GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
+            GITHUB_REF="${GITHUB_REF}" \
+            GITHUB_ACTOR="${GITHUB_ACTOR}" \
+            GITHUB_TRIGGERING_ACTOR="${GITHUB_TRIGGERING_ACTOR}" \
+            GITHUB_RUN_ATTEMPT="${GITHUB_RUN_ATTEMPT}" \
+            GITHUB_EVENT_NAME="${GITHUB_EVENT_NAME}" \
+            GITHUB_JOB="${GITHUB_JOB}" \
+            RUNNER_ENVIRONMENT="${RUNNER_ENVIRONMENT}" \
+            GITHUB_SHA="${GITHUB_SHA}" \
+            GITHUB_RUN_ID="${GITHUB_RUN_ID}" \
+            GITHUB_EVENT_PATH="${GITHUB_EVENT_PATH}" \
+            GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
+            GITHUB_WORKSPACE="${GITHUB_WORKSPACE}" \
+            RUNNER_TEMP="${RUNNER_TEMP}" \
+            CLOUDFLARE_API_TOKEN="${CLOUDFLARE_API_TOKEN}" \
+            CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID}" \
+            python3 "$CONTROL_DIR/publish_existing_update.py" preflight --report binding-before.json
+      - name: Write one claim to original receipt377 and read it directly and repository-wide
+        id: claim
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          env -i \
+            PATH="${PATH}" \
+            HOME="${HOME}" \
+            LANG="${LANG}" \
+            PYTHONDONTWRITEBYTECODE="${PYTHONDONTWRITEBYTECODE}" \
+            GH_TOKEN="${GH_TOKEN}" \
+            GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
+            GITHUB_REF="${GITHUB_REF}" \
+            GITHUB_ACTOR="${GITHUB_ACTOR}" \
+            GITHUB_TRIGGERING_ACTOR="${GITHUB_TRIGGERING_ACTOR}" \
+            GITHUB_RUN_ATTEMPT="${GITHUB_RUN_ATTEMPT}" \
+            GITHUB_EVENT_NAME="${GITHUB_EVENT_NAME}" \
+            GITHUB_JOB="${GITHUB_JOB}" \
+            RUNNER_ENVIRONMENT="${RUNNER_ENVIRONMENT}" \
+            GITHUB_SHA="${GITHUB_SHA}" \
+            GITHUB_RUN_ID="${GITHUB_RUN_ID}" \
+            GITHUB_EVENT_PATH="${GITHUB_EVENT_PATH}" \
+            GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
+            GITHUB_WORKSPACE="${GITHUB_WORKSPACE}" \
+            RUNNER_TEMP="${RUNNER_TEMP}" \
+            python3 "$CONTROL_DIR/publish_existing_update.py" claim --report update-claim-result.json
+      - name: Recheck source main full journal accepted state config and old public15
+        id: recheck
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          env -i \
+            PATH="${PATH}" \
+            HOME="${HOME}" \
+            LANG="${LANG}" \
+            PYTHONDONTWRITEBYTECODE="${PYTHONDONTWRITEBYTECODE}" \
+            GH_TOKEN="${GH_TOKEN}" \
+            GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
+            GITHUB_REF="${GITHUB_REF}" \
+            GITHUB_ACTOR="${GITHUB_ACTOR}" \
+            GITHUB_TRIGGERING_ACTOR="${GITHUB_TRIGGERING_ACTOR}" \
+            GITHUB_RUN_ATTEMPT="${GITHUB_RUN_ATTEMPT}" \
+            GITHUB_EVENT_NAME="${GITHUB_EVENT_NAME}" \
+            GITHUB_JOB="${GITHUB_JOB}" \
+            RUNNER_ENVIRONMENT="${RUNNER_ENVIRONMENT}" \
+            GITHUB_SHA="${GITHUB_SHA}" \
+            GITHUB_RUN_ID="${GITHUB_RUN_ID}" \
+            GITHUB_EVENT_PATH="${GITHUB_EVENT_PATH}" \
+            GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
+            GITHUB_WORKSPACE="${GITHUB_WORKSPACE}" \
+            RUNNER_TEMP="${RUNNER_TEMP}" \
+            CLOUDFLARE_API_TOKEN="${CLOUDFLARE_API_TOKEN}" \
+            CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID}" \
+            python3 "$CONTROL_DIR/publish_existing_update.py" recheck --report immediately-before-upload.json
+      - name: Upload fixed existing route-less static assets once
+        id: deploy
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          umask 077
+          wrangler_workdir="$(mktemp -d "$RUNNER_TEMP/damyang-wrangler.XXXXXX")"
+          cd "$wrangler_workdir"
+          if ! env -i PATH="$PATH" HOME="$wrangler_workdir" CI=true \
+            CLOUDFLARE_API_TOKEN="$CLOUDFLARE_API_TOKEN" \
+            CLOUDFLARE_ACCOUNT_ID="$CLOUDFLARE_ACCOUNT_ID" \
+            WRANGLER_LOG_SANITIZE=true WRANGLER_SEND_METRICS=false \
+            npx --yes wrangler@4.148.0 deploy --config "$GITHUB_WORKSPACE/release/wrangler.publish.json" \
+            > "$RUNNER_TEMP/damyang-static-update-private.log" 2>&1; then
+            echo 'Upload failed or uncertain. No retry. Read-only evidence follows.'
+            exit 1
+          fi
+      - name: Parse only one version UUID digest from successful private upload log
+        id: version
+        if: steps.deploy.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          env -i \
+            PATH="${PATH}" \
+            HOME="${HOME}" \
+            LANG="${LANG}" \
+            PYTHONDONTWRITEBYTECODE="${PYTHONDONTWRITEBYTECODE}" \
+            GH_TOKEN="${GH_TOKEN}" \
+            GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
+            GITHUB_REF="${GITHUB_REF}" \
+            GITHUB_ACTOR="${GITHUB_ACTOR}" \
+            GITHUB_TRIGGERING_ACTOR="${GITHUB_TRIGGERING_ACTOR}" \
+            GITHUB_RUN_ATTEMPT="${GITHUB_RUN_ATTEMPT}" \
+            GITHUB_EVENT_NAME="${GITHUB_EVENT_NAME}" \
+            GITHUB_JOB="${GITHUB_JOB}" \
+            RUNNER_ENVIRONMENT="${RUNNER_ENVIRONMENT}" \
+            GITHUB_SHA="${GITHUB_SHA}" \
+            GITHUB_RUN_ID="${GITHUB_RUN_ID}" \
+            GITHUB_EVENT_PATH="${GITHUB_EVENT_PATH}" \
+            GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
+            GITHUB_WORKSPACE="${GITHUB_WORKSPACE}" \
+            RUNNER_TEMP="${RUNNER_TEMP}" \
+            python3 "$CONTROL_DIR/publish_existing_update.py" parse-upload --report upload-version.json --upload-log "$RUNNER_TEMP/damyang-static-update-private.log"
+      - name: GET-only provider observation retained even after uncertain upload
+        id: binding
+        if: ${{ always() && steps.recheck.outcome == 'success' && (steps.deploy.outcome == 'success' || steps.deploy.outcome == 'failure') }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          env -i \
+            PATH="${PATH}" \
+            HOME="${HOME}" \
+            LANG="${LANG}" \
+            PYTHONDONTWRITEBYTECODE="${PYTHONDONTWRITEBYTECODE}" \
+            GH_TOKEN="${GH_TOKEN}" \
+            GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
+            GITHUB_REF="${GITHUB_REF}" \
+            GITHUB_ACTOR="${GITHUB_ACTOR}" \
+            GITHUB_TRIGGERING_ACTOR="${GITHUB_TRIGGERING_ACTOR}" \
+            GITHUB_RUN_ATTEMPT="${GITHUB_RUN_ATTEMPT}" \
+            GITHUB_EVENT_NAME="${GITHUB_EVENT_NAME}" \
+            GITHUB_JOB="${GITHUB_JOB}" \
+            RUNNER_ENVIRONMENT="${RUNNER_ENVIRONMENT}" \
+            GITHUB_SHA="${GITHUB_SHA}" \
+            GITHUB_RUN_ID="${GITHUB_RUN_ID}" \
+            GITHUB_EVENT_PATH="${GITHUB_EVENT_PATH}" \
+            GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
+            GITHUB_WORKSPACE="${GITHUB_WORKSPACE}" \
+            RUNNER_TEMP="${RUNNER_TEMP}" \
+            CLOUDFLARE_API_TOKEN="${CLOUDFLARE_API_TOKEN}" \
+            CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID}" \
+            python3 "$CONTROL_DIR/publish_existing_update.py" readback --report binding-after.json
+      - name: Check public16 independently of provider readback success
+        id: http
+        if: ${{ always() && steps.recheck.outcome == 'success' && (steps.deploy.outcome == 'success' || steps.deploy.outcome == 'failure') }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          env -i \
+            PATH="${PATH}" \
+            HOME="${HOME}" \
+            LANG="${LANG}" \
+            PYTHONDONTWRITEBYTECODE="${PYTHONDONTWRITEBYTECODE}" \
+            GH_TOKEN="${GH_TOKEN}" \
+            GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
+            GITHUB_REF="${GITHUB_REF}" \
+            GITHUB_ACTOR="${GITHUB_ACTOR}" \
+            GITHUB_TRIGGERING_ACTOR="${GITHUB_TRIGGERING_ACTOR}" \
+            GITHUB_RUN_ATTEMPT="${GITHUB_RUN_ATTEMPT}" \
+            GITHUB_EVENT_NAME="${GITHUB_EVENT_NAME}" \
+            GITHUB_JOB="${GITHUB_JOB}" \
+            RUNNER_ENVIRONMENT="${RUNNER_ENVIRONMENT}" \
+            GITHUB_SHA="${GITHUB_SHA}" \
+            GITHUB_RUN_ID="${GITHUB_RUN_ID}" \
+            GITHUB_EVENT_PATH="${GITHUB_EVENT_PATH}" \
+            GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
+            GITHUB_WORKSPACE="${GITHUB_WORKSPACE}" \
+            RUNNER_TEMP="${RUNNER_TEMP}" \
+            python3 "$CONTROL_DIR/publish_existing_update.py" public --report public-http.json
+      - name: Retain bounded evidence without raw uploader output or provider responses
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: damyang-existing-static-update-result-${{ github.run_id }}
+          path: |
+            update-selection.json
+            update-artifact-check.json
+            binding-before.json
+            previous-public-http.json
+            claim-write-reserved.json
+            deployment-attempt-claim.json
+            update-claim-result.json
+            immediately-before-upload.json
+            upload-version.json
+            provider-state-before.json
+            provider-state-after-observed.json
+            update-source-config.json
+            binding-after.json
+            public-http.json
+            public-http-observations.json
+            release/release.json
+            release/wrangler.publish.json
+          if-no-files-found: warn
+      - name: Require upload success and independently recorded provider and public results
+        if: always()
+        env:
+          DEPLOY: ${{ steps.deploy.outcome }}
+          VERSION: ${{ steps.version.outcome }}
+          BINDING: ${{ steps.binding.outcome }}
+          HTTP: ${{ steps.http.outcome }}
+        run: test "$DEPLOY" = success && test "$VERSION" = success && test "$BINDING" = success && test "$HTTP" = success

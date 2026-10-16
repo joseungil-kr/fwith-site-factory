@@ -1,0 +1,99 @@
+
+  recovery_finalize_indexnow:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[DAMYANG-INDEXNOW-RECOVERY-FINALIZE] 20261016' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.user.login == 'joseungil-kr'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      CONTROL_DIR: control/scripts/direct-damyang-recovery
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Require reviewed actual identities before artifact retrieval
+        id: selected
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          env -i \
+            PATH="${PATH}" \
+            HOME="${HOME}" \
+            LANG="${LANG}" \
+            PYTHONDONTWRITEBYTECODE="${PYTHONDONTWRITEBYTECODE}" \
+            GH_TOKEN="${GH_TOKEN}" \
+            GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
+            GITHUB_REF="${GITHUB_REF}" \
+            GITHUB_ACTOR="${GITHUB_ACTOR}" \
+            GITHUB_TRIGGERING_ACTOR="${GITHUB_TRIGGERING_ACTOR}" \
+            GITHUB_RUN_ATTEMPT="${GITHUB_RUN_ATTEMPT}" \
+            GITHUB_EVENT_NAME="${GITHUB_EVENT_NAME}" \
+            GITHUB_JOB="${GITHUB_JOB}" \
+            RUNNER_ENVIRONMENT="${RUNNER_ENVIRONMENT}" \
+            GITHUB_SHA="${GITHUB_SHA}" \
+            GITHUB_RUN_ID="${GITHUB_RUN_ID}" \
+            GITHUB_EVENT_PATH="${GITHUB_EVENT_PATH}" \
+            GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
+            GITHUB_WORKSPACE="${GITHUB_WORKSPACE}" \
+            python3 "$CONTROL_DIR/finalize_recovery.py" prepare --report finalizer-selection.json
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.selected.outputs.build_artifact_id }}
+          run-id: ${{ steps.selected.outputs.build_run_id }}
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: damyang-recovery-build
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.selected.outputs.baseline_artifact_id }}
+          run-id: ${{ steps.selected.outputs.baseline_run_id }}
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: damyang-recovery-baseline
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.selected.outputs.update_artifact_id }}
+          run-id: ${{ steps.selected.outputs.update_run_id }}
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: damyang-recovery-update
+      - name: Recheck exact artifacts, current public bytes and lifetime receipt budget
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          env -i \
+            PATH="${PATH}" \
+            HOME="${HOME}" \
+            LANG="${LANG}" \
+            PYTHONDONTWRITEBYTECODE="${PYTHONDONTWRITEBYTECODE}" \
+            GH_TOKEN="${GH_TOKEN}" \
+            GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
+            GITHUB_REF="${GITHUB_REF}" \
+            GITHUB_ACTOR="${GITHUB_ACTOR}" \
+            GITHUB_TRIGGERING_ACTOR="${GITHUB_TRIGGERING_ACTOR}" \
+            GITHUB_RUN_ATTEMPT="${GITHUB_RUN_ATTEMPT}" \
+            GITHUB_EVENT_NAME="${GITHUB_EVENT_NAME}" \
+            GITHUB_JOB="${GITHUB_JOB}" \
+            RUNNER_ENVIRONMENT="${RUNNER_ENVIRONMENT}" \
+            GITHUB_SHA="${GITHUB_SHA}" \
+            GITHUB_RUN_ID="${GITHUB_RUN_ID}" \
+            GITHUB_EVENT_PATH="${GITHUB_EVENT_PATH}" \
+            GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
+            GITHUB_WORKSPACE="${GITHUB_WORKSPACE}" \
+            python3 "$CONTROL_DIR/finalize_recovery.py" finalize --report finalizer-receipt.json
+      - name: Retain bounded receipt and current public byte evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: damyang-no-deploy-recovery-result-${{ github.run_id }}
+          path: |
+            finalizer-selection.json
+            finalizer-receipt.json
+            finalizer-public-http.json
+          if-no-files-found: error
