@@ -1,0 +1,97 @@
+{
+  "schema": "damyang-supplemental-policy-context/v1",
+  "revision": 2,
+  "copySHA256": "3bc9a15e452efbc3afac06f366f711ac45008b136d3597a6a15d997ddfb741d0",
+  "copyPointer": "/home/sections/4/afterList/1",
+  "originalDenominators": {
+    "guidance": 165,
+    "policy": 24,
+    "currentFacts": 16,
+    "facilities": 3
+  },
+  "supplementalDenominators": {
+    "upperImagePolicyClauses": 6,
+    "applicationScopeFollowupFacts": 1
+  },
+  "imageBindings": [
+    {
+      "sku": "B201",
+      "url": "https://fwith.co.kr/data/item/flower379/B201/main_pc.jpg",
+      "bytes": 2457249,
+      "sha256": "69a56afede4f5cb2c4d94361f61c39deffd189ca170ee17cca0f63d290dc6ef5"
+    },
+    {
+      "sku": "B203",
+      "url": "https://fwith.co.kr/data/item/flower379/B203/main_pc.jpg",
+      "bytes": 2485184,
+      "sha256": "c1bb20ce75cfd96f9f9de4ca06edaba5ffe4d46c035b25f17c7a33aa2cb94455"
+    },
+    {
+      "sku": "B205",
+      "url": "https://fwith.co.kr/data/item/flower379/B205/main_pc.jpg",
+      "bytes": 2592349,
+      "sha256": "27a3e495b90b3409c675eb71de9fee2649a815aa06424f72f77c397782cccea0"
+    },
+    {
+      "sku": "B060",
+      "url": "https://fwith.co.kr/data/item/flower379/B060/main_pc.jpg",
+      "bytes": 797246,
+      "sha256": "67c7d7f16ca2b4bffe2694a7e2de06f41b90e5ea8fcaa57681eb2f5b8f890cfa"
+    }
+  ],
+  "upperPolicyBySKU": [
+    {
+      "sku": "B201",
+      "weekday": "After 19:00 on weekdays: next weekday morning, as posted in the upper strip.",
+      "weekendHoliday": "After 19:00 on weekends/holidays: next day around 13:00, as posted in the upper strip."
+    },
+    {
+      "sku": "B203",
+      "weekday": "After 19:00 on weekdays: next weekday morning, as posted in the upper strip.",
+      "weekendHoliday": "After 19:00 on weekends/holidays: next day around 13:00, as posted in the upper strip."
+    },
+    {
+      "sku": "B205",
+      "weekday": "After 19:00 on weekdays: next weekday morning, as posted in the upper strip.",
+      "weekendHoliday": "After 19:00 on weekends/holidays: next day around 13:00, as posted in the upper strip."
+    }
+  ],
+  "lowerPolicyBySKU": [
+    {
+      "sku": "B201",
+      "afterHour": 19,
+      "publishedCondition": "Next-day morning excluding weekends and public holidays, as posted in lower order guidance."
+    },
+    {
+      "sku": "B203",
+      "afterHour": 19,
+      "publishedCondition": "Next-day morning excluding weekends and public holidays, as posted in lower order guidance."
+    },
+    {
+      "sku": "B205",
+      "afterHour": 19,
+      "publishedCondition": "Next-day morning excluding weekends and public holidays, as posted in lower order guidance."
+    },
+    {
+      "sku": "B060",
+      "afterHour": 21,
+      "publishedCondition": "Next-day morning excluding weekends and public holidays, as posted in lower order guidance."
+    }
+  ],
+  "applicationScopeFollowupFacts": [
+    {
+      "id": "FUP-01",
+      "fact": "B201/B203/B205 contain both upper and lower timing statements in the same source image. Their scope, exception relationship and precedence cannot be determined from these posted materials alone.",
+      "notEstablished": [
+        "Which statement overrides another",
+        "Actual Damyang arrival date or time",
+        "A B060 weekend/holiday 13:00 exception"
+      ],
+      "handling": "Retain both locations and uncertainty together in one visible paragraph; preserve B060 as a separate 21:00 condition."
+    }
+  ],
+  "authorScores": null,
+  "independentScores": null,
+  "actualRenderingVerified": false,
+  "publicHTTPVerified": false
+}

@@ -1,0 +1,25 @@
+---
+import '../styles/global.css';
+import '../styles/gangdong.css';
+import '../styles/mokpo.css';
+import '../styles/yeosu.css';
+import '../styles/suncheon.css';
+import '../styles/damyang.css';
+import {assertBoundary,navigation,ui} from '../lib/damyang-runtime.mjs';
+assertBoundary();
+const {page}=Astro.props;
+---
+<!doctype html><html lang="ko"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>{page.title}</title><meta name="description" content={page.description}/><meta name="robots" content="noindex,nofollow,noarchive"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+{page.id!=='not-found'&&<><meta property="og:type" content="website"/><meta property="og:title" content={page.title}/><meta property="og:description" content={page.description}/><meta property="og:locale" content="ko_KR"/></>}<meta name="theme-color" content="#3a214f"/>
+</head><body>
+<a class="skip-link" href="#main-content">{ui.skipLink}</a>
+<header class="site-header"><div class="header-inner"><a class="brand" href="/" aria-label={ui.homeLink}><span class="brand-icon" aria-hidden="true">✿</span><b>{ui.brand}</b></a>
+<nav class="desktop-navigation" aria-label={ui.menuLabel}>{navigation.map((link:any)=><a href={link.href}>{link.label}</a>)}</nav>
+<details class="mobile-menu"><summary><span class="menu-open">{ui.menuOpen}</span><span class="menu-close">{ui.menuClose}</span></summary><nav aria-label={ui.menuLabel}>{navigation.map((link:any)=><a href={link.href}>{link.label}</a>)}</nav></details>
+</div></header>
+<main id="main-content" tabindex="-1"><slot/></main>
+<footer aria-label={ui.footerLabel}><div><strong>{ui.brand}</strong><span>{ui.footerLabel}</span><a href="tel:18440644">{ui.phoneLink}</a><a href="/">{ui.homeLink}</a></div></footer>
+<div class="mobile-bar"><a href="/">{ui.homeLink}</a><a href="tel:18440644">{ui.phoneLink}</a></div>
+</body></html>

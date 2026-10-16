@@ -1,0 +1,178 @@
+{
+  "revision": 2,
+  "copySHA256": "3bc9a15e452efbc3afac06f366f711ac45008b136d3597a6a15d997ddfb741d0",
+  "copyPointer": "/home/sections/4/afterList/1",
+  "originalDenominators": {
+    "guidance": 165,
+    "policy": 24,
+    "currentFacts": 16,
+    "facilities": 3
+  },
+  "supplementalDenominators": {
+    "upperImagePolicyClauses": 6,
+    "applicationScopeFollowupFacts": 1
+  },
+  "imageBindings": [
+    {
+      "sku": "B201",
+      "url": "https://fwith.co.kr/data/item/flower379/B201/main_pc.jpg",
+      "bytes": 2457249,
+      "sha256": "69a56afede4f5cb2c4d94361f61c39deffd189ca170ee17cca0f63d290dc6ef5"
+    },
+    {
+      "sku": "B203",
+      "url": "https://fwith.co.kr/data/item/flower379/B203/main_pc.jpg",
+      "bytes": 2485184,
+      "sha256": "c1bb20ce75cfd96f9f9de4ca06edaba5ffe4d46c035b25f17c7a33aa2cb94455"
+    },
+    {
+      "sku": "B205",
+      "url": "https://fwith.co.kr/data/item/flower379/B205/main_pc.jpg",
+      "bytes": 2592349,
+      "sha256": "27a3e495b90b3409c675eb71de9fee2649a815aa06424f72f77c397782cccea0"
+    },
+    {
+      "sku": "B060",
+      "url": "https://fwith.co.kr/data/item/flower379/B060/main_pc.jpg",
+      "bytes": 797246,
+      "sha256": "67c7d7f16ca2b4bffe2694a7e2de06f41b90e5ea8fcaa57681eb2f5b8f890cfa"
+    }
+  ],
+  "upperPolicyBySKU": [
+    {
+      "sku": "B201",
+      "weekday": "After 19:00 on weekdays: next weekday morning, as posted in the upper strip.",
+      "weekendHoliday": "After 19:00 on weekends/holidays: next day around 13:00, as posted in the upper strip."
+    },
+    {
+      "sku": "B203",
+      "weekday": "After 19:00 on weekdays: next weekday morning, as posted in the upper strip.",
+      "weekendHoliday": "After 19:00 on weekends/holidays: next day around 13:00, as posted in the upper strip."
+    },
+    {
+      "sku": "B205",
+      "weekday": "After 19:00 on weekdays: next weekday morning, as posted in the upper strip.",
+      "weekendHoliday": "After 19:00 on weekends/holidays: next day around 13:00, as posted in the upper strip."
+    }
+  ],
+  "lowerPolicyBySKU": [
+    {
+      "sku": "B201",
+      "afterHour": 19,
+      "publishedCondition": "Next-day morning excluding weekends and public holidays, as posted in lower order guidance."
+    },
+    {
+      "sku": "B203",
+      "afterHour": 19,
+      "publishedCondition": "Next-day morning excluding weekends and public holidays, as posted in lower order guidance."
+    },
+    {
+      "sku": "B205",
+      "afterHour": 19,
+      "publishedCondition": "Next-day morning excluding weekends and public holidays, as posted in lower order guidance."
+    },
+    {
+      "sku": "B060",
+      "afterHour": 21,
+      "publishedCondition": "Next-day morning excluding weekends and public holidays, as posted in lower order guidance."
+    }
+  ],
+  "applicationScopeFollowupFacts": [
+    {
+      "id": "FUP-01",
+      "fact": "B201/B203/B205 contain both upper and lower timing statements in the same source image. Their scope, exception relationship and precedence cannot be determined from these posted materials alone.",
+      "notEstablished": [
+        "Which statement overrides another",
+        "Actual Damyang arrival date or time",
+        "A B060 weekend/holiday 13:00 exception"
+      ],
+      "handling": "Retain both locations and uncertainty together in one visible paragraph; preserve B060 as a separate 21:00 condition.",
+      "independentStatus": "UNDETERMINED_RELATIONSHIP_EXPLICITLY_PRESERVED",
+      "independentFinding": "자료에 없는 우선순위나 필연적인 모순을 만들지 않는다. 실제 주문의 도착일·시간도 확정하지 않는다."
+    }
+  ],
+  "authorScores": null,
+  "independentScores": null,
+  "independentNumericScores": null,
+  "actualRenderingVerified": false,
+  "publicHTTPVerified": false,
+  "verdict": "SIX_UPPER_CLAUSES_AND_ONE_SCOPE_LIMIT_SATISFIED_IN_R2_MANUSCRIPT",
+  "schema": "damyang-public-safe-supplemental-policy-assessment/v1",
+  "privateOriginalReviewSHA256": "2a3e6a8db20acf52436b6e0d83c592023a37e6ed1b8ad4c05854f50e72388bb5",
+  "privateOriginalInputSHA256": "d0e88f9f733f9c75ee966f57560f3d72e3aad62cf7ddcfd220a03807b4a8a8be",
+  "supplementalUpperPolicyClauses": [
+    {
+      "clauseId": "B201-upper-weekday",
+      "sku": "B201",
+      "sourceURL": "https://fwith.co.kr/data/item/flower379/B201/main_pc.jpg",
+      "sourceSHA256": "69a56afede4f5cb2c4d94361f61c39deffd189ca170ee17cca0f63d290dc6ef5",
+      "imageRegion": "upper timing strip, x0 y0 x960 y600",
+      "originalTextSHA256": "14ced46104bb3593b24b632e79e21e5fa7473e2ac285cb06670ce098067fa58d",
+      "copyPointer": "/home/sections/4/afterList/1",
+      "handling": "Retain as source-location-specific posted guidance alongside lower conditions; no precedence or arrival promise.",
+      "independentStatus": "DIRECT_IMAGE_TRANSCRIPTION_AND_R2_CONTEXT_MATCH",
+      "independentFinding": "상단 원문과 해당 SKU,19시 구분,평일 기준/주말·공휴일13시전후를 직접 대조했다. 같은 문단의 하단 고지·미확정 범위·상담 안내와 분리하지 않는다."
+    },
+    {
+      "clauseId": "B201-upper-weekend-holiday",
+      "sku": "B201",
+      "sourceURL": "https://fwith.co.kr/data/item/flower379/B201/main_pc.jpg",
+      "sourceSHA256": "69a56afede4f5cb2c4d94361f61c39deffd189ca170ee17cca0f63d290dc6ef5",
+      "imageRegion": "upper timing strip, x0 y0 x960 y600",
+      "originalTextSHA256": "05d2c61003919eeae79b0cefb9faddc70d481618ca591a06da206cee238c61dd",
+      "copyPointer": "/home/sections/4/afterList/1",
+      "handling": "Retain as source-location-specific posted guidance alongside lower conditions; no precedence or arrival promise.",
+      "independentStatus": "DIRECT_IMAGE_TRANSCRIPTION_AND_R2_CONTEXT_MATCH",
+      "independentFinding": "상단 원문과 해당 SKU,19시 구분,평일 기준/주말·공휴일13시전후를 직접 대조했다. 같은 문단의 하단 고지·미확정 범위·상담 안내와 분리하지 않는다."
+    },
+    {
+      "clauseId": "B203-upper-weekday",
+      "sku": "B203",
+      "sourceURL": "https://fwith.co.kr/data/item/flower379/B203/main_pc.jpg",
+      "sourceSHA256": "c1bb20ce75cfd96f9f9de4ca06edaba5ffe4d46c035b25f17c7a33aa2cb94455",
+      "imageRegion": "upper timing strip, x0 y0 x960 y600",
+      "originalTextSHA256": "14ced46104bb3593b24b632e79e21e5fa7473e2ac285cb06670ce098067fa58d",
+      "copyPointer": "/home/sections/4/afterList/1",
+      "handling": "Retain as source-location-specific posted guidance alongside lower conditions; no precedence or arrival promise.",
+      "independentStatus": "DIRECT_IMAGE_TRANSCRIPTION_AND_R2_CONTEXT_MATCH",
+      "independentFinding": "상단 원문과 해당 SKU,19시 구분,평일 기준/주말·공휴일13시전후를 직접 대조했다. 같은 문단의 하단 고지·미확정 범위·상담 안내와 분리하지 않는다."
+    },
+    {
+      "clauseId": "B203-upper-weekend-holiday",
+      "sku": "B203",
+      "sourceURL": "https://fwith.co.kr/data/item/flower379/B203/main_pc.jpg",
+      "sourceSHA256": "c1bb20ce75cfd96f9f9de4ca06edaba5ffe4d46c035b25f17c7a33aa2cb94455",
+      "imageRegion": "upper timing strip, x0 y0 x960 y600",
+      "originalTextSHA256": "05d2c61003919eeae79b0cefb9faddc70d481618ca591a06da206cee238c61dd",
+      "copyPointer": "/home/sections/4/afterList/1",
+      "handling": "Retain as source-location-specific posted guidance alongside lower conditions; no precedence or arrival promise.",
+      "independentStatus": "DIRECT_IMAGE_TRANSCRIPTION_AND_R2_CONTEXT_MATCH",
+      "independentFinding": "상단 원문과 해당 SKU,19시 구분,평일 기준/주말·공휴일13시전후를 직접 대조했다. 같은 문단의 하단 고지·미확정 범위·상담 안내와 분리하지 않는다."
+    },
+    {
+      "clauseId": "B205-upper-weekday",
+      "sku": "B205",
+      "sourceURL": "https://fwith.co.kr/data/item/flower379/B205/main_pc.jpg",
+      "sourceSHA256": "27a3e495b90b3409c675eb71de9fee2649a815aa06424f72f77c397782cccea0",
+      "imageRegion": "upper timing strip, x0 y0 x960 y600",
+      "originalTextSHA256": "14ced46104bb3593b24b632e79e21e5fa7473e2ac285cb06670ce098067fa58d",
+      "copyPointer": "/home/sections/4/afterList/1",
+      "handling": "Retain as source-location-specific posted guidance alongside lower conditions; no precedence or arrival promise.",
+      "independentStatus": "DIRECT_IMAGE_TRANSCRIPTION_AND_R2_CONTEXT_MATCH",
+      "independentFinding": "상단 원문과 해당 SKU,19시 구분,평일 기준/주말·공휴일13시전후를 직접 대조했다. 같은 문단의 하단 고지·미확정 범위·상담 안내와 분리하지 않는다."
+    },
+    {
+      "clauseId": "B205-upper-weekend-holiday",
+      "sku": "B205",
+      "sourceURL": "https://fwith.co.kr/data/item/flower379/B205/main_pc.jpg",
+      "sourceSHA256": "27a3e495b90b3409c675eb71de9fee2649a815aa06424f72f77c397782cccea0",
+      "imageRegion": "upper timing strip, x0 y0 x960 y600",
+      "originalTextSHA256": "05d2c61003919eeae79b0cefb9faddc70d481618ca591a06da206cee238c61dd",
+      "copyPointer": "/home/sections/4/afterList/1",
+      "handling": "Retain as source-location-specific posted guidance alongside lower conditions; no precedence or arrival promise.",
+      "independentStatus": "DIRECT_IMAGE_TRANSCRIPTION_AND_R2_CONTEXT_MATCH",
+      "independentFinding": "상단 원문과 해당 SKU,19시 구분,평일 기준/주말·공휴일13시전후를 직접 대조했다. 같은 문단의 하단 고지·미확정 범위·상담 안내와 분리하지 않는다."
+    }
+  ],
+  "redaction": "Original source transcripts/image bodies/private relative evidence paths excluded; source URLs, byte hashes, six clause identities and independent meaning/judgments preserved."
+}
