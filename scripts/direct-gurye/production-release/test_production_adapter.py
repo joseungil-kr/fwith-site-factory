@@ -1,9 +1,9 @@
 """Real source51/private11 tests; no mocked source or output validator."""
 from pathlib import Path
-import json,os,shutil,subprocess,sys,tempfile,unittest
+import copy,json,os,shutil,subprocess,sys,tempfile,unittest
 sys.dont_write_bytecode=True
 import production_adapter as a
-REV='faad1dcf40b879bf03075967d1a6e482a87d54ea'
+REV='45b0062549772dcd64a20eb975a5c05868487fe4' # Existing source60 used as explicit local test input, not an unsaved successor claim.
 class ProductionTests(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
@@ -17,8 +17,8 @@ class ProductionTests(unittest.TestCase):
  def tearDown(self):self.tmp.cleanup()
  def cli(self,adapter,*args):
   return subprocess.run([sys.executable,str(adapter/'production_adapter.py'),*args],capture_output=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
- def test_real_positive_exact14_and_body8asset_parity(self):
-  r=a.build(self.source,self.output,REV);self.assertEqual(r,a.validate(self.source,self.output,REV));self.assertEqual(r['productionFilesVerified'],14);self.assertEqual(r['sourceFilesVerified'],51);self.assertEqual(r['htmlBodiesByteIdentical'],2);self.assertEqual(r['staticAssetsByteIdentical'],8);self.assertFalse(r['publicationReady']);self.assertFalse(r['assemblyCommitExternallyVerified'])
+ def test_real_positive_exact15_and_body8asset_parity(self):
+  r=a.build(self.source,self.output,REV);self.assertEqual(r,a.validate(self.source,self.output,REV));self.assertEqual(r['productionFilesVerified'],15);self.assertEqual(r['sourceFilesVerified'],51);self.assertEqual(r['htmlBodiesByteIdentical'],2);self.assertEqual(r['staticAssetsByteIdentical'],8);self.assertFalse(r['publicationReady']);self.assertFalse(r['assemblyCommitExternallyVerified'])
   c=a.read_contract();row,proof=a.proof(c);self.assertEqual((self.output/row['path'][1:]).read_bytes(),proof)
   for n in a.base.FILES:
    doc=a.base.Metadata((self.output/n).read_text());self.assertEqual(doc.meta['site-factory-revision'],REV);self.assertEqual(doc.meta['site-factory-private-source-revision'],a.SOURCE);self.assertNotIn('site-factory-release-revision',doc.meta)
@@ -90,4 +90,34 @@ class ProductionTests(unittest.TestCase):
   for logs in [self.source/'logs',a.ROOT/'logs',self.output/'logs']:
    with self.assertRaises(ValueError):a.build_native(self.source,self.output,logs,REV)
   self.assertFalse(self.output.exists())
+ def test_exact_social14_existing_titles_image_and_404_absence(self):
+  a.build(self.source,self.output,REV);c=a.read_contract();_,_,_,_,private,_=a.verify_inputs(self.source);expected=a.social_values(c,private);doc=a.SocialMetadata((self.output/'index.html').read_text());self.assertEqual(doc.social,expected);self.assertEqual(len(expected),14);self.assertEqual(a.SocialMetadata((self.output/'404.html').read_text()).social,[])
+  self.assertEqual(dict((key,value)for _,key,value in expected)['og:url'],'https://gurye.fwith.kr/');self.assertEqual(dict((key,value)for _,key,value in expected)['og:image'],dict((key,value)for _,key,value in expected)['twitter:image']);self.assertEqual(c['socialMetadata']['imageWidth'],500);self.assertEqual(c['socialMetadata']['imageHeight'],500)
+  p=self.output/'index.html';original=p.read_bytes()
+  for kind,key,value in expected:
+   tag=('<meta '+kind+'="'+key+'" content="'+a.html.escape(value,quote=True)+'">').encode();self.assertEqual(original.count(tag),1)
+   for changed in [original.replace(tag,b'',1),original.replace(tag,tag+tag,1),original.replace(tag,tag.replace(b'content="',b'content="wrong-',1),1)]:
+    p.write_bytes(changed)
+    with self.assertRaises(ValueError):a.validate(self.source,self.output,REV)
+   p.write_bytes(original)
+  p=self.output/'404.html';original=p.read_bytes();p.write_bytes(original.replace(b'</head>',b'<meta property="og:url" content="https://gurye.fwith.kr/"></head>'))
+  with self.assertRaises(ValueError):a.validate(self.source,self.output,REV)
+ def test_empty_headers_has_no_added_rules(self):
+  a.build(self.source,self.output,REV);p=self.output/'_headers';self.assertEqual(p.read_bytes(),b'/*\n')
+  for data in [b'',b'/*\n  X-Robots-Tag: noindex\n',b'/*\n  Access-Control-Allow-Origin: *\n',b'/*\r\n']:
+   p.write_bytes(data)
+   with self.assertRaises(ValueError):a.validate(self.source,self.output,REV)
+ def test_reused_release_manifest_exact_schema_and_actual_identifiers(self):
+  result=a.build(self.source,self.output,REV);files=result['files'];control='c'*40;run='123456789';binding='d'*64;m=a.release_manifest(files,REV,control,run,binding);self.assertEqual(set(m),a.RELEASE_KEYS);self.assertEqual(m['sourceContractSha256'],a.CONTRACT_SHA);self.assertEqual(m['sourceBranch'],'source/gurye-production-metadata-preparation-20261016');self.assertEqual(a.validate_release_manifest(m,files,REV,control,run,binding),m)
+  raw=a.release_manifest_bytes(m);self.assertEqual(raw,(json.dumps(m,ensure_ascii=False,sort_keys=True,indent=2)+'\n').encode());self.assertEqual(json.loads(raw),m)
+  for key in m:
+   for mode in ['delete','wrong']:
+    changed=copy.deepcopy(m)
+    if mode=='delete':changed.pop(key)
+    else:changed[key]='wrong'
+    with self.assertRaises(ValueError):a.validate_release_manifest(changed,files,REV,control,run,binding)
+  changed=copy.deepcopy(m);changed['extra']=True
+  with self.assertRaises(ValueError):a.validate_release_manifest(changed,files,REV,control,run,binding)
+  for args in [(files,'local-inspection',control,run,binding),(files,REV,'short',run,binding),(files,REV,control,'0',binding),(files,REV,control,123,binding),(files,REV,control,run,'short'),({},REV,control,run,binding)]:
+   with self.assertRaises(ValueError):a.release_manifest(*args)
 if __name__=='__main__':unittest.main()

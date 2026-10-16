@@ -4,11 +4,12 @@ The original source51 and keyless5 stay immutable. Actual commit ownership,
 Actions evidence, provider state and public HTTP remain separate release gates.
 """
 from pathlib import Path
-import argparse, datetime, hashlib, json, re, sys
+import argparse, datetime, hashlib, html, json, re, sys
+from html.parser import HTMLParser
 sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parent
 KEYLESS=ROOT.parent/'keyless-release'
-CONTRACT_SHA='539a58756cae4fa7f5e4a5c7ccf57fb8bd1879a8956f46b9dc1ef44b2f0d37e9'
+CONTRACT_SHA='0f6c1c070405afbf7cc5d6a51191caf8664c868f9c87f07ac1167efac40e33a2'
 SOURCE='557324cfdea14a5dec3354f2124cc887e2ff7555'
 ASSEMBLY56='faad1dcf40b879bf03075967d1a6e482a87d54ea'
 ORIGIN='https://gurye.fwith.kr'
@@ -25,8 +26,10 @@ def read_contract():
  require(c['repository']=='joseungil-kr/fwith-site-factory' and c['hostname']==HOST and c['origin']==ORIGIN,'Foreign fixed target')
  require(c['privateSourceRevision']==SOURCE and c['keylessAssemblyRevision']==ASSEMBLY56,'Frozen source identity changed')
  require(c['sourceRoot']=='site-factory/gurye-flower' and c['keylessRoot']=='scripts/direct-gurye/keyless-release' and c['productionRoot']=='scripts/direct-gurye/production-release','Root contract changed')
- require(c['indexRoutes']==['/'] and c['productionOutputFiles']==14 and c['bodyChangesAllowed']==[] and c['facilityPages']=='HOLD','Bounded home scope changed')
+ require(c['indexRoutes']==['/'] and c['productionOutputFiles']==15 and c['bodyChangesAllowed']==[] and c['facilityPages']=='HOLD','Bounded home scope changed')
  require(c['approval']['dedicatedPublicProofGenerationAndApplication']is True and c['approval']['submitHomeOnlyAfterDeploymentVerification']is True,'Dedicated approval absent')
+ require(c['successorBranch']=='source/gurye-production-metadata-preparation-20261016' and c['priorProductionAssemblyRevision']=='45b0062549772dcd64a20eb975a5c05868487fe4' and c['emptyHeaders']=='/*\n','Successor/empty header contract changed')
+ require(c['socialMetadata']['canonicalURL']==ORIGIN+'/' and c['socialMetadata']['imagePath']=='/images/products/B201.jpg' and c['socialMetadata']['expectedTagCount']==14 and c['socialMetadata']['notFoundSocialTags']==0,'Social scope changed')
  require(c['productionBuildEnabled']is True and c['providerNetworkOperationsImplemented']is False and c['indexNowPostImplemented']is False,'Build/network boundary changed')
  require(len(c['keylessFiles'])==5 and len({r['path']for r in c['keylessFiles']})==5,'Keyless inventory changed')
  for row in c['keylessFiles']:
@@ -71,6 +74,41 @@ def verify_inputs(source):
  require(c['privateVisualReviewSHA256']==k['privateVisualReview']['resultSHA256'],'Private visual review changed')
  return source,c,k,b,private,result
 
+class SocialMetadata(HTMLParser):
+ def __init__(self,text):
+  super().__init__();self.social=[];self.descriptions=[];self.titles=[];self.in_title=False;self.feed(text)
+ def handle_starttag(self,tag,attrs):
+  a=dict(attrs);require(len(a)==len(attrs),'Duplicate HTML attributes')
+  if tag=='title':self.titles.append('');self.in_title=True
+  if tag=='meta':
+   if a.get('name')=='description':self.descriptions.append(a.get('content',''))
+   key=a.get('property',a.get('name',''))
+   if key.startswith(('og:','twitter:')):self.social.append(('property'if 'property'in a else'name',key,a.get('content','')))
+ def handle_endtag(self,tag):
+  if tag=='title':self.in_title=False
+ def handle_data(self,data):
+  if self.in_title:self.titles[-1]+=data
+
+def social_values(c,private):
+ doc=SocialMetadata(private['index.html'].decode());require(len(doc.titles)==len(doc.descriptions)==1 and not doc.social,'One reviewed title/description and no inherited social tags required')
+ m=c['socialMetadata'];require(m['homeOnly']is True and m['type']=='website'and m['locale']=='ko_KR'and m['imageWidth']==m['imageHeight']==500 and m['twitterCard']=='summary','Exact social image/card contract required')
+ require(digest(private[m['imagePath'].lstrip('/')])==m['imageSHA256'],'Approved existing social image changed')
+ title,description=doc.titles[0],doc.descriptions[0];image=ORIGIN+m['imagePath'];alt=m['imageAlt']
+ return [('property','og:type','website'),('property','og:locale','ko_KR'),('property','og:title',title),('property','og:description',description),('property','og:url',ORIGIN+'/'),('property','og:image',image),('property','og:image:width','500'),('property','og:image:height','500'),('property','og:image:alt',alt),('name','twitter:card','summary'),('name','twitter:title',title),('name','twitter:description',description),('name','twitter:image',image),('name','twitter:image:alt',alt)]
+
+RELEASE_KEYS={'schemaVersion','repository','sourceBranch','sourceRoot','revision','controlRevision','runId','origin','worker','indexable','bindingSha256','sourceContractSha256','files'}
+def release_manifest(files,assembly_revision,control_revision,run_id,binding_sha):
+ c=read_contract();revision(assembly_revision);revision(control_revision)
+ require(type(run_id)is str and re.fullmatch('[1-9][0-9]*',run_id),'Actual runId string required')
+ require(type(binding_sha)is str and re.fullmatch('[0-9a-f]{64}',binding_sha),'Full QA binding hash required')
+ require(type(files)is dict and set(files)==set(c['productionOutputPaths'])and len(files)==15 and all(type(v)is str and re.fullmatch('[0-9a-f]{64}',v)for v in files.values()),'Exact output15 manifest required')
+ require(set(c['releaseManifest']['keys'])==RELEASE_KEYS and c['releaseManifest']['publicDeploymentAuthorization']is False,'Exact reused release manifest schema required')
+ return dict(schemaVersion=1,repository=c['repository'],sourceBranch=c['successorBranch'],sourceRoot=c['sourceRoot'],revision=assembly_revision,controlRevision=control_revision,runId=run_id,origin=ORIGIN,worker=c['workerCandidate'],indexable=True,bindingSha256=binding_sha,sourceContractSha256=CONTRACT_SHA,files=files)
+def validate_release_manifest(value,files,assembly_revision,control_revision,run_id,binding_sha):
+ expected=release_manifest(files,assembly_revision,control_revision,run_id,binding_sha)
+ require(type(value)is dict and set(value)==RELEASE_KEYS and json.dumps(value,sort_keys=True)==json.dumps(expected,sort_keys=True),'Release manifest identity/schema mismatch');return value
+def release_manifest_bytes(value):return (json.dumps(value,ensure_ascii=False,sort_keys=True,indent=2)+'\n').encode('utf-8')
+
 def expected_output(c,k,private,assembly_revision):
  revision(assembly_revision);output=base.expected_output(k,private)
  for name in base.FILES:
@@ -80,9 +118,14 @@ def expected_output(c,k,private,assembly_revision):
   require(before.count(old)==1 and before.count(old_revision)==1 and b'site-factory-private-source-revision'not in before,'Unexpected offline head')
   new=('<meta name="site-factory-release-state" content="production-candidate"><meta name="site-factory-private-source-revision" content="'+SOURCE+'">').encode()
   new_revision=('<meta name="site-factory-revision" content="'+assembly_revision+'">').encode()
-  output[name]=before.replace(old,new,1).replace(old_revision,new_revision,1)+b'<body'+body
- row,raw=proof(c);output[row['path'][1:]]=raw
- require(len(output)==14,'Exact production output14 required');return output
+  head=before.replace(old,new,1).replace(old_revision,new_revision,1)
+  if name=='index.html':
+   require(head.count(b'</head>')==1,'Exact head closing required')
+   social=''.join('<meta '+kind+'="'+key+'" content="'+html.escape(value,quote=True)+'">'for kind,key,value in social_values(c,private)).encode()
+   head=head.replace(b'</head>',social+b'</head>',1)
+  output[name]=head+b'<body'+body
+ row,raw=proof(c);output[row['path'][1:]]=raw;output['_headers']=c['emptyHeaders'].encode()
+ require(len(output)==15 and sorted(output)==c['productionOutputPaths'],'Exact production output15 required');return output
 
 def validate(source,output,assembly_revision):
  revision(assembly_revision);source,output,_=paths(source,output)
@@ -94,9 +137,10 @@ def validate(source,output,assembly_revision):
   require(doc.meta.get('site-factory-revision')==assembly_revision and doc.meta.get('site-factory-private-source-revision')==SOURCE and doc.meta.get('site-factory-release-state')=='production-candidate','Source/assembly revision mismatch')
   require(doc.meta.get('robots')==('index,follow'if route=='/'else'noindex,follow')and doc.canonical==([ORIGIN+'/']if route=='/'else[]),'Canonical/robots mismatch')
   require(doc.h1==1 and doc.scripts==0,'Unexpected H1 or executable script')
+  require(SocialMetadata(actual[name].decode()).social==(social_values(c,private)if route=='/'else[]),'Exact home social14/404 social0 required')
   require(digest(b'<body'+actual[name].split(b'<body',1)[1])==k['htmlBaseline'][name]['bodySHA256'],'Customer body changed')
  row,raw=proof(c)
- return {'state':'PRODUCTION_CANDIDATE_EXACT_OUTPUT_VERIFIED','privateSourceRevision':SOURCE,'keylessAssemblyRevision':ASSEMBLY56,'assemblyRevision':assembly_revision,'assemblyCommitExternallyVerified':False,'sourceFilesVerified':source_check['verifiedSourceFiles'],'keylessFilesVerified':5,'privateFilesVerified':11,'productionFilesVerified':14,'htmlBodiesByteIdentical':2,'staticAssetsByteIdentical':8,'indexRoutes':['/'],'origin':ORIGIN,'proof':{'path':row['path'],'sha256':row['sha256'],'bytes':len(raw)},'dedicatedPublicProofApprovalVerifiedAtUTC':c['approval']['verifiedAtUTC'],'privateVisualReviewSHA256':c['privateVisualReviewSHA256'],'productionBrowserVerified':False,'publicHTTPVerified':False,'providerOwnershipVerified':False,'providerWrites':0,'IndexNowSubmitted':False,'publicationReady':False,'facilityPages':'HOLD','files':{n:digest(d)for n,d in sorted(actual.items())}}
+ return {'state':'PRODUCTION_CANDIDATE_EXACT_OUTPUT_VERIFIED','privateSourceRevision':SOURCE,'keylessAssemblyRevision':ASSEMBLY56,'assemblyRevision':assembly_revision,'assemblyCommitExternallyVerified':False,'sourceFilesVerified':source_check['verifiedSourceFiles'],'keylessFilesVerified':5,'privateFilesVerified':11,'productionFilesVerified':15,'homeSocialMetadataTagsVerified':14,'notFoundSocialTags':0,'emptyHeadersBytesVerified':3,'htmlBodiesByteIdentical':2,'staticAssetsByteIdentical':8,'indexRoutes':['/'],'origin':ORIGIN,'proof':{'path':row['path'],'sha256':row['sha256'],'bytes':len(raw)},'dedicatedPublicProofApprovalVerifiedAtUTC':c['approval']['verifiedAtUTC'],'privateVisualReviewSHA256':c['privateVisualReviewSHA256'],'productionBrowserVerified':False,'publicHTTPVerified':False,'providerOwnershipVerified':False,'providerWrites':0,'IndexNowSubmitted':False,'publicationReady':False,'facilityPages':'HOLD','files':{n:digest(d)for n,d in sorted(actual.items())}}
 
 def build(source,output,assembly_revision):
  revision(assembly_revision);base.private_environment();source,output,_=paths(source,output,new=True)
