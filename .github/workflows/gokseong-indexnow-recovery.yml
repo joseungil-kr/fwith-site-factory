@@ -1,0 +1,63 @@
+name: Gokseong reviewed same-proof IndexNow recovery
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+concurrency:
+  group: gokseong-direct-public-release
+  cancel-in-progress: false
+jobs:
+  finalize_indexnow:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[GOKSEONG-INDEXNOW-RECOVERY] 20261016' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.user.login == 'joseungil-kr'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      REVISION: 7e6573e2eb97ac5473622d37478729ee43b565f1
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Run offline recovery tests without workflow credentials
+        run: python3 -m unittest discover -s control/scripts/direct-gokseong-indexnow-recovery -p 'test_*.py' -v
+      - name: Require exact owner request and independently reviewed retained artifacts
+        id: prepare
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p gokseong-recovery-result
+          env -i PATH="$PATH" HOME="$HOME" LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 GH_TOKEN="$GH_TOKEN" GITHUB_REPOSITORY="$GITHUB_REPOSITORY" GITHUB_REF="$GITHUB_REF" GITHUB_ACTOR="$GITHUB_ACTOR" GITHUB_TRIGGERING_ACTOR="$GITHUB_TRIGGERING_ACTOR" GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" GITHUB_JOB="$GITHUB_JOB" RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" GITHUB_SHA="$GITHUB_SHA" GITHUB_RUN_ID="$GITHUB_RUN_ID" GITHUB_EVENT_PATH="$GITHUB_EVENT_PATH" GITHUB_OUTPUT="$GITHUB_OUTPUT" GITHUB_WORKSPACE="$GITHUB_WORKSPACE" REVISION="$REVISION" python3 control/scripts/direct-gokseong-indexnow-recovery/finalize_recovery.py prepare --report gokseong-recovery-result/selection.json
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.prepare.outputs.build_artifact_id }}
+          run-id: ${{ steps.prepare.outputs.build_run_id }}
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: gokseong-recovery-build
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.prepare.outputs.publication_artifact_id }}
+          run-id: ${{ steps.prepare.outputs.publication_run_id }}
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: gokseong-recovery-publication
+      - name: Verify exact current public release and spend at most one journaled submission
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          env -i PATH="$PATH" HOME="$HOME" LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 GH_TOKEN="$GH_TOKEN" GITHUB_REPOSITORY="$GITHUB_REPOSITORY" GITHUB_REF="$GITHUB_REF" GITHUB_ACTOR="$GITHUB_ACTOR" GITHUB_TRIGGERING_ACTOR="$GITHUB_TRIGGERING_ACTOR" GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" GITHUB_JOB="$GITHUB_JOB" RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" GITHUB_SHA="$GITHUB_SHA" GITHUB_RUN_ID="$GITHUB_RUN_ID" GITHUB_EVENT_PATH="$GITHUB_EVENT_PATH" GITHUB_OUTPUT="$GITHUB_OUTPUT" GITHUB_WORKSPACE="$GITHUB_WORKSPACE" REVISION="$REVISION" python3 control/scripts/direct-gokseong-indexnow-recovery/finalize_recovery.py finalize --report gokseong-recovery-result/finalization.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gokseong-no-deploy-recovery-${{ github.run_id }}
+          path: gokseong-recovery-result/
+          if-no-files-found: error
+          retention-days: 30
