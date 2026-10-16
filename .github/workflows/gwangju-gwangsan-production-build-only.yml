@@ -1,0 +1,115 @@
+name: Gwangsan pinned production build and loopback QA
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+concurrency:
+  group: gwangsan-direct-public-release
+  cancel-in-progress: false
+jobs:
+  production_build:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.title == '[GWANGJU-GWANGSAN-PRODUCTION-BUILD] 20261016' && github.event.issue.user.login == 'joseungil-kr'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_RELEASE_MODE: production
+      SITE_INDEXABLE: 'true'
+      SITE_URL: https://gwangju-gwangsan.fwith.kr
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Select exact authorized production build
+        id: select
+        run: python3 control/scripts/direct-gwangju-gwangsan/production_build.py select --report selected-source.json
+      - name: Pin source and external control binding in build environment
+        run: |
+          echo 'SITE_FACTORY_REVISION=${{ steps.select.outputs.source_revision }}' >> "$GITHUB_ENV"
+          echo "SITE_RELEASE_BINDING_PATH=$GITHUB_WORKSPACE/control/scripts/direct-gwangju-gwangsan/production-binding.json" >> "$GITHUB_ENV"
+          echo 'SITE_RELEASE_BINDING_SHA256=${{ steps.select.outputs.binding_sha256 }}' >> "$GITHUB_ENV"
+      - name: Recheck production source branch head
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {data} = await github.rest.git.getRef({...context.repo, ref:'heads/source/gwangju-gwangsan-production-preparation-20261016'});
+            if (data.object.type !== 'commit' || data.object.sha !== process.env.SITE_FACTORY_REVISION) throw new Error('Pinned source branch moved');
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.select.outputs.source_revision }}
+          path: target
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify all source files and binding
+        run: python3 control/scripts/direct-gwangju-gwangsan/production_build.py prebuild --checkout target --report source-prebuild.json
+      - name: Test all credential-free preview and production controls
+        run: python3 -m unittest discover -s control/scripts/direct-gwangju-gwangsan -p 'test_*.py' -v
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Preserve original preview build and historical regression gates
+        working-directory: target/site-factory/gwangju-gwangsan-flower/candidate
+        run: |
+          set -euo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/evidence/logs"
+          npm ci --no-audit --no-fund 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/npm-ci.log"
+          unset SITE_RELEASE_MODE SITE_INDEXABLE SITE_URL SITE_RELEASE_BINDING_PATH SITE_RELEASE_BINDING_SHA256
+          npm run build 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/preview-build.log"
+          npm test 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/preview-native-tests.log"
+      - name: Build production metadata with byte-identical customer body and assets
+        working-directory: target/site-factory/gwangju-gwangsan-flower/candidate
+        run: |
+          set -euo pipefail
+          node "$GITHUB_WORKSPACE/target/site-factory/gwangju-gwangsan-flower/release-adapter/scripts/build_gwangsan_release.mjs" 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/production-build.log"
+          node --test "$GITHUB_WORKSPACE/target/site-factory/gwangju-gwangsan-flower/release-adapter/release-tests/"*.test.mjs 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/production-native-tests.log"
+          python3 "$GITHUB_WORKSPACE/target/site-factory/gwangju-gwangsan-flower/release-adapter/scripts/test_gwangsan_runner_output.py" 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/production-mutations.log"
+      - name: Verify and package exact 18-file production artifact
+        env:
+          NATIVE_GATES_PASSED: 'true'
+        run: python3 control/scripts/direct-gwangju-gwangsan/production_build.py postbuild --package --checkout target --report production-output.json
+      - name: Verify capture selectors and installed Astro CLI against actual production files
+        env:
+          GWANGSAN_CAPTURE_INSPECTION_ROOT: ${{ github.workspace }}/target/site-factory/gwangju-gwangsan-flower/candidate
+          GWANGSAN_CAPTURE_INSPECTION_DIST: ${{ github.workspace }}/target/site-factory/gwangju-gwangsan-flower/candidate/dist
+          GWANGSAN_CAPTURE_INSPECTION_REVISION: ${{ steps.select.outputs.source_revision }}
+        run: python3 control/scripts/direct-gwangju-gwangsan/test_capture_contract.py
+      - name: Install existing pinned browser tooling and Korean fonts
+        run: |
+          python3 -m pip install 'playwright==1.63.0'
+          python3 -m playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          fc-match 'Noto Sans CJK KR' | tee evidence/logs/font-match.txt
+      - name: Inspect production artifact on runner loopback only
+        run: |
+          set -euo pipefail
+          env -i PATH="$PATH" HOME="$HOME" LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 ASTRO_TELEMETRY_DISABLED=1 \
+            SITE_RELEASE_MODE="$SITE_RELEASE_MODE" SITE_INDEXABLE="$SITE_INDEXABLE" SITE_URL="$SITE_URL" \
+            SITE_FACTORY_REVISION="$SITE_FACTORY_REVISION" SITE_RELEASE_BINDING_PATH="$SITE_RELEASE_BINDING_PATH" \
+            SITE_RELEASE_BINDING_SHA256="$SITE_RELEASE_BINDING_SHA256" \
+            GITHUB_REPOSITORY="$GITHUB_REPOSITORY" GITHUB_REF="$GITHUB_REF" GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_ACTOR="$GITHUB_ACTOR" GITHUB_TRIGGERING_ACTOR="$GITHUB_TRIGGERING_ACTOR" \
+            GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" GITHUB_RUN_ID="$GITHUB_RUN_ID" \
+            python3 control/scripts/direct-gwangju-gwangsan/production_capture.py --checkout target --output evidence/browser 2>&1 | tee evidence/logs/capture.log
+      - name: Seal retained screenshots and reports
+        if: always()
+        run: python3 control/scripts/direct-gwangju-gwangsan/production_capture.py --seal --output evidence/browser
+      - name: Retain production bytes and actual browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gwangsan-production-build-${{ github.run_id }}-${{ github.sha }}
+          path: |
+            release/
+            selected-source.json
+            source-prebuild.json
+            production-output.json
+            evidence/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
