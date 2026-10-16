@@ -1,0 +1,210 @@
+{
+  "schema": "damyang-single-home-intent/v1",
+  "copySHA256": "3bc9a15e452efbc3afac06f366f711ac45008b136d3597a6a15d997ddfb741d0",
+  "renderPlanSHA256": "99c7106fece161c1cd5ffe5308a3c3155bee287292607627e85322fe23c7c7d7",
+  "region": {
+    "name": "담양군",
+    "officialCode": "12710",
+    "legalCode": "1271000000",
+    "officialParent": "전남광주통합특별시",
+    "nationalOrder": 36
+  },
+  "primaryIntent": "Choose and order a condolence wreath for Damyang using real product photos, item price, explicit local surcharge, ribbon and order-condition help.",
+  "oneIntentOneIndexableHome": true,
+  "facilityDetailCount": 0,
+  "emptyDirectoryCount": 0,
+  "plannedIndexableHomeCount": 1,
+  "actualIndexablePageCount": null,
+  "measuredSearchVolume": null,
+  "measuredSearchRanking": null,
+  "authorScores": null,
+  "independentScores": null,
+  "coreHubLaunch": "NOT_ASSESSED",
+  "fullLaunch": "NOT_ASSESSED",
+  "heldCandidates": [
+    {
+      "id": "F01",
+      "name": "담양동산병원장례식장",
+      "addressAsSource": "전라남도 담양군 담양읍 죽향대로 1203 (백동리)",
+      "phone": "061-383-0000",
+      "sourceDate": "2026-04-01",
+      "handling": "Only dated identity displayed in home.destinations; no facility page",
+      "heldFacts": [
+        "층별/호실표",
+        "외부화환허용·금지·독점",
+        "진입/설치/회수",
+        "수령가능시각",
+        "꽃이랑제휴/납품경험"
+      ],
+      "facilityDetailStatus": "HOLD_OPERATOR_PURCHASE_FACTS_UNVERIFIED"
+    },
+    {
+      "id": "F02",
+      "name": "담양제일장례식장",
+      "addressAsSource": "전라남도 담양군 담양읍 추성로 1198 (양각리)",
+      "phone": "061-382-1111",
+      "sourceDate": "2026-04-01",
+      "handling": "Only dated identity displayed in home.destinations; no facility page",
+      "heldFacts": [
+        "층별/호실표",
+        "외부화환허용·금지·독점",
+        "진입/설치/회수",
+        "수령가능시각",
+        "꽃이랑제휴/납품경험"
+      ],
+      "facilityDetailStatus": "HOLD_OPERATOR_PURCHASE_FACTS_UNVERIFIED"
+    },
+    {
+      "id": "F03",
+      "name": "새마을장례식장",
+      "addressAsSource": "전라남도 담양군 담양읍 죽향문화로 287 (만성리)",
+      "phone": "061-383-4444",
+      "sourceDate": "2026-04-01",
+      "handling": "Only dated identity displayed in home.destinations; no facility page",
+      "heldFacts": [
+        "층별/호실표",
+        "외부화환허용·금지·독점",
+        "진입/설치/회수",
+        "수령가능시각",
+        "꽃이랑제휴/납품경험"
+      ],
+      "facilityDetailStatus": "HOLD_OPERATOR_PURCHASE_FACTS_UNVERIFIED"
+    }
+  ],
+  "customerQuestionMap": [
+    {
+      "id": "Q01",
+      "question": "What can I send and why?",
+      "answerLocation": "home.lead",
+      "evidence": "B201/B203/B205/B060 verified product pages",
+      "nextAction": "Call merchant or compare photos",
+      "independentVerdict": null,
+      "actualRenderVerified": false
+    },
+    {
+      "id": "Q02",
+      "question": "Which real options and prices?",
+      "answerLocation": "home.products + productCards",
+      "evidence": "Four exact photos, verified names/basic prices",
+      "nextAction": "Four SKU-specific detail URLs",
+      "independentVerdict": null,
+      "actualRenderVerified": false
+    },
+    {
+      "id": "Q03",
+      "question": "What does Damyang cost with delivery?",
+      "answerLocation": "home.lead + budget + card labels",
+      "evidence": "Four explicit 10000KRW shipping rows; arithmetic totals only",
+      "nextAction": "Consult final address, date and final total",
+      "independentVerdict": null,
+      "actualRenderVerified": false
+    },
+    {
+      "id": "Q04",
+      "question": "How do I choose within a shared budget?",
+      "answerLocation": "home.budget",
+      "evidence": "B203 basic79000 + posted10000 = reference89000",
+      "nextAction": "State total budget during consultation",
+      "independentVerdict": null,
+      "actualRenderVerified": false
+    },
+    {
+      "id": "Q05",
+      "question": "What do we put on the ribbon?",
+      "answerLocation": "home.ribbon",
+      "evidence": "Editorial examples, no invented mandatory formula",
+      "nextAction": "Discuss chosen greeting and sender text",
+      "independentVerdict": null,
+      "actualRenderVerified": false
+    },
+    {
+      "id": "Q06",
+      "question": "Which Damyang facility am I referring to?",
+      "answerLocation": "home.destinations",
+      "evidence": "MOHW dated three identities; no live operator terms",
+      "nextAction": "Use current intended facility/binso in consultation",
+      "independentVerdict": null,
+      "actualRenderVerified": false
+    },
+    {
+      "id": "Q07",
+      "question": "What information is needed?",
+      "answerLocation": "home.order.list",
+      "evidence": "Bounded merchant order consultation",
+      "nextAction": "Four grouped input categories, no website collection form",
+      "independentVerdict": null,
+      "actualRenderVerified": false
+    },
+    {
+      "id": "Q08",
+      "question": "Can I choose a delivery time or order late?",
+      "answerLocation": "home.order.afterList[0:2]",
+      "evidence": "Payment-confirmed production and requested leadtime; all six upper 19:00 clauses and the existing lower conditions retained by source location without inferred precedence; separate B060 21:00 condition; actual delivery schedule unverified.",
+      "nextAction": "Discuss feasible actual schedule",
+      "independentVerdict": null,
+      "actualRenderVerified": false
+    },
+    {
+      "id": "Q09",
+      "question": "Are the photo/materials/collection exact?",
+      "answerLocation": "home.products + sample notice + order.afterList[2]",
+      "evidence": "Posted material, seasonal variation, rear paper, no collection",
+      "nextAction": "Select example product without unverified quality inference",
+      "independentVerdict": null,
+      "actualRenderVerified": false
+    },
+    {
+      "id": "Q10",
+      "question": "How can I change a binso/ribbon?",
+      "answerLocation": "home.faq[0]",
+      "evidence": "Changes depend on actual processing stage",
+      "nextAction": "Contact merchant with existing order and change",
+      "independentVerdict": null,
+      "actualRenderVerified": false
+    },
+    {
+      "id": "Q11",
+      "question": "Can I cancel after production or dispatch?",
+      "answerLocation": "home.faq[1]",
+      "evidence": "Both relevant policy clauses preserved, no invented precedence",
+      "nextAction": "Discuss actual order stage and reason",
+      "independentVerdict": null,
+      "actualRenderVerified": false
+    },
+    {
+      "id": "Q12",
+      "question": "What if damaged/different/late report/refused?",
+      "answerLocation": "home.faq[2]",
+      "evidence": "Published defect and limitation clauses, no legal final ruling",
+      "nextAction": "Explain issue with order to merchant",
+      "independentVerdict": null,
+      "actualRenderVerified": false
+    },
+    {
+      "id": "Q13",
+      "question": "What if paid but unavailable?",
+      "answerLocation": "home.faq[3]",
+      "evidence": "Posted full refund; bank/card distinction retained in review",
+      "nextAction": "Payment-specific consultation",
+      "independentVerdict": null,
+      "actualRenderVerified": false
+    }
+  ],
+  "customerSourceDisplayDate": "2026-10-16 Asia/Seoul",
+  "governmentRosterDate": "2026-04-01",
+  "sourceCommit": null,
+  "researchReviewOnly": "PASS_RESEARCH_TO_WRITING_ONLY is upstream research scope, not this manuscript approval.",
+  "mandatoryInputQuestionForThisDraft": null,
+  "unverified": [
+    "Renderer adaptation/source regression",
+    "Static build and actual two-page output",
+    "Complete rendered text/context preservation",
+    "H1/H2/H3, unique metadata/OG/Twitter/canonical/robots/sitemap",
+    "All href and fragment destinations",
+    "FAQ/product/price/banner image visibility",
+    "Mobile/desktop and keyboard behavior",
+    "Public HTTP/assets MIME and exact hashes/real missing-route 404",
+    "Release and receipt binding",
+    "Actual indexing/ranking separate from acceptance"
+  ]
+}

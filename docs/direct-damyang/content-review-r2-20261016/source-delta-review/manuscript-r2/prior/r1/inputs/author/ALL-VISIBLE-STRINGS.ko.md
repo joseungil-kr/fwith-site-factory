@@ -1,0 +1,603 @@
+# 담양 전체 노출문구 검토용 목록
+
+실제 렌더 결과가 아닌 작성된 문구와 계획한 출력 문맥입니다.
+
+## /home/title
+
+담양 근조화환 사진·가격과 배송비 | 꽃이랑
+
+문맥: HTML title / og:title / twitter:title
+
+## /home/description
+
+담양군에 보낼 근조화환 4종의 실제 상품사진과 기본가 59,000~149,000원, 게시 추가배송비 10,000원을 안내합니다. 배송비를 더한 참고예산, 조의 리본과 주문·변경 조건을 꽃이랑에서 상담합니다.
+
+문맥: meta description / og:description / twitter:description
+
+## /home/h1
+
+담양에 조의를 전하는 근조화환
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/lead/0
+
+담양군으로 근조화환을 보내실 때, 꽃이랑에서 상품과 리본 문구를 상담해 드립니다. 조문을 대신해 인사를 전하거나 회사·모임의 뜻을 함께 담으실 수 있도록 네 상품의 사진과 비용을 한곳에 모았습니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/lead/1
+
+상품 기본가는 59,000원부터 149,000원까지입니다. 담양군에는 게시 추가배송비 10,000원이 있어, 가장 낮은 기본가의 상품은 이를 더해 69,000원을 참고예산으로 보실 수 있습니다. 실제 주문금액과 가능한 일정은 보내실 주소를 바탕으로 상담합니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/0/h2
+
+사진과 함께 고르는 네 가지 화환
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/0/paragraphs/0
+
+같은 조의의 뜻을 전하더라도 선호하시는 꽃의 배치는 다를 수 있습니다. 흰색과 노란색이 중심인 모습, 분홍빛 꽃이 더해진 모습, 윗부분 장식의 차이를 아래 사진에서 보실 수 있습니다. 마음에 두신 사진이 있다면 B201처럼 상품번호를 말씀해 주셔도 됩니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/0/paragraphs/1
+
+각 상품의 기본가와 담양 추가배송비를 따로 적었습니다. 버튼을 누르면 그 상품의 공식 상세가 열려, 다른 상품을 다시 찾아야 하는 번거로움 없이 주문 내용을 이어 보실 수 있습니다. 사진은 판매 상품의 예시이며 담양 현장의 납품 사진은 아닙니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/1/h2
+
+배송비까지 생각한 담양 주문 예산
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/1/paragraphs/0
+
+담양군 배송표에 적힌 10,000원을 기본가에 더하면 B201은 69,000원, B203은 89,000원, B205는 119,000원, B060은 159,000원입니다. 이는 게시금액을 더한 참고 계산으로, 개별 주문의 결제총액을 확정한 금액은 아닙니다. 배송비는 주문 시 결제합니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/1/paragraphs/1
+
+함께 모은 금액이나 회사의 지출 한도가 있다면 배송비를 포함한 예산으로 말씀해 주세요. 예를 들어 9만 원 안팎을 생각하신다면 참고 합산이 89,000원인 B203부터 의논할 수 있습니다. 상품의 모습이 먼저 정해졌을 때에는 그 상품을 기준으로 최종금액을 안내해 드립니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/2/h2
+
+조의의 말과 보내는 분의 이름
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/2/paragraphs/0
+
+마음을 담은 인사가 꼭 길어야 하는 것은 아닙니다. ‘삼가 조의를 표합니다’, ‘깊은 애도를 표합니다’처럼 짧은 표현으로도 뜻을 전하실 수 있습니다. ‘삼가 고인의 명복을 빕니다’ 또는 ‘謹弔’를 쓰고 싶으시거나 종교에 맞춘 문구가 있다면, 원하시는 표현을 바탕으로 리본을 상담합니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/2/paragraphs/1
+
+인사말과 함께 개인 성함, 회사명, 모임명 중 어떤 이름으로 보내실지도 의논합니다. 회사라면 ‘주식회사 ○○ 임직원 일동’, 여러 분이 함께라면 ‘○○모임 일동’처럼 적을 수 있습니다. 직함이나 이름을 여러 개 넣고 싶으실 때에는 전체 표기를 말씀해 주시면 됩니다. 아직 문구가 정해지지 않았다면 상품 상담과 함께 이야기하셔도 좋습니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/3/h2
+
+담양 장례식장 이름과 주소 안내
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/3/paragraphs/0
+
+보내실 곳을 이야기할 때 참고하실 수 있도록 2026년 4월 1일 보건복지부 명부의 세 시설을 적었습니다. 아래 번호는 장례식장 문의용이며 꽃이랑 상품 주문 상담번호와는 다릅니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/3/list/0
+
+담양동산병원장례식장 · 담양읍 죽향대로 1203(백동리) · 061-383-0000
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/3/list/1
+
+담양제일장례식장 · 담양읍 추성로 1198(양각리) · 061-382-1111
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/3/list/2
+
+새마을장례식장 · 담양읍 죽향문화로 287(만성리) · 061-383-4444
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/3/afterList/0
+
+명부의 이름·주소 안내이며 현재 운영이나 화환 반입·수령 가능 여부를 확정하는 목록은 아닙니다. 실제 주문은 현재 안내받으신 시설명과 빈소를 기준으로 상담합니다. 시설별 반입과 설치 위치 등 현장 조건은 해당 장례식장의 안내가 필요합니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/4/h2
+
+주문 상담과 희망 일정
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/4/paragraphs/0
+
+꽃이랑 주문 상담은 1844-0644입니다. 다음 내용을 한 번에 알려주시면 상품 선택부터 리본과 일정까지 이어서 의논하겠습니다. 아직 모르는 항목은 비워 두고, 정해진 예산이나 상품부터 문의하셔도 됩니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/4/list/0
+
+상품번호 또는 배송비를 포함한 예산
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/4/list/1
+
+받는 장례식장 이름·주소·빈소와 고인 또는 상주명
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/4/list/2
+
+전달 희망 날짜와 시각, 발인 전 전달을 원하시면 발인 일정
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/4/list/3
+
+리본 인사말·보내는 이름·주문자 연락처
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/4/afterList/0
+
+상품 안내는 입금 확인 뒤 제작하며 최소 3시간 전 주문을 요청하고 있습니다. 원하시는 시각이 가까운 주문은 가능한 일정부터 상담합니다. 희망시각을 적는 것만으로 정시 도착이나 발인 전 전달이 확정되지는 않습니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/4/afterList/1
+
+늦은 주문은 B201·B203·B205의 경우 19시 이후, B060은 21시 이후 주문을 주말·공휴일을 제외한 익일 오전 중 배송으로 안내합니다. 상품별 게시기준이 다르므로 마감 전 당일 도착이나 주말·공휴일의 다음 날 도착을 뜻하지는 않습니다. 실제 담양 주문의 가능일정을 함께 안내해 드립니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sections/4/afterList/2
+
+화환에는 생화와 조화를 혼합해 사용하고, 계절·지역의 소재 수급에 따라 꽃장식이 달라질 수 있습니다. 후다지 부착 유무도 지역마다 다르며 품질 차이를 뜻하지 않습니다. 별도 화환 수거는 하지 않으므로 장례 후 처리 방법은 시설에 문의하실 수 있습니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/faqHeading
+
+주문이 달라졌을 때 궁금한 점
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/faq/0/question
+
+빈소나 리본을 바꾸고 싶으면 어떻게 하나요?
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/faq/0/answer
+
+이미 접수한 주문을 찾을 수 있는 정보와 바뀐 내용을 꽃이랑에 알려주세요. 제작·출고 진행 상태를 기준으로 변경할 수 있는 내용을 상담합니다. 빈소와 전달 희망일이 함께 달라졌다면 두 내용을 같이 말씀해 주시면 됩니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/faq/1/question
+
+제작 중이거나 출고된 주문을 취소할 수 있나요?
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/faq/1/answer
+
+게시정책에는 제작 완료된 꽃 상품의 교환·환불 제한과 출고 후 취소 시 배송비를 제외한 환불 안내가 함께 있습니다. 제작 완료, 출고, 배송 완료는 다른 단계이므로 해당 주문의 상태와 취소 사유에 맞는 적용 조건을 상담하겠습니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/faq/2/question
+
+상품에 문제가 있거나 사진과 다르면 어떻게 하나요?
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/faq/2/answer
+
+불량·파손 또는 주문과 전혀 다른 상품이 배송된 경우에는 환불 가능한 조건이 있습니다. 다만 계절·지역의 소재 차이로 사진과 달라진 경우, 배송 완료 후 하루 이상 지난 경우, 배송정보 오류·수취거부에는 제한 안내가 있습니다. 불편하신 내용을 주문정보와 함께 알려주시면 해당 사유로 상담합니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/faq/3/question
+
+결제 후 품절이나 배송 불가가 확인되면요?
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/faq/3/answer
+
+결제한 뒤 재고가 없거나 배송이 불가능한 경우에는 전액 환불한다는 규정이 있습니다. 결제수단에 따라 환불 처리 안내가 다르므로, 문의하실 때 결제한 주문을 기준으로 안내해 드립니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/closing
+
+조의를 전할 꽃을 준비하실 때 가격과 리본 중 어느 쪽부터 이야기하셔도 좋습니다. 담양에 보내실 상품을 꽃이랑에서 함께 의논하겠습니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/cta/label
+
+담양 화환 주문 상담 · 1844-0644
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sourceHeading
+
+출처 및 확인 정보
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sourceIntro
+
+상품사진·가격·담양 배송표와 주문정책은 2026년 10월 16일(한국시간)에 확인한 꽃이랑 게시자료를 기준으로 합니다. 시설명·도로명주소·전화번호는 보건복지부 2026년 4월 1일 기준 자료의 담양 항목을 참고했습니다. 명부 당시 광역 주소 표기는 전라남도이며, 현재 지역 명칭은 전남광주통합특별시 담양군입니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sources/0/label
+
+꽃이랑 근조 3단 화환 B201
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sources/1/label
+
+꽃이랑 근조 고급 3단 화환 B203
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sources/2/label
+
+꽃이랑 근조 특대 3단 화환 B205
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sources/3/label
+
+꽃이랑 근조 특특대 3단 화환 B060
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sources/4/label
+
+꽃이랑 화환 소재·수거 안내
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sources/5/label
+
+꽃이랑 교환·환불 안내
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sources/6/label
+
+보건복지부 장례식장 현황 · 2026년 4월 1일 기준
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /home/sources/7/label
+
+행정안전부 2026년 10월 12일 시행 행정·법정동 코드 안내
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /productCards/0/name
+
+근조 3단 화환
+
+문맥: Product card visible text
+
+## /productCards/0/priceLabel
+
+상품 기본가 59,000원
+
+문맥: Product card visible text
+
+## /productCards/0/shippingLabel
+
+담양 게시 추가배송비 10,000원
+
+문맥: Product card visible text
+
+## /productCards/0/referenceTotalLabel
+
+게시금액 합산 참고예산 69,000원
+
+문맥: Product card visible text
+
+## /productCards/0/description
+
+흰색·노란색 꽃과 위쪽 노란 장식이 보이는 상품입니다.
+
+문맥: Product card visible text
+
+## /productCards/0/photoAlt
+
+흰색과 노란색 꽃, 위쪽 노란 장식의 B201 근조 3단 화환 상품사진
+
+문맥: Product image alt / og:image:alt / twitter:image:alt
+
+## /productCards/0/ctaLabel
+
+B201 공식 상품 상세
+
+문맥: Product card visible text
+
+## /productCards/1/name
+
+근조 고급 3단 화환
+
+문맥: Product card visible text
+
+## /productCards/1/priceLabel
+
+상품 기본가 79,000원
+
+문맥: Product card visible text
+
+## /productCards/1/shippingLabel
+
+담양 게시 추가배송비 10,000원
+
+문맥: Product card visible text
+
+## /productCards/1/referenceTotalLabel
+
+게시금액 합산 참고예산 89,000원
+
+문맥: Product card visible text
+
+## /productCards/1/description
+
+흰색·노란색 배치에 상단의 분홍빛 꽃이 더해진 모습입니다.
+
+문맥: Product card visible text
+
+## /productCards/1/photoAlt
+
+상단의 분홍빛 꽃과 흰색·노란색 꽃이 보이는 B203 근조 고급 3단 화환 상품사진
+
+문맥: Product image alt
+
+## /productCards/1/ctaLabel
+
+B203 공식 상품 상세
+
+문맥: Product card visible text
+
+## /productCards/2/name
+
+근조 특대 3단 화환
+
+문맥: Product card visible text
+
+## /productCards/2/priceLabel
+
+상품 기본가 109,000원
+
+문맥: Product card visible text
+
+## /productCards/2/shippingLabel
+
+담양 게시 추가배송비 10,000원
+
+문맥: Product card visible text
+
+## /productCards/2/referenceTotalLabel
+
+게시금액 합산 참고예산 119,000원
+
+문맥: Product card visible text
+
+## /productCards/2/description
+
+윗부분의 노란 원형 장식과 옆쪽 노란 꽃이 눈에 띕니다.
+
+문맥: Product card visible text
+
+## /productCards/2/photoAlt
+
+노란 원형 윗장식과 측면 노란 꽃이 있는 B205 근조 특대 3단 화환 상품사진
+
+문맥: Product image alt
+
+## /productCards/2/ctaLabel
+
+B205 공식 상품 상세
+
+문맥: Product card visible text
+
+## /productCards/3/name
+
+근조 특특대 3단 화환
+
+문맥: Product card visible text
+
+## /productCards/3/priceLabel
+
+상품 기본가 149,000원
+
+문맥: Product card visible text
+
+## /productCards/3/shippingLabel
+
+담양 게시 추가배송비 10,000원
+
+문맥: Product card visible text
+
+## /productCards/3/referenceTotalLabel
+
+게시금액 합산 참고예산 159,000원
+
+문맥: Product card visible text
+
+## /productCards/3/description
+
+가운데와 양옆의 분홍빛 꽃 배치를 보실 수 있습니다.
+
+문맥: Product card visible text
+
+## /productCards/3/photoAlt
+
+중앙과 양옆에 분홍빛 꽃이 배치된 B060 근조 특특대 3단 화환 상품사진
+
+문맥: Product image alt
+
+## /productCards/3/ctaLabel
+
+B060 공식 상품 상세
+
+문맥: Product card visible text
+
+## /notFound/title
+
+페이지를 찾을 수 없습니다 | 꽃이랑 담양
+
+문맥: HTML title
+
+## /notFound/description
+
+요청하신 페이지가 없습니다. 담양 근조화환 홈에서 상품사진과 가격, 배송비 및 주문 상담 내용을 보실 수 있습니다.
+
+문맥: meta description
+
+## /notFound/h1
+
+요청하신 페이지를 찾을 수 없습니다
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /notFound/body
+
+담양 근조화환 홈에서 네 상품의 사진과 가격, 리본·주문 안내를 이어 보실 수 있습니다.
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /notFound/cta/label
+
+담양 근조화환 홈으로
+
+문맥: Page body, heading, list, source, FAQ or CTA
+
+## /sharedUI/brand
+
+꽃이랑
+
+문맥: Header brand / Footer brand
+
+## /sharedUI/skipLink
+
+본문으로 바로 가기
+
+문맥: Keyboard skip link
+
+## /sharedUI/menuLabel
+
+주요 메뉴
+
+문맥: Header navigation accessible label
+
+## /sharedUI/menuOpen
+
+메뉴 열기
+
+문맥: Mobile menu button closed-state accessible label
+
+## /sharedUI/menuClose
+
+메뉴 닫기
+
+문맥: Mobile menu button open-state accessible label
+
+## /sharedUI/homeLink
+
+담양 근조화환 홈
+
+문맥: Header brand accessible label / Footer home link
+
+## /sharedUI/productsLink
+
+상품사진·가격
+
+문맥: Header navigation anchor label; exact destination in render-plan
+
+## /sharedUI/budgetLink
+
+배송비·예산
+
+문맥: Header navigation anchor label; exact destination in render-plan
+
+## /sharedUI/ribbonLink
+
+리본 문구
+
+문맥: Header navigation anchor label; exact destination in render-plan
+
+## /sharedUI/orderLink
+
+주문 상담
+
+문맥: Header navigation anchor label; exact destination in render-plan
+
+## /sharedUI/faqLink
+
+변경·취소 질문
+
+문맥: Header navigation anchor label; exact destination in render-plan
+
+## /sharedUI/phoneLink
+
+꽃이랑 상담 1844-0644
+
+문맥: Header merchant phone link / Footer merchant phone link
+
+## /sharedUI/footerLabel
+
+꽃이랑 상품·주문 안내
+
+문맥: Footer navigation accessible label
+
+## /sharedUI/productSampleNotice
+
+상품사진은 예시이며 계절·지역별 소재 수급에 따라 실제 구성에 차이가 있을 수 있습니다.
+
+문맥: One notice after four home product cards
+
+## /sharedBannerAlt/message
+
+흰 장미와 잎을 배경으로 꽃으로 전하는 마음을 안내하는 꽃이랑 배너. 전화 1844-0644.
+
+문맥: One home banner image alt; no visible caption
+
+## /sharedBannerAlt/budget
+
+겹겹의 흰 꽃을 배경으로 상품 사진과 가격 비교를 안내하는 꽃이랑 배너. 전화 1844-0644.
+
+문맥: One home banner image alt; no visible caption
+
+## /sharedBannerAlt/consultation
+
+흰 꽃과 봉오리를 배경으로 상품 선택과 리본 문구 상담을 안내하는 꽃이랑 배너. 전화 1844-0644.
+
+문맥: One home banner image alt; no visible caption

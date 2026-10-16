@@ -1,0 +1,193 @@
+{
+  "schema": "damyang-independent-zip-reproduction/v1",
+  "archive": {
+    "name": "damyang-frozen-source.zip",
+    "bytes": 963322,
+    "sha256": "98fca5210ab62b4b2703537370eb88c09abda94ee91fa5854d41c186e8af8a6a"
+  },
+  "sourceFiles": 74,
+  "sourceFileBytesUnchangedAfterTests": true,
+  "sourceManifestSHA256": "61efcb194fa0de3c92fb41c6c5feeb358abb8c4c4887cd6d646e84c2b476b8e7",
+  "sourceTreeSHA256": "0b3812116c10af12fdf15dca9d2c8b0a3f7f97b9987a277138ad8f330931493c",
+  "authorEvidenceCopied": false,
+  "authorOutputCopied": false,
+  "authorTestFixturesCopied": false,
+  "freshFixturesGeneratedFromRebuiltPrivateDist": true,
+  "runtime": {
+    "source": "Existing trusted dependency cache; no install or upgrade",
+    "topLevelVersionsCheckedAgainstLock": {
+      "astro": "7.3.5",
+      "@astrojs/sitemap": "3.7.4",
+      "@astrojs/check": "0.9.10",
+      "typescript": "5.9.3"
+    },
+    "allTransitiveInstalledCachePackagesIndividuallyVerified": false
+  },
+  "commands": [
+    {
+      "name": "verify-inputs",
+      "command": [
+        "node",
+        "scripts/verify_inputs.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 0.096,
+      "log": "verify-inputs.log",
+      "logSHA256": "9a232ae3d4efa7010f9bd90d897875727acd8c9d1d09cbbe2dd3e46cd2c82fa2"
+    },
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/astro/bin/astro.mjs",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 3.171,
+      "log": "typecheck.log",
+      "logSHA256": "1f960c28a8800c2d59943ce374723f9924ba7a2cdb799bdde70f62653c0028b7"
+    },
+    {
+      "name": "build-private",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 5.2,
+      "log": "build-private.log",
+      "logSHA256": "6a0e008250a37a618dadfa9905bc11f8cf104cc0e635cf20a4720ea4d0b8a772"
+    },
+    {
+      "name": "private-node",
+      "command": [
+        "node",
+        "--test",
+        "tests/damyang-runtime.test.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 0.248,
+      "log": "private-node.log",
+      "logSHA256": "a8c107feffa83d490c9b95c4acc01d492e701df76d14bb68d9ddaaea3ef1d102"
+    },
+    {
+      "name": "private-python",
+      "command": [
+        "python3",
+        "scripts/test_damyang.py"
+      ],
+      "exitCode": 0,
+      "seconds": 18.76,
+      "log": "private-python.log",
+      "logSHA256": "89bc532d220a4ba63b19f8a664cee725e73ecdf063f2ec7397cd0415bf5ed43d"
+    },
+    {
+      "name": "adapter-node",
+      "command": [
+        "node",
+        "--test",
+        "../release-adapter/release-tests/damyang-release.test.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 0.232,
+      "log": "adapter-node.log",
+      "logSHA256": "4a12f69d16b6febeab98d32f81c9e1b1a779f2768e299d7b15aa3eac3eef6ce5"
+    },
+    {
+      "name": "adapter-python",
+      "command": [
+        "python3",
+        "../release-adapter/scripts/test_damyang_adapter.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.286,
+      "log": "adapter-python.log",
+      "logSHA256": "b4b979f4542fbc06c30eb8e732238e1673c975e7ed6a006bd0321908b5881581"
+    },
+    {
+      "name": "output-python",
+      "command": [
+        "python3",
+        "../release-adapter/scripts/test_damyang_release_output.py"
+      ],
+      "exitCode": 0,
+      "seconds": 1.683,
+      "log": "output-python.log",
+      "logSHA256": "63071feff50fb4aac4cb8f247cd4bb2c957fe374cc2104b54358fab8f1ebdb1a"
+    },
+    {
+      "name": "node-python-parity",
+      "command": [
+        "python3",
+        "../release-adapter/scripts/test_damyang_node_python_parity.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.165,
+      "log": "node-python-parity.log",
+      "logSHA256": "7f4d4e6260942a32e07e31844aa16830e9a8ecd1296a9c93728555b6959b5011"
+    },
+    {
+      "name": "runner-output",
+      "command": [
+        "python3",
+        "../release-adapter/scripts/test_damyang_runner_output.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.413,
+      "log": "runner-output.log",
+      "logSHA256": "6efe91f1516a2c92054db4350b92dcb36f497c23f85d366da6d25ec6d3c84e76"
+    }
+  ],
+  "commandWorkingDirectory": "candidate",
+  "testSuites": [
+    {
+      "suite": "private-node",
+      "cases": 67,
+      "failures": 0
+    },
+    {
+      "suite": "private-python",
+      "cases": 75,
+      "failures": 0
+    },
+    {
+      "suite": "adapter-node",
+      "cases": 36,
+      "failures": 0
+    },
+    {
+      "suite": "adapter-python",
+      "cases": 30,
+      "failures": 0
+    },
+    {
+      "suite": "output-python",
+      "cases": 63,
+      "failures": 0
+    },
+    {
+      "suite": "node-python-parity",
+      "cases": 1,
+      "failures": 0
+    },
+    {
+      "suite": "runner-output",
+      "cases": 60,
+      "failures": 0
+    }
+  ],
+  "testCases": 332,
+  "allCommandExitCodesZero": true,
+  "actualOutputFilesCompared": 30,
+  "privateOutputByteParity": 14,
+  "productionLikeOutputByteParity": 16,
+  "sourceOnlyReplayMeaning": "Source was read from the exact archive into a new empty directory. Only an existing lock-matched runtime cache was linked. No author dist, evidence or output fixtures were imported.",
+  "reviewerHarnessRecovery": [
+    {
+      "issue": "Initial privacy scan matched a relative vendor package-lock workspace glob as if it were an absolute filesystem path.",
+      "resolution": "Inspected the exact occurrence, constrained the scanner to absolute-path context, reran all reviewer checks. Source was unchanged."
+    }
+  ],
+  "actualRemoteRunnerExecuted": false
+}

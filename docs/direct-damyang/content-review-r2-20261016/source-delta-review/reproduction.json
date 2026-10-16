@@ -1,0 +1,214 @@
+{
+  "schema": "damyang-r2-independent-zip-reproduction/v1",
+  "archive": {
+    "name": "damyang-frozen-source.zip",
+    "bytes": 989956,
+    "sha256": "d442b6f1c88758f72659b19ff6e34d311c73589eaeca859370cb86700b74c1c8"
+  },
+  "sourceFiles": 80,
+  "sourceManifestSHA256": "440de4a7a3df7f3df1e3f3c65c26684b42ba237929c7dcb4e539dae20eeee573",
+  "sourceTreeSHA256": "5f8fc655f696e54fc5648b4ed3a7b2a78a617ea545b4d99cff6d3a482ee9cfd6",
+  "sourceFileBytesUnchangedAfterTests": true,
+  "authorEvidenceCopied": false,
+  "authorOutputCopied": false,
+  "authorGeneratedFixturesCopied": false,
+  "freshFixturesGeneratedFromRebuiltPrivateDist": true,
+  "runtime": {
+    "source": "Existing trusted dependency cache; no dependency install or upgrade",
+    "topLevelVersionsCheckedAgainstLock": {
+      "astro": "7.3.5",
+      "@astrojs/sitemap": "3.7.4",
+      "@astrojs/check": "0.9.10",
+      "typescript": "5.9.3"
+    },
+    "allTransitiveInstalledCachePackagesIndividuallyVerified": false
+  },
+  "commands": [
+    {
+      "name": "verify-inputs",
+      "command": [
+        "node",
+        "scripts/verify_inputs.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 0.096,
+      "log": "logs/verify-inputs.log",
+      "rawLogSHA256": "9a232ae3d4efa7010f9bd90d897875727acd8c9d1d09cbbe2dd3e46cd2c82fa2",
+      "publicLogSHA256": "9a232ae3d4efa7010f9bd90d897875727acd8c9d1d09cbbe2dd3e46cd2c82fa2",
+      "redaction": "Only environment-local workspace/temporary path roots replaced; command output and result preserved."
+    },
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/astro/bin/astro.mjs",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 3.107,
+      "log": "logs/typecheck.log",
+      "rawLogSHA256": "10454119b5801bce0a4a017c012ec853401d0c588406dc16ade2b650818b32a4",
+      "publicLogSHA256": "4eaea3353fca84c523e822bedf1dc9363b4c432ace8af26b085c74865153a5c9",
+      "redaction": "Only environment-local workspace/temporary path roots replaced; command output and result preserved."
+    },
+    {
+      "name": "build-private",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 5.132,
+      "log": "logs/build-private.log",
+      "rawLogSHA256": "e64b4575529cd6ca7294a07de4f8b445abf86b781ae5918017ae091521e36e01",
+      "publicLogSHA256": "83cc14d6ec16a320cca1c58d0bc9a6d50121edbe103d81b3998048deab3f1eb0",
+      "redaction": "Only environment-local workspace/temporary path roots replaced; command output and result preserved."
+    },
+    {
+      "name": "private-node",
+      "command": [
+        "node",
+        "--test",
+        "tests/damyang-runtime.test.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 0.243,
+      "log": "logs/private-node.log",
+      "rawLogSHA256": "0274e01cda5c751a885f78ee18480a1da428235fc7135b8e7b080b055894e042",
+      "publicLogSHA256": "0274e01cda5c751a885f78ee18480a1da428235fc7135b8e7b080b055894e042",
+      "redaction": "Only environment-local workspace/temporary path roots replaced; command output and result preserved."
+    },
+    {
+      "name": "private-python",
+      "command": [
+        "python3",
+        "scripts/test_damyang.py"
+      ],
+      "exitCode": 0,
+      "seconds": 21.656,
+      "log": "logs/private-python.log",
+      "rawLogSHA256": "33733db970189a94ba7d576c6131cd4911e7a5496d471724e310993f118ee8f9",
+      "publicLogSHA256": "33733db970189a94ba7d576c6131cd4911e7a5496d471724e310993f118ee8f9",
+      "redaction": "Only environment-local workspace/temporary path roots replaced; command output and result preserved."
+    },
+    {
+      "name": "adapter-node",
+      "command": [
+        "node",
+        "--test",
+        "../release-adapter/release-tests/damyang-release.test.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 0.265,
+      "log": "logs/adapter-node.log",
+      "rawLogSHA256": "3fe13ec75c443d6c8c9e026a9d69508d08363f3c15e8de9e7fcac9fecc2e775d",
+      "publicLogSHA256": "3fe13ec75c443d6c8c9e026a9d69508d08363f3c15e8de9e7fcac9fecc2e775d",
+      "redaction": "Only environment-local workspace/temporary path roots replaced; command output and result preserved."
+    },
+    {
+      "name": "adapter-python",
+      "command": [
+        "python3",
+        "../release-adapter/scripts/test_damyang_adapter.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.288,
+      "log": "logs/adapter-python.log",
+      "rawLogSHA256": "a2eee4a64ab450d169f63cab355f05a2ae9b3fdff69046de92171eb05852f110",
+      "publicLogSHA256": "a2eee4a64ab450d169f63cab355f05a2ae9b3fdff69046de92171eb05852f110",
+      "redaction": "Only environment-local workspace/temporary path roots replaced; command output and result preserved."
+    },
+    {
+      "name": "output-python",
+      "command": [
+        "python3",
+        "../release-adapter/scripts/test_damyang_release_output.py"
+      ],
+      "exitCode": 0,
+      "seconds": 1.917,
+      "log": "logs/output-python.log",
+      "rawLogSHA256": "6009ce049b77238b9b2adfc4f518e72f036dda152177c9d215513d1d6edbe825",
+      "publicLogSHA256": "6009ce049b77238b9b2adfc4f518e72f036dda152177c9d215513d1d6edbe825",
+      "redaction": "Only environment-local workspace/temporary path roots replaced; command output and result preserved."
+    },
+    {
+      "name": "node-python-parity",
+      "command": [
+        "python3",
+        "../release-adapter/scripts/test_damyang_node_python_parity.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.205,
+      "log": "logs/node-python-parity.log",
+      "rawLogSHA256": "cafee4bbe1597e4859a888653f840302cc5fde3cc543e7e14ea229808a929aa3",
+      "publicLogSHA256": "cafee4bbe1597e4859a888653f840302cc5fde3cc543e7e14ea229808a929aa3",
+      "redaction": "Only environment-local workspace/temporary path roots replaced; command output and result preserved."
+    },
+    {
+      "name": "runner-output",
+      "command": [
+        "python3",
+        "../release-adapter/scripts/test_damyang_runner_output.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.428,
+      "log": "logs/runner-output.log",
+      "rawLogSHA256": "0efa45b09793c8bd1dfffd4b5b44eb8653fa34fff3e884d984f0e7a2e82d894b",
+      "publicLogSHA256": "0efa45b09793c8bd1dfffd4b5b44eb8653fa34fff3e884d984f0e7a2e82d894b",
+      "redaction": "Only environment-local workspace/temporary path roots replaced; command output and result preserved."
+    }
+  ],
+  "commandWorkingDirectory": "candidate",
+  "testSuites": [
+    {
+      "suite": "private-node",
+      "cases": 73,
+      "failures": 0
+    },
+    {
+      "suite": "private-python",
+      "cases": 81,
+      "failures": 0
+    },
+    {
+      "suite": "adapter-node",
+      "cases": 36,
+      "failures": 0
+    },
+    {
+      "suite": "adapter-python",
+      "cases": 30,
+      "failures": 0
+    },
+    {
+      "suite": "output-python",
+      "cases": 63,
+      "failures": 0
+    },
+    {
+      "suite": "node-python-parity",
+      "cases": 1,
+      "failures": 0
+    },
+    {
+      "suite": "runner-output",
+      "cases": 60,
+      "failures": 0
+    }
+  ],
+  "testCases": 344,
+  "allCommandExitCodesZero": true,
+  "actualOutputFilesCompared": 30,
+  "privateOutputByteParityWithAuthor": 14,
+  "productionLikeOutputByteParityWithAuthor": 16,
+  "r1R2OutputDelta": {
+    "comparedFiles": 30,
+    "allowedCustomerParagraphChanges": 1,
+    "allowedCopyDigestMarkerChanges": 2,
+    "allOtherBytesUnchanged": true
+  },
+  "actualRemoteRunnerExecuted": false,
+  "sourceOnlyReplayMeaning": "The exact archive was extracted into an empty reviewer directory. Only the existing lock-matched runtime dependency cache was linked. Author dist, generated fixture output and evidence were not imported.",
+  "reviewerAttribution": "This is a new separately scoped r1-to-r2 delta review and fresh full replay. The original independent reviewer did not rerun r2, and their report is preserved byte-for-byte."
+}
