@@ -61,7 +61,7 @@ class PublicationPhaseTests(unittest.TestCase):
 
     def test_workflow_publish_only_has_no_journal_permission_or_submission_step(self):
         text=(self.fixture.original.parents[1]/'.github/workflows/goheung-production-publish.yml').read_text()
-        self.assertIn('if: false && github.repository',text)
+        self.assertIn('if: github.repository',text)
         self.assertNotIn('issues: write',text);self.assertNotIn('GH_TOKEN:',text);self.assertNotIn('receiptIssue',text)
         self.assertNotIn('indexnow --report',text);self.assertNotIn('INDEXNOW:',text)
         self.assertIn('wrangler@4.148.0 deploy',text);self.assertEqual(text.count('wrangler@4.148.0 deploy'),1)
