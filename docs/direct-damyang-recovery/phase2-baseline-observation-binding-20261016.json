@@ -1,12 +1,12 @@
 {
   "schema": "damyang-phase2-get-only-baseline-code-binding/v1",
-  "state": "REVIEWED_SCRIPTS_SINGLEPAGE_CODE_PENDING_NEW_DAMYANG_OBSERVATION",
+  "state": "REVIEWED_SHARED_OPTIONAL_PAGINATION_PENDING_NEW_DAMYANG_OBSERVATION",
   "repository": "joseungil-kr/fwith-site-factory",
   "hostname": "damyang.fwith.kr",
   "worker": "damyang-flower-guide",
   "acceptedAccountSHA256": "d5bbfc5383872f2c9e36138452e0c880f46b03bbd4aaffa278490c2ad6d7bcbf",
-  "reconciledBaseRevision": "58ec69182c84de89ed4b13ab9620bdb3872c1bd2",
-  "reconciledBaseTree": "7fea1b3ccc060bbd303c2009efd71e71147e0610",
+  "reconciledBaseRevision": "718c1253d300959dfd1fb5cb589dbfca5470c963",
+  "reconciledBaseTree": "21dc8e86592e598ee63c9953628fdb3c6609a3b5",
   "source": {
     "revision": "063e9eda9d33cb2f8b4dfd847bea966ff9443eb5",
     "branch": "source/damyang-dedicated-proof-recovery-20261016",
@@ -139,7 +139,7 @@
     "normalDiagnosticResponsesProvenIdentical": false,
     "baselineAccepted": false
   },
-  "independentBaselineCodeReview": {
+  "priorScriptsSinglePageCodeReview": {
     "reviewSHA256": "c87d408111fe03ff043c447f5c7bf6c94b249aeabddfad500f80ce6c9882ab52",
     "bindingSHA256": "70ad0d6b98e1a4ce076d884dde142447e3f40dcfde40c6413e7ab0b4ceee87d4",
     "verdict": "PASS_EXACT_LOCAL_SCRIPTS_ONLY_PAGINATION_DELTA",
@@ -172,6 +172,91 @@
     "countsAreSeparateNotAdditive": true,
     "repeatedRuntimeCountsAreNotDistinct": true,
     "followonContractSHA256": "b873cc862d7bb8f0b26a664ce03f6a8f1d9dc05580f81578027e59abfff90ec0",
-    "acceptanceDelta": "Only absent result_info at the exact unfiltered scripts-list endpoint with explicit nonpaginated=True at three call sites. Present metadata, domain and active-deployment guards are unchanged."
+    "acceptanceDelta": "Only absent result_info at the exact unfiltered scripts-list endpoint with explicit nonpaginated=True at three call sites. Present metadata, domain and active-deployment guards are unchanged.",
+    "scope": "Historical scripts-omission-only delta at 788644c6802219971b641e5955b08dc8ca0af48b. Explicitly superseded by the reviewed shared optional-metadata contract; not current baseline acceptance."
+  },
+  "latestFailedBaselineObservation": {
+    "issue": 392,
+    "runId": 38903585639,
+    "runAttempt": 1,
+    "jobId": 116981528209,
+    "controlRevision": "788644c6802219971b641e5955b08dc8ca0af48b",
+    "artifactId": 12046897665,
+    "artifactBytes": 1723,
+    "artifactSHA256": "5602d7f87003ca7214fa059209fc627ae20402b298997f8629505185b65c0815",
+    "observationSHA256": "a18c5fcf5e7fd7bbe3f4ca3b87d9e4254a526be83d90a33fce2d1ace0495d3be",
+    "independentReviewSHA256": "b279a65c82055f6e186cbbe7e895283ce269301b832d3514eb8867dc0c7d2cdc",
+    "independentBindingSHA256": "161dfe6a926705b18275690ba7646ea3233893db0fe5aac6396fda1274dc35bd",
+    "state": "BLOCKED_WITH_NO_PROVIDER_MUTATION",
+    "normalFailureCode": "complete_provider_pagination_required",
+    "normalFailureEndpointOrSnapshotKnown": false,
+    "normalPublic15CallCountKnown": false,
+    "normalDiagnosticResponsesProvenIdentical": false,
+    "separateDiagnostic": {
+      "accountIdentityVerified": true,
+      "fixedWorkerInventoryGate": true,
+      "domainsResultInfoPresent": true,
+      "domainProvidedKeys": [
+        "page",
+        "per_page",
+        "count",
+        "total_count"
+      ],
+      "domainTotalPagesPresent": false,
+      "providedDomainMetadataTypeAndPageChecksPassed": true,
+      "countAndTotalCountMatchActualRowsEvaluated": false,
+      "perPageCoversActualRowsEvaluated": false,
+      "wholeDomainBindingGate": false,
+      "laterEndpointsRequested": false
+    },
+    "baselineAccepted": false
+  },
+  "independentBaselineCodeReview": {
+    "reviewSHA256": "44d14758b7b6428bcac36bd370ee6504e93ba67b2351f44bde437d8a5a6ced4c",
+    "bindingSHA256": "88748e804ecaa749fcc6ae6d5a36f2ebc23f72ace938bb89d4e3372b6fbc3098",
+    "verdict": "PASS_EXACT_LOCAL_SHARED_PAGINATION_DELTA",
+    "baselineZIP_SHA256": "c645ae74c2a911c04053f15e9dd17b0a574d24682ffdbd70d305ca677ae56c86",
+    "minimumFiles": [
+      {
+        "path": "scripts/direct-damyang-recovery/provider_baseline.py",
+        "bytes": 51604,
+        "sha256": "087d1047de4f236c5082cb6601007670854bdfc567d2e621310422afe8902111",
+        "gitBlobSHA1": "ac90f366a2cc21d43135ed5460ecdac5257cecec"
+      },
+      {
+        "path": "scripts/direct-damyang-recovery/test_damyang_baseline.py",
+        "bytes": 39557,
+        "sha256": "01b5be3678df9cfd721f9d7b48860af557f41ba79f9bf799de5679c6cce60b5f",
+        "gitBlobSHA1": "da516c78c46a8de7916e69d5bdecf43ff6753dd4"
+      },
+      {
+        "path": "scripts/direct-damyang-recovery/test_provider_baseline.py",
+        "bytes": 86765,
+        "sha256": "7c12ebb52ca0c23242f59d69bb1f264a995cf968156d88c076634d05b3844916",
+        "gitBlobSHA1": "1455a6459f9293537f5bf60d62ef2f271454920b"
+      }
+    ],
+    "pythonRuntimeMethods": 197,
+    "pythonRuntimeSubtests": 1811,
+    "workflowDiscoverMethods": 158,
+    "workflowDiscoverSubtests": 1616,
+    "differentialComparisons": 23361,
+    "countsAreSeparateNotAdditive": true,
+    "repeatedRuntimeCountsAreNotDistinct": true,
+    "followonContractSHA256": "88d3f1214459af69c9c4729b86bcbf004bc5018230bd3ed2ea4361e152810e2f",
+    "acceptanceDelta": "Explicit replacement of the prior scripts-omission-only contract: use the exact reviewed Gwangsan single_page and active_identity functions for existing unfiltered scripts/domains SinglePage and first serving deployment page1/per_page1. Absent, empty or consistent partial metadata is accepted where the existing envelope permits; all provided-value type, allowed-key and contradiction checks remain.",
+    "preservedBoundaries": [
+      "Damyang fixed account/host/Worker/zone and both exposure flags false",
+      "settings/bindings/capability and exact selected UUID/detail/raw-time/beta/config/routing bytes",
+      "existing endpoint allowlist and GET-only provider-public15-provider snapshots",
+      "source81/actualQA24/release17 and original422 history/additionalPOST1"
+    ],
+    "evidenceLimitations": [
+      "Normal failure endpoint, snapshot and public15 reach unknown. Separate diagnostic response not proved identical.",
+      "Fresh diagnostic count completeness was not reached after strict-five metadata rejection; next actual success is not guaranteed.",
+      "SinglePage inventory completeness relies on fixed unfiltered official endpoint contract. No independent transport truncation proof.",
+      "Only inherited provided-value consistency predicates; not a new exhaustive arithmetic consistency proof.",
+      "Successful Gwangsan R12 observation does not retain raw pagination."
+    ]
   }
 }

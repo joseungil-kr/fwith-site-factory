@@ -24,7 +24,7 @@ class DamyangBaselineContract(unittest.TestCase):
     def read(path):return b.canonical(obj) if Path(path)==target else real_read(path)
     with self.subTest(path=target.name,field=field),patch.object(b,'read',side_effect=read),patch.object(p,'http_once') as http,self.assertRaises(ValueError):b.old_public(policy)
     http.assert_not_called()
- def test_missing_pagination_allowed_only_for_unfiltered_scripts_absence(self):
+ def test_documented_optional_pagination_fields_do_not_change_exact_projection(self):
   paths=['/accounts/'+ACCOUNT+'/workers/scripts','/accounts/'+ACCOUNT+'/workers/domains',SCRIPT+'/deployments?page=1&per_page=1']
   for path in paths:
    for key in [None,'page','per_page','count','total_count','total_pages']:
@@ -32,11 +32,11 @@ class DamyangBaselineContract(unittest.TestCase):
      f=fixtures()
      if key is None:del f[path]['result_info']
      else:del f[path]['result_info'][key]
-     if path=='/accounts/'+ACCOUNT+'/workers/scripts' and key is None:self.assertEqual(self.state(f),self.state())
-     else:
-      with self.assertRaisesRegex(ValueError,'complete_provider_pagination_required'):self.state(f)
- def test_nullable_domain_does_not_allow_empty_pagination(self):
-  for info in [{},None,[],False]:
+     self.assertEqual(self.state(f),self.state())
+ def test_nullable_domain_empty_metadata_valid_but_bad_containers_still_rejected(self):
+  f=fixtures();f['/accounts/'+ACCOUNT+'/workers/domains'].update(errors=None,messages=None,result_info={})
+  self.assertEqual(self.state(f),self.state())
+  for info in [None,[],False]:
    f=fixtures();f['/accounts/'+ACCOUNT+'/workers/domains'].update(errors=None,messages=None,result_info=info)
    with self.subTest(info=info),self.assertRaises(ValueError):self.state(f)
  def test_both_exposure_flags_must_be_false(self):
@@ -263,8 +263,8 @@ class DamyangSelectedAssetsBoundary(unittest.TestCase):
   for raw in (inherited.R12AssetsPreservation.CANARY,ACCOUNT,VID,DEP,'jwt','content_base64'):
    self.assertNotIn(raw,json.dumps(report)+output.getvalue())
 
-class ScriptsNonpaginatedContract(unittest.TestCase):
- """Only the exact unfiltered scripts endpoint may omit result_info. All rows synthetic."""
+class DocumentedOptionalPaginationContract(unittest.TestCase):
+ """Shared documented optional metadata; endpoint identity remains exact. All rows synthetic."""
  SCRIPTS='/accounts/'+ACCOUNT+'/workers/scripts'
  DOMAIN='/accounts/'+ACCOUNT+'/workers/domains'
  ACTIVE=SCRIPT+'/deployments?page=1&per_page=1'
@@ -279,19 +279,17 @@ class ScriptsNonpaginatedContract(unittest.TestCase):
   self.assertEqual(actual,self.state(fixtures()));self.assertEqual(len(op.requests),9)
   self.assertEqual([r.full_url.removeprefix('https://api.cloudflare.com/client/v4') for r in op.requests],paths)
   for r in op.requests:self.assertEqual(r.get_method(),'GET');self.assertIsNone(r.data)
- def test_absence_requires_explicit_exact_boolean_opt_in(self):
-  obj=self.case()[self.SCRIPTS]
-  for flag in [False,None,0,1,'true',[],{}]:
-   with self.subTest(flag=flag),self.assertRaisesRegex(ValueError,'complete_provider_pagination_required'):b.single_page(obj,nonpaginated=flag)
-  with self.assertRaisesRegex(ValueError,'complete_provider_pagination_required'):b.single_page(obj)
-  self.assertEqual(b.single_page(obj,nonpaginated=True),obj['result'])
- def test_all_present_partial_metadata_subsets_rejected_every_endpoint(self):
+ def test_shared_single_page_has_no_special_opt_in_or_new_endpoint(self):
+  obj=self.case()[self.SCRIPTS];self.assertEqual(b.single_page(obj),obj['result'])
+  for flag in [True,False,None,0,1,'true',[],{}]:
+   with self.subTest(flag=flag),self.assertRaises(TypeError):b.single_page(obj,nonpaginated=flag)
+ def test_all_consistent_optional_metadata_subsets_match_exact_projection(self):
   keys=['page','total_pages','count','total_count','per_page']
   for path in [self.SCRIPTS,self.DOMAIN,self.ACTIVE]:
-   for mask in range(31):
+   for mask in range(32):
     with self.subTest(path=path,mask=mask):
      f=self.case();f[path]['result_info']={k:1 for i,k in enumerate(keys) if mask&(1<<i)}
-     with self.assertRaisesRegex(ValueError,'complete_provider_pagination_required'):self.state(f)
+     self.assertEqual(self.state(f),self.state(fixtures()))
  def test_present_wrong_typed_metadata_values_rejected(self):
   for path in [self.SCRIPTS,self.DOMAIN,self.ACTIVE]:
    for value in [None,True,False,0,1,1.0,'',[],[1]]:
@@ -313,10 +311,10 @@ class ScriptsNonpaginatedContract(unittest.TestCase):
    for key,value in [('total_count',2),('total_pages',2)]:
     f=self.case();f[path]['result_info']={k:1 for k in ['page','total_pages','count','total_count','per_page']};f[path]['result_info'][key]=value
     with self.subTest(path=path,key=key),self.assertRaises(ValueError):self.state(f)
- def test_domain_active_absence_remains_blocked_and_active_page_one_is_not_total_history(self):
+ def test_domain_active_optional_metadata_preserves_history_and_first_page_contract(self):
   for path in [self.DOMAIN,self.ACTIVE]:
    f=self.case();del f[path]['result_info']
-   with self.subTest(path=path),self.assertRaisesRegex(ValueError,'complete_provider_pagination_required'):self.state(f)
+   with self.subTest(path=path):self.assertEqual(self.state(f),self.state(fixtures()))
   f=self.case();f[self.ACTIVE]['result_info'].update(total_count=12,total_pages=12)
   self.assertEqual(self.state(f),self.state(fixtures()))
  def test_inventory_empty_duplicate_wrong_target_and_typed_ids_stay_blocked(self):
@@ -353,14 +351,14 @@ class ScriptsNonpaginatedContract(unittest.TestCase):
   self.assertIs(shape['checks']['singlePageComplete'],True);self.assertEqual(shape['envelope']['expectedFields']['result_info'],{'present':False,'type':'absent'})
   for flag in ['baselineAccepted','publicationEligible','providerMutationsPerformed']:self.assertIs(result[flag],False)
   for forbidden in [ACCOUNT,DEP,VID,'fixture-token','not-retained','do-not-retain']:self.assertNotIn(forbidden,json.dumps(result))
- def test_fresh_sweep_present_partial_scripts_or_missing_domain_active_stops_at_original_gate(self):
-  for path,expected_count in [(self.SCRIPTS,2),(self.DOMAIN,3),(self.ACTIVE,6)]:
+ def test_fresh_sweep_optional_metadata_consistent_with_normal_validation(self):
+  for path in [self.SCRIPTS,self.DOMAIN,self.ACTIVE]:
    f=self.case()
    if path==self.SCRIPTS:f[path]['result_info']={}
    else:del f[path]['result_info']
    with self.subTest(path=path):
-    result,op=inherited.StateShapeDiagnostics().run_sweep(f);self.assertEqual(len(op.requests),expected_count);self.assertIs(result['baselineAccepted'],False)
-    self.assertEqual(result['endpoints']['selected-version']['status'],'not_requested')
+    result,op=inherited.StateShapeDiagnostics().run_sweep(f);self.assertEqual(len(op.requests),8);self.assertIs(result['baselineAccepted'],False)
+    self.assertEqual(result['state'],'BOUNDED_DIAGNOSTIC_SWEEP_FINISHED_NOT_A_BASELINE')
  def test_repeated_active_response_equality_and_original_error_are_preserved(self):
   f=self.case();seen=[]
   def get(path):
@@ -370,9 +368,9 @@ class ScriptsNonpaginatedContract(unittest.TestCase):
   with patch.object(b,'ACCOUNT_SHA',SHA),self.assertRaisesRegex(ValueError,'active_deployment_changed_during_observation'):b.current_state(ACCOUNT,get)
   self.assertEqual(seen.count(self.ACTIVE),2)
   fresh={'schema':'synthetic-diagnostic','baselineAccepted':False}
-  f=self.case();f[self.DOMAIN]['result_info']={}
+  f=self.case();f[self.DOMAIN]['result_info']={'total_pages':2}
   with patch.object(b,'ACCOUNT_SHA',SHA),patch.object(b,'state_diagnostic_sweep',return_value=fresh) as sweep,self.assertRaises(b.ProviderStateDiagnosticError) as caught:b.state_with_diagnostics({},ACCOUNT,get_for(f))
-  self.assertEqual(caught.exception.original_code,'complete_provider_pagination_required');self.assertEqual(caught.exception.diagnostic,fresh);sweep.assert_called_once_with({})
+  self.assertEqual(caught.exception.original_code,'provider_list_completeness_unverified');self.assertEqual(caught.exception.diagnostic,fresh);sweep.assert_called_once_with({})
 
  def test_scripts_absence_does_not_bypass_result_or_later_state_validation(self):
   for value in [None,False,0,'fixture-pagination-canary',{}]:
@@ -384,3 +382,64 @@ class ScriptsNonpaginatedContract(unittest.TestCase):
   for i,mutate in enumerate(mutations):
    f=self.case();mutate(f)
    with self.subTest(later=i),self.assertRaises(ValueError):self.state(f)
+
+class CompleteEndpointPaginationReuse(unittest.TestCase):
+ """Cross-endpoint official optional metadata and preserved Damyang identity."""
+ SCRIPTS='/accounts/'+ACCOUNT+'/workers/scripts';DOMAIN='/accounts/'+ACCOUNT+'/workers/domains';ACTIVE=SCRIPT+'/deployments?page=1&per_page=1'
+ def state(self,f):
+  with patch.object(b,'ACCOUNT_SHA',SHA):return b.current_state(ACCOUNT,get_for(f))
+ def observed_shape(self,assets=False):
+  f=inherited.R12AssetsPreservation.fixtures() if assets else fixtures()
+  del f[self.SCRIPTS]['result_info'];del f[self.DOMAIN]['result_info']['total_pages']
+  f[self.DOMAIN].update(errors=None,messages=None)
+  return f
+ def test_known_cross_region_domain_shape_preserves_full_damyang_projection(self):
+  for assets in (False,True):
+   f=self.observed_shape(assets);original=inherited.R12AssetsPreservation.fixtures() if assets else fixtures()
+   with self.subTest(assets=assets):self.assertEqual(self.state(f),self.state(original))
+   seen=[]
+   with patch.object(b,'ACCOUNT_SHA',SHA):b.current_state(ACCOUNT,get_for(f,seen))
+   self.assertEqual(len(seen),10 if assets else 9);self.assertEqual(seen.count(self.ACTIVE),2)
+ def test_observed_nullable_domain_four_fields_diagnostic_advances_without_acceptance(self):
+  report,op=inherited.StateShapeDiagnostics().run_sweep(self.observed_shape())
+  self.assertEqual(len(op.requests),8);self.assertEqual(report['state'],'BOUNDED_DIAGNOSTIC_SWEEP_FINISHED_NOT_A_BASELINE')
+  shape=report['endpoints']['domains-list']['shape'];self.assertIs(shape['checks']['singlePageComplete'],True)
+  self.assertEqual(shape['fields']['pagination']['total_pages'],{'present':False,'type':'absent'})
+  for key in ['baselineAccepted','publicationEligible','providerMutationsPerformed']:self.assertIs(report[key],False)
+ def test_all_endpoint_omission_combinations_keep_exact_fixed_state(self):
+  for mask in range(8):
+   f=fixtures()
+   for i,path in enumerate([self.SCRIPTS,self.DOMAIN,self.ACTIVE]):
+    if mask&(1<<i):del f[path]['result_info']
+   with self.subTest(mask=mask):self.assertEqual(self.state(f),self.state(fixtures()))
+ def test_nullable_domain_absence_still_rejected_by_unchanged_envelope(self):
+  f=self.observed_shape();del f[self.DOMAIN]['result_info']
+  op=inherited.R2Regressions().opener([f[self.DOMAIN]]);get=inherited.R2Regressions().transport(op)
+  with self.assertRaises(b.ProviderEnvelopeError):get(self.DOMAIN)
+  self.assertEqual(len(op.requests),1)
+ def test_optional_metadata_never_relaxes_exact_damyang_binding_or_both_exposure_flags(self):
+  changes=[lambda f:f[self.DOMAIN]['result'][0].update(hostname='gwangju-gwangsan.fwith.kr'),lambda f:f[self.DOMAIN]['result'][0].update(service='gwangju-gwangsan-flower-guide'),lambda f:f[self.DOMAIN]['result'].append(copy.deepcopy(f[self.DOMAIN]['result'][0])),lambda f:f[self.DOMAIN]['result'][0].update(zone_name='other.invalid'),lambda f:f[SCRIPT+'/subdomain']['result'].update(previews_enabled=True),lambda f:f[SCRIPT+'/subdomain']['result'].update(enabled=True)]
+  for i,change in enumerate(changes):
+   f=self.observed_shape();change(f)
+   with self.subTest(change=i),self.assertRaises(ValueError):self.state(f)
+ def test_optional_active_metadata_still_requires_one_full_traffic_uuid(self):
+  variants=[[],[{'version_id':VID,'percentage':50}],[{'version_id':VID,'percentage':100},{'version_id':VID,'percentage':0}],[{'version_id':'latest','percentage':100}],[{'version_id':VID,'percentage':True}]]
+  for row in variants:
+   f=self.observed_shape();f[self.ACTIVE]['result_info']={};f[self.ACTIVE]['result']['deployments'][0]['versions']=row
+   with self.subTest(versions=row),self.assertRaisesRegex(ValueError,'single_full_traffic_version_required'):self.state(f)
+  for deployments in [[],[copy.deepcopy(fixtures()[self.ACTIVE]['result']['deployments'][0])]*2]:
+   f=self.observed_shape();f[self.ACTIVE]['result_info']={};f[self.ACTIVE]['result']['deployments']=deployments
+   with self.subTest(count=len(deployments)),self.assertRaisesRegex(ValueError,'active_deployment_ambiguous_or_missing'):self.state(f)
+ def test_optional_fields_do_not_normalize_contradictory_count_or_later_page(self):
+  for path in [self.SCRIPTS,self.DOMAIN,self.ACTIVE]:
+   cases=[{'page':2},{'page':0},{'count':0},{'count':2},{'per_page':0},{'total_count':0},{'total_pages':0},{'cursor':'fixture-canary'}]
+   if path!=self.ACTIVE:cases += [{'total_pages':2},{'total_count':2}]
+   else:cases += [{'per_page':2}]
+   for info in cases:
+    f=fixtures();f[path]['result_info']=info
+    with self.subTest(path=path,info=info),self.assertRaises(ValueError):self.state(f)
+ def test_optional_shape_then_detail_version_and_public_guard_errors_remain(self):
+  changes=[lambda f:f[SCRIPT+'/deployments/'+DEP]['result'].update(source='changed'),lambda f:f[SCRIPT+'/versions/'+VID]['result'].update(id='33333333-3333-3333-3333-333333333333'),lambda f:f[SCRIPT+'/settings']['result'].update(logpush=True),lambda f:f[SCRIPT+'/settings']['result'].update(bindings=[{'type':'secret_text','name':'fixture-canary'}])]
+  for i,change in enumerate(changes):
+   f=self.observed_shape();change(f)
+   with self.subTest(change=i),self.assertRaises(ValueError):self.state(f)

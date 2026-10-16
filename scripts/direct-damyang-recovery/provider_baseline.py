@@ -153,7 +153,7 @@ def provider_shape_diagnostic(account,path,obj):
   fields['result']=diagnostic_fields(result,'id');checks['exactAccountIdentity']=type(result) is dict and result.get('id')==account;contexts['exactAccountIdentity']=type(result) is dict
  elif label=='scripts-list':
   rows=result if type(result) is list else [];names=[r.get('id') if type(r) is dict else None for r in rows]
-  checks.update(rowsArray=type(result) is list,rowsNonempty=type(result) is list and bool(result),singlePageComplete=diagnostic_predicate(lambda:single_page(obj,nonpaginated=True) is not None),allRowsNonemptyStringId=all(type(n) is str and bool(n) for n in names),idsUnique=diagnostic_predicate(lambda:len(names)==len(set(names))),fixedWorkerExactlyOnce=names.count(WORKER)==1)
+  checks.update(rowsArray=type(result) is list,rowsNonempty=type(result) is list and bool(result),singlePageComplete=diagnostic_predicate(lambda:single_page(obj) is not None),allRowsNonemptyStringId=all(type(n) is str and bool(n) for n in names),idsUnique=diagnostic_predicate(lambda:len(names)==len(set(names))),fixedWorkerExactlyOnce=names.count(WORKER)==1)
   contexts.update({key:type(result) is list for key in ('allRowsNonemptyStringId','idsUnique','fixedWorkerExactlyOnce')})
  elif label=='domains-list':
   rows=result if type(result) is list else [];checks['rowsArray']=type(result) is list;checks['rowsNonempty']=type(result) is list and bool(result);checks['singlePageComplete']=diagnostic_predicate(lambda:single_page(obj) is not None);checks['inventoryRequiredStrings']=all(type(r) is dict and all(type(r.get(k)) is str and bool(r[k]) for k in ('id','hostname','service','zone_id')) for r in rows)
@@ -248,9 +248,8 @@ def pagination(obj,single=True):
  if single:require(info.get('total_pages',1)<=1,'provider_list_completeness_unverified')
  return info
 
-def single_page(obj,*,nonpaginated=False):
+def single_page(obj):
  rows=obj.get('result');require(type(rows) is list,'provider_list_schema');info=pagination(obj)
- require((nonpaginated is True and 'result_info' not in obj) or set(info)=={'page','total_pages','count','total_count','per_page'},'complete_provider_pagination_required')
  require(info.get('total_pages',1) in ({0,1} if not rows else {1}) and info.get('count',len(rows))==len(rows) and info.get('total_count',len(rows))==len(rows) and info.get('per_page',len(rows))>=len(rows),'provider_list_completeness_unverified')
  return rows
 
@@ -259,7 +258,7 @@ def active_identity(obj):
  allowed={'id','created_on','source','strategy','versions','annotations','author_email'};require(type(active) is dict and set(active)<=allowed and {'id','created_on','source','strategy','versions'}<=set(active),'active_deployment_schema')
  require(type(active['id']) is str and re.fullmatch(UUID,active['id']) and active['strategy']=='percentage','active_deployment_identity');timestamp(active['created_on'])
  versions=active['versions'];require(type(versions) is list and len(versions)==1 and type(versions[0]) is dict and set(versions[0])=={'version_id','percentage'} and type(versions[0]['percentage']) in (int,float) and versions[0]['percentage']==100 and type(versions[0]['version_id']) is str and re.fullmatch(UUID,versions[0]['version_id']),'single_full_traffic_version_required')
- info=pagination(obj,single=False);require(set(info)=={'page','total_pages','count','total_count','per_page'},'complete_provider_pagination_required');require(info.get('count',1)==1 and info.get('per_page',1)==1 and info.get('total_count',1)>=1 and info.get('total_pages',1)>=1,'deployment_page_identity')
+ info=pagination(obj,single=False);require(info.get('count',1)==1 and info.get('per_page',1)==1 and info.get('total_count',1)>=1 and info.get('total_pages',1)>=1,'deployment_page_identity')
  return active
 
 def selected_assets_preservation(get,account,vid,number,created_on):
@@ -347,7 +346,7 @@ def deployed_version(get,account,settings=None):
 def current_state(account,get):
  require(sha(account.encode())==ACCOUNT_SHA,'historical_account_digest_mismatch');base='/accounts/'+account;script=base+'/workers/scripts/'+WORKER
  acct=get(base).get('result');require(type(acct) is dict and acct.get('id')==account,'account_identity_mismatch')
- scripts=single_page(get(base+'/workers/scripts'),nonpaginated=True);names=[r.get('id') if isinstance(r,dict) else None for r in scripts];require(all(isinstance(n,str) and n for n in names) and len(names)==len(set(names)) and names.count(WORKER)==1,'existing_worker_missing_or_ambiguous')
+ scripts=single_page(get(base+'/workers/scripts'));names=[r.get('id') if isinstance(r,dict) else None for r in scripts];require(all(isinstance(n,str) and n for n in names) and len(names)==len(set(names)) and names.count(WORKER)==1,'existing_worker_missing_or_ambiguous')
  domains=single_page(get(base+'/workers/domains'));require(all(type(r) is dict and all(isinstance(r.get(k),str) and r[k] for k in ['id','hostname','service','zone_id']) for r in domains),'domain_inventory_schema');matches=[r for r in domains if r['hostname'].lower()==HOST or r['service']==WORKER];require(len(matches)==1 and matches[0]['hostname']==HOST and matches[0]['service']==WORKER,'exact_existing_binding_required');row=matches[0]
  require(set(row)<={'id','hostname','service','zone_id','zone_name','environment','enabled','previews_enabled','cert_id'} and row.get('zone_name')=='fwith.kr' and row.get('environment') in (None,'production') and ('enabled' not in row or row['enabled'] is True) and ('previews_enabled' not in row or row['previews_enabled'] is False),'binding_configuration_requires_review')
  require(type(row['id']) is str and 1<=len(row['id'])<=128 and all(33<=ord(c)<=126 for c in row['id']) and bool(re.fullmatch(r'(?:[0-9a-fA-F]{32}|'+UUID+r')',row['zone_id'])),'opaque_domain_zone_identity_required')
@@ -398,7 +397,7 @@ def state_diagnostic_sweep(env,opener=None):
   if not account_ok:report['state']='account_identity_gate_failed';return diagnostic_evaluated(report,evaluation)
   scripts_obj=request('scripts-list',base+'/workers/scripts')
   try:
-   scripts=single_page(scripts_obj,nonpaginated=True);names=[r.get('id') if isinstance(r,dict) else None for r in scripts];worker_ok=all(isinstance(n,str) and n for n in names) and len(names)==len(set(names)) and names.count(WORKER)==1
+   scripts=single_page(scripts_obj);names=[r.get('id') if isinstance(r,dict) else None for r in scripts];worker_ok=all(isinstance(n,str) and n for n in names) and len(names)==len(set(names)) and names.count(WORKER)==1
   except Exception:worker_ok=False
   report['checks']['fixedWorkerInventoryGate']=bool(worker_ok)
   if not worker_ok:report['state']='worker_inventory_gate_failed';return diagnostic_evaluated(report,evaluation)
