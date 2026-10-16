@@ -276,6 +276,97 @@ def verify_run(row, data, path, *, current=False):
             'workflow_run_not_successful_or_current')
 
 
+# One historical upload only. Default verify_run remains success-only.
+EXACT_FAILED_UPDATE = {'artifactBytes': 11493, 'artifactDigest': 'sha256:3127f575d0cf493ce65df79f7e55b1594fd9f5feb45e812f612218b9aa4b1e96', 'artifactId': 12056828086, 'artifactName': 'damyang-existing-static-update-result-38927541164', 'controlRevision': '683aae06c27d18e0a674fb32b61be17abcfd5996', 'runAttempt': 1, 'runId': 38927541164}
+EXACT_FAILED_UPDATE_FILES = {'binding-after.json': '601e3b99010397566a51a25811a282af9c7a55c946b76e1b2a6381c1eb14f7ff', 'binding-before.json': 'c8c2cf48b9041f1f72cfd637f554638d6434a293c804358c0f3e629ce1cdeafd', 'claim-write-reserved.json': 'e4cbe2632e2ad3774a20e2738ae195c1dd83aabae629f02efb10d490d0d4cc92', 'deployment-attempt-claim.json': '67bd424d870f392aa67af38adcf6650bc431a85aadc56f148dc659f4fb8811ad', 'immediately-before-upload.json': 'a4139060a9680229e23217f234607f9d2387b5844777e81f9a86b13bd299be20', 'previous-public-http.json': 'b5f7fe6d61425f8a5a46b29bdf100dbeaefa8a74e2aad63cc3a45c411a35dd47', 'provider-state-after-observed.json': '25ff5d454f1ee9cbb47e8d1c24057c39096b6c07f9854b7aa7bb555e5bb53d5d', 'provider-state-before.json': 'e76c786f99a3e0547c8f6a000304b8735f6d8b492a9fcc62490a33dae7abec77', 'public-http-observations.json': '2aea3773609a4f541596d6efe87da0a3daa99b4a7426cb7b33a5a939c6513428', 'public-http.json': 'f8bf906ab0cd6d8b3ced04e9ab94f113f63a879a1eee1ff24a27945ffb193e65', 'release/release.json': 'b99c33011de1afe318779e8d750a2f267aa2c47d5a042455928fc720ab9fc986', 'release/wrangler.publish.json': '119e436410aa12cccd99f6ecac29619cd298202e7c911465a1bfaa1b702b9610', 'update-artifact-check.json': '2c1b3eb28807d1e162eb7d5562d0754196b1592fb0dc92c40dfe00f6efd6b86a', 'update-claim-result.json': '67bd424d870f392aa67af38adcf6650bc431a85aadc56f148dc659f4fb8811ad', 'update-selection.json': 'ff2a0ea56c293c34ac209944bd2428d24ea0b4a8327b8dbfdd87ec2638e6e300', 'update-source-config.json': 'ce51a23cdaa8024f0fb1ade0764e53aa1bacd56dd5cd5ffedd5856f5c31f733c', 'upload-version.json': '2a3deee30c1df2f177d20e9624059748f77aa9ee522d4fe2e72c3918a56fd2b1'}
+EXACT_FAILED_UPDATE_STEPS = [{'number': 1, 'name': 'Set up job', 'status': 'completed', 'conclusion': 'success'}, {'number': 2, 'name': 'Run actions/checkout@v4', 'status': 'completed', 'conclusion': 'success'}, {'number': 3, 'name': 'Run trusted control regressions without credentials or site code', 'status': 'completed', 'conclusion': 'success'}, {'number': 4, 'name': 'Require actual baseline acceptance and reviewed metadata before retrieval', 'status': 'completed', 'conclusion': 'success'}, {'number': 5, 'name': 'Run actions/download-artifact@v4', 'status': 'completed', 'conclusion': 'success'}, {'number': 6, 'name': 'Run actions/download-artifact@v4', 'status': 'completed', 'conclusion': 'success'}, {'number': 7, 'name': 'Read exact actual build24 and baseline artifact then copy release17 only', 'status': 'completed', 'conclusion': 'success'}, {'number': 8, 'name': 'Run actions/setup-node@v4', 'status': 'completed', 'conclusion': 'success'}, {'number': 9, 'name': 'GET accepted current target and old public15 before and after', 'status': 'completed', 'conclusion': 'success'}, {'number': 10, 'name': 'Write one claim to original receipt377 and read it directly and repository-wide', 'status': 'completed', 'conclusion': 'success'}, {'number': 11, 'name': 'Recheck source main full journal accepted state config and old public15', 'status': 'completed', 'conclusion': 'success'}, {'number': 12, 'name': 'Upload fixed existing route-less static assets once', 'status': 'completed', 'conclusion': 'success'}, {'number': 13, 'name': 'Parse only one version UUID digest from successful private upload log', 'status': 'completed', 'conclusion': 'success'}, {'number': 14, 'name': 'GET-only provider observation retained even after uncertain upload', 'status': 'completed', 'conclusion': 'success'}, {'number': 15, 'name': 'Check public16 independently of provider readback success', 'status': 'completed', 'conclusion': 'success'}, {'number': 16, 'name': 'Retain bounded evidence without raw uploader output or provider responses', 'status': 'completed', 'conclusion': 'success'}, {'number': 17, 'name': 'Require upload success and independently recorded provider and public results', 'status': 'completed', 'conclusion': 'failure'}, {'number': 33, 'name': 'Post Run actions/setup-node@v4', 'status': 'completed', 'conclusion': 'skipped'}, {'number': 34, 'name': 'Post Run actions/checkout@v4', 'status': 'completed', 'conclusion': 'success'}, {'number': 35, 'name': 'Complete job', 'status': 'completed', 'conclusion': 'success'}]
+EXACT_UPLOADED_STATE_SHA256 = '16ab9442d70e3e75ef69320b70769456bc8eef62408bb979c93753e484a5ee63'
+EXACT_UPLOAD_CLAIM_ID = 6219311010
+
+
+def verify_exact_uploaded_failure(data, job):
+    """Verify one historical failed run as failure; never alter its conclusion."""
+    row = EXACT_FAILED_UPDATE
+    require(type(data) is dict and type(data.get('id')) is int and data['id'] == row['runId']
+            and type(data.get('run_attempt')) is int and data['run_attempt'] == 1
+            and data.get('event') == 'issues' and data.get('head_branch') == 'main'
+            and data.get('head_sha') == row['controlRevision'] and data.get('path') == WORKFLOW
+            and data.get('repository', {}).get('full_name') == guard.REPOSITORY
+            and type(data.get('repository', {}).get('id')) is int
+            and data['repository']['id'] == 1360554691
+            and data.get('actor', {}).get('login') == OWNER
+            and data.get('triggering_actor', {}).get('login') == OWNER
+            and data.get('status') == 'completed' and data.get('conclusion') == 'failure',
+            'exact_historical_failed_upload_run_required')
+    require(type(job) is dict and type(job.get('id')) is int and job['id'] == 117062829774
+            and type(job.get('run_id')) is int and job['run_id'] == row['runId']
+            and type(job.get('run_attempt')) is int and job['run_attempt'] == 1
+            and job.get('head_branch') == 'main' and job.get('head_sha') == row['controlRevision']
+            and job.get('name') == 'recovery_static_update' and job.get('status') == 'completed'
+            and job.get('conclusion') == 'failure' and type(job.get('steps')) is list,
+            'exact_historical_upload_job_required')
+    steps = [{k:s.get(k) for k in ('number','name','status','conclusion')} for s in job['steps'] if type(s) is dict]
+    require(len(steps) == len(job['steps']) and guard.exact(steps, EXACT_FAILED_UPDATE_STEPS),
+            'exact_completed_upload_readback_and_failed_aggregate_required')
+    # The original public step wrapper returned success, but artifact public-http
+    # is blocked and the aggregate failed. Its API status is not public acceptance.
+    return {'state': 'EXACT_HISTORICAL_FAILED_UPLOAD_IDENTITY_VERIFIED',
+        'runId': row['runId'], 'controlRevision': row['controlRevision'], 'conclusion': 'failure',
+        'uploadAndProviderReadbackSucceeded': True, 'publicAccepted': False}
+
+
+def validate_failed_uploaded_artifact(update_root, pins, baseline):
+    """Consume exact retained17 as historical data, not a new successful run."""
+    require(guard.exact(pins.get('failedUpdate'), EXACT_FAILED_UPDATE), 'exact_failed_update_binding_required')
+    require(public_release.file_inventory(update_root) == EXACT_FAILED_UPDATE_FILES,
+            'exact_historical_failed_artifact17_required')
+    root = Path(update_root)
+    report = lambda name: read_json(root / name)
+    before = report('provider-state-before.json'); after = report('provider-state-after-observed.json')
+    require(guard.exact(before, baseline.get('currentProviderState'))
+            and guard.digest(before) == baseline.get('currentProviderStateSHA256'),
+            'historical_upload_actual_baseline_mismatch')
+    require(guard.digest(after) == EXACT_UPLOADED_STATE_SHA256
+            and guard.exact({k:v for k,v in before.items() if k != 'activeDeployment'},
+                            {k:v for k,v in after.items() if k != 'activeDeployment'})
+            and checked_version_coverage(after.get('activeDeployment')),
+            'historical_exact_uploaded_projection_required')
+    upload = report('upload-version.json'); active = after['activeDeployment']
+    require(guard.exact(upload, {'state':'ONE_UPLOAD_SUCCEEDED_VERSION_PARSED',
+            'runId':str(EXACT_FAILED_UPDATE['runId']), 'sourceRevision':SOURCE,
+            'versionIdSHA256':active['versionIdSHA256']}), 'historical_upload_version_binding_required')
+    require(guard.exact(report('release/release.json'), pins['releaseManifest'])
+            and sha(public_release.read_file(root/'release/release.json')) == pins['releaseManifestSha256'],
+            'historical_upload_manifest_binding_required')
+    require(guard.exact(report('public-http.json'), {
+            'liveBrowserPixelsVerified':False, 'mode':'public',
+            'reason':'duplicate_or_unsafe_public_header', 'searchIndexing':'not_verified',
+            'sourceRevision':SOURCE, 'state':'BLOCKED_OR_OUTCOME_UNCERTAIN_NO_AUTOMATIC_REUPLOAD'}),
+            'original_public_failure_must_be_retained')
+    claim = report('deployment-attempt-claim.json')
+    require(guard.exact(claim, report('update-claim-result.json'))
+            and claim.get('commentId') == EXACT_UPLOAD_CLAIM_ID and type(claim.get('commentId')) is int
+            and claim.get('runId') == str(EXACT_FAILED_UPDATE['runId'])
+            and claim.get('controlRevision') == EXACT_FAILED_UPDATE['controlRevision']
+            and claim.get('state') == 'STARTED_NO_AUTOMATIC_REUPLOAD'
+            and claim.get('sourceRevision') == SOURCE and claim.get('hostname') == 'damyang.fwith.kr'
+            and claim.get('buildRunId') == pins['build']['runId']
+            and claim.get('artifactId') == pins['build']['artifactId']
+            and claim.get('artifactDigest') == pins['build']['artifactDigest']
+            and claim.get('outputFilesSha256') == guard.digest(pins['releaseFiles'])
+            and claim.get('releaseManifestSha256') == pins['releaseManifestSha256']
+            and claim.get('providerStateSHA256') == guard.digest(before),
+            'historical_claim_source_and_build_binding_required')
+    require(guard.exact(report('binding-after.json'), {
+            'state':'EXACT_NEW_VERSION_AND_UNCHANGED_BINDING_VERIFIED', 'sourceRevision':SOURCE,
+            'previousSourceRevision':guard.CHAIN['originalSourceRevision'],
+            'accountSHA256':after['accountSHA256'], 'hostname':after['hostname'], 'worker':after['worker'],
+            'currentProviderStateSHA256':guard.digest(after), 'deploymentIdSHA256':active['deploymentIdSHA256'],
+            'versionIdSHA256':active['versionIdSHA256'], 'providerMethods':['GET'],
+            'providerMutationsPerformed':False,'hostnameAttached':False,'publicHTTPVerified':False}),
+            'historical_exact_provider_readback_required')
+    return {'claim':claim, 'providerAfter':after, 'originalFailure':report('public-http.json')}
+
 def verify_artifact_meta(row, data):
     require(type(data) is dict and data.get('id') == row['artifactId'] and type(data.get('id')) is int
             and data.get('expired') is False and data.get('name') == row['artifactName']

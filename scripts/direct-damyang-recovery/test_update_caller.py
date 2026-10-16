@@ -139,7 +139,7 @@ class Authorization(Case):
             pins=pins_fixture();pins['baseline'][key]=value;env=env_fixture()
             with self.subTest(key=key):self.blocked(lambda:c.authorize(pins,env,event_fixture(pins,env),'prepare'))
     def test_all_helpers_exact_and_before_import(self):
-        c.verify_imports();self.assertEqual(c.IMPORT_PINS['finalize_recovery.py'],'95585304bf31ed9b7b8c10fa3c42f20806c2d8e0b40867d8a2b27ed83af3ef8f')
+        c.verify_imports();self.assertEqual(c.IMPORT_PINS['finalize_recovery.py'],'87953c7d9bd89f81a7c7dcedacceadc27627dfe4ecb9cac67574ea076dbe3825')
         tree=ast.parse((c.D/'publish_existing_update.py').read_text());verify=next(n for n in tree.body if isinstance(n,ast.Expr) and isinstance(n.value,ast.Call) and getattr(n.value.func,'id',None)=='verify_imports')
         imports=[n for n in tree.body if isinstance(n,ast.Import) and any(x.name in ('finalize_recovery','existing_update') for x in n.names)]
         self.assertTrue(all(verify.lineno<n.lineno for n in imports))
@@ -196,7 +196,7 @@ class Boundaries(Case):
         self.assertEqual((c.ROOT/'workflow/damyang-existing-update-proposed.yml').read_bytes(),original+(c.ROOT/'workflow/additive-update-job.yml').read_bytes())
     def test_workflow_exact_downloads_single_uploader_and_safe_retention(self):
         job=(c.ROOT/'workflow/additive-update-job.yml').read_text()
-        self.assertEqual(job.count('actions/download-artifact@v4'),2);self.assertEqual(job.count('wrangler@4.148.0 deploy --config'),1)
+        self.assertEqual(job.count('actions/download-artifact@v4'),3);self.assertEqual(job.count('wrangler@4.148.0 deploy --config'),1)
         self.assertEqual(job.count('CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}'),4)
         self.assertNotIn('indexnow_finalize.py',job);self.assertNotIn('finalize_recovery.py',job);self.assertNotIn('recovery_build.py',job)
         retained=job.split('          path: |\n')[1].split('          if-no-files-found:')[0]
@@ -501,6 +501,60 @@ class RepositoryLinkCompatibility(Case):
             rows[1].append(claim); client, _ = self.journal_client(c.GitHubClient, rows)
             with self.subTest(state=state):
                 self.blocked(lambda: c.update.inspect_full_journal(client.pages()), 'prior_damyang_update_attempt')
+
+
+class PublicTimingHeaders(Case):
+    def response(self, headers, status=200, body=b''):
+        return c.journal.RawResponse(status, body, headers)
+    def test_single_headers_and_first_timing_value_preserved(self):
+        pairs=[('Content-Type','text/plain'),('Server-Timing','first;dur=1')]
+        self.assertEqual(c.public_release.checked_headers(self.response(pairs)),{'content-type':'text/plain','server-timing':'first;dur=1'})
+        for extra in ('server-timing','SERVER-TIMING','Server-Timing'):
+            with self.subTest(name=extra):
+                response=self.response(pairs+[(extra,'second;dur=2')])
+                self.assertEqual(c.public_release.checked_headers(response)['server-timing'],'first;dur=1')
+                self.assertEqual(response.headers,pairs+[(extra,'second;dur=2')])
+    def test_every_other_duplicate_header_still_rejected(self):
+        names=('content-type','content-length','content-encoding','location','content-security-policy','x-robots-tag','cf-mitigated','cache-control','set-cookie','report-to','nel','link','transfer-encoding','connection','x-unknown','server','vary','etag')
+        for name in names:
+            for second in (name,name.upper()):
+                with self.subTest(name=name,second=second):
+                    self.blocked(lambda:c.public_release.checked_headers(self.response([(name,'x'),(second,'x')])),'duplicate_or_unsafe_public_header')
+    def test_repeated_timing_rows_still_require_valid_tuple_and_string(self):
+        for row in (['server-timing','x'],('server-timing',),('server-timing','x','x'),('server-timing',None),('server-timing',1),(1,'x'),(True,'x')):
+            with self.subTest(row=row):
+                self.blocked(lambda:c.public_release.checked_headers(self.response([('Server-Timing','valid'),row])),'invalid_public_response_header')
+    def test_repeated_timing_rows_still_require_safe_full_values(self):
+        for value in ('x\r','x\n','x\r\ny','x'*4097):
+            with self.subTest(length=len(value)):
+                self.blocked(lambda:c.public_release.checked_headers(self.response([('server-timing','valid'),('SERVER-TIMING',value)])),'duplicate_or_unsafe_public_header')
+        for name in (' server-timing','server-timing ','server_timing','server:timing','x'*129,''):
+            with self.subTest(name=name):
+                self.blocked(lambda:c.public_release.checked_headers(self.response([(name,'x')])),'duplicate_or_unsafe_public_header')
+    def test_response_and_row_bounds_are_unchanged(self):
+        self.assertEqual(c.public_release.checked_headers(self.response([('server-timing','x'*4096)]*100)),{'server-timing':'x'*4096})
+        cases=[self.response([('server-timing','x')]*101),self.response((),body=b''),self.response([],status=True),self.response([],body='x'),self.response([],body=b'x'*(c.public_release.LIMIT+1))]
+        for response in cases:
+            with self.subTest(status=response.status,headers=type(response.headers).__name__):
+                self.blocked(lambda:c.public_release.checked_headers(response),'invalid_public_response')
+    def test_challenge_encoding_and_public_identity_still_rejected(self):
+        for headers in ([('cf-mitigated','challenge')],[('content-encoding','gzip')]):
+            with self.subTest(headers=headers):
+                self.blocked(lambda:c.public_release.checked_headers(self.response(headers+[('server-timing','x'),('SERVER-TIMING','y')])),'public_challenge|compressed_public')
+        self.blocked(lambda:c.public_release.verify_public_response('/foreign','x',200,self.response([]),{}),'fixed_public_response_identity')
+    def test_both_proof_bytes_and_status_unchanged_with_timing(self):
+        for name,expected in ((c.public_release.ACTIVE,c.journal.ACTIVE_PROOF_SHA256),(c.public_release.LEGACY,c.journal.RETAINED_PROOF_SHA256)):
+            pairs=[('content-type','text/plain'),('server-timing','x'),('Server-Timing','y')];body=(name[:-4]+'\n').encode()
+            with self.subTest(proof=name):
+                row=c.public_release.verify_public_response('/'+name,name,200,self.response(pairs,body=body),{name:expected})
+                self.assertEqual(row['artifactSha256'],expected)
+                self.blocked(lambda:c.public_release.verify_public_response('/'+name,name,200,self.response(pairs,body=body+b'x'),{name:expected}),'public_bytes_mismatch')
+                self.blocked(lambda:c.public_release.verify_public_response('/'+name,name,200,self.response(pairs,status=404,body=body),{name:expected}),'public_http_status_mismatch')
+    def test_html_type_robots_and_generic_duplicate_preserved(self):
+        pairs=[('server-timing','x'),('Server-Timing','y')]
+        for headers,reason in (([('content-type','text/plain')],'public_html_content_type'),([('content-type','text/html'),('x-robots-tag','noindex')],'public_home_header_blocks'),([('content-type','text/html'),('Content-Type','text/html')],'duplicate_or_unsafe')):
+            with self.subTest(reason=reason):
+                self.blocked(lambda:c.public_release.verify_public_response('/','index.html',200,self.response(pairs+headers),{'index.html':'a'*64}),reason)
 
 
 if __name__=='__main__':unittest.main(verbosity=2)

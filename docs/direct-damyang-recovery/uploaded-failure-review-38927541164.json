@@ -1,0 +1,183 @@
+{
+  "schema": "damyang-actual-upload-public-failure-independent-review/v1",
+  "verdict": "NEW_UPLOADED_VERSION_CONFIRMED_PUBLIC_VALIDATION_BLOCKED",
+  "reviewedAtUTC": "2026-10-16T16:03:00Z",
+  "actual": {
+    "schema": "damyang-actual-update-public-header-failure-independent/v1",
+    "runId": 38927541164,
+    "runAttempt": 1,
+    "controlRevision": "683aae06c27d18e0a674fb32b61be17abcfd5996",
+    "runConclusion": "failure",
+    "artifactId": 12056828086,
+    "artifactSHA256": "3127f575d0cf493ce65df79f7e55b1594fd9f5feb45e812f612218b9aa4b1e96",
+    "artifactBytes": 11493,
+    "artifactFiles": 17,
+    "rawZIPAllBytesVerified": true,
+    "actualProviderUploadSucceeded": true,
+    "externalUploaderInvocationCount": 1,
+    "claimCommentId": 6219311010,
+    "newVersionSHA256": "f1c11f59c8af6a9d8954b6e3218649f1e3483a7bd2c3fb37e836eeecb54e12bd",
+    "newStateSHA256": "16ab9442d70e3e75ef69320b70769456bc8eef62408bb979c93753e484a5ee63",
+    "exactProviderProjectionReadbackReplayed": true,
+    "publicObservedPaths": 1,
+    "publicValidatedPaths": 0,
+    "publicFailureReason": "duplicate_or_unsafe_public_header",
+    "originalFailureHeadersRetained": false,
+    "freshHomeSameBodyDigest": true,
+    "freshDuplicateTimingReproduction": true,
+    "freshObservationIsOriginalHeaderProof": false,
+    "actualPublic16Accepted": false,
+    "finalizerActivated": false,
+    "cases": [
+      {
+        "name": "exact_actual_provider_readback_replayed",
+        "outcome": "accepted"
+      },
+      {
+        "name": "account",
+        "outcome": "rejected",
+        "code": "existing_settings_account_binding_or_exposure_changed"
+      },
+      {
+        "name": "workersDev",
+        "outcome": "rejected",
+        "code": "existing_settings_account_binding_or_exposure_changed"
+      },
+      {
+        "name": "binding",
+        "outcome": "rejected",
+        "code": "existing_settings_account_binding_or_exposure_changed"
+      },
+      {
+        "name": "version",
+        "outcome": "rejected",
+        "code": "new_exact_uploaded_version_not_active"
+      },
+      {
+        "name": "old_version",
+        "outcome": "rejected",
+        "code": "new_exact_uploaded_version_not_active"
+      },
+      {
+        "name": "assets",
+        "outcome": "rejected",
+        "code": "version_static_capabilities_changed"
+      },
+      {
+        "name": "coverage",
+        "outcome": "rejected",
+        "code": "version_static_capabilities_changed"
+      },
+      {
+        "name": "rerun_old_preflight_after_actual_upload",
+        "outcome": "rejected",
+        "code": "accepted_provider_baseline_changed"
+      },
+      {
+        "name": "later_fresh_headers_reproduce_strict_failure",
+        "outcome": "rejected",
+        "code": "duplicate_or_unsafe_public_header"
+      },
+      {
+        "name": "current_finalizer_rejects_failed_update_run",
+        "outcome": "rejected",
+        "code": "workflow_run_not_successful_or_current"
+      },
+      {
+        "name": "later_fresh_home_with_only_timing_duplicate_removed_offline",
+        "outcome": "accepted",
+        "result": {
+          "path": "/",
+          "file": "index.html",
+          "httpStatus": 200,
+          "rawBodySha256": "ec4b4913af8b7b020de451ea70c5f21e8c5ebb359422e2de6e0515010997400b",
+          "rawBodyBytes": 20764,
+          "artifactSha256": "2bb3d2545d422443529d66af9b1c512eb7e088f54a222b3d1f149db65e1c8fca",
+          "normalization": "exact_existing_single_beacon"
+        }
+      }
+    ],
+    "counts": {
+      "network": 0,
+      "process": 0
+    },
+    "limitations": [
+      "One CLI invocation does not establish one internal HTTP request.",
+      "No raw provider API responses or original failing headers retained. Only normalized reports and job gates are verified.",
+      "Offline timing-row removal tests a later separate response only and is not a production patch or public16 acceptance.",
+      "The saved artifact17 contains reports/config/manifest, not release17 HTML/assets. Accepted build24 supplies exact release bytes separately."
+    ]
+  },
+  "terminalChain": {
+    "schema": "damyang-actual-upload-terminal-chain-independent/v1",
+    "runId": 38927541164,
+    "jobId": 117062829774,
+    "runConclusion": "failure",
+    "jobConclusion": "failure",
+    "skippedJobs": [
+      "inspect_existing_baseline",
+      "recovery_finalize_indexnow",
+      "publish"
+    ],
+    "requiredPreflightClaimUploadVersionReadbackStepsSuccessful": true,
+    "publicStepAPISuccessIsNotPublicAcceptance": true,
+    "publicStepExplanation": "The wrapper masks its command status until the final aggregate gate. HTTP=failure and the failed report are authoritative for public validation.",
+    "claimDirectReadbackIdentityAndBodyExact": true,
+    "directListResponseDifference": "performed_via_github_app metadata only; all other fields equal",
+    "claimCommentId": 6219311010,
+    "originalReceiptCommentsUnchanged": true,
+    "receiptIssue377Comments": 3,
+    "newIndexNowRecordCount": 0,
+    "terminalRawSHA256": "9f0222e40b06e7ff7e5bb3a0c5ecb7a7af2fff52f4aa780f8eab4703927c7f57",
+    "claimRawSHA256": "c5852c50ddfe675613223e058a91ef8f99d3624d8dd14f2532b654452fb61585",
+    "actualPublic16Accepted": false,
+    "automaticReuploadAllowed": false,
+    "finalizerActivated": false
+  },
+  "stageConclusions": {
+    "trustedCI": "237 methods passed in actual job",
+    "actualBuild24AndRelease17": "verified existing artifact/source binding; no source execution",
+    "oldPublic15AndCurrentBaseline": "actual preflight and immediate recheck succeeded",
+    "durableClaim": "6219311010 exact body/identity direct readback, original377 pair unchanged",
+    "externalUploader": "one explicit pinned CLI invocation succeeded; internal HTTP requests not counted",
+    "selectedVersionReadback": "new uploaded version plus unchanged measured identity/config/settings/capability projection verified",
+    "publicHTTP": "home200 body observed; original public verifier completed zero paths before header rejection",
+    "finalizer": "skipped, code seal false, additional IndexNow records0"
+  },
+  "localOfflineCases": {
+    "accepted": 2,
+    "rejected": 10,
+    "network": 0,
+    "process": 0
+  },
+  "followonContract": {
+    "path": "FOLLOWON-CONTRACT.json",
+    "sha256": "fd130d376c5b90ec2e9363e51ebde007f295895f9256dcc00585ef2cab13a524"
+  },
+  "officialEvidence": {
+    "url": "https://www.w3.org/TR/2026/WD-server-timing-20260407/",
+    "status": "W3C Working Draft",
+    "sections": [
+      "2",
+      "6"
+    ],
+    "paraphrase": "Server-Timing carries list-valued request metrics; the example includes repeated header lines. This supports a narrow compatibility change for this unconsumed telemetry field only."
+  },
+  "followonScope": "No upload or new claim. Review a narrow Server-Timing duplicate exception, then independently bind separate safe public16 evidence and exact failed-run provenance before any finalizer change.",
+  "knownLimits": [
+    "The failing response headers were not retained. A later response with equal body hash has repeated Server-Timing lines and independently reproduces the old rejection. This is a supported compatibility gap, not proof that the original header set was identical.",
+    "Provider observations are normalized projections, not raw provider responses or atomic CAS. No claim of all Worker code/capability absence is made.",
+    "Artifact17 is reports/config/manifest; it does not contain all release17 bodies. Existing accepted build24 supplies expected byte hashes.",
+    "The public-check step API appears successful because its wrapper defers the outcome to the final aggregate step. HTTP=failure, the failed report and aggregate failure are not promoted to public success.",
+    "Direct and list claim responses differ only in performed_via_github_app metadata. The trusted identity, body and every other returned field match; original receipt2 records are byte-equivalent JSON values.",
+    "Later PUBLIC16-OBSERVATIONS omitted some telemetry values before retention. Those placeholders cannot be fed as if they were original strings to prove full header safety. A separately reviewed safe observation is required.",
+    "The prior run and all original reports remain failed/blocked. Any new public verification needs separate provenance and cannot overwrite the original artifact.",
+    "This review makes no finalizer/public16/IndexNow acceptance."
+  ],
+  "public16Accepted": false,
+  "finalizerApproved": false,
+  "newIndexNowSubmitted": false,
+  "automaticReuploadAllowed": false,
+  "remoteWritesByReviewer": 0,
+  "providerCallsByReviewer": 0
+}

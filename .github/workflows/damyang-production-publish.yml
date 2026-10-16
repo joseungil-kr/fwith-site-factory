@@ -210,7 +210,7 @@ jobs:
           if-no-files-found: warn
 
   recovery_static_update:
-    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[DAMYANG-EXISTING-STATIC-UPDATE] 20261016' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.user.login == 'joseungil-kr'
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && (github.event.issue.title == '[DAMYANG-EXISTING-STATIC-UPDATE] 20261016' || github.event.issue.title == '[DAMYANG-UPLOADED-GET-RECONCILE] 20261017') && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.user.login == 'joseungil-kr'
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     permissions:
@@ -220,6 +220,7 @@ jobs:
     env:
       PYTHONDONTWRITEBYTECODE: '1'
       CONTROL_DIR: control/scripts/direct-damyang-recovery
+      RECONCILE_ONLY: ${{ github.event.issue.title == '[DAMYANG-UPLOADED-GET-RECONCILE] 20261017' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -230,12 +231,14 @@ jobs:
       - name: Run trusted control regressions without credentials or site code
         run: |
           env -i PATH="$PATH" HOME="$HOME" LANG="$LANG" PYTHONDONTWRITEBYTECODE=1 \
-            PYTHONPATH="$CONTROL_DIR" python3 -m unittest test_update_caller test_existing_update test_provider_baseline test_damyang_baseline -v
+            PYTHONPATH="$CONTROL_DIR" python3 -m unittest test_update_caller test_existing_update test_provider_baseline test_damyang_baseline test_reconcile_uploaded -v
       - name: Require actual baseline acceptance and reviewed metadata before retrieval
         id: selected
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          caller="$CONTROL_DIR/publish_existing_update.py"; report="update-selection.json"
+          if [ "$RECONCILE_ONLY" = true ]; then caller="$CONTROL_DIR/reconcile_uploaded.py"; report="reconciliation-selection.json"; fi
           env -i \
             PATH="${PATH}" \
             HOME="${HOME}" \
@@ -256,7 +259,7 @@ jobs:
             GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
             GITHUB_WORKSPACE="${GITHUB_WORKSPACE}" \
             RUNNER_TEMP="${RUNNER_TEMP}" \
-            python3 "$CONTROL_DIR/publish_existing_update.py" prepare --report update-selection.json
+            python3 "$caller" prepare --report "$report"
       - uses: actions/download-artifact@v4
         with:
           artifact-ids: ${{ steps.selected.outputs.build_artifact_id }}
@@ -271,11 +274,21 @@ jobs:
           github-token: ${{ github.token }}
           merge-multiple: true
           path: damyang-recovery-baseline
+      - uses: actions/download-artifact@v4
+        if: env.RECONCILE_ONLY == 'true'
+        with:
+          artifact-ids: ${{ steps.selected.outputs.update_artifact_id }}
+          run-id: ${{ steps.selected.outputs.update_run_id }}
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: damyang-recovery-update
       - name: Read exact actual build24 and baseline artifact then copy release17 only
         id: artifact
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          caller="$CONTROL_DIR/publish_existing_update.py"; report="update-artifact-check.json"
+          if [ "$RECONCILE_ONLY" = true ]; then caller="$CONTROL_DIR/reconcile_uploaded.py"; report="reconciliation-inputs.json"; fi
           env -i \
             PATH="${PATH}" \
             HOME="${HOME}" \
@@ -296,11 +309,13 @@ jobs:
             GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
             GITHUB_WORKSPACE="${GITHUB_WORKSPACE}" \
             RUNNER_TEMP="${RUNNER_TEMP}" \
-            python3 "$CONTROL_DIR/publish_existing_update.py" artifact --report update-artifact-check.json
+            python3 "$caller" artifact --report "$report"
       - uses: actions/setup-node@v4
+        if: env.RECONCILE_ONLY != 'true'
         with:
           node-version: 22
       - name: GET accepted current target and old public15 before and after
+        if: env.RECONCILE_ONLY != 'true'
         id: preflight
         env:
           GH_TOKEN: ${{ github.token }}
@@ -331,6 +346,7 @@ jobs:
             CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID}" \
             python3 "$CONTROL_DIR/publish_existing_update.py" preflight --report binding-before.json
       - name: Write one claim to original receipt377 and read it directly and repository-wide
+        if: env.RECONCILE_ONLY != 'true'
         id: claim
         env:
           GH_TOKEN: ${{ github.token }}
@@ -357,6 +373,7 @@ jobs:
             RUNNER_TEMP="${RUNNER_TEMP}" \
             python3 "$CONTROL_DIR/publish_existing_update.py" claim --report update-claim-result.json
       - name: Recheck source main full journal accepted state config and old public15
+        if: env.RECONCILE_ONLY != 'true'
         id: recheck
         env:
           GH_TOKEN: ${{ github.token }}
@@ -387,6 +404,7 @@ jobs:
             CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID}" \
             python3 "$CONTROL_DIR/publish_existing_update.py" recheck --report immediately-before-upload.json
       - name: Upload fixed existing route-less static assets once
+        if: env.RECONCILE_ONLY != 'true'
         id: deploy
         continue-on-error: true
         env:
@@ -407,7 +425,7 @@ jobs:
           fi
       - name: Parse only one version UUID digest from successful private upload log
         id: version
-        if: steps.deploy.outcome == 'success'
+        if: env.RECONCILE_ONLY != 'true' && steps.deploy.outcome == 'success'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
@@ -435,13 +453,15 @@ jobs:
             python3 "$CONTROL_DIR/publish_existing_update.py" parse-upload --report upload-version.json --upload-log "$RUNNER_TEMP/damyang-static-update-private.log"
       - name: GET-only provider observation retained even after uncertain upload
         id: binding
-        if: ${{ always() && steps.recheck.outcome == 'success' && (steps.deploy.outcome == 'success' || steps.deploy.outcome == 'failure') }}
+        if: ${{ always() && ((env.RECONCILE_ONLY == 'true' && steps.artifact.outcome == 'success') || (env.RECONCILE_ONLY != 'true' && steps.recheck.outcome == 'success' && (steps.deploy.outcome == 'success' || steps.deploy.outcome == 'failure'))) }}
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
+          caller="$CONTROL_DIR/publish_existing_update.py"; mode=readback; report=binding-after.json
+          if [ "$RECONCILE_ONLY" = true ]; then caller="$CONTROL_DIR/reconcile_uploaded.py"; mode=observe; report=reconciliation-result.json; fi
           env -i \
             PATH="${PATH}" \
             HOME="${HOME}" \
@@ -464,10 +484,10 @@ jobs:
             RUNNER_TEMP="${RUNNER_TEMP}" \
             CLOUDFLARE_API_TOKEN="${CLOUDFLARE_API_TOKEN}" \
             CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID}" \
-            python3 "$CONTROL_DIR/publish_existing_update.py" readback --report binding-after.json
+            python3 "$caller" "$mode" --report "$report"
       - name: Check public16 independently of provider readback success
         id: http
-        if: ${{ always() && steps.recheck.outcome == 'success' && (steps.deploy.outcome == 'success' || steps.deploy.outcome == 'failure') }}
+        if: ${{ always() && env.RECONCILE_ONLY != 'true' && steps.recheck.outcome == 'success' && (steps.deploy.outcome == 'success' || steps.deploy.outcome == 'failure') }}
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
@@ -497,7 +517,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: damyang-existing-static-update-result-${{ github.run_id }}
+          name: ${{ env.RECONCILE_ONLY == 'true' && 'damyang-uploaded-get-reconciliation-result' || 'damyang-existing-static-update-result' }}-${{ github.run_id }}
           path: |
             update-selection.json
             update-artifact-check.json
@@ -516,6 +536,14 @@ jobs:
             public-http-observations.json
             release/release.json
             release/wrangler.publish.json
+            reconciliation-selection.json
+            reconciliation-inputs.json
+            reconciliation-provider-before.json
+            reconciliation-provider-after.json
+            reconciliation-public-http.json
+            reconciliation-public-observations.json
+            reconciliation-public-bodies
+            reconciliation-result.json
           if-no-files-found: warn
       - name: Require upload success and independently recorded provider and public results
         if: always()
@@ -524,7 +552,12 @@ jobs:
           VERSION: ${{ steps.version.outcome }}
           BINDING: ${{ steps.binding.outcome }}
           HTTP: ${{ steps.http.outcome }}
-        run: test "$DEPLOY" = success && test "$VERSION" = success && test "$BINDING" = success && test "$HTTP" = success
+        run: |
+          if [ "$RECONCILE_ONLY" = true ]; then
+            test "$DEPLOY" = skipped && test "$VERSION" = skipped && test "$BINDING" = success && test "$HTTP" = skipped
+          else
+            test "$DEPLOY" = success && test "$VERSION" = success && test "$BINDING" = success && test "$HTTP" = success
+          fi
 
   recovery_finalize_indexnow:
     if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[DAMYANG-INDEXNOW-RECOVERY-FINALIZE] 20261016' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.user.login == 'joseungil-kr'

@@ -157,9 +157,10 @@ def checked_headers(response):
                 'invalid_public_response_header')
         name, value = item; name = name.lower()
         require(re.fullmatch(r'[a-z0-9-]{1,128}', name) is not None and len(value) <= 4096
-                and '\r' not in value and '\n' not in value and name not in result,
+                and '\r' not in value and '\n' not in value,
                 'duplicate_or_unsafe_public_header')
-        result[name] = value
+        require(name not in result or name == 'server-timing', 'duplicate_or_unsafe_public_header')
+        if name not in result: result[name] = value
     require(not result.get('cf-mitigated', '').strip(), 'public_challenge_forbidden')
     require(result.get('content-encoding', 'identity').lower() in ('', 'identity'), 'compressed_public_response_forbidden')
     return result

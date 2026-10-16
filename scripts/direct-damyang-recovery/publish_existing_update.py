@@ -26,12 +26,12 @@ IMPORT_PINS = {
   "beacon_normalization.py": "6782ef230efcc88d7c17eb0e2f043317271a0b64c5b9150f2829ce4a3847cd67",
   "existing_provider.py": "f4e8bb7e4e0553d7535b713ecdae0fd4bc32608f692a91ba7c7f232b5a25ecb0",
   "existing_update.py": "52345dd7dfff910fc17441e1d2b91a58c532b88f34dcdc65aa752f851a3c99df",
-  "finalize_recovery.py": "95585304bf31ed9b7b8c10fa3c42f20806c2d8e0b40867d8a2b27ed83af3ef8f",
+  "finalize_recovery.py": "87953c7d9bd89f81a7c7dcedacceadc27627dfe4ecb9cac67574ea076dbe3825",
   "indexnow_recovery.py": "59f23a38bc14925261901d182bd6d503827d16f95bda9368619159a1dd8021f4",
   "managed_robots.py": "51eebc7dc9a405ade4c5f7da6cdb086a8319d2df690b5b9429e20bd764cbdee5",
   "previous_public.py": "c88277a6c00bfecf5c360bfbe64b3a0b9aeceedd77fedf68e2e01d4d329b897a",
   "provider_baseline.py": "087d1047de4f236c5082cb6601007670854bdfc567d2e621310422afe8902111",
-  "public_release.py": "712562d65952acacca6d33bb628e9f454eeef3cc2f4d3aac5166d4271ba7987c",
+  "public_release.py": "3edb22cfc985fc47bcf5a7533e1dd1190e4ad147aa40a0e7e235631741c45390",
   "recovery_build.py": "5a1c4b9d7ec6ca79caf36688c183935af77694d572bf63201d3a028b2beb5da5",
   "recovery_output.py": "559c00b6dbbbe85ef1dbd9a0bef026a75d8fe241839d8392d0cef59c1c52a6fd"
 }
