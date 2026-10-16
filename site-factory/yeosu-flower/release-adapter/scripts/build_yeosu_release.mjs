@@ -13,5 +13,9 @@ if(selected.release.mode==='production'){
  if(write.status!==0)process.exit(write.status??1);
  const qa=spawnSync('python3',[path.join(ADAPTER_ROOT,'scripts/yeosu_release_output.py'),'--dist','dist','--revision',selected.release.revision],{cwd:ROOT,env:process.env,stdio:'inherit'});
  if(qa.status!==0)process.exit(qa.status??1);
+ // Required content correction follows the unchanged historical build and baseline QA.
+ // Missing files, unexpected source output or a wrong replacement fail this producer.
+ const correction=spawnSync('python3',[path.join(ADAPTER_ROOT,'correction/apply_policy_correction.py'),'--dist',path.join(ROOT,'dist'),'--revision',selected.release.revision],{cwd:ROOT,env:process.env,stdio:'inherit'});
+ if(correction.status!==0)process.exit(correction.status??1);
 }
 console.log('Verified '+selected.release.mode+' build only; production launch/pixels/provider/public HTTP remain separate gates.');
