@@ -1,12 +1,12 @@
 {
   "schema": "damyang-phase2-get-only-baseline-code-binding/v1",
-  "state": "REVIEWED_CODE_PENDING_CURRENT_DAMYANG_OBSERVATION",
+  "state": "REVIEWED_SCRIPTS_SINGLEPAGE_CODE_PENDING_NEW_DAMYANG_OBSERVATION",
   "repository": "joseungil-kr/fwith-site-factory",
   "hostname": "damyang.fwith.kr",
   "worker": "damyang-flower-guide",
   "acceptedAccountSHA256": "d5bbfc5383872f2c9e36138452e0c880f46b03bbd4aaffa278490c2ad6d7bcbf",
-  "reconciledBaseRevision": "684cec7edb768f290f13ccf3ca6d091020581822",
-  "reconciledBaseTree": "548f93990001df5d1ff1303d1e8e05424aac05e9",
+  "reconciledBaseRevision": "58ec69182c84de89ed4b13ab9620bdb3872c1bd2",
+  "reconciledBaseTree": "7fea1b3ccc060bbd303c2009efd71e71147e0610",
   "source": {
     "revision": "063e9eda9d33cb2f8b4dfd847bea966ff9443eb5",
     "branch": "source/damyang-dedicated-proof-recovery-20261016",
@@ -32,35 +32,6 @@
     "reviewVerdict": "ACCEPT_SOURCE063E9_BUILD_ARTIFACT_ONLY",
     "evidenceRebuilt": false,
     "newLiveBrowserObserved": false
-  },
-  "independentBaselineCodeReview": {
-    "reviewSHA256": "b847450ed824c91f40c01712da1b757175402cc7d76dd8d529f136625a5e9746",
-    "bindingSHA256": "174afef5cc2fbaa48e1f8bbb526e8aae7cbd383f3c71caa35149271ad5aa7895",
-    "verdict": "PASS_EXACT_LOCAL_BASELINE3_WITH_PENDING_FULL_INTEGRATION",
-    "baselineZIP_SHA256": "706173d51ad6870087bf170743e72db18af07140c014a973c9f586de59e063ba",
-    "minimumFiles": [
-      {
-        "path": "scripts/direct-damyang-recovery/provider_baseline.py",
-        "bytes": 51837,
-        "sha256": "e23c8070c2d0e6cdb163596f08c69074005bc8c02d7845b67e63951db4f0b8a0",
-        "gitBlobSHA1": "dc2051f874a3e74272c074fea6e89802b62bd3ec"
-      },
-      {
-        "path": "scripts/direct-damyang-recovery/test_damyang_baseline.py",
-        "bytes": 24557,
-        "sha256": "873ae9dda55f5819efcdc37bff01d5e0d02ef3946e0a34ed0881e519d43f37ae",
-        "gitBlobSHA1": "e82e0dc0860d39337e05615eee92dce9fa0f0905"
-      },
-      {
-        "path": "scripts/direct-damyang-recovery/test_provider_baseline.py",
-        "bytes": 86765,
-        "sha256": "7c12ebb52ca0c23242f59d69bb1f264a995cf968156d88c076634d05b3844916",
-        "gitBlobSHA1": "1455a6459f9293537f5bf60d62ef2f271454920b"
-      }
-    ],
-    "pythonRuntimeMethods": 176,
-    "pythonRuntimeSubtests": 1425,
-    "repeatedRuntimeCountsAreNotDistinct": true
   },
   "observationBoundary": {
     "workflowPath": ".github/workflows/damyang-production-publish.yml",
@@ -110,5 +81,97 @@
     "explicitApprovalConfirmed": true,
     "approvedAtUTC": "2026-10-16T08:38:20.147557+00:00",
     "scope": "Damyang dedicated public ownership proof and existing-host recovery of the rejected home URL only; no credential, permission, account or DNS change."
+  },
+  "priorBaselineCodeReview": {
+    "reviewSHA256": "b847450ed824c91f40c01712da1b757175402cc7d76dd8d529f136625a5e9746",
+    "bindingSHA256": "174afef5cc2fbaa48e1f8bbb526e8aae7cbd383f3c71caa35149271ad5aa7895",
+    "verdict": "PASS_EXACT_LOCAL_BASELINE3_WITH_PENDING_FULL_INTEGRATION",
+    "baselineZIP_SHA256": "706173d51ad6870087bf170743e72db18af07140c014a973c9f586de59e063ba",
+    "minimumFiles": [
+      {
+        "path": "scripts/direct-damyang-recovery/provider_baseline.py",
+        "bytes": 51837,
+        "sha256": "e23c8070c2d0e6cdb163596f08c69074005bc8c02d7845b67e63951db4f0b8a0",
+        "gitBlobSHA1": "dc2051f874a3e74272c074fea6e89802b62bd3ec"
+      },
+      {
+        "path": "scripts/direct-damyang-recovery/test_damyang_baseline.py",
+        "bytes": 24557,
+        "sha256": "873ae9dda55f5819efcdc37bff01d5e0d02ef3946e0a34ed0881e519d43f37ae",
+        "gitBlobSHA1": "e82e0dc0860d39337e05615eee92dce9fa0f0905"
+      },
+      {
+        "path": "scripts/direct-damyang-recovery/test_provider_baseline.py",
+        "bytes": 86765,
+        "sha256": "7c12ebb52ca0c23242f59d69bb1f264a995cf968156d88c076634d05b3844916",
+        "gitBlobSHA1": "1455a6459f9293537f5bf60d62ef2f271454920b"
+      }
+    ],
+    "pythonRuntimeMethods": 176,
+    "pythonRuntimeSubtests": 1425,
+    "repeatedRuntimeCountsAreNotDistinct": true,
+    "scope": "Historical baseline3 code at saved control 1a89ca47afff6d2e411045d2ad0c73658fcdfe9b; superseded provider/test_damyang pins are not the new scripts-list omission candidate."
+  },
+  "priorBaselineObservation": {
+    "issue": 390,
+    "runId": 38900348919,
+    "runAttempt": 1,
+    "jobId": 116970770573,
+    "controlRevision": "1a89ca47afff6d2e411045d2ad0c73658fcdfe9b",
+    "artifactId": 12045533571,
+    "artifactBytes": 1338,
+    "artifactSHA256": "364f779972289e6cc534b08948cfe81fc829afd33f35a1a426fa29b35b800561",
+    "observationSHA256": "716883ee0a929b7b2f5f65e76b5df3d13e524563f753c27fa6596c868f32cffa",
+    "independentReviewSHA256": "941aebcb4fb7a22ce1a4e4353584775f758869ddf856ea8f4a2e8eaa311e0b6c",
+    "independentBindingSHA256": "cfcd7fe918464932f41ba8d9f084548419ff0f5d4f7ff2745494c5b0a7a6431f",
+    "state": "BLOCKED_WITH_NO_PROVIDER_MUTATION",
+    "normalFailureCode": "complete_provider_pagination_required",
+    "normalFailureEndpointOrSnapshotKnown": false,
+    "normalPublic15CallCountKnown": false,
+    "separateDiagnostic": {
+      "scriptsResultInfoPresent": false,
+      "accountIdentityVerified": true,
+      "fixedWorkerExactlyOnce": true,
+      "returnedIdsUnique": true,
+      "wholeInventoryGate": false,
+      "laterEndpointsRequested": false
+    },
+    "normalDiagnosticResponsesProvenIdentical": false,
+    "baselineAccepted": false
+  },
+  "independentBaselineCodeReview": {
+    "reviewSHA256": "c87d408111fe03ff043c447f5c7bf6c94b249aeabddfad500f80ce6c9882ab52",
+    "bindingSHA256": "70ad0d6b98e1a4ce076d884dde142447e3f40dcfde40c6413e7ab0b4ceee87d4",
+    "verdict": "PASS_EXACT_LOCAL_SCRIPTS_ONLY_PAGINATION_DELTA",
+    "baselineZIP_SHA256": "5f0a52413101a0aa5d1cc74c09f5a0efe196d96927187d51caea2908017caf1f",
+    "minimumFiles": [
+      {
+        "path": "scripts/direct-damyang-recovery/provider_baseline.py",
+        "bytes": 51967,
+        "sha256": "02e9d9f15807c9093b8d14a5607f9757995daf59d02cba2800e24aad2c7bad2e",
+        "gitBlobSHA1": "b78330b5da5506359edf67a88a63c19a0d51dfac"
+      },
+      {
+        "path": "scripts/direct-damyang-recovery/test_damyang_baseline.py",
+        "bytes": 34649,
+        "sha256": "760b1a4efcab20ca8811b0e7a8494583e50e896cd01d93ba72b47c769fcf1994",
+        "gitBlobSHA1": "2f5f874e720ff54b7db57370167b92abcf67d25c"
+      },
+      {
+        "path": "scripts/direct-damyang-recovery/test_provider_baseline.py",
+        "bytes": 86765,
+        "sha256": "7c12ebb52ca0c23242f59d69bb1f264a995cf968156d88c076634d05b3844916",
+        "gitBlobSHA1": "1455a6459f9293537f5bf60d62ef2f271454920b"
+      }
+    ],
+    "pythonRuntimeMethods": 189,
+    "pythonRuntimeSubtests": 1752,
+    "workflowDiscoverMethods": 150,
+    "workflowDiscoverSubtests": 1557,
+    "differentialComparisons": 9391,
+    "countsAreSeparateNotAdditive": true,
+    "repeatedRuntimeCountsAreNotDistinct": true,
+    "followonContractSHA256": "b873cc862d7bb8f0b26a664ce03f6a8f1d9dc05580f81578027e59abfff90ec0",
+    "acceptanceDelta": "Only absent result_info at the exact unfiltered scripts-list endpoint with explicit nonpaginated=True at three call sites. Present metadata, domain and active-deployment guards are unchanged."
   }
 }
