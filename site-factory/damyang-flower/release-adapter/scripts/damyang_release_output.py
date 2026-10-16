@@ -17,7 +17,10 @@ SOCIAL_IMAGE_ALT='흰색과 노란색 꽃, 위쪽 노란 장식의 B201 근조 3
 SOCIAL_IMAGE_SHA256='7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3'
 ROUTES = ['/']
 FILES = {'index.html':'/', '404.html':'/404.html'}
-PROOF = {'origin':ORIGIN,'path':'/39c4ed924bc6084c670a963c26d9f018.txt','sha256':'5da3864d5327c6e4e41e6eef12510004b2302f55c3bc61593d7d49c1797739b5'}
+LEGACY_PROOF = {'origin': 'https://damyang.fwith.kr', 'path': '/39c4ed924bc6084c670a963c26d9f018.txt', 'sha256': '5da3864d5327c6e4e41e6eef12510004b2302f55c3bc61593d7d49c1797739b5'}
+PROOF = {'origin': 'https://damyang.fwith.kr', 'path': '/db5e090bdb87762ce7c7ec5c01f6ab73.txt', 'sha256': 'a818ead0cec264f34e0763edc923803719244855f8b281c214688c296790ecec'}
+RETAINED_PROOFS = [LEGACY_PROOF]
+PROOF_RECOVERY_CHAIN = {'originalSourceRevision': '89c92dff3dca6456c1b0a3f7ee0587efe0361bed', 'originalPublicationRunId': 38861200090, 'originalReceiptIssue': 377, 'originalStartedCommentId': 6209522619, 'originalRejectedCommentId': 6209523005, 'originalFingerprint': 'ccef3be8005323e66f2038a490f94df15a843fd7abbc2726801f233db2807d22', 'originalUrlSetSha256': 'bcd12b5887c8bccc074ca964fc5b39c55599264b5084641320fcb267a76960c7', 'originalHttpStatus': 422, 'historicalPostAttempts': 1, 'maximumRecoveryPostAttempts': 1, 'maximumTotalPostAttempts': 2}
 
 
 class Metadata(HTMLParser):
@@ -99,7 +102,7 @@ def reachable_sitemap_urls(dist, inventory):
 def indexnow_payload(urls, proof=PROOF):
     """Pure offline payload construction; this function never submits or grants release approval."""
     assert isinstance(urls,list) and urls==[ORIGIN+'/'], 'IndexNow requires exactly the canonical home URL'
-    assert proof==PROOF, 'Exact existing public proof required'
+    assert proof==PROOF and proof!=LEGACY_PROOF, 'Exact dedicated active public proof required'
     return {'host': ORIGIN.removeprefix('https://'), 'key':Path(PROOF['path']).stem,
             'keyLocation':ORIGIN+PROOF['path'], 'urlList':list(urls)}
 
@@ -160,8 +163,7 @@ def inspect_dist(dist, mode, proof=PROOF):
     assert not any(p.is_symlink() for p in dist.rglob('*')), 'Artifact symlink forbidden'
     inventory = {p.relative_to(dist).as_posix(): sha(p.read_bytes()) for p in paths}
     assert {name for name in inventory if name.endswith('.html')} == set(FILES), 'Exact index.html and 404.html required'
-    assert len(inventory)==16, 'Exact 16 output files required'
-    expected=set(FILES)|set(baseline()['staticAssets'])|{'robots.txt','_headers','sitemap-index.xml','sitemap-0.xml',PROOF['path'].lstrip('/')}
+    expected=set(FILES)|set(baseline()['staticAssets'])|{'robots.txt','_headers','sitemap-index.xml','sitemap-0.xml',PROOF['path'].lstrip('/'),*[p['path'].lstrip('/') for p in RETAINED_PROOFS]}
     assert set(inventory)==expected, 'Exact production output inventory required'
     assert not any(Path(name).name in {'_worker.js', '_routes.json', '_redirects', 'package.json', 'package-lock.json'} for name in inventory), 'Executable or routing artifact forbidden'
     for filename, route in FILES.items():
@@ -197,10 +199,13 @@ def inspect_dist(dist, mode, proof=PROOF):
     assert indexnow_payload(urls)['urlList']==urls, 'Sitemap and IndexNow URL set mismatch'
     assert (dist / 'robots.txt').read_text(encoding='utf-8') == 'User-agent: *\nAllow: /\nSitemap: ' + ORIGIN + '/sitemap-index.xml\n'
     assert (dist / '_headers').read_bytes() == b'/*\n', 'Exact empty response-header rules required'
-    assert proof == PROOF, 'Exact Damyang existing proof binding required'
-    name = proof['path'].lstrip('/')
-    assert name in inventory and inventory[name] == proof['sha256'], 'Copied proof missing or changed'
-    assert (dist / name).read_bytes() == (Path(name).stem + '\n').encode('utf-8'), 'Copied proof body mismatch'
+    assert proof == PROOF and proof != LEGACY_PROOF, 'Exact Damyang dedicated active proof binding required'
+    assert len(RETAINED_PROOFS)==1 and len({p['path'] for p in [PROOF,*RETAINED_PROOFS]})==2, 'Exact distinct active and retained proofs required'
+    for selected in [PROOF,*RETAINED_PROOFS]:
+        assert selected['origin']==ORIGIN and re.fullmatch(r'/[0-9a-f]{32}\.txt',selected['path']), 'Exact local proof path format required'
+        name = selected['path'].lstrip('/')
+        assert name in inventory and inventory[name] == selected['sha256'], 'Copied proof missing or changed'
+        assert (dist / name).read_bytes() == (Path(name).stem + '\n').encode('utf-8'), 'Copied proof body mismatch'
     parity=equivalence(dist,mode['revision'])
     return {'state': 'production_artifact_contract_verified' if mode['mode']=='production' else 'offline_metadata_contract_verified', 'previewEquivalence':parity, 'publicHTTPVerified': False,
             'origin': ORIGIN, 'revision': mode['revision'], 'htmlFiles': 2, 'sitemapUrls': sorted(urls),

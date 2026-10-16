@@ -14,7 +14,7 @@ PREVIEW_SHA='local-inspection'
 PRIVATE_FILE_COUNT=65 # Set by final local source freeze.
 MANIFEST_SHA='33028f8fefb57c023d13eb99869626a0134538019d9e574c3c176bd5ca10baaf'
 TREE_SHA='b2ada80b598aa383a4da56bfe547722e5894a0fc9658a3f10d9e0f127a3a5b73'
-CONTRACT_SHA='8b62c4bb7ee96c05c7a612c3a24582a7eda26ae380a781221bf8a314ab3e5544'
+CONTRACT_SHA='9b7be12391a574527cd61958ebf61a87523f52df134ccd9e0e1ad769281b175d'
 BOUNDARY=['SITE_ORIGIN','SITE_URL','PUBLIC_SITE_URL','PRODUCTION_ORIGIN','DEPLOY_ENV','DEPLOY_TARGET','ALLOW_PRODUCTION','SITE_RELEASE_MODE','SITE_INDEXABLE','SITE_RELEASE_BINDING_PATH','SITE_RELEASE_BINDING_SHA256','CLOUDFLARE_API_TOKEN','CLOUDFLARE_ACCOUNT_ID','PRODUCTION_APPROVED','OWNERSHIP_VERIFIED','INDEXNOW_ENABLED','PUBLIC_APPROVED']
 def require(ok,reason):
  if not ok:raise ValueError(reason)
@@ -78,7 +78,8 @@ def inspect_output(private_dist,destination):
  (destination/'_headers').write_text('/*\n');(destination/'sitemap.xml').unlink()
  (destination/'sitemap-index.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><sitemap><loc>'+output.ORIGIN+'/sitemap-0.xml</loc></sitemap></sitemapindex>\n')
  (destination/'sitemap-0.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join('<url><loc>'+output.ORIGIN+r+'</loc></url>' for r in output.ROUTES)+'</urlset>\n')
- proof=read(ADAPTER/'release/existing-indexnow-proof.txt');require(sha(proof)==output.PROOF['sha256'] and proof==(Path(output.PROOF['path']).stem+'\n').encode(),'existing_proof_bytes_required');(destination/Path(output.PROOF['path']).name).write_bytes(proof)
+ for filename,binding in [('existing-indexnow-proof.txt',output.LEGACY_PROOF),('damyang-indexnow-proof.txt',output.PROOF)]:
+  proof=read(ADAPTER/'release'/filename);require(sha(proof)==binding['sha256'] and proof==(Path(binding['path']).stem+'\n').encode(),'exact_active_and_retained_proof_bytes_required');(destination/Path(binding['path']).name).write_bytes(proof)
  result=output.inspect_dist(destination,dict(mode='offline-inspection',indexable=True,origin=output.ORIGIN,revision=PREVIEW_SHA))
  result.update(state='OFFLINE_METADATA_INSPECTION_ONLY',sourceRevision=None,sourceRevisionRole='pending-real-remote-save; local-inspection marker only',productionBindingUsed=False,productionRunnerExecuted=False,publishableArtifact=False,releaseManifestCreated=False,providerCredentialsUsed=False,publicationExecuted=False,indexNowSubmitted=False)
  frozen_source();return result

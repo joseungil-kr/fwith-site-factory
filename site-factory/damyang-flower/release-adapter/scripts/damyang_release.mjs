@@ -12,7 +12,10 @@ export const ROOT=path.join(SOURCE_ROOT,'candidate');
 export const HOSTNAME='damyang.fwith.kr',ORIGIN='https://'+HOSTNAME,WORKER='damyang-flower-guide';
 export const ROUTES=['/'];
 export const HTML_ROUTES=['/','/404.html'];
-export const PROOF={origin:ORIGIN,path:'/39c4ed924bc6084c670a963c26d9f018.txt',sha256:'5da3864d5327c6e4e41e6eef12510004b2302f55c3bc61593d7d49c1797739b5'};
+export const LEGACY_PROOF={"origin":"https://damyang.fwith.kr","path":"/39c4ed924bc6084c670a963c26d9f018.txt","sha256":"5da3864d5327c6e4e41e6eef12510004b2302f55c3bc61593d7d49c1797739b5"};
+export const PROOF={"origin":"https://damyang.fwith.kr","path":"/db5e090bdb87762ce7c7ec5c01f6ab73.txt","sha256":"a818ead0cec264f34e0763edc923803719244855f8b281c214688c296790ecec"};
+export const RETAINED_PROOFS=[LEGACY_PROOF];
+export const PROOF_RECOVERY_CHAIN={"originalSourceRevision":"89c92dff3dca6456c1b0a3f7ee0587efe0361bed","originalPublicationRunId":38861200090,"originalReceiptIssue":377,"originalStartedCommentId":6209522619,"originalRejectedCommentId":6209523005,"originalFingerprint":"ccef3be8005323e66f2038a490f94df15a843fd7abbc2726801f233db2807d22","originalUrlSetSha256":"bcd12b5887c8bccc074ca964fc5b39c55599264b5084641320fcb267a76960c7","originalHttpStatus":422,"historicalPostAttempts":1,"maximumRecoveryPostAttempts":1,"maximumTotalPostAttempts":2};
 export const PRIVATE_FILE_COUNT=65; // Set by final local source freeze, never inferred during validation.
 export const PRIVATE_TREE_SHA='b2ada80b598aa383a4da56bfe547722e5894a0fc9658a3f10d9e0f127a3a5b73';
 export const sha=b=>createHash('sha256').update(b).digest('hex');
@@ -34,13 +37,14 @@ export function frozenSource(root=SOURCE_ROOT){
 }
 export function robotsForRoute(route){require(HTML_ROUTES.includes(route),'unknown_html_route');return ROUTES.includes(route)?'index,follow':'noindex,follow'}
 export function validateBinding(b,env,contractSha){
- const expected={schemaVersion:1,state:'approved',repository:'joseungil-kr/fwith-site-factory',sourceRoot:'site-factory/damyang-flower',siteKey:'damyang-flower-direct',hostname:HOSTNAME,origin:ORIGIN,worker:WORKER,frozenInputSha256:REVIEWED_SPEC_SHA256,frozenPrivateTreeSha256:PRIVATE_TREE_SHA,sourceRevision:env.SITE_FACTORY_REVISION,proof:PROOF,sitemapRoutes:ROUTES,htmlFiles:2,notFoundRobots:'noindex,follow',notFoundStatus:404,publicHttpVerified:false,indexNowSubmitted:false,boundedContractSha256:contractSha,coreHubLaunchStatus:'NOT_ASSESSED',fullLaunchStatus:'NOT_ASSESSED'};
+ const expected={schemaVersion:1,state:'approved',repository:'joseungil-kr/fwith-site-factory',sourceRoot:'site-factory/damyang-flower',siteKey:'damyang-flower-direct',hostname:HOSTNAME,origin:ORIGIN,worker:WORKER,frozenInputSha256:REVIEWED_SPEC_SHA256,frozenPrivateTreeSha256:PRIVATE_TREE_SHA,sourceRevision:env.SITE_FACTORY_REVISION,proof:PROOF,retainedProofs:RETAINED_PROOFS,proofRecoveryChain:PROOF_RECOVERY_CHAIN,sitemapRoutes:ROUTES,htmlFiles:2,notFoundRobots:'noindex,follow',notFoundStatus:404,publicHttpVerified:false,indexNowSubmitted:false,boundedContractSha256:contractSha,coreHubLaunchStatus:'NOT_ASSESSED',fullLaunchStatus:'NOT_ASSESSED'};
  for(const [k,v] of Object.entries(expected))require(same(b[k],v),'binding_mismatch:'+k);
  require(/^[0-9a-f]{40}$/.test(b.sourceRevision||''),'actual_source_revision_required');
- require(same(b.approvals,{publication:true,hostBinding:true,indexNowProof:true}),'explicit_approvals_required');
+ require(same(b.approvals,{publication:true,hostBinding:true,indexNowProof:true,indexNowProofReplacement:true}),'explicit_approvals_required');
  require(typeof b.authorizationEvidence==='string'&&/^https:\/\/github\.com\/joseungil-kr\/fwith-site-factory\/blob\/[0-9a-f]{40}\/docs\/direct-damyang\/production-authorization-20261016\.json$/.test(b.authorizationEvidence),'auditable_approval_reference_required');
+ require(typeof b.recoveryAuthorizationEvidence==='string'&&/^https:\/\/github\.com\/joseungil-kr\/fwith-site-factory\/blob\/[0-9a-f]{40}\/docs\/direct-damyang\/indexnow-key-recovery-authorization-20261016\.json$/.test(b.recoveryAuthorizationEvidence),'recovery_approval_reference_required');
  require(/^[0-9a-f]{64}$/.test(b.sourceContractSha256||''),'source_contract_digest_required');
- require(Object.keys(b).sort().join('|')===[...Object.keys(expected),'approvals','authorizationEvidence','sourceContractSha256'].sort().join('|'),'binding_schema_mismatch');
+ require(Object.keys(b).sort().join('|')===[...Object.keys(expected),'approvals','authorizationEvidence','recoveryAuthorizationEvidence','sourceContractSha256'].sort().join('|'),'binding_schema_mismatch');
  require(env.SITE_RELEASE_MODE==='production'&&env.SITE_INDEXABLE==='true'&&env.SITE_URL===ORIGIN,'production_environment_mismatch');
  return {mode:'production',indexable:true,origin:ORIGIN,revision:b.sourceRevision,worker:WORKER};
 }
@@ -59,8 +63,11 @@ export function resolveDamyangRelease(env=process.env,root=ROOT){
  require(!realBinding.startsWith(realRoot+path.sep),'source_internal_binding_forbidden');
  const raw=read(bindingPath);require(/^[0-9a-f]{64}$/.test(env.SITE_RELEASE_BINDING_SHA256||'')&&sha(raw)===env.SITE_RELEASE_BINDING_SHA256,'binding_digest_mismatch');
  const result=validateBinding(JSON.parse(raw),env,sha(read(path.join(ADAPTER_ROOT,'release/bounded-contract.json'))));
- const proof=read(path.join(ADAPTER_ROOT,'release/existing-indexnow-proof.txt'));
- require(sha(proof)===PROOF.sha256&&proof.toString()===path.basename(PROOF.path,'.txt')+'\n','existing_proof_bytes_required');
+ require(PROOF.origin===ORIGIN&&LEGACY_PROOF.origin===ORIGIN&&PROOF.path!==LEGACY_PROOF.path,'dedicated_proof_required');
+ for(const [filename,binding] of [['existing-indexnow-proof.txt',LEGACY_PROOF],['damyang-indexnow-proof.txt',PROOF]]){
+  const proof=read(path.join(ADAPTER_ROOT,'release',filename));
+  require(/^\/[0-9a-f]{32}\.txt$/.test(binding.path)&&sha(proof)===binding.sha256&&proof.toString()===path.basename(binding.path,'.txt')+'\n','exact_active_and_retained_proof_bytes_required');
+ }
  return result;
 }
 export function privateBuildEnvironment(env=process.env){

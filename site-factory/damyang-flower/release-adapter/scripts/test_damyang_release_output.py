@@ -95,4 +95,21 @@ class IndexNowFixtureTests(unittest.TestCase):
  def test_foreign_proof_fails(self):
   with self.assertRaises(AssertionError):o.indexnow_payload([o.ORIGIN+'/'],{**o.PROOF,'origin':'https://wrong.invalid'})
 
+class RecoveryProofTests(OutputTests):
+ def test_retained_proof_missing(self):(self.root/o.LEGACY_PROOF['path'].lstrip('/')).unlink();self.reject()
+ def test_active_proof_missing(self):(self.root/o.PROOF['path'].lstrip('/')).unlink();self.reject()
+ def test_retained_proof_changed(self):(self.root/o.LEGACY_PROOF['path'].lstrip('/')).write_bytes(b'changed\n');self.reject()
+ def test_active_has_legacy_bytes(self):(self.root/o.PROOF['path'].lstrip('/')).write_bytes((self.root/o.LEGACY_PROOF['path'].lstrip('/')).read_bytes());self.reject()
+ def test_retained_has_active_bytes(self):(self.root/o.LEGACY_PROOF['path'].lstrip('/')).write_bytes((self.root/o.PROOF['path'].lstrip('/')).read_bytes());self.reject()
+ def test_third_arbitrary_proof_rejected(self):(self.root/('1'*32+'.txt')).write_text('1'*32+'\n');self.reject()
+ def test_legacy_not_active_payload(self):
+  with self.assertRaises(AssertionError):o.indexnow_payload([o.ORIGIN+'/'],o.LEGACY_PROOF)
+ def test_binding_wrong_proof(self):
+  with self.assertRaises(AssertionError):o.inspect_dist(self.root,self.mode,o.LEGACY_PROOF)
+ def test_active_and_retained_paths_are_distinct(self):self.assertNotEqual(o.PROOF['path'],o.LEGACY_PROOF['path']);self.assertEqual(o.RETAINED_PROOFS,[o.LEGACY_PROOF])
+ def test_successor_inventory_derived_from_allowed_files(self):
+  result=self.check();expected=set(o.FILES)|set(o.baseline()['staticAssets'])|{'robots.txt','_headers','sitemap-index.xml','sitemap-0.xml',o.PROOF['path'].lstrip('/'),o.LEGACY_PROOF['path'].lstrip('/')};self.assertEqual(set(result['files']),expected)
+ def test_original_rejection_budget_preserved(self):
+  chain=o.PROOF_RECOVERY_CHAIN;self.assertEqual(chain['originalReceiptIssue'],377);self.assertEqual(chain['originalHttpStatus'],422);self.assertEqual(chain['historicalPostAttempts'],1);self.assertEqual(chain['maximumRecoveryPostAttempts'],1);self.assertEqual(chain['maximumTotalPostAttempts'],2)
+
 if __name__=='__main__':unittest.main(verbosity=2)

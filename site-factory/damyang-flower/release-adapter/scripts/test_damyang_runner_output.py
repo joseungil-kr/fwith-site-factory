@@ -10,6 +10,7 @@ def run():
    self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup);self.root=Path(self.tmp.name)/'dist'
    shutil.copytree(fixture,self.root);self.mode=dict(mode)
   original.OutputTests.setUp=runner_setup
-  result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(original.OutputTests))
+  original.RecoveryProofTests.setUp=runner_setup
+  result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(original.RecoveryProofTests))
   return 0 if result.wasSuccessful() else 1
 if __name__=='__main__':raise SystemExit(run())

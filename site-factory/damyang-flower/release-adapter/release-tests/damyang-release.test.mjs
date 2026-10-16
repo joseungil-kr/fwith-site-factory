@@ -1,9 +1,9 @@
 // Synthetic offline bindings are test data, never release authorization.
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import path from 'node:path';import os from 'node:os';
-import {ROOT,ADAPTER_ROOT,PRIVATE_FILE_COUNT,REVIEWED_SPEC_SHA256,ORIGIN,WORKER,HOSTNAME,ROUTES,PROOF,PRIVATE_TREE_SHA,sha,read,frozenSource,resolveDamyangRelease,validateBinding,robotsForRoute,privateBuildEnvironment} from '../scripts/damyang_release.mjs';
+import {ROOT,ADAPTER_ROOT,PRIVATE_FILE_COUNT,REVIEWED_SPEC_SHA256,ORIGIN,WORKER,HOSTNAME,ROUTES,PROOF,LEGACY_PROOF,RETAINED_PROOFS,PROOF_RECOVERY_CHAIN,PRIVATE_TREE_SHA,sha,read,frozenSource,resolveDamyangRelease,validateBinding,robotsForRoute,privateBuildEnvironment} from '../scripts/damyang_release.mjs';
 const contractSha=sha(read(path.join(ADAPTER_ROOT,'release/bounded-contract.json')));
 const env={SITE_RELEASE_MODE:'production',SITE_INDEXABLE:'true',SITE_URL:ORIGIN,SITE_FACTORY_REVISION:'a'.repeat(40)};
-const fixture=()=>({schemaVersion:1,state:'approved',repository:'joseungil-kr/fwith-site-factory',sourceRoot:'site-factory/damyang-flower',siteKey:'damyang-flower-direct',hostname:HOSTNAME,origin:ORIGIN,worker:WORKER,frozenInputSha256:REVIEWED_SPEC_SHA256,frozenPrivateTreeSha256:PRIVATE_TREE_SHA,sourceRevision:env.SITE_FACTORY_REVISION,proof:PROOF,sitemapRoutes:ROUTES,htmlFiles:2,notFoundRobots:'noindex,follow',notFoundStatus:404,publicHttpVerified:false,indexNowSubmitted:false,boundedContractSha256:contractSha,coreHubLaunchStatus:'NOT_ASSESSED',fullLaunchStatus:'NOT_ASSESSED',approvals:{publication:true,hostBinding:true,indexNowProof:true},authorizationEvidence:'https://github.com/joseungil-kr/fwith-site-factory/blob/'+('c'.repeat(40))+'/docs/direct-damyang/production-authorization-20261016.json',sourceContractSha256:'d'.repeat(64)});
+const fixture=()=>({schemaVersion:1,state:'approved',repository:'joseungil-kr/fwith-site-factory',sourceRoot:'site-factory/damyang-flower',siteKey:'damyang-flower-direct',hostname:HOSTNAME,origin:ORIGIN,worker:WORKER,frozenInputSha256:REVIEWED_SPEC_SHA256,frozenPrivateTreeSha256:PRIVATE_TREE_SHA,sourceRevision:env.SITE_FACTORY_REVISION,proof:PROOF,retainedProofs:RETAINED_PROOFS,proofRecoveryChain:PROOF_RECOVERY_CHAIN,sitemapRoutes:ROUTES,htmlFiles:2,notFoundRobots:'noindex,follow',notFoundStatus:404,publicHttpVerified:false,indexNowSubmitted:false,boundedContractSha256:contractSha,coreHubLaunchStatus:'NOT_ASSESSED',fullLaunchStatus:'NOT_ASSESSED',approvals:{publication:true,hostBinding:true,indexNowProof:true,indexNowProofReplacement:true},authorizationEvidence:'https://github.com/joseungil-kr/fwith-site-factory/blob/'+('c'.repeat(40))+'/docs/direct-damyang/production-authorization-20261016.json',recoveryAuthorizationEvidence:'https://github.com/joseungil-kr/fwith-site-factory/blob/'+('c'.repeat(40))+'/docs/direct-damyang/indexnow-key-recovery-authorization-20261016.json',sourceContractSha256:'d'.repeat(64)});
 test('exact frozen private source including reviewed copy, app and seven images remains byte-bound',()=>assert.equal(frozenSource(),true));
 test('default remains private preview without selected origin',()=>assert.deepEqual(resolveDamyangRelease({}),{mode:'preview',indexable:false,origin:null,revision:'local',worker:null}));
 test('production fixture accepts exact explicit external contract',()=>assert.equal(validateBinding(fixture(),env,contractSha).origin,ORIGIN));
@@ -24,3 +24,23 @@ function isolated(fn){const root=fs.mkdtempSync(path.join(os.tmpdir(),'damyang-f
 for(const [name,fn] of [
  ['extra file',r=>fs.writeFileSync(path.join(r,'candidate/extra.txt'),'extra')],['hidden file',r=>fs.writeFileSync(path.join(r,'candidate/.hidden'),'hidden')],['missing file',r=>fs.unlinkSync(path.join(r,'candidate/src/pages/index.astro'))],['changed source',r=>fs.appendFileSync(path.join(r,'candidate/src/pages/index.astro'),'changed')],['symlink parent',r=>{const p=path.join(r,'candidate/src/pages');fs.renameSync(p,p+'-target');fs.symlinkSync(p+'-target',p);}]
 ])test('frozen set rejects '+name,()=>isolated(root=>{fn(root);assert.throws(()=>frozenSource(root));}));
+
+// The original publication approval, legacy proof or a fresh fingerprint cannot reset this chain.
+for(const [name,mutate] of [
+ ['legacy proof active',b=>b.proof=LEGACY_PROOF],
+ ['missing retained proof',b=>delete b.retainedProofs],
+ ['changed retained proof',b=>b.retainedProofs=[{...LEGACY_PROOF,sha256:'0'.repeat(64)}]],
+ ['active proof also retained',b=>b.retainedProofs=[PROOF]],
+ ['missing original chain',b=>delete b.proofRecoveryChain],
+ ['changed original receipt',b=>b.proofRecoveryChain={...PROOF_RECOVERY_CHAIN,originalReceiptIssue:378}],
+ ['changed original source',b=>b.proofRecoveryChain={...PROOF_RECOVERY_CHAIN,originalSourceRevision:'0'.repeat(40)}],
+ ['changed original comment',b=>b.proofRecoveryChain={...PROOF_RECOVERY_CHAIN,originalRejectedCommentId:6209523006}],
+ ['changed original fingerprint',b=>b.proofRecoveryChain={...PROOF_RECOVERY_CHAIN,originalFingerprint:'0'.repeat(64)}],
+ ['reset historical budget',b=>b.proofRecoveryChain={...PROOF_RECOVERY_CHAIN,historicalPostAttempts:0}],
+ ['expanded recovery budget',b=>b.proofRecoveryChain={...PROOF_RECOVERY_CHAIN,maximumRecoveryPostAttempts:2}],
+ ['expanded total budget',b=>b.proofRecoveryChain={...PROOF_RECOVERY_CHAIN,maximumTotalPostAttempts:3}],
+ ['missing replacement approval',b=>b.approvals={publication:true,hostBinding:true,indexNowProof:true}],
+ ['missing recovery authority reference',b=>delete b.recoveryAuthorizationEvidence],
+ ['old authority reference reused',b=>b.recoveryAuthorizationEvidence=b.authorizationEvidence],
+ ['foreign recovery authority reference',b=>b.recoveryAuthorizationEvidence='https://wrong.invalid/approval'],
+])test('dedicated recovery binding rejects '+name,()=>{const b=fixture();mutate(b);assert.throws(()=>validateBinding(b,env,contractSha));});

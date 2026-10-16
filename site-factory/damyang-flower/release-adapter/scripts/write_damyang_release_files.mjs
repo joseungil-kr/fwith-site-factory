@@ -1,7 +1,7 @@
 // Modifies generated heads/control files only after unchanged private QA; every body byte stays identical.
 import fs from 'node:fs';
 import path from 'node:path';
-import {resolveDamyangRelease,ROOT,ADAPTER_ROOT,ROUTES,HTML_ROUTES,PROOF,require,robotsForRoute} from './damyang_release.mjs';
+import {resolveDamyangRelease,ROOT,ADAPTER_ROOT,ROUTES,HTML_ROUTES,PROOF,LEGACY_PROOF,require,robotsForRoute} from './damyang_release.mjs';
 const release=resolveDamyangRelease();require(release.mode==='production','production_only_output_transform');
 const copy=JSON.parse(fs.readFileSync(path.join(ROOT,'../inputs/reviewed-copy/customer-copy.json'),'utf8'));const asset=JSON.parse(fs.readFileSync(path.join(ROOT,'../inputs/reviewed-copy/asset-manifest.json'),'utf8')).productPhotos.find(p=>p.sku==='B201');const socialImage={path:asset.publicPath,alt:copy.productCards[0].photoAlt};
 require(socialImage.path==='/images/products/B201.jpg'&&typeof socialImage.alt==='string','reviewed_social_product_required');
@@ -28,5 +28,6 @@ fs.writeFileSync(path.join(dist,'_headers'),'/*\n');
 fs.rmSync(path.join(dist,'sitemap.xml'));
 fs.writeFileSync(path.join(dist,'sitemap-index.xml'),`<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><sitemap><loc>${release.origin}/sitemap-0.xml</loc></sitemap></sitemapindex>\n`);
 fs.writeFileSync(path.join(dist,'sitemap-0.xml'),`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${ROUTES.map(r=>`<url><loc>${release.origin+r}</loc></url>`).join('')}</urlset>\n`);
-fs.copyFileSync(path.join(ADAPTER_ROOT,'release/existing-indexnow-proof.txt'),path.join(dist,PROOF.path.slice(1)));
-console.log('Generated two route-aware metadata heads, exact one-URL sitemap and existing public proof; no network calls.');
+fs.copyFileSync(path.join(ADAPTER_ROOT,'release/existing-indexnow-proof.txt'),path.join(dist,LEGACY_PROOF.path.slice(1)));
+fs.copyFileSync(path.join(ADAPTER_ROOT,'release/damyang-indexnow-proof.txt'),path.join(dist,PROOF.path.slice(1)));
+console.log('Generated two route-aware metadata heads, exact one-URL sitemap and separate retained/active public proofs; no network calls.');
