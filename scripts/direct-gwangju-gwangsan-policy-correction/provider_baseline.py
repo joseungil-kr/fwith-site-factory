@@ -67,6 +67,27 @@ def allowed_path(account,path,selected=None):
  selected=selected or {}
  return not u.query and any(type(selected.get(kind)) is str and re.fullmatch(UUID,selected[kind]) and u.path==script+'/'+kind+'/'+selected[kind] for kind in ('deployments','versions'))
 
+class ProviderEnvelopeError(ValueError):
+ def __init__(self,diagnostic):
+  super().__init__('provider_response_unverified');self.diagnostic=diagnostic
+
+def envelope_diagnostic(account,path,obj):
+ # Only fixed labels, expected-field presence/types and booleans leave this function.
+ # Response values, unknown field names, identifiers and provider messages are never retained.
+ base='/accounts/'+account;script=base+'/workers/scripts/'+WORKER
+ fixed={base:'account',base+'/workers/scripts':'scripts-list',base+'/workers/domains':'domains-list',script+'/settings':'script-settings',script+'/subdomain':'script-exposure',script+'/deployments?page=1&per_page=1':'active-deployment-list'}
+ label=fixed.get(path)
+ if label is None:
+  for kind,name in [('deployments','selected-deployment'),('versions','selected-version')]:
+   if re.fullmatch(re.escape(script+'/'+kind+'/')+UUID,path):label=name
+ require(label is not None,'diagnostic_endpoint_label_unavailable')
+ types={dict:'object',list:'array',str:'string',bool:'boolean',int:'number',float:'number',type(None):'null'}
+ is_object=type(obj) is dict;fields={}
+ for name in ('success','errors','messages','result','result_info'):
+  present=is_object and name in obj;fields[name]={'present':present,'type':types.get(type(obj[name]),'other') if present else 'absent'}
+ checks={'object':is_object,'onlyAllowedTopLevelKeys':is_object and set(obj)<={'success','errors','messages','result','result_info'},'successIsTrue':is_object and obj.get('success') is True,'errorsIsEmptyArray':is_object and obj.get('errors')==[],'resultPresent':is_object and 'result' in obj,'messagesAbsentOrArray':is_object and ('messages' not in obj or type(obj['messages']) is list)}
+ return {'schema':'gwangsan-provider-envelope-diagnostic/v1','endpoint':label,'responseType':types.get(type(obj),'other'),'expectedFields':fields,'checks':checks}
+
 def provider_get(env,opener=None):
  account=env.get('CLOUDFLARE_ACCOUNT_ID','');token=env.get('CLOUDFLARE_API_TOKEN','')
  require(re.fullmatch('[0-9a-fA-F]{32}',account) and sha(account.encode())==ACCOUNT_SHA,'accepted_account_configuration_required')
@@ -92,7 +113,9 @@ def provider_get(env,opener=None):
    obj=json.loads(raw,object_pairs_hook=unique,parse_constant=lambda value:require(False,'provider_nonfinite_json'))
   except ValueError:raise ValueError('provider_json_invalid') from None
   except Exception:raise ValueError('provider_json_invalid') from None
-  require(type(obj) is dict and set(obj)<={'success','errors','messages','result','result_info'} and obj.get('success') is True and obj.get('errors')==[] and 'result' in obj and ('messages' not in obj or type(obj['messages']) is list),'provider_response_unverified')
+  try:
+   require(type(obj) is dict and set(obj)<={'success','errors','messages','result','result_info'} and obj.get('success') is True and obj.get('errors')==[] and 'result' in obj and ('messages' not in obj or type(obj['messages']) is list),'provider_response_unverified')
+  except ValueError:raise ProviderEnvelopeError(envelope_diagnostic(account,path,obj)) from None
   if path==active_path:
    active=active_identity(obj);new={'deployments':active['id'],'versions':active['versions'][0]['version_id']}
    require(not selected or selected==new,'active_identity_changed_during_transport');selected.update(new)
@@ -184,5 +207,7 @@ def main():
  try:
   load_policy();event=json.loads(read(os.environ['GITHUB_EVENT_PATH']));result=authorize(os.environ,event) if a.mode=='authorize' else observe(os.environ,event);save(a.report,result);print(json.dumps({'state':result.get('state','READ_ONLY_REQUEST_SELECTED'),'providerMutationsPerformed':False}));return 0
  except Exception as e:
-  code=str(e) if type(e) is ValueError and re.fullmatch('[a-z0-9_]+',str(e)) else type(e).__name__;save(a.report,{'state':'BLOCKED_WITH_NO_PROVIDER_MUTATION','code':code,'providerMutationsPerformed':False,'baselineAccepted':False});print('Read-only baseline blocked: '+code);return 1
+  code=str(e) if type(e) in (ValueError,ProviderEnvelopeError) and re.fullmatch('[a-z0-9_]+',str(e)) else type(e).__name__;report={'state':'BLOCKED_WITH_NO_PROVIDER_MUTATION','code':code,'providerMutationsPerformed':False,'baselineAccepted':False}
+  if type(e) is ProviderEnvelopeError:report['diagnostic']=e.diagnostic
+  save(a.report,report);print('Read-only baseline blocked: '+code);return 1
 if __name__=='__main__':sys.exit(main())

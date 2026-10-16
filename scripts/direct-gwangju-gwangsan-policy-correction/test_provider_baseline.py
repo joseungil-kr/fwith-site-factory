@@ -274,4 +274,64 @@ class R2Regressions(unittest.TestCase):
   with patch.object(p,'get',get),patch.object(p.managed_robots,'verify_headers'),patch.object(p.managed_robots,'verify',return_value={}),patch.object(p,'save'),patch.object(Path,'write_bytes'):r=p.http_once(c)
   self.assertEqual(len(r['observations']),17);self.assertTrue(all(set(x)<={'path','status','mediaType','bodySHA256','normalizedBodySHA256'} and len(x['bodySHA256'])==64 for x in r['observations']))
 
+class EnvelopeDiagnostics(unittest.TestCase):
+ def transport(self,obj):
+  helper=R2Regressions();opener=helper.opener([obj]);return helper.transport(opener),opener
+ def test_expected_endpoint_labels_only(self):
+  expected=['account','scripts-list','domains-list','script-settings','script-exposure','active-deployment-list','selected-deployment','selected-version']
+  for path,label in zip(fixtures(),expected):
+   with self.subTest(label=label):
+    report=b.envelope_diagnostic(ACCOUNT,path,ok({}));self.assertEqual(report['endpoint'],label)
+    for forbidden in [ACCOUNT,DEP,VID,SCRIPT]:self.assertNotIn(forbidden,json.dumps(report))
+  for path in ['https://evil.test/private','/accounts/'+ACCOUNT+'/workers/scripts/other/settings',SCRIPT+'/versions/not-uuid',SCRIPT+'/versions/'+VID+'?secret=value']:
+   with self.subTest(path=path),self.assertRaisesRegex(ValueError,'^diagnostic_endpoint_label_unavailable$'):b.envelope_diagnostic(ACCOUNT,path,{})
+ def test_presence_types_and_validation_flags_only(self):
+  obj={'success':False,'errors':[{'code':123,'message':'fixture-private-error'}],'messages':['fixture-private-message'],'result':{'secret':'fixture-private-result'},'unknown-fixture-private-key':'fixture-private-value'}
+  report=b.envelope_diagnostic(ACCOUNT,'/accounts/'+ACCOUNT,obj)
+  self.assertEqual(report['expectedFields'],{'success':{'present':True,'type':'boolean'},'errors':{'present':True,'type':'array'},'messages':{'present':True,'type':'array'},'result':{'present':True,'type':'object'},'result_info':{'present':False,'type':'absent'}})
+  self.assertEqual(report['checks'],{'object':True,'onlyAllowedTopLevelKeys':False,'successIsTrue':False,'errorsIsEmptyArray':False,'resultPresent':True,'messagesAbsentOrArray':True})
+  self.assertNotIn('fixture-private',json.dumps(report));self.assertNotIn('123',json.dumps(report));self.assertTrue(all(type(v) is bool for v in report['checks'].values()))
+ def test_response_types_never_echo_values(self):
+  for obj,typ in [(None,'null'),(False,'boolean'),(123,'number'),(1.5,'number'),('fixture-private','string'),(['fixture-private'],'array'),({'fixture-private':'fixture-private'},'object')]:
+   with self.subTest(type=typ):
+    report=b.envelope_diagnostic(ACCOUNT,'/accounts/'+ACCOUNT,obj);self.assertEqual(report['responseType'],typ);self.assertNotIn('fixture-private',json.dumps(report));self.assertNotIn('123',json.dumps(report))
+ def test_exact_original_envelope_predicate_preserved(self):
+  variants=[ok({}),{**ok({}),'messages':[]},{**ok({}),'result_info':{}},None,[],False,'fixture-private']
+  for key in ['success','errors','messages','result','result_info','unknown-fixture-private-key']:
+   for value in [None,False,True,0,1,'fixture-private',[],['fixture-private'],{}, {'fixture-private':'fixture-private'}]:
+    obj=ok({});obj[key]=value;variants.append(obj)
+   obj=ok({});obj.pop(key,None);variants.append(obj)
+  for i,obj in enumerate(variants):
+   old=(type(obj) is dict and set(obj)<={'success','errors','messages','result','result_info'} and obj.get('success') is True and obj.get('errors')==[] and 'result' in obj and ('messages' not in obj or type(obj['messages']) is list))
+   with self.subTest(case=i):
+    get,opener=self.transport(obj)
+    if old:self.assertEqual(get('/accounts/'+ACCOUNT),obj)
+    else:
+     with self.assertRaises(b.ProviderEnvelopeError) as caught:get('/accounts/'+ACCOUNT)
+     self.assertEqual(str(caught.exception),'provider_response_unverified');self.assertNotIn('fixture-private',json.dumps(caught.exception.diagnostic));self.assertNotIn(ACCOUNT,json.dumps(caught.exception.diagnostic))
+    self.assertEqual(len(opener.requests),1);self.assertEqual(opener.requests[0].get_method(),'GET');self.assertIsNone(opener.requests[0].data)
+ def test_dynamic_endpoint_error_uses_only_selected_label(self):
+  helper=R2Regressions();f=fixtures();opener=helper.opener([f[SCRIPT+'/deployments?page=1&per_page=1'],{'success':False,'errors':['fixture-private'],'result':None}]);get=helper.transport(opener);get(SCRIPT+'/deployments?page=1&per_page=1')
+  with self.assertRaises(b.ProviderEnvelopeError) as caught:get(SCRIPT+'/versions/'+VID)
+  self.assertEqual(caught.exception.diagnostic['endpoint'],'selected-version');self.assertNotIn(VID,json.dumps(caught.exception.diagnostic));self.assertEqual(len(opener.requests),2)
+ def test_cli_failure_retains_only_safe_diagnostic_and_exit_one(self):
+  diag=b.envelope_diagnostic(ACCOUNT,'/accounts/'+ACCOUNT,{'success':False,'errors':['fixture-private'],'result':None})
+  with tempfile.TemporaryDirectory() as td:
+   output=Path(td)/'failure.json'
+   with patch.object(b.sys,'argv',['provider_baseline.py','observe','--report',str(output)]),patch.dict(b.os.environ,{'GITHUB_EVENT_PATH':'synthetic-event.json'}),patch.object(b,'load_policy'),patch.object(b,'read',return_value=b'{}'),patch.object(b,'observe',side_effect=b.ProviderEnvelopeError(diag)),patch('sys.stdout',new_callable=io.StringIO) as stdout:
+    self.assertEqual(b.main(),1)
+   report=json.loads(output.read_text());self.assertEqual(report,{'state':'BLOCKED_WITH_NO_PROVIDER_MUTATION','code':'provider_response_unverified','providerMutationsPerformed':False,'baselineAccepted':False,'diagnostic':diag});self.assertNotIn('fixture-private',output.read_text()+stdout.getvalue())
+ def test_other_failures_do_not_gain_diagnostic_or_raw_messages(self):
+  for error,code in [(ValueError('safe_code'),'safe_code'),(ValueError('fixture private error'),'ValueError'),(RuntimeError('fixture-private'),'RuntimeError')]:
+   with self.subTest(code=code),tempfile.TemporaryDirectory() as td:
+    output=Path(td)/'failure.json'
+    with patch.object(b.sys,'argv',['provider_baseline.py','observe','--report',str(output)]),patch.dict(b.os.environ,{'GITHUB_EVENT_PATH':'synthetic-event.json'}),patch.object(b,'load_policy'),patch.object(b,'read',return_value=b'{}'),patch.object(b,'observe',side_effect=error),patch('sys.stdout',new_callable=io.StringIO) as stdout:self.assertEqual(b.main(),1)
+    report=json.loads(output.read_text());self.assertEqual(report['code'],code);self.assertNotIn('diagnostic',report);self.assertNotIn('fixture',output.read_text()+stdout.getvalue())
+ def test_success_output_does_not_gain_diagnostic(self):
+  expected={'state':'OBSERVED_NOT_ACCEPTED_FOR_MUTATION','baselineAccepted':False,'publicationEligible':False}
+  with tempfile.TemporaryDirectory() as td:
+   output=Path(td)/'observation.json'
+   with patch.object(b.sys,'argv',['provider_baseline.py','observe','--report',str(output)]),patch.dict(b.os.environ,{'GITHUB_EVENT_PATH':'synthetic-event.json'}),patch.object(b,'load_policy'),patch.object(b,'read',return_value=b'{}'),patch.object(b,'observe',return_value=expected),patch('sys.stdout',new_callable=io.StringIO):self.assertEqual(b.main(),0)
+   self.assertEqual(json.loads(output.read_text()),expected)
+
 if __name__=='__main__':unittest.main(verbosity=2)
