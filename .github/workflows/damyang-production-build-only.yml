@@ -113,3 +113,100 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 30
+
+  recovery_build:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.title == '[DAMYANG-RECOVERY-BUILD] 20261016 source063e9' && github.event.issue.user.login == 'joseungil-kr'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      ASTRO_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Select independently reviewed closed recovery request
+        id: recovery_select
+        run: python3 control/scripts/direct-damyang-recovery/recovery_build.py select --report recovery-selected-source.json
+      - name: Recheck exact dedicated recovery source branch head
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {data} = await github.rest.git.getRef({...context.repo, ref:'heads/source/damyang-dedicated-proof-recovery-20261016'});
+            if (data.object.type !== 'commit' || data.object.sha !== '063e9eda9d33cb2f8b4dfd847bea966ff9443eb5') throw new Error('Dedicated recovery source branch moved');
+      - uses: actions/checkout@v4
+        with:
+          ref: 063e9eda9d33cb2f8b4dfd847bea966ff9443eb5
+          path: target
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify exact source81 and actual Git subtree before any source execution
+        run: python3 control/scripts/direct-damyang-recovery/recovery_build.py prebuild --checkout target --report recovery-source-prebuild.json
+      - name: Run isolated recovery control negatives without changing original first-publication guards
+        run: python3 -m unittest discover -s control/scripts/direct-damyang-recovery -p 'test_recovery_build.py' -v
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Credential-free private source build and unchanged native regressions
+        working-directory: target/site-factory/damyang-flower/candidate
+        run: |
+          set -euo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/evidence-recovery/logs"
+          env -i PATH="$PATH" HOME="$HOME" LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 ASTRO_TELEMETRY_DISABLED=1 \
+            bash -euo pipefail -c 'npm ci --no-audit --no-fund; npm run build; npm test; python3 ../release-adapter/scripts/test_damyang_runner_output.py; python3 ../release-adapter/scripts/test_damyang_adapter.py; python3 ../release-adapter/scripts/test_damyang_release_output.py; python3 ../release-adapter/scripts/test_damyang_node_python_parity.py; node --test ../release-adapter/release-tests/damyang-release.test.mjs' \
+            2>&1 | tee "$GITHUB_WORKSPACE/evidence-recovery/logs/private-and-native-tests.log"
+      - name: Build source063e9 release17 with no provider or GitHub credential environment
+        working-directory: target/site-factory/damyang-flower/candidate
+        run: |
+          set -euo pipefail
+          env -i PATH="$PATH" HOME="$HOME" LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 ASTRO_TELEMETRY_DISABLED=1 \
+            SITE_RELEASE_MODE=production SITE_INDEXABLE=true SITE_URL=https://damyang.fwith.kr \
+            SITE_FACTORY_REVISION=063e9eda9d33cb2f8b4dfd847bea966ff9443eb5 \
+            SITE_RELEASE_BINDING_PATH="$GITHUB_WORKSPACE/recovery-binding/production-binding.json" \
+            SITE_RELEASE_BINDING_SHA256='${{ steps.recovery_select.outputs.binding_sha256 }}' \
+            node ../release-adapter/scripts/build_damyang_release.mjs \
+            2>&1 | tee "$GITHUB_WORKSPACE/evidence-recovery/logs/recovery-production-build.log"
+      - name: Verify source bytes remain unchanged and package17 exact outputs plus expected16 HTTP plan
+        env:
+          NATIVE_GATES_PASSED: 'true'
+        run: python3 control/scripts/direct-damyang-recovery/recovery_build.py postbuild --checkout target --package release-recovery --report recovery-output.json
+      - name: Retain source-bound recovery artifact for separate independent review
+        id: recovery_artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: damyang-proof-recovery-build-${{ github.run_id }}-${{ github.sha }}
+          path: |
+            release-recovery/
+            recovery-selected-source.json
+            recovery-source-prebuild.json
+            recovery-output.json
+            evidence-recovery/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - name: Record actual upload identity without claiming independent acceptance
+        env:
+          ARTIFACT_ID: ${{ steps.recovery_artifact.outputs.artifact-id }}
+          ARTIFACT_DIGEST: ${{ steps.recovery_artifact.outputs.artifact-digest }}
+          ARTIFACT_URL: ${{ steps.recovery_artifact.outputs.artifact-url }}
+        run: |
+          python3 - <<'PYIDENTITY'
+          import json,os,re
+          e=os.environ
+          assert re.fullmatch('[1-9][0-9]*',e['ARTIFACT_ID']) and re.fullmatch('[0-9a-f]{64}',e['ARTIFACT_DIGEST'])
+          d=dict(schemaVersion=1,sourceRevision='063e9eda9d33cb2f8b4dfd847bea966ff9443eb5',controlRevision=e['GITHUB_SHA'],runId=e['GITHUB_RUN_ID'],runAttempt=1,artifactId=int(e['ARTIFACT_ID']),artifactDigest='sha256:'+e['ARTIFACT_DIGEST'],artifactURL=e['ARTIFACT_URL'],state='UPLOADED_PENDING_INDEPENDENT_DOWNLOAD_AND_REVIEW',publicationReady=False,newLiveBrowserObserved=False)
+          open('recovery-artifact-identity.json','w').write(json.dumps(d,sort_keys=True,indent=2)+'\n')
+          with open(e['GITHUB_STEP_SUMMARY'],'a') as f: f.write('Recovery artifact '+e['ARTIFACT_ID']+' uploaded. Independent source/control/run/digest/output review is still required. No provider update or public HTTP was performed.\n')
+          PYIDENTITY
+      - name: Retain upload identity separately from the immutable build ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: damyang-proof-recovery-identity-${{ github.run_id }}-${{ github.sha }}
+          path: recovery-artifact-identity.json
+          if-no-files-found: error
+          retention-days: 30

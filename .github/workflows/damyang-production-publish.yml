@@ -173,3 +173,38 @@ jobs:
           INDEXNOW: ${{ steps.indexnow.outcome }}
         run: test "$DEPLOY" = success && test "$ATTACH" = success && test "$BINDING" = success && test "$HTTP" = success && test "$INDEXNOW" = success
 
+  inspect_existing_baseline:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[DAMYANG-EXISTING-BASELINE-INSPECT] 20261016' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.user.login == 'joseungil-kr'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      CONTROL_DIR: control/scripts/direct-damyang-recovery
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Authorize exact owner, main, first attempt and fixed GET-only request
+        run: python3 "$CONTROL_DIR/provider_baseline.py" authorize --report baseline-request.json
+      - name: Verify offline fixed-target contracts without provider credentials
+        run: python3 -m unittest discover -s "$CONTROL_DIR" -p 'test*baseline*.py' -v
+      - name: Observe existing binding, active version and original fifteen public paths
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: python3 "$CONTROL_DIR/provider_baseline.py" observe --report baseline-observation.json
+      - name: Retain nonsecret unaccepted observation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: damyang-existing-baseline-${{ github.run_id }}-${{ github.sha }}
+          path: |
+            baseline-request.json
+            baseline-observation.json
+            previous-public-http.json
+          if-no-files-found: warn
