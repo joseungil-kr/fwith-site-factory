@@ -30,10 +30,10 @@
     "customerCopyAndRendererUnchanged": true,
     "productionExpandedOccurrences": 143
   },
-  "status": "public_release_verified_indexnow_rejected_422_pending",
-  "executionState": "public_release_verified_indexnow_rejected_422_pending",
+  "status": "public_release_verified_indexnow_rejected_422_budget_exhausted",
+  "executionState": "public_release_verified_indexnow_rejected_422_budget_exhausted",
   "active": false,
-  "updatedAt": "2026-10-16T16:10:05.539366+00:00",
+  "updatedAt": "2026-10-16T17:56:30.760031+00:00",
   "originStatus": "PUBLIC_HTTP_VERIFIED_INDEXNOW_REJECTED",
   "origin": "https://gokseong.fwith.kr",
   "sourceBranch": "source/gokseong-dedicated-proof-production-20261016",
@@ -343,7 +343,7 @@
     "scope": "These are separate invocations and counts are not summed or substituted. Historical source89 regressions remain in the history object."
   },
   "pendingReleaseGates": [
-    "Accepted IndexNow receipt for the existing source91, dedicated public proof and single home URL. Preserve the original rejected receipt; any no-deploy recovery is separately reviewed and gated."
+    "Accepted IndexNow receipt remains missing. The original1 plus allowed additional1 POST budget is exhausted after two422 responses. Continue read-only diagnosis; do not retry or change submission method/source/key/deployment under this record."
   ],
   "releaseScope": {
     "substantiveHomeCount": 1,
@@ -365,5 +365,36 @@
     "prior67HostsCarriedForward": true,
     "exactFirstPublicAvailabilityEstablished": false
   },
-  "boundary": "Source91 and the actual reviewed build are publicly served. Independent15 GETs and fresh static102/119/143 copy checks pass, with strictly bounded Cloudflare HTML/robots transformations. The original single Naver POST was rejected422 and the final publish run failed; end-to-end release completion and search indexing are not claimed. No fresh live-public browser rendering is claimed. Preserve the original89 history, current source/key/host and receipt399. This record does not authorize redeployment, a new proof or resubmission. No further POST occurred during diagnosis."
+  "boundary": "Source91 and its reviewed build remain publicly served. The separately reviewed no-deploy recovery run38942033667 made the one permitted additional POST using the same dedicated proof and URL set; it was rejected422 with complete raw response Invalid urls. Original1 plus additional1 exhaust the lifetime2 budget, with no accepted receipt. The original rejected pair and its unavailable raw-body/wire-request limits remain preserved. Recovery public30 body observations match the reviewed release; current headers are runner-checked but their raw rows were not retained, and no fresh live browser rendering is claimed. No source/key change or redeployment occurred. Further submission requires a separately authorized and reviewed plan; this record grants none. Original source89 and first-public countImpact history remain unchanged.",
+  "indexNowRecovery": {
+    "state": "rejected_422_additional_budget_exhausted",
+    "recordPath": "docs/direct-gokseong/indexnow-recovery-result-20261017.json",
+    "recordSHA256": "4f10ba5ce54d28eb811b5a87f20842d31b3853bad22daf508a9cd7ec5534731f",
+    "runId": 38942033667,
+    "runURL": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/38942033667",
+    "controlRevision": "5a6bddffe1f5afbca77df91020c66547decfef44",
+    "artifactId": 12063981180,
+    "artifactSHA256": "e29012c22f1e54b709fcede5b8ec08abd1daf190c73030c463cbae39ce376b8b",
+    "receiptURL": "https://github.com/joseungil-kr/fwith-site-factory/issues/399#issuecomment-6221346305",
+    "originalReceiptURL": "https://github.com/joseungil-kr/fwith-site-factory/issues/399#issuecomment-6219443018",
+    "additionalPOSTs": 1,
+    "lifetimePOSTs": 2,
+    "remainingAdditionalPOSTs": 0,
+    "retryAllowed": false,
+    "HTTPStatus": 422,
+    "acceptedReceipt": false,
+    "actualRequestDataRetained": true,
+    "responseBodyRetained": true,
+    "responseBodyReadComplete": true,
+    "responseBodyBytes": 12,
+    "responseBodySHA256": "f83a31d1f1f5f393a40a2bebd8f43ed5cc2b9fa2fee784b8efb126860af0e508",
+    "originalResponseBodyStillUnavailable": true,
+    "publicRunnerGETObservations": 30,
+    "publicBodyComparisonsVerified": true,
+    "sourceAndKeyUnchanged": true,
+    "providerOperations": 0,
+    "newPublicHosts": 0,
+    "newCompletedHosts": 0
+  },
+  "countImpactScope": "Historical first-public snapshot retained unchanged. This recovery adds zero public hosts and zero completions; current global counts are in latest-progress.publicVerificationPendingIndexNow."
 }
