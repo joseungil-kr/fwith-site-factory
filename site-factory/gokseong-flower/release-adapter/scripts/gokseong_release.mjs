@@ -12,7 +12,7 @@ export const ROOT=path.join(SOURCE_ROOT,'candidate');
 export const HOSTNAME='gokseong.fwith.kr',ORIGIN='https://'+HOSTNAME,WORKER='gokseong-flower-guide';
 export const ROUTES=['/'];
 export const HTML_ROUTES=['/','/404.html'];
-export const PROOF=null; // Dedicated Gokseong verification key requires separate approval and a reviewed successor.
+export const PROOF={"origin":"https://gokseong.fwith.kr","path":"/049d6c691d2c4cb824d23f82e9883ce4.txt","sha256":"6b2ca7c4565ff09d97fa259ca5df416fdcb8408e92b0f0edf3dcf7af3a1fdcc4"}; // Dedicated public proof, generated under host-specific approval; publication still separately gated.
 export const EQUIVALENCE_SHA256='c337efd945a3090f5f48ea69c4f79c5866065bfaf7e76fd60c010b154e45338e';
 export const PRIVATE_FILE_COUNT=73; // Set by final local source freeze, never inferred during validation.
 export const PRIVATE_TREE_SHA='d37ad2fa7bdcedc33dd0a223fc8434e83b404167a07a8e056046c0c58caa3dbb';
@@ -43,7 +43,6 @@ export function validateBinding(b,env,contractSha){
  require(/^[0-9a-f]{64}$/.test(b.sourceContractSha256||''),'source_contract_digest_required');
  require(Object.keys(b).sort().join('|')===[...Object.keys(expected),'approvals','authorizationEvidence','sourceContractSha256'].sort().join('|'),'binding_schema_mismatch');
  require(env.SITE_RELEASE_MODE==='production'&&env.SITE_INDEXABLE==='true'&&env.SITE_URL===ORIGIN,'production_environment_mismatch');
- require(PROOF!==null,'site_specific_indexnow_proof_pending_no_production_mode');
  return {mode:'production',indexable:true,origin:ORIGIN,revision:b.sourceRevision,worker:WORKER};
 }
 export function resolveGokseongRelease(env=process.env,root=ROOT){
@@ -61,6 +60,8 @@ export function resolveGokseongRelease(env=process.env,root=ROOT){
  require(!realBinding.startsWith(realRoot+path.sep),'source_internal_binding_forbidden');
  const raw=read(bindingPath);require(/^[0-9a-f]{64}$/.test(env.SITE_RELEASE_BINDING_SHA256||'')&&sha(raw)===env.SITE_RELEASE_BINDING_SHA256,'binding_digest_mismatch');
  const result=validateBinding(JSON.parse(raw),env,sha(read(path.join(ADAPTER_ROOT,'release/bounded-contract.json'))));
+ const proof=read(path.join(ADAPTER_ROOT,'release/gokseong-indexnow-proof.txt'));
+ require(PROOF.origin===ORIGIN&&/^\/[0-9a-f]{32}\.txt$/.test(PROOF.path)&&sha(proof)===PROOF.sha256&&proof.toString()===path.basename(PROOF.path,'.txt')+'\n','exact_dedicated_proof_bytes_required');
  return result;
 }
 export function privateBuildEnvironment(env=process.env){

@@ -17,7 +17,7 @@ SOCIAL_IMAGE_ALT='흰색·노란색 꽃과 노란 윗장식의 B201 근조 3단 
 SOCIAL_IMAGE_SHA256='7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3'
 ROUTES = ['/']
 FILES = {'index.html':'/', '404.html':'/404.html'}
-PROOF = None # Site-specific key/proof remains unapproved and unconfigured.
+PROOF = {'origin': 'https://gokseong.fwith.kr', 'path': '/049d6c691d2c4cb824d23f82e9883ce4.txt', 'sha256': '6b2ca7c4565ff09d97fa259ca5df416fdcb8408e92b0f0edf3dcf7af3a1fdcc4'} # Dedicated public proof; this validator never submits.
 
 
 class Metadata(HTMLParser):
@@ -97,8 +97,11 @@ def reachable_sitemap_urls(dist, inventory):
 
 
 def indexnow_payload(urls, proof=PROOF):
-    """No submission payload can be created before a separately approved site-specific proof."""
-    raise AssertionError('Gokseong site-specific IndexNow key/proof is pending; no payload or POST authorized')
+    """Pure local payload construction. It never submits or grants release approval."""
+    assert isinstance(urls,list) and urls==[ORIGIN+'/'], 'IndexNow requires exactly the canonical home URL'
+    assert proof==PROOF, 'Exact dedicated Gokseong public proof required'
+    return {'host': ORIGIN.removeprefix('https://'), 'key':Path(PROOF['path']).stem,
+            'keyLocation':ORIGIN+PROOF['path'], 'urlList':list(urls)}
 
 
 def baseline():
@@ -149,16 +152,17 @@ def equivalence(dist,revision):
     return {'htmlBodiesByteIdentical':2,'staticAssetsByteIdentical':9,'headChangesExactlyAllowed':2}
 
 
-def inspect_dist(dist, mode, proof=PROOF):
+def inspect_dist(dist, mode, proof=None):
     dist = Path(dist)
-    assert mode['mode'] == 'offline-inspection' and mode['indexable'] is True and mode['origin'] == ORIGIN
+    assert mode['mode'] in {'offline-inspection','production'} and mode['indexable'] is True and mode['origin'] == ORIGIN
+    if mode['mode']=='production' and proof is None:proof=PROOF
     assert (re.fullmatch('[0-9a-f]{40}',mode['revision']) if mode['mode']=='production' else mode['revision']=='local-inspection'), 'Offline marker cannot authorize production'
     paths = [p for p in dist.rglob('*') if p.is_file()]
     assert not any(p.is_symlink() for p in dist.rglob('*')), 'Artifact symlink forbidden'
     inventory = {p.relative_to(dist).as_posix(): sha(p.read_bytes()) for p in paths}
     assert {name for name in inventory if name.endswith('.html')} == set(FILES), 'Exact index.html and 404.html required'
-    assert len(inventory)==15, 'Exact 15 offline files required; no verification proof is configured'
     expected=set(FILES)|set(baseline()['staticAssets'])|{'robots.txt','_headers','sitemap-index.xml','sitemap-0.xml'}
+    if mode['mode']=='production':expected.add(PROOF['path'].lstrip('/'))
     assert set(inventory)==expected, 'Exact production output inventory required'
     assert not any(Path(name).name in {'_worker.js', '_routes.json', '_redirects', 'package.json', 'package-lock.json'} for name in inventory), 'Executable or routing artifact forbidden'
     for filename, route in FILES.items():
@@ -191,7 +195,12 @@ def inspect_dist(dist, mode, proof=PROOF):
             assert social.get('twitter:title')==social.get('og:title') and social.get('twitter:description')==social.get('og:description'), 'Twitter reviewed title/description mismatch'
     assert inventory.get(SOCIAL_IMAGE_PATH.lstrip('/'))==SOCIAL_IMAGE_SHA256, 'Approved social image bytes changed'
     urls = reachable_sitemap_urls(dist, inventory)
-    assert PROOF is None and proof is None, 'Dedicated proof is pending, inherited proof forbidden'
+    if mode['mode']=='production':
+        assert proof==PROOF and proof['origin']==ORIGIN and re.fullmatch(r'/[0-9a-f]{32}\.txt',proof['path']), 'Exact dedicated Gokseong proof required'
+        name=proof['path'].lstrip('/')
+        assert inventory[name]==proof['sha256'] and (dist/name).read_bytes()==(Path(name).stem+'\n').encode(), 'Dedicated proof bytes changed'
+        assert indexnow_payload(urls,proof)['urlList']==urls, 'Sitemap and IndexNow URL set mismatch'
+    else:assert proof is None, 'Offline inspection must contain no proof'
     assert (dist / 'robots.txt').read_text(encoding='utf-8') == 'User-agent: *\nAllow: /\nSitemap: ' + ORIGIN + '/sitemap-index.xml\n'
     assert (dist / '_headers').read_bytes() == b'/*\n', 'Exact empty response-header rules required'
     parity=equivalence(dist,mode['revision'])
@@ -199,7 +208,7 @@ def inspect_dist(dist, mode, proof=PROOF):
             'origin': ORIGIN, 'revision': mode['revision'], 'htmlFiles': 2, 'sitemapUrls': sorted(urls),
             'purchaseHomeCount': 1, 'facilityDetailCount': 0, 'supportCount': 0,
             'notFoundProbe': {'path': '/.gokseong-release-missing-' + mode['revision'] + '/', 'expectedStatus': 404, 'bodySha256': inventory['404.html']},
-            'files': inventory, 'indexNowProof':None, 'indexNowStatus':'PENDING_SEPARATE_SITE_SPECIFIC_APPROVAL', 'publishableArtifact':False}
+            'files': inventory, 'indexNowProof':proof, 'indexNowStatus':'NOT_SUBMITTED', 'publishableArtifact':False}
 
 
 

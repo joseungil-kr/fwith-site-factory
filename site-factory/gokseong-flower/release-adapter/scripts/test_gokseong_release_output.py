@@ -88,12 +88,22 @@ class OutputTests(unittest.TestCase):
  def test_404_banner(self):self.edit('404.html','</main>','<figure data-shared-flower-banner="message"></figure></main>');self.reject()
 class IndexNowFixtureTests(unittest.TestCase):
  def test_one_home_payload(self):
-  self.assertIsNone(o.PROOF)
-  with self.assertRaisesRegex(AssertionError,'site-specific'):o.indexnow_payload([o.ORIGIN+'/'])
+  self.assertEqual(o.indexnow_payload([o.ORIGIN+'/']),{'host':'gokseong.fwith.kr','key':Path(o.PROOF['path']).stem,'keyLocation':o.ORIGIN+o.PROOF['path'],'urlList':[o.ORIGIN+'/']})
  def test_empty_extra_duplicate_foreign_404_and_nonlist_fail_closed(self):
   for value in [[],[o.ORIGIN+'/',o.ORIGIN+'/regions/'],[o.ORIGIN+'/',o.ORIGIN+'/'],['https://wrong.invalid/'],[o.ORIGIN+'/404.html'],(o.ORIGIN+'/',),None]:
    with self.subTest(value=value),self.assertRaises(AssertionError):o.indexnow_payload(value)
  def test_foreign_proof_fails(self):
   with self.assertRaises(AssertionError):o.indexnow_payload([o.ORIGIN+'/'],{'origin':'https://wrong.invalid','key':'unapproved'})
 
+from gokseong_test_fixtures import synthetic_production_output
+class ProductionOutputTests(OutputTests):
+ def setUp(self):
+  fixture=synthetic_production_output();self.root,self.mode=fixture.__enter__();self.addCleanup(fixture.__exit__,None,None,None)
+ def test_dedicated_proof_missing(self):(self.root/o.PROOF['path'].lstrip('/')).unlink();self.reject()
+ def test_dedicated_proof_changed(self):(self.root/o.PROOF['path'].lstrip('/')).write_bytes(b'changed\n');self.reject()
+ def test_second_proof_rejected(self):(self.root/('b'*32+'.txt')).write_text('b'*32+'\n');self.reject()
+ def test_foreign_proof_binding_rejected(self):
+  with self.assertRaises(AssertionError):o.inspect_dist(self.root,self.mode,{**o.PROOF,'origin':'https://wrong.invalid'})
+ def test_production_inventory_and_scope(self):
+  result=self.check();self.assertEqual(len(result['files']),16);self.assertEqual(result['indexNowProof'],o.PROOF);self.assertFalse(result['publishableArtifact']);self.assertFalse(result['publicHTTPVerified'])
 if __name__=='__main__':unittest.main(verbosity=2)
