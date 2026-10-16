@@ -8,7 +8,7 @@ This caller cannot POST, claim, deploy, attach, execute site code or IndexNow.
 from pathlib import Path
 import argparse, collections, datetime, hashlib, json, os, re, sys
 D=Path(__file__).resolve().parent;ROOT=D.parents[1]
-CALLER_SHA256='930d306c99fbd6be3fd453d33cb78b36af0afebaee814998325783a2a7627e4f'
+CALLER_SHA256='a956d958bbc8c3019907682c2fcf8fd44f30f6aeb114181017fec13733deb236'
 if hashlib.sha256((D/'publish_existing_update.py').read_bytes()).hexdigest()!=CALLER_SHA256:
     raise ValueError('immutable_existing_update_caller_required')
 import publish_existing_update as c

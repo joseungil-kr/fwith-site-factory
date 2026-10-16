@@ -577,6 +577,10 @@ jobs:
           path: control
           fetch-depth: 1
           persist-credentials: false
+      - name: Run trusted finalizer regressions without credentials or site code
+        run: |
+          cd control/scripts/direct-damyang-recovery
+          python3 -m unittest test_finalizer_reconciliation
       - name: Require reviewed actual identities before artifact retrieval
         id: selected
         env:
@@ -623,6 +627,13 @@ jobs:
           github-token: ${{ github.token }}
           merge-multiple: true
           path: damyang-recovery-update
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.selected.outputs.reconciliation_artifact_id }}
+          run-id: ${{ steps.selected.outputs.reconciliation_run_id }}
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: damyang-recovery-reconciliation
       - name: Recheck exact artifacts, current public bytes and lifetime receipt budget
         env:
           GH_TOKEN: ${{ github.token }}
@@ -656,4 +667,5 @@ jobs:
             finalizer-selection.json
             finalizer-receipt.json
             finalizer-public-http.json
+            submission-evidence/
           if-no-files-found: error

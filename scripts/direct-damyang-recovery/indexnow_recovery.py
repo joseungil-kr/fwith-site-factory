@@ -20,6 +20,7 @@ from pathlib import Path
 import re
 import threading
 from typing import Callable
+from urllib.parse import quote, urlencode
 
 REPOSITORY = 'joseungil-kr/fwith-site-factory'
 ORIGIN = 'https://damyang.fwith.kr'
@@ -34,6 +35,8 @@ BOT_ID = 41898282
 HELPER_SHA256 = '55f5274d3fcc713e82fd8ce18e280447e68e9e460bc1ff3f9bf5cc683834935f'
 ACTIVE_PROOF_SHA256 = 'a818ead0cec264f34e0763edc923803719244855f8b281c214688c296790ecec'
 RETAINED_PROOF_SHA256 = '5da3864d5327c6e4e41e6eef12510004b2302f55c3bc61593d7d49c1797739b5'
+# These frozen lineage names refer to lifetime submission reservations, regardless
+# of wire method. They are not counters of this component's HTTP POST calls.
 CHAIN = {
     'originalSourceRevision': '89c92dff3dca6456c1b0a3f7ee0587efe0361bed',
     'originalPublicationRunId': 38861200090,
@@ -228,6 +231,22 @@ def _payload(contract):
             'keyLocation': ORIGIN + '/' + contract.active_key + '.txt', 'urlList': [HOME]}
 
 
+def _submission_url(contract):
+    """Official single-URL GET; fixed order, RFC3986 values, no request body."""
+    payload = _payload(contract)
+    return ENDPOINT + '?' + urlencode([
+        ('url', payload['urlList'][0]), ('key', payload['key']),
+        ('keyLocation', payload['keyLocation']),
+    ], quote_via=quote, safe='')
+
+
+def _submission_binding(contract):
+    wire_url = _submission_url(contract).encode('ascii')
+    return {'submissionMethod': 'GET', 'submissionURLSha256': sha(wire_url),
+            'submissionURLBytes': len(wire_url), 'submissionBodyBytes': 0,
+            'submissionBodySha256': sha(b'')}
+
+
 def _fingerprint(contract, revision):
     return digest({**_identity(revision), 'keySha256': digest(contract.active_key)})
 
@@ -254,7 +273,8 @@ def _validate_binding(binding):
 def _validate_successor(record, contract):
     base = {'attempt', 'endpoint', 'fingerprint', 'origin', 'recordedAt', 'revision',
             'runUrl', 'siteKey', 'state', 'urlCount', 'urlSetSha256', 'controlRevision',
-            'sourceArtifactSha256', 'requestSha256', 'requestBytes', *_lineage().keys()}
+            'sourceArtifactSha256', 'requestSha256', 'requestBytes', *_lineage().keys(),
+            *_submission_binding(contract).keys()}
     require(set(record).issubset(base | {'httpStatus', 'response', 'retryNotBefore'})
             and base.issubset(record), 'unexpected_successor_record_schema')
     binding = Binding(record['revision'], record['controlRevision'],
@@ -263,7 +283,8 @@ def _validate_successor(record, contract):
     expected = {**_identity(binding.source_revision), **_lineage(), 'attempt': 2,
                 'fingerprint': _fingerprint(contract, binding.source_revision),
                 'requestSha256': sha(json.dumps(_payload(contract)).encode()),
-                'requestBytes': len(json.dumps(_payload(contract)).encode())}
+                'requestBytes': len(json.dumps(_payload(contract)).encode()),
+                **_submission_binding(contract)}
     require(exact({k: record[k] for k in expected}, expected), 'successor_chain_or_budget_mismatch')
     require(type(record['recordedAt']) is str and len(record['recordedAt']) < 64,
             'successor_timestamp_invalid')
@@ -535,9 +556,14 @@ class RecoveryAdapter:
         self.validate_binding, self.assert_serialized = validate_binding, assert_serialized
         self.validate_full_public_release = validate_full_public_release
         self.started = None
-        self.start_writes = self.post_calls = 0
+        self.start_writes = self.submission_calls = 0
         self.last_diagnostics = None
         self.used = False
+
+    @property
+    def post_calls(self):
+        """Legacy semantic-POST intent reservation count; wire HTTP POST is always 0."""
+        return self.submission_calls
 
     def _guard(self):
         require(self.assert_serialized() is True, 'shared_serialization_not_verified')
@@ -559,9 +585,10 @@ class RecoveryAdapter:
                      'controlRevision': self.binding.control_revision,
                      'sourceArtifactSha256': self.binding.artifact_sha256,
                      'requestSha256': sha(json.dumps(_payload(self.contract)).encode()),
-                     'requestBytes': len(json.dumps(_payload(self.contract)).encode())}
+                     'requestBytes': len(json.dumps(_payload(self.contract)).encode()),
+                     **_submission_binding(self.contract)}
         if record['state'] == 'started':
-            require(self.start_writes == 0 and self.post_calls == 0 and self.started is None,
+            require(self.start_writes == 0 and self.submission_calls == 0 and self.started is None,
                     'second_started_or_attempt_forbidden')
             require(self.validate_full_public_release(self.binding) is True,
                     'full_public_release_not_verified')
@@ -570,7 +597,7 @@ class RecoveryAdapter:
                     'recovery_budget_already_spent')
             self.start_writes += 1
         else:
-            require(self.started is not None and self.start_writes == 1 and self.post_calls == 1,
+            require(self.started is not None and self.start_writes == 1 and self.submission_calls == 1,
                     'terminal_without_single_attempt')
             audit_chain(self.read_page, self.contract, own_started=self.started)
             if self.last_diagnostics is not None:
@@ -623,11 +650,14 @@ class RecoveryAdapter:
             require(url == ENDPOINT and type(payload) is dict
                     and json.dumps(payload).encode() == json.dumps(_payload(self.contract)).encode(),
                     'fixed_post_payload_required')
-            require(self.post_calls == 0 and self.start_writes == 1 and self.started is not None,
+            require(self.submission_calls == 0 and self.start_writes == 1 and self.started is not None,
                     'single_durable_post_only')
             audit_chain(self.read_page, self.contract, own_started=self.started)
-            self.post_calls += 1  # Reserve before callback: even a timeout spends it.
-            response = self.transport_callback(method, url, json.dumps(payload).encode())
+            # The unchanged shared helper invokes semantic POST intent. requestSha256
+            # and requestBytes still bind those exact JSON bytes; this is not wire POST.
+            wire_url = _submission_url(self.contract)
+            self.submission_calls += 1  # Reserve before callback, including exceptions.
+            response = self.transport_callback('GET', wire_url, None)
             self.last_diagnostics = diagnostics(response, self.contract)
             return response.status, '', self.last_diagnostics['safeHeaders']
         require(method == 'GET' and payload is None and url in {
@@ -643,8 +673,13 @@ class RecoveryAdapter:
                     'invalid_public_probe_headers')
             name, value = pair
             name = name.lower()
-            require(name not in headers and '\n' not in value and '\r' not in value,
+            require('\n' not in value and '\r' not in value,
                     'ambiguous_public_probe_headers')
+            # Repeated Server-Timing is unused telemetry. Check every original
+            # row before keeping its first value; all other duplicates fail.
+            if name == 'server-timing' and name in headers:
+                continue
+            require(name not in headers, 'ambiguous_public_probe_headers')
             headers[name] = value
         try:
             text = response.body.decode('utf-8')
@@ -686,16 +721,18 @@ class RecoveryAdapter:
                         'httpStatus': receipt['httpStatus'], 'receiptRevision': receipt['revision'],
                         'requestedRevision': self.binding.source_revision,
                         'receiptCommentId': audit.successor[-1][0],
-                        'fingerprint': receipt['fingerprint'], 'postCallsThisInvocation': 0,
+                        'fingerprint': receipt['fingerprint'], 'submissionCallsThisInvocation': 0,
+                        'httpPostCallsThisInvocation': 0, **_submission_binding(self.contract),
                         'urlSetSha256': CHAIN['originalUrlSetSha256'], 'lifetimeAttempt': 2,
                         'searchIndexing': 'not_verified'}
             self.helper.finalize(site, self.binding.source_revision, root, self,
                                  transport=self.transport, run_url=self.binding.run_url,
                                  sleep=self.no_retry_sleep)
             verified = audit_chain(self.read_page, self.contract)
-            require(verified.accepted is not None and self.post_calls == 1,
+            require(verified.accepted is not None and self.submission_calls == 1,
                     'accepted_receipt_not_verified')
-            return {**verified.accepted, 'postCallsThisInvocation': 1, 'searchIndexing': 'not_verified'}
+            return {**verified.accepted, 'submissionCallsThisInvocation': 1,
+                    'httpPostCallsThisInvocation': 0, 'searchIndexing': 'not_verified'}
         except RecoveryBlocked:
             raise
         except Exception:

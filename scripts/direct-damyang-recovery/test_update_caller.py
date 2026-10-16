@@ -52,7 +52,7 @@ class Case(unittest.TestCase):
 class Authorization(Case):
     def test_dormant_seal_and_exact_actual_baseline_binding(self):
         self.assertIs(c.OPERATIONAL_CONTROLS_ENABLED,True)
-        self.assertIs(c.reader.OPERATIONAL_CONTROLS_ENABLED,False)
+        self.assertIs(c.reader.OPERATIONAL_CONTROLS_ENABLED,True)
         pins=c.read_json(c.ROOT/'docs/direct-damyang-recovery/update-caller-binding.json')
         states={'PENDING_INDEPENDENT_UPDATE_CONTROL_REVIEW_WITH_ACCEPTED_ACTUAL_BASELINE':False,
                 'INDEPENDENTLY_REVIEWED_ACTUAL_STATIC_UPDATE':True}
@@ -139,7 +139,7 @@ class Authorization(Case):
             pins=pins_fixture();pins['baseline'][key]=value;env=env_fixture()
             with self.subTest(key=key):self.blocked(lambda:c.authorize(pins,env,event_fixture(pins,env),'prepare'))
     def test_all_helpers_exact_and_before_import(self):
-        c.verify_imports();self.assertEqual(c.IMPORT_PINS['finalize_recovery.py'],'87953c7d9bd89f81a7c7dcedacceadc27627dfe4ecb9cac67574ea076dbe3825')
+        c.verify_imports();self.assertEqual(c.IMPORT_PINS['finalize_recovery.py'],'ff7b4ef78d5e24ef998ee6bb500e44042735153de7d45da1bd0d36b48cc46112')
         tree=ast.parse((c.D/'publish_existing_update.py').read_text());verify=next(n for n in tree.body if isinstance(n,ast.Expr) and isinstance(n.value,ast.Call) and getattr(n.value.func,'id',None)=='verify_imports')
         imports=[n for n in tree.body if isinstance(n,ast.Import) and any(x.name in ('finalize_recovery','existing_update') for x in n.names)]
         self.assertTrue(all(verify.lineno<n.lineno for n in imports))

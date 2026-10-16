@@ -98,9 +98,12 @@ class Authorization(shared.Case):
             with self.subTest(mode=mode):self.blocked(lambda:c.authorize(pins,given,event,mode))
         for mode in ('claim','preflight','recheck','parse-upload','readback','public','indexnow','deploy'):
             with self.subTest(mode=mode):self.blocked(lambda:q.authorize(pins,env,event,mode),'fixed_unoptimized_get_only_mode')
-    def test_exact_helper_pin_and_finalizer_remains_disabled(self):
+    def test_exact_helper_pin_and_finalizer_requires_pending_operational_review(self):
         self.assertEqual(q.CALLER_SHA256,c.sha((c.D/'publish_existing_update.py').read_bytes()))
-        self.assertFalse(c.reader.OPERATIONAL_CONTROLS_ENABLED)
+        self.assertTrue(c.reader.OPERATIONAL_CONTROLS_ENABLED)
+        pins=c.read_json(c.ROOT/'docs/direct-damyang-recovery/finalizer-binding.json');pins['review']=None
+        with patch.object(c.reader,'read_json',return_value=pins):
+            self.blocked(lambda:c.reader.approved_pins('pending-local-fixture'),'exact_independent_operational_review_required')
         self.assertEqual(c.sha((c.ROOT/'docs/direct-damyang-recovery/update-caller-binding.json').read_bytes()),q.PENDING_UPDATE_SHA256)
 
 
