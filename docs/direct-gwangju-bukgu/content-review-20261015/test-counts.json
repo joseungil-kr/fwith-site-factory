@@ -1,0 +1,120 @@
+{
+  "commands": [
+    {
+      "name": "verify-inputs",
+      "command": [
+        "node",
+        "scripts/verify_inputs.mjs"
+      ],
+      "cwd": "source/candidate",
+      "exitCode": 0,
+      "log": "evidence/verify-inputs-final.log"
+    },
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/astro/bin/astro.mjs",
+        "check"
+      ],
+      "cwd": "source/candidate",
+      "exitCode": 0,
+      "log": "evidence/typecheck-final.log"
+    },
+    {
+      "name": "build",
+      "command": [
+        "node",
+        "node_modules/astro/bin/astro.mjs",
+        "build"
+      ],
+      "cwd": "source/candidate",
+      "exitCode": 0,
+      "log": "evidence/build-final.log"
+    },
+    {
+      "name": "private-qa",
+      "command": [
+        "python3",
+        "scripts/qa_donggu.py"
+      ],
+      "cwd": "source/candidate",
+      "exitCode": 0,
+      "log": "evidence/private-qa-final.log"
+    },
+    {
+      "name": "private-node-tests",
+      "command": [
+        "node",
+        "--test",
+        "tests/donggu-runtime.test.mjs"
+      ],
+      "cwd": "source/candidate",
+      "exitCode": 0,
+      "log": "evidence/private-node-tests-final.log"
+    },
+    {
+      "name": "private-python-tests",
+      "command": [
+        "python3",
+        "scripts/test_donggu.py"
+      ],
+      "cwd": "source/candidate",
+      "exitCode": 0,
+      "log": "evidence/private-python-tests-final.log"
+    },
+    {
+      "name": "adapter-node-tests",
+      "command": [
+        "node",
+        "--test",
+        "../release-adapter/release-tests/bukgu-release.test.mjs"
+      ],
+      "cwd": "source/candidate",
+      "exitCode": 0,
+      "log": "evidence/adapter-node-tests-final.log"
+    },
+    {
+      "name": "adapter-python-tests",
+      "command": [
+        "python3",
+        "../release-adapter/scripts/test_bukgu_adapter.py"
+      ],
+      "cwd": "source/candidate",
+      "exitCode": 0,
+      "log": "evidence/adapter-python-tests-final.log"
+    },
+    {
+      "name": "output-python-tests",
+      "command": [
+        "python3",
+        "../release-adapter/scripts/test_bukgu_release_output.py"
+      ],
+      "cwd": "source/candidate",
+      "exitCode": 0,
+      "log": "evidence/output-python-tests-final.log"
+    },
+    {
+      "name": "node-python-parity",
+      "command": [
+        "python3",
+        "../release-adapter/scripts/test_bukgu_node_python_parity.py"
+      ],
+      "cwd": "source/candidate",
+      "exitCode": 0,
+      "log": "evidence/node-python-parity-final.log"
+    }
+  ],
+  "caseCounts": {
+    "private-node-tests": 65,
+    "private-python-tests": 81,
+    "adapter-node-tests": 36,
+    "adapter-python-tests": 30,
+    "output-python-tests": 55,
+    "node-python-parity": 1
+  },
+  "nativeCases": 268,
+  "httpsVariantSubcasesInsideOneCase": 12,
+  "httpVariantSubcasesInsideOneCase": 22,
+  "allCommandsExitZero": true
+}
