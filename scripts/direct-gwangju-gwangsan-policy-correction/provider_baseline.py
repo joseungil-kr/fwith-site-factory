@@ -77,6 +77,7 @@ def allowed_path(account,path,selected=None):
  if u.path in fixed:return not u.query
  if u.path==script+'/deployments':return u.query=='page=1&per_page=1'
  selected=selected or {}
+ if type(selected.get('versions')) is str and re.fullmatch(UUID,selected['versions']) and u.path==base+'/workers/workers/'+WORKER+'/versions/'+selected['versions']:return u.query=='include=modules'
  return not u.query and any(type(selected.get(kind)) is str and re.fullmatch(UUID,selected[kind]) and u.path==script+'/'+kind+'/'+selected[kind] for kind in ('deployments','versions'))
 
 class ProviderEnvelopeError(ValueError):
@@ -390,17 +391,62 @@ def active_identity(obj):
  info=pagination(obj,single=False);require(info.get('count',1)==1 and info.get('per_page',1)==1 and info.get('total_count',1)>=1 and info.get('total_pages',1)>=1,'deployment_page_identity')
  return active
 
+def selected_assets_preservation(get,account,vid,number,created_on):
+ # The beta Version API names the same immutable selected version. include=modules
+ # returns all modules; only the two fixed asset-config names are consumed here.
+ # No legacy runtime.assets internals, JWT values, other module content or code
+ # absence are inspected or asserted. No fallback, retry or extra diagnostic GET.
+ path='/accounts/'+account+'/workers/workers/'+WORKER+'/versions/'+vid+'?include=modules'
+ try:obj=get(path)
+ except Exception:raise ValueError('selected_assets_transport_unverified') from None
+ v=obj.get('result') if type(obj) is dict else None
+ require(type(v) is dict and type(v.get('id')) is str and v['id']==vid,'selected_assets_version_identity')
+ require(type(v.get('number')) is int and v['number']>0 and v['number']==number,'selected_assets_version_number')
+ try:timestamp(v.get('created_on'));timestamp(created_on)
+ except ValueError:raise ValueError('selected_assets_version_time') from None
+ require(v['created_on']==created_on,'selected_assets_version_time')
+ assets=v.get('assets');require(type(assets) is dict and set(assets)<={'config','jwt'},'selected_assets_schema')
+ # 'jwt' is allowed by membership only. Never retrieve its value, even its type.
+ config=assets.get('config');require(type(config) is dict and set(config)<={'base_path','html_handling','not_found_handling','run_worker_first'},'selected_assets_config_schema')
+ fields={}
+ for key,expected in [('html_handling','auto-trailing-slash'),('not_found_handling','404-page')]:
+  require(type(config.get(key)) is str and config[key]==expected,'selected_assets_'+key);fields[key]=expected
+ if 'base_path' in config:
+  require(type(config['base_path']) is str and config['base_path']=='/','selected_assets_base_path');fields['base_path']='/'
+ if 'run_worker_first' in config:
+  require(config['run_worker_first'] is False,'selected_assets_run_worker_first');fields['run_worker_first']=False
+ # Absence is retained as absence; do not coerce absent/null/[] to '/' or false.
+ modules=v.get('modules');require(type(modules) is list,'selected_assets_modules_inventory_required')
+ headers='absent_source_noop_equivalent'
+ for module in modules:
+  require(type(module) is dict and type(module.get('name')) is str and bool(module['name']),'selected_assets_module_name_required')
+  name=module['name']
+  require(name!='_redirects','selected_assets_redirects_present')
+  if name=='_headers':
+   require(headers=='absent_source_noop_equivalent','selected_assets_duplicate_headers')
+   require(set(module)=={'name','content_type','content_base64'} and type(module['content_type']) is str and module['content_type']=='text/plain' and type(module['content_base64']) is str and module['content_base64']=='LyoK','selected_assets_headers_bytes')
+   headers='present_exact_source_bytes'
+ # Only constants and presence of approved values leave the projection. Unknown
+ # top-level beta fields and non-config modules are intentionally unconsumed.
+ projection={'schema':'gwangsan-selected-version-assets-preservation/v1','configFields':fields,'headers':headers,'redirects':'absent','modulesInventoryProvided':True,'legacyRuntimeAssetsInternalsInspected':False,'otherModuleContentInspected':False,'workerCodeAbsenceProven':False}
+ return projection,v['created_on']
+
 def deployed_version(get,account,settings=None):
  script='/accounts/'+account+'/workers/scripts/'+WORKER
  obj=get(script+'/deployments?page=1&per_page=1');active=active_identity(obj);value=obj['result'];versions=active['versions']
  detail=get(script+'/deployments/'+active['id']).get('result');require(detail==active,'active_deployment_detail_changed')
- vid=versions[0]['version_id'];v=get(script+'/versions/'+vid).get('result');require(type(v) is dict and set(v)<={'id','metadata','number','resources'} and v.get('id')==vid,'version_identity_or_schema')
- meta=v.get('metadata');require(type(meta) is dict and set(meta)<={'author_email','author_id','created_on','hasPreview','modified_on','source'} and isinstance(meta.get('source'),str),'version_metadata_schema');require(meta['source'] in {'unknown','api','wrangler','terraform','dash','cf_cli','dash_template','integration','quick_editor','playground','workersci'},'unreviewed_version_source');timestamp(meta.get('created_on'));require(type(v.get('number')) is int and v['number']>0,'version_number_required')
+ vid=versions[0]['version_id'];v=get(script+'/versions/'+vid).get('result');require(type(v) is dict and set(v)<={'id','metadata','number','resources','annotations','startup_time_ms'} and v.get('id')==vid,'version_identity_or_schema')
+ meta=v.get('metadata');require(type(meta) is dict and isinstance(meta.get('source'),str),'version_metadata_schema');require(meta['source'] in {'unknown','api','wrangler','terraform','dash','cf_cli','dash_template','integration','quick_editor','playground','workersci'},'unreviewed_version_source');timestamp(meta.get('created_on'));require(type(v.get('number')) is int and v['number']>0,'version_number_required')
+ # Metadata extras and unknown annotation values are outside this policy's consumed
+ # fields. They are not declared harmless, validated, retained or hashed.
+ if 'annotations' in v:
+  annotations=v['annotations'];require(type(annotations) is dict and all(type(annotations[key]) is str for key in ('workers/message','workers/tag','workers/triggered_by') if key in annotations),'version_annotations_type_required')
+ if 'startup_time_ms' in v:require(type(v['startup_time_ms']) in (int,float) and 0<=v['startup_time_ms']<float('inf'),'version_startup_metric_required')
  resources=v.get('resources');require(type(resources) is dict and set(resources)<={'bindings','script','script_runtime'} and resources.get('bindings')==[],'version_resource_schema_requires_review')
  # Do not expose script body, binding values, author identity or annotations. Version ID is not an asset digest or Git-source proof.
- scriptmeta=resources.get('script',{});runtime=resources.get('script_runtime',{});require(type(scriptmeta) is dict and set(scriptmeta)<={'etag','handlers','last_deployed_from','named_handlers'},'version_script_schema_requires_review');require(type(runtime) is dict and set(runtime)<={'compatibility_date','compatibility_flags','exports','limits','migration_tag','usage_model'},'version_runtime_schema_requires_review')
+ scriptmeta=resources.get('script',{});runtime=resources.get('script_runtime',{});require(type(scriptmeta) is dict and set(scriptmeta)<={'etag','handlers','last_deployed_from','named_handlers'},'version_script_schema_requires_review');require(type(runtime) is dict and set(runtime)<={'compatibility_date','compatibility_flags','exports','limits','migration_tag','usage_model','assets'},'version_runtime_schema_requires_review')
  require(not scriptmeta.get('named_handlers') and not runtime.get('exports') and not runtime.get('migration_tag') and not runtime.get('limits'),'unexpected_version_capability')
- selected={'deploymentIdSHA256':sha(active['id'].encode()),'deploymentCreatedOn':active['created_on'],'strategy':'percentage','versionIdSHA256':sha(vid.encode()),'trafficPercentage':100,'versionNumber':v['number'],'versionCreatedOn':meta['created_on'],'versionSource':meta['source'],'versionResourcesKnownShape':True,'versionIdentityIsAssetDigest':False}
+ selected={'deploymentIdSHA256':sha(active['id'].encode()),'deploymentCreatedOn':active['created_on'],'strategy':'percentage','versionIdSHA256':sha(vid.encode()),'trafficPercentage':100,'versionNumber':v['number'],'versionCreatedOn':meta['created_on'],'versionSource':meta['source'],'versionResourceCoverage':{'resourceContainerAndBindingsChecked':True,'knownRuntimeCapabilityGuardsChecked':True,'legacyAssetsInternalsInspected':False,'selectedAssetsConfigCompared':'assets' in runtime,'workerCodeInspected':False},'versionIdentityIsAssetDigest':False}
  runtime_projection={'present': 'script_runtime' in resources,'fields':{}}
  for key in ('compatibility_date','compatibility_flags','usage_model'):
   if key in runtime:
@@ -410,12 +456,17 @@ def deployed_version(get,account,settings=None):
   if key in runtime:require(canonical(runtime[key])==canonical(empty),'unexpected_version_capability');runtime_projection['fields'][key]=runtime[key]
  script_projection={'present':'script' in resources,'fields':{}}
  if 'handlers' in scriptmeta:
-  handlers=scriptmeta['handlers'];require(type(handlers) is list and all(type(v) is str for v in handlers) and handlers in ([],['fetch']),'static_only_version_handlers_required');script_projection['fields']['handlers']=handlers
+  handlers=scriptmeta['handlers'];require(handlers is None or (type(handlers) is list and all(type(v) is str for v in handlers) and handlers in ([],['fetch'])),'static_only_version_handlers_required');script_projection['fields']['handlers']=handlers
  if 'named_handlers' in scriptmeta:
   require(type(scriptmeta['named_handlers']) is list and not scriptmeta['named_handlers'],'static_only_named_handlers_required');script_projection['fields']['named_handlers']=[]
- for key,pattern in [('etag',r'[A-Za-z0-9_.:"-]{1,128}'),('last_deployed_from',r'[A-Za-z0-9_.-]{1,64}')]:
-  if key in scriptmeta:require(type(scriptmeta[key]) is str and bool(re.fullmatch(pattern,scriptmeta[key])),'version_script_metadata_type_required')
+ for key in ('etag','last_deployed_from'):
+  if key in scriptmeta:require(type(scriptmeta[key]) is str,'version_script_metadata_type_required')
   script_projection['fields'][key+'Present']=key in scriptmeta
+ if 'assets' in runtime:
+  require(type(runtime['assets']) is dict,'version_assets_object_required')
+  preservation,beta_created=selected_assets_preservation(get,account,vid,v['number'],meta['created_on'])
+  runtime_projection['fields']['assetsPreservation']=preservation
+  selected['assetsVersionCreatedOn']=beta_created # Raw timestamp remains digest-bound.
  selected['versionScript']=script_projection
  selected['versionRuntime']=runtime_projection
  repeat=get(script+'/deployments?page=1&per_page=1');active_identity(repeat);require(repeat==obj,'active_deployment_changed_during_observation')

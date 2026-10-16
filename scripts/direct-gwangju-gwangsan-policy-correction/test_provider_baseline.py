@@ -194,7 +194,7 @@ class R2Regressions(unittest.TestCase):
   f=fixtures();script=f[SCRIPT+'/versions/'+VID]['result']['resources']['script'];script.update(handlers=['fetch'],named_handlers=[],last_deployed_from='wrangler');x=self.state(f)
   self.assertEqual(x['activeDeployment']['versionScript'],{'present':True,'fields':{'handlers':['fetch'],'named_handlers':[],'etagPresent':True,'last_deployed_fromPresent':True}});self.assertNotIn('do-not-use-as-assets-digest',json.dumps(x))
   original=copy.deepcopy(script)
-  for key,values in [('handlers',[False,'fetch',{},['fetch','fetch'],['scheduled'],['unknown'],[1]]),('named_handlers',[{},False,[{'x':[]}]]),('etag',[None,1,[],{},'x'*129,'private text']),('last_deployed_from',[None,True,[],{},'x'*65,'private text'])]:
+  for key,values in [('handlers',[False,'fetch',{},['fetch','fetch'],['scheduled'],['unknown'],[1]]),('named_handlers',[{},False,[{'x':[]}]]),('etag',[None,1,[],{}]),('last_deployed_from',[None,True,[],{}])]:
    for value in values:
     f[SCRIPT+'/versions/'+VID]['result']['resources']['script']={**original,key:value}
     with self.subTest(key=key,value=value),self.assertRaises(ValueError):self.state(f)
@@ -646,11 +646,11 @@ class R11FixedDiagnostics(unittest.TestCase):
       f=fixtures();f[SCRIPT+'/versions/'+VID]['result']=v
       with self.assertRaises(ValueError):b.deployed_version(get_for(f),ACCOUNT,SETTINGS)
   v=self.version();v['resources']['script_runtime'][self.UNKNOWN]=None;pred=self.project(v)['runtime']['predicates'];self.assertEqual(pred['outsideExploratoryRuntimeInventoryKeysPresent'],'evaluated_true');self.assertEqual(pred['versionSemanticUnverifiedRuntimeKeysPresent'],'evaluated_true')
- def test_known_outer_and_annotations_remain_diagnostic_only(self):
+ def test_prior_diagnostic_checks_do_not_imply_current_acceptance(self):
   for key,value in [('annotations',{}),('annotations',{'workers/message':self.CANARY,self.UNKNOWN:self.CANARY}),('startup_time_ms',0),('startup_time_ms',1.5)]:
    with self.subTest(key=key):
     v=self.version();v[key]=value;out=self.project(v);self.assertEqual(out['outer']['predicates']['onlyDocumentedOuterUnionKeys'],'evaluated_true');self.assert_vocabulary(out);f=fixtures();f[SCRIPT+'/versions/'+VID]['result']=v
-    with self.assertRaisesRegex(ValueError,'version_identity_or_schema'):b.deployed_version(get_for(f),ACCOUNT,SETTINGS)
+    self.assertNotIn(self.CANARY,json.dumps(b.deployed_version(get_for(f),ACCOUNT,SETTINGS)))
   v=self.version();v[self.UNKNOWN]=self.CANARY;self.assertEqual(self.project(v)['outer']['predicates']['onlyDocumentedOuterUnionKeys'],'evaluated_false')
  def test_annotation_known_values_str_exact_and_unknown_value_unread(self):
   for key in ('workers/triggered_by','workers/message','workers/tag'):
@@ -679,7 +679,7 @@ class R11FixedDiagnostics(unittest.TestCase):
    v=self.version();v['resources']['script']['handlers']=value;out=self.project(v);self.assert_vocabulary(out);pred=out['script']['predicates']['handlers'];self.assertEqual(pred['exactNull'],'evaluated_true' if value is None else 'evaluated_false');self.assertEqual(pred['exactEmptyArray'],'evaluated_true' if type(value) is list and not value else 'evaluated_false')
    if value is None:
     f=fixtures();f[SCRIPT+'/versions/'+VID]['result']=v
-    with self.assertRaisesRegex(ValueError,'static_only_version_handlers_required'):b.deployed_version(get_for(f),ACCOUNT,SETTINGS)
+    self.assertIsNone(b.deployed_version(get_for(f),ACCOUNT,SETTINGS)['versionScript']['fields']['handlers'])
  def test_jwt_membership_without_value_type_or_serialization_access(self):
   class NeverRead(dict):
    def __getitem__(self,key):
@@ -738,11 +738,209 @@ class R11FixedDiagnostics(unittest.TestCase):
   self.assertEqual(caught.exception.original_code,'active_deployment_changed_during_observation');self.assertEqual(len(normal.requests),18);self.assertEqual(len(diagnostic.requests),8);self.assertEqual(len(normal.requests)+len(diagnostic.requests),26);public.assert_called_once()
   for request in normal.requests+diagnostic.requests:self.assertEqual(request.get_method(),'GET');self.assertIsNone(request.data)
  def test_runtime_unknown_metadata_capability_and_strings_remain_rejected(self):
-  cases=[('metadata','resources',{}),('metadata','approved',True),('runtime','logpush',False),('runtime','assets',{}),('runtime',self.UNKNOWN,None),('script','handlers',None),('script','etag',''),('script','last_deployed_from','Unicode 한글'),('script','placement_mode','off')]
+  cases=[('runtime','logpush',False),('runtime','assets',{}),('runtime',self.UNKNOWN,None),('script','placement_mode','off')]
   for location,key,value in cases:
    with self.subTest(location=location,key=key):
     f=fixtures();v=f[SCRIPT+'/versions/'+VID]['result'];parent=v['metadata'] if location=='metadata' else v['resources']['script_runtime' if location=='runtime' else 'script'];parent[key]=value
     with self.assertRaises(ValueError):b.deployed_version(get_for(f),ACCOUNT,SETTINGS)
+
+
+
+class R12AssetsPreservation(unittest.TestCase):
+ BETA='/accounts/'+ACCOUNT+'/workers/workers/'+b.WORKER+'/versions/'+VID+'?include=modules'
+ CANARY='R12-PRIVATE-CANARY-DO-NOT-OUTPUT'
+ @classmethod
+ def fixtures(cls):
+  f=fixtures();v=f[SCRIPT+'/versions/'+VID]['result']
+  v['metadata']['unconsumed_field']=cls.CANARY;v.update(annotations={'workers/message':cls.CANARY,'unknown':{'secret':cls.CANARY}},startup_time_ms=0)
+  v['resources']['script'].update(handlers=None,etag='',last_deployed_from='')
+  v['resources']['script_runtime']['assets']={'unconsumed_internal':cls.CANARY}
+  f[cls.BETA]=ok({'id':VID,'number':1,'created_on':v['metadata']['created_on'],'assets':{'config':{'html_handling':'auto-trailing-slash','not_found_handling':'404-page'},'jwt':cls.CANARY},'modules':[{'name':'_headers','content_type':'text/plain','content_base64':'LyoK'},{'name':'private-module-'+cls.CANARY,'content_type':cls.CANARY,'content_base64':cls.CANARY}],'other_unconsumed':cls.CANARY})
+  return f
+ def state(self,f=None,get=None):
+  with patch.object(b,'ACCOUNT_SHA',SHA):return b.current_state(ACCOUNT,get or get_for(f or self.fixtures()))
+ def projection(self,f=None):return self.state(f)['activeDeployment']['versionRuntime']['fields']['assetsPreservation']
+ def reject(self,f,code):
+  with patch.object(b,'state_diagnostic_sweep') as sweep,patch.object(b,'ACCOUNT_SHA',SHA),self.assertRaisesRegex(ValueError,'^'+code+'$') as caught:b.state_with_diagnostics({},ACCOUNT,get_for(f))
+  self.assertNotIn(self.CANARY,str(caught.exception))
+  if code.startswith('selected_assets_'):sweep.assert_not_called()
+ def test_positive_exact_projection_and_coverage(self):
+  seen=[];state=self.state(get=get_for(self.fixtures(),seen));active=state['activeDeployment'];p=active['versionRuntime']['fields']['assetsPreservation']
+  self.assertEqual(len(seen),10);self.assertEqual(seen[-2],self.BETA);self.assertEqual(seen[-1],SCRIPT+'/deployments?page=1&per_page=1');self.assertEqual(p,{'schema':'gwangsan-selected-version-assets-preservation/v1','configFields':{'html_handling':'auto-trailing-slash','not_found_handling':'404-page'},'headers':'present_exact_source_bytes','redirects':'absent','modulesInventoryProvided':True,'legacyRuntimeAssetsInternalsInspected':False,'otherModuleContentInspected':False,'workerCodeAbsenceProven':False})
+  self.assertEqual(active['assetsVersionCreatedOn'],'2026-10-16T02:58:19Z');self.assertIsNone(active['versionScript']['fields']['handlers']);self.assertNotIn('versionResourcesKnownShape',active);self.assertEqual(active['versionResourceCoverage'],{'resourceContainerAndBindingsChecked':True,'knownRuntimeCapabilityGuardsChecked':True,'legacyAssetsInternalsInspected':False,'selectedAssetsConfigCompared':True,'workerCodeInspected':False})
+  raw=json.dumps(state)
+  for forbidden in (self.CANARY,ACCOUNT,DEP,VID,'unconsumed_field','unconsumed_internal','other_unconsumed','content_base64','jwt','author_email'):self.assertNotIn(forbidden,raw)
+ def test_original_assets_absent_path_still_nine_requests(self):
+  seen=[];state=self.state(fixtures(),get=get_for(fixtures(),seen));self.assertEqual(len(seen),9);self.assertNotIn(self.BETA,seen);self.assertNotIn('assetsPreservation',state['activeDeployment']['versionRuntime']['fields']);self.assertFalse(state['activeDeployment']['versionResourceCoverage']['selectedAssetsConfigCompared'])
+ def test_header_absence_is_distinct_source_noop_equivalence(self):
+  f=self.fixtures();present=self.projection(f);f[self.BETA]['result']['modules']=[];absent=self.projection(f)
+  self.assertEqual(absent['headers'],'absent_source_noop_equivalent');self.assertNotEqual(present,absent);self.assertNotEqual(b.digest(present),b.digest(absent))
+ def test_optional_config_presence_is_preserved_and_not_normalized(self):
+  states=[]
+  for base in (False,True):
+   for first in (False,True):
+    f=self.fixtures();config=f[self.BETA]['result']['assets']['config']
+    if base:config['base_path']='/'
+    if first:config['run_worker_first']=False
+    p=self.projection(f);self.assertEqual('base_path' in p['configFields'],base);self.assertEqual('run_worker_first' in p['configFields'],first);states.append(self.state(f))
+  self.assertEqual(len({b.digest(s) for s in states}),4)
+ def test_null_missing_empty_fetch_handlers_stay_distinct(self):
+  states=[]
+  for value in ('missing',None,[],['fetch']):
+   f=self.fixtures();s=f[SCRIPT+'/versions/'+VID]['result']['resources']['script']
+   if value=='missing':s.pop('handlers')
+   else:s['handlers']=value
+   states.append(self.state(f))
+  self.assertEqual(len({b.digest(s) for s in states}),4)
+ def test_script_strings_are_type_only_and_discarded(self):
+  for name in ('etag','last_deployed_from'):
+   for value in ('',' ',self.CANARY,'Unicode 한글','x'*4096):
+    with self.subTest(name=name,length=len(value)):
+     f=self.fixtures();f[SCRIPT+'/versions/'+VID]['result']['resources']['script'][name]=value;self.assertNotIn(value if value.strip() else self.CANARY,json.dumps(self.state(f)))
+   for value in (None,False,0,[],{}):
+    f=self.fixtures();f[SCRIPT+'/versions/'+VID]['result']['resources']['script'][name]=value
+    with self.subTest(name=name,kind=type(value).__name__),self.assertRaisesRegex(ValueError,'version_script_metadata_type_required'):self.state(f)
+ def test_annotation_known_types_and_metric_rejections(self):
+  for name in ('workers/message','workers/tag','workers/triggered_by'):
+   for value in (None,False,0,[],{}):
+    f=self.fixtures();f[SCRIPT+'/versions/'+VID]['result']['annotations'][name]=value
+    with self.subTest(name=name,kind=type(value).__name__),self.assertRaisesRegex(ValueError,'version_annotations_type_required'):self.state(f)
+  for value in (None,False,[],0,''):
+   f=self.fixtures();f[SCRIPT+'/versions/'+VID]['result']['annotations']=value
+   with self.subTest(parent=type(value).__name__),self.assertRaisesRegex(ValueError,'version_annotations_type_required'):self.state(f)
+  for value in (None,False,True,-1,-0.1,float('nan'),float('inf'),-float('inf'),json.loads('1e999'),'',[],{}):
+   f=self.fixtures();f[SCRIPT+'/versions/'+VID]['result']['startup_time_ms']=value
+   with self.subTest(metric=repr(value)),self.assertRaisesRegex(ValueError,'version_startup_metric_required'):self.state(f)
+  for value in (0,0.0,1,0.5,1e100):
+   f=self.fixtures();f[SCRIPT+'/versions/'+VID]['result']['startup_time_ms']=value;self.state(f)
+ def test_selected_beta_identity_number_and_exact_raw_time(self):
+  for key,values,code in [('id',[None,False,0,'',DEP,VID[:8],VID+'x'],'selected_assets_version_identity'),('number',[None,False,True,0,-1,1.0,2,'1'],'selected_assets_version_number'),('created_on',[None,'2026-02-29T00:00:00Z','2026-10-16T02:58:19.000000000Z','2026-10-16T11:58:19+09:00','2026-10-16T02:58:20Z'],'selected_assets_version_time')]:
+   for value in values:
+    f=self.fixtures();f[self.BETA]['result'][key]=value
+    with self.subTest(key=key,value=value):self.reject(f,code)
+  for value in (None,[],False,''):
+   f=self.fixtures();f[self.BETA]['result']=value;self.reject(f,'selected_assets_version_identity')
+ def test_same_raw_nanoseconds_preserved_and_equivalent_variants_rejected(self):
+  states=[]
+  for raw in ('2026-10-16T02:58:19.123456001Z','2026-10-16T02:58:19.123456999Z','2026-10-16T11:58:19.123456001+09:00'):
+   f=self.fixtures();f[SCRIPT+'/versions/'+VID]['result']['metadata']['created_on']=raw;f[self.BETA]['result']['created_on']=raw;state=self.state(f);self.assertEqual(state['activeDeployment']['assetsVersionCreatedOn'],raw);states.append(state)
+  self.assertEqual(len({b.digest(s) for s in states}),3)
+  for raw in ('2026-10-16T02:58:19.123456999Z','2026-10-16T11:58:19.123456001+09:00'):
+   f=self.fixtures();f[SCRIPT+'/versions/'+VID]['result']['metadata']['created_on']='2026-10-16T02:58:19.123456001Z';f[self.BETA]['result']['created_on']=raw;self.reject(f,'selected_assets_version_time')
+ def test_assets_parent_config_schema_and_expected_values(self):
+  for value in (None,False,0,[], '', {'unknown':self.CANARY}):
+   f=self.fixtures();f[self.BETA]['result']['assets']=value;self.reject(f,'selected_assets_schema')
+  f=self.fixtures();del f[self.BETA]['result']['assets'];self.reject(f,'selected_assets_schema')
+  for value in (None,False,0,[], '', {'unknown':self.CANARY}):
+   f=self.fixtures();f[self.BETA]['result']['assets']['config']=value;self.reject(f,'selected_assets_config_schema')
+  f=self.fixtures();del f[self.BETA]['result']['assets']['config'];self.reject(f,'selected_assets_config_schema')
+  for key,values in [('html_handling',[None,False,0,[],{},'none','force-trailing-slash','drop-trailing-slash','']),('not_found_handling',[None,False,0,[],{},'none','single-page-application','']),('base_path',[None,False,0,[],{},'/else','']),('run_worker_first',[None,True,0,1,[],['/*'],{},'false'])]:
+   for value in values:
+    with self.subTest(key=key,kind=type(value).__name__):
+     f=self.fixtures();f[self.BETA]['result']['assets']['config'][key]=value;self.reject(f,'selected_assets_'+key)
+  for key in ('html_handling','not_found_handling'):
+   f=self.fixtures();del f[self.BETA]['result']['assets']['config'][key];self.reject(f,'selected_assets_'+key)
+ def test_modules_must_be_present_typed_inventory(self):
+  for value in (None,False,0,{},''):
+   f=self.fixtures();f[self.BETA]['result']['modules']=value;self.reject(f,'selected_assets_modules_inventory_required')
+  f=self.fixtures();del f[self.BETA]['result']['modules'];self.reject(f,'selected_assets_modules_inventory_required')
+  for value in (None,False,0,[],{}, {'name':None},{'name':False},{'name':0},{'name':[]},{'name':''}):
+   f=self.fixtures();f[self.BETA]['result']['modules']=[value];self.reject(f,'selected_assets_module_name_required')
+ def test_fixed_headers_exact_canonical_bytes_and_redirect_absence(self):
+  for key,values in [('content_type',[None,False,[],{},'application/javascript','text/plain; charset=utf-8','TEXT/PLAIN','']),('content_base64',[None,False,[],{},'','Lyo=','LyoK=','LyoK\n',' LyoK','LyoN','Ly8K','LyoKAA==','LyoKLyoK'])]:
+   for value in values:
+    f=self.fixtures();f[self.BETA]['result']['modules'][0][key]=value
+    with self.subTest(key=key,value=repr(value)):self.reject(f,'selected_assets_headers_bytes')
+  for key in ('content_type','content_base64'):
+   f=self.fixtures();del f[self.BETA]['result']['modules'][0][key];self.reject(f,'selected_assets_headers_bytes')
+  f=self.fixtures();f[self.BETA]['result']['modules'][0]['unknown']=self.CANARY;self.reject(f,'selected_assets_headers_bytes')
+  f=self.fixtures();f[self.BETA]['result']['modules'].append(copy.deepcopy(f[self.BETA]['result']['modules'][0]));self.reject(f,'selected_assets_duplicate_headers')
+  for value in ({'name':'_redirects'},{'name':'_redirects','content_type':'text/plain','content_base64':''},{'name':'_redirects','content_type':None,'content_base64':self.CANARY}):
+   f=self.fixtures();f[self.BETA]['result']['modules'].append(value);self.reject(f,'selected_assets_redirects_present')
+ def test_unconsumed_jwt_unknown_metadata_and_module_content_getters_forbidden(self):
+  class ReadSelected(dict):
+   def __init__(self,allowed,**values):super().__init__(values);self.allowed=allowed
+   def __getitem__(self,key):
+    if key not in self.allowed:raise AssertionError('forbidden value read')
+    return super().__getitem__(key)
+   def get(self,key,*default):
+    if key not in self.allowed:raise AssertionError('forbidden get')
+    return super().get(key,*default)
+   def items(self):raise AssertionError('items forbidden')
+   def values(self):raise AssertionError('values forbidden')
+  f=self.fixtures();v=f[SCRIPT+'/versions/'+VID]['result'];beta=f[self.BETA]['result'];v['metadata']=ReadSelected({'source','created_on'},**v['metadata']);v['annotations']=ReadSelected({'workers/message','workers/tag','workers/triggered_by'},**v['annotations']);v['resources']['script_runtime']['assets']=ReadSelected(set(),private=object(),jwt=object());beta['assets']=ReadSelected({'config'},config=beta['assets']['config'],jwt=object());beta['modules'][1]=ReadSelected({'name'},name='private-module-'+self.CANARY,content_type=object(),content_base64=object());real_type=type
+  with patch.object(b,'type',lambda value:dict if real_type(value) is ReadSelected else real_type(value),create=True):state=self.state(get=lambda path:f[path])
+  self.assertNotIn(self.CANARY,json.dumps(state))
+ def test_known_caps_and_target_gates_run_before_beta(self):
+  mutations=[lambda f:f['/accounts/'+ACCOUNT]['result'].update(id='b'*32),lambda f:f['/accounts/'+ACCOUNT+'/workers/scripts']['result'].clear(),lambda f:f['/accounts/'+ACCOUNT+'/workers/domains']['result'][0].update(hostname='other.test'),lambda f:f[SCRIPT+'/settings']['result'].update(logpush=True),lambda f:f[SCRIPT+'/subdomain']['result'].update(enabled=True),lambda f:f[SCRIPT+'/deployments/'+DEP]['result'].update(id=VID),lambda f:f[SCRIPT+'/versions/'+VID]['result'].update(id=DEP),lambda f:f[SCRIPT+'/versions/'+VID]['result']['resources'].update(bindings=[{'secret':self.CANARY}]),lambda f:f[SCRIPT+'/versions/'+VID]['result']['resources']['script'].update(handlers=['scheduled']),lambda f:f[SCRIPT+'/versions/'+VID]['result']['resources']['script'].update(named_handlers=['fetch']),lambda f:f[SCRIPT+'/versions/'+VID]['result']['resources']['script_runtime'].update(limits={'cpu_ms':1}),lambda f:f[SCRIPT+'/versions/'+VID]['result']['resources']['script_runtime'].update(exports=['fetch']),lambda f:f[SCRIPT+'/versions/'+VID]['result']['resources']['script_runtime'].update(migration_tag='x'),lambda f:f[SCRIPT+'/versions/'+VID]['result']['resources']['script_runtime'].update(compatibility_flags=['nodejs_compat'])]
+  for location in ('resources','script_runtime'):
+   for name in ('containers','logpush','observability','bindings','unknown'):
+    for value in (None,[],{}):
+     if location=='resources' and name=='bindings':continue
+     def mutate(f,location=location,name=name,value=value):
+      parent=f[SCRIPT+'/versions/'+VID]['result']['resources'];parent=parent if location=='resources' else parent['script_runtime'];parent[name]=value
+     mutations.append(mutate)
+  for i,mutate in enumerate(mutations):
+   f=self.fixtures();mutate(f);seen=[]
+   with self.subTest(mutation=i),self.assertRaises(ValueError):self.state(get=get_for(f,seen))
+   self.assertNotIn(self.BETA,seen)
+  for value in (None,False,0,[], ''):
+   f=self.fixtures();f[SCRIPT+'/versions/'+VID]['result']['resources']['script_runtime']['assets']=value;seen=[]
+   with self.assertRaisesRegex(ValueError,'version_assets_object_required'):self.state(get=get_for(f,seen))
+   self.assertNotIn(self.BETA,seen)
+ def test_exact_beta_transport_selection_and_query(self):
+  f=self.fixtures();op=R2Regressions().opener([f[SCRIPT+'/deployments?page=1&per_page=1'],f[self.BETA]]);get=R2Regressions().transport(op)
+  with self.assertRaisesRegex(ValueError,'provider_get_endpoint_forbidden'):get(self.BETA)
+  self.assertEqual(len(op.requests),0);get(SCRIPT+'/deployments?page=1&per_page=1')
+  bad=[self.BETA.replace(ACCOUNT,'b'*32),self.BETA.replace(b.WORKER,'other-worker'),self.BETA.replace(VID,DEP),self.BETA.replace(VID,VID[:8]),self.BETA.replace(VID,'latest'),self.BETA.replace('?include=modules',''),self.BETA+'&x=1',self.BETA.replace('include=modules','include=bindings'),self.BETA+'#x',self.BETA.replace('include=modules','include=%6dodules')]
+  for path in bad:
+   with self.subTest(path=path),self.assertRaises(ValueError):get(path)
+  self.assertEqual(len(op.requests),1);get(self.BETA);self.assertEqual(len(op.requests),2);self.assertEqual(op.requests[-1].get_method(),'GET');self.assertIsNone(op.requests[-1].data)
+ def test_beta_transport_failures_fixed_no_retry_fallback_or_sweep(self):
+  f=self.fixtures()
+  for error in (RuntimeError(self.CANARY),ValueError(self.CANARY),b.ProviderEnvelopeError({'secret':self.CANARY})):
+   seen=[]
+   def get(path):
+    seen.append(path)
+    if path==self.BETA:raise error
+    return f[path]
+   with patch.object(b,'state_diagnostic_sweep') as sweep,patch.object(b,'ACCOUNT_SHA',SHA),self.assertRaisesRegex(ValueError,'^selected_assets_transport_unverified$'):b.state_with_diagnostics({},ACCOUNT,get)
+   sweep.assert_not_called();self.assertEqual(seen.count(self.BETA),1);self.assertEqual(len(seen),9)
+ def test_beta_http_json_cap_and_access_failures_stop_once(self):
+  from email.message import Message
+  good=json.dumps(self.fixtures()[self.BETA]).encode()
+  class Response:
+   def __init__(self,status,body,mime='application/json',encoding=None):
+    self.status=status;self.body=body;self.headers=Message();self.headers['Content-Type']=mime
+    if encoding is not None:self.headers['Content-Encoding']=encoding
+   def __enter__(self):return self
+   def __exit__(self,*args):pass
+   def read(self,n):self.limit=n;return self.body[:n]
+  variants=[(code,good,'application/json',None) for code in (204,301,302,401,403,404,429,500)]+[(200,b'x'*(1024*1024+1),'application/json',None),(200,good,'text/plain',None),(200,good,'application/json','gzip'),(200,b'{invalid '+self.CANARY.encode(),'application/json',None),(200,b'{"success":true,"success":true,"errors":[],"result":{}}','application/json',None),(200,b'{"success":true,"errors":[],"result":{"x":NaN}}','application/json',None),(200,b'{"success":false,"errors":[{"message":"'+self.CANARY.encode()+b'"}],"result":{}}','application/json',None)]
+  for status,raw,mime,encoding in variants:
+   response=Response(status,raw,mime,encoding)
+   class Opener:
+    def __init__(self):self.requests=[]
+    def open(self,request,timeout):
+     self.requests.append(request)
+     return Response(200,json.dumps(self_outer.fixtures()[SCRIPT+'/deployments?page=1&per_page=1']).encode()) if len(self.requests)==1 else response
+   self_outer=self;op=Opener();get=R2Regressions().transport(op);get(SCRIPT+'/deployments?page=1&per_page=1')
+   with self.subTest(status=status,mime=mime,size=len(raw)),self.assertRaisesRegex(ValueError,'^selected_assets_transport_unverified$'):b.selected_assets_preservation(get,ACCOUNT,VID,1,'2026-10-16T02:58:19Z')
+   self.assertEqual(len(op.requests),2)
+ def test_total_assets_normal_plus_existing_diagnostic_bound_28(self):
+  f=self.fixtures();paths=StateShapeDiagnostics().paths();normal_paths=paths+[self.BETA,SCRIPT+'/deployments?page=1&per_page=1'];responses=[copy.deepcopy(f[path]) for path in normal_paths*2];responses[-1]['result']['deployments'][0]['created_on']='2026-10-16T03:00:00Z';normal=R2Regressions().opener(responses);diagnostic=R2Regressions().opener([f[path] for path in paths])
+  with patch.object(b,'ACCOUNT_SHA',SHA),patch.object(b,'build_opener',side_effect=[normal,diagnostic]),patch.object(b,'load_policy',return_value={}),patch.object(b,'authorize',return_value={}),patch.object(b,'trusted_control'),patch.object(b,'old_public',return_value={}) as public,self.assertRaises(b.ProviderStateDiagnosticError) as caught:b.observe(StateShapeDiagnostics().env(),{})
+  self.assertEqual(caught.exception.original_code,'active_deployment_changed_during_observation');self.assertEqual(len(normal.requests),20);self.assertEqual(len(diagnostic.requests),8);self.assertEqual(len(normal.requests)+len(diagnostic.requests),28);public.assert_called_once()
+  for request in normal.requests+diagnostic.requests:self.assertEqual(request.get_method(),'GET');self.assertIsNone(request.data)
+ def test_cross_public_check_detects_raw_beta_and_preservation_changes(self):
+  first=self.state()
+  for key,value in [('base_path','/'),('run_worker_first',False)]:
+   f=self.fixtures();f[self.BETA]['result']['assets']['config'][key]=value;second=self.state(f)
+   env,event=Authorization().case()
+   with patch.object(b,'trusted_control'),patch.object(b,'provider_get',return_value=(ACCOUNT,None)),patch.object(b,'state_with_diagnostics',side_effect=[first,second]),patch.object(b,'old_public',return_value={}),self.assertRaisesRegex(ValueError,'provider_changed_across_full_public_check'):b.observe(env,event)
+ def test_source_fixed_config_headers_and_no_redirects_are_pinned(self):
+  policy=b.load_policy();source=json.loads(b.read(b.ROOT/'docs/direct-gwangju-gwangsan-policy-correction/prior-publication/wrangler-publish.json'));contract=json.loads(b.read(b.ROOT/policy['previousPublicContractPath']))
+  self.assertEqual(source,{'name':b.WORKER,'compatibility_date':'2026-10-09','workers_dev':False,'assets':{'directory':'./dist/','html_handling':'auto-trailing-slash','not_found_handling':'404-page'}});self.assertEqual(contract['files']['_headers'],b.sha(b'/*\n'));self.assertNotIn('_redirects',contract['files']);self.assertEqual(b.CURRENT,'0da9982f8ea294c6fb38729d17e9043d45f7ca72')
 
 
 if __name__=='__main__':
