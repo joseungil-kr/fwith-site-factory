@@ -1,0 +1,25 @@
+---
+import '../styles/global.css';
+import '../styles/gangdong.css';
+import '../styles/mokpo.css';
+import '../styles/yeosu.css';
+import '../styles/suncheon.css';
+import '../styles/gokseong.css';
+import '../styles/gurye.css';
+import '../styles/boseong.css';
+import {assertBoundary,ui} from '../lib/boseong-runtime.mjs';
+assertBoundary();
+const {page}=Astro.props;
+const anchor=(href:string)=>page.id==='not-found'&&href.startsWith('#')?'/'+href:href;
+---
+<!doctype html><html lang="ko"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>{page.title}</title><meta name="description" content={page.description}/><meta name="robots" content="noindex,nofollow"/>
+<meta name="theme-color" content="#3a214f"/>
+</head><body>
+<a class="skip-link" data-copy-key="ui.skipLabel" href={ui.skipHref}>{ui.skipLabel}</a>
+<header class="site-header"><div class="header-inner"><a class="brand" href={ui.brandHref}><b data-copy-key="ui.brandLabel">{ui.brandLabel}</b><small data-copy-key="ui.regionLabel">{ui.regionLabel}</small></a>
+<nav class="desktop-navigation" aria-label={ui.navAriaLabel}>{ui.navigation.map((link:any,i:number)=><a data-copy-key={`ui.navigation.${i}`} href={anchor(link.href)}>{link.label}</a>)}</nav>
+</div></header>
+<main id="main-content" tabindex="-1"><slot/></main>
+<footer><div><strong data-copy-key="ui.footerBrand">{ui.footerBrand}</strong>{ui.footerLinks.map((link:any,i:number)=><a data-copy-key={`ui.footerLinks.${i}`} href={anchor(link.href)}>{link.label}</a>)}<small data-copy-key="ui.copyright">{ui.copyright}</small></div></footer>
+</body></html>

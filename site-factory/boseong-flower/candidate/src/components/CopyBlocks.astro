@@ -1,0 +1,4 @@
+---
+const {blocks,prefix,offset=0}=Astro.props;
+---
+{blocks.map((b:any,i:number)=>b.type==='p'?<p data-copy-key={`${prefix}.${i+offset}`}>{b.text}</p>:<ul>{b.items.map((text:string,j:number)=><li data-copy-key={`${prefix}.${i+offset}.${j}`}>{text}</li>)}</ul>)}

@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SharedFlowerBanner from './SharedFlowerBanner.astro';
+import ProductCards from './ProductCards.astro';
+import CopyBlocks from './CopyBlocks.astro';
+import {copy,display,ui,sections,blocks,faqs} from '../lib/boseong-runtime.mjs';
+const {page}=Astro.props;
+const error=display.notFoundCopyPlan;
+---
+<BaseLayout page={page}><article data-page-id={page.id} data-source-manuscript-sha={copy.sourceSHA256['draft-home.ko.md']}>
+{page.id==='home'?<>
+<section id="opening" class="category-hero"><h1 data-copy-key="page.h1">{display.page.h1}</h1>{copy.intro.split('\n\n').map((p:string,i:number)=><p data-copy-key={`intro.${i}`}>{p}</p>)}<div class="actions">{ui.heroActions.map((a:any,i:number)=><a class={`btn ${i===0?'dark':'primary'}`} data-copy-key={`ui.heroActions.${i}`} href={a.href}>{a.label}</a>)}</div></section>
+<SharedFlowerBanner variant="message"/>
+{sections.map((s:any)=><>
+<section id={s.id} class="content-card copy-section"><h2 data-copy-key={`section.${s.id}.heading`}>{s.heading}</h2><CopyBlocks blocks={s.blocks} prefix={`section.${s.id}.body`}/>{s.id==='products-cost'&&<ProductCards/>}</section>
+{s.id==='products-cost'&&<SharedFlowerBanner variant="budget"/>}
+</>)}
+<section id="questions" class="faq" data-visible-faq><h2 data-copy-key="section.questions.heading">{copy.sections.find((s:any)=>s.id==='questions')?.heading}</h2>{faqs.map((f:any)=><div class="faq-pair" id={f.id}><h3 data-copy-key={`${f.id}.question`}>{f.question}</h3><CopyBlocks blocks={blocks(f.answer)} prefix={`${f.id}.answer`}/></div>)}</section>
+<SharedFlowerBanner variant="consultation"/>
+<section class="content-card inline-order"><h2 data-copy-key="ui.inlineOrderHeading">{ui.inlineOrderHeading}</h2><p data-copy-key="ui.inlineOrderText">{ui.inlineOrderText}</p><a class="btn primary" data-copy-key="ui.inlineOrderAction" href={ui.inlineOrderAction.href}>{ui.inlineOrderAction.label}</a></section>
+<section id="sources" class="source-card"><h2 data-copy-key="sources.heading">{display.sourceArea.heading}</h2><p data-copy-key="sources.checkedLabel">{display.sourceArea.checkedLabel}</p><ul>{display.sourceArea.items.map((s:any,i:number)=><li><a data-copy-key={`sources.${i}`} href={s.href}>{s.label}</a></li>)}</ul></section>
+<div class="actions final-action"><a class="btn dark" data-copy-key="ui.closingAction" aria-label={ui.closingAction.ariaLabel} href={ui.closingAction.href}>{ui.closingAction.label}</a></div>
+</>:<section class="category-hero not-found"><h1 data-copy-key="404.h1">{error.h1}</h1><p data-copy-key="404.body">{error.body}</p><div class="actions"><a class="btn dark" data-copy-key="404.ctaLabel" href={error.ctaHref}>{error.ctaLabel}</a></div></section>}
+</article></BaseLayout>
