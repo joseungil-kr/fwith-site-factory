@@ -43,9 +43,15 @@ def historical_job():
 
 class Authorization(shared.Case):
     def test_pending_binding_all_three_cli_stop_before_event_credentials_transport(self):
+        # This negative fixture stays pending even after the real binding activates.
+        pending=c.read_json(c.ROOT/'docs/direct-damyang-recovery/reconciliation-binding.json')
+        pending.update(status='PENDING_INDEPENDENT_GET_ONLY_RECONCILIATION_REVIEW',
+            operationalActivationAllowed=False,review=None,controlFiles=None,
+            workflowFiles=None,reviewedControlRevision=None)
         for mode in q.MODES:
-            with self.subTest(mode=mode),patch.object(q.sys,'argv',['reconcile',mode,'--control-root',str(c.ROOT),'--report',str(self.root/'blocked.json')]),patch.object(q,'authorize')as auth,patch.object(q,'ReadOnlyHTTP')as http,patch.dict(os.environ,{'GH_TOKEN':'PRIVATE_SENTINEL','CLOUDFLARE_API_TOKEN':'PRIVATE_SENTINEL','GITHUB_EVENT_PATH':'DO_NOT_READ'},clear=True):
+            with self.subTest(mode=mode),patch.object(q,'read_json',return_value=pending)as read,patch.object(q.sys,'argv',['reconcile',mode,'--control-root',str(c.ROOT),'--report',str(self.root/'blocked.json')]),patch.object(q,'authorize')as auth,patch.object(q,'ReadOnlyHTTP')as http,patch.dict(os.environ,{'GH_TOKEN':'PRIVATE_SENTINEL','CLOUDFLARE_API_TOKEN':'PRIVATE_SENTINEL','GITHUB_EVENT_PATH':'DO_NOT_READ'},clear=True):
                 self.assertEqual(q.main(),1);auth.assert_not_called();http.assert_not_called()
+                read.assert_called_once_with(c.ROOT/'docs/direct-damyang-recovery/reconciliation-binding.json')
                 raw=(self.root/'blocked.json').read_text();self.assertNotIn('PRIVATE_SENTINEL',raw);self.assertIn('independent_get_only_reconciliation_acceptance_required',raw)
     def test_disabled_code_seal_all_three_modes_stops_before_environment(self):
         for mode in q.MODES:
