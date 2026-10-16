@@ -152,4 +152,18 @@ class RealInputAndSyntheticObservationTests(unittest.TestCase):
   for key in manifest:
    bad=copy.deepcopy(manifest);bad[key]=None
    with self.assertRaises(ValueError):module.validate_release_manifest(bad,facts['files'],self.b['assemblyRevision'],control,run,g.BINDING_SHA)
+ def test_real_capture_startup_reaches_socket_boundary_without_module_shadowing(self):
+  # Execute the unchanged capture startup and real Handler construction. No socket or browser starts.
+  import importlib.util,sys,types
+  from unittest.mock import patch,Mock
+  class StopBeforeSocket(RuntimeError):pass
+  api=types.ModuleType('playwright.sync_api');api.sync_playwright=Mock(side_effect=AssertionError('browser_must_not_start'))
+  parent=types.ModuleType('playwright');parent.sync_api=api
+  with patch.dict(sys.modules,{'playwright':parent,'playwright.sync_api':api}):
+   sys.modules.pop('expected_surface',None)
+   spec=importlib.util.spec_from_file_location('gurye_capture_startup',g.ROOT/'capture_production.py');capture=importlib.util.module_from_spec(spec);spec.loader.exec_module(capture)
+   with patch.object(capture.socketserver,'ThreadingTCPServer',side_effect=StopBeforeSocket('socket boundary reached'))as server:
+    with self.assertRaisesRegex(StopBeforeSocket,'socket boundary reached'):capture.run(self.source,self.output,self.b['assemblyRevision'])
+    server.assert_called_once();self.assertEqual(server.call_args.args[0],('127.0.0.1',0));self.assertTrue(issubclass(server.call_args.args[1],capture.http.server.SimpleHTTPRequestHandler))
+   api.sync_playwright.assert_not_called()
 if __name__=='__main__':unittest.main()
