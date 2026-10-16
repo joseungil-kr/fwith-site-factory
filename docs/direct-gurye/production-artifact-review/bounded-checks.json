@@ -1,0 +1,421 @@
+{
+  "artifactDigest": "sha256:4de3ab9d692121ce45f79c2c1b8a7ad061a2e7da18e5fb5fd49ed8a29601808a",
+  "artifactId": "12059990609",
+  "assessmentScope": "bounded-launch",
+  "bindingSha256": "819387431b999d24321be95cb052101188f37bbf1e1d2e67058730c137676c9c",
+  "boundedContractSha256": "a1effa3234cbf8fd900ec086cffb4de09fac7cf85ce0537826f9559769f779b7",
+  "buildControlSha": "108a4d4fde6dbd1360eb1b72f3d3bebe5be03775",
+  "buildRunId": "38931418314",
+  "checkCount": 18,
+  "checks": {
+    "actual_cta": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "실제 HTML과 DOM의 4개 SKU URL, 전화 href, anchor를 대조했다. 외부 주문이나 전화는 실행하지 않았다.",
+      "status": "PASS"
+    },
+    "architecture_manifest_page_map_html_sitemap": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "원고 render-plan의 고객 홈 1개, 기술 404 1개, 시설 HOLD가 source60, 실제 HTML 2개, release 15파일, sitemap 1URL과 일치한다.",
+      "status": "PASS"
+    },
+    "bounded_single_home_scope": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "실질 구매 홈 1개와 기술 404 1개만 수용한다. 시설 3개는 HOLD, article 0개와 support 0개이며 core-hub/full-launch는 NOT_ASSESSED이다.",
+      "status": "PASS"
+    },
+    "build_and_expected_http_paths": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "실제 run38931418314의 native/build/browser와 source/control/artifact를 결속했다. 15개 파일과 loopback 누락경로 404를 확인했다. 공개 HTTP는 아직 아니다.",
+      "status": "PASS"
+    },
+    "business_truth": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "상품가·추가비·참고합계, 재료 혼합, 수거 없음, 19시 안내 차이와 21시 조건, 취소 단계의 경계를 보존했다. 무료·정시·설치·현장실적·상품 우월성·제휴를 발명하지 않았다.",
+      "status": "PASS"
+    },
+    "content_writing_contract": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "고객 전문, UI, FAQ, 메타, alt, 버튼, 배너 문구를 현행 지침 3개와 대조했다. 문체와 정보 완결성을 별도로 판단하고 문자수 2847을 통과선으로 쓰지 않았다.",
+      "status": "PASS"
+    },
+    "home_anchor_navigation_and_no_extra_routes": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "메뉴 4개와 본문 anchor, 404 회복 링크가 실제 ID에 연결된다. 별도 시설·허브·지원 글 경로는 없다.",
+      "status": "PASS"
+    },
+    "image_local_reuse_safety": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "상품사진 4장과 승인 배너 3장의 로컬 bytes, SHA, 비율, alt, 본문 분산을 확인했다. 신규 생성이나 추가 자산은 없다.",
+      "status": "PASS"
+    },
+    "image_origin_classification": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "사진은 판매상품의 외관, 공통 배너는 승인된 분위기 자산이다. 실제 구례 납품 증거로 사용하지 않는다. 삭제 승인된 캡션을 재삽입하지 않았다.",
+      "status": "PASS"
+    },
+    "local_evidence": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "구례 추가비 20,000원과 2026-04-01 명부의 3시설을 원문으로 대조했다. 현재 반입·운영은 미확인으로 남겼다.",
+      "status": "PASS"
+    },
+    "no_duplicate_intent_or_cluster": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "이번 고정 source에는 고객 홈 1개만 있고 가격·근조·시설명 치환 URL을 추가하지 않았다. 담양·곡성 보존 원고와 40자 초과 정확 동일 문단 0개를 재계산했다. 외부 브랜드 블로그 소유권이나 전웹 중복은 미확인이다.",
+      "status": "PASS"
+    },
+    "no_duplicate_slug": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "HTML 2개의 ID 중복 0개, 추가 route 0개, sitemap의 단일 홈을 검사했다. 범위는 고정 산출물이며 전웹 URL 중복 주장과 구분한다.",
+      "status": "PASS"
+    },
+    "provider_voice": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "상품과 리본을 상담해 드린다는 실제 판매자 시점과 차분한 공감을 확인했다. 고객 감정이나 납품 경험을 꾸미지 않는다.",
+      "status": "PASS"
+    },
+    "purchase_conversion_path": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "사진·예산 선택에서 해당 SKU 상세, 또는 리본·일정 상담으로 이어진다. 준비정보 목록은 한 곳에 있다.",
+      "status": "PASS"
+    },
+    "query_title_h1_intent_alignment": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "구례 근조 구매 의도와 title, H1, 첫 답변, 가격·주문 내용의 대응을 전문으로 읽었다.",
+      "status": "PASS"
+    },
+    "route_aware_indexability_and_canonical": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "홈 index,follow·자기 canonical·sitemap 1URL과 404 noindex,follow·canonical 없음·social 0개를 실제 head에서 확인했다.",
+      "status": "PASS"
+    },
+    "source_classification": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "사업 원문, 공식 명부, 산술 참고, 문구 제안, 미확인 정책 적용을 분리했다. 선택 원자료 19개만 이번에 재해시했고 참조 124항목 전수검수를 주장하지 않는다.",
+      "status": "PASS"
+    },
+    "vertical_specificity": {
+      "evidence": [
+        {
+          "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+          "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+          "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+          "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+        },
+        {
+          "path": "docs/direct-gurye/production-artifact-review/quality-assessment.json",
+          "sha256": "10c4a62a4cc8cf5c4ecbd2ee9157aa2270b68843ae1acb96c5d11c8a4541a124"
+        }
+      ],
+      "reason": "근조 목적, 빈소, 조문 리본, 발인 일정, 수거 경계를 다루며 축하·개업 서비스로 확장하지 않는다.",
+      "status": "PASS"
+    }
+  },
+  "classification": "DIRECT_FACTS_WITH_EXPLICIT_EDITORIAL_JUDGMENTS",
+  "limitations": [
+    "PASS checks apply only to the exact retained single-home artifact and stated original-source scope.",
+    "No whole-web duplicate-content, actual facility acceptance, public deployment, indexing or ranking claim."
+  ],
+  "publicHttpVerified": false,
+  "publicationReady": false,
+  "region": "gurye",
+  "reviewedAtUTC": "2026-10-16T17:06:40.054563+00:00",
+  "reviewer": "independent-gurye-artifact-and-bounded-reviewer-20261016",
+  "schemaVersion": 1,
+  "sourceCommit": "de6147d063dc563a6ef0f82e6ebf0e6e4ca3d10f",
+  "sourceContractSha256": "0f6c1c070405afbf7cc5d6a51191caf8664c868f9c87f07ac1167efac40e33a2"
+}

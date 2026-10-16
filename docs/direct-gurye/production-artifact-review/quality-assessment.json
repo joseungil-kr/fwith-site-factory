@@ -1,0 +1,311 @@
+{
+  "artifactDigest": "sha256:4de3ab9d692121ce45f79c2c1b8a7ad061a2e7da18e5fb5fd49ed8a29601808a",
+  "artifactId": "12059990609",
+  "bindingSha256": "819387431b999d24321be95cb052101188f37bbf1e1d2e67058730c137676c9c",
+  "boundedContractSha256": "a1effa3234cbf8fd900ec086cffb4de09fac7cf85ce0537826f9559769f779b7",
+  "buildControlSha": "108a4d4fde6dbd1360eb1b72f3d3bebe5be03775",
+  "buildRunId": "38931418314",
+  "classification": "EDITORIAL_AND_TECHNICAL_JUDGMENT_NOT_SEARCH_PERFORMANCE",
+  "copiedRegionalScoresOrJudgments": false,
+  "coreHubLaunchStatus": "NOT_ASSESSED",
+  "criteria": {
+    "aeo": [
+      {
+        "awarded": 19,
+        "criterion": "core_purchase_question_answers",
+        "deduction": "상품비교가 첫 화면에 압축되어 있지 않아 빠른 가격 답변은 아래로 이동해야 한다.",
+        "evidence": [
+          {
+            "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+            "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+          },
+          {
+            "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+            "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "비용·상품선택·받을빈소·문구·주문준비·늦은주문·변경취소에 질문→답변→상품/전화 다음행동이 있다."
+      },
+      {
+        "awarded": 20,
+        "criterion": "visible_complementary_faq",
+        "deduction": "FAQ rich result나 AI 답변 채택을 보장하지 않는다. 실제FAQ가 있다는 편집·표시 범위만 평가한다.",
+        "evidence": [
+          {
+            "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+            "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+          },
+          {
+            "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+            "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "입금자명·수거·후다지3문답은 다른 본문을 단순 복제하지 않고 남은 질문에 답한다. HTML과실제화면에서 펼쳐진 전문을 확인했다."
+      },
+      {
+        "awarded": 18,
+        "criterion": "answer_precision_without_invention",
+        "deduction": "상충하는 게시안내 때문에 모든 야간/취소 질문에 단일 확정답을 주지는 못한다. 이를 숨기지 않고 실제상담으로 넘긴다.",
+        "evidence": [
+          {
+            "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+            "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "B201/B203/B20519시상하단과B06021시,최소3시간전주문,재료/수거/취소조건을 왜곡하지 않는다."
+      },
+      {
+        "awarded": 19,
+        "criterion": "appropriate_next_action",
+        "deduction": "시설 연락처는 읽을 수 있는 텍스트로만 제시되어 즉시 전화 동작은 제공하지 않는다. 실제 외부 주문이나 전화는 수행하지 않았다.",
+        "evidence": [
+          {
+            "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+            "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+          },
+          {
+            "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+            "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "각 상품 CTA가 해당 SKU로, 상담 CTA가 같은 1844-0644로 이어진다. 준비정보는 한 곳이며 고객에게 반복 숙제를 주지 않는다."
+      },
+      {
+        "awarded": 16,
+        "criterion": "answer_readability_and_scan_cost",
+        "deduction": "긴 시간·환불 문단은 복수 조건을 연속해서 읽어야 하고 320px 첫 CTA는 첫 화면 아래다. 정보 가림은 없으나 스캔 비용이 남는다.",
+        "evidence": [
+          {
+            "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+            "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+          },
+          {
+            "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+            "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "H2/H3와 문단·목록·가격 카드, 모바일 폭에 맞는 텍스트로 읽을 수 있다. 불필요한 감정 가정, 밝은 근조 말투, 허구 경험을 찾지 못했다."
+      }
+    ],
+    "geo": [
+      {
+        "awarded": 19,
+        "criterion": "primary_evidence_and_dates",
+        "deduction": "게시된 판매자 안내까지 검증했으며 실제 이행·현재 시설 운영을 직접 입증하지는 못한다.",
+        "evidence": [
+          {
+            "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+            "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "판매자 원본4·공통정책 이미지·공식CSV를 가격/정책/시설별로 구분하고 확인일·목록기준일을 노출한다."
+      },
+      {
+        "awarded": 17,
+        "criterion": "gurye_specific_decision_value",
+        "deduction": "현행 반입·수령시간·설치조건이 없어 시설별 구체 해답의 깊이는 제한된다. 시설페이지3개HOLD를 지켜 과장을 막았다.",
+        "evidence": [
+          {
+            "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+            "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "구례20,000원 구간과 날짜 있는3시설 식별을 하나의 지역 구매결정에 활용한다. 관광·인구·관계없는 지역정보로 분량을 채우지 않는다."
+      },
+      {
+        "awarded": 20,
+        "criterion": "claim_classification_and_limits",
+        "deduction": "확인한 한계 내에서 새 허위 또는 근거 없는 서비스 약속을 찾지 못했다.",
+        "evidence": [
+          {
+            "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+            "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+          },
+          {
+            "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+            "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "참고합계/확정견적, 판매사진/현장실적, 게시시간/접수답변, 날짜 있는명부/현재허가를 분리한다. 경쟁사의 무료·빠른배송 약속을 가져오지 않는다."
+      },
+      {
+        "awarded": 17,
+        "criterion": "self_contained_extractable_context",
+        "deduction": "19시 상하단 차이와 취소단계 관계가 긴 문단에 걸쳐 있고 단일 문장만 떼면 조건을 놓칠 수 있다. 말미 출처 연결도 즉각적이지 않다.",
+        "evidence": [
+          {
+            "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+            "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+          },
+          {
+            "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+            "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "상품번호·가격·추가비·시설기준일·정책SKU가 텍스트에 있어 인용 시 조건을 함께 읽을 수 있다."
+      },
+      {
+        "awarded": 18,
+        "criterion": "entity_and_provenance_clarity",
+        "deduction": "현재 현장 경험이나 시설 제휴는 증명되지 않아 주장하지 않는다. 별도 작성자/전문성 소개 없이 브랜드와출처 링크로 책임 주체를 보여주는 제한이 있다.",
+        "evidence": [
+          {
+            "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+            "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+          },
+          {
+            "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+            "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "꽃이랑·1844-0644·공식몰·직접SKU URL·공식자료 링크를 명확히 제시하며 상품별사진을 구분한다."
+      }
+    ],
+    "seo": [
+      {
+        "awarded": 19,
+        "criterion": "query_title_and_first_answer",
+        "deduction": "제목과 첫 답변이 여러 세부정보를 묶어 짧은 가격 답변까지 읽는 거리가 있다.",
+        "evidence": [
+          {
+            "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+            "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+          },
+          {
+            "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+            "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "구례 근조화환 가격·추가비·빈소 주문이라는 한 구매 의도를 title/H1/첫 답변에서 연결한다. 근조의 차분한 문체로 실제4상품과 상담을 제시한다."
+      },
+      {
+        "awarded": 20,
+        "criterion": "artifact_discovery_and_structure",
+        "deduction": "이 항목은 산출물·loopback 범위다. 실제 공개 크롤 가능성은 별도 필수 게이트로 남기며 점수에 포함하지 않는다.",
+        "evidence": [
+          {
+            "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+            "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "홈1 canonical/index/sitemap와404 noindex·canonical 없음이 정확하다. H1각1, H2/H3, 실제anchor 및 로컬자산이 검증됐고 social14는 기존 내용에만 결속된다."
+      },
+      {
+        "awarded": 18,
+        "criterion": "purchase_information_completeness",
+        "deduction": "카드 이전 배너와 긴 본문으로 비교가 즉시 보이지 않고 비용 문구 일부가 본문과 카드 주변에서 반복된다.",
+        "evidence": [
+          {
+            "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+            "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+          },
+          {
+            "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+            "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "실제4상품가·20,000원 추가비·4참고합계, 빈소3곳 식별, 리본·주문정보·시간·변경취소·FAQ가 한 HTML에 있다."
+      },
+      {
+        "awarded": 17,
+        "criterion": "navigation_and_mobile_use",
+        "deduction": "320px 상담CTA y906.95는844px 첫 화면 밖이다. 4개 메뉴는 반복스크롤을 줄이지만FAQ/취소 바로가기는 없어 긴 페이지 탐색 부담이 남는다.",
+        "evidence": [
+          {
+            "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+            "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "320/390/1280에서anchor·skip·실제CTA·터치44px이상·가로overflow없음을 검사했다."
+      },
+      {
+        "awarded": 18,
+        "criterion": "asset_and_source_semantics",
+        "deduction": "세 배너가 비교/정보 접근을 길게 하고 정책 근거는 문장 가까이보다 말미 링크 모음에 있다. 실제 성능/Core Web Vitals는 측정하지 않았다.",
+        "evidence": [
+          {
+            "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+            "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+          },
+          {
+            "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+            "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+          },
+          {
+            "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+            "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "상품사진4와배너3은 실제원본·크기·설명alt를 보존하며 출처7과 날짜가 있다."
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "path": "docs/direct-gurye/production-artifact-review/all-route-output.json",
+      "sha256": "d10c118481a5086f53f6db3c8c1ea47b7b647e54fea6394a44989c423e4b8759"
+    },
+    {
+      "path": "docs/direct-gurye/production-artifact-review/browser-pixels.json",
+      "sha256": "8bbfd8c7fb92b050c0084e172d8b53a76da994caa75c5831e20427a148fe4516"
+    },
+    {
+      "path": "docs/direct-gurye/production-artifact-review/content-source-evidence.json",
+      "sha256": "773869b3285badfe7184ce1a78e4843f6571826c966bc3df0b30c4d784eea586"
+    }
+  ],
+  "fullLaunchStatus": "NOT_ASSESSED",
+  "minimums": {
+    "aeo": 90,
+    "geo": 85,
+    "seo": 90
+  },
+  "nonBlockingLimitations": [
+    "320px initial phone CTA begins at y906.95 in an844px viewport; top navigation remains accessible.",
+    "Long timing/cancellation paragraphs and repeated fee reminders increase scan cost.",
+    "Sources are grouped at the end rather than linked adjacent to each claim.",
+    "Current facility acceptance, checkout amount, fulfillment and merchant policy precedence remain unresolved and explicitly bounded.",
+    "No public HTTP, field performance, search indexing/ranking, AI citation or conversion result was measured."
+  ],
+  "officialGuidanceContext": [
+    {
+      "url": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
+      "use": "People-first usefulness, descriptive headings and trustworthy sourcing; no preferred word-count target."
+    },
+    {
+      "url": "https://developers.google.com/search/docs/appearance/ai-features",
+      "use": "AI appearance follows ordinary search fundamentals; no separate guaranteed AI optimization score or special schema is claimed."
+    }
+  ],
+  "path": "/",
+  "performanceOrSearchOutcomeMeasured": false,
+  "publicHttpVerified": false,
+  "rankIndexingCitationConversionGuarantee": false,
+  "region": "gurye",
+  "reviewedAtUTC": "2026-10-16T17:06:40.054563+00:00",
+  "reviewer": "independent-gurye-artifact-and-bounded-reviewer-20261016",
+  "rubricScope": "Bounded single purchase home readiness: five20-point dimensions per category, each item reasoned from exact content and actual artifact. This is not Google/Naver/AI scoring.",
+  "schemaVersion": 1,
+  "scores": {
+    "aeo": 92,
+    "geo": 91,
+    "seo": 92
+  },
+  "sourceCommit": "de6147d063dc563a6ef0f82e6ebf0e6e4ca3d10f",
+  "sourceContractSha256": "0f6c1c070405afbf7cc5d6a51191caf8664c868f9c87f07ac1167efac40e33a2"
+}
