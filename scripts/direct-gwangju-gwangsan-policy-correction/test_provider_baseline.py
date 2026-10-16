@@ -208,7 +208,7 @@ class R2Regressions(unittest.TestCase):
   for path in [' '+SCRIPT+'/settings',SCRIPT+'/settings ',SCRIPT+'/settings?',SCRIPT+'/settings\n',SCRIPT+'/set\ttings',SCRIPT+'/set\rtings','\x00'+SCRIPT+'/settings',SCRIPT+'/settings\x7f',SCRIPT+'/deployments?page=1&per_page=1\n']:
    with self.subTest(path=path),self.assertRaises(ValueError):b.allowed_path(ACCOUNT,path)
  def test_domain_and_zone_ids_must_be_opaque_identifiers(self):
-  for key in ['id','zone_id']:
+  for key in ['zone_id']:
    for value in ['private identity text','abc','x'*32,'3'*31,'3'*33,'3'*32+'\n',[],None,True]:
     f=fixtures();f['/accounts/'+ACCOUNT+'/workers/domains']['result'][0][key]=value
     with self.subTest(key=key,value=value),self.assertRaises(ValueError):self.state(f)
@@ -382,7 +382,7 @@ class DomainNullEnvelopeCompatibility(unittest.TestCase):
   if domain_mutation:domain_mutation(f[key])
   paths=['/accounts/'+ACCOUNT,'/accounts/'+ACCOUNT+'/workers/scripts',key,SCRIPT+'/settings',SCRIPT+'/subdomain',SCRIPT+'/deployments?page=1&per_page=1',SCRIPT+'/deployments/'+DEP,SCRIPT+'/versions/'+VID,SCRIPT+'/deployments?page=1&per_page=1'];get,opener=self.transport([f[path] for path in paths]);return get,opener
  def test_full_synthetic_state_still_requires_exact_domain_identity(self):
-  mutations=[lambda obj:obj['result'][0].update(hostname='other.example'),lambda obj:obj['result'][0].update(service='other-worker'),lambda obj:obj['result'][0].update(zone_name='other.example'),lambda obj:obj['result'][0].update(enabled=False),lambda obj:obj['result'][0].update(previews_enabled=True),lambda obj:obj['result'].clear(),lambda obj:obj['result'].append(copy.deepcopy(obj['result'][0])),lambda obj:obj['result'][0].update(id='invalid'),lambda obj:obj.update(result_info={'total_pages':2})]
+  mutations=[lambda obj:obj['result'][0].update(hostname='other.example'),lambda obj:obj['result'][0].update(service='other-worker'),lambda obj:obj['result'][0].update(zone_name='other.example'),lambda obj:obj['result'][0].update(enabled=False),lambda obj:obj['result'][0].update(previews_enabled=True),lambda obj:obj['result'].clear(),lambda obj:obj['result'].append(copy.deepcopy(obj['result'][0])),lambda obj:obj['result'][0].update(id='invalid space'),lambda obj:obj.update(result_info={'total_pages':2})]
   for i,mutation in enumerate(mutations):
    with self.subTest(case=i):
     get,_=self.state_transport(mutation)
@@ -522,4 +522,87 @@ class StateShapeDiagnostics(unittest.TestCase):
    for key in ('compatibility_date','compatibility_flags','usage_model'):
     name='runtime_'+key+'_AbsentOrMatchesSettings';self.assertFalse(out['checkEvaluated'][name]);self.assertNotIn(name,out['checks'])
 
-if __name__=='__main__':unittest.main(verbosity=2)
+
+class CompatibilityContract(unittest.TestCase):
+ def state(self,fixture=None):
+  with patch.object(b,'ACCOUNT_SHA',SHA):return b.current_state(ACCOUNT,get_for(fixture or fixtures()))
+ def domain(self,value):
+  f=fixtures();f['/accounts/'+ACCOUNT+'/workers/domains']['result'][0]['id']=value;return f
+ def times(self,deployment,version=None):
+  f=fixtures();f[SCRIPT+'/deployments?page=1&per_page=1']['result']['deployments'][0]['created_on']=deployment;f[SCRIPT+'/deployments/'+DEP]['result']['created_on']=deployment;f[SCRIPT+'/versions/'+VID]['result']['metadata']['created_on']=version or deployment;return f
+ def test_domain_accepts_exact_ascii_graphic_1_to_128(self):
+  values=[chr(i) for i in range(33,127)]+['x'*128,'3'*32,DEP,'AbC-._~:/?#[]@!$&\'()*+,;=%','https://elsewhere.test/secret?x=1#part']
+  for value in values:
+   with self.subTest(value=value):self.assertEqual(self.state(self.domain(value))['hostnameBinding']['domainIdSHA256'],b.sha(value.encode('utf-8')))
+ def test_domain_rejects_types_lengths_whitespace_controls_and_nonascii(self):
+  class StringSubclass(str):pass
+  values=[None,False,True,0,1,1.5,[],{},'',StringSubclass('abc'),'x'*129,'private identity text',' abc','abc ','\u00e9','\uff21','\u200b','\u00a0']+['a'+chr(i)+'b' for i in list(range(33))+[127,128,255]]
+  for value in values:
+   with self.subTest(value=repr(value)),self.assertRaises(ValueError):self.state(self.domain(value))
+ def test_domain_digest_preserves_case_punctuation_and_exact_bytes(self):
+  values=['Opaque:ID/a','opaque:ID/a','Opaque:ID/b','Opaque%3AID/a','Opaque:ID/a!'];states=[self.state(self.domain(value)) for value in values]
+  self.assertEqual(states[0],self.state(self.domain(values[0])));self.assertEqual(len({b.digest(s) for s in states}),len(values))
+  for state,value in zip(states,values):self.assertEqual(state['hostnameBinding']['domainIdSHA256'],b.sha(value.encode()));self.assertNotIn(value,json.dumps(state))
+ def test_every_positive_domain_still_requires_fixed_target_and_security_guards(self):
+  domain_key='/accounts/'+ACCOUNT+'/workers/domains'
+  mutations=[lambda f:f['/accounts/'+ACCOUNT]['result'].update(id='b'*32),lambda f:f['/accounts/'+ACCOUNT+'/workers/scripts']['result'].clear(),lambda f:f['/accounts/'+ACCOUNT+'/workers/scripts']['result'].append({'id':b.WORKER}),lambda f:f[domain_key]['result'][0].update(hostname='other.test'),lambda f:f[domain_key]['result'][0].update(service='other'),lambda f:f[domain_key]['result'][0].update(zone_name='other.test'),lambda f:f[domain_key]['result'].append(copy.deepcopy(f[domain_key]['result'][0])),lambda f:f[domain_key].update(result_info={'total_pages':2}),lambda f:f[domain_key]['result'][0].update(environment='staging'),lambda f:f[domain_key]['result'][0].update(enabled=False),lambda f:f[domain_key]['result'][0].update(previews_enabled=True),lambda f:f[domain_key]['result'][0].update(zone_id='opaque.zone'),lambda f:f[domain_key]['result'][0].update(cert_id='bad cert'),lambda f:f[SCRIPT+'/subdomain']['result'].update(enabled=True),lambda f:f[SCRIPT+'/subdomain']['result'].update(previews_enabled='false'),lambda f:f[SCRIPT+'/settings']['result'].update(bindings=[{'name':'SECRET','value':'secret-canary'}])]
+  for value in ['!', 'x'*128,DEP,'opaque:+/%?ID']:
+   for i,mutate in enumerate(mutations):
+    with self.subTest(value=value,mutation=i):
+     f=self.domain(value);mutate(f)
+     with self.assertRaises(ValueError):self.state(f)
+ def test_opaque_url_like_domain_never_changes_get_paths_or_leaks(self):
+  expected=['/accounts/'+ACCOUNT,'/accounts/'+ACCOUNT+'/workers/scripts','/accounts/'+ACCOUNT+'/workers/domains',SCRIPT+'/settings',SCRIPT+'/subdomain',SCRIPT+'/deployments?page=1&per_page=1',SCRIPT+'/deployments/'+DEP,SCRIPT+'/versions/'+VID,SCRIPT+'/deployments?page=1&per_page=1']
+  raw='https://example.invalid/private-canary?token=abc#fragment';f=self.domain(raw);op=R2Regressions().opener([f[path] for path in expected])
+  with patch.object(b,'ACCOUNT_SHA',SHA):
+   account,get=b.provider_get({'CLOUDFLARE_ACCOUNT_ID':ACCOUNT,'CLOUDFLARE_API_TOKEN':'fixture-token'},op);state=b.current_state(account,get)
+  self.assertEqual([r.full_url for r in op.requests],['https://api.cloudflare.com/client/v4'+path for path in expected]);self.assertEqual(len(op.requests),9)
+  for request in op.requests:self.assertEqual(request.get_method(),'GET');self.assertIsNone(request.data)
+  report=b.provider_shape_diagnostic(ACCOUNT,expected[2],f[expected[2]]);self.assertNotIn(raw,json.dumps(state));self.assertNotIn('private-canary',json.dumps(report))
+ def test_timestamp_positive_fractions_offsets_calendar_and_rollovers(self):
+  import datetime as dt
+  for digits in range(10):
+   fraction='' if digits==0 else '.'+'123456789'[:digits]
+   for zone,offset in [('Z',0),('+00:00',0),('+09:00',540),('-05:30',-330),('+23:59',1439),('-23:59',-1439)]:
+    value='2024-02-29T23:59:59'+fraction+zone
+    with self.subTest(value=value):
+     actual=b.timestamp(value);self.assertEqual(actual.microsecond,int(('123456789'[:digits]).ljust(6,'0')[:6]));self.assertEqual(actual.utcoffset(),dt.timedelta(minutes=offset));self.assertEqual((actual.year,actual.month,actual.day),(2024,2,29))
+  pairs=[('2025-01-01T00:00:00+09:00','2024-12-31T15:00:00Z'),('2024-03-01T00:00:00+00:01','2024-02-29T23:59:00Z'),('2024-12-31T23:59:00-00:01','2025-01-01T00:00:00Z')]
+  for left,right in pairs:
+   with self.subTest(left=left):self.assertEqual(b.timestamp(left),b.timestamp(right))
+  for value in ['0001-01-01T00:00:00Z','9999-12-31T23:59:59.999999999Z','2000-02-29T12:30:30Z']:self.assertIsNotNone(b.timestamp(value))
+ def test_timestamp_rejects_outside_explicit_profile_with_fixed_error(self):
+  class StringSubclass(str):pass
+  values=[None,True,0,1.2,[],{},StringSubclass('2026-01-01T00:00:00Z'),'', '2026-01-01','2026-01-01T00:00:00','2026-01-01t00:00:00Z','2026-01-01T00:00:00z','2026-01-01 00:00:00Z','2026-01-01\u202800:00:00Z','20260101T000000Z','2026-W01-1T00:00:00Z','2026-001T00:00:00Z','0000-01-01T00:00:00Z','10000-01-01T00:00:00Z','2025-02-29T00:00:00Z','1900-02-29T00:00:00Z','2026-04-31T00:00:00Z','2026-00-01T00:00:00Z','2026-13-01T00:00:00Z','2026-01-00T00:00:00Z','2026-01-32T00:00:00Z','2026-01-01T24:00:00Z','2026-01-01T00:60:00Z','2026-01-01T00:00:60Z','2026-01-01T00:00:00-00:00','2026-01-01T00:00:00+24:00','2026-01-01T00:00:00+00:60','2026-01-01T00:00:00-24:00','2026-01-01T00:00:00-00:60','2026-01-01T00:00:00.Z','2026-01-01T00:00:00.1234567890Z','2026-01-01T00:00:00,123Z','2026-01-01T00:00.5Z','2026-01-01T00.5Z','2026-01-01T00:00:00+0000','2026-01-01T00:00:00+00','2026-01-01T00:00:00+00:00:00','2026-01-01T00:00:00+00:00.1','２０２６-01-01T00:00:00Z','2026-01-01T00:00:00.١Z','0001-01-01T00:00:00+00:01','9999-12-31T23:59:59-00:01']
+  values += [x+'2026-01-01T00:00:00Z' for x in [' ','\t','\r','\n','\0']]+['2026-01-01T00:00:00Z'+x for x in [' ','\t','\r','\n','\0','extra-secret-canary']]
+  for value in values:
+   with self.subTest(value=repr(value)),self.assertRaisesRegex(ValueError,'^invalid_provider_timestamp$'):b.timestamp(value)
+ def test_nanosecond_provider_raw_state_digest_and_equivalent_offsets_stay_distinct(self):
+  pairs=[('2026-10-16T02:58:20.123456001Z','2026-10-16T02:58:20.123456999Z'),('2026-10-16T02:58:20.123456789Z','2026-10-16T11:58:20.123456789+09:00')]
+  for left,right in pairs:
+   with self.subTest(left=left):
+    self.assertEqual(b.timestamp(left),b.timestamp(right));a=self.state(self.times(left));z=self.state(self.times(right));self.assertNotEqual(a,z);self.assertNotEqual(b.digest(a),b.digest(z));self.assertEqual(a['activeDeployment']['deploymentCreatedOn'],left);self.assertEqual(a['activeDeployment']['versionCreatedOn'],left)
+    f=self.times(left);f[SCRIPT+'/deployments/'+DEP]['result']['created_on']=right
+    with self.assertRaisesRegex(ValueError,'active_deployment_detail_changed'):self.state(f)
+    f=self.times(left);count=0
+    def get(path):
+     nonlocal count
+     obj=copy.deepcopy(f[path])
+     if path==SCRIPT+'/deployments?page=1&per_page=1':
+      count+=1
+      if count==2:obj['result']['deployments'][0]['created_on']=right
+     return obj
+    with patch.object(b,'ACCOUNT_SHA',SHA),self.assertRaisesRegex(ValueError,'active_deployment_changed_during_observation'):b.current_state(ACCOUNT,get)
+    env,event=Authorization().case()
+    with patch.object(b,'trusted_control'),patch.object(b,'provider_get',return_value=(ACCOUNT,None)),patch.object(b,'state_with_diagnostics',side_effect=[a,z]),patch.object(b,'old_public',return_value={}),self.assertRaisesRegex(ValueError,'provider_changed_across_full_public_check'):b.observe(env,event)
+ def test_timestamp_rejection_stops_active_before_dynamic_requests(self):
+  for value in ['2026-01-01T00:00:60Z','2026-01-01T00:00:00.1234567890Z','2026-01-01T00:00:00Zsecret-canary']:
+   f=self.times(value);op=R2Regressions().opener([f[SCRIPT+'/deployments?page=1&per_page=1']]);get=R2Regressions().transport(op)
+   with self.subTest(value=value),self.assertRaisesRegex(ValueError,'^invalid_provider_timestamp$'):get(SCRIPT+'/deployments?page=1&per_page=1')
+   for path in [SCRIPT+'/deployments/'+DEP,SCRIPT+'/versions/'+VID]:
+    with self.assertRaises(ValueError):get(path)
+   self.assertEqual(len(op.requests),1);report,diag=StateShapeDiagnostics().run_sweep(f);self.assertEqual(len(diag.requests),6);self.assertEqual(report['endpoints']['selected-deployment']['status'],'not_requested');self.assertNotIn('secret-canary',json.dumps(report))
+
+if __name__=='__main__':
+ print('Python runtime: '+'.'.join(str(v) for v in b.sys.version_info[:3]),flush=True)
+ unittest.main(verbosity=2)

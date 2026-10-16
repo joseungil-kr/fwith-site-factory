@@ -19,9 +19,21 @@ def save(p,v):Path(p).write_text(json.dumps(v,sort_keys=True,ensure_ascii=False,
 def read(p):
  p=Path(p);require(p.is_file() and not p.is_symlink(),'regular_file_required');return p.read_bytes()
 def timestamp(s):
- require(isinstance(s,str) and len(s)<=40,'invalid_provider_timestamp')
- try:d=datetime.datetime.fromisoformat(s.replace('Z','+00:00'));require(d.tzinfo is not None,'provider_timestamp_timezone_required');return d
- except (ValueError,TypeError):raise ValueError('invalid_provider_timestamp') from None
+ # Explicit project RFC3339 subset. Preserve the raw value in state and digests.
+ require(type(s) is str,'invalid_provider_timestamp')
+ match=re.fullmatch(r'([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})(?:\.([0-9]{1,9}))?(Z|[+-][0-9]{2}:[0-9]{2})',s)
+ require(match is not None,'invalid_provider_timestamp')
+ try:
+  year,month,day,hour,minute,second=(int(v) for v in match.group(1,2,3,4,5,6));fraction=match.group(7) or '';zone=match.group(8)
+  offset=datetime.timedelta(0)
+  if zone!='Z':
+   hours=int(zone[1:3]);minutes=int(zone[4:6]);require(hours<=23 and minutes<=59 and zone!='-00:00','invalid_provider_timestamp');offset=datetime.timedelta(hours=hours,minutes=minutes)
+   if zone[0]=='-':offset=-offset
+  # Provider 7-9 digit fractions floor only for comparisons; never rewrite state.
+  microsecond=int(fraction.ljust(6,'0')[:6]);d=datetime.datetime(year,month,day,hour,minute,second,microsecond,tzinfo=datetime.timezone(offset))
+  d.astimezone(datetime.timezone.utc) # Reject UTC conversion overflow too.
+  return d
+ except (ValueError,TypeError,OverflowError):raise ValueError('invalid_provider_timestamp') from None
 class NoRedirect(HTTPRedirectHandler):
  def redirect_request(self,*a,**k):return None
 
@@ -275,7 +287,7 @@ def current_state(account,get):
  scripts=single_page(get(base+'/workers/scripts'));names=[r.get('id') if isinstance(r,dict) else None for r in scripts];require(all(isinstance(n,str) and n for n in names) and len(names)==len(set(names)) and names.count(WORKER)==1,'existing_worker_missing_or_ambiguous')
  domains=single_page(get(base+'/workers/domains'));require(all(type(r) is dict and all(isinstance(r.get(k),str) and r[k] for k in ['id','hostname','service','zone_id']) for r in domains),'domain_inventory_schema');matches=[r for r in domains if r['hostname'].lower()==HOST or r['service']==WORKER];require(len(matches)==1 and matches[0]['hostname']==HOST and matches[0]['service']==WORKER,'exact_existing_binding_required');row=matches[0]
  require(set(row)<={'id','hostname','service','zone_id','zone_name','environment','enabled','previews_enabled','cert_id'} and row.get('zone_name')=='fwith.kr' and row.get('environment') in (None,'production') and ('enabled' not in row or row['enabled'] is True) and ('previews_enabled' not in row or row['previews_enabled'] is False),'binding_configuration_requires_review')
- require(all(bool(re.fullmatch(r'(?:[0-9a-fA-F]{32}|'+UUID+r')',row[k])) for k in ('id','zone_id')),'opaque_domain_zone_identity_required')
+ require(type(row['id']) is str and 1<=len(row['id'])<=128 and all(33<=ord(c)<=126 for c in row['id']) and bool(re.fullmatch(r'(?:[0-9a-fA-F]{32}|'+UUID+r')',row['zone_id'])),'opaque_domain_zone_identity_required')
  require('cert_id' not in row or (type(row['cert_id']) is str and bool(re.fullmatch(r'[A-Za-z0-9_-]{1,128}',row['cert_id']))),'invalid_optional_certificate_identity')
  import existing_provider as pc
  raw_settings=get(script+'/settings').get('result');require(type(raw_settings) is dict and type(raw_settings.get('logpush')) is bool,'explicit_typed_logpush_required')
