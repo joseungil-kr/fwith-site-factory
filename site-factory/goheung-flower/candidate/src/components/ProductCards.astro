@@ -1,0 +1,10 @@
+---
+import {products,ui} from '../lib/goheung-runtime.mjs';
+---
+<div class="product-group" data-purchase-cards role="group" aria-label={ui.productGroupAriaLabel}><div class="product-grid">
+{products.map((p:any)=><article class="product-card" id={`product-${p.sku}`} data-product-sku={p.sku}>
+<h3 data-copy-key={`product.${p.sku}.heading`}>{p.heading}</h3><img src={`/images/products/${p.sku}.jpg`} alt={p.photoAlt} width="500" height="500" loading="lazy" decoding="async"/>
+<p class="product-price" data-copy-key={`product.${p.sku}.priceLabel`}>{p.priceLabel}</p><p class="product-shipping" data-copy-key={`product.${p.sku}.shippingLabel`}>{p.shippingLabel}</p><p class="product-reference" data-copy-key={`product.${p.sku}.sumLabel`}>{p.sumLabel}</p><p class="product-description" data-copy-key={`product.${p.sku}.description`}>{p.description}</p>
+<a data-copy-key={`product.${p.sku}.ctaLabel`} data-order-product-sku={p.sku} href={p.ctaHref}>{p.ctaLabel}</a>
+</article>)}
+</div><p class="product-notice" data-copy-key="ui.productNotice">{ui.productNotice}</p><p class="amount-notice" data-copy-key="ui.amountNotice">{ui.amountNotice}</p></div>
