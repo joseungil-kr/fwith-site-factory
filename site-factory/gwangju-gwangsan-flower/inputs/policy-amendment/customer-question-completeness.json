@@ -1,0 +1,243 @@
+{
+  "schema": "gwangsan-customer-question-completeness/v1",
+  "copySHA256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72",
+  "questionCount": 13,
+  "rows": [
+    {
+      "id": "purpose",
+      "customerQuestion": "어디에 무엇을 전하고 어떤 상담을 받을 수 있는가?",
+      "answerPointers": [
+        "detail.lead",
+        "home.lead"
+      ],
+      "sourcePaths": [
+        "customer-copy.json"
+      ],
+      "answerSummary": "목적에 맞는 근조화환, 예산·리본 상담을 직접 제시",
+      "nextAction": "tel:18440644",
+      "classification": "편집 판단",
+      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
+      "independentVerdict": null,
+      "actualRenderedVisible": false
+    },
+    {
+      "id": "products",
+      "customerQuestion": "실제 상품과 가격·사진은 무엇인가?",
+      "answerPointers": [
+        "detail.sections[products]",
+        "productCards"
+      ],
+      "sourcePaths": [
+        "asset-manifest.json",
+        "evidence/originals/B201-selected.html",
+        "evidence/originals/B203-selected.html",
+        "evidence/originals/B205-selected.html",
+        "evidence/originals/B060-selected.html"
+      ],
+      "answerSummary": "네 상품과 기본가·실제 사진·SKU별 링크",
+      "nextAction": "해당 SKU 상세",
+      "classification": "직접 확인",
+      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
+      "independentVerdict": null,
+      "actualRenderedVisible": false
+    },
+    {
+      "id": "difference",
+      "customerQuestion": "사진에서 어떤 차이를 보고 고를 수 있는가?",
+      "answerPointers": [
+        "detail.sections[products]",
+        "productCards.description"
+      ],
+      "sourcePaths": [
+        "asset-manifest.json"
+      ],
+      "answerSummary": "색과 배치만 설명하며 크기·수량·품질을 추론하지 않음",
+      "nextAction": "상품번호로 상담",
+      "classification": "직접 확인 + 편집 판단",
+      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
+      "independentVerdict": null,
+      "actualRenderedVisible": false
+    },
+    {
+      "id": "total",
+      "customerQuestion": "표시가격에 배송비가 포함되는가?",
+      "answerPointers": [
+        "detail.sections[budget]",
+        "productCards.shippingLabel",
+        "home.sections[selection]"
+      ],
+      "sourcePaths": [
+        "evidence/originals/B201-selected.html"
+      ],
+      "answerSummary": "기본가와 추가 배송비·최종금액 상담을 분리; 광산 금액 미확정",
+      "nextAction": "총예산을 기준으로 상담",
+      "classification": "직접 확인 + 미확인 경계",
+      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
+      "independentVerdict": null,
+      "actualRenderedVisible": false
+    },
+    {
+      "id": "place",
+      "customerQuestion": "시설과 받는 빈소는 무엇으로 특정하는가?",
+      "answerPointers": [
+        "detail.sections[facility]",
+        "detail.sections[order].list"
+      ],
+      "sourcePaths": [
+        "evidence/originals/suwan-government-row.json",
+        "evidence/originals/suwan_map.facility-excerpt.html",
+        "evidence/originals/suwan_rooms.facility-excerpt.html"
+      ],
+      "answerSummary": "주소·시설전화 역할과 별도 1층/3층 특실을 짧게 설명; 실제 층·호실 입력",
+      "nextAction": "꽃이랑 주문 상담",
+      "classification": "직접 확인",
+      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
+      "independentVerdict": null,
+      "actualRenderedVisible": false
+    },
+    {
+      "id": "timing",
+      "customerQuestion": "오늘 또는 발인 전에 보낼 수 있는가?",
+      "answerPointers": [
+        "detail.sections[facility].paragraphs[2]",
+        "detail.sections[order].afterList[0]"
+      ],
+      "sourcePaths": [
+        "inputs/policy-amendment/source-evidence-binding.json"
+      ],
+      "answerSummary": "희망일정은 개별 상담하며 B201·B203·B205 상단의 평일19시/주말·공휴일19시 이후13시전후와 하단의 주말·공휴일 제외 익일오전을 게시 위치별로 함께 보존한다. 두 안내의 적용범위·예외 관계는 미확정이며 B06021시는 별도다.",
+      "nextAction": "날짜·시각과 발인일정 상담",
+      "classification": "직접 확인 + 개별 이행 미확인",
+      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
+      "independentVerdict": null,
+      "actualRenderedVisible": false
+    },
+    {
+      "id": "ribbon",
+      "customerQuestion": "리본 인사와 보내는 이름은 어떻게 적는가?",
+      "answerPointers": [
+        "detail.sections[ribbon]"
+      ],
+      "sourcePaths": [
+        "PURCHASE-PLAN.ko.md"
+      ],
+      "answerSummary": "조의 표현·개인/회사/모임 예시; 종교별 강제규칙 없음",
+      "nextAction": "문구 상담",
+      "classification": "추정·판단: 편집 예시",
+      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
+      "independentVerdict": null,
+      "actualRenderedVisible": false
+    },
+    {
+      "id": "order",
+      "customerQuestion": "상담 전에 무엇을 준비하는가?",
+      "answerPointers": [
+        "detail.sections[order].list"
+      ],
+      "sourcePaths": [
+        "PURCHASE-PLAN.ko.md"
+      ],
+      "answerSummary": "상품/예산, 층·호실/수신 식별, 일정, 리본/발신/연락처를 네 항목에 모음",
+      "nextAction": "tel:18440644",
+      "classification": "추정·판단: 편집 제안",
+      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
+      "independentVerdict": null,
+      "actualRenderedVisible": false
+    },
+    {
+      "id": "materials",
+      "customerQuestion": "사진과 소재·후다지·수거 조건은 같은가?",
+      "answerPointers": [
+        "sharedUI.productSampleNotice",
+        "detail.sections[order].afterList[1]"
+      ],
+      "sourcePaths": [
+        "evidence/originals/order-top2.jpg"
+      ],
+      "answerSummary": "생화·조화 혼합, 후다지 지역차, 별도수거 없음",
+      "nextAction": "상품 상담 또는 시설 처리 안내",
+      "classification": "직접 확인",
+      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
+      "independentVerdict": null,
+      "actualRenderedVisible": false
+    },
+    {
+      "id": "change",
+      "customerQuestion": "빈소·리본이 변경되면 어떻게 하는가?",
+      "answerPointers": [
+        "detail.faq[0]"
+      ],
+      "sourcePaths": [
+        "PURCHASE-PLAN.ko.md"
+      ],
+      "answerSummary": "기존 주문과 변경내용으로 진행상태별 상담; 무조건 수정·무료변경 약속 없음",
+      "nextAction": "기존 주문 상담",
+      "classification": "추정·판단: 안전한 상담 안내",
+      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
+      "independentVerdict": null,
+      "actualRenderedVisible": false
+    },
+    {
+      "id": "cancel",
+      "customerQuestion": "제작완료/출고 뒤 취소 기준은?",
+      "answerPointers": [
+        "detail.faq[1]"
+      ],
+      "sourcePaths": [
+        "evidence/originals/de-change.jpg"
+      ],
+      "answerSummary": "제작완료 환불불가와 출고후 배송비제외 환불을 함께 남기고 우선순위 판단 안 함",
+      "nextAction": "진행상태별 상담",
+      "classification": "직접 확인 + 개별적용 미확인",
+      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
+      "independentVerdict": null,
+      "actualRenderedVisible": false
+    },
+    {
+      "id": "defect",
+      "customerQuestion": "사진 차이와 파손·오배송은 어떻게 다른가?",
+      "answerPointers": [
+        "detail.faq[2]"
+      ],
+      "sourcePaths": [
+        "evidence/originals/de-change.jpg"
+      ],
+      "answerSummary": "불량/파손/전혀다른상품과 소재차이 구분; 하루/주소오류/수취거부 조건 유지",
+      "nextAction": "해당 주문 상황 상담",
+      "classification": "직접 확인",
+      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
+      "independentVerdict": null,
+      "actualRenderedVisible": false
+    },
+    {
+      "id": "unavailable",
+      "customerQuestion": "결제 뒤 배송불가/품절이면?",
+      "answerPointers": [
+        "detail.faq[3]"
+      ],
+      "sourcePaths": [
+        "evidence/originals/de-change.jpg"
+      ],
+      "answerSummary": "공식 전액환불 조건을 개인사정 취소와 구분",
+      "nextAction": "결제 주문 상담",
+      "classification": "직접 확인",
+      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
+      "independentVerdict": null,
+      "actualRenderedVisible": false
+    }
+  ],
+  "missingCriticalFactsHandledAsQuestions": [
+    "Exact final total",
+    "Actual facility receiving conditions and arrival time",
+    "Individual refund clause application"
+  ],
+  "authorConclusion": "작성된 답변과 경계는 존재한다. 독립 정보완결성·어투 판단 및 실제 출력 확인은 아직 필요하다.",
+  "independentVerdict": null,
+  "policyAmendment": {
+    "scope": "ONE_TIMING_PARAGRAPH_ONLY",
+    "source": "inputs/policy-amendment/review/independent-review-r2.json",
+    "priorArtifactSHA256": "7ddb2692873f027e68fb0f756a961213e2947a3e188806d82998f789d3dcb75c",
+    "previousTimingSummarySuperseded": true,
+    "actualBuildOrPublicationApproval": false
+  }
+}

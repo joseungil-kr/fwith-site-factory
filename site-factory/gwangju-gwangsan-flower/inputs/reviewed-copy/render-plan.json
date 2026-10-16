@@ -1,0 +1,439 @@
+{
+  "status": "MANUSCRIPT_AND_SPEC_ONLY_AWAITING_INDEPENDENT_REVIEW",
+  "origin": null,
+  "domain": null,
+  "productionEnabled": false,
+  "pages": [
+    {
+      "id": "home",
+      "proposedPath": "/",
+      "titleSource": "customer-copy.json#/home/title",
+      "metaDescriptionSource": "customer-copy.json#/home/description",
+      "h1Source": "customer-copy.json#/home/h1",
+      "previewRobots": "noindex,nofollow,noarchive",
+      "previewSitemapIncluded": false,
+      "productionRobots": "index,follow",
+      "productionSitemapIncluded": true,
+      "canonical": null,
+      "canonicalAtProduction": "verified production origin + exact own path",
+      "mainMenuIncluded": true,
+      "bannerCount": 3,
+      "actualChildCount": 0,
+      "coreHub": false,
+      "HTTPStatusRequirement": 200,
+      "status": "PLANNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "detail",
+      "proposedPath": "/regions/suwan-funeral-wreath/",
+      "titleSource": "customer-copy.json#/detail/title",
+      "metaDescriptionSource": "customer-copy.json#/detail/description",
+      "h1Source": "customer-copy.json#/detail/h1",
+      "previewRobots": "noindex,nofollow,noarchive",
+      "previewSitemapIncluded": false,
+      "productionRobots": "index,follow",
+      "productionSitemapIncluded": true,
+      "canonical": null,
+      "canonicalAtProduction": "verified production origin + exact own path",
+      "mainMenuIncluded": true,
+      "bannerCount": 3,
+      "actualChildCount": 0,
+      "coreHub": false,
+      "HTTPStatusRequirement": 200,
+      "status": "PLANNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "support",
+      "proposedPath": "/regions/",
+      "titleSource": "customer-copy.json#/support/title",
+      "metaDescriptionSource": "customer-copy.json#/support/description",
+      "h1Source": "customer-copy.json#/support/h1",
+      "previewRobots": "noindex,nofollow,noarchive",
+      "previewSitemapIncluded": false,
+      "productionRobots": "noindex,follow",
+      "productionSitemapIncluded": false,
+      "canonical": null,
+      "canonicalAtProduction": "verified production origin + exact own path",
+      "mainMenuIncluded": false,
+      "bannerCount": 0,
+      "actualChildCount": 1,
+      "coreHub": false,
+      "HTTPStatusRequirement": 200,
+      "status": "PLANNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "notFound",
+      "proposedPath": "/404.html",
+      "titleSource": "customer-copy.json#/notFound/title",
+      "metaDescriptionSource": "customer-copy.json#/notFound/description",
+      "h1Source": "customer-copy.json#/notFound/h1",
+      "previewRobots": "noindex,nofollow,noarchive",
+      "previewSitemapIncluded": false,
+      "productionRobots": "noindex,follow",
+      "productionSitemapIncluded": false,
+      "canonical": null,
+      "canonicalAtProduction": null,
+      "mainMenuIncluded": false,
+      "bannerCount": 0,
+      "actualChildCount": 0,
+      "coreHub": false,
+      "HTTPStatusRequirement": 404,
+      "status": "PLANNED_NOT_IMPLEMENTED",
+      "canonicalPolicy": "Omit canonical on the technical 404 response.",
+      "socialMetadataIncluded": false,
+      "productCardCount": 0,
+      "marketingBanners": false,
+      "requiredElements": [
+        "Error-recovery title",
+        "Error-recovery meta description",
+        "noindex,follow robots",
+        "Exactly one H1",
+        "Home recovery link",
+        "Actual HTTP 404"
+      ]
+    }
+  ],
+  "productionPolicy": {
+    "robotsTxt": "Must permit the two verified indexable routes; do not accidentally block home/detail.",
+    "sitemapPageIds": [
+      "home",
+      "detail"
+    ],
+    "sitemapURLCount": 2,
+    "IndexNow": "Only after verified source/build/graph/public HTTP and applicable authorization. Receipt does not prove indexing."
+  },
+  "headings": {
+    "H1ExactlyOneEveryPage": true,
+    "sections": "H2",
+    "productNames": "H3 below products H2",
+    "FAQQuestions": "H3 under one FAQ H2, each question/answer visible exactly once",
+    "sources": "One H2 from sourceHeading, each source label rendered as paragraph/list; no extra H2 per source",
+    "decorativeBannerHeadings": 0,
+    "supportCard": "H2",
+    "404ExtraHeadings": 0,
+    "homeFacilityGuideCard": "H3 under facility-guide H2; find section by id, never array index"
+  },
+  "socialMetadata": {
+    "appliesToPageIds": [
+      "home",
+      "detail",
+      "support"
+    ],
+    "og:type": "website",
+    "og:locale": "ko_KR",
+    "og:title": "Same source as page title, no second edited copy",
+    "og:description": "Same source as page description",
+    "og:url": "Absolute own canonical after origin verified",
+    "og:image": "Verified origin + /images/products/B201.jpg",
+    "og:image:width": 500,
+    "og:image:height": 500,
+    "og:image:alt": "customer-copy.json#/productCards/0/photoAlt",
+    "twitter:card": "summary",
+    "twitter:title": "Same source as page title",
+    "twitter:description": "Same source as page description",
+    "twitter:image": "Same absolute URL and bytes as og:image",
+    "twitter:image:alt": "Same source as og:image:alt",
+    "newImageGeneration": false,
+    "requiredChecks": [
+      "Every required tag present exactly once",
+      "Per-page title/description match JSON",
+      "Absolute social URL after origin assigned",
+      "Image MIME, dimensions and SHA match asset-manifest.json"
+    ],
+    "exceptions": [
+      {
+        "pageId": "notFound",
+        "reason": "Technical error recovery; no product social image or OG/Twitter block."
+      }
+    ]
+  },
+  "navigation": {
+    "mainMenuPageIds": [
+      "home",
+      "detail"
+    ],
+    "supportExcludedFromMainMenu": true,
+    "detailBreadcrumb": {
+      "visible": true,
+      "ariaLabelSource": "customer-copy.json#/sharedUI/breadcrumbLabel",
+      "items": [
+        {
+          "pageId": "home",
+          "href": "/",
+          "labelSource": "customer-copy.json#/sharedUI/homeLink"
+        },
+        {
+          "pageId": "support",
+          "href": "/regions/",
+          "labelSource": "customer-copy.json#/support/h1"
+        },
+        {
+          "pageId": "detail",
+          "href": null,
+          "labelSource": "customer-copy.json#/detail/h1",
+          "ariaCurrent": "page"
+        }
+      ]
+    },
+    "supportBreadcrumb": {
+      "visible": true,
+      "ariaLabelSource": "customer-copy.json#/sharedUI/breadcrumbLabel",
+      "items": [
+        {
+          "pageId": "home",
+          "href": "/",
+          "labelSource": "customer-copy.json#/sharedUI/homeLink"
+        },
+        {
+          "pageId": "support",
+          "href": null,
+          "labelSource": "customer-copy.json#/support/h1",
+          "ariaCurrent": "page"
+        }
+      ]
+    },
+    "edges": [
+      {
+        "from": "home",
+        "to": "detail",
+        "source": "home.sections[id=facility-guide].card and home.sourceLink",
+        "purpose": "Open facility-specific product, cost and order help"
+      },
+      {
+        "from": "detail",
+        "to": "support",
+        "source": "Visible detail breadcrumb middle anchor",
+        "purpose": "Navigate to parent guide; gives support an actual inbound link"
+      },
+      {
+        "from": "support",
+        "to": "detail",
+        "source": "support.card",
+        "purpose": "Open the single real facility guide"
+      },
+      {
+        "from": "detail",
+        "to": "home",
+        "source": "Visible breadcrumb and shared home navigation",
+        "purpose": "Return to regional consultation home"
+      },
+      {
+        "from": "support",
+        "to": "home",
+        "source": "Visible breadcrumb",
+        "purpose": "Regional consultation home"
+      },
+      {
+        "from": "notFound",
+        "to": "home",
+        "source": "notFound.cta",
+        "purpose": "Recover from unknown route"
+      }
+    ],
+    "minimumInboundForAllPublicNonHomePages": 1,
+    "inboundExceptions": [
+      {
+        "pageId": "notFound",
+        "reason": "True 404 response, not a discoverable content target; do not link users intentionally to missing page."
+      }
+    ],
+    "expectedMinimumInbound": {
+      "detail": 2,
+      "support": 1
+    },
+    "validateRenderedHTMLGraph": true,
+    "unrelatedFacilityLinks": false
+  },
+  "productCards": {
+    "source": "customer-copy.json#/productCards",
+    "count": 4,
+    "placement": "Immediately after products prose",
+    "instancesEachOnDetail": 1,
+    "SKUSpecificCTAs": true,
+    "baseAndShippingSeparate": true,
+    "sampleNoticeSource": "customer-copy.json#/sharedUI/productSampleNotice",
+    "sampleNoticeInstancesOnDetail": 1,
+    "imagePolicy": {
+      "width": 500,
+      "height": 500,
+      "objectFit": "contain",
+      "crop": false,
+      "altSource": "productCards[*].photoAlt",
+      "displayRole": "actual posted product example",
+      "loading": "lazy for below-fold cards; do not defer any actual LCP hero",
+      "decoding": "async"
+    }
+  },
+  "sourceAnchor": "sources",
+  "unimplementedChecks": [
+    "Static build and source tests",
+    "Rendered headings/metadata/canonical/robots/sitemap and internal link graph",
+    "Actual FAQ/card/source visibility without duplication",
+    "Mobile desktop and keyboard interaction",
+    "Public HTML, assets, headers and real missing-route 404",
+    "Exact commit/build/artifact binding",
+    "IndexNow receipt and actual indexing measured separately"
+  ],
+  "commonBannersCaptionException": "Later specific SHARED_BANNER_STANDARD 2026-10-13 governs the three approved phone-bearing brand assets; do not apply the earlier generic no-baked-phone rule to remove approved phone or regenerate images.",
+  "contentBoundary": {
+    "supportOneRealChild": true,
+    "noOtherFacilityExpansion": true,
+    "noFacilityAliasURLs": true,
+    "currentOperationMustNotBeImpliedByTemplate": true,
+    "noGeneratedServiceJSONLD": true
+  },
+  "footer": {
+    "usesExistingLayout": true,
+    "visibleStringSources": [
+      "sharedUI.brand",
+      "sharedUI.phoneLink",
+      "sharedUI.homeLink"
+    ],
+    "destinations": {
+      "phoneLink": "tel:18440644",
+      "homeLink": "/"
+    },
+    "noUnrelatedRegionalLinks": true,
+    "noNewServiceClaims": true,
+    "exactActualRenderVerificationPending": true
+  },
+  "region": {
+    "name": "광산구",
+    "officialCode": "12330",
+    "legalCode": "1233000000",
+    "officialParent": "전남광주통합특별시",
+    "customerQueryName": "광주 광산구",
+    "nationalOrder": 35
+  },
+  "sourceContext": {
+    "guidanceReadMainSha": "b3aec933f55ca2ad51817a7f3634a1787166d488",
+    "guidanceGitBlobVerified": true,
+    "researchBindings": "evidence/research-input-bindings.json",
+    "researchIntegrity": "evidence/research-integrity.json",
+    "recordedPublished": 64,
+    "planTotal": 230,
+    "remaining": 166,
+    "gwangsanRecordedPublished": false,
+    "recordLimit": "Current main recorded64 releases; not64 simultaneous fresh public checks. Bukgu current source/control remains parent-owned."
+  },
+  "namespace": {
+    "candidate": "gwangju-gwangsan",
+    "verified": false,
+    "reserved": false,
+    "productionURL": null
+  },
+  "faq": {
+    "source": "customer-copy.json#/detail/faq",
+    "count": 4,
+    "alwaysVisible": true,
+    "visibleInstancesEach": 1,
+    "accordion": false,
+    "contentMarkdownMustNotSuppress": true,
+    "schemaGenerated": false,
+    "actualHTMLVerified": false
+  },
+  "commonBanners": [
+    {
+      "variant": "message",
+      "assetPath": "assets/shared-banners/flower-message.webp",
+      "publicPath": "/images/shared-banners/flower-message.webp",
+      "sha256": "a5ecdeb1914566a32d45b084351e2782fc8b234e9a4fbb8635a60a9921cac5f5",
+      "bytes": 171698,
+      "width": 1774,
+      "height": 887,
+      "element": "figure/img",
+      "altSource": "customer-copy.json#/sharedBannerAlt/message",
+      "caption": null,
+      "loading": "lazy below hero",
+      "decoding": "async",
+      "responsive": "width:100%;height:auto",
+      "newGeneration": false,
+      "pixelInspection": "Full exact approved image opened by Gwangsan writer2026-10-16UTC. No new image generation."
+    },
+    {
+      "variant": "budget",
+      "assetPath": "assets/shared-banners/flower-budget.webp",
+      "publicPath": "/images/shared-banners/flower-budget.webp",
+      "sha256": "081198095eb005603721be7c778f4d477f4dd93dcf96f0c261f18bf06bb91421",
+      "bytes": 145664,
+      "width": 1774,
+      "height": 887,
+      "element": "figure/img",
+      "altSource": "customer-copy.json#/sharedBannerAlt/budget",
+      "caption": null,
+      "loading": "lazy below hero",
+      "decoding": "async",
+      "responsive": "width:100%;height:auto",
+      "newGeneration": false,
+      "pixelInspection": "Full exact approved image opened by Gwangsan writer2026-10-16UTC. No new image generation."
+    },
+    {
+      "variant": "consultation",
+      "assetPath": "assets/shared-banners/flower-consultation.webp",
+      "publicPath": "/images/shared-banners/flower-consultation.webp",
+      "sha256": "d6654aa44c365f64e330d0be2042972d3320fad54231425aaffca1dfdcd25ebc",
+      "bytes": 126306,
+      "width": 1774,
+      "height": 887,
+      "element": "figure/img",
+      "altSource": "customer-copy.json#/sharedBannerAlt/consultation",
+      "caption": null,
+      "loading": "lazy below hero",
+      "decoding": "async",
+      "responsive": "width:100%;height:auto",
+      "newGeneration": false,
+      "pixelInspection": "Full exact approved image opened by Gwangsan writer2026-10-16UTC. No new image generation."
+    }
+  ],
+  "placement": {
+    "home": [
+      "H1 and lead",
+      "message banner",
+      "selection prose with basic prices and onward reference to detail photos",
+      "budget banner",
+      "facility-guide prose and linked card, then consultation prose",
+      "consultation banner",
+      "phone CTA and one source section"
+    ],
+    "detail": [
+      "Visible home → support → current breadcrumb",
+      "H1 and two lead paragraphs",
+      "message banner",
+      "products prose and four cards, then budget and ribbon prose",
+      "budget banner immediately before facility",
+      "facility facts, grouped order inputs, product-specific late-order policy, materials/collection",
+      "four always-visible FAQs",
+      "consultation banner",
+      "closing, phone CTA and one source section"
+    ],
+    "support": [
+      "Visible home → current breadcrumb",
+      "H1 and body",
+      "One real facility card"
+    ],
+    "notFound": [
+      "H1, body and recovery CTA"
+    ]
+  },
+  "claimBoundary": {
+    "facilityIdentity": "MOHW2026-04-01 row213 and original Suwan directions agree on road and phone. Source regional prefixes remain as posted.",
+    "facilityRoom": "Official room guide distinguishes first-floor and third-floor special rooms. No complete room list, current assignment or receipt/installation policy inferred.",
+    "facilityPartner": "Suwan official flower page names 우리꽃화훼유통, a separate partner. It neither establishes 꽃이랑 affiliation nor grants or denies external flower admission.",
+    "cutoff": "B201/B203/B20519:00 and B06021:00 are distinct posted after-hours thresholds; both exclude weekends/public holidays for next-morning wording. These are not assurances for a Suwan order.",
+    "shipping": "Gwangsan row absent; additionalShippingKRW and finalPriceKRW remain null. Never treat absence as free.",
+    "fulfillment": "Individual delivery/admission/receipt/install/photo/stock and arrival before departure not verified.",
+    "policyApplication": "Both completed-production no-refund and post-dispatch less-delivery-fee refund retained; do not decide precedence.",
+    "heldFacilities": "Other9government facilities remain held. No alias facility URLs or implied complete list.",
+    "publicationReadiness": "NOT_ASSESSED",
+    "meaningOfPlannedProductionMetadata": "Future requirements only, no host reservation or public state."
+  },
+  "schemaImplementationWarnings": [
+    "Exactly seven root keys. Reuse existing JSON renderer/schema, not sibling customer prose.",
+    "Home order selection, facility-guide, consultation. No product cards/photos in home body. Link onward to detail photos; social B201 image is metadata only.",
+    "Detail order products, budget, ribbon, facility, order. Keep budget banner immediately before facility. Use authored IDs, not inherited array indexes.",
+    "Four FAQs: room/ribbon change; completed/dispatched cancellation; defect/material/day/address/refusal; post-payment unavailable/full refund. All visible exactly once.",
+    "Footer reuses sharedUI brand, merchant phone and home label only. All label/alt/meta strings are included in context map.",
+    "Local manuscript/spec verification is not built HTML, source commit, pixels, public HTTP or IndexNow verification."
+  ],
+  "contentReuse": "Existing Bukgu/Namgu schema and capacity, shared neutral UI and approved assets only. Gwangsan prose, order emphasis, headings, metadata and FAQ newly authored."
+}
