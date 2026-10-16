@@ -130,6 +130,145 @@ def diagnostic_evaluated(report,contexts):
   if not evaluated:report['checks'].pop(name)
  return report
 
+# Fixed diagnostic vocabulary only. Cross-endpoint names do not establish version
+# semantics or relax any normal guard. Sources are pinned in the R11 review binding.
+R11_EXPLORATORY_FIELDS='annotations assets bindings body_part cache_options compatibility_date compatibility_flags containers created_on etag exports exports_reconciliation handlers has_assets has_modules id keep_assets keep_bindings last_deployed_from limits logpush main_module migration_tag migrations modified_on named_handlers observability package_dependencies placement placement_mode placement_status routes tag tags tail_consumers usage_model'
+R11_VERSION_RUNTIME_FIELDS='compatibility_date compatibility_flags containers exports limits migration_tag usage_model'
+R11_METADATA_FIELDS='author_email author_id created_on modified_on source hasPreview'
+R11_SETTINGS_EQUALITY_FIELDS='logpush observability placement bindings compatibility_date compatibility_flags usage_model limits cache_options tail_consumers tags'
+R11_NESTED_FIELDS={
+ 'observability':'enabled head_sampling_rate issues logs redact_query_string traces',
+ 'issues':'enabled','logs':'enabled invocation_logs destinations head_sampling_rate persist',
+ 'traces':'destinations enabled head_sampling_rate persist propagation_policy',
+ 'placement':'mode region hostname host target','assets':'config',
+ 'config':'_headers _redirects base_path html_handling not_found_handling run_worker_first serve_directly',
+ 'cache_options':'enabled cross_version_cache','limits':'cpu_ms subrequests'}
+
+def diagnostic_r11_status(evaluated,value=False):
+ return ('evaluated_true' if value else 'evaluated_false') if evaluated else 'not_evaluated'
+
+def diagnostic_r11_fact(value,kind):
+ # No formatting, hashing, item traversal or general serialization of values.
+ if kind=='exactFalse':return value is False
+ if kind=='exactTrue':return value is True
+ if kind=='exactNull':return value is None
+ if kind=='exactEmptyArray':return type(value) is list and not value
+ if kind=='exactFetchOnly':return type(value) is list and len(value)==1 and type(value[0]) is str and value[0]=='fetch'
+ if kind=='exactEmptyObject':return type(value) is dict and not value
+ if kind=='exactString':return type(value) is str
+ if kind=='exactEmptyString':return type(value) is str and not value
+ if kind=='exactNonemptyString':return type(value) is str and bool(value)
+ if kind=='exactRoot':return type(value) is str and value=='/'
+ if kind=='finiteUnitInterval':return type(value) in (int,float) and 0<=value<=1
+ if kind=='finiteNonnegative':return type(value) in (int,float) and 0<=value<float('inf')
+ raise ValueError('diagnostic_fixed_predicate_required')
+
+def diagnostic_r11_node(parent,key,names):
+ if type(parent) is not dict:return {'state':'parent_wrong_type','fields':{},'predicates':{}},None
+ if key not in parent:return {'state':'parent_absent','fields':{},'predicates':{}},None
+ value=parent[key]
+ if type(value) is not dict:return {'state':'parent_wrong_type','fields':{},'predicates':{}},None
+ return {'state':'object','fields':diagnostic_fields(value,names),'predicates':{}},value
+
+def diagnostic_r11_fields_facts(node,value,spec):
+ for field,kinds in spec.items():
+  present=type(value) is dict and field in value
+  node['predicates'][field]={kind:diagnostic_r11_status(present,diagnostic_r11_fact(value[field],kind) if present else False) for kind in kinds.split()}
+
+def diagnostic_r11_nested(parent,key):
+ node,value=diagnostic_r11_node(parent,key,R11_NESTED_FIELDS[key]);valid=type(value) is dict
+ allowed=set(R11_NESTED_FIELDS[key].split())|({'jwt'} if key=='assets' else set())
+ node['predicates']['remainingUnknownObjectKeysPresent']=diagnostic_r11_status(valid,bool(set(value)-allowed) if valid else False)
+ node['predicates']['exactEmptyObject']=diagnostic_r11_status(valid,not value if valid else False)
+ spec={}
+ if key in ('observability','issues','logs','traces','cache_options'):spec['enabled']='exactFalse exactTrue'
+ if key in ('observability','logs','traces'):spec['head_sampling_rate']='finiteUnitInterval'
+ if key in ('logs','traces'):spec.update(destinations='exactEmptyArray',persist='exactFalse')
+ if key=='logs':spec['invocation_logs']='exactFalse'
+ if key=='observability':
+  node['predicates']['exactDisabledObject']=diagnostic_r11_status(valid,set(value)=={'enabled'} and value['enabled'] is False if valid else False)
+  node['children']={name:diagnostic_r11_nested(value,name) for name in ('issues','logs','traces')}
+ if key=='assets':
+  # Membership only: never retrieve even the type of the credential value.
+  node['predicates']['credentialFieldPresent']=diagnostic_r11_status(valid,'jwt' in value if valid else False)
+  node['predicates']['configObject']=diagnostic_r11_status(valid and 'config' in value,type(value['config']) is dict if valid and 'config' in value else False)
+  node['children']={'config':diagnostic_r11_nested(value,'config')}
+ if key=='config':spec.update(run_worker_first='exactFalse exactTrue exactEmptyArray',serve_directly='exactTrue',_headers='exactEmptyString',_redirects='exactEmptyString',base_path='exactRoot')
+ diagnostic_r11_fields_facts(node,value,spec)
+ return node
+
+def diagnostic_r11_exploratory(parent,key):
+ node,value=diagnostic_r11_node(parent,key,R11_EXPLORATORY_FIELDS);valid=type(value) is dict
+ additional=R11_METADATA_FIELDS if key=='metadata' else R11_VERSION_RUNTIME_FIELDS
+ coverage=set((R11_EXPLORATORY_FIELDS+' '+additional).split())
+ name='outsideExploratoryMetadataInventoryKeysPresent' if key=='metadata' else 'outsideExploratoryRuntimeInventoryKeysPresent'
+ node['predicates'][name]=diagnostic_r11_status(valid,bool(set(value)-coverage) if valid else False)
+ if key=='script_runtime':
+  documented=valid and set(value)<=set(R11_VERSION_RUNTIME_FIELDS.split())
+  node['predicates']['onlyVersionDocumentedRuntimeKeys']=diagnostic_r11_status(valid,documented)
+  node['predicates']['versionSemanticUnverifiedRuntimeKeysPresent']=diagnostic_r11_status(valid,not documented)
+ else:
+  node['predicates']['onlyDocumentedMetadataKeys']=diagnostic_r11_status(valid,set(value)<=set(R11_METADATA_FIELDS.split()) if valid else False)
+ spec={name:'exactFalse exactTrue' for name in ('logpush','keep_assets','has_assets','has_modules')}
+ spec.update({name:'exactEmptyArray' for name in ('bindings','keep_bindings','compatibility_flags','containers','tail_consumers','tags','package_dependencies')})
+ spec.update({name:'exactEmptyObject' for name in ('exports','exports_reconciliation','migrations','cache_options','limits','placement')})
+ spec.update({name:'exactEmptyString exactNonemptyString' for name in ('body_part','main_module')})
+ diagnostic_r11_fields_facts(node,value,spec)
+ node['nested']={name:diagnostic_r11_nested(value,name) for name in ('observability','placement','assets','cache_options','limits')}
+ return node
+
+def diagnostic_r11_version(version):
+ # Called only after the existing selected-version identity gate.
+ out={'schema':'gwangsan-fixed-version-diagnostic/v1','versionMeaningEstablished':False,'baselineAccepted':False}
+ out['outer']={'state':'object','fields':diagnostic_fields(version,'id metadata number resources annotations startup_time_ms'),'predicates':{'onlyDocumentedOuterUnionKeys':diagnostic_r11_status(True,set(version)<={'id','metadata','number','resources','annotations','startup_time_ms'})}}
+ diagnostic_r11_fields_facts(out['outer'],version,{'startup_time_ms':'finiteNonnegative'})
+ annotations,value=diagnostic_r11_node(version,'annotations','workers/triggered_by workers/message workers/tag');out['annotations']=annotations
+ annotations['predicates']['knownPresentAnnotationValuesAreStrings']=diagnostic_r11_status(type(value) is dict,all(type(value[name]) is str for name in ('workers/triggered_by','workers/message','workers/tag') if name in value) if type(value) is dict else False)
+ out['metadata']=diagnostic_r11_exploratory(version,'metadata')
+ metadata=version.get('metadata');out['metadata']['versionFields']=diagnostic_fields(metadata,R11_METADATA_FIELDS)
+ diagnostic_r11_fields_facts(out['metadata'],metadata,{'hasPreview':'exactTrue exactFalse'})
+ resources,res=diagnostic_r11_node(version,'resources','bindings script script_runtime');out['resources']=resources
+ resources['predicates']['onlyDocumentedResourceKeys']=diagnostic_r11_status(type(res) is dict,set(res)<={'bindings','script','script_runtime'} if type(res) is dict else False)
+ diagnostic_r11_fields_facts(resources,res,{'bindings':'exactEmptyArray'})
+ script,value=diagnostic_r11_node(res,'script','etag handlers last_deployed_from named_handlers placement_mode');out['script']=script
+ script['predicates']['onlyDocumentedScriptUnionKeys']=diagnostic_r11_status(type(value) is dict,set(value)<={'etag','handlers','last_deployed_from','named_handlers','placement_mode'} if type(value) is dict else False)
+ diagnostic_r11_fields_facts(script,value,{'etag':'exactString exactEmptyString','last_deployed_from':'exactString exactEmptyString','handlers':'exactNull exactEmptyArray exactFetchOnly','named_handlers':'exactEmptyArray'})
+ out['runtime']=diagnostic_r11_exploratory(res,'script_runtime')
+ return out
+
+def diagnostic_r11_target(row):
+ out={'state':'unique_target_after_inventory_gate','fields':diagnostic_fields(row,'id has_assets has_modules handlers named_handlers exports etag last_deployed_from compatibility_date compatibility_flags usage_model migration_tag placement placement_mode cache_options'),'predicates':{}}
+ diagnostic_r11_fields_facts(out,row,{'has_assets':'exactTrue exactFalse','has_modules':'exactTrue exactFalse','handlers':'exactEmptyArray exactFetchOnly','named_handlers':'exactEmptyArray','exports':'exactEmptyObject','etag':'exactEmptyString','migration_tag':'exactEmptyString','placement':'exactEmptyObject'})
+ return out
+
+def diagnostic_r11_equality(left,right,kind):
+ # Compare only bounded known shapes. Nonempty arrays are deliberately not visited.
+ if type(left) is not type(right):return 'evaluated_false'
+ if type(left) in (str,bool,int,float,type(None)):
+  if type(left) is float and not (-float('inf')<left<float('inf') and -float('inf')<right<float('inf')):return 'not_evaluated'
+  return diagnostic_r11_status(True,left==right)
+ if type(left) is list:return diagnostic_r11_status(True,True) if not left and not right else 'not_evaluated'
+ if type(left) is not dict:return 'not_evaluated'
+ if not left and not right:return 'evaluated_true'
+ if kind not in R11_NESTED_FIELDS:return 'not_evaluated'
+ names=R11_NESTED_FIELDS[kind].split()
+ if not set(left)<=set(names) or not set(right)<=set(names):return 'not_evaluated'
+ if set(left)!=set(right):return 'evaluated_false'
+ results=[diagnostic_r11_equality(left[name],right[name],name) for name in names if name in left]
+ if 'not_evaluated' in results:return 'not_evaluated'
+ return diagnostic_r11_status(True,all(result=='evaluated_true' for result in results))
+
+def diagnostic_r11_settings_comparison(version,settings,settings_shape):
+ # Earlier endpoint in this sweep; neither an atomic snapshot nor normal-response equality.
+ checks=settings_shape['checks'];evaluated=settings_shape['checkEvaluated']
+ required=('onlyPriorAllowedSettingsKeys','logpushExplicitFalse','observabilityAbsentOrExactDisabled','existingSettingsProjectionExactlyExpected')
+ out={'comparisonContext':'earlier_separate_settings_response_in_same_sweep','earlierSettingsOriginalGuardsPassed':all(evaluated.get(key) is True and checks.get(key) is True for key in required),'fields':{}}
+ resources=version.get('resources');parents={'metadata':version.get('metadata'),'runtime':resources.get('script_runtime') if type(resources) is dict else None}
+ for name,parent in parents.items():
+  out['fields'][name]={key:diagnostic_r11_equality(parent[key],settings[key],key) if type(parent) is dict and type(settings) is dict and key in parent and key in settings else 'not_evaluated' for key in R11_SETTINGS_EQUALITY_FIELDS.split()}
+ return out
+
+
 def provider_shape_diagnostic(account,path,obj):
  # The result has only predetermined keys, fixed type labels and booleans.
  # Never retain values, unknown key names, counts, identifiers or identifier digests.
@@ -171,6 +310,7 @@ def provider_shape_diagnostic(account,path,obj):
  elif label=='selected-version':
   fields['version']=diagnostic_fields(result,'id metadata number resources annotations startup_time_ms');fields['versionIdPattern']=diagnostic_string(mapping.get('id'));checks.update(onlyPriorVersionKeys=type(result) is dict and set(result)<={'id','metadata','number','resources'},versionNumberPositiveInteger=type(mapping.get('number')) is int and mapping['number']>0,versionIdMatchesRequested=type(result) is dict and mapping.get('id')==path.rsplit('/',1)[-1])
   if not checks['versionIdMatchesRequested']:return diagnostic_evaluated(out,contexts)
+  out['expandedVersion']=diagnostic_r11_version(mapping)
   meta=mapping.get('metadata');fields['metadata']=diagnostic_fields(meta,'created_on modified_on source hasPreview');metadata=meta if type(meta) is dict else {};checks.update(onlyPriorMetadataKeys=type(meta) is dict and set(meta)<={'author_email','author_id','created_on','hasPreview','modified_on','source'},versionTimestampValid=diagnostic_predicate(lambda:timestamp(metadata.get('created_on')) is not None),knownVersionSource=type(metadata.get('source')) is str and metadata['source'] in {'unknown','api','wrangler','terraform','dash','cf_cli','dash_template','integration','quick_editor','playground','workersci'})
   resources=mapping.get('resources');res=resources if type(resources) is dict else {};fields['resources']=diagnostic_fields(resources,'bindings script script_runtime');checks.update(onlyPriorResourceKeys=type(resources) is dict and set(resources)<={'bindings','script','script_runtime'},bindingsEmptyArray=type(res.get('bindings')) is list and not res['bindings'])
   script=res.get('script',{});runtime=res.get('script_runtime',{});sm=script if type(script) is dict else {};rt=runtime if type(runtime) is dict else {};fields['script']=diagnostic_fields(script,'etag handlers last_deployed_from named_handlers placement_mode');fields['runtime']=diagnostic_fields(runtime,'compatibility_date compatibility_flags exports limits migration_tag usage_model containers');checks.update(onlyPriorScriptKeys=type(script) is dict and set(script)<={'etag','handlers','last_deployed_from','named_handlers'},onlyPriorRuntimeKeys=type(runtime) is dict and set(runtime)<={'compatibility_date','compatibility_flags','exports','limits','migration_tag','usage_model'},staticHandlersAllowed='handlers' not in sm or (type(sm['handlers']) is list and sm['handlers'] in ([],['fetch'])),namedHandlersAllowed='named_handlers' not in sm or (type(sm['named_handlers']) is list and not sm['named_handlers']))
@@ -336,6 +476,7 @@ def state_diagnostic_sweep(env,opener=None):
   except Exception:worker_ok=False
   report['checks']['fixedWorkerInventoryGate']=bool(worker_ok)
   if not worker_ok:report['state']='worker_inventory_gate_failed';return diagnostic_evaluated(report,evaluation)
+  report['endpoints']['scripts-list']['shape']['selectedTarget']=diagnostic_r11_target(next(row for row in scripts if row['id']==WORKER))
   domains_obj=request('domains-list',base+'/workers/domains')
   try:
    domains=single_page(domains_obj);schema_ok=all(type(r) is dict and all(isinstance(r.get(k),str) and r[k] for k in ['id','hostname','service','zone_id']) for r in domains);matches=[r for r in domains if r['hostname'].lower()==HOST or r['service']==WORKER] if schema_ok else [];bound=len(matches)==1 and matches[0]['hostname']==HOST and matches[0]['service']==WORKER;row=matches[0] if bound else {};prefix_ok=bound and set(row)<={'id','hostname','service','zone_id','zone_name','environment','enabled','previews_enabled','cert_id'} and row.get('zone_name')=='fwith.kr' and row.get('environment') in (None,'production') and ('enabled' not in row or row['enabled'] is True) and ('previews_enabled' not in row or row['previews_enabled'] is False)
@@ -355,6 +496,7 @@ def state_diagnostic_sweep(env,opener=None):
   runtime_context=type(resources) is dict and ('script_runtime' not in resources or type(resources['script_runtime']) is dict)
   for key in ('compatibility_date','compatibility_flags','usage_model'):
    name='runtime_'+key+'_AbsentOrMatchesSettings';evaluation[name]=runtime_context and (key not in runtime or type(raw_settings) is dict);report['checks'][name]=runtime_context and (key not in runtime or (type(raw_settings) is dict and key in raw_settings and canonical(runtime[key])==canonical(raw_settings[key])))
+  report['earlierSettingsComparison']=diagnostic_r11_settings_comparison(version,raw_settings,report['endpoints']['script-settings']['shape'])
   report['state']='BOUNDED_DIAGNOSTIC_SWEEP_FINISHED_NOT_A_BASELINE'
  except StopSweep:pass
  except Exception:report['state']='diagnostic_local_check_failed'

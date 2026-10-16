@@ -603,6 +603,148 @@ class CompatibilityContract(unittest.TestCase):
     with self.assertRaises(ValueError):get(path)
    self.assertEqual(len(op.requests),1);report,diag=StateShapeDiagnostics().run_sweep(f);self.assertEqual(len(diag.requests),6);self.assertEqual(report['endpoints']['selected-deployment']['status'],'not_requested');self.assertNotIn('secret-canary',json.dumps(report))
 
+class R11FixedDiagnostics(unittest.TestCase):
+ DIRECT='annotations assets bindings body_part cache_options compatibility_date compatibility_flags containers created_on etag exports exports_reconciliation handlers has_assets has_modules id keep_assets keep_bindings last_deployed_from limits logpush main_module migration_tag migrations modified_on named_handlers observability package_dependencies placement placement_mode placement_status routes tag tags tail_consumers usage_model'
+ RUNTIME='compatibility_date compatibility_flags containers exports limits migration_tag usage_model'
+ TOKENS=set(('schema gwangsan-fixed-version-diagnostic/v1 versionMeaningEstablished baselineAccepted outer metadata annotations resources script script_runtime runtime versionFields state fields predicates nested children object parent_wrong_type parent_absent unique_target_after_inventory_gate present type absent null boolean number string array other author_email author_id source hasPreview number startup_time_ms workers/triggered_by workers/message workers/tag enabled head_sampling_rate issues logs redact_query_string traces invocation_logs destinations persist propagation_policy mode region hostname host target config _headers _redirects base_path html_handling not_found_handling run_worker_first serve_directly cross_version_cache cpu_ms subrequests onlyDocumentedOuterUnionKeys onlyDocumentedMetadataKeys onlyDocumentedResourceKeys onlyDocumentedScriptUnionKeys onlyVersionDocumentedRuntimeKeys versionSemanticUnverifiedRuntimeKeysPresent outsideExploratoryMetadataInventoryKeysPresent outsideExploratoryRuntimeInventoryKeysPresent knownPresentAnnotationValuesAreStrings remainingUnknownObjectKeysPresent exactDisabledObject credentialFieldPresent configObject exactFalse exactTrue exactNull exactEmptyArray exactFetchOnly exactEmptyObject exactString exactEmptyString exactNonemptyString exactRoot finiteUnitInterval finiteNonnegative not_evaluated evaluated_false evaluated_true comparisonContext earlier_separate_settings_response_in_same_sweep earlierSettingsOriginalGuardsPassed '+DIRECT).split())
+ CANARY='R11_PRIVATE_VALUE_DO_NOT_EMIT'
+ UNKNOWN='R11_PRIVATE_UNKNOWN_KEY_DO_NOT_EMIT'
+ def version(self):return fixtures()[SCRIPT+'/versions/'+VID]['result']
+ def project(self,version=None):return b.provider_shape_diagnostic(ACCOUNT,SCRIPT+'/versions/'+VID,ok(self.version() if version is None else version))['expandedVersion']
+ def assert_vocabulary(self,value):
+  if type(value) is dict:
+   for key,child in value.items():self.assertIn(key,self.TOKENS);self.assert_vocabulary(child)
+  elif type(value) is str:self.assertIn(value,self.TOKENS)
+  else:self.assertIs(type(value),bool)
+ def test_exact_fixed_vocab_and_source_identity(self):
+  self.assertEqual(b.R11_EXPLORATORY_FIELDS,self.DIRECT);self.assertEqual(len(self.DIRECT.split()),36);self.assertEqual(b.R11_VERSION_RUNTIME_FIELDS,self.RUNTIME);self.assertEqual(b.CURRENT,'0da9982f8ea294c6fb38729d17e9043d45f7ca72')
+ def test_all_36_fields_types_canaries_and_real_parent_status(self):
+  samples=[None,False,True,0,1,3.5,'',self.CANARY,[],[self.CANARY],{}, {self.UNKNOWN:self.CANARY}]
+  for location in ('metadata','script_runtime'):
+   for key in self.DIRECT.split():
+    for value in samples:
+     with self.subTest(location=location,key=key,kind=type(value).__name__):
+      v=self.version();parent=v if location=='metadata' else v['resources'];parent[location]={key:copy.deepcopy(value),self.UNKNOWN:self.CANARY};before=copy.deepcopy(v);out=self.project(v);self.assertEqual(v,before);self.assert_vocabulary(out);raw=json.dumps(out);self.assertNotIn(self.CANARY,raw);self.assertNotIn(self.UNKNOWN,raw)
+      node=out['metadata' if location=='metadata' else 'runtime'];self.assertEqual(node['state'],'object');self.assertTrue(node['fields'][key]['present']);self.assertEqual(node['fields'][key]['type'],b.diagnostic_type(value))
+ def test_missing_null_empty_and_malformed_parents_remain_distinct(self):
+  for key in ('metadata','resources','annotations'):
+   for value in [None,False,0,'',[],{},[{}]]:
+    with self.subTest(key=key,kind=type(value).__name__):
+     v=self.version();v[key]=value;out=self.project(v);self.assert_vocabulary(out);self.assertEqual(out[key]['state'],'object' if type(value) is dict else 'parent_wrong_type')
+     if type(value) is not dict:self.assertEqual(out[key]['fields'],{})
+   v=self.version();v.pop(key,None);out=self.project(v);self.assertEqual(out[key]['state'],'parent_absent');self.assert_vocabulary(out)
+  for key in ('script','script_runtime'):
+   for value in [None,False,0,'',[],{}]:
+    v=self.version();v['resources'][key]=value;out=self.project(v);node=out['script' if key=='script' else 'runtime'];self.assertEqual(node['state'],'object' if type(value) is dict else 'parent_wrong_type');self.assert_vocabulary(out)
+   v=self.version();v['resources'].pop(key,None);self.assertEqual(self.project(v)['script' if key=='script' else 'runtime']['state'],'parent_absent')
+ def test_broad_coverage_does_not_establish_version_semantics_or_accept(self):
+  for key in self.DIRECT.split():
+   for value in [None,{},[],False]:
+    with self.subTest(key=key,value=type(value).__name__):
+     v=self.version();v['resources']['script_runtime'][key]=value;out=self.project(v)['runtime']['predicates'];self.assertEqual(out['outsideExploratoryRuntimeInventoryKeysPresent'],'evaluated_false');self.assertEqual(out['onlyVersionDocumentedRuntimeKeys'],'evaluated_true' if key in self.RUNTIME.split() else 'evaluated_false');self.assertEqual(out['versionSemanticUnverifiedRuntimeKeysPresent'],'evaluated_false' if key in self.RUNTIME.split() else 'evaluated_true')
+     if key not in ('compatibility_date','compatibility_flags','usage_model','exports','limits','migration_tag'):
+      f=fixtures();f[SCRIPT+'/versions/'+VID]['result']=v
+      with self.assertRaises(ValueError):b.deployed_version(get_for(f),ACCOUNT,SETTINGS)
+  v=self.version();v['resources']['script_runtime'][self.UNKNOWN]=None;pred=self.project(v)['runtime']['predicates'];self.assertEqual(pred['outsideExploratoryRuntimeInventoryKeysPresent'],'evaluated_true');self.assertEqual(pred['versionSemanticUnverifiedRuntimeKeysPresent'],'evaluated_true')
+ def test_known_outer_and_annotations_remain_diagnostic_only(self):
+  for key,value in [('annotations',{}),('annotations',{'workers/message':self.CANARY,self.UNKNOWN:self.CANARY}),('startup_time_ms',0),('startup_time_ms',1.5)]:
+   with self.subTest(key=key):
+    v=self.version();v[key]=value;out=self.project(v);self.assertEqual(out['outer']['predicates']['onlyDocumentedOuterUnionKeys'],'evaluated_true');self.assert_vocabulary(out);f=fixtures();f[SCRIPT+'/versions/'+VID]['result']=v
+    with self.assertRaisesRegex(ValueError,'version_identity_or_schema'):b.deployed_version(get_for(f),ACCOUNT,SETTINGS)
+  v=self.version();v[self.UNKNOWN]=self.CANARY;self.assertEqual(self.project(v)['outer']['predicates']['onlyDocumentedOuterUnionKeys'],'evaluated_false')
+ def test_annotation_known_values_str_exact_and_unknown_value_unread(self):
+  for key in ('workers/triggered_by','workers/message','workers/tag'):
+   for value in [None,False,0,1,[],{},'',self.CANARY]:
+    with self.subTest(key=key,kind=type(value).__name__):
+     v=self.version();v['annotations']={key:value,self.UNKNOWN:object()};out=self.project(v);self.assertEqual(out['annotations']['predicates']['knownPresentAnnotationValuesAreStrings'],'evaluated_true' if type(value) is str else 'evaluated_false');self.assert_vocabulary(out)
+ def test_finite_numbers_exclude_bool_and_json_overflow(self):
+  for value in [False,True,None,'0',[],{},-1,float('nan'),float('inf'),-float('inf'),json.loads('1e999'),0,1,0.5,10**500]:
+   with self.subTest(kind=type(value).__name__):
+    expected=type(value) in (int,float) and 0<=value<float('inf');v=self.version();v['startup_time_ms']=value;out=self.project(v);self.assertEqual(out['outer']['predicates']['startup_time_ms']['finiteNonnegative'],'evaluated_true' if expected else 'evaluated_false');self.assert_vocabulary(out)
+    for key in ('observability','logs','traces'):
+     node=b.diagnostic_r11_nested({key:{'head_sampling_rate':value}},key);self.assertEqual(node['predicates']['head_sampling_rate']['finiteUnitInterval'],'evaluated_true' if type(value) in (int,float) and 0<=value<=1 else 'evaluated_false');self.assert_vocabulary(node)
+ def test_every_nested_shape_is_fixed_and_wrong_parent_never_empty_pass(self):
+  for key,names in b.R11_NESTED_FIELDS.items():
+   for value in [None,False,0,'',[],{}, {name:self.CANARY for name in names.split()}, {self.UNKNOWN:self.CANARY}]:
+    with self.subTest(key=key,kind=type(value).__name__):
+     out=b.diagnostic_r11_nested({key:value},key);self.assert_vocabulary(out);self.assertNotIn(self.CANARY,json.dumps(out));self.assertNotIn(self.UNKNOWN,json.dumps(out));self.assertEqual(out['state'],'object' if type(value) is dict else 'parent_wrong_type')
+     if type(value) is not dict:self.assertEqual(out['predicates']['exactEmptyObject'],'not_evaluated');self.assertEqual(out['predicates']['remainingUnknownObjectKeysPresent'],'not_evaluated')
+   self.assertEqual(b.diagnostic_r11_nested({},key)['state'],'parent_absent')
+ def test_typed_boolean_and_null_handlers_never_coerced(self):
+  for value in [None,0,1,False,True,'false',[],{}]:
+   for key in ('logpush','keep_assets','has_assets','has_modules'):
+    node=b.diagnostic_r11_exploratory({'script_runtime':{key:value}},'script_runtime');self.assertEqual(node['predicates'][key]['exactFalse'],'evaluated_true' if value is False else 'evaluated_false');self.assertEqual(node['predicates'][key]['exactTrue'],'evaluated_true' if value is True else 'evaluated_false')
+   node=b.diagnostic_r11_nested({'observability':{'enabled':value}},'observability');self.assertEqual(node['predicates']['exactDisabledObject'],'evaluated_true' if value is False else 'evaluated_false')
+  for value in [None,[],['fetch'],['scheduled'],['fetch','fetch'],False,'fetch',{},[1]]:
+   v=self.version();v['resources']['script']['handlers']=value;out=self.project(v);self.assert_vocabulary(out);pred=out['script']['predicates']['handlers'];self.assertEqual(pred['exactNull'],'evaluated_true' if value is None else 'evaluated_false');self.assertEqual(pred['exactEmptyArray'],'evaluated_true' if type(value) is list and not value else 'evaluated_false')
+   if value is None:
+    f=fixtures();f[SCRIPT+'/versions/'+VID]['result']=v
+    with self.assertRaisesRegex(ValueError,'static_only_version_handlers_required'):b.deployed_version(get_for(f),ACCOUNT,SETTINGS)
+ def test_jwt_membership_without_value_type_or_serialization_access(self):
+  class NeverRead(dict):
+   def __getitem__(self,key):
+    if key=='jwt':raise AssertionError('credential value accessed')
+    return super().__getitem__(key)
+   def get(self,key,*args):
+    if key=='jwt':raise AssertionError('credential value accessed')
+    return super().get(key,*args)
+   def values(self):raise AssertionError('values accessed')
+   def items(self):raise AssertionError('items accessed')
+  assets=NeverRead(jwt=object(),config={'run_worker_first':False});real_type=type
+  # Instrument an exact-dict boundary to make a value-access attempt observable.
+  with patch.object(b,'type',lambda value:dict if real_type(value) is NeverRead else real_type(value),create=True):out=b.diagnostic_r11_nested({'assets':assets},'assets')
+  self.assertEqual(out['state'],'object');self.assertEqual(out['predicates']['credentialFieldPresent'],'evaluated_true');self.assertNotIn('jwt',json.dumps(out));self.assert_vocabulary(out)
+ def test_nonempty_resource_arrays_are_never_traversed_or_serialized(self):
+  class Poison:
+   def __eq__(self,other):raise AssertionError('item equality forbidden')
+   def __str__(self):raise AssertionError('item string forbidden')
+   def __repr__(self):raise AssertionError('item repr forbidden')
+  for key in ('bindings','keep_bindings','compatibility_flags','containers','tail_consumers','tags','package_dependencies'):
+   node=b.diagnostic_r11_exploratory({'script_runtime':{key:[Poison()]}},'script_runtime');self.assertEqual(node['predicates'][key]['exactEmptyArray'],'evaluated_false');self.assert_vocabulary(node)
+  for key in ('logs','traces'):
+   node=b.diagnostic_r11_nested({key:{'destinations':[Poison()]}},key);self.assertEqual(node['predicates']['destinations']['exactEmptyArray'],'evaluated_false');self.assert_vocabulary(node)
+  self.assertEqual(b.diagnostic_r11_equality([Poison()],[Poison()],'bindings'),'not_evaluated')
+ def test_settings_comparison_is_separate_guarded_and_nontraversing(self):
+  f=fixtures();v=f[SCRIPT+'/versions/'+VID]['result'];v['resources']['script_runtime'].update(logpush=False,placement={},bindings=[]);v['metadata']['logpush']=False;report,op=StateShapeDiagnostics().run_sweep(f);out=report['earlierSettingsComparison'];self.assertTrue(out['earlierSettingsOriginalGuardsPassed']);self.assertEqual(out['comparisonContext'],'earlier_separate_settings_response_in_same_sweep');self.assertEqual(out['fields']['runtime']['logpush'],'evaluated_true');self.assertEqual(out['fields']['metadata']['logpush'],'evaluated_true');self.assert_vocabulary(out);self.assertEqual(len(op.requests),8)
+  f[SCRIPT+'/settings']['result']['logpush']=True;report,_=StateShapeDiagnostics().run_sweep(f);out=report['earlierSettingsComparison'];self.assertFalse(out['earlierSettingsOriginalGuardsPassed']);self.assertEqual(out['fields']['runtime']['logpush'],'evaluated_false')
+  for bad in [None,[],{}, {'logpush':False,'bindings':[{'value':self.CANARY}]}]:
+   f[SCRIPT+'/settings']['result']=bad;report,_=StateShapeDiagnostics().run_sweep(f);out=report['earlierSettingsComparison'];self.assertFalse(out['earlierSettingsOriginalGuardsPassed']);self.assertEqual(out['fields']['runtime']['bindings'],'not_evaluated');self.assert_vocabulary(out)
+ def test_bounded_equality_known_objects_unknown_nonfinite_and_aliasing(self):
+  for left,right,kind,expected in [({'enabled':False},{'enabled':False},'observability','evaluated_true'),({'enabled':False},{'enabled':0},'observability','evaluated_false'),({self.UNKNOWN:None},{self.UNKNOWN:None},'placement','not_evaluated'),({'logs':{'destinations':[self.CANARY]}},{'logs':{'destinations':[self.CANARY]}},'observability','not_evaluated'),(float('inf'),float('inf'),'limits','not_evaluated'),([],{},'bindings','evaluated_false'),({'enabled':False},{},'observability','evaluated_false')]:
+   with self.subTest(kind=kind):self.assertEqual(b.diagnostic_r11_equality(left,right,kind),expected)
+  v=self.version();v['metadata']['assets']={'config':{'_headers':self.CANARY},'jwt':self.CANARY};out=self.project(v);before=copy.deepcopy(out);v.clear();self.assertEqual(out,before);self.assert_vocabulary(out)
+ def test_target_projection_requires_account_complete_unique_inventory(self):
+  for mutate in [lambda f:f['/accounts/'+ACCOUNT]['result'].update(id='other'),lambda f:f['/accounts/'+ACCOUNT+'/workers/scripts']['result'].append({'id':b.WORKER,'etag':self.CANARY}),lambda f:f['/accounts/'+ACCOUNT+'/workers/scripts'].update(result_info={'total_pages':2}),lambda f:f['/accounts/'+ACCOUNT+'/workers/scripts']['result'].append({'id':None}),lambda f:f['/accounts/'+ACCOUNT+'/workers/scripts']['result'].clear()]:
+   f=fixtures();mutate(f);report,op=StateShapeDiagnostics().run_sweep(f);self.assertLessEqual(len(op.requests),2);self.assertNotIn('selectedTarget',json.dumps(report));self.assertNotIn(self.CANARY,json.dumps(report))
+  f=fixtures();f['/accounts/'+ACCOUNT+'/workers/scripts']['result']=[{'id':'other','etag':self.CANARY,'has_assets':True},{'id':b.WORKER,'has_assets':False,'has_modules':False}];report,_=StateShapeDiagnostics().run_sweep(f);out=report['endpoints']['scripts-list']['shape']['selectedTarget'];self.assertEqual(out['predicates']['has_assets']['exactFalse'],'evaluated_true');self.assert_vocabulary(out);self.assertNotIn(self.CANARY,json.dumps(report))
+ def test_wrong_selected_id_cannot_get_nested_or_settings_attribution(self):
+  for bad in [DEP,None,'other',VID.upper()]:
+   if bad==VID:continue
+   with self.subTest(kind=type(bad).__name__):
+    f=fixtures();f[SCRIPT+'/versions/'+VID]['result']['id']=bad;report,op=StateShapeDiagnostics().run_sweep(f);shape=report['endpoints']['selected-version']['shape'];self.assertNotIn('expandedVersion',shape);self.assertNotIn('earlierSettingsComparison',report);self.assertEqual(report['state'],'selected_version_identity_gate_failed');self.assertEqual(len(op.requests),8)
+  f=fixtures();f[SCRIPT+'/deployments/'+DEP]['result']['id']=VID;report,op=StateShapeDiagnostics().run_sweep(f);self.assertEqual(len(op.requests),7);self.assertEqual(report['endpoints']['selected-version']['status'],'not_requested')
+ def test_new_projector_errors_preserve_original_code_and_get_budget(self):
+  for name,count in [('diagnostic_r11_target',2),('diagnostic_r11_version',8),('diagnostic_r11_settings_comparison',8)]:
+   with self.subTest(name=name),patch.object(b,name,side_effect=RuntimeError(self.CANARY)):report,op=StateShapeDiagnostics().run_sweep()
+   self.assertEqual(len(op.requests),count);self.assertNotIn(self.CANARY,json.dumps(report));self.assertFalse(report['baselineAccepted'])
+   with patch.object(b,'current_state',side_effect=ValueError('version_identity_or_schema')),patch.object(b,'state_diagnostic_sweep',return_value=report),self.assertRaises(b.ProviderStateDiagnosticError) as caught:b.state_with_diagnostics(StateShapeDiagnostics().env(),ACCOUNT,None)
+   self.assertEqual(caught.exception.original_code,'version_identity_or_schema')
+ def test_normal_transport_never_invokes_new_projectors(self):
+  with patch.object(b,'diagnostic_r11_version',side_effect=AssertionError('diagnostic invoked')),patch.object(b,'diagnostic_r11_target',side_effect=AssertionError('diagnostic invoked')),patch.object(b,'diagnostic_r11_settings_comparison',side_effect=AssertionError('diagnostic invoked')),patch.object(b,'ACCOUNT_SHA',SHA):
+   out=b.current_state(ACCOUNT,get_for(fixtures()));self.assertEqual(out['hostname'],b.HOST);self.assertNotIn('expandedVersion',json.dumps(out))
+ def test_total_normal_plus_diagnostic_get_bound_is_26(self):
+  f=fixtures();paths=StateShapeDiagnostics().paths();normal_paths=paths+[SCRIPT+'/deployments?page=1&per_page=1'];responses=[copy.deepcopy(f[path]) for path in normal_paths*2];responses[-1]['result']['deployments'][0]['created_on']='2026-10-16T03:00:00Z';normal=R2Regressions().opener(responses);diagnostic=R2Regressions().opener([f[path] for path in paths])
+  with patch.object(b,'ACCOUNT_SHA',SHA),patch.object(b,'build_opener',side_effect=[normal,diagnostic]),patch.object(b,'load_policy',return_value={}),patch.object(b,'authorize',return_value={}),patch.object(b,'trusted_control'),patch.object(b,'old_public',return_value={}) as public,self.assertRaises(b.ProviderStateDiagnosticError) as caught:b.observe(StateShapeDiagnostics().env(),{})
+  self.assertEqual(caught.exception.original_code,'active_deployment_changed_during_observation');self.assertEqual(len(normal.requests),18);self.assertEqual(len(diagnostic.requests),8);self.assertEqual(len(normal.requests)+len(diagnostic.requests),26);public.assert_called_once()
+  for request in normal.requests+diagnostic.requests:self.assertEqual(request.get_method(),'GET');self.assertIsNone(request.data)
+ def test_runtime_unknown_metadata_capability_and_strings_remain_rejected(self):
+  cases=[('metadata','resources',{}),('metadata','approved',True),('runtime','logpush',False),('runtime','assets',{}),('runtime',self.UNKNOWN,None),('script','handlers',None),('script','etag',''),('script','last_deployed_from','Unicode 한글'),('script','placement_mode','off')]
+  for location,key,value in cases:
+   with self.subTest(location=location,key=key):
+    f=fixtures();v=f[SCRIPT+'/versions/'+VID]['result'];parent=v['metadata'] if location=='metadata' else v['resources']['script_runtime' if location=='runtime' else 'script'];parent[key]=value
+    with self.assertRaises(ValueError):b.deployed_version(get_for(f),ACCOUNT,SETTINGS)
+
+
 if __name__=='__main__':
  print('Python runtime: '+'.'.join(str(v) for v in b.sys.version_info[:3]),flush=True)
  unittest.main(verbosity=2)
