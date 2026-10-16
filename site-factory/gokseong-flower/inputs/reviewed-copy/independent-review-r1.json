@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "schema": "gokseong-independent-manuscript-review/v1",
+  "revision": "gokseong-copy-r1-20261016",
+  "region": {
+    "name": "곡성군",
+    "officialCode": "12720",
+    "legalCode": "1272000000",
+    "officialParent": "전남광주통합특별시",
+    "nationalOrder": 37
+  },
+  "assessmentScope": "MANUSCRIPT_AND_RENDER_PLAN_ONLY",
+  "customerCopySHA256": "3829721f442682c7b07f02b043b5ba80a0e1e0d5264babb7c96a7b2eadd0332e",
+  "renderPlanSHA256": "44753e8bdad5abad9c9ae15add3b119cba0f19a88757ca46a53b22d83fbbae1d",
+  "sourceCommit": null,
+  "verdict": "MANUSCRIPT_CONTENT_ACCEPTED_RENDER_MAPPING_REVISION_REQUIRED",
+  "contentVerdict": "PASS_BOUNDED_MANUSCRIPT_EDITORIAL_REVIEW",
+  "toneVerdict": "PASS_PROVIDER_VOICE_CONDOLENCE_RESTRAINT",
+  "searchIntentVerdict": "PASS_BOUNDED_INFORMATION_COMPLETENESS_NOT_SEARCH_RESULT",
+  "renderSpecVerdict": "MUST_FIX_GOK_MAP_01",
+  "mustFixRemaining": [
+    {
+      "id": "GOK-MAP-01",
+      "severity": "MUST_FIX_RENDER_SPEC_BEFORE_IMPLEMENTATION",
+      "affectedFiles": [
+        "output-context-map.json",
+        "visible-strings.json",
+        "render-plan.json"
+      ],
+      "affectedPointers": [
+        "/sharedUI/brand",
+        "/sharedUI/phoneLink",
+        "/sharedUI/homeLink",
+        "/sharedUI/menuLabel",
+        "/sharedUI/productsLink",
+        "/sharedUI/budgetLink",
+        "/sharedUI/ribbonLink",
+        "/sharedUI/orderLink",
+        "/sharedUI/faqLink",
+        "/sharedUI/footerLabel",
+        "/home/faqHeading",
+        "/home/sourceHeading",
+        "/productCards/*/name"
+      ],
+      "evidence": "R1 assigns generic body text and expectedCopiesPerContext=1, but header/footer/mobile plan entails multiple instances. FAQ/source headings and product names lack precise H2/H3 contexts. Actual reusable BaseLayout has distinct desktop/mobile DOM and open/close labels.",
+      "requiredCorrection": "Separate versioned location+selector+extraction+count+viewport/state contract; distinguish DOM count from visible count and authored102 from SKU identifiers. Clarify planned header-phone contradiction. Preserve original customer102strings and native denominators.",
+      "status": "AWAITING_AUTHOR_DESIGN_R2",
+      "originalCustomerCopyMustRemainUnchanged": true
+    }
+  ],
+  "mandatoryRevisions": [
+    {
+      "id": "GOK-MAP-01",
+      "severity": "MUST_FIX_RENDER_SPEC_BEFORE_IMPLEMENTATION",
+      "affectedFiles": [
+        "output-context-map.json",
+        "visible-strings.json",
+        "render-plan.json"
+      ],
+      "affectedPointers": [
+        "/sharedUI/brand",
+        "/sharedUI/phoneLink",
+        "/sharedUI/homeLink",
+        "/sharedUI/menuLabel",
+        "/sharedUI/productsLink",
+        "/sharedUI/budgetLink",
+        "/sharedUI/ribbonLink",
+        "/sharedUI/orderLink",
+        "/sharedUI/faqLink",
+        "/sharedUI/footerLabel",
+        "/home/faqHeading",
+        "/home/sourceHeading",
+        "/productCards/*/name"
+      ],
+      "evidence": "R1 assigns generic body text and expectedCopiesPerContext=1, but header/footer/mobile plan entails multiple instances. FAQ/source headings and product names lack precise H2/H3 contexts. Actual reusable BaseLayout has distinct desktop/mobile DOM and open/close labels.",
+      "requiredCorrection": "Separate versioned location+selector+extraction+count+viewport/state contract; distinguish DOM count from visible count and authored102 from SKU identifiers. Clarify planned header-phone contradiction. Preserve original customer102strings and native denominators.",
+      "status": "AWAITING_AUTHOR_DESIGN_R2",
+      "originalCustomerCopyMustRemainUnchanged": true
+    }
+  ],
+  "originalDenominators": {
+    "guidance": 171,
+    "policy": 16,
+    "currentFacts": 17,
+    "facilities": 5
+  },
+  "plannedStructure": {
+    "copyRootKeys": [
+      "home",
+      "productCards",
+      "notFound",
+      "sharedUI",
+      "sharedBannerAlt"
+    ],
+    "authoredStrings": 102,
+    "substantiveHomeCount": 1,
+    "facilityDetailCount": 0,
+    "emptyHubCount": 0,
+    "technical404Count": 1,
+    "plannedHTMLCount": 2,
+    "plannedIndexableURLCount": 1,
+    "actualHTMLCount": null,
+    "actualSitemapURLCount": null,
+    "productCards": 4,
+    "FAQObjects": 3,
+    "assets": 7
+  },
+  "originalAuthorScores": null,
+  "originalIndependentScores": null,
+  "independentNumericScores": null,
+  "actualHTMLChecked": false,
+  "actualBuildChecked": false,
+  "actualBrowserChecked": false,
+  "actualPublicHTTPChecked": false,
+  "publicationEligible": false,
+  "coreHubLaunchStatus": "NOT_ASSESSED",
+  "fullLaunchStatus": "NOT_ASSESSED",
+  "checkedAtUTC": "2026-10-16T06:14:37.937333+00:00",
+  "claimLimits": [
+    "Merchant and external-source HTTP reads do not mean a Gokseong deployment exists.",
+    "102 authored strings are data coverage, not live DOM visibility.",
+    "No score, rank, indexing or conversion success is claimed.",
+    "Five dated facility identities are not five verified operating/accepting locations.",
+    "Original author295checks/16mutations were reproduced, not substituted for independent editorial review."
+  ],
+  "originalFrozenZipSHA256": "f54d934a02b0642e26befa8744b78a53167b4005bd88c32c570b8a511de86183"
+}

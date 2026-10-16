@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SharedFlowerBanner from './SharedFlowerBanner.astro';
+import ProductCards from './ProductCards.astro';
+import {copy,home,copySHA,mapTarget} from '../lib/gokseong-runtime.mjs';
+const {page:p}=Astro.props;
+const c=copy[p.copyKey as keyof typeof copy] as any;
+---
+<BaseLayout page={p}><article data-page-id={p.id} data-page-role={p.role} data-copy-sha={copySHA[p.id as keyof typeof copySHA]}><div data-reviewed-body>
+<section id="opening" class="category-hero"><h1 data-reviewed-block>{c.h1}</h1>{p.id==='home'?c.lead.map((t:string,i:number)=><p data-reviewed-block data-first-answer={i===0||undefined}>{t}</p>):<p data-reviewed-block>{c.body}</p>}</section>
+{p.id==='home'?<>
+<SharedFlowerBanner variant="message"/>
+{home.sections.map((s:any)=><><section id={s.id} class="content-card copy-section"><h2 data-reviewed-block>{s.h2}</h2>{s.paragraphs.map((t:string)=><p data-reviewed-block>{t}</p>)}{s.id==='products'&&<ProductCards/>}{s.list&&<ul>{s.list.map((t:string)=><li data-reviewed-block>{t}</li>)}</ul>}{s.afterList?.map((t:string)=><p data-reviewed-block>{t}</p>)}</section>{s.id==='budget'&&<SharedFlowerBanner variant="budget"/>}</>)}
+<section id="faq" class="faq" data-visible-faq><h2 data-reviewed-block>{home.faqHeading}</h2>{home.faq.map((f:any,i:number)=><div class="faq-pair" id={`faq-${i+1}`}><h3 data-reviewed-block data-faq-question>{f.question}</h3><p data-reviewed-block data-faq-answer>{f.answer}</p></div>)}</section>
+<SharedFlowerBanner variant="consultation"/>
+<div class="directory-closing"><p data-reviewed-block>{home.closing}</p></div><div class="actions final-action"><a class="btn dark" data-reviewed-block data-required-cta href={home.cta.href}>{home.cta.label}</a></div>
+<section id="sources" class="source-card" data-source-references><h2 data-reviewed-block>{home.sourceHeading}</h2><p data-reviewed-block>{home.sourceIntro}</p><ul>{home.sources.map((s:any)=><li><a data-reviewed-block href={s.url}>{s.label}</a></li>)}</ul></section>
+</>:<div class="actions final-action"><a class="btn dark" data-reviewed-block data-required-cta href={mapTarget(c.cta)}>{c.cta.label}</a></div>}
+</div></article></BaseLayout>

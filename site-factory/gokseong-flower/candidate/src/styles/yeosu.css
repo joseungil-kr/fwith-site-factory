@@ -1,0 +1,14 @@
+/* Yeosu-only layout adaptation. Inherited template styles remain byte-identical. */
+.product-card{display:flex;flex-direction:column;min-width:0;gap:12px}
+.product-card h3{margin:0;order:0;font-size:20px;line-height:1.5}
+.product-card img{order:1;max-width:100%;width:100%;height:auto}
+.product-card .product-price{order:2;margin:0;font-size:18px;font-weight:700}
+.product-card [data-order-product-sku]{order:3;min-height:44px;align-self:flex-start}
+.source-card li{line-height:1.9;overflow-wrap:anywhere}
+.source-card ul{padding-left:1.4rem}
+#faq h3{margin-top:24px;line-height:1.55}
+#faq p{line-height:1.95}
+#main-content:focus{outline:3px solid #ab5071;outline-offset:-3px}
+.desktop-navigation{flex-wrap:wrap;justify-content:flex-end;max-width:75%;font-size:13px}
+.mobile-menu nav{width:min(280px,80vw)}
+@media(max-width:600px){.category-hero h1{overflow-wrap:anywhere}.product-card{display:flex;flex-direction:column}.product-card img{max-height:none}.source-card ul{padding-left:1.1rem}}

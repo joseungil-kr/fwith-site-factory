@@ -1,0 +1,431 @@
+{
+  "schema": "single-purchase-home-render-plan/v2",
+  "status": "MANUSCRIPT_AND_SPEC_ONLY_NOT_RENDERED",
+  "origin": null,
+  "domain": null,
+  "productionEnabled": false,
+  "region": {
+    "name": "곡성군",
+    "officialCode": "12720",
+    "legalCode": "1272000000",
+    "officialParent": "전남광주통합특별시",
+    "nationalOrder": 37
+  },
+  "sourceContext": {
+    "guidanceReadMainSha": "5c1a1d9b32297cca19b282e299776410247730ee",
+    "guidanceGitBlobsUnchangedSinceResearchStart": true,
+    "researchFinalReviewSHA256": "419682c58c374f22b9d703a92f9c90e3d8b7b378363552243250f735d1ec77f9",
+    "recordedPublished": 66,
+    "planTotal": 230,
+    "recordedRemaining": 164,
+    "nationalCountingUnit": "official region",
+    "regionalCountIncrement": 0,
+    "recordLimit": "Latest main ledger read, not 66 fresh public-site checks. Gokseong manuscript adds no release."
+  },
+  "namespace": {
+    "candidate": "gokseong",
+    "verified": false,
+    "reserved": false,
+    "productionURL": null
+  },
+  "pages": [
+    {
+      "id": "home",
+      "proposedPath": "/",
+      "titleSource": "customer-copy.json#/home/title",
+      "metaDescriptionSource": "customer-copy.json#/home/description",
+      "h1Source": "customer-copy.json#/home/h1",
+      "previewRobots": "noindex,nofollow,noarchive",
+      "previewSitemapIncluded": false,
+      "productionRobots": "index,follow",
+      "productionSitemapIncluded": true,
+      "canonical": null,
+      "canonicalAtProduction": "Verified production origin + /",
+      "canonicalPolicy": "Exact own absolute URL after verification",
+      "socialMetadataIncluded": true,
+      "bannerCount": 3,
+      "productCardCount": 4,
+      "faqCount": 3,
+      "HTTPStatusRequirement": 200,
+      "status": "PLANNED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "notFound",
+      "proposedPath": "/404.html",
+      "titleSource": "customer-copy.json#/notFound/title",
+      "metaDescriptionSource": "customer-copy.json#/notFound/description",
+      "h1Source": "customer-copy.json#/notFound/h1",
+      "previewRobots": "noindex,nofollow,noarchive",
+      "previewSitemapIncluded": false,
+      "productionRobots": "noindex,follow",
+      "productionSitemapIncluded": false,
+      "canonical": null,
+      "canonicalAtProduction": null,
+      "canonicalPolicy": "Omit canonical on technical error page",
+      "socialMetadataIncluded": false,
+      "bannerCount": 0,
+      "productCardCount": 0,
+      "faqCount": 0,
+      "HTTPStatusRequirement": 404,
+      "status": "PLANNED_NOT_IMPLEMENTED"
+    }
+  ],
+  "productionPolicy": {
+    "robotsTxt": "Allow the verified home route; include only final verified sitemap location. Preview stays noindex and has no sitemap submission.",
+    "sitemapPageIds": [
+      "home"
+    ],
+    "plannedIndexableURLCount": 1,
+    "actualSitemapURLCount": null,
+    "IndexNow": "Derive exact URL set from verified final sitemap and public responses. No inherited two-URL requirement. Do not POST at manuscript stage."
+  },
+  "headings": {
+    "H1ExactlyOneEveryPage": true,
+    "sections": "H2",
+    "productNames": "H3 under products H2",
+    "FAQQuestions": "H3 under faq H2, question and answer always visible once",
+    "sources": "One H2; source links in list/paragraph, not individual H2s",
+    "decorativeBannerHeadings": 0,
+    "notFoundExtraHeadings": 0
+  },
+  "socialMetadata": {
+    "appliesToPageIds": [
+      "home"
+    ],
+    "og:type": "website",
+    "og:locale": "ko_KR",
+    "og:title": "home.title",
+    "og:description": "home.description",
+    "og:url": "Verified origin + /, exactly own canonical",
+    "og:image": "Verified origin + /images/products/B201.jpg",
+    "og:image:width": 500,
+    "og:image:height": 500,
+    "og:image:alt": "productCards[0].photoAlt",
+    "twitter:card": "summary",
+    "twitter:title": "home.title",
+    "twitter:description": "home.description",
+    "twitter:image": "Same absolute URL and bytes as og:image",
+    "twitter:image:alt": "productCards[0].photoAlt",
+    "notFoundSocialMetadataIncluded": false,
+    "newImageGeneration": false
+  },
+  "navigation": {
+    "brandHref": "/",
+    "skipHref": "#main-content",
+    "mainMenu": [
+      {
+        "labelSource": "sharedUI.productsLink",
+        "href": "/#products"
+      },
+      {
+        "labelSource": "sharedUI.budgetLink",
+        "href": "/#budget"
+      },
+      {
+        "labelSource": "sharedUI.ribbonLink",
+        "href": "/#ribbon"
+      },
+      {
+        "labelSource": "sharedUI.orderLink",
+        "href": "/#order"
+      },
+      {
+        "labelSource": "sharedUI.faqLink",
+        "href": "/#faq"
+      }
+    ],
+    "homePageIds": [
+      "home"
+    ],
+    "noBreadcrumbNeeded": true,
+    "noRegionsRoute": true,
+    "noFacilityRoute": true,
+    "noFakeAliases": true,
+    "footerLinks": [
+      {
+        "labelSource": "sharedUI.homeLink",
+        "href": "/"
+      },
+      {
+        "labelSource": "sharedUI.phoneLink",
+        "href": "tel:18440644"
+      }
+    ],
+    "notFoundRecoveryHref": "/",
+    "validateActualFragments": true,
+    "desktop": {
+      "selector": "nav.desktop-navigation",
+      "DOMInstancesPerPage": 1,
+      "visibleAtMinWidth": 861
+    },
+    "mobile": {
+      "selector": "details.mobile-menu > nav",
+      "DOMInstancesPerPage": 1,
+      "visibleAtMaxWidth": 860,
+      "visibleOnlyWhenDetailsOpen": true
+    },
+    "menuLabelOccurrences": 2
+  },
+  "header": {
+    "brand": "sharedUI.brand",
+    "homeAriaLabel": "sharedUI.homeLink",
+    "menuAriaLabel": "sharedUI.menuLabel",
+    "skipLabel": "sharedUI.skipLink",
+    "compactMenuOpenLabel": "sharedUI.menuOpen",
+    "compactMenuCloseLabel": "sharedUI.menuClose",
+    "noUnreviewedTemplateTagline": true,
+    "telephonePlacement": "No header telephone element in the reused layout; the approved phone label is in footer and mobile fixed bar."
+  },
+  "footer": {
+    "labelSource": "sharedUI.footerLabel",
+    "brandSource": "sharedUI.brand",
+    "linkSources": [
+      "sharedUI.homeLink",
+      "sharedUI.phoneLink"
+    ],
+    "noUnrelatedRegionalLinks": true,
+    "noNewServicesOrPerformanceClaims": true
+  },
+  "productCards": {
+    "source": "customer-copy.json#/productCards",
+    "count": 4,
+    "pageIds": [
+      "home"
+    ],
+    "placement": "After home.sections[id=products].paragraphs, inside that section, before budget H2",
+    "instancesEach": 1,
+    "SKUSpecificCTAs": true,
+    "baseAndShippingAndReferenceSeparate": true,
+    "referenceNeverFinalPrice": true,
+    "sampleNoticeSource": "sharedUI.productSampleNotice",
+    "sampleNoticeInstances": 1,
+    "imagePolicy": {
+      "width": 500,
+      "height": 500,
+      "objectFit": "contain",
+      "crop": false,
+      "altSource": "productCards[*].photoAlt",
+      "loading": "lazy for below-fold images; do not blindly defer an LCP image",
+      "decoding": "async"
+    },
+    "headingTextRule": "Exact authored product name + one space + that product SKU; one H3 per product under #products H2."
+  },
+  "faq": {
+    "source": "customer-copy.json#/home/faq",
+    "count": 3,
+    "headingSource": "home.faqHeading",
+    "id": "faq",
+    "alwaysVisible": true,
+    "visibleInstancesEach": 1,
+    "accordion": false,
+    "contentMarkdownMustNotSuppress": true,
+    "schemaGenerated": false,
+    "actualHTMLVerified": false
+  },
+  "commonBanners": [
+    {
+      "variant": "message",
+      "assetPath": "assets/shared-banners/flower-message.webp",
+      "publicPath": "/images/shared-banners/flower-message.webp",
+      "sha256": "a5ecdeb1914566a32d45b084351e2782fc8b234e9a4fbb8635a60a9921cac5f5",
+      "bytes": 171698,
+      "width": 1774,
+      "height": 887,
+      "mimeType": "image/webp",
+      "element": "figure/img",
+      "altSource": "customer-copy.json#/sharedBannerAlt/message",
+      "caption": null,
+      "loading": "lazy",
+      "decoding": "async",
+      "responsive": "width:100%;height:auto",
+      "inspection": "Writer opened the existing approved bytes and rehashed their exact copies. No regeneration or image edits."
+    },
+    {
+      "variant": "budget",
+      "assetPath": "assets/shared-banners/flower-budget.webp",
+      "publicPath": "/images/shared-banners/flower-budget.webp",
+      "sha256": "081198095eb005603721be7c778f4d477f4dd93dcf96f0c261f18bf06bb91421",
+      "bytes": 145664,
+      "width": 1774,
+      "height": 887,
+      "mimeType": "image/webp",
+      "element": "figure/img",
+      "altSource": "customer-copy.json#/sharedBannerAlt/budget",
+      "caption": null,
+      "loading": "lazy",
+      "decoding": "async",
+      "responsive": "width:100%;height:auto",
+      "inspection": "Writer opened the existing approved bytes and rehashed their exact copies. No regeneration or image edits."
+    },
+    {
+      "variant": "consultation",
+      "assetPath": "assets/shared-banners/flower-consultation.webp",
+      "publicPath": "/images/shared-banners/flower-consultation.webp",
+      "sha256": "d6654aa44c365f64e330d0be2042972d3320fad54231425aaffca1dfdcd25ebc",
+      "bytes": 126306,
+      "width": 1774,
+      "height": 887,
+      "mimeType": "image/webp",
+      "element": "figure/img",
+      "altSource": "customer-copy.json#/sharedBannerAlt/consultation",
+      "caption": null,
+      "loading": "lazy",
+      "decoding": "async",
+      "responsive": "width:100%;height:auto",
+      "inspection": "Writer opened the existing approved bytes and rehashed their exact copies. No regeneration or image edits."
+    }
+  ],
+  "placement": {
+    "home": [
+      "Header and skip link",
+      "H1 and two original lead paragraphs",
+      "message banner",
+      "products prose and four actual product cards plus one sample notice",
+      "budget prose",
+      "budget banner",
+      "ribbon prose",
+      "destinations prose, five dated facility identity rows and specific Ok-gwa uncertainty",
+      "order prose, grouped inputs and complete upper/lower timing context",
+      "FAQ heading and three always-visible question/answer pairs",
+      "consultation banner",
+      "closing and merchant telephone CTA",
+      "sources H2, intro and eight source links",
+      "Footer",
+      "Mobile fixed home/telephone bar; only CSS-visible through 860px, not duplicated manuscript body"
+    ],
+    "notFound": [
+      "Header, only agreed shared labels/links",
+      "H1, error body and home recovery CTA",
+      "Footer; no products, FAQs or marketing banners",
+      "Same mobile fixed home/telephone bar; no marketing products/FAQ/banner"
+    ]
+  },
+  "anchorIds": [
+    "main-content",
+    "products",
+    "budget",
+    "ribbon",
+    "destinations",
+    "order",
+    "faq",
+    "sources"
+  ],
+  "sourceAnchor": "sources",
+  "contentBoundary": {
+    "substantiveHomeCount": 1,
+    "facilityDetailCount": 0,
+    "emptyDirectoryCount": 0,
+    "heldFacilities": 5,
+    "coreHubLaunch": "NOT_ASSESSED",
+    "fullLaunch": "NOT_ASSESSED",
+    "noGeneratedServiceOrOfferJSONLD": true,
+    "noLiveAvailabilityClaim": true,
+    "actualRenderedPageCount": null
+  },
+  "schemaImplementationWarnings": [
+    "Five root keys are reused after inspecting the actual Damyang r2 runtime and renderer. Do not reuse its region constants, hashes, denominator assertions, scores or verdict.",
+    "Render every section paragraph, list and afterList using the section ID. Exactly five dated facility identities are displayed; no facility-detail route.",
+    "Render four product cards with distinct SKU URLs, base price, posted shipping, reference total and null final price.",
+    "Render three authored FAQ pairs once visibly. No accordion or hidden data-only FAQ.",
+    "Only home belongs in a future verified production sitemap; technical 404 is noindex with no canonical/social metadata.",
+    "Manuscript is not a build, DOM, browser, release or indexing verification.",
+    "Use the revision2 exact DOM occurrence/state map. Do not count the whole document body or confuse planned CSS availability with current viewport intersection. Implementer must demonstrate actual DOM, accessibility and scroll reachability later."
+  ],
+  "unimplementedChecks": [
+    "Renderer adaptation/source regression",
+    "Static build and actual two-page output",
+    "Complete rendered text/context preservation",
+    "H1/H2/H3, unique metadata/OG/Twitter/canonical/robots/sitemap",
+    "All href and fragment destinations",
+    "FAQ/product/price/banner image visibility",
+    "Mobile/desktop and keyboard behavior",
+    "Public HTTP/assets MIME and exact hashes/real missing-route 404",
+    "Release and receipt binding",
+    "Actual indexing/ranking separate from acceptance"
+  ],
+  "policyContextRetention": {
+    "revision": 1,
+    "copyPointer": "/home/sections/4/afterList/1",
+    "requirements": [
+      "Render the complete timing paragraph once without truncation.",
+      "Preserve both upper notices and the lower notice for B201/B203/B205 with source position.",
+      "Application scope and exceptions are unresolved, not a proven contradiction or new policy.",
+      "B060 21:00 remains separate; do not infer weekend delivery or common cutoff.",
+      "No clock calculation or SLA. Per-order schedule consultation remains."
+    ],
+    "supplementalContextFile": "timing-context-addendum.json",
+    "actualHTMLVerified": false
+  },
+  "designRevision": 2,
+  "mobileBar": {
+    "homeSource": "sharedUI.homeLink",
+    "homeHref": "/",
+    "phoneSource": "sharedUI.phoneLink",
+    "phoneHref": "tel:18440644",
+    "DOMInstancesPerPage": 1,
+    "visibleAtMaxWidth": 860,
+    "pageIds": [
+      "home",
+      "notFound"
+    ]
+  },
+  "outputOccurrenceContract": {
+    "schema": "gokseong-output-occurrences/v2",
+    "mapFile": "output-context-map.json",
+    "widthBoundary": 860,
+    "states": [
+      {
+        "id": "320-closed",
+        "width": 320,
+        "menuOpen": false,
+        "skipFocused": false
+      },
+      {
+        "id": "320-open",
+        "width": 320,
+        "menuOpen": true,
+        "skipFocused": false
+      },
+      {
+        "id": "320-skip-focused",
+        "width": 320,
+        "menuOpen": false,
+        "skipFocused": true
+      },
+      {
+        "id": "390-closed",
+        "width": 390,
+        "menuOpen": false,
+        "skipFocused": false
+      },
+      {
+        "id": "390-open",
+        "width": 390,
+        "menuOpen": true,
+        "skipFocused": false
+      },
+      {
+        "id": "390-skip-focused",
+        "width": 390,
+        "menuOpen": false,
+        "skipFocused": true
+      },
+      {
+        "id": "1280-normal",
+        "width": 1280,
+        "menuOpen": false,
+        "skipFocused": false
+      },
+      {
+        "id": "1280-skip-focused",
+        "width": 1280,
+        "menuOpen": false,
+        "skipFocused": true
+      }
+    ],
+    "bodyDuplicateRule": "Authored main-content leaves render at their own bound location once. Repeated shell labels and metadata are intentional distinct contexts, not duplicate purchase prose.",
+    "actualDOMVerified": false,
+    "actualCSSVerified": false,
+    "actualBrowserVerified": false
+  }
+}

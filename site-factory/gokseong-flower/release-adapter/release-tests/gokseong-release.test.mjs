@@ -1,0 +1,27 @@
+// Synthetic offline bindings are test data, never release authorization.
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import path from 'node:path';import os from 'node:os';
+import {ROOT,ADAPTER_ROOT,PRIVATE_FILE_COUNT,REVIEWED_SPEC_SHA256,ORIGIN,WORKER,HOSTNAME,ROUTES,PROOF,PRIVATE_TREE_SHA,sha,read,frozenSource,resolveGokseongRelease,validateBinding,robotsForRoute,privateBuildEnvironment} from '../scripts/gokseong_release.mjs';
+const contractSha=sha(read(path.join(ADAPTER_ROOT,'release/bounded-contract.json')));
+const env={SITE_RELEASE_MODE:'production',SITE_INDEXABLE:'true',SITE_URL:ORIGIN,SITE_FACTORY_REVISION:'a'.repeat(40)};
+const fixture=()=>({schemaVersion:1,state:'approved',repository:'joseungil-kr/fwith-site-factory',sourceRoot:'site-factory/gokseong-flower',siteKey:'gokseong-flower-direct',hostname:HOSTNAME,origin:ORIGIN,worker:WORKER,frozenInputSha256:REVIEWED_SPEC_SHA256,frozenPrivateTreeSha256:PRIVATE_TREE_SHA,sourceRevision:env.SITE_FACTORY_REVISION,proof:PROOF,sitemapRoutes:ROUTES,htmlFiles:2,notFoundRobots:'noindex,follow',notFoundStatus:404,publicHttpVerified:false,indexNowSubmitted:false,boundedContractSha256:contractSha,coreHubLaunchStatus:'NOT_ASSESSED',fullLaunchStatus:'NOT_ASSESSED',approvals:{publication:true,hostBinding:true,indexNowProof:true},authorizationEvidence:'https://github.com/joseungil-kr/fwith-site-factory/blob/'+('c'.repeat(40))+'/docs/direct-gokseong/production-authorization-20261016.json',sourceContractSha256:'d'.repeat(64)});
+test('exact frozen private source including reviewed copy, app and seven images remains byte-bound',()=>assert.equal(frozenSource(),true));
+test('default remains private preview without selected origin',()=>assert.deepEqual(resolveGokseongRelease({}),{mode:'preview',indexable:false,origin:null,revision:'local',worker:null}));
+test('even exact synthetic production fixture is blocked while dedicated proof is pending',()=>assert.throws(()=>validateBinding(fixture(),env,contractSha),/site_specific_indexnow_proof_pending/));
+for(const [k,value] of Object.entries({origin:'https://wrong.invalid',worker:'seoul-gangdong-flower-guide',siteKey:'other',schemaVersion:true,htmlFiles:5,notFoundRobots:'index,follow',sitemapRoutes:[...ROUTES,'/regions/'],publicHttpVerified:true,indexNowSubmitted:true,coreHubLaunchStatus:'PASS',fullLaunchStatus:'PASS',sourceRevision:'short',boundedContractSha256:'0'.repeat(64),approvals:{publication:true,hostBinding:true,indexNowProof:false},authorizationEvidence:'not-a-source',extra:'unknown'}))test('binding rejects '+k,()=>assert.throws(()=>validateBinding({...fixture(),[k]:value},env,contractSha)));
+for(const [k,value] of Object.entries({SITE_RELEASE_MODE:'other',SITE_INDEXABLE:'true',SITE_URL:ORIGIN,SITE_RELEASE_BINDING_PATH:'/tmp/binding',CLOUDFLARE_API_TOKEN:'TEST_ONLY',CLOUDFLARE_ACCOUNT_ID:'TEST_ONLY',PUBLIC_APPROVED:'true'}))test('preview rejects '+k,()=>assert.throws(()=>resolveGokseongRelease({[k]:value})));
+test('production binding required',()=>assert.throws(()=>resolveGokseongRelease(env),/control_binding_path/));
+test('production mode cannot proceed using a syntactically matching external fixture while proof is null',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'gokseong-pending-proof-'));try{
+  const file=path.join(dir,'production-binding.json');fs.writeFileSync(file,JSON.stringify(fixture()));const selected={...env,SITE_RELEASE_BINDING_PATH:file,SITE_RELEASE_BINDING_SHA256:sha(read(file))};
+  assert.throws(()=>privateBuildEnvironment(selected),/site_specific_indexnow_proof_pending/);
+  assert.throws(()=>resolveGokseongRelease({...selected,SITE_RELEASE_BINDING_SHA256:'0'.repeat(64)}),/binding_digest/);
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});
+test('unknown routes fail and only 404 remains noindex',()=>{assert.equal(robotsForRoute('/'),'index,follow');assert.throws(()=>robotsForRoute('/regions/'));assert.throws(()=>robotsForRoute('/regions/suwan-funeral-wreath/'));assert.equal(robotsForRoute('/404.html'),'noindex,follow');assert.throws(()=>robotsForRoute('/invented/'))});
+
+test('old predecessor field is rejected rather than promoted',()=>assert.throws(()=>validateBinding({...fixture(),previewSourceRevision:'b'.repeat(40)},env,contractSha)));
+test('offline marker never counts as actual production source SHA',()=>assert.throws(()=>validateBinding({...fixture(),sourceRevision:'local-inspection'},{...env,SITE_FACTORY_REVISION:'local-inspection'},contractSha)));
+function isolated(fn){const root=fs.mkdtempSync(path.join(os.tmpdir(),'gokseong-frozen-'));try{const rows=JSON.parse(read(path.join(ADAPTER_ROOT,'release/private-source-manifest.json')));for(const row of rows){const to=path.join(root,row.path);fs.mkdirSync(path.dirname(to),{recursive:true});fs.copyFileSync(path.join(ROOT,'..',row.path),to);}fn(root);}finally{fs.rmSync(root,{recursive:true,force:true});}}
+for(const [name,fn] of [
+ ['extra file',r=>fs.writeFileSync(path.join(r,'candidate/extra.txt'),'extra')],['hidden file',r=>fs.writeFileSync(path.join(r,'candidate/.hidden'),'hidden')],['missing file',r=>fs.unlinkSync(path.join(r,'candidate/src/pages/index.astro'))],['changed source',r=>fs.appendFileSync(path.join(r,'candidate/src/pages/index.astro'),'changed')],['symlink parent',r=>{const p=path.join(r,'candidate/src/pages');fs.renameSync(p,p+'-target');fs.symlinkSync(p+'-target',p);}]
+])test('frozen set rejects '+name,()=>isolated(root=>{fn(root);assert.throws(()=>frozenSource(root));}));
