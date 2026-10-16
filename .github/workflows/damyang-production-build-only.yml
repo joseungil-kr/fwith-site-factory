@@ -132,7 +132,15 @@ jobs:
           persist-credentials: false
       - name: Select independently reviewed closed recovery request
         id: recovery_select
-        run: python3 control/scripts/direct-damyang-recovery/recovery_build.py select --report recovery-selected-source.json
+        run: |
+          env -i PATH="$PATH" HOME="$HOME" LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 \
+            GITHUB_REPOSITORY="$GITHUB_REPOSITORY" GITHUB_REF="$GITHUB_REF" \
+            GITHUB_ACTOR="$GITHUB_ACTOR" GITHUB_TRIGGERING_ACTOR="$GITHUB_TRIGGERING_ACTOR" \
+            GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" \
+            GITHUB_RUN_ID="$GITHUB_RUN_ID" GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_WORKSPACE="$GITHUB_WORKSPACE" GITHUB_EVENT_PATH="$GITHUB_EVENT_PATH" \
+            GITHUB_OUTPUT="$GITHUB_OUTPUT" \
+            python3 control/scripts/direct-damyang-recovery/recovery_build.py select --report recovery-selected-source.json
       - name: Recheck exact dedicated recovery source branch head
         uses: actions/github-script@v7
         with:
@@ -146,9 +154,18 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Verify exact source81 and actual Git subtree before any source execution
-        run: python3 control/scripts/direct-damyang-recovery/recovery_build.py prebuild --checkout target --report recovery-source-prebuild.json
+        run: |
+          env -i PATH="$PATH" HOME="$HOME" LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 \
+            GITHUB_REPOSITORY="$GITHUB_REPOSITORY" GITHUB_REF="$GITHUB_REF" \
+            GITHUB_ACTOR="$GITHUB_ACTOR" GITHUB_TRIGGERING_ACTOR="$GITHUB_TRIGGERING_ACTOR" \
+            GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" \
+            GITHUB_RUN_ID="$GITHUB_RUN_ID" GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_WORKSPACE="$GITHUB_WORKSPACE" \
+            python3 control/scripts/direct-damyang-recovery/recovery_build.py prebuild --checkout target --report recovery-source-prebuild.json
       - name: Run isolated recovery control negatives without changing original first-publication guards
-        run: python3 -m unittest discover -s control/scripts/direct-damyang-recovery -p 'test_recovery_build.py' -v
+        run: |
+          env -i PATH="$PATH" HOME="$HOME" LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 \
+            python3 -m unittest discover -s control/scripts/direct-damyang-recovery -p 'test_recovery_build.py' -v
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -174,7 +191,14 @@ jobs:
       - name: Verify source bytes remain unchanged and package17 exact outputs plus expected16 HTTP plan
         env:
           NATIVE_GATES_PASSED: 'true'
-        run: python3 control/scripts/direct-damyang-recovery/recovery_build.py postbuild --checkout target --package release-recovery --report recovery-output.json
+        run: |
+          env -i PATH="$PATH" HOME="$HOME" LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 \
+            GITHUB_REPOSITORY="$GITHUB_REPOSITORY" GITHUB_REF="$GITHUB_REF" \
+            GITHUB_ACTOR="$GITHUB_ACTOR" GITHUB_TRIGGERING_ACTOR="$GITHUB_TRIGGERING_ACTOR" \
+            GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" \
+            GITHUB_RUN_ID="$GITHUB_RUN_ID" GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_WORKSPACE="$GITHUB_WORKSPACE" NATIVE_GATES_PASSED="$NATIVE_GATES_PASSED" \
+            python3 control/scripts/direct-damyang-recovery/recovery_build.py postbuild --checkout target --package release-recovery --report recovery-output.json
       - name: Retain source-bound recovery artifact for separate independent review
         id: recovery_artifact
         uses: actions/upload-artifact@v4

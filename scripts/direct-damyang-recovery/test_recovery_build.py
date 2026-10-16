@@ -5,6 +5,9 @@ from pathlib import Path
 import unittest
 import shutil
 import tempfile
+import os
+import subprocess
+import shlex
 from unittest.mock import patch
 import recovery_build as q
 
@@ -247,6 +250,67 @@ class ClosedActivationTests(unittest.TestCase):
     def test_intermediate_reviewed_symlink_rejected(self):
         self.write();target=self.root/'docs/direct-damyang-recovery/prior-publication';renamed=self.root/'relocated';target.rename(renamed);target.symlink_to(renamed,target_is_directory=True)
         with self.assertRaisesRegex(ValueError,'reviewed_path_unsafe'):q.activation(self.root)
+
+
+class TrustedWorkflowEnvironmentTests(unittest.TestCase):
+    """Real local shell env-i boundary; invented sentinels, no provider/network."""
+    COMMON = {'PATH','HOME','LANG','PYTHONDONTWRITEBYTECODE','GITHUB_REPOSITORY','GITHUB_REF',
+              'GITHUB_ACTOR','GITHUB_TRIGGERING_ACTOR','GITHUB_RUN_ATTEMPT','GITHUB_EVENT_NAME',
+              'GITHUB_RUN_ID','GITHUB_SHA','GITHUB_WORKSPACE'}
+    def prefix(self, phase):
+        lines=(q.DIRECTORY.parents[1]/q.WORKFLOW).read_text().splitlines(True)
+        matches=[i for i,line in enumerate(lines) if 'python3 control/scripts/direct-damyang-recovery/recovery_build.py '+phase+' ' in line]
+        self.assertEqual(len(matches),1);end=matches[0];start=end-1
+        while start>=0 and lines[start].strip()!='run: |':start-=1
+        self.assertGreaterEqual(start,0)
+        text=''.join(line[10:] for line in lines[start+1:end]);self.assertTrue(text.startswith('env -i '))
+        return text
+    def parent(self):
+        return {**os.environ,**env(),'PATH':os.environ['PATH'],'HOME':os.environ.get('HOME','/tmp'),
+                'GITHUB_WORKSPACE':'/tmp/synthetic workspace with spaces',
+                'GITHUB_EVENT_PATH':'/tmp/synthetic event with spaces.json','GITHUB_OUTPUT':'/tmp/synthetic output',
+                'NATIVE_GATES_PASSED':'true','AZURE_SYNTHETIC_METADATA':'not-a-credential',
+                'AWS_SYNTHETIC_METADATA':'not-a-credential','SYNTHETIC_PROVIDER_LABEL':'not-a-credential',
+                'CLOUDFLARE_API_TOKEN':'INVENTED_SENTINEL','GH_TOKEN':'INVENTED_SENTINEL',
+                'GITHUB_TOKEN':'INVENTED_SENTINEL','ACTIONS_RUNTIME_TOKEN':'INVENTED_SENTINEL'}
+    def run_child(self,phase,parent=None,extra=''):
+        code="import os,json,sys;sys.path.insert(0,"+repr(str(q.DIRECTORY))+ ");import recovery_build as q;q.owner_context(os.environ);print(json.dumps(sorted(os.environ)))"
+        command=self.prefix(phase)+extra+'python3 -c '+shlex.quote(code)
+        return subprocess.run(['/bin/bash','-eu','-c',command],env=parent or self.parent(),text=True,capture_output=True)
+    def test_parent_metadata_fixture_reproduces_unchanged_sentinel(self):
+        for name in ['AZURE_SYNTHETIC_METADATA','AWS_SYNTHETIC_METADATA','SYNTHETIC_PROVIDER_LABEL']:
+            e=env();e[name]='synthetic-noncredential'
+            with self.subTest(name=name),self.assertRaisesRegex(ValueError,'provider_credentials_forbidden'):q.owner_context(e)
+    def test_three_actual_workflow_prefixes_forward_exact_minimum_names(self):
+        for phase in ['select','prebuild','postbuild']:
+            result=self.run_child(phase);self.assertEqual(result.returncode,0,result.stderr)
+            expected=self.COMMON|({'GITHUB_EVENT_PATH','GITHUB_OUTPUT'} if phase=='select' else set())|({'NATIVE_GATES_PASSED'} if phase=='postbuild' else set())
+            with self.subTest(phase=phase):self.assertEqual(set(json.loads(result.stdout)),expected)
+            self.assertNotIn('INVENTED_SENTINEL',result.stdout+result.stderr)
+    def test_child_injected_credentials_still_rejected(self):
+        for phase in ['select','prebuild','postbuild']:
+            for name in ['CLOUDFLARE_API_TOKEN','CF_API_KEY','AWS_ACCESS_KEY_ID','AZURE_CLIENT_SECRET','GOOGLE_APPLICATION_CREDENTIALS','PROVIDER_TOKEN']:
+                result=self.run_child(phase,extra=name+'=INVENTED_SENTINEL ')
+                with self.subTest(phase=phase,name=name):self.assertNotEqual(result.returncode,0);self.assertIn('provider_credentials_forbidden',result.stderr);self.assertNotIn('INVENTED_SENTINEL',result.stdout+result.stderr)
+    def test_owner_main_attempt_identity_not_bypassed_by_cleaning(self):
+        for key in env():
+            parent=self.parent();parent[key]='wrong';result=self.run_child('select',parent)
+            with self.subTest(key=key):self.assertNotEqual(result.returncode,0)
+    def test_shell_quoted_paths_do_not_execute_parent_values(self):
+        parent=self.parent();parent['GITHUB_WORKSPACE']='/tmp/space ; $(exit 99) " unicode 경로'
+        result=self.run_child('prebuild',parent);self.assertEqual(result.returncode,0,result.stderr)
+    def test_unittest_step_only_forwards_four_process_variables(self):
+        lines=(q.DIRECTORY.parents[1]/q.WORKFLOW).read_text().splitlines(True)
+        matches=[i for i,line in enumerate(lines) if "python3 -m unittest discover -s control/scripts/direct-damyang-recovery -p 'test_recovery_build.py' -v" in line]
+        self.assertEqual(len(matches),1);end=matches[0];self.assertEqual(lines[end-2].strip(),'run: |')
+        prefix=lines[end-1][10:];self.assertTrue(prefix.startswith('env -i '))
+        code='import os,json;print(json.dumps(sorted(os.environ)))'
+        result=subprocess.run(['/bin/bash','-eu','-c',prefix+'python3 -c '+shlex.quote(code)],env=self.parent(),capture_output=True,text=True)
+        self.assertEqual(result.returncode,0,result.stderr);self.assertEqual(set(json.loads(result.stdout)),{'PATH','HOME','LANG','PYTHONDONTWRITEBYTECODE'})
+
+    def test_credential_guard_code_stays_exact_reviewed_bytes(self):
+        # Entire runtime module remains R3 byte-identical; only workflow/tests/review binding change.
+        self.assertEqual(q.sha(q.read(q.DIRECTORY/'recovery_build.py')),'5a1c4b9d7ec6ca79caf36688c183935af77694d572bf63201d3a028b2beb5da5')
 
 if __name__=='__main__':
     unittest.main()
