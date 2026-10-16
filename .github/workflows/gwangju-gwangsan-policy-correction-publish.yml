@@ -1,0 +1,210 @@
+name: Gwangsan reviewed existing-host policy correction
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+concurrency:
+  group: gwangsan-direct-public-release
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[GWANGJU-GWANGSAN-POLICY-CORRECTION-PUBLISH] 20261016' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.user.login == 'joseungil-kr'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      REGION: gwangsan
+      CONTROL_DIR: control/scripts/direct-gwangju-gwangsan-policy-correction
+      REVISION: ${{ fromJSON(github.event.issue.body).source_revision }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Authorize exact owner, main, first attempt, binding and source
+        id: source
+        run: |
+          python3 "$CONTROL_DIR/publish.py" authorize --report selected-source.json
+      - name: Run fixed control safety tests without provider credentials
+        run: |
+          PYTHONPATH="$CONTROL_DIR" python3 -m unittest test_provider_baseline test_existing_update test_publish_correction test_managed_robots test_gwangsan_http_guards -v
+      - name: Require sealed all-route output and independent mobile and desktop review
+        id: release
+        run: python3 "$CONTROL_DIR/publish.py" select --report selected-release.json
+      - name: Verify actual successful build and exact retained artifact metadata
+        uses: actions/github-script@v7
+        env:
+          BUILD_RUN_ID: ${{ steps.release.outputs.build_run_id }}
+          BUILD_ARTIFACT_ID: ${{ steps.release.outputs.artifact_id }}
+        with:
+          script: |
+            const fs = require('fs');
+            const desc = JSON.parse(fs.readFileSync(process.env.CONTROL_DIR + '/production-release-review-binding.json'));
+            const review = JSON.parse(fs.readFileSync('control/' + desc.path));
+            const {data: run} = await github.rest.actions.getWorkflowRun({...context.repo, run_id: Number(process.env.BUILD_RUN_ID)});
+            if (run.id !== Number(review.buildRunId) || run.run_attempt !== 1 || run.status !== 'completed' || run.conclusion !== 'success' || run.event !== 'issues' || run.head_branch !== 'main' || run.head_sha !== review.buildControlSha || run.path !== '.github/workflows/gwangju-gwangsan-policy-correction-build-only.yml' || run.repository.full_name !== 'joseungil-kr/fwith-site-factory' || run.actor?.login !== 'joseungil-kr' || run.triggering_actor?.login !== 'joseungil-kr') throw new Error('Build identity mismatch');
+            const {data: artifact} = await github.rest.actions.getArtifact({...context.repo, artifact_id: Number(process.env.BUILD_ARTIFACT_ID)});
+            if (artifact.id !== Number(review.artifactId) || artifact.expired || artifact.name !== 'gwangsan-policy-correction-build-' + review.buildRunId + ('-' + review.buildControlSha) || artifact.workflow_run.id !== run.id || artifact.workflow_run.head_sha !== run.head_sha || artifact.workflow_run.head_branch !== 'main') throw new Error('Artifact identity mismatch');
+            if (process.env.REGION === 'gwangsan') {
+              if (artifact.digest !== review.artifactDigest || String(run.id) !== String(review.qaRunId)) throw new Error('Gwangsan archive or combined browser run mismatch');
+              const publication = JSON.parse(fs.readFileSync(process.env.CONTROL_DIR + '/production-publication.json'));
+              const {data: journal} = await github.rest.issues.get({...context.repo, issue_number: publication.receiptIssue});
+              if (journal.number !== publication.receiptIssue || journal.pull_request || journal.state !== 'open' || journal.user.login !== 'joseungil-kr' || journal.title !== '[GWANGJU-GWANGSAN-INDEXNOW-RECEIPTS] 20261016' || journal.repository_url !== 'https://api.github.com/repos/joseungil-kr/fwith-site-factory') throw new Error('Gwangsan receipt issue identity mismatch');
+            }
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.release.outputs.artifact_id }}
+          run-id: ${{ steps.release.outputs.build_run_id }}
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: gwangsan-retained
+      - name: Stage only the retained Gwangsan static release package
+        if: env.REGION == 'gwangsan'
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import shutil
+          root = Path('gwangsan-retained/release')
+          assert root.is_dir() and not root.is_symlink()
+          assert not any(p.is_symlink() for p in root.rglob('*'))
+          assert not Path('release').exists()
+          shutil.copytree(root, 'release', symlinks=True)
+          PY
+      - name: Rehash exact reviewed static output and generate fixed route-less configuration
+        run: python3 "$CONTROL_DIR/publish.py" artifact --report artifact-check.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Recheck fixed source branch before mutation
+        uses: actions/github-script@v7
+        env:
+          SOURCE_BRANCH: ${{ steps.source.outputs.source_branch }}
+        with:
+          script: |
+            if (process.env.GITHUB_RUN_ATTEMPT !== '1') throw new Error('Reruns forbidden');
+            const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/' + process.env.SOURCE_BRANCH});
+            if (data.object.type !== 'commit' || data.object.sha !== process.env.REVISION) throw new Error('Source branch moved');
+            const {data: main} = await github.rest.git.getRef({...context.repo, ref: 'heads/main'});
+            if (main.object.type !== 'commit' || main.object.sha !== process.env.GITHUB_SHA) throw new Error('Control main moved');
+      - name: GET-only exact account, Worker and hostname accepted-current-baseline preflight
+        id: preflight
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 "$CONTROL_DIR/publish.py" preflight --report binding-before.json
+      - name: Prepare exact durable deployment identity
+        run: python3 "$CONTROL_DIR/publish.py" claim-plan --report deployment-attempt-plan.json
+      - name: Claim this revision once in the original journal and read back exact record
+        id: claim
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const {execFileSync} = require('child_process');
+            const issue_number = 374;
+            const {data: journal} = await github.rest.issues.get({...context.repo, issue_number});
+            if (journal.number !== issue_number || journal.pull_request || journal.state !== 'open' || journal.user.login !== 'joseungil-kr' || journal.title !== '[GWANGJU-GWANGSAN-INDEXNOW-RECEIPTS] 20261016' || journal.repository_url !== 'https://api.github.com/repos/joseungil-kr/fwith-site-factory') throw new Error('Historical journal identity changed');
+            const comments = await github.paginate(github.rest.issues.listComments, {...context.repo, issue_number, per_page: 100});
+            fs.writeFileSync('deployment-journal-comments.json', JSON.stringify(comments));
+            execFileSync('python3', [process.env.CONTROL_DIR + '/publish.py', 'claim-prepare', '--report', 'deployment-attempt-draft.json'], {stdio: 'pipe'});
+            const claim = JSON.parse(fs.readFileSync('deployment-attempt-draft.json'));
+            const marker = '<!-- gwangsan-policy-correction-attempt-v1 -->\n';
+            const body = marker + JSON.stringify(claim);
+            // No retry after an uncertain comment creation. A later run sees the durable claim and stops.
+            const {data: created} = await github.rest.issues.createComment({...context.repo, issue_number, body});
+            const {data: actual} = await github.rest.issues.getComment({...context.repo, comment_id: created.id});
+            if (!Number.isSafeInteger(actual.id) || actual.id <= 0 || actual.id !== created.id || actual.body !== body || actual.user?.login !== 'github-actions[bot]' || actual.issue_url !== 'https://api.github.com/repos/joseungil-kr/fwith-site-factory/issues/374') throw new Error('Durable claim readback mismatch');
+            fs.writeFileSync('deployment-attempt-claim.json', JSON.stringify({...claim, commentId: actual.id}, null, 2) + '\n');
+      - name: Recheck accepted account binding exposure settings active version and all prior bytes
+        id: recheck
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 "$CONTROL_DIR/publish.py" recheck --report immediately-before-upload.json
+      - name: Deploy fixed route-less static assets once
+        id: deploy
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_LOG_SANITIZE: 'true'
+          WRANGLER_SEND_METRICS: 'false'
+        run: |
+          wrangler_workdir="$(mktemp -d "$RUNNER_TEMP/regional-wrangler.XXXXXX")"
+          cd "$wrangler_workdir"
+          if ! npx --yes wrangler@4.148.0 deploy --config "$GITHUB_WORKSPACE/release/wrangler.publish.json" > "$RUNNER_TEMP/regional-production-upload.log" 2>&1; then
+            echo 'Upload failed or uncertain. Inspect GET and HTTP evidence before recovery.'
+            exit 1
+          fi
+      - name: Parse only the new provider version digest from the successful private upload log
+        id: version
+        if: steps.deploy.outcome == 'success'
+        continue-on-error: true
+        run: python3 "$CONTROL_DIR/publish.py" parse-upload --upload-log "$RUNNER_TEMP/regional-production-upload.log" --report upload-version.json
+      - name: GET-only binding readback, including after an uncertain upload
+        id: binding
+        if: ${{ always() && steps.recheck.outcome == 'success' && (steps.deploy.outcome == 'success' || steps.deploy.outcome == 'failure') }}
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 "$CONTROL_DIR/publish.py" readback --report binding-after.json
+      - name: Verify every public output byte, region-specific robots and real 404
+        id: http
+        if: ${{ always() && steps.recheck.outcome == 'success' && (steps.deploy.outcome == 'success' || steps.deploy.outcome == 'failure') }}
+        continue-on-error: true
+        run: python3 "$CONTROL_DIR/publish.py" http --report public-http.json
+      - name: Finalize the exact regional sitemap through its idempotent journal
+        id: indexnow
+        if: ${{ always() && steps.deploy.outcome == 'success' && steps.version.outcome == 'success' && steps.binding.outcome == 'success' && steps.http.outcome == 'success' }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 "$CONTROL_DIR/publish.py" indexnow --report indexnow-receipt.json
+      - name: Retain verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gwangsan-policy-correction-result-${{ github.run_id }}
+          path: |
+            selected-source.json
+            selected-release.json
+            artifact-check.json
+            http-contract.json
+            binding-before.json
+            previous-public-http.json
+            deployment-attempt-plan.json
+            deployment-attempt-claim.json
+            immediately-before-upload.json
+            upload-version.json
+            provider-state-before.json
+            provider-state-after-observed.json
+            update-source-config.json
+            binding-after.json
+            public-http.json
+            public-robots.txt
+            public-robots-headers.json
+            indexnow-robots.txt
+            indexnow-robots-headers.json
+            indexnow-receipt.json
+            indexnow-http-observations.json
+            release/release.json
+            release/wrangler.publish.json
+          if-no-files-found: warn
+      - name: Require new provider version, unchanged binding, public bytes and new revision receipt
+        if: always()
+        env:
+          DEPLOY: ${{ steps.deploy.outcome }}
+          VERSION: ${{ steps.version.outcome }}
+          BINDING: ${{ steps.binding.outcome }}
+          HTTP: ${{ steps.http.outcome }}
+          INDEXNOW: ${{ steps.indexnow.outcome }}
+        run: test "$DEPLOY" = success && test "$VERSION" = success && test "$BINDING" = success && test "$HTTP" = success && test "$INDEXNOW" = success
+

@@ -1,0 +1,4331 @@
+--- base654dafd7/candidate/scripts/qa_donggu.py
++++ amendment/candidate/scripts/qa_donggu.py
+@@ -11,7 +11,9 @@
+ def must(v,code,detail=''):
+  if not v:raise QAError(f'{code}: {detail}')
+ def htmlpath(p):return 'index.html' if p=='/' else '404.html' if p=='/404.html' else p.strip('/')+'/index.html'
+-def load(name):return json.loads((I/name).read_text())
++AMEND=B/'inputs/policy-amendment'
++EXPECTED_AMENDMENT_SHA='5f3744b594ccdfd69b1333f0b91491b3fc9eff219759bc8f436085a731299aed'
++def load(name):return json.loads(((AMEND if name=='customer-copy.json' else I)/name).read_text())
+ routes={x['id']:x['proposedPath'] for x in load('render-plan.json')['pages']}
+ def target(c,v):return v['href']
+ def facility_card(c):
+@@ -26,6 +28,7 @@
+  must(list(c)==['home','detail','productCards','support','notFound','sharedUI','sharedBannerAlt'],'COPY_SEVEN_KEYS')
+  must([s['id'] for s in c['home']['sections']]==['selection','facility-guide','consultation'],'HOME_REVIEWED_ORDER')
+  must([s['id'] for s in c['detail']['sections']]==['products','budget','ribbon','facility','order'],'DETAIL_REVIEWED_ORDER')
++ must(c['detail']['sections'][4]['afterList'][0]==json.loads((AMEND/'version-diff.json').read_text())['changes'][0]['after'],'FULL_TIMING_AMENDMENT')
+  return True
+ def projection(key,c):
+  validate_copy_schema(c)
+@@ -81,11 +84,15 @@
+  must(sha(manifest)==binding['requiredOriginalsSHA256'],'INPUT_MANIFEST_HASH')
+  for row in json.loads(manifest):
+   raw=(B/row['path']).read_bytes();must(len(raw)==row['bytes'] and sha(raw)==row['sha256'],'REQUIRED_INPUT_HASH',row['path'])
+- return binding
++ amendmentRaw=(AMEND/'MANIFEST.json').read_bytes();must(sha(amendmentRaw)==EXPECTED_AMENDMENT_SHA,'AMENDMENT_MANIFEST_HASH');amendment=json.loads(amendmentRaw)
++ for row in amendment['files']:
++  raw=(B/row['path']).read_bytes();must(len(raw)==row['bytes'] and sha(raw)==row['sha256'],'AMENDMENT_INPUT_HASH',row['path'])
++ must(amendment['originalCopySHA256']==binding['customerCopySHA256'] and amendment['pendingFindingResolved'] is False,'AMENDMENT_SCOPE')
++ return {**binding,'historicalCustomerCopySHA256':binding['customerCopySHA256'],'customerCopySHA256':amendment['resolvedCopySHA256']}
+ 
+ def check(root=None):
+  root=Path(root or C/'dist');binding=input_contract();c=load('customer-copy.json');plan=load('render-plan.json');ui=c['sharedUI'];pm=json.loads((C/'src/data/page-map.json').read_text())
+- must(sha((I/'customer-copy.json').read_bytes())==binding['customerCopySHA256'],'CANONICAL_COPY_PIN')
++ must(sha((AMEND/'customer-copy.json').read_bytes())==binding['customerCopySHA256'],'CANONICAL_COPY_PIN')
+  expected=[('home','home','primary-home'),('article','detail','primary-article'),('support','support','support-navigation'),('not-found','notFound','technical-404')]
+  must(plan['region']=={'name': '광산구', 'officialCode': '12330', 'legalCode': '1233000000', 'officialParent': '전남광주통합특별시', 'customerQueryName': '광주 광산구', 'nationalOrder': 35},'REGION_FACTS')
+  must(plan['origin'] is None and plan['domain'] is None and plan['productionEnabled'] is False,'COPY_PRIVATE_SCOPE')
+--- base654dafd7/candidate/scripts/test_donggu.py
++++ amendment/candidate/scripts/test_donggu.py
+@@ -52,7 +52,7 @@
+  def test_robots_file(self):self.mutate('robots.txt',lambda s:s+'Sitemap: https://donggu.fwith.kr/sitemap.xml\n')
+  def test_notfound_copy(self):self.mutate(self.missing,lambda s:s.replace(self.c['notFound']['body'],'페이지가 존재합니다',1))
+  def test_support_copy(self):self.mutate(self.support,lambda s:s.replace(self.c['support']['body'],'새 시설 안내',1))
+- def test_copy_hash(self):self.mutate(self.home,lambda s:s.replace('data-copy-sha="'+q.sha((q.I/'customer-copy.json').read_bytes())+'"','data-copy-sha="wrong"',1))
++ def test_copy_hash(self):self.mutate(self.home,lambda s:s.replace('data-copy-sha="'+q.sha((q.AMEND/'customer-copy.json').read_bytes())+'"','data-copy-sha="wrong"',1))
+  def test_broken_link(self):self.mutate(self.home,lambda s:s.replace(q.routes['detail'],'/regions/nonexistent/',1))
+  def test_broken_anchor(self):self.mutate(self.home,lambda s:s.replace('#sources','#missing',1))
+  def test_skip_target(self):self.mutate(self.home,lambda s:s.replace('href="#main-content"','href="#absent"',1))
+@@ -96,6 +96,12 @@
+  def test_fourth_faq_missing_rejected(self):
+   self.mutate(self.detail,lambda s:s.replace('<div class="faq-pair"><h3 data-reviewed-block data-faq-question>'+self.c['detail']['faq'][3]['question'], '<div class="faq-pair"><h3 hidden data-reviewed-block data-faq-question>'+self.c['detail']['faq'][3]['question'],1))
+  def test_unapproved_service_schema(self):self.mutate(self.home,lambda s:s.replace('</head>','<script type="application/ld+json">{"@type":"Service"}</script></head>',1))
++ def test_amendment_upper_weekday(self):self.mutate(self.detail,lambda s:s.replace('평일 기준 익일 오전','익일 오전',1))
++ def test_amendment_upper_weekend(self):self.mutate(self.detail,lambda s:s.replace('익일 오후 1시 전후','익일 오전',1))
++ def test_amendment_lower_position(self):self.mutate(self.detail,lambda s:s.replace('같은 이미지 하단','일반 안내',1))
++ def test_amendment_unresolved_scope(self):self.mutate(self.detail,lambda s:s.replace('적용범위나 예외 관계','확정 일정',1))
++ def test_amendment_B060_distinction(self):self.mutate(self.detail,lambda s:s.replace('B060은 별도로 21시 이후','B060은 별도로 19시 이후',1))
++ def test_amendment_provider_assistance(self):self.mutate(self.detail,lambda s:s.replace('해당 주문으로 상담해 드립니다','직접 확인하세요',1))
+ class CopySchemaTests(unittest.TestCase):
+  def reject(self,change):
+   c=json.loads(json.dumps(q.load('customer-copy.json')));change(c)
+--- base654dafd7/candidate/src/lib/donggu-runtime.mjs
++++ amendment/candidate/src/lib/donggu-runtime.mjs
+@@ -7,9 +7,11 @@
+ export const sha256=b=>crypto.createHash('sha256').update(b).digest('hex');
+ export const PIN=JSON.parse(fs.readFileSync(path.join(BUNDLE,'candidate/src/data/input-binding.json')));
+ export const EXPECTED_REQUIRED_SHA='af97369e9140157e118e52d46e7e94b8612e4cc4a83fb7808572e2a33c7d4336';
+-export const EXPECTED_COPY_SHA='9a0044feabf70a7a5ae6994d2523169a48d374ae4697aeeda3ccff4f6aec0493';
++export const ORIGINAL_COPY_SHA='9a0044feabf70a7a5ae6994d2523169a48d374ae4697aeeda3ccff4f6aec0493';
++export const EXPECTED_COPY_SHA='349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72';
++export const EXPECTED_AMENDMENT_SHA='5f3744b594ccdfd69b1333f0b91491b3fc9eff219759bc8f436085a731299aed';
+ const read=name=>JSON.parse(fs.readFileSync(path.join(INPUT,name)));
+-export const copy=read('customer-copy.json'),home=copy.home,detail=copy.detail,products=copy.productCards,ui=copy.sharedUI,plan=read('render-plan.json');
++export const copy=JSON.parse(fs.readFileSync(path.join(BUNDLE,'inputs/policy-amendment/customer-copy.json'))),home=copy.home,detail=copy.detail,products=copy.productCards,ui=copy.sharedUI,plan=read('render-plan.json');
+ export const copySHA={home:EXPECTED_COPY_SHA,article:EXPECTED_COPY_SHA,support:EXPECTED_COPY_SHA,'not-found':EXPECTED_COPY_SHA};
+ export const previewConfig=Object.freeze({mode:'private-local-preview',origin:null,domain:null,canonical:null,productionEnabled:false,coreHubLaunchStatus:'NOT_ASSESSED',fullLaunchStatus:'NOT_ASSESSED',crossRegionPublicationPrerequisites:false});
+ export function assertBoundary(config=previewConfig,env=process.env){
+@@ -22,17 +24,34 @@
+  let current=root;for(const part of relative.split('/')){current=path.join(current,part);if(fs.lstatSync(current).isSymbolicLink())throw new Error('Input symlink forbidden');}
+  if(!fs.lstatSync(file).isFile())throw new Error('Input regular file required');return fs.readFileSync(file);
+ }
++export function verifyAmendment(root=BUNDLE){
++ const raw=regular(root,'inputs/policy-amendment/MANIFEST.json');if(sha256(raw)!==EXPECTED_AMENDMENT_SHA)throw new Error('Amendment manifest changed');
++ const amendment=JSON.parse(raw);if(amendment.resolvedCopySHA256!==EXPECTED_COPY_SHA||amendment.originalCopySHA256!==ORIGINAL_COPY_SHA||amendment.copyPointer!=='/detail/sections/4/afterList/0'||amendment.priorRequiredOriginalsSHA256!==EXPECTED_REQUIRED_SHA||amendment.pendingFindingResolved!==false)throw new Error('Amendment scope changed');
++ if(new Set(amendment.files.map(r=>r.path)).size!==amendment.files.length||amendment.files.some(r=>!r.path.startsWith('inputs/policy-amendment/')))throw new Error('Amendment inventory changed');
++ for(const row of amendment.files){const b=regular(root,row.path);if(b.length!==row.bytes||sha256(b)!==row.sha256)throw new Error('Amendment input changed: '+row.path);}
++ const current=JSON.parse(regular(root,'inputs/policy-amendment/customer-copy.json')),original=JSON.parse(regular(root,'inputs/reviewed-copy/customer-copy.json')),delta=JSON.parse(regular(root,'inputs/policy-amendment/version-diff.json'));
++ if(sha256(regular(root,'inputs/policy-amendment/customer-copy.json'))!==EXPECTED_COPY_SHA||delta.changedCustomerLeafCount!==1||delta.changes[0].pointer!==amendment.copyPointer||current.detail.sections[4].afterList[0]!==delta.changes[0].after||original.detail.sections[4].afterList[0]!==delta.changes[0].before)throw new Error('Approved one-leaf amendment changed');
++ current.detail.sections[4].afterList[0]=original.detail.sections[4].afterList[0];if(!isDeepStrictEqual(current,original))throw new Error('Amendment changes another customer leaf');
++ const review=JSON.parse(regular(root,'inputs/policy-amendment/review/independent-review-r2.json'));
++ if(review.verdict!=='ACCEPT_NARROW_TIMING_PARAGRAPH_WITH_SOURCE_AND_RELEASE_PENDING'||review.assessmentScope!=='ONE_TIMING_PARAGRAPH_MANUSCRIPT_ONLY'||review.customerCopySHA256!==EXPECTED_COPY_SHA||review.originalCopySHA256!==ORIGINAL_COPY_SHA||review.successorSourceCommit!==null||review.historicalScores!==null||review.authorScores!==null||review.numericReviewScore!==null||!isDeepStrictEqual(review.supplementalDenominators,{upperImagePolicyClauses:6,applicationScopeFollowupFacts:1})||!review.notAFullSiteReReview)throw new Error('Narrow native review meaning changed');
++ for(const k of ['publicationApprovedByThisReview','actualSuccessorBuildVerified','actualSuccessorHTMLVerified','actualSuccessorBrowserVerified','actualSuccessorPublicHTTPVerified','actualSuccessorRedeploymentVerified','pendingFindingResolved'])if(review[k]!==false)throw new Error('Narrow review falsely promoted');
++ const visible=JSON.parse(regular(root,'inputs/policy-amendment/visible-strings.json')),contexts=JSON.parse(regular(root,'inputs/policy-amendment/output-context-map.json'));
++ const resolve=(obj,p)=>p.split('/').slice(1).reduce((v,k)=>v[k],obj),resolved=JSON.parse(regular(root,'inputs/policy-amendment/customer-copy.json'));
++ if(visible.length!==117||contexts.rows.length!==117||contexts.copySHA256!==EXPECTED_COPY_SHA||[...visible,...contexts.rows].some(r=>resolve(resolved,r.pointer)!==r.text))throw new Error('Amended117 context strings changed');
++ return amendment;
++}
+ export function verifyInputs(root=BUNDLE){
+  const raw=regular(root,'inputs/required-originals.json');if(sha256(raw)!==EXPECTED_REQUIRED_SHA)throw new Error('Required originals manifest changed');
+  const rows=JSON.parse(raw);if(rows.length!==25||new Set(rows.map(r=>r.path)).size!==25)throw new Error('Required originals denominator changed');
+  for(const r of rows){const b=regular(root,r.path);if(b.length!==r.bytes||sha256(b)!==r.sha256)throw new Error('Required original changed: '+r.path);}
+  const inventory=[];function scan(dir){for(const d of fs.readdirSync(dir,{withFileTypes:true})){if(d.name.startsWith('.')||d.isSymbolicLink())throw new Error('Unexpected hidden or symlink input');const f=path.join(dir,d.name);if(d.isDirectory())scan(f);else inventory.push(path.relative(root,f).split(path.sep).join('/'));}}
+- scan(path.join(root,'inputs'));const want=['inputs/required-originals.json',...rows.filter(r=>r.path.startsWith('inputs/')).map(r=>r.path)].sort();if(!isDeepStrictEqual(inventory.sort(),want))throw new Error('Unexpected input file');
++ const amendment=verifyAmendment(root);
++ scan(path.join(root,'inputs'));const want=['inputs/required-originals.json','inputs/policy-amendment/MANIFEST.json',...amendment.files.map(r=>r.path),...rows.filter(r=>r.path.startsWith('inputs/')).map(r=>r.path)].sort();if(!isDeepStrictEqual(inventory.sort(),want))throw new Error('Unexpected input file');
+  const bindingRaw=regular(root,'inputs/reviewed-copy/independent-review/review-bindings.json'),reviewRaw=regular(root,'inputs/reviewed-copy/independent-review/review-result.json');
+  if(sha256(bindingRaw)!=='424a2790d568089627829b38bc5b1770fbb9d8651ca8b74f332adeba6d49a824'||sha256(reviewRaw)!=='e2d82c37a84021c281603d415fe7b4d67d98729fe09fea349906098ec8d338d6')throw new Error('Independent review original changed');
+  const binding=JSON.parse(bindingRaw),review=JSON.parse(reviewRaw);
+- if(binding.copySHA256!==EXPECTED_COPY_SHA||binding.renderPlanSHA256!=='eb39fac5d44663e89fe14003f26984b2cafc088e70e97e65a09e7ac85dbe294c'||binding.sourceCommitSHA!==null||binding.authorInputManifestSHA256!=='8f93bca65e13286c2c76a29379ede8cfb827b49a4a39efc155b8d89aeb9ee18b')throw new Error('Final review binding scope changed');
+- if(review.status!=='MANUSCRIPT_REVIEW_ACCEPTED_WITH_RENDER_PENDING'||review.copySHA256!==EXPECTED_COPY_SHA||review.renderPlanSHA256!==binding.renderPlanSHA256||review.blockingManuscriptIssues.length!==0||review.copyChangesRequested.length!==0||review.historicalScores!==null||review.authorScores!==null||review.numericReviewScore!==null)throw new Error('Independent manuscript verdict or original null score changed');
++ if(binding.copySHA256!==ORIGINAL_COPY_SHA||binding.renderPlanSHA256!=='eb39fac5d44663e89fe14003f26984b2cafc088e70e97e65a09e7ac85dbe294c'||binding.sourceCommitSHA!==null||binding.authorInputManifestSHA256!=='8f93bca65e13286c2c76a29379ede8cfb827b49a4a39efc155b8d89aeb9ee18b')throw new Error('Final review binding scope changed');
++ if(review.status!=='MANUSCRIPT_REVIEW_ACCEPTED_WITH_RENDER_PENDING'||review.copySHA256!==ORIGINAL_COPY_SHA||review.renderPlanSHA256!==binding.renderPlanSHA256||review.blockingManuscriptIssues.length!==0||review.copyChangesRequested.length!==0||review.historicalScores!==null||review.authorScores!==null||review.numericReviewScore!==null)throw new Error('Independent manuscript verdict or original null score changed');
+  if(review.actualBuildVerified!==false||review.actualHTMLVerified!==false||review.actualBrowserVerified!==false||review.publicHTTPVerified!==false||review.publicationApprovedByThisReview!==false||review.coreHubLaunch!=='NOT_ASSESSED'||review.fullLaunch!=='NOT_ASSESSED')throw new Error('Original manuscript review scope changed');
+  if(!isDeepStrictEqual(review.denominators,{guidance:159,policy:24,facility:2,customerStrings:117,customerQuestions:13,faq:4,customerAssets:7,customerRoutes:4,plannedIndexableRoutes:2,detailCandidates:1,heldFacilities:9}))throw new Error('Independent review denominators changed');
+  const projection=JSON.parse(regular(root,'inputs/reviewed-input-projection.json'));
+@@ -72,6 +91,7 @@
+  if(p.commonBanners.map(b=>b.variant).join(',')!=='message,budget,consultation'||p.commonBanners.some(b=>b.width!==1774||b.height!==887||b.caption!==null)||Object.values(c.sharedBannerAlt).some(s=>s.split('1844-0644').length!==2))throw new Error('Banner contract changed');
+  if(p.pages.some(x=>x.previewRobots!=='noindex,nofollow,noarchive'||x.previewSitemapIncluded!==false||x.canonical!==null))throw new Error('Private robots contract changed');
+  if(p.socialMetadata['og:image']!=='Verified origin + /images/products/B201.jpg'||p.socialMetadata['twitter:card']!=='summary'||p.pages[3].socialMetadataIncluded!==false||p.pages[3].canonicalAtProduction!==null)throw new Error('Social/404 contract changed');
++ if(c.detail.sections[4].afterList[0]!==JSON.parse(fs.readFileSync(path.join(BUNDLE,'inputs/policy-amendment/version-diff.json'))).changes[0].after)throw new Error('Complete approved timing amendment required');
+  if(c.home.cta.href!=='tel:18440644'||c.detail.cta.href!=='tel:18440644')throw new Error('Sales phone changed');return true;
+ }
+ export function validateRuntime(){assertBoundary();verifyInputs();validateContract();return true;}
+--- base654dafd7/candidate/tests/donggu-runtime.test.mjs
++++ amendment/candidate/tests/donggu-runtime.test.mjs
+@@ -28,3 +28,15 @@
+ 
+ test('all four FAQ pairs are mandatory',()=>{assert.equal(copy.detail.faq.length,4);const c=clone(copy);c.detail.faq.splice(3,1);assert.throws(()=>validateContract(c,plan));});
+ test('rejects predecessor Bukgu section order',()=>{const c=clone(copy);c.detail.sections=['products','ribbon','budget','facility','order'].map(id=>c.detail.sections.find(s=>s.id===id));assert.throws(()=>validateContract(c,plan));});
++
++test('amendment rejects missing upper-weekday',()=>{const c=structuredClone(copy);c.detail.sections[4].afterList[0]=c.detail.sections[4].afterList[0].replace("평일 기준 익일 오전","익일 오전");assert.throws(()=>validateContract(c,plan));});
++
++test('amendment rejects missing upper-weekend',()=>{const c=structuredClone(copy);c.detail.sections[4].afterList[0]=c.detail.sections[4].afterList[0].replace("익일 오후 1시 전후","익일 오전");assert.throws(()=>validateContract(c,plan));});
++
++test('amendment rejects missing lower-position',()=>{const c=structuredClone(copy);c.detail.sections[4].afterList[0]=c.detail.sections[4].afterList[0].replace("같은 이미지 하단","일반 안내");assert.throws(()=>validateContract(c,plan));});
++
++test('amendment rejects missing unresolved-scope',()=>{const c=structuredClone(copy);c.detail.sections[4].afterList[0]=c.detail.sections[4].afterList[0].replace("적용범위나 예외 관계","확정 일정");assert.throws(()=>validateContract(c,plan));});
++
++test('amendment rejects missing B060-distinction',()=>{const c=structuredClone(copy);c.detail.sections[4].afterList[0]=c.detail.sections[4].afterList[0].replace("B060은 별도로 21시 이후","B060은 별도로 19시 이후");assert.throws(()=>validateContract(c,plan));});
++
++test('amendment rejects missing provider-assistance',()=>{const c=structuredClone(copy);c.detail.sections[4].afterList[0]=c.detail.sections[4].afterList[0].replace("해당 주문으로 상담해 드립니다","직접 확인하세요");assert.throws(()=>validateContract(c,plan));});
+--- base654dafd7/inputs/policy-amendment/MANIFEST.json
++++ amendment/inputs/policy-amendment/MANIFEST.json
+@@ -0,0 +1,215 @@
++{
++  "schema": "gwangsan-one-leaf-policy-amendment/v1",
++  "baseSourceCommit": "654dafd7cafa4c6a158684ac4b304ceb7a5996b5",
++  "copyPointer": "/detail/sections/4/afterList/0",
++  "originalCopySHA256": "9a0044feabf70a7a5ae6994d2523169a48d374ae4697aeeda3ccff4f6aec0493",
++  "resolvedCopySHA256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72",
++  "priorRequiredOriginalsSHA256": "af97369e9140157e118e52d46e7e94b8612e4cc4a83fb7808572e2a33c7d4336",
++  "priorInputBindingSHA256": "794d87f795e76c7b1adbbfb4cc9bba023d89882fed838c7ea567e245e27163f3",
++  "reviewSHA256": "4dce819ef5e1c9ac48b215c911a796dd102b3526b1492685f063299371c8c7b4",
++  "reviewBindingSHA256": "86ced576296d166a47edf75a187ab932828c0eaa4dded52ef98e262eb06898c8",
++  "nativeReviewManifestSHA256": "4fd0b57835b554796a03668f50587c4952e53a0d432b05657aaa5fd0f3ced261",
++  "files": [
++    {
++      "path": "inputs/policy-amendment/README.ko.md",
++      "bytes": 671,
++      "sha256": "ee14f9b919147af08defb85db7a0e7c4fe40f7796508315ed3a5084032ec4e39"
++    },
++    {
++      "path": "inputs/policy-amendment/SOURCE-MAP.json",
++      "bytes": 8856,
++      "sha256": "cca3c513477a48a96a60ceb26b99101a3ce4265acaf8e14a056611780b2f4ad1"
++    },
++    {
++      "path": "inputs/policy-amendment/customer-copy.json",
++      "bytes": 19639,
++      "sha256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72"
++    },
++    {
++      "path": "inputs/policy-amendment/customer-question-completeness.json",
++      "bytes": 9329,
++      "sha256": "b9ac8455261759fe9a7f1604f0d4f241c00fd93c4e19587ea67aee2c55f0b913"
++    },
++    {
++      "path": "inputs/policy-amendment/output-context-map.json",
++      "bytes": 46646,
++      "sha256": "012cb6340e7e382296bbb41fa2e93ce2e791c05b93e3ea5b45000aa83635133d"
++    },
++    {
++      "path": "inputs/policy-amendment/purchase-intent-metadata.json",
++      "bytes": 8357,
++      "sha256": "de54a84410188f3ccc081ba39a979717d18c885208caa07c4b87638cbea8ef9d"
++    },
++    {
++      "path": "inputs/policy-amendment/review/REVIEW-MANIFEST.json",
++      "bytes": 2761,
++      "sha256": "4fd0b57835b554796a03668f50587c4952e53a0d432b05657aaa5fd0f3ced261"
++    },
++    {
++      "path": "inputs/policy-amendment/review/REVIEW.ko.md",
++      "bytes": 2465,
++      "sha256": "e2a2192f3d10026b6b25adbe25e92cb201a6a923f305934a565d325b824ccd4a"
++    },
++    {
++      "path": "inputs/policy-amendment/review/independent-review-r2.json",
++      "bytes": 3811,
++      "sha256": "4dce819ef5e1c9ac48b215c911a796dd102b3526b1492685f063299371c8c7b4"
++    },
++    {
++      "path": "inputs/policy-amendment/review/prior/policy-summary-correction-pending.json",
++      "bytes": 11727,
++      "sha256": "ea85812811e25337f7c665b41a6fb2c79d9113f645ada0cc09a5a86dde72a76f"
++    },
++    {
++      "path": "inputs/policy-amendment/review/projection-mapping.json",
++      "bytes": 998,
++      "sha256": "cff36cdca78a0e5b36484cf1025f7b6aac21d3ffd0a82ae883a54c3cc800d797"
++    },
++    {
++      "path": "inputs/policy-amendment/review/review-binding.json",
++      "bytes": 1818,
++      "sha256": "86ced576296d166a47edf75a187ab932828c0eaa4dded52ef98e262eb06898c8"
++    },
++    {
++      "path": "inputs/policy-amendment/review/reviewed-diff.json",
++      "bytes": 2600,
++      "sha256": "7b337a00331e28e74c27fbc0fbdd3d1af1daa9f2a55df36af849f9c360df4dda"
++    },
++    {
++      "path": "inputs/policy-amendment/review/source-original-identity.json",
++      "bytes": 2977,
++      "sha256": "9921f597e03f420d2eb257932259f91ad4171dcc436b6bb23360d356639edde6"
++    },
++    {
++      "path": "inputs/policy-amendment/source-evidence-binding.json",
++      "bytes": 1864,
++      "sha256": "57dfb73278dce2f2a4b1daabaa6ac474dc02b718104df685060867680f5e15ff"
++    },
++    {
++      "path": "inputs/policy-amendment/version-diff.json",
++      "bytes": 2001,
++      "sha256": "5789fff906efc06fa902685ea968f3dd38fa6b41188ab10240904fcc1795b7a3"
++    },
++    {
++      "path": "inputs/policy-amendment/visible-strings.json",
++      "bytes": 22105,
++      "sha256": "48588fee9795d132683846a4bd27fc97fed1e461ab3c37cc78faa71d1525ac66"
++    }
++  ],
++  "exactNativeProjection": [
++    {
++      "originalPath": "inputs/customer-copy.json",
++      "packagedPath": "inputs/policy-amendment/customer-copy.json",
++      "bytes": 19639,
++      "sha256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72",
++      "transformation": "EXACT_BYTES"
++    },
++    {
++      "originalPath": "inputs/version-diff.json",
++      "packagedPath": "inputs/policy-amendment/version-diff.json",
++      "bytes": 2001,
++      "sha256": "5789fff906efc06fa902685ea968f3dd38fa6b41188ab10240904fcc1795b7a3",
++      "transformation": "EXACT_BYTES"
++    },
++    {
++      "originalPath": "inputs/source-evidence-binding.json",
++      "packagedPath": "inputs/policy-amendment/source-evidence-binding.json",
++      "bytes": 1864,
++      "sha256": "57dfb73278dce2f2a4b1daabaa6ac474dc02b718104df685060867680f5e15ff",
++      "transformation": "EXACT_BYTES"
++    },
++    {
++      "originalPath": "independent-review-r2.json",
++      "packagedPath": "inputs/policy-amendment/review/independent-review-r2.json",
++      "bytes": 3811,
++      "sha256": "4dce819ef5e1c9ac48b215c911a796dd102b3526b1492685f063299371c8c7b4",
++      "transformation": "EXACT_BYTES"
++    },
++    {
++      "originalPath": "review-binding.json",
++      "packagedPath": "inputs/policy-amendment/review/review-binding.json",
++      "bytes": 1818,
++      "sha256": "86ced576296d166a47edf75a187ab932828c0eaa4dded52ef98e262eb06898c8",
++      "transformation": "EXACT_BYTES"
++    },
++    {
++      "originalPath": "REVIEW-MANIFEST.json",
++      "packagedPath": "inputs/policy-amendment/review/REVIEW-MANIFEST.json",
++      "bytes": 2761,
++      "sha256": "4fd0b57835b554796a03668f50587c4952e53a0d432b05657aaa5fd0f3ced261",
++      "transformation": "EXACT_BYTES"
++    },
++    {
++      "originalPath": "reviewed-diff.json",
++      "packagedPath": "inputs/policy-amendment/review/reviewed-diff.json",
++      "bytes": 2600,
++      "sha256": "7b337a00331e28e74c27fbc0fbdd3d1af1daa9f2a55df36af849f9c360df4dda",
++      "transformation": "EXACT_BYTES"
++    },
++    {
++      "originalPath": "source-original-identity.json",
++      "packagedPath": "inputs/policy-amendment/review/source-original-identity.json",
++      "bytes": 2977,
++      "sha256": "9921f597e03f420d2eb257932259f91ad4171dcc436b6bb23360d356639edde6",
++      "transformation": "EXACT_BYTES"
++    },
++    {
++      "originalPath": "prior/policy-summary-correction-pending.json",
++      "packagedPath": "inputs/policy-amendment/review/prior/policy-summary-correction-pending.json",
++      "bytes": 11727,
++      "sha256": "ea85812811e25337f7c665b41a6fb2c79d9113f645ada0cc09a5a86dde72a76f",
++      "transformation": "EXACT_BYTES"
++    },
++    {
++      "originalPath": "projection-mapping.json",
++      "packagedPath": "inputs/policy-amendment/review/projection-mapping.json",
++      "bytes": 998,
++      "sha256": "cff36cdca78a0e5b36484cf1025f7b6aac21d3ffd0a82ae883a54c3cc800d797",
++      "transformation": "EXACT_BYTES"
++    },
++    {
++      "originalPath": "REVIEW.ko.md",
++      "packagedPath": "inputs/policy-amendment/review/REVIEW.ko.md",
++      "bytes": 2465,
++      "sha256": "e2a2192f3d10026b6b25adbe25e92cb201a6a923f305934a565d325b824ccd4a",
++      "transformation": "EXACT_BYTES"
++    }
++  ],
++  "derivedFiles": [
++    {
++      "path": "visible-strings.json",
++      "baseOriginalSHA256": "d2dd6a8926876c84872bafd60fa1f0038c2fd49b9fb8f33e947d8f8292510830",
++      "handling": "Exact derivative with only copy binding, timing row and explicit narrow amendment metadata updated; no prior verdict promoted."
++    },
++    {
++      "path": "output-context-map.json",
++      "baseOriginalSHA256": "94b76e176b696c30c14097019744e14dde6af27f306e49d8accd36dd694df5d4",
++      "handling": "Exact derivative with only copy binding, timing row and explicit narrow amendment metadata updated; no prior verdict promoted."
++    },
++    {
++      "path": "customer-question-completeness.json",
++      "baseOriginalSHA256": "7ddb2692873f027e68fb0f756a961213e2947a3e188806d82998f789d3dcb75c",
++      "handling": "Exact derivative with only copy binding, timing row and explicit narrow amendment metadata updated; no prior verdict promoted."
++    },
++    {
++      "path": "purchase-intent-metadata.json",
++      "baseOriginalSHA256": "81d363a72efb9ba216b3e7ea3fbc5bc57ae8e27a972f45030e59e5c9a9c45aea",
++      "handling": "Exact derivative with only copy binding, timing row and explicit narrow amendment metadata updated; no prior verdict promoted."
++    },
++    {
++      "path": "SOURCE-MAP.json",
++      "baseOriginalSHA256": "6d93779b287f658ee4fd4864f4b61b65d22e0204e540b17cbab5b5fdb7df63a5",
++      "handling": "Exact derivative with only copy binding, timing row and explicit narrow amendment metadata updated; no prior verdict promoted."
++    }
++  ],
++  "allOriginalInputFilesUnchanged": true,
++  "originalVerdictReplaced": false,
++  "supplementalDenominators": {
++    "upperImagePolicyClauses": 6,
++    "applicationScopeFollowupFacts": 1
++  },
++  "sourceCommit": null,
++  "actualBrowserVerified": false,
++  "actualPublicHTTPVerified": false,
++  "pendingFindingResolved": false
++}
+--- base654dafd7/inputs/policy-amendment/README.ko.md
++++ amendment/inputs/policy-amendment/README.ko.md
+@@ -0,0 +1,3 @@
++# 광산 정책 한 문단 amendment
++
++기존 source654dafd7의 원고·원문검수·분모159/24/2/117 및 null 판정을 그대로 보존한다. 이 별도 amendment는 승인된 detail 한 문단과 관련117문구/문맥지도·timing 질문·정책요약만 정정한다. 상단6조항과 미확정 관계1을 보존하고 기존 완료기록 또는 pending finding을 완료로 바꾸지 않는다. 전체 현재 resolved-copy SHA는 모든 HTML에 동일하게 표시한다. 다른3페이지는 그 SHA 메타데이터만 바뀌며 화면/정책/레이아웃/자산은 동일해야 한다. 이 후보는 원격 저장·실제 화면·재배포가 미검증이다.
+--- base654dafd7/inputs/policy-amendment/SOURCE-MAP.json
++++ amendment/inputs/policy-amendment/SOURCE-MAP.json
+@@ -0,0 +1,232 @@
++{
++  "schema": "gwangsan-copy-source-map/v1",
++  "copySHA256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72",
++  "renderPlanSHA256": "eb39fac5d44663e89fe14003f26984b2cafc088e70e97e65a09e7ac85dbe294c",
++  "guidanceBindings": "evidence/main-guidance/byte-verification.json",
++  "researchBindings": [
++    {
++      "path": "evidence/research-input-bindings.json",
++      "sha256": "f27c2ed67202c8013918629b563089d12355a359eddd24cceea786a16f39a4ac"
++    }
++  ],
++  "originalBindings": [
++    {
++      "path": "evidence/originals/B201-selected.html",
++      "bytes": 10215,
++      "sha256": "df3864529fbeb060b0506986167d84d21d7274cce1810f6db640476a59028fb9"
++    },
++    {
++      "path": "evidence/originals/B201-order.png",
++      "bytes": 367504,
++      "sha256": "a01508b818b490e4ca377d6d5bb854b39a99536dc963dfe3560372d85d158b01"
++    },
++    {
++      "path": "evidence/originals/B203-selected.html",
++      "bytes": 10243,
++      "sha256": "f914a66c886d4d30fef906db844892c88ef9c956030759eb55bb82df14cb5f61"
++    },
++    {
++      "path": "evidence/originals/B203-order.png",
++      "bytes": 370729,
++      "sha256": "6f70a22f383fc76e4003373697df9afa80625db055737d2de878a28ea30c4fea"
++    },
++    {
++      "path": "evidence/originals/B205-selected.html",
++      "bytes": 10244,
++      "sha256": "638e4e3f8c02412872bee10de9a50ead4ff7a3a80fc18ad333c9ca7fda7029b6"
++    },
++    {
++      "path": "evidence/originals/B205-order.png",
++      "bytes": 370729,
++      "sha256": "6f70a22f383fc76e4003373697df9afa80625db055737d2de878a28ea30c4fea"
++    },
++    {
++      "path": "evidence/originals/B060-selected.html",
++      "bytes": 10256,
++      "sha256": "bf2a8f83d520b6c4b810d738f074edfc2a69d4339f5127135782cdd42f493344"
++    },
++    {
++      "path": "evidence/originals/B060-order.png",
++      "bytes": 320410,
++      "sha256": "c440f987e618f4deec665fd9782cc99144bc119a4c2a0336bfc4cbdff3601094"
++    },
++    {
++      "path": "evidence/originals/order-top2.jpg",
++      "bytes": 122654,
++      "sha256": "24c11e1cc413d3f64ad05145fdc0fb4171c8f3e618d4351609777f8e2ff43bc3"
++    },
++    {
++      "path": "evidence/originals/de-change.jpg",
++      "bytes": 146560,
++      "sha256": "02701dd33c2a09258a882873df005dbe616842c2add159a08d618b68a934944c"
++    },
++    {
++      "path": "evidence/originals/suwan_map.facility-excerpt.html",
++      "bytes": 230,
++      "sha256": "eaabd1eb50ff0efda9e04ed325d2bc8388743fa528b7d50428be265612ccf4f0"
++    },
++    {
++      "path": "evidence/originals/suwan_rooms.facility-excerpt.html",
++      "bytes": 571,
++      "sha256": "cdecbe5bec1c5e3671a8a0615343c8c27b7be89e9c31aa9f29ab24e06d6c1442"
++    },
++    {
++      "path": "evidence/originals/suwan_flower.facility-excerpt.html",
++      "bytes": 387,
++      "sha256": "c4c969df213ff67dfd00ff139f5d75fee7cb519de7d0ac0fb01ed2e329a8fb3b"
++    },
++    {
++      "path": "evidence/originals/suwan-government-row.json",
++      "bytes": 863,
++      "sha256": "61acbd08cf8713537812f38a50d6263bb113a37969b4300ae3caaab7442ea73a"
++    }
++  ],
++  "fieldBindings": [
++    {
++      "fields": [
++        "home.sections[selection]",
++        "detail.lead",
++        "detail.sections[products]",
++        "productCards"
++      ],
++      "classification": "직접 확인",
++      "sourcePaths": [
++        "evidence/originals/B201-selected.html",
++        "evidence/originals/B203-selected.html",
++        "evidence/originals/B205-selected.html",
++        "evidence/originals/B060-selected.html",
++        "asset-manifest.json"
++      ],
++      "use": "Four officialnames/base prices and visible colors/layout only. Home describes linked detailphotos, not nonexistent homephotos."
++    },
++    {
++      "fields": [
++        "detail.sections[budget]",
++        "productCards.shippingLabel"
++      ],
++      "classification": "미확인 경계",
++      "sourcePaths": [
++        "evidence/originals/B201-selected.html",
++        "evidence/originals/B203-selected.html",
++        "evidence/originals/B205-selected.html",
++        "evidence/originals/B060-selected.html"
++      ],
++      "use": "All four say shipping paid at order. No Gwangsan row; finalfee and total remain unknown."
++    },
++    {
++      "fields": [
++        "detail.sections[facility]"
++      ],
++      "classification": "직접 확인 + 편집 판단",
++      "sourcePaths": [
++        "evidence/originals/suwan-government-row.json",
++        "evidence/originals/suwan_map.facility-excerpt.html",
++        "evidence/originals/suwan_rooms.facility-excerpt.html"
++      ],
++      "use": "One address/phone, two separate special-room floors, one short receiving/schedule caveat. Facility phone distinct from merchant."
++    },
++    {
++      "fields": [
++        "detail.sections[order].afterList[0]"
++      ],
++      "classification": "직접 확인 + 개별 이행 미확인",
++      "sourcePaths": [
++        "inputs/policy-amendment/source-evidence-binding.json"
++      ],
++      "use": "Upper weekday and weekend/holiday19h clauses plus existing lower clauses preserved by image location; applicability/exception relationship unestablished. B06021 remains separate; no order arrival promise."
++    },
++    {
++      "fields": [
++        "detail.sections[order].afterList[1]"
++      ],
++      "classification": "직접 확인",
++      "sourcePaths": [
++        "evidence/originals/order-top2.jpg"
++      ],
++      "use": "Mixed fresh/artificial, rear paper regional variation, no collection. Posted merchant policy, not supply-chain inspection."
++    },
++    {
++      "fields": [
++        "detail.faq"
++      ],
++      "classification": "직접 확인 + 편집 판단 + 개별적용 미확인",
++      "sourcePaths": [
++        "evidence/originals/de-change.jpg",
++        "original-clause-review-input.json"
++      ],
++      "use": "Separate order modification advice from actual merchant cancellation/refund clauses; preserve material/defect/day/address/refusal and afterpayment unavailability."
++    },
++    {
++      "fields": [
++        "detail.sections[ribbon]",
++        "detail.sections[order].list",
++        "home.sections[consultation]"
++      ],
++      "classification": "추정·판단: 편집 제안",
++      "sourcePaths": [
++        "PURCHASE-PLAN.ko.md"
++      ],
++      "use": "Neutral phrases and placeholder names; one grouped order list. No actual deceased or family information retained."
++    },
++    {
++      "fields": [
++        "sharedBannerAlt",
++        "sharedUI",
++        "footer",
++        "title",
++        "description",
++        "buttons"
++      ],
++      "classification": "공통문구 재사용 + 신규 작성 + 기술 계획",
++      "sourcePaths": [
++        "customer-copy.json",
++        "render-plan.json",
++        "output-context-map.json"
++      ],
++      "use": "Generic approved banner alt kept. No copied regional emotional opening. All customer contexts require independent text and laterrender review."
++    }
++  ],
++  "directlyInspected": [
++    "Pinnedmain fourguidance exactGitblobs",
++    "Governmentrow213 and exactSuwan operator facility fragments",
++    "Fourmerchant selected productpages",
++    "Fouractual productphotos, two policyimages, fourorderimage crops, threeapproved banners",
++    "Three retainedcompetitor bodies",
++    "PinnedBukgu CopyPage source and prior sevenkeyJSON/schema"
++  ],
++  "toolReports": [
++    "Research HTTP200timing and originalserver responsehashes; no newmerchant GET by writer",
++    "Independentresearch handoffstatus applies only to research",
++    "Mainrecorded64/230 is not a new64site audit"
++  ],
++  "editorialJudgments": [
++    "OneSuwan cluster and one regionentry; no additionalfacility/aliasURL",
++    "Products→totalbudget→ribbon→floor/room/schedule→order→fourFAQ flow",
++    "Bounded afterhours wording with exactSKUdifferences and weekend exclusion"
++  ],
++  "unverified": [
++    "Order-specificdeliverycost, finaltotal, stock, actualreceiving conditions, roomassignment, arrival/install/photo",
++    "Currentoperation, phoneanswer or order/refund fulfillment",
++    "Independentfulltext/tone/searchreview",
++    "Actualapp/codebuild/HTML/screens/publicHTTP/IndexNow/index/rank"
++  ],
++  "sourceBoundary": "Onlyminimal publicbusiness/facility evidence and approvedassets. No whole researchfolder, competitorbody/images, privateobituary, personalcontacts or absolute filesystempaths. Review evidence must not render to customers.",
++  "notPerformed": [
++    "Remote repositorywrite/commit/push",
++    "Implementation/build/browser/deploy/indexing",
++    "PC/CodexWork/cloudtask/contentAPI",
++    "Order/call/payment/customerdata transmission"
++  ],
++  "customerSourceDisplayDate": {
++    "date": "2026-10-16",
++    "timezone": "Asia/Seoul",
++    "governmentDatasetAsOf": "2026-04-01"
++  },
++  "policyAmendment": {
++    "scope": "ONE_TIMING_PARAGRAPH_ONLY",
++    "source": "inputs/policy-amendment/review/independent-review-r2.json",
++    "priorArtifactSHA256": "6d93779b287f658ee4fd4864f4b61b65d22e0204e540b17cbab5b5fdb7df63a5",
++    "previousTimingSummarySuperseded": true,
++    "actualBuildOrPublicationApproval": false
++  }
++}
+--- base654dafd7/inputs/policy-amendment/customer-copy.json
++++ amendment/inputs/policy-amendment/customer-copy.json
+@@ -0,0 +1,270 @@
++{
++  "home": {
++    "title": "광주 광산구 근조화환 가격·주문 상담 | 꽃이랑",
++    "description": "광주 광산구 근조화환의 기본가와 리본 상담을 안내합니다. 광주수완장례식장 상세에서 네 상품사진, 배송비 포함 예산과 빈소·일정에 따른 주문 내용을 보실 수 있습니다.",
++    "h1": "광주 광산구로 보내는 근조화환",
++    "lead": "조문을 대신하거나 조의의 뜻을 더해 전하실 때, 꽃이랑에서 근조화환과 리본을 상담해 드립니다. 광주 광산구에 보내실 꽃을 준비하신다면 상품 가격대부터 말씀하셔도 좋습니다. 광주수완장례식장 주문에 필요한 내용은 아래 상세 안내에 담았습니다.",
++    "sections": [
++      {
++        "id": "selection",
++        "h2": "화환 가격과 전체 비용을 의논합니다",
++        "paragraphs": [
++          "근조화환의 상품 기본가는 59,000원, 79,000원, 109,000원, 149,000원입니다. 배송비는 주문 시 결제하며, 광산구 배송지의 추가 배송비와 최종금액은 상담으로 안내해 드립니다. 회사나 모임의 예산이 정해져 있다면 배송비를 포함한 금액으로 이야기하겠습니다.",
++          "사진을 보면서 선택하고 싶으신 분께는 광주수완장례식장 상세의 네 상품사진을 안내합니다. 각 상품의 사진과 함께 번호와 기본가를 보실 수 있고, 해당 상품의 공식 상세로 바로 연결됩니다."
++        ]
++      },
++      {
++        "id": "facility-guide",
++        "h2": "광주수완장례식장에 전할 꽃",
++        "paragraphs": [
++          "수완장례식장 안내에는 네 가지 화환과 리본 표현을 비롯해, 층·호실을 포함한 주문정보와 늦은 시간의 주문 상담을 정리했습니다. 준비하신 예산과 전달 희망일정을 함께 의논하실 수 있습니다."
++        ],
++        "card": {
++          "title": "광주수완장례식장 근조화환",
++          "summary": "사진 속 꽃의 배치와 기본가를 비교하고, 총예산·리본·주문 변경까지 이어서 살펴보실 수 있습니다.",
++          "ctaLabel": "수완장례식장 상품사진·가격 보기",
++          "href": "/regions/suwan-funeral-wreath/"
++        }
++      },
++      {
++        "id": "consultation",
++        "h2": "전하고 싶은 인사부터 시작하셔도 좋습니다",
++        "paragraphs": [
++          "‘어떤 말을 적으면 좋을까요?’라는 질문으로 상담을 시작하셔도 됩니다. 꽃이랑은 고인을 기리는 인사와 보내는 분의 이름을 리본에 어떻게 담을지 함께 의논합니다. 개인, 회사, 모임에서 정해 두신 표현이 있으면 그 문구를 바탕으로 상담해 드립니다."
++        ]
++      }
++    ],
++    "cta": {
++      "label": "광산구 화환 주문 상담 · 1844-0644",
++      "href": "tel:18440644"
++    },
++    "sourceHeading": "출처 및 확인 정보",
++    "sourceIntro": "상품 기본가와 정책은 2026년 10월 16일(한국시간)에 확인한 꽃이랑 게시자료를 기준으로 합니다. 시설 자료와 상품별 출처는 광주수완장례식장 상세에 연결했습니다.",
++    "sourceLink": {
++      "label": "수완장례식장 안내의 상품·시설 출처",
++      "href": "/regions/suwan-funeral-wreath/#sources"
++    }
++  },
++  "detail": {
++    "title": "광주수완장례식장 근조화환 가격·사진·리본 | 꽃이랑",
++    "description": "광주수완장례식장에 전할 근조화환 네 종류를 상품사진과 기본가 59,000~149,000원으로 안내합니다. 배송비 포함 예산, 조의 리본, 층·호실과 희망일정에 따른 주문을 상담합니다.",
++    "h1": "광주수완장례식장에 전하는 근조화환",
++    "lead": [
++      "광주수완장례식장에 조의를 전하실 근조화환을 꽃이랑에서 안내합니다. 상품 기본가는 59,000원부터 149,000원까지이며, 네 상품의 사진과 리본 문구를 함께 상담해 드립니다. 길게 표현하기 어려운 인사도 간결한 말로 담으실 수 있습니다.",
++      "직접 찾아뵙는 일정과 별도로 꽃을 준비하시거나 여러 분의 이름을 모아 보내실 때, 정해 놓으신 예산을 바탕으로 이야기하겠습니다. 꽃의 모습이 먼저 마음에 드셨다면 그 상품번호로 문의하셔도 좋습니다. 받는 빈소와 전달을 원하시는 일정은 주문 상담에서 함께 다룹니다."
++    ],
++    "sections": [
++      {
++        "id": "products",
++        "h2": "네 상품사진으로 보는 색과 배치",
++        "paragraphs": [
++          "59,000원의 근조 3단 화환 B201은 흰색·노란색 중심의 꽃과 위쪽 노란 장식이 보입니다. 79,000원의 근조 고급 3단 화환 B203에는 상단에 분홍빛 꽃이 더해져 있습니다. 두 상품의 꽃 배치와 리본이 놓인 모습을 사진으로 비교하실 수 있습니다.",
++          "근조 특대 3단 화환 B205는 109,000원이며, 윗부분의 노란 원형 장식과 옆쪽 노란 꽃이 눈에 띕니다. 149,000원의 근조 특특대 3단 화환 B060은 가운데와 양옆의 분홍빛 꽃이 보이는 구성입니다.",
++          "각 카드의 버튼은 해당 상품의 공식 상세로 연결됩니다. 사진 속 색이나 배치가 궁금하실 때에는 상품번호로 문의하시면 됩니다. 실제 주문에 쓰이는 소재와 구성은 계절·지역의 수급에 따라 달라질 수 있습니다."
++        ],
++        "productCardIds": [
++          "B201",
++          "B203",
++          "B205",
++          "B060"
++        ]
++      },
++      {
++        "id": "budget",
++        "h2": "배송비를 포함해 준비하실 금액",
++        "paragraphs": [
++          "표시된 가격은 상품 기본가입니다. 배송비는 주문 시 결제하며, 광산구의 추가 배송비와 주문 전체 금액은 상담에서 안내합니다. 배송비를 포함한 총예산을 기준으로 선택 가능한 상품을 의논하겠습니다.",
++          "회사에서 정한 한도나 함께 모은 예산이 있을 때는 ‘배송까지 포함해 ○만 원 정도로 준비하려 합니다’라고 문의하셔도 됩니다. 선택하신 상품이 있다면 그 상품의 기본가에 어떤 비용이 더해지는지, 최종금액이 얼마인지 주문을 정하기 전에 상담해 드립니다."
++        ]
++      },
++      {
++        "id": "ribbon",
++        "h2": "짧은 조의의 말과 함께 보내는 이름",
++        "paragraphs": [
++          "리본 문구로는 ‘삼가 조의를 표합니다’, ‘깊은 애도를 표합니다’, ‘삼가 고인의 명복을 빕니다’ 등을 쓰실 수 있습니다. 종교나 관계에 맞춰 평소 사용하시는 표현이 있다면 그 뜻을 담아 상담합니다. 정해진 문장을 그대로 쓰셔도 되고, 한글 인사와 ‘謹弔’ 같은 한자 표현을 두고 의논하셔도 됩니다.",
++          "보내는 이름은 개인 성함이나 회사·단체명으로 적습니다. 여러 분이 함께 준비하실 때의 예시는 ‘○○모임 일동’, 회사에서 전하실 때는 ‘주식회사 ○○ 임직원 일동’입니다. 실명과 단체명은 보내시는 분들이 정하신 표기를 바탕으로 주문합니다.",
++          "인사말을 아직 정하지 못하셨다고 상품 상담을 미루실 필요는 없습니다. 전하고 싶은 표현이 있으면 그 부분부터 들려주세요. 꽃이랑에서 상품 선택과 리본 문구를 함께 상담해 드리겠습니다."
++        ]
++      },
++      {
++        "id": "facility",
++        "h2": "수완장례식장의 층·호실과 전달 일정",
++        "paragraphs": [
++          "광주수완장례식장은 광산구 수완로 6(신가동)에 있으며, 시설 대표전화는 062-959-4444입니다. 장례식장 위치·시설 문의를 위한 번호이고, 이 안내의 꽃 상품과 리본 주문은 꽃이랑에서 상담합니다.",
++          "공식 빈소 안내에는 1층 특실과 3층 특실이 따로 표시되어 있습니다. 특실로 보내는 주문도 현재 안내받으신 층과 호실을 함께 기준으로 삼습니다.",
++          "전달 희망일정은 장례식장의 화환 반입·수령 조건과 함께 상담합니다. 발인 전에 전하고 싶으신 경우에도 실제 배송 가능 여부를 의논한 뒤 주문을 정합니다. 시설의 수령 조건이나 도착시각이 희망시간만으로 확정되지는 않습니다."
++        ]
++      },
++      {
++        "id": "order",
++        "h2": "꽃이랑 주문 상담에 필요한 내용",
++        "paragraphs": [
++          "주문 상담은 1844-0644로 연결됩니다. 아래 네 가지를 함께 말씀하시면 상품과 리본, 배송 일정을 이어서 의논할 수 있습니다. 아직 정해지지 않은 항목이 있다면 알고 계신 내용으로 상품 상담부터 시작하셔도 됩니다."
++        ],
++        "list": [
++          "상품번호 또는 배송비를 포함한 총예산",
++          "광주수완장례식장 층·호실과 고인 또는 상주명",
++          "전달 희망 날짜·시각, 발인 전 전달을 원하시면 발인 일정",
++          "리본 인사말, 보내는 이름과 주문자 연락처"
++        ],
++        "afterList": [
++          "늦은 주문 안내는 상품과 게시 위치에 따라 구분됩니다. B201·B203·B205 상세 이미지 상단에는 평일 19시 이후 주문은 평일 기준 익일 오전, 주말·공휴일 19시 이후 주문은 익일 오후 1시 전후 배송으로 적혀 있습니다. 같은 이미지 하단에는 19시 이후 주문을 주말·공휴일을 제외한 익일 오전 중 배송으로 안내합니다. 두 안내의 적용범위나 예외 관계는 게시자료만으로 확정할 수 없어 어느 한쪽을 수완장례식장 주문의 확정 일정으로 안내하지 않습니다. B060은 별도로 21시 이후 주문을 주말·공휴일을 제외한 익일 오전 중 배송으로 게시하고 있으며, 이 안내만으로 주말·공휴일 도착일이나 실제 수완장례식장 주문의 가능일정을 보장하지는 않습니다. 수완장례식장에 전할 실제 날짜와 가능시간은 해당 주문으로 상담해 드립니다.",
++          "화환은 생화와 조화를 혼합해 사용합니다. 뒷면 종이인 후다지의 부착 유무는 지역에 따라 다르며, 별도 화환 수거는 하지 않습니다. 장례 후 처리는 장례식장의 안내에 따라 진행하실 수 있습니다."
++        ]
++      }
++    ],
++    "faqHeading": "주문 후 변경·취소와 상품에 관한 질문",
++    "faq": [
++      {
++        "question": "주문한 뒤 빈소나 리본 내용이 바뀌면 어떻게 하나요?",
++        "answer": "기존 주문을 찾을 수 있는 정보와 변경할 내용을 꽃이랑에 알려주시면 진행 상태를 바탕으로 상담합니다. 제작·출고가 어디까지 진행되었는지에 따라 바꿀 수 있는 내용이 달라질 수 있습니다. 빈소 변경과 함께 전달 희망일정도 달라졌다면 두 내용을 묶어 문의하시면 됩니다."
++      },
++      {
++        "question": "제작하거나 출고한 화환도 취소할 수 있나요?",
++        "answer": "꽃이랑 게시정책에는 제작 완료된 꽃 상품은 교환·환불 불가라는 항목과, 상품 출고 후 취소를 원할 때 배송비를 제외한 금액을 환불한다는 항목이 함께 있습니다. 일괄적으로 취소 가능 여부를 정하기보다 해당 주문의 진행 상태와 사유를 놓고 적용 조건을 상담합니다."
++      },
++      {
++        "question": "사진과 다른 꽃이나 손상된 상품을 받았을 때는요?",
++        "answer": "불량·파손 또는 주문한 것과 전혀 다른 상품이 배송되었을 때는 환불 가능한 조건이 있습니다. 계절·지역에 같은 소재가 없어 이미지와 달라진 경우에는 그 차이만으로 취소·환불이 불가하다는 안내입니다. 배송 완료 후 하루 이상 지난 경우와 주문자의 배송지 정보 오류·수취거부도 교환·환불 불가 항목에 포함됩니다. 해당 상황을 꽃이랑에 말씀해 주시면 주문별로 상담하겠습니다."
++      },
++      {
++        "question": "결제한 뒤 배송 불가나 품절 안내를 받으면요?",
++        "answer": "결제 완료 후 배송이 불가능하거나 재고가 없을 때는 전액 환불한다는 공식 규정이 있습니다. 고객 사정으로 취소하는 경우와는 구분되는 조건입니다. 환불에 관한 문의는 결제한 주문을 기준으로 이어갑니다."
++      }
++    ],
++    "closing": "수완장례식장에 전할 꽃을 준비하실 때, 예산과 인사말 중 먼저 정해진 내용부터 이야기해 주세요. 꽃이랑에서 그 내용을 바탕으로 상품과 리본 주문을 상담해 드리겠습니다.",
++    "cta": {
++      "label": "수완장례식장 화환 주문 상담 · 1844-0644",
++      "href": "tel:18440644"
++    },
++    "sourceHeading": "출처 및 확인 정보",
++    "sourceIntro": "2026년 10월 16일(한국시간)에 꽃이랑 상품사진·가격·정책과 시설 운영자 자료를 확인했습니다. 시설 주소와 대표전화는 보건복지부 2026년 4월 1일 기준 명부 및 광주수완장례식장 오시는길을 대조했으며, 층·호실은 공식 빈소 안내를 참고했습니다.",
++    "sources": [
++      {
++        "label": "보건복지부 장례식장 현황 · 2026년 4월 1일 기준",
++        "url": "https://www.data.go.kr/data/15143467/fileData.do"
++      },
++      {
++        "label": "광주수완장례식장 오시는길",
++        "url": "https://xn--9n2b13p6qa02ip2bca.com/intro/directions"
++      },
++      {
++        "label": "광주수완장례식장 빈소·접객실 안내",
++        "url": "https://xn--9n2b13p6qa02ip2bca.com/facility/room"
++      },
++      {
++        "label": "꽃이랑 근조 3단 화환 B201",
++        "url": "https://fwith.co.kr/shop/item.php?it_id=B201"
++      },
++      {
++        "label": "꽃이랑 근조 고급 3단 화환 B203",
++        "url": "https://fwith.co.kr/shop/item.php?it_id=B203"
++      },
++      {
++        "label": "꽃이랑 근조 특대 3단 화환 B205",
++        "url": "https://fwith.co.kr/shop/item.php?it_id=B205"
++      },
++      {
++        "label": "꽃이랑 근조 특특대 3단 화환 B060",
++        "url": "https://fwith.co.kr/shop/item.php?it_id=B060"
++      },
++      {
++        "label": "꽃이랑 화환 소재·수거 안내",
++        "url": "https://fwith.co.kr/shop/img/order-top2.jpg"
++      },
++      {
++        "label": "꽃이랑 교환·환불 안내",
++        "url": "https://fwith.co.kr/data/common/flower379/de_change_content.jpg"
++      }
++    ]
++  },
++  "productCards": [
++    {
++      "sku": "B201",
++      "name": "근조 3단 화환",
++      "basePriceKRW": 59000,
++      "priceLabel": "상품 기본가 59,000원",
++      "shippingLabel": "배송비·최종금액은 주문 상담",
++      "description": "흰색·노란색 꽃과 위쪽의 노란 장식이 보입니다.",
++      "localPhoto": "assets/B201-photo.jpg",
++      "photoAlt": "흰색과 노란색 꽃 위로 노란 장식이 놓인 B201 근조 3단 화환 상품사진",
++      "ctaLabel": "B201 공식 상품 상세",
++      "ctaHref": "https://fwith.co.kr/shop/item.php?it_id=B201"
++    },
++    {
++      "sku": "B203",
++      "name": "근조 고급 3단 화환",
++      "basePriceKRW": 79000,
++      "priceLabel": "상품 기본가 79,000원",
++      "shippingLabel": "배송비·최종금액은 주문 상담",
++      "description": "상단 분홍빛 꽃이 흰색·노란색 구성에 더해져 있습니다.",
++      "localPhoto": "assets/B203-photo.jpg",
++      "photoAlt": "상단 분홍빛 꽃과 흰색·노란색 배치의 B203 근조 고급 3단 화환 상품사진",
++      "ctaLabel": "B203 공식 상품 상세",
++      "ctaHref": "https://fwith.co.kr/shop/item.php?it_id=B203"
++    },
++    {
++      "sku": "B205",
++      "name": "근조 특대 3단 화환",
++      "basePriceKRW": 109000,
++      "priceLabel": "상품 기본가 109,000원",
++      "shippingLabel": "배송비·최종금액은 주문 상담",
++      "description": "노란 원형 윗장식과 옆쪽의 노란 꽃을 볼 수 있습니다.",
++      "localPhoto": "assets/B205-photo.jpg",
++      "photoAlt": "위쪽 노란 원형 장식과 측면 노란 꽃이 보이는 B205 근조 특대 3단 화환 상품사진",
++      "ctaLabel": "B205 공식 상품 상세",
++      "ctaHref": "https://fwith.co.kr/shop/item.php?it_id=B205"
++    },
++    {
++      "sku": "B060",
++      "name": "근조 특특대 3단 화환",
++      "basePriceKRW": 149000,
++      "priceLabel": "상품 기본가 149,000원",
++      "shippingLabel": "배송비·최종금액은 주문 상담",
++      "description": "중앙과 양옆에 놓인 분홍빛 꽃이 보이는 사진입니다.",
++      "localPhoto": "assets/B060-photo.jpg",
++      "photoAlt": "중앙과 양옆 분홍빛 꽃이 들어간 B060 근조 특특대 3단 화환 상품사진",
++      "ctaLabel": "B060 공식 상품 상세",
++      "ctaHref": "https://fwith.co.kr/shop/item.php?it_id=B060"
++    }
++  ],
++  "support": {
++    "title": "광산구 수완장례식장 근조화환 상세 찾기 | 꽃이랑",
++    "description": "광주수완장례식장 근조화환의 사진·가격 안내로 이어집니다. 리본과 전체 비용, 전달 일정 및 주문 변경에 관한 상세 내용을 제공합니다.",
++    "h1": "광산구 근조화환 상세 안내",
++    "body": "광주수완장례식장에 보내실 화환의 사진과 주문 상담 내용을 아래에서 보실 수 있습니다.",
++    "card": {
++      "title": "광주수완장례식장 상품·주문 안내",
++      "summary": "59,000~149,000원 기본가의 네 상품과 리본 표현, 층·호실을 포함한 주문정보를 담았습니다.",
++      "ctaLabel": "수완장례식장 상세 안내 열기",
++      "href": "/regions/suwan-funeral-wreath/"
++    }
++  },
++  "notFound": {
++    "title": "찾으시는 페이지가 없습니다 | 꽃이랑 광주 광산구",
++    "description": "요청하신 주소에는 안내가 없습니다. 꽃이랑 광주 광산구 홈에서 근조화환 상품과 주문 상담 안내로 이동하실 수 있습니다.",
++    "h1": "찾으시는 안내 페이지가 없습니다",
++    "body": "광산구 근조화환 홈으로 돌아가 상품과 주문 상담 내용을 이용하실 수 있습니다.",
++    "cta": {
++      "label": "광산구 근조화환 홈으로 돌아가기",
++      "href": "/"
++    }
++  },
++  "sharedUI": {
++    "brand": "꽃이랑",
++    "skipLink": "본문으로 바로 가기",
++    "menuLabel": "주요 메뉴",
++    "menuOpen": "메뉴 열기",
++    "menuClose": "메뉴 닫기",
++    "homeLink": "광주 광산구 근조화환 홈",
++    "detailLink": "수완장례식장 상품·리본",
++    "phoneLink": "꽃이랑 상담 1844-0644",
++    "breadcrumbLabel": "현재 위치",
++    "productSampleNotice": "게시된 상품사진은 예시입니다. 계절·지역별 소재 수급에 따라 실제 구성에 차이가 있을 수 있습니다."
++  },
++  "sharedBannerAlt": {
++    "message": "흰 장미와 잎을 배경으로 꽃으로 전하는 마음을 안내하는 꽃이랑 배너. 전화 1844-0644.",
++    "budget": "겹겹의 흰 꽃을 배경으로 상품 사진과 가격 비교를 안내하는 꽃이랑 배너. 전화 1844-0644.",
++    "consultation": "흰 꽃과 봉오리를 배경으로 상품 선택과 리본 문구 상담을 안내하는 꽃이랑 배너. 전화 1844-0644."
++  }
++}
+--- base654dafd7/inputs/policy-amendment/customer-question-completeness.json
++++ amendment/inputs/policy-amendment/customer-question-completeness.json
+@@ -0,0 +1,243 @@
++{
++  "schema": "gwangsan-customer-question-completeness/v1",
++  "copySHA256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72",
++  "questionCount": 13,
++  "rows": [
++    {
++      "id": "purpose",
++      "customerQuestion": "어디에 무엇을 전하고 어떤 상담을 받을 수 있는가?",
++      "answerPointers": [
++        "detail.lead",
++        "home.lead"
++      ],
++      "sourcePaths": [
++        "customer-copy.json"
++      ],
++      "answerSummary": "목적에 맞는 근조화환, 예산·리본 상담을 직접 제시",
++      "nextAction": "tel:18440644",
++      "classification": "편집 판단",
++      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
++      "independentVerdict": null,
++      "actualRenderedVisible": false
++    },
++    {
++      "id": "products",
++      "customerQuestion": "실제 상품과 가격·사진은 무엇인가?",
++      "answerPointers": [
++        "detail.sections[products]",
++        "productCards"
++      ],
++      "sourcePaths": [
++        "asset-manifest.json",
++        "evidence/originals/B201-selected.html",
++        "evidence/originals/B203-selected.html",
++        "evidence/originals/B205-selected.html",
++        "evidence/originals/B060-selected.html"
++      ],
++      "answerSummary": "네 상품과 기본가·실제 사진·SKU별 링크",
++      "nextAction": "해당 SKU 상세",
++      "classification": "직접 확인",
++      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
++      "independentVerdict": null,
++      "actualRenderedVisible": false
++    },
++    {
++      "id": "difference",
++      "customerQuestion": "사진에서 어떤 차이를 보고 고를 수 있는가?",
++      "answerPointers": [
++        "detail.sections[products]",
++        "productCards.description"
++      ],
++      "sourcePaths": [
++        "asset-manifest.json"
++      ],
++      "answerSummary": "색과 배치만 설명하며 크기·수량·품질을 추론하지 않음",
++      "nextAction": "상품번호로 상담",
++      "classification": "직접 확인 + 편집 판단",
++      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
++      "independentVerdict": null,
++      "actualRenderedVisible": false
++    },
++    {
++      "id": "total",
++      "customerQuestion": "표시가격에 배송비가 포함되는가?",
++      "answerPointers": [
++        "detail.sections[budget]",
++        "productCards.shippingLabel",
++        "home.sections[selection]"
++      ],
++      "sourcePaths": [
++        "evidence/originals/B201-selected.html"
++      ],
++      "answerSummary": "기본가와 추가 배송비·최종금액 상담을 분리; 광산 금액 미확정",
++      "nextAction": "총예산을 기준으로 상담",
++      "classification": "직접 확인 + 미확인 경계",
++      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
++      "independentVerdict": null,
++      "actualRenderedVisible": false
++    },
++    {
++      "id": "place",
++      "customerQuestion": "시설과 받는 빈소는 무엇으로 특정하는가?",
++      "answerPointers": [
++        "detail.sections[facility]",
++        "detail.sections[order].list"
++      ],
++      "sourcePaths": [
++        "evidence/originals/suwan-government-row.json",
++        "evidence/originals/suwan_map.facility-excerpt.html",
++        "evidence/originals/suwan_rooms.facility-excerpt.html"
++      ],
++      "answerSummary": "주소·시설전화 역할과 별도 1층/3층 특실을 짧게 설명; 실제 층·호실 입력",
++      "nextAction": "꽃이랑 주문 상담",
++      "classification": "직접 확인",
++      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
++      "independentVerdict": null,
++      "actualRenderedVisible": false
++    },
++    {
++      "id": "timing",
++      "customerQuestion": "오늘 또는 발인 전에 보낼 수 있는가?",
++      "answerPointers": [
++        "detail.sections[facility].paragraphs[2]",
++        "detail.sections[order].afterList[0]"
++      ],
++      "sourcePaths": [
++        "inputs/policy-amendment/source-evidence-binding.json"
++      ],
++      "answerSummary": "희망일정은 개별 상담하며 B201·B203·B205 상단의 평일19시/주말·공휴일19시 이후13시전후와 하단의 주말·공휴일 제외 익일오전을 게시 위치별로 함께 보존한다. 두 안내의 적용범위·예외 관계는 미확정이며 B06021시는 별도다.",
++      "nextAction": "날짜·시각과 발인일정 상담",
++      "classification": "직접 확인 + 개별 이행 미확인",
++      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
++      "independentVerdict": null,
++      "actualRenderedVisible": false
++    },
++    {
++      "id": "ribbon",
++      "customerQuestion": "리본 인사와 보내는 이름은 어떻게 적는가?",
++      "answerPointers": [
++        "detail.sections[ribbon]"
++      ],
++      "sourcePaths": [
++        "PURCHASE-PLAN.ko.md"
++      ],
++      "answerSummary": "조의 표현·개인/회사/모임 예시; 종교별 강제규칙 없음",
++      "nextAction": "문구 상담",
++      "classification": "추정·판단: 편집 예시",
++      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
++      "independentVerdict": null,
++      "actualRenderedVisible": false
++    },
++    {
++      "id": "order",
++      "customerQuestion": "상담 전에 무엇을 준비하는가?",
++      "answerPointers": [
++        "detail.sections[order].list"
++      ],
++      "sourcePaths": [
++        "PURCHASE-PLAN.ko.md"
++      ],
++      "answerSummary": "상품/예산, 층·호실/수신 식별, 일정, 리본/발신/연락처를 네 항목에 모음",
++      "nextAction": "tel:18440644",
++      "classification": "추정·판단: 편집 제안",
++      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
++      "independentVerdict": null,
++      "actualRenderedVisible": false
++    },
++    {
++      "id": "materials",
++      "customerQuestion": "사진과 소재·후다지·수거 조건은 같은가?",
++      "answerPointers": [
++        "sharedUI.productSampleNotice",
++        "detail.sections[order].afterList[1]"
++      ],
++      "sourcePaths": [
++        "evidence/originals/order-top2.jpg"
++      ],
++      "answerSummary": "생화·조화 혼합, 후다지 지역차, 별도수거 없음",
++      "nextAction": "상품 상담 또는 시설 처리 안내",
++      "classification": "직접 확인",
++      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
++      "independentVerdict": null,
++      "actualRenderedVisible": false
++    },
++    {
++      "id": "change",
++      "customerQuestion": "빈소·리본이 변경되면 어떻게 하는가?",
++      "answerPointers": [
++        "detail.faq[0]"
++      ],
++      "sourcePaths": [
++        "PURCHASE-PLAN.ko.md"
++      ],
++      "answerSummary": "기존 주문과 변경내용으로 진행상태별 상담; 무조건 수정·무료변경 약속 없음",
++      "nextAction": "기존 주문 상담",
++      "classification": "추정·판단: 안전한 상담 안내",
++      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
++      "independentVerdict": null,
++      "actualRenderedVisible": false
++    },
++    {
++      "id": "cancel",
++      "customerQuestion": "제작완료/출고 뒤 취소 기준은?",
++      "answerPointers": [
++        "detail.faq[1]"
++      ],
++      "sourcePaths": [
++        "evidence/originals/de-change.jpg"
++      ],
++      "answerSummary": "제작완료 환불불가와 출고후 배송비제외 환불을 함께 남기고 우선순위 판단 안 함",
++      "nextAction": "진행상태별 상담",
++      "classification": "직접 확인 + 개별적용 미확인",
++      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
++      "independentVerdict": null,
++      "actualRenderedVisible": false
++    },
++    {
++      "id": "defect",
++      "customerQuestion": "사진 차이와 파손·오배송은 어떻게 다른가?",
++      "answerPointers": [
++        "detail.faq[2]"
++      ],
++      "sourcePaths": [
++        "evidence/originals/de-change.jpg"
++      ],
++      "answerSummary": "불량/파손/전혀다른상품과 소재차이 구분; 하루/주소오류/수취거부 조건 유지",
++      "nextAction": "해당 주문 상황 상담",
++      "classification": "직접 확인",
++      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
++      "independentVerdict": null,
++      "actualRenderedVisible": false
++    },
++    {
++      "id": "unavailable",
++      "customerQuestion": "결제 뒤 배송불가/품절이면?",
++      "answerPointers": [
++        "detail.faq[3]"
++      ],
++      "sourcePaths": [
++        "evidence/originals/de-change.jpg"
++      ],
++      "answerSummary": "공식 전액환불 조건을 개인사정 취소와 구분",
++      "nextAction": "결제 주문 상담",
++      "classification": "직접 확인",
++      "authorCoverage": "ADDRESSED_IN_MANUSCRIPT",
++      "independentVerdict": null,
++      "actualRenderedVisible": false
++    }
++  ],
++  "missingCriticalFactsHandledAsQuestions": [
++    "Exact final total",
++    "Actual facility receiving conditions and arrival time",
++    "Individual refund clause application"
++  ],
++  "authorConclusion": "작성된 답변과 경계는 존재한다. 독립 정보완결성·어투 판단 및 실제 출력 확인은 아직 필요하다.",
++  "independentVerdict": null,
++  "policyAmendment": {
++    "scope": "ONE_TIMING_PARAGRAPH_ONLY",
++    "source": "inputs/policy-amendment/review/independent-review-r2.json",
++    "priorArtifactSHA256": "7ddb2692873f027e68fb0f756a961213e2947a3e188806d82998f789d3dcb75c",
++    "previousTimingSummarySuperseded": true,
++    "actualBuildOrPublicationApproval": false
++  }
++}
+--- base654dafd7/inputs/policy-amendment/output-context-map.json
++++ amendment/inputs/policy-amendment/output-context-map.json
+@@ -0,0 +1,1251 @@
++{
++  "schema": "gwangsan-output-context-map/v1",
++  "copySHA256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72",
++  "visibleKoreanStringCount": 117,
++  "coverage": "Every Korean string leaf in all seven copy roots. Body, accessibility and metadata are separate contexts. This is a planned output map, not actual DOM evidence.",
++  "rows": [
++    {
++      "pointer": "/home/title",
++      "text": "광주 광산구 근조화환 가격·주문 상담 | 꽃이랑",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Document title; also OG/Twitter titles except404",
++      "instancesPerApplicablePage": "1 title plus social copies on normal pages"
++    },
++    {
++      "pointer": "/home/description",
++      "text": "광주 광산구 근조화환의 기본가와 리본 상담을 안내합니다. 광주수완장례식장 상세에서 네 상품사진, 배송비 포함 예산과 빈소·일정에 따른 주문 내용을 보실 수 있습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Meta description; also OG/Twitter descriptions except404",
++      "instancesPerApplicablePage": "1 meta plus social copies on normal pages"
++    },
++    {
++      "pointer": "/home/h1",
++      "text": "광주 광산구로 보내는 근조화환",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/home/lead",
++      "text": "조문을 대신하거나 조의의 뜻을 더해 전하실 때, 꽃이랑에서 근조화환과 리본을 상담해 드립니다. 광주 광산구에 보내실 꽃을 준비하신다면 상품 가격대부터 말씀하셔도 좋습니다. 광주수완장례식장 주문에 필요한 내용은 아래 상세 안내에 담았습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/home/sections/0/h2",
++      "text": "화환 가격과 전체 비용을 의논합니다",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/home/sections/0/paragraphs/0",
++      "text": "근조화환의 상품 기본가는 59,000원, 79,000원, 109,000원, 149,000원입니다. 배송비는 주문 시 결제하며, 광산구 배송지의 추가 배송비와 최종금액은 상담으로 안내해 드립니다. 회사나 모임의 예산이 정해져 있다면 배송비를 포함한 금액으로 이야기하겠습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/home/sections/0/paragraphs/1",
++      "text": "사진을 보면서 선택하고 싶으신 분께는 광주수완장례식장 상세의 네 상품사진을 안내합니다. 각 상품의 사진과 함께 번호와 기본가를 보실 수 있고, 해당 상품의 공식 상세로 바로 연결됩니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/home/sections/1/h2",
++      "text": "광주수완장례식장에 전할 꽃",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/home/sections/1/paragraphs/0",
++      "text": "수완장례식장 안내에는 네 가지 화환과 리본 표현을 비롯해, 층·호실을 포함한 주문정보와 늦은 시간의 주문 상담을 정리했습니다. 준비하신 예산과 전달 희망일정을 함께 의논하실 수 있습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/home/sections/1/card/title",
++      "text": "광주수완장례식장 근조화환",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/home/sections/1/card/summary",
++      "text": "사진 속 꽃의 배치와 기본가를 비교하고, 총예산·리본·주문 변경까지 이어서 살펴보실 수 있습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/home/sections/1/card/ctaLabel",
++      "text": "수완장례식장 상품사진·가격 보기",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/home/sections/2/h2",
++      "text": "전하고 싶은 인사부터 시작하셔도 좋습니다",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/home/sections/2/paragraphs/0",
++      "text": "‘어떤 말을 적으면 좋을까요?’라는 질문으로 상담을 시작하셔도 됩니다. 꽃이랑은 고인을 기리는 인사와 보내는 분의 이름을 리본에 어떻게 담을지 함께 의논합니다. 개인, 회사, 모임에서 정해 두신 표현이 있으면 그 문구를 바탕으로 상담해 드립니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/home/cta/label",
++      "text": "광산구 화환 주문 상담 · 1844-0644",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/home/sourceHeading",
++      "text": "출처 및 확인 정보",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/home/sourceIntro",
++      "text": "상품 기본가와 정책은 2026년 10월 16일(한국시간)에 확인한 꽃이랑 게시자료를 기준으로 합니다. 시설 자료와 상품별 출처는 광주수완장례식장 상세에 연결했습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/home/sourceLink/label",
++      "text": "수완장례식장 안내의 상품·시설 출처",
++      "actualRendered": false,
++      "pageIds": [
++        "home"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/title",
++      "text": "광주수완장례식장 근조화환 가격·사진·리본 | 꽃이랑",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Document title; also OG/Twitter titles except404",
++      "instancesPerApplicablePage": "1 title plus social copies on normal pages"
++    },
++    {
++      "pointer": "/detail/description",
++      "text": "광주수완장례식장에 전할 근조화환 네 종류를 상품사진과 기본가 59,000~149,000원으로 안내합니다. 배송비 포함 예산, 조의 리본, 층·호실과 희망일정에 따른 주문을 상담합니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Meta description; also OG/Twitter descriptions except404",
++      "instancesPerApplicablePage": "1 meta plus social copies on normal pages"
++    },
++    {
++      "pointer": "/detail/h1",
++      "text": "광주수완장례식장에 전하는 근조화환",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/lead/0",
++      "text": "광주수완장례식장에 조의를 전하실 근조화환을 꽃이랑에서 안내합니다. 상품 기본가는 59,000원부터 149,000원까지이며, 네 상품의 사진과 리본 문구를 함께 상담해 드립니다. 길게 표현하기 어려운 인사도 간결한 말로 담으실 수 있습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/lead/1",
++      "text": "직접 찾아뵙는 일정과 별도로 꽃을 준비하시거나 여러 분의 이름을 모아 보내실 때, 정해 놓으신 예산을 바탕으로 이야기하겠습니다. 꽃의 모습이 먼저 마음에 드셨다면 그 상품번호로 문의하셔도 좋습니다. 받는 빈소와 전달을 원하시는 일정은 주문 상담에서 함께 다룹니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/0/h2",
++      "text": "네 상품사진으로 보는 색과 배치",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/0/paragraphs/0",
++      "text": "59,000원의 근조 3단 화환 B201은 흰색·노란색 중심의 꽃과 위쪽 노란 장식이 보입니다. 79,000원의 근조 고급 3단 화환 B203에는 상단에 분홍빛 꽃이 더해져 있습니다. 두 상품의 꽃 배치와 리본이 놓인 모습을 사진으로 비교하실 수 있습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/0/paragraphs/1",
++      "text": "근조 특대 3단 화환 B205는 109,000원이며, 윗부분의 노란 원형 장식과 옆쪽 노란 꽃이 눈에 띕니다. 149,000원의 근조 특특대 3단 화환 B060은 가운데와 양옆의 분홍빛 꽃이 보이는 구성입니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/0/paragraphs/2",
++      "text": "각 카드의 버튼은 해당 상품의 공식 상세로 연결됩니다. 사진 속 색이나 배치가 궁금하실 때에는 상품번호로 문의하시면 됩니다. 실제 주문에 쓰이는 소재와 구성은 계절·지역의 수급에 따라 달라질 수 있습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/1/h2",
++      "text": "배송비를 포함해 준비하실 금액",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/1/paragraphs/0",
++      "text": "표시된 가격은 상품 기본가입니다. 배송비는 주문 시 결제하며, 광산구의 추가 배송비와 주문 전체 금액은 상담에서 안내합니다. 배송비를 포함한 총예산을 기준으로 선택 가능한 상품을 의논하겠습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/1/paragraphs/1",
++      "text": "회사에서 정한 한도나 함께 모은 예산이 있을 때는 ‘배송까지 포함해 ○만 원 정도로 준비하려 합니다’라고 문의하셔도 됩니다. 선택하신 상품이 있다면 그 상품의 기본가에 어떤 비용이 더해지는지, 최종금액이 얼마인지 주문을 정하기 전에 상담해 드립니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/2/h2",
++      "text": "짧은 조의의 말과 함께 보내는 이름",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/2/paragraphs/0",
++      "text": "리본 문구로는 ‘삼가 조의를 표합니다’, ‘깊은 애도를 표합니다’, ‘삼가 고인의 명복을 빕니다’ 등을 쓰실 수 있습니다. 종교나 관계에 맞춰 평소 사용하시는 표현이 있다면 그 뜻을 담아 상담합니다. 정해진 문장을 그대로 쓰셔도 되고, 한글 인사와 ‘謹弔’ 같은 한자 표현을 두고 의논하셔도 됩니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/2/paragraphs/1",
++      "text": "보내는 이름은 개인 성함이나 회사·단체명으로 적습니다. 여러 분이 함께 준비하실 때의 예시는 ‘○○모임 일동’, 회사에서 전하실 때는 ‘주식회사 ○○ 임직원 일동’입니다. 실명과 단체명은 보내시는 분들이 정하신 표기를 바탕으로 주문합니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/2/paragraphs/2",
++      "text": "인사말을 아직 정하지 못하셨다고 상품 상담을 미루실 필요는 없습니다. 전하고 싶은 표현이 있으면 그 부분부터 들려주세요. 꽃이랑에서 상품 선택과 리본 문구를 함께 상담해 드리겠습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/3/h2",
++      "text": "수완장례식장의 층·호실과 전달 일정",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/3/paragraphs/0",
++      "text": "광주수완장례식장은 광산구 수완로 6(신가동)에 있으며, 시설 대표전화는 062-959-4444입니다. 장례식장 위치·시설 문의를 위한 번호이고, 이 안내의 꽃 상품과 리본 주문은 꽃이랑에서 상담합니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/3/paragraphs/1",
++      "text": "공식 빈소 안내에는 1층 특실과 3층 특실이 따로 표시되어 있습니다. 특실로 보내는 주문도 현재 안내받으신 층과 호실을 함께 기준으로 삼습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/3/paragraphs/2",
++      "text": "전달 희망일정은 장례식장의 화환 반입·수령 조건과 함께 상담합니다. 발인 전에 전하고 싶으신 경우에도 실제 배송 가능 여부를 의논한 뒤 주문을 정합니다. 시설의 수령 조건이나 도착시각이 희망시간만으로 확정되지는 않습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/4/h2",
++      "text": "꽃이랑 주문 상담에 필요한 내용",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/4/paragraphs/0",
++      "text": "주문 상담은 1844-0644로 연결됩니다. 아래 네 가지를 함께 말씀하시면 상품과 리본, 배송 일정을 이어서 의논할 수 있습니다. 아직 정해지지 않은 항목이 있다면 알고 계신 내용으로 상품 상담부터 시작하셔도 됩니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/4/list/0",
++      "text": "상품번호 또는 배송비를 포함한 총예산",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/4/list/1",
++      "text": "광주수완장례식장 층·호실과 고인 또는 상주명",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/4/list/2",
++      "text": "전달 희망 날짜·시각, 발인 전 전달을 원하시면 발인 일정",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/4/list/3",
++      "text": "리본 인사말, 보내는 이름과 주문자 연락처",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/4/afterList/0",
++      "text": "늦은 주문 안내는 상품과 게시 위치에 따라 구분됩니다. B201·B203·B205 상세 이미지 상단에는 평일 19시 이후 주문은 평일 기준 익일 오전, 주말·공휴일 19시 이후 주문은 익일 오후 1시 전후 배송으로 적혀 있습니다. 같은 이미지 하단에는 19시 이후 주문을 주말·공휴일을 제외한 익일 오전 중 배송으로 안내합니다. 두 안내의 적용범위나 예외 관계는 게시자료만으로 확정할 수 없어 어느 한쪽을 수완장례식장 주문의 확정 일정으로 안내하지 않습니다. B060은 별도로 21시 이후 주문을 주말·공휴일을 제외한 익일 오전 중 배송으로 게시하고 있으며, 이 안내만으로 주말·공휴일 도착일이나 실제 수완장례식장 주문의 가능일정을 보장하지는 않습니다. 수완장례식장에 전할 실제 날짜와 가능시간은 해당 주문으로 상담해 드립니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sections/4/afterList/1",
++      "text": "화환은 생화와 조화를 혼합해 사용합니다. 뒷면 종이인 후다지의 부착 유무는 지역에 따라 다르며, 별도 화환 수거는 하지 않습니다. 장례 후 처리는 장례식장의 안내에 따라 진행하실 수 있습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/faqHeading",
++      "text": "주문 후 변경·취소와 상품에 관한 질문",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/faq/0/question",
++      "text": "주문한 뒤 빈소나 리본 내용이 바뀌면 어떻게 하나요?",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/faq/0/answer",
++      "text": "기존 주문을 찾을 수 있는 정보와 변경할 내용을 꽃이랑에 알려주시면 진행 상태를 바탕으로 상담합니다. 제작·출고가 어디까지 진행되었는지에 따라 바꿀 수 있는 내용이 달라질 수 있습니다. 빈소 변경과 함께 전달 희망일정도 달라졌다면 두 내용을 묶어 문의하시면 됩니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/faq/1/question",
++      "text": "제작하거나 출고한 화환도 취소할 수 있나요?",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/faq/1/answer",
++      "text": "꽃이랑 게시정책에는 제작 완료된 꽃 상품은 교환·환불 불가라는 항목과, 상품 출고 후 취소를 원할 때 배송비를 제외한 금액을 환불한다는 항목이 함께 있습니다. 일괄적으로 취소 가능 여부를 정하기보다 해당 주문의 진행 상태와 사유를 놓고 적용 조건을 상담합니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/faq/2/question",
++      "text": "사진과 다른 꽃이나 손상된 상품을 받았을 때는요?",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/faq/2/answer",
++      "text": "불량·파손 또는 주문한 것과 전혀 다른 상품이 배송되었을 때는 환불 가능한 조건이 있습니다. 계절·지역에 같은 소재가 없어 이미지와 달라진 경우에는 그 차이만으로 취소·환불이 불가하다는 안내입니다. 배송 완료 후 하루 이상 지난 경우와 주문자의 배송지 정보 오류·수취거부도 교환·환불 불가 항목에 포함됩니다. 해당 상황을 꽃이랑에 말씀해 주시면 주문별로 상담하겠습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/faq/3/question",
++      "text": "결제한 뒤 배송 불가나 품절 안내를 받으면요?",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/faq/3/answer",
++      "text": "결제 완료 후 배송이 불가능하거나 재고가 없을 때는 전액 환불한다는 공식 규정이 있습니다. 고객 사정으로 취소하는 경우와는 구분되는 조건입니다. 환불에 관한 문의는 결제한 주문을 기준으로 이어갑니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/closing",
++      "text": "수완장례식장에 전할 꽃을 준비하실 때, 예산과 인사말 중 먼저 정해진 내용부터 이야기해 주세요. 꽃이랑에서 그 내용을 바탕으로 상품과 리본 주문을 상담해 드리겠습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/cta/label",
++      "text": "수완장례식장 화환 주문 상담 · 1844-0644",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sourceHeading",
++      "text": "출처 및 확인 정보",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sourceIntro",
++      "text": "2026년 10월 16일(한국시간)에 꽃이랑 상품사진·가격·정책과 시설 운영자 자료를 확인했습니다. 시설 주소와 대표전화는 보건복지부 2026년 4월 1일 기준 명부 및 광주수완장례식장 오시는길을 대조했으며, 층·호실은 공식 빈소 안내를 참고했습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sources/0/label",
++      "text": "보건복지부 장례식장 현황 · 2026년 4월 1일 기준",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sources/1/label",
++      "text": "광주수완장례식장 오시는길",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sources/2/label",
++      "text": "광주수완장례식장 빈소·접객실 안내",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sources/3/label",
++      "text": "꽃이랑 근조 3단 화환 B201",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sources/4/label",
++      "text": "꽃이랑 근조 고급 3단 화환 B203",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sources/5/label",
++      "text": "꽃이랑 근조 특대 3단 화환 B205",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sources/6/label",
++      "text": "꽃이랑 근조 특특대 3단 화환 B060",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sources/7/label",
++      "text": "꽃이랑 화환 소재·수거 안내",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/detail/sources/8/label",
++      "text": "꽃이랑 교환·환불 안내",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/0/name",
++      "text": "근조 3단 화환",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/0/priceLabel",
++      "text": "상품 기본가 59,000원",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/0/shippingLabel",
++      "text": "배송비·최종금액은 주문 상담",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/0/description",
++      "text": "흰색·노란색 꽃과 위쪽의 노란 장식이 보입니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/0/photoAlt",
++      "text": "흰색과 노란색 꽃 위로 노란 장식이 놓인 B201 근조 3단 화환 상품사진",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card image alt",
++      "instancesPerApplicablePage": 1,
++      "additionalMetadataContext": {
++        "pageIds": [
++          "home",
++          "detail",
++          "support"
++        ],
++        "tags": [
++          "og:image:alt",
++          "twitter:image:alt"
++        ]
++      }
++    },
++    {
++      "pointer": "/productCards/0/ctaLabel",
++      "text": "B201 공식 상품 상세",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/1/name",
++      "text": "근조 고급 3단 화환",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/1/priceLabel",
++      "text": "상품 기본가 79,000원",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/1/shippingLabel",
++      "text": "배송비·최종금액은 주문 상담",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/1/description",
++      "text": "상단 분홍빛 꽃이 흰색·노란색 구성에 더해져 있습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/1/photoAlt",
++      "text": "상단 분홍빛 꽃과 흰색·노란색 배치의 B203 근조 고급 3단 화환 상품사진",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card image alt",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/1/ctaLabel",
++      "text": "B203 공식 상품 상세",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/2/name",
++      "text": "근조 특대 3단 화환",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/2/priceLabel",
++      "text": "상품 기본가 109,000원",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/2/shippingLabel",
++      "text": "배송비·최종금액은 주문 상담",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/2/description",
++      "text": "노란 원형 윗장식과 옆쪽의 노란 꽃을 볼 수 있습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/2/photoAlt",
++      "text": "위쪽 노란 원형 장식과 측면 노란 꽃이 보이는 B205 근조 특대 3단 화환 상품사진",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card image alt",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/2/ctaLabel",
++      "text": "B205 공식 상품 상세",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/3/name",
++      "text": "근조 특특대 3단 화환",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/3/priceLabel",
++      "text": "상품 기본가 149,000원",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/3/shippingLabel",
++      "text": "배송비·최종금액은 주문 상담",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/3/description",
++      "text": "중앙과 양옆에 놓인 분홍빛 꽃이 보이는 사진입니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/3/photoAlt",
++      "text": "중앙과 양옆 분홍빛 꽃이 들어간 B060 근조 특특대 3단 화환 상품사진",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card image alt",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/productCards/3/ctaLabel",
++      "text": "B060 공식 상품 상세",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product card text",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/support/title",
++      "text": "광산구 수완장례식장 근조화환 상세 찾기 | 꽃이랑",
++      "actualRendered": false,
++      "pageIds": [
++        "support"
++      ],
++      "context": "Document title; also OG/Twitter titles except404",
++      "instancesPerApplicablePage": "1 title plus social copies on normal pages"
++    },
++    {
++      "pointer": "/support/description",
++      "text": "광주수완장례식장 근조화환의 사진·가격 안내로 이어집니다. 리본과 전체 비용, 전달 일정 및 주문 변경에 관한 상세 내용을 제공합니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "support"
++      ],
++      "context": "Meta description; also OG/Twitter descriptions except404",
++      "instancesPerApplicablePage": "1 meta plus social copies on normal pages"
++    },
++    {
++      "pointer": "/support/h1",
++      "text": "광산구 근조화환 상세 안내",
++      "actualRendered": false,
++      "pageIds": [
++        "support"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/support/body",
++      "text": "광주수완장례식장에 보내실 화환의 사진과 주문 상담 내용을 아래에서 보실 수 있습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "support"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/support/card/title",
++      "text": "광주수완장례식장 상품·주문 안내",
++      "actualRendered": false,
++      "pageIds": [
++        "support"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/support/card/summary",
++      "text": "59,000~149,000원 기본가의 네 상품과 리본 표현, 층·호실을 포함한 주문정보를 담았습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "support"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/support/card/ctaLabel",
++      "text": "수완장례식장 상세 안내 열기",
++      "actualRendered": false,
++      "pageIds": [
++        "support"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/notFound/title",
++      "text": "찾으시는 페이지가 없습니다 | 꽃이랑 광주 광산구",
++      "actualRendered": false,
++      "pageIds": [
++        "notFound"
++      ],
++      "context": "Document title; also OG/Twitter titles except404",
++      "instancesPerApplicablePage": "1 title plus social copies on normal pages"
++    },
++    {
++      "pointer": "/notFound/description",
++      "text": "요청하신 주소에는 안내가 없습니다. 꽃이랑 광주 광산구 홈에서 근조화환 상품과 주문 상담 안내로 이동하실 수 있습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "notFound"
++      ],
++      "context": "Meta description; also OG/Twitter descriptions except404",
++      "instancesPerApplicablePage": "1 meta plus social copies on normal pages"
++    },
++    {
++      "pointer": "/notFound/h1",
++      "text": "찾으시는 안내 페이지가 없습니다",
++      "actualRendered": false,
++      "pageIds": [
++        "notFound"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/notFound/body",
++      "text": "광산구 근조화환 홈으로 돌아가 상품과 주문 상담 내용을 이용하실 수 있습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "notFound"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/notFound/cta/label",
++      "text": "광산구 근조화환 홈으로 돌아가기",
++      "actualRendered": false,
++      "pageIds": [
++        "notFound"
++      ],
++      "context": "Authored body/heading/card/FAQ/source/CTA",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/sharedUI/brand",
++      "text": "꽃이랑",
++      "actualRendered": false,
++      "pageIds": [
++        "home",
++        "detail",
++        "support",
++        "notFound"
++      ],
++      "context": "Shared navigation/accessibility UI; responsive menu states must be inspected",
++      "instancesPerApplicablePage": "Layout-specific; must bind actual HTML after implementation",
++      "footerReuse": true
++    },
++    {
++      "pointer": "/sharedUI/skipLink",
++      "text": "본문으로 바로 가기",
++      "actualRendered": false,
++      "pageIds": [
++        "home",
++        "detail",
++        "support",
++        "notFound"
++      ],
++      "context": "Shared navigation/accessibility UI; responsive menu states must be inspected",
++      "instancesPerApplicablePage": "Layout-specific; must bind actual HTML after implementation"
++    },
++    {
++      "pointer": "/sharedUI/menuLabel",
++      "text": "주요 메뉴",
++      "actualRendered": false,
++      "pageIds": [
++        "home",
++        "detail",
++        "support",
++        "notFound"
++      ],
++      "context": "Shared navigation/accessibility UI; responsive menu states must be inspected",
++      "instancesPerApplicablePage": "Layout-specific; must bind actual HTML after implementation"
++    },
++    {
++      "pointer": "/sharedUI/menuOpen",
++      "text": "메뉴 열기",
++      "actualRendered": false,
++      "pageIds": [
++        "home",
++        "detail",
++        "support",
++        "notFound"
++      ],
++      "context": "Shared navigation/accessibility UI; responsive menu states must be inspected",
++      "instancesPerApplicablePage": "Layout-specific; must bind actual HTML after implementation"
++    },
++    {
++      "pointer": "/sharedUI/menuClose",
++      "text": "메뉴 닫기",
++      "actualRendered": false,
++      "pageIds": [
++        "home",
++        "detail",
++        "support",
++        "notFound"
++      ],
++      "context": "Shared navigation/accessibility UI; responsive menu states must be inspected",
++      "instancesPerApplicablePage": "Layout-specific; must bind actual HTML after implementation"
++    },
++    {
++      "pointer": "/sharedUI/homeLink",
++      "text": "광주 광산구 근조화환 홈",
++      "actualRendered": false,
++      "pageIds": [
++        "home",
++        "detail",
++        "support",
++        "notFound"
++      ],
++      "context": "Shared navigation/accessibility UI; responsive menu states must be inspected",
++      "instancesPerApplicablePage": "Layout-specific; must bind actual HTML after implementation",
++      "footerReuse": true
++    },
++    {
++      "pointer": "/sharedUI/detailLink",
++      "text": "수완장례식장 상품·리본",
++      "actualRendered": false,
++      "pageIds": [
++        "home",
++        "detail",
++        "support",
++        "notFound"
++      ],
++      "context": "Shared navigation/accessibility UI; responsive menu states must be inspected",
++      "instancesPerApplicablePage": "Layout-specific; must bind actual HTML after implementation"
++    },
++    {
++      "pointer": "/sharedUI/phoneLink",
++      "text": "꽃이랑 상담 1844-0644",
++      "actualRendered": false,
++      "pageIds": [
++        "home",
++        "detail",
++        "support",
++        "notFound"
++      ],
++      "context": "Shared navigation/accessibility UI; responsive menu states must be inspected",
++      "instancesPerApplicablePage": "Layout-specific; must bind actual HTML after implementation",
++      "footerReuse": true
++    },
++    {
++      "pointer": "/sharedUI/breadcrumbLabel",
++      "text": "현재 위치",
++      "actualRendered": false,
++      "pageIds": [
++        "detail",
++        "support"
++      ],
++      "context": "Breadcrumb aria-label",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/sharedUI/productSampleNotice",
++      "text": "게시된 상품사진은 예시입니다. 계절·지역별 소재 수급에 따라 실제 구성에 차이가 있을 수 있습니다.",
++      "actualRendered": false,
++      "pageIds": [
++        "detail"
++      ],
++      "context": "Product sample notice after four cards",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/sharedBannerAlt/message",
++      "text": "흰 장미와 잎을 배경으로 꽃으로 전하는 마음을 안내하는 꽃이랑 배너. 전화 1844-0644.",
++      "actualRendered": false,
++      "pageIds": [
++        "home",
++        "detail"
++      ],
++      "context": "Shared figure image alt",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/sharedBannerAlt/budget",
++      "text": "겹겹의 흰 꽃을 배경으로 상품 사진과 가격 비교를 안내하는 꽃이랑 배너. 전화 1844-0644.",
++      "actualRendered": false,
++      "pageIds": [
++        "home",
++        "detail"
++      ],
++      "context": "Shared figure image alt",
++      "instancesPerApplicablePage": 1
++    },
++    {
++      "pointer": "/sharedBannerAlt/consultation",
++      "text": "흰 꽃과 봉오리를 배경으로 상품 선택과 리본 문구 상담을 안내하는 꽃이랑 배너. 전화 1844-0644.",
++      "actualRendered": false,
++      "pageIds": [
++        "home",
++        "detail"
++      ],
++      "context": "Shared figure image alt",
++      "instancesPerApplicablePage": 1
++    }
++  ],
++  "footer": {
++    "usesExistingLayout": true,
++    "visibleStringSources": [
++      "sharedUI.brand",
++      "sharedUI.phoneLink",
++      "sharedUI.homeLink"
++    ],
++    "destinations": {
++      "phoneLink": "tel:18440644",
++      "homeLink": "/"
++    },
++    "noUnrelatedRegionalLinks": true,
++    "noNewServiceClaims": true,
++    "exactActualRenderVerificationPending": true
++  },
++  "bannerTextEmbeddedInApprovedAssets": {
++    "assetManifest": "asset-manifest.json",
++    "reviewedAsPixels": true,
++    "text": [
++      "꽃이랑 1844-0644 / 꽃으로 전하는 마음 / 전하고 싶은 마음에 어울리는 꽃을 안내합니다",
++      "꽃이랑 1844-0644 / 예산에 맞는 꽃 선택 / 상품 사진과 가격을 함께 살펴보세요",
++      "꽃이랑 1844-0644 / 주문 상담 안내 / 상품 선택부터 리본 문구까지 상담해 드립니다"
++    ]
++  },
++  "policyAmendment": {
++    "scope": "ONE_TIMING_PARAGRAPH_ONLY",
++    "source": "inputs/policy-amendment/review/independent-review-r2.json",
++    "priorArtifactSHA256": "94b76e176b696c30c14097019744e14dde6af27f306e49d8accd36dd694df5d4",
++    "previousTimingSummarySuperseded": true,
++    "actualBuildOrPublicationApproval": false
++  }
++}
+--- base654dafd7/inputs/policy-amendment/purchase-intent-metadata.json
++++ amendment/inputs/policy-amendment/purchase-intent-metadata.json
+@@ -0,0 +1,218 @@
++{
++  "schema": "gwangsan-purchase-intent/v1",
++  "status": "PLANNED_NOT_IMPLEMENTED",
++  "region": {
++    "name": "광산구",
++    "officialCode": "12330",
++    "legalCode": "1233000000",
++    "officialParent": "전남광주통합특별시",
++    "customerQueryName": "광주 광산구",
++    "nationalOrder": 35
++  },
++  "copySHA256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72",
++  "renderPlanSHA256": "eb39fac5d44663e89fe14003f26984b2cafc088e70e97e65a09e7ac85dbe294c",
++  "measuredSearchVolume": null,
++  "measuredSearchRanking": null,
++  "sourceLevels": {
++    "facility": "Government2026-04-01 row and original operator fragments",
++    "productsAndPolicy": "Original merchant selected HTML and images",
++    "shippingAndFulfillment": "Individual values unknown; bounded consultation",
++    "ribbonAndBuyerFlow": "Editorial examples and judgment"
++  },
++  "pages": [
++    {
++      "pageId": "home",
++      "role": "REGION_SERVICE_LANDING",
++      "primaryKeyword": "광주 광산구 근조화환",
++      "secondaryKeywords": [
++        "광산구 화환 가격",
++        "광산구 근조화환 주문"
++      ],
++      "keywordCluster": [
++        "광주 광산구 근조화환",
++        "광산구 화환 가격",
++        "광산구 근조화환 배송비",
++        "광산구 리본 상담"
++      ],
++      "intentKey": "gwangju-gwangsan-12330:condolence-wreath:regional-entry",
++      "queryClass": "core-commercial",
++      "expectedDecision": "기본가와 상담 범위를 이해하고 수완 상세의 사진 또는 전화 상담으로 이동",
++      "nextActions": [
++        "detail",
++        "tel:18440644"
++      ],
++      "queryEvidence": [
++        {
++          "type": "serp_observation",
++          "classification": "도구 보고",
++          "sourcePath": "evidence/search-and-competition.json",
++          "scope": "Research performed actual queries; writer did not measure ranking/volume"
++        },
++        {
++          "type": "competitor_original_read",
++          "classification": "직접 확인",
++          "sourcePath": "evidence/search-and-competition.json",
++          "scope": "Writer read three retained original selected bodies, not just searchtitles"
++        },
++        {
++          "type": "purchase_intent_analysis",
++          "classification": "추정·판단",
++          "sourcePath": "PURCHASE-PLAN.ko.md",
++          "section": "검색 의도와 고객 결정"
++        }
++      ]
++    },
++    {
++      "pageId": "detail",
++      "role": "PLACE_LANDING",
++      "primaryKeyword": "광주수완장례식장 근조화환",
++      "secondaryKeywords": [
++        "수완장례식장 화환 가격",
++        "수완장례식장 리본 문구",
++        "수완장례식장 화환 주문"
++      ],
++      "keywordCluster": [
++        "광주수완장례식장 근조화환",
++        "수완장례식장 근조화환",
++        "수완장례식장 화환 가격",
++        "수완장례식장 화환 사진",
++        "수완장례식장 리본 문구",
++        "수완장례식장 배송비"
++      ],
++      "intentKey": "suwan-suwanro6:condolence-wreath:photos-budget-ribbon-floor-schedule-order",
++      "queryClass": "local-commercial",
++      "expectedDecision": "네 사진과 기본가, 총예산·리본, 층·호실 및 상품별 저녁 주문조건을 이해한 뒤 특정 상품 또는 주문 상담으로 이동",
++      "nextActions": [
++        "https://fwith.co.kr/shop/item.php?it_id=B201",
++        "https://fwith.co.kr/shop/item.php?it_id=B203",
++        "https://fwith.co.kr/shop/item.php?it_id=B205",
++        "https://fwith.co.kr/shop/item.php?it_id=B060",
++        "tel:18440644"
++      ],
++      "queryEvidence": [
++        {
++          "type": "serp_observation",
++          "classification": "도구 보고",
++          "sourcePath": "evidence/search-and-competition.json",
++          "scope": "Research performed actual queries; writer did not measure ranking/volume"
++        },
++        {
++          "type": "competitor_original_read",
++          "classification": "직접 확인",
++          "sourcePath": "evidence/search-and-competition.json",
++          "scope": "Writer read three retained original selected bodies, not just searchtitles"
++        },
++        {
++          "type": "purchase_intent_analysis",
++          "classification": "추정·판단",
++          "sourcePath": "PURCHASE-PLAN.ko.md",
++          "section": "검색 의도와 고객 결정"
++        }
++      ]
++    },
++    {
++      "pageId": "support",
++      "role": "SUPPORT_NAVIGATION",
++      "primaryKeyword": null,
++      "queryClass": null,
++      "intentKey": null,
++      "noindex": true,
++      "actualChildCount": 1,
++      "reason": "한 개 실제 상세로 이동하는 지원목록이며 독립 검색대상이 아님",
++      "nextActions": [
++        "detail"
++      ]
++    },
++    {
++      "pageId": "notFound",
++      "role": "TECHNICAL_404",
++      "primaryKeyword": null,
++      "queryClass": null,
++      "intentKey": null,
++      "noindex": true,
++      "reason": "실제404 오류복구; canonical/social/sitemap/마케팅 배너 제외",
++      "nextActions": [
++        "home"
++      ]
++    }
++  ],
++  "internalDuplicationDecision": {
++    "synonymsOneURL": true,
++    "noAliasOrDongPages": true,
++    "bodyMetricEvidence": "body-count-and-overlap.json",
++    "manuallyReadSiblingReference": "Bukgu full final customer JSON; Namgu schema and all six bodies measured. No copied scores.",
++    "qualityJudgment": "PENDING_INDEPENDENT_REVIEW"
++  },
++  "heldCandidateCount": 9,
++  "heldCandidates": [
++    {
++      "name": "(주)스카이장례식장",
++      "reason": "정부 CSV 시설행만 확인. 운영자 원문과 구매자 고유 판단 근거 미검증.",
++      "status": "HOLD"
++    },
++    {
++      "name": "광주보훈병원장례식장",
++      "reason": "공식 원문에서 이름·도로명·시설전화·지하1층 빈소 확인. 시설 식별/층 안내만으로 수완과 다른 독립 구매 결정을 충분히 만들지 못하므로 상세 보류.",
++      "status": "HOLD"
++    },
++    {
++      "name": "만평장례식장",
++      "reason": "정부 CSV와 운영자 위치 페이지에서 도로명·시설전화 일치. 독립 구매 의사결정용 추가 규정/조건은 확인하지 않았으므로 상세 보류.",
++      "status": "HOLD"
++    },
++    {
++      "name": "베스트 장례문화원",
++      "reason": "정부 CSV는 빈소·안치·주차 0, 운영종류 공란. 폐업 또는 실제 시설 부재로 해석 불가. 운영자 원문 교차검증 미수행.",
++      "status": "HOLD"
++    },
++    {
++      "name": "빛 장례식장",
++      "reason": "정부 CSV 시설행만 확인. 운영자 원문과 구매자 고유 판단 근거 미검증.",
++      "status": "HOLD"
++    },
++    {
++      "name": "송정사랑병원장례식장",
++      "reason": "정부 CSV 시설행만 확인. 운영자 원문과 구매자 고유 판단 근거 미검증.",
++      "status": "HOLD"
++    },
++    {
++      "name": "송정장례식장",
++      "reason": "정부 CSV 시설행만 확인. 운영자 원문과 구매자 고유 판단 근거 미검증.",
++      "status": "HOLD"
++    },
++    {
++      "name": "신가병원장례식장",
++      "reason": "정부 CSV 시설행만 확인. 운영자 원문과 구매자 고유 판단 근거 미검증.",
++      "status": "HOLD"
++    },
++    {
++      "name": "하남성심병원장례식장",
++      "reason": "정부 CSV 시설행만 확인. 운영자 원문과 구매자 고유 판단 근거 미검증.",
++      "status": "HOLD"
++    }
++  ],
++  "customerQuestionMap": "customer-question-completeness.json",
++  "titleAlignmentReview": {
++    "status": "PENDING_INDEPENDENT_REVIEW",
++    "authorScore": null,
++    "independentScore": null
++  },
++  "customerSourceDisplayDate": {
++    "date": "2026-10-16",
++    "timezone": "Asia/Seoul",
++    "governmentDatasetAsOf": "2026-04-01"
++  },
++  "mandatoryInputQuestionForThisDraft": null,
++  "unverified": [
++    "Final shipping fee and order total",
++    "Actual admission, receipt, dispatch/arrival, stock and fulfillment",
++    "Rendered HTML, source commit, browser, public HTTP and indexing"
++  ],
++  "policyAmendment": {
++    "scope": "ONE_TIMING_PARAGRAPH_ONLY",
++    "source": "inputs/policy-amendment/review/independent-review-r2.json",
++    "priorArtifactSHA256": "81d363a72efb9ba216b3e7ea3fbc5bc57ae8e27a972f45030e59e5c9a9c45aea",
++    "previousTimingSummarySuperseded": true,
++    "actualBuildOrPublicationApproval": false
++  }
++}
+--- base654dafd7/inputs/policy-amendment/review/REVIEW-MANIFEST.json
++++ amendment/inputs/policy-amendment/review/REVIEW-MANIFEST.json
+@@ -0,0 +1,89 @@
++{
++  "schema": "gwangsan-narrow-policy-review-manifest/v1",
++  "kind": "public-safe",
++  "closedAtUTC": "2026-10-16T03:57:56.015495+00:00",
++  "pathBase": "THIS_PACKAGE_ROOT",
++  "fileCount": 15,
++  "files": [
++    {
++      "path": "REVIEW.ko.md",
++      "bytes": 2465,
++      "sha256": "e2a2192f3d10026b6b25adbe25e92cb201a6a923f305934a565d325b824ccd4a"
++    },
++    {
++      "path": "independent-checks.json",
++      "bytes": 26500,
++      "sha256": "f0fbda54e81479a61147059b82f6d0447117cae8f5b9ad12b59e46ea42732a82"
++    },
++    {
++      "path": "independent-review-r2.json",
++      "bytes": 3811,
++      "sha256": "4dce819ef5e1c9ac48b215c911a796dd102b3526b1492685f063299371c8c7b4"
++    },
++    {
++      "path": "inputs/MANIFEST.json",
++      "bytes": 852,
++      "sha256": "3525501249354912168fc1c8b44b08549fda60ca97f1fb2202adde0c32a36da1"
++    },
++    {
++      "path": "inputs/README.ko.md",
++      "bytes": 493,
++      "sha256": "81d0ff016e295d1bedaf12169aae879e84041cc26ef2e1c5bf85ab730bf51b66"
++    },
++    {
++      "path": "inputs/customer-copy.json",
++      "bytes": 19639,
++      "sha256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72"
++    },
++    {
++      "path": "inputs/original-customer-copy.json",
++      "bytes": 19040,
++      "sha256": "9a0044feabf70a7a5ae6994d2523169a48d374ae4697aeeda3ccff4f6aec0493"
++    },
++    {
++      "path": "inputs/source-evidence-binding.json",
++      "bytes": 1864,
++      "sha256": "57dfb73278dce2f2a4b1daabaa6ac474dc02b718104df685060867680f5e15ff"
++    },
++    {
++      "path": "inputs/version-diff.json",
++      "bytes": 2001,
++      "sha256": "5789fff906efc06fa902685ea968f3dd38fa6b41188ab10240904fcc1795b7a3"
++    },
++    {
++      "path": "prior/policy-summary-correction-pending.json",
++      "bytes": 11727,
++      "sha256": "ea85812811e25337f7c665b41a6fb2c79d9113f645ada0cc09a5a86dde72a76f"
++    },
++    {
++      "path": "prior/r1-review-result.json",
++      "bytes": 2344,
++      "sha256": "e2d82c37a84021c281603d415fe7b4d67d98729fe09fea349906098ec8d338d6"
++    },
++    {
++      "path": "projection-mapping.json",
++      "bytes": 998,
++      "sha256": "cff36cdca78a0e5b36484cf1025f7b6aac21d3ffd0a82ae883a54c3cc800d797"
++    },
++    {
++      "path": "review-binding.json",
++      "bytes": 1818,
++      "sha256": "86ced576296d166a47edf75a187ab932828c0eaa4dded52ef98e262eb06898c8"
++    },
++    {
++      "path": "reviewed-diff.json",
++      "bytes": 2600,
++      "sha256": "7b337a00331e28e74c27fbc0fbdd3d1af1daa9f2a55df36af849f9c360df4dda"
++    },
++    {
++      "path": "source-original-identity.json",
++      "bytes": 2977,
++      "sha256": "9921f597e03f420d2eb257932259f91ad4171dcc436b6bb23360d356639edde6"
++    }
++  ],
++  "excludedFromOwnList": [
++    "REVIEW-MANIFEST.json",
++    "SHA256SUMS"
++  ],
++  "status": "FROZEN_NARROW_MANUSCRIPT_ONLY_SOURCE_QA_RELEASE_PENDING"
++}
+--- base654dafd7/inputs/policy-amendment/review/REVIEW.ko.md
++++ amendment/inputs/policy-amendment/review/REVIEW.ko.md
+@@ -0,0 +1,20 @@
++# 광산 늦은 주문 문단 한정 후속 검수
++
++## 판정
++수완장례식장 상세의 /detail/sections/4/afterList/0 한 문단 수정은 원고 단계에서 수용한다. 전체 광산 재검수·소스 반영·실제 HTML/화면·재배포 승인이 아니다.
++
++## 직접 확인
++source654dafd7의 원래 customer-copy를 GitHub에서 새로 읽고 SHA256·Gitblob을 계산해 후보 원본과 동일함을 확인했다. 원고 변경은 한 leaf이며 다른116개 표시문구와 모든 다른 데이터는 그대로다. 가격·광산 배송비 상담·메타·FAQ·배너·기존4route 구조에 변경이 없다. 담양 배송비10,000원 같은 지역 사실은 가져오지 않았다.
++
++B201/B203/B205 원문 상단의 평일19시/주말·공휴일19시→13시전후와 하단19시·주말공휴일 제외 조건을 함께 표시한다. B060은 별도21시 하단 조건이다. 관계를 필연적 모순으로 부르거나 우선순위를 정하지 않는다. 실제 수완장례식장 주문의 날짜와 가능시간은 해당 주문 상담으로 안내한다.
++
++원문4개 이미지의 광산·담양·최근 곡성 보관본은 SKU별 동일 SHA다. 새 정책 변경이 아니라 원래 상단 고지 누락을 보완하는 정정이다. 기존 문단도 무조건 도착 약속은 아니었지만 전체 범위를 요약하기에는 부족했다.
++
++## 보존
++기존 원고·검수의 manifest 파일을 전부 재검사했다. 원래159개 지침/24개 정책/시설2/표시문구117 등 분모와 null 점수·판정·완료증거는 수정하지 않는다. 상단6개/미확정범위1개는 별도 후속 맥락이다. prior/에는 원래 review-result와 pending finding의 정확한 바이트를 보존한다.
++
++## 남은 일
++새 원고 해시를 실제 소스와 연결된 visible-strings/context/구매질문/원문요약/렌더 바인딩에 반영하고 독립 검수해야 한다. 전체 수정 문단을 실제 HTML에서 한 번 표시하고 모바일 가독성·관련 meta/FAQ 불변과 회귀를 검사해야 한다. 검토된 소스의 빌드·재배포 후 공개 응답/본문/자산/404 등을 다시 확인해야 한다. 이 검수만으로 pending finding을 해결 완료로 바꾸면 안 된다.
++
++## 미확인
++원문 상하단의 실제 적용범위·예외·우선순위, 특정 주문의 가능시간, 후속 소스/빌드/화면/공개배포는 미확인이다. 기존03:41 공개 GET 관측은 정정 전의 기록이다.
+--- base654dafd7/inputs/policy-amendment/review/independent-review-r2.json
++++ amendment/inputs/policy-amendment/review/independent-review-r2.json
+@@ -0,0 +1,100 @@
++{
++  "schema": "gwangsan-independent-narrow-policy-successor-review/v1",
++  "schemaVersion": 1,
++  "reviewedAtUTC": "2026-10-16T03:57:56.015495+00:00",
++  "revision": "gwangsan-timing-copy-r2-20261016",
++  "assessmentScope": "ONE_TIMING_PARAGRAPH_MANUSCRIPT_ONLY",
++  "verdict": "ACCEPT_NARROW_TIMING_PARAGRAPH_WITH_SOURCE_AND_RELEASE_PENDING",
++  "customerCopySHA256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72",
++  "originalCopySHA256": "9a0044feabf70a7a5ae6994d2523169a48d374ae4697aeeda3ccff4f6aec0493",
++  "copyPointer": "/detail/sections/4/afterList/0",
++  "baseSourceCommit": "654dafd7cafa4c6a158684ac4b304ceb7a5996b5",
++  "successorSourceCommit": null,
++  "originalDenominators": {
++    "guidance": 159,
++    "policy": 24,
++    "facility": 2,
++    "customerStrings": 117,
++    "customerQuestions": 13,
++    "faq": 4,
++    "customerAssets": 7,
++    "customerRoutes": 4,
++    "plannedIndexableRoutes": 2,
++    "detailCandidates": 1,
++    "heldFacilities": 9
++  },
++  "supplementalDenominators": {
++    "upperImagePolicyClauses": 6,
++    "applicationScopeFollowupFacts": 1
++  },
++  "historicalScores": null,
++  "authorScores": null,
++  "numericReviewScore": null,
++  "blockingManuscriptIssues": [],
++  "copyChangesRequested": [],
++  "notAFullSiteReReview": true,
++  "publicationApprovedByThisReview": false,
++  "actualSuccessorBuildVerified": false,
++  "actualSuccessorHTMLVerified": false,
++  "actualSuccessorBrowserVerified": false,
++  "actualSuccessorPublicHTTPVerified": false,
++  "actualSuccessorRedeploymentVerified": false,
++  "pendingFindingResolved": false,
++  "priorEvidencePreserved": true,
++  "priorReview": {
++    "path": "prior/r1-review-result.json",
++    "bytes": 2344,
++    "sha256": "e2d82c37a84021c281603d415fe7b4d67d98729fe09fea349906098ec8d338d6"
++  },
++  "pendingFinding": {
++    "path": "prior/policy-summary-correction-pending.json",
++    "bytes": 11727,
++    "sha256": "ea85812811e25337f7c665b41a6fb2c79d9113f645ada0cc09a5a86dde72a76f"
++  },
++  "supersession": {
++    "scope": "Only previous timing-summary completeness finding is superseded. Existing review record and completed-release history are retained unchanged.",
++    "newPolicyChange": false,
++    "previousParagraphUnconditionalArrivalPromise": false,
++    "previousSummaryComplete": false,
++    "newParagraphScopeDisclosureSufficient": true
++  },
++  "requiredNextStages": [
++    "Bind exact new copy and all affected derived artifacts/source review without relabeling earlier approvals",
++    "Inspect actual complete paragraph and metadata/FAQ/context regressions; check long paragraph on mobile",
++    "Build and independently verify successor source/output",
++    "Redeploy approved artifact then independently recheck public HTML/assets/real404 and release evidence"
++  ],
++  "reviewEvidence": {
++    "reviewed-diff.json": {
++      "path": "reviewed-diff.json",
++      "bytes": 2600,
++      "sha256": "7b337a00331e28e74c27fbc0fbdd3d1af1daa9f2a55df36af849f9c360df4dda"
++    },
++    "source-original-identity.json": {
++      "path": "source-original-identity.json",
++      "bytes": 2977,
++      "sha256": "9921f597e03f420d2eb257932259f91ad4171dcc436b6bb23360d356639edde6"
++    },
++    "independent-checks.json": {
++      "path": "independent-checks.json",
++      "bytes": 26500,
++      "sha256": "f0fbda54e81479a61147059b82f6d0447117cae8f5b9ad12b59e46ea42732a82"
++    },
++    "REVIEW.ko.md": {
++      "path": "REVIEW.ko.md",
++      "bytes": 2465,
++      "sha256": "e2a2192f3d10026b6b25adbe25e92cb201a6a923f305934a565d325b824ccd4a"
++    }
++  },
++  "unverified": [
++    "Relationship or precedence between merchant upper and lower notices",
++    "Specific order delivery date/time",
++    "New source, build, screens and public correction result"
++  ],
++  "operations": {
++    "remoteWrites": false,
++    "sourceChanged": false,
++    "deployed": false,
++    "originalsOverwritten": false
++  }
++}
+--- base654dafd7/inputs/policy-amendment/review/prior/policy-summary-correction-pending.json
++++ amendment/inputs/policy-amendment/review/prior/policy-summary-correction-pending.json
+@@ -0,0 +1,214 @@
++{
++  "schema": "fwith-public-policy-summary-correction-finding/v1",
++  "schemaVersion": 1,
++  "findingID": "gwangsan-policy-summary-correction-pending-20261016",
++  "status": "POLICY_SUMMARY_CORRECTION_PENDING",
++  "createdAtUTC": "2026-10-16T03:46:28.979163+00:00",
++  "scope": {
++    "site": "gwangju-gwangsan.fwith.kr",
++    "region": "gwangsan",
++    "completedReleaseEvidencePreserved": true,
++    "historicalCompletionCountsPreserved": true,
++    "priorCompletionEvidenceIsNotAnApprovalOfThisNewlyIdentifiedSummaryOmission": true
++  },
++  "directlyConfirmed": {
++    "merchantSources": [
++      {
++        "sku": "B201",
++        "sourceURL": "https://fwith.co.kr/data/item/flower379/B201/main_pc.jpg",
++        "sha256": "69a56afede4f5cb2c4d94361f61c39deffd189ca170ee17cca0f63d290dc6ef5",
++        "sameOriginalBytesAcrossAcquisitions": true,
++        "acquisitions": [
++          {
++            "researchContext": "gwangsan",
++            "checkedAtUTC": "2026-10-16T00:34:59.719306+00:00",
++            "endedAtUTC": "2026-10-16T00:35:06.240976+00:00",
++            "reportedHTTPStatus": 200,
++            "sha256IndependentlyRecomputed": "69a56afede4f5cb2c4d94361f61c39deffd189ca170ee17cca0f63d290dc6ef5",
++            "bytes": 2457249
++          },
++          {
++            "researchContext": "damyang",
++            "checkedAtUTC": "2026-10-16T02:22:45.536060+00:00",
++            "endedAtUTC": "2026-10-16T02:22:51.764979+00:00",
++            "reportedHTTPStatus": 200,
++            "sha256IndependentlyRecomputed": "69a56afede4f5cb2c4d94361f61c39deffd189ca170ee17cca0f63d290dc6ef5",
++            "bytes": 2457249
++          },
++          {
++            "researchContext": "gokseong",
++            "checkedAtUTC": "2026-10-16T03:30:46.508390+00:00",
++            "endedAtUTC": "2026-10-16T03:30:53.221481+00:00",
++            "reportedHTTPStatus": 200,
++            "sha256IndependentlyRecomputed": "69a56afede4f5cb2c4d94361f61c39deffd189ca170ee17cca0f63d290dc6ef5",
++            "bytes": 2457249
++          }
++        ],
++        "upperNotice": {
++          "weekday": "평일 오후 7시 이후 주문 건 : 평일 기준 익일 오전 중으로 배송됩니다.",
++          "weekendHoliday": "주말 · 공휴일 오후 7시 이후 주문건 : 익일 오후 1시 전 후로 배송됩니다."
++        },
++        "lowerNotice": "저녁 7시 이후 주문은 주말 및 공휴일을 제외한 익일 오전 중으로 배송됩니다.",
++        "inspection": "Upper and lower notices directly read for B201/B203/B205; B060 full original and lower notice directly read, with no equivalent timing banner observed at its top."
++      },
++      {
++        "sku": "B203",
++        "sourceURL": "https://fwith.co.kr/data/item/flower379/B203/main_pc.jpg",
++        "sha256": "c1bb20ce75cfd96f9f9de4ca06edaba5ffe4d46c035b25f17c7a33aa2cb94455",
++        "sameOriginalBytesAcrossAcquisitions": true,
++        "acquisitions": [
++          {
++            "researchContext": "gwangsan",
++            "checkedAtUTC": "2026-10-16T00:34:59.722697+00:00",
++            "endedAtUTC": "2026-10-16T00:35:05.880123+00:00",
++            "reportedHTTPStatus": 200,
++            "sha256IndependentlyRecomputed": "c1bb20ce75cfd96f9f9de4ca06edaba5ffe4d46c035b25f17c7a33aa2cb94455",
++            "bytes": 2485184
++          },
++          {
++            "researchContext": "damyang",
++            "checkedAtUTC": "2026-10-16T02:22:45.538338+00:00",
++            "endedAtUTC": "2026-10-16T02:22:51.421965+00:00",
++            "reportedHTTPStatus": 200,
++            "sha256IndependentlyRecomputed": "c1bb20ce75cfd96f9f9de4ca06edaba5ffe4d46c035b25f17c7a33aa2cb94455",
++            "bytes": 2485184
++          },
++          {
++            "researchContext": "gokseong",
++            "checkedAtUTC": "2026-10-16T03:30:46.509396+00:00",
++            "endedAtUTC": "2026-10-16T03:30:53.005715+00:00",
++            "reportedHTTPStatus": 200,
++            "sha256IndependentlyRecomputed": "c1bb20ce75cfd96f9f9de4ca06edaba5ffe4d46c035b25f17c7a33aa2cb94455",
++            "bytes": 2485184
++          }
++        ],
++        "upperNotice": {
++          "weekday": "평일 오후 7시 이후 주문 건 : 평일 기준 익일 오전 중으로 배송됩니다.",
++          "weekendHoliday": "주말 · 공휴일 오후 7시 이후 주문건 : 익일 오후 1시 전 후로 배송됩니다."
++        },
++        "lowerNotice": "저녁 7시 이후 주문은 주말 및 공휴일을 제외한 익일 오전 중으로 배송됩니다.",
++        "inspection": "Upper and lower notices directly read for B201/B203/B205; B060 full original and lower notice directly read, with no equivalent timing banner observed at its top."
++      },
++      {
++        "sku": "B205",
++        "sourceURL": "https://fwith.co.kr/data/item/flower379/B205/main_pc.jpg",
++        "sha256": "27a3e495b90b3409c675eb71de9fee2649a815aa06424f72f77c397782cccea0",
++        "sameOriginalBytesAcrossAcquisitions": true,
++        "acquisitions": [
++          {
++            "researchContext": "gwangsan",
++            "checkedAtUTC": "2026-10-16T00:35:04.949991+00:00",
++            "endedAtUTC": "2026-10-16T00:35:10.426590+00:00",
++            "reportedHTTPStatus": 200,
++            "sha256IndependentlyRecomputed": "27a3e495b90b3409c675eb71de9fee2649a815aa06424f72f77c397782cccea0",
++            "bytes": 2592349
++          },
++          {
++            "researchContext": "damyang",
++            "checkedAtUTC": "2026-10-16T02:22:50.595268+00:00",
++            "endedAtUTC": "2026-10-16T02:22:55.624333+00:00",
++            "reportedHTTPStatus": 200,
++            "sha256IndependentlyRecomputed": "27a3e495b90b3409c675eb71de9fee2649a815aa06424f72f77c397782cccea0",
++            "bytes": 2592349
++          },
++          {
++            "researchContext": "gokseong",
++            "checkedAtUTC": "2026-10-16T03:30:51.948504+00:00",
++            "endedAtUTC": "2026-10-16T03:30:57.330004+00:00",
++            "reportedHTTPStatus": 200,
++            "sha256IndependentlyRecomputed": "27a3e495b90b3409c675eb71de9fee2649a815aa06424f72f77c397782cccea0",
++            "bytes": 2592349
++          }
++        ],
++        "upperNotice": {
++          "weekday": "평일 오후 7시 이후 주문 건 : 평일 기준 익일 오전 중으로 배송됩니다.",
++          "weekendHoliday": "주말 · 공휴일 오후 7시 이후 주문건 : 익일 오후 1시 전 후로 배송됩니다."
++        },
++        "lowerNotice": "저녁 7시 이후 주문은 주말 및 공휴일을 제외한 익일 오전 중으로 배송됩니다.",
++        "inspection": "Upper and lower notices directly read for B201/B203/B205; B060 full original and lower notice directly read, with no equivalent timing banner observed at its top."
++      },
++      {
++        "sku": "B060",
++        "sourceURL": "https://fwith.co.kr/data/item/flower379/B060/main_pc.jpg",
++        "sha256": "67c7d7f16ca2b4bffe2694a7e2de06f41b90e5ea8fcaa57681eb2f5b8f890cfa",
++        "sameOriginalBytesAcrossAcquisitions": true,
++        "acquisitions": [
++          {
++            "researchContext": "gwangsan",
++            "checkedAtUTC": "2026-10-16T00:35:05.171766+00:00",
++            "endedAtUTC": "2026-10-16T00:35:10.194986+00:00",
++            "reportedHTTPStatus": 200,
++            "sha256IndependentlyRecomputed": "67c7d7f16ca2b4bffe2694a7e2de06f41b90e5ea8fcaa57681eb2f5b8f890cfa",
++            "bytes": 797246
++          },
++          {
++            "researchContext": "damyang",
++            "checkedAtUTC": "2026-10-16T02:22:50.787270+00:00",
++            "endedAtUTC": "2026-10-16T02:22:55.114678+00:00",
++            "reportedHTTPStatus": 200,
++            "sha256IndependentlyRecomputed": "67c7d7f16ca2b4bffe2694a7e2de06f41b90e5ea8fcaa57681eb2f5b8f890cfa",
++            "bytes": 797246
++          },
++          {
++            "researchContext": "gokseong",
++            "checkedAtUTC": "2026-10-16T03:30:52.345390+00:00",
++            "endedAtUTC": "2026-10-16T03:30:57.219565+00:00",
++            "reportedHTTPStatus": 200,
++            "sha256IndependentlyRecomputed": "67c7d7f16ca2b4bffe2694a7e2de06f41b90e5ea8fcaa57681eb2f5b8f890cfa",
++            "bytes": 797246
++          }
++        ],
++        "upperNotice": null,
++        "lowerNotice": "저녁 9시 이후 주문은 주말 및 공휴일을 제외한 익일 오전 중으로 배송됩니다.",
++        "inspection": "Upper and lower notices directly read for B201/B203/B205; B060 full original and lower notice directly read, with no equivalent timing banner observed at its top."
++      }
++    ],
++    "publishedPage": {
++      "url": "https://gwangju-gwangsan.fwith.kr/regions/suwan-funeral-wreath/",
++      "method": "GET",
++      "startedAtUTC": "2026-10-16T03:41:16.177313+00:00",
++      "status": 200,
++      "finalURL": "https://gwangju-gwangsan.fwith.kr/regions/suwan-funeral-wreath/",
++      "contentType": "text/html",
++      "bytes": 19870,
++      "sha256": "16ea3f535496cc4241364fa4d50c10ed9411feb4f10da7e3962b8a3ce5142feb",
++      "finishedAtUTC": "2026-10-16T03:41:23.135933+00:00"
++    },
++    "publishedParagraphPresent": true,
++    "affectedCopySHA256": "9a0044feabf70a7a5ae6994d2523169a48d374ae4697aeeda3ccff4f6aec0493",
++    "affectedCopyJSONPointer": "/detail/sections/4/afterList/0",
++    "affectedPublicSection": "꽃이랑 주문 상담에 필요한 내용",
++    "affectedPublishedParagraph": "늦은 시간에는 상품별 주문안내가 다릅니다. B201·B203·B205는 19시 이후, B060은 21시 이후 주문을 주말·공휴일을 제외한 익일 오전 배송으로 안내하고 있습니다. 이는 상품에 게시된 일반 안내이므로, 수완장례식장에 전할 실제 날짜와 가능시간은 해당 주문으로 상담해 드립니다.",
++    "sourceImagesChangedBetweenRetainedAndFreshAcquisitions": false
++  },
++  "judgments": {
++    "unconditionalArrivalPromise": false,
++    "whyNotUnconditional": "기존 문단은 상품에 게시된 일반 안내로 한정하고 실제 날짜와 가능시간은 해당 주문으로 상담한다고 명시한다.",
++    "incompleteScopeSummary": true,
++    "reason": "B201·B203·B205 이미지 상단의 평일/주말·공휴일 구분을 누락하고 하단의 주말·공휴일 제외 안내만 요약한다.",
++    "relationshipOfNotices": "APPLICABILITY_AND_EXCEPTION_RELATIONSHIP_UNDETERMINED",
++    "doNotConclude": "판매자 정책이 반드시 모순된다고 단정하거나 어느 고지가 우선한다고 추론하지 않는다.",
++    "policyChangeClaim": false,
++    "correctionType": "기존 원문에 이미 있던 상단 고지 누락을 보완하는 후속 원고 정정"
++  },
++  "pending": {
++    "manuscript": "새 명시적 revision으로 상하단 안내를 구분하고 실제 주문의 가능일정은 상담으로 안내",
++    "source": "검토된 새 원고와 연결 증거·해시를 소스에 반영",
++    "qa": "원고·실제 HTML·메타·FAQ·모바일/데스크톱과 관련 해시를 재검증",
++    "redeployment": "검토된 새 빌드 재배포 후 공개 GET·본문·자산·404를 재확인",
++    "currentState": "NONE_OF_CORRECTION_SOURCE_QA_REDEPLOYMENT_VERIFIED"
++  },
++  "toolReports": [
++    "Merchant GET status and timestamps are the retained acquisition tools’ reports; this reviewer independently opened image content and recomputed every retained/fresh source hash."
++  ],
++  "unverified": [
++    "The seller has not established the precedence or exact applicability relationship between the upper and lower notices.",
++    "Actual delivery day/time for a particular Gwangsan order.",
++    "Other completed sites have not been audited by this finding."
++  ],
++  "operations": {
++    "remoteWrites": false,
++    "redeployed": false
++  },
++  "privacyBoundary": "Public source URLs, original-byte hashes, public page content and review conclusions only; no private filesystem paths, conversation IDs or personal data."
++}
+--- base654dafd7/inputs/policy-amendment/review/projection-mapping.json
++++ amendment/inputs/policy-amendment/review/projection-mapping.json
+@@ -0,0 +1,20 @@
++{
++  "schema": "gwangsan-policy-review-public-safe-projection/v1",
++  "privateReviewSHA256": "4dce819ef5e1c9ac48b215c911a796dd102b3526b1492685f063299371c8c7b4",
++  "privateBindingSHA256": "86ced576296d166a47edf75a187ab932828c0eaa4dded52ef98e262eb06898c8",
++  "transformation": "All projected review/input/prior files are exact bytes. Remote-original body and builder remain private; its identity is publicly preserved by URL/commit/Gitblob/SHA256.",
++  "meaningPreserved": [
++    "Exact before/after paragraph and copy hashes",
++    "Original159/24/2/117 denominators and other historical counts/null scores",
++    "Separate6+1 source context",
++    "Only narrow manuscript acceptance; source/QA/redeployment remain pending",
++    "Original review/pending finding exact bytes and historical completion preserved"
++  ],
++  "excluded": [
++    "Private absolute paths",
++    "Conversation IDs",
++    "Raw private research",
++    "Nonessential remote tool response metadata"
++  ],
++  "staticPublicationAllowed": false
++}
+--- base654dafd7/inputs/policy-amendment/review/review-binding.json
++++ amendment/inputs/policy-amendment/review/review-binding.json
+@@ -0,0 +1,51 @@
++{
++  "schema": "gwangsan-narrow-policy-successor-review-binding/v1",
++  "pathBase": "THIS_REVIEW_PACKAGE_ROOT",
++  "review": {
++    "path": "independent-review-r2.json",
++    "bytes": 3811,
++    "sha256": "4dce819ef5e1c9ac48b215c911a796dd102b3526b1492685f063299371c8c7b4"
++  },
++  "customerCopy": {
++    "path": "inputs/customer-copy.json",
++    "bytes": 19639,
++    "sha256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72"
++  },
++  "originalCustomerCopy": {
++    "path": "inputs/original-customer-copy.json",
++    "bytes": 19040,
++    "sha256": "9a0044feabf70a7a5ae6994d2523169a48d374ae4697aeeda3ccff4f6aec0493"
++  },
++  "candidateManifest": {
++    "path": "inputs/MANIFEST.json",
++    "bytes": 852,
++    "sha256": "3525501249354912168fc1c8b44b08549fda60ca97f1fb2202adde0c32a36da1"
++  },
++  "exactVersionDiff": {
++    "path": "inputs/version-diff.json",
++    "bytes": 2001,
++    "sha256": "5789fff906efc06fa902685ea968f3dd38fa6b41188ab10240904fcc1795b7a3"
++  },
++  "reviewedDiff": {
++    "path": "reviewed-diff.json",
++    "bytes": 2600,
++    "sha256": "7b337a00331e28e74c27fbc0fbdd3d1af1daa9f2a55df36af849f9c360df4dda"
++  },
++  "sourceEvidence": {
++    "path": "source-original-identity.json",
++    "bytes": 2977,
++    "sha256": "9921f597e03f420d2eb257932259f91ad4171dcc436b6bb23360d356639edde6"
++  },
++  "priorOriginalReview": {
++    "path": "prior/r1-review-result.json",
++    "bytes": 2344,
++    "sha256": "e2d82c37a84021c281603d415fe7b4d67d98729fe09fea349906098ec8d338d6"
++  },
++  "pendingFinding": {
++    "path": "prior/policy-summary-correction-pending.json",
++    "bytes": 11727,
++    "sha256": "ea85812811e25337f7c665b41a6fb2c79d9113f645ada0cc09a5a86dde72a76f"
++  },
++  "publicationEligible": false,
++  "invalidatesOn": "Any modified bound source/paragraph or expanded scope requires a new review. This is not source/build/deploy QA."
++}
+--- base654dafd7/inputs/policy-amendment/review/reviewed-diff.json
++++ amendment/inputs/policy-amendment/review/reviewed-diff.json
+@@ -0,0 +1,25 @@
++{
++  "schema": "gwangsan-independent-narrow-policy-diff/v1",
++  "originalCopySHA256": "9a0044feabf70a7a5ae6994d2523169a48d374ae4697aeeda3ccff4f6aec0493",
++  "customerCopySHA256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72",
++  "changedLeafCount": 1,
++  "changes": [
++    {
++      "pointer": "/detail/sections/4/afterList/0",
++      "before": "늦은 시간에는 상품별 주문안내가 다릅니다. B201·B203·B205는 19시 이후, B060은 21시 이후 주문을 주말·공휴일을 제외한 익일 오전 배송으로 안내하고 있습니다. 이는 상품에 게시된 일반 안내이므로, 수완장례식장에 전할 실제 날짜와 가능시간은 해당 주문으로 상담해 드립니다.",
++      "after": "늦은 주문 안내는 상품과 게시 위치에 따라 구분됩니다. B201·B203·B205 상세 이미지 상단에는 평일 19시 이후 주문은 평일 기준 익일 오전, 주말·공휴일 19시 이후 주문은 익일 오후 1시 전후 배송으로 적혀 있습니다. 같은 이미지 하단에는 19시 이후 주문을 주말·공휴일을 제외한 익일 오전 중 배송으로 안내합니다. 두 안내의 적용범위나 예외 관계는 게시자료만으로 확정할 수 없어 어느 한쪽을 수완장례식장 주문의 확정 일정으로 안내하지 않습니다. B060은 별도로 21시 이후 주문을 주말·공휴일을 제외한 익일 오전 중 배송으로 게시하고 있으며, 이 안내만으로 주말·공휴일 도착일이나 실제 수완장례식장 주문의 가능일정을 보장하지는 않습니다. 수완장례식장에 전할 실제 날짜와 가능시간은 해당 주문으로 상담해 드립니다."
++    }
++  ],
++  "otherCustomerDataExactlyUnchanged": true,
++  "originalVisibleStrings": 117,
++  "changedVisibleStrings": 1,
++  "unchangedVisibleStrings": 116,
++  "semanticReview": {
++    "sourcePositions": "Both upper weekday/weekend-holiday statements and lower19 condition represented",
++    "B060": "Separate21 condition preserved; no imported13 exception",
++    "scope": "Applicability and exception relationship explicitly unestablished; no precedence assigned",
++    "arrivalPromise": "No unconditional arrival or weekend delivery promise; actual order consultation retained",
++    "tone": "Longer but necessary source qualification, ending with provider consultation; no invented experience or customer-only burden",
++    "originality": "Shared merchant-policy correction reuses the same factual notice. This is not a claim of new regional originality or a full-site new editorial review."
++  }
++}
+--- base654dafd7/inputs/policy-amendment/review/source-original-identity.json
++++ amendment/inputs/policy-amendment/review/source-original-identity.json
+@@ -0,0 +1,64 @@
++{
++  "schema": "gwangsan-timing-original-source-identity/v1",
++  "checkedAtUTC": "2026-10-16T03:57:56.015495+00:00",
++  "originalCustomerCopy": {
++    "repository": "joseungil-kr/fwith-site-factory",
++    "ref": "654dafd7cafa4c6a158684ac4b304ceb7a5996b5",
++    "path": "site-factory/gwangju-gwangsan-flower/inputs/reviewed-copy/customer-copy.json",
++    "url": "https://github.com/joseungil-kr/fwith-site-factory/blob/654dafd7cafa4c6a158684ac4b304ceb7a5996b5/site-factory/gwangju-gwangsan-flower/inputs/reviewed-copy/customer-copy.json",
++    "bytes": 19040,
++    "sha256": "9a0044feabf70a7a5ae6994d2523169a48d374ae4697aeeda3ccff4f6aec0493",
++    "gitBlobSHA": "985bb50cf9a0c78ef7d04843eb05e9e0e03ef3e1",
++    "verification": "Full GitHub connector content directly read, saved and independently rehashed against original candidate/local frozen copy; no write."
++  },
++  "merchantImages": [
++    {
++      "sku": "B201",
++      "url": "https://fwith.co.kr/data/item/flower379/B201/main_pc.jpg",
++      "bytes": 2457249,
++      "sha256": "69a56afede4f5cb2c4d94361f61c39deffd189ca170ee17cca0f63d290dc6ef5"
++    },
++    {
++      "sku": "B203",
++      "url": "https://fwith.co.kr/data/item/flower379/B203/main_pc.jpg",
++      "bytes": 2485184,
++      "sha256": "c1bb20ce75cfd96f9f9de4ca06edaba5ffe4d46c035b25f17c7a33aa2cb94455"
++    },
++    {
++      "sku": "B205",
++      "url": "https://fwith.co.kr/data/item/flower379/B205/main_pc.jpg",
++      "bytes": 2592349,
++      "sha256": "27a3e495b90b3409c675eb71de9fee2649a815aa06424f72f77c397782cccea0"
++    },
++    {
++      "sku": "B060",
++      "url": "https://fwith.co.kr/data/item/flower379/B060/main_pc.jpg",
++      "bytes": 797246,
++      "sha256": "67c7d7f16ca2b4bffe2694a7e2de06f41b90e5ea8fcaa57681eb2f5b8f890cfa"
++    }
++  ],
++  "merchantImagesSameAcrossOriginalAndFreshAcquisitions": true,
++  "newMerchantPolicyChangeEstablished": false,
++  "originalPolicyImagesViewed": "B201/B203/B205 upper and lower regions and B060 lower/full source directly inspected by this reviewer; applicability/precedence remains unknown.",
++  "priorPublicPageObservation": {
++    "url": "https://gwangju-gwangsan.fwith.kr/regions/suwan-funeral-wreath/",
++    "method": "GET",
++    "startedAtUTC": "2026-10-16T03:41:16.177313+00:00",
++    "status": 200,
++    "finalURL": "https://gwangju-gwangsan.fwith.kr/regions/suwan-funeral-wreath/",
++    "contentType": "text/html",
++    "bytes": 19870,
++    "sha256": "16ea3f535496cc4241364fa4d50c10ed9411feb4f10da7e3962b8a3ce5142feb",
++    "finishedAtUTC": "2026-10-16T03:41:23.135933+00:00"
++  },
++  "priorOriginalReview": {
++    "sha256": "e2d82c37a84021c281603d415fe7b4d67d98729fe09fea349906098ec8d338d6",
++    "statusUnchanged": "MANUSCRIPT_REVIEW_ACCEPTED_WITH_RENDER_PENDING"
++  },
++  "priorOriginalReviewManifest": {
++    "sha256": "c683b49847b51d25a3b89ea322cd4d6f91d6ce727ae23c2a44003a96740aa545",
++    "fileCount": 74,
++    "allOriginalFilesUnmodified": true
++  },
++  "pendingFindingSHA256": "ea85812811e25337f7c665b41a6fb2c79d9113f645ada0cc09a5a86dde72a76f"
++}
+--- base654dafd7/inputs/policy-amendment/source-evidence-binding.json
++++ amendment/inputs/policy-amendment/source-evidence-binding.json
+@@ -0,0 +1,45 @@
++{
++  "schema": "gwangsan-timing-correction-evidence-binding/v1",
++  "customerCopySHA256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72",
++  "baseSourceCommit": "654dafd7cafa4c6a158684ac4b304ceb7a5996b5",
++  "copyPointer": "/detail/sections/4/afterList/0",
++  "sourceImages": [
++    {
++      "sku": "B201",
++      "url": "https://fwith.co.kr/data/item/flower379/B201/main_pc.jpg",
++      "bytes": 2457249,
++      "sha256": "69a56afede4f5cb2c4d94361f61c39deffd189ca170ee17cca0f63d290dc6ef5"
++    },
++    {
++      "sku": "B203",
++      "url": "https://fwith.co.kr/data/item/flower379/B203/main_pc.jpg",
++      "bytes": 2485184,
++      "sha256": "c1bb20ce75cfd96f9f9de4ca06edaba5ffe4d46c035b25f17c7a33aa2cb94455"
++    },
++    {
++      "sku": "B205",
++      "url": "https://fwith.co.kr/data/item/flower379/B205/main_pc.jpg",
++      "bytes": 2592349,
++      "sha256": "27a3e495b90b3409c675eb71de9fee2649a815aa06424f72f77c397782cccea0"
++    },
++    {
++      "sku": "B060",
++      "url": "https://fwith.co.kr/data/item/flower379/B060/main_pc.jpg",
++      "bytes": 797246,
++      "sha256": "67c7d7f16ca2b4bffe2694a7e2de06f41b90e5ea8fcaa57681eb2f5b8f890cfa"
++    }
++  ],
++  "supplementalUpperClauses": 6,
++  "unresolvedApplicationScopeFacts": 1,
++  "separateB06021Retained": true,
++  "precedenceDetermined": false,
++  "actualDeliveryVerified": false,
++  "copyReviewRequired": true,
++  "damyangApprovedWordingSource": {
++    "customerCopySHA256": "3bc9a15e452efbc3afac06f366f711ac45008b136d3597a6a15d997ddfb741d0",
++    "independentReviewSHA256": "03459961bc8d1e71e80f06dfc827b02b16683bc4e5a724592b87ffa406f1a101"
++  },
++  "regionalDifference": "Only Damyang references and closing consultation context changed to Suwan funeral hall; this is a separate Gwangsan editorial review candidate, not inherited approval.",
++  "priorSourceAndCompletionEvidencePreserved": true,
++  "remoteWrites": false
++}
+--- base654dafd7/inputs/policy-amendment/version-diff.json
++++ amendment/inputs/policy-amendment/version-diff.json
+@@ -0,0 +1,18 @@
++{
++  "schema": "gwangsan-narrow-policy-copy-revision/v1",
++  "baseSourceCommit": "654dafd7cafa4c6a158684ac4b304ceb7a5996b5",
++  "baseSourcePath": "site-factory/gwangju-gwangsan-flower/inputs/reviewed-copy/customer-copy.json",
++  "originalCopySHA256": "9a0044feabf70a7a5ae6994d2523169a48d374ae4697aeeda3ccff4f6aec0493",
++  "customerCopySHA256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72",
++  "changedCustomerLeafCount": 1,
++  "changes": [
++    {
++      "pointer": "/detail/sections/4/afterList/0",
++      "before": "늦은 시간에는 상품별 주문안내가 다릅니다. B201·B203·B205는 19시 이후, B060은 21시 이후 주문을 주말·공휴일을 제외한 익일 오전 배송으로 안내하고 있습니다. 이는 상품에 게시된 일반 안내이므로, 수완장례식장에 전할 실제 날짜와 가능시간은 해당 주문으로 상담해 드립니다.",
++      "after": "늦은 주문 안내는 상품과 게시 위치에 따라 구분됩니다. B201·B203·B205 상세 이미지 상단에는 평일 19시 이후 주문은 평일 기준 익일 오전, 주말·공휴일 19시 이후 주문은 익일 오후 1시 전후 배송으로 적혀 있습니다. 같은 이미지 하단에는 19시 이후 주문을 주말·공휴일을 제외한 익일 오전 중 배송으로 안내합니다. 두 안내의 적용범위나 예외 관계는 게시자료만으로 확정할 수 없어 어느 한쪽을 수완장례식장 주문의 확정 일정으로 안내하지 않습니다. B060은 별도로 21시 이후 주문을 주말·공휴일을 제외한 익일 오전 중 배송으로 게시하고 있으며, 이 안내만으로 주말·공휴일 도착일이나 실제 수완장례식장 주문의 가능일정을 보장하지는 않습니다. 수완장례식장에 전할 실제 날짜와 가능시간은 해당 주문으로 상담해 드립니다."
++    }
++  ],
++  "otherCopyDataExactlyUnchanged": true,
++  "sourceOrDeploymentChanged": false,
++  "independentReview": null
++}
+--- base654dafd7/inputs/policy-amendment/visible-strings.json
++++ amendment/inputs/policy-amendment/visible-strings.json
+@@ -0,0 +1,470 @@
++[
++  {
++    "pointer": "/home/title",
++    "text": "광주 광산구 근조화환 가격·주문 상담 | 꽃이랑"
++  },
++  {
++    "pointer": "/home/description",
++    "text": "광주 광산구 근조화환의 기본가와 리본 상담을 안내합니다. 광주수완장례식장 상세에서 네 상품사진, 배송비 포함 예산과 빈소·일정에 따른 주문 내용을 보실 수 있습니다."
++  },
++  {
++    "pointer": "/home/h1",
++    "text": "광주 광산구로 보내는 근조화환"
++  },
++  {
++    "pointer": "/home/lead",
++    "text": "조문을 대신하거나 조의의 뜻을 더해 전하실 때, 꽃이랑에서 근조화환과 리본을 상담해 드립니다. 광주 광산구에 보내실 꽃을 준비하신다면 상품 가격대부터 말씀하셔도 좋습니다. 광주수완장례식장 주문에 필요한 내용은 아래 상세 안내에 담았습니다."
++  },
++  {
++    "pointer": "/home/sections/0/h2",
++    "text": "화환 가격과 전체 비용을 의논합니다"
++  },
++  {
++    "pointer": "/home/sections/0/paragraphs/0",
++    "text": "근조화환의 상품 기본가는 59,000원, 79,000원, 109,000원, 149,000원입니다. 배송비는 주문 시 결제하며, 광산구 배송지의 추가 배송비와 최종금액은 상담으로 안내해 드립니다. 회사나 모임의 예산이 정해져 있다면 배송비를 포함한 금액으로 이야기하겠습니다."
++  },
++  {
++    "pointer": "/home/sections/0/paragraphs/1",
++    "text": "사진을 보면서 선택하고 싶으신 분께는 광주수완장례식장 상세의 네 상품사진을 안내합니다. 각 상품의 사진과 함께 번호와 기본가를 보실 수 있고, 해당 상품의 공식 상세로 바로 연결됩니다."
++  },
++  {
++    "pointer": "/home/sections/1/h2",
++    "text": "광주수완장례식장에 전할 꽃"
++  },
++  {
++    "pointer": "/home/sections/1/paragraphs/0",
++    "text": "수완장례식장 안내에는 네 가지 화환과 리본 표현을 비롯해, 층·호실을 포함한 주문정보와 늦은 시간의 주문 상담을 정리했습니다. 준비하신 예산과 전달 희망일정을 함께 의논하실 수 있습니다."
++  },
++  {
++    "pointer": "/home/sections/1/card/title",
++    "text": "광주수완장례식장 근조화환"
++  },
++  {
++    "pointer": "/home/sections/1/card/summary",
++    "text": "사진 속 꽃의 배치와 기본가를 비교하고, 총예산·리본·주문 변경까지 이어서 살펴보실 수 있습니다."
++  },
++  {
++    "pointer": "/home/sections/1/card/ctaLabel",
++    "text": "수완장례식장 상품사진·가격 보기"
++  },
++  {
++    "pointer": "/home/sections/2/h2",
++    "text": "전하고 싶은 인사부터 시작하셔도 좋습니다"
++  },
++  {
++    "pointer": "/home/sections/2/paragraphs/0",
++    "text": "‘어떤 말을 적으면 좋을까요?’라는 질문으로 상담을 시작하셔도 됩니다. 꽃이랑은 고인을 기리는 인사와 보내는 분의 이름을 리본에 어떻게 담을지 함께 의논합니다. 개인, 회사, 모임에서 정해 두신 표현이 있으면 그 문구를 바탕으로 상담해 드립니다."
++  },
++  {
++    "pointer": "/home/cta/label",
++    "text": "광산구 화환 주문 상담 · 1844-0644"
++  },
++  {
++    "pointer": "/home/sourceHeading",
++    "text": "출처 및 확인 정보"
++  },
++  {
++    "pointer": "/home/sourceIntro",
++    "text": "상품 기본가와 정책은 2026년 10월 16일(한국시간)에 확인한 꽃이랑 게시자료를 기준으로 합니다. 시설 자료와 상품별 출처는 광주수완장례식장 상세에 연결했습니다."
++  },
++  {
++    "pointer": "/home/sourceLink/label",
++    "text": "수완장례식장 안내의 상품·시설 출처"
++  },
++  {
++    "pointer": "/detail/title",
++    "text": "광주수완장례식장 근조화환 가격·사진·리본 | 꽃이랑"
++  },
++  {
++    "pointer": "/detail/description",
++    "text": "광주수완장례식장에 전할 근조화환 네 종류를 상품사진과 기본가 59,000~149,000원으로 안내합니다. 배송비 포함 예산, 조의 리본, 층·호실과 희망일정에 따른 주문을 상담합니다."
++  },
++  {
++    "pointer": "/detail/h1",
++    "text": "광주수완장례식장에 전하는 근조화환"
++  },
++  {
++    "pointer": "/detail/lead/0",
++    "text": "광주수완장례식장에 조의를 전하실 근조화환을 꽃이랑에서 안내합니다. 상품 기본가는 59,000원부터 149,000원까지이며, 네 상품의 사진과 리본 문구를 함께 상담해 드립니다. 길게 표현하기 어려운 인사도 간결한 말로 담으실 수 있습니다."
++  },
++  {
++    "pointer": "/detail/lead/1",
++    "text": "직접 찾아뵙는 일정과 별도로 꽃을 준비하시거나 여러 분의 이름을 모아 보내실 때, 정해 놓으신 예산을 바탕으로 이야기하겠습니다. 꽃의 모습이 먼저 마음에 드셨다면 그 상품번호로 문의하셔도 좋습니다. 받는 빈소와 전달을 원하시는 일정은 주문 상담에서 함께 다룹니다."
++  },
++  {
++    "pointer": "/detail/sections/0/h2",
++    "text": "네 상품사진으로 보는 색과 배치"
++  },
++  {
++    "pointer": "/detail/sections/0/paragraphs/0",
++    "text": "59,000원의 근조 3단 화환 B201은 흰색·노란색 중심의 꽃과 위쪽 노란 장식이 보입니다. 79,000원의 근조 고급 3단 화환 B203에는 상단에 분홍빛 꽃이 더해져 있습니다. 두 상품의 꽃 배치와 리본이 놓인 모습을 사진으로 비교하실 수 있습니다."
++  },
++  {
++    "pointer": "/detail/sections/0/paragraphs/1",
++    "text": "근조 특대 3단 화환 B205는 109,000원이며, 윗부분의 노란 원형 장식과 옆쪽 노란 꽃이 눈에 띕니다. 149,000원의 근조 특특대 3단 화환 B060은 가운데와 양옆의 분홍빛 꽃이 보이는 구성입니다."
++  },
++  {
++    "pointer": "/detail/sections/0/paragraphs/2",
++    "text": "각 카드의 버튼은 해당 상품의 공식 상세로 연결됩니다. 사진 속 색이나 배치가 궁금하실 때에는 상품번호로 문의하시면 됩니다. 실제 주문에 쓰이는 소재와 구성은 계절·지역의 수급에 따라 달라질 수 있습니다."
++  },
++  {
++    "pointer": "/detail/sections/1/h2",
++    "text": "배송비를 포함해 준비하실 금액"
++  },
++  {
++    "pointer": "/detail/sections/1/paragraphs/0",
++    "text": "표시된 가격은 상품 기본가입니다. 배송비는 주문 시 결제하며, 광산구의 추가 배송비와 주문 전체 금액은 상담에서 안내합니다. 배송비를 포함한 총예산을 기준으로 선택 가능한 상품을 의논하겠습니다."
++  },
++  {
++    "pointer": "/detail/sections/1/paragraphs/1",
++    "text": "회사에서 정한 한도나 함께 모은 예산이 있을 때는 ‘배송까지 포함해 ○만 원 정도로 준비하려 합니다’라고 문의하셔도 됩니다. 선택하신 상품이 있다면 그 상품의 기본가에 어떤 비용이 더해지는지, 최종금액이 얼마인지 주문을 정하기 전에 상담해 드립니다."
++  },
++  {
++    "pointer": "/detail/sections/2/h2",
++    "text": "짧은 조의의 말과 함께 보내는 이름"
++  },
++  {
++    "pointer": "/detail/sections/2/paragraphs/0",
++    "text": "리본 문구로는 ‘삼가 조의를 표합니다’, ‘깊은 애도를 표합니다’, ‘삼가 고인의 명복을 빕니다’ 등을 쓰실 수 있습니다. 종교나 관계에 맞춰 평소 사용하시는 표현이 있다면 그 뜻을 담아 상담합니다. 정해진 문장을 그대로 쓰셔도 되고, 한글 인사와 ‘謹弔’ 같은 한자 표현을 두고 의논하셔도 됩니다."
++  },
++  {
++    "pointer": "/detail/sections/2/paragraphs/1",
++    "text": "보내는 이름은 개인 성함이나 회사·단체명으로 적습니다. 여러 분이 함께 준비하실 때의 예시는 ‘○○모임 일동’, 회사에서 전하실 때는 ‘주식회사 ○○ 임직원 일동’입니다. 실명과 단체명은 보내시는 분들이 정하신 표기를 바탕으로 주문합니다."
++  },
++  {
++    "pointer": "/detail/sections/2/paragraphs/2",
++    "text": "인사말을 아직 정하지 못하셨다고 상품 상담을 미루실 필요는 없습니다. 전하고 싶은 표현이 있으면 그 부분부터 들려주세요. 꽃이랑에서 상품 선택과 리본 문구를 함께 상담해 드리겠습니다."
++  },
++  {
++    "pointer": "/detail/sections/3/h2",
++    "text": "수완장례식장의 층·호실과 전달 일정"
++  },
++  {
++    "pointer": "/detail/sections/3/paragraphs/0",
++    "text": "광주수완장례식장은 광산구 수완로 6(신가동)에 있으며, 시설 대표전화는 062-959-4444입니다. 장례식장 위치·시설 문의를 위한 번호이고, 이 안내의 꽃 상품과 리본 주문은 꽃이랑에서 상담합니다."
++  },
++  {
++    "pointer": "/detail/sections/3/paragraphs/1",
++    "text": "공식 빈소 안내에는 1층 특실과 3층 특실이 따로 표시되어 있습니다. 특실로 보내는 주문도 현재 안내받으신 층과 호실을 함께 기준으로 삼습니다."
++  },
++  {
++    "pointer": "/detail/sections/3/paragraphs/2",
++    "text": "전달 희망일정은 장례식장의 화환 반입·수령 조건과 함께 상담합니다. 발인 전에 전하고 싶으신 경우에도 실제 배송 가능 여부를 의논한 뒤 주문을 정합니다. 시설의 수령 조건이나 도착시각이 희망시간만으로 확정되지는 않습니다."
++  },
++  {
++    "pointer": "/detail/sections/4/h2",
++    "text": "꽃이랑 주문 상담에 필요한 내용"
++  },
++  {
++    "pointer": "/detail/sections/4/paragraphs/0",
++    "text": "주문 상담은 1844-0644로 연결됩니다. 아래 네 가지를 함께 말씀하시면 상품과 리본, 배송 일정을 이어서 의논할 수 있습니다. 아직 정해지지 않은 항목이 있다면 알고 계신 내용으로 상품 상담부터 시작하셔도 됩니다."
++  },
++  {
++    "pointer": "/detail/sections/4/list/0",
++    "text": "상품번호 또는 배송비를 포함한 총예산"
++  },
++  {
++    "pointer": "/detail/sections/4/list/1",
++    "text": "광주수완장례식장 층·호실과 고인 또는 상주명"
++  },
++  {
++    "pointer": "/detail/sections/4/list/2",
++    "text": "전달 희망 날짜·시각, 발인 전 전달을 원하시면 발인 일정"
++  },
++  {
++    "pointer": "/detail/sections/4/list/3",
++    "text": "리본 인사말, 보내는 이름과 주문자 연락처"
++  },
++  {
++    "pointer": "/detail/sections/4/afterList/0",
++    "text": "늦은 주문 안내는 상품과 게시 위치에 따라 구분됩니다. B201·B203·B205 상세 이미지 상단에는 평일 19시 이후 주문은 평일 기준 익일 오전, 주말·공휴일 19시 이후 주문은 익일 오후 1시 전후 배송으로 적혀 있습니다. 같은 이미지 하단에는 19시 이후 주문을 주말·공휴일을 제외한 익일 오전 중 배송으로 안내합니다. 두 안내의 적용범위나 예외 관계는 게시자료만으로 확정할 수 없어 어느 한쪽을 수완장례식장 주문의 확정 일정으로 안내하지 않습니다. B060은 별도로 21시 이후 주문을 주말·공휴일을 제외한 익일 오전 중 배송으로 게시하고 있으며, 이 안내만으로 주말·공휴일 도착일이나 실제 수완장례식장 주문의 가능일정을 보장하지는 않습니다. 수완장례식장에 전할 실제 날짜와 가능시간은 해당 주문으로 상담해 드립니다."
++  },
++  {
++    "pointer": "/detail/sections/4/afterList/1",
++    "text": "화환은 생화와 조화를 혼합해 사용합니다. 뒷면 종이인 후다지의 부착 유무는 지역에 따라 다르며, 별도 화환 수거는 하지 않습니다. 장례 후 처리는 장례식장의 안내에 따라 진행하실 수 있습니다."
++  },
++  {
++    "pointer": "/detail/faqHeading",
++    "text": "주문 후 변경·취소와 상품에 관한 질문"
++  },
++  {
++    "pointer": "/detail/faq/0/question",
++    "text": "주문한 뒤 빈소나 리본 내용이 바뀌면 어떻게 하나요?"
++  },
++  {
++    "pointer": "/detail/faq/0/answer",
++    "text": "기존 주문을 찾을 수 있는 정보와 변경할 내용을 꽃이랑에 알려주시면 진행 상태를 바탕으로 상담합니다. 제작·출고가 어디까지 진행되었는지에 따라 바꿀 수 있는 내용이 달라질 수 있습니다. 빈소 변경과 함께 전달 희망일정도 달라졌다면 두 내용을 묶어 문의하시면 됩니다."
++  },
++  {
++    "pointer": "/detail/faq/1/question",
++    "text": "제작하거나 출고한 화환도 취소할 수 있나요?"
++  },
++  {
++    "pointer": "/detail/faq/1/answer",
++    "text": "꽃이랑 게시정책에는 제작 완료된 꽃 상품은 교환·환불 불가라는 항목과, 상품 출고 후 취소를 원할 때 배송비를 제외한 금액을 환불한다는 항목이 함께 있습니다. 일괄적으로 취소 가능 여부를 정하기보다 해당 주문의 진행 상태와 사유를 놓고 적용 조건을 상담합니다."
++  },
++  {
++    "pointer": "/detail/faq/2/question",
++    "text": "사진과 다른 꽃이나 손상된 상품을 받았을 때는요?"
++  },
++  {
++    "pointer": "/detail/faq/2/answer",
++    "text": "불량·파손 또는 주문한 것과 전혀 다른 상품이 배송되었을 때는 환불 가능한 조건이 있습니다. 계절·지역에 같은 소재가 없어 이미지와 달라진 경우에는 그 차이만으로 취소·환불이 불가하다는 안내입니다. 배송 완료 후 하루 이상 지난 경우와 주문자의 배송지 정보 오류·수취거부도 교환·환불 불가 항목에 포함됩니다. 해당 상황을 꽃이랑에 말씀해 주시면 주문별로 상담하겠습니다."
++  },
++  {
++    "pointer": "/detail/faq/3/question",
++    "text": "결제한 뒤 배송 불가나 품절 안내를 받으면요?"
++  },
++  {
++    "pointer": "/detail/faq/3/answer",
++    "text": "결제 완료 후 배송이 불가능하거나 재고가 없을 때는 전액 환불한다는 공식 규정이 있습니다. 고객 사정으로 취소하는 경우와는 구분되는 조건입니다. 환불에 관한 문의는 결제한 주문을 기준으로 이어갑니다."
++  },
++  {
++    "pointer": "/detail/closing",
++    "text": "수완장례식장에 전할 꽃을 준비하실 때, 예산과 인사말 중 먼저 정해진 내용부터 이야기해 주세요. 꽃이랑에서 그 내용을 바탕으로 상품과 리본 주문을 상담해 드리겠습니다."
++  },
++  {
++    "pointer": "/detail/cta/label",
++    "text": "수완장례식장 화환 주문 상담 · 1844-0644"
++  },
++  {
++    "pointer": "/detail/sourceHeading",
++    "text": "출처 및 확인 정보"
++  },
++  {
++    "pointer": "/detail/sourceIntro",
++    "text": "2026년 10월 16일(한국시간)에 꽃이랑 상품사진·가격·정책과 시설 운영자 자료를 확인했습니다. 시설 주소와 대표전화는 보건복지부 2026년 4월 1일 기준 명부 및 광주수완장례식장 오시는길을 대조했으며, 층·호실은 공식 빈소 안내를 참고했습니다."
++  },
++  {
++    "pointer": "/detail/sources/0/label",
++    "text": "보건복지부 장례식장 현황 · 2026년 4월 1일 기준"
++  },
++  {
++    "pointer": "/detail/sources/1/label",
++    "text": "광주수완장례식장 오시는길"
++  },
++  {
++    "pointer": "/detail/sources/2/label",
++    "text": "광주수완장례식장 빈소·접객실 안내"
++  },
++  {
++    "pointer": "/detail/sources/3/label",
++    "text": "꽃이랑 근조 3단 화환 B201"
++  },
++  {
++    "pointer": "/detail/sources/4/label",
++    "text": "꽃이랑 근조 고급 3단 화환 B203"
++  },
++  {
++    "pointer": "/detail/sources/5/label",
++    "text": "꽃이랑 근조 특대 3단 화환 B205"
++  },
++  {
++    "pointer": "/detail/sources/6/label",
++    "text": "꽃이랑 근조 특특대 3단 화환 B060"
++  },
++  {
++    "pointer": "/detail/sources/7/label",
++    "text": "꽃이랑 화환 소재·수거 안내"
++  },
++  {
++    "pointer": "/detail/sources/8/label",
++    "text": "꽃이랑 교환·환불 안내"
++  },
++  {
++    "pointer": "/productCards/0/name",
++    "text": "근조 3단 화환"
++  },
++  {
++    "pointer": "/productCards/0/priceLabel",
++    "text": "상품 기본가 59,000원"
++  },
++  {
++    "pointer": "/productCards/0/shippingLabel",
++    "text": "배송비·최종금액은 주문 상담"
++  },
++  {
++    "pointer": "/productCards/0/description",
++    "text": "흰색·노란색 꽃과 위쪽의 노란 장식이 보입니다."
++  },
++  {
++    "pointer": "/productCards/0/photoAlt",
++    "text": "흰색과 노란색 꽃 위로 노란 장식이 놓인 B201 근조 3단 화환 상품사진"
++  },
++  {
++    "pointer": "/productCards/0/ctaLabel",
++    "text": "B201 공식 상품 상세"
++  },
++  {
++    "pointer": "/productCards/1/name",
++    "text": "근조 고급 3단 화환"
++  },
++  {
++    "pointer": "/productCards/1/priceLabel",
++    "text": "상품 기본가 79,000원"
++  },
++  {
++    "pointer": "/productCards/1/shippingLabel",
++    "text": "배송비·최종금액은 주문 상담"
++  },
++  {
++    "pointer": "/productCards/1/description",
++    "text": "상단 분홍빛 꽃이 흰색·노란색 구성에 더해져 있습니다."
++  },
++  {
++    "pointer": "/productCards/1/photoAlt",
++    "text": "상단 분홍빛 꽃과 흰색·노란색 배치의 B203 근조 고급 3단 화환 상품사진"
++  },
++  {
++    "pointer": "/productCards/1/ctaLabel",
++    "text": "B203 공식 상품 상세"
++  },
++  {
++    "pointer": "/productCards/2/name",
++    "text": "근조 특대 3단 화환"
++  },
++  {
++    "pointer": "/productCards/2/priceLabel",
++    "text": "상품 기본가 109,000원"
++  },
++  {
++    "pointer": "/productCards/2/shippingLabel",
++    "text": "배송비·최종금액은 주문 상담"
++  },
++  {
++    "pointer": "/productCards/2/description",
++    "text": "노란 원형 윗장식과 옆쪽의 노란 꽃을 볼 수 있습니다."
++  },
++  {
++    "pointer": "/productCards/2/photoAlt",
++    "text": "위쪽 노란 원형 장식과 측면 노란 꽃이 보이는 B205 근조 특대 3단 화환 상품사진"
++  },
++  {
++    "pointer": "/productCards/2/ctaLabel",
++    "text": "B205 공식 상품 상세"
++  },
++  {
++    "pointer": "/productCards/3/name",
++    "text": "근조 특특대 3단 화환"
++  },
++  {
++    "pointer": "/productCards/3/priceLabel",
++    "text": "상품 기본가 149,000원"
++  },
++  {
++    "pointer": "/productCards/3/shippingLabel",
++    "text": "배송비·최종금액은 주문 상담"
++  },
++  {
++    "pointer": "/productCards/3/description",
++    "text": "중앙과 양옆에 놓인 분홍빛 꽃이 보이는 사진입니다."
++  },
++  {
++    "pointer": "/productCards/3/photoAlt",
++    "text": "중앙과 양옆 분홍빛 꽃이 들어간 B060 근조 특특대 3단 화환 상품사진"
++  },
++  {
++    "pointer": "/productCards/3/ctaLabel",
++    "text": "B060 공식 상품 상세"
++  },
++  {
++    "pointer": "/support/title",
++    "text": "광산구 수완장례식장 근조화환 상세 찾기 | 꽃이랑"
++  },
++  {
++    "pointer": "/support/description",
++    "text": "광주수완장례식장 근조화환의 사진·가격 안내로 이어집니다. 리본과 전체 비용, 전달 일정 및 주문 변경에 관한 상세 내용을 제공합니다."
++  },
++  {
++    "pointer": "/support/h1",
++    "text": "광산구 근조화환 상세 안내"
++  },
++  {
++    "pointer": "/support/body",
++    "text": "광주수완장례식장에 보내실 화환의 사진과 주문 상담 내용을 아래에서 보실 수 있습니다."
++  },
++  {
++    "pointer": "/support/card/title",
++    "text": "광주수완장례식장 상품·주문 안내"
++  },
++  {
++    "pointer": "/support/card/summary",
++    "text": "59,000~149,000원 기본가의 네 상품과 리본 표현, 층·호실을 포함한 주문정보를 담았습니다."
++  },
++  {
++    "pointer": "/support/card/ctaLabel",
++    "text": "수완장례식장 상세 안내 열기"
++  },
++  {
++    "pointer": "/notFound/title",
++    "text": "찾으시는 페이지가 없습니다 | 꽃이랑 광주 광산구"
++  },
++  {
++    "pointer": "/notFound/description",
++    "text": "요청하신 주소에는 안내가 없습니다. 꽃이랑 광주 광산구 홈에서 근조화환 상품과 주문 상담 안내로 이동하실 수 있습니다."
++  },
++  {
++    "pointer": "/notFound/h1",
++    "text": "찾으시는 안내 페이지가 없습니다"
++  },
++  {
++    "pointer": "/notFound/body",
++    "text": "광산구 근조화환 홈으로 돌아가 상품과 주문 상담 내용을 이용하실 수 있습니다."
++  },
++  {
++    "pointer": "/notFound/cta/label",
++    "text": "광산구 근조화환 홈으로 돌아가기"
++  },
++  {
++    "pointer": "/sharedUI/brand",
++    "text": "꽃이랑"
++  },
++  {
++    "pointer": "/sharedUI/skipLink",
++    "text": "본문으로 바로 가기"
++  },
++  {
++    "pointer": "/sharedUI/menuLabel",
++    "text": "주요 메뉴"
++  },
++  {
++    "pointer": "/sharedUI/menuOpen",
++    "text": "메뉴 열기"
++  },
++  {
++    "pointer": "/sharedUI/menuClose",
++    "text": "메뉴 닫기"
++  },
++  {
++    "pointer": "/sharedUI/homeLink",
++    "text": "광주 광산구 근조화환 홈"
++  },
++  {
++    "pointer": "/sharedUI/detailLink",
++    "text": "수완장례식장 상품·리본"
++  },
++  {
++    "pointer": "/sharedUI/phoneLink",
++    "text": "꽃이랑 상담 1844-0644"
++  },
++  {
++    "pointer": "/sharedUI/breadcrumbLabel",
++    "text": "현재 위치"
++  },
++  {
++    "pointer": "/sharedUI/productSampleNotice",
++    "text": "게시된 상품사진은 예시입니다. 계절·지역별 소재 수급에 따라 실제 구성에 차이가 있을 수 있습니다."
++  },
++  {
++    "pointer": "/sharedBannerAlt/message",
++    "text": "흰 장미와 잎을 배경으로 꽃으로 전하는 마음을 안내하는 꽃이랑 배너. 전화 1844-0644."
++  },
++  {
++    "pointer": "/sharedBannerAlt/budget",
++    "text": "겹겹의 흰 꽃을 배경으로 상품 사진과 가격 비교를 안내하는 꽃이랑 배너. 전화 1844-0644."
++  },
++  {
++    "pointer": "/sharedBannerAlt/consultation",
++    "text": "흰 꽃과 봉오리를 배경으로 상품 선택과 리본 문구 상담을 안내하는 꽃이랑 배너. 전화 1844-0644."
++  }
++]
+--- base654dafd7/release-adapter/release/bounded-contract.json
++++ amendment/release-adapter/release/bounded-contract.json
+@@ -6,9 +6,9 @@
+   "crossRegionPublicationPrerequisites": false,
+   "frozenInputsManifestSHA256": "af97369e9140157e118e52d46e7e94b8612e4cc4a83fb7808572e2a33c7d4336",
+   "frozenSource": {
+-    "frozenFiles": 59,
+-    "frozenTreeSHA256": "791ce17e1c824806f22380248dac47beb602eb7bf205771f32f331721b87a5a6",
+-    "privateManifestSHA256": "a5eb69f3a7b3705819d6b2228770bcbfd132faf22bb3795224474e1bfeea2019",
++    "frozenFiles": 77,
++    "frozenTreeSHA256": "9f145c55ef0effa823d1c645142662312fe6d635b7c7c3493eec73b396975bfd",
++    "privateManifestSHA256": "0c3864efe17af5c6f752a9dd623d00b2b8520889222bf258d2fc7af8b15d9955",
+     "privateOutputFiles": 16,
+     "repository": "joseungil-kr/fwith-site-factory",
+     "requiredOriginalInputs": 25,
+@@ -24,6 +24,13 @@
+   ],
+   "origin": "https://gwangju-gwangsan.fwith.kr",
+   "originStatus": "PROPOSED_REGISTRY_BRANCH_PLAN_CLEAR_PROVIDER_OWNERSHIP_UNVERIFIED",
++  "policyAmendment": {
++    "baseSourceCommit": "654dafd7cafa4c6a158684ac4b304ceb7a5996b5",
++    "manifestSHA256": "5f3744b594ccdfd69b1333f0b91491b3fc9eff219759bc8f436085a731299aed",
++    "pendingFindingResolved": false,
++    "resolvedCopySHA256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72",
++    "scope": "ONE_TIMING_PARAGRAPH_ONLY"
++  },
+   "primaryCount": 2,
+   "productionLaunchGateStatus": "PENDING_OWN_SOURCE_CONTROL_RUNNER_PIXEL_HOST_AND_HTTP_GATES",
+   "requiredEvidence": [
+--- base654dafd7/release-adapter/release/preview-equivalence.json
++++ amendment/release-adapter/release/preview-equivalence.json
+@@ -2,10 +2,10 @@
+   "allowedGeneratedBodyChanges": [],
+   "browserVerified": false,
+   "htmlBodies": {
+-    "404.html": "48a589839515561d1eeb78f9df5457cff30a5d7c0e7b89ffd24edacd8e3c3b89",
+-    "index.html": "74e896d414c90f4cdd8b3d2ced86dd0a27fac2b7bef5395e3a0ceea42b9c8496",
+-    "regions/index.html": "91d43fed4f3299186e64c8644b609f70d76d2a06b4db4d424059ce509356c86b",
+-    "regions/suwan-funeral-wreath/index.html": "0f3850592978db57f9ac8e8bae57d9f81d7a3796ef93e4e71d251a54d1353928"
++    "404.html": "9fb26732d406529e0ab9c1ad5bdad8870fdd3de7dbf7bbee228c741c420650ab",
++    "index.html": "124f85defc74c635f22a817adbf24d5f2397ccf0d8ebca600452baca9c114ba0",
++    "regions/index.html": "af47bdb2609433b9ec533a078668bfbc4ae9bd6e4a900a65efb1edc9ff0a8f37",
++    "regions/suwan-funeral-wreath/index.html": "0844ab99ab8f48e78078ae515ba5cb36eced94d2bfb073e026e41583a24fe8a1"
+   },
+   "htmlPrefixes": {
+     "404.html": "<!DOCTYPE html><html lang=\"ko\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>찾으시는 페이지가 없습니다 | 꽃이랑 광주 광산구</title><meta name=\"description\" content=\"요청하신 주소에는 안내가 없습니다. 꽃이랑 광주 광산구 홈에서 근조화환 상품과 주문 상담 안내로 이동하실 수 있습니다.\"><meta name=\"robots\" content=\"noindex,nofollow,noarchive\"><link rel=\"icon\" href=\"/favicon.svg\" type=\"image/svg+xml\"><meta name=\"theme-color\" content=\"#3a214f\"><link rel=\"stylesheet\" href=\"/_astro/CopyPage.BudSIMTy.css\"></head>",
+@@ -13,10 +13,10 @@
+     "regions/index.html": "<!DOCTYPE html><html lang=\"ko\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>광산구 수완장례식장 근조화환 상세 찾기 | 꽃이랑</title><meta name=\"description\" content=\"광주수완장례식장 근조화환의 사진·가격 안내로 이어집니다. 리본과 전체 비용, 전달 일정 및 주문 변경에 관한 상세 내용을 제공합니다.\"><meta name=\"robots\" content=\"noindex,nofollow,noarchive\"><link rel=\"icon\" href=\"/favicon.svg\" type=\"image/svg+xml\"><meta property=\"og:type\" content=\"website\"><meta property=\"og:title\" content=\"광산구 수완장례식장 근조화환 상세 찾기 | 꽃이랑\"><meta property=\"og:description\" content=\"광주수완장례식장 근조화환의 사진·가격 안내로 이어집니다. 리본과 전체 비용, 전달 일정 및 주문 변경에 관한 상세 내용을 제공합니다.\"><meta property=\"og:locale\" content=\"ko_KR\"><meta name=\"theme-color\" content=\"#3a214f\"><link rel=\"stylesheet\" href=\"/_astro/CopyPage.BudSIMTy.css\"></head>",
+     "regions/suwan-funeral-wreath/index.html": "<!DOCTYPE html><html lang=\"ko\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>광주수완장례식장 근조화환 가격·사진·리본 | 꽃이랑</title><meta name=\"description\" content=\"광주수완장례식장에 전할 근조화환 네 종류를 상품사진과 기본가 59,000~149,000원으로 안내합니다. 배송비 포함 예산, 조의 리본, 층·호실과 희망일정에 따른 주문을 상담합니다.\"><meta name=\"robots\" content=\"noindex,nofollow,noarchive\"><link rel=\"icon\" href=\"/favicon.svg\" type=\"image/svg+xml\"><meta property=\"og:type\" content=\"website\"><meta property=\"og:title\" content=\"광주수완장례식장 근조화환 가격·사진·리본 | 꽃이랑\"><meta property=\"og:description\" content=\"광주수완장례식장에 전할 근조화환 네 종류를 상품사진과 기본가 59,000~149,000원으로 안내합니다. 배송비 포함 예산, 조의 리본, 층·호실과 희망일정에 따른 주문을 상담합니다.\"><meta property=\"og:locale\" content=\"ko_KR\"><meta name=\"theme-color\" content=\"#3a214f\"><link rel=\"stylesheet\" href=\"/_astro/CopyPage.BudSIMTy.css\"></head>"
+   },
+-  "privateTreeSHA256": "791ce17e1c824806f22380248dac47beb602eb7bf205771f32f331721b87a5a6",
++  "privateTreeSHA256": "9f145c55ef0effa823d1c645142662312fe6d635b7c7c3493eec73b396975bfd",
+   "publicHTTPVerified": false,
+   "schemaVersion": 1,
+-  "sourceManifestSHA256": "a5eb69f3a7b3705819d6b2228770bcbfd132faf22bb3795224474e1bfeea2019",
++  "sourceManifestSHA256": "0c3864efe17af5c6f752a9dd623d00b2b8520889222bf258d2fc7af8b15d9955",
+   "sourceRevision": null,
+   "sourceScope": "exact-local-private-build-awaiting-remote-save",
+   "staticAssets": {
+--- base654dafd7/release-adapter/release/private-source-manifest.json
++++ amendment/release-adapter/release/private-source-manifest.json
+@@ -1,355 +1,386 @@
+ [
+   {
+     "bytes": 971,
+-    "gitBlobSHA1": "95ec7cd5f7576dd6846573857ce25ec6fe86327d",
+     "path": "SOURCE-SAVE.ko.md",
+     "sha256": "34dc47536213a6b56b07f09f4e8b17ed70c80fecc43b4683b2104c2b5577f0ea"
+   },
+   {
+     "bytes": 1143,
+-    "gitBlobSHA1": "ccedf751ae8a8dd93e869e9879f67aa803030280",
+     "path": "candidate/README.md",
+     "sha256": "218a88168711843e3473bb474dfccde0c906a50519969efe96dec2fb69eb86aa"
+   },
+   {
+     "bytes": 195,
+-    "gitBlobSHA1": "82f6d0be120f5eda5607bf72b630851af3c06109",
+     "path": "candidate/astro.config.mjs",
+     "sha256": "265fcd8f030bbddb75daf4616110c85f6ca3f0365c149846f0465ae5d93f851e"
+   },
+   {
+     "bytes": 183465,
+-    "gitBlobSHA1": "bda26bcd47b304601966607cbfd9a6119a0a4331",
+     "path": "candidate/package-lock.json",
+     "sha256": "a8a6b55f06bdda3cd4675ffd2b384d46d8011ece0c1952d2ca74929d7899a1b3"
+   },
+   {
+     "bytes": 679,
+-    "gitBlobSHA1": "34787f60e9a6594e13fdd7338cb412f9b514e05b",
+     "path": "candidate/package.json",
+     "sha256": "b6c14c8f02de7d8a6cc7387b7d5c257b7c5f78394bee7027cbeb54f773fbeed1"
+   },
+   {
+     "bytes": 48,
+-    "gitBlobSHA1": "f826a043be1bab90080cfa49e9e0f8f524bae11b",
+     "path": "candidate/public/_headers",
+     "sha256": "70c1d7c3bf45b229d1c596c803ee0db0560a811557f7b56f38f5fef0885033da"
+   },
+   {
+     "bytes": 185,
+-    "gitBlobSHA1": "04825f793dd3f36db0ac15ad82dbf1d954746f8e",
+     "path": "candidate/public/favicon.svg",
+     "sha256": "7ad52153b6e98b0b1a93bf546b2c1f3a9d9724a450703086fcedcb30fd05c3b4"
+   },
+   {
+     "bytes": 84178,
+-    "gitBlobSHA1": "24a9c466cfb2116b6432389c6bbb1c226c9ce4ca",
+     "path": "candidate/public/images/products/B060.jpg",
+     "sha256": "a336ca8434249feccafceb257c10acf1a3a81693b794682d29f0bf5d0057c1e3"
+   },
+   {
+     "bytes": 75206,
+-    "gitBlobSHA1": "52f55c45c05a9a31488b8ac03a39975fba93c601",
+     "path": "candidate/public/images/products/B201.jpg",
+     "sha256": "7556b6d29ff31e23da6e8e9cfc42b246974e8f8d5e3d3ba5b789fcd8341667f3"
+   },
+   {
+     "bytes": 79304,
+-    "gitBlobSHA1": "566809de3fd7367a506e267f8ecbf1b81207cdca",
+     "path": "candidate/public/images/products/B203.jpg",
+     "sha256": "0db53ecefe21b765d042fc4ba96a58fff5287be7b15fbf26ff8d4e92095a5114"
+   },
+   {
+     "bytes": 86279,
+-    "gitBlobSHA1": "ab914ee924fd0bf0e39a2061cf74e2ef550186b9",
+     "path": "candidate/public/images/products/B205.jpg",
+     "sha256": "1873eb9037478de487a4141e0974b90c994cfd0432e07af818799947ce0db43e"
+   },
+   {
+     "bytes": 145664,
+-    "gitBlobSHA1": "39b72a72f140a8f6aa600670b6232f0b5fdfadff",
+     "path": "candidate/public/images/shared-banners/flower-budget.webp",
+     "sha256": "081198095eb005603721be7c778f4d477f4dd93dcf96f0c261f18bf06bb91421"
+   },
+   {
+     "bytes": 126306,
+-    "gitBlobSHA1": "1bea27c47de84c8b5e31ae4db72db2e3cb173ff8",
+     "path": "candidate/public/images/shared-banners/flower-consultation.webp",
+     "sha256": "d6654aa44c365f64e330d0be2042972d3320fad54231425aaffca1dfdcd25ebc"
+   },
+   {
+     "bytes": 171698,
+-    "gitBlobSHA1": "3425794d6d72bff1eb87c2d01e1650807e3ec055",
+     "path": "candidate/public/images/shared-banners/flower-message.webp",
+     "sha256": "a5ecdeb1914566a32d45b084351e2782fc8b234e9a4fbb8635a60a9921cac5f5"
+   },
+   {
+     "bytes": 26,
+-    "gitBlobSHA1": "1f53798bb4fe33c86020be7f10c44f29486fd190",
+     "path": "candidate/public/robots.txt",
+     "sha256": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1"
+   },
+   {
+     "bytes": 109,
+-    "gitBlobSHA1": "174236b02907054b14d53e0bcc6430be3194cb22",
+     "path": "candidate/public/sitemap.xml",
+     "sha256": "63835cfef3e52851c5fda3c47603a3a40f7da0784eedf8c8b068effb20e07ac2"
+   },
+   {
+     "bytes": 3956,
+-    "gitBlobSHA1": "d7dc525e65c47b571942ecbbc58f0b89933e2900",
+     "path": "candidate/scripts/html_surface.py",
+     "sha256": "e49cd25260885371b02441772643e09904103838f0297a97f9fb28a22dd26c77"
+   },
+   {
+-    "bytes": 17545,
+-    "gitBlobSHA1": "8374f66b45216346d1d7c7880983dbebb2da0475",
++    "bytes": 18440,
+     "path": "candidate/scripts/qa_donggu.py",
+-    "sha256": "244589f88ce04747a41088ed8a06fc8d5874be29a1318dad9976549e4cd87eeb"
+-  },
+-  {
+-    "bytes": 13341,
+-    "gitBlobSHA1": "2b541a1a9c84d27d0910c2092642c8d42db3dbdd",
++    "sha256": "1276b7dec59f0f5f6b417c83c7ddb873ad50fa12901173a0c75ed0f0629bfed1"
++  },
++  {
++    "bytes": 14196,
+     "path": "candidate/scripts/test_donggu.py",
+-    "sha256": "0bc16128284c52d9649a63e678f029ee75f28465b4c45ee4f346e28d4f853932"
++    "sha256": "0cc26b643bd3dde4b1eb3ef6995060d45e6264de279bbf398e008f009928388e"
+   },
+   {
+     "bytes": 282,
+-    "gitBlobSHA1": "067a1abfa24d11eead2de48319100a1054c7186f",
+     "path": "candidate/scripts/verify_inputs.mjs",
+     "sha256": "e8c26503257d355645d5c1f432ac62ce9b560eea9eecba5a85f59379d22e6937"
+   },
+   {
+     "bytes": 4036,
+-    "gitBlobSHA1": "685c3274f6acfdd2ca70f7086276d6b8ed970ffb",
+     "path": "candidate/src/components/CopyPage.astro",
+     "sha256": "cdf92e188d4c513ca32f17ade50e961af303eb38140f7e78b4d57818214a5b14"
+   },
+   {
+     "bytes": 765,
+-    "gitBlobSHA1": "6a3081cf05914c8f8a52f58b63c64fcac1708f02",
+     "path": "candidate/src/components/ProductCards.astro",
+     "sha256": "0312f5140257773357a2d8d60a3803f05ef67f7ec1c0b3acbdf1c342596823a9"
+   },
+   {
+     "bytes": 719,
+-    "gitBlobSHA1": "938b80166a93576199678aec36d0a4e30adf4b9f",
+     "path": "candidate/src/components/SharedFlowerBanner.astro",
+     "sha256": "3ed942641de73175de467e47f793e817f13281a63e0dd365ee99f22698ada05f"
+   },
+   {
+     "bytes": 835,
+-    "gitBlobSHA1": "cd310b78f10119e6bf2ccc2b7afe1406d75f1c3f",
+     "path": "candidate/src/data/input-binding.json",
+     "sha256": "794d87f795e76c7b1adbbfb4cc9bba023d89882fed838c7ea567e245e27163f3"
+   },
+   {
+     "bytes": 3374,
+-    "gitBlobSHA1": "1868740583014e6010810b63fc91b42d197bc420",
+     "path": "candidate/src/data/page-map.json",
+     "sha256": "49fee0f0b3fb0211b6d36bc4bb052e059cd18c38002566ee06c641ea8b508e10"
+   },
+   {
+     "bytes": 527,
+-    "gitBlobSHA1": "95ffe8c1790cff37406d09ffd6cb48da27b24ba6",
+     "path": "candidate/src/data/reuse-provenance.json",
+     "sha256": "3c19c42345675a43b2f6d7de4e61ae34a2f3895f1f77ba729b2148b6ee183fda"
+   },
+   {
+     "bytes": 1981,
+-    "gitBlobSHA1": "dbe5b790ad72a4e32656d953fca37206536713c3",
+     "path": "candidate/src/layouts/BaseLayout.astro",
+     "sha256": "25abe00c39c836a73f62d129777cecd2471da41c6663df486f5cddf13e94fb02"
+   },
+   {
+-    "bytes": 11245,
+-    "gitBlobSHA1": "c3ba8446006a3b6fa91b8db99704ca121130e2b1",
++    "bytes": 15100,
+     "path": "candidate/src/lib/donggu-runtime.mjs",
+-    "sha256": "19b2f24c553b45f172eddb5b1a403a5988baabc2c7cc66bfe1f94e4575b60a58"
++    "sha256": "b3df02b51787fffb4dc7b6d9223a60a99378660928797e026bfbe523870b4ad6"
+   },
+   {
+     "bytes": 138,
+-    "gitBlobSHA1": "a9d94793cf5d8fa03a1cacecc28b5f00ed4f794c",
+     "path": "candidate/src/pages/404.astro",
+     "sha256": "0ddfa72af9362bad1282a90cb9eb692095e09abe4ffa21fd574b48ddaffc2bf6"
+   },
+   {
+     "bytes": 138,
+-    "gitBlobSHA1": "99dd626a4a37f33e54956736572290e492a62b09",
+     "path": "candidate/src/pages/index.astro",
+     "sha256": "8d93d9db28848402c4aabfa97f45fa5462688d7f040aacaa8f5f5bb51359eb6b"
+   },
+   {
+     "bytes": 144,
+-    "gitBlobSHA1": "2c6aa981c0f844b0063c3c52d678fb2c46984f16",
+     "path": "candidate/src/pages/regions/index.astro",
+     "sha256": "b290d2eea79da6781a36502b69454effdc478eed89e6f7aaf6180156740f8961"
+   },
+   {
+     "bytes": 144,
+-    "gitBlobSHA1": "7f0bdcceda56013b50be3478b1f2b8f643f6d6a5",
+     "path": "candidate/src/pages/regions/suwan-funeral-wreath.astro",
+     "sha256": "46bc2e8cf1ba4fbc07fce674b68b8f3153db1dc03ca8d13bb6cef02ae2bb017c"
+   },
+   {
+     "bytes": 354,
+-    "gitBlobSHA1": "3581cf91e9ac2df43de3681bf0bf3f30cf376ae0",
+     "path": "candidate/src/styles/donggu.css",
+     "sha256": "c5b3f43fd4373f41ff4d493f638cabf1de6f627f3324e9571bf71c9edde8d798"
+   },
+   {
+     "bytes": 3460,
+-    "gitBlobSHA1": "ab17922557c53bf74aae36685b6d2c4d3510fd3f",
+     "path": "candidate/src/styles/gangdong.css",
+     "sha256": "aafe7f284fd747bc77c623a6d42eab9de1e08cfeb5f296b99dc3be94e0ab8d37"
+   },
+   {
+     "bytes": 12668,
+-    "gitBlobSHA1": "163077042c48125bc63589dd49cf39d6808ee272",
+     "path": "candidate/src/styles/global.css",
+     "sha256": "cf0df5fc762e609e81811a10df82c410c468985aa4709409819e4018f9e1bf49"
+   },
+   {
+     "bytes": 533,
+-    "gitBlobSHA1": "1e07aee17fa5e087401fadf204bdd71f81029140",
+     "path": "candidate/src/styles/mokpo.css",
+     "sha256": "b1bd651ec7c1d1187e432fc703dda97190ff65d40a243194472ef68963398650"
+   },
+   {
+     "bytes": 473,
+-    "gitBlobSHA1": "595bc8bd470babf3273c0038363e20d03f1c53c6",
+     "path": "candidate/src/styles/suncheon.css",
+     "sha256": "de0fb4d20a1534d35f62be97dc1e861b17e5c642179a968b3b13dec873a27739"
+   },
+   {
+     "bytes": 994,
+-    "gitBlobSHA1": "cb9a9facb39776e30c171d40f6eee6481211fe28",
+     "path": "candidate/src/styles/yeosu.css",
+     "sha256": "f048cdd75da8e75f6c33d0ea5d16973082b3f1d1995480e169a87a88f3f436eb"
+   },
+   {
+-    "bytes": 6576,
+-    "gitBlobSHA1": "4af932ddc2edb05abe2d581d9c265820503a0d5d",
++    "bytes": 8153,
+     "path": "candidate/tests/donggu-runtime.test.mjs",
+-    "sha256": "19e7644af82259a4d3251cfff661d5485f3f6446a67e0ac84347bb446732be81"
++    "sha256": "97092d51d0583ad17eec38664a27e0b93b50624bbfea6c9b540e797d80dcdf31"
+   },
+   {
+     "bytes": 164,
+-    "gitBlobSHA1": "88ec675de2f8641efc51443f75daf29a63908b4e",
+     "path": "candidate/tsconfig.json",
+     "sha256": "30f71be41480ad700252d3e1f9efa859b73250c1898ba2f04f5da824c74e124b"
+   },
+   {
++    "bytes": 9006,
++    "path": "inputs/policy-amendment/MANIFEST.json",
++    "sha256": "5f3744b594ccdfd69b1333f0b91491b3fc9eff219759bc8f436085a731299aed"
++  },
++  {
++    "bytes": 671,
++    "path": "inputs/policy-amendment/README.ko.md",
++    "sha256": "ee14f9b919147af08defb85db7a0e7c4fe40f7796508315ed3a5084032ec4e39"
++  },
++  {
++    "bytes": 8856,
++    "path": "inputs/policy-amendment/SOURCE-MAP.json",
++    "sha256": "cca3c513477a48a96a60ceb26b99101a3ce4265acaf8e14a056611780b2f4ad1"
++  },
++  {
++    "bytes": 19639,
++    "path": "inputs/policy-amendment/customer-copy.json",
++    "sha256": "349aed309651211833a240394361352b95f8830c0f61e5829419047df74a7c72"
++  },
++  {
++    "bytes": 9329,
++    "path": "inputs/policy-amendment/customer-question-completeness.json",
++    "sha256": "b9ac8455261759fe9a7f1604f0d4f241c00fd93c4e19587ea67aee2c55f0b913"
++  },
++  {
++    "bytes": 46646,
++    "path": "inputs/policy-amendment/output-context-map.json",
++    "sha256": "012cb6340e7e382296bbb41fa2e93ce2e791c05b93e3ea5b45000aa83635133d"
++  },
++  {
++    "bytes": 8357,
++    "path": "inputs/policy-amendment/purchase-intent-metadata.json",
++    "sha256": "de54a84410188f3ccc081ba39a979717d18c885208caa07c4b87638cbea8ef9d"
++  },
++  {
++    "bytes": 2761,
++    "path": "inputs/policy-amendment/review/REVIEW-MANIFEST.json",
++    "sha256": "4fd0b57835b554796a03668f50587c4952e53a0d432b05657aaa5fd0f3ced261"
++  },
++  {
++    "bytes": 2465,
++    "path": "inputs/policy-amendment/review/REVIEW.ko.md",
++    "sha256": "e2a2192f3d10026b6b25adbe25e92cb201a6a923f305934a565d325b824ccd4a"
++  },
++  {
++    "bytes": 3811,
++    "path": "inputs/policy-amendment/review/independent-review-r2.json",
++    "sha256": "4dce819ef5e1c9ac48b215c911a796dd102b3526b1492685f063299371c8c7b4"
++  },
++  {
++    "bytes": 11727,
++    "path": "inputs/policy-amendment/review/prior/policy-summary-correction-pending.json",
++    "sha256": "ea85812811e25337f7c665b41a6fb2c79d9113f645ada0cc09a5a86dde72a76f"
++  },
++  {
++    "bytes": 998,
++    "path": "inputs/policy-amendment/review/projection-mapping.json",
++    "sha256": "cff36cdca78a0e5b36484cf1025f7b6aac21d3ffd0a82ae883a54c3cc800d797"
++  },
++  {
++    "bytes": 1818,
++    "path": "inputs/policy-amendment/review/review-binding.json",
++    "sha256": "86ced576296d166a47edf75a187ab932828c0eaa4dded52ef98e262eb06898c8"
++  },
++  {
++    "bytes": 2600,
++    "path": "inputs/policy-amendment/review/reviewed-diff.json",
++    "sha256": "7b337a00331e28e74c27fbc0fbdd3d1af1daa9f2a55df36af849f9c360df4dda"
++  },
++  {
++    "bytes": 2977,
++    "path": "inputs/policy-amendment/review/source-original-identity.json",
++    "sha256": "9921f597e03f420d2eb257932259f91ad4171dcc436b6bb23360d356639edde6"
++  },
++  {
++    "bytes": 1864,
++    "path": "inputs/policy-amendment/source-evidence-binding.json",
++    "sha256": "57dfb73278dce2f2a4b1daabaa6ac474dc02b718104df685060867680f5e15ff"
++  },
++  {
++    "bytes": 2001,
++    "path": "inputs/policy-amendment/version-diff.json",
++    "sha256": "5789fff906efc06fa902685ea968f3dd38fa6b41188ab10240904fcc1795b7a3"
++  },
++  {
++    "bytes": 22105,
++    "path": "inputs/policy-amendment/visible-strings.json",
++    "sha256": "48588fee9795d132683846a4bd27fc97fed1e461ab3c37cc78faa71d1525ac66"
++  },
++  {
+     "bytes": 4396,
+-    "gitBlobSHA1": "1647dac642395d55d74a0fd6495bf60491597ac2",
+     "path": "inputs/required-originals.json",
+     "sha256": "af97369e9140157e118e52d46e7e94b8612e4cc4a83fb7808572e2a33c7d4336"
+   },
+   {
+     "bytes": 8545,
+-    "gitBlobSHA1": "8ad95f7bad068a0b9a07708a5faf861b43aade8e",
+     "path": "inputs/reviewed-copy/SOURCE-MAP.json",
+     "sha256": "6d93779b287f658ee4fd4864f4b61b65d22e0204e540b17cbab5b5fdb7df63a5"
+   },
+   {
+     "bytes": 4966,
+-    "gitBlobSHA1": "49cf392490c3188427516df4faf9b252df0c0ef1",
+     "path": "inputs/reviewed-copy/asset-manifest.json",
+     "sha256": "6006ad798dcfbeff380f2d296e54dc665ac416d39536f893280452f9fccb3a23"
+   },
+   {
+     "bytes": 5488,
+-    "gitBlobSHA1": "7a944b6da2aa097f91d2776a352b58461e1b9bc6",
+     "path": "inputs/reviewed-copy/body-count-and-overlap.json",
+     "sha256": "71c5eaaf4a11e15ff8a878000953d36e403db2e1b341812d29eededf45ec17d1"
+   },
+   {
+     "bytes": 19040,
+-    "gitBlobSHA1": "985bb50cf9a0c78ef7d04843eb05e9e0e03ef3e1",
+     "path": "inputs/reviewed-copy/customer-copy.json",
+     "sha256": "9a0044feabf70a7a5ae6994d2523169a48d374ae4697aeeda3ccff4f6aec0493"
+   },
+   {
+     "bytes": 8915,
+-    "gitBlobSHA1": "49526c10b6c393dc74e39d672d761b3c4424108f",
+     "path": "inputs/reviewed-copy/customer-question-completeness.json",
+     "sha256": "7ddb2692873f027e68fb0f756a961213e2947a3e188806d82998f789d3dcb75c"
+   },
+   {
+     "bytes": 63563,
+-    "gitBlobSHA1": "a2bd2238b146cc7918cac4313e6540b3b944ee36",
+     "path": "inputs/reviewed-copy/independent-review/customer-context-review.json",
+     "sha256": "eeecba211694893382df15e13892a74b372bd765c03c9c52f1527cc40d726bd5"
+   },
+   {
+     "bytes": 154427,
+-    "gitBlobSHA1": "a4fdaf11a11705a805f03bec99cc598fb436a239",
+     "path": "inputs/reviewed-copy/independent-review/original-row-review.json",
+     "sha256": "010c816182d0256668d59a7b62a731ff6691c0d736881c9c41327a2b3689b6f8"
+   },
+   {
+     "bytes": 8735,
+-    "gitBlobSHA1": "427d676cbb8e1732c176678eef4b3305752b7e37",
+     "path": "inputs/reviewed-copy/independent-review/question-review.json",
+     "sha256": "f0b077111dc74d9ea98c813dbdd3311f798ffd21a58037453cae51cfb3053757"
+   },
+   {
+     "bytes": 12415,
+-    "gitBlobSHA1": "29eba7c26f0d7f4733f173df028e4a92f4f3765d",
+     "path": "inputs/reviewed-copy/independent-review/review-bindings.json",
+     "sha256": "424a2790d568089627829b38bc5b1770fbb9d8651ca8b74f332adeba6d49a824"
+   },
+   {
+     "bytes": 12994,
+-    "gitBlobSHA1": "d922fa60586fee0762faa43db1c817e39b886625",
+     "path": "inputs/reviewed-copy/independent-review/review-manifest-r1.json",
+     "sha256": "c683b49847b51d25a3b89ea322cd4d6f91d6ce727ae23c2a44003a96740aa545"
+   },
+   {
+     "bytes": 2344,
+-    "gitBlobSHA1": "951da18d3e77f76ae108ed852e969a91896f70cf",
+     "path": "inputs/reviewed-copy/independent-review/review-result.json",
+     "sha256": "e2d82c37a84021c281603d415fe7b4d67d98729fe09fea349906098ec8d338d6"
+   },
+   {
+     "bytes": 93117,
+-    "gitBlobSHA1": "a77cb1bd6052c5d3cdb75a65bf753377179b1dd3",
+     "path": "inputs/reviewed-copy/original-clause-review-input.json",
+     "sha256": "1bb16bac8df557ff5d64c04008cc5a83f7705549c25d26110e56c2dcb0e4fa6b"
+   },
+   {
+     "bytes": 45716,
+-    "gitBlobSHA1": "0ad574d40274313b881325924c95023bbc7ad945",
+     "path": "inputs/reviewed-copy/output-context-map.json",
+     "sha256": "94b76e176b696c30c14097019744e14dde6af27f306e49d8accd36dd694df5d4"
+   },
+   {
+     "bytes": 8026,
+-    "gitBlobSHA1": "e8acf11c7b34aadc3cf6211f4eabff2c110fed47",
+     "path": "inputs/reviewed-copy/purchase-intent-metadata.json",
+     "sha256": "81d363a72efb9ba216b3e7ea3fbc5bc57ae8e27a972f45030e59e5c9a9c45aea"
+   },
+   {
+     "bytes": 16901,
+-    "gitBlobSHA1": "6994dcbf16a22a444ce093e26b1b5dbc1ca62343",
+     "path": "inputs/reviewed-copy/render-plan.json",
+     "sha256": "eb39fac5d44663e89fe14003f26984b2cafc088e70e97e65a09e7ac85dbe294c"
+   },
+   {
+     "bytes": 11583,
+-    "gitBlobSHA1": "766a9237a917dedf9f4acbe93066b5b437f0fbb6",
+     "path": "inputs/reviewed-copy/review-input-manifest-r1.json",
+     "sha256": "8f93bca65e13286c2c76a29379ede8cfb827b49a4a39efc155b8d89aeb9ee18b"
+   },
+   {
+     "bytes": 21506,
+-    "gitBlobSHA1": "72eeff77965ef8bc68fa5187dad8c9c5cc409d49",
+     "path": "inputs/reviewed-copy/visible-strings.json",
+     "sha256": "d2dd6a8926876c84872bafd60fa1f0038c2fd49b9fb8f33e947d8f8292510830"
+   },
+   {
+     "bytes": 5009,
+-    "gitBlobSHA1": "b0464bc15bdbf73518cfa2430be863d05570d8b2",
+     "path": "inputs/reviewed-input-projection.json",
+     "sha256": "9a031a51c6b172efbfc1e1c4be45a87924736509953064f5b48c0415bfec18f2"
+   }
+--- base654dafd7/release-adapter/scripts/gwangsan_adapter.py
++++ amendment/release-adapter/scripts/gwangsan_adapter.py
+@@ -11,9 +11,9 @@
+ SOURCE=ADAPTER.parent
+ CANDIDATE=SOURCE/'candidate'
+ PREVIEW_SHA='local-inspection'
+-MANIFEST_SHA='a5eb69f3a7b3705819d6b2228770bcbfd132faf22bb3795224474e1bfeea2019'
+-TREE_SHA='791ce17e1c824806f22380248dac47beb602eb7bf205771f32f331721b87a5a6'
+-CONTRACT_SHA='ec08e94c62e8b43e765f2e4bb4ea17c3bdfd93340b3fe150ee8a71a21b8b2421'
++MANIFEST_SHA='0c3864efe17af5c6f752a9dd623d00b2b8520889222bf258d2fc7af8b15d9955'
++TREE_SHA='9f145c55ef0effa823d1c645142662312fe6d635b7c7c3493eec73b396975bfd'
++CONTRACT_SHA='79047267be04e4b51e3ccd709404a83720d245138d81ecafb128785178a3b661'
+ BOUNDARY=['SITE_ORIGIN','SITE_URL','PUBLIC_SITE_URL','PRODUCTION_ORIGIN','DEPLOY_ENV','DEPLOY_TARGET','ALLOW_PRODUCTION','SITE_RELEASE_MODE','SITE_INDEXABLE','SITE_RELEASE_BINDING_PATH','SITE_RELEASE_BINDING_SHA256','CLOUDFLARE_API_TOKEN','CLOUDFLARE_ACCOUNT_ID','PRODUCTION_APPROVED','OWNERSHIP_VERIFIED','INDEXNOW_ENABLED','PUBLIC_APPROVED']
+ def require(ok,reason):
+  if not ok:raise ValueError(reason)
+@@ -38,7 +38,7 @@
+ 
+ def frozen_source(root=SOURCE):
+  raw=read(ADAPTER/'release/private-source-manifest.json');require(sha(raw)==MANIFEST_SHA,'frozen_manifest_changed');rows=json.loads(raw)
+- require(len(rows)==59 and len({r['path'] for r in rows})==59,'frozen_denominator_changed')
++ require(len(rows)==77 and len({r['path'] for r in rows})==77,'frozen_denominator_changed')
+  require(sha(''.join(f"{r['sha256']}  {r['path']}\n" for r in sorted(rows,key=lambda r:r['path'])).encode())==TREE_SHA,'frozen_tree_changed')
+  root=Path(root).resolve()
+  for row in rows:
+--- base654dafd7/release-adapter/scripts/gwangsan_release.mjs
++++ amendment/release-adapter/scripts/gwangsan_release.mjs
+@@ -13,17 +13,17 @@
+ export const ROUTES=['/','/regions/suwan-funeral-wreath/'];
+ export const HTML_ROUTES=['/','/regions/',ROUTES[1],'/404.html'];
+ export const PROOF={origin:ORIGIN,path:'/39c4ed924bc6084c670a963c26d9f018.txt',sha256:'5da3864d5327c6e4e41e6eef12510004b2302f55c3bc61593d7d49c1797739b5'};
+-export const PRIVATE_TREE_SHA='791ce17e1c824806f22380248dac47beb602eb7bf205771f32f331721b87a5a6';
++export const PRIVATE_TREE_SHA='9f145c55ef0effa823d1c645142662312fe6d635b7c7c3493eec73b396975bfd';
+ export const sha=b=>createHash('sha256').update(b).digest('hex');
+ export const require=(ok,reason)=>{if(!ok)throw new Error(reason)};
+ const same=isDeepStrictEqual;
+ export function read(p){const s=fs.lstatSync(p);require(s.isFile()&&!s.isSymbolicLink(),'regular_file_required');return fs.readFileSync(p)}
+ export function frozenSource(root=SOURCE_ROOT){
+  const raw=read(path.join(ADAPTER_ROOT,'release/private-source-manifest.json')),rows=JSON.parse(raw);
+- require(rows.length===59,'frozen_source_denominator');
++ require(rows.length===77,'frozen_source_denominator');
+  const sorted=rows.slice().sort((a,b)=>a.path<b.path?-1:a.path>b.path?1:0).map(r=>`${r.sha256}  ${r.path}\n`).join('');
+  require(sha(sorted)===PRIVATE_TREE_SHA,'frozen_manifest_changed');
+- require(new Set(rows.map(r=>r.path)).size===59,'duplicate_frozen_path');
++ require(new Set(rows.map(r=>r.path)).size===77,'duplicate_frozen_path');
+  for(const row of rows){
+   require(typeof row.path==='string'&&(row.path==='SOURCE-SAVE.ko.md'||row.path.startsWith('candidate/')||row.path.startsWith('inputs/'))&&!path.isAbsolute(row.path)&&!row.path.split('/').some(part=>part==='..'||part==='.'||part.startsWith('.')),'unsafe_manifest_path');
+   const target=path.join(root,row.path);let cursor=root;for(const part of row.path.split('/')){cursor=path.join(cursor,part);require(!fs.lstatSync(cursor).isSymbolicLink(),'source_symlink_forbidden');}const bytes=read(target);require(sha(bytes)===row.sha256&&bytes.length===row.bytes,'frozen_source_changed:'+row.path);
+--- base654dafd7/release-adapter/scripts/gwangsan_release_output.py
++++ amendment/release-adapter/scripts/gwangsan_release_output.py
+@@ -8,7 +8,7 @@
+ import re
+ import xml.etree.ElementTree as ET
+ 
+-EQUIVALENCE_SHA='c670a86adbefd94df63e51b5572be1a467be09dd642659832e9f1116a83efdb7'
++EQUIVALENCE_SHA='250841e6a47bf9ad8ea83d167a5e35b9407ff8b10093e735d83da54f38c19acb'
+ EQUIVALENCE_PATH=Path(__file__).resolve().parents[1]/'release/preview-equivalence.json'
+ 
+ ORIGIN = 'https://gwangju-gwangsan.fwith.kr'
+--- base654dafd7/release-adapter/scripts/test_gwangsan_adapter.py
++++ amendment/release-adapter/scripts/test_gwangsan_adapter.py
+@@ -3,7 +3,7 @@
+ from pathlib import Path
+ import gwangsan_adapter as a
+ class AdapterTests(unittest.TestCase):
+- def test_exact_saved_source(self):self.assertEqual(len(a.frozen_source()),59)
++ def test_exact_saved_source(self):self.assertEqual(len(a.frozen_source()),77)
+  def test_original_build_env_allowed(self):self.assertEqual(a.private_environment({})['ASTRO_TELEMETRY_DISABLED'],'1')
+  def test_private_dist_exact(self):self.assertTrue(a.verify_private_dist(a.CANDIDATE/'dist'))
+  def test_production_command_is_fail_closed(self):

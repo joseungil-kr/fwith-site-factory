@@ -1,0 +1,191 @@
+{
+  "schema": "gwangsan-policy-amendment-independent-zip-reproduction/v1",
+  "archive": {
+    "archiveName": "gwangsan-policy-source-r2.zip",
+    "archiveBytes": 1054267,
+    "archiveSHA256": "05c81e347b16f4c0f96a7a21e97fcdfaad185cb6a1d5eb905483c1917f4ce92c"
+  },
+  "sourceFiles": 92,
+  "sourceTreeSHA256": "f27905b27ae97982d0caf0e8e5f052bb2406b02ba076a1f5aee418d9786b205b",
+  "authorEvidenceCopied": false,
+  "authorDistOrFixturesCopied": false,
+  "freshFixturesGeneratedFromRebuiltPrivateDist": true,
+  "sourceBytesUnchangedAfterTests": true,
+  "runtime": {
+    "source": "Existing dependency cache, no install or update",
+    "exactTopLevelLockVersions": {
+      "astro": "7.3.5",
+      "@astrojs/sitemap": "3.7.4",
+      "@astrojs/check": "0.9.10",
+      "typescript": "5.9.3"
+    },
+    "allTransitiveCachePackageBytesVerified": false
+  },
+  "commands": [
+    {
+      "name": "verify-inputs",
+      "command": [
+        "node",
+        "scripts/verify_inputs.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 0.079,
+      "log": "logs/verify-inputs.log",
+      "rawLogSHA256": "e2f88c244819f5a6a26273243148328ece657733f1e0578e4b53096a4a55795a",
+      "publicLogSHA256": "e2f88c244819f5a6a26273243148328ece657733f1e0578e4b53096a4a55795a",
+      "redaction": "Only local workspace and temporary fixture path roots replaced."
+    },
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/astro/bin/astro.mjs",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 2.995,
+      "log": "logs/typecheck.log",
+      "rawLogSHA256": "33b47c5ef43ef10ff69150531d91464ba7b52007a86b69f8821855d739182a8b",
+      "publicLogSHA256": "68d7cf2d05b0cfac53a1f32b01cc02deccae79582d56f28611a7969d3dde15b2",
+      "redaction": "Only local workspace and temporary fixture path roots replaced."
+    },
+    {
+      "name": "build-private",
+      "command": [
+        "node",
+        "node_modules/astro/bin/astro.mjs",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 0.902,
+      "log": "logs/build-private.log",
+      "rawLogSHA256": "7c09e4d1a605f60876636e205395cbb2cf4bc972a32e17a5de4fe780b19e52bf",
+      "publicLogSHA256": "7f7bb07ecaf4d3771f949757745edb553602a85ab7b3d9f46bd01ac3ef0c896e",
+      "redaction": "Only local workspace and temporary fixture path roots replaced."
+    },
+    {
+      "name": "private-qa",
+      "command": [
+        "python3",
+        "scripts/qa_donggu.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.857,
+      "log": "logs/private-qa.log",
+      "rawLogSHA256": "9ef4cb1c4b2ae8d6be8ad2cae5e5c95ff7ac3bce7f6406e4369798ab714dddf2",
+      "publicLogSHA256": "9ef4cb1c4b2ae8d6be8ad2cae5e5c95ff7ac3bce7f6406e4369798ab714dddf2",
+      "redaction": "Only local workspace and temporary fixture path roots replaced."
+    },
+    {
+      "name": "private-node",
+      "command": [
+        "node",
+        "--test",
+        "tests/donggu-runtime.test.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 0.224,
+      "log": "logs/private-node.log",
+      "rawLogSHA256": "2e15537bffc4f815e3642ee5c18c15a32575f4053c45c6d5d35a51b6dccb19c8",
+      "publicLogSHA256": "2e15537bffc4f815e3642ee5c18c15a32575f4053c45c6d5d35a51b6dccb19c8",
+      "redaction": "Only local workspace and temporary fixture path roots replaced."
+    },
+    {
+      "name": "private-python",
+      "command": [
+        "python3",
+        "scripts/test_donggu.py"
+      ],
+      "exitCode": 0,
+      "seconds": 24.427,
+      "log": "logs/private-python.log",
+      "rawLogSHA256": "2a6edb2f8e0a03891e5d378a9cf40bb4828d9dbd7b3c06b2180054302e5b5bb2",
+      "publicLogSHA256": "2a6edb2f8e0a03891e5d378a9cf40bb4828d9dbd7b3c06b2180054302e5b5bb2",
+      "redaction": "Only local workspace and temporary fixture path roots replaced."
+    },
+    {
+      "name": "adapter-node",
+      "command": [
+        "node",
+        "--test",
+        "../release-adapter/release-tests/gwangsan-release.test.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 0.234,
+      "log": "logs/adapter-node.log",
+      "rawLogSHA256": "5f9962849c8e9066e1e243936f643ec804c4e6e2dc34983589fb9c4d5b94e6ac",
+      "publicLogSHA256": "5f9962849c8e9066e1e243936f643ec804c4e6e2dc34983589fb9c4d5b94e6ac",
+      "redaction": "Only local workspace and temporary fixture path roots replaced."
+    },
+    {
+      "name": "adapter-python",
+      "command": [
+        "python3",
+        "../release-adapter/scripts/test_gwangsan_adapter.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.343,
+      "log": "logs/adapter-python.log",
+      "rawLogSHA256": "7d7611a4e7e8bb8af4332766476a060f614695fcc2f713b572783fd7d32c953d",
+      "publicLogSHA256": "7d7611a4e7e8bb8af4332766476a060f614695fcc2f713b572783fd7d32c953d",
+      "redaction": "Only local workspace and temporary fixture path roots replaced."
+    },
+    {
+      "name": "output-python",
+      "command": [
+        "python3",
+        "../release-adapter/scripts/test_gwangsan_release_output.py"
+      ],
+      "exitCode": 0,
+      "seconds": 1.999,
+      "log": "logs/output-python.log",
+      "rawLogSHA256": "8752ba14e1b7b30ee0c30fbded4e5017ecbbaa009d25dd3b53d3fc7cb0f19311",
+      "publicLogSHA256": "8752ba14e1b7b30ee0c30fbded4e5017ecbbaa009d25dd3b53d3fc7cb0f19311",
+      "redaction": "Only local workspace and temporary fixture path roots replaced."
+    },
+    {
+      "name": "node-python-parity",
+      "command": [
+        "python3",
+        "../release-adapter/scripts/test_gwangsan_node_python_parity.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.217,
+      "log": "logs/node-python-parity.log",
+      "rawLogSHA256": "05f57eb182ab5d7cfb16a8ba38ac6c9b49a505d3c7f6841b56824ac3aab0f2d4",
+      "publicLogSHA256": "05f57eb182ab5d7cfb16a8ba38ac6c9b49a505d3c7f6841b56824ac3aab0f2d4",
+      "redaction": "Only local workspace and temporary fixture path roots replaced."
+    }
+  ],
+  "allTenCommandsExitZero": true,
+  "testSuites": {
+    "private-node": 73,
+    "private-python": 88,
+    "adapter-node": 36,
+    "adapter-python": 30,
+    "output-python": 55,
+    "node-python-parity": 1
+  },
+  "testCases": 283,
+  "independentAssertions": {
+    "positive": 80,
+    "negative": 32
+  },
+  "privateFiles": 16,
+  "productionLikeFiles": 18,
+  "outputFilesComparedAgainstAuthorAndBaseline": 34,
+  "baselineOutputAllowedChanges": [
+    "One approved paragraph at detail /detail/sections/4/afterList/0",
+    "Four HTML data-copy-sha markers"
+  ],
+  "actualRemoteRunner": false,
+  "reviewHarnessRecovery": {
+    "initialCountParser": "Node emitted the human-readable ℹ tests summary, while the reviewer count parser initially expected # tests. All test commands had already exited zero.",
+    "correction": "Accept both exact Node summary prefixes; reran the entire independent assertion script successfully.",
+    "sourceEdits": 0
+  },
+  "authorRecoveryNotNewReviewClaim": {
+    "authorReported": "Historical59 count assertion was changed to actual77, before the received frozen ZIP.",
+    "independentlyVerified": "The final ZIP count assertion is77 and all283 tests passed in the independent replay."
+  }
+}
