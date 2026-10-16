@@ -61,13 +61,13 @@ jobs:
           unset SITE_RELEASE_MODE SITE_INDEXABLE SITE_URL SITE_RELEASE_BINDING_PATH SITE_RELEASE_BINDING_SHA256
           npm run build 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/preview-build.log"
           npm test 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/preview-native-tests.log"
+          python3 "$GITHUB_WORKSPACE/target/site-factory/damyang-flower/release-adapter/scripts/test_damyang_runner_output.py" 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/production-mutations.log"
       - name: Build production metadata with byte-identical customer body and assets
         working-directory: target/site-factory/damyang-flower/candidate
         run: |
           set -euo pipefail
           node "$GITHUB_WORKSPACE/target/site-factory/damyang-flower/release-adapter/scripts/build_damyang_release.mjs" 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/production-build.log"
           node --test "$GITHUB_WORKSPACE/target/site-factory/damyang-flower/release-adapter/release-tests/"*.test.mjs 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/production-native-tests.log"
-          python3 "$GITHUB_WORKSPACE/target/site-factory/damyang-flower/release-adapter/scripts/test_damyang_runner_output.py" 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/production-mutations.log"
       - name: Verify and package exact 16-file production artifact
         env:
           NATIVE_GATES_PASSED: 'true'
