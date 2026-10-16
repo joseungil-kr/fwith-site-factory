@@ -88,6 +88,14 @@ def envelope_diagnostic(account,path,obj):
  checks={'object':is_object,'onlyAllowedTopLevelKeys':is_object and set(obj)<={'success','errors','messages','result','result_info'},'successIsTrue':is_object and obj.get('success') is True,'errorsIsEmptyArray':is_object and obj.get('errors')==[],'resultPresent':is_object and 'result' in obj,'messagesAbsentOrArray':is_object and ('messages' not in obj or type(obj['messages']) is list)}
  return {'schema':'gwangsan-provider-envelope-diagnostic/v1','endpoint':label,'responseType':types.get(type(obj),'other'),'expectedFields':fields,'checks':checks}
 
+def domain_null_envelope(account,path,obj):
+ # Exact observed domains-list representation only; retain original nulls in memory.
+ # This is not an API permission change or a general nullable-error fallback.
+ return (path=='/accounts/'+account+'/workers/domains' and type(obj) is dict
+  and set(obj)=={'success','errors','messages','result','result_info'}
+  and obj['success'] is True and obj['errors'] is None and obj['messages'] is None
+  and type(obj['result']) is list and type(obj['result_info']) is dict)
+
 def provider_get(env,opener=None):
  account=env.get('CLOUDFLARE_ACCOUNT_ID','');token=env.get('CLOUDFLARE_API_TOKEN','')
  require(re.fullmatch('[0-9a-fA-F]{32}',account) and sha(account.encode())==ACCOUNT_SHA,'accepted_account_configuration_required')
@@ -113,13 +121,16 @@ def provider_get(env,opener=None):
    obj=json.loads(raw,object_pairs_hook=unique,parse_constant=lambda value:require(False,'provider_nonfinite_json'))
   except ValueError:raise ValueError('provider_json_invalid') from None
   except Exception:raise ValueError('provider_json_invalid') from None
+  nullable_domain=domain_null_envelope(account,path,obj)
   try:
-   require(type(obj) is dict and set(obj)<={'success','errors','messages','result','result_info'} and obj.get('success') is True and obj.get('errors')==[] and 'result' in obj and ('messages' not in obj or type(obj['messages']) is list),'provider_response_unverified')
+   require((type(obj) is dict and set(obj)<={'success','errors','messages','result','result_info'} and obj.get('success') is True and obj.get('errors')==[] and 'result' in obj and ('messages' not in obj or type(obj['messages']) is list)) or nullable_domain,'provider_response_unverified')
   except ValueError:raise ProviderEnvelopeError(envelope_diagnostic(account,path,obj)) from None
+  if nullable_domain:get.envelope_compatibility['domainsListNullPairObserved']=True
   if path==active_path:
    active=active_identity(obj);new={'deployments':active['id'],'versions':active['versions'][0]['version_id']}
    require(not selected or selected==new,'active_identity_changed_during_transport');selected.update(new)
   return obj
+ get.envelope_compatibility={'domainsListNullPairObserved':False}
  return account,get
 
 def pagination(obj,single=True):
@@ -199,7 +210,7 @@ def old_public(p):
 
 def observe(env,event):
  p=load_policy();identity=authorize(env,event);trusted_control(env);account,get=provider_get(env);first=current_state(account,get);public=old_public(p);second=current_state(account,get);require(first==second,'provider_changed_across_full_public_check')
- result={'schema':'gwangsan-current-provider-baseline-observation/v1','state':'OBSERVED_NOT_ACCEPTED_FOR_MUTATION','observedAtUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'identity':identity,'policySHA256':POLICY_SHA,'previousSourceRevision':PREVIOUS,'correctionSourceRevision':CURRENT,'previousPublicationRunId':38843104514,'historicalProviderVersionKnown':False,'currentProviderState':first,'currentProviderStateSHA256':digest(first),'previousPublicHTTP':public,'providerMethods':['GET'],'providerMutationsPerformed':False,'IndexNowSubmitted':False,'baselineAccepted':False,'publicationEligible':False}
+ result={'schema':'gwangsan-current-provider-baseline-observation/v1','state':'OBSERVED_NOT_ACCEPTED_FOR_MUTATION','observedAtUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'identity':identity,'policySHA256':POLICY_SHA,'previousSourceRevision':PREVIOUS,'correctionSourceRevision':CURRENT,'previousPublicationRunId':38843104514,'historicalProviderVersionKnown':False,'currentProviderState':first,'currentProviderStateSHA256':digest(first),'previousPublicHTTP':public,'providerMethods':['GET'],'providerMutationsPerformed':False,'IndexNowSubmitted':False,'baselineAccepted':False,'publicationEligible':False,'providerEnvelopeCompatibility':dict(get.envelope_compatibility)}
  save('previous-public-http.json',public);return result
 
 def main():

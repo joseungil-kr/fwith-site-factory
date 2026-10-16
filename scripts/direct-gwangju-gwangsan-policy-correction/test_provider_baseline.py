@@ -334,4 +334,71 @@ class EnvelopeDiagnostics(unittest.TestCase):
    with patch.object(b.sys,'argv',['provider_baseline.py','observe','--report',str(output)]),patch.dict(b.os.environ,{'GITHUB_EVENT_PATH':'synthetic-event.json'}),patch.object(b,'load_policy'),patch.object(b,'read',return_value=b'{}'),patch.object(b,'observe',return_value=expected),patch('sys.stdout',new_callable=io.StringIO):self.assertEqual(b.main(),0)
    self.assertEqual(json.loads(output.read_text()),expected)
 
+class DomainNullEnvelopeCompatibility(unittest.TestCase):
+ def nullable(self):return {'success':True,'errors':None,'messages':None,'result':[],'result_info':{}}
+ def transport(self,objects):
+  helper=R2Regressions();opener=helper.opener(objects);return helper.transport(opener),opener
+ def test_exact_observed_shape_retains_nulls_and_records_boolean(self):
+  obj=self.nullable();obj['result']=[{'fixture':'do-not-retain-in-observation'}];original=copy.deepcopy(obj);get,opener=self.transport([obj]);self.assertEqual(get.envelope_compatibility,{'domainsListNullPairObserved':False});actual=get('/accounts/'+ACCOUNT+'/workers/domains');self.assertEqual(actual,original);self.assertIsNone(actual['errors']);self.assertIsNone(actual['messages']);self.assertEqual(get.envelope_compatibility,{'domainsListNullPairObserved':True});self.assertEqual(len(opener.requests),1);self.assertEqual(opener.requests[0].get_method(),'GET');self.assertIsNone(opener.requests[0].data)
+ def test_no_general_nullable_error_fallback(self):
+  for path in fixtures():
+   if path=='/accounts/'+ACCOUNT+'/workers/domains':continue
+   with self.subTest(path=path):
+    self.assertFalse(b.domain_null_envelope(ACCOUNT,path,self.nullable()))
+    if '/versions/' in path or re_match_selected(path):continue
+    get,_=self.transport([self.nullable()])
+    with self.assertRaises(b.ProviderEnvelopeError):get(path)
+    self.assertFalse(get.envelope_compatibility['domainsListNullPairObserved'])
+ def test_exact_five_keys_and_typed_null_pair_required(self):
+  variants=[]
+  for key in self.nullable():
+   obj=self.nullable();obj.pop(key);variants.append(obj)
+  obj=self.nullable();obj['fixture-private-extra']='fixture-private';variants.append(obj)
+  for key in ['errors','messages']:
+   for value in [False,0,'',{},[],['fixture-private']]:
+    obj=self.nullable();obj[key]=value;variants.append(obj)
+  for value in [False,0,1,'true',None,[],{}]:
+   obj=self.nullable();obj['success']=value;variants.append(obj)
+  for key in ['result','result_info']:
+   for value in [None,False,0,'fixture-private',{'fixture-private':'fixture-private'} if key=='result' else []]:
+    obj=self.nullable();obj[key]=value;variants.append(obj)
+  for i,obj in enumerate(variants):
+   with self.subTest(case=i):
+    self.assertFalse(b.domain_null_envelope(ACCOUNT,'/accounts/'+ACCOUNT+'/workers/domains',obj));get,_=self.transport([obj])
+    with self.assertRaises(b.ProviderEnvelopeError) as caught:get('/accounts/'+ACCOUNT+'/workers/domains')
+    self.assertFalse(get.envelope_compatibility['domainsListNullPairObserved']);self.assertNotIn('fixture-private',json.dumps(caught.exception.diagnostic))
+ def test_prior_array_representation_still_unchanged(self):
+  for obj in [ok([]),{**ok([]),'messages':[],'result_info':{}}]:
+   with self.subTest(has_messages='messages' in obj):
+    get,_=self.transport([obj]);self.assertEqual(get('/accounts/'+ACCOUNT+'/workers/domains'),obj);self.assertFalse(get.envelope_compatibility['domainsListNullPairObserved'])
+ def test_null_domain_envelope_does_not_bypass_pagination(self):
+  variants=[{'page':2},{'total_pages':2},{'total_count':2},{'count':2},{'page':True},{'total_count':True},{'count':False},{'per_page':0},{'cursor':'fixture-private'}]
+  for info in variants:
+   with self.subTest(info=info):
+    obj=self.nullable();obj['result']=[{}];obj['result_info']=info;get,_=self.transport([obj]);raw=get('/accounts/'+ACCOUNT+'/workers/domains')
+    with self.assertRaises(ValueError):b.single_page(raw)
+ def state_transport(self,domain_mutation=None):
+  f=fixtures();key='/accounts/'+ACCOUNT+'/workers/domains';f[key].update(errors=None,messages=None,result_info={})
+  if domain_mutation:domain_mutation(f[key])
+  paths=['/accounts/'+ACCOUNT,'/accounts/'+ACCOUNT+'/workers/scripts',key,SCRIPT+'/settings',SCRIPT+'/subdomain',SCRIPT+'/deployments?page=1&per_page=1',SCRIPT+'/deployments/'+DEP,SCRIPT+'/versions/'+VID,SCRIPT+'/deployments?page=1&per_page=1'];get,opener=self.transport([f[path] for path in paths]);return get,opener
+ def test_full_synthetic_state_still_requires_exact_domain_identity(self):
+  mutations=[lambda obj:obj['result'][0].update(hostname='other.example'),lambda obj:obj['result'][0].update(service='other-worker'),lambda obj:obj['result'][0].update(zone_name='other.example'),lambda obj:obj['result'][0].update(enabled=False),lambda obj:obj['result'][0].update(previews_enabled=True),lambda obj:obj['result'].clear(),lambda obj:obj['result'].append(copy.deepcopy(obj['result'][0])),lambda obj:obj['result'][0].update(id='invalid'),lambda obj:obj.update(result_info={'total_pages':2})]
+  for i,mutation in enumerate(mutations):
+   with self.subTest(case=i):
+    get,_=self.state_transport(mutation)
+    with patch.object(b,'ACCOUNT_SHA',SHA),self.assertRaises(ValueError):b.current_state(ACCOUNT,get)
+ def test_full_synthetic_state_retains_existing_normalized_projection(self):
+  get,opener=self.state_transport()
+  with patch.object(b,'ACCOUNT_SHA',SHA):actual=b.current_state(ACCOUNT,get);expected=b.current_state(ACCOUNT,get_for(fixtures()))
+  self.assertEqual(actual,expected);self.assertEqual(len(opener.requests),9);self.assertTrue(get.envelope_compatibility['domainsListNullPairObserved'])
+ def test_observation_reports_compatibility_without_acceptance(self):
+  get,_=self.state_transport();get.envelope_compatibility['domainsListNullPairObserved']=True
+  env,event=Authorization().case()
+  with patch.object(b,'trusted_control'),patch.object(b,'provider_get',return_value=(ACCOUNT,get)),patch.object(b,'current_state',return_value={'syntheticState':True}),patch.object(b,'old_public',return_value={'checkedPaths':17,'unknownHttpStatus':404}),patch.object(b,'save'):
+   report=b.observe(env,event)
+  self.assertEqual(report['providerEnvelopeCompatibility'],{'domainsListNullPairObserved':True});self.assertFalse(report['baselineAccepted']);self.assertFalse(report['publicationEligible']);self.assertFalse(report['providerMutationsPerformed']);self.assertFalse(report['IndexNowSubmitted']);self.assertEqual(report['providerMethods'],['GET']);self.assertEqual(report['state'],'OBSERVED_NOT_ACCEPTED_FOR_MUTATION')
+
+def re_match_selected(path):
+ return '/deployments/' in path
+
 if __name__=='__main__':unittest.main(verbosity=2)
