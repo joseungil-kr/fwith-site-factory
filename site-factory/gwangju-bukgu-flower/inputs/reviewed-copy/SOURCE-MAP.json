@@ -1,0 +1,235 @@
+{
+  "schema": "bukgu-copy-source-map/v1",
+  "copySHA256": "7669c489a95e2c82888cb3623fa962000e21d7b76092038e1c2d2a8ab702b429",
+  "renderPlanSHA256": "1d294f23cd7826c362514391f91c36abd7ead623d1e863459b890355e9191a75",
+  "researchBindings": [
+    {
+      "path": "evidence/research-input-bindings.json",
+      "bytes": 1403,
+      "sha256": "b692024e0827da39a009f68659896701c887a40b40b7fd76d1e97d27f8fe56b4"
+    }
+  ],
+  "guidanceBindings": "evidence/main-guidance/byte-verification.json",
+  "originalBindings": [
+    {
+      "path": "evidence/originals/B201-selected.html",
+      "bytes": 10215,
+      "sha256": "df3864529fbeb060b0506986167d84d21d7274cce1810f6db640476a59028fb9"
+    },
+    {
+      "path": "evidence/originals/B203-selected.html",
+      "bytes": 10243,
+      "sha256": "f914a66c886d4d30fef906db844892c88ef9c956030759eb55bb82df14cb5f61"
+    },
+    {
+      "path": "evidence/originals/B205-selected.html",
+      "bytes": 10244,
+      "sha256": "638e4e3f8c02412872bee10de9a50ead4ff7a3a80fc18ad333c9ca7fda7029b6"
+    },
+    {
+      "path": "evidence/originals/B060-selected.html",
+      "bytes": 10256,
+      "sha256": "bf2a8f83d520b6c4b810d738f074edfc2a69d4339f5127135782cdd42f493344"
+    },
+    {
+      "path": "evidence/originals/order-top2.jpg",
+      "bytes": 122654,
+      "sha256": "24c11e1cc413d3f64ad05145fdc0fb4171c8f3e618d4351609777f8e2ff43bc3"
+    },
+    {
+      "path": "evidence/originals/de-change.jpg",
+      "bytes": 146560,
+      "sha256": "02701dd33c2a09258a882873df005dbe616842c2add159a08d618b68a934944c"
+    },
+    {
+      "path": "evidence/originals/green_map.facility-excerpt.html",
+      "bytes": 437,
+      "sha256": "3cdc3dbcefb307c2530261eea4df47deeb356d896f22abcedfec98d0f4fdc765"
+    },
+    {
+      "path": "evidence/originals/green_procedure.facility-excerpt.html",
+      "bytes": 711,
+      "sha256": "edf88cab1899891b77af4e091b83168ef13eda0804e4244062ac46a46f5ab376"
+    },
+    {
+      "path": "evidence/originals/green-government-row.json",
+      "bytes": 940,
+      "sha256": "43d430fa86b028a7134ce7dce9fed102a466eadddea0e7a8817703078f66030c"
+    }
+  ],
+  "sourceBoundary": "Only selected public business/facility facts and minimal review evidence. Entire research folder, competitor/guideline originals outside required repo standards, and any obituary are not packaged. Evidence is review-only, never customer HTML. All new file bindings are package-relative.",
+  "fieldBindings": [
+    {
+      "fields": [
+        "detail.lead",
+        "detail.sections[products]",
+        "productCards",
+        "home.sections[selection]"
+      ],
+      "classification": "직접 확인",
+      "sourcePaths": [
+        "evidence/originals/B201-selected.html",
+        "evidence/originals/B203-selected.html",
+        "evidence/originals/B205-selected.html",
+        "evidence/originals/B060-selected.html",
+        "asset-manifest.json"
+      ],
+      "use": "Exact4product names/SKUs/basic prices and visible photo colors/layout. Home points to detail for actual photos. No size/quality/stock inference."
+    },
+    {
+      "fields": [
+        "detail.sections[budget]",
+        "productCards.shippingLabel"
+      ],
+      "classification": "미확인 경계",
+      "sourcePaths": [
+        "evidence/originals/B201-selected.html",
+        "evidence/originals/B203-selected.html",
+        "evidence/originals/B205-selected.html",
+        "evidence/originals/B060-selected.html"
+      ],
+      "use": "Bukgu missing from applicable provincial table; fee and total stay unknown."
+    },
+    {
+      "fields": [
+        "detail.sections[facility].paragraphs[0]"
+      ],
+      "classification": "직접 확인",
+      "sourcePaths": [
+        "evidence/originals/green-government-row.json",
+        "evidence/originals/green_map.facility-excerpt.html"
+      ],
+      "use": "Road and phone match. Short facility information with merchant and facility numbers clearly separated."
+    },
+    {
+      "fields": [
+        "detail.sections[facility].paragraphs[1]"
+      ],
+      "classification": "직접 확인 + 편집 판단",
+      "sourcePaths": [
+        "evidence/originals/green_procedure.facility-excerpt.html"
+      ],
+      "use": "Posted room confirmation after anchi; product/ribbon consultation may start before actual room details. No24hour flower receipt interpretation."
+    },
+    {
+      "fields": [
+        "detail.sections[facility].paragraphs[2]",
+        "detail.sections[order]"
+      ],
+      "classification": "미확인 경계 + 편집 판단",
+      "sourcePaths": [
+        "PURCHASE-PLAN.ko.md"
+      ],
+      "use": "One conditional entry/receipt/schedule paragraph and one grouped input list. No invented fulfillment."
+    },
+    {
+      "fields": [
+        "detail.sections[ribbon]",
+        "home.sections[consultation]"
+      ],
+      "classification": "추정·판단: 편집 예시",
+      "sourcePaths": [
+        "PURCHASE-PLAN.ko.md"
+      ],
+      "use": "Neutral condolence phrases and fictional placeholders; no copied private obituary or invented customer experience."
+    },
+    {
+      "fields": [
+        "detail.sections[order].afterList[1]"
+      ],
+      "classification": "직접 확인",
+      "sourcePaths": [
+        "evidence/originals/order-top2.jpg"
+      ],
+      "use": "Mixed fresh/artificial flowers, rear-paper regional variation, no separate collection. Posted merchant policy, not supply-chain inspection."
+    },
+    {
+      "fields": [
+        "detail.faq"
+      ],
+      "classification": "직접 확인 + 개별적용 미확인",
+      "sourcePaths": [
+        "evidence/originals/de-change.jpg",
+        "original-clause-review-input.json"
+      ],
+      "use": "Cancellation/completed production, post-dispatch refund less shipping, defect/wrong item/material differences,1day/address errors/refusal, payment-unavailable full refund kept distinct."
+    },
+    {
+      "fields": [
+        "sharedBannerAlt",
+        "sharedUI",
+        "footer"
+      ],
+      "classification": "공통문구 재사용 + 기술 계획",
+      "sourcePaths": [
+        "render-plan.json",
+        "asset-manifest.json"
+      ],
+      "use": "Exact approved generic alt and neutral accessibility labels. Footer uses3existing shared labels."
+    },
+    {
+      "fields": [
+        "home",
+        "support",
+        "notFound",
+        "titles",
+        "descriptions",
+        "buttons"
+      ],
+      "classification": "편집 판단·기술 계획",
+      "sourcePaths": [
+        "customer-copy.json",
+        "render-plan.json"
+      ],
+      "use": "New Bukgu text in all contexts; actual rendering pending."
+    }
+  ],
+  "directlyInspected": [
+    "Current pinned main four guidance files with Git-blob byte verification",
+    "Government row229 plus retained exact Green map/procedure fragments",
+    "4merchant product name/price/shipping original excerpts",
+    "4actual product photos,2whole policy images,3approved banner originals",
+    "Two retained Green competitor bodies: The Hwahwan and Samgo",
+    "Namgu r2 schema and actual candidate CopyPage/ProductCards/BaseLayout/package source"
+  ],
+  "toolReports": [
+    "Research HTTP timing/status and search observations, not newly fetched merchant pages by writer",
+    "Independent research approval applies only to research/conditional plan",
+    "Recorded63releases, not63new HTTP checks"
+  ],
+  "editorialJudgments": [
+    "One Green cluster with photo→ribbon→total-budget→room/schedule→order flow",
+    "Early product/ribbon consultation while room not yet selected is a bounded next step grounded in actual operator procedure",
+    "Three nonduplicative FAQ topics and one grouped order list",
+    "No arbitrary facility-page count, geography filler or price-as-respect pressure"
+  ],
+  "technicalPlans": [
+    "4routes:2primary indexable,1noindex support,1real404",
+    "4SKU-specific cards and7exact customer assets",
+    "Always-visible3FAQ, ordered H1/H2/H3, sources section, metadata/social/canonical/robots/sitemap/link graph",
+    "No home product-photo claim; detail carries all4photos"
+  ],
+  "unverified": [
+    "Current operation,phone answer,stock,room assignment,flower entry/receiving,actual fulfillment",
+    "Bukgu delivery fee/final total and individual cancellation/refund intersection",
+    "Guhojeon address and Ilgok phone inconsistencies remain held out",
+    "Independent manuscript/tone/search-quality approval",
+    "Application/source commit/build/HTML/browser/public HTTP/IndexNow/index/rank"
+  ],
+  "notPerformed": [
+    "App implementation",
+    "Remote write/commit/push or repository state change",
+    "Issues/Actions/deployment/IndexNow",
+    "PC/CodexWork/cloud task/content API",
+    "Image generation/software installation",
+    "Calls/orders/customer-data transmission"
+  ],
+  "customerSourceDisplayDate": {
+    "date": "2026-10-16",
+    "timezone": "Asia/Seoul",
+    "display": "2026년 10월 16일(한국시간)",
+    "originalProductCollectionUTC": "2026-10-15T22:35:56.258368+00:00",
+    "governmentDatasetAsOf": "2026-04-01",
+    "rule": "Separate current source observation from dated government snapshot."
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "renderPlanSHA256": "1d294f23cd7826c362514391f91c36abd7ead623d1e863459b890355e9191a75",
+  "status": "REQUIRED_NEXT_STAGE_NOT_EXECUTED",
+  "checks": [
+    {
+      "id": "ordered-copy",
+      "requirement": "115문자열·본문전문·공통UI·footer exact bytes를 실제출력에서 확인한다. 단순 부분문자열 존재로 통과시키지 않는다.",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "home-photo-location",
+      "requirement": "홈에는4상품사진이없다. 홈CTA는네사진이있는상세로가며 거짓홈사진비교를추가하지않는다.",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "detail-order",
+      "requirement": "products→ribbon→budget→facility→order;products뒤카드4개;budget배너는facility바로앞. 배열index가아니라sectionID를존중한다.",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "faq",
+      "requirement": "FAQ3질문·답변이각한번항상노출. contentMarkdown분기로숨기거나accordion에접지않는다.",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "products",
+      "requirement": "4SKU사진500정방형contain·정확한명칭/가격·SKU상세href;하나의실제상품예시고지.",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "banners",
+      "requirement": "홈상세3장씩message→budget→consultation,각사이실질본문;지원/404는0장.1774×887·전화alt1회·no caption·responsive·lazy/async.",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "headings",
+      "requirement": "각4경로H1한개,H2/H3순서,장식배너heading0,출처H2한개.",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "metadata",
+      "requirement": "4고유title/description,생산canonical은ownURL;404canonical/social없음;OG/TwitterB201500pxsummary.",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "index-policy",
+      "requirement": "preview전체noindex/빈sitemap;생산홈상세만2sitemapURL,지원noindex·menu제외,404noindex.",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "links-footer",
+      "requirement": "정확한상세slug/출처fragment;상세breadcrumb가support실제inbound;footer기존brand/phone/home만.시설전화는orderCTA아님.",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "visual-interaction",
+      "requirement": "모바일/desktop실제화면·읽기·overflow·menu반복열기닫기·키보드/focus·Back/Forward와FAQ가시성을검사한다.",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "source-public",
+      "requirement": "exactsourcecommit·실제build/artifact·공개HTTP/자산MIME/SHA·실제missingroute404를별도검증한다.",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "search-submission",
+      "requirement": "검증된2URL의원본IndexNow영수증을별도로결속한다.접수는실제색인/순위가아니다.",
+      "status": "NOT_EXECUTED"
+    }
+  ],
+  "actualHTMLChecked": false,
+  "actualBrowserChecked": false,
+  "actualPublicHTTPChecked": false,
+  "publicationEligible": false
+}
