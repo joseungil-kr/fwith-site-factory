@@ -1,0 +1,367 @@
+{
+  "artifactDigest": "sha256:7215d4f0a9f023f37e1564175182cabab58ba3b57918ff6a86d7287df53d6e84",
+  "artifactId": "12064247223",
+  "bindingSha256": "4323c79c126c706564530e60aafc3780aabb9ee35cc53cb94ec626089a90c1c1",
+  "buildControlSha": "a872562386e70a49ef3283bad3eea603716c1340",
+  "buildRunId": "38943104776",
+  "classification": "EDITORIAL_AND_TECHNICAL_JUDGMENT_NOT_SEARCH_PERFORMANCE",
+  "copiedRegionalScoresOrJudgments": false,
+  "coreHubLaunchStatus": "NOT_ASSESSED",
+  "criteria": {
+    "aeo": [
+      {
+        "awarded": 19,
+        "criterion": "core_purchase_question_answers",
+        "deduction": "빠른4상품가격 비교는 상단 첫 화면에 압축되지 않아 스크롤이 필요하다.",
+        "evidence": [
+          {
+            "path": "docs/direct-goheung/production-artifact-review/all-route-output.json",
+            "sha256": "66f5b8d82d8f7d3b004a56ba3ee9f37ea68e40f1af80c90a1530e32d7d3d9888"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/browser-pixels.json",
+            "sha256": "a2aef3e9108f8eb2702ee4c08c894bf871bd2335ea894c1c7c3f5ab875f63ec2"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/content-source-evidence.json",
+            "sha256": "7f8d595e508a93d3e14e95060094a484bc5730b913a766a52464d8f7b7824d5e"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "선택·예산·리본·준비정보·밤주문·재료·수거·변경취소·입금명 질문에 구체답변과 다음행동이 있다."
+      },
+      {
+        "awarded": 20,
+        "criterion": "visible_complementary_faq",
+        "deduction": "문답표시만 평가하며 FAQ rich result나AI 답변채택을 보장하지 않는다.",
+        "evidence": [
+          {
+            "path": "docs/direct-goheung/production-artifact-review/all-route-output.json",
+            "sha256": "66f5b8d82d8f7d3b004a56ba3ee9f37ea68e40f1af80c90a1530e32d7d3d9888"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/browser-pixels.json",
+            "sha256": "a2aef3e9108f8eb2702ee4c08c894bf871bd2335ea894c1c7c3f5ab875f63ec2"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/content-source-evidence.json",
+            "sha256": "7f8d595e508a93d3e14e95060094a484bc5730b913a766a52464d8f7b7824d5e"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "실제FAQ2의 취소/변경과다른입금명 문답이HTML과3폭화면에 전문표시되며 주요본문의 시간/소재설명을 기계반복하지 않는다."
+      },
+      {
+        "awarded": 18,
+        "criterion": "answer_precision_without_invention",
+        "deduction": "게시정책의 충돌로 주말도착·취소의 모든상황에 확정답을 주지 못하고 실제주문상담이 필요하다.",
+        "evidence": [
+          {
+            "path": "docs/direct-goheung/production-artifact-review/all-route-output.json",
+            "sha256": "66f5b8d82d8f7d3b004a56ba3ee9f37ea68e40f1af80c90a1530e32d7d3d9888"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/browser-pixels.json",
+            "sha256": "a2aef3e9108f8eb2702ee4c08c894bf871bd2335ea894c1c7c3f5ab875f63ec2"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/content-source-evidence.json",
+            "sha256": "7f8d595e508a93d3e14e95060094a484bc5730b913a766a52464d8f7b7824d5e"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "19시상하단 차이와B06021시,최소3시간전주문,취소·수거 제한을 숨기거나 한가지 규칙으로 통합하지 않는다."
+      },
+      {
+        "awarded": 20,
+        "criterion": "appropriate_next_action",
+        "deduction": "페이지가 제시한 다음행동의 적합성 범위다. 실제주문·전화 연결은 활성화하지 않았다.",
+        "evidence": [
+          {
+            "path": "docs/direct-goheung/production-artifact-review/all-route-output.json",
+            "sha256": "66f5b8d82d8f7d3b004a56ba3ee9f37ea68e40f1af80c90a1530e32d7d3d9888"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/browser-pixels.json",
+            "sha256": "a2aef3e9108f8eb2702ee4c08c894bf871bd2335ea894c1c7c3f5ab875f63ec2"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/content-source-evidence.json",
+            "sha256": "7f8d595e508a93d3e14e95060094a484bc5730b913a766a52464d8f7b7824d5e"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "네SKU 직접상세와같은전화번호 상담,가격/문구/밤주문/FAQ anchor,404홈복귀가 올바르게 이어진다. 충돌하는시설전화버튼을 만들지 않는다."
+      },
+      {
+        "awarded": 16,
+        "criterion": "answer_readability_and_scan_cost",
+        "deduction": "긴 시간/취소조건과320화면의긴스크롤 및첫CTA 위치가 빠른답찾기의 부담이다. 숨김이나누락은 아니다.",
+        "evidence": [
+          {
+            "path": "docs/direct-goheung/production-artifact-review/all-route-output.json",
+            "sha256": "66f5b8d82d8f7d3b004a56ba3ee9f37ea68e40f1af80c90a1530e32d7d3d9888"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/browser-pixels.json",
+            "sha256": "a2aef3e9108f8eb2702ee4c08c894bf871bd2335ea894c1c7c3f5ab875f63ec2"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/content-source-evidence.json",
+            "sha256": "7f8d595e508a93d3e14e95060094a484bc5730b913a766a52464d8f7b7824d5e"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "H2/H3·카드·문단·한번의목록으로 읽히고3폭에서한글깨짐/가림이 없다. 따뜻하되근조목적을 존중하고 훈계/허구경험이 없다."
+      }
+    ],
+    "geo": [
+      {
+        "awarded": 19,
+        "criterion": "primary_evidence_and_dates",
+        "deduction": "게시원문은 현재실행·시설반입·재고를 증명하지 않으며 실제이행은 미확인이다.",
+        "evidence": [
+          {
+            "path": "docs/direct-goheung/production-artifact-review/all-route-output.json",
+            "sha256": "66f5b8d82d8f7d3b004a56ba3ee9f37ea68e40f1af80c90a1530e32d7d3d9888"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/browser-pixels.json",
+            "sha256": "a2aef3e9108f8eb2702ee4c08c894bf871bd2335ea894c1c7c3f5ab875f63ec2"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/content-source-evidence.json",
+            "sha256": "7f8d595e508a93d3e14e95060094a484bc5730b913a766a52464d8f7b7824d5e"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "판매자 원본4·군청표·복지부CSV와 게시일/자료기준일,원고근거map·독립검수digest를 결속했다."
+      },
+      {
+        "awarded": 16,
+        "criterion": "goheung_specific_decision_value",
+        "deduction": "여섯시설 반입·설치·시간원문 부재와 명칭/주소/전화 충돌로 지역답변의 깊이가 제한된다. 상품·정책 상당부분은 타지역과 공통이며 지역 고유성으로 과장하지 않는다.",
+        "evidence": [
+          {
+            "path": "docs/direct-goheung/production-artifact-review/all-route-output.json",
+            "sha256": "66f5b8d82d8f7d3b004a56ba3ee9f37ea68e40f1af80c90a1530e32d7d3d9888"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/browser-pixels.json",
+            "sha256": "a2aef3e9108f8eb2702ee4c08c894bf871bd2335ea894c1c7c3f5ab875f63ec2"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/content-source-evidence.json",
+            "sha256": "7f8d595e508a93d3e14e95060094a484bc5730b913a766a52464d8f7b7824d5e"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "고흥20,000원과 공통으로일치하는3시설 주소가 구매 예산·목적지 식별에 쓰인다. 무관한 관광/역사 문장은 없다."
+      },
+      {
+        "awarded": 20,
+        "criterion": "claim_classification_and_limits",
+        "deduction": "검토한 고정본문 범위에서 새로운 미근거 주장을 찾지 못했다. 실제이행 검증 점수는 아니다.",
+        "evidence": [
+          {
+            "path": "docs/direct-goheung/production-artifact-review/all-route-output.json",
+            "sha256": "66f5b8d82d8f7d3b004a56ba3ee9f37ea68e40f1af80c90a1530e32d7d3d9888"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/browser-pixels.json",
+            "sha256": "a2aef3e9108f8eb2702ee4c08c894bf871bd2335ea894c1c7c3f5ab875f63ec2"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/content-source-evidence.json",
+            "sha256": "7f8d595e508a93d3e14e95060094a484bc5730b913a766a52464d8f7b7824d5e"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "실판매사진/실적,게시시간/도착보장,참고합계/결제액,명부/현재반입을 명확히 구분한다. 시설전화·무료·설치·회수 약속을 발명하지 않는다."
+      },
+      {
+        "awarded": 17,
+        "criterion": "self_contained_extractable_context",
+        "deduction": "긴 시간/환불 문단은 일부만 인용하면 조건을 잃기 쉽고 근거링크가 말미에 모여 있다.",
+        "evidence": [
+          {
+            "path": "docs/direct-goheung/production-artifact-review/all-route-output.json",
+            "sha256": "66f5b8d82d8f7d3b004a56ba3ee9f37ea68e40f1af80c90a1530e32d7d3d9888"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/browser-pixels.json",
+            "sha256": "a2aef3e9108f8eb2702ee4c08c894bf871bd2335ea894c1c7c3f5ab875f63ec2"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/content-source-evidence.json",
+            "sha256": "7f8d595e508a93d3e14e95060094a484bc5730b913a766a52464d8f7b7824d5e"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "SKU별가격/비용·19시와B06021시·취소단계·시설날짜가 본문에 있어 조건부답변 문맥을 보존한다."
+      },
+      {
+        "awarded": 18,
+        "criterion": "entity_and_provenance_clarity",
+        "deduction": "현장경험·제휴·별도 작성자전문성은 입증하지 않는다. 제공자책임 표시는 브랜드/연락처 중심이다.",
+        "evidence": [
+          {
+            "path": "docs/direct-goheung/production-artifact-review/all-route-output.json",
+            "sha256": "66f5b8d82d8f7d3b004a56ba3ee9f37ea68e40f1af80c90a1530e32d7d3d9888"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/browser-pixels.json",
+            "sha256": "a2aef3e9108f8eb2702ee4c08c894bf871bd2335ea894c1c7c3f5ab875f63ec2"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/content-source-evidence.json",
+            "sha256": "7f8d595e508a93d3e14e95060094a484bc5730b913a766a52464d8f7b7824d5e"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "꽃이랑·1844-0644·실제 SKU직접링크·공식몰·8출처로 제공자와근거를 구분한다."
+      }
+    ],
+    "seo": [
+      {
+        "awarded": 19,
+        "criterion": "query_title_and_first_answer",
+        "deduction": "짧은 가격 비교 답변은 첫 문단에서 완결되지 않고 아래 예산 섹션으로 이동해야 한다.",
+        "evidence": [
+          {
+            "path": "docs/direct-goheung/production-artifact-review/all-route-output.json",
+            "sha256": "66f5b8d82d8f7d3b004a56ba3ee9f37ea68e40f1af80c90a1530e32d7d3d9888"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/browser-pixels.json",
+            "sha256": "a2aef3e9108f8eb2702ee4c08c894bf871bd2335ea894c1c7c3f5ab875f63ec2"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/content-source-evidence.json",
+            "sha256": "7f8d595e508a93d3e14e95060094a484bc5730b913a766a52464d8f7b7824d5e"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "title의 고흥 근조화환4종·추가비·상담, H1과첫문단의 조의·4상품·리본상담이 한 구매의도에 맞는다. 경고/주소로 시작하지 않는다."
+      },
+      {
+        "awarded": 20,
+        "criterion": "artifact_discovery_and_structure",
+        "deduction": "산출물과loopback만 평가한 만점이다. 공개 HTTP/크롤/검색 노출은 별도 필수검증으로 남는다.",
+        "evidence": [
+          {
+            "path": "docs/direct-goheung/production-artifact-review/all-route-output.json",
+            "sha256": "66f5b8d82d8f7d3b004a56ba3ee9f37ea68e40f1af80c90a1530e32d7d3d9888"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/browser-pixels.json",
+            "sha256": "a2aef3e9108f8eb2702ee4c08c894bf871bd2335ea894c1c7c3f5ab875f63ec2"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/content-source-evidence.json",
+            "sha256": "7f8d595e508a93d3e14e95060094a484bc5730b913a766a52464d8f7b7824d5e"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "홈1의 index,follow/canonical/sitemap,404의 noindex,nofollow·canonical없음,H1각1,순차 H2/H3,로컬자산과14social을 실제 산출물에서 확인했다."
+      },
+      {
+        "awarded": 18,
+        "criterion": "purchase_information_completeness",
+        "deduction": "상품카드 앞 긴 예산설명과 배너 때문에 비교까지 거리가 있고 비용 설명이 여러 위치에서 반복된다.",
+        "evidence": [
+          {
+            "path": "docs/direct-goheung/production-artifact-review/all-route-output.json",
+            "sha256": "66f5b8d82d8f7d3b004a56ba3ee9f37ea68e40f1af80c90a1530e32d7d3d9888"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/browser-pixels.json",
+            "sha256": "a2aef3e9108f8eb2702ee4c08c894bf871bd2335ea894c1c7c3f5ab875f63ec2"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/content-source-evidence.json",
+            "sha256": "7f8d595e508a93d3e14e95060094a484bc5730b913a766a52464d8f7b7824d5e"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "사진4·기본가4·고흥추가비·참고합계4·문구·한번의 주문정보목록·시간/변경취소·입금FAQ를 연결한다."
+      },
+      {
+        "awarded": 18,
+        "criterion": "navigation_and_mobile_use",
+        "deduction": "320첫 CTA는844높이 아래이고 긴 전체문서를 스크롤해야 한다. FAQ 직접nav는 구례 rubric의 해당 약점을 해소하지만 긴 페이지 부담은 남는다.",
+        "evidence": [
+          {
+            "path": "docs/direct-goheung/production-artifact-review/all-route-output.json",
+            "sha256": "66f5b8d82d8f7d3b004a56ba3ee9f37ea68e40f1af80c90a1530e32d7d3d9888"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/browser-pixels.json",
+            "sha256": "a2aef3e9108f8eb2702ee4c08c894bf871bd2335ea894c1c7c3f5ab875f63ec2"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/content-source-evidence.json",
+            "sha256": "7f8d595e508a93d3e14e95060094a484bc5730b913a766a52464d8f7b7824d5e"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "모바일3폭검사,skip,4anchor 및 질문FAQ 직접nav,24내부상호작용,44px touch,원본38화면에서 잘림없음을 확인했다."
+      },
+      {
+        "awarded": 18,
+        "criterion": "asset_and_source_semantics",
+        "deduction": "3배너와 말미출처 모음은 정보접근을 길게 한다. 실제 공개 성능/Core Web Vitals는 평가하지 않았다.",
+        "evidence": [
+          {
+            "path": "docs/direct-goheung/production-artifact-review/all-route-output.json",
+            "sha256": "66f5b8d82d8f7d3b004a56ba3ee9f37ea68e40f1af80c90a1530e32d7d3d9888"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/browser-pixels.json",
+            "sha256": "a2aef3e9108f8eb2702ee4c08c894bf871bd2335ea894c1c7c3f5ab875f63ec2"
+          },
+          {
+            "path": "docs/direct-goheung/production-artifact-review/content-source-evidence.json",
+            "sha256": "7f8d595e508a93d3e14e95060094a484bc5730b913a766a52464d8f7b7824d5e"
+          }
+        ],
+        "maximum": 20,
+        "rationale": "판매사진4·공통배너3의 동일bytes와 설명alt/비율,8출처와 확인일을 실제HTML/화면에서 확인했다."
+      }
+    ]
+  },
+  "facilityPages": "HOLD_ALL_6",
+  "fullLaunchStatus": "NOT_ASSESSED",
+  "minimums": {
+    "aeo": 90,
+    "geo": 85,
+    "seo": 90
+  },
+  "nonBlockingLimitations": [
+    "320 hero phone CTA is below initial844 viewport.",
+    "Long policy paragraphs and grouped end-of-page sources increase scanning/extraction cost.",
+    "Current facility entry/fulfillment and policy precedence remain unresolved.",
+    "Shared merchant products/policies are substantial; no whole-web uniqueness claim.",
+    "No public HTTP, field performance, ranking/indexing/AI citation or conversion measurement."
+  ],
+  "path": "/",
+  "performanceOrSearchOutcomeMeasured": false,
+  "publicHttpVerified": false,
+  "rankIndexingCitationConversionGuarantee": false,
+  "region": "goheung",
+  "reviewedAtUTC": "2026-10-16T18:15:17.641938+00:00",
+  "reviewer": "independent-goheung-artifact-and-bounded-reviewer-20261016",
+  "rubricOrigin": {
+    "path": "docs/direct-goheung/production-artifact-review/criteria-origin.json",
+    "sha256": "88450065e53970667b189059644abdfa82c9f658e6dc2598bc853d4717f1daa2"
+  },
+  "rubricScope": "Same existing five 20-point dimensions per category. Each Goheung award and deduction is independently reasoned from exact text/artifact/screenshots, not count-based or threshold-fitted.",
+  "schemaVersion": 1,
+  "scores": {
+    "aeo": 93,
+    "geo": 90,
+    "seo": 93
+  },
+  "sourceCommit": "d6f43be6bd5ee0239ef6485c50a59a0492b9ee3e",
+  "sourceContractSha256": "932ec053de13fd230727a4a979100d157d06cf1cf2dc71bf745d26c77f965dd6"
+}
