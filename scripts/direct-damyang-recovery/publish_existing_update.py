@@ -26,7 +26,7 @@ IMPORT_PINS = {
   "beacon_normalization.py": "6782ef230efcc88d7c17eb0e2f043317271a0b64c5b9150f2829ce4a3847cd67",
   "existing_provider.py": "f4e8bb7e4e0553d7535b713ecdae0fd4bc32608f692a91ba7c7f232b5a25ecb0",
   "existing_update.py": "52345dd7dfff910fc17441e1d2b91a58c532b88f34dcdc65aa752f851a3c99df",
-  "finalize_recovery.py": "a3d36f3863aacc88f884ba11add8980fd6b7af61d472d77ade2b50592e2ce04a",
+  "finalize_recovery.py": "95585304bf31ed9b7b8c10fa3c42f20806c2d8e0b40867d8a2b27ed83af3ef8f",
   "indexnow_recovery.py": "59f23a38bc14925261901d182bd6d503827d16f95bda9368619159a1dd8021f4",
   "managed_robots.py": "51eebc7dc9a405ade4c5f7da6cdb086a8319d2df690b5b9429e20bd764cbdee5",
   "previous_public.py": "c88277a6c00bfecf5c360bfbe64b3a0b9aeceedd77fedf68e2e01d4d329b897a",

@@ -241,9 +241,14 @@ class GitHubClient:
                 require(match is not None, 'unrecognized_github_pagination')
                 dest, rel = match.groups()
                 require(rel not in rels, 'duplicate_github_pagination_relation'); rels.add(rel)
-                page_match = re.fullmatch(re.escape(guard.API_BASE) + r'/issues/comments\?per_page=100&page=([1-9][0-9]*)', dest)
+                # GitHub's Link may identify this exact repository by immutable ID.
+                # Normalize only the Link; HTTP still uses the original name URL.
+                page_match = re.fullmatch(r'(?:' + re.escape(guard.API_BASE)
+                    + r'|https://api\.github\.com/repositories/1360554691)'
+                    + r'/issues/comments\?per_page=100&page=([1-9][0-9]*)', dest)
                 require(page_match is not None and int(page_match[1]) <= guard.MAX_PAGES,
                         'foreign_or_noncanonical_github_pagination')
+                dest = guard.page_url(int(page_match[1]))
                 if rel == 'next':
                     require(dest == guard.page_url(number + 1), 'github_next_page_mismatch'); next_url = dest
                 if rel == 'prev': require(number > 1 and dest == guard.page_url(number - 1), 'github_prev_page_mismatch')

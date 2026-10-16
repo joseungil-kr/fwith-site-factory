@@ -139,7 +139,7 @@ class Authorization(Case):
             pins=pins_fixture();pins['baseline'][key]=value;env=env_fixture()
             with self.subTest(key=key):self.blocked(lambda:c.authorize(pins,env,event_fixture(pins,env),'prepare'))
     def test_all_helpers_exact_and_before_import(self):
-        c.verify_imports();self.assertEqual(c.IMPORT_PINS['finalize_recovery.py'],'a3d36f3863aacc88f884ba11add8980fd6b7af61d472d77ade2b50592e2ce04a')
+        c.verify_imports();self.assertEqual(c.IMPORT_PINS['finalize_recovery.py'],'95585304bf31ed9b7b8c10fa3c42f20806c2d8e0b40867d8a2b27ed83af3ef8f')
         tree=ast.parse((c.D/'publish_existing_update.py').read_text());verify=next(n for n in tree.body if isinstance(n,ast.Expr) and isinstance(n.value,ast.Call) and getattr(n.value.func,'id',None)=='verify_imports')
         imports=[n for n in tree.body if isinstance(n,ast.Import) and any(x.name in ('finalize_recovery','existing_update') for x in n.names)]
         self.assertTrue(all(verify.lineno<n.lineno for n in imports))
@@ -344,6 +344,163 @@ class Flow(Case):
         for log in ('','Current Version ID: bad',('Current Version ID: '+value+'\n')*2):
             p.write_text(log)
             with self.subTest(log=log):self.blocked(lambda:c.update.extract_upload_version(p,self.env))
+
+
+class RepositoryLinkCompatibility(Case):
+    alias = 'https://api.github.com/repositories/1360554691/issues/comments'
+    clients = (c.reader.GitHubClient, c.GitHubClient)
+
+    def url(self, number, alias=True):
+        return (self.alias if alias else c.journal.API_BASE + '/issues/comments') + '?per_page=100&page=' + str(number)
+
+    def client(self, cls, comments=None, links=None, headers=None):
+        http = Mock()
+        pairs = [('content-type', 'application/json')]
+        if links is not None: pairs.append(('link', links))
+        if headers is not None: pairs.extend(headers)
+        http.call.return_value = c.journal.RawResponse(200, json.dumps(comments or []).encode(), pairs)
+        return cls(http), http
+
+    def test_exact_name_and_numeric_links_normalize_without_alias_get(self):
+        for cls in self.clients:
+            for alias in (False, True):
+                with self.subTest(client=cls.__module__, alias=alias):
+                    links = ', '.join('<' + self.url(n, alias) + '>; rel="' + rel + '"'
+                        for n, rel in ((3, 'next'), (1, 'prev'), (1, 'first'), (6, 'last')))
+                    client, http = self.client(cls, links=links)
+                    page = client.read_page(2)
+                    self.assertEqual(page.url, c.journal.page_url(2))
+                    self.assertEqual(page.next_url, c.journal.page_url(3))
+                    http.call.assert_called_once_with('GET', c.journal.page_url(2))
+
+    def test_observed_fresh_numeric_header_and_terminal_relations(self):
+        observed = '<https://api.github.com/repositories/1360554691/issues/comments?per_page=100&page=2>; rel="next", <https://api.github.com/repositories/1360554691/issues/comments?per_page=100&page=6>; rel="last"'
+        for cls in self.clients:
+            with self.subTest(client=cls.__module__):
+                client, _ = self.client(cls, links=observed)
+                self.assertEqual(client.read_page(1).next_url, c.journal.page_url(2))
+                client, _ = self.client(cls, links='<' + self.url(5) + '>; rel="prev", <' + self.url(1) + '>; rel="first"')
+                self.assertIsNone(client.read_page(6).next_url)
+
+    def test_foreign_or_noncanonical_aliases_are_rejected(self):
+        good = self.url(2)
+        variants = [good.replace('1360554691', '1360554692'), good.replace('1360554691', '01360554691'),
+            good.replace('1360554691', 'joseungil-kr/fwith-site-factory'),
+            good.replace('api.github.com', 'api.github.com.evil.example'), good.replace('api.github.com', 'API.github.com'),
+            good.replace('api.github.com', 'api.github.com:443'), good.replace('api.github.com', 'user@api.github.com'),
+            good.replace('https:', 'http:'), good.replace('/repositories/', '//repositories/'),
+            good.replace('/repositories/', '/repositories/../repositories/'), good.replace('/issues/comments', '/issues/377/comments'),
+            good.replace('/issues/comments', '/issues/comments/'), good.replace('/comments', '/%63omments'),
+            good.replace('1360554691', '%31360554691'), good.replace('&page=2', '&page=02'),
+            good.replace('&page=2', '&page=0'), good.replace('&page=2', '&page=-1'), good.replace('&page=2', '&page=+2'),
+            good.replace('&page=2', '&page=2.0'), good.replace('&page=2', '&page=%32'),
+            good.replace('&page=2', '&page=' + str(c.journal.MAX_PAGES + 1)),
+            good.replace('per_page=100&page=2', 'page=2&per_page=100'), good.replace('per_page=100', 'per_page=99'),
+            good.replace('per_page=100', 'per_page=0100'), good.replace('&page=2', '&Page=2'),
+            good + '&page=2', good + '&per_page=100', good + '&since=x', good + '&', good + '#fragment',
+            good.replace('&', '&amp;'), good.replace('&page', ';page'), good + '\n',
+            c.journal.API_BASE.replace('fwith-site-factory', 'other') + '/issues/comments?per_page=100&page=2']
+        for cls in self.clients:
+            for dest in variants:
+                with self.subTest(client=cls.__module__, dest=dest):
+                    client, http = self.client(cls, links='<' + dest + '>; rel="next"')
+                    self.blocked(lambda: client.read_page(1), 'foreign_or_noncanonical')
+                    http.call.assert_called_once_with('GET', c.journal.page_url(1))
+
+    def test_relation_cycles_jumps_duplicates_and_wrong_first_prev_rejected(self):
+        links = [(1, '<' + self.url(1) + '>; rel="next"'), (1, '<' + self.url(3) + '>; rel="next"'),
+            (2, '<' + self.url(1) + '>; rel="next"'), (2, '<' + self.url(2) + '>; rel="prev"'),
+            (1, '<' + self.url(1) + '>; rel="prev"'), (2, '<' + self.url(2) + '>; rel="first"'),
+            (1, '<' + self.url(2) + '>; rel="next", <' + self.url(2, False) + '>; rel="next"'),
+            (1, '<' + self.url(2) + '>; rel="unknown"'), (1, '<' + self.url(2) + '>; rel=next'),
+            (1, '<' + self.url(2) + '>; rel="next"; x="y"')]
+        for cls in self.clients:
+            for number, link in links:
+                with self.subTest(client=cls.__module__, number=number, link=link):
+                    client, http = self.client(cls, links=link)
+                    self.blocked(lambda: client.read_page(number))
+                    self.assertEqual(http.call.call_count, 1)
+
+    def test_header_and_page_bounds_remain_closed(self):
+        for cls in self.clients:
+            for number in (True, 0, -1, '1', c.journal.MAX_PAGES + 1):
+                with self.subTest(client=cls.__module__, number=number):
+                    client, http = self.client(cls)
+                    self.blocked(lambda: client.read_page(number)); http.call.assert_not_called()
+            for headers in ([('Link', '<' + self.url(2) + '>; rel="next"')], []):
+                client, _ = self.client(cls, links=('x' * 4097 if not headers else '<' + self.url(2) + '>; rel="next"'), headers=headers)
+                self.blocked(lambda: client.read_page(1))
+            client, _ = self.client(cls, links='<' + self.url(c.journal.MAX_PAGES) + '>; rel="last"')
+            self.assertIsNone(client.read_page(c.journal.MAX_PAGES).next_url)
+
+    def test_alias_is_not_new_transport_scope_and_redirect_is_not_followed(self):
+        for transport in (c.reader.BoundedHTTP, c.UpdateHTTP):
+            for dest in (self.url(1), self.url(1).replace('1360554691', '1360554692')):
+                with self.subTest(transport=transport.__name__, dest=dest):
+                    op = Opener(Response(dest)); http = transport('SYNTHETIC', [], [], opener=op)
+                    self.blocked(lambda: http.call('GET', dest), 'scope'); self.assertEqual(op.calls, [])
+            for response in (Response(c.journal.page_url(1), 302), Response(self.url(1))):
+                op = Opener(response); http = transport('SYNTHETIC', [], [], opener=op)
+                self.blocked(lambda: http.call('GET', c.journal.page_url(1)))
+                self.assertEqual(len(op.calls), 1)
+        self.assertIsNone(c.reader.NoRedirect().redirect_request(None, None, None, None, None, None))
+        self.assertIsNone(c.NoRedirect().redirect_request(None, None, None, None, None, None))
+
+    def history(self):
+        def comment(record, number):
+            return {'id': number, 'user': {'login': 'github-actions[bot]', 'id': 41898282, 'type': 'Bot'},
+                'body': c.journal.MARKER + json.dumps(record),
+                'url': c.journal.API_BASE + '/issues/comments/' + str(number),
+                'issue_url': c.journal.ISSUE_URL, 'html_url': c.journal.WEB_ISSUE + '#issuecomment-' + str(number)}
+        return [[{'id': n, 'body': 'unrelated repository comment'} for n in range(1, 101)],
+            [comment(c.journal.original_record('started'), 6209522619), comment(c.journal.original_record('rejected'), 6209523005)]]
+
+    def journal_client(self, cls, rows):
+        http = Mock()
+        def call(method, url):
+            self.assertEqual(method, 'GET')
+            number = 1 if url == c.journal.page_url(1) else 2
+            self.assertEqual(url, c.journal.page_url(number))
+            headers = [('content-type', 'application/json')]
+            if number == 1: headers.append(('link', '<' + self.url(2) + '>; rel="next", <' + self.url(2) + '>; rel="last"'))
+            else: headers.append(('link', '<' + self.url(1) + '>; rel="prev", <' + self.url(1) + '>; rel="first"'))
+            return c.journal.RawResponse(200, json.dumps(rows[number - 1]).encode(), headers)
+        http.call.side_effect = call
+        return cls(http), http
+
+    def test_whole_repository_audits_both_consumers_complete_numeric_links(self):
+        contract = c.update._journal_contract()[1]
+        client, http = self.journal_client(c.reader.GitHubClient, self.history())
+        self.assertFalse(c.journal.audit_chain(client.read_page, contract).successor)
+        self.assertEqual(http.call.call_count, 2)
+        client, http = self.journal_client(c.GitHubClient, self.history())
+        self.assertTrue(c.update.inspect_full_journal(client.pages()))
+        self.assertEqual(http.call.call_count, 2)
+
+    def test_whole_repository_duplicate_foreign_and_incomplete_pages_rejected(self):
+        contract = c.update._journal_contract()[1]
+        for kind in ('duplicate', 'foreign-author', 'foreign-issue', 'short-first', 'missing-original', 'full-last'):
+            rows = self.history()
+            if kind == 'duplicate': rows[1].append(copy.deepcopy(rows[0][0]))
+            elif kind == 'foreign-author': rows[1][0]['user']['id'] = 1
+            elif kind == 'foreign-issue': rows[1][0]['issue_url'] = c.journal.API_BASE + '/issues/378'
+            elif kind == 'short-first': rows[0].pop()
+            elif kind == 'missing-original': rows[1].pop()
+            else: rows[1] += [{'id': n, 'body': 'unrelated'} for n in range(101, 199)]
+            for cls in self.clients:
+                with self.subTest(kind=kind, client=cls.__module__):
+                    client, _ = self.journal_client(cls, rows)
+                    self.blocked(lambda: c.update.inspect_full_journal(client.pages()) if cls is c.GitHubClient
+                        else c.journal.audit_chain(client.read_page, contract))
+
+    def test_existing_host_claim_still_blocks_after_alias_pagination(self):
+        for state in ('STARTED_NO_AUTOMATIC_REUPLOAD', 'FAILED', 'UNKNOWN', 'SUCCESS'):
+            rows = self.history(); claim = copy.deepcopy(rows[1][0]); claim['id'] = 6209524000
+            claim['body'] = c.update.MARKER + json.dumps({'hostname': c.update.HOST, 'sourceRevision': 'f' * 40, 'state': state})
+            claim.update(url=c.journal.API_BASE + '/issues/comments/6209524000', html_url=c.journal.WEB_ISSUE + '#issuecomment-6209524000')
+            rows[1].append(claim); client, _ = self.journal_client(c.GitHubClient, rows)
+            with self.subTest(state=state):
+                self.blocked(lambda: c.update.inspect_full_journal(client.pages()), 'prior_damyang_update_attempt')
 
 
 if __name__=='__main__':unittest.main(verbosity=2)
