@@ -1,0 +1,344 @@
+{
+  "artifactDigest": "sha256:deac983235eadbacb1fecee2b4f4249f738af94a609f4a544463977a9f124316",
+  "artifactId": "12055617902",
+  "assessmentScope": "bounded-launch",
+  "bindingSha256": "700872fe62c6027ffa0ebddf7b87ebf95256d4d22e9dbc9911b7d455c65b3d34",
+  "boundedContractSha256": "de4c9c56c1532a923d1b26b0f7cb035542b2197a3ac3b142e54fc02ef18fdb2f",
+  "buildControlSha": "64be198af7b57a0ff64fa1ae8b049947f066aff3",
+  "buildRunId": "38923430470",
+  "checks": {
+    "actual_cta": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "실제DOM·스크린샷·좌표에서 상품CTA·상담·홈복귀를 확인했다.30개 anchor/back-forward,3개404복귀도 확인했다.",
+      "status": "PASS"
+    },
+    "architecture_manifest_page_map_html_sitemap": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "실제16파일·HTML2·home1·sitemap1URL과 원본page map이 일치한다.",
+      "status": "PASS"
+    },
+    "bounded_single_home_scope": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "이 평가는 구매홈1+기술404의 bounded-launch 전제만 다룬다. core-hub와full-launch는 NOT_ASSESSED다.",
+      "status": "PASS"
+    },
+    "build_and_expected_http_paths": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "실제성공run·digest와 release16를 검증했고 loopback 양쪽직접경로200·없는경로404를 확인했다. 공개HTTP는 후속필수다.",
+      "status": "PASS"
+    },
+    "business_truth": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "확정견적/재고/도착/현재시설운영/반입/정책우선순위/순위·색인을 약속하지 않는다. 현재HTML게시가와참고합계를 별도확인했다.",
+      "status": "PASS"
+    },
+    "content_writing_contract": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "동결private73과 고객원고102 authored leaves,119logical/143expanded occurrences,25actualDOM의본문·링크를 보존했다.",
+      "status": "PASS"
+    },
+    "home_anchor_navigation_and_no_extra_routes": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "5개 메뉴anchor는 home섹션으로 연결되고 두출발경로×3뷰포트의30관측이 맞다. 추가고객route 없음.",
+      "status": "PASS"
+    },
+    "image_local_reuse_safety": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "실제7개 이미지 모두 로컬이며 원본SHA·비율·alt·로드를 검사했다. 외부 로딩/새 이미지 생성이 없다.",
+      "status": "PASS"
+    },
+    "image_origin_classification": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "4개 판매자 상품 예시사진과3개 승인된 AI 분위기 배너를 구분했다. 어느 것도 곡성 납품사진으로 주장하지 않는다.",
+      "status": "PASS"
+    },
+    "local_evidence": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "곡성 게시 배송비,5시설 날짜 있는 주소/전화, 겸면·옥과면 구별, 옥과 수령조건 미확인을 보존한다.",
+      "status": "PASS"
+    },
+    "no_duplicate_intent_or_cluster": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "유일한 indexable purchase home1개, technical404만 추가된다. 지역/시설 복제 landing·허브/지원 글을 만들지 않았다.",
+      "status": "PASS"
+    },
+    "no_duplicate_slug": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "실제파일·page map·link target·sitemap에 중복slug나고객상세route가 없다.",
+      "status": "PASS"
+    },
+    "provider_voice": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "꽃이랑 상품·상담 제공자 목소리를 유지하며 시설 운영자·배송 실적·공식 제휴를 가장하지 않는다.",
+      "status": "PASS"
+    },
+    "purchase_conversion_path": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "4개 공식 상품 상세 href와 tel:18440644, 준비할 주문정보가 있다. 결제·통화 실행은 검사범위 밖이다.",
+      "status": "PASS"
+    },
+    "query_title_h1_intent_alignment": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "실제 title/H1/lead는 곡성 근조화환 주문이며 사진·참고예산·상담을 제공한다.",
+      "status": "PASS"
+    },
+    "route_aware_indexability_and_canonical": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "home은 정확한https origin canonical/OG/index.404는noindex·canonical/OG 없음. robots/sitemap은home만 가리킨다.",
+      "status": "PASS"
+    },
+    "source_classification": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "판매자 게시사항/정부 날짜있는 명부/해석·미확인 영역을 실제 본문과 출처에서 구분한다.",
+      "status": "PASS"
+    },
+    "vertical_specificity": {
+      "evidence": [
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/all-route-output.json",
+          "sha256": "f947a39afc288832e4381de491037299435e4f852267e5189f54c090b3e3fec0"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/browser-pixels.json",
+          "sha256": "a4239e0ae22e14596c96d5bfac1d024bfd085d3735d1da1a16f6ed0bbece4ca4"
+        },
+        {
+          "path": "docs/direct-gokseong/production-artifact-review/content-source-evidence.json",
+          "sha256": "2179fc2d6d93bbd49e5ef5f4b13cf487af0cf86e474f44bfc0d60f59acee8582"
+        }
+      ],
+      "rationale": "리본 예시, 발신명, 빈소·발인 일정, mixed 소재, 취소·파손 등 근조화환 구매 질문을 다룬다.",
+      "status": "PASS"
+    }
+  },
+  "indexNowSubmitted": false,
+  "providerOwnershipVerified": false,
+  "publicHTTPVerified": false,
+  "region": "gokseong",
+  "reviewedAtUTC": "2026-10-16T15:44:07.069273+00:00",
+  "reviewer": "independent-gokseong-release-reviewer-r1",
+  "schemaVersion": 1,
+  "sourceCommit": "7e6573e2eb97ac5473622d37478729ee43b565f1",
+  "sourceContractSha256": "ea5004b9083a3323f404144c81591d36b021a0a74d4a948ff09063150ce03d53"
+}
