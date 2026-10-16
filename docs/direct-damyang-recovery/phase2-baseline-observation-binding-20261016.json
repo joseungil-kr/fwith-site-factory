@@ -1,0 +1,114 @@
+{
+  "schema": "damyang-phase2-get-only-baseline-code-binding/v1",
+  "state": "REVIEWED_CODE_PENDING_CURRENT_DAMYANG_OBSERVATION",
+  "repository": "joseungil-kr/fwith-site-factory",
+  "hostname": "damyang.fwith.kr",
+  "worker": "damyang-flower-guide",
+  "acceptedAccountSHA256": "d5bbfc5383872f2c9e36138452e0c880f46b03bbd4aaffa278490c2ad6d7bcbf",
+  "reconciledBaseRevision": "684cec7edb768f290f13ccf3ca6d091020581822",
+  "reconciledBaseTree": "548f93990001df5d1ff1303d1e8e05424aac05e9",
+  "source": {
+    "revision": "063e9eda9d33cb2f8b4dfd847bea966ff9443eb5",
+    "branch": "source/damyang-dedicated-proof-recovery-20261016",
+    "root": "site-factory/damyang-flower",
+    "files": 81,
+    "manifestPath": "scripts/direct-damyang-recovery/source-manifest.json",
+    "manifestSHA256": "43b576eb99c65f14bfeea698d4a9ec57a14fb442c25aaae7cc79e28dcbd2f8bb",
+    "previousRevision": "89c92dff3dca6456c1b0a3f7ee0587efe0361bed"
+  },
+  "existingAcceptedBuild": {
+    "runId": 38888053867,
+    "runAttempt": 1,
+    "controlRevision": "33ca99b04ae43af120d5799d926f1611b1d59942",
+    "artifactId": 12040108398,
+    "artifactBytes": 799100,
+    "artifactSHA256": "43b618dc55c0536a16fe8887e6ce4b6a16254b82db7c34657fd23d976824b408",
+    "archiveFiles": 24,
+    "releaseFiles": 17,
+    "expectedPublicPaths": 16,
+    "reviewPath": "docs/direct-damyang-recovery/build-artifact-review-38888053867.json",
+    "reviewSHA256": "3a2263b174c32c161716a43cf4451186a1213b862125b7b44c9f8a9032fc5842",
+    "independentAuditManifestSHA256": "c7a0c64d605104f0541d831bf0226c9faf688b7f61c719ec00f226e658229ba3",
+    "reviewVerdict": "ACCEPT_SOURCE063E9_BUILD_ARTIFACT_ONLY",
+    "evidenceRebuilt": false,
+    "newLiveBrowserObserved": false
+  },
+  "independentBaselineCodeReview": {
+    "reviewSHA256": "b847450ed824c91f40c01712da1b757175402cc7d76dd8d529f136625a5e9746",
+    "bindingSHA256": "174afef5cc2fbaa48e1f8bbb526e8aae7cbd383f3c71caa35149271ad5aa7895",
+    "verdict": "PASS_EXACT_LOCAL_BASELINE3_WITH_PENDING_FULL_INTEGRATION",
+    "baselineZIP_SHA256": "706173d51ad6870087bf170743e72db18af07140c014a973c9f586de59e063ba",
+    "minimumFiles": [
+      {
+        "path": "scripts/direct-damyang-recovery/provider_baseline.py",
+        "bytes": 51837,
+        "sha256": "e23c8070c2d0e6cdb163596f08c69074005bc8c02d7845b67e63951db4f0b8a0",
+        "gitBlobSHA1": "dc2051f874a3e74272c074fea6e89802b62bd3ec"
+      },
+      {
+        "path": "scripts/direct-damyang-recovery/test_damyang_baseline.py",
+        "bytes": 24557,
+        "sha256": "873ae9dda55f5819efcdc37bff01d5e0d02ef3946e0a34ed0881e519d43f37ae",
+        "gitBlobSHA1": "e82e0dc0860d39337e05615eee92dce9fa0f0905"
+      },
+      {
+        "path": "scripts/direct-damyang-recovery/test_provider_baseline.py",
+        "bytes": 86765,
+        "sha256": "7c12ebb52ca0c23242f59d69bb1f264a995cf968156d88c076634d05b3844916",
+        "gitBlobSHA1": "1455a6459f9293537f5bf60d62ef2f271454920b"
+      }
+    ],
+    "pythonRuntimeMethods": 176,
+    "pythonRuntimeSubtests": 1425,
+    "repeatedRuntimeCountsAreNotDistinct": true
+  },
+  "observationBoundary": {
+    "workflowPath": ".github/workflows/damyang-production-publish.yml",
+    "workflowSHA256": "877c5c678cd3c1e3c7b1299cf68cd1f735ae9a0f7c0bae6316e21ccc9dc9d87d",
+    "job": "inspect_existing_baseline",
+    "issueTitle": "[DAMYANG-EXISTING-BASELINE-INSPECT] 20261016",
+    "ownerFirstAttemptOnly": true,
+    "requestBindsActualSavedControlRevision": true,
+    "policyPath": "scripts/direct-damyang-recovery/provider-baseline-policy.json",
+    "policySHA256": "d6888b641c08a09056b5113bba4b4c9e257b4da533c246b5a4da02663643ae19",
+    "providerMethods": [
+      "GET"
+    ],
+    "previousPublicPaths": 15,
+    "previousOutputFiles": 16,
+    "providerSnapshotsAroundFullPublicCheck": 2,
+    "sameSelectedVersionBetaAssetsConfigAndRoutingFilesOnly": true,
+    "runtimeAssetsInternalsInspected": false,
+    "workerCodeInspected": false
+  },
+  "bindingRole": "Review and provenance record only. Existing GET-only runtime authorizes the exact saved control revision and verifies its clean tracked checkout; this document creates no additional runtime bypass or activation seal.",
+  "existingPhase1ReviewMeaning": "Historical source/build QA evidence is immutable. Its old baseline-three-file pins do not cover this new observation candidate and are not replaced or reused as current-baseline acceptance.",
+  "remainingGates": [
+    "Fresh remote readback and exact revision-bound owner issue before GET-only observation",
+    "Actual Damyang observation artifact and independent target/public15 acceptance",
+    "Separately reviewed existing-host static update and full baseline/update/finalizer consumer binding",
+    "New public16 verification before at most one additional IndexNow POST"
+  ],
+  "historicalSubmission": {
+    "receiptIssue": 377,
+    "startedComment": 6209522619,
+    "rejectedComment": 6209523005,
+    "httpStatus": 422,
+    "attempts": 1,
+    "raw422BodyRetained": false,
+    "causeConfirmed": false
+  },
+  "additionalPOSTsPerformed": 0,
+  "additionalPOSTBudget": 1,
+  "automaticRetryAllowed": false,
+  "baselineAccepted": false,
+  "fullConsumerAccepted": false,
+  "publicationEligible": false,
+  "providerMutationsPerformed": false,
+  "IndexNowSubmitted": false,
+  "authorization": {
+    "explicitApprovalConfirmed": true,
+    "approvedAtUTC": "2026-10-16T08:38:20.147557+00:00",
+    "scope": "Damyang dedicated public ownership proof and existing-host recovery of the rejected home URL only; no credential, permission, account or DNS change."
+  }
+}

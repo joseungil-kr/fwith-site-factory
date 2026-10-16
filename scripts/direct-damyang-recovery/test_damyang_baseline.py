@@ -109,8 +109,8 @@ class PreviouslyObservedVersionShape(unittest.TestCase):
   script=v['resources']['script'];script['handlers']=None;script['etag']='synthetic/invalid';script['last_deployed_from']='synthetic/invalid'
   v['resources']['script_runtime']['synthetic_unknown_runtime']=None
   return f
- def test_observed_shape_class_rejected_without_baseline_acceptance(self):
-  with patch.object(b,'ACCOUNT_SHA',SHA),self.assertRaisesRegex(ValueError,'version_identity_or_schema'):b.current_state(ACCOUNT,get_for(self.case()))
+ def test_unknown_nonassets_runtime_still_rejected_without_baseline_acceptance(self):
+  with patch.object(b,'ACCOUNT_SHA',SHA),self.assertRaisesRegex(ValueError,'version_runtime_schema_requires_review'):b.current_state(ACCOUNT,get_for(self.case()))
  def test_diagnostic_has_same_known_failure_predicates_no_raw_values(self):
   report=b.provider_shape_diagnostic(ACCOUNT,SCRIPT+'/versions/'+VID,self.case()[SCRIPT+'/versions/'+VID])
   for key in ['onlyPriorVersionKeys','onlyPriorMetadataKeys','onlyPriorRuntimeKeys','staticHandlersAllowed','etagAbsentOrAllowedPattern','last_deployed_fromAbsentOrAllowedPattern']:
@@ -118,13 +118,30 @@ class PreviouslyObservedVersionShape(unittest.TestCase):
   self.assertEqual(report['fields']['version']['annotations'],{'present':True,'type':'object'});self.assertEqual(report['fields']['script']['handlers'],{'present':True,'type':'null'})
   raw=json.dumps(report)
   for canary in ['CANARY_NOT_PROVIDER_VALUE','synthetic_unknown_metadata','synthetic_unknown_runtime','synthetic/invalid',VID]:self.assertNotIn(canary,raw)
- def test_null_handlers_is_not_normalized_to_empty_array(self):
-  f=fixtures();f[SCRIPT+'/versions/'+VID]['result']['resources']['script']['handlers']=None
-  with patch.object(b,'ACCOUNT_SHA',SHA),self.assertRaisesRegex(ValueError,'static_only_version_handlers_required'):b.current_state(ACCOUNT,get_for(f))
- def test_unknown_runtime_or_metadata_remains_blocking(self):
-  for section,code in [('metadata','version_metadata_schema'),('script_runtime','version_runtime_schema_requires_review')]:
-   f=fixtures();v=f[SCRIPT+'/versions/'+VID]['result'];target=v['metadata'] if section=='metadata' else v['resources']['script_runtime'];target['synthetic_unknown']=None
-   with self.subTest(section=section),patch.object(b,'ACCOUNT_SHA',SHA),self.assertRaisesRegex(ValueError,code):b.current_state(ACCOUNT,get_for(f))
+ def test_null_handlers_is_accepted_but_not_normalized_to_empty_array(self):
+  states=[]
+  for value in (None,[],['fetch']):
+   f=fixtures();f[SCRIPT+'/versions/'+VID]['result']['resources']['script']['handlers']=value
+   with patch.object(b,'ACCOUNT_SHA',SHA):state=b.current_state(ACCOUNT,get_for(f))
+   self.assertEqual(state['activeDeployment']['versionScript']['fields']['handlers'],value);states.append(state)
+  self.assertEqual(len({b.digest(state) for state in states}),3)
+ def test_metadata_unknown_is_unconsumed_nonassets_runtime_still_blocks(self):
+  f=fixtures();f[SCRIPT+'/versions/'+VID]['result']['metadata']['synthetic_unknown']='CANARY_NOT_PROVIDER_VALUE'
+  with patch.object(b,'ACCOUNT_SHA',SHA):state=b.current_state(ACCOUNT,get_for(f))
+  self.assertNotIn('synthetic_unknown',json.dumps(state));self.assertNotIn('CANARY_NOT_PROVIDER_VALUE',json.dumps(state))
+  for value in (None,{},[],False,'CANARY_NOT_PROVIDER_VALUE'):
+   f=fixtures();f[SCRIPT+'/versions/'+VID]['result']['resources']['script_runtime']['synthetic_unknown']=value
+   with self.subTest(value=type(value).__name__),patch.object(b,'ACCOUNT_SHA',SHA),self.assertRaisesRegex(ValueError,'version_runtime_schema_requires_review'):b.current_state(ACCOUNT,get_for(f))
+ def test_retained_diagnostic_predicates_are_prior_policy_not_new_acceptance(self):
+  # Diagnostic code is deliberately unchanged. A prior-predicate false is not a
+  # rejection under the new narrow contract, and never grants baseline acceptance.
+  f=self.case();del f[SCRIPT+'/versions/'+VID]['result']['resources']['script_runtime']['synthetic_unknown_runtime']
+  with patch.object(b,'ACCOUNT_SHA',SHA):state=b.current_state(ACCOUNT,get_for(f))
+  self.assertIsNone(state['activeDeployment']['versionScript']['fields']['handlers'])
+  report=b.provider_shape_diagnostic(ACCOUNT,SCRIPT+'/versions/'+VID,f[SCRIPT+'/versions/'+VID])
+  for key in ('onlyPriorVersionKeys','onlyPriorMetadataKeys','staticHandlersAllowed','etagAbsentOrAllowedPattern','last_deployed_fromAbsentOrAllowedPattern'):
+   with self.subTest(key=key):self.assertTrue(report['checkEvaluated'][key]);self.assertFalse(report['checks'][key])
+  self.assertNotIn('CANARY_NOT_PROVIDER_VALUE',json.dumps(report))
 
 class StrictTimeBoundary(unittest.TestCase):
  def test_six_digit_claim_boundary_with_nine_digit_provider_floor(self):
@@ -159,3 +176,87 @@ class FixedPublicGET(unittest.TestCase):
   body=b'<html><body>known</body></html>'
   for changed in [body+b' ',body.replace(b'known',b'changed'),b'<!-- unknown injection -->'+body]:
    with self.subTest(body=changed),self.assertRaises(AssertionError):p.strip_one_cf_beacon(changed,b.sha(body))
+
+
+class DamyangSelectedAssetsBoundary(unittest.TestCase):
+ # Independent Damyang-only boundary additions; synthetic repeated identities only.
+ def case(self):return inherited.R12AssetsPreservation.fixtures()
+ def state(self,f):
+  with patch.object(b,'ACCOUNT_SHA',SHA):return b.current_state(ACCOUNT,get_for(f))
+ def test_gwangsan_other_accounts_aliases_and_queries_never_reach_transport(self):
+  beta=inherited.R12AssetsPreservation.BETA;selection={'deployments':DEP,'versions':VID}
+  variants=[beta.replace(b.WORKER,'gwangju-gwangsan-flower-guide'),beta.replace(ACCOUNT,'b'*32),beta.replace(VID,VID[:8]),beta.replace(VID,'latest'),beta.replace(VID,VID.upper()+'A'),beta+'?x=1',beta+'&include=modules',beta.replace('?include=modules','?include=modules&'),beta.replace('?include=modules','?include=modules%00'),beta.replace('/workers/workers/','/workers/scripts/'),beta.replace('/accounts/','//accounts/'),'https://api.cloudflare.com/client/v4'+beta,beta+'#fragment']
+  f=self.case();op=inherited.R2Regressions().opener([f[SCRIPT+'/deployments?page=1&per_page=1']]);get=inherited.R2Regressions().transport(op);get(SCRIPT+'/deployments?page=1&per_page=1')
+  for path in variants:
+   with self.subTest(path=path):
+    try:allowed=b.allowed_path(ACCOUNT,path,selection)
+    except ValueError:allowed=False
+    self.assertFalse(allowed)
+    with self.assertRaises(ValueError):get(path)
+  self.assertEqual(len(op.requests),1)
+ def test_all_eight_optional_and_header_states_are_distinct(self):
+  states=[];beta=inherited.R12AssetsPreservation.BETA
+  for base in (False,True):
+   for first in (False,True):
+    for header in (False,True):
+     f=self.case();value=f[beta]['result']
+     if base:value['assets']['config']['base_path']='/'
+     if first:value['assets']['config']['run_worker_first']=False
+     if not header:value['modules']=[]
+     state=self.state(f);states.append(state)
+     coverage=state['activeDeployment']['versionResourceCoverage'];self.assertEqual(len(coverage),5);self.assertTrue(all(type(v) is bool for v in coverage.values()))
+     projection=state['activeDeployment']['versionRuntime']['fields']['assetsPreservation']
+     self.assertEqual('base_path' in projection['configFields'],base);self.assertEqual('run_worker_first' in projection['configFields'],first)
+     self.assertEqual(projection['headers'],'present_exact_source_bytes' if header else 'absent_source_noop_equivalent')
+  self.assertEqual(len({b.digest(s) for s in states}),8)
+ def test_same_version_repeat_preserves_raw_identity_time_and_number(self):
+  first=self.state(self.case());baseline=first['activeDeployment']['versionRuntime']['fields']['assetsPreservation']
+  for field,value in [('id','55555555-5555-5555-5555-555555555555'),('number',2),('created_on','2026-10-16T02:58:19.000000001Z'),('created_on','2026-10-16T11:58:19+09:00')]:
+   f=self.case();beta=inherited.R12AssetsPreservation.BETA;v=f[SCRIPT+'/versions/'+VID]['result'];other=f[beta]['result']
+   if field=='id':
+    v['id']=value;other['id']=value
+    for entry in (f[SCRIPT+'/deployments?page=1&per_page=1']['result']['deployments'][0],f[SCRIPT+'/deployments/'+DEP]['result']):entry['versions'][0]['version_id']=value
+    f[SCRIPT+'/versions/'+value]=f.pop(SCRIPT+'/versions/'+VID);f[beta.replace(VID,value)]=f.pop(beta)
+   elif field=='number':v['number']=value;other['number']=value
+   else:v['metadata']['created_on']=value;other['created_on']=value
+   second=self.state(f)
+   with self.subTest(field=field,value=value):
+    self.assertEqual(second['activeDeployment']['versionRuntime']['fields']['assetsPreservation'],baseline)
+    self.assertNotEqual(first,second);self.assertNotEqual(b.digest(first),b.digest(second))
+    env,event=inherited.Authorization().case()
+    with patch.object(b,'trusted_control'),patch.object(b,'provider_get',return_value=(ACCOUNT,None)),patch.object(b,'state_with_diagnostics',side_effect=[first,second]),patch.object(b,'old_public',return_value={}),patch.object(b,'save') as save,self.assertRaisesRegex(ValueError,'provider_changed_across_full_public_check'):b.observe(env,event)
+    save.assert_not_called()
+ def test_projection_missing_mutated_and_presence_changes_fail_baseline_repeat(self):
+  first=self.state(self.case());variants=[]
+  for key,value in [('schema','other/v1'),('headers','absent_source_noop_equivalent'),('workerCodeAbsenceProven',True)]:
+   second=copy.deepcopy(first);second['activeDeployment']['versionRuntime']['fields']['assetsPreservation'][key]=value;variants.append(second)
+  second=copy.deepcopy(first);del second['activeDeployment']['versionRuntime']['fields']['assetsPreservation'];variants.append(second)
+  for key,value in [('base_path','/'),('run_worker_first',False)]:
+   second=copy.deepcopy(first);second['activeDeployment']['versionRuntime']['fields']['assetsPreservation']['configFields'][key]=value;variants.append(second)
+  for second in variants:
+   self.assertNotEqual(b.digest(first),b.digest(second));env,event=inherited.Authorization().case()
+   with patch.object(b,'trusted_control'),patch.object(b,'provider_get',return_value=(ACCOUNT,None)),patch.object(b,'state_with_diagnostics',side_effect=[first,second]),patch.object(b,'old_public',return_value={}),patch.object(b,'save') as save,self.assertRaisesRegex(ValueError,'provider_changed_across_full_public_check'):b.observe(env,event)
+   save.assert_not_called()
+ def test_new_validation_codes_do_not_add_legacy_diagnostic_sweep(self):
+  beta=inherited.R12AssetsPreservation.BETA;canary=inherited.R12AssetsPreservation.CANARY
+  cases=[('version_annotations_type_required',lambda f:f[SCRIPT+'/versions/'+VID]['result'].update(annotations=None)),('version_startup_metric_required',lambda f:f[SCRIPT+'/versions/'+VID]['result'].update(startup_time_ms=True)),('version_assets_object_required',lambda f:f[SCRIPT+'/versions/'+VID]['result']['resources']['script_runtime'].update(assets=None))]
+  for code,mutate in cases:
+   f=self.case();mutate(f);seen=[]
+   with self.subTest(code=code),patch.object(b,'ACCOUNT_SHA',SHA),patch.object(b,'state_diagnostic_sweep') as sweep,self.assertRaisesRegex(ValueError,'^'+code+'$') as caught:b.state_with_diagnostics({},ACCOUNT,get_for(f,seen))
+   self.assertNotIn(code,b.STATE_DIAGNOSTIC_CODES);self.assertNotIn(beta,seen);self.assertNotIn(canary,str(caught.exception));sweep.assert_not_called()
+ def test_actual_old_phase1_binding_rejects_this_new_three_file_candidate(self):
+  import recovery_build as q
+  review=json.loads(b.read(b.ROOT/'docs/direct-damyang-recovery/phase1-control-review-20261016.json'))
+  mismatch={row['path'] for row in review['controlFiles'] if b.sha(b.read(b.ROOT/row['path']))!=row['sha256']}
+  self.assertEqual(mismatch,{'scripts/direct-damyang-recovery/'+name for name in ('provider_baseline.py','test_provider_baseline.py','test_damyang_baseline.py')})
+  with patch.object(q,'git') as git,self.assertRaisesRegex(ValueError,'reviewed_control_file_changed'):q.activation(b.ROOT)
+  git.assert_not_called()
+ def test_beta_fixed_error_reports_do_not_retain_raw_values(self):
+  beta=inherited.R12AssetsPreservation.BETA;f=self.case();f[beta]['result']['modules'][0]['content_base64']=inherited.R12AssetsPreservation.CANARY
+  def observe(*args):
+   with patch.object(b,'ACCOUNT_SHA',SHA):return b.state_with_diagnostics({},ACCOUNT,get_for(f))
+  with patch.object(b,'load_policy',return_value={}),patch.object(b,'read',return_value=b'{}'),patch.object(b,'observe',side_effect=observe),patch.object(b,'save') as save,patch.dict(os.environ,{'GITHUB_EVENT_PATH':'synthetic-event.json'}),patch.object(b.sys,'argv',['provider_baseline.py','observe','--report','fixture-report.json']),patch('sys.stdout',new_callable=io.StringIO) as output,patch.object(b,'state_diagnostic_sweep') as sweep:
+   self.assertEqual(b.main(),1)
+  report=save.call_args.args[1];self.assertEqual(report,{'state':'BLOCKED_WITH_NO_PROVIDER_MUTATION','code':'selected_assets_headers_bytes','providerMutationsPerformed':False,'baselineAccepted':False});sweep.assert_not_called()
+  for raw in (inherited.R12AssetsPreservation.CANARY,ACCOUNT,VID,DEP,'jwt','content_base64'):
+   self.assertNotIn(raw,json.dumps(report)+output.getvalue())
