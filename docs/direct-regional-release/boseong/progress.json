@@ -7,10 +7,10 @@
   "nationalOrder": 40,
   "progressPath": "boseong/progress.json",
   "sourceRoot": "site-factory/boseong-flower",
-  "status": "public_release_verified_indexnow_not_submitted",
-  "executionState": "public_release_verified_indexnow_not_submitted",
+  "status": "public_release_verified_indexnow_rejected_422",
+  "executionState": "public_release_verified_indexnow_rejected_422",
   "active": false,
-  "updatedAt": "2026-10-17T06:39:01.213Z",
+  "updatedAt": "2026-10-17T07:22:55Z",
   "plannedOrigin": "https://boseong.fwith.kr",
   "originStatus": "PUBLIC_RELEASE_VERIFIED_PROVIDER_BINDING_AND_PUBLIC_HTTP_DNS_UNCHECKED",
   "sourceBranch": "source/boseong-production-preparation-20261017",
@@ -132,8 +132,8 @@
   "productionActionsExecuted": true,
   "publicDeploymentCount": 1,
   "newVerificationKeysCreated": 1,
-  "IndexNowSubmitted": false,
-  "IndexNowSubmissionCount": 0,
+  "IndexNowSubmitted": true,
+  "IndexNowSubmissionCount": 1,
   "IndexNowReceived": false,
   "endToEndComplete": false,
   "publicationReady": false,
@@ -146,11 +146,11 @@
     "countsChanged": true
   },
   "pendingReleaseGates": [
-    "IndexNow request/receipt remains pending because the current Boseong publisher explicitly disables submission. Review an existing authorized no-deploy submission route; do not regenerate the already-approved, deployed proof key.",
+    "One authorized Boseong IndexNow POST attempt was rejected with HTTP 422. The provider response body was not retained, so the cause is unknown; the durable journal records the rejection and no retry is allowed.",
     "DNS records/state were not checked. Fixed-hostname attachment was accepted and the worker/hostname binding was read back; do not claim that attachment had no DNS side effect.",
     "A separate live public-browser screenshot session was not performed during this publication run."
   ],
-  "boundary": "Boseong public release and 14-path workflow HTTP verification completed at the pinned production source. Retained build output15/15 byte hashes match. The dedicated public proof key was approved, generated and applied once before this publication, and its public file was verified; no new key was generated during this publication. IndexNow remains unsubmitted, search indexing is unverified and end-to-end count remains66/230. Provider fixed-hostname attachment performed a mutation; DNS state was not checked.",
+  "boundary": "Boseong public release remains verified at the pinned production source. One separately authorized, root-URL-only IndexNow POST was attempted in run39013203959 and rejected with HTTP422; the terminal same-fingerprint journal record was read back. The provider response body and specific cause are unavailable. No retry was made, no accepted receipt is recorded, search indexing remains unverified, and end-to-end count remains66/230. The dedicated public proof key was approved, generated and applied before publication and its public file was verified; no new key was generated during this submission. DNS state was not checked after the fixed-hostname attachment.",
   "priorPreparationSourceRevision": "e4fea02b97a46aa4e3853ed8d63a242a20b1dee3",
   "priorPreparationSourceBranch": "source/boseong-private-qa-20261016",
   "productionSource50": {
@@ -274,5 +274,24 @@
       "proofPublicHTTPPath": "/31d1075dc9b5ec84419992fe7a70c660.txt"
     }
   },
-  "newVerificationKeysGeneratedThisPublication": 0
+  "newVerificationKeysGeneratedThisPublication": 0,
+  "actualIndexNowSubmission": {
+    "state": "rejected",
+    "httpStatus": 422,
+    "runId": "39013203959",
+    "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/39013203959",
+    "resultArtifactId": 12093781755,
+    "resultArtifactSha256": "98196cf7916c78c643f0eb925f0640ceb458bae7536786ded4b79224ec168f1e",
+    "postCount": 1,
+    "preflightGetCount": 15,
+    "fingerprint": "6fd60c242e83546ea966385412dd710309dab88eb1e02fa8602948802e837bf8",
+    "journalIssue": 425,
+    "journalCommentUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/425#issuecomment-6231134295",
+    "providerReceiptReceived": false,
+    "responseBodyRetained": false,
+    "providerCauseKnown": false,
+    "automaticRetryAllowed": false,
+    "searchIndexing": "not_verified",
+    "rootUrlOnly": true
+  }
 }

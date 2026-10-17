@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-17T06:39:01.213Z",
+  "updatedAt": "2026-10-17T07:22:55Z",
   "mode": "direct-github-static",
   "status": "reconciled_latest_progress_supplement",
   "historicalCheckpoint": "checkpoint.json",
@@ -2639,7 +2639,7 @@
     "remainingSubmissionBudget": 0
   },
   "publicVerificationPendingIndexNow": {
-    "updatedAtUTC": "2026-10-17T06:23:48Z",
+    "updatedAtUTC": "2026-10-17T07:22:55Z",
     "publicVerifiedHostCount": 71,
     "publicVerifiedHosts": [
       "ansan.fwith.kr",
@@ -2735,10 +2735,10 @@
       "boseong.fwith.kr"
     ],
     "progressPath": "boseong/progress.json",
-    "status": "public_release_verified_indexnow_not_submitted",
+    "status": "public_release_verified_indexnow_rejected_422",
     "publicRunId": 39009688147,
     "publicIndependentGETCount": 14,
-    "IndexNowHTTPStatus": null,
+    "IndexNowHTTPStatus": 422,
     "receiptUrl": null,
     "priorSnapshotPreserved": {
       "updatedAtUTC": "2026-10-16T18:48:35.159156+00:00",
@@ -3057,8 +3057,18 @@
       "basis": "Prior66 completed hosts plus separately public-verified Damyang/Gokseong/Gurye/Goheung equals70. This increment adds Goheung once; prior69 are carried-forward evidence. Oct17 KST public additions are Gokseong, Gurye and Goheung. No Goheung IndexNow request has been sent, so accepted-receipt completion remains66/230 with164 remaining. Observation times do not establish exact first-public availability.",
       "IndexNowSubmitted": false
     },
-    "basis": "The stored 70-host public-verification snapshot at main 0ad22fcfb215500d50fe2bef2082cf1f90cfa0c3 is carried forward and Boseong is added once from successful production run39009688147: 71 public-verified hosts. The accepted-receipt/end-to-end union remains66/230 with164 remaining; no IndexNow request was sent for Boseong. KST daily public additions are Gokseong, Gurye, Goheung and Boseong (4), with no new end-to-end completion. Public observation time does not establish exact first-public availability.",
-    "IndexNowSubmitted": false
+    "basis": "The stored 70-host public-verification snapshot is carried forward and Boseong is added once from successful publication run39009688147: 71 public-verified hosts. The accepted-receipt/end-to-end union remains66/230 with164 remaining. A separate authorized root-URL-only Boseong IndexNow POST was made once in run39013203959 and rejected with HTTP422; durable issue425 journal comment6231134295 records the rejection for the same fingerprint. No retry was made; provider response body and cause are unknown, no accepted receipt is claimed, and this outcome adds no end-to-end completion. KST daily public additions remain Gokseong, Gurye, Goheung and Boseong (4), with no new end-to-end completion.",
+    "IndexNowSubmitted": true,
+    "IndexNowSubmissionCount": 1,
+    "journalTerminalRecordURL": "https://github.com/joseungil-kr/fwith-site-factory/issues/425#issuecomment-6231134295",
+    "submissionRunId": "39013203959",
+    "submissionRunURL": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/39013203959",
+    "resultArtifactId": 12093781755,
+    "resultArtifactSHA256": "98196cf7916c78c643f0eb925f0640ceb458bae7536786ded4b79224ec168f1e",
+    "submissionFingerprint": "6fd60c242e83546ea966385412dd710309dab88eb1e02fa8602948802e837bf8",
+    "automaticRetryAllowed": false,
+    "providerCauseKnown": false,
+    "providerReceiptReceived": false
   },
   "damyangVerificationKeyRecovery": {
     "state": "SUCCESSOR_PUBLIC_VERIFIED_ADDITIONAL_GET_REJECTED_422_BUDGET_EXHAUSTED",

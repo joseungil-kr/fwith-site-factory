@@ -5,9 +5,9 @@
   "officialCode": "12750",
   "legalCode": "1275000000",
   "nationalOrder": 40,
-  "status": "public_release_verified_indexnow_pending",
+  "status": "public_release_verified_indexnow_rejected_422",
   "verifiedAtUTC": "2026-10-17T06:23:48Z",
-  "documentationRecordedAtUTC": "2026-10-17T06:39:01.213Z",
+  "documentationRecordedAtUTC": "2026-10-17T07:22:55Z",
   "completionDateKST": "2026-10-17",
   "url": "https://boseong.fwith.kr/",
   "sourceRevision": "eb4f931242e7b8f7598cd2fec957b0d988740e7a",
@@ -119,9 +119,9 @@
   "indexNow": {
     "mode": "publish-and-verify-only",
     "submissionEnabled": false,
-    "submissionCount": 0,
-    "submitted": false,
-    "httpStatus": null,
+    "submissionCount": 1,
+    "submitted": true,
+    "httpStatus": 422,
     "receiptURL": null,
     "searchIndexingVerified": false,
     "approvalAtUTC": "2026-10-17T01:32:10Z",
@@ -131,7 +131,22 @@
     "proofFilePath": "scripts/direct-boseong/production-release/boseong-indexnow-proof.txt",
     "proofFileBytes": 33,
     "proofFileContentSHA256": "58be5dbed02ccb2703e99e881d616982477ae2d22797a3f0d41995db6c35ad9a",
-    "proofPublicHTTPPath": "/31d1075dc9b5ec84419992fe7a70c660.txt"
+    "proofPublicHTTPPath": "/31d1075dc9b5ec84419992fe7a70c660.txt",
+    "state": "rejected",
+    "postCount": 1,
+    "preflightGetCount": 15,
+    "automaticRetryAllowed": false,
+    "providerReceiptReceived": false,
+    "responseBodyRetained": false,
+    "providerCauseKnown": false,
+    "runId": "39013203959",
+    "runURL": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/39013203959",
+    "resultArtifactId": 12093781755,
+    "resultArtifactSHA256": "98196cf7916c78c643f0eb925f0640ceb458bae7536786ded4b79224ec168f1e",
+    "durableJournalURL": "https://github.com/joseungil-kr/fwith-site-factory/issues/425#issuecomment-6231134295",
+    "fingerprint": "6fd60c242e83546ea966385412dd710309dab88eb1e02fa8602948802e837bf8",
+    "urlCount": 1,
+    "urlSetSHA256": "5bcf641e4eebf77e3b5847ec1b9f93de5303c07483dda99035241a3b9c97813a"
   },
   "countImpact": {
     "priorPublicVerifiedHostCount": 70,
@@ -147,10 +162,29 @@
     "dailyEndToEndCompletedHostCount": 0
   },
   "scopeBoundaries": [
-    "No IndexNow POST or retry was made.",
-    "The dedicated public proof key was approved/generated/applied once before this publication; its public 33-byte proof file was verified. No new key was generated or regenerated during this publication.",
-    "The publisher control remains publish-and-verify-only with IndexNow submission disabled; no receipt or search-indexing verification is recorded.",
+    "One root-URL-only IndexNow POST was made and rejected with HTTP422; the durable journal records the terminal rejection. No automatic retry or second POST is allowed.",
+    "The provider response body was not retained; the specific 422 cause is unknown. No accepted receipt or search-indexing result is claimed.",
+    "The dedicated public proof key was approved/generated/applied once before this publication and its public 33-byte proof file was verified. No new key was generated during this submission.",
     "DNS records/state were not checked; fixed-hostname attachment was accepted and may have DNS side effects.",
     "The recovered visual-review verdict is retained only with its byte-recovery limitation."
-  ]
+  ],
+  "indexNowSubmissionResult": {
+    "state": "rejected",
+    "httpStatus": 422,
+    "runId": "39013203959",
+    "runUrl": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/39013203959",
+    "resultArtifactId": 12093781755,
+    "resultArtifactSha256": "98196cf7916c78c643f0eb925f0640ceb458bae7536786ded4b79224ec168f1e",
+    "postCount": 1,
+    "preflightGetCount": 15,
+    "fingerprint": "6fd60c242e83546ea966385412dd710309dab88eb1e02fa8602948802e837bf8",
+    "journalIssue": 425,
+    "journalCommentUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/425#issuecomment-6231134295",
+    "providerReceiptReceived": false,
+    "responseBodyRetained": false,
+    "providerCauseKnown": false,
+    "automaticRetryAllowed": false,
+    "searchIndexing": "not_verified",
+    "rootUrlOnly": true
+  }
 }

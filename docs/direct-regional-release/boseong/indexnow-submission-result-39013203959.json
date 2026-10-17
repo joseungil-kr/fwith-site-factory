@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "recordType": "boseong-indexnow-submission-terminal-result",
+  "recordedAtUTC": "2026-10-17T07:22:55Z",
+  "region": "Boseong",
+  "sourceRevision": "eb4f931242e7b8f7598cd2fec957b0d988740e7a",
+  "sourceBuild": {
+    "runId": "38994862258",
+    "artifactId": "12086568586",
+    "artifactDigest": "sha256:af5732bdc751630c7f7546f597947e0e00ea7d599e830f61a63d59ad9361a1a8"
+  },
+  "submissionControlRevision": "57e1b73a942ff69d5d63693d8e9804e4477fc099",
+  "trigger": {
+    "issueNumber": 426,
+    "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/426"
+  },
+  "actualRun": {
+    "runId": "39013203959",
+    "runAttempt": 1,
+    "url": "https://github.com/joseungil-kr/fwith-site-factory/actions/runs/39013203959",
+    "conclusion": "failure",
+    "artifactId": 12093781755,
+    "artifactName": "boseong-indexnow-result-39013203959",
+    "artifactArchiveSha256": "98196cf7916c78c643f0eb925f0640ceb458bae7536786ded4b79224ec168f1e"
+  },
+  "outcome": {
+    "state": "rejected",
+    "endpoint": "https://searchadvisor.naver.com/indexnow",
+    "method": "POST",
+    "httpStatus": 422,
+    "reason": "indexnow_rejected_http_422",
+    "postCount": 1,
+    "preflightGetCount": 15,
+    "automaticRetryAllowed": false,
+    "providerReceiptReceived": false,
+    "searchIndexing": "not_verified",
+    "responseBodyRetained": false,
+    "responseBodySha256": null,
+    "providerCauseKnown": false
+  },
+  "request": {
+    "origin": "https://boseong.fwith.kr",
+    "urls": [
+      "https://boseong.fwith.kr/"
+    ],
+    "urlCount": 1,
+    "fingerprint": "6fd60c242e83546ea966385412dd710309dab88eb1e02fa8602948802e837bf8",
+    "urlSetSha256": "5bcf641e4eebf77e3b5847ec1b9f93de5303c07483dda99035241a3b9c97813a"
+  },
+  "durableJournal": {
+    "issueNumber": 425,
+    "url": "https://github.com/joseungil-kr/fwith-site-factory/issues/425",
+    "startedCommentId": 6231133768,
+    "terminalCommentId": 6231134295,
+    "terminalCommentUrl": "https://github.com/joseungil-kr/fwith-site-factory/issues/425#issuecomment-6231134295",
+    "owner": "joseungil-kr",
+    "title": "[BOSEONG-PRODUCTION-PUBLISH] 20261017",
+    "readbackVerified": true,
+    "sameFingerprintForStartedAndRejected": true
+  },
+  "publicPreflight": {
+    "rootHtmlRawSha256": "aadca834d5fe516d764a00d3b7841fb8026faad91bd1b9ff67408fca2c6ac641",
+    "normalizedHtmlSha256": "fecd2e7f2f3ca0a8c7a6b9aec2fee54465742c6ce8760f63861564eeb127ffd3",
+    "normalizedKnownCloudflareBeaconCount": 1,
+    "robotsRawSha256": "41237f46ea92bd8ff84b89c7520ed829030024c468c5cfc98a2e7da0b3c5e309",
+    "robotsRawBodyUnmodified": true,
+    "sitemapUrls": 1
+  },
+  "keyProof": {
+    "preexistingProofApprovedGeneratedAndAppliedAtUTC": "2026-10-17T01:32:10Z",
+    "newKeyGeneratedDuringThisSubmission": false,
+    "publicProofDeployedVerified": true,
+    "path": "scripts/direct-boseong/production-release/boseong-indexnow-proof.txt",
+    "sha256": "58be5dbed02ccb2703e99e881d616982477ae2d22797a3f0d41995db6c35ad9a",
+    "publicPath": "/31d1075dc9b5ec84419992fe7a70c660.txt"
+  },
+  "countImpact": {
+    "publicVerifiedHostCount": 71,
+    "acceptedReceiptEndToEndHostCount": 66,
+    "remainingRegions": 164,
+    "dateKST": "2026-10-17",
+    "dailyPublicVerifiedHostCount": 4,
+    "dailyEndToEndCompletedHostCount": 0,
+    "countIncrementFromThis422": 0
+  },
+  "limitations": [
+    "The workflow artifact and durable journal retain HTTP 422 but not the response body; the provider's specific rejection cause is unknown.",
+    "No retry or second POST was made. An accepted IndexNow receipt and search indexing are not verified.",
+    "The submission phase did not redeploy the site or change the existing public proof key."
+  ]
+}
