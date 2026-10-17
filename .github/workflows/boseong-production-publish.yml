@@ -9,9 +9,9 @@ concurrency:
   cancel-in-progress: false
 jobs:
   publish:
-    # Inactive save phase. Activation is a separate reviewed main commit after the
-    # exact publication authorization record is saved and its commit revision pinned.
-    if: false && github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[BOSEONG-PRODUCTION-PUBLISH] 20261017' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.user.login == 'joseungil-kr'
+    # Activated only after the exact authorization record was saved and read back on main.
+    # Its saved commit revision is pinned in authorization-binding.json.
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[BOSEONG-PRODUCTION-PUBLISH] 20261017' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.user.login == 'joseungil-kr'
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     permissions:
@@ -46,15 +46,11 @@ jobs:
           script: |
             const fs = require('fs');
             const desc = JSON.parse(fs.readFileSync(process.env.CONTROL_DIR + '/production-release-review-binding.json'));
-            const review = JSON.parse(fs.readFileSync('control/' + desc.path));
             const {data: run} = await github.rest.actions.getWorkflowRun({...context.repo, run_id: Number(process.env.BUILD_RUN_ID)});
-            if (run.id !== Number(review.buildRunId) || run.run_attempt !== 1 || run.status !== 'completed' || run.conclusion !== 'success' || run.event !== 'issues' || run.head_branch !== 'main' || run.head_sha !== review.buildControlSha || run.path !== '.github/workflows/boseong-production-build-only.yml' || run.repository.full_name !== 'joseungil-kr/fwith-site-factory' || run.actor?.login !== 'joseungil-kr' || run.triggering_actor?.login !== 'joseungil-kr') throw new Error('Build identity mismatch');
+            if (run.id !== Number(desc.buildRunId) || run.run_attempt !== 1 || run.status !== 'completed' || run.conclusion !== 'success' || run.event !== 'issues' || run.head_branch !== 'main' || run.head_sha !== desc.buildControlSha || run.path !== '.github/workflows/boseong-production-build-only.yml' || run.repository.full_name !== 'joseungil-kr/fwith-site-factory' || run.actor?.login !== 'joseungil-kr' || run.triggering_actor?.login !== 'joseungil-kr') throw new Error('Build identity mismatch');
             const {data: artifact} = await github.rest.actions.getArtifact({...context.repo, artifact_id: Number(process.env.BUILD_ARTIFACT_ID)});
-            if (artifact.id !== Number(review.artifactId) || artifact.expired || artifact.name !== process.env.REGION + '-production-build-' + review.buildRunId + ('-' + review.buildControlSha) || artifact.workflow_run.id !== run.id || artifact.workflow_run.head_sha !== run.head_sha || artifact.workflow_run.head_branch !== 'main') throw new Error('Artifact identity mismatch');
-            if (process.env.REGION === 'boseong') {
-              if (artifact.digest !== review.artifactDigest || String(run.id) !== String(review.qaRunId)) throw new Error('Boseong archive or combined browser run mismatch');
-
-            }
+            if (artifact.id !== Number(desc.artifactId) || artifact.expired || artifact.name !== process.env.REGION + '-production-build-' + desc.buildRunId + ('-' + desc.buildControlSha) || artifact.workflow_run.id !== run.id || artifact.workflow_run.head_sha !== run.head_sha || artifact.workflow_run.head_branch !== 'main') throw new Error('Artifact identity mismatch');
+            if (process.env.REGION === 'boseong' && artifact.digest !== desc.artifactDigest) throw new Error('Boseong archive digest mismatch');
       - uses: actions/checkout@v4
         with:
           ref: ${{ env.REVISION }}

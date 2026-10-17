@@ -15,6 +15,48 @@ import publish
 import production_output as output
 
 class BoseongBoundaryTests(unittest.TestCase):
+    def test_actual_workflow_artifact_check_javascript_with_stubbed_github(self):
+        workflow=(HERE.parents[1]/'.github/workflows/boseong-production-publish.yml').read_text()
+        lines=workflow.splitlines()
+        step=next(i for i,line in enumerate(lines) if line.strip()=='- name: Verify actual successful build and exact retained artifact metadata')
+        script_line=next(i for i in range(step,len(lines)) if lines[i].strip()=='script: |')
+        js=[]
+        for line in lines[script_line+1:]:
+            if line.strip() and not line.startswith('            '): break
+            js.append(line[12:] if line.startswith('            ') else '')
+        script='\n'.join(js).rstrip()
+        self.assertIn('Number(desc.buildRunId)',script)
+        self.assertIn('Number(desc.artifactId)',script)
+        self.assertIn('desc.artifactDigest',script)
+        self.assertNotIn('desc.path',script)
+        self.assertNotIn('review.qaRunId',script)
+        job_if=next(line.strip() for line in lines if line.strip().startswith('if:'))
+        self.assertTrue(job_if.startswith('if: github.repository =='))
+        self.assertNotIn('false &&',job_if)
+        activation=json.loads((HERE/'authorization-binding.json').read_text())
+        self.assertEqual(activation['revision'],'9b6ebbdfc44aec9c49058a68df59afa9205460fb')
+        descriptor=(HERE/'production-release-review-binding.json').read_text()
+        harness=r"""
+const fs=require('fs'),assert=require('assert');
+const descriptorText=process.env.TEST_DESCRIPTOR;
+const script=JSON.parse(process.env.TEST_SCRIPT);
+const CONTROL_DIR='control/scripts/direct-boseong';
+const originalRead=fs.readFileSync.bind(fs);
+fs.readFileSync=(p,...args)=>String(p)===CONTROL_DIR+'/production-release-review-binding.json'?descriptorText:originalRead(p,...args);
+const desc=JSON.parse(descriptorText);
+const run={id:Number(desc.buildRunId),run_attempt:1,status:'completed',conclusion:'success',event:'issues',head_branch:'main',head_sha:desc.buildControlSha,path:'.github/workflows/boseong-production-build-only.yml',repository:{full_name:'joseungil-kr/fwith-site-factory'},actor:{login:'joseungil-kr'},triggering_actor:{login:'joseungil-kr'}};
+function provider(artifact){const calls=[];return {calls,github:{rest:{actions:{getWorkflowRun:async p=>{calls.push(['run',p]);return {data:run}},getArtifact:async p=>{calls.push(['artifact',p]);return {data:artifact}}}}}}}
+const processStub={env:{CONTROL_DIR,BUILD_RUN_ID:String(desc.buildRunId),BUILD_ARTIFACT_ID:String(desc.artifactId),REGION:'boseong'}};
+const context={repo:{owner:'joseungil-kr',repo:'fwith-site-factory'}};
+const AsyncFunction=Object.getPrototypeOf(async function(){}).constructor;
+async function execute(artifact){const p=provider(artifact);await new AsyncFunction('process','github','context','require',script)(processStub,p.github,context,require);assert.deepStrictEqual(p.calls,[['run',{owner:'joseungil-kr',repo:'fwith-site-factory',run_id:Number(desc.buildRunId)}],['artifact',{owner:'joseungil-kr',repo:'fwith-site-factory',artifact_id:Number(desc.artifactId)}]]);}
+const good={id:Number(desc.artifactId),expired:false,name:'boseong-production-build-'+desc.buildRunId+'-'+desc.buildControlSha,digest:desc.artifactDigest,workflow_run:{id:run.id,head_sha:run.head_sha,head_branch:'main'}};
+(async()=>{await execute(good);await assert.rejects(()=>execute({...good,digest:'sha256:wrong'}),/Boseong archive digest mismatch/);console.log('workflow JS descriptor contract passed');})().catch(e=>{console.error(e);process.exitCode=1});
+"""
+        env=os.environ.copy()
+        env.update(TEST_DESCRIPTOR=descriptor,TEST_SCRIPT=json.dumps(script))
+        result=subprocess.run(['node','-e',harness],check=True,capture_output=True,text=True,env=env)
+        self.assertIn('workflow JS descriptor contract passed',result.stdout)
     def test_fixed_source_and_approved_proof_are_exact(self):
         contract,binding,binding_sha=gate.load()
         self.assertEqual(contract['sourceRevision'],'eb4f931242e7b8f7598cd2fec957b0d988740e7a')
