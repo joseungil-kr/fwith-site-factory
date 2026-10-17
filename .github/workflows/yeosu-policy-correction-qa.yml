@@ -5,7 +5,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: yeosu-direct-public-release
+  group: yeosu-policy-correction-readonly-qa-${{ github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.title == '[YEOSU-POLICY-CORRECTION-QA] 20261017' && github.event.issue.user.login == 'joseungil-kr' && 'requested' || github.run_id }}
   cancel-in-progress: false
 jobs:
   production_build:
