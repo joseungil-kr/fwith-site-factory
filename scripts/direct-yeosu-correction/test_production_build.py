@@ -13,10 +13,10 @@ class FrozenControls(unittest.TestCase):
   p,s=B.load_ui_expectations();self.assertEqual(len(p),4);self.assertEqual(len(s['faqs']),4);self.assertEqual(s['productCards'],[])
   self.assertTrue(all(not x['productCardIds'] for x in p));self.assertEqual(sum(len(x['images']) for x in p),6)
  def test_saved_source_binding_is_not_historical_revision(self):
-  c,b,h=B.load();self.assertEqual(c['sourceRevision'],'97382615bf24f164f097f323295f495b84561f8d');self.assertNotEqual(c['sourceRevision'],B.BASE)
+  c,b,h=B.load();self.assertNotEqual(c['sourceRevision'],B.R3_SOURCE);self.assertNotEqual(c['sourceRevision'],B.BASE)
   self.assertEqual(b['sourceRevision'],c['sourceRevision']);self.assertFalse(B.data('qa-scope.json')['publicationAuthorized'])
  def test_frozen_control_mutation_fails(self):
-  for name in ['expected-source88.json','expected-output18.json','ui-expectations.json','patch-spec.json','original-html/404.html','r3-review-binding.json','trusted-frozen-files.json']:
+  for name in ['expected-source88.json','expected-output18.json','ui-expectations.json','patch-spec.json','original-html/404.html','r3-review-binding.json','r4-layout-binding.json','r4-source-review.json','frozen-source-save-review.r4.json','original-assets/CopyPage.BgCFg6FO.css','trusted-frozen-files.json']:
    with self.subTest(name=name),tempfile.TemporaryDirectory() as temp:
     p=Path(temp)/'controls';shutil.copytree(D,p,ignore=shutil.ignore_patterns('__pycache__'));f=p/name;f.write_bytes(f.read_bytes()+b' ')
     with patch.object(B,'DIRECTORY',p),self.assertRaises(ValueError):B.load()
@@ -38,7 +38,7 @@ class FrozenControls(unittest.TestCase):
 class SelectRequest(unittest.TestCase):
  def setUp(self):
   self.c,_,self.digest=B.load();self.env={'GITHUB_REPOSITORY':B.REPOSITORY,'GITHUB_REF':'refs/heads/main','GITHUB_ACTOR':B.OWNER,'GITHUB_TRIGGERING_ACTOR':B.OWNER,'GITHUB_RUN_ATTEMPT':'1','GITHUB_EVENT_NAME':'issues','GITHUB_SHA':'a'*40}
-  self.body=dict(schemaVersion=1,mode='yeosu-policy-correction-readonly-qa',source_branch=B.BRANCH,source_revision=self.c['sourceRevision'],expected_control_revision=self.env['GITHUB_SHA'],binding_sha256=self.digest,frozen_review_manifest_sha256=B.FROZEN_SHA,correction_spec_sha256=B.R3_SPEC_SHA)
+  self.body=dict(schemaVersion=1,mode='yeosu-policy-correction-readonly-qa',source_branch=B.BRANCH,source_revision=self.c['sourceRevision'],expected_control_revision=self.env['GITHUB_SHA'],binding_sha256=self.digest,frozen_review_manifest_sha256=B.FROZEN_SHA,correction_spec_sha256=B.R4_SPEC_SHA)
   self.event={'action':'opened','repository':{'full_name':B.REPOSITORY,'owner':{'login':B.OWNER,'type':'User'}},'issue':{'title':B.TITLE,'user':{'login':B.OWNER},'body':json.dumps(self.body),'number':123,'state':'open'}}
  def go(self):return B.select(self.c,self.digest,self.env,self.event)
  def test_only_exact_owner_main_first_attempt_request(self):

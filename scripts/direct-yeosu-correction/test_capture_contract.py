@@ -35,7 +35,7 @@ def fixture_page(route='/'):
 def fixture_spec(): return deepcopy(FROZEN['spec'])
 def fixture_metrics(route='/'):
     p=fixture_page(route);primary=route in ('/',CAP.ARTICLE);faqs=fixture_spec()['faqs'] if route==CAP.ARTICLE else []
-    return {'viewport':390,'scrollWidth':390,'overflow':[],'h1':[p['content']['h1']],'title':p['content']['title'],
+    metrics={'viewport':390,'scrollWidth':390,'overflow':[],'h1':[p['content']['h1']],'title':p['content']['title'],
       'description':[p['content']['metaDescription']],'revision':[REVISION],
       'firstAnswer':[{'text':p['content']['firstAnswer'],'visible':True}] if p['content']['firstAnswer'] is not None else [],
       'robots':['index,follow' if primary else 'noindex,follow'],'canonical':[] if route=='/404.html' else [CAP.ORIGIN+route],
@@ -48,6 +48,9 @@ def fixture_metrics(route='/'):
       'breadcrumbs':p['breadcrumbs'],'internalLinks':p['internalLinks'],
       'supportCards':[{'title':c['title'],'summary':c['summary'],'links':[{'label':c['ctaLabel'],'href':c['href']}]} for c in p['contentCards']],
       'ctas':[{'href':'/','height':44}], 'bodyCtas':[{**v,'visible':True,'width':200,'height':44} for v in p['ctas']]}
+
+    metrics['headingGlyphs']=[{'text':h['text'],'sectionId':h['sectionId'],'visible':True,'overflowWrap':'anywhere','whiteSpace':'normal','fontSize':23,'lineHeight':34.5,'contentBox':{'left':18,'right':372},'glyphs':[{'char':c,'rects':[{'left':20,'right':30,'top':100,'bottom':123,'width':10,'height':23}]} for c in h['text'] if not c.isspace()],'clips':[]} for h in p['h2Headings']]
+    return metrics
 
 
 class StaticHarnessContract(unittest.TestCase):

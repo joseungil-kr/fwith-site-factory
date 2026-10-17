@@ -23,6 +23,7 @@ import time
 import urllib.error
 import urllib.request
 from urllib.parse import urlsplit
+from layout_evidence import HEADING_METRICS_JS, heading_issues, supplemental_evidence
 
 SOURCE_ROOT = 'site-factory/yeosu-flower'
 ROOT = SOURCE_ROOT + '/portable/yeosu-portable-build-inputs-20261015/yeosu-local-implementation-20261015/candidate'
@@ -301,6 +302,7 @@ METRICS_JS = r'''() => {
 def inspect_metrics(metrics, expected, spec, width, revision):
     issues = metadata_issues(metrics, expected, revision)
     route = expected['path']
+    issues.extend(heading_issues(metrics.get('headingGlyphs'), expected['h2Headings'], width))
     expected_first = [{'text': expected['content']['firstAnswer'], 'visible': True}] if expected['content']['firstAnswer'] is not None else []
     if metrics.get('firstAnswer') != expected_first:
         issues.append('Exact first answer missing, changed, or invisible')
@@ -512,6 +514,7 @@ def inspect(root, out, pages, spec, revision, port):
                                     record['issues'].append('Direct file route is not HTTP 200')
                                 settle(page)
                                 record['metrics'] = page.evaluate(METRICS_JS)
+                                record['metrics']['headingGlyphs'] = page.evaluate(HEADING_METRICS_JS)
                                 record['issues'].extend(inspect_metrics(record['metrics'], expected, spec, width, revision))
                                 # Retain restriction guidance and four-FAQ pixels as dedicated sections too.
                                 for selector, label in (('#section-1', 'seller-restriction'), ('[data-visible-faq]', 'faq')):
@@ -519,6 +522,7 @@ def inspect(root, out, pages, spec, revision, port):
                                         target = out / (stem + '-' + label + '.png')
                                         page.locator(selector).screenshot(path=str(target))
                                         record.setdefault('artifacts', []).append({'file': target.name, 'sha256': sha(target), 'bytes': target.stat().st_size})
+                                supplemental_evidence(page, out, stem, expected, record, width)
                                 page.evaluate('scrollTo(0,0)')
                             except Exception as error:
                                 record['issues'].append(type(error).__name__ + ': ' + str(error))
