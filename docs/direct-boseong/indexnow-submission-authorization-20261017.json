@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "recordType": "boseong-indexnow-submission-phase-authorization",
+  "authorizationBasis": "The user's original Boseong task explicitly requested IndexNow acceptance after public verification; the user later directed that only already-started regional work be finished in economy mode.",
+  "region": "Boseong",
+  "repository": "joseungil-kr/fwith-site-factory",
+  "phase": "no-deploy-indexnow-submission-after-verified-publication",
+  "authorizedAction": {
+    "endpoint": "https://searchadvisor.naver.com/indexnow",
+    "origin": "https://boseong.fwith.kr",
+    "urlList": [
+      "https://boseong.fwith.kr/"
+    ],
+    "maximumPOSTRequests": 1,
+    "automaticRetry": false,
+    "existingPublicProofOnly": true,
+    "newKeyOrCredential": false,
+    "deploymentOrProviderMutation": false,
+    "durableJournal": {
+      "repository": "joseungil-kr/fwith-site-factory",
+      "issueNumber": 425,
+      "owner": "joseungil-kr",
+      "title": "[BOSEONG-PRODUCTION-PUBLISH] 20261017"
+    }
+  },
+  "sourceBinding": {
+    "sourceRevision": "eb4f931242e7b8f7598cd2fec957b0d988740e7a",
+    "publicationControlRevision": "0ad22fcfb215500d50fe2bef2082cf1f90cfa0c3",
+    "publicationRunId": "39009688147",
+    "publicationIssue": 425,
+    "buildRunId": "38994862258",
+    "buildArtifactId": "12086568586",
+    "buildArtifactDigest": "sha256:af5732bdc751630c7f7546f597947e0e00ea7d599e830f61a63d59ad9361a1a8"
+  },
+  "proof": {
+    "path": "scripts/direct-boseong/production-release/boseong-indexnow-proof.txt",
+    "sha256": "58be5dbed02ccb2703e99e881d616982477ae2d22797a3f0d41995db6c35ad9a",
+    "publicPath": "/31d1075dc9b5ec84419992fe7a70c660.txt"
+  },
+  "stopConditions": [
+    "Any existing started, unknown, rejected, or received journal record for the same fingerprint",
+    "Any mismatch in source, retained artifact, public proof, sitemap, robots, canonical, or page bytes",
+    "Any HTTP response other than 200",
+    "Any transport uncertainty, timeout, redirect, or retry request",
+    "The fixed Boseong receipt-journal issue is missing or its owner, repository, title, or open state differs"
+  ],
+  "claims": {
+    "searchIndexing": "not_verified",
+    "submissionReceipt": "pending"
+  }
+}

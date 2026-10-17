@@ -1,0 +1,98 @@
+name: Boseong one-shot no-deploy IndexNow submission
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+concurrency:
+  group: "${{ github.event_name == 'issues' && github.event.action == 'opened' && github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event.issue.title == '[BOSEONG-INDEXNOW-SUBMIT] 20261017' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.event.issue.user.login == 'joseungil-kr' && 'boseong-direct-indexnow-submit' || format('irrelevant-{0}', github.run_id) }}"
+  cancel-in-progress: false
+jobs:
+  submit:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.event_name == 'issues' && github.event.action == 'opened' && github.event.issue.title == '[BOSEONG-INDEXNOW-SUBMIT] 20261017' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.user.login == 'joseungil-kr'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Authorize exact owner issue and emit pinned artifact coordinates
+        id: authorize
+        run: |
+          mkdir -p boseong-result
+          cd control
+          env -i PATH="$PATH" HOME="$HOME" LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1             GITHUB_REPOSITORY="$GITHUB_REPOSITORY" GITHUB_REF="$GITHUB_REF"             GITHUB_ACTOR="$GITHUB_ACTOR" GITHUB_TRIGGERING_ACTOR="$GITHUB_TRIGGERING_ACTOR"             GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME"             GITHUB_JOB="$GITHUB_JOB" RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT"             GITHUB_SHA="$GITHUB_SHA" GITHUB_RUN_ID="$GITHUB_RUN_ID"             GITHUB_EVENT_PATH="$GITHUB_EVENT_PATH" GITHUB_OUTPUT="$GITHUB_OUTPUT"             GITHUB_WORKSPACE="$GITHUB_WORKSPACE"             python3 scripts/direct-boseong-indexnow/finalize_boseong.py authorize               --report ../boseong-result/authorization.json
+      - name: Verify exact successful retained build run and artifact
+        uses: actions/github-script@v7
+        env:
+          BUILD_RUN_ID: ${{ steps.authorize.outputs.build_run_id }}
+          BUILD_ARTIFACT_ID: ${{ steps.authorize.outputs.artifact_id }}
+          BUILD_ARTIFACT_NAME: ${{ steps.authorize.outputs.artifact_name }}
+          BUILD_ARTIFACT_DIGEST: ${{ steps.authorize.outputs.artifact_digest }}
+        with:
+          script: |
+            const fs = require('fs');
+            const binding = JSON.parse(fs.readFileSync('control/scripts/direct-boseong-indexnow/submission-binding.json'));
+            const {data: run} = await github.rest.actions.getWorkflowRun({...context.repo, run_id: Number(process.env.BUILD_RUN_ID)});
+            if (run.id !== Number(binding.build.runId) || run.run_attempt !== 1 || run.status !== 'completed' ||
+                run.conclusion !== 'success' || run.event !== 'issues' || run.head_branch !== 'main' ||
+                run.head_sha !== binding.build.controlRevision || run.path !== '.github/workflows/boseong-production-build-only.yml' ||
+                run.repository.full_name !== binding.repository || run.actor?.login !== 'joseungil-kr' ||
+                run.triggering_actor?.login !== 'joseungil-kr') throw new Error('Build run identity mismatch');
+            const {data: artifact} = await github.rest.actions.getArtifact({...context.repo, artifact_id: Number(process.env.BUILD_ARTIFACT_ID)});
+            if (artifact.id !== Number(binding.build.artifactId) || artifact.expired ||
+                artifact.name !== binding.build.artifactName || artifact.digest !== binding.build.artifactDigest ||
+                artifact.workflow_run.id !== run.id || artifact.workflow_run.head_sha !== run.head_sha ||
+                artifact.workflow_run.head_branch !== 'main') throw new Error('Build artifact identity mismatch');
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.authorize.outputs.artifact_id }}
+          run-id: ${{ steps.authorize.outputs.build_run_id }}
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: boseong-retained
+      - name: Run bounded control tests against the verified retained artifact without credentials
+        run: |
+          cd control
+          env -i PATH="$PATH" HOME="$HOME" LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1             BOSEONG_RELEASE_ROOT="$GITHUB_WORKSPACE/boseong-retained/release"             python3 -m unittest discover -s scripts/direct-boseong-indexnow -p 'test_*.py' -v
+      - name: GET-only live proof, root-only sitemap, robots and byte preflight
+        run: |
+          cd control
+          env -i PATH="$PATH" HOME="$HOME" LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1             GITHUB_REPOSITORY="$GITHUB_REPOSITORY" GITHUB_REF="$GITHUB_REF"             GITHUB_ACTOR="$GITHUB_ACTOR" GITHUB_TRIGGERING_ACTOR="$GITHUB_TRIGGERING_ACTOR"             GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME"             GITHUB_JOB="$GITHUB_JOB" RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT"             GITHUB_SHA="$GITHUB_SHA" GITHUB_RUN_ID="$GITHUB_RUN_ID"             GITHUB_EVENT_PATH="$GITHUB_EVENT_PATH" GITHUB_WORKSPACE="$GITHUB_WORKSPACE"             BOSEONG_RELEASE_ROOT="$GITHUB_WORKSPACE/boseong-retained/release"             python3 scripts/direct-boseong-indexnow/finalize_boseong.py preflight               --report ../boseong-result/preflight.json
+      - name: Submit exactly one journaled IndexNow request
+        id: submit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd control
+          env -i PATH="$PATH" HOME="$HOME" LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1             GH_TOKEN="$GH_TOKEN" GITHUB_REPOSITORY="$GITHUB_REPOSITORY"             GITHUB_REF="$GITHUB_REF" GITHUB_ACTOR="$GITHUB_ACTOR"             GITHUB_TRIGGERING_ACTOR="$GITHUB_TRIGGERING_ACTOR" GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT"             GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" GITHUB_JOB="$GITHUB_JOB"             RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" GITHUB_SHA="$GITHUB_SHA"             GITHUB_RUN_ID="$GITHUB_RUN_ID" GITHUB_EVENT_PATH="$GITHUB_EVENT_PATH"             GITHUB_WORKSPACE="$GITHUB_WORKSPACE"             BOSEONG_RELEASE_ROOT="$GITHUB_WORKSPACE/boseong-retained/release"             python3 scripts/direct-boseong-indexnow/finalize_boseong.py submit               --report ../boseong-result/receipt.json
+      - name: Retain bounded submission evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: boseong-indexnow-result-${{ github.run_id }}
+          path: boseong-result/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Require a durable accepted receipt
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          value=json.loads(Path('boseong-result/receipt.json').read_text())
+          assert value.get('state') in ('received','received_key_validation_pending','already_received')
+          assert value.get('retryAllowed') is False
+          assert value.get('POSTCount') in (0,1)
+          assert value.get('journalReadbackVerified') is True or value.get('state') == 'already_received'
+          PY
