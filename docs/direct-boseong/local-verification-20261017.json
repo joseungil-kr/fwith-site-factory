@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "recordType": "inactive-boseong-publisher-local-verification",
+  "verifiedAtUTC": "2026-10-17T06:05:24Z",
+  "scope": "Local candidate code and mocks only. No repository save, provider write, DNS change, or public HTTP verification was performed by this verification.",
+  "candidate": {
+    "workflow": ".github/workflows/boseong-production-publish.yml",
+    "publicationJobInactive": true,
+    "authorizationCommitBinding": "zero/null until inactive controls and authorization are saved and read back; activation must bind to that exact saved commit",
+    "eligibleIssueConcurrencyGroup": "boseong-direct-public-release",
+    "irrelevantEventConcurrencyGroup": "boseong-irrelevant-run-{github.run_id}",
+    "cancelInProgress": false
+  },
+  "localChecks": [
+    {
+      "command": "cd /tmp/boseong-runtime-work && BOSEONG_SOURCE_CHECKOUT=/tmp/boseong-runtime-fixture BOSEONG_TEST_DIST=/tmp/boseong-runtime-work/release/dist python3 -m unittest discover -s /tmp/fwith-boseong-candidate/candidate/scripts/direct-boseong -p 'test_*.py' -v",
+      "result": "PASS: 10 tests, no skips",
+      "coverage": "Includes a cold source checkout without candidate/dist, restore-input plus artifact validation, credentialed mock runtime, GET preflight, single simulated upload, one attach, and readback; all provider interactions used in-memory mocks and dummy credentials."
+    },
+    {
+      "command": "BOSEONG_ACCEPTED_SOURCE_DIR=/tmp/boseong-source50-recovered python3 /tmp/fwith-boseong-candidate/base/scripts/direct-boseong/production-release/test_production_adapter.py",
+      "result": "PASS: 16 tests"
+    },
+    {
+      "command": "PyYAML parse and workflow structure checks",
+      "result": "PASS",
+      "coverage": "Job inactive; restoration and credential-free validations precede credentialed provider stages; eligible issues share a group and unrelated events use run-specific groups."
+    }
+  ],
+  "restoredInput": {
+    "sourceFiles": "46/46 exact-source files validated",
+    "privateFiles": "11/11 private inputs restored and hash-checked",
+    "privateOutputsSha256": "361627fc4847331343fb71f1201620bb1ff8f1c2652d43489e0ec603e922efe2",
+    "releaseManifestSha256": "33a78138a1f69f7a1ead53b0d3d7a31eea68114360cbc98710bb87de6fc9b3ce",
+    "artifactDigest": "sha256:af5732bdc751630c7f7546f597947e0e00ea7d599e830f61a63d59ad9361a1a8",
+    "buildRunId": "38994862258",
+    "artifactId": "12086568586"
+  },
+  "qaRecovery": {
+    "verdictPath": "scripts/direct-boseong/production-review-recovery/bounded-VERDICT.json",
+    "verdictSha256": "2ac93a79f13cbc74937057c9317f7e3cc95caab12acac514b89daa1dbf46cef2",
+    "acceptedBoundedReview": true,
+    "originalNativeVerdictBytesRecoverable": false,
+    "originalReviewManifestBytesRecoverable": false,
+    "publicHttpVerified": false,
+    "publicationReady": false,
+    "remoteSaved": false
+  },
+  "operationalLimits": [
+    "No real Cloudflare/provider calls or external HTTP requests were made by the mocked runtime test.",
+    "No workflow was activated or dispatched; no remote write, custom-domain attach, DNS side effect, or public response was verified.",
+    "Production attach may automatically create a DNS record and may initiate TLS provisioning; do not describe attach as having no DNS effect.",
+    "An intentional exists=false result remains no-overwrite; uncertain write is reconciled by GET then stopped, without upload retry.",
+    "A recovered bounded review is evidence of accepted scoped QA, not independent proof of the unrecovered original native verdict/manifest bytes or publication readiness."
+  ],
+  "sourceDependencies": {
+    "sourceCommit": "eb4f931242e7b8f7598cd2fec957b0d988740e7a",
+    "sourceTree": "f7d6e5b1c4b1d649532519e66e23b840bc716472",
+    "files": {
+      "scripts/direct-boseong/production-release/boseong-indexnow-proof.txt": {
+        "gitBlobSha": "37d8fb59c359e9d37c41e24e13dab3831bbcbcd7",
+        "sha256": "58be5dbed02ccb2703e99e881d616982477ae2d22797a3f0d41995db6c35ad9a"
+      },
+      "scripts/direct-boseong/production-release/production-contract.json": {
+        "gitBlobSha": "5470332477f571f7fc7ae93b00da0a5d61e27a9b",
+        "sha256": "40e26405a96a77cf8550df66d1aa06381149c6f107bb049ab5bd51cab5410273"
+      },
+      "scripts/direct-boseong/production-release/production_adapter.py": {
+        "gitBlobSha": "42a41a25514e4b1cbc95a6c5918f3b6bbc55d59f",
+        "sha256": "bd49eede0bd3286c20af3f042156615af1d0b998e71a155e196b4d87ca5fbf56"
+      },
+      "scripts/direct-boseong/production-release/test_production_adapter.py": {
+        "gitBlobSha": "93cb30ca2848c7f1d655b91b71864ae093183652",
+        "sha256": "a9aa60746a680138d6f5a1ca920a4662eff11b588c0988759769c6df7ddeb7e3"
+      }
+    },
+    "verification": "Local file bytes hash to the source commit Git blob IDs above; included as unchanged source50 dependencies needed by the publisher workflow."
+  },
+  "remoteBase": {
+    "repository": "joseungil-kr/fwith-site-factory",
+    "branch": "main",
+    "commit": "7b45cc40efa7873cbe241d92b2f26c569f12b00e",
+    "rootTree": "a10ef42ea1e48ab1f4faa48dfa1ce56276c5f865",
+    "verifiedAtUTC": "2026-10-17T06:11:29Z",
+    "candidateFilePaths": "All 16 target paths were absent from the complete 3,857-entry main tree; no existing paths are replaced or deleted."
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-authorized-boseong-publication-not-readiness-proof",
+  "repository": "joseungil-kr/fwith-site-factory",
+  "sourceRoot": "site-factory/boseong-flower",
+  "sourceBranch": "source/boseong-production-preparation-20261017",
+  "sourceRevision": "eb4f931242e7b8f7598cd2fec957b0d988740e7a",
+  "sourceTree": "f7d6e5b1c4b1d649532519e66e23b840bc716472",
+  "sourceContractSha256": "40e26405a96a77cf8550df66d1aa06381149c6f107bb049ab5bd51cab5410273",
+  "qaBindingSha256": "f7c8fd6d4f94bdfe70aaf70822e871219166ed75230bff94eaf940110ec25f9d",
+  "actualProductionBuild": {
+    "runId": "38994862258",
+    "artifactId": "12086568586",
+    "artifactDigest": "sha256:af5732bdc751630c7f7546f597947e0e00ea7d599e830f61a63d59ad9361a1a8",
+    "buildControlRevision": "d9e237974308c77af027a0f9ff70f17c3b34f8ad",
+    "releaseManifestSha256": "33a78138a1f69f7a1ead53b0d3d7a31eea68114360cbc98710bb87de6fc9b3ce",
+    "outputFilesSha256": "b4bd83e674d3b0aa66f17b0f5d0c5f57cd8afb88c98cea25078f4fb588a1367a"
+  },
+  "userAuthorization": {
+    "issuedAtUTC": "2026-10-17T05:06:52Z",
+    "followupAtUTC": "2026-10-17T05:07:26Z",
+    "scope": [
+      "finish already-started regional work in economy mode",
+      "publish the already-started Boseong site after its own quality, provider and public-HTTP gates"
+    ],
+    "explicitTask": "사용량 절약모드로 나머지 지역 작업 진행바람",
+    "followup": "하던 작업만 마무리"
+  },
+  "publicationPhase": {
+    "name": "boseong-first-publication-after-independent-review-and-own-gates",
+    "workflowPath": ".github/workflows/boseong-production-publish.yml",
+    "ownerIssueTitle": "[BOSEONG-PRODUCTION-PUBLISH] 20261017",
+    "controlRevisionMustMatchOwnerIssueAndGitHubSha": true,
+    "firstPublicationOnly": true,
+    "stopAndReconcileAfterAnyUncertainWrite": true
+  },
+  "target": {
+    "origin": "https://boseong.fwith.kr",
+    "hostname": "boseong.fwith.kr",
+    "worker": "boseong-flower-guide",
+    "workerMode": "static-assets-only",
+    "routes": [
+      "/"
+    ]
+  },
+  "authorizedProviderEffects": {
+    "workerAssetUpload": "one fixed retained artifact upload after GET preflight",
+    "customDomainAttach": {
+      "hostname": "boseong.fwith.kr",
+      "zone": "fwith.kr",
+      "overrideScope": false,
+      "overrideExistingOrigin": false,
+      "overrideExistingDnsRecord": false,
+      "mayAutomaticallyCreateDnsRecord": true,
+      "mayInitiateTlsCertificateProvisioning": true
+    },
+    "domainOwnershipTransfer": false,
+    "existingRecordOverride": false
+  },
+  "exclusions": {
+    "indexNowSubmissionAuthorized": false,
+    "newIndexNowKeyOrCredentialAuthorized": false,
+    "productionReadyClaimBeforePublicHttp": false,
+    "facilityPages": "HOLD"
+  }
+}
