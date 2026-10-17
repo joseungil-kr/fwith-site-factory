@@ -1,0 +1,128 @@
+name: Jangheung pinned production candidate and read-only loopback QA
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.title == '[JANGHEUNG-PRODUCTION-BUILD] source58-20261017' && github.event.issue.user.login == 'joseungil-kr' && github.event.issue.user.type == 'User' && 'jangheung-production-build-only' || format('jangheung-production-nonmatching-{0}', github.run_id) }}
+  cancel-in-progress: false
+jobs:
+  production_qa:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/main' && github.actor == 'joseungil-kr' && github.triggering_actor == 'joseungil-kr' && github.run_attempt == 1 && github.event.issue.title == '[JANGHEUNG-PRODUCTION-BUILD] source58-20261017' && github.event.issue.user.login == 'joseungil-kr' && github.event.issue.user.type == 'User'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+      ASTRO_TELEMETRY_DISABLED: '1'
+      NPM_CONFIG_UPDATE_NOTIFIER: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Select exact saved source58 and owner request
+        id: bind
+        run: python3 control/scripts/direct-jangheung/production-qa/production_qa.py select --report evidence/selected-source.json
+      - name: Read back assembly and preserved source branch heads
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const b = JSON.parse(fs.readFileSync('control/scripts/direct-jangheung/production-qa/bindings.json', 'utf8'));
+            const expected = [[b.sourceBranch,b.assemblyRevision],['source/jangheung-private-qa-20261016',b.privateSourceRevision]];
+            for (const [branch,sha] of expected) {
+              const {data} = await github.rest.git.getRef({...context.repo, ref:'heads/' + branch});
+              if (data.object.type !== 'commit' || data.object.sha !== sha) throw new Error('Pinned source branch moved: '+branch);
+            }
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.bind.outputs.source_sha }}
+          path: target
+          persist-credentials: false
+      - name: Verify exact source58 before executing its code
+        run: python3 control/scripts/direct-jangheung/production-qa/production_qa.py prebuild --checkout target --report evidence/source-prebuild.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Fresh dependency install and unchanged source54 native build and tests
+        working-directory: target/site-factory/jangheung-flower/candidate
+        run: |
+          set -euo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/evidence/logs"
+          npm ci --no-audit --no-fund 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/npm-ci.log"
+          npm run build 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/private-build.log"
+          npm test 2>&1 | tee "$GITHUB_WORKSPACE/evidence/logs/private-tests.log"
+      - name: Test approved production adapter without network clients
+        env:
+          JANGHEUNG_ACCEPTED_SOURCE_DIR: ${{ github.workspace }}/target/site-factory/jangheung-flower
+        run: |
+          set -euo pipefail
+          python3 target/scripts/direct-jangheung/production-release/test_production_adapter.py -v 2>&1 | tee evidence/logs/production-tests.log
+      - name: Build exact15 production candidate outside the private source
+        run: |
+          set -euo pipefail
+          python3 target/scripts/direct-jangheung/production-release/production_adapter.py build \
+            --source target/site-factory/jangheung-flower --output release/dist \
+            --assembly-revision '${{ steps.bind.outputs.source_sha }}' 2>&1 | tee evidence/logs/production-build.log
+          python3 control/scripts/direct-jangheung/production-qa/production_qa.py postbuild --checkout target --dist release/dist --report evidence/production-output.json
+      - name: Run read-only source and capture guard regressions
+        env:
+          JANGHEUNG_PRODUCTION_CHECKOUT: ${{ github.workspace }}/target
+          JANGHEUNG_PRODUCTION_DIST: ${{ github.workspace }}/release/dist
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s control/scripts/direct-jangheung/production-qa -p 'test_*.py' -v 2>&1 | tee evidence/logs/control-tests.log
+      - name: Install existing pinned official browser tooling and Korean fonts
+        run: |
+          set -euo pipefail
+          python3 -m pip install 'playwright==1.63.0'
+          python3 -m playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          fc-match 'Noto Sans CJK KR' | tee evidence/logs/font-match.txt
+      - name: Capture actual production15 over runner loopback only
+        run: |
+          set -euo pipefail
+          python3 control/scripts/direct-jangheung/production-qa/capture_production.py \
+            --source target/site-factory/jangheung-flower --dist release/dist \
+            --assembly-revision '${{ steps.bind.outputs.source_sha }}' 2>&1 | tee evidence/logs/browser.log
+      - name: Verify full actual surface and metadata plus all27 home viewport pixel comparisons
+        run: python3 control/scripts/direct-jangheung/production-qa/production_qa.py browser --checkout target --dist release/dist --report evidence/browser-verification.json
+      - name: Recheck frozen source heads immediately before packaging
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const b = JSON.parse(fs.readFileSync('control/scripts/direct-jangheung/production-qa/bindings.json', 'utf8'));
+            const expected = [[b.sourceBranch,b.assemblyRevision],['source/jangheung-private-qa-20261016',b.privateSourceRevision]];
+            for (const [branch,sha] of expected) {
+              const {data} = await github.rest.git.getRef({...context.repo, ref:'heads/' + branch});
+              if (data.object.type !== 'commit' || data.object.sha !== sha) throw new Error('Pinned source branch moved: '+branch);
+            }
+      - name: Package exact existing release.json schema with actual run and control identity
+        env:
+          NATIVE_GATES_PASSED: 'true'
+        run: python3 control/scripts/direct-jangheung/production-qa/production_qa.py package --checkout target --dist release/dist --report evidence/release-package.json
+      - name: Preserve failure or success evidence for independent review
+        if: always()
+        run: |
+          mkdir -p evidence
+          if test -d target/site-factory/jangheung-flower/candidate/evidence; then cp -R target/site-factory/jangheung-flower/candidate/evidence evidence/candidate; fi
+          python3 control/scripts/direct-jangheung/production-qa/production_qa.py seal --evidence evidence
+      - name: Retain exact production bytes and browser evidence without publishing
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jangheung-production-build-${{ github.run_id }}-${{ github.sha }}
+          path: |
+            release/
+            evidence/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
