@@ -10,7 +10,7 @@
   "status": "public_release_verified_indexnow_not_submitted",
   "executionState": "public_release_verified_indexnow_not_submitted",
   "active": false,
-  "updatedAt": "2026-10-17T06:34:45.553Z",
+  "updatedAt": "2026-10-17T06:39:01.213Z",
   "plannedOrigin": "https://boseong.fwith.kr",
   "originStatus": "PUBLIC_RELEASE_VERIFIED_PROVIDER_BINDING_AND_PUBLIC_HTTP_DNS_UNCHECKED",
   "sourceBranch": "source/boseong-production-preparation-20261017",
@@ -97,12 +97,20 @@
     }
   },
   "verificationKeyConfiguration": {
-    "status": "approval_requested_no_reply_pending",
+    "status": "dedicated_public_proof_approved_generated_and_applied_once_submission_pending",
     "requestedAtUTC": "2026-10-16T19:32:58Z",
     "target": "One dedicated public IndexNow verification key for boseong.fwith.kr; generation and application.",
-    "approved": false,
-    "keyGenerated": false,
-    "proofCreated": false
+    "approved": true,
+    "keyGenerated": true,
+    "proofCreated": true,
+    "approvedAtUTC": "2026-10-17T01:32:10Z",
+    "proofApplied": true,
+    "proofFilePath": "scripts/direct-boseong/production-release/boseong-indexnow-proof.txt",
+    "proofFileBytes": 33,
+    "proofFileContentSHA256": "58be5dbed02ccb2703e99e881d616982477ae2d22797a3f0d41995db6c35ad9a",
+    "proofDeployedVerified": true,
+    "newKeyGeneratedThisPublication": false,
+    "IndexNowSubmissionEnabled": false
   },
   "customerScope": {
     "copyRevision": "r2",
@@ -123,7 +131,7 @@
   "productionSourceStored": true,
   "productionActionsExecuted": true,
   "publicDeploymentCount": 1,
-  "newVerificationKeysCreated": 0,
+  "newVerificationKeysCreated": 1,
   "IndexNowSubmitted": false,
   "IndexNowSubmissionCount": 0,
   "IndexNowReceived": false,
@@ -138,11 +146,11 @@
     "countsChanged": true
   },
   "pendingReleaseGates": [
-    "IndexNow remains disabled in the existing publish-and-verify-only control; no request, verification-key generation, receipt or search-indexing claim is recorded.",
-    "DNS records/state were not checked. Fixed-hostname attachment was accepted and the worker/hostname binding was read back; no claim is made that attachment had no DNS side effect.",
-    "Live public browser screenshots were not performed as part of the completed production-publication run."
+    "IndexNow request/receipt remains pending because the current Boseong publisher explicitly disables submission. Review an existing authorized no-deploy submission route; do not regenerate the already-approved, deployed proof key.",
+    "DNS records/state were not checked. Fixed-hostname attachment was accepted and the worker/hostname binding was read back; do not claim that attachment had no DNS side effect.",
+    "A separate live public-browser screenshot session was not performed during this publication run."
   ],
-  "boundary": "Boseong public release and 14-path workflow HTTP verification completed at the pinned production source. Retained build output15/15 byte hashes match. IndexNow remains unsubmitted, no key was generated, search indexing is unverified and end-to-end count remains66/230. Provider fixed-hostname attachment performed a mutation; DNS state was not checked.",
+  "boundary": "Boseong public release and 14-path workflow HTTP verification completed at the pinned production source. Retained build output15/15 byte hashes match. The dedicated public proof key was approved, generated and applied once before this publication, and its public file was verified; no new key was generated during this publication. IndexNow remains unsubmitted, search indexing is unverified and end-to-end count remains66/230. Provider fixed-hostname attachment performed a mutation; DNS state was not checked.",
   "priorPreparationSourceRevision": "e4fea02b97a46aa4e3853ed8d63a242a20b1dee3",
   "priorPreparationSourceBranch": "source/boseong-private-qa-20261016",
   "productionSource50": {
@@ -254,7 +262,17 @@
       "submissionCount": 0,
       "httpStatus": null,
       "receiptURL": null,
-      "searchIndexingVerified": false
+      "searchIndexingVerified": false,
+      "approved": true,
+      "approvalAtUTC": "2026-10-17T01:32:10Z",
+      "preexistingProofGeneratedEarlier": true,
+      "newKeyGeneratedThisPublication": false,
+      "proofDeployedVerified": true,
+      "proofFilePath": "scripts/direct-boseong/production-release/boseong-indexnow-proof.txt",
+      "proofFileBytes": 33,
+      "proofFileContentSHA256": "58be5dbed02ccb2703e99e881d616982477ae2d22797a3f0d41995db6c35ad9a",
+      "proofPublicHTTPPath": "/31d1075dc9b5ec84419992fe7a70c660.txt"
     }
-  }
+  },
+  "newVerificationKeysGeneratedThisPublication": 0
 }
