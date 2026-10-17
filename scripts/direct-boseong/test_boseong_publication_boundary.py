@@ -168,7 +168,16 @@ const good={id:Number(desc.artifactId),expired:false,name:'boseong-production-bu
         unrelated_a=dict(event_name='push',run_id=201);unrelated_b=dict(event_name='schedule',run_id=202)
         self.assertEqual(modeled_group(first),modeled_group(second))
         self.assertNotEqual(modeled_group(unrelated_a),modeled_group(unrelated_b))
-        self.assertIn('if: false &&',workflow)
+        publish_block=workflow.split('\njobs:\n  publish:\n',1)[1].split('\n    runs-on:',1)[0]
+        publish_condition=next(line.strip() for line in publish_block.splitlines() if line.strip().startswith('if:'))
+        for guard in ["github.repository == 'joseungil-kr/fwith-site-factory'","github.ref == 'refs/heads/main'",
+            "github.event.issue.title == '[BOSEONG-PRODUCTION-PUBLISH] 20261017'","github.actor == 'joseungil-kr'",
+            "github.triggering_actor == 'joseungil-kr'",'github.run_attempt == 1',"github.event.issue.user.login == 'joseungil-kr'"]:
+            self.assertIn(guard,publish_condition)
+        self.assertNotIn('false &&',publish_condition)
+        saved=json.loads((HERE/'authorization-binding.json').read_text())
+        self.assertEqual(saved['revision'],'9b6ebbdfc44aec9c49058a68df59afa9205460fb')
+        self.assertTrue(saved['publicIssuesApproved'])
         self.assertNotIn('indexnow-submit',workflow)
         self.assertIn('override_existing_dns_record=False', (HERE/'publish.py').read_text())
 
