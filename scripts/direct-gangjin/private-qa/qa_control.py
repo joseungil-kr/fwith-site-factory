@@ -6,14 +6,14 @@ from pathlib import Path
 import argparse,datetime,hashlib,json,math,os,re,subprocess,sys
 sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parent
-BINDING_SHA='014b603e47c65ee63e89273e189908e1feb64eb61119b56e7118c15a92d6fd40'
-SOURCE_REVISION='683487ff86f8505076e8f595a6b8e54b2aa9a6e6'
-TITLE='[GANGJIN-PRIVATE-QA] source48-20261016'
+BINDING_SHA='2fefd67d53ce99591874b8557ea24e329da4f162ddd3a1804902a5d2367e933e'
+SOURCE_REVISION='c790678f55eebfc22ea3782a75debe801a13c041'
+TITLE='[GANGJIN-PRIVATE-QA] source48-touchfix-20261017'
 REPO='joseungil-kr/fwith-site-factory';OWNER='joseungil-kr'
-PREFIX='site-factory/gangjin-flower';BRANCH='source/gangjin-private-qa-20261016'
-SOURCE_MANIFEST_SHA='422050e5f6c153d92406f245dc8050d9710e8811e53b6014b231206a41b3d72a'
-SOURCE_ZIP_SHA='b9b7828b82ff63fb8ed6b161b7dd8d3e62a7ae7cecde61f5f270fd980ba55533'
-STATIC_REVIEW_MANIFEST_SHA='8b97f15f5514ba94f17d1cfeed8973dbfc72117a8b5fe98a15b8ca55476abc15'
+PREFIX='site-factory/gangjin-flower';BRANCH='source/gangjin-private-qa-touchfix-20261017'
+SOURCE_MANIFEST_SHA='5969f1e6dd80238119cd11ba329c2b2c0c6c106f8210ccb0479ddfe4db84b439'
+SOURCE_ZIP_SHA='d535b23a3020f579be1b6946a6971c06839de9c653a38fa7db5f6908b8351d03'
+STATIC_REVIEW_MANIFEST_SHA='9c76d1ba600c40ce9234c56886493b63932985a96e87e3669d566e05d47bcc55'
 STICKY_SECTIONS=('restriction','products','delivery','location','timing','ribbon','faq','sources')
 def require(ok,message):
  if not ok:raise ValueError(message)
@@ -52,8 +52,8 @@ def validate_binding(b,require_bound=True):
   readback=json.loads(back['rawUTF8']);require(readback.get('commit')==SOURCE_REVISION and readback.get('branch')==BRANCH and readback.get('fileCount')==48 and readback.get('allFilesMatchAcceptedSource')is True,'Remote source48 byte receipt changed')
   remote_rows=readback.get('files',[]);require(len(remote_rows)==48,'Remote source48 byte projection count changed')
   for row,remote in zip(rows,remote_rows):require(all(remote.get(k)==row[k]for k in ['path','bytes','sha256','gitBlobSHA'])and remote.get('remotePath')==PREFIX+'/'+row['path']and remote.get('fetchedSHA256')==row['sha256']and remote.get('fetchedGitBlobSHA')==row['gitBlobSHA'],'Remote source48 byte projection changed')
-  independent=b.get('independentRemoteSourceReview',{});require(type(independent)is dict and independent.get('sha256')=='6365e23282571f52c64d5af30d6eb5c55b2669f37de822630fc776079c22798a'and independent.get('manifestSHA256')=='c6d2bab4738e29bc1f4650ec4b0ab7cdfd75fe086553730fc6e9a4dc28aae40e'and sha(independent.get('rawUTF8','').encode())==independent.get('sha256'),'Independent remote source acceptance changed')
-  accepted=json.loads(independent['rawUTF8']);require(accepted.get('status')=='PASS_SOURCE48_REMOTE_SAVE_AND_DOWNLOADED_ONLY_REPRODUCTION'and accepted.get('blockingFindings')==[]and accepted.get('requiredSourceChanges')==[]and accepted.get('sourceCommit')==SOURCE_REVISION and accepted.get('branch')==BRANCH and accepted.get('sourceManifestSHA256')==SOURCE_MANIFEST_SHA and accepted.get('sourceArchiveSHA256')==SOURCE_ZIP_SHA and accepted.get('authorSaveManifestSHA256')==b.get('sourceSaveManifestSHA256')=='5937084cd045d055839cd20efcfe165fbc18c0df44da422e22350f2fb60fab45'and accepted.get('acceptedStaticReviewManifestSHA256')==STATIC_REVIEW_MANIFEST_SHA and accepted.get('sourceFilesIndependentlyFetched')==48 and accepted.get('sourceBytesSHA256GitBlobAndZIPParity')is True and accepted.get('downloadedOnlyBuild')is True and accepted.get('outputFilesActualBytesEqualBothAcceptedOutputs')==11 and accepted.get('sourceUnchangedAfterBuild')is True and accepted.get('controlsAccepted')is False and accepted.get('browserExecuted')is False and accepted.get('publicHTTPVerified')is False and accepted.get('IndexNowSubmitted')is False and accepted.get('keysOrProofCreated')is False and accepted.get('publicationReady')is False and accepted.get('facilityPages')=='HOLD_5','Independent remote acceptance scope changed')
+  independent=b.get('independentRemoteSourceReview',{});require(type(independent)is dict and independent.get('sha256')=='b618c5d819642728a3a433f0b3a35db13e9ecf414aeb8a51126276f603d201af'and independent.get('manifestSHA256')=='0b656f32b3c7e49dfa6e346d6cebb606c581f4496c9103100d442ec2a0a041de'and sha(independent.get('rawUTF8','').encode())==independent.get('sha256'),'Independent remote source acceptance changed')
+  accepted=json.loads(independent['rawUTF8']);require(accepted.get('status')=='PASS_SOURCE48_REMOTE_SAVE_AND_DOWNLOADED_ONLY_REPRODUCTION'and accepted.get('blockingFindings')==[]and accepted.get('requiredSourceChanges')==[]and accepted.get('sourceCommit')==SOURCE_REVISION and accepted.get('branch')==BRANCH and accepted.get('sourceManifestSHA256')==SOURCE_MANIFEST_SHA and accepted.get('sourceArchiveSHA256')==SOURCE_ZIP_SHA and accepted.get('authorSaveManifestSHA256')==b.get('sourceSaveManifestSHA256')=='c89d30e56656480f0cb6e4019f6daf550a7109380190c80d3d5ff9e617977e22'and accepted.get('acceptedStaticReviewManifestSHA256')==STATIC_REVIEW_MANIFEST_SHA and accepted.get('sourceFilesIndependentlyFetched')==48 and accepted.get('sourceBytesSHA256GitBlobAndZIPParity')is True and accepted.get('downloadedOnlyBuild')is True and accepted.get('outputFilesActualBytesEqualBothAcceptedOutputs')==11 and accepted.get('sourceUnchangedAfterBuild')is True and accepted.get('controlsAccepted')is False and accepted.get('browserExecuted')is False and accepted.get('publicHTTPVerified')is False and accepted.get('IndexNowSubmitted')is False and accepted.get('keysOrProofCreated')is False and accepted.get('publicationReady')is False and accepted.get('facilityPages')=='HOLD_5','Independent remote acceptance scope changed')
  return m
 
 def binding(require_bound=True):
