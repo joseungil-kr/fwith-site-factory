@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import instances from '../../data/site-instances.json';
+import regions from '../../data/regions-matrix.json';
+import productGroups from '../../data/product-groups.json';
+import sourceProducts from '../../data/product-sources.json';
+import config from '../../data/site-config.json';
+import {selectInstance,enabledRows,productsFor} from '../../lib/matrix.mjs';
+const active=selectInstance(instances,import.meta.env.SITE_INSTANCE || config.defaultInstance);
+export function getStaticPaths(){
+  const active=selectInstance(instances,import.meta.env.SITE_INSTANCE || config.defaultInstance);
+  return enabledRows(active,regions,productGroups).groups.map(group=>({params:{product:group.slug},props:{group}}));
+}
+const {group}=Astro.props;
+const products=productsFor(group,sourceProducts);
+const activeRegions=regions.filter((r:any)=>active.enabledRegions.includes(r.key));
+---
+<BaseLayout title={`${group.label} 지역별 주문 안내 | ${active.brand}`} description={`${group.label} 실제 상품 원문과 지역별 주문 준비 페이지를 한곳에서 확인하세요.`} canonicalPath={`/products/${group.slug}/`}>
+<nav class="breadcrumb" aria-label="현재 위치"><a href="/">홈</a><span>›</span><span>{group.label}</span></nav>
+<section class="category-hero hub-hero"><div><span class="eyebrow">{group.buyerIntent}</span><h1>{group.label} 지역별 주문 안내</h1><p>상품 원문을 확인한 뒤 받을 지역을 선택하세요. 주소별 추가 배송비와 가능한 도착시간은 주문 전에 확인합니다.</p></div></section>
+<section class="product-section"><h2>연결된 실제 상품</h2><div class="product-grid">{products.map((p:any)=><article class="product-card"><div><h3>{p.name}</h3>{p.priceVerifiedAt ? <strong>{p.price.toLocaleString()}원</strong> : <strong>현재 가격 재확인 후 표시</strong>}<p>상품코드 {p.code}</p><a href={p.sourceUrl}>공식 상품 원문 →</a></div></article>)}</div></section>
+<section class="card-grid big">{activeRegions.map((region:any)=><a class="page-card" href={`/${region.slug}/${group.slug}/`}><strong>{region.name} {group.label}</strong><span>{group.buyerIntent}</span></a>)}</section>
+</BaseLayout>
