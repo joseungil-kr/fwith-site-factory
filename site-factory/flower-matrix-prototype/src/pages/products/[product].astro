@@ -14,10 +14,12 @@ export function getStaticPaths(){
 const {group}=Astro.props;
 const products=productsFor(group,sourceProducts);
 const activeRegions=regions.filter((r:any)=>active.enabledRegions.includes(r.key));
+const hero=products[0];
 ---
-<BaseLayout title={`${group.label} 지역별 주문 안내 | ${active.brand}`} description={`${group.label} 실제 상품 원문과 지역별 주문 준비 페이지를 한곳에서 확인하세요.`} canonicalPath={`/products/${group.slug}/`}>
+<BaseLayout title={`${group.label} 지역별 주문 안내 | ${active.brand}`} description={`${group.label} 실제 상품 사진과 가격, 지역별 주문 준비 페이지를 한곳에서 확인하세요.`} canonicalPath={`/products/${group.slug}/`} socialImageUrl={hero.imageUrl} socialImageAlt={hero.imageAlt}>
 <nav class="breadcrumb" aria-label="현재 위치"><a href="/">홈</a><span>›</span><span>{group.label}</span></nav>
-<section class="category-hero hub-hero"><div><span class="eyebrow">{group.buyerIntent}</span><h1>{group.label} 지역별 주문 안내</h1><p>상품 원문을 확인한 뒤 받을 지역을 선택하세요. 주소별 추가 배송비와 가능한 도착시간은 주문 전에 확인합니다.</p></div></section>
-<section class="product-section"><h2>연결된 실제 상품</h2><div class="product-grid">{products.map((p:any)=><article class="product-card"><div><h3>{p.name}</h3>{p.priceVerifiedAt ? <strong>{p.price.toLocaleString()}원</strong> : <strong>현재 가격 재확인 후 표시</strong>}<p>상품코드 {p.code}</p><a href={p.sourceUrl}>공식 상품 원문 →</a></div></article>)}</div></section>
-<section class="card-grid big">{activeRegions.map((region:any)=><a class="page-card" href={`/${region.slug}/${group.slug}/`}><strong>{region.name} {group.label}</strong><span>{group.buyerIntent}</span></a>)}</section>
+<section class="category-hero hub-hero"><div><span class="eyebrow">{group.buyerIntent}</span><h1>{group.label} 지역별 주문 안내</h1><p>{group.intro}</p></div></section>
+<section class="product-section"><h2>{group.label} 실제 상품과 가격</h2><div class="product-grid">{products.map((p:any)=><article class="product-card"><img src={p.imageUrl} alt={p.imageAlt} loading="lazy" width="500" height="500"/><div><h3>{p.name}</h3><strong>{p.price.toLocaleString()}원</strong><p>상품코드 {p.code} · {p.priceVerifiedAt} 가격 확인</p><a href={p.sourceUrl}>꽃이랑 상품 원문 →</a></div></article>)}</div></section>
+<section class="content-card"><h2>상품을 고르기 전에 확인하세요</h2><ul>{group.selectionTips.map((tip:string)=><li>{tip}</li>)}</ul></section>
+<section class="card-grid big">{activeRegions.map((region:any)=><a class="page-card" href={`/${region.slug}/${group.slug}/`}><strong>{region.name} {group.label}</strong><span>{region.decisionNote}</span></a>)}</section>
 </BaseLayout>
