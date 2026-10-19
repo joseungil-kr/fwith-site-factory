@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import instances from '../../data/site-instances.json';
+import regions from '../../data/regions-matrix.json';
+import productGroups from '../../data/product-groups.json';
+import sourceProducts from '../../data/product-sources.json';
+import config from '../../data/site-config.json';
+import {selectInstance,matrixPages,productsFor} from '../../lib/matrix.mjs';
+const active=selectInstance(instances,import.meta.env.SITE_INSTANCE || config.defaultInstance);
+export function getStaticPaths(){
+  const active=selectInstance(instances,import.meta.env.SITE_INSTANCE || config.defaultInstance);
+  return matrixPages(active,regions,productGroups).map(page=>({params:{region:page.region.slug,product:page.group.slug},props:{page}}));
+}
+const {page}=Astro.props;
+const products=productsFor(page.group,sourceProducts);
+const currentPrices=products.filter((p:any)=>p.priceVerifiedAt);
+const siblingGroups=productGroups.filter((g:any)=>active.enabledProductGroups.includes(g.key)&&g.key!==page.group.key);
+---
+<BaseLayout title={page.title} description={page.description} canonicalPath={page.url}>
+<nav class="breadcrumb" aria-label="현재 위치"><a href="/">홈</a><span>›</span><a href={`/${page.region.slug}/`}>{page.region.name}</a><span>›</span><span>{page.group.label}</span></nav>
+<article class="matrix-detail" data-matrix-key={page.key}>
+<section class="detail-hero"><div><span class="eyebrow">{page.region.name} · {page.group.buyerIntent}</span><h1>{page.h1}</h1><p>{page.description}</p><div class="actions"><a class="btn primary" href={active.phoneHref}>☎ {active.phone}</a><a class="btn dark" href={active.orderUrl}>꽃이랑 상품 확인</a></div></div></section>
+<section class="content-card"><h2>주문 전에 준비할 정보</h2><ul>{page.group.questions.map((q:string)=><li>{q}</li>)}</ul></section>
+<section class="product-section"><h2>현재 확인한 실제 상품 원문</h2><div class="product-grid">{products.map((p:any)=><article class="product-card" data-source-code={p.code}><div><h3>{p.name}</h3>{p.priceVerifiedAt ? <strong>{p.price.toLocaleString()}원</strong> : <strong>현재 가격 재확인 후 표시</strong>}<p>상품코드 {p.code} · {p.priceVerifiedAt ? `${p.priceVerifiedAt} 원문 가격 확인` : '과거 가격값은 공개용으로 사용하지 않음'}</p><a href={p.sourceUrl}>fwith.co.kr 원문 확인 →</a></div></article>)}</div></section>
+<section class="content-card"><h2>{page.region.name} 배송 조건</h2><p>전국 배송 가능 상품이라도 정확한 주소에 따라 추가 배송비가 발생할 수 있습니다. 상품 준비 가능 여부와 도착 가능시간, 수령처 반입 조건은 주문 전에 확인합니다.</p><p><a href={page.region.sourceUrl} rel="nofollow">{page.region.name} 공식 지역 정보 확인 →</a></p></section>
+<section class="faq"><h2>{page.region.name} {page.group.label} 자주 묻는 질문</h2><div><h3>표시가격만 결제하면 되나요?</h3><p>아닙니다. 받는 주소에 따라 추가 배송비가 발생할 수 있으므로 결제 전 최종 금액을 확인해야 합니다.</p></div><div><h3>사진과 완전히 같은 꽃이 배송되나요?</h3><p>지역과 계절에 따라 꽃 구성과 형태가 일부 달라질 수 있습니다. 상품 원문과 상담 내용을 기준으로 확인해 주세요.</p></div></section>
+<section class="related"><h2>{page.region.name}의 다른 상품 안내</h2><div class="card-grid">{siblingGroups.map((g:any)=><a class="page-card" href={`/${page.region.slug}/${g.slug}/`}><strong>{page.region.name} {g.label}</strong><span>{g.buyerIntent}</span></a>)}</div></section>
+<section class="conversion-panel"><div><span class="eyebrow">{active.brand} 주문</span><h2>상품과 수령정보를 정했다면 문의해 주세요</h2><p>전화 {active.phone} · 지역별 추가 배송비와 가능한 도착시간 확인</p></div><div class="actions"><a class="btn light" href={active.phoneHref}>전화주문</a><a class="btn yellow" href={active.orderUrl}>온라인 주문</a></div></section>
+</article>
+</BaseLayout>
