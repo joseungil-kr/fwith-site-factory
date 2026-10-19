@@ -9,9 +9,10 @@ import {selectInstance,enabledRows,productsFor} from '../../lib/matrix.mjs';
 const active=selectInstance(instances,import.meta.env.SITE_INSTANCE || config.defaultInstance);
 export function getStaticPaths(){
   const active=selectInstance(instances,import.meta.env.SITE_INSTANCE || config.defaultInstance);
-  return enabledRows(active,regions,productGroups).regions.map(region=>({params:{region:region.slug},props:{region}}));
+  return enabledRows(active,regions,productGroups).regions.map((region:any)=>({params:{region:region.slug},props:{region}}));
 }
-const {region}=Astro.props;
+type RegionProp={key:string;name:string;slug:string;sourceUrl:string;sourceType:string;deliveryNote:string;decisionNote:string};
+const {region}=Astro.props as {region:RegionProp};
 const groups=productGroups.filter((g:any)=>active.enabledProductGroups.includes(g.key));
 const lead=productsFor(groups[0],sourceProducts)[0];
 ---
