@@ -11,7 +11,7 @@ export function getStaticPaths(){
   const active=selectInstance(instances,import.meta.env.SITE_INSTANCE || config.defaultInstance);
   return matrixPages(active,regions,productGroups).map(page=>({params:{region:page.region.slug,product:page.group.slug},props:{page}}));
 }
-const {page}=Astro.props;
+const {page}=Astro.props as {page:any};
 const products=productsFor(page.group,sourceProducts);
 const hero=products[0];
 const siblingGroups=productGroups.filter((g:any)=>active.enabledProductGroups.includes(g.key)&&g.key!==page.group.key);
