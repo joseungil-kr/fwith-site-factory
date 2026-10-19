@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "status": "pre-deploy",
+  "hypothesis": "동일한 다지역×상품 원형을 서로 다른 서브도메인에 배포했을 때 각 URL이 네이버에서 별도 수집·색인·노출될 수 있는지 관측한다.",
+  "competitorReference": {
+    "name": "m-castle",
+    "observationSource": "user-observed",
+    "independentlyVerifiedUrl": null,
+    "observedStructure": "여러 서브도메인 각각에 다양한 지역·상품 페이지를 담는 구조",
+    "inferenceBoundary": "상위노출 원인은 구조 자체로 확정하지 않으며 콘텐츠 정확성, 내부링크, 도메인 이력, 수집 빈도 등은 별도 가설로 기록한다."
+  },
+  "instances": ["prototype-a","prototype-b"],
+  "targetQueries": [
+    "안산 근조화환",
+    "안산 개업화환",
+    "수원 근조화환",
+    "수원 승진화분",
+    "성남 축하화환",
+    "평택 꽃다발",
+    "인천 남동구 근조화환",
+    "인천 남동구 승진화분"
+  ],
+  "metrics": ["publishedAt","sourceRevision","url","naverCollected","naverIndexed","resultArea","observedRank","observedAt","notes"],
+  "waitPolicy": "4~8주 관측은 다음 제작의 대기조건이 아니며 제작·복제와 병행한다.",
+  "conversionOwner": "user"
+}
