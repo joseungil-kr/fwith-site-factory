@@ -137,7 +137,7 @@ jobs:
           SITE_INDEXABLE: 'false'
           SITE_FACTORY_REVISION: ${{ steps.source.outputs.revision }}
         run: |
-          git restore src/data/regions-matrix.json src/data/site-instances.json src/data/build-revision.json
+          git restore src/data/regions-matrix.json src/data/site-instances.json
           node scripts/prepare_scale_fixture.mjs 50
           /usr/bin/time -f '{"elapsedSeconds":%e,"maxRssKb":%M}' -o scale-50-time.json npm run build
           python3 - <<'PY'
@@ -157,7 +157,7 @@ jobs:
           SITE_INDEXABLE: 'false'
           SITE_FACTORY_REVISION: ${{ steps.source.outputs.revision }}
         run: |
-          git restore src/data/regions-matrix.json src/data/site-instances.json src/data/build-revision.json
+          git restore src/data/regions-matrix.json src/data/site-instances.json
           node scripts/prepare_scale_fixture.mjs 250
           /usr/bin/time -f '{"elapsedSeconds":%e,"maxRssKb":%M}' -o scale-250-time.json npm run build
           python3 - <<'PY'
@@ -168,7 +168,7 @@ jobs:
           print(json.dumps(out,ensure_ascii=False))
           PY
           rm -rf dist
-          git restore src/data/regions-matrix.json src/data/site-instances.json src/data/build-revision.json
+          git restore src/data/regions-matrix.json src/data/site-instances.json
       - name: Save build-only evidence
         if: always()
         uses: actions/upload-artifact@v4
