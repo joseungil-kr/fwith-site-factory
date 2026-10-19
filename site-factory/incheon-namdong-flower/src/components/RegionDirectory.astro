@@ -1,0 +1,36 @@
+---
+import {site} from '../config/site';
+import {groupsFor,coverage as sourceCoverage} from '../lib/regional-runtime.mjs';
+import InlineOrderBanner from './InlineOrderBanner.astro';
+const {pages}=Astro.props;
+type Representative={pageKey:string;unitKeys:string[]};
+type District={key:string;name:string;sourceUrl:string};
+type RegionEntry={representative:Representative;page:{url:string;primaryKeyword:string;cardSummary:string}};
+type RegionGroup=District & {items:RegionEntry[]};
+type Coverage={districts:District[];units:{unitKey:string;name:string}[];administrativeCrosswalk:{aliasKey:string;name:string;districtKey:string;relations:{unitKey:string;scope:string}[]}[]};
+const coverage=sourceCoverage as Coverage;
+const districts=groupsFor(pages) as RegionGroup[];
+const published=new Map<string,RegionEntry>(districts.flatMap(d=>d.items).flatMap(entry=>entry.representative.unitKeys.map(key=>[key,entry] as [string,RegionEntry])));
+---
+<section class="category-hero">
+  <span class="eyebrow">{site.brand} {site.region}</span>
+  <h1>{site.region} 지역별 꽃배달 안내</h1>
+  <p>받는 곳의 동 이름으로 안내를 찾아보세요. 배송 주소는 도로명주소와 건물명·층·호수까지 확인해 주세요.</p>
+  <div class="actions"><a class="btn primary" href={site.phoneHref}>전화 상담·주문</a><a class="btn dark" href={site.orderUrl}>온라인 주문</a></div>
+</section>
+<nav class="actions" aria-label="구별 지역 안내">{districts.map(d=><a class="btn light" href={`#${d.key}`}>{d.name}</a>)}</nav>
+{districts.map((district,index)=><section id={district.key} data-region-district={district.key}>
+  <div class="section-title"><h2>{district.name}</h2></div>
+  <div class="card-grid big">{district.items.map(({representative,page})=><a class="page-card" href={page.url} data-region-unit={representative.unitKeys.join('|')}><strong>{page.primaryKeyword}</strong><span>{page.cardSummary}</span><em>주문 안내 보기 →</em></a>)}</div>
+  {index===Math.floor((districts.length-1)/2) && <InlineOrderBanner/>}
+  <details class="content-card"><summary>행정동 이름으로 찾기</summary>
+    <p>행정동과 주소에 쓰이는 법정동은 범위가 다를 수 있습니다. ‘일부’로 표시한 관계는 동 전체를 뜻하지 않습니다.</p>
+    <ul class="decision-list">{coverage.administrativeCrosswalk.filter(a=>a.districtKey===district.key).map(admin=><li data-administrative-unit={admin.aliasKey}><strong>{admin.name}</strong>: {admin.relations.map((relation,index)=>{
+      const unit=coverage.units.find(unit=>unit.unitKey===relation.unitKey);
+      const entry=published.get(relation.unitKey);
+      if(!unit)throw new Error('Administrative relation lacks a legal unit');
+      return <>{index>0?' · ':''}{entry ? <a href={entry.page.url}>{unit.name}</a> : <span>{unit.name}</span>}{relation.scope==='partial'?' 일부':''}</>;
+    })}</li>)}</ul>
+    <a href={district.sourceUrl} rel="nofollow">{district.name} 공식 관할 안내</a>
+  </details>
+</section>)}
