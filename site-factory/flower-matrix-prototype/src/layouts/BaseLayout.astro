@@ -5,7 +5,7 @@ import buildRevision from '../data/build-revision.json';
 import products from '../data/products.json';
 import provenance from '../data/social-image-provenance.json';
 import {productSocialImage} from '../lib/social-image.mjs';
-const {title,description,canonicalPath='/',noindex=false,includeSchema=true,orderUrl=site.orderUrl,socialProduct=products[0]}=Astro.props;
+const {title,description,canonicalPath='/',noindex=false,includeSchema=true,orderUrl=site.orderUrl,socialProduct=null}=Astro.props;
 const canonical=canonicalPath===false ? '' : new URL(canonicalPath,site.domain).toString();
 const socialImage=canonical && socialProduct ? productSocialImage(socialProduct,provenance,site.domain,site.brand) : null;
 const indexable=site.indexable && !noindex;
