@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import instances from '../../data/site-instances.json';
+import regions from '../../data/regions-matrix.json';
+import productGroups from '../../data/product-groups.json';
+import config from '../../data/site-config.json';
+import {selectInstance,enabledRows} from '../../lib/matrix.mjs';
+const active=selectInstance(instances,import.meta.env.SITE_INSTANCE || config.defaultInstance);
+export function getStaticPaths(){
+  const active=selectInstance(instances,import.meta.env.SITE_INSTANCE || config.defaultInstance);
+  return enabledRows(active,regions,productGroups).regions.map(region=>({params:{region:region.slug},props:{region}}));
+}
+const {region}=Astro.props;
+const groups=productGroups.filter((g:any)=>active.enabledProductGroups.includes(g.key));
+---
+<BaseLayout title={`${region.name} 꽃배달 상품별 안내 | ${active.brand}`} description={`${region.name} 근조화환·개업축하화환·승진취임 난·꽃다발 주문 준비를 상품군별로 확인하세요.`} canonicalPath={`/${region.slug}/`}>
+<nav class="breadcrumb" aria-label="현재 위치"><a href="/">홈</a><span>›</span><span>{region.name}</span></nav>
+<section class="category-hero hub-hero"><div><span class="eyebrow">{region.name} 꽃배달</span><h1>{region.name} 꽃배달 상품별 안내</h1><p>목적에 맞는 상품군을 고르고, 받는 곳의 정확한 주소·수령정보·희망시간을 준비하세요.</p></div></section>
+<section class="card-grid big">{groups.map((g:any)=><a class="page-card" href={`/${region.slug}/${g.slug}/`}><strong>{region.name} {g.label}</strong><span>{g.buyerIntent}</span><em>주문 준비 보기 →</em></a>)}</section>
+</BaseLayout>
