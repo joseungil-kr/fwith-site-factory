@@ -1,0 +1,209 @@
+name: Flower Matrix Build Only
+on:
+  issues:
+    types: [opened, reopened]
+permissions:
+  contents: read
+concurrency:
+  group: flower-matrix-build-only
+  cancel-in-progress: false
+jobs:
+  build:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.event.issue.title == '[FLOWER-MATRIX-BUILD]' && github.actor == github.repository_owner && github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      A_ORIGIN: https://matrix-a.example.invalid
+      B_ORIGIN: https://matrix-b.example.invalid
+    steps:
+      - name: Resolve exact source revision
+        id: source
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          python3 - <<'PY'
+          import json,os,re
+          p=json.loads(os.environ['ISSUE_BODY'])
+          rev=p.get('source_revision','')
+          if not re.fullmatch(r'[0-9a-f]{40}',rev): raise SystemExit('full source_revision required')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('revision='+rev+'\n')
+          PY
+      - name: Authorize exact prototype branch head
+        uses: actions/github-script@v7
+        env:
+          REVISION: ${{ steps.source.outputs.revision }}
+        with:
+          script: |
+            if (process.env.GITHUB_RUN_ATTEMPT !== '1') throw new Error('Start a new build-only issue instead of mutation rerun');
+            const {data} = await github.rest.git.getRef({...context.repo, ref:'heads/source/flower-matrix-prototype-20261020'});
+            if (data.object.type !== 'commit' || data.object.sha !== process.env.REVISION) throw new Error('source branch moved or revision mismatch');
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.source.outputs.revision }}
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site-factory/flower-matrix-prototype/package-lock.json
+      - name: Install dependencies
+        working-directory: site-factory/flower-matrix-prototype
+        run: npm ci
+      - name: Verify current fwith product pages and authorized photos
+        id: product_source
+        continue-on-error: true
+        working-directory: site-factory/flower-matrix-prototype
+        run: python3 scripts/verify_product_sources.py
+      - name: Run unit tests
+        id: unit
+        working-directory: site-factory/flower-matrix-prototype
+        env:
+          SITE_FACTORY_REVISION: ${{ steps.source.outputs.revision }}
+        run: npm test
+      - name: Build prototype A and rendered QA
+        id: build_a
+        working-directory: site-factory/flower-matrix-prototype
+        env:
+          SITE_INSTANCE: prototype-a
+          SITE_URL: ${{ env.A_ORIGIN }}
+          SITE_INDEXABLE: 'false'
+          SITE_FACTORY_REVISION: ${{ steps.source.outputs.revision }}
+        run: |
+          npm run build
+          cp matrix-qa.json matrix-qa-a.json
+          mv dist dist-a
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          root=Path('dist-a');rows=[]
+          for p in sorted(x for x in root.rglob('*') if x.is_file()):
+              rows.append([p.relative_to(root).as_posix(),hashlib.sha256(p.read_bytes()).hexdigest()])
+          Path('dist-a-hashes.json').write_text(json.dumps(rows,indent=2)+'\n')
+          PY
+      - name: Rebuild A and prove deterministic output
+        id: deterministic
+        working-directory: site-factory/flower-matrix-prototype
+        env:
+          SITE_INSTANCE: prototype-a
+          SITE_URL: ${{ env.A_ORIGIN }}
+          SITE_INDEXABLE: 'false'
+          SITE_FACTORY_REVISION: ${{ steps.source.outputs.revision }}
+        run: |
+          npm run build
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          root=Path('dist');rows=[]
+          for p in sorted(x for x in root.rglob('*') if x.is_file()):
+              rows.append([p.relative_to(root).as_posix(),hashlib.sha256(p.read_bytes()).hexdigest()])
+          before=json.loads(Path('dist-a-hashes.json').read_text())
+          if rows!=before:
+              a=dict(before);b=dict(rows)
+              changed=sorted(set(a)^set(b)|{k for k in set(a)&set(b) if a[k]!=b[k]})
+              raise SystemExit('non-deterministic build files: '+json.dumps(changed[:30]))
+          Path('deterministic.json').write_text(json.dumps({'same':True,'fileCount':len(rows)},indent=2)+'\n')
+          print('DETERMINISTIC BUILD PASSED',len(rows))
+          PY
+          rm -rf dist
+      - name: Build prototype B and rendered QA
+        id: build_b
+        working-directory: site-factory/flower-matrix-prototype
+        env:
+          SITE_INSTANCE: prototype-b
+          SITE_URL: ${{ env.B_ORIGIN }}
+          SITE_INDEXABLE: 'false'
+          SITE_FACTORY_REVISION: ${{ steps.source.outputs.revision }}
+        run: |
+          npm run build
+          cp matrix-qa.json matrix-qa-b.json
+          mv dist dist-b
+      - name: Compare A and B clone boundaries
+        id: clone
+        working-directory: site-factory/flower-matrix-prototype
+        run: python3 scripts/compare_clone_builds.py dist-a dist-b "$A_ORIGIN" "$B_ORIGIN"
+      - name: Inspect supplied m-castle examples structurally
+        id: competitor
+        continue-on-error: true
+        working-directory: site-factory/flower-matrix-prototype
+        run: python3 scripts/inspect_competitor.py
+      - name: Build 255-route synthetic scale fixture
+        id: scale_50
+        working-directory: site-factory/flower-matrix-prototype
+        env:
+          SITE_INSTANCE: prototype-a
+          SITE_URL: https://scale-50.example.invalid
+          SITE_INDEXABLE: 'false'
+          SITE_FACTORY_REVISION: ${{ steps.source.outputs.revision }}
+        run: |
+          git restore src/data/regions-matrix.json src/data/site-instances.json src/data/build-revision.json
+          node scripts/prepare_scale_fixture.mjs 50
+          /usr/bin/time -f '{"elapsedSeconds":%e,"maxRssKb":%M}' -o scale-50-time.json npm run build
+          python3 - <<'PY'
+          import json
+          q=json.load(open('matrix-qa.json'));t=json.load(open('scale-50-time.json'))
+          out={'testOnly':True,'syntheticRegionCount':50,**q,**t}
+          open('scale-50.json','w').write(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
+          print(json.dumps(out,ensure_ascii=False))
+          PY
+          rm -rf dist
+      - name: Build 1255-route synthetic scale fixture
+        id: scale_250
+        working-directory: site-factory/flower-matrix-prototype
+        env:
+          SITE_INSTANCE: prototype-a
+          SITE_URL: https://scale-250.example.invalid
+          SITE_INDEXABLE: 'false'
+          SITE_FACTORY_REVISION: ${{ steps.source.outputs.revision }}
+        run: |
+          git restore src/data/regions-matrix.json src/data/site-instances.json src/data/build-revision.json
+          node scripts/prepare_scale_fixture.mjs 250
+          /usr/bin/time -f '{"elapsedSeconds":%e,"maxRssKb":%M}' -o scale-250-time.json npm run build
+          python3 - <<'PY'
+          import json
+          q=json.load(open('matrix-qa.json'));t=json.load(open('scale-250-time.json'))
+          out={'testOnly':True,'syntheticRegionCount':250,**q,**t}
+          open('scale-250.json','w').write(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
+          print(json.dumps(out,ensure_ascii=False))
+          PY
+          rm -rf dist
+          git restore src/data/regions-matrix.json src/data/site-instances.json src/data/build-revision.json
+      - name: Save build-only evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flower-matrix-build-${{ github.run_id }}
+          path: |
+            site-factory/flower-matrix-prototype/dist-a/
+            site-factory/flower-matrix-prototype/dist-b/
+            site-factory/flower-matrix-prototype/matrix-qa-a.json
+            site-factory/flower-matrix-prototype/matrix-qa-b.json
+            site-factory/flower-matrix-prototype/product-source-verification.json
+            site-factory/flower-matrix-prototype/deterministic.json
+            site-factory/flower-matrix-prototype/clone-compare.json
+            site-factory/flower-matrix-prototype/competitor-structure.json
+            site-factory/flower-matrix-prototype/scale-50.json
+            site-factory/flower-matrix-prototype/scale-250.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Require complete build-only verification
+        if: always()
+        env:
+          PRODUCT: ${{ steps.product_source.outcome }}
+          UNIT: ${{ steps.unit.outcome }}
+          A: ${{ steps.build_a.outcome }}
+          DETERMINISTIC: ${{ steps.deterministic.outcome }}
+          B: ${{ steps.build_b.outcome }}
+          CLONE: ${{ steps.clone.outcome }}
+          SCALE50: ${{ steps.scale_50.outcome }}
+          SCALE250: ${{ steps.scale_250.outcome }}
+        run: |
+          test "$PRODUCT" = success
+          test "$UNIT" = success
+          test "$A" = success
+          test "$DETERMINISTIC" = success
+          test "$B" = success
+          test "$CLONE" = success
+          test "$SCALE50" = success
+          test "$SCALE250" = success
