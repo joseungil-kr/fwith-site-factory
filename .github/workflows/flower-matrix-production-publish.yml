@@ -1,0 +1,254 @@
+name: Flower Matrix Production Publish
+on:
+  issues:
+    types: [opened]
+permissions: {}
+concurrency:
+  group: flower-matrix-production-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.event.issue.title == '[FLOWER-MATRIX-PRODUCTION]' && github.actor == github.repository_owner && github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+    steps:
+      - name: Resolve exact reviewed release request
+        id: request
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          python3 - <<'PY'
+          import json,os,re
+          p=json.loads(os.environ['ISSUE_BODY'])
+          expected={
+            'source_revision':'334a765092fec21a092657320ecefdaf86006fc7',
+            'reviewed_run_id':39373673643,
+            'reviewed_artifact_id':12243015433,
+            'reviewed_artifact_digest':'sha256:b5b153f3088440603228b74e66c2819a9bd603eaa591689bc455e731a8704edb',
+          }
+          for k,v in expected.items():
+              if p.get(k)!=v: raise SystemExit('reviewed release identity mismatch: '+k)
+          if p.get('hostnames')!=['flower-a.fwith.kr','flower-b.fwith.kr']:
+              raise SystemExit('exact hostname pair required')
+          if p.get('search_submission') is not False:
+              raise SystemExit('search submission must remain disabled')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              for k,v in expected.items():out.write(f'{k}={v}\n')
+          PY
+      - name: Authorize exact source head and immutable reviewed artifact
+        uses: actions/github-script@v7
+        env:
+          SOURCE_REVISION: ${{ steps.request.outputs.source_revision }}
+          REVIEWED_RUN_ID: ${{ steps.request.outputs.reviewed_run_id }}
+          REVIEWED_ARTIFACT_ID: ${{ steps.request.outputs.reviewed_artifact_id }}
+          REVIEWED_ARTIFACT_DIGEST: ${{ steps.request.outputs.reviewed_artifact_digest }}
+        with:
+          script: |
+            if (process.env.GITHUB_RUN_ATTEMPT !== '1') throw new Error('Mutation reruns disabled; inspect before any new release request');
+            const {data: ref} = await github.rest.git.getRef({...context.repo, ref:'heads/source/flower-matrix-prototype-20261020'});
+            if (ref.object.type !== 'commit' || ref.object.sha !== process.env.SOURCE_REVISION) throw new Error('Source branch moved');
+            const {data: run} = await github.rest.actions.getWorkflowRun({...context.repo, run_id:Number(process.env.REVIEWED_RUN_ID)});
+            if (run.status !== 'completed' || run.conclusion !== 'success') throw new Error('Reviewed build run is not successful');
+            const {data: artifact} = await github.rest.actions.getArtifact({...context.repo, artifact_id:Number(process.env.REVIEWED_ARTIFACT_ID)});
+            if (artifact.expired || artifact.workflow_run?.id !== Number(process.env.REVIEWED_RUN_ID)
+                || artifact.name !== 'flower-matrix-build-' + process.env.REVIEWED_RUN_ID
+                || artifact.digest !== process.env.REVIEWED_ARTIFACT_DIGEST) throw new Error('Reviewed artifact identity/digest mismatch');
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.request.outputs.source_revision }}
+          path: source
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Download exact reviewed production artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ steps.request.outputs.reviewed_run_id }}
+          artifact-ids: ${{ steps.request.outputs.reviewed_artifact_id }}
+          path: reviewed
+      - name: Verify reviewed production artifact before provider credentials
+        env:
+          REVISION: ${{ steps.request.outputs.source_revision }}
+        run: |
+          set -euo pipefail
+          test -d reviewed/dist-production-a
+          test -d reviewed/dist-production-b
+          cd source/site-factory/flower-matrix-prototype
+          python3 scripts/verify_ab_experiment.py \
+            "$GITHUB_WORKSPACE/reviewed/dist-production-a" "$GITHUB_WORKSPACE/reviewed/dist-production-b" \
+            https://flower-a.fwith.kr https://flower-b.fwith.kr --indexable
+          REVISION="$REVISION" python3 - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import os,re,xml.etree.ElementTree as ET
+          revision=os.environ['REVISION']
+          for key in ('a','b'):
+              root=Path(os.environ['GITHUB_WORKSPACE'])/'reviewed'/('dist-production-'+key)
+              html=list(root.rglob('*.html'))
+              if len(html)!=166: raise SystemExit(f'{key}: expected 166 html including 404, got {len(html)}')
+              for p in html:
+                  text=p.read_text()
+                  if f'name="site-factory-revision" content="{revision}"' not in text:
+                      raise SystemExit(f'{key}: revision metadata mismatch {p}')
+              robots=(root/'robots.txt').read_text().strip().splitlines()
+              origin='https://flower-'+key+'.fwith.kr'
+              if robots!=['User-agent: *','Allow: /','Sitemap: '+origin+'/sitemap-index.xml']:
+                  raise SystemExit(f'{key}: production robots mismatch')
+              idx=ET.fromstring((root/'sitemap-index.xml').read_bytes())
+              ns='{http://www.sitemaps.org/schemas/sitemap/0.9}'
+              children=[x.text for x in idx.findall(ns+'sitemap/'+ns+'loc')]
+              urls=[]
+              for url in children:
+                  child=root/url.removeprefix(origin+'/')
+                  doc=ET.fromstring(child.read_bytes())
+                  urls.extend(x.text for x in doc.findall(ns+'url/'+ns+'loc'))
+              if len(urls)!=165 or len(set(urls))!=165:
+                  raise SystemExit(f'{key}: sitemap URL count mismatch')
+          print('REVIEWED PRODUCTION ARTIFACT PASS: 165 URLs per hostname')
+          PY
+      - name: Cloudflare GET-only collision preflight A
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 control/scripts/direct-flower-matrix/publish.py preflight --target flower-a --report binding-a-before.json
+      - name: Cloudflare GET-only collision preflight B
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 control/scripts/direct-flower-matrix/publish.py preflight --target flower-b --report binding-b-before.json
+      - name: Prepare fixed route-less Worker packages
+        run: |
+          set -euo pipefail
+          mkdir release-a release-b
+          cp -a reviewed/dist-production-a release-a/dist
+          cp -a reviewed/dist-production-b release-b/dist
+          python3 - <<'PY'
+          import json
+          for key,name in [('a','flower-matrix-a-prod'),('b','flower-matrix-b-prod')]:
+              cfg={'name':name,'compatibility_date':'2026-10-20','workers_dev':False,
+                   'assets':{'directory':'./dist/','not_found_handling':'404-page','html_handling':'auto-trailing-slash'}}
+              open('release-'+key+'/wrangler.publish.json','w').write(json.dumps(cfg,indent=2)+'\n')
+          PY
+      - name: Deploy flower-a reviewed static artifact
+        id: deploy_a
+        working-directory: release-a
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_LOG_SANITIZE: 'true'
+          WRANGLER_SEND_METRICS: 'false'
+        run: npx --yes wrangler@4.148.0 deploy --config wrangler.publish.json
+      - name: Deploy flower-b reviewed static artifact
+        id: deploy_b
+        working-directory: release-b
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_LOG_SANITIZE: 'true'
+          WRANGLER_SEND_METRICS: 'false'
+        run: npx --yes wrangler@4.148.0 deploy --config wrangler.publish.json
+      - name: Attach flower-a exact custom domain only if absent
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ "$(python3 -c "import json;print(str(json.load(open('binding-a-before.json'))['hostnameBindingExists']).lower())")" = false ]; then
+            python3 control/scripts/direct-flower-matrix/publish.py attach --target flower-a --before binding-a-before.json --report attach-a.json
+          else
+            cp binding-a-before.json attach-a.json
+          fi
+      - name: Attach flower-b exact custom domain only if absent
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ "$(python3 -c "import json;print(str(json.load(open('binding-b-before.json'))['hostnameBindingExists']).lower())")" = false ]; then
+            python3 control/scripts/direct-flower-matrix/publish.py attach --target flower-b --before binding-b-before.json --report attach-b.json
+          else
+            cp binding-b-before.json attach-b.json
+          fi
+      - name: GET-only exact binding readback
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            if python3 control/scripts/direct-flower-matrix/publish.py readback --target flower-a --report binding-a-after.json \
+              && python3 control/scripts/direct-flower-matrix/publish.py readback --target flower-b --report binding-b-after.json; then
+              exit 0
+            fi
+            test "$attempt" != 6
+            sleep 10
+          done
+      - name: Verify flower-a public HTTPS, all 165 routes, images, sitemap and real 404
+        env:
+          REVISION: ${{ steps.request.outputs.source_revision }}
+        run: |
+          for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            if python3 control/scripts/direct-flower-matrix/publish.py http --target flower-a --root reviewed/dist-production-a --revision "$REVISION" --report live-a.json; then exit 0; fi
+            test "$attempt" != 12
+            sleep 5
+          done
+      - name: Verify flower-b public HTTPS, all 165 routes, images, sitemap and real 404
+        env:
+          REVISION: ${{ steps.request.outputs.source_revision }}
+        run: |
+          for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            if python3 control/scripts/direct-flower-matrix/publish.py http --target flower-b --root reviewed/dist-production-b --revision "$REVISION" --report live-b.json; then exit 0; fi
+            test "$attempt" != 12
+            sleep 5
+          done
+      - name: Save public release evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flower-matrix-production-${{ github.run_id }}
+          path: |
+            binding-a-before.json
+            binding-b-before.json
+            attach-a.json
+            attach-b.json
+            binding-a-after.json
+            binding-b-after.json
+            live-a.json
+            live-b.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Report successful public release without search submission
+        if: success()
+        uses: actions/github-script@v7
+        env:
+          REVISION: ${{ steps.request.outputs.source_revision }}
+        with:
+          script: |
+            await github.rest.issues.createComment({...context.repo,issue_number:context.issue.number,
+              body:[
+                'FLOWER_MATRIX_PUBLIC_V1_COMPLETE',
+                'source='+process.env.REVISION,
+                'A=https://flower-a.fwith.kr/ sitemap=https://flower-a.fwith.kr/sitemap-index.xml',
+                'B=https://flower-b.fwith.kr/ sitemap=https://flower-b.fwith.kr/sitemap-index.xml',
+                'Cloudflare Worker/domain binding and complete HTTPS route verification passed.',
+                'No IndexNow, Naver, Google, sitemap submission or indexing request was performed.',
+                'run='+context.serverUrl+'/'+context.repo.owner+'/'+context.repo.repo+'/actions/runs/'+context.runId
+              ].join('\n')});
+            await github.rest.issues.update({...context.repo,issue_number:context.issue.number,state:'closed',state_reason:'completed'});
+      - name: Report exact release blocker
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({...context.repo,issue_number:context.issue.number,
+              body:'FLOWER_MATRIX_PUBLIC_BLOCKED: publication or verification did not complete. No search-engine submission was attempted. Inspect exact failed step and provider evidence before retry. run='+context.serverUrl+'/'+context.repo.owner+'/'+context.repo.repo+'/actions/runs/'+context.runId});
