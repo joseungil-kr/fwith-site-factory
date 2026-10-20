@@ -29,9 +29,9 @@ jobs:
           p=json.loads(os.environ['ISSUE_BODY'])
           expected={
             'source_revision':'334a765092fec21a092657320ecefdaf86006fc7',
-            'reviewed_run_id':39373673643,
-            'reviewed_artifact_id':12243015433,
-            'reviewed_artifact_digest':'sha256:b5b153f3088440603228b74e66c2819a9bd603eaa591689bc455e731a8704edb',
+            'reviewed_run_id':39376871869,
+            'reviewed_artifact_id':12243837557,
+            'reviewed_artifact_digest':'sha256:12f87a10658f662c4671aec8f9946ef0f9021d319375079be78b5178b8fddebf',
           }
           for k,v in expected.items():
               if p.get(k)!=v: raise SystemExit('reviewed release identity mismatch: '+k)
