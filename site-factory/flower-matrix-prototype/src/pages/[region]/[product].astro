@@ -15,11 +15,13 @@ const {page}=Astro.props as {page:any};
 const products=productsFor(page.group,sourceProducts);
 const hero=products[0];
 const siblingGroups=productGroups.filter((g:any)=>active.enabledProductGroups.includes(g.key)&&g.key!==page.group.key);
+const isVariantTreatment=active.copyVariant==='variant-v1' && !(active.controlRegionKeys||[]).includes(page.region.key);
+const firstAnswer=isVariantTreatment ? `받는 곳의 정확한 주소와 수령자·희망시간을 먼저 준비해 주세요. ${page.group.intro}` : page.group.intro;
 ---
 <BaseLayout title={page.title} description={page.description} canonicalPath={page.url} socialImageUrl={hero.imageUrl} socialImageAlt={hero.imageAlt}>
 <nav class="breadcrumb" aria-label="현재 위치"><a href="/">홈</a><span>›</span><a href={`/${page.region.slug}/`}>{page.region.name}</a><span>›</span><span>{page.group.label}</span></nav>
 <article class="matrix-detail" data-matrix-key={page.key}>
-<section class="detail-hero"><div><span class="eyebrow">{page.region.name} · {page.group.buyerIntent}</span><h1>{page.h1}</h1><p>{page.group.intro}</p><div class="actions"><a class="btn primary" href={active.phoneHref}>☎ {active.phone}</a><a class="btn dark" href={active.orderUrl}>꽃이랑 온라인 주문</a></div><div class="facts"><span>실제 상품 가격 확인</span><span>주소별 추가배송비 확인</span><span>가능한 도착시간 확인</span></div></div>
+<section class="detail-hero"><div><span class="eyebrow">{page.region.name} · {page.group.buyerIntent}</span><h1>{page.h1}</h1><p data-copy-variant={isVariantTreatment ? 'variant-v1' : 'baseline'}>{firstAnswer}</p><div class="actions"><a class="btn primary" href={active.phoneHref}>☎ {active.phone}</a><a class="btn dark" href={active.orderUrl}>꽃이랑 온라인 주문</a></div><div class="facts"><span>실제 상품 가격 확인</span><span>주소별 추가배송비 확인</span><span>가능한 도착시간 확인</span></div></div>
 <figure class="detail-product" data-source-code={hero.code}><img src={hero.imageUrl} alt={hero.imageAlt} loading="eager" width="500" height="500"/><figcaption><strong>{hero.name}</strong><span>{hero.price.toLocaleString()}원</span><small>꽃이랑 상품코드 {hero.code} · {hero.priceVerifiedAt} 가격 확인</small></figcaption></figure></section>
 <section class="content-card"><h2>{page.region.name}에서 {page.group.label}을 고를 때</h2><p>{page.region.decisionNote}</p><ul>{page.group.selectionTips.map((tip:string)=><li>{tip}</li>)}</ul></section>
 <section class="product-section"><h2>{page.group.label} 실제 상품과 가격</h2><div class="product-grid">{products.map((p:any)=><article class="product-card" data-source-code={p.code}><img src={p.imageUrl} alt={p.imageAlt} loading="lazy" width="500" height="500"/><div><h3>{p.name}</h3><strong>{p.price.toLocaleString()}원</strong><p>상품코드 {p.code} · {p.priceVerifiedAt} 원문 가격 확인</p><a href={p.sourceUrl}>꽃이랑 상품 원문 확인 →</a></div></article>)}</div><p class="product-notice">실제 배송 상품은 지역·계절에 따라 꽃 구성과 형태가 일부 달라질 수 있습니다.</p></section>
