@@ -55,7 +55,9 @@ try{
         screenshotsReady:document.readyState==='complete'
       };
     });
-    const name=instance+'-'+viewport.key+'-'+route.key+'.png';
+    const name=instance+'-'+viewport.key+'-'+route.key+'-full.png';
+    const viewportName=instance+'-'+viewport.key+'-'+route.key+'-viewport.png';
+    await page.screenshot({path:path.join(outRoot,viewportName),fullPage:false,animations:'disabled'});
     await page.screenshot({path:path.join(outRoot,name),fullPage:true,animations:'disabled'});
     const failures=[];
     if(!response||response.status()!==200)failures.push('http-'+(response?.status()??'no-response'));
@@ -67,7 +69,7 @@ try{
     if(check.images.some(i=>!i.loaded||!i.alt?.trim()||!i.widthAttr||!i.heightAttr))failures.push('image-load-or-alt-dimensions');
     if(check.paragraphFontMin<14)failures.push('paragraph-font-too-small');
     if(errors.length)failures.push('browser-errors');
-    results.push({instance,viewport:viewport.key,route:route.path,screenshot:name,httpStatus:response?.status()??null,checks:check,consoleErrors:errors,failures});
+    results.push({instance,viewport:viewport.key,route:route.path,screenshot:name,viewportScreenshot:viewportName,httpStatus:response?.status()??null,checks:check,consoleErrors:errors,failures});
     await page.close();
    }
    await context.close();
