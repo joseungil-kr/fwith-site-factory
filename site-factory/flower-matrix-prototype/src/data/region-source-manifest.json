@@ -1,0 +1,349 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Official provenance for the first multi-region flower matrix; this manifest is evidence, not proof of delivery coverage or local commercial demand.",
+  "checkedAtUtc": "2026-10-20",
+  "inventory": {
+    "regionCount": 32,
+    "gyeonggiMunicipalityCount": 31,
+    "incheonAdditionalRegionCount": 1,
+    "regionDataPath": "src/data/regions-matrix.json"
+  },
+  "sources": [
+    {
+      "id": "gyeonggi_municipality_list",
+      "publisher": "경기도청",
+      "title": "경기도 행정구역 현황",
+      "url": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "sourceAsOf": "2026-07-01",
+      "supports": "경기도 31개 시·군의 공식 명칭과 범위",
+      "repositoryEvidencePath": "docs/direct-regional-release/national/gyeonggi-release-audit.json"
+    },
+    {
+      "id": "mois_current_code_notice",
+      "publisher": "행정안전부 주민과",
+      "title": "행정기관(행정동) 및 관할구역(법정동) 변경내역(2026.9.30. 시행)",
+      "url": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824",
+      "publishedDate": "2026-09-29",
+      "effectiveDate": "2026-09-30",
+      "supports": "시·군·구 공식 코드와 행정구역 명칭",
+      "repositoryEvidencePath": "docs/direct-regional-release/national/source-evidence.json"
+    },
+    {
+      "id": "mois_current_code_dataset",
+      "publisher": "행정안전부 주민과",
+      "title": "jscode20260930.zip",
+      "url": "https://www.mois.go.kr/cmm/fms/FileDown.do?atchFileId=FILE_00149355_BR8t5D&fileSn=1",
+      "effectiveDate": "2026-09-30",
+      "sha256": "c9c2583919adfff992edc098fe7ea522e625fedabbfefedbd85564942c059d43",
+      "parsedRepositoryFile": "docs/direct-regional-release/national/official-release-units.json",
+      "parsedFileBlobSha": "c0d14b0d0f9d51bd34456f66e192112f8f9e89db",
+      "supports": "공식 행정구역 코드 매핑(경기도 31개 시·군 및 인천 남동구)"
+    },
+    {
+      "id": "latest_effective_change_check",
+      "publisher": "행정안전부 주민과",
+      "title": "행정기관(행정동) 및 관할구역(법정동) 변경내역(2026.10.12. 시행)",
+      "url": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=130109",
+      "publishedDate": "2026-10-08",
+      "effectiveDate": "2026-10-12",
+      "supports": "최신 시행 변경 확인",
+      "interpretation": "기존 저장소의 source-evidence는 평택 고덕동 행정동 분리와 관할 조정을 기록하고 법정동 코드 및 전국 시·군·구 단위 분모에는 영향이 없다고 명시한다. 본 매트릭스는 시·군·구 수준이므로 32개 집계에 추가 행정동을 혼입하지 않는다.",
+      "repositoryEvidencePath": "docs/direct-regional-release/national/source-evidence.json"
+    }
+  ],
+  "regionInventory": [
+    {
+      "key": "ansan",
+      "name": "안산시",
+      "slug": "ansan",
+      "administrativeCode": "4127000000",
+      "officialFullName": "경기도 안산시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "suwon",
+      "name": "수원시",
+      "slug": "suwon",
+      "administrativeCode": "4111000000",
+      "officialFullName": "경기도 수원시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "seongnam",
+      "name": "성남시",
+      "slug": "seongnam",
+      "administrativeCode": "4113000000",
+      "officialFullName": "경기도 성남시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "pyeongtaek",
+      "name": "평택시",
+      "slug": "pyeongtaek",
+      "administrativeCode": "4122000000",
+      "officialFullName": "경기도 평택시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "incheon-namdong",
+      "name": "인천 남동구",
+      "slug": "incheon-namdong",
+      "administrativeCode": "2820000000",
+      "officialFullName": "인천광역시 남동구",
+      "regionalListSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "uijeongbu",
+      "name": "의정부시",
+      "slug": "uijeongbu",
+      "administrativeCode": "4115000000",
+      "officialFullName": "경기도 의정부시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "anyang",
+      "name": "안양시",
+      "slug": "anyang",
+      "administrativeCode": "4117000000",
+      "officialFullName": "경기도 안양시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "bucheon",
+      "name": "부천시",
+      "slug": "bucheon",
+      "administrativeCode": "4119000000",
+      "officialFullName": "경기도 부천시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "gwangmyeong",
+      "name": "광명시",
+      "slug": "gwangmyeong",
+      "administrativeCode": "4121000000",
+      "officialFullName": "경기도 광명시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "dongducheon",
+      "name": "동두천시",
+      "slug": "dongducheon",
+      "administrativeCode": "4125000000",
+      "officialFullName": "경기도 동두천시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "goyang",
+      "name": "고양시",
+      "slug": "goyang",
+      "administrativeCode": "4128000000",
+      "officialFullName": "경기도 고양시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "gwacheon",
+      "name": "과천시",
+      "slug": "gwacheon",
+      "administrativeCode": "4129000000",
+      "officialFullName": "경기도 과천시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "guri",
+      "name": "구리시",
+      "slug": "guri",
+      "administrativeCode": "4131000000",
+      "officialFullName": "경기도 구리시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "namyangju",
+      "name": "남양주시",
+      "slug": "namyangju",
+      "administrativeCode": "4136000000",
+      "officialFullName": "경기도 남양주시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "osan",
+      "name": "오산시",
+      "slug": "osan",
+      "administrativeCode": "4137000000",
+      "officialFullName": "경기도 오산시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "siheung",
+      "name": "시흥시",
+      "slug": "siheung",
+      "administrativeCode": "4139000000",
+      "officialFullName": "경기도 시흥시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "gunpo",
+      "name": "군포시",
+      "slug": "gunpo",
+      "administrativeCode": "4141000000",
+      "officialFullName": "경기도 군포시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "uiwang",
+      "name": "의왕시",
+      "slug": "uiwang",
+      "administrativeCode": "4143000000",
+      "officialFullName": "경기도 의왕시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "hanam",
+      "name": "하남시",
+      "slug": "hanam",
+      "administrativeCode": "4145000000",
+      "officialFullName": "경기도 하남시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "yongin",
+      "name": "용인시",
+      "slug": "yongin",
+      "administrativeCode": "4146000000",
+      "officialFullName": "경기도 용인시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "paju",
+      "name": "파주시",
+      "slug": "paju",
+      "administrativeCode": "4148000000",
+      "officialFullName": "경기도 파주시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "icheon",
+      "name": "이천시",
+      "slug": "icheon",
+      "administrativeCode": "4150000000",
+      "officialFullName": "경기도 이천시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "anseong",
+      "name": "안성시",
+      "slug": "anseong",
+      "administrativeCode": "4155000000",
+      "officialFullName": "경기도 안성시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "gimpo",
+      "name": "김포시",
+      "slug": "gimpo",
+      "administrativeCode": "4157000000",
+      "officialFullName": "경기도 김포시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "hwaseong",
+      "name": "화성시",
+      "slug": "hwaseong",
+      "administrativeCode": "4159000000",
+      "officialFullName": "경기도 화성시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "gwangju",
+      "name": "광주시",
+      "slug": "gwangju",
+      "administrativeCode": "4161000000",
+      "officialFullName": "경기도 광주시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "yangju",
+      "name": "양주시",
+      "slug": "yangju",
+      "administrativeCode": "4163000000",
+      "officialFullName": "경기도 양주시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "pocheon",
+      "name": "포천시",
+      "slug": "pocheon",
+      "administrativeCode": "4165000000",
+      "officialFullName": "경기도 포천시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "yeoju",
+      "name": "여주시",
+      "slug": "yeoju",
+      "administrativeCode": "4167000000",
+      "officialFullName": "경기도 여주시",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "yeoncheon",
+      "name": "연천군",
+      "slug": "yeoncheon",
+      "administrativeCode": "4180000000",
+      "officialFullName": "경기도 연천군",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "gapyeong",
+      "name": "가평군",
+      "slug": "gapyeong",
+      "administrativeCode": "4182000000",
+      "officialFullName": "경기도 가평군",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    },
+    {
+      "key": "yangpyeong",
+      "name": "양평군",
+      "slug": "yangpyeong",
+      "administrativeCode": "4183000000",
+      "officialFullName": "경기도 양평군",
+      "regionalListSource": "https://www.gg.go.kr/contents/contents.do?ciIdx=468&menuId=1831",
+      "administrativeCodeSource": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000052&nttId=129824"
+    }
+  ],
+  "boundaries": {
+    "notEvidenceOf": "배송 가능성, 배송비, 지역별 판매 실적, 업체 지점, 후기 또는 검색 순위",
+    "deliveryPolicy": "지역별 최종 배송비와 도착 가능시간은 실제 상품 배송표와 정확한 수령 주소로 별도 확인",
+    "publication": "32-region dataset is not automatically enabled on the five-region prototype instances; flower-a and flower-b carry the 32-region list as separate production-shaped configurations."
+  }
+}
