@@ -7,6 +7,13 @@
 - 운영 책임: dot. 웹마스터는 독립 검수 결과를 dot에게 보고한다.
 
 
+## 최신 정정 · 2026-10-20 18:33 KST / 09:33 UTC
+이 절은 아래 과거 상태보다 우선한다.
+- [직접 확인] GitHub 원격에 소스 커밋 `5a819f93b73b5c59ec899f579a8a3294bb4b0e1f`가 존재한다. 부모 커밋은 `334a765092fec21a092657320ecefdaf86006fc7`, 커밋 시각은 17:36:35 KST / 08:36:35 UTC, 제목은 `fix(competitor): preserve source evidence and reject unknown comparisons`이다. 따라서 17:02 기록의 “커밋·푸시는 아직 없다”는 현재 상태로 재사용하지 않는다. 증거: https://github.com/joseungil-kr/fwith-site-factory/commit/5a819f93b73b5c59ec899f579a8a3294bb4b0e1f
+- [직접 확인] 커밋의 변경 파일 목록은 `package.json`, `scripts/inspect_competitor.py`, `tests/fixtures/competitor.html`, `tests/test_inspect_competitor.py`이다. 이는 원격 커밋 및 파일 목록의 확인이며, diff 내용의 타당성·테스트 재실행·공개 배포 검증은 아직 완료하지 않았다. V3 목표 달성이나 새 A/B 공개 완료로 해석하지 않는다.
+- [미확인] AM02 지원 중계에서 `AppServerBackend` 오류가 보고되어 새 작업자의 현재 실행·대기 상태는 재확인하지 못했다. 과거 `waitingOnApproval` 표시를 현재 상태로 단정하지 않는다.
+- dot이 인수한 최신 사용자 우선순위는 18:31 KST의 AM02 기존 사이트 감사 확인이다. 이 정정 작업은 기록 수정만 수행하며 새로운 V3 구현·작업 생성·배포를 시작하지 않는다. V3의 M-castle 전체 원문 및 역할 연결 공백은 해결된 것으로 간주하지 않는다.
+
 ## 현재 상태 · 2026-10-20 17:02 KST / 08:02 UTC
 이 절은 아래 과거 상태보다 우선한다. 기록 시각과 작업자의 마지막 실제 활동 시각을 구분한다.
 - 구현 진행에 대한 사용자 답변은 16:43 KST에 확인됐고(메시지 `Sentinel_2d5b740c278881919a22f04434895558`), 16:45 KST 새 작업자 `01a15824-4a29-7832-a1c3-cdbb9b5dde05`의 실제 지시 수신을 확인했다는 dot의 중계 확인을 인수했다. 이 구현 확인 질문은 해결됐으며 반복 요청하지 않는다. 보안·인증·권한 변경 등 별도 승인 경계는 그대로 유지한다.
