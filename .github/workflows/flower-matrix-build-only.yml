@@ -145,7 +145,7 @@ jobs:
           root=Path('dist-flower-a');rows=[]
           for p in sorted(x for x in root.rglob('*') if x.is_file()):
               rows.append([p.relative_to(root).as_posix(),hashlib.sha256(p.read_bytes()).hexdigest()])
-          Path('dist-flower-a-hashes.json').write_text(json.dumps(rows,indent=2)+'\\n')
+          Path('dist-flower-a-hashes.json').write_text(json.dumps(rows,indent=2)+'\n')
           PY
       - name: Rebuild flower-a and prove deterministic output
         id: flower_a_deterministic
@@ -168,7 +168,7 @@ jobs:
               a=dict(before);b=dict(rows)
               changed=sorted(set(a)^set(b)|{k for k in set(a)&set(b) if a[k]!=b[k]})
               raise SystemExit('non-deterministic 165-route build files: '+json.dumps(changed[:30]))
-          Path('flower-a-deterministic.json').write_text(json.dumps({'same':True,'fileCount':len(rows)},indent=2)+'\\n')
+          Path('flower-a-deterministic.json').write_text(json.dumps({'same':True,'fileCount':len(rows)},indent=2)+'\n')
           print('FLOWER-A DETERMINISTIC BUILD PASSED',len(rows))
           PY
           rm -rf dist
