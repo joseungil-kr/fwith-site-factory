@@ -1,0 +1,35 @@
+name: Flower Matrix Cloudflare Read-Only Preflight
+on:
+  issues:
+    types: [opened, reopened]
+permissions:
+  contents: read
+concurrency:
+  group: flower-matrix-provider-probe
+  cancel-in-progress: false
+jobs:
+  inspect:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.event.issue.title == '[FLOWER-MATRIX-PROVIDER-PROBE]' && github.actor == github.repository_owner && github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout trusted read-only probe code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Inspect exact DNS and Worker bindings using GET only
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          REPORT_PATH: cloudflare-readonly-observation.json
+        run: python3 scripts/flower-matrix/provider_probe.py
+      - name: Preserve read-only observation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flower-matrix-provider-observation-${{ github.run_id }}
+          path: cloudflare-readonly-observation.json
+          if-no-files-found: warn
+          retention-days: 14
