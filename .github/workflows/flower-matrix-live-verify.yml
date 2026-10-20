@@ -22,9 +22,9 @@ jobs:
           p=json.loads(os.environ['ISSUE_BODY'])
           expected={
             'source_revision':'334a765092fec21a092657320ecefdaf86006fc7',
-            'reviewed_run_id':39376871869,
-            'reviewed_artifact_id':12243837557,
-            'reviewed_artifact_digest':'sha256:12f87a10658f662c4671aec8f9946ef0f9021d319375079be78b5178b8fddebf',
+            'reviewed_run_id':39382381640,
+            'reviewed_artifact_id':12246186874,
+            'reviewed_artifact_digest':'sha256:650ded829d59b138a6e801ffea7de2330d9728e96a0665faa07283616abc1855',
             'production_run_id':39377546918,
             'mode':'get-only'
           }
@@ -37,11 +37,11 @@ jobs:
             const expectedSource='334a765092fec21a092657320ecefdaf86006fc7';
             const {data: ref}=await github.rest.git.getRef({...context.repo,ref:'heads/source/flower-matrix-prototype-20261020'});
             if(ref.object.type!=='commit'||ref.object.sha!==expectedSource) throw new Error('source branch moved');
-            const {data: run}=await github.rest.actions.getWorkflowRun({...context.repo,run_id:39376871869});
+            const {data: run}=await github.rest.actions.getWorkflowRun({...context.repo,run_id:39382381640});
             if(run.status!=='completed'||run.conclusion!=='success') throw new Error('reviewed run is not successful');
-            const {data: artifact}=await github.rest.actions.getArtifact({...context.repo,artifact_id:12243837557});
-            if(artifact.expired||artifact.workflow_run?.id!==39376871869||
-               artifact.digest!=='sha256:12f87a10658f662c4671aec8f9946ef0f9021d319375079be78b5178b8fddebf')
+            const {data: artifact}=await github.rest.actions.getArtifact({...context.repo,artifact_id:12246186874});
+            if(artifact.expired||artifact.workflow_run?.id!==39382381640||
+               artifact.digest!=='sha256:650ded829d59b138a6e801ffea7de2330d9728e96a0665faa07283616abc1855')
               throw new Error('reviewed artifact mismatch');
       - uses: actions/checkout@v4
         with:
@@ -58,8 +58,8 @@ jobs:
         with:
           github-token: ${{ github.token }}
           repository: ${{ github.repository }}
-          run-id: 39376871869
-          artifact-ids: 12243837557
+          run-id: 39382381640
+          artifact-ids: 12246186874
           path: reviewed
           merge-multiple: true
       - name: Reverify immutable artifact before live GET
