@@ -34,7 +34,9 @@ def collect(root):
     return {p.relative_to(root).as_posix():p for p in root.rglob("*") if p.is_file()}
 
 def main():
-    if len(sys.argv)!=5:raise SystemExit("usage: verify_ab_experiment.py DIST_A DIST_B ORIGIN_A ORIGIN_B")
+    if len(sys.argv) not in (5,6):raise SystemExit("usage: verify_ab_experiment.py DIST_A DIST_B ORIGIN_A ORIGIN_B [--indexable]")
+    indexable=len(sys.argv)==6 and sys.argv[5]=="--indexable"
+    if len(sys.argv)==6 and not indexable:raise SystemExit("unknown mode")
     da,db=Path(sys.argv[1]),Path(sys.argv[2]);oa=sys.argv[3].rstrip("/");ob=sys.argv[4].rstrip("/")
     data=json.loads(Path("src/data/regions-matrix.json").read_text())
     instances=json.loads(Path("src/data/site-instances.json").read_text())
@@ -58,7 +60,8 @@ def main():
         assert A.canonical==[oa+route],f"A canonical mismatch {route}: {A.canonical}"
         assert B.canonical==[ob+route],f"B canonical mismatch {route}: {B.canonical}"
         assert A.meta.get("og:url")==oa+route and B.meta.get("og:url")==ob+route,f"OG origin mismatch {route}"
-        assert "noindex" in A.meta.get("robots","") and "noindex" in B.meta.get("robots",""),"preview build unexpectedly indexable"
+        expected_robots="index,follow" if indexable else "noindex,nofollow,noarchive"
+        assert A.meta.get("robots")==expected_robots and B.meta.get("robots")==expected_robots,"A/B robots mode mismatch"
         assert A.title==B.title,f"title changed in B variant {route}"
         assert A.meta.get("description")==B.meta.get("description"),f"meta description changed in B variant {route}"
         assert len(A.images)>0 and len(B.images)>0,f"no images {route}"
@@ -84,7 +87,16 @@ def main():
             assert textA==textB,f"non-detail control page differs {route}"
     assert controls_checked==20,controls_checked
     assert treatments_checked==108,treatments_checked
-    result={"status":"PASS","routes":165,"regions":32,"productGroups":4,"controlDetailPages":controls_checked,"variantDetailPages":treatments_checked,"aOrigin":oa,"bOrigin":ob,"pricingPolicyInvariant":True,"variantScope":"one first-answer prefix only","noindexPreview":True,"fileCount":len(fa)}
+    for root,origin in ((da,oa),(db,ob)):
+        robots=(root/"robots.txt").read_text().strip()
+        headers=(root/"_headers").read_text()
+        if indexable:
+            assert robots==f"User-agent: *\nAllow: /\nSitemap: {origin}/sitemap-index.xml",f"Production robots mismatch {root}"
+            assert "X-Robots-Tag: noindex" not in headers,f"Production headers block indexing {root}"
+        else:
+            assert robots=="User-agent: *\nDisallow: /",f"Preview robots mismatch {root}"
+            assert "X-Robots-Tag: noindex, nofollow, noarchive" in headers,f"Preview header missing noindex {root}"
+    result={"status":"PASS","routes":165,"regions":32,"productGroups":4,"controlDetailPages":controls_checked,"variantDetailPages":treatments_checked,"aOrigin":oa,"bOrigin":ob,"pricingPolicyInvariant":True,"variantScope":"one first-answer prefix only","indexable":indexable,"noindexPreview":not indexable,"fileCount":len(fa)}
     Path("ab-experiment-qa.json").write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n")
     print(json.dumps(result,ensure_ascii=False))
 if __name__=="__main__":main()
