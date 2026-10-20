@@ -3,10 +3,12 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_matrix.py",
+    "build": "node scripts/assert_preview_boundary.mjs && npm run assets:prepare && npm run assets:verify && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_matrix.py",
     "dev": "astro dev",
     "test": "node --test tests/*.test.mjs",
-    "qa": "python3 scripts/qa_matrix.py"
+    "qa": "python3 scripts/qa_matrix.py",
+    "assets:prepare": "python3 scripts/prepare_product_assets.py",
+    "assets:verify": "python3 scripts/verify_product_sources.py"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.0.0",
