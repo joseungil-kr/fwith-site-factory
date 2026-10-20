@@ -58,6 +58,19 @@ def route_covers(pattern,hostname):
         return hostname.endswith(suffix) and hostname!=suffix[1:]
     return False
 
+def public_dns(host,qtype):
+    url="https://dns.google/resolve?"+urlencode({"name":host,"type":qtype})
+    req=Request(url,headers={"Accept":"application/dns-json","User-Agent":UA})
+    try:
+        with urlopen(req,timeout=12) as response:
+            status=response.status;raw=response.read(256*1024+1)
+        if len(raw)>256*1024:return {"queryType":qtype,"httpStatus":status,"complete":False,"error":"response_limit_exceeded","answers":[]}
+        data=json.loads(raw)
+        answers=[{"name":x.get("name"),"type":x.get("type"),"data":x.get("data"),"ttl":x.get("TTL")} for x in (data.get("Answer") or [])]
+        return {"queryType":qtype,"httpStatus":status,"complete":status==200 and data.get("Status")==0,"dnsStatus":data.get("Status"),"answers":answers}
+    except Exception as error:
+        return {"queryType":qtype,"httpStatus":None,"complete":False,"error":type(error).__name__+":"+str(error),"answers":[]}
+
 def main():
     account=os.environ.get("CLOUDFLARE_ACCOUNT_ID","")
     token=os.environ.get("CLOUDFLARE_API_TOKEN","")
@@ -97,6 +110,7 @@ def main():
         route=[x for x in relevant_routes if route_covers(x.get("pattern"),host)]
         report["targets"][host]={
           "dns":{"complete":dns_meta["complete"],"records":relevant_dns,"pages":dns_meta["pages"],"failures":dns_meta["failures"]},
+          "publicDns":[public_dns(host,qtype) for qtype in ("A","AAAA","CNAME")],
           "workerCustomDomainBindings":custom,
           "workerRoutes":route,
           "candidateWorkers":[x for x in candidate_scripts if host.split(".")[0] in x.lower() or "matrix" in x.lower()]
@@ -107,7 +121,7 @@ def main():
     write(report)
     summary={"status":report["status"],"mutationsPerformed":False,"targets":{},"checkStatuses":{k:v.get("success",v.get("complete")) for k,v in report["checks"].items() if isinstance(v,dict)}}
     for host,v in report["targets"].items():
-        summary["targets"][host]={"dnsRecords":v["dns"]["records"],"workerCustomDomainBindings":v["workerCustomDomainBindings"],"workerRoutes":v["workerRoutes"],"candidateWorkers":v["candidateWorkers"],"dnsReadComplete":v["dns"]["complete"]}
+        summary["targets"][host]={"dnsRecords":v["dns"]["records"],"dnsReadComplete":v["dns"]["complete"],"dnsReadFailures":v["dns"]["failures"],"publicDns":v.get("publicDns",[]),"workerCustomDomainBindings":v["workerCustomDomainBindings"],"workerRoutes":v["workerRoutes"],"candidateWorkers":v["candidateWorkers"]}
     print(json.dumps(summary,ensure_ascii=False,indent=2))
 
 def write(report):
