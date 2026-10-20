@@ -68,8 +68,9 @@ def main():
             src=image.get("src","")
             assert src.startswith("/images/products/"),f"not using local product image {route}: {src}"
         textA=" ".join(A.body);textB=" ".join(B.body)
-        if route.count("/")>=2 and route!="/" and not route.startswith("/products/"):
-            region=route.strip("/").split("/")[0]
+        parts=route.strip("/").split("/") if route!="/" else []
+        if len(parts)==2 and parts[0]!="products":
+            region=parts[0]
             region_obj=next(x for x in data if x["slug"]==region)
             if region_obj["key"] in controls:
                 assert textA==textB,f"control detail changed {route}"
