@@ -1,0 +1,111 @@
+name: Flower Matrix Live Verify
+on:
+  issues:
+    types: [opened]
+permissions: {}
+jobs:
+  verify:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.event.issue.title == '[FLOWER-MATRIX-LIVE-VERIFY]' && github.actor == github.repository_owner && github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+    steps:
+      - name: Resolve exact deployed release identity
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          python3 - <<'PY'
+          import json,os
+          p=json.loads(os.environ['ISSUE_BODY'])
+          expected={
+            'source_revision':'334a765092fec21a092657320ecefdaf86006fc7',
+            'reviewed_run_id':39376871869,
+            'reviewed_artifact_id':12243837557,
+            'reviewed_artifact_digest':'sha256:12f87a10658f662c4671aec8f9946ef0f9021d319375079be78b5178b8fddebf',
+            'production_run_id':39377546918,
+            'mode':'get-only'
+          }
+          if p!=expected: raise SystemExit('unexpected live verification request')
+          PY
+      - name: Authorize exact source head and immutable artifact
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const expectedSource='334a765092fec21a092657320ecefdaf86006fc7';
+            const {data: ref}=await github.rest.git.getRef({...context.repo,ref:'heads/source/flower-matrix-prototype-20261020'});
+            if(ref.object.type!=='commit'||ref.object.sha!==expectedSource) throw new Error('source branch moved');
+            const {data: run}=await github.rest.actions.getWorkflowRun({...context.repo,run_id:39376871869});
+            if(run.status!=='completed'||run.conclusion!=='success') throw new Error('reviewed run is not successful');
+            const {data: artifact}=await github.rest.actions.getArtifact({...context.repo,artifact_id:12243837557});
+            if(artifact.expired||artifact.workflow_run?.id!==39376871869||
+               artifact.digest!=='sha256:12f87a10658f662c4671aec8f9946ef0f9021d319375079be78b5178b8fddebf')
+              throw new Error('reviewed artifact mismatch');
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 334a765092fec21a092657320ecefdaf86006fc7
+          path: source
+          persist-credentials: false
+      - name: Download exact reviewed artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 39376871869
+          artifact-ids: 12243837557
+          path: reviewed
+          merge-multiple: true
+      - name: Reverify immutable artifact before live GET
+        run: |
+          cd source/site-factory/flower-matrix-prototype
+          python3 scripts/verify_ab_experiment.py \
+            "$GITHUB_WORKSPACE/reviewed/dist-production-a" "$GITHUB_WORKSPACE/reviewed/dist-production-b" \
+            https://flower-a.fwith.kr https://flower-b.fwith.kr --indexable
+      - name: Verify flower-a full public HTTPS contract
+        env:
+          REVISION: 334a765092fec21a092657320ecefdaf86006fc7
+        run: python3 control/scripts/direct-flower-matrix/publish.py http --target flower-a --root reviewed/dist-production-a --revision "$REVISION" --report live-a.json
+      - name: Verify flower-b full public HTTPS contract
+        env:
+          REVISION: 334a765092fec21a092657320ecefdaf86006fc7
+        run: python3 control/scripts/direct-flower-matrix/publish.py http --target flower-b --root reviewed/dist-production-b --revision "$REVISION" --report live-b.json
+      - name: Save live verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flower-matrix-live-verify-${{ github.run_id }}
+          path: |
+            live-a.json
+            live-b.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Report public verification success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({...context.repo,issue_number:context.issue.number,
+              body:[
+                'FLOWER_MATRIX_PUBLIC_V1_COMPLETE',
+                'source=334a765092fec21a092657320ecefdaf86006fc7',
+                'A=https://flower-a.fwith.kr/ sitemap=https://flower-a.fwith.kr/sitemap-index.xml',
+                'B=https://flower-b.fwith.kr/ sitemap=https://flower-b.fwith.kr/sitemap-index.xml',
+                'All 165 routes per hostname, local images, canonical/OG, indexable robots, sitemap and real 404 passed by GET-only verification.',
+                'No Naver, Google, sitemap submission, indexing request or IndexNow action was performed.',
+                'run='+context.serverUrl+'/'+context.repo.owner+'/'+context.repo.repo+'/actions/runs/'+context.runId
+              ].join('\n')});
+            await github.rest.issues.update({...context.repo,issue_number:context.issue.number,state:'closed',state_reason:'completed'});
+      - name: Report exact verification blocker
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({...context.repo,issue_number:context.issue.number,
+              body:'FLOWER_MATRIX_LIVE_VERIFY_BLOCKED: GET-only public verification failed. No provider mutation or search submission was performed. run='+context.serverUrl+'/'+context.repo.owner+'/'+context.repo.repo+'/actions/runs/'+context.runId});
