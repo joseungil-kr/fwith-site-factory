@@ -127,6 +127,88 @@ jobs:
         id: clone
         working-directory: site-factory/flower-matrix-prototype
         run: python3 scripts/compare_clone_builds.py dist-a dist-b "$A_ORIGIN" "$B_ORIGIN"
+      - name: Build 165-route flower-a preview
+        id: flower_a
+        working-directory: site-factory/flower-matrix-prototype
+        env:
+          SITE_INSTANCE: flower-a
+          SITE_URL: https://flower-a.fwith.kr
+          SITE_INDEXABLE: 'false'
+          SITE_FACTORY_REVISION: ${{ steps.source.outputs.revision }}
+        run: |
+          npm run build
+          cp matrix-qa.json matrix-qa-flower-a.json
+          mv dist dist-flower-a
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          root=Path('dist-flower-a');rows=[]
+          for p in sorted(x for x in root.rglob('*') if x.is_file()):
+              rows.append([p.relative_to(root).as_posix(),hashlib.sha256(p.read_bytes()).hexdigest()])
+          Path('dist-flower-a-hashes.json').write_text(json.dumps(rows,indent=2)+'\\n')
+          PY
+      - name: Rebuild flower-a and prove deterministic output
+        id: flower_a_deterministic
+        working-directory: site-factory/flower-matrix-prototype
+        env:
+          SITE_INSTANCE: flower-a
+          SITE_URL: https://flower-a.fwith.kr
+          SITE_INDEXABLE: 'false'
+          SITE_FACTORY_REVISION: ${{ steps.source.outputs.revision }}
+        run: |
+          npm run build
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          root=Path('dist');rows=[]
+          for p in sorted(x for x in root.rglob('*') if x.is_file()):
+              rows.append([p.relative_to(root).as_posix(),hashlib.sha256(p.read_bytes()).hexdigest()])
+          before=json.loads(Path('dist-flower-a-hashes.json').read_text())
+          if rows!=before:
+              a=dict(before);b=dict(rows)
+              changed=sorted(set(a)^set(b)|{k for k in set(a)&set(b) if a[k]!=b[k]})
+              raise SystemExit('non-deterministic 165-route build files: '+json.dumps(changed[:30]))
+          Path('flower-a-deterministic.json').write_text(json.dumps({'same':True,'fileCount':len(rows)},indent=2)+'\\n')
+          print('FLOWER-A DETERMINISTIC BUILD PASSED',len(rows))
+          PY
+          rm -rf dist
+      - name: Build 165-route flower-b preview
+        id: flower_b
+        working-directory: site-factory/flower-matrix-prototype
+        env:
+          SITE_INSTANCE: flower-b
+          SITE_URL: https://flower-b.fwith.kr
+          SITE_INDEXABLE: 'false'
+          SITE_FACTORY_REVISION: ${{ steps.source.outputs.revision }}
+        run: |
+          npm run build
+          cp matrix-qa.json matrix-qa-flower-b.json
+          mv dist dist-flower-b
+      - name: Verify A/B control and first-answer variant
+        id: ab_experiment
+        working-directory: site-factory/flower-matrix-prototype
+        run: python3 scripts/verify_ab_experiment.py dist-flower-a dist-flower-b https://flower-a.fwith.kr https://flower-b.fwith.kr
+      - name: Install official Playwright Chromium for visual QA
+        id: playwright_install
+        working-directory: site-factory/flower-matrix-prototype
+        run: |
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Capture desktop and 392px mobile screens and run visual checks
+        id: visual
+        working-directory: site-factory/flower-matrix-prototype
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --directory dist-flower-a > "$RUNNER_TEMP/matrix-a-http.log" 2>&1 &
+          A_SERVER=$!
+          python3 -m http.server 4174 --directory dist-flower-b > "$RUNNER_TEMP/matrix-b-http.log" 2>&1 &
+          B_SERVER=$!
+          trap 'kill "$A_SERVER" "$B_SERVER" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null && curl -fsS http://127.0.0.1:4174/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/capture_matrix_screenshots.mjs
       - name: Inspect supplied m-castle examples structurally
         id: competitor
         continue-on-error: true
@@ -181,8 +263,15 @@ jobs:
           path: |
             site-factory/flower-matrix-prototype/dist-a/
             site-factory/flower-matrix-prototype/dist-b/
+            site-factory/flower-matrix-prototype/dist-flower-a/
+            site-factory/flower-matrix-prototype/dist-flower-b/
             site-factory/flower-matrix-prototype/matrix-qa-a.json
             site-factory/flower-matrix-prototype/matrix-qa-b.json
+            site-factory/flower-matrix-prototype/matrix-qa-flower-a.json
+            site-factory/flower-matrix-prototype/matrix-qa-flower-b.json
+            site-factory/flower-matrix-prototype/flower-a-deterministic.json
+            site-factory/flower-matrix-prototype/ab-experiment-qa.json
+            site-factory/flower-matrix-prototype/screenshots/
             site-factory/flower-matrix-prototype/product-source-verification.json
             site-factory/flower-matrix-prototype/deterministic.json
             site-factory/flower-matrix-prototype/clone-compare.json
@@ -200,6 +289,12 @@ jobs:
           DETERMINISTIC: ${{ steps.deterministic.outcome }}
           B: ${{ steps.build_b.outcome }}
           CLONE: ${{ steps.clone.outcome }}
+          FLOWER_A: ${{ steps.flower_a.outcome }}
+          FLOWER_A_DETERMINISTIC: ${{ steps.flower_a_deterministic.outcome }}
+          FLOWER_B: ${{ steps.flower_b.outcome }}
+          AB_EXPERIMENT: ${{ steps.ab_experiment.outcome }}
+          PLAYWRIGHT: ${{ steps.playwright_install.outcome }}
+          VISUAL: ${{ steps.visual.outcome }}
           SCALE50: ${{ steps.scale_50.outcome }}
           SCALE250: ${{ steps.scale_250.outcome }}
         run: |
@@ -209,5 +304,11 @@ jobs:
           test "$DETERMINISTIC" = success
           test "$B" = success
           test "$CLONE" = success
+          test "$FLOWER_A" = success
+          test "$FLOWER_A_DETERMINISTIC" = success
+          test "$FLOWER_B" = success
+          test "$AB_EXPERIMENT" = success
+          test "$PLAYWRIGHT" = success
+          test "$VISUAL" = success
           test "$SCALE50" = success
           test "$SCALE250" = success
