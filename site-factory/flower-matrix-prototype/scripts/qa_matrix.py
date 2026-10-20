@@ -29,7 +29,8 @@ def main(root=Path('.')):
  instances=read(root,'src/data/site-instances.json');regions=read(root,'src/data/regions-matrix.json');groups=read(root,'src/data/product-groups.json');products=read(root,'src/data/product-sources.json');config=read(root,'src/data/site-config.json')
  key=os.environ.get('SITE_INSTANCE') or config['defaultInstance'];instance=next((x for x in instances if x['key']==key),None);assert instance,'Unknown SITE_INSTANCE'
  base=(os.environ.get('SITE_URL') or instance['domain']).rstrip('/');parsed_base=urlparse(base);assert parsed_base.scheme=='https' and parsed_base.netloc
- if os.environ.get('SITE_INDEXABLE')=='true':assert instance['deployable'] is True and config['productionApproved'] is True,'Prototype cannot become indexable before explicit promotion'
+ indexable=os.environ.get('SITE_INDEXABLE')=='true'
+ if indexable:assert instance['deployable'] is True and config['productionApproved'] is True,'Production build requires explicit production gate and deployable instance'
  rmap={x['key']:x for x in regions};gmap={x['key']:x for x in groups};enabled_regions=[rmap[x] for x in instance['enabledRegions']];enabled_groups=[gmap[x] for x in instance['enabledProductGroups']]
  detail=[f"/{r['slug']}/{g['slug']}/" for r in enabled_regions for g in enabled_groups];region_hubs=[f"/{r['slug']}/" for r in enabled_regions];product_hubs=[f"/products/{g['slug']}/" for g in enabled_groups];expected={'/',*detail,*region_hubs,*product_hubs}
  assert len(detail)==len(enabled_regions)*len(enabled_groups)
@@ -44,7 +45,8 @@ def main(root=Path('.')):
   assert doc.title.strip() and doc.title not in titles,f'Duplicate/missing title {url}';titles.add(doc.title)
   desc=doc.meta.get('description','').strip();assert desc and desc not in descriptions,f'Duplicate/missing description {url}';descriptions.add(desc)
   assert doc.canonical==[base+url],f'Canonical mismatch {url}: {doc.canonical}'
-  assert 'noindex' in doc.meta.get('robots',''),f'Prototype must remain noindex {url}'
+  expected_robots='index,follow' if indexable else 'noindex,nofollow,noarchive'
+  assert doc.meta.get('robots')==expected_robots,f'Robots meta mismatch {url}: {doc.meta.get("robots")}'
   assert doc.meta.get('og:url')==base+url,f'OG URL mismatch {url}'
   assert doc.meta.get('og:image'),f'Missing OG image {url}'
   og_host=urlparse(doc.meta['og:image']).hostname
@@ -78,13 +80,21 @@ def main(root=Path('.')):
  for p in products:
   assert p['sourceUrl']==f"https://fwith.co.kr/shop/item.php?it_id={p['code']}"
   assert p['priceVerifiedAt']=='2026-10-20'
+ robots_file=dist/'robots.txt';assert robots_file.is_file(),'Missing robots.txt';robots_text=robots_file.read_text().strip()
+ headers_file=dist/'_headers';assert headers_file.is_file(),'Missing response headers';headers_text=headers_file.read_text()
+ if indexable:
+  assert robots_text==f'User-agent: *\nAllow: /\nSitemap: {base}/sitemap-index.xml',f'Production robots.txt mismatch: {robots_text}'
+  assert 'X-Robots-Tag: noindex' not in headers_text,'Production headers still block indexing'
+ else:
+  assert robots_text=='User-agent: *\nDisallow: /',f'Preview robots.txt mismatch: {robots_text}'
+  assert 'X-Robots-Tag: noindex, nofollow, noarchive' in headers_text,'Preview response header missing noindex'
  sitemap=set()
  for file in dist.glob('sitemap-*.xml'):
   tree=ET.parse(file)
   for loc in tree.iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc'):
    if loc.text and not loc.text.endswith('.xml'):sitemap.add(unquote(loc.text))
  assert sitemap=={base+u for u in expected},f'Sitemap matrix mismatch: {sitemap ^ {base+u for u in expected}}'
- report={'schemaVersion':1,'instance':key,'origin':base,'regions':len(enabled_regions),'productGroups':len(enabled_groups),'detailPages':len(detail),'totalRoutes':len(expected),'titlesUnique':True,'descriptionsUnique':True,'noindex':True,'crossInstanceLeak':False}
+ report={'schemaVersion':1,'instance':key,'origin':base,'regions':len(enabled_regions),'productGroups':len(enabled_groups),'detailPages':len(detail),'totalRoutes':len(expected),'titlesUnique':True,'descriptionsUnique':True,'indexable':indexable,'noindex':not indexable,'crossInstanceLeak':False}
  (root/'matrix-qa.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
  print('MATRIX QA PASSED: '+json.dumps(report,ensure_ascii=False))
 if __name__=='__main__':main()
