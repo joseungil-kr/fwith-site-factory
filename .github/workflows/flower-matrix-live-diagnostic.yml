@@ -1,0 +1,77 @@
+name: Flower Matrix Live Diagnostic
+on:
+  issues:
+    types: [opened]
+permissions: {}
+jobs:
+  observe:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.event.issue.title == '[FLOWER-MATRIX-LIVE-DIAG]' && github.actor == github.repository_owner && github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Authorize exact diagnostic request
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          python3 - <<'PY'
+          import json,os
+          p=json.loads(os.environ['ISSUE_BODY'])
+          if p != {
+            'source_revision':'334a765092fec21a092657320ecefdaf86006fc7',
+            'hostnames':['flower-a.fwith.kr','flower-b.fwith.kr'],
+            'mode':'get-only'
+          }:
+              raise SystemExit('unexpected diagnostic request')
+          PY
+      - name: Observe live HTTP without provider credentials
+        run: |
+          python3 - <<'PY'
+          from urllib.request import Request,build_opener,HTTPRedirectHandler
+          from urllib.error import HTTPError,URLError
+          import hashlib,json,time
+          class NoRedirect(HTTPRedirectHandler):
+              def redirect_request(self,*a,**k): return None
+          opener=build_opener(NoRedirect())
+          hosts=['flower-a.fwith.kr','flower-b.fwith.kr']
+          paths=['/','/robots.txt','/sitemap-index.xml','/ansan/funeral-wreath/','/.matrix-diag-missing/']
+          out={'schemaVersion':1,'mode':'get-only','observations':[]}
+          for host in hosts:
+              for path in paths:
+                  row={'host':host,'path':path,'url':'https://'+host+path}
+                  try:
+                      req=Request(row['url'],headers={'User-Agent':'SiteFactory-Matrix-Live-Diagnostic/1.0','Accept-Encoding':'identity','Cache-Control':'no-cache'})
+                      try: r=opener.open(req,timeout=25)
+                      except HTTPError as e: r=e
+                      with r:
+                          body=r.read(2*1024*1024+1)
+                          row.update(status=r.code,contentType=r.headers.get('Content-Type'),server=r.headers.get('Server'),cfRay=r.headers.get('CF-Ray'),
+                                     location=r.headers.get('Location'),xRobotsTag=r.headers.get_all('X-Robots-Tag',[]),
+                                     bytes=len(body),sha256=hashlib.sha256(body).hexdigest())
+                      if path=='/robots.txt':
+                          row['bodyUtf8']=body.decode('utf-8','replace')
+                          row['bodyHexPrefix']=body[:256].hex()
+                  except Exception as e:
+                      row['error']=type(e).__name__+':'+str(e)
+                  out['observations'].append(row)
+          open('flower-matrix-live-diagnostic.json','w').write(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
+          for x in out['observations']:
+              if x['path']=='/robots.txt':
+                  print(json.dumps(x,ensure_ascii=False))
+          PY
+      - name: Upload diagnostic evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: flower-matrix-live-diagnostic-${{ github.run_id }}
+          path: flower-matrix-live-diagnostic.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Report diagnostic completion
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({...context.repo,issue_number:context.issue.number,
+              body:'FLOWER_MATRIX_LIVE_DIAGNOSTIC_COMPLETE (GET-only, no Cloudflare credentials, no search submission). run='+context.serverUrl+'/'+context.repo.owner+'/'+context.repo.repo+'/actions/runs/'+context.runId});
+            await github.rest.issues.update({...context.repo,issue_number:context.issue.number,state:'closed',state_reason:'completed'});
