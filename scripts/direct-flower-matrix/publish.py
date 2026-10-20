@@ -190,8 +190,26 @@ def verify_live(key,root_path,revision):
         checked+=1
     # Exact robots and sitemap public bytes.
     status,robots,_=get(origin,"/robots.txt",200)
-    text=robots.decode("utf-8").strip().splitlines()
-    require(text==["User-agent: *","Allow: /","Sitemap: "+origin+"/sitemap-index.xml"],"live_robots_mismatch")
+    text=robots.decode("utf-8").replace("\\r\\n","\\n").strip()
+    # Cloudflare may prepend its Managed Content Signals block at the edge.
+    # Preserve a fail-closed search boundary: our exact production block must remain
+    # intact, wildcard crawlers must never be denied, and the exact host sitemap
+    # must be advertised. Provider-added rules for named AI/training bots are allowed.
+    required_block="User-agent: *\\nAllow: /\\nSitemap: "+origin+"/sitemap-index.xml"
+    require(required_block in text,"live_robots_required_block_missing")
+    current_agents=[]
+    for raw in text.splitlines():
+        line=raw.split("#",1)[0].strip()
+        if not line: continue
+        name,sep,value=line.partition(":")
+        if not sep: continue
+        name=name.strip().lower();value=value.strip()
+        if name=="user-agent":
+            if not current_agents or any(a=="*" for a in current_agents):
+                current_agents=[]
+            current_agents.append(value.lower())
+        elif name=="disallow" and "*" in current_agents:
+            require(value not in ("/","/*"),"live_robots_wildcard_disallow")
     checked+=1
     for sm in ["/sitemap-index.xml",*sitemaps]:
         get(origin,sm,200); checked+=1
