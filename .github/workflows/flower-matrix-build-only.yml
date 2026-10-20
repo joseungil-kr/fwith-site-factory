@@ -51,11 +51,15 @@ jobs:
       - name: Install dependencies
         working-directory: site-factory/flower-matrix-prototype
         run: npm ci
+      - name: Install Pillow for product asset verification
+        run: python3 -m pip install --disable-pip-version-check Pillow==11.3.0
       - name: Verify current fwith product pages and authorized photos
         id: product_source
         continue-on-error: true
         working-directory: site-factory/flower-matrix-prototype
-        run: python3 scripts/verify_product_sources.py
+        run: |
+          python3 scripts/prepare_product_assets.py
+          python3 scripts/verify_product_sources.py
       - name: Run unit tests
         id: unit
         working-directory: site-factory/flower-matrix-prototype
