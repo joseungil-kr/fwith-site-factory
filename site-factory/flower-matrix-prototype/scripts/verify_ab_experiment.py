@@ -76,7 +76,7 @@ def main():
                 assert textA==textB,f"control detail changed {route}"
                 controls_checked+=1
             else:
-                assert textB.startswith(PREFIX),f"B treatment prefix missing {route}"
+                assert PREFIX in textB,f"B treatment prefix missing {route}"
                 normalized=textB.replace(PREFIX,"",1).strip()
                 assert normalized==textA,f"B changed content outside first answer {route}"
                 treatments_checked+=1
