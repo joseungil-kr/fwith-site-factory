@@ -79,6 +79,7 @@ jobs:
           run-id: ${{ steps.request.outputs.reviewed_run_id }}
           artifact-ids: ${{ steps.request.outputs.reviewed_artifact_id }}
           path: reviewed
+          merge-multiple: true
       - name: Verify reviewed production artifact before provider credentials
         env:
           REVISION: ${{ steps.request.outputs.source_revision }}
