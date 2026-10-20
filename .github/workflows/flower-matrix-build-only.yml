@@ -209,6 +209,34 @@ jobs:
             sleep 1
           done
           node scripts/capture_matrix_screenshots.mjs
+      - name: Build indexable flower-a production candidate
+        id: production_a
+        working-directory: site-factory/flower-matrix-prototype
+        env:
+          SITE_INSTANCE: flower-a
+          SITE_URL: https://flower-a.fwith.kr
+          SITE_INDEXABLE: 'true'
+          SITE_FACTORY_REVISION: ${{ steps.source.outputs.revision }}
+        run: |
+          npm run build
+          cp matrix-qa.json matrix-qa-production-a.json
+          mv dist dist-production-a
+      - name: Build indexable flower-b production candidate
+        id: production_b
+        working-directory: site-factory/flower-matrix-prototype
+        env:
+          SITE_INSTANCE: flower-b
+          SITE_URL: https://flower-b.fwith.kr
+          SITE_INDEXABLE: 'true'
+          SITE_FACTORY_REVISION: ${{ steps.source.outputs.revision }}
+        run: |
+          npm run build
+          cp matrix-qa.json matrix-qa-production-b.json
+          mv dist dist-production-b
+      - name: Verify production A/B canonical robots and sitemap
+        id: production_ab
+        working-directory: site-factory/flower-matrix-prototype
+        run: python3 scripts/verify_ab_experiment.py dist-production-a dist-production-b https://flower-a.fwith.kr https://flower-b.fwith.kr --indexable
       - name: Inspect supplied m-castle examples structurally
         id: competitor
         continue-on-error: true
@@ -265,6 +293,12 @@ jobs:
             site-factory/flower-matrix-prototype/dist-b/
             site-factory/flower-matrix-prototype/dist-flower-a/
             site-factory/flower-matrix-prototype/dist-flower-b/
+            site-factory/flower-matrix-prototype/dist-production-a/
+            site-factory/flower-matrix-prototype/dist-production-b/
+            site-factory/flower-matrix-prototype/matrix-qa-production-a.json
+            site-factory/flower-matrix-prototype/matrix-qa-production-b.json
+            site-factory/flower-matrix-prototype/ab-experiment-qa.json
+            site-factory/flower-matrix-prototype/ab-experiment-qa-production.json
             site-factory/flower-matrix-prototype/matrix-qa-a.json
             site-factory/flower-matrix-prototype/matrix-qa-b.json
             site-factory/flower-matrix-prototype/matrix-qa-flower-a.json
@@ -297,6 +331,9 @@ jobs:
           AB_EXPERIMENT: ${{ steps.ab_experiment.outcome }}
           PLAYWRIGHT: ${{ steps.playwright_install.outcome }}
           VISUAL: ${{ steps.visual.outcome }}
+          PRODUCTION_A: ${{ steps.production_a.outcome }}
+          PRODUCTION_B: ${{ steps.production_b.outcome }}
+          PRODUCTION_AB: ${{ steps.production_ab.outcome }}
           SCALE50: ${{ steps.scale_50.outcome }}
           SCALE250: ${{ steps.scale_250.outcome }}
         run: |
@@ -312,5 +349,8 @@ jobs:
           test "$AB_EXPERIMENT" = success
           test "$PLAYWRIGHT" = success
           test "$VISUAL" = success
+          test "$PRODUCTION_A" = success
+          test "$PRODUCTION_B" = success
+          test "$PRODUCTION_AB" = success
           test "$SCALE50" = success
           test "$SCALE250" = success
