@@ -1,0 +1,126 @@
+name: Daysky reviewed 1736-page production asset deploy
+on:
+  push:
+    branches: [feature/daysky-v5-1736-deploy-20261025]
+    paths:
+      - '.github/workflows/daysky-v5-1736-deploy.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: daysky-production-assets
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: joseungil-kr/site-factory-v5
+          ref: 58f4428a2d961d3dd4ef8d1fc33e106ddd737ad5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Require existing Cloudflare credentials
+        env:
+          CF_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          test -n "$CF_ID" || { echo 'V5 repository has no CLOUDFLARE_ACCOUNT_ID secret'; exit 3; }
+          test -n "$CF_TOKEN" || { echo 'V5 repository has no CLOUDFLARE_API_TOKEN secret'; exit 3; }
+      - name: Run all regressions
+        run: |
+          python -m unittest discover -s tests -q
+          npm test
+      - name: Build all authorized indexable pages
+        run: |
+          python -m v5 build --site daysky --mode public-indexing
+          python -m v5 audit --site daysky
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from xml.etree import ElementTree as ET
+          out=Path('dist/daysky')
+          manifest=json.loads(Path('reports/daysky/manifest.json').read_text())
+          assert manifest['pageCount']==1736
+          urls=ET.parse(out/'sitemap.xml').findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')
+          assert len(urls)==1736
+          assert all((out/('index.html' if n==1 else f'{n}.html')).exists() for n in (1,2,29,30,1736))
+          PY
+      - name: Verify existing Daysky domain and record previous worker version
+        id: previous
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          python - <<'PY'
+          import os,json,urllib.request
+          account=os.environ['CLOUDFLARE_ACCOUNT_ID']
+          token=os.environ['CLOUDFLARE_API_TOKEN']
+          def get(path):
+              req=urllib.request.Request('https://api.cloudflare.com/client/v4'+path,headers={'Authorization':'Bearer '+token})
+              with urllib.request.urlopen(req,timeout=30) as r: data=json.load(r)
+              if not data.get('success'): raise RuntimeError('Cloudflare preflight failed')
+              return data['result']
+          domains=get('/accounts/'+account+'/workers/domains')
+          matches=[d for d in domains if d.get('hostname')=='daysky.nalmada.net']
+          assert len(matches)==1 and matches[0].get('service')=='sfv5-daysky-preview','Unexpected custom domain binding; refuse deployment'
+          record=get('/accounts/'+account+'/workers/scripts/sfv5-daysky-preview/deployments')
+          versions=record['deployments'][0]['versions']
+          assert len(versions)==1 and versions[0]['percentage']==100,'No stable previous worker version'
+          version=versions[0]['version_id']
+          with open(os.environ['GITHUB_OUTPUT'],'a') as fp:fp.write('version='+version+'\n')
+          print('Existing Daysky Worker binding and rollback version verified')
+          PY
+      - name: Prepare existing Worker static-assets config
+        run: |
+          mkdir -p deploy/daysky
+          python - <<'PY'
+          import json
+          cfg={'name':'sfv5-daysky-preview','compatibility_date':'2026-10-21','main':'../../worker/index.js','workers_dev':True,'preview_urls':False,'keep_vars':True,
+          'assets':{'directory':'../../dist/daysky','binding':'ASSETS','html_handling':'none','not_found_handling':'404-page','run_worker_first':True}}
+          open('deploy/daysky/existing-worker.wrangler.json','w').write(json.dumps(cfg))
+          PY
+      - name: Deploy new assets to existing Daysky Worker
+        id: deploy
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: npx --yes wrangler@4.148.0 deploy --config deploy/daysky/existing-worker.wrangler.json
+      - name: Check public pages and sitemap
+        env:
+          PYTHONUNBUFFERED: '1'
+        run: |
+          python - <<'PY'
+          import urllib.request,xml.etree.ElementTree as ET,time
+          origin='https://daysky.nalmada.net'
+          last=''
+          for attempt in range(12):
+              try:
+                  for path in ('/','/29.html','/30.html','/1736.html'):
+                      with urllib.request.urlopen(origin+path,timeout=25) as r:
+                          body=r.read().decode()
+                          assert r.status==200 and '당일스카이' in body
+                          assert 'noindex' not in r.headers.get('X-Robots-Tag','').lower()
+                          assert '<meta name="robots" content="index,follow">' in body
+                  with urllib.request.urlopen(origin+'/sitemap.xml',timeout=30) as r:
+                      urls=ET.fromstring(r.read()).findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')
+                  assert len(urls)==1736,len(urls)
+                  print('LIVE DAYS KY DEPLOY VERIFIED: 1736 sitemap URLs, 4 page HTTP 200')
+                  break
+              except Exception as e:
+                  last=str(e)
+                  if attempt==11: raise
+                  time.sleep(10)
+          PY
+      - name: Roll back previous worker version on failed post-deploy verification
+        if: failure() && steps.deploy.outcome == 'success' && steps.previous.outputs.version != ''
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          PREVIOUS_VERSION: ${{ steps.previous.outputs.version }}
+        run: npx --yes wrangler@4.148.0 versions deploy "$PREVIOUS_VERSION@100%" --yes --config deploy/daysky/existing-worker.wrangler.json
