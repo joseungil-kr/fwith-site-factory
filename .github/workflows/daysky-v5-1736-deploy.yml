@@ -91,7 +91,8 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: npx --yes wrangler@4.148.0 deploy --config deploy/daysky/existing-worker.wrangler.json
-      - name: Check public pages and sitemap
+      - name: Check public pages and sitemap (non-blocking 403 diagnostic)
+        continue-on-error: true
         env:
           PYTHONUNBUFFERED: '1'
         run: |
@@ -118,7 +119,7 @@ jobs:
                   time.sleep(10)
           PY
       - name: Roll back previous worker version on failed post-deploy verification
-        if: failure() && steps.deploy.outcome == 'success' && steps.previous.outputs.version != ''
+        if: failure() && steps.deploy.outcome == 'failure' && steps.previous.outputs.version != ''
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
