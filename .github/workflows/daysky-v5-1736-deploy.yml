@@ -45,6 +45,8 @@ jobs:
           from pathlib import Path
           from xml.etree import ElementTree as ET
           out=Path('dist/daysky')
+          import base64
+          (out/'naver5310230a849ed5aa4c3e4bde03072d95.html').write_bytes(base64.b64decode('bmF2ZXItc2l0ZS12ZXJpZmljYXRpb246IG5hdmVyNTMxMDIzMGE4NDllZDVhYTRjM2U0YmRlMDMwNzJkOTUuaHRtbA=='))
           manifest=json.loads(Path('reports/daysky/manifest.json').read_text())
           assert manifest['pageCount']==1736
           urls=ET.parse(out/'sitemap.xml').findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')
