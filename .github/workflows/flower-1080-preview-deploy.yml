@@ -1,0 +1,166 @@
+name: Nalmada Flower 1080 reviewed noindex preview deploy
+on:
+  push:
+    branches: [feature/flower-1080-preview-deploy-20261027]
+    paths:
+      - '.github/workflows/flower-1080-preview-deploy.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: sfv5-nalmada-flower-preview-worker
+  cancel-in-progress: false
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: joseungil-kr/site-factory-v5
+          ref: 7b588d4ea596cf70e5d8adcdab7c967c33a6ad84
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Require account-scoped existing credentials
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo 'Missing Cloudflare account credential'; exit 3; }
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo 'Missing Cloudflare token'; exit 3; }
+          test "$(git rev-parse HEAD)" = "7b588d4ea596cf70e5d8adcdab7c967c33a6ad84"
+      - name: Ensure isolated preview Worker is not bound to an operating domain
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          python - <<'PY'
+          import json,os,urllib.request
+          a=os.environ['CLOUDFLARE_ACCOUNT_ID']
+          token=os.environ['CLOUDFLARE_API_TOKEN']
+          req=urllib.request.Request(
+            'https://api.cloudflare.com/client/v4/accounts/'+a+'/workers/domains',
+            headers={'Authorization':'Bearer '+token, 'Accept':'application/json'})
+          with urllib.request.urlopen(req,timeout=35) as response: data=json.load(response)
+          if not data.get('success'):raise RuntimeError('Cloudflare domain readback failed')
+          domains=data['result']
+          worker='sfv5-nalmada-flower-preview'
+          attached=[d['hostname'] for d in domains if d.get('service')==worker]
+          if attached:raise RuntimeError('Preview Worker already attached to custom domain: '+str(attached))
+          flower=[{'host':d['hostname'],'worker':d.get('service')} for d in domains
+                  if d.get('hostname')=='flower.nalmada.net']
+          print('FLOWER_CUSTOM_DOMAIN_READ_ONLY='+json.dumps(flower))
+          print('PREVIEW_WORKER_CUSTOM_DOMAIN_ATTACHMENTS=0')
+          PY
+      - name: Audit 1080-page content before HTML generation
+        run: |
+          python -m py_compile scripts/build_flower_funeral_national.py scripts/prepare_flower_funeral_preview.py
+          python scripts/build_flower_funeral_national.py --audit-only
+          test ! -d dist/flower-funeral-national-preview
+      - name: Generate 1080 pages and searchable Nalmada Flower homepage
+        run: |
+          python scripts/build_flower_funeral_national.py
+          python scripts/prepare_flower_funeral_preview.py
+      - name: Independently inspect exact release bytes
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          out=Path('dist/flower-funeral-national-preview')
+          report=json.loads(Path('reports/flower-funeral/pool-1080-1pct-audit.json').read_text())
+          mf=json.loads((out/'manifest.json').read_text())
+          hall_json=json.loads((out/'halls.json').read_text())
+          assert report['passes'] and report['fullPairComparisons']==1165320
+          assert report['fullPairFailures']==0 and report['maximumSimilarity']<0.49
+          assert mf['pageCount']==len(hall_json)==1080 and mf['qaPasses']
+          html=list(out.glob('fh-*.html'))
+          assert len(html)==1080
+          assert (out/'index.html').is_file() and (out/'404.html').is_file()
+          assert 'Disallow: /' in (out/'robots.txt').read_text()
+          assert not (out/'sitemap.xml').exists()
+          for f in (html[0],html[100],html[500],html[-1],out/'index.html',out/'404.html'):
+              t=f.read_text()
+              assert '<meta name="robots" content="noindex,nofollow">' in t
+              assert '날마다꽃' in t
+              assert '<link rel="canonical"' not in t
+          print('RELEASE_1080_NO_INDEX_QA_PASSED; max Jaccard:',report['maximumSimilarity'])
+          PY
+      - name: Write disposable isolated Worker config
+        run: |
+          mkdir -p deploy/flower-national-preview
+          python - <<'PY'
+          import json
+          cfg={'name':'sfv5-nalmada-flower-preview','compatibility_date':'2026-10-21',
+               'main':'../../worker/index.js','workers_dev':True,
+               'preview_urls':False,'keep_vars':False,'vars':{'V5_STAGING':'1'},
+               'assets':{'directory':'../../dist/flower-funeral-national-preview',
+                         'binding':'ASSETS','html_handling':'none',
+                         'not_found_handling':'404-page','run_worker_first':True}}
+          open('deploy/flower-national-preview/wrangler.json','w').write(json.dumps(cfg,indent=2))
+          PY
+      - name: Deploy noindex bundle to isolated workers.dev (no DNS changes)
+        id: release
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4.148.0 deploy --config deploy/flower-national-preview/wrangler.json 2>&1 | tee /tmp/flower-deploy.log
+          python - <<'PY'
+          import os,re
+          s=open('/tmp/flower-deploy.log',encoding='utf-8',errors='ignore').read()
+          urls=re.findall(r'https://[a-zA-Z0-9.-]+\.workers\.dev(?:/[^\s]*)?',s)
+          if not urls:raise RuntimeError('Wrangler did not report a preview URL')
+          url=urls[-1].rstrip('/')
+          print('FLOWER_NO_INDEX_PREVIEW_DEPLOY_URL='+url)
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              out.write('url='+url+'\n')
+          PY
+      - name: Confirm active version through provider API
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          python - <<'PY'
+          import os,json,urllib.request
+          req=urllib.request.Request(
+            'https://api.cloudflare.com/client/v4/accounts/'+os.environ['CLOUDFLARE_ACCOUNT_ID']+
+            '/workers/scripts/sfv5-nalmada-flower-preview/deployments',
+            headers={'Authorization':'Bearer '+os.environ['CLOUDFLARE_API_TOKEN']})
+          with urllib.request.urlopen(req,timeout=35) as response:data=json.load(response)
+          assert data['success']
+          versions=data['result']['deployments'][0]['versions']
+          assert len(versions)==1 and versions[0]['percentage']==100
+          print('FLOWER_CLOUDFLARE_DEPLOYED_VERSION='+versions[0]['version_id'])
+          PY
+      - name: Public preview readback (diagnostic; HTTP 403 does not imply deployment failure)
+        continue-on-error: true
+        env:
+          PREVIEW_URL: ${{ steps.release.outputs.url }}
+        run: |
+          python - <<'PY'
+          import os,urllib.request,urllib.error
+          from xml.etree import ElementTree
+          origin=os.environ['PREVIEW_URL'].rstrip('/')
+          for path in ('/','/halls.json','/robots.txt','/fh-0003dfe99ba37467302b.html',
+                       '/404-test-nalmada-flower.html'):
+              try:
+                  with urllib.request.urlopen(origin+path,timeout=25) as r:
+                      code=r.status;body=r.read(300000).decode(errors='replace')
+                      header=r.headers.get('X-Robots-Tag','')
+              except urllib.error.HTTPError as e:
+                  code=e.code;body=e.read(10000).decode(errors='replace')
+                  header=e.headers.get('X-Robots-Tag','')
+              print('FLOWER_PREVIEW_READBACK',path,code,'X-Robots-Tag=',header)
+              assert 'noindex' in header.lower(),path+' missing crawler exclusion'
+              if path=='/':assert code==200 and '날마다꽃' in body
+              elif path=='/halls.json':assert code==200
+              elif path=='/robots.txt':assert code==200 and 'Disallow: /' in body
+              elif path.startswith('/fh-'):assert code==200 and '근조화환 주문 가격안내' in body
+              else:assert code==404
+          print('FLOWER_PREVIEW_LIVE_HTTP_VERIFIED')
+          PY
