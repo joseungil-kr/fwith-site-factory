@@ -1,0 +1,198 @@
+name: Nalmada Flower IndexNow receipt-only limited retry
+on:
+  push:
+    branches: [ops/flower-indexnow-limited-retry-20261027]
+    paths:
+      - '.github/workflows/flower-indexnow-retry-20261027.yml'
+permissions:
+  contents: read
+concurrency:
+  group: flower-nalmada-indexnow-one-shot-20261027
+  cancel-in-progress: false
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 19
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: joseungil-kr/site-factory-v5
+          ref: bc7a159abb689d369573e21e6fc03572e8a9495a
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Public proof verification and maximum two IndexNow POSTs five minutes apart
+        run: |
+          python - <<'PY'
+          import hashlib,json,time,re,sys
+          from pathlib import Path
+          from datetime import datetime,timezone
+          from urllib.request import Request,build_opener,HTTPRedirectHandler
+          from urllib.error import HTTPError
+          from urllib.parse import urlsplit
+          from xml.etree import ElementTree as ET
+
+          HOST='flower.nalmada.net'
+          ORIGIN='https://'+HOST
+          ENDPOINT='https://api.indexnow.org/indexnow'
+          SOURCE_SHA='bc7a159abb689d369573e21e6fc03572e8a9495a'
+          OUTPUT=Path('reports/flower-indexnow/limited-retry-20261027.json')
+          OUTPUT.parent.mkdir(parents=True,exist_ok=True)
+          def utc():
+              return datetime.now(timezone.utc).isoformat(timespec='milliseconds')
+          class NoRedirect(HTTPRedirectHandler):
+              def redirect_request(self,*args,**kwargs):
+                  return None
+          client=build_opener(NoRedirect)
+          def get(path):
+              req=Request(ORIGIN+path,headers={'User-Agent':'NalmadaFlower-IndexNow-Proof/1.0',
+                      'Accept':'text/plain,application/xml,text/html,*/*','Cache-Control':'no-cache'})
+              with client.open(req,timeout=35) as resp:
+                  body=resp.read(8*1024*1024+1)
+                  assert len(body)<=8*1024*1024,'response_too_large'
+                  assert resp.status==200,('HTTP',path,resp.status)
+                  assert resp.geturl()==ORIGIN+path,('unexpected_redirect',path,resp.geturl())
+                  return body,dict(resp.headers)
+          journal={'scope':'indexnow_only_without_new_deployment_or_ownership_changes',
+                   'sourceSha':SOURCE_SHA,'endpoint':ENDPOINT,'host':HOST,
+                   'preexistingRun':'40501099683','preexistingIndexNowStatus':403,
+                   'preexistingIndexNowError':'SiteVerificationNotCompleted',
+                   'startedAtUTC':utc(),'attempts':[],'accepted':False,
+                   'receiptState':'NOT_SUBMITTED'}
+          def save():
+              OUTPUT.write_text(json.dumps(journal,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          save()
+          try:
+              original=json.loads(Path('data/flower/indexnow_public_key_20261027.json').read_text(encoding='utf-8'))
+              auth=json.loads(Path('data/flower/nalmada_release_authorization_20261027.json').read_text(encoding='utf-8'))
+              hall=json.loads(Path('data/flower/v4_facilities_1080.snapshot.json').read_text(encoding='utf-8'))
+              key=original['key'];key_location=original['keyLocation']
+              assert original['host']==HOST
+              assert re.fullmatch(r'[0-9a-f]{32}',key), 'malformed_existing_public_key'
+              assert key_location==ORIGIN+'/'+key+'.txt'
+              assert auth['authorizationDate']=='2026-10-27'
+              assert auth['scope']['indexNowSubmissionAuthorized'] is True
+              assert auth['scope']['googleNaverSubmissionAssignedElsewhere'] is True
+              assert len(hall['facilities'])==1080
+              assert hall['publicationAllowed'] is False
+              key_body,key_headers=get('/'+key+'.txt')
+              assert key_body==key.encode('utf-8'), 'live_key_bytes_mismatch'
+              page,homepage_headers=get('/')
+              assert b'<meta name="robots" content="index,follow">' in page
+              assert b'<link rel="canonical" href="https://flower.nalmada.net/">' in page
+              assert 'noindex' not in homepage_headers.get('X-Robots-Tag','').lower()
+              sample_id=hall['facilities'][0]['id']
+              sample,sample_headers=get('/'+sample_id+'.html')
+              assert b'<meta name="robots" content="index,follow">' in sample
+              assert (ORIGIN+'/'+sample_id+'.html').encode() in sample
+              assert 'noindex' not in sample_headers.get('X-Robots-Tag','').lower()
+              robots,robot_headers=get('/robots.txt')
+              assert b'Allow: /' in robots and b'Disallow: /' not in robots
+              assert ('Sitemap: '+ORIGIN+'/sitemap.xml').encode() in robots
+              sitemap_xml,sitemap_headers=get('/sitemap.xml')
+              assert b'<!DOCTYPE' not in sitemap_xml.upper() and b'<!ENTITY' not in sitemap_xml.upper()
+              parsed=ET.fromstring(sitemap_xml)
+              ns='{http://www.sitemaps.org/schemas/sitemap/0.9}'
+              urls=[n.text for n in parsed.findall('.//'+ns+'loc')]
+              assert len(urls)==len(set(urls))==1081
+              expected={ORIGIN+'/'}|{ORIGIN+'/'+f['id']+'.html' for f in hall['facilities']}
+              assert set(urls)==expected
+              assert all(urlsplit(url).scheme=='https' and urlsplit(url).netloc==HOST
+                         and not urlsplit(url).query and not urlsplit(url).fragment for url in urls)
+              journal['verifiedAtUTC']=utc()
+              journal['proof']={
+                 'keyLocation':key_location,'keyHttpStatus':200,
+                 'keyByteLength':len(key_body),'keyExactUtf8Match':True,
+                 'keyBodySha256':hashlib.sha256(key_body).hexdigest(),
+                 'homepageHttpStatus':200,'samplePageHttpStatus':200,
+                 'indexFollowAndCanonical':True,
+                 'robotsAllow':True,'sitemapStatus':200,'sitemapUrlCount':len(urls),
+                 'allSameExactHost':True,'matchesPinned1080FacilityIds':True,
+                 'sitemapSha256':hashlib.sha256(sitemap_xml).hexdigest()
+              }
+              payload={'host':HOST,'key':key,'keyLocation':key_location,'urlList':urls}
+              wire=json.dumps(payload,separators=(',',':'),ensure_ascii=False).encode('utf-8')
+              journal['submission']={'host':payload['host'],'keyLocation':payload['keyLocation'],
+                  'urlCount':len(urls),'payloadSha256':hashlib.sha256(wire).hexdigest(),
+                  'payloadBytes':len(wire),'method':'POST','endpoint':ENDPOINT}
+              journal['receiptState']='PUBLIC_PROOF_VERIFIED_PENDING_POST'
+              save()
+              print('FLOWER_KEY_AND_1081_URLS_VERIFIED='+json.dumps(journal['proof'],ensure_ascii=False),flush=True)
+          except Exception as exc:
+              journal['receiptState']='PREFLIGHT_FAILED_NO_POST'
+              journal['preflightFailure']=type(exc).__name__+': '+str(exc)[:260]
+              save()
+              print('FLOWER_INDEXNOW_PREFLIGHT_FAILED='+journal['preflightFailure'],flush=True)
+              raise
+
+          # Known older run returned 403; never report Actions success as an IndexNow receipt.
+          # One full-batch request now, one further request ONLY on the exact temporary
+          # SiteVerificationNotCompleted 403 after 300 seconds. No change to keys,
+          # DNS, OAuth, Cloudflare, GSC or Naver ownership.
+          for attempt_number in (1,2):
+              row={'attempt':attempt_number,'startedAtUTC':utc(),
+                   'state':'STARTED_OUTCOME_UNKNOWN'}
+              journal['attempts'].append(row)
+              journal['receiptState']='POST_IN_PROGRESS'
+              save()     # persist the journal before the potentially irreversible request
+              request=Request(ENDPOINT,data=wire,method='POST',
+                    headers={'Content-Type':'application/json; charset=utf-8',
+                             'User-Agent':'NalmadaFlower-IndexNow/1.0'})
+              try:
+                  try:
+                      response=client.open(request,timeout=55)
+                  except HTTPError as exc:
+                      response=exc
+                  with response:
+                      code=response.code
+                      body=response.read(4096).decode('utf-8','replace')
+                      headers=dict(response.headers)
+              except Exception as exc:
+                  row.update(finishedAtUTC=utc(),state='UNKNOWN_TRANSPORT_NO_RETRY',
+                             error=type(exc).__name__+': '+str(exc)[:260])
+                  journal['receiptState']='UNKNOWN_NOT_ACCEPTED_NO_RETRY'
+                  save()
+                  print('FLOWER_INDEXNOW_UNCERTAIN_TRANSPORT='+json.dumps(row,ensure_ascii=False),flush=True)
+                  break
+              row.update(finishedAtUTC=utc(),httpStatus=code,responseBody=body[:1200],
+                         responseContentType=headers.get('Content-Type',''))
+              if code in (200,202):
+                  row['state']='ACCEPTED_VERIFIED' if code==200 else 'ACCEPTED_KEY_VALIDATION_PENDING'
+                  journal['accepted']=True
+                  journal['receiptState']=row['state']
+                  save()
+                  print('FLOWER_INDEXNOW_RECEIPT='+json.dumps(row,ensure_ascii=False),flush=True)
+                  break
+              try:
+                  error_code=json.loads(body).get('errorCode')
+              except ValueError:
+                  error_code=None
+              row.update(state='REJECTED',errorCode=error_code)
+              journal['receiptState']='REJECTED_NO_ACCEPTANCE'
+              save()
+              print('FLOWER_INDEXNOW_REJECTED='+json.dumps(row,ensure_ascii=False),flush=True)
+              if not (attempt_number==1 and code==403 and
+                      error_code=='SiteVerificationNotCompleted'):
+                  break
+              print('FLOWER_INDEXNOW_LIMITED_RETRY_WAIT_SECONDS=300',flush=True)
+              time.sleep(300)
+
+          journal['finishedAtUTC']=utc()
+          save()
+          print('FLOWER_INDEXNOW_FINAL='+json.dumps({
+              'accepted':journal['accepted'],'receiptState':journal['receiptState'],
+              'attemptCount':len(journal['attempts']),
+              'codes':[r.get('httpStatus') for r in journal['attempts']],
+              'urlCount':len(urls),'receiptFile':str(OUTPUT)
+          },ensure_ascii=False),flush=True)
+          if not journal['accepted']:
+              sys.exit(2)
+          PY
+      - name: Preserve immutable receipt and proof (even on non-acceptance)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flower-indexnow-1081-proof-and-retry-20261027
+          path: reports/flower-indexnow/limited-retry-20261027.json
+          retention-days: 90
+          if-no-files-found: error
