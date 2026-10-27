@@ -46,6 +46,17 @@ jobs:
               dns_error=None
           except urllib.error.HTTPError as e:
               dns=[];dns_error='HTTP '+str(e.code)+' DNS read unavailable'
+          dns_public={}
+          for record_type in ('A','AAAA','CNAME','TXT'):
+              query='https://cloudflare-dns.com/dns-query?'+urllib.parse.urlencode({'name':'flower.nalmada.net','type':record_type})
+              request=urllib.request.Request(query,headers={'Accept':'application/dns-json','User-Agent':'Flower-Release-Preflight/1'})
+              try:
+                  with urllib.request.urlopen(request,timeout=15) as result:
+                      answer=json.load(result)
+                  dns_public[record_type]={'status':answer.get('Status'),'answers':[
+                      {'type':x.get('type'),'name':x.get('name'),'ttl':x.get('TTL')}
+                      for x in answer.get('Answer',[]) ]}
+              except Exception as exc:dns_public[record_type]={'error':type(exc).__name__}
           host_results={}
           for host in ['https://flower.nalmada.net/','https://sfv5-nalmada-flower-preview.joseungil.workers.dev/']:
               try:
@@ -53,5 +64,5 @@ jobs:
                       host_results[host]=res.status
               except urllib.error.HTTPError as e:host_results[host]=e.code
               except Exception as e:host_results[host]=type(e).__name__
-          print('FLOWER_PRODUCTION_PREFLIGHT='+json.dumps({'zoneActive':True,'v4ProofVerified':True,'customDomains':matching,'dnsRecords':dns,'dnsReadError':dns_error,'httpObservations':host_results},ensure_ascii=False))
+          print('FLOWER_PRODUCTION_PREFLIGHT='+json.dumps({'zoneActive':True,'v4ProofVerified':True,'customDomains':matching,'dnsRecords':dns,'dnsReadError':dns_error,'publicDNS':dns_public,'httpObservations':host_results},ensure_ascii=False))
           PY
