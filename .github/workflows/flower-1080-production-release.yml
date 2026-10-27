@@ -1,0 +1,265 @@
+name: Flower 1080 owner-authorized production indexability and IndexNow
+on:
+  push:
+    branches: [feature/flower-1080-indexable-release-20261027]
+    paths:
+      - '.github/workflows/flower-1080-production-release.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: flower-nalmada-net-reviewed-production
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: joseungil-kr/site-factory-v5
+          ref: 4152b4b7008516688e055864db11717342a05644
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Require existing trusted Cloudflare credentials and exact V5 revision
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" && test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test "$(git rev-parse HEAD)" = "4152b4b7008516688e055864db11717342a05644"
+      - name: Preflight exact domain mapping, prior Worker version and immutable source flags
+        id: prior
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          python - <<'PY'
+          import os,json,urllib.request
+          account=os.environ['CLOUDFLARE_ACCOUNT_ID']
+          token=os.environ['CLOUDFLARE_API_TOKEN']
+          def get(path):
+              req=urllib.request.Request('https://api.cloudflare.com/client/v4'+path,headers={'Authorization':'Bearer '+token})
+              with urllib.request.urlopen(req,timeout=30) as r: body=json.load(r)
+              assert body['success'],('Cloudflare GET failed',path,body.get('errors'))
+              return body['result']
+          domains=get('/accounts/'+account+'/workers/domains')
+          matches=[x for x in domains if x.get('hostname')=='flower.nalmada.net']
+          if len(matches)!=1 or matches[0].get('service')!='sfv5-nalmada-flower-preview':
+              raise RuntimeError('Unexpected production hostname/Worker mapping')
+          zones=get('/zones?name=nalmada.net&per_page=50')
+          active=[x for x in zones if x.get('name')=='nalmada.net' and x.get('account',{}).get('id')==account and x.get('status')=='active']
+          if len(active)!=1:raise RuntimeError('Exact nalmada.net zone not found')
+          deploys=get('/accounts/'+account+'/workers/scripts/sfv5-nalmada-flower-preview/deployments')
+          versions=deploys['deployments'][0]['versions']
+          if len(versions)!=1 or versions[0]['percentage']!=100:raise RuntimeError('Worker split deployment')
+          prior=versions[0]['version_id']
+          if prior!='92ed9a9f-2179-44c4-a223-8ff7a51a506a':
+              raise RuntimeError('Unexpected previous Worker version: '+prior)
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:out.write('version='+prior+'\n')
+          print('PRODUCTION_PREFLIGHT_VERIFIED: exact flower.nalmada.net Worker binding, active old version, zone owner')
+          PY
+      - name: Validate 1080 group-safe assignments and owner-approved commercial evidence
+        run: |
+          python -m unittest discover -s tests -p 'test_flower_pool_semantics.py' -v
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('data/flower')
+          owner=json.loads((root/'nalmada_release_authorization_20261027.json').read_text())
+          original=json.loads((root/'v4_facilities_1080.snapshot.json').read_text())
+          copy=json.loads(Path('data/pools/flower_funeral_professional_600.v4.json').read_text())
+          assert original['publicationAllowed'] is False
+          assert copy['readyForPublication'] is False
+          assert owner['scope']['publicReleaseAuthorized'] is True
+          assert owner['authorizationDate']=='2026-10-27'
+          assert owner['facilities']['addressHiddenUntilConfirmed']
+          assert {p['id']:p['priceKRW'] for p in owner['products']['records']}=={'B201':59000,'B203':79000,'B205':109000}
+          print('IMMUTABLE ORIGINAL FLAGS AND SEPARATE OWNER RELEASE APPROVAL VERIFIED')
+          PY
+      - name: Reaudit actual rendered documents before generating production assets
+        run: |
+          python scripts/build_flower_funeral_national.py --audit-only --public
+          test ! -e dist/flower-funeral-national-preview/index.html
+          python scripts/build_flower_funeral_national.py --public
+          python scripts/prepare_flower_funeral_preview.py --public
+          python scripts/flower_visible_copy_check.py
+      - name: Inspect complete release bytes, canonical, sitemap, IndexNow key, SEO and prices
+        run: |
+          python - <<'PY'
+          import json,xml.etree.ElementTree as ET
+          from pathlib import Path
+          out=Path('dist/flower-funeral-national-preview')
+          report=json.loads(Path('reports/flower-funeral/pool-1080-1pct-audit.json').read_text())
+          manifest=json.loads((out/'manifest.json').read_text())
+          assert report['passes'] and report['fullPairComparisons']==1165320
+          assert report['fullPairFailures']==0 and report['maximumSimilarity']<.49
+          assert manifest['mode']=='production-indexable' and manifest['pageCount']==1080
+          files=list(out.glob('fh-*.html'))
+          assert len(files)==1080
+          expected={'https://flower.nalmada.net/'}
+          for f in files:
+              text=f.read_text()
+              url='https://flower.nalmada.net/'+f.name
+              assert '<meta name="robots" content="index,follow">' in text
+              assert '<link rel="canonical" href="'+url+'">' in text
+              assert '날마다꽃' in text and '근조화환 주문 가격안내' in text
+              for amount in ('59,000원','79,000원','109,000원'):
+                  assert amount in text
+              assert '2026.10.27 판매처 확인 가격' in text
+              expected.add(url)
+          home=(out/'index.html').read_text()
+          assert '<meta name="robots" content="index,follow">' in home
+          assert '<link rel="canonical" href="https://flower.nalmada.net/">' in home
+          assert 'noindex,nofollow' in (out/'404.html').read_text()
+          sitemap=ET.parse(out/'sitemap.xml').getroot()
+          urls=[e.text for e in sitemap.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
+          assert len(urls)==len(set(urls))==1081 and set(urls)==expected
+          robots=(out/'robots.txt').read_text()
+          assert 'Allow: /' in robots and 'Disallow: /' not in robots
+          assert 'Sitemap: https://flower.nalmada.net/sitemap.xml' in robots
+          ownership=json.loads(Path('data/flower/indexnow_public_key_20261027.json').read_text())
+          assert (out/(ownership['key']+'.txt')).read_text()==ownership['key']
+          assert "flower.nalmada.net" in Path('worker/index.js').read_text()
+          print('REVIEWED_PUBLIC_ARTIFACTS_PASS pages=1080 sitemap=1081 Jaccard='+str(report['maximumSimilarity']))
+          PY
+      - name: Prepare exact existing production Worker with authorized public-host mode
+        run: |
+          mkdir -p deploy/flower-production-release
+          python - <<'PY'
+          import json
+          cfg={'name':'sfv5-nalmada-flower-preview','compatibility_date':'2026-10-21',
+               'main':'../../worker/index.js','workers_dev':True,
+               'preview_urls':False,'keep_vars':False,
+               'vars':{'V5_STAGING':'1','V5_PUBLIC_HOST':'flower.nalmada.net'},
+               'assets':{'directory':'../../dist/flower-funeral-national-preview',
+                         'binding':'ASSETS','html_handling':'none',
+                         'not_found_handling':'404-page','run_worker_first':True}}
+          open('deploy/flower-production-release/wrangler.json','w').write(json.dumps(cfg,indent=2))
+          PY
+      - name: Deploy authorized flower.nalmada.net production Worker assets
+        id: deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4.148.0 deploy --config deploy/flower-production-release/wrangler.json
+      - name: Verify production Worker version changed
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PRIOR_VERSION: ${{ steps.prior.outputs.version }}
+        run: |
+          python - <<'PY'
+          import os,json,urllib.request
+          path='/accounts/'+os.environ['CLOUDFLARE_ACCOUNT_ID']+'/workers/scripts/sfv5-nalmada-flower-preview/deployments'
+          req=urllib.request.Request('https://api.cloudflare.com/client/v4'+path,headers={'Authorization':'Bearer '+os.environ['CLOUDFLARE_API_TOKEN']})
+          with urllib.request.urlopen(req,timeout=30) as r:res=json.load(r)
+          assert res['success']
+          versions=res['result']['deployments'][0]['versions']
+          assert len(versions)==1 and versions[0]['percentage']==100
+          current=versions[0]['version_id']
+          assert current!=os.environ['PRIOR_VERSION'],('Version unchanged',current)
+          print('FLOWER_PRODUCTION_ACTIVE_WORKER_VERSION='+current)
+          PY
+      - name: Publicly verify all 1080 pages, indexability, robots, sitemap and ownership key
+        id: verify
+        run: |
+          python - <<'PY'
+          import json,urllib.request,urllib.error,time,xml.etree.ElementTree as ET
+          from pathlib import Path
+          from concurrent.futures import ThreadPoolExecutor,as_completed
+          root='https://flower.nalmada.net'
+          manifest=json.loads(Path('dist/flower-funeral-national-preview/manifest.json').read_text())
+          expected={root+'/'}
+          for page in manifest['pages']:expected.add(root+'/'+page['filename'])
+          def get(path):
+              req=urllib.request.Request(root+path,headers={'User-Agent':'NalmadaFlower-Indexability-Readback/1'})
+              with urllib.request.urlopen(req,timeout=25) as r:
+                  return r.status,dict(r.headers),r.read()
+          for attempt in range(14):
+              try:
+                  status,headers,body=get('/')
+                  text=body.decode()
+                  assert status==200 and '날마다꽃' in text
+                  assert '<meta name="robots" content="index,follow">' in text
+                  assert '<link rel="canonical" href="'+root+'/">' in text
+                  assert 'noindex' not in headers.get('X-Robots-Tag','').lower()
+                  break
+              except Exception:
+                  if attempt==13:raise
+                  time.sleep(6)
+          status,_,data=get('/robots.txt')
+          assert status==200 and 'Allow: /' in data.decode() and 'Disallow: /' not in data.decode()
+          assert 'Sitemap: '+root+'/sitemap.xml' in data.decode()
+          status,_,data=get('/sitemap.xml')
+          xml=ET.fromstring(data)
+          urls=[x.text for x in xml.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
+          assert status==200 and len(urls)==1081 and set(urls)==expected
+          key=json.loads(Path('data/flower/indexnow_public_key_20261027.json').read_text())
+          status,_,body=get('/'+key['key']+'.txt')
+          assert status==200 and body.decode().strip()==key['key']
+          def check(page):
+              path='/'+page['filename']
+              status,headers,body=get(path)
+              text=body.decode('utf-8','replace')
+              uri=root+path
+              assert status==200 and 'noindex' not in headers.get('X-Robots-Tag','').lower()
+              assert '<meta name="robots" content="index,follow">' in text
+              assert '<link rel="canonical" href="'+uri+'">' in text
+              assert page['facility'] in text or page['facility'].replace('&','&amp;') in text
+              assert '59,000원' in text and '79,000원' in text and '109,000원' in text
+              return path
+          errors=[]
+          with ThreadPoolExecutor(max_workers=10) as executor:
+              futures=[executor.submit(check,page) for page in manifest['pages']]
+              for future in as_completed(futures):
+                  try:future.result()
+                  except Exception as exc:errors.append(type(exc).__name__+': '+str(exc)[:160])
+          print('FLOWER_PRODUCTION_FULL_HTTP_AUDIT='+json.dumps({
+              'total':1080,'success':1080-len(errors),'failures':len(errors),
+              'examples':errors[:8],'sitemap':1081,'robots':'Allow','canonical':'self','meta':'index,follow'
+          },ensure_ascii=False),flush=True)
+          if errors:raise SystemExit('Production full HTTP audit not passed')
+          print('FLOWER_PRODUCTION_ALL_1080_INDEXABLE_AND_SITEMAP_VERIFIED',flush=True)
+          PY
+      - name: Roll back Worker version if post-deploy indexability verification fails
+        if: failure() && steps.deploy.outcome == 'success' && steps.verify.outcome == 'failure'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PRIOR_VERSION: ${{ steps.prior.outputs.version }}
+        run: npx --yes wrangler@4.148.0 versions deploy "$PRIOR_VERSION@100%" --yes --config deploy/flower-production-release/wrangler.json
+      - name: Submit verified 1081 live URLs to IndexNow (not Google/Naver)
+        if: success()
+        id: indexnow
+        continue-on-error: true
+        run: |
+          python - <<'PY'
+          import json,urllib.request,urllib.error
+          from pathlib import Path
+          key=json.loads(Path('data/flower/indexnow_public_key_20261027.json').read_text())
+          body=json.loads(Path('data/flower/nalmada_release_authorization_20261027.json').read_text())
+          assert body['scope']['indexNowSubmissionAuthorized'] is True
+          from xml.etree import ElementTree as ET
+          root=ET.parse('dist/flower-funeral-national-preview/sitemap.xml')
+          urls=[x.text for x in root.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
+          assert len(urls)==1081 and all(x.startswith('https://flower.nalmada.net/') for x in urls)
+          payload={'host':'flower.nalmada.net','key':key['key'],'keyLocation':key['keyLocation'],'urlList':urls}
+          req=urllib.request.Request('https://api.indexnow.org/indexnow',
+              data=json.dumps(payload).encode('utf-8'),method='POST',
+              headers={'Content-Type':'application/json; charset=utf-8','User-Agent':'NalmadaFlower-IndexNow/1'})
+          try:
+              with urllib.request.urlopen(req,timeout=55) as r:
+                  code=r.status;message=r.read(1000).decode(errors='replace')
+          except urllib.error.HTTPError as e:
+              code=e.code;message=e.read(1000).decode(errors='replace')
+          print('FLOWER_INDEXNOW_HTTP='+str(code),flush=True)
+          print('FLOWER_INDEXNOW_RESPONSE='+message[:500],flush=True)
+          print('FLOWER_INDEXNOW_URLS_SUBMITTED='+str(len(urls)),flush=True)
+          if code not in (200,202):raise SystemExit('IndexNow submission not accepted')
+          print('FLOWER_INDEXNOW_ACCEPTED_CODE='+str(code),flush=True)
+          PY
