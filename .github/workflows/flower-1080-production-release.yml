@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: joseungil-kr/site-factory-v5
-          ref: 4152b4b7008516688e055864db11717342a05644
+          ref: 0f025d3e599ceeff4f5d7817754aab7e8391202e
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -31,7 +31,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" && test -n "$CLOUDFLARE_ACCOUNT_ID"
-          test "$(git rev-parse HEAD)" = "4152b4b7008516688e055864db11717342a05644"
+          test "$(git rev-parse HEAD)" = "0f025d3e599ceeff4f5d7817754aab7e8391202e"
       - name: Preflight exact domain mapping, prior Worker version and immutable source flags
         id: prior
         env:
