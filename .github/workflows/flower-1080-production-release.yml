@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: joseungil-kr/site-factory-v5
-          ref: bc7a159abb689d369573e21e6fc03572e8a9495a
+          ref: 327c4c49cc6b30479691b5291226e1ff01c7cbbb
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -31,7 +31,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" && test -n "$CLOUDFLARE_ACCOUNT_ID"
-          test "$(git rev-parse HEAD)" = "bc7a159abb689d369573e21e6fc03572e8a9495a"
+          test "$(git rev-parse HEAD)" = "327c4c49cc6b30479691b5291226e1ff01c7cbbb"
       - name: Preflight exact domain mapping, prior Worker version and immutable source flags
         id: prior
         env:
@@ -58,7 +58,7 @@ jobs:
           versions=deploys['deployments'][0]['versions']
           if len(versions)!=1 or versions[0]['percentage']!=100:raise RuntimeError('Worker split deployment')
           prior=versions[0]['version_id']
-          if prior!='92ed9a9f-2179-44c4-a223-8ff7a51a506a':
+          if prior!='ef4c61fc-c229-4b8b-bd34-90268dadbab8':
               raise RuntimeError('Unexpected previous Worker version: '+prior)
           with open(os.environ['GITHUB_OUTPUT'],'a') as out:out.write('version='+prior+'\n')
           print('PRODUCTION_PREFLIGHT_VERIFIED: exact flower.nalmada.net Worker binding, active old version, zone owner')
@@ -113,6 +113,7 @@ jobs:
               assert '2026.10.27 판매처 확인 가격' in text
               expected.add(url)
           home=(out/'index.html').read_text()
+          assert home.count('4294f019f90dbaab16b91e588be60fca64a40ca8')==1
           assert '<meta name="robots" content="index,follow">' in home
           assert '<link rel="canonical" href="https://flower.nalmada.net/">' in home
           assert 'noindex,nofollow' in (out/'404.html').read_text()
@@ -186,6 +187,7 @@ jobs:
                   status,headers,body=get('/')
                   text=body.decode()
                   assert status==200 and '날마다꽃' in text
+                  assert text.count('4294f019f90dbaab16b91e588be60fca64a40ca8')==1
                   assert '<meta name="robots" content="index,follow">' in text
                   assert '<link rel="canonical" href="'+root+'/">' in text
                   assert 'noindex' not in headers.get('X-Robots-Tag','').lower()
@@ -237,33 +239,3 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           PRIOR_VERSION: ${{ steps.prior.outputs.version }}
         run: npx --yes wrangler@4.148.0 versions deploy "$PRIOR_VERSION@100%" --yes --config deploy/flower-production-release/wrangler.json
-      - name: Submit verified 1081 live URLs to IndexNow (not Google/Naver)
-        if: success()
-        id: indexnow
-        continue-on-error: true
-        run: |
-          python - <<'PY'
-          import json,urllib.request,urllib.error
-          from pathlib import Path
-          key=json.loads(Path('data/flower/indexnow_public_key_20261027.json').read_text())
-          body=json.loads(Path('data/flower/nalmada_release_authorization_20261027.json').read_text())
-          assert body['scope']['indexNowSubmissionAuthorized'] is True
-          from xml.etree import ElementTree as ET
-          root=ET.parse('dist/flower-funeral-national-preview/sitemap.xml')
-          urls=[x.text for x in root.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
-          assert len(urls)==1081 and all(x.startswith('https://flower.nalmada.net/') for x in urls)
-          payload={'host':'flower.nalmada.net','key':key['key'],'keyLocation':key['keyLocation'],'urlList':urls}
-          req=urllib.request.Request('https://api.indexnow.org/indexnow',
-              data=json.dumps(payload).encode('utf-8'),method='POST',
-              headers={'Content-Type':'application/json; charset=utf-8','User-Agent':'NalmadaFlower-IndexNow/1'})
-          try:
-              with urllib.request.urlopen(req,timeout=55) as r:
-                  code=r.status;message=r.read(1000).decode(errors='replace')
-          except urllib.error.HTTPError as e:
-              code=e.code;message=e.read(1000).decode(errors='replace')
-          print('FLOWER_INDEXNOW_HTTP='+str(code),flush=True)
-          print('FLOWER_INDEXNOW_RESPONSE='+message[:500],flush=True)
-          print('FLOWER_INDEXNOW_URLS_SUBMITTED='+str(len(urls)),flush=True)
-          if code not in (200,202):raise SystemExit('IndexNow submission not accepted')
-          print('FLOWER_INDEXNOW_ACCEPTED_CODE='+str(code),flush=True)
-          PY
