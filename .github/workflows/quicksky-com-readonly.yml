@@ -1,4 +1,4 @@
-name: Quicksky exact com zone credential alternate read only
+name: Quicksky exact net zone credential alternate read only
 on:
   push:
     branches: [ops/quicksky-com-zone-lookup-20261027]
@@ -13,7 +13,7 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
-      - name: List exact nalmada.com zone without printing private IDs
+      - name: List exact nalmada.net zone without printing private IDs
         run: |
           python3 - <<'PY'
           import json,os,urllib.request,urllib.error
@@ -29,23 +29,29 @@ jobs:
               if not d.get('success'):raise RuntimeError('Cloudflare API read failed '+path.split('?')[0])
               if (d.get('result_info') or {}).get('total_pages',1)>1:raise RuntimeError('Unexpected pagination')
               return d['result']
-          zones=get('/zones?name=nalmada.com&per_page=50')
-          matching=[x for x in zones if x.get('name')=='nalmada.com']
+          zones=get('/zones?name=nalmada.net&per_page=50')
+          matching=[x for x in zones if x.get('name')=='nalmada.net']
           configured=os.environ.get('CLOUDFLARE_ACCOUNT_ID','')
           possible=[z for z in matching if not configured or z.get('account',{}).get('id')==configured]
-          result={'host':'quicksky.nalmada.com','visibleExactComZones':len(matching),
+          result={'host':'quicksky.nalmada.net','visibleExactNetZones':len(matching),
                   'zoneInConfiguredAccount':len(possible),'statuses':[z.get('status') for z in matching]}
           if len(possible)==1:
               zone=possible[0]
               aid=zone['account']['id'];zid=zone['id']
               try:
                   domains=get('/accounts/'+aid+'/workers/domains')
-                  result['existingBindingServiceNames']=[x.get('service') for x in domains if x.get('hostname')=='quicksky.nalmada.com']
+                  result['existingBindingServiceNames']=[x.get('service') for x in domains if x.get('hostname')=='quicksky.nalmada.net']
               except RuntimeError as e:result['bindingReadError']=str(e)
               try:
-                  dns=get('/zones/'+zid+'/dns_records?name=quicksky.nalmada.com&per_page=100')
+                  dns=get('/zones/'+zid+'/dns_records?name=quicksky.nalmada.net&per_page=100')
                   result['exactHostDnsRecordTypes']=[x.get('type') for x in dns]
               except RuntimeError as e:result['dnsReadError']=str(e)
+              try:
+                  routes=get('/zones/'+zid+'/workers/routes')
+                  import fnmatch
+                  result['routeReadSucceeded']=True
+                  result['conflictingRoutes']=[x.get('pattern') for x in routes if fnmatch.fnmatchcase('quicksky.nalmada.net',x.get('pattern','').split('://')[-1].split('/')[0])]
+              except RuntimeError as e:result['routeReadError']=str(e)
           print('QUICKSKY_FWITH_ALTERNATE_CF_READ='+json.dumps(result))
-          if len(possible)!=1:raise SystemExit('Exact com zone not available from existing fwith credentials')
+          if len(possible)!=1:raise SystemExit('Exact net zone not available from existing fwith credentials')
           PY
