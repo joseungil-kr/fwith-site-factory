@@ -32,21 +32,46 @@ def require(condition, code):
         raise Stop(code)
 
 
+def single_page_domains(payload):
+    """Domains.list is SyncSinglePage in Cloudflare's SDK, not a V4Page API.
+
+    No page/per_page request parameters. Optional metadata must not contradict
+    completeness; any advertised continuation, truncation or unknown metadata stops.
+    """
+    require(payload.get('success') is True and payload.get('errors') in (None, []), 'domain_response_failed')
+    rows = payload.get('result')
+    require(isinstance(rows, list) and all(isinstance(row, dict) for row in rows), 'domain_rows_invalid')
+    require(not any(key in payload for key in ['cursor', 'cursors', 'next', 'next_page', 'has_more', 'links']), 'domain_continuation_unverified')
+    info = payload.get('result_info', {})
+    require(isinstance(info, dict) and set(info) <= {'page', 'per_page', 'count', 'total_count', 'total_pages'}, 'domain_metadata_unverified')
+    require(all(type(value) is int and value >= 0 for value in info.values()), 'domain_metadata_invalid')
+    for key in ['count', 'total_count']:
+        require(key not in info or info[key] == len(rows), 'domain_inventory_incomplete')
+    require(info.get('page', 1) == 1 and info.get('total_pages', 1) == 1
+            and info.get('per_page', len(rows)) >= len(rows), 'domain_inventory_incomplete')
+    ids = [row.get('id') for row in rows]
+    require(all(isinstance(value, str) and value for value in ids) and len(set(ids)) == len(ids), 'domain_identity_invalid')
+    require(all(isinstance(row.get(key), str) and row[key] for row in rows for key in ['hostname', 'service']), 'domain_identity_invalid')
+    return rows
+
+
 class NoRedirect(HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         return None
 
 
 class Provider:
-    def __init__(self):
+    def __init__(self, record=lambda *args, **kwargs: None):
+        self.record = record
         self.account = os.environ.get('CLOUDFLARE_ACCOUNT_ID', '')
         self.token = os.environ.get('CLOUDFLARE_API_TOKEN', '')
         require(bool(re.fullmatch('[a-f0-9]{32}', self.account)) and bool(self.token), 'existing_credentials_unavailable')
         self.opener = build_opener(NoRedirect())
 
     def get(self, resource):
-        allowed = resource == 'workers/domains' or bool(re.fullmatch(r'workers/domains\?page=[1-9][0-9]*&per_page=100', resource))
+        allowed = resource == 'workers/domains'
         for worker in ORIGINALS:
+            allowed |= resource in [f'workers/domains?hostname={HOSTS[worker]}', f'workers/domains?service={worker}']
             allowed |= resource in [f'workers/scripts/{worker}/deployments', f'workers/scripts/{worker}/settings']
             allowed |= bool(re.fullmatch(f'workers/scripts/{worker}/versions/[a-f0-9-]{{36}}', resource))
         require(allowed, 'get_path_not_allowed')
@@ -58,24 +83,31 @@ class Provider:
             with self.opener.open(request, timeout=min(10, remaining)) as response:
                 payload = json.loads(response.read(4 * 1024 * 1024))
             require(payload.get('success') is True, 'provider_get_failed')
+            if resource.startswith('workers/domains'):
+                info = payload.get('result_info')
+                # Structural diagnostics only: no account, token, domain records
+                # or unknown response values can enter the retained report.
+                self.record('domain_response_shape', query=resource.split('?', 1)[-1].split('=', 1)[0] if '?' in resource else 'all',
+                            top_fields=sorted(payload), result_type=type(payload.get('result')).__name__,
+                            result_count=len(payload['result']) if isinstance(payload.get('result'), list) else None,
+                            info_type=type(info).__name__, info_fields=sorted(info) if isinstance(info, dict) else [],
+                            pagination={key: value for key, value in (info.items() if isinstance(info, dict) else [])
+                                        if key in ['page', 'per_page', 'count', 'total_count', 'total_pages'] and type(value) is int})
             return payload
         except Exception:
             raise Stop('provider_get_failed') from None
 
     def snapshot(self):
         self.deadline = time.monotonic() + 60
-        domains = []
-        for page in range(1, 101):
-            data = self.get(f'workers/domains?page={page}&per_page=100')
-            rows, info = data['result'], data.get('result_info', {})
-            require(isinstance(rows, list) and info.get('page') == page
-                    and isinstance(info.get('total_pages'), int), 'domain_pagination_unverified')
-            domains.extend(rows)
-            if page == info['total_pages']:
-                require(len(domains) == info.get('total_count'), 'domain_inventory_incomplete')
-                break
-        else:
-            raise Stop('domain_inventory_incomplete')
+        domains = single_page_domains(self.get('workers/domains'))
+        # Reconcile documented exact filters, detecting missing target rows,
+        # ignored filters, extra aliases for a Worker and changing inventories.
+        for worker, host in HOSTS.items():
+            for key, value in [('hostname', host), ('service', worker)]:
+                filtered = single_page_domains(self.get(f'workers/domains?{key}={value}'))
+                require(all(row[key] == value for row in filtered), 'domain_filter_ignored')
+                expected = {row['id']: row for row in domains if row[key] == value}
+                require({row['id']: row for row in filtered} == expected, 'domain_filter_disagreement')
         state = {}
         for worker, original in ORIGINALS.items():
             host = HOSTS[worker]
@@ -277,7 +309,7 @@ def main():
         age = (datetime.now(timezone.utc) - observed).total_seconds()
         require(0 <= age <= 900 and 20000 <= args.remaining_requests <= 100000, 'capacity_observation_stale_or_low')
         verify_bundle(args.bundle)
-        report['status'] = execute(Provider(), Wrangler(args.wrangler, args.bundle), public_snapshot, record)
+        report['status'] = execute(Provider(record), Wrangler(args.wrangler, args.bundle), public_snapshot, record)
     except Stop as error:
         report['status'] = 'stopped'
         report['reason'] = str(error)  # only our fixed codes, never provider bodies

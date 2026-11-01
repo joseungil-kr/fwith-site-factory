@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
-from execute_stage1 import execute, Stop, Provider, Wrangler, check_state, DONGJAK, GEUMCHEON, D_VERSION, G_VERSION
+from execute_stage1 import execute, Stop, Provider, Wrangler, check_state, single_page_domains, DONGJAK, GEUMCHEON, D_VERSION, G_VERSION
 
 PILOT = '11111111-1111-4111-8111-111111111111'
 OTHER = '22222222-2222-4222-8222-222222222222'
@@ -160,15 +160,19 @@ class ExecutorTests(unittest.TestCase):
                 self.assertNotIn('shell', command.call_args.kwargs)
 
     def test_real_snapshot_parser_accepts_only_complete_expected_domains_and_100_percent(self):
-        for fault in [None, 'pagination', 'mapping', 'split', 'missing_version']:
+        for fault in [None, 'missing_metadata', 'pagination', 'mapping', 'split', 'missing_version', 'ignored_filter', 'missing_unfiltered']:
             provider = object.__new__(Provider)
             def get(path):
                 if path.startswith('workers/domains'):
-                    rows = [dict(hostname='seoul-dongjak.fwith.kr', service=DONGJAK, enabled=True, previews_enabled=False),
-                            dict(hostname='seoul-geumcheon.fwith.kr', service=GEUMCHEON, enabled=True, previews_enabled=False)]
+                    rows = [dict(id='domain-dongjak', hostname='seoul-dongjak.fwith.kr', service=DONGJAK, enabled=True, previews_enabled=False),
+                            dict(id='domain-geumcheon', hostname='seoul-geumcheon.fwith.kr', service=GEUMCHEON, enabled=True, previews_enabled=False)]
                     if fault == 'mapping': rows[1]['service'] = DONGJAK
-                    info = dict(page=1, total_pages=1, total_count=2)
-                    return dict(result=rows, result_info={} if fault == 'pagination' else info)
+                    if fault == 'missing_unfiltered' and '?' not in path: rows = rows[:1]
+                    if '?' in path and fault != 'ignored_filter':
+                        key, value = path.split('?', 1)[1].split('=', 1)
+                        rows = [r for r in rows if r[key] == value]
+                    info = dict(page=1, total_pages=2 if fault == 'pagination' else 1, total_count=len(rows))
+                    return dict(success=True, result=rows, **({} if fault == 'missing_metadata' else {'result_info': info}))
                 worker = DONGJAK if DONGJAK in path else GEUMCHEON
                 version = D_VERSION if worker == DONGJAK else G_VERSION
                 if path.endswith('/deployments'):
@@ -180,9 +184,33 @@ class ExecutorTests(unittest.TestCase):
                 raise AssertionError(path)
             provider.get = get
             with self.subTest(fault=fault):
-                if fault is None: check_state(provider.snapshot(), D_VERSION)
+                if fault in [None, 'missing_metadata']: check_state(provider.snapshot(), D_VERSION)
                 else:
                     with self.assertRaises(Stop): provider.snapshot()
+
+    def test_single_page_optional_metadata_without_invented_pagination(self):
+        row = dict(id='one', hostname='example.test', service='worker')
+        for info in [None, {}, {'count': 1}, {'page': 1, 'total_pages': 1, 'total_count': 1, 'per_page': 100}]:
+            payload = dict(success=True, result=[row])
+            if info is not None: payload['result_info'] = info
+            self.assertEqual(single_page_domains(payload), [row])
+
+    def test_incomplete_or_advertised_continuation_is_never_accepted(self):
+        row = dict(id='one', hostname='example.test', service='worker')
+        for info in [{'total_count': 2}, {'count': 2}, {'page': 2}, {'total_pages': 2},
+                     {'per_page': 0}, {'page': '1'}, {'page': True}, {'cursor': 'next'}, None]:
+            with self.subTest(info=info), self.assertRaises(Stop):
+                single_page_domains(dict(success=True, result=[row], result_info=info))
+        for key in ['cursor', 'next', 'links', 'has_more']:
+            with self.subTest(key=key), self.assertRaises(Stop):
+                single_page_domains(dict(success=True, result=[row], **{key: 'continuation'}))
+
+    def test_domain_errors_duplicate_ids_and_malformed_rows_stop(self):
+        row = dict(id='one', hostname='example.test', service='worker')
+        for patch in [dict(success=False), dict(errors=[{'code':1}]), dict(result=[row, row]),
+                      dict(result=[{'id':'one'}]), dict(result={}), dict(result=[None])]:
+            with self.subTest(patch=patch), self.assertRaises(Stop):
+                single_page_domains({**dict(success=True, result=[row]), **patch})
 
 
 if __name__ == '__main__': unittest.main(verbosity=2)
