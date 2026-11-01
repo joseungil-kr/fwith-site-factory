@@ -73,6 +73,6 @@ Independent review at 06:13:40 UTC reproduced a null-active-version bug. Fixed: 
 
 Helper baseline file lengths and SHA-256 were independently checked against readiness-review.json (7/7). Public Dongjak /404 is 200 and genuinely missing path 404, both with retained 404.html bytes; robots matches the previous capture. The earlier /404.html 307 to /404 remains valid. Account usage observed approximately 06:10–06:11 UTC was 2,739/100,000, leaving 97,261; per-site static demand remains unavailable. These are timestamped observations, not perpetual readiness.
 
-No deployment, rollback, domain update or secret/permission change was performed. Push remains held after the earlier automatic-review rejection.
+No deployment, rollback, domain update or secret/permission change was performed. The reviewed seven files were subsequently pushed and remotely verified at a750d0bc237b79cfd5d5f8fe02a9c5afcfd3a586 after explicit seven-file approval. Later execution-preparation additions remain local pending review.
 
 Pinned Wrangler 4.148.0 deploy --dry-run completed successfully without upload. Its console said 54 files; independent filesystem inspection finds 54 total entries but only 37 regular files (36 assets plus _headers). All 36 region asset hashes still match the retained contracts. Do not report the console entry count as uploaded file count. No provider upload or live asset inventory was obtained by this dry-run.
