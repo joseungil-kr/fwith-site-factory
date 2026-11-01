@@ -1,7 +1,7 @@
 {
   "scope": "local workerd only; no production or edge-cache verification",
   "validatorNote": "Opaque ETag values may change on migration; own-validator 304 and old-validator full bytes checked.",
-  "checks": 115,
+  "checks": 123,
   "failures": 0,
   "results": [
     {
@@ -762,6 +762,42 @@
     },
     {
       "region": "dongjak",
+      "path": "/404",
+      "repeat": 0,
+      "equal": true,
+      "baseline": {
+        "status": 200,
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "etag": "\"9fd2f8f97bbb1e8e7bee982ad1ce1fdc\"",
+          "x-robots-tag": null,
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "SAMEORIGIN",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "location": null
+        },
+        "bytes": 1892,
+        "sha256": "c3faa624aeb013bec9ba468a077ee461805fce8d64f8748ffab3c9ed1f91e779"
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "etag": "\"c13fe8d0b57e84fa00a067e392a385a0\"",
+          "x-robots-tag": null,
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "SAMEORIGIN",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "location": null
+        },
+        "bytes": 1892,
+        "sha256": "c3faa624aeb013bec9ba468a077ee461805fce8d64f8748ffab3c9ed1f91e779"
+      }
+    },
+    {
+      "region": "dongjak",
       "path": "/missing",
       "repeat": 0,
       "equal": true,
@@ -1734,6 +1770,42 @@
     },
     {
       "region": "dongjak",
+      "path": "/404",
+      "repeat": 1,
+      "equal": true,
+      "baseline": {
+        "status": 200,
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "etag": "\"9fd2f8f97bbb1e8e7bee982ad1ce1fdc\"",
+          "x-robots-tag": null,
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "SAMEORIGIN",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "location": null
+        },
+        "bytes": 1892,
+        "sha256": "c3faa624aeb013bec9ba468a077ee461805fce8d64f8748ffab3c9ed1f91e779"
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "etag": "\"c13fe8d0b57e84fa00a067e392a385a0\"",
+          "x-robots-tag": null,
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "SAMEORIGIN",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "location": null
+        },
+        "bytes": 1892,
+        "sha256": "c3faa624aeb013bec9ba468a077ee461805fce8d64f8748ffab3c9ed1f91e779"
+      }
+    },
+    {
+      "region": "dongjak",
       "path": "/missing",
       "repeat": 1,
       "equal": true,
@@ -1946,6 +2018,48 @@
         },
         "bytes": 18586,
         "sha256": "3ce5378ed2337872d7629d3ca37c7bd42b2ff4132e62be2b90e9480096076119"
+      }
+    },
+    {
+      "region": "dongjak",
+      "test": "404-body-versus-status",
+      "path": "/404",
+      "equal": true,
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "etag": "\"c13fe8d0b57e84fa00a067e392a385a0\"",
+          "x-robots-tag": null,
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "SAMEORIGIN",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "location": null
+        },
+        "bytes": 1892,
+        "sha256": "c3faa624aeb013bec9ba468a077ee461805fce8d64f8748ffab3c9ed1f91e779"
+      }
+    },
+    {
+      "region": "dongjak",
+      "test": "404-body-versus-status",
+      "path": "/missing",
+      "equal": true,
+      "candidate": {
+        "status": 404,
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "etag": "\"c13fe8d0b57e84fa00a067e392a385a0\"",
+          "x-robots-tag": null,
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "SAMEORIGIN",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "location": null
+        },
+        "bytes": 1892,
+        "sha256": "c3faa624aeb013bec9ba468a077ee461805fce8d64f8748ffab3c9ed1f91e779"
       }
     },
     {
@@ -2798,6 +2912,42 @@
     },
     {
       "region": "geumcheon",
+      "path": "/404",
+      "repeat": 0,
+      "equal": true,
+      "baseline": {
+        "status": 200,
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "etag": "\"20699aa769ce6d1a44a122f8cea21b6c\"",
+          "x-robots-tag": null,
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "SAMEORIGIN",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "location": null
+        },
+        "bytes": 2303,
+        "sha256": "b766200f5bb4391df62a9cf0cfd2494efde77616384b5f5a2e2d5ef479b40134"
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "etag": "\"aa370d6d45326fa900a2b1a4eb6b6c15\"",
+          "x-robots-tag": null,
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "SAMEORIGIN",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "location": null
+        },
+        "bytes": 2303,
+        "sha256": "b766200f5bb4391df62a9cf0cfd2494efde77616384b5f5a2e2d5ef479b40134"
+      }
+    },
+    {
+      "region": "geumcheon",
       "path": "/missing",
       "repeat": 0,
       "equal": true,
@@ -3770,6 +3920,42 @@
     },
     {
       "region": "geumcheon",
+      "path": "/404",
+      "repeat": 1,
+      "equal": true,
+      "baseline": {
+        "status": 200,
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "etag": "\"20699aa769ce6d1a44a122f8cea21b6c\"",
+          "x-robots-tag": null,
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "SAMEORIGIN",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "location": null
+        },
+        "bytes": 2303,
+        "sha256": "b766200f5bb4391df62a9cf0cfd2494efde77616384b5f5a2e2d5ef479b40134"
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "etag": "\"aa370d6d45326fa900a2b1a4eb6b6c15\"",
+          "x-robots-tag": null,
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "SAMEORIGIN",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "location": null
+        },
+        "bytes": 2303,
+        "sha256": "b766200f5bb4391df62a9cf0cfd2494efde77616384b5f5a2e2d5ef479b40134"
+      }
+    },
+    {
+      "region": "geumcheon",
       "path": "/missing",
       "repeat": 1,
       "equal": true,
@@ -3982,6 +4168,48 @@
         },
         "bytes": 22373,
         "sha256": "b9ef94c563edba2c2ee2cfb79a71da708e19b55115cb2935b0c3bc9e0a06d978"
+      }
+    },
+    {
+      "region": "geumcheon",
+      "test": "404-body-versus-status",
+      "path": "/404",
+      "equal": true,
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "etag": "\"aa370d6d45326fa900a2b1a4eb6b6c15\"",
+          "x-robots-tag": null,
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "SAMEORIGIN",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "location": null
+        },
+        "bytes": 2303,
+        "sha256": "b766200f5bb4391df62a9cf0cfd2494efde77616384b5f5a2e2d5ef479b40134"
+      }
+    },
+    {
+      "region": "geumcheon",
+      "test": "404-body-versus-status",
+      "path": "/missing",
+      "equal": true,
+      "candidate": {
+        "status": 404,
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "etag": "\"aa370d6d45326fa900a2b1a4eb6b6c15\"",
+          "x-robots-tag": null,
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "SAMEORIGIN",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "location": null
+        },
+        "bytes": 2303,
+        "sha256": "b766200f5bb4391df62a9cf0cfd2494efde77616384b5f5a2e2d5ef479b40134"
       }
     },
     {
