@@ -84,6 +84,42 @@ class ExecutorTests(unittest.TestCase):
             self.run_case([state(), state(), state(PILOT), state(PILOT), state(PILOT)], ['same', 'different'], runner)
         self.assertEqual(runner.calls, ['deploy', 'rollback'])
 
+    def test_concurrent_settings_change_before_recovery_stops_all_writes(self):
+        for worker in [DONGJAK, GEUMCHEON]:
+            changed = state(PILOT)
+            changed[worker]['settings']['logpush'] = True
+            runner = FakeRunner()
+            with self.subTest(worker=worker), self.assertRaisesRegex(Stop, 'settings_drift'):
+                self.run_case([state(), state(), state(PILOT), changed], ['same', 'different'], runner)
+            self.assertEqual(runner.calls, ['deploy'])
+
+    def test_initial_dongjak_settings_error_can_recover_only_if_unchanged(self):
+        initial = state(PILOT)
+        initial[DONGJAK]['settings']['logpush'] = True
+        runner = FakeRunner([dict(ok=True, uuid=PILOT), dict(ok=True, uuid=D_VERSION)])
+        self.assertEqual(self.run_case([state(), state(), initial, copy.deepcopy(initial), state()], ['same', 'same'], runner), 'rolled_back')
+        self.assertEqual(runner.calls, ['deploy', 'rollback'])
+        later = copy.deepcopy(initial)
+        later[DONGJAK]['settings']['usage_model'] = 'concurrent-change'
+        runner = FakeRunner()
+        with self.assertRaisesRegex(Stop, 'rollback_dongjak_settings_drift'):
+            self.run_case([state(), state(), initial, later], ['same'], runner)
+        self.assertEqual(runner.calls, ['deploy'])
+
+    def test_geumcheon_drift_in_first_postdeploy_snapshot_is_never_ours(self):
+        changed = state(PILOT)
+        changed[GEUMCHEON]['settings']['logpush'] = True
+        runner = FakeRunner()
+        with self.assertRaisesRegex(Stop, 'rollback_geumcheon_settings_drift'):
+            self.run_case([state(), state(), changed, changed], ['same'], runner)
+        self.assertEqual(runner.calls, ['deploy'])
+
+    def test_no_first_postdeploy_snapshot_means_no_settings_recovery_baseline(self):
+        runner = FakeRunner()
+        with self.assertRaisesRegex(Stop, 'rollback_postdeploy_baseline_unavailable'):
+            self.run_case([state(), state(), Stop('get_failed'), state(PILOT)], ['same'], runner)
+        self.assertEqual(runner.calls, ['deploy'])
+
     def test_uncertain_rollback_success_requires_readback_and_public_proof(self):
         runner = FakeRunner([dict(ok=True, uuid=PILOT), dict(ok=False, uuid=None)])
         self.assertEqual(self.run_case([state(), state(), state(PILOT), state(PILOT), state()], ['same', 'different', 'same'], runner), 'rolled_back')

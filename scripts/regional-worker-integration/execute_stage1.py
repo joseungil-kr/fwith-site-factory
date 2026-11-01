@@ -227,8 +227,10 @@ def execute(provider, runner, probe, record):
             record('uncertain_deploy_readback_failed')
         raise Stop('deploy_uuid_uncertain_no_retry_or_rollback')
     record('pilot_recorded', pilot_uuid=pilot)
+    postdeploy = None
     try:
-        check_state(provider.snapshot(), pilot, original)
+        postdeploy = provider.snapshot()
+        check_state(postdeploy, pilot, original)
         require(outcome['ok'], 'deploy_reported_failure_with_known_uuid')
         require(probe() == baseline, 'postdeploy_public_difference')
         check_state(provider.snapshot(), pilot, original)
@@ -239,6 +241,13 @@ def execute(provider, runner, probe, record):
         # A fresh read must prove ownership before ANY rollback; conflicts remain untouched.
         current = provider.snapshot()
         require(current[DONGJAK]['version'] == pilot and current[GEUMCHEON]['version'] == G_VERSION, 'rollback_conflict_stop')
+        require(postdeploy is not None and postdeploy[DONGJAK]['version'] == pilot,
+                'rollback_postdeploy_baseline_unavailable')
+        # Geumcheon was never modified by this deployment. Dongjak may have an
+        # initial deployment error, but further settings drift is not ours to undo.
+        require(postdeploy[GEUMCHEON] == original[GEUMCHEON]
+                and current[GEUMCHEON] == original[GEUMCHEON], 'rollback_geumcheon_settings_drift')
+        require(current[DONGJAK] == postdeploy[DONGJAK], 'rollback_dongjak_settings_drift')
         record('rollback_started', pilot_uuid=pilot)
         restored = runner.run('rollback')
         check_state(provider.snapshot(), D_VERSION, original)
