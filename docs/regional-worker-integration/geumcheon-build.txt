@@ -1,0 +1,76 @@
+
+> build
+> node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && python3 scripts/test_output_bindings.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_links.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py
+
+14:19:09 [types] Generated 445ms
+14:19:09 [check] Getting diagnostics for Astro files in C:\Users\FIREBAT AM02\Documents\Codex\2026-11-01\task\build-geumcheon...
+[96mtests/geumcheon-grouped.test.mjs[0m:[93m1[0m:[93m128[0m - [93mwarning[0m[90m ts(6133): [0m'spawnSync' is declared but its value is never read.
+
+[7m1[0m import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import crypto from 'node:crypto';import {spawnSync} from 'node:child_process';
+[7m [0m [93m                                                                                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96mtests/shared-banner-requested-change.test.mjs[0m:[93m9[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'common' is declared but its value is never read.
+
+[7m9[0m const common=JSON.parse(read('src/data/geumcheon-copy.json'));
+[7m [0m [93m      ~~~~~~[0m
+
+Result (53 files):
+- 0 errors
+- 0 warnings
+- 2 hints
+
+14:19:20 [types] Generated 124ms
+14:19:20 [build] output: "static"
+14:19:20 [build] mode: "static"
+14:19:20 [build] directory: C:\Users\FIREBAT AM02\Documents\Codex\2026-11-01\task\build-geumcheon\dist\
+14:19:20 [build] Collecting build info...
+14:19:20 [build] ??Completed in 175ms.
+14:19:20 [build] Building static entrypoints...
+14:19:21 [vite] ??built in 745ms
+14:19:21 [vite] ??built in 44ms
+14:19:21 [build] Rearranging server assets...
+
+ generating static routes
+14:19:21   ?쒋? /404.html (+26ms)
+14:19:21   ?쒋? /robots.txt (+7ms)
+14:19:21   ?쒋? /regions/geumcheon-funeral-wreath/index.html (+12ms)
+14:19:21   ?쒋? /regions/index.html (+9ms)
+14:19:21   ?쒋? /index.html (+10ms)
+14:19:21 ??Completed in 122ms.
+
+14:19:21 [build] ??Completed in 1.03s.
+14:19:21 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+14:19:21 [build] 4 page(s) built in 1.23s
+14:19:21 [build] Complete!
+STATIC QA PASSED: 1 details, 3 HTML routes; indexable=True; exact metadata/sitemap/snapshot/link parity
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.610s
+
+OK
+STATIC QA PASSED: 1 details, 3 HTML routes; indexable=True; exact metadata/sitemap/snapshot/link parity
+GRAPH QA PASSED { pages: 1, hubs: 1 }
+FAQ / PRODUCT QA: 1 details, 3 visible FAQs, 12 exact product links
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.548s
+
+OK
+FAQ / PRODUCT QA: 1 details, 3 visible FAQs, 12 exact product links
+FAQ / PRODUCT QA: 1 details, 3 visible FAQs, 12 exact product links
+SHARED BANNER QA: 3 customer pages, 6 banners; headings, alt, exact assets and links checked
+.................
+----------------------------------------------------------------------
+Ran 17 tests in 1.320s
+
+OK
+SHARED BANNER QA: 3 customer pages, 6 banners; headings, alt, exact assets and links checked
+SHARED BANNER QA: 4 customer pages, 6 banners; headings, alt, exact assets and links checked
+DIRECTORY QA: 10 administrative entries; 5 exact destination links; grouped=True; all named destination anchors checked
+DIRECTORY SPACING QA: {"cards": 1, "districts": 1, "eligible": false, "bannerKinds": [], "visibleCardsBetweenBanners": [], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.108s
+
+OK
+DIRECTORY SPACING QA: {"cards": 1, "districts": 1, "eligible": false, "bannerKinds": [], "visibleCardsBetweenBanners": [], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}

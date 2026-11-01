@@ -1,0 +1,78 @@
+
+> build
+> node scripts/assert_preview_boundary.mjs && node scripts/write_build_revision.mjs && astro check && astro build && node scripts/write_response_headers.mjs && python3 scripts/qa_static.py && python3 scripts/test_output_bindings.py && node scripts/qa_bootstrap_or_graph.mjs && python3 scripts/qa_faq_products.py && python3 scripts/test_faq_products.py && python3 scripts/qa_shared_banners.py && python3 scripts/test_shared_banners.py && python3 scripts/qa_directory_links.py && python3 scripts/qa_directory_spacing.py && python3 scripts/test_directory_spacing.py && python3 scripts/qa_dongjak.py && python3 scripts/test_dongjak.py
+
+14:19:09 [types] Generated 444ms
+14:19:09 [check] Getting diagnostics for Astro files in C:\Users\FIREBAT AM02\Documents\Codex\2026-11-01\task\build-dongjak...
+[96mtests/dongjak-grouped.test.mjs[0m:[93m1[0m:[93m128[0m - [93mwarning[0m[90m ts(6133): [0m'spawnSync' is declared but its value is never read.
+
+[7m1[0m import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import crypto from 'node:crypto';import {spawnSync} from 'node:child_process';
+[7m [0m [93m                                                                                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+Result (56 files):
+- 0 errors
+- 0 warnings
+- 1 hint
+
+14:19:20 [types] Generated 128ms
+14:19:20 [build] output: "static"
+14:19:20 [build] mode: "static"
+14:19:20 [build] directory: C:\Users\FIREBAT AM02\Documents\Codex\2026-11-01\task\build-dongjak\dist\
+14:19:20 [build] Collecting build info...
+14:19:20 [build] ??Completed in 162ms.
+14:19:20 [build] Building static entrypoints...
+14:19:21 [vite] ??built in 727ms
+14:19:21 [vite] ??built in 48ms
+14:19:21 [build] Rearranging server assets...
+
+ generating static routes
+14:19:21   ?쒋? /404.html (+42ms)
+14:19:21   ?쒋? /robots.txt (+8ms)
+14:19:21   ?쒋? /regions/dongjak-funeral-wreath/index.html (+34ms)
+14:19:21   ?쒋? /regions/index.html (+7ms)
+14:19:21   ?쒋? /index.html (+10ms)
+14:19:21 ??Completed in 160ms.
+
+14:19:21 [build] ??Completed in 1.04s.
+14:19:21 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+14:19:21 [build] 4 page(s) built in 1.22s
+14:19:21 [build] Complete!
+STATIC QA PASSED: 1 details, 3 HTML routes; indexable=True; exact metadata/sitemap/snapshot/link parity
+STATIC QA PASSED: 1 details, 3 HTML routes; indexable=True; exact metadata/sitemap/snapshot/link parity
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.656s
+
+OK
+GRAPH QA PASSED { pages: 1, hubs: 1 }
+FAQ / PRODUCT QA: 1 details, 2 visible FAQs, 9 exact product links
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.534s
+
+OK
+FAQ / PRODUCT QA: 1 details, 2 visible FAQs, 9 exact product links
+FAQ / PRODUCT QA: 1 details, 2 visible FAQs, 9 exact product links
+SHARED BANNER QA: 3 customer pages, 6 banners; headings, alt, exact assets and links checked
+................
+----------------------------------------------------------------------
+Ran 16 tests in 1.225s
+
+OK
+SHARED BANNER QA: 3 customer pages, 6 banners; headings, alt, exact assets and links checked
+SHARED BANNER QA: 4 customer pages, 6 banners; headings, alt, exact assets and links checked
+DIRECTORY QA: 15 administrative entries; 0 exact destination links; grouped=True; all named destination anchors checked
+DIRECTORY SPACING QA: {"cards": 1, "districts": 1, "eligible": false, "bannerKinds": [], "visibleCardsBetweenBanners": [], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.115s
+
+OK
+DIRECTORY SPACING QA: {"cards": 1, "districts": 1, "eligible": false, "bannerKinds": [], "visibleCardsBetweenBanners": [], "orderedCardsPreserved": true, "inlineCtaPositionPreserved": true}
+DONGJAK STATIC QA: {"scope": "Static HTML only; screen/public HTTP/search unverified", "htmlFiles": 4, "details": [{"url": "/regions/dongjak-funeral-wreath/", "anchors": 2, "productCards": 4, "faq": 2, "sourceSectionH2": 1, "approvedCopyPreserved": true}], "uniqueSku": 4, "legalEntries": 9, "adminEntries": 15, "officialRelations": 18, "legalFacilityLinks": 2, "administrativeFacilityLinks": 0, "directoryCards": 1, "directoryBanners": 0, "directoryIndexable": false, "productionApproved": true, "canonicalOrigin": "https://seoul-dongjak.fwith.kr", "hostnameOwnershipVerified": false, "approvedArticleParagraphs": 13}
+......................
+----------------------------------------------------------------------
+Ran 22 tests in 2.496s
+
+OK
+DONGJAK STATIC QA: {"scope": "Static HTML only; screen/public HTTP/search unverified", "htmlFiles": 4, "details": [{"url": "/regions/dongjak-funeral-wreath/", "anchors": 2, "productCards": 4, "faq": 2, "sourceSectionH2": 1, "approvedCopyPreserved": true}], "uniqueSku": 4, "legalEntries": 9, "adminEntries": 15, "officialRelations": 18, "legalFacilityLinks": 2, "administrativeFacilityLinks": 0, "directoryCards": 1, "directoryBanners": 0, "directoryIndexable": false, "productionApproved": true, "canonicalOrigin": "https://seoul-dongjak.fwith.kr", "hostnameOwnershipVerified": false, "approvedArticleParagraphs": 13}

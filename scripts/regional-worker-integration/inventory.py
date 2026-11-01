@@ -22,10 +22,19 @@ def collect():
                 for target in node.targets:
                     if isinstance(target, ast.Name) and target.id in names:
                         values[target.id] = node.value.value
+        evidence = path.relative_to(ROOT).as_posix()
+        binding_path = path.with_name('publication-binding.json')
+        if values.get('HOSTNAME') is None and binding_path.exists():
+            binding = json.loads(binding_path.read_text(encoding='utf-8'))
+            assert binding['branch'] == values['BRANCH']
+            assert binding['sourceRoot'] == values['SOURCE_ROOT']
+            assert binding['configuredWorkerTarget'] == values['WORKER']
+            values['HOSTNAME'] = binding['hostname']
+            evidence = binding_path.relative_to(ROOT).as_posix()
         if len(values) == 4 and all(isinstance(value, str) and value for value in values.values()):
             rows.append(dict(hostname=values['HOSTNAME'], worker=values['WORKER'],
                              branch=values['BRANCH'], root=values['SOURCE_ROOT'],
-                             evidence=path.relative_to(ROOT).as_posix()))
+                             evidence=evidence))
     registry = json.loads((ROOT / '.github/site-factory-sites.json').read_text(encoding='utf-8'))
     for site in registry['sites'].values():
         hostname = urlsplit(site['siteUrl']).hostname
