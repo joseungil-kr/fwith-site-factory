@@ -10,11 +10,13 @@ import json
 import os
 from pathlib import Path
 import re
+import socket
+import ssl
 import subprocess
 import time
 import zipfile
 from urllib.parse import urlsplit
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from urllib.request import Request, HTTPRedirectHandler, build_opener
 
 from prepare_stage1 import CONFIG, ROOT, ROUTER_SHA, ZIP_SHA
@@ -190,6 +192,29 @@ def verify_bundle(bundle):
     require(actual == expected and len(actual) == 37, 'asset_inventory_mismatch')
 
 
+def transport_evidence(error):
+    reason = error.reason if isinstance(error, URLError) else error
+    category = 'unclassified'
+    if isinstance(reason, ssl.SSLCertVerificationError):
+        category = 'tls_certificate'
+    elif isinstance(reason, ssl.SSLError):
+        category = 'tls'
+    elif isinstance(reason, socket.gaierror):
+        category = 'name_resolution'
+    elif isinstance(reason, TimeoutError):
+        category = 'timeout'
+    elif isinstance(reason, ConnectionError):
+        category = 'connection'
+    elif isinstance(reason, OSError):
+        category = 'os_transport'
+    result = dict(transport_category=category, underlying_type=type(reason).__name__)
+    for name in ['errno', 'winerror', 'verify_code']:
+        value = getattr(reason, name, None)
+        if type(value) is int:
+            result[name] = value
+    return result
+
+
 def public_snapshot(record=lambda *args, **kwargs: None):
     opener = build_opener(NoRedirect())
     result = {}
@@ -246,7 +271,7 @@ def public_snapshot(record=lambda *args, **kwargs: None):
                     require(hashlib.sha256(body).hexdigest() == files[path.lstrip('/')], 'public_asset_mismatch')
                 result[host + path] = dict(status=status, headers=headers, sha256=hashlib.sha256(body).hexdigest())
             except Exception as error:
-                record('public_probe_failed', **evidence, exception_type=type(error).__name__,
+                record('public_probe_failed', **evidence, **transport_evidence(error), exception_type=type(error).__name__,
                        reason=str(error) if isinstance(error, Stop) else 'transport_or_response_error')
                 raise Stop('public_verification_failed') from None
     return result

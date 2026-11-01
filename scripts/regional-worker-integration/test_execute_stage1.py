@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
-from execute_stage1 import execute, public_snapshot, diagnose_readonly, Stop, Provider, Wrangler, check_state, single_page_domains, DONGJAK, GEUMCHEON, D_VERSION, G_VERSION
+from execute_stage1 import execute, transport_evidence, NoRedirect, public_snapshot, diagnose_readonly, Stop, Provider, Wrangler, check_state, single_page_domains, DONGJAK, GEUMCHEON, D_VERSION, G_VERSION
 
 PILOT = '11111111-1111-4111-8111-111111111111'
 OTHER = '22222222-2222-4222-8222-222222222222'
@@ -73,6 +73,31 @@ class FakeRunner:
 
 
 class PublicEvidenceTests(unittest.TestCase):
+    def test_transport_categories_never_include_reason_messages(self):
+        import socket, ssl
+        from urllib.error import URLError
+        cases = [(socket.gaierror(-2, 'private'), 'name_resolution'),
+                 (ssl.SSLCertVerificationError(1, 'private'), 'tls_certificate'),
+                 (ConnectionRefusedError(111, 'private'), 'connection'),
+                 (TimeoutError('private'), 'timeout'), ('private proxy URL', 'unclassified')]
+        for reason, category in cases:
+            evidence = transport_evidence(URLError(reason))
+            self.assertEqual(evidence['transport_category'], category)
+            self.assertNotIn('private', str(evidence))
+
+    def test_normal_307_becomes_readable_http_error_without_following(self):
+        from io import BytesIO
+        from urllib.request import Request, build_opener
+        from urllib.error import HTTPError
+        opener = build_opener(NoRedirect())
+        with patch.object(opener, 'open', side_effect=AssertionError('must not follow')):
+            with self.assertRaises(HTTPError) as caught:
+                opener.error('http', Request('https://seoul-dongjak.fwith.kr/404.html'),
+                             BytesIO(b''), 307, 'Temporary Redirect', {'location': '/404'})
+        self.assertEqual(caught.exception.code, 307)
+        self.assertEqual(caught.exception.headers['location'], '/404')
+        self.assertEqual(caught.exception.read(), b'')
+
     def test_transport_exception_redacts_message(self):
         events = []
         with patch('execute_stage1.build_opener') as opener:

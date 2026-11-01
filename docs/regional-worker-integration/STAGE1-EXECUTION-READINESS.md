@@ -123,3 +123,14 @@ The local diagnostic change preserves all response/hash/robots/redirect assertio
 New --public-preflight-readonly --report PATH mode calls only the public probe, before any provider credentials or Wrangler construction. It requires no authentication and cannot deploy or recover. This mode has not yet been run against production; independent review should precede use. A local result would not by itself prove the previous GitHub runner response. No UA change, retry loop, proxy or alternate access route was added.
 
 Verification: executor/evidence tests 27, recovery 6, planner 2 (35 total), all pass; diff whitespace check passes. Tests cover transport message redaction and a 403 block response with external sensitive redirect. Changed files: execute_stage1.py, test_execute_stage1.py and this document. No workflow/publication/dispatch or provider write in this follow-up.
+
+
+## URLError classification and redirect contract
+
+Helper's 09:13:51 UTC local receipt shows URLError on Dongjak /404.html with no HTTP status, redirect or body hash. It is not evidence of a 403, wrong redirect or site outage. Historical GitHub failure cannot be assigned the same cause from this separate environment.
+
+Python's [urllib.error documentation](https://docs.python.org/3/library/urllib.error.html) permits URLError.reason to be either an exception or a string. Diagnostic classification now records only its class, fixed transport category and integer errno/winerror/verify_code. Categories distinguish certificate verification, other TLS, name resolution, timeout, connection and generic OS errors. A string reason remains unclassified: its text may contain proxy URLs or other private data and is never logged. This cannot reliably distinguish a proxy tunnel error whose only evidence is a string. Default TLS verification and proxy discovery remain unchanged; no network settings are inspected or modified.
+
+The [urllib.request contract](https://docs.python.org/3/library/urllib.request.html) and installed implementation were checked. Returning None from redirect_request declines automatic following; the default error handler then raises a readable HTTPError. The public probe catches HTTPError before its generic exception handler and reads status/Location/body. A network-free opener regression test confirms a normal 307 Location:/404 produces HTTPError(code=307), preserves the empty body, and never calls open again. Therefore normal 307 handling itself does not explain the observed bare URLError. The existing /404.html contract remains 307, Location /404, empty body.
+
+29 executor/evidence tests pass, including classification/redaction and real urllib handler-chain simulation; earlier recovery/planner 8 tests were unaffected. No additional URL fetch, push, dispatch, deployment, recovery or configuration change was performed. Live underlying classification still needs an independently reviewed GET-only observation.
