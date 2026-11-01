@@ -16,6 +16,11 @@ on:
         required: true
         default: false
         type: boolean
+      public_preflight_only:
+        description: Public GET-only preflight without provider credentials
+        required: true
+        default: false
+        type: boolean
       remaining_requests:
         description: Fresh observed account daily execution requests remaining (at least 20000)
         required: false
@@ -40,12 +45,17 @@ jobs:
           REVIEWED_SHA: ${{ inputs.reviewed_sha }}
           EXECUTE_STAGE1: ${{ inputs.execute_stage1 }}
           DIAGNOSE_ONLY: ${{ inputs.diagnose_only }}
+          PUBLIC_PREFLIGHT_ONLY: ${{ inputs.public_preflight_only }}
         run: |
           set -euo pipefail
           test "$GITHUB_RUN_ATTEMPT" = 1
           test "$GITHUB_SHA" = "$REVIEWED_SHA"
           test "${#REVIEWED_SHA}" = 40
-          if [ "$EXECUTE_STAGE1" = true ] && [ "$DIAGNOSE_ONLY" = true ]; then exit 1; fi
+          selected=0
+          for mode in "$EXECUTE_STAGE1" "$DIAGNOSE_ONLY" "$PUBLIC_PREFLIGHT_ONLY"; do
+            if [ "$mode" = true ]; then selected=$((selected + 1)); fi
+          done
+          test "$selected" -le 1
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
@@ -67,14 +77,17 @@ jobs:
         env:
           WRANGLER_SEND_METRICS: 'false'
         run: node "$RUNNER_TEMP/regional-tools/node_modules/wrangler/bin/wrangler.js" deploy --config "$RUNNER_TEMP/regional-stage1/wrangler.stage1.json" --dry-run --outdir "$RUNNER_TEMP/regional-dry-run"
+      - name: Public GET-only preflight
+        if: inputs.public_preflight_only == true && inputs.diagnose_only != true && inputs.execute_stage1 != true
+        run: python3 scripts/regional-worker-integration/execute_stage1.py --public-preflight-readonly --report "$RUNNER_TEMP/regional-stage1-report.json"
       - name: GET-only response schema diagnostics
-        if: inputs.diagnose_only == true && inputs.execute_stage1 != true
+        if: inputs.diagnose_only == true && inputs.execute_stage1 != true && inputs.public_preflight_only != true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: python3 scripts/regional-worker-integration/execute_stage1.py --diagnose-readonly --report "$RUNNER_TEMP/regional-stage1-report.json"
       - name: One guarded Dongjak deploy with guarded recovery
-        if: inputs.execute_stage1 == true && inputs.diagnose_only != true
+        if: inputs.execute_stage1 == true && inputs.diagnose_only != true && inputs.public_preflight_only != true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -89,7 +102,7 @@ jobs:
             --remaining-requests "$REMAINING_REQUESTS" \
             --usage-observed-at "$USAGE_OBSERVED_AT"
       - name: Retain sanitized state transitions only
-        if: always() && (inputs.execute_stage1 == true || inputs.diagnose_only == true)
+        if: always() && (inputs.execute_stage1 == true || inputs.diagnose_only == true || inputs.public_preflight_only == true)
         uses: actions/upload-artifact@v4
         with:
           name: dongjak-stage1-sanitized-report
