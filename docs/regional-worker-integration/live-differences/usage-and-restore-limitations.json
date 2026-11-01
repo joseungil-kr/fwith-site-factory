@@ -1,0 +1,20 @@
+{
+  "checked_at_utc": "2026-11-01T05:37:34.6778902Z",
+  "account_requests_today": 2357,
+  "daily_limit": 100000,
+  "remaining_calculated": 97643,
+  "usage_scope": "Account Workers & Pages dashboard Requests today, November 1",
+  "static_asset_requests": "Per-site metrics unavailable for static-assets-only Workers; not zero. Do not add unreported static asset delivery to Worker execution requests.",
+  "restore_commands_not_executed": [
+    "npx wrangler rollback 3720873d-5c57-4c0f-a25c-80dba048ddd1 --name seoul-dongjak-flower-guide",
+    "npx wrangler rollback c3d0ea60-ca39-47b6-a119-e692d66a1658 --name seoul-geumcheon-flower-guide"
+  ],
+  "restore_limitations": [
+    "Commands recorded only; no rollback or deployment executed.",
+    "Current full provider settings/asset metadata were not exported. Historical wrangler.publish.json recovered.",
+    "Current active UUID-to-source SHA mapping is not explicitly present in recovered receipt.",
+    "Custom Domain reassignment is separate from version rollback and is not performed."
+  ],
+  "source": "Existing Cloudflare UI and GitHub Actions result artifacts",
+  "observed_public_differences": "Both sites: 16 of 18 publicly requested file bodies match retained hashes. /404.html returns307; Dongjak Location /404 directly confirmed. robots.txt differs; Dongjak body explicitly includes Cloudflare Managed Content before original robots rules. _headers not served as asset. Geumcheon robots exact cause not inspected."
+}

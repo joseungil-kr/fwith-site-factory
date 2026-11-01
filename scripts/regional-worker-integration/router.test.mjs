@@ -78,3 +78,27 @@ test('HEAD and asset conditional responses are preserved', async () => {
   assert.equal(response.headers.get('ETag'), 'same');
   assert.equal(await response.text(), '');
 });
+
+test('404.html canonical redirect preserves 307, relative location, query and empty body', async () => {
+  for (const [i, origin] of origins.entries()) {
+    const response = await router.fetch(new Request(origin + '/404.html?audit=1'), {ASSETS: {async fetch(req) {
+      assert.equal(new URL(req.url).pathname, prefixes[i] + '/404.html');
+      return new Response(null, {status: 307, headers: {Location: prefixes[i] + '/404?audit=1'}});
+    }}});
+    assert.equal(response.status, 307);
+    assert.equal(response.headers.get('Location'), '/404?audit=1');
+    assert.equal(await response.text(), '');
+  }
+});
+
+test('robots policy bytes are opaque; router neither strips nor adds managed directives', async () => {
+  // Synthetic policy fixture, not a claimed copy of current public robots.txt.
+  const body = '# Managed test fixture\nUser-agent: ExampleTrainingBot\nDisallow: /\n\nUser-agent: *\nAllow: /\n';
+  for (const origin of origins) {
+    const response = await router.fetch(new Request(origin + '/robots.txt'), {ASSETS: {async fetch() {
+      return new Response(body, {headers: {'Content-Type': 'text/plain', 'ETag': 'policy-version'}});
+    }}});
+    assert.equal(await response.text(), body);
+    assert.equal(response.headers.get('ETag'), 'policy-version');
+  }
+});
