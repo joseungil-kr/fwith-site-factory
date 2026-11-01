@@ -13,6 +13,7 @@ import re
 import subprocess
 import time
 import zipfile
+from urllib.parse import urlsplit
 from urllib.error import HTTPError
 from urllib.request import Request, HTTPRedirectHandler, build_opener
 
@@ -189,7 +190,7 @@ def verify_bundle(bundle):
     require(actual == expected and len(actual) == 37, 'asset_inventory_mismatch')
 
 
-def public_snapshot():
+def public_snapshot(record=lambda *args, **kwargs: None):
     opener = build_opener(NoRedirect())
     result = {}
     deadline = time.monotonic() + 120
@@ -203,6 +204,15 @@ def public_snapshot():
         paths += ['/', '/404', '/__stage1_missing_20261101__', '/regions',
                   '/__regional/dongjak/index.html', '/__regional/geumcheon/index.html']
         for path in paths:
+            evidence = dict(url='https://' + host + path, status=None, actual_sha256=None,
+                            expected_sha256=files.get(path.lstrip('/')), redirect=None)
+            if path == '/404' or path.startswith('/__'):
+                evidence['expected_sha256'] = files['404.html']
+            if path == '/404.html':
+                evidence['expected_sha256'] = hashlib.sha256(b'').hexdigest()
+            if path == '/robots.txt':
+                evidence['expected_sha256'] = None  # Managed prefix is not fixed bytes.
+                evidence['expected_original_sha256'] = hashlib.sha256(original_robots).hexdigest()
             try:
                 try:
                     require(time.monotonic() < deadline, 'public_probe_timeout')
@@ -213,6 +223,15 @@ def public_snapshot():
                     body = response.read(2 * 1024 * 1024)
                     status = response.code
                     headers = {key: response.headers.get(key) for key in selected}
+                evidence.update(status=status, actual_sha256=hashlib.sha256(body).hexdigest())
+                location = headers.get('location')
+                if location:
+                    target = urlsplit(location)
+                    allowed = target.hostname in HOSTS.values() or (not target.netloc and location.startswith('/'))
+                    evidence['redirect'] = (target.scheme + '://' + target.netloc if target.netloc else '') + target.path if allowed and target.path in paths else '[redacted_unexpected_target]'
+                if path == '/robots.txt':
+                    evidence['original_suffix_matches'] = body.endswith(b'\n\n' + original_robots)
+                    evidence['managed_policy_present'] = b'Content-Signal: search=yes,ai-train=no,use=reference' in body
                 require(status in [200, 307, 308, 404], 'public_response_unverified')
                 if path == '/404.html':
                     require(status == 307 and headers['location'] == '/404' and body == b'', '404_redirect_mismatch')
@@ -226,7 +245,9 @@ def public_snapshot():
                 if status == 200 and path.lstrip('/') in files and path != '/robots.txt':
                     require(hashlib.sha256(body).hexdigest() == files[path.lstrip('/')], 'public_asset_mismatch')
                 result[host + path] = dict(status=status, headers=headers, sha256=hashlib.sha256(body).hexdigest())
-            except Exception:
+            except Exception as error:
+                record('public_probe_failed', **evidence, exception_type=type(error).__name__,
+                       reason=str(error) if isinstance(error, Stop) else 'transport_or_response_error')
                 raise Stop('public_verification_failed') from None
     return result
 
@@ -346,6 +367,7 @@ def main():
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--execute-reviewed-stage1', action='store_true')
     mode.add_argument('--diagnose-readonly', action='store_true')
+    mode.add_argument('--public-preflight-readonly', action='store_true')
     parser.add_argument('--bundle', type=Path)
     parser.add_argument('--wrangler', type=Path)
     parser.add_argument('--report', type=Path, required=True)
@@ -357,6 +379,11 @@ def main():
         report['events'].append(dict(event=event, utc=datetime.now(timezone.utc).isoformat(), **fields))
         args.report.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     try:
+        if args.public_preflight_readonly:
+            public_snapshot(record)
+            report['status'] = 'public_preflight_verified'
+            record('finished')
+            return 0
         require((args.execute_reviewed_stage1 or args.diagnose_readonly) and os.environ.get('GITHUB_ACTIONS') == 'true'
                 and os.environ.get('GITHUB_REPOSITORY') == 'joseungil-kr/fwith-site-factory'
                 and os.environ.get('GITHUB_RUN_ATTEMPT') == '1', 'execution_not_armed')
@@ -369,7 +396,7 @@ def main():
             age = (datetime.now(timezone.utc) - observed).total_seconds()
             require(0 <= age <= 900 and 20000 <= args.remaining_requests <= 100000, 'capacity_observation_stale_or_low')
             verify_bundle(args.bundle)
-            report['status'] = execute(Provider(record), Wrangler(args.wrangler, args.bundle), public_snapshot, record)
+            report['status'] = execute(Provider(record), Wrangler(args.wrangler, args.bundle), lambda: public_snapshot(record), record)
     except Stop as error:
         report['status'] = 'stopped'
         report['reason'] = str(error)  # only our fixed codes, never provider bodies

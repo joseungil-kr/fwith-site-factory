@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
-from execute_stage1 import execute, diagnose_readonly, Stop, Provider, Wrangler, check_state, single_page_domains, DONGJAK, GEUMCHEON, D_VERSION, G_VERSION
+from execute_stage1 import execute, public_snapshot, diagnose_readonly, Stop, Provider, Wrangler, check_state, single_page_domains, DONGJAK, GEUMCHEON, D_VERSION, G_VERSION
 
 PILOT = '11111111-1111-4111-8111-111111111111'
 OTHER = '22222222-2222-4222-8222-222222222222'
@@ -70,6 +70,36 @@ class FakeRunner:
     def run(self, operation):
         self.calls.append(operation)
         return next(self.outcomes)
+
+
+class PublicEvidenceTests(unittest.TestCase):
+    def test_transport_exception_redacts_message(self):
+        events = []
+        with patch('execute_stage1.build_opener') as opener:
+            opener.return_value.open.side_effect = TimeoutError('private response/token')
+            with self.assertRaises(Stop):
+                public_snapshot(lambda event, **fields: events.append(fields))
+        self.assertEqual(events[0]['exception_type'], 'TimeoutError')
+        self.assertIsNone(events[0]['status'])
+        self.assertNotIn('private', str(events))
+
+    def test_blocked_response_records_hash_not_body_or_external_redirect(self):
+        events = []
+        response = unittest.mock.MagicMock()
+        response.__enter__.return_value = response
+        response.read.return_value = b'private block response'
+        response.code = 403
+        response.headers = {'location': 'https://external.invalid/private?token=secret'}
+        with patch('execute_stage1.build_opener') as opener:
+            opener.return_value.open.return_value = response
+            with self.assertRaises(Stop):
+                public_snapshot(lambda event, **fields: events.append(fields))
+        self.assertEqual(events[0]['status'], 403)
+        self.assertEqual(events[0]['reason'], 'public_response_unverified')
+        self.assertEqual(len(events[0]['actual_sha256']), 64)
+        self.assertEqual(events[0]['redirect'], '[redacted_unexpected_target]')
+        self.assertNotIn('private', str(events))
+        self.assertNotIn('secret', str(events))
 
 
 class ExecutorTests(unittest.TestCase):
