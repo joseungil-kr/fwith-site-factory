@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
-from execute_stage1 import execute, transport_evidence, NoRedirect, public_snapshot, diagnose_readonly, Stop, Provider, Wrangler, check_state, single_page_domains, DONGJAK, GEUMCHEON, D_VERSION, G_VERSION
+from execute_stage1 import main, execute, transport_evidence, NoRedirect, public_snapshot, diagnose_readonly, Stop, Provider, Wrangler, check_state, single_page_domains, DONGJAK, GEUMCHEON, D_VERSION, G_VERSION
 
 PILOT = '11111111-1111-4111-8111-111111111111'
 OTHER = '22222222-2222-4222-8222-222222222222'
@@ -73,6 +73,44 @@ class FakeRunner:
 
 
 class PublicEvidenceTests(unittest.TestCase):
+    def test_public_cli_never_constructs_provider_or_wrangler(self):
+        import tempfile, json
+        with tempfile.TemporaryDirectory() as directory:
+            report = str(Path(directory) / 'report.json')
+            with patch('sys.argv', ['execute_stage1.py', '--public-preflight-readonly', '--report', report]), \
+                 patch('execute_stage1.Provider', side_effect=AssertionError('provider forbidden')), \
+                 patch('execute_stage1.Wrangler', side_effect=AssertionError('write forbidden')), \
+                 patch('execute_stage1.subprocess.run', side_effect=AssertionError('subprocess forbidden')), \
+                 patch('execute_stage1.public_snapshot', return_value={}) as probe:
+                self.assertEqual(main(), 0)
+            probe.assert_called_once()
+            self.assertEqual(json.loads(Path(report).read_text())['status'], 'public_preflight_verified')
+
+    def test_workflow_public_mode_has_no_secrets_and_excludes_other_modes(self):
+        import itertools
+        workflow = Path(__file__).resolve().parents[2] / '.github/workflows/regional-dongjak-stage1.yml'
+        text = workflow.read_text()
+        public = text.split('      - name: Public GET-only preflight\n')[1].split('      - name:')[0]
+        self.assertNotIn('env:', public)
+        self.assertNotIn('secrets.', public)
+        self.assertIn('--public-preflight-readonly', public)
+        self.assertIn('inputs.public_preflight_only == true && inputs.diagnose_only != true && inputs.execute_stage1 != true', public)
+        for name in ['execute_stage1', 'diagnose_only', 'public_preflight_only']:
+            block = text.split('      ' + name + ':\n')[1]
+            self.assertIn('default: false', block.split('type: boolean')[0])
+        self.assertIn('for mode in "$EXECUTE_STAGE1" "$DIAGNOSE_ONLY" "$PUBLIC_PREFLIGHT_ONLY"', text)
+        self.assertIn('test "$selected" -le 1', text)
+        self.assertIn('test "$GITHUB_SHA" = "$REVIEWED_SHA"', text)
+        self.assertIn('test "$GITHUB_RUN_ATTEMPT" = 1', text)
+        for execute_mode, diagnose_mode, public_mode in itertools.product([False, True], repeat=3):
+            allowed = sum([execute_mode, diagnose_mode, public_mode]) <= 1
+            if allowed and public_mode:
+                self.assertFalse(execute_mode or diagnose_mode)
+        for step in ['GET-only response schema diagnostics', 'One guarded Dongjak deploy with guarded recovery']:
+            block = text.split('      - name: ' + step + '\n')[1].split('      - name:')[0]
+            self.assertIn('inputs.public_preflight_only != true', block)
+
+
     def test_transport_categories_never_include_reason_messages(self):
         import socket, ssl
         from urllib.error import URLError
