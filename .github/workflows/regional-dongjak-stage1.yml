@@ -1,0 +1,83 @@
+name: Reviewed Dongjak integration Stage 1
+on:
+  workflow_dispatch:
+    inputs:
+      reviewed_sha:
+        description: Full independently reviewed control commit; must equal this run SHA
+        required: true
+        type: string
+      execute_stage1:
+        description: Execute Dongjak-only deployment after independent review
+        required: true
+        default: false
+        type: boolean
+      remaining_requests:
+        description: Fresh observed account daily execution requests remaining (at least 20000)
+        required: true
+        type: string
+      usage_observed_at:
+        description: UTC ISO timestamp of the usage observation (maximum age 15 minutes)
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: seoul-dongjak-direct-public-release
+  cancel-in-progress: false
+jobs:
+  reviewed-stage1:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.actor == github.repository_owner && github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Require exact reviewed run and first attempt
+        env:
+          REVIEWED_SHA: ${{ inputs.reviewed_sha }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_RUN_ATTEMPT" = 1
+          test "$GITHUB_SHA" = "$REVIEWED_SHA"
+          test "${#REVIEWED_SHA}" = 40
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Test guards and reproduce reviewed bytes without provider credentials
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          set -euo pipefail
+          python3 scripts/regional-worker-integration/test_recovery_plan.py
+          python3 scripts/regional-worker-integration/test_stage1_commands.py
+          python3 scripts/regional-worker-integration/test_execute_stage1.py
+          python3 scripts/regional-worker-integration/prepare_stage1.py --output "$RUNNER_TEMP/regional-stage1"
+          npm install --prefix "$RUNNER_TEMP/regional-tools" --no-audit --no-fund --ignore-scripts wrangler@4.148.0
+      - name: Local dry-run only
+        env:
+          WRANGLER_SEND_METRICS: 'false'
+        run: node "$RUNNER_TEMP/regional-tools/node_modules/wrangler/bin/wrangler.js" deploy --config "$RUNNER_TEMP/regional-stage1/wrangler.stage1.json" --dry-run --outdir "$RUNNER_TEMP/regional-dry-run"
+      - name: One guarded Dongjak deploy with guarded recovery
+        if: inputs.execute_stage1 == true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          REMAINING_REQUESTS: ${{ inputs.remaining_requests }}
+          USAGE_OBSERVED_AT: ${{ inputs.usage_observed_at }}
+        run: |
+          python3 scripts/regional-worker-integration/execute_stage1.py \
+            --execute-reviewed-stage1 \
+            --bundle "$RUNNER_TEMP/regional-stage1" \
+            --wrangler "$RUNNER_TEMP/regional-tools/node_modules/wrangler/bin/wrangler.js" \
+            --report "$RUNNER_TEMP/regional-stage1-report.json" \
+            --remaining-requests "$REMAINING_REQUESTS" \
+            --usage-observed-at "$USAGE_OBSERVED_AT"
+      - name: Retain sanitized state transitions only
+        if: always() && inputs.execute_stage1 == true
+        uses: actions/upload-artifact@v4
+        with:
+          name: dongjak-stage1-sanitized-report
+          path: ${{ runner.temp }}/regional-stage1-report.json
+          if-no-files-found: warn
