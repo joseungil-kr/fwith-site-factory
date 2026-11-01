@@ -3,10 +3,43 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
-from execute_stage1 import execute, Stop, Provider, Wrangler, check_state, single_page_domains, DONGJAK, GEUMCHEON, D_VERSION, G_VERSION
+from execute_stage1 import execute, diagnose_readonly, Stop, Provider, Wrangler, check_state, single_page_domains, DONGJAK, GEUMCHEON, D_VERSION, G_VERSION
 
 PILOT = '11111111-1111-4111-8111-111111111111'
 OTHER = '22222222-2222-4222-8222-222222222222'
+
+
+# Exact DomainListResponse field set from cloudflare-python types/workers/
+# domain_list_response.py. Values are synthetic; no enabled/previews fields.
+def official_domains():
+    return [dict(id='domain-' + region, cert_id='synthetic-cert', environment='production',
+                 hostname='seoul-' + region + '.fwith.kr', service=worker,
+                 zone_id='synthetic-zone', zone_name='fwith.kr')
+            for region, worker in [('dongjak', DONGJAK), ('geumcheon', GEUMCHEON)]]
+
+
+class SchemaProvider:
+    def __init__(self, subdomain=None):
+        self.paths = []
+        self.subdomain = dict(enabled=False, previews_enabled=False) if subdomain is None else subdomain
+    def get(self, path):
+        self.paths.append(path)
+        if path.startswith('workers/domains'):
+            rows = official_domains()
+            if '?' in path:
+                key, value = path.split('?', 1)[1].split('=', 1)
+                rows = [r for r in rows if r[key] == value]
+            return dict(success=True, errors=[], messages=[], result=rows)
+        worker = DONGJAK if DONGJAK in path else GEUMCHEON
+        version = D_VERSION if worker == DONGJAK else G_VERSION
+        if path.endswith('/subdomain'): result = self.subdomain
+        elif path.endswith('/settings'): result = state()[worker]['settings']
+        elif path.endswith('/deployments'):
+            result = dict(deployments=[dict(id='synthetic-deployment', source='wrangler', strategy='percentage',
+                          created_on='2026-11-01T00:00:00Z', versions=[dict(version_id=version, percentage=100.0)])])
+        elif '/versions/' in path: result = dict(id=version, resources=dict(script=dict(etag=''), bindings=[]))
+        else: raise AssertionError(path)
+        return dict(success=True, errors=[], messages=[], result=result)
 
 
 def state(version=D_VERSION):
@@ -16,6 +49,8 @@ def state(version=D_VERSION):
               GEUMCHEON: dict(version=G_VERSION, settings=copy.deepcopy(settings))}
     if version != D_VERSION:
         result[DONGJAK]['settings']['bindings'] = [{'name': 'ASSETS', 'type': 'assets'}]
+    for worker in result:
+        result[worker]['subdomain'] = dict(enabled=False, previews_enabled=False)
     return result
 
 
@@ -164,8 +199,8 @@ class ExecutorTests(unittest.TestCase):
             provider = object.__new__(Provider)
             def get(path):
                 if path.startswith('workers/domains'):
-                    rows = [dict(id='domain-dongjak', hostname='seoul-dongjak.fwith.kr', service=DONGJAK, enabled=True, previews_enabled=False),
-                            dict(id='domain-geumcheon', hostname='seoul-geumcheon.fwith.kr', service=GEUMCHEON, enabled=True, previews_enabled=False)]
+                    rows = [dict(id='domain-dongjak', cert_id='synthetic-cert', environment='production', hostname='seoul-dongjak.fwith.kr', service=DONGJAK, zone_id='synthetic-zone', zone_name='fwith.kr'),
+                            dict(id='domain-geumcheon', cert_id='synthetic-cert', environment='production', hostname='seoul-geumcheon.fwith.kr', service=GEUMCHEON, zone_id='synthetic-zone', zone_name='fwith.kr')]
                     if fault == 'mapping': rows[1]['service'] = DONGJAK
                     if fault == 'missing_unfiltered' and '?' not in path: rows = rows[:1]
                     if '?' in path and fault != 'ignored_filter':
@@ -176,11 +211,12 @@ class ExecutorTests(unittest.TestCase):
                 worker = DONGJAK if DONGJAK in path else GEUMCHEON
                 version = D_VERSION if worker == DONGJAK else G_VERSION
                 if path.endswith('/deployments'):
-                    return dict(result=dict(deployments=[dict(created_on='2026-11-01T00:00:00Z',
+                    return dict(result=dict(deployments=[dict(id='synthetic-deployment', source='wrangler', strategy='percentage', created_on='2026-11-01T00:00:00Z',
                         versions=[dict(version_id=version, percentage=50 if fault == 'split' else 100)])]))
                 if '/versions/' in path:
-                    return dict(result=dict(id=None if fault == 'missing_version' else version))
+                    return dict(result=dict(id=None if fault == 'missing_version' else version, resources=dict(script=dict(etag=''), bindings=[])))
                 if path.endswith('/settings'): return dict(result=state()[worker]['settings'])
+                if path.endswith('/subdomain'): return dict(result=dict(enabled=False, previews_enabled=False))
                 raise AssertionError(path)
             provider.get = get
             with self.subTest(fault=fault):
@@ -211,6 +247,56 @@ class ExecutorTests(unittest.TestCase):
                       dict(result=[{'id':'one'}]), dict(result={}), dict(result=[None])]:
             with self.subTest(patch=patch), self.assertRaises(Stop):
                 single_page_domains({**dict(success=True, result=[row]), **patch})
+
+    def test_official_domain_fixture_and_separate_subdomain_endpoint(self):
+        self.assertEqual(set(official_domains()[0]), {'id', 'cert_id', 'environment', 'hostname', 'service', 'zone_id', 'zone_name'})
+        for flags in [dict(enabled=False, previews_enabled=False), dict(enabled=True, previews_enabled=False),
+                      dict(enabled=False, previews_enabled=True), dict(enabled=False), {}]:
+            fixture = SchemaProvider(flags)
+            provider = object.__new__(Provider)
+            provider.get = fixture.get
+            if flags == dict(enabled=False, previews_enabled=False):
+                check_state(provider.snapshot(), D_VERSION)
+                self.assertEqual(len([p for p in fixture.paths if p.startswith('workers/domains')]), 5)
+            else:
+                with self.assertRaisesRegex(Stop, 'subdomain_exposure_unverified'): provider.snapshot()
+
+    def test_diagnostics_only_gets_every_endpoint_and_never_runs_wrangler(self):
+        provider = SchemaProvider()
+        events = []
+        with patch('execute_stage1.Wrangler', side_effect=AssertionError('no Wrangler allowed')), \
+                patch('execute_stage1.subprocess.run', side_effect=AssertionError('no subprocess allowed')):
+            self.assertEqual(diagnose_readonly(provider, lambda name, **fields: events.append(name)), 'diagnostic_verified')
+        self.assertEqual(len(provider.paths), 13)
+        self.assertIn('diagnostic_snapshot_verified', events)
+        self.assertEqual(sum(p.endswith('/subdomain') for p in provider.paths), 2)
+
+    def test_diagnostic_failure_collects_other_endpoint_shapes_without_writes(self):
+        provider = SchemaProvider()
+        original_get = provider.get
+        def failed_get(path):
+            if path.endswith('/subdomain'):
+                provider.paths.append(path)
+                raise Stop('provider_get_failed')
+            return original_get(path)
+        provider.get = failed_get
+        events = []
+        self.assertEqual(diagnose_readonly(provider, lambda name, **fields: events.append(name)), 'diagnostic_stopped')
+        self.assertEqual(len(provider.paths), 13)
+        self.assertEqual(events.count('diagnostic_get_failed'), 2)
+
+    def test_active_deployment_is_first_not_largest_timestamp(self):
+        fixture = SchemaProvider()
+        original_get = fixture.get
+        def get(path):
+            result = original_get(path)
+            if path.endswith('/deployments'):
+                result['result']['deployments'].append(dict(id='later-history', source='wrangler', strategy='percentage',
+                    created_on='2099-01-01T00:00:00Z', versions=[dict(version_id=OTHER, percentage=100)]))
+            return result
+        provider = object.__new__(Provider)
+        provider.get = get
+        check_state(provider.snapshot(), D_VERSION)
 
 
 if __name__ == '__main__': unittest.main(verbosity=2)

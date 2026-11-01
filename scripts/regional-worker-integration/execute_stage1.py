@@ -72,7 +72,7 @@ class Provider:
         allowed = resource == 'workers/domains'
         for worker in ORIGINALS:
             allowed |= resource in [f'workers/domains?hostname={HOSTS[worker]}', f'workers/domains?service={worker}']
-            allowed |= resource in [f'workers/scripts/{worker}/deployments', f'workers/scripts/{worker}/settings']
+            allowed |= resource in [f'workers/scripts/{worker}/{suffix}' for suffix in ['deployments', 'settings', 'subdomain']]
             allowed |= bool(re.fullmatch(f'workers/scripts/{worker}/versions/[a-f0-9-]{{36}}', resource))
         require(allowed, 'get_path_not_allowed')
         request = Request(f'https://api.cloudflare.com/client/v4/accounts/{self.account}/{resource}',
@@ -83,6 +83,15 @@ class Provider:
             with self.opener.open(request, timeout=min(10, remaining)) as response:
                 payload = json.loads(response.read(4 * 1024 * 1024))
             require(payload.get('success') is True, 'provider_get_failed')
+            result = payload.get('result')
+            # All endpoint diagnostics are structure only, never returned values.
+            self.record('response_shape', endpoint=resource.split('?', 1)[0],
+                        result_type=type(result).__name__, result_fields=sorted(result) if isinstance(result, dict) else [],
+                        row_fields=sorted({key for row in result if isinstance(row, dict) for key in row}) if isinstance(result, list) else [],
+                        result_count=len(result) if isinstance(result, list) else None,
+                        nested_fields={key: sorted(value) for key, value in result.items() if isinstance(value, dict)} if isinstance(result, dict) else {},
+                        list_item_fields={key: sorted({field for row in value if isinstance(row, dict) for field in row})
+                                          for key, value in result.items() if isinstance(value, list)} if isinstance(result, dict) else {})
             if resource.startswith('workers/domains'):
                 info = payload.get('result_info')
                 # Structural diagnostics only: no account, token, domain records
@@ -113,11 +122,14 @@ class Provider:
             host = HOSTS[worker]
             matches = [r for r in domains if r.get('hostname') == host or r.get('service') == worker]
             require(len(matches) == 1 and matches[0].get('hostname') == host
-                    and matches[0].get('service') == worker and matches[0].get('enabled') is True
-                    and matches[0].get('previews_enabled') is False, 'domain_mapping_drift')
+                    and matches[0].get('service') == worker
+                    and matches[0].get('environment') == 'production', 'domain_mapping_drift')
+            subdomain = self.get(f'workers/scripts/{worker}/subdomain')['result']
+            require(subdomain.get('enabled') is False and subdomain.get('previews_enabled') is False, 'subdomain_exposure_unverified')
             deployments = self.get(f'workers/scripts/{worker}/deployments')['result']['deployments']
-            require(bool(deployments), 'deployment_missing')
-            latest = max(deployments, key=lambda row: row['created_on'])
+            require(isinstance(deployments, list) and bool(deployments), 'deployment_missing')
+            latest = deployments[0]  # Official endpoint contract: first is actively serving.
+            require(latest.get('strategy') == 'percentage', 'deployment_strategy_unverified')
             versions = latest['versions']
             require(len(versions) == 1 and versions[0]['percentage'] == 100
                     and valid_uuid(versions[0]['version_id']), 'active_version_unverified')
@@ -126,13 +138,16 @@ class Provider:
                 version = self.get(f'workers/scripts/{worker}/versions/{version_id}')['result']
                 require(version.get('id') == version_id, 'retained_version_unavailable')
             settings = self.get(f'workers/scripts/{worker}/settings')['result']
-            state[worker] = dict(version=active, settings=settings)
+            state[worker] = dict(version=active, settings=settings, subdomain=subdomain,
+                                 domain={key: matches[0][key] for key in ['hostname', 'service', 'environment']})
         return state
 
 
 def check_state(state, expected_dongjak, baseline=None):
     for worker, expected in [(DONGJAK, expected_dongjak), (GEUMCHEON, G_VERSION)]:
         require(state[worker]['version'] == expected, 'concurrent_version_change')
+        require(state[worker]['subdomain'].get('enabled') is False
+                and state[worker]['subdomain'].get('previews_enabled') is False, 'subdomain_exposure_unverified')
         settings = state[worker]['settings']
         require(settings.get('compatibility_date') == '2026-10-09'
                 and settings.get('compatibility_flags') == [] and settings.get('logpush') is False
@@ -288,28 +303,73 @@ def execute(provider, runner, probe, record):
         return 'rolled_back'
 
 
+def diagnose_readonly(provider, record):
+    """Collect all allowlisted schema evidence even if one endpoint is unavailable.
+
+    No Wrangler, subprocess or public probe; check the collected GET snapshot only.
+    """
+    cache = {}
+    paths = ['workers/domains']
+    for worker, host in HOSTS.items():
+        paths += [f'workers/domains?hostname={host}', f'workers/domains?service={worker}']
+        paths += [f'workers/scripts/{worker}/{suffix}' for suffix in ['deployments', 'settings', 'subdomain']]
+        paths += [f'workers/scripts/{worker}/versions/{ORIGINALS[worker]}']
+    for path in paths:
+        try:
+            cache[path] = provider.get(path)
+            if path.endswith('/deployments'):
+                worker = path.split('/')[2]
+                rows = cache[path]['result']['deployments']
+                for entry in rows[0]['versions'] if rows else []:
+                    version = entry.get('version_id')
+                    if valid_uuid(version) and version != ORIGINALS[worker]:
+                        extra = f'workers/scripts/{worker}/versions/{version}'
+                        cache[extra] = provider.get(extra)
+        except Exception:
+            record('diagnostic_get_failed', endpoint=path.split('?', 1)[0])
+    cached_provider = object.__new__(Provider)
+    cached_provider.get = lambda path: cache[path]
+    try:
+        snapshot = cached_provider.snapshot()
+        check_state(snapshot, D_VERSION)
+        record('diagnostic_snapshot_verified')
+        return 'diagnostic_verified'
+    except Stop as error:
+        record('diagnostic_snapshot_stopped', reason=str(error))
+    except Exception:
+        record('diagnostic_snapshot_stopped', reason='missing_or_unexpected_schema')
+    return 'diagnostic_stopped'
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--execute-reviewed-stage1', action='store_true')
-    parser.add_argument('--bundle', type=Path, required=True)
-    parser.add_argument('--wrangler', type=Path, required=True)
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--execute-reviewed-stage1', action='store_true')
+    mode.add_argument('--diagnose-readonly', action='store_true')
+    parser.add_argument('--bundle', type=Path)
+    parser.add_argument('--wrangler', type=Path)
     parser.add_argument('--report', type=Path, required=True)
-    parser.add_argument('--remaining-requests', type=int, required=True)
-    parser.add_argument('--usage-observed-at', required=True)
+    parser.add_argument('--remaining-requests', type=int)
+    parser.add_argument('--usage-observed-at')
     args = parser.parse_args()
     report = {'events': [], 'status': 'not_started'}
     def record(event, **fields):
         report['events'].append(dict(event=event, utc=datetime.now(timezone.utc).isoformat(), **fields))
         args.report.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     try:
-        require(args.execute_reviewed_stage1 and os.environ.get('GITHUB_ACTIONS') == 'true'
+        require((args.execute_reviewed_stage1 or args.diagnose_readonly) and os.environ.get('GITHUB_ACTIONS') == 'true'
                 and os.environ.get('GITHUB_REPOSITORY') == 'joseungil-kr/fwith-site-factory'
                 and os.environ.get('GITHUB_RUN_ATTEMPT') == '1', 'execution_not_armed')
-        observed = datetime.fromisoformat(args.usage_observed_at.replace('Z', '+00:00'))
-        age = (datetime.now(timezone.utc) - observed).total_seconds()
-        require(0 <= age <= 900 and 20000 <= args.remaining_requests <= 100000, 'capacity_observation_stale_or_low')
-        verify_bundle(args.bundle)
-        report['status'] = execute(Provider(record), Wrangler(args.wrangler, args.bundle), public_snapshot, record)
+        if args.diagnose_readonly:
+            report['status'] = diagnose_readonly(Provider(record), record)
+        else:
+            require(args.bundle is not None and args.wrangler is not None and args.usage_observed_at is not None
+                    and args.remaining_requests is not None, 'execution_inputs_missing')
+            observed = datetime.fromisoformat(args.usage_observed_at.replace('Z', '+00:00'))
+            age = (datetime.now(timezone.utc) - observed).total_seconds()
+            require(0 <= age <= 900 and 20000 <= args.remaining_requests <= 100000, 'capacity_observation_stale_or_low')
+            verify_bundle(args.bundle)
+            report['status'] = execute(Provider(record), Wrangler(args.wrangler, args.bundle), public_snapshot, record)
     except Stop as error:
         report['status'] = 'stopped'
         report['reason'] = str(error)  # only our fixed codes, never provider bodies
@@ -318,7 +378,7 @@ def main():
         report['reason'] = 'unexpected_error_redacted'
     record('finished')
     print(json.dumps({'status': report['status']}))
-    return 0 if report['status'] == 'pilot_verified' else 1
+    return 0 if report['status'] in ['pilot_verified', 'diagnostic_verified'] else 1
 
 
 if __name__ == '__main__':
