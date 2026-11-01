@@ -64,3 +64,15 @@ Stage 1 must pass its immediate checks and agreed observation window. Refresh bo
 No further search for a nonexistent source-SHA API field is required. The unresolved items are execution readiness and observable edge behavior, not a demand for stronger provenance than the API supplies.
 
 The accompanying recovery_plan.py is an offline one-action-at-a-time guard, not a provider executor. Four tests passed: moved-domain ordering, binding/public verification separation, already-restored verification, and stale/unknown/drift refusal. A live executor is not armed. Its current recovery logic covers the combined two-site state; the stage-1-only rollback command above does not depend on a domain mutation.
+
+## Independent review fix and stage-1 preparation
+
+Independent review at 06:13:40 UTC reproduced a null-active-version bug. Fixed: missing/empty/invalid/unexpected current UUID stops all write plans before any domain action. A rollback plan requires the exact expected pilot UUID recorded after deployment, both deployments at 100%, and expected hostname ownership. Original UUID requires verification only. Tests now pass 6/6 recovery cases and 2/2 stage-1 command cases, including null, empty, unknown, third-party UUID, expected pilot and original UUID.
+
+`stage1_commands.py` prepares fixed argv using installed Wrangler 4.148.0, the exact Dongjak Worker and original UUID. It verifies the local configuration and emits commands only; it never executes a provider command or reads credentials. Configuration is at sibling `regional-pilot-bundle/wrangler.stage1.json`; local bundle/assets are unchanged. No domain routes are added, workers.dev and previews remain disabled. Deploy is allowed only from the exact original UUID; rollback only from the recorded candidate. The test UUID is a fixture, never a deploy target. The eventual executor must serialize publishers and perform immediate live readback; local JSON is not a lock and Wrangler offers no compare-and-swap guarantee.
+
+Helper baseline file lengths and SHA-256 were independently checked against readiness-review.json (7/7). Public Dongjak /404 is 200 and genuinely missing path 404, both with retained 404.html bytes; robots matches the previous capture. The earlier /404.html 307 to /404 remains valid. Account usage observed approximately 06:10–06:11 UTC was 2,739/100,000, leaving 97,261; per-site static demand remains unavailable. These are timestamped observations, not perpetual readiness.
+
+No deployment, rollback, domain update or secret/permission change was performed. Push remains held after the earlier automatic-review rejection.
+
+Pinned Wrangler 4.148.0 deploy --dry-run completed successfully without upload. Its console said 54 files; independent filesystem inspection finds 54 total entries but only 37 regular files (36 assets plus _headers). All 36 region asset hashes still match the retained contracts. Do not report the console entry count as uploaded file count. No provider upload or live asset inventory was obtained by this dry-run.

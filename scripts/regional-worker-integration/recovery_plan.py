@@ -5,6 +5,7 @@ Custom Domain API payload must be supplied from private preflight evidence.
 """
 import argparse
 import json
+from uuid import UUID
 
 DONGJAK = 'seoul-dongjak-flower-guide'
 GEUMCHEON = 'seoul-geumcheon-flower-guide'
@@ -12,9 +13,24 @@ D_VERSION = '3720873d-5c57-4c0f-a25c-80dba048ddd1'
 G_VERSION = 'c3d0ea60-ca39-47b6-a119-e692d66a1658'
 
 
+def valid_uuid(value):
+    try:
+        return isinstance(value, str) and str(UUID(value)) == value
+    except (ValueError, TypeError, AttributeError):
+        return False
+
+
 def next_action(state):
     if state.get('fresh_readback') is not True:
         return {'action': 'STOP', 'reason': 'Fresh domain and deployment readback required; unknown outcomes cannot be retried blindly.'}
+    current = state.get('dongjak_version')
+    pilot = state.get('expected_pilot_uuid')
+    if not valid_uuid(current) or (current != D_VERSION and (not valid_uuid(pilot) or pilot == D_VERSION or current != pilot)):
+        return {'action': 'STOP', 'reason': 'Unknown or conflicting active UUID; require original or exact recorded pilot UUID.'}
+    if state.get('dongjak_percentage') != 100 or state.get('geumcheon_percentage') != 100:
+        return {'action': 'STOP', 'reason': 'Expected single-version deployment at 100%; split or unknown traffic state.'}
+    if state.get('dongjak_service') != DONGJAK:
+        return {'action': 'STOP', 'reason': 'Unexpected Dongjak hostname ownership.'}
     if state.get('geumcheon_version') != G_VERSION:
         return {'action': 'STOP', 'reason': 'Original Geumcheon Worker drifted; resolve before reattaching traffic.'}
     owner = state.get('geumcheon_service')
