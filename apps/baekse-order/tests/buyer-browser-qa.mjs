@@ -76,7 +76,28 @@ try{
  assert.equal(after.products[0].stock,0,'Approved invoice should debit stock');
  assert.equal(after.buyer_dashboard.pending_count,0);
  await page.setViewportSize({width:1440,height:900});
+ const snapshotBefore=await page.evaluate(async()=>({
+   state:await (await fetch('/api/state')).json(),
+   exportData:await (await fetch('/api/export')).json()
+ }));
+ await page.locator('#bill-delivery').getByText('배송완료 처리').waitFor();
+ assert.ok((await page.locator('#bill-sheet').innerText()).includes('출고완료(배송전)'));
+ await page.locator('#bill-delivery').click();
+ await page.locator('#bill-delivery').getByText('배송전으로 변경').waitFor();
+ assert.ok((await page.locator('#bill-sheet').innerText()).includes('출고완료(배송완료)'));
+ const snapshotDelivered=await page.evaluate(async()=>({
+   state:await (await fetch('/api/state')).json(),
+   exportData:await (await fetch('/api/export')).json()
+ }));
+ assert.deepEqual(snapshotDelivered.state.metrics,snapshotBefore.state.metrics,'Delivery should not change sales dashboard');
+ assert.deepEqual(snapshotDelivered.exportData.movements,snapshotBefore.exportData.movements,'Delivery cannot affect inventory movements');
+ assert.deepEqual(snapshotDelivered.exportData.lines,snapshotBefore.exportData.lines,'Delivery cannot change sold items');
+ assert.deepEqual(snapshotDelivered.state.products,snapshotBefore.state.products,'Delivery cannot affect stock counts');
+ await page.screenshot({path:path.join(out,'admin-delivered-invoice-1440.png'),fullPage:true});
+ await page.locator('#bill-delivery').click();
+ await page.locator('#bill-delivery').getByText('배송완료 처리').waitFor();
+ assert.ok((await page.locator('#bill-sheet').innerText()).includes('출고완료(배송전)'));
  await page.screenshot({path:path.join(out,'admin-issued-invoice-1440.png'),fullPage:true});
  assert.deepEqual(errors,[]);
- console.log('BUYER_BROWSER_QA_PASS: mobile 390, desktop 1440, client-only link, 20-unit order with zero stock, admin shortage, guarded approval, invoice and stock');
+ console.log('BUYER_BROWSER_QA_PASS: mobile 390, desktop 1440, client-only link, 20-unit order with zero stock, admin shortage, guarded approval, invoice, delivery-toggle no-stock-or-sales mutation');
 }finally{await browser.close()}
