@@ -59,7 +59,10 @@ try{
  assert.equal(before.products[0].stock,0,'Pending buyer request may not debit stock');
  await page.screenshot({path:path.join(out,'admin-shortage-390.png'),fullPage:true});
  await page.locator('#request-list [data-request-fulfill]').first().click();
- assert.ok(dialogs.some(x=>x.includes('재고 부족')),'Insufficient stock should block invoice fulfillment');
+ for(let i=0;i<30&&!dialogs.some(x=>x.includes('재고 부족'));i++){
+   await new Promise(resolve=>setTimeout(resolve,150));
+ }
+ assert.ok(dialogs.some(x=>x.includes('재고 부족')),'Insufficient stock must block approval. Dialogs: '+JSON.stringify(dialogs));
  await page.locator('[data-tab=stock]').click();
  await page.locator('#stock-product').selectOption('1');
  await page.locator('#stock-qty').fill('20');
