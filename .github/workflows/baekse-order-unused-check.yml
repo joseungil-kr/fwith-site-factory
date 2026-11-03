@@ -1,0 +1,63 @@
+name: Baekse order verify superseded Hallflower preview is unreferenced
+on:
+  push:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths: ['.github/workflows/baekse-order-unused-check.yml']
+permissions: {contents: read}
+jobs:
+  read-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      ORDER_PASS: ${{ secrets.BAEKSE_ORDER_ADMIN_PASSWORD }}
+    steps:
+      - name: Check account-level Worker references and 7-day invocation metrics
+        run: |
+          python3 - <<'PY'
+          import os,json,urllib.request,urllib.error,datetime
+          a=os.getenv('CF_ACCOUNT','');t=os.getenv('CF_TOKEN','')
+          assert a and t, 'Missing existing Cloudflare account settings'
+          print('ADMIN_SECRET_PRESENT',bool(os.getenv('ORDER_PASS')),'LENGTH_OK',len(os.getenv('ORDER_PASS',''))>=12)
+          def get(url,data=None):
+            body=json.dumps(data).encode() if data is not None else None
+            req=urllib.request.Request(url,data=body,headers={'Authorization':'Bearer '+t,'Accept':'application/json','Content-Type':'application/json'})
+            try:
+              with urllib.request.urlopen(req,timeout=30) as h:
+                j=json.load(h)
+                print('HTTP',req.full_url.replace(a,'ACCOUNT').split('?')[0],h.status,'success',j.get('success'),'errors',[(e.get('code'),e.get('message','')[:100]) for e in (j.get('errors') or [])])
+                return j
+            except urllib.error.HTTPError as e:
+              print('HTTP',req.full_url.replace(a,'ACCOUNT').split('?')[0],e.code,'UNREADABLE')
+              return None
+          root='https://api.cloudflare.com/client/v4'
+          x=get(root+'/accounts/'+a+'/workers/workers?per_page=100')
+          if x and isinstance(x.get('result'),list):
+            target=next((v for v in x['result'] if v.get('name')=='sfv53-hallflower'),None)
+            print('TARGET_FROM_WORKERS_LIST',target and {k:target.get(k) for k in ['id','name','created_on']})
+            if target:
+              d=get(root+'/accounts/'+a+'/workers/workers/'+target['id'])
+              if d:
+                obj=d['result'];refs=obj.get('references') or {}
+                print('TARGET_REFERENCES', {k: len(v) if isinstance(v,list) else 'unknown' for k,v in refs.items()})
+                print('TARGET_SUBDOMAIN',obj.get('subdomain'))
+          else:print('WORKERS_DETAILS_UNAVAILABLE')
+          end=datetime.datetime.now(datetime.timezone.utc)
+          start=end-datetime.timedelta(days=7)
+          query="""query Q($accountTag: string!, $scriptName: string!, $start: Time!, $end: Time!) {
+            viewer { accounts(filter: { accountTag: $accountTag }) {
+              workersInvocationsAdaptive(limit: 1, filter: {scriptName:$scriptName, datetime_geq:$start, datetime_leq:$end}) {
+                sum { requests errors }
+              }
+            } }
+          }"""
+          m=get(root+'/graphql',{'query':query,'variables':{'accountTag':a,'scriptName':'sfv53-hallflower','start':start.strftime('%Y-%m-%dT%H:%M:%SZ'),'end':end.strftime('%Y-%m-%dT%H:%M:%SZ')}})
+          if m:
+            try:
+              rows=m['data']['viewer']['accounts'][0]['workersInvocationsAdaptive']
+              print('LAST_7D_INVOCATIONS',rows)
+            except Exception as e:
+              print('ANALYTICS_UNREADABLE',str(m.get('errors',''))[:500])
+          print('UNUSED_CHECK_COMPLETE')
+          PY
