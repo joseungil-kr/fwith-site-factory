@@ -1,0 +1,21 @@
+{
+  "name": "funeralflower-home-preview",
+  "main": "src.js",
+  "compatibility_date": "2026-10-21",
+  "workers_dev": true,
+  "preview_urls": false,
+  "keep_vars": false,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  "durable_objects": {
+    "bindings": [{ "name": "ORDER_DB", "class_name": "OrderDatabase" }]
+  },
+  "migrations": [
+    { "tag": "baekse-order-v1-20261103", "new_sqlite_classes": ["OrderDatabase"] }
+  ]
+}
