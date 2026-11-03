@@ -49,6 +49,12 @@ jobs:
               req=urllib.request.Request('https://'+host+'/',headers={'User-Agent':ua})
               with urllib.request.urlopen(req,timeout=15) as r: print('UA_PROBE',label,r.status)
             except urllib.error.HTTPError as e: print('UA_PROBE',label,e.code)
+          for label,ua in [('python-default','Python-urllib/3.12'),('browser-style','Mozilla/5.0 (compatible; deployment verifier)')]:
+            try:
+              req=urllib.request.Request('https://'+host+'/api/login',data=b'{"password":"invalid-smoke-test"}',headers={'Content-Type':'application/json','Origin':'https://'+host,'User-Agent':ua},method='POST')
+              with urllib.request.urlopen(req,timeout=15) as r:print('LOGIN_POST_PROBE',label,r.status)
+            except urllib.error.HTTPError as e:
+              print('LOGIN_POST_PROBE',label,e.code,'BODY',e.read(120).decode('utf-8','replace'))
           for p in ('/','/index.html','/api/session','/api/state','/app.js'):
             u='https://'+host+p
             try:
