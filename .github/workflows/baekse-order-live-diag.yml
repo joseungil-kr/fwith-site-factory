@@ -1,0 +1,29 @@
+name: Baekse live Worker HTTP diagnostics read only
+on:
+  push:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths: ['.github/workflows/baekse-order-live-diag.yml']
+permissions: {contents: read}
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Read Worker hostname status and HTML hints
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.error,socket
+          host='funeralflower-home-preview.joseungil.workers.dev'
+          try:print('IP_LOOKUP',host,[x[4][0] for x in socket.getaddrinfo(host,443)][:2])
+          except Exception as e:print('DNS_ERROR',str(e)[:200])
+          for p in ('/','/index.html','/api/session','/api/state','/app.js'):
+            u='https://'+host+p
+            try:
+              req=urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0 (compatible; deployment verifier)'})
+              with urllib.request.urlopen(req,timeout=15) as r:
+                body=r.read(600)
+                print('HTTP_READ',p,r.status,'CONTENT_TYPE',r.headers.get('Content-Type'),'NOINDEX',r.headers.get('X-Robots-Tag'),'LENGTH_FIRST',len(body),'HAS_BAEKSE',b'\xeb\xb0\xb1\xec\x84\xb8' in body,'PREFIX',body[:140].decode('utf-8','replace'))
+            except urllib.error.HTTPError as e:
+              print('HTTP_READ',p,'ERROR_STATUS',e.code,'BODY_PREFIX',e.read(180).decode('utf-8','replace'))
+            except Exception as e: print('HTTP_READ',p,'NETWORK_ERROR',type(e).__name__,str(e)[:150])
+          PY
