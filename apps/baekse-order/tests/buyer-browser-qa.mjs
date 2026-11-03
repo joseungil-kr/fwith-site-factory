@@ -52,6 +52,7 @@ try{
  await page.locator('[data-page="order"]:not(.hidden)').waitFor();
  assert.ok(await page.locator('[data-page="order"]').isVisible(),'Mobile shortcut navigates to order registration');
  await selectTab('home');
+ assert.ok(await page.locator('[data-page="home"]').isVisible(),'Navigation should return to dashboard');
  assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주 요청(0)','Initially no pending buyer requests');
  await selectTab('clients');
  await page.locator('[data-client-edit]').first().click();
