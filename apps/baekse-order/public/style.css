@@ -135,3 +135,196 @@
   .mobile-shortcuts{padding-left:10px;padding-right:10px}
   .nav.mobile-expanded{padding-left:10px;padding-right:10px}
 }
+
+
+/* Baeksefood modern SaaS design system: appearance only, existing print flow is unchanged. */
+@media screen{
+ :root{--bk-bg:#f5f7fa;--bk-white:#fff;--bk-stroke:#e5ebef;--bk-ink:#1a3035;--bk-muted:#76868d;--bk-green:#0b7668;--bk-green-soft:#e8f5f0;--bk-amber:#ad6a0d;--bk-radius:13px}
+ body{background:var(--bk-bg);color:var(--bk-ink);-webkit-font-smoothing:antialiased}
+ #app .top{background:#fff;border-bottom:1px solid var(--bk-stroke);min-height:72px}
+ #app .brand{display:flex;align-items:center;gap:10px}
+ #app .brand-emblem{width:35px;height:35px;flex:0 0 35px;display:grid;place-items:center;background:var(--bk-green);color:#fff;border-radius:11px;font-weight:850;font-size:18px}
+ #app .brand-wordmark{display:flex;flex-direction:column;gap:2px;min-width:0}
+ #app .brand b{font-size:20px;line-height:1.2;letter-spacing:-.7px;color:#193a35}
+ #app .brand span:not(.brand-emblem){font-size:10px;color:#8e9ba0;letter-spacing:.3px}
+ #app .nav{background:#fff;border-bottom:1px solid var(--bk-stroke);padding-top:9px;padding-bottom:9px;gap:4px}
+ #app .nav button{font-size:12px;font-weight:650;border-radius:8px;color:#60767b}
+ #app .nav button.selected{background:var(--bk-green-soft);color:var(--bk-green)}
+ #app main{max-width:1260px;padding-top:30px}
+ #app .page-head h1{font-size:27px;font-weight:800;letter-spacing:-1px;color:var(--bk-ink)}
+ #app .page-head p{font-size:13px;line-height:1.6}
+ #app .screen-eyebrow{font-size:10px;color:var(--bk-green);font-weight:850;letter-spacing:1.35px;margin:0 0 7px}
+ #app .page-head-modern{margin-bottom:23px}
+ #app .panel{background:#fff;border:1px solid var(--bk-stroke);box-shadow:0 4px 16px rgba(21,54,65,.03);border-radius:var(--bk-radius);padding:21px}
+ #app .panel h2,.request-workspace h2{font-size:16px;letter-spacing:-.35px;font-weight:800;color:var(--bk-ink)}
+ #app .panel-title{margin-bottom:16px}
+ #app .panel .linkbtn{padding:5px 2px;color:var(--bk-green);font-size:11px}
+ #app button{transition:background-color .14s ease,border-color .14s ease}
+ #app .primary{background:var(--bk-green);border-color:var(--bk-green);font-weight:750}
+ #app .primary:hover{background:#08685c}
+ #app .secondary{background:#fff;border:1px solid #dce6e6;color:#42665f}
+ #app .secondary:hover{background:#f2faf6;border-color:#9dc9b7}
+ #app input:not([type="checkbox"]),#app select,#app textarea{border-color:#dce5e7}
+ #app .table-overflow{max-width:100%;border-radius:9px}
+ #app table{font-size:12px}
+ #app table th{padding:12px 10px;background:#f6f8fa;color:#7d9094;font-weight:700}
+ #app table td{padding:13px 10px;border-bottom:1px solid #ecf1f3}
+ #app .hint,.page-head p{color:var(--bk-muted)}
+ #app .price-note{font-size:11px;color:#89989a}
+ #app .pill{font-weight:750}
+ #app .metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}
+ #app .metrics .metric{border:1px solid var(--bk-stroke);border-radius:12px;min-width:0;padding:19px 20px;box-shadow:0 2px 9px rgba(21,54,65,.025)}
+ #app .metrics .metric small{font-size:12px;font-weight:650;color:#74878c}
+ #app .metrics .metric small::before{content:"↗";display:inline-grid;place-items:center;width:25px;height:25px;margin-right:8px;background:#eaf6f1;color:var(--bk-green);border-radius:7px;font-size:13px;font-weight:800}
+ #app .metrics .metric:nth-child(2) small::before,#app .metrics .metric:nth-child(4) small::before{content:"₩"}
+ #app .metrics .metric:nth-child(3) small::before{content:"▤"}
+ #app .metrics .metric:nth-child(5) small::before{content:"!";background:#fff1df;color:#ae6b0f}
+ #app .metrics .metric:nth-child(6) small::before{content:"◎"}
+ #app .metrics .metric b{color:var(--bk-ink);font-size:clamp(17px,1.75vw,25px);font-weight:850;letter-spacing:-.65px;margin-top:15px;overflow-wrap:anywhere;white-space:normal}
+ #app .metrics .metric-orange{background:#fffaf3;border-color:#f1dfc3}
+ #app .metrics .metric-orange b{color:#a76513}
+ #app .dashboard-urgent-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:14px}
+ #app .dashboard-urgent-grid>.panel{min-width:0}
+ #app .dashboard-urgent-grid .buyer-kpi{background:#eff7f3;border:1px solid #e5f0eb;padding:11px 14px}
+ #app .dashboard-urgent-grid .buyer-kpi strong{color:var(--bk-green);font-size:22px}
+ #app .dashboard-urgent-grid .buyer-kpi.shortage-alert{background:#fff4e6;border-color:#f6e5cf}
+ #app .dashboard-urgent-grid .buyer-kpi.shortage-alert strong{color:#ad6a0d}
+ #app .dashboard-urgent-grid .buyer-kpi span{font-size:11px}
+ #app .dashboard-detail-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:14px}
+ #app .dashboard-secondary-grid{grid-template-columns:1.15fr 1fr}
+ #app .dashboard-detail-grid>.panel{min-width:0}
+ #app .dashboard-empty{padding:20px 10px;text-align:center;color:#8e9da3;font-size:12px}
+ #app .dashboard-request-item{display:flex;justify-content:space-between;align-items:center;gap:9px;border-bottom:1px solid #edf1f3;padding:13px 0}
+ #app .dashboard-request-item:last-child{border-bottom:0}
+ #app .dashboard-request-name{display:flex;align-items:center;gap:10px;min-width:0}
+ #app .dashboard-request-avatar,.request-avatar{background:#e5f4ef;color:#247b68;border-radius:9px;width:36px;height:36px;flex:0 0 36px;display:grid;place-items:center;font-size:12px;font-weight:850}
+ #app .dashboard-request-name strong{font-size:12px;display:block;color:#30464b}
+ #app .dashboard-request-name span{font-size:10px;color:#90a0a4;display:block;margin-top:4px}
+ #app .dashboard-shortage-item{padding:12px 0;border-bottom:1px solid #eff2f3}
+ #app .dashboard-shortage-item:last-child{border-bottom:0}
+ #app .dashboard-shortage-line{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px}
+ #app .dashboard-shortage-line b{font-size:12px}
+ #app .dashboard-shortage-value{font-size:11px;font-weight:800;color:#ae6215}
+ #app .dashboard-shortage-progress{height:7px;background:#edf1f3;border-radius:7px;overflow:hidden;margin-top:8px}
+ #app .dashboard-shortage-progress>span{display:block;height:100%;background:#d7a25c;border-radius:7px}
+ #app .dashboard-shortage-help{font-size:10px;color:#8d9ea4;margin-top:6px}
+ #app .request-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:18px}
+ #app .request-overview-card,#app .receivable-stat{background:#fff;border:1px solid var(--bk-stroke);border-radius:11px;padding:17px 20px;display:flex;align-items:center;gap:12px;min-width:0}
+ #app .request-overview-card strong,#app .receivable-stat strong{font-size:23px;font-weight:850;color:#24413d;white-space:nowrap}
+ #app .request-overview-card span,#app .receivable-stat span{font-size:12px;color:#819297}
+ #app .request-overview-card.warn{background:#fff9f1;border-color:#f2e6d3}
+ #app .request-overview-card.warn strong{color:#a96b17}
+ #app .requests-shortages .buyer-shortage-grid{margin-top:14px}
+ #app .request-workspace{min-width:0;margin-bottom:25px}
+ #app .request-workspace-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:13px}
+ #app .request-workspace-header h2{margin:0 0 3px}
+ #app .request-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+ #app .request-filter-tabs{display:inline-flex;align-items:center;gap:4px;background:#ebeff1;padding:4px;border-radius:9px}
+ #app .request-filter-tabs button{font-size:11px;background:transparent;color:#71868b;padding:9px 13px;min-height:35px;border:0;white-space:nowrap}
+ #app .request-filter-tabs button.active{background:#fff;color:var(--bk-green);box-shadow:0 2px 5px rgba(20,50,50,.08)}
+ #app .request-search-label{margin:0;max-width:255px;flex:1}
+ #app .request-search-label input{font-size:12px;margin:0;height:42px;min-height:42px}
+ #app .visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+ #app .buyer-request-card{border:1px solid var(--bk-stroke);border-radius:12px;padding:20px;margin:12px 0;background:#fff;box-shadow:0 2px 10px rgba(21,54,65,.02)}
+ #app .buyer-request-head{margin-bottom:14px}
+ #app .buyer-request-head div{min-width:0}
+ #app .buyer-request-head strong{font-size:15px;letter-spacing:-.3px}
+ #app .buyer-request-head span:not(.request-state){font-size:11px}
+ #app .buyer-request-identity{display:flex!important;flex-direction:row!important;align-items:center!important;gap:11px!important}
+ #app .buyer-request-identity-details{display:flex;flex-direction:column;gap:4px;min-width:0}
+ #app .request-state{font-size:10px;background:#e7f6ef;color:#128269}
+ #app .request-state.state-waiting{background:#fff1dc;color:#a66612}
+ #app .buyer-request-items{list-style:none;padding:0;margin:0}
+ #app .buyer-request-items-header,#app .buyer-request-item{display:grid;grid-template-columns:minmax(100px,1.55fr) minmax(40px,.45fr) minmax(50px,.55fr) minmax(80px,.8fr);gap:6px;align-items:center}
+ #app .buyer-request-items-header{font-size:11px;color:#899aa0;background:#f5f8f8;border-radius:8px;padding:10px 12px;font-weight:700}
+ #app .buyer-request-item{font-size:12px;border-bottom:1px solid #eef2f3;padding:12px}
+ #app .buyer-request-item:last-child{border-bottom:0}
+ #app .buyer-request-item span:last-child,#app .buyer-request-items-header span:last-child{text-align:right}
+ #app .buyer-request-item .request-item-name{font-weight:750;color:#354e50;overflow-wrap:anywhere}
+ #app .buyer-request-item .request-item-low{font-weight:800;color:#b75f30}
+ #app .buyer-request-sum{font-size:12px;color:#7d8e92;display:flex;justify-content:space-between;align-items:center;margin:13px 0}
+ #app .buyer-request-sum b{font-size:17px;color:#2a4544}
+ #app .buyer-request-card .buyer-approval-controls{margin-top:14px}
+ #app .buyer-request-card .action-row{margin-top:14px;border-top:1px solid #eef2f3;padding-top:13px}
+ #app .buyer-request-card .primary{min-width:98px}
+ #app .buyer-request-note{line-height:1.5}
+ #app .buyer-shortage-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+ #app .shortage-item{border-radius:9px;background:#fff9ed;border-color:#f1e2c9}
+ #app .shortage-item strong{font-size:13px}
+ #app .receivables-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:17px}
+ #app .receivable-stat{display:flex;flex-direction:column;align-items:flex-start;gap:5px}
+ #app .receivable-stat strong{font-size:24px;color:var(--bk-green)}
+ #app .receivable-stat.warn strong{color:#ae711a}
+ #app .receivables-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:15px;align-items:start}
+ #app .receivables-layout>.panel{min-width:0}
+ #app .receivables-directory .table-overflow{overflow-x:auto}
+ #app .receivables-directory th,#app .receivables-directory td{font-size:11px}
+ #app .receivables-directory td:last-child{font-weight:800}
+ #app .receivables-directory [data-ar-client]{padding:7px 10px;font-size:11px}
+ #app .receivables-directory tr.highlighted td{background:#f1f9f5}
+ #app .panel-overline{font-size:9px;color:#92a2a7;font-weight:800;letter-spacing:1px}
+ #app .account-select-label{margin:6px 0 16px;color:#68818a}
+ #app .ar-current{background:#f0f8f4;border-color:#e0efe8;padding:17px;border-radius:11px}
+ #app .ar-current-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+ #app .ar-current-stats>div:first-child{grid-column:1/-1;border-bottom:1px solid #d8e9df;padding-bottom:10px}
+ #app .ar-current-stats strong{color:var(--bk-green);font-size:26px}
+ #app .ar-current-stats span{font-size:11px}
+ #app .ar-current-stats b{font-size:14px}
+ #app .ar-form h2{font-size:14px}
+ #app #ar-payment-history{margin-top:21px}
+ #app #ar-payment-history .table-overflow{overflow-x:auto}
+ #app #ar-payment-history table{font-size:11px}
+ #app .buyer-kpi{border-radius:9px}
+ #app .status-note{font-size:11px;color:#73868b}
+}
+@media screen and (max-width:1080px){
+ #app .dashboard-urgent-grid,#app .dashboard-detail-grid{grid-template-columns:1fr 1fr}
+ #app .receivables-layout{grid-template-columns:1fr}
+ #app .metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media screen and (max-width:768px){
+ #app main{padding:19px 13px 34px}
+ #app .page-head h1{font-size:22px}
+ #app .page-head-modern{margin-bottom:18px}
+ #app .page-head-modern>.primary,#app .page-head-modern>.secondary{font-size:11px;padding:9px 11px}
+ #app .panel{padding:15px}
+ #app .panel h2{font-size:14px}
+ #app .metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ #app .metrics .metric{padding:13px;min-width:0}
+ #app .metrics .metric small{font-size:10px}
+ #app .metrics .metric small::before{width:22px;height:22px;margin-right:5px}
+ #app .metrics .metric b{font-size:clamp(16px,4.4vw,20px);line-height:1.3;margin-top:9px}
+ #app .dashboard-urgent-grid,#app .dashboard-detail-grid{grid-template-columns:1fr;gap:0}
+ #app .dashboard-urgent-grid .buyer-kpi{flex:1;min-width:0;flex-direction:column;align-items:flex-start;gap:5px}
+ #app .dashboard-urgent-grid .buyer-kpi strong{font-size:20px}
+ #app .buyer-dashboard-row{align-items:stretch}
+ #app .request-overview{gap:7px}
+ #app .request-overview-card{flex-direction:column;align-items:flex-start;gap:4px;padding:10px}
+ #app .request-overview-card strong{font-size:19px}
+ #app .request-overview-card span{font-size:10px}
+ #app .request-toolbar{flex-wrap:wrap}
+ #app .request-filter-tabs{width:100%;justify-content:space-between}
+ #app .request-filter-tabs button{flex:1;padding:8px 6px;min-width:0}
+ #app .request-search-label{max-width:none;width:100%;flex:1 1 100%}
+ #app .buyer-shortage-grid{grid-template-columns:1fr}
+ #app .buyer-request-card{padding:14px}
+ #app .buyer-request-items-header,#app .buyer-request-item{grid-template-columns:minmax(0,1.5fr) minmax(35px,.45fr) minmax(80px,.9fr);gap:5px}
+ #app .buyer-request-items-header span:nth-child(3),#app .buyer-request-item span:nth-child(3){display:none}
+ #app .buyer-request-items-header,#app .buyer-request-item{font-size:10px;padding:10px 5px}
+ #app .buyer-request-head strong{font-size:13px}
+ #app .buyer-request-card .action-row{justify-content:stretch}
+ #app .buyer-request-card .action-row button{flex:1}
+ #app .receivables-overview{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ #app .receivables-overview .receivable-stat:last-child{grid-column:1/-1}
+ #app .receivable-stat{padding:13px}
+ #app .receivable-stat strong{font-size:20px}
+ #app .receivables-layout{grid-template-columns:1fr;gap:0}
+ #app .dashboard-request-item{padding:11px 0}
+ #app .panel-title h2{max-width:65%}
+}
+@media screen and (max-width:400px){
+ #app .request-overview-card strong{font-size:17px}
+ #app .metrics .metric b{font-size:16px}
+ #app .buyer-request-identity{gap:8px!important}
+ #app .request-avatar{width:32px;height:32px;flex-basis:32px}
+}
