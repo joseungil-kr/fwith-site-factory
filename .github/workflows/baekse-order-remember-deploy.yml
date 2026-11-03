@@ -34,7 +34,7 @@ jobs:
           node --check src.js
           node --check public/app.js
           npm test
-          test "\${#BAEKSE_ORDER_ADMIN_PASSWORD}" -ge 12 || { echo 'GitHub secret BAEKSE_ORDER_ADMIN_PASSWORD is missing or too short'; exit 3; }
+          test "${#BAEKSE_ORDER_ADMIN_PASSWORD}" -ge 12 || { echo 'GitHub secret BAEKSE_ORDER_ADMIN_PASSWORD is missing or too short'; exit 3; }
           test -n "$CLOUDFLARE_ACCOUNT_ID"
           test -n "$CLOUDFLARE_API_TOKEN"
           node -e 'const j=JSON.parse(require("fs").readFileSync("wrangler.reused.jsonc","utf8")); if(j.name!=="funeralflower-home-preview"||j.keep_vars!==true||j.durable_objects.bindings[0].class_name!=="OrderDatabase")process.exit(1);'
