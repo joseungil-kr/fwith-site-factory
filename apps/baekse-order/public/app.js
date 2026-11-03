@@ -15,7 +15,7 @@ function setMobileMenuOpen(open){
  $('#mobile-menu-glyph').textContent=expanded?'×':'☰';
 }
 function closeMobileMenu(){setMobileMenuOpen(false)}
-function show(tab){closeMobileMenu();$('[data-page]').forEach(x=>x.classList.toggle('hidden',x.dataset.page!==tab));$$('[data-tab]').forEach(x=>x.classList.toggle('selected',x.dataset.tab===tab));window.scrollTo(0,0);if(tab==='requests')loadBuyerRequests().catch(e=>$('#request-list').textContent=e.message);if(tab==='receivables')loadReceivableDetail().catch(e=>alert(e.message))}
+function show(tab){closeMobileMenu();$$('[data-page]').forEach(x=>x.classList.toggle('hidden',x.dataset.page!==tab));$$('[data-tab]').forEach(x=>x.classList.toggle('selected',x.dataset.tab===tab));window.scrollTo(0,0);if(tab==='requests')loadBuyerRequests().catch(e=>$('#request-list').textContent=e.message);if(tab==='receivables')loadReceivableDetail().catch(e=>alert(e.message))}
 async function refresh(){state=await api('state');render()}
 function table(headers,rows){return `<div class="table-overflow"><table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')||`<tr><td colspan="${headers.length}">등록 내역이 없습니다.</td></tr>`}</tbody></table></div>`}
 function renderRequestNavCount(){

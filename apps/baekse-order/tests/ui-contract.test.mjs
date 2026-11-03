@@ -63,6 +63,6 @@ test('mobile hamburger menu, persistent request count and quick-order shortcuts'
  assert.ok(css.includes('.nav.mobile-expanded{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))'));
  assert.ok(css.includes('.nav{display:none;overflow:visible'));
  assert.ok(css.includes('.top-right{display:none'));
- assert.ok(script.includes("function show(tab){closeMobileMenu();$('[data-page]').forEach("),
+ assert.ok(script.includes("function show(tab){closeMobileMenu();$$('[data-page]').forEach("),
    'Mobile navigation must update all pages, not only the first matching page');
 });
