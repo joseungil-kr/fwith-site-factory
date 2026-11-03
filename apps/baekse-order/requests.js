@@ -161,7 +161,7 @@ export async function handleBuyerAdmin(db,request,path,data){
     const client_snapshot=JSON.stringify({business:client.business,person:client.person,phone:client.phone,business_no:client.business_no,address:client.address});
     let issued_order_id;
     db.ctx.storage.transactionSync(()=>{
-      db.sql.exec('INSERT INTO orders(client_id,client_snapshot,order_date,vat,supply,tax,total,previous_balance,bank_snapshot,memo,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)',
+      db.sql.exec('INSERT INTO orders(client_id,client_snapshot,order_date,vat,supply,tax,total,previous_balance,bank_snapshot,delivery_status,memo,created_at) VALUES(?,?,?,?,?,?,?,?,?,'pending',?,?)',
         client.id,client_snapshot,date,vat,totals.supply,totals.tax,totals.total,previous_balance,JSON.stringify(seller||{}),memo,now());
       issued_order_id=one(db,'SELECT last_insert_rowid() AS id').id;
       for(const line of lines){

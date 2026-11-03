@@ -27,6 +27,13 @@ export function checkedSettings(raw) {
   return {slot, baudRate, paperMm, dotWidth, fontSize, autoCut};
 }
 
+export function receiptShippingLabel(order){
+ if(order?.status!=='issued')return '취소됨';
+ if(order.delivery_status==='delivered')return '출고완료(배송완료)';
+ if(order.delivery_status==='pending')return '출고완료(배송전)';
+ return '출고완료(배송상태 미확인)';
+}
+
 export function makeReceiptRows(invoice) {
   if (!invoice || !invoice.order || !Array.isArray(invoice.items)) {
     throw new Error('출력할 거래명세표를 먼저 선택하세요.');
@@ -40,6 +47,7 @@ export function makeReceiptRows(invoice) {
     {text: '거 래 명 세 표',align:'center',kind:'subtitle'},
     {text: '전표: ' + code},
     {text: '일자: ' + String(o.order_date || '')},
+    {text: '상태: ' + receiptShippingLabel(o)},
     {text: '거래처: ' + String(c.business || '')},
     {text: '담당자: ' + String(c.person || '') + '  ' + String(c.phone || '')},
   ];

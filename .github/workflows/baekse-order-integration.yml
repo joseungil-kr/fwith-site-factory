@@ -268,6 +268,56 @@ jobs:
           _,export=api('export')
           assert len(export['buyer_requests'])==3 and len(export['buyer_lines'])==4
           assert not any('token_hash' in x for x in export['buyer_links'])
+          # Delivery status edits only shipment metadata: preserve sales, inventory,
+          # original line items, and all financial fields, even on repeated clicks.
+          _,initial=api('orders/detail?id='+str(bill['id']))
+          assert initial['order']['delivery_status']=='pending' and initial['order']['delivered_at'] is None
+          _,beforeShip=api('state')
+          _,backupBefore=api('export')
+          originalOrder=next(x for x in backupBefore['orders'] if x['id']==bill['id'])
+          origSales=beforeShip['metrics']['cumulative_amount']
+          origCounts=beforeShip['metrics']['cumulative_count']
+          origStocks={x['id']:x['stock'] for x in beforeShip['products']}
+          origMoves=backupBefore['movements']
+          origLines=backupBefore['lines']
+          _,deliver=api('orders/delivery',{'id':bill['id'],'delivery_status':'delivered'})
+          assert deliver['ok'] and not deliver['unchanged'] and deliver['delivered_at']
+          _,same=api('orders/delivery',{'id':bill['id'],'delivery_status':'delivered'})
+          assert same['unchanged'] and same['delivered_at']==deliver['delivered_at']
+          _,state=api('state')
+          _,changedBill=api('orders/detail?id='+str(bill['id']))
+          assert changedBill['order']['delivery_status']=='delivered'
+          assert changedBill['order']['delivered_at']==deliver['delivered_at']
+          assert next(x for x in state['orders'] if x['id']==bill['id'])['delivery_status']=='delivered'
+          _,backupAfter=api('export')
+          assert state['metrics']['cumulative_amount']==origSales and state['metrics']['cumulative_count']==origCounts
+          assert {x['id']:x['stock'] for x in state['products']}==origStocks
+          assert backupAfter['movements']==origMoves and backupAfter['lines']==origLines
+          afterOrder=next(x for x in backupAfter['orders'] if x['id']==bill['id'])
+          for k,v in originalOrder.items():
+            if k not in ('delivery_status','delivered_at'):assert afterOrder[k]==v,(k,afterOrder[k],v)
+          assert len([a for a in backupAfter['audit'] if a['action']=='order_delivery_status' and str(bill['id']) in a['info']])==1
+          _,reset=api('orders/delivery',{'id':bill['id'],'delivery_status':'pending'})
+          assert reset['ok'] and reset['delivered_at'] is None
+          _,returnBill=api('orders/detail?id='+str(bill['id']))
+          assert returnBill['order']['delivery_status']=='pending'
+          _,backupReset=api('export')
+          assert backupReset['movements']==origMoves and backupReset['lines']==origLines
+          # Invalid transitions fail; cancelled orders cannot be marked delivered.
+          try: api('orders/delivery',{'id':bill['id'],'delivery_status':'shipped'})
+          except urllib.error.HTTPError as e:assert e.code==400
+          else:raise AssertionError('Invalid shipping state accepted')
+          api('orders/cancel',{'id':bill['id']})
+          try: api('orders/delivery',{'id':bill['id'],'delivery_status':'delivered'})
+          except urllib.error.HTTPError as e:assert e.code==400
+          else:raise AssertionError('Cancelled invoice marked as delivered')
+          api('orders/reissue',{'id':bill['id']})
+          _,reissued=api('orders/detail?id='+str(bill['id']))
+          assert reissued['order']['delivery_status']=='pending' and reissued['order']['delivered_at'] is None
+          _,finalShip=api('state')
+          assert finalShip['metrics']['cumulative_amount']==origSales
+          assert {x['id']:x['stock'] for x in finalShip['products']}==origStocks
+          print('DELIVERY_STATUS_QA_PASS: pending/delivered/undo, idempotent, cancelled blocked, reissue reset; zero stock and sales mutations')
           print('BUYER_PORTAL_PASS: anonymous scoped links, rotation/revocation, oversized requests, consolidated shortage, stock-independent queue, atomic approval, unique issue, existing invoice and sales')
           print('NEW_FEATURES_API_PASS: monthly/all-time full DB KPI, editable company, product sort, reissue, stock guard, invoice deletion')
           print('BILLING_QA_PASS: editable bank, historical snapshot, previous balance 100000, due 193000, actual sale remains 93000')

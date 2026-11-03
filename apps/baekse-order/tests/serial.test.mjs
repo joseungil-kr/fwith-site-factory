@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {checkedSettings,makeReceiptRows,rasterBand,testReceiptBytes,SerialReceiptPrinter,PAPER_WIDTHS,WIDTH_CHOICES,buildRasterJob} from '../public/serial-printer.js';
+import {checkedSettings,makeReceiptRows,receiptShippingLabel,rasterBand,testReceiptBytes,SerialReceiptPrinter,PAPER_WIDTHS,WIDTH_CHOICES,buildRasterJob} from '../public/serial-printer.js';
 
 test('COM1..COM6 only, COM4 9600 default profile supported',()=>{
   assert.deepEqual(checkedSettings({slot:'4',baudRate:'9600',paperMm:'58'}),{slot:4,baudRate:9600,paperMm:58,dotWidth:384,fontSize:26,autoCut:true});
@@ -84,3 +84,13 @@ test('full-width single raster image, linefeed, and one GS V 0 auto-cut from wor
 });
 
 test('전 잔고는 부가세와 같은 글자 유형이고 입금처는 하단에 출력',()=>{const r=makeReceiptRows({order:{id:11,order_date:'2026-11-03',status:'issued',supply:93000,tax:0,total:93000,previous_balance:100000,amount_due:193000,client:{business:'안산 중앙점'},bank:{bank_name:'테스트은행',account_number:'987-654',account_holder:'테스트예금주'}},items:[{name:'잉어반죽',qty:1,unit_price:93000,line_total:93000}]});const txt=r.map(x=>x.text||'').join('|');for(const s of ['공급가액: 93,000원','부가세: 0원','전 잔고: 100,000원','합계: 193,000원','테스트은행 987-654','예금주: 테스트예금주'])assert.ok(txt.includes(s));assert.equal(r.find(x=>x.text?.startsWith('전 잔고')).kind,r.find(x=>x.text?.startsWith('부가세')).kind);});
+
+test('배송상태 출력은 취소를 최우선 처리하고 기존 출고는 미확인으로 남김',()=>{
+  assert.equal(receiptShippingLabel({status:'issued',delivery_status:'pending'}),'출고완료(배송전)');
+  assert.equal(receiptShippingLabel({status:'issued',delivery_status:'delivered'}),'출고완료(배송완료)');
+  assert.equal(receiptShippingLabel({status:'issued',delivery_status:'unknown'}),'출고완료(배송상태 미확인)');
+  assert.equal(receiptShippingLabel({status:'cancelled',delivery_status:'delivered'}),'취소됨');
+  const o={id:31,order_date:'2026-11-04',status:'issued',delivery_status:'delivered',
+    supply:1000,tax:0,total:1000,client:{business:'테스트'}};
+  assert.ok(makeReceiptRows({order:o,items:[]}).some(row=>row.text==='상태: 출고완료(배송완료)'));
+});

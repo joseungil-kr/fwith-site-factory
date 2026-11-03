@@ -17,7 +17,7 @@ export class OrderDatabase extends DurableObject {
     this.sql.exec(`CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,cost INTEGER NOT NULL,price INTEGER NOT NULL,active INTEGER NOT NULL DEFAULT 1,sort_order INTEGER NOT NULL DEFAULT 0,created_at TEXT NOT NULL);`);
     this.sql.exec(`CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY AUTOINCREMENT,business TEXT NOT NULL,person TEXT NOT NULL,phone TEXT NOT NULL,business_no TEXT NOT NULL DEFAULT '',address TEXT NOT NULL DEFAULT '',active INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL);`);
     this.sql.exec(`CREATE TABLE IF NOT EXISTS movements (id INTEGER PRIMARY KEY AUTOINCREMENT,product_id INTEGER NOT NULL,delta INTEGER NOT NULL,cost INTEGER NOT NULL DEFAULT 0,note TEXT NOT NULL DEFAULT '',source TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL);`);
-    this.sql.exec(`CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY AUTOINCREMENT,client_id INTEGER NOT NULL,client_snapshot TEXT NOT NULL,order_date TEXT NOT NULL,vat TEXT NOT NULL,supply INTEGER NOT NULL,tax INTEGER NOT NULL,total INTEGER NOT NULL,previous_balance INTEGER NOT NULL DEFAULT 0,bank_snapshot TEXT NOT NULL DEFAULT '{}',status TEXT NOT NULL DEFAULT 'issued',memo TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL,cancelled_at TEXT);`);
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY AUTOINCREMENT,client_id INTEGER NOT NULL,client_snapshot TEXT NOT NULL,order_date TEXT NOT NULL,vat TEXT NOT NULL,supply INTEGER NOT NULL,tax INTEGER NOT NULL,total INTEGER NOT NULL,previous_balance INTEGER NOT NULL DEFAULT 0,bank_snapshot TEXT NOT NULL DEFAULT '{}',status TEXT NOT NULL DEFAULT 'issued',delivery_status TEXT NOT NULL DEFAULT 'unknown',delivered_at TEXT,memo TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL,cancelled_at TEXT);`);
     this.sql.exec(`CREATE TABLE IF NOT EXISTS lines (id INTEGER PRIMARY KEY AUTOINCREMENT,order_id INTEGER NOT NULL,product_id INTEGER,name TEXT NOT NULL,qty INTEGER NOT NULL,unit_price INTEGER NOT NULL,cost INTEGER NOT NULL DEFAULT 0,line_total INTEGER NOT NULL);`);
     this.sql.exec(`CREATE TABLE IF NOT EXISTS audit (id INTEGER PRIMARY KEY AUTOINCREMENT,action TEXT NOT NULL,info TEXT NOT NULL,created_at TEXT NOT NULL);`);
     this.sql.exec(`CREATE TABLE IF NOT EXISTS sessions (hash TEXT PRIMARY KEY,expires INTEGER NOT NULL);`);
@@ -38,6 +38,9 @@ export class OrderDatabase extends DurableObject {
     const orderCols=this.sql.exec('PRAGMA table_info(orders)').toArray().map(x=>x.name);
     if(!orderCols.includes('previous_balance'))this.sql.exec('ALTER TABLE orders ADD COLUMN previous_balance INTEGER NOT NULL DEFAULT 0');
     if(!orderCols.includes('bank_snapshot'))this.sql.exec("ALTER TABLE orders ADD COLUMN bank_snapshot TEXT NOT NULL DEFAULT '{}'");
+    // Historic records have unknown delivery state; never fabricate a completed delivery.
+    if(!orderCols.includes('delivery_status'))this.sql.exec("ALTER TABLE orders ADD COLUMN delivery_status TEXT NOT NULL DEFAULT 'unknown'");
+    if(!orderCols.includes('delivered_at'))this.sql.exec('ALTER TABLE orders ADD COLUMN delivered_at TEXT');
     const productCols=this.sql.exec('PRAGMA table_info(products)').toArray().map(x=>x.name);
     if(!productCols.includes('sort_order'))this.sql.exec('ALTER TABLE products ADD COLUMN sort_order INTEGER NOT NULL DEFAULT 0');
     const settingCols=this.sql.exec('PRAGMA table_info(receipt_settings)').toArray().map(x=>x.name);
@@ -92,7 +95,7 @@ export class OrderDatabase extends DurableObject {
    if(path==='/api/state'&&req.method==='GET'){
       const products=this.all('SELECT p.*,COALESCE((SELECT SUM(delta) FROM movements WHERE product_id=p.id),0) AS stock FROM products p ORDER BY p.sort_order,p.id');
       const clients=this.all('SELECT * FROM clients ORDER BY id');
-      const orders=this.all('SELECT o.id,o.order_date,o.status,o.supply,o.tax,o.total,o.previous_balance,(o.total+o.previous_balance) AS amount_due,o.memo,o.created_at, json_extract(o.client_snapshot,\'$.business\') AS client_name FROM orders o ORDER BY o.id DESC LIMIT 300');
+      const orders=this.all('SELECT o.id,o.order_date,o.status,o.delivery_status,o.delivered_at,o.supply,o.tax,o.total,o.previous_balance,(o.total+o.previous_balance) AS amount_due,o.memo,o.created_at, json_extract(o.client_snapshot,\'$.business\') AS client_name FROM orders o ORDER BY o.id DESC LIMIT 300');
       const kstDate=new Date(Date.now()+9*3600000).toISOString().slice(0,10);
       const kstMonth=kstDate.slice(0,7);
       const todayStat=this.getOne("SELECT COUNT(*) AS count,COALESCE(SUM(total),0) AS amount FROM orders WHERE status='issued' AND order_date=?",kstDate);
@@ -197,7 +200,7 @@ export class OrderDatabase extends DurableObject {
       for(const [id,q] of grouped){const remaining=this.getOne('SELECT COALESCE(SUM(delta),0) AS qty FROM movements WHERE product_id=?',id).qty;if(q>remaining)throw new Error(`${items.find(i=>i.product_id===id).name}: 재고 부족 (현재 ${remaining}개)`)}
       let id;
       this.ctx.storage.transactionSync(()=>{
-        this.sql.exec('INSERT INTO orders(client_id,client_snapshot,order_date,vat,supply,tax,total,previous_balance,bank_snapshot,memo,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)',client.id,JSON.stringify({business:client.business,person:client.person,phone:client.phone,business_no:client.business_no,address:client.address}),order_date,vat,totals.supply,totals.tax,totals.total,previous_balance,bank_snapshot,memo,now());
+        this.sql.exec('INSERT INTO orders(client_id,client_snapshot,order_date,vat,supply,tax,total,previous_balance,bank_snapshot,delivery_status,memo,created_at) VALUES(?,?,?,?,?,?,?,?,?,'pending',?,?)',client.id,JSON.stringify({business:client.business,person:client.person,phone:client.phone,business_no:client.business_no,address:client.address}),order_date,vat,totals.supply,totals.tax,totals.total,previous_balance,bank_snapshot,memo,now());
         id=this.getOne('SELECT last_insert_rowid() AS id').id;
         for(const i of items){this.sql.exec('INSERT INTO lines(order_id,product_id,name,qty,unit_price,cost,line_total) VALUES(?,?,?,?,?,?,?)',id,i.product_id,i.name,i.qty,i.unit_price,i.cost,i.qty*i.unit_price);
           if(i.product_id)this.sql.exec('INSERT INTO movements(product_id,delta,cost,note,source,created_at) VALUES(?,?,?,?,?,?)',i.product_id,-i.qty,i.cost,'출고 #'+id,'order:'+id,now());}
@@ -230,7 +233,7 @@ export class OrderDatabase extends DurableObject {
          'INSERT INTO movements(product_id,delta,cost,note,source,created_at) VALUES(?,?,?,?,?,?)',
          line.product_id,-line.qty,line.cost,'출고복원 #'+id,'reissue:'+id,now()
        );
-       this.sql.exec("UPDATE orders SET status='issued',cancelled_at=NULL WHERE id=?",id);
+       this.sql.exec("UPDATE orders SET status='issued',cancelled_at=NULL,delivery_status='pending',delivered_at=NULL WHERE id=?",id);
        this.audit('order_reissue',{id,total:order.total});
      });
      return json({ok:true,id,status:'issued'});
@@ -248,6 +251,21 @@ export class OrderDatabase extends DurableObject {
        this.audit('order_delete',{id,previousStatus:order.status,supply:order.supply,lineCount});
      });
      return json({ok:true,id,deleted:true,previousStatus:order.status});
+   }
+   // A delivery-state edit must never touch stock movements, order status or amounts.
+   if(path==='/api/orders/delivery'&&req.method==='POST'){
+     const id=onlyInt(data.id,'명세표 ID',1),target=String(data.delivery_status||'');
+     if(!['pending','delivered'].includes(target))throw new Error('배송상태는 배송전 또는 배송완료만 선택하세요');
+     const order=this.getOne('SELECT id,status,delivery_status,delivered_at FROM orders WHERE id=?',id);
+     if(!order)throw new Error('명세표를 찾을 수 없습니다');
+     if(order.status!=='issued')throw new Error('취소된 명세표는 배송상태를 변경할 수 없습니다');
+     if(order.delivery_status===target)return json({ok:true,id,delivery_status:target,delivered_at:order.delivered_at,unchanged:true});
+     const deliveredAt=target==='delivered'?now():null;
+     this.ctx.storage.transactionSync(()=>{
+       this.sql.exec("UPDATE orders SET delivery_status=?,delivered_at=? WHERE id=? AND status='issued'",target,deliveredAt,id);
+       this.audit('order_delivery_status',{id,previous:order.delivery_status,next:target});
+     });
+     return json({ok:true,id,delivery_status:target,delivered_at:deliveredAt,unchanged:false});
    }
    if(path==='/api/orders/detail'&&req.method==='GET'){
      const id=onlyInt(Number(url.searchParams.get('id')),'명세표 ID',1),order=this.getOne('SELECT * FROM orders WHERE id=?',id);if(!order)return err('명세표를 찾을 수 없습니다',404);
