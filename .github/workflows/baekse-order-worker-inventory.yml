@@ -1,4 +1,4 @@
-name: Baekse order find unused Worker (read-only)
+name: Baekse order inspect candidate idle Workers (read only)
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
@@ -7,38 +7,59 @@ permissions: {contents: read}
 jobs:
   inventory:
     runs-on: ubuntu-latest
-    timeout-minutes: 9
+    timeout-minutes: 10
     env:
       CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
-      - name: Enumerate Worker metadata and live hostname bindings without modifying anything
+      - name: Inventory candidate bindings, secrets (names only), deployments and schedules
         shell: bash
         run: |
           python3 - <<'PY'
           import os,json,urllib.request,urllib.error
-          t=os.environ['CF_TOKEN'];a=os.environ['CF_ACCOUNT']
-          def get(p):
-            r=urllib.request.Request('https://api.cloudflare.com/client/v4'+p,headers={'Authorization':'Bearer '+t})
+          a=os.environ.get('CF_ACCOUNT','');t=os.environ.get('CF_TOKEN','')
+          assert t and a,"Missing existing credentials"
+          def req(path):
+            r=urllib.request.Request('https://api.cloudflare.com/client/v4'+path,headers={'Authorization':'Bearer '+t,'Accept':'application/json'})
             try:
-              with urllib.request.urlopen(r,timeout=25) as res:
-                d=json.load(res);return d.get('result') if d.get('success') else None
+              with urllib.request.urlopen(r,timeout=25) as h:
+                x=json.load(h)
+                print('API',path.replace(a,'ACCOUNT').split('?')[0],h.status,x.get('success'))
+                return x.get('result') if x.get('success') else None
             except urllib.error.HTTPError as e:
-              print('READ_ERROR',p.split('?')[0],e.code);return None
-          scripts=get('/accounts/'+a+'/workers/scripts')
-          domains=get('/accounts/'+a+'/workers/domains')
-          zones=get('/zones?name=baeksefood.com')
-          routes=[]
-          if zones:
-            routes=get('/zones/'+zones[0]['id']+'/workers/routes') or []
-          print('TOTAL_WORKER_SCRIPTS',len(scripts or []))
-          attached={d.get('service') for d in domains or []}
-          routed={r.get('script') for r in routes or []}
-          for s in scripts or []:
-            n=s.get('id','')
-            print('WORKER',n,'custom_domain',n in attached,'route',n in routed,
-                  'created',s.get('created_on'),'modified',s.get('modified_on'),
-                  'usage_model',s.get('usage_model'),'environments',len(s.get('environments') or []))
-          print('CUSTOM_DOMAIN_COUNT',len(domains or []),'BAEKSE_ROUTE_COUNT',len(routes))
-          print('RISK_CONTROL','Read-only metadata, no domain or script modifications')
+              print('API',path.replace(a,'ACCOUNT').split('?')[0],e.code,'DENIED')
+              return None
+            except Exception as e:
+              print('API',path.replace(a,'ACCOUNT').split('?')[0],type(e).__name__)
+              return None
+          scripts=req('/accounts/'+a+'/workers/scripts')
+          domains=req('/accounts/'+a+'/workers/domains')
+          if not isinstance(scripts,list) or not isinstance(domains,list):raise SystemExit('Unverified inventory; no changes')
+          attached={}
+          for d in domains:attached.setdefault(d.get('service',''),[]).append(d.get('hostname'))
+          candidate_names=[
+            'sfv53-hallflower','sfv5-ansan-promotion-plant-preview',
+            'blog-fwith-guide-qa','namyangju-flower-guide-qa',
+            'bucheon-flower-guide-qa','suwon-flower-guide-qa',
+            'astro-chat-lab-oauth-qa','astro-chat-lab-qa'
+          ]
+          print('TOTAL_SCRIPTS',len(scripts),'CUSTOM_DOMAIN_COUNT',len(domains))
+          for name in candidate_names:
+            x=next((s for s in scripts if s.get('id')==name),None)
+            if not x:print('CANDIDATE',name,'ABSENT');continue
+            print('CANDIDATE',name,'MODIFIED',x.get('modified_on'),'CUSTOM_DOMAINS',attached.get(name,[]),'metadata_has_cron',bool(x.get('schedules') or x.get('cron_triggers')))
+            settings=req('/accounts/'+a+'/workers/scripts/'+name+'/settings')
+            if isinstance(settings,dict):
+              bs=settings.get('bindings') or []
+              print('SETTINGS',name,'bindings',[(b.get('type'),b.get('name')) for b in bs],'compatibility_date',settings.get('compatibility_date'))
+            deployments=req('/accounts/'+a+'/workers/scripts/'+name+'/deployments')
+            if isinstance(deployments,dict):
+              d=deployments.get('deployments') or []
+              print('DEPLOYMENTS',name,'count',len(d),'latest',[(i.get('created_on'),len(i.get('versions') or [])) for i in d[:2]])
+            cron=req('/accounts/'+a+'/workers/scripts/'+name+'/schedules')
+            if cron is not None:print('SCHEDULES',name,cron)
+            # Worker-specific workers.dev configuration (read-only)
+            sub=req('/accounts/'+a+'/workers/scripts/'+name+'/subdomain')
+            if isinstance(sub,dict):print('WORKERS_DEV',name,sub.get('enabled'),sub.get('previews_enabled'))
+          print('INSPECTION_READ_ONLY_DONE')
           PY
