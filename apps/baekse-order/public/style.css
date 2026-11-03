@@ -75,3 +75,22 @@
 #link-result input{display:block;width:100%;margin-top:8px;padding:12px;border:1px solid #a9c6b7;border-radius:8px;color:#195946;font-size:13px}
 #link-result label{display:block;font-size:13px;font-weight:600;margin:14px 0}
 @media(max-width:740px){.buyer-shortage-grid{grid-template-columns:1fr}.buyer-approval-controls{grid-template-columns:1fr}.buyer-kpi{width:100%}.buyer-request-card{padding:13px}}
+
+/* Trading-partner receivables: scoped administrative ledger, no effects on existing inventory styles. */
+.receivables-home-panel{border-color:#c8e1d5}
+.ar-caution{margin:14px 0!important;background:#fff9e8;border:1px solid #f0dca8;border-radius:9px;padding:12px;line-height:1.65}
+.ar-current{margin:17px 0 12px;background:#f4f9f6;border:1px solid #d9e9df;border-radius:10px;padding:16px;line-height:1.5}
+.ar-current p{margin:5px 0 9px}
+.ar-current-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:11px}
+.ar-current-stats>div{display:flex;flex-direction:column;gap:7px;min-width:0}
+.ar-current-stats span{font-size:12px;color:#5b7468}
+.ar-current-stats b{font-size:16px;color:#1e5644;overflow-wrap:anywhere}
+.ar-current-stats strong{font-size:23px;color:#087459;overflow-wrap:anywhere}
+.ar-form{border-top:1px solid #e5ece7;padding-top:18px;margin-top:18px}
+.ar-form h2{margin:0 0 12px}
+.ar-form input[readonly],#previous-balance[readonly],input[data-request-balance][readonly]{background:#f0f7f3;color:#146e54;font-weight:700;border-color:#b5d4c4}
+.ar-voided td:not(:last-child){color:#88948e;text-decoration:line-through}
+#ar-payment-history{margin-top:22px}
+#ar-payment-history h2{margin-bottom:12px}
+@media(max-width:800px){.ar-current-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.ar-current-stats{grid-template-columns:1fr 1fr}.ar-current-stats strong{font-size:20px}}
