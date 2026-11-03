@@ -56,7 +56,7 @@ jobs:
           script=next((s for s in scripts if s.get('id')==worker),None)
           assert script,'Target must be an existing Worker; creating new Workers is prohibited'
           # Reject any intervening worker revision, except for this workflow's own verified retries.
-          assert script.get('modified_on')=='2026-10-28T14:54:51.163343Z', 'Candidate changed since inventory; refuse overwrite'
+          assert script.get('modified_on')=='2026-11-03T07:18:02.515681Z', 'Existing reviewed app changed since first deploy; refuse overwrite'
           newer=api('/accounts/'+account+'/workers/workers?per_page=200')['result']
           target=next((s for s in newer if s.get('name')==worker),None)
           assert target,'Worker reference verification unavailable'
@@ -66,7 +66,7 @@ jobs:
           schedules=api('/accounts/'+account+'/workers/scripts/'+worker+'/schedules')['result']['schedules']
           assert not schedules,'Worker has cron triggers'
           bindings=api('/accounts/'+account+'/workers/scripts/'+worker+'/settings')['result'].get('bindings') or []
-          assert not bindings,'Worker has existing database/secret/assets bindings'
+          assert sorted((b.get('type'),b.get('name')) for b in bindings)==[('assets','ASSETS'),('durable_object_namespace','ORDER_DB')], 'Existing Worker bindings no longer match reviewed order app'
           mappings=api('/accounts/'+account+'/workers/domains')['result']
           assert not any(v.get('service')==worker for v in mappings),'Worker has a live custom domain'
           assert not any(v.get('hostname')==host for v in mappings),'Order hostname already bound to another Worker'
@@ -86,13 +86,14 @@ jobs:
           assert not metric.get('errors'),'Analytics unavailable; do not assume unused'
           analytics=metric['data']['viewer']['accounts'][0]['workersInvocationsAdaptive']
           visits=sum(int(x['sum']['requests']) for x in analytics)
-          assert visits==0,f'Worker has recent requests: {visits}; do not overwrite'
+          print('CURRENT_APP_LAST7D_REQUESTS',visits)
           deployment=api('/accounts/'+account+'/workers/scripts/'+worker+'/deployments')['result']['deployments']
           assert deployment and deployment[0].get('versions') and len(deployment[0]['versions'])==1,'No stable previous version for rollback'
           v=deployment[0]['versions'][0]
           assert v.get('percentage')==100,'Previous Worker version not stable'
           prev=v['version_id']
-          print('REUSE_GUARD_PASS',worker,'requests7d',visits,'domainRefs',len(refs.get('domains') or []),'cron',len(schedules))
+          assert prev=='7fc95f65-7990-4055-be36-da9898f13c33', 'Current Worker version changed since reviewed app deployment'
+          print('SAFE_UPDATE_GUARD_PASS',worker,'requests7d',visits,'domainRefs',len(refs.get('domains') or []),'cron',len(schedules))
           print('EXISTING_DEPLOYMENT_VERSION',prev)
           print('ADMIN_PASSWORD_CONFIGURED',len(os.getenv('BAEKSE_ORDER_ADMIN_PASSWORD',''))>=12)
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:
