@@ -179,7 +179,7 @@ export async function handleBuyerAdmin(db,request,path,data){
         now(),issued_order_id,id);
       db.audit('buyer_request_fulfilled',{id,issued_order_id,client_id:client.id,supply:totals.supply});
     });
-    return response({ok:true,id,issued_order_id,status:'fulfilled',...totals,amount_due});
+    return response({ok:true,id,issued_order_id,status:'fulfilled',...totals,previous_balance,amount_due});
   }
   return fail('없는 발주 관리 API 주소입니다.',404);
 }
