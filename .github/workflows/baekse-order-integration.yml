@@ -19,7 +19,7 @@ jobs:
         run: |
           node --check src.js
           npm test
-          npx --yes wrangler@4.148.0 dev --local --port 8787 --var ADMIN_PASSWORD:ci-only-strong-example-password-2026 >/tmp/baekse-order-wrangler.log 2>&1 &
+          npx --yes wrangler@4.156.2 dev --local --port 8787 --var ADMIN_PASSWORD:ci-only-strong-example-password-2026 >/tmp/baekse-order-wrangler.log 2>&1 &
           echo $! >/tmp/baekse-order-wrangler.pid
       - name: End to end API simulation, atomic stock and printed invoice source
         shell: bash
@@ -34,13 +34,17 @@ jobs:
               break
             except Exception as e:last=e;time.sleep(1)
           else:raise AssertionError('Worker local boot failed: '+str(last))
-          jar=http.cookiejar.CookieJar()
+          jar=http.cookiejar.CookieJar(); session_cookie=''
           opener=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
           def api(path,data=None):
+  global session_cookie
             b=json.dumps(data).encode() if data is not None else None
             headers={'Origin':base,'Content-Type':'application/json'} if data is not None else {}
+  if session_cookie:headers['Cookie']=session_cookie
             req=urllib.request.Request(base+'/api/'+path,data=b,headers=headers)
-            with opener.open(req,timeout=25) as r:return r.status,json.load(r)
+            with opener.open(req,timeout=25) as r:
+    if path=='login':session_cookie=r.headers.get('Set-Cookie','').split(';')[0]
+    return r.status,json.load(r)
           try: api('state')
           except urllib.error.HTTPError as e:assert e.code==401
           else:raise AssertionError('No authentication bypass permitted')
