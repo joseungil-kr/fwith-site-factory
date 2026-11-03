@@ -44,16 +44,25 @@ jobs:
           host='funeralflower-home-preview.joseungil.workers.dev'
           try:print('IP_LOOKUP',host,[x[4][0] for x in socket.getaddrinfo(host,443)][:2])
           except Exception as e:print('DNS_ERROR',str(e)[:200])
-          for urlpath in ('/','/serial-printer.js'):
+          for urlpath in ('/','/app.js','/style.css','/serial-printer.js'):
             try:
               req=urllib.request.Request('https://order.baeksefood.com'+urlpath,headers={'User-Agent':'Mozilla/5.0 (compatible; deployment verifier)'})
               with urllib.request.urlopen(req,timeout=20) as r:
                 data=r.read().decode('utf-8','replace')
-                checks={'/':['id="serial-width-test"','id="serial-dots"','id="serial-font"','id="serial-cut"','80mm (현재 용지)','512도트'], '/serial-printer.js':['WIDTH_CHOICES','80: 512','buildRasterJob','0x56','testWidth']}
-                assert r.status==200 and all(marker in data for marker in checks[urlpath]),'Missing 80mm thermal receipt hotfix markers'
-                print('LIVE_THERMAL_READBACK_PASS',urlpath,'HTTP',r.status,'MARKERS',len(checks[urlpath]),'NOINDEX',r.headers.get('X-Robots-Tag'))
+                checks={
+                  '/':['id="serial-dots"','id="serial-font"','id="serial-cut"','80mm (현재 용지)','512도트','id="bill-delete"','name="company_name"','name="company_email"','관리자 설정','처음 한 번은'],
+                  '/app.js':['metric-orange','cancelled-order-row','data-product-move','orders/reissue','orders/delete','movementLabel','company_name'],
+                  '/style.css':['.metric.metric-orange','.bank-settings-grid','.cancelled-order-row','.order-move-buttons'],
+                  '/serial-printer.js':['WIDTH_CHOICES','80: 512','buildRasterJob','0x56']
+                }
+                assert r.status==200 and all(marker in data for marker in checks[urlpath]),'Missing live admin/dashboard/thermal UI markers'
+                if urlpath=='/':
+                  assert 'id="serial-test"' not in data and 'id="serial-width-test"' not in data,'Obsolete printer buttons returned'
+                if urlpath=='/app.js':
+                  assert "serial-test" not in data,'Obsolete printer handlers returned'
+                print('LIVE_UI_READBACK_PASS',urlpath,'HTTP',r.status,'MARKERS',len(checks[urlpath]),'NOINDEX',r.headers.get('X-Robots-Tag'))
             except Exception as e:
-              print('LIVE_THERMAL_READBACK_FAIL',urlpath,str(e)[:160])
+              print('LIVE_UI_READBACK_FAIL',urlpath,str(e)[:160])
               raise
           for label,ua in [('python-default','Python-urllib/3.12'),('browser-style','Mozilla/5.0 (compatible; deployment verifier)')]:
             try:
