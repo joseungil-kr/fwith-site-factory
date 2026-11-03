@@ -98,6 +98,27 @@ try{
  await page.locator('#bill-delivery').getByText('배송완료 처리').waitFor();
  assert.ok((await page.locator('#bill-sheet').innerText()).includes('출고완료(배송전)'));
  await page.screenshot({path:path.join(out,'admin-issued-invoice-1440.png'),fullPage:true});
+ // Onboard a client to AR after it already has historical invoices: no double count.
+ await page.setViewportSize({width:390,height:844});
+ const financialBefore=await page.evaluate(async()=>await (await fetch('/api/state')).json());
+ await page.locator('[data-tab=receivables]').click();
+ await page.locator('#ar-client-select').selectOption('1');
+ await page.locator('#ar-opening-form:not(.hidden)').waitFor();
+ await page.locator('#ar-opening-amount').fill('100000');
+ await page.locator('#ar-opening-form button[type=submit]').click();
+ await page.waitForFunction(()=>document.querySelector('.ar-current-stats strong')?.textContent==='100,000원');
+ await page.locator('#ar-paid-amount').fill('20000');
+ await page.locator('#ar-payment-form button[type=submit]').click();
+ await page.waitForFunction(()=>document.querySelector('.ar-current-stats strong')?.textContent==='80,000원');
+ await page.screenshot({path:path.join(out,'admin-receivables-390.png'),fullPage:true});
+ const financialAfter=await page.evaluate(async()=>await (await fetch('/api/state')).json());
+ assert.deepEqual(financialAfter.metrics,financialBefore.metrics,'Opening/payments cannot affect revenue KPIs');
+ assert.deepEqual(financialAfter.products,financialBefore.products,'Opening/payments cannot affect stock');
+ await page.locator('[data-tab=order]').click();
+ assert.equal(await page.locator('#vat').inputValue(),'none','VAT selection should default to uncalculated');
+ assert.equal(await page.locator('#previous-balance').inputValue(),'80000','Current receivable must populate prior balance');
+ assert.equal(await page.locator('#previous-balance').evaluate(el=>el.readOnly),true);
+ await page.screenshot({path:path.join(out,'admin-auto-balance-390.png'),fullPage:true});
  assert.deepEqual(errors,[]);
- console.log('BUYER_BROWSER_QA_PASS: mobile 390, desktop 1440, client-only link, 20-unit order with zero stock, admin shortage, guarded approval, invoice, delivery-toggle no-stock-or-sales mutation');
+ console.log('BUYER_BROWSER_QA_PASS: mobile 390, desktop 1440, client-only link, 20-unit order with zero stock, admin shortage, guarded approval, invoice, delivery toggle, receivable opening, payment and automated prior balance; no stock/revenue mutation');
 }finally{await browser.close()}
