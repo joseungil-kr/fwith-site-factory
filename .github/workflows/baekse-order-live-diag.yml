@@ -44,6 +44,11 @@ jobs:
           host='funeralflower-home-preview.joseungil.workers.dev'
           try:print('IP_LOOKUP',host,[x[4][0] for x in socket.getaddrinfo(host,443)][:2])
           except Exception as e:print('DNS_ERROR',str(e)[:200])
+          for label,ua in [('python-default','Python-urllib/3.12'),('browser-style','Mozilla/5.0 (compatible; deployment verifier)')]:
+            try:
+              req=urllib.request.Request('https://'+host+'/',headers={'User-Agent':ua})
+              with urllib.request.urlopen(req,timeout=15) as r: print('UA_PROBE',label,r.status)
+            except urllib.error.HTTPError as e: print('UA_PROBE',label,e.code)
           for p in ('/','/index.html','/api/session','/api/state','/app.js'):
             u='https://'+host+p
             try:
