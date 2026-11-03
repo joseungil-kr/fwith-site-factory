@@ -16,7 +16,7 @@ function setMobileMenuOpen(open){
 }
 function closeMobileMenu(){setMobileMenuOpen(false)}
 function show(tab){closeMobileMenu();$$('[data-page]').forEach(x=>x.classList.toggle('hidden',x.dataset.page!==tab));$$('[data-tab]').forEach(x=>x.classList.toggle('selected',x.dataset.tab===tab));window.scrollTo(0,0);if(tab==='requests')loadBuyerRequests().catch(e=>$('#request-list').textContent=e.message);if(tab==='receivables')loadReceivableDetail().catch(e=>alert(e.message))}
-async function refresh(){state=await api('state');render()}
+async function refresh(){state=await api('state');render();loadBuyerRequests().catch(e=>{const el=$('#home-request-preview');if(el)el.textContent='발주 목록을 확인할 수 없습니다. 새로고침해 주세요.'})}
 function table(headers,rows){return `<div class="table-overflow"><table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')||`<tr><td colspan="${headers.length}">등록 내역이 없습니다.</td></tr>`}</tbody></table></div>`}
 function renderRequestNavCount(){
  const pending=Number(state.buyer_dashboard?.pending_count??0);
@@ -47,16 +47,22 @@ function renderReceivables(){
  const accountList=state.receivables?.accounts||[];
  const selected=$('#ar-client-select').value;
  $('#ar-client-select').innerHTML='<option value="">거래처 선택</option>'+
-   state.clients.map(c=>'<option value="'+c.id+'">'+esc(c.business)+'</option>').join('');
- if(selected && state.clients.some(c=>String(c.id)===selected))$('#ar-client-select').value=selected;
- $('#ar-count-label').textContent='관리 중 '+accountList.length+'곳 / 총 '+state.clients.length+'곳';
- $('#receivables-list').innerHTML=table(['거래처','기초 미수금','출고금액 누계','입금액 누계','현재 미수금','관리'],
+   state.clients.map(client=>'<option value="'+client.id+'">'+esc(client.business)+'</option>').join('');
+ if(selected&&state.clients.some(client=>String(client.id)===selected))$('#ar-client-select').value=selected;
+ const count=state.clients.length,tracked=accountList.length,missing=Math.max(0,count-tracked);
+ $('#ar-count-label').textContent='관리 '+tracked+'곳 / 전체 '+count+'곳';
+ $('#receivables-overview').innerHTML=
+   '<div class="receivable-stat"><span>현재 미수금 합계</span><strong>'+money(state.receivables?.total||0)+'</strong></div>'+
+   '<div class="receivable-stat"><span>관리 거래처</span><strong>'+tracked+'곳</strong></div>'+
+   '<div class="receivable-stat'+(missing?' warn':'')+'"><span>기초잔액 미설정</span><strong>'+missing+'곳</strong></div>';
+ $('#receivables-list').innerHTML=table(['거래처','입금 누계','현재 미수금'],
    state.clients.map(client=>{
-     const a=clientReceivable(client.id);
-     return '<tr><td>'+esc(client.business)+'</td><td>'+(a?money(a.opening_balance):'미설정')+
-       '</td><td>'+(a?money(a.issued_amount):'—')+'</td><td>'+(a?money(a.paid_amount):'—')+
-       '</td><td><b>'+(a?money(a.balance):'미설정')+'</b></td>'+
-       '<td><button class="secondary" type="button" data-ar-client="'+client.id+'">상세 관리</button></td></tr>';
+     const account=clientReceivable(client.id);
+     const balance=account?money(account.balance):'미설정';
+     return '<tr class="'+(selected===String(client.id)?'highlighted':'')+'"><td><strong>'+esc(client.business)+
+       '</strong><span class="price-note">'+(account?'미수금 관리 중':'기초잔액 미설정')+'</span></td>'+
+       '<td>'+(account?money(account.paid_amount):'—')+'</td><td><strong class="'+(account?'bk-ar-amount':'')+'">'+
+       balance+'</strong><div class="ar-table-action"><button class="secondary" type="button" data-ar-client="'+client.id+'">상세 관리</button></div></td></tr>';
    }));
 }
 async function loadReceivableDetail(){
@@ -107,13 +113,43 @@ function syncOrderPreviousBalance(){
 }
 function renderBuyerDashboard(){
  const v=state.buyer_dashboard||{pending_count:0,shortage_count:0,shortages:[]};
- const pieces=['<div class="buyer-kpi"><strong>'+Number(v.pending_count||0)+'건</strong><span>신규 발주 대기</span></div>',
-   '<div class="buyer-kpi'+(v.shortage_count?' shortage-alert':'')+'"><strong>'+Number(v.shortage_count||0)+'품목</strong><span>추가 입고 필요</span></div>'];
- if(v.shortages?.length){
-   pieces.push('<div class="buyer-alert-list">'+v.shortages.slice(0,4).map(p=>
-     '<span>'+esc(p.name)+' <b>부족 '+fmt(p.shortage)+'개</b></span>').join('')+'</div>');
+ const pending=Number(v.pending_count||0),shortCount=Number(v.shortage_count||0);
+ $('#buyer-home-summary').innerHTML='<div class="buyer-dashboard-row">'+
+    '<div class="buyer-kpi"><strong>'+pending+'건</strong><span>출고 처리 대기</span></div>'+
+    '<div class="buyer-kpi'+(shortCount?' shortage-alert':'')+'"><strong>'+shortCount+'품목</strong><span>추가 입고 검토</span></div></div>'+
+    (v.shortages?.length?'<div class="buyer-alert-list">'+v.shortages.slice(0,3).map(p=>
+      '<span>'+esc(p.name)+' <b>부족 '+fmt(p.shortage)+'개</b></span>').join('')+'</div>':'');
+ const shortages=v.shortages||[];
+ $('#home-shortages').innerHTML=shortages.length?shortages.slice(0,5).map(p=>{
+   const stock=Math.max(0,Number(p.stock)||0),requested=Math.max(0,Number(p.requested)||0);
+   const fill=requested>0?Math.min(100,Math.round(stock/requested*100)):100;
+   return '<div class="dashboard-shortage-item"><div class="dashboard-shortage-line"><b>'+esc(p.name)+
+     '</b><span class="dashboard-shortage-value">부족 '+fmt(p.shortage)+'개</span></div>'+
+     '<div class="dashboard-shortage-progress"><span style="width:'+fill+'%"></span></div>'+
+     '<p class="dashboard-shortage-help">현재 '+fmt(stock)+'개 / 전체 미처리 발주 '+fmt(requested)+'개</p></div>';
+ }).join(''):'<div class="dashboard-empty">현재 추가 입고가 필요한 제품이 없습니다.</div>';
+}
+function renderHomeRequestPreview(){
+ const pending=buyerRequests.filter(r=>r.status==='pending').slice(0,4);
+ const target=$('#home-request-preview');
+ if(!target)return;
+ if(!pending.length){
+   target.innerHTML=state.buyer_dashboard?.pending_count?
+     '<p class="dashboard-empty">발주 요청을 불러오는 중입니다.</p>':
+     '<p class="dashboard-empty">확인할 발주 요청이 없습니다.</p>';
+   return;
  }
- $('#buyer-home-summary').innerHTML='<div class="buyer-dashboard-row">'+pieces.join('')+'</div>';
+ target.innerHTML=pending.map(req=>{
+   const total=req.items.reduce((v,item)=>v+Number(item.qty)*Number(item.unit_price),0);
+   const short=requestNeedsRestock(req);
+   const first=req.items[0];
+   const product=first?esc(first.name)+(req.items.length>1?' 외 '+(req.items.length-1)+'종':''):'품목 없음';
+   return '<div class="dashboard-request-item"><div class="dashboard-request-name">'+
+     '<span class="dashboard-request-avatar" aria-hidden="true">'+esc(req.client_name.slice(0,1))+'</span>'+
+     '<div><strong>'+esc(req.client_name)+'</strong><span>'+product+' · '+money(total)+
+     ' · 납품 '+esc(req.requested_delivery)+'</span></div></div>'+
+     '<span class="request-state '+(short?'state-waiting':'')+'">'+(short?'입고 검토':'출고 대기')+'</span></div>';
+ }).join('');
 }
 async function loadBuyerRequests(){
  $('#request-list').textContent='발주 요청을 불러오는 중입니다.';
@@ -128,20 +164,72 @@ async function loadBuyerRequests(){
  $('#request-shortages').innerHTML=shortages.length?
    shortages.map(p=>'<div class="shortage-item"><b>'+esc(p.name)+'</b><span>현재고 '+fmt(p.stock)+'개 / 미처리 발주 '+fmt(p.requested)+'개</span><strong>추가 입고 '+fmt(p.shortage)+'개 필요</strong></div>').join(''):
    '<p class="hint">현재 추가 입고가 필요한 품목이 없습니다.</p>';
- const labels={pending:'발주 대기',fulfilled:'출고 완료',cancelled:'발주 취소'};
- $('#request-list').innerHTML=buyerRequests.length?buyerRequests.map(req=>{
-   const pending=req.status==='pending';
-   const clientBalance=clientReceivable(req.client_id);
-   const rows=req.items.map(p=>'<li>'+esc(p.name)+' · '+fmt(p.qty)+'개 × '+money(p.unit_price)+'</li>').join('');
-   const total=req.items.reduce((n,p)=>n+p.qty*p.unit_price,0);
-   return '<article class="buyer-request-card"><div class="buyer-request-head"><div><strong>#'+req.id+' · '+esc(req.client_name)+'</strong><span>납품 요청일 '+esc(req.requested_delivery)+' · '+esc(req.created_at.slice(0,10))+'</span></div><span class="request-state '+(pending?'state-waiting':'')+'">'+labels[req.status]+'</span></div>'+
-   '<ul class="buyer-request-items">'+rows+'</ul><p class="buyer-request-sum">예상 공급가액: <b>'+money(total)+'</b></p>'+
-   (req.note?'<p class="buyer-request-note">요청사항: '+esc(req.note)+'</p>':'')+
-   (pending?'<div class="buyer-approval-controls"><label>부가세<select data-request-vat="'+req.id+'"><option value="none">0원</option><option value="tax">10% 추가</option></select></label><label>전 잔고<input data-request-balance="'+req.id+'" type="number" min="0" max="2000000000" value="'+(clientBalance?clientBalance.balance:0)+'" '+(clientBalance?'readonly':'')+' inputmode="numeric"></label></div>'+(clientBalance?'<p class="hint">전 잔고 자동 입력: '+money(clientBalance.balance)+' (출고 확정 시 최신 잔액 적용)</p>':'<p class="hint">미수금 관리 미설정: 전 잔고 수동 입력</p>')+'<div class="action-row"><button class="primary" data-request-fulfill="'+req.id+'" type="button">출고처리</button><button class="danger" data-request-cancel="'+req.id+'" type="button">발주 취소</button></div>':
-      req.issued_order_id?'<div class="action-row"><button class="secondary" data-request-invoice="'+req.issued_order_id+'" type="button">거래명세표 보기</button></div>':'')+
-   '</article>';
- }).join(''):'<p class="hint">발주 요청 내역이 없습니다.</p>';
+ const shortagesAll=result.summary?.shortages||[];
+ const pendingCount=Number(result.summary?.pending_count||0);
+ const reviewCount=shortagesAll.length;
+ const canReview=buyerRequests.filter(req=>req.status==='pending'&&!requestNeedsRestock(req)).length;
+ $('#request-overview').innerHTML=
+   '<div class="request-overview-card"><strong>'+pendingCount+'건</strong><span>처리 대기</span></div>'+
+   '<div class="request-overview-card'+(reviewCount?' warn':'')+'"><strong>'+reviewCount+'품목</strong><span>추가 입고 필요</span></div>'+
+   '<div class="request-overview-card"><strong>'+canReview+'건</strong><span>재고 검토 가능</span></div>';
+ renderBuyerRequestCards();
+ renderHomeRequestPreview();
 }
+let requestFilter='all';
+function requestNeedsRestock(req){
+ if(req.status!=='pending')return false;
+ const shortages=new Set((state.buyer_dashboard?.shortages||[]).map(x=>Number(x.product_id)));
+ return req.items.some(item=>shortages.has(Number(item.product_id)));
+}
+function renderBuyerRequestCards(){
+ const query=$('#request-search').value.trim().toLowerCase();
+ const rows=buyerRequests.filter(req=>{
+   if(requestFilter==='pending'&&req.status!=='pending')return false;
+   if(requestFilter==='shortage'&&!requestNeedsRestock(req))return false;
+   const hay=[String(req.id),String(req.client_name||''),...req.items.map(item=>String(item.name||''))].join(' ').toLowerCase();
+   return !query||hay.includes(query);
+ });
+ $$('#request-filters button').forEach(button=>{
+   const active=button.dataset.requestFilter===requestFilter;
+   button.classList.toggle('active',active);
+   button.setAttribute('aria-pressed',String(active));
+ });
+ const stocks=new Map((state.products||[]).map(p=>[Number(p.id),Number(p.stock||0)]));
+ const labels={pending:'발주 대기',fulfilled:'출고 완료',cancelled:'발주 취소'};
+ $('#request-list').innerHTML=rows.length?rows.map(req=>{
+   const pending=req.status==='pending',short=requestNeedsRestock(req);
+   const clientBalance=clientReceivable(req.client_id);
+   const total=req.items.reduce((v,item)=>v+Number(item.qty)*Number(item.unit_price),0);
+   const lines=req.items.map(item=>{
+     const stock=stocks.get(Number(item.product_id));
+     const stockLabel=stock===undefined?'미확인':fmt(stock)+'개';
+     return '<div class="buyer-request-item"><span class="request-item-name">'+esc(item.name)+
+       '</span><span>'+fmt(item.qty)+'개</span><span class="'+(stock!==undefined&&stock<item.qty?'request-item-low':'')+'">'+
+       stockLabel+'</span><span>'+money(Number(item.qty)*Number(item.unit_price))+'</span></div>';
+   }).join('');
+   const status=pending?(short?'입고 검토':'출고 검토'):labels[req.status]||esc(req.status);
+   const controls=pending?
+     '<div class="buyer-approval-controls"><label>부가세<select data-request-vat="'+req.id+'"><option value="none">0원</option><option value="tax">10% 추가</option></select></label>'+
+     '<label>전 잔고<input data-request-balance="'+req.id+'" type="number" min="0" max="2000000000" value="'+(clientBalance?clientBalance.balance:0)+'" '+(clientBalance?'readonly':'')+' inputmode="numeric"></label></div>'+
+     (clientBalance?'<p class="hint">전 잔고 자동 입력: '+money(clientBalance.balance)+' (출고 확정 시 최신 잔액 적용)</p>':
+       '<p class="hint">미수금 관리 미설정: 전 잔고 수동 입력</p>')+
+     '<div class="action-row"><button class="primary" type="button" data-request-fulfill="'+req.id+'">출고처리</button>'+
+     '<button class="secondary" type="button" data-request-cancel="'+req.id+'">발주 취소</button></div>':
+     (req.issued_order_id?'<div class="action-row"><button class="secondary" type="button" data-request-invoice="'+req.issued_order_id+'">거래명세표 보기</button></div>':'');
+   const note=req.note?'<p class="buyer-request-note">요청사항: '+esc(req.note)+'</p>':'';
+   const label=short?'<div class="bk-shortage-note">전체 미처리 발주량을 기준으로 추가 입고가 필요한 제품이 포함되어 있습니다.</div>':'';
+   return '<article class="buyer-request-card"><div class="buyer-request-head"><div class="buyer-request-identity">'+
+     '<span class="request-avatar" aria-hidden="true">'+esc(String(req.client_name||'업').slice(0,1))+'</span>'+
+     '<div class="buyer-request-identity-details"><strong>'+esc(req.client_name)+' <small>#'+req.id+'</small></strong>'+
+     '<span>접수 '+esc(req.created_at.slice(0,10))+' · 납품 요청 '+esc(req.requested_delivery)+'</span></div></div>'+
+     '<span class="request-state '+(pending&&short?'state-waiting':'')+'">'+status+'</span></div>'+
+     '<div class="buyer-request-items-header" aria-hidden="true"><span>발주 제품</span><span>수량</span><span>현재고</span><span>공급금액</span></div>'+
+     '<div class="buyer-request-items">'+lines+'</div>'+note+label+
+     '<div class="buyer-request-sum"><span>예상 공급가액 · 부가세 별도</span><b>'+money(total)+'</b></div>'+
+     controls+'</article>';
+ }).join(''):'<div class="panel"><p class="dashboard-empty">조건에 맞는 발주 내역이 없습니다.</p></div>';
+}
+
 function renderHome(){
  const active=state.orders.filter(o=>o.status==='issued');
  const day=today(),month=day.slice(0,7),monthLabel=Number(day.slice(5,7))+'월';
@@ -159,6 +247,7 @@ function renderHome(){
    '"><small>'+esc(name)+'</small><b>'+esc(value)+'</b></div>').join('');
  $('#home-stock').innerHTML=table(['제품','현재고','출고단가'],state.products.filter(p=>p.active).map(p=>`<tr><td>${esc(p.name)}</td><td><span class="pill ${p.stock<=3?'orange':''}">${fmt(p.stock)}개</span></td><td>${money(p.price)}</td></tr>`));
  $('#home-orders').innerHTML=table(['날짜','거래처','금액','상태'],state.orders.slice(0,7).map(o=>`<tr><td>${esc(o.order_date)}</td><td>${esc(o.client_name)}</td><td>${money(o.total)}</td><td>${o.status==='issued'?'완료':'취소'}</td></tr>`));
+ renderHomeRequestPreview();
 }
 function renderOrder(){const client=$('#order-client').value;$('#order-client').innerHTML=`<option value="">거래처 선택</option>`+state.clients.filter(c=>c.active).map(c=>`<option value="${c.id}">${esc(c.business)}</option>`).join('');$('#order-client').value=client||String(state.clients.find(c=>c.active)?.id||'');
  const old={};$$('#order-items input').forEach(i=>old[i.dataset.id]=i.value);
@@ -301,6 +390,8 @@ $('#copy-generated-link').onclick=async()=>{
 };
 $('#hide-generated-link').onclick=()=>{$('#generated-link-value').value='';$('#link-result').classList.add('hidden')};
 $('#refresh-requests').onclick=()=>loadBuyerRequests().catch(e=>alert(e.message));
+$('#request-filters').onclick=e=>{const button=e.target.closest('button[data-request-filter]');if(!button)return;requestFilter=button.dataset.requestFilter;renderBuyerRequestCards()};
+$('#request-search').oninput=renderBuyerRequestCards;
 $('#request-list').onclick=async e=>{
  const fulfill=e.target.closest('[data-request-fulfill]'),
        cancel=e.target.closest('[data-request-cancel]'),
