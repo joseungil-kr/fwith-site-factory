@@ -66,7 +66,7 @@ try{
  await page.locator('[data-tab=stock]').click();
  await page.locator('#stock-product').selectOption('1');
  await page.locator('#stock-qty').fill('20');
- await page.locator('#stock-form button[type=submit]').click();
+ await page.locator('#stock-form button.primary').click();
  await page.locator('[data-tab=requests]').click();
  await page.locator('#request-list [data-request-fulfill]').waitFor();
  await page.locator('#request-list [data-request-fulfill]').first().click();
