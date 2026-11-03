@@ -94,3 +94,44 @@
 #ar-payment-history h2{margin-bottom:12px}
 @media(max-width:800px){.ar-current-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.ar-current-stats{grid-template-columns:1fr 1fr}.ar-current-stats strong{font-size:20px}}
+
+
+/* Mobile application navigation: 768px and narrower uses accessible expanding menu.
+ * Desktop top bar, authenticated API, printer CSS and all order flows stay unchanged. */
+.mobile-header-actions,.mobile-shortcuts,.mobile-nav-logout{display:none}
+@media screen and (max-width:768px){
+  .top{height:auto;min-height:65px;padding:9px 14px;gap:8px}
+  .brand{flex:1 1 auto;min-width:0;gap:0}
+  .brand b{font-size:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .brand span,.top-right{display:none}
+  .mobile-header-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex:0 0 auto}
+  .mobile-pending{min-height:42px;max-width:160px;display:inline-flex;align-items:center;gap:7px;
+    padding:8px 10px;background:#eaf5f0;border:1px solid #c5e2d2;border-radius:9px;
+    color:#0e6d54;font-size:12px;white-space:nowrap}
+  .mobile-pending.has-pending{background:#fff2df;border-color:#eac589;color:#93500b}
+  .mobile-pending-count{display:grid;place-items:center;border-radius:20px;min-width:22px;height:22px;
+    padding:1px 5px;background:#0f7f60;color:#fff;font-size:12px;font-variant-numeric:tabular-nums}
+  .mobile-pending.has-pending .mobile-pending-count{background:#b75c09}
+  .mobile-menu-toggle{display:flex;justify-content:center;align-items:center;
+    width:44px;min-width:44px;height:44px;padding:0;border:1px solid #cfdfd6;
+    border-radius:9px;background:#fff;color:#1d5948;font-size:26px;line-height:1}
+  .nav{display:none;overflow:visible;border-bottom:0;padding:0}
+  .nav.mobile-expanded{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;padding:12px 14px;background:#fff;border-bottom:1px solid #e3e9e6}
+  .nav.mobile-expanded button{display:block;width:100%;min-height:46px;padding:10px 12px;
+    text-align:left;white-space:normal;overflow-wrap:anywhere;border:1px solid #e2eae5;
+    border-radius:9px;background:#f8faf9;color:#43594e}
+  .nav.mobile-expanded button.selected{background:#e3f4ee;border-color:#c1e4d4;color:#076c57}
+  .nav.mobile-expanded .mobile-nav-logout{background:#fff3f1;color:#8f3e3f;border-color:#efd6d3}
+  .mobile-shortcuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:9px;padding:10px 14px;background:#fff;border-bottom:1px solid #e4ebe7}
+  .mobile-shortcuts button{min-width:0;min-height:44px;padding:9px 10px;font-size:14px}
+}
+@media screen and (max-width:360px){
+  .top{padding-left:10px;padding-right:10px}
+  .brand b{font-size:18px}
+  .mobile-header-actions{gap:5px}
+  .mobile-pending{padding:7px 8px;gap:5px;font-size:11px}
+  .mobile-shortcuts{padding-left:10px;padding-right:10px}
+  .nav.mobile-expanded{padding-left:10px;padding-right:10px}
+}

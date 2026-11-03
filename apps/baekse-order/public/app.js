@@ -6,12 +6,24 @@ const today=()=>new Date(Date.now()+9*3600000).toISOString().slice(0,10);
 let state={products:[],clients:[],orders:[],movements:[]},viewOrder=null,buyerRequests=[],lastBalanceClientId=null,paymentRequestKey=null;
 const toast=s=>{const t=$('#toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500)};
 async function api(path,body){const opt=body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)};let r=await fetch('/api/'+path,opt);let d=await r.json().catch(()=>({error:'서버 오류'}));if(!r.ok){if(r.status===401){$('#app').classList.add('hidden');$('#login').classList.remove('hidden')}throw new Error(d.error||'요청 실패')}return d}
-function show(tab){$$('[data-page]').forEach(x=>x.classList.toggle('hidden',x.dataset.page!==tab));$$('[data-tab]').forEach(x=>x.classList.toggle('selected',x.dataset.tab===tab));window.scrollTo(0,0);if(tab==='requests')loadBuyerRequests().catch(e=>$('#request-list').textContent=e.message);if(tab==='receivables')loadReceivableDetail().catch(e=>alert(e.message))}
+function setMobileMenuOpen(open){
+ const expanded=Boolean(open);
+ $('#nav').classList.toggle('mobile-expanded',expanded);
+ const toggle=$('#mobile-menu-toggle');
+ toggle.setAttribute('aria-expanded',String(expanded));
+ toggle.setAttribute('aria-label',expanded?'전체 메뉴 닫기':'전체 메뉴 열기');
+ $('#mobile-menu-glyph').textContent=expanded?'×':'☰';
+}
+function closeMobileMenu(){setMobileMenuOpen(false)}
+function show(tab){closeMobileMenu();$('[data-page]').forEach(x=>x.classList.toggle('hidden',x.dataset.page!==tab));$$('[data-tab]').forEach(x=>x.classList.toggle('selected',x.dataset.tab===tab));window.scrollTo(0,0);if(tab==='requests')loadBuyerRequests().catch(e=>$('#request-list').textContent=e.message);if(tab==='receivables')loadReceivableDetail().catch(e=>alert(e.message))}
 async function refresh(){state=await api('state');render()}
 function table(headers,rows){return `<div class="table-overflow"><table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')||`<tr><td colspan="${headers.length}">등록 내역이 없습니다.</td></tr>`}</tbody></table></div>`}
 function renderRequestNavCount(){
  const pending=Number(state.buyer_dashboard?.pending_count??0);
- $('#nav-requests-pending').textContent=String(Number.isSafeInteger(pending)&&pending>=0?pending:0);
+ const count=String(Number.isSafeInteger(pending)&&pending>=0?pending:0);
+ $('#nav-requests-pending').textContent=count;
+ $('#mobile-requests-pending').textContent=count;
+ $('#mobile-requests').classList.toggle('has-pending',Number(count)>0);
 }
 function render(){renderRequestNavCount();renderHome();renderBuyerDashboard();renderReceivableHome();renderOrder();renderStock();renderClients();renderReceivables();renderProducts();renderBills();renderSettings();}
 function renderSettings(){
@@ -199,6 +211,24 @@ function resetProduct(){$('#product-form').reset();$('#product-form [name=id]').
 $('#login-form').addEventListener('submit',async e=>{e.preventDefault();try{await api('login',{password:e.target.password.value,remember:e.target.elements.namedItem('remember').checked});e.target.reset();$('#login').classList.add('hidden');$('#app').classList.remove('hidden');$('#login-error').textContent='';await refresh()}catch(e){$('#login-error').textContent=e.message}});
 $('#logout').onclick=async()=>{await api('logout',{});location.reload()};
 $('#nav').onclick=e=>{let b=e.target.closest('button[data-tab]');if(b)show(b.dataset.tab)};
+$('#mobile-menu-toggle').onclick=()=>{
+ const opening=$('#mobile-menu-toggle').getAttribute('aria-expanded')!=='true';
+ setMobileMenuOpen(opening);
+ if(opening)$('#nav button[data-tab].selected')?.focus();
+};
+$('#mobile-logout').onclick=()=>$('#logout').click();
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape'&&$('#mobile-menu-toggle').getAttribute('aria-expanded')==='true'){
+   closeMobileMenu();$('#mobile-menu-toggle').focus();
+ }
+});
+document.addEventListener('click',e=>{
+ if(window.innerWidth<=768&&$('#mobile-menu-toggle').getAttribute('aria-expanded')==='true'&&
+    !e.target.closest('#nav')&&!e.target.closest('#mobile-menu-toggle'))closeMobileMenu();
+});
+window.addEventListener('resize',()=>{
+ if(window.innerWidth>768&&$('#mobile-menu-toggle').getAttribute('aria-expanded')==='true')closeMobileMenu();
+});
 document.body.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)show(b.dataset.go)});
 $('#add-extra').onclick=addExtra;$('#extras').onclick=e=>{if(e.target.closest('.extra-remove')){e.target.closest('.extra-row').remove();updateTotals()}};
 $('#order-form').addEventListener('input',updateTotals);$('#vat').addEventListener('change',updateTotals);$('#order-client').addEventListener('change',syncOrderPreviousBalance);

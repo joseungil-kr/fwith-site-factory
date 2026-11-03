@@ -1,7 +1,15 @@
 <!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>백세푸드 | 입출고·재고관리</title><link rel="stylesheet" href="/style.css"></head><body>
 <div id="login" class="login-shell"><form id="login-form" class="login-card"><div class="mark">백세푸드 <span>ORDER</span></div><h1>원재료 입출고 관리</h1><p>관리자만 거래·재고 내역에 접근할 수 있습니다.</p><label>관리자 비밀번호<input name="password" type="password" autocomplete="current-password" required placeholder="비밀번호 입력"></label><label class="remember-option"><input id="login-remember" name="remember" type="checkbox"><span>로그인 기억하기 (30일)</span></label><p class="remember-note">비밀번호 자체는 저장하지 않고 로그인 상태만 유지합니다. 공용 기기에서는 선택하지 마세요.</p><button class="primary" type="submit">로그인</button><p id="login-error" role="alert" class="error"></p></form></div>
-<div id="app" class="hidden"><header class="top"><div class="brand"><b>백세푸드</b><span>재고·거래명세표</span></div><div class="top-right"><span id="current-date"></span><button class="ghost" id="logout">로그아웃</button></div></header>
-<nav class="nav" id="nav"><button data-tab="home" class="selected">대시보드</button><button data-tab="order">출고 등록</button><button data-tab="requests">발주 요청(<span id="nav-requests-pending">0</span>)</button><button data-tab="stock">입고·재고</button><button data-tab="bills">거래명세표</button><button data-tab="receivables">미수금 관리</button><button data-tab="products">제품 관리</button><button data-tab="clients">거래처 관리</button><button data-tab="settings">관리자 설정</button></nav>
+<div id="app" class="hidden"><header class="top"><div class="brand"><b>백세푸드</b><span>재고·거래명세표</span></div>
+ <div class="mobile-header-actions">
+   <button id="mobile-requests" class="mobile-pending" type="button" data-go="requests" aria-label="발주 요청 확인"><span>발주 요청</span><span class="mobile-pending-count" id="mobile-requests-pending">0</span></button>
+   <button id="mobile-menu-toggle" class="mobile-menu-toggle" type="button" aria-controls="nav" aria-expanded="false" aria-label="전체 메뉴 열기"><span id="mobile-menu-glyph" aria-hidden="true">☰</span></button>
+ </div><div class="top-right"><span id="current-date"></span><button class="ghost" id="logout">로그아웃</button></div></header>
+<nav class="nav" id="nav"><button data-tab="home" class="selected">대시보드</button><button data-tab="order">출고 등록</button><button data-tab="requests">발주 요청(<span id="nav-requests-pending">0</span>)</button><button data-tab="stock">입고·재고</button><button data-tab="bills">거래명세표</button><button data-tab="receivables">미수금 관리</button><button data-tab="products">제품 관리</button><button data-tab="clients">거래처 관리</button><button data-tab="settings">관리자 설정</button><button id="mobile-logout" type="button" class="mobile-nav-logout">로그아웃</button></nav>
+ <div class="mobile-shortcuts" aria-label="자주 사용하는 기능 바로가기">
+   <button type="button" class="primary" data-go="order">+ 출고 등록</button>
+   <button type="button" class="secondary" data-go="requests">발주 확인</button>
+ </div>
 <main>
 <section class="page" data-page="home"><div class="page-head"><div><h1>운영 현황</h1><p>오늘의 출고와 제품별 재고를 확인하세요.</p></div><button class="primary" data-go="order">+ 출고 등록</button></div><div id="metrics" class="metrics"></div>
 <div class="panel buyer-dashboard-panel">

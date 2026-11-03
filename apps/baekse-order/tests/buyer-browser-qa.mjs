@@ -25,8 +25,33 @@ try{
  await page.locator('#login-form button[type=submit]').click();
  await page.locator('#app:not(.hidden) #metrics').waitFor();
  assert.equal(await page.locator('.metric').count(),6);
- assert.equal((await page.locator('[data-tab=requests]').innerText()).trim(),'발주 요청(0)','Initially no pending buyer requests');
- await page.locator('[data-tab=clients]').click();
+ const toggle=page.locator('#mobile-menu-toggle');
+ const appNav=page.locator('#nav');
+ async function selectTab(name){
+   if(await toggle.isVisible()&&!(await appNav.isVisible()))await toggle.click();
+   await page.locator('#nav button[data-tab="'+name+'"]').click();
+   if(await toggle.isVisible())assert.equal(await toggle.getAttribute('aria-expanded'),'false');
+ }
+ assert.equal(await toggle.getAttribute('aria-expanded'),'false','Mobile menu starts closed');
+ assert.equal(await appNav.isVisible(),false,'Mobile nav must start collapsed');
+ assert.equal((await page.locator('#mobile-requests-pending').textContent()).trim(),'0');
+ assert.ok(await page.locator('.mobile-shortcuts [data-go="order"]').isVisible());
+ await toggle.click();
+ assert.equal(await toggle.getAttribute('aria-expanded'),'true');
+ assert.ok(await appNav.isVisible());
+ await page.setViewportSize({width:320,height:740});
+ const menuWidths=await page.evaluate(()=>({viewport:innerWidth,html:document.documentElement.scrollWidth,nav:document.querySelector('#nav').scrollWidth}));
+ assert.ok(menuWidths.html<=menuWidths.viewport+2 && menuWidths.nav<=menuWidths.viewport+2,
+   'Narrow mobile menu caused horizontal overflow: '+JSON.stringify(menuWidths));
+ await page.keyboard.press('Escape');
+ assert.equal(await toggle.getAttribute('aria-expanded'),'false','Escape closes mobile nav');
+ assert.equal(await appNav.isVisible(),false);
+ await page.setViewportSize({width:390,height:844});
+ await page.locator('.mobile-shortcuts [data-go="order"]').click();
+ assert.ok(await page.locator('[data-page="order"]').isVisible(),'Mobile shortcut navigates to order registration');
+ await selectTab('home');
+ assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주 요청(0)','Initially no pending buyer requests');
+ await selectTab('clients');
  await page.locator('[data-client-edit]').first().click();
  await page.locator('#client-form [name=person]').fill('QA발주담당');
  await page.locator('#client-form [name=phone]').fill('010-1111-2222');
@@ -53,9 +78,10 @@ try{
  await buyerPage.locator('#submit-order').click();
  await buyerPage.locator('#result').getByText(/접수 완료/).waitFor();
  await buyerPage.locator('#request-history').getByText(/접수 대기/).waitFor();
- await page.locator('[data-tab=requests]').click();
+ await selectTab('requests');
  await page.locator('#request-list [data-request-fulfill]').waitFor();
- assert.equal((await page.locator('[data-tab=requests]').innerText()).trim(),'발주 요청(1)','Customer request must update admin nav badge');
+ assert.equal((await page.locator('#mobile-requests-pending').textContent()).trim(),'1','Mobile pending chip updates');
+ assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주 요청(1)','Customer request must update admin nav badge');
  assert.ok((await page.locator('#request-shortages').innerText()).includes('추가 입고 20개 필요'));
  const before=await page.evaluate(async()=>await (await fetch('/api/state')).json());
  assert.equal(before.products[0].stock,0,'Pending buyer request may not debit stock');
@@ -65,11 +91,11 @@ try{
    await new Promise(resolve=>setTimeout(resolve,150));
  }
  assert.ok(dialogs.some(x=>x.includes('재고 부족')),'Insufficient stock must block approval. Dialogs: '+JSON.stringify(dialogs));
- await page.locator('[data-tab=stock]').click();
+ await selectTab('stock');
  await page.locator('#stock-product').selectOption('1');
  await page.locator('#stock-qty').fill('20');
  await page.locator('#stock-form button.primary').click();
- await page.locator('[data-tab=requests]').click();
+ await selectTab('requests');
  await page.locator('#request-list [data-request-fulfill]').waitFor();
  await page.locator('#request-list [data-request-fulfill]').first().click();
  await page.locator('#bill-preview:not(.hidden)').waitFor();
@@ -77,8 +103,12 @@ try{
  const after=await page.evaluate(async()=>await (await fetch('/api/state')).json());
  assert.equal(after.products[0].stock,0,'Approved invoice should debit stock');
  assert.equal(after.buyer_dashboard.pending_count,0);
- assert.equal((await page.locator('[data-tab=requests]').innerText()).trim(),'발주 요청(0)','Fulfilled order clears pending request count');
+ assert.equal((await page.locator('#mobile-requests-pending').textContent()).trim(),'0','Mobile pending chip clears after approval');
+ assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주 요청(0)','Fulfilled order clears pending request count');
  await page.setViewportSize({width:1440,height:900});
+ assert.equal(await toggle.isVisible(),false,'Hamburger button must be hidden on desktop');
+ assert.ok(await appNav.isVisible(),'Desktop navigation should remain fully visible');
+ assert.equal(await page.locator('.mobile-shortcuts').isVisible(),false,'Mobile shortcuts hidden on desktop');
  const snapshotBefore=await page.evaluate(async()=>({
    state:await (await fetch('/api/state')).json(),
    exportData:await (await fetch('/api/export')).json()
@@ -104,7 +134,7 @@ try{
  // Onboard a client to AR after it already has historical invoices: no double count.
  await page.setViewportSize({width:390,height:844});
  const financialBefore=await page.evaluate(async()=>await (await fetch('/api/state')).json());
- await page.locator('[data-tab=receivables]').click();
+ await selectTab('receivables');
  await page.locator('#ar-client-select').selectOption('1');
  await page.locator('#ar-opening-form:not(.hidden)').waitFor();
  await page.locator('#ar-opening-amount').fill('100000');
@@ -117,7 +147,7 @@ try{
  const financialAfter=await page.evaluate(async()=>await (await fetch('/api/state')).json());
  assert.deepEqual(financialAfter.metrics,financialBefore.metrics,'Opening/payments cannot affect revenue KPIs');
  assert.deepEqual(financialAfter.products,financialBefore.products,'Opening/payments cannot affect stock');
- await page.locator('[data-tab=order]').click();
+ await selectTab('order');
  assert.equal(await page.locator('#vat').inputValue(),'none','VAT selection should default to uncalculated');
  assert.equal(await page.locator('#previous-balance').inputValue(),'80000','Current receivable must populate prior balance');
  assert.equal(await page.locator('#previous-balance').evaluate(el=>el.readOnly),true);

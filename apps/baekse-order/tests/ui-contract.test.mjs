@@ -49,3 +49,18 @@ test('navigation order, pending request count and removed AR hint',()=>{
  assert.ok(!html.includes('관리 시작 전 발행한 명세표는 기초 미수금에 이미 반영된 것으로 간주하며 다시 합산하지 않습니다.'));
  assert.ok(!html.includes('기존 명세표의 ‘전 잔고’는 중복 계산하지 않습니다.'));
 });
+
+
+test('mobile hamburger menu, persistent request count and quick-order shortcuts',()=>{
+ assert.ok(html.includes('id="mobile-menu-toggle"') && html.includes('aria-controls="nav"') && html.includes('aria-expanded="false"'));
+ assert.ok(html.includes('id="mobile-requests-pending"') && html.includes('id="mobile-requests"'));
+ assert.ok(html.includes('class="mobile-shortcuts"') && html.includes('data-go="order"'));
+ assert.ok(html.includes('id="mobile-logout"'));
+ for(const identifier of ['function setMobileMenuOpen','function closeMobileMenu',
+   "toggle.setAttribute('aria-expanded'",'mobile-requests-pending',"$('#mobile-menu-toggle').onclick",
+   "if(e.key==='Escape'",'window.innerWidth>768'])assert.ok(script.includes(identifier),identifier);
+ assert.ok(css.includes('@media screen and (max-width:768px)'));
+ assert.ok(css.includes('.nav.mobile-expanded{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))'));
+ assert.ok(css.includes('.nav{display:none;overflow:visible'));
+ assert.ok(css.includes('.top-right{display:none'));
+});

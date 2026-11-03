@@ -44,10 +44,15 @@ try {
     assert.ok(measures.html <= measures.width + 2, label + ': horizontal overflow: ' + JSON.stringify(measures));
   }
 
+  async function selectTab(tab){
+    const mobileToggle=page.locator('#mobile-menu-toggle');
+    if(await mobileToggle.isVisible() && !(await page.locator('#nav').isVisible()))await mobileToggle.click();
+    await page.locator('#nav button[data-tab="'+tab+'"]').click();
+  }
   await noPageOverflow('dashboard390');
   await page.screenshot({path: path.join(out, 'mobile-dashboard.png'), fullPage: true});
 
-  await page.locator('[data-tab=clients]').click();
+  await selectTab('clients');
   await page.locator('[data-client-edit]').first().click();
   await page.locator('#client-form [name=person]').fill('CI 테스트담당');
   await page.locator('#client-form [name=phone]').fill('010-1111-2222');
@@ -56,13 +61,13 @@ try {
   await noPageOverflow('customer390');
   await page.screenshot({path: path.join(out, 'mobile-customers.png'), fullPage: true});
 
-  await page.locator('[data-tab=stock]').click();
+  await selectTab('stock');
   await page.locator('#stock-qty').fill('20');
   await page.locator('#stock-form button[type=submit]').click();
   await page.locator('#stock-list').getByText('20개').first().waitFor();
   await noPageOverflow('stock390');
 
-  await page.locator('[data-tab=order]').click();
+  await selectTab('order');
   await page.locator('#order-items input[data-id="1"]').fill('2');
   await page.locator('#add-extra').click();
   await page.locator('[data-extra=name]').fill('기타 배송비');
@@ -102,7 +107,7 @@ try {
   await page.evaluate(() => document.body.classList.remove('print-58','print-80'));
   await page.emulateMedia({media:'screen'});
   await page.setViewportSize({width:1440,height:900});
-  await page.locator('[data-tab=bills]').click();
+  await selectTab('bills');
   await noPageOverflow('bills1440');
   await page.screenshot({path:path.join(out,'desktop-invoice.png'),fullPage:true});
   assert.deepEqual(issues,[], 'JavaScript page errors');
