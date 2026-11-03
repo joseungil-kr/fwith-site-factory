@@ -33,7 +33,9 @@ jobs:
         working-directory: apps/baekse-order
         run: |
           node --check src.js
+          node --check requests.js
           node --check public/app.js
+          node --check public/buyer.js
           node --check public/serial-printer.js
           npm test
           test "${#BAEKSE_ORDER_ADMIN_PASSWORD}" -ge 12 || { echo 'GitHub secret BAEKSE_ORDER_ADMIN_PASSWORD is missing or too short'; exit 3; }
@@ -80,7 +82,7 @@ jobs:
           version=deployments[0]['versions'][0]
           assert version.get('percentage')==100,'Previous version is not deployed at 100%'
           previous=version['version_id']
-          assert previous=='e83ca6dc-718b-4af1-917d-91a65f6cb662','Worker version changed since last verified release'
+          assert previous=='57c7760c-ebf6-4d96-89df-ffec16e4f137','Worker version changed since last verified release'
           with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:
             f.write('previous_version='+previous+'\n')
           print('SAFE_ORDER_APP_UPDATE_PASS',hostname,'existingWorker',worker,'rollbackPinned',previous)
@@ -119,6 +121,7 @@ jobs:
                 assert 'id="serial-test"' not in html and 'id="serial-width-test"' not in html,'Obsolete printer test buttons must be hidden'
                 assert all(mark in html for mark in ['id="previous-balance"','id="payment-form"','name="company_name"','name="company_business_no"','name="company_address"','name="company_phone"','name="company_email"','name="bank_name"','name="account_number"','name="account_holder"','id="bill-delete"']), 'Admin fields or invoice delete button missing'
                 assert '>관리자 설정</button>' in html and '처음 한 번은' in html,'Renamed admin tab or simplified help missing'
+                assert all(x in html for x in ['data-tab="requests"','id="buyer-home-summary"','id="request-shortages"','id="request-list"','id="link-result"']),'Buyer request manager UI missing'
                 assert 'COM4 (현재 사용)' in html and '9600bps' in html and 'COM6' in html, 'COM range/default missing'
                 assert 'noindex' in r.headers.get('X-Robots-Tag','').lower()
                 assert 'script-src' in r.headers.get('Content-Security-Policy','')
@@ -132,6 +135,20 @@ jobs:
             assert r.status==200 and 'SerialReceiptPrinter' in module and 'requestPort()' in module and 'rasterBand' in module and 'buildRasterJob' in module and 'testWidth' in module and '0x56' in module and '전 잔고' in module and '입금처' in module
             assert 'noindex' in r.headers.get('X-Robots-Tag','').lower()
           print('SERIAL_MODULE_PUBLIC_200: COM1-6 labels, 9600bps default, ESC/POS bitmap, noindex')
+          for path,markers in [
+            ('/request/',['id="buyer-form"','id="buyer-products"','id="delivery-date"','noindex']),
+            ('/buyer.js',['/api/buyer/','request_key','overview','submit']),
+            ('/buyer.css',['buyer-product','buyer-submit'])
+          ]:
+            with unauthed.open(base+path,timeout=25) as r:
+              page=r.read().decode('utf-8')
+              assert r.status==200 and all(m in page for m in markers),'Buyer portal asset missing '+path
+              assert 'noindex' in r.headers.get('X-Robots-Tag','').lower()
+          print('BUYER_PORTAL_PUBLIC_ASSETS_PASS: mobile buyer entry, JS and CSS HTTPS200 noindex')
+          for path in ['/api/requests/list','/api/state']:
+            try:unauthed.open(base+path,timeout=20)
+            except urllib.error.HTTPError as e:assert e.code==401,'Authenticated API should deny anonymous reads'
+            else:raise AssertionError('Anonymous admin data exposure at '+path)
           try:unauthed.open(base+'/api/state',timeout=20)
           except urllib.error.HTTPError as e:assert e.code==401,'Anonymous API must reject'
           else:raise AssertionError('Anonymous access to inventory')
@@ -164,6 +181,11 @@ jobs:
             assert set(('today_count','today_amount','month_count','month_amount','cumulative_amount')).issubset(payload.get('metrics',{})),'Six KPI aggregation fields missing'
             assert all('sort_order' in product for product in payload.get('products',[])),'Product order migration missing'
             assert payload['products']==sorted(payload['products'],key=lambda p:(p['sort_order'],p['id'])),'Product sort order inconsistent'
+            summary=payload.get('buyer_dashboard',{})
+            assert all(k in summary for k in ('pending_count','shortage_count','shortages','products')),'Pending and shortage state missing'
+            assert isinstance(payload.get('buyer_links'),list),'Buyer link metadata missing'
+            assert all('token_hash' not in obj and 'token' not in obj for obj in payload['buyer_links']),'Secret tokens exposed to admin state'
+            print('BUYER_PORTAL_DATABASE_PASS: secure link metadata, request tables and aggregated stock shortages')
             for item in payload.get('orders',[])[:1]:
               req=urllib.request.Request(base+'/api/orders/detail?id='+str(item['id']))
               with op.open(req,timeout=25) as d:
@@ -175,6 +197,7 @@ jobs:
           with unauthed.open(base+'/app.js',timeout=25) as r:
             ui=r.read().decode('utf-8')
             assert all(k in ui for k in ['metric-orange','cancelled-order-row','data-product-move','orders/reissue','orders/delete','movementLabel']), 'Front-end behaviors missing'
+            assert all(k in ui for k in ['data-client-link','requests/link/issue','requests/link/revoke','requests/fulfill','loadBuyerRequests','buyer-home-summary']),'Buyer admin actions missing'
             assert 'serial-width-test' not in ui and 'serial-test' not in ui,'Old printer test handlers remain'
           print('ADMIN_DASHBOARD_LIVE_PASS: six KPIs, company settings, product sorting, invoice restore/delete, localized stock movements')
           print('PAYMENT_FIELDS_LIVE_PASS: configurable bank persisted, legacy invoices readable, previous balance column available')
