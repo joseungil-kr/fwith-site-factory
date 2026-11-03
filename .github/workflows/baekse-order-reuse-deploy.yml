@@ -62,7 +62,9 @@ jobs:
           assert target,'Worker reference verification unavailable'
           detail=api('/accounts/'+account+'/workers/workers/'+target['id'])['result']
           refs=detail.get('references') or {}
-          assert all(not v for v in refs.values()),'Worker is used by a domain or another Cloudflare resource'
+          assert all(not v for k,v in refs.items() if k!='durable_objects'),'Worker is used by an external domain/service/queue'
+          do_refs=refs.get('durable_objects') or []
+          assert all(x.get('worker_name')==worker and x.get('namespace_name')==worker+'_OrderDatabase' for x in do_refs),'Existing DO is referenced by an external Worker'
           schedules=api('/accounts/'+account+'/workers/scripts/'+worker+'/schedules')['result']['schedules']
           assert not schedules,'Worker has cron triggers'
           bindings=api('/accounts/'+account+'/workers/scripts/'+worker+'/settings')['result'].get('bindings') or []
