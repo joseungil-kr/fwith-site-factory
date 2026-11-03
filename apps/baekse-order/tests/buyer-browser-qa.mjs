@@ -39,6 +39,7 @@ try{
  await toggle.click();
  assert.equal(await toggle.getAttribute('aria-expanded'),'true');
  assert.ok(await appNav.isVisible());
+ assert.ok(await page.locator('#mobile-logout').isVisible(),'Mobile logout must remain accessible inside the menu');
  await page.setViewportSize({width:320,height:740});
  const menuWidths=await page.evaluate(()=>({viewport:innerWidth,html:document.documentElement.scrollWidth,nav:document.querySelector('#nav').scrollWidth}));
  assert.ok(menuWidths.html<=menuWidths.viewport+2 && menuWidths.nav<=menuWidths.viewport+2,
@@ -48,6 +49,7 @@ try{
  assert.equal(await appNav.isVisible(),false);
  await page.setViewportSize({width:390,height:844});
  await page.locator('.mobile-shortcuts [data-go="order"]').click();
+ await page.locator('[data-page="order"]:not(.hidden)').waitFor();
  assert.ok(await page.locator('[data-page="order"]').isVisible(),'Mobile shortcut navigates to order registration');
  await selectTab('home');
  assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주 요청(0)','Initially no pending buyer requests');
@@ -78,7 +80,9 @@ try{
  await buyerPage.locator('#submit-order').click();
  await buyerPage.locator('#result').getByText(/접수 완료/).waitFor();
  await buyerPage.locator('#request-history').getByText(/접수 대기/).waitFor();
- await selectTab('requests');
+ await page.locator('#mobile-requests').click();
+ await page.locator('[data-page="requests"]:not(.hidden)').waitFor();
+ assert.equal(await appNav.isVisible(),false,'Mobile header request chip must navigate without expanding the menu');
  await page.locator('#request-list [data-request-fulfill]').waitFor();
  assert.equal((await page.locator('#mobile-requests-pending').textContent()).trim(),'1','Mobile pending chip updates');
  assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주 요청(1)','Customer request must update admin nav badge');
