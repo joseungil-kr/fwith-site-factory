@@ -3,19 +3,91 @@ const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(
 const money=n=>(Number(n)||0).toLocaleString('ko-KR')+'원',fmt=n=>(Number(n)||0).toLocaleString('ko-KR');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const today=()=>new Date(Date.now()+9*3600000).toISOString().slice(0,10);
-let state={products:[],clients:[],orders:[],movements:[]},viewOrder=null,buyerRequests=[];
+let state={products:[],clients:[],orders:[],movements:[]},viewOrder=null,buyerRequests=[],lastBalanceClientId=null,paymentRequestKey=null;
 const toast=s=>{const t=$('#toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500)};
 async function api(path,body){const opt=body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)};let r=await fetch('/api/'+path,opt);let d=await r.json().catch(()=>({error:'서버 오류'}));if(!r.ok){if(r.status===401){$('#app').classList.add('hidden');$('#login').classList.remove('hidden')}throw new Error(d.error||'요청 실패')}return d}
-function show(tab){$$('[data-page]').forEach(x=>x.classList.toggle('hidden',x.dataset.page!==tab));$$('[data-tab]').forEach(x=>x.classList.toggle('selected',x.dataset.tab===tab));window.scrollTo(0,0);if(tab==='requests')loadBuyerRequests().catch(e=>$('#request-list').textContent=e.message)}
+function show(tab){$$('[data-page]').forEach(x=>x.classList.toggle('hidden',x.dataset.page!==tab));$$('[data-tab]').forEach(x=>x.classList.toggle('selected',x.dataset.tab===tab));window.scrollTo(0,0);if(tab==='requests')loadBuyerRequests().catch(e=>$('#request-list').textContent=e.message);if(tab==='receivables')loadReceivableDetail().catch(e=>alert(e.message))}
 async function refresh(){state=await api('state');render()}
 function table(headers,rows){return `<div class="table-overflow"><table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')||`<tr><td colspan="${headers.length}">등록 내역이 없습니다.</td></tr>`}</tbody></table></div>`}
-function render(){renderHome();renderBuyerDashboard();renderOrder();renderStock();renderClients();renderProducts();renderBills();renderSettings();}
+function render(){renderHome();renderBuyerDashboard();renderReceivableHome();renderOrder();renderStock();renderClients();renderReceivables();renderProducts();renderBills();renderSettings();}
 function renderSettings(){
  const s=state.receipt_settings||{};
  for(const key of ['company_name','company_business_no','company_address','company_phone','company_email','bank_name','account_number','account_holder']){
    $('#payment-form [name="'+key+'"]').value=s[key]||(key==='company_name'?'백세푸드':'');
  }
  $('.brand b').textContent=s.company_name||'백세푸드';
+}
+function clientReceivable(id){
+ return (state.receivables?.accounts||[]).find(a=>a.client_id===Number(id))||null;
+}
+function renderReceivableHome(){
+ const accounts=state.receivables||{accounts:[],total:0,tracked_clients:0};
+ const missing=Math.max(0,state.clients.length-accounts.tracked_clients);
+ $('#receivable-home-summary').innerHTML='<div class="buyer-dashboard-row">'+
+   '<div class="buyer-kpi"><strong>'+money(accounts.total||0)+'</strong><span>미수금 관리 중인 거래처 합계</span></div>'+
+   '<div class="buyer-kpi'+(missing?' shortage-alert':'')+'"><strong>'+missing+'곳</strong><span>기초 미수금 미설정</span></div></div>';
+}
+function renderReceivables(){
+ const accountList=state.receivables?.accounts||[];
+ const selected=$('#ar-client-select').value;
+ $('#ar-client-select').innerHTML='<option value="">거래처 선택</option>'+
+   state.clients.map(c=>'<option value="'+c.id+'">'+esc(c.business)+'</option>').join('');
+ if(selected && state.clients.some(c=>String(c.id)===selected))$('#ar-client-select').value=selected;
+ $('#ar-count-label').textContent='관리 중 '+accountList.length+'곳 / 총 '+state.clients.length+'곳';
+ $('#receivables-list').innerHTML=table(['거래처','기초 미수금','출고금액 누계','입금액 누계','현재 미수금','관리'],
+   state.clients.map(client=>{
+     const a=clientReceivable(client.id);
+     return '<tr><td>'+esc(client.business)+'</td><td>'+(a?money(a.opening_balance):'미설정')+
+       '</td><td>'+(a?money(a.issued_amount):'—')+'</td><td>'+(a?money(a.paid_amount):'—')+
+       '</td><td><b>'+(a?money(a.balance):'미설정')+'</b></td>'+
+       '<td><button class="secondary" type="button" data-ar-client="'+client.id+'">상세 관리</button></td></tr>';
+   }));
+}
+async function loadReceivableDetail(){
+ const id=Number($('#ar-client-select').value);
+ if(!id){
+   $('#ar-current').textContent='거래처를 선택하세요.';
+   $('#ar-opening-form').classList.add('hidden');$('#ar-payment-form').classList.add('hidden');
+   $('#ar-payment-history').replaceChildren();return;
+ }
+ const d=await api('receivables/detail?client_id='+id),a=d.account;
+ $('#ar-opening-form').classList.remove('hidden');
+ $('#ar-opening-amount').value=String(a?.opening_balance??0);
+ $('#ar-opening-reason-wrap').classList.toggle('hidden',!a);
+ $('#ar-opening-reason').required=Boolean(a);
+ $('#ar-opening-reason').value='';
+ $('#ar-opening-save').textContent=a?'기초잔액 수정':'기초 미수금 등록·관리 시작';
+ $('#ar-payment-form').classList.toggle('hidden',!a);
+ if(a){
+   $('#ar-current').innerHTML='<div class="ar-current-stats"><div><span>현재 미수금</span><strong>'+money(a.balance)+
+     '</strong></div><div><span>기초 미수금</span><b>'+money(a.opening_balance)+
+     '</b></div><div><span>관리 시작 후 출고 누계</span><b>'+money(a.issued_amount)+
+     '</b></div><div><span>입금 누계</span><b>'+money(a.paid_amount)+'</b></div></div>'+
+     '<p class="hint">관리 시작: '+esc(a.activated_at.slice(0,10))+' · 기존 명세표는 기초잔액에 포함된 것으로 간주합니다.</p>';
+ }else{
+   $('#ar-current').innerHTML='<p>이 업체는 아직 미수금 자동계산이 설정되지 않았습니다.</p>'+
+     '<p class="hint">거래처의 현재 실제 미수금을 확인해 기초잔액으로 입력하세요. 과거 명세표는 다시 합산하지 않습니다.</p>';
+ }
+ const payments=d.payments||[];
+ $('#ar-payment-history').innerHTML=a?
+   '<h2>입금 내역 (최근 100건)</h2>'+table(['입금일','금액','메모','처리'],
+     payments.map(p=>'<tr class="'+(p.voided_at?'ar-voided':'')+'"><td>'+esc(p.paid_date)+'</td>'+
+       '<td>'+money(p.amount)+'</td><td>'+esc(p.memo||'')+'</td><td>'+
+       (p.voided_at?'취소됨':'<button class="danger" type="button" data-ar-void="'+p.id+'">입금 취소</button>')+'</td></tr>')):'';
+}
+function syncOrderPreviousBalance(){
+ const clientId=Number($('#order-client').value),a=clientReceivable(clientId);
+ const previous=$('#previous-balance'),hint=$('#previous-balance-help');
+ if(a){
+   previous.value=String(a.balance);previous.readOnly=true;
+   hint.textContent='자동 입력: 거래처 미수금 원장 기준 '+money(a.balance)+' · 출고 저장 시 최신 금액을 다시 계산합니다.';
+ }else{
+   if(lastBalanceClientId!==clientId)previous.value='0';
+   previous.readOnly=false;
+   hint.textContent='미수금 관리 미설정 · 기본 0원(수동 입력). 거래처별 미수금 관리에서 자동계산을 설정할 수 있습니다.';
+ }
+ lastBalanceClientId=clientId;
+ updateTotals();
 }
 function renderBuyerDashboard(){
  const v=state.buyer_dashboard||{pending_count:0,shortage_count:0,shortages:[]};
@@ -38,12 +110,13 @@ async function loadBuyerRequests(){
  const labels={pending:'발주 대기',fulfilled:'출고 완료',cancelled:'발주 취소'};
  $('#request-list').innerHTML=buyerRequests.length?buyerRequests.map(req=>{
    const pending=req.status==='pending';
+   const clientBalance=clientReceivable(req.client_id);
    const rows=req.items.map(p=>'<li>'+esc(p.name)+' · '+fmt(p.qty)+'개 × '+money(p.unit_price)+'</li>').join('');
    const total=req.items.reduce((n,p)=>n+p.qty*p.unit_price,0);
    return '<article class="buyer-request-card"><div class="buyer-request-head"><div><strong>#'+req.id+' · '+esc(req.client_name)+'</strong><span>납품 요청일 '+esc(req.requested_delivery)+' · '+esc(req.created_at.slice(0,10))+'</span></div><span class="request-state '+(pending?'state-waiting':'')+'">'+labels[req.status]+'</span></div>'+
    '<ul class="buyer-request-items">'+rows+'</ul><p class="buyer-request-sum">예상 공급가액: <b>'+money(total)+'</b></p>'+
    (req.note?'<p class="buyer-request-note">요청사항: '+esc(req.note)+'</p>':'')+
-   (pending?'<div class="buyer-approval-controls"><label>부가세<select data-request-vat="'+req.id+'"><option value="none">0원</option><option value="tax">10% 추가</option></select></label><label>전 잔고<input data-request-balance="'+req.id+'" type="number" min="0" max="2000000000" value="0" inputmode="numeric"></label></div><div class="action-row"><button class="primary" data-request-fulfill="'+req.id+'" type="button">출고처리</button><button class="danger" data-request-cancel="'+req.id+'" type="button">발주 취소</button></div>':
+   (pending?'<div class="buyer-approval-controls"><label>부가세<select data-request-vat="'+req.id+'"><option value="none">0원</option><option value="tax">10% 추가</option></select></label><label>전 잔고<input data-request-balance="'+req.id+'" type="number" min="0" max="2000000000" value="'+(clientBalance?clientBalance.balance:0)+'" '+(clientBalance?'readonly':'')+' inputmode="numeric"></label></div>'+(clientBalance?'<p class="hint">전 잔고 자동 입력: '+money(clientBalance.balance)+' (출고 확정 시 최신 잔액 적용)</p>':'<p class="hint">미수금 관리 미설정: 전 잔고 수동 입력</p>')+'<div class="action-row"><button class="primary" data-request-fulfill="'+req.id+'" type="button">출고처리</button><button class="danger" data-request-cancel="'+req.id+'" type="button">발주 취소</button></div>':
       req.issued_order_id?'<div class="action-row"><button class="secondary" data-request-invoice="'+req.issued_order_id+'" type="button">거래명세표 보기</button></div>':'')+
    '</article>';
  }).join(''):'<p class="hint">발주 요청 내역이 없습니다.</p>';
@@ -68,7 +141,7 @@ function renderHome(){
 }
 function renderOrder(){const client=$('#order-client').value;$('#order-client').innerHTML=`<option value="">거래처 선택</option>`+state.clients.filter(c=>c.active).map(c=>`<option value="${c.id}">${esc(c.business)}</option>`).join('');$('#order-client').value=client||String(state.clients.find(c=>c.active)?.id||'');
  const old={};$$('#order-items input').forEach(i=>old[i.dataset.id]=i.value);
- $('#order-items').innerHTML=state.products.filter(p=>p.active).map(p=>`<tr><td><b>${esc(p.name)}</b><span class="price-note">${money(p.price)} / 개 · 부가세 별도</span></td><td>${fmt(p.stock)}개</td><td><input type="number" min="0" max="${Math.max(0,p.stock)}" step="1" data-id="${p.id}" value="${esc(old[p.id]??0)}" aria-label="${esc(p.name)} 출고수량"></td><td class="right num" data-total="${p.id}">0원</td></tr>`).join('');updateTotals()}
+ $('#order-items').innerHTML=state.products.filter(p=>p.active).map(p=>`<tr><td><b>${esc(p.name)}</b><span class="price-note">${money(p.price)} / 개 · 부가세 별도</span></td><td>${fmt(p.stock)}개</td><td><input type="number" min="0" max="${Math.max(0,p.stock)}" step="1" data-id="${p.id}" value="${esc(old[p.id]??0)}" aria-label="${esc(p.name)} 출고수량"></td><td class="right num" data-total="${p.id}">0원</td></tr>`).join('');syncOrderPreviousBalance()}
 function getItems(){const items=[];for(const i of $$('#order-items input')){const n=Number(i.value);if(!Number.isSafeInteger(n)||n<0)throw new Error('수량은 0 이상의 정수여야 합니다');if(n===0)continue;const p=state.products.find(p=>p.id===Number(i.dataset.id));if(n>p.stock)throw new Error(`${p.name} 재고 부족`);items.push({product_id:p.id,qty:n,unit_price:p.price,name:p.name});}
  for(const el of $$('.extra-row')){const name=el.querySelector('[data-extra="name"]').value.trim(),qty=Number(el.querySelector('[data-extra="qty"]').value),unit_price=Number(el.querySelector('[data-extra="price"]').value);if(!name&&!qty&&!unit_price)continue;if(!name||!Number.isSafeInteger(qty)||qty<1||!Number.isSafeInteger(unit_price)||unit_price<0)throw new Error('기타 품명·수량·단가를 모두 정확히 입력하세요');items.push({name,qty,unit_price})}return items}
 function updateTotals(){try{let items=getItems(),supply=items.reduce((a,i)=>a+i.qty*i.unit_price,0),tax=$('#vat').value==='tax'?Math.round(supply*.1):0,previousBalance=Number($('#previous-balance').value);if(!Number.isSafeInteger(previousBalance)||previousBalance<0||previousBalance>2000000000)throw new Error('전 잔고는 0원 이상의 정수로 입력하세요');$$('#order-items input').forEach(input=>{const p=state.products.find(p=>p.id===Number(input.dataset.id));const target=$(`[data-total="${p.id}"]`);if(target)target.textContent=money(Number(input.value)*p.price)});$('#order-total').innerHTML=`<div><span>공급가액 (부가세 제외)</span><b>${money(supply)}</b></div><div><span>부가세</span><b>${money(tax)}</b></div><div><span>전 잔고</span><b>${money(previousBalance)}</b></div><div class="grand"><span>합계</span><b>${money(supply+tax+previousBalance)}</b></div>`}catch(e){$('#order-total').textContent=e.message}}
@@ -118,7 +191,7 @@ $('#logout').onclick=async()=>{await api('logout',{});location.reload()};
 $('#nav').onclick=e=>{let b=e.target.closest('button[data-tab]');if(b)show(b.dataset.tab)};
 document.body.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)show(b.dataset.go)});
 $('#add-extra').onclick=addExtra;$('#extras').onclick=e=>{if(e.target.closest('.extra-remove')){e.target.closest('.extra-row').remove();updateTotals()}};
-$('#order-form').addEventListener('input',updateTotals);$('#vat').addEventListener('change',updateTotals);
+$('#order-form').addEventListener('input',updateTotals);$('#vat').addEventListener('change',updateTotals);$('#order-client').addEventListener('change',syncOrderPreviousBalance);
 $('#order-form').addEventListener('submit',async e=>{e.preventDefault();try{const items=getItems();if(!items.length)throw new Error('출고 품목을 한 개 이상 입력하세요');if(!confirm('재고를 차감하고 거래명세표를 발행할까요?'))return;const r=await api('orders',{client_id:Number($('#order-client').value),order_date:$('#order-date').value,vat:$('#vat').value,previous_balance:Number($('#previous-balance').value||0),memo:$('#order-memo').value,items});toast('출고 등록 및 거래명세표 발행 완료');$$('#order-items input').forEach(i=>i.value=0);$('#extras').innerHTML='';$('#order-memo').value='';$('#previous-balance').value='0';await refresh();show('bills');await openBill(r.id)}catch(e){alert(e.message)}});
 $('#stock-product').onchange=setStockCost;$('#stock-type').onchange=()=>{$('#stock-qty-label').firstChild.textContent=$('#stock-type').value==='adjust'?'실사 재고수량':'수량';$('#stock-qty').min=$('#stock-type').value==='adjust'?'0':'1'};
 $('#stock-form').addEventListener('submit',async e=>{e.preventDefault();try{let type=$('#stock-type').value,quantity=Number($('#stock-qty').value);await api('stock',{product_id:Number($('#stock-product').value),type,quantity,adjustment:type==='adjust'?quantity:undefined,cost:Number($('#stock-cost').value),note:$('#stock-note').value});toast('재고 변경을 저장했습니다');$('#stock-qty').value='';$('#stock-note').value='';await refresh()}catch(e){alert(e.message)}});
