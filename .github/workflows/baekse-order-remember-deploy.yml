@@ -105,7 +105,7 @@ jobs:
           base='https://order.baeksefood.com';password=os.environ['BAEKSE_ORDER_ADMIN_PASSWORD']
           ua='Mozilla/5.0 (compatible; deployment verifier)'
           def opener(jar=None):
-            op=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar)) if jar else urllib.request.build_opener()
+            op=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar)) if jar is not None else urllib.request.build_opener()
             op.addheaders=[('User-Agent',ua)]
             return op
           unauthed=opener()
