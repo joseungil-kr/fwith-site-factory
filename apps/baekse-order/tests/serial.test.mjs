@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {checkedSettings,makeReceiptRows,rasterBand,testReceiptBytes,SerialReceiptPrinter,PAPER_WIDTHS} from '../public/serial-printer.js';
+import {checkedSettings,makeReceiptRows,rasterBand,testReceiptBytes,SerialReceiptPrinter,PAPER_WIDTHS,WIDTH_CHOICES,buildRasterJob} from '../public/serial-printer.js';
 
 test('COM1..COM6 only, COM4 9600 default profile supported',()=>{
-  assert.deepEqual(checkedSettings({slot:'4',baudRate:'9600',paperMm:'58'}),{slot:4,baudRate:9600,paperMm:58});
+  assert.deepEqual(checkedSettings({slot:'4',baudRate:'9600',paperMm:'58'}),{slot:4,baudRate:9600,paperMm:58,dotWidth:384,fontSize:26,autoCut:true});
   assert.deepEqual(Object.keys(PAPER_WIDTHS),['58','80']);
   for (const v of [0,7,'COM4','abc']) assert.throws(()=>checkedSettings({slot:v,baudRate:9600,paperMm:58}));
   assert.throws(()=>checkedSettings({slot:4,baudRate:300,paperMm:58}));
@@ -55,4 +55,30 @@ test('Web Serial requestPort and 8N1 open, safe send, disconnect',async()=>{
 test('Already-allowed reconnect fails closed with multiple ports',async()=>{
   const p=new SerialReceiptPrinter({requestPort:()=>Promise.reject(new Error('should not call')),getPorts:async()=>[{},{}]});
   await assert.rejects(p.reconnectGranted({slot:4,baudRate:9600,paperMm:58}),/한 개가 아닙니다/);
+});
+
+test('80mm SAM4S 512-dot default, font 26px, cut enabled; adjustable width and type',()=>{
+  assert.equal(PAPER_WIDTHS[80],512);
+  assert.equal(PAPER_WIDTHS[58],384);
+  assert.ok(WIDTH_CHOICES[80].includes(432));
+  assert.ok(WIDTH_CHOICES[80].includes(512));
+  const s=checkedSettings({slot:4,baudRate:9600,paperMm:80});
+  assert.equal(s.dotWidth,512);
+  assert.equal(s.fontSize,26);
+  assert.equal(s.autoCut,true);
+  const alt=checkedSettings({slot:4,baudRate:9600,paperMm:80,dotWidth:448,fontSize:30,autoCut:false});
+  assert.equal(alt.dotWidth,448);
+  assert.equal(alt.fontSize,30);
+  assert.equal(alt.autoCut,false);
+  assert.throws(()=>checkedSettings({slot:4,baudRate:9600,paperMm:58,dotWidth:576}));
+});
+test('full-width single raster image, linefeed, and one GS V 0 auto-cut from working printtest script',()=>{
+  const width=512,height=150,raw=new Uint8ClampedArray(width*height*4).fill(255);
+  const command=buildRasterJob({width,height,data:raw},true);
+  assert.equal(command.length,3,'short receipt must use one GS v 0 command');
+  assert.deepEqual([...command[0]],[0x1b,0x40]);
+  assert.deepEqual([...command[1].subarray(0,8)],[0x1d,0x76,0x30,0,64,0,150,0]);
+  assert.equal(command[1].length,8+64*150);
+  assert.deepEqual([...command[2]],[10,10,10,0x1d,0x56,0]);
+  assert.deepEqual([...buildRasterJob({width,height,data:raw},false)[2]],[10,10,10]);
 });
