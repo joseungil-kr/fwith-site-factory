@@ -1,0 +1,219 @@
+name: Baekse order guarded reuse of idle Cloudflare Worker
+on:
+  push:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths:
+      - '.github/workflows/baekse-order-reuse-deploy.yml'
+      - 'apps/baekse-order/wrangler.reused.jsonc'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: baekse-order-reused-worker-production
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      BAEKSE_ORDER_ADMIN_PASSWORD: ${{ secrets.BAEKSE_ORDER_ADMIN_PASSWORD }}
+      WRANGLER_SEND_METRICS: 'false'
+      TARGET_WORKER: funeralflower-home-preview
+      CUSTOM_HOST: order.baeksefood.com
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/baekse-order-deploy-20261103
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Revalidate code, VAT calculations and database contract
+        working-directory: apps/baekse-order
+        run: |
+          node --check src.js
+          node --check public/app.js
+          npm test
+          node -e 'const j=require("./wrangler.reused.jsonc"); if(j.name!=="funeralflower-home-preview"||j.durable_objects.bindings[0].class_name!=="OrderDatabase")process.exit(1)'
+      - name: Guarded Cloudflare candidate and target domain preflight (read only)
+        id: guard
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request,urllib.error,datetime,socket
+          account=os.getenv('CLOUDFLARE_ACCOUNT_ID');token=os.getenv('CLOUDFLARE_API_TOKEN')
+          worker=os.environ['TARGET_WORKER'];host=os.environ['CUSTOM_HOST']
+          assert token and account,'Existing Cloudflare deployment credentials unavailable'
+          root='https://api.cloudflare.com/client/v4'
+          def api(path,data=None):
+            req=urllib.request.Request(root+path,data=json.dumps(data).encode() if data is not None else None,
+              headers={'Authorization':'Bearer '+token,'Content-Type':'application/json'})
+            with urllib.request.urlopen(req,timeout=30) as h:
+              j=json.load(h)
+              if not j.get('success',True) and 'data' not in j:raise RuntimeError('Cloudflare read failed: '+path.split('?')[0])
+              return j
+          scripts=api('/accounts/'+account+'/workers/scripts')['result']
+          script=next((s for s in scripts if s.get('id')==worker),None)
+          assert script,'Target must be an existing Worker; creating new Workers is prohibited'
+          # Reject any intervening worker revision, except for this workflow's own verified retries.
+          assert script.get('modified_on')=='2026-10-28T14:54:51.163343Z', 'Candidate changed since inventory; refuse overwrite'
+          newer=api('/accounts/'+account+'/workers/workers?per_page=200')['result']
+          target=next((s for s in newer if s.get('name')==worker),None)
+          assert target,'Worker reference verification unavailable'
+          detail=api('/accounts/'+account+'/workers/workers/'+target['id'])['result']
+          refs=detail.get('references') or {}
+          assert all(not v for v in refs.values()),'Worker is used by a domain or another Cloudflare resource'
+          schedules=api('/accounts/'+account+'/workers/scripts/'+worker+'/schedules')['result']['schedules']
+          assert not schedules,'Worker has cron triggers'
+          bindings=api('/accounts/'+account+'/workers/scripts/'+worker+'/settings')['result'].get('bindings') or []
+          assert not bindings,'Worker has existing database/secret/assets bindings'
+          mappings=api('/accounts/'+account+'/workers/domains')['result']
+          assert not any(v.get('service')==worker for v in mappings),'Worker has a live custom domain'
+          assert not any(v.get('hostname')==host for v in mappings),'Order hostname already bound to another Worker'
+          zones=api('/zones?name=baeksefood.com')['result']
+          zones=[z for z in zones if z.get('name')=='baeksefood.com' and z.get('status')=='active' and z.get('account',{}).get('id')==account]
+          assert len(zones)==1,'Order domain is not in the verified Cloudflare account'
+          end=datetime.datetime.now(datetime.timezone.utc)
+          start=end-datetime.timedelta(days=7)
+          query="""query Q($accountTag:string!,$scriptName:string!,$start:Time!,$end:Time!){
+            viewer{accounts(filter:{accountTag:$accountTag}){
+              workersInvocationsAdaptive(limit:1,filter:{scriptName:$scriptName,datetime_geq:$start,datetime_leq:$end}){sum{requests}}
+            }}
+          }"""
+          payload={'query':query,'variables':{'accountTag':account,'scriptName':worker,
+            'start':start.strftime('%Y-%m-%dT%H:%M:%SZ'),'end':end.strftime('%Y-%m-%dT%H:%M:%SZ')}}
+          metric=api('/graphql',payload)
+          assert not metric.get('errors'),'Analytics unavailable; do not assume unused'
+          analytics=metric['data']['viewer']['accounts'][0]['workersInvocationsAdaptive']
+          visits=sum(int(x['sum']['requests']) for x in analytics)
+          assert visits==0,f'Worker has recent requests: {visits}; do not overwrite'
+          deployment=api('/accounts/'+account+'/workers/scripts/'+worker+'/deployments')['result']['deployments']
+          assert deployment and deployment[0].get('versions') and len(deployment[0]['versions'])==1,'No stable previous version for rollback'
+          v=deployment[0]['versions'][0]
+          assert v.get('percentage')==100,'Previous Worker version not stable'
+          prev=v['version_id']
+          print('REUSE_GUARD_PASS',worker,'requests7d',visits,'domainRefs',len(refs.get('domains') or []),'cron',len(schedules))
+          print('EXISTING_DEPLOYMENT_VERSION',prev)
+          print('ADMIN_PASSWORD_CONFIGURED',len(os.getenv('BAEKSE_ORDER_ADMIN_PASSWORD',''))>=12)
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+            f.write('previous_version='+prev+'\n')
+            f.write('zone='+zones[0]['id']+'\n')
+          PY
+      - name: Reuse the exact existing Worker, without creating another
+        id: deploy
+        working-directory: apps/baekse-order
+        run: npx --yes wrangler@4.156.2 deploy --config wrangler.reused.jsonc
+      - name: Set existing approved administrator password only when configured
+        id: credential
+        if: ${{ env.BAEKSE_ORDER_ADMIN_PASSWORD != '' }}
+        working-directory: apps/baekse-order
+        shell: bash
+        run: |
+          if [ "${#BAEKSE_ORDER_ADMIN_PASSWORD}" -lt 12 ]; then
+            echo 'Admin password too short; refusing insecure setting'
+            exit 4
+          fi
+          printf '%s' "$BAEKSE_ORDER_ADMIN_PASSWORD" | npx --yes wrangler@4.156.2 secret put ADMIN_PASSWORD --config wrangler.reused.jsonc
+      - name: Independently check live workers.dev and fail-closed API
+        id: livecheck
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.error,time,os
+          url='https://'+os.environ['TARGET_WORKER']+'.joseungil.workers.dev'
+          previous=''
+          for attempt in range(12):
+            try:
+              with urllib.request.urlopen(url+'/',timeout=25) as r:
+                html=r.read().decode()
+                assert r.status==200 and '백세푸드' in html and '로그인' in html
+                assert 'noindex' in r.headers.get('X-Robots-Tag','').lower()
+              for path in ('/api/state','/api/session','/api/export'):
+                try:urllib.request.urlopen(url+path,timeout=20)
+                except urllib.error.HTTPError as e:assert e.code==401,(path,e.code)
+                else:raise AssertionError('Anonymous data leak '+path)
+              pwd=os.environ.get('BAEKSE_ORDER_ADMIN_PASSWORD','')
+              req=urllib.request.Request(url+'/api/login',data=b'{"password":"deliberately-invalid"}',headers={'Content-Type':'application/json'},method='POST')
+              try:urllib.request.urlopen(req,timeout=20)
+              except urllib.error.HTTPError as e:
+                assert e.code==(401 if len(pwd)>=12 else 503),e.code
+              else:raise AssertionError('Anonymous login bypass')
+              print('LIVE_WORKER_PASS',url,'LOGIN_POLICY',('enabled' if len(pwd)>=12 else 'fail-closed-unconfigured'))
+              break
+            except Exception as e:
+              previous=str(e)
+              if attempt==11:raise
+              time.sleep(10)
+          PY
+      - name: Roll back old Worker version if direct Worker health check fails
+        if: ${{ failure() && steps.deploy.outcome == 'success' && steps.livecheck.outcome != 'success' && steps.guard.outputs.previous_version != '' }}
+        working-directory: apps/baekse-order
+        run: npx --yes wrangler@4.156.2 versions deploy "${{ steps.guard.outputs.previous_version }}@100%" --yes --config wrangler.reused.jsonc
+      - name: Attach only the requested order subdomain, without touching other domains
+        id: domain
+        if: ${{ success() }}
+        shell: bash
+        env:
+          ZONE: ${{ steps.guard.outputs.zone }}
+        run: |
+          python3 - <<'PY'
+          import os,json,urllib.request,urllib.error
+          account=os.environ['CLOUDFLARE_ACCOUNT_ID'];token=os.environ['CLOUDFLARE_API_TOKEN']
+          host=os.environ['CUSTOM_HOST'];worker=os.environ['TARGET_WORKER'];zid=os.environ['ZONE']
+          payload=json.dumps({'hostname':host,'service':worker,'zone_id':zid}).encode()
+          req=urllib.request.Request('https://api.cloudflare.com/client/v4/accounts/'+account+'/workers/domains',
+            data=payload,method='PUT',headers={'Authorization':'Bearer '+token,'Content-Type':'application/json'})
+          try:
+            with urllib.request.urlopen(req,timeout=40) as r:j=json.load(r)
+          except urllib.error.HTTPError as e:
+            try:j=json.load(e)
+            except: j={}
+            print('DOMAIN_ATTACH_FAILED',e.code,[(x.get('code'),x.get('message','')[:200]) for x in j.get('errors') or []])
+            raise SystemExit(7)
+          assert j.get('success'),'Domain attach rejected'
+          result=j['result']
+          assert result.get('hostname')==host and result.get('service')==worker,'Unexpected hostname binding'
+          print('DOMAIN_ATTACHED',host,'worker',worker,'enabled',result.get('enabled'))
+          PY
+      - name: Test public custom hostname and preserve other sites
+        id: publiccheck
+        if: ${{ success() }}
+        run: |
+          python3 - <<'PY'
+          import os,urllib.request,urllib.error,time,socket
+          base='https://'+os.environ['CUSTOM_HOST']
+          last=''
+          for n in range(12):
+            try:
+              with urllib.request.urlopen(base+'/',timeout=25) as r:
+                html=r.read().decode()
+                assert r.status==200 and '백세푸드' in html and '로그인' in html
+                assert 'noindex' in r.headers.get('X-Robots-Tag','').lower()
+              try:urllib.request.urlopen(base+'/api/state',timeout=20)
+              except urllib.error.HTTPError as e:assert e.code==401,e.code
+              else:raise AssertionError('Unauthenticated API disclosure')
+              print('ORDER_DOMAIN_LIVE_HTTP_200',base,'API401','NOINDEX')
+              break
+            except Exception as e:
+              last=str(e)
+              if n==11:raise AssertionError('Order domain not verified: '+last)
+              time.sleep(15)
+          for old in ('https://baeksefood.com','https://interpiad.com'):
+            try:
+              with urllib.request.urlopen(old,timeout=25) as r:
+                print('EXISTING_SITE',old,r.status)
+            except Exception as e:
+              print('EXISTING_SITE_READBACK_FAILED',old,type(e).__name__)
+          PY
+      - name: Publish deployment receipt
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '## Baekse order app – reused Worker'
+            echo '- Target Worker: funeralflower-home-preview (existing script only)'
+            echo '- Intended domain: https://order.baeksefood.com'
+            echo '- Source: apps/baekse-order/wrangler.reused.jsonc'
+            echo '- See each step outcome for live HTTP, login and domain proof.'
+            echo '- Admin password is never generated or logged by this workflow.'
+          } >> "$GITHUB_STEP_SUMMARY"
