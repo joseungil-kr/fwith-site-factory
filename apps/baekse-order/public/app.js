@@ -326,9 +326,9 @@ $('#ar-payment-form').addEventListener('submit',async event=>{
    paymentRequestKey=paymentRequestKey||crypto.randomUUID();
    const result=await api('receivables/payments',{client_id:id,amount,
       paid_date:$('#ar-paid-date').value,memo:$('#ar-paid-memo').value,request_key:paymentRequestKey});
+   await refresh();await loadReceivableDetail();
    paymentRequestKey=null;
    $('#ar-paid-amount').value='';$('#ar-paid-memo').value='';
-   await refresh();await loadReceivableDetail();
    toast(result.duplicate?'이미 접수된 입금 내역입니다.':'입금 내역을 저장했습니다.');
  }catch(err){alert(err.message)}finally{button.disabled=false}
 });
