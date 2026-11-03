@@ -5,3 +5,15 @@
 .login-card .remember-option{display:flex;align-items:center;gap:10px;margin-top:17px;cursor:pointer;font-size:14px;font-weight:600;color:#365349}
 .login-card .remember-option input[type="checkbox"]{flex:none;width:19px;height:19px;min-height:19px;margin:0;padding:0;accent-color:#087a65;cursor:pointer}
 .login-card .remember-note{font-size:12px;line-height:1.5;color:#74857b;margin:6px 0 0}
+
+
+/* Direct serial printing controls stay usable with touch, mouse, or virtual keyboard. */
+.serial-settings{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.serial-actions{justify-content:flex-start;margin-top:18px}
+.serial-actions button{min-height:46px}
+.serial-badge{color:#117261;font-size:12px;border:1px solid #aed7c8;border-radius:7px;padding:5px 9px}
+.serial-status{font-size:14px;font-weight:650;background:#e7f8f1;border:1px solid #bce7d3;color:#125745;border-radius:9px;padding:13px 15px;margin:14px 0 7px}
+.serial-status.serial-error{background:#fff1ee;color:#9c3027;border-color:#efc8c2}
+.serial-help{font-size:12px;line-height:1.65;color:#61786e;margin:8px 0 0}
+@media(max-width:740px){.serial-settings{grid-template-columns:1fr 1fr}.serial-actions button{flex:1 1 145px}}
+@media print{#serial-printer-panel{display:none!important}}

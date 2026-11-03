@@ -1,3 +1,4 @@
+import {SerialReceiptPrinter, checkedSettings} from './serial-printer.js';
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
 const money=n=>(Number(n)||0).toLocaleString('ko-KR')+'원',fmt=n=>(Number(n)||0).toLocaleString('ko-KR');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -27,7 +28,7 @@ function renderClients(){const id=$('#client-form [name=id]').value;$('#client-l
 function renderProducts(){const id=$('#product-form [name=id]').value;$('#product-list').innerHTML=table(['제품명','매입단가','출고단가 (VAT 별도)','상태 / 관리'],state.products.map(p=>`<tr><td>${esc(p.name)}</td><td>${money(p.cost)}</td><td>${money(p.price)}</td><td><div class="row-action"><span class="pill ${p.active?'':'red'}">${p.active?'판매중':'비활성'}</span><button class="secondary" data-product-edit="${p.id}">수정</button><button class="${p.active?'danger':'secondary'}" data-product-toggle="${p.id}">${p.active?'삭제':'복구'}</button></div></td></tr>`));$('#product-form-title').textContent=id?'제품 수정':'제품 추가'}
 function renderBills(){const selected=$('#bill-client-filter').value;$('#bill-client-filter').innerHTML='<option value="">전체 거래처</option>'+state.clients.map(c=>`<option value="${c.id}">${esc(c.business)}</option>`).join('');$('#bill-client-filter').value=selected;
  const filterDate=$('#bill-date-filter').value,filterClient=$('#bill-client-filter').selectedOptions[0]?.text;const list=state.orders.filter(o=>(!filterDate||o.order_date===filterDate)&&(!selected||o.client_name===filterClient));$('#bill-list').innerHTML=table(['명세표','출고일','거래처','공급가액','부가세','합계 / 상태',''],list.map(o=>`<tr><td class="num">#${o.id}</td><td>${esc(o.order_date)}</td><td>${esc(o.client_name)}</td><td>${money(o.supply)}</td><td>${money(o.tax)}</td><td>${money(o.total)}<span class="price-note">${o.status==='issued'?'출고완료':'취소됨'}</span></td><td><button class="secondary" data-bill-view="${o.id}">보기</button></td></tr>`))}
-async function openBill(id){viewOrder=await api('orders/detail?id='+id);const {order:o,items}=viewOrder;$('#bill-preview').classList.remove('hidden');$('#bill-cancel').disabled=o.status!=='issued';$('#bill-sheet').innerHTML=`<article class="invoice ${o.status!=='issued'?'cancelled':''}"><h2>거 래 명 세 표</h2><div class="invoice-meta"><div><p><b>전표번호:</b> ${esc('B'+o.order_date.replaceAll('-','')+'-'+String(o.id).padStart(4,'0'))}</p><p><b>출고일:</b> ${esc(o.order_date)}</p><p><b>거래처:</b> ${esc(o.client.business)}</p><p><b>담당자:</b> ${esc(o.client.person)} / ${esc(o.client.phone)}</p>${o.client.business_no?`<p><b>사업자번호:</b> ${esc(o.client.business_no)}</p>`:''}${o.client.address?`<p><b>주소:</b> ${esc(o.client.address)}</p>`:''}</div><div><p><b>공급자:</b> 백세푸드</p><p><b>출고단가:</b> 부가세 미포함</p><p><b>상태:</b> ${o.status==='issued'?'출고완료':'취소'}</p></div></div>${table(['품명','수량','단가','금액'],items.map(i=>`<tr><td>${esc(i.name)}</td><td>${fmt(i.qty)}</td><td>${money(i.unit_price)}</td><td>${money(i.line_total)}</td></tr>`))}<div class="invoice-total">공급가액 ${money(o.supply)}<br><small>부가세 ${money(o.tax)}</small><br>합계 ${money(o.total)}</div>${o.memo?`<p><b>비고:</b> ${esc(o.memo)}</p>`:''}<div class="invoice-footer">위와 같이 출고하였습니다.</div></article>`;$('#bill-preview').scrollIntoView({behavior:'smooth',block:'start'})}
+async function openBill(id){viewOrder=await api('orders/detail?id='+id);const {order:o,items}=viewOrder;$('#bill-preview').classList.remove('hidden');$('#bill-cancel').disabled=o.status!=='issued';$('#bill-sheet').innerHTML=`<article class="invoice ${o.status!=='issued'?'cancelled':''}"><h2>거 래 명 세 표</h2><div class="invoice-meta"><div><p><b>전표번호:</b> ${esc('B'+o.order_date.replaceAll('-','')+'-'+String(o.id).padStart(4,'0'))}</p><p><b>출고일:</b> ${esc(o.order_date)}</p><p><b>거래처:</b> ${esc(o.client.business)}</p><p><b>담당자:</b> ${esc(o.client.person)} / ${esc(o.client.phone)}</p>${o.client.business_no?`<p><b>사업자번호:</b> ${esc(o.client.business_no)}</p>`:''}${o.client.address?`<p><b>주소:</b> ${esc(o.client.address)}</p>`:''}</div><div><p><b>공급자:</b> 백세푸드</p><p><b>출고단가:</b> 부가세 미포함</p><p><b>상태:</b> ${o.status==='issued'?'출고완료':'취소'}</p></div></div>${table(['품명','수량','단가','금액'],items.map(i=>`<tr><td>${esc(i.name)}</td><td>${fmt(i.qty)}</td><td>${money(i.unit_price)}</td><td>${money(i.line_total)}</td></tr>`))}<div class="invoice-total">공급가액 ${money(o.supply)}<br><small>부가세 ${money(o.tax)}</small><br>합계 ${money(o.total)}</div>${o.memo?`<p><b>비고:</b> ${esc(o.memo)}</p>`:''}<div class="invoice-footer">위와 같이 출고하였습니다.</div></article>`;updateSerialControls();$('#bill-preview').scrollIntoView({behavior:'smooth',block:'start'})}
 function printBill(size){if(!viewOrder)return toast('명세표를 먼저 선택하세요');document.body.classList.remove('print-58','print-80');if(size!=='a4')document.body.classList.add('print-'+size);window.print();setTimeout(()=>document.body.classList.remove('print-58','print-80'),1000)}
 function resetClient(){$('#client-form').reset();$('#client-form [name=id]').value='';$('#client-form-title').textContent='거래처 추가'}
 function resetProduct(){$('#product-form').reset();$('#product-form [name=id]').value='';$('#product-form-title').textContent='제품 추가'}
@@ -47,6 +48,107 @@ $('#client-list').onclick=async e=>{let edit=e.target.closest('[data-client-edit
 $('#product-list').onclick=async e=>{let edit=e.target.closest('[data-product-edit]'),toggle=e.target.closest('[data-product-toggle]');if(edit){const p=state.products.find(p=>p.id===Number(edit.dataset.productEdit));for(const k of ['id','name','cost','price'])$('#product-form [name="'+k+'"]').value=p[k];$('#product-form').scrollIntoView({behavior:'smooth'});renderProducts()}if(toggle){if(!confirm('제품의 사용 상태를 변경하시겠습니까? 과거 출고내역은 유지됩니다.'))return;try{await api('products/toggle',{id:Number(toggle.dataset.productToggle)});await refresh()}catch(e){alert(e.message)}}};
 $('#bill-date-filter').onchange=renderBills;$('#bill-client-filter').onchange=renderBills;
 $('#bill-list').onclick=e=>{const b=e.target.closest('[data-bill-view]');if(b)openBill(Number(b.dataset.billView)).catch(e=>alert(e.message))};
+
+/* Serial receipt printer: COM labels are user settings, not native OS port enumeration.
+   The browser only opens the physical device chosen by the operator in requestPort(). */
+const serialPrinter = new SerialReceiptPrinter();
+const serialSelectIds = ['serial-slot','serial-baud','serial-paper'];
+const readSerialSettings = () => checkedSettings({
+  slot: $('#serial-slot').value, baudRate: $('#serial-baud').value, paperMm: $('#serial-paper').value
+});
+function setSerialStatus(text, isError=false) {
+  const el=$('#serial-status');
+  el.textContent=text;
+  el.classList.toggle('serial-error',!!isError);
+}
+function updateSerialControls() {
+  const enabled=serialPrinter.supported && window.isSecureContext;
+  const busy=serialPrinter.busy;
+  const connected=serialPrinter.connected;
+  $('#serial-connect').disabled=!enabled||busy||connected;
+  $('#serial-reconnect').disabled=!enabled||busy||connected;
+  $('#serial-disconnect').disabled=busy||!connected;
+  $('#serial-test').disabled=busy||!connected;
+  $('#serial-print').disabled=busy||!connected||!viewOrder;
+  for(const id of serialSelectIds) $('#'+id).disabled=busy||connected;
+}
+try {
+  const previous=JSON.parse(localStorage.getItem('baekse-serial-preferences')||'{}');
+  for(const id of serialSelectIds) {
+    const key=id.replace('serial-','');
+    if(previous[key]!=null) {
+      const element=$('#'+id);
+      if(Array.from(element.options).some(option=>option.value===String(previous[key]))) element.value=String(previous[key]);
+    }
+  }
+} catch (_) { /* Storage may be blocked in private windows. */ }
+for(const id of serialSelectIds) {
+  $('#'+id).addEventListener('change',()=>{
+    try {
+      const prefs=readSerialSettings();
+      localStorage.setItem('baekse-serial-preferences',
+        JSON.stringify({slot:prefs.slot,baud:prefs.baudRate,paper:prefs.paperMm}));
+      setSerialStatus('COM'+prefs.slot+' / '+prefs.baudRate+'bps 선택됨. 장치 선택창에서 실제 COM 포트를 확인하세요.');
+    } catch (e) {setSerialStatus(e.message,true)}
+  });
+}
+async function serialAction(action, successText) {
+  try {
+    // Call action synchronously in this click event before the first await (Web Serial activation).
+    const pending=action();
+    updateSerialControls();
+    await pending;
+    setSerialStatus(successText());
+  } catch (e) {
+    const msg=String(e && e.message || e);
+    const hint=/NetworkError|already open|Failed to open|Access denied|in use|사용 중|busy/i.test(msg)?
+      ' 기존 POS가 COM 포트를 사용 중인지 확인한 후 POS 쪽 연결을 해제해 보세요.':'';
+    setSerialStatus('COM 작업 실패: '+msg+hint,true);
+  } finally {updateSerialControls()}
+}
+$('#serial-connect').addEventListener('click',()=>serialAction(
+  ()=>serialPrinter.connect(readSerialSettings()),
+  ()=>{const s=serialPrinter.settings;return '장치 연결됨 · COM'+s.slot+' 설정 / '+s.baudRate+'bps. 실제 포트 번호는 브라우저 선택창 기준입니다.';}
+));
+$('#serial-reconnect').addEventListener('click',()=>serialAction(
+  ()=>serialPrinter.reconnectGranted(readSerialSettings()),
+  ()=>{const s=serialPrinter.settings;return '이전에 허용한 장치로 재연결됨 · COM'+s.slot+' 설정 / '+s.baudRate+'bps';}
+));
+$('#serial-disconnect').addEventListener('click',()=>serialAction(
+  ()=>serialPrinter.disconnect(),
+  ()=>'연결 해제됨. POS 프로그램에서 COM 포트를 다시 사용할 수 있습니다.'
+));
+function sendProgress(label,sent,total) {
+  const percent=Math.min(100,Math.round(100*sent/Math.max(1,total)));
+  setSerialStatus(label+' · 전송 '+percent+'% (전송 완료 후 용지 출력이 끝날 수 있습니다)');
+}
+$('#serial-test').addEventListener('click',()=>serialAction(
+  ()=>serialPrinter.test((sent,total)=>sendProgress('시험 출력',sent,total)),
+  ()=>'시험 출력 데이터 전송 완료. 종이 출력 여부를 확인하세요.'
+));
+$('#serial-print').addEventListener('click',()=>serialAction(
+  ()=>serialPrinter.printInvoice(viewOrder,Number($('#serial-paper').value),
+      (sent,total)=>sendProgress('거래명세표',sent,total)),
+  ()=>'거래명세표 데이터 전송 완료. 프린터의 실제 출력 결과를 확인하세요.'
+));
+if(serialPrinter.supported && window.isSecureContext) {
+  setSerialStatus('COM4 · 9600bps 기본 설정. ' +
+    '장치 선택·연결을 눌러 실제 COM4를 선택하세요.');
+  if(typeof navigator.serial.addEventListener==='function') {
+    navigator.serial.addEventListener('disconnect',event=>{
+      if(serialPrinter.port===event.target) {
+        serialPrinter.port=null;
+        serialPrinter.settings=null;
+        setSerialStatus('장치 연결이 끊어졌습니다. 다시 연결하세요.',true);
+        updateSerialControls();
+      }
+    });
+  }
+} else {
+  setSerialStatus('COM 직접 출력은 Windows용 Chrome/Edge의 HTTPS 연결에서 지원됩니다. 현재 브라우저에서는 사용할 수 없습니다.',true);
+}
+updateSerialControls();
+
 $('#bill-a4').onclick=()=>printBill('a4');$('#bill-58').onclick=()=>printBill('58');$('#bill-80').onclick=()=>printBill('80');
 $('#bill-cancel').onclick=async()=>{if(!viewOrder||!confirm('이 출고를 취소하고 제품 재고를 복원할까요?'))return;try{await api('orders/cancel',{id:viewOrder.order.id});toast('출고 취소·재고 복원 완료');await refresh();await openBill(viewOrder.order.id)}catch(e){alert(e.message)}};
 $('#backup').onclick=async()=>{try{const d=await api('export'),blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='baekse-order-backup-'+today()+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}catch(e){alert(e.message)}};
