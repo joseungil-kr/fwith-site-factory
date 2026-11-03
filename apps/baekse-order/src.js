@@ -1,6 +1,7 @@
 import { DurableObject } from 'cloudflare:workers';
 import {DEFAULT_PRODUCTS,onlyInt,safeText,dateCheck,calcTotals,calculatePayable,sessionDurationSeconds} from './logic.js';
 import {ensureBuyerSchema,buyerSupplySummary,buyerLinkSummaries,handleBuyerPublic,handleBuyerAdmin} from './requests.js';
+import {ensureReceivableSchema,getReceivables,ensureReceivableOrderCanIssue,assertReceivableOrderRemoval,handleReceivablesAdmin} from './receivables.js';
 const json=(obj,status=200,headers={})=>new Response(JSON.stringify(obj),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...headers}});
 const err=(msg,status=400)=>json({error:msg},status);
 const encode = new TextEncoder();
@@ -53,6 +54,7 @@ export class OrderDatabase extends DurableObject {
     }
     this.sql.exec('UPDATE products SET sort_order=id WHERE sort_order=0');
     ensureBuyerSchema(this);
+    ensureReceivableSchema(this);
     if(!this.sql.exec('SELECT id FROM clients LIMIT 1').toArray()[0]) this.sql.exec('INSERT INTO clients (business,person,phone,created_at) VALUES (?,?,?,?)','안산 중앙점','미입력','미입력',now());
   });
  }
@@ -106,14 +108,16 @@ export class OrderDatabase extends DurableObject {
       const receipt_settings=this.getOne('SELECT bank_name,account_number,account_holder,company_name,company_business_no,company_address,company_phone,company_email FROM receipt_settings WHERE id=1');
       const buyer_dashboard=buyerSupplySummary(this);
       const buyer_links=buyerLinkSummaries(this);
-      return json({products,clients,orders,movements,receipt_settings,metrics,buyer_dashboard,buyer_links});
+      const receivables=getReceivables(this);
+      return json({products,clients,orders,movements,receipt_settings,metrics,buyer_dashboard,buyer_links,receivables});
    }
    if(path==='/api/export'&&req.method==='GET'){
-      const data={exported_at:now(),products:this.all('SELECT * FROM products'),clients:this.all('SELECT * FROM clients'),orders:this.all('SELECT * FROM orders'),lines:this.all('SELECT * FROM lines'),movements:this.all('SELECT * FROM movements'),buyer_requests:this.all('SELECT * FROM buyer_requests'),buyer_lines:this.all('SELECT * FROM buyer_lines'),buyer_links:buyerLinkSummaries(this),audit:this.all('SELECT * FROM audit')};
+      const data={exported_at:now(),products:this.all('SELECT * FROM products'),clients:this.all('SELECT * FROM clients'),orders:this.all('SELECT * FROM orders'),lines:this.all('SELECT * FROM lines'),movements:this.all('SELECT * FROM movements'),buyer_requests:this.all('SELECT * FROM buyer_requests'),buyer_lines:this.all('SELECT * FROM buyer_lines'),buyer_links:buyerLinkSummaries(this),receivable_accounts:this.all('SELECT * FROM receivable_accounts'),receivable_payments:this.all('SELECT * FROM receivable_payments'),audit:this.all('SELECT * FROM audit')};
       return json(data,200,{'Content-Disposition':'attachment; filename="baekse-order-backup.json"'});
    }
    const data=req.method==='POST'?await req.json():{};
    if(path.startsWith('/api/requests/'))return handleBuyerAdmin(this,req,path,data);
+   if(path.startsWith('/api/receivables/'))return handleReceivablesAdmin(this,req,path,data);
    if(path==='/api/receipt-settings'&&req.method==='POST'){
      const current=this.getOne('SELECT * FROM receipt_settings WHERE id=1');
      if(!current)throw new Error('관리자 설정이 준비되지 않았습니다');
@@ -192,7 +196,8 @@ export class OrderDatabase extends DurableObject {
         return {product_id:null,name,qty,unit_price,cost:0}
       });
       const totals=calcTotals(items,vat);
-      const previous_balance=onlyInt(data.previous_balance??0,'전 잔고',0,2_000_000_000);
+      // If receivables tracking is enabled, the DB is authoritative: ignore client-supplied balance.
+      const {tracked:receivable_tracked,previous_balance}=ensureReceivableOrderCanIssue(this,client.id,totals.total,data.previous_balance??0);
       const amount_due=calculatePayable(totals.total,previous_balance);
       const bank_setting=this.getOne('SELECT bank_name,account_number,account_holder,company_name,company_business_no,company_address,company_phone,company_email FROM receipt_settings WHERE id=1');
       const bank_snapshot=JSON.stringify(bank_setting||{bank_name:'',account_number:'',account_holder:''});
@@ -204,12 +209,13 @@ export class OrderDatabase extends DurableObject {
         id=this.getOne('SELECT last_insert_rowid() AS id').id;
         for(const i of items){this.sql.exec('INSERT INTO lines(order_id,product_id,name,qty,unit_price,cost,line_total) VALUES(?,?,?,?,?,?,?)',id,i.product_id,i.name,i.qty,i.unit_price,i.cost,i.qty*i.unit_price);
           if(i.product_id)this.sql.exec('INSERT INTO movements(product_id,delta,cost,note,source,created_at) VALUES(?,?,?,?,?,?)',i.product_id,-i.qty,i.cost,'출고 #'+id,'order:'+id,now());}
-        this.audit('order_create',{id,total:totals.total,previous_balance,amount_due});
+        this.audit('order_create',{id,total:totals.total,previous_balance,amount_due,receivable_tracked});
       });
       return json({ok:true,id,...totals,previous_balance,amount_due});
    }
    if(path==='/api/orders/cancel'&&req.method==='POST'){
       const id=onlyInt(data.id,'명세표 ID',1),order=this.getOne('SELECT * FROM orders WHERE id=?',id);if(!order||order.status!=='issued')throw new Error('취소할 수 없는 출고건');
+      assertReceivableOrderRemoval(this,order);
       this.ctx.storage.transactionSync(()=>{
         const lines=this.all('SELECT * FROM lines WHERE order_id=?',id);for(const l of lines)if(l.product_id)this.sql.exec('INSERT INTO movements(product_id,delta,cost,note,source,created_at) VALUES(?,?,?,?,?,?)',l.product_id,l.qty,l.cost,'출고취소 #'+id,'cancel:'+id,now());
         this.sql.exec('UPDATE orders SET status=?,cancelled_at=? WHERE id=?','cancelled',now(),id);this.audit('order_cancel',{id});
@@ -243,6 +249,7 @@ export class OrderDatabase extends DurableObject {
      const id=onlyInt(data.id,'명세표 ID',1);
      const order=this.getOne('SELECT * FROM orders WHERE id=?',id);
      if(!order)throw new Error('삭제할 명세표가 없습니다');
+     assertReceivableOrderRemoval(this,order);
      const lineCount=this.getOne('SELECT COUNT(*) AS n FROM lines WHERE order_id=?',id).n;
      this.ctx.storage.transactionSync(()=>{
        this.sql.exec('DELETE FROM movements WHERE source IN (?,?,?)','order:'+id,'cancel:'+id,'reissue:'+id);
