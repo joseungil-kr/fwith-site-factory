@@ -149,6 +149,18 @@ jobs:
           _,backup=api('export')
           assert len(backup['orders'])==1
           assert any(a['action']=='order_delete' for a in backup['audit'])
+          # Public buyer screen is a static noindex page; API cannot expose admin state.
+          for asset,markers in [
+            ('/request/',['id="buyer-form"','id="buyer-products"','noindex','/buyer.js']),
+            ('/buyer.js',['request_key','api/buyer/','overview','submit']),
+            ('/buyer.css',['buyer-product','buyer-submit'])
+          ]:
+            with urllib.request.urlopen(base+asset,timeout=20) as r:
+              body=r.read().decode('utf-8')
+              assert r.status==200 and all(mark in body for mark in markers),('Missing buyer asset',asset)
+          try: urllib.request.urlopen(base+'/api/requests/list',timeout=15)
+          except urllib.error.HTTPError as e:assert e.code==401
+          else:raise AssertionError('Admin buyer list was anonymously accessible')
           # Trade-client link is scoped to the client and does not require administrator login.
           _,initial=api('state')
           assert initial['buyer_dashboard']['pending_count']==0
