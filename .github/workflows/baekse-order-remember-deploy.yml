@@ -34,6 +34,7 @@ jobs:
         run: |
           node --check src.js
           node --check requests.js
+          node --check receivables.js
           node --check public/app.js
           node --check public/buyer.js
           node --check public/serial-printer.js
@@ -82,7 +83,7 @@ jobs:
           version=deployments[0]['versions'][0]
           assert version.get('percentage')==100,'Previous version is not deployed at 100%'
           previous=version['version_id']
-          assert previous=='e13fad76-da5b-4a70-acd9-837219f7898b','Worker version changed since last verified release'
+          assert previous=='595988eb-f0cd-4426-b28b-463963606087','Worker version changed since last verified release'
           with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:
             f.write('previous_version='+previous+'\n')
           print('SAFE_ORDER_APP_UPDATE_PASS',hostname,'existingWorker',worker,'rollbackPinned',previous)
@@ -121,6 +122,8 @@ jobs:
                 assert 'id="serial-test"' not in html and 'id="serial-width-test"' not in html,'Obsolete printer test buttons must be hidden'
                 assert all(mark in html for mark in ['id="previous-balance"','id="payment-form"','name="company_name"','name="company_business_no"','name="company_address"','name="company_phone"','name="company_email"','name="bank_name"','name="account_number"','name="account_holder"','id="bill-delete"','id="bill-delivery"']), 'Admin fields or delivery button missing'
                 assert '>관리자 설정</button>' in html and '처음 한 번은' in html,'Renamed admin tab or simplified help missing'
+                assert all(x in html for x in ['>거래처 관리</button>','>제품 관리</button>','data-tab="receivables"','id="ar-opening-form"','id="ar-payment-form"','id="ar-client-select"','id="ar-paid-amount"','id="ar-paid-date"','id="previous-balance-help"']), 'Receivables management UI incomplete'
+                assert '<option value="none" selected>부가세 미계산 (0원)</option>' in html, 'Default VAT should be uncalculated'
                 assert all(x in html for x in ['data-tab="requests"','id="buyer-home-summary"','id="request-shortages"','id="request-list"','id="link-result"']),'Buyer request manager UI missing'
                 assert 'COM4 (현재 사용)' in html and '9600bps' in html and 'COM6' in html, 'COM range/default missing'
                 assert 'noindex' in r.headers.get('X-Robots-Tag','').lower()
@@ -144,6 +147,10 @@ jobs:
               page=r.read().decode('utf-8')
               assert r.status==200 and all(m in page for m in markers),'Buyer portal asset missing '+path
               assert 'noindex' in r.headers.get('X-Robots-Tag','').lower()
+          with unauthed.open(base+'/request/',timeout=25) as r:
+            buyer_html=r.read().decode('utf-8')
+            assert '<p>필요한 제품과 수량을 입력해 주세요.</p>' in buyer_html
+            assert '현재 재고보다 많이 요청해도 됩니다.' not in buyer_html
           print('BUYER_PORTAL_PUBLIC_ASSETS_PASS: mobile buyer entry, JS and CSS HTTPS200 noindex')
           for path in ['/api/requests/list','/api/state']:
             try:unauthed.open(base+path,timeout=20)
@@ -186,6 +193,16 @@ jobs:
             assert all(k in summary for k in ('pending_count','shortage_count','shortages','products')),'Pending and shortage state missing'
             assert isinstance(payload.get('buyer_links'),list),'Buyer link metadata missing'
             assert all('token_hash' not in obj and 'token' not in obj for obj in payload['buyer_links']),'Secret tokens exposed to admin state'
+            ar=payload.get('receivables')
+            assert isinstance(ar,dict) and all(k in ar for k in ('accounts','total','tracked_clients')), 'Receivables ledger state schema missing'
+            assert isinstance(ar['accounts'],list)
+            assert all(('client_id' in acct and 'balance' in acct and 'cutoff_order_id' in acct) for acct in ar['accounts'])
+            if payload.get('clients'):
+              first_id=payload['clients'][0]['id']
+              with op.open(base+'/api/receivables/detail?client_id='+str(first_id),timeout=25) as ar_response:
+                detail=json.load(ar_response)
+                assert detail['client']['id']==first_id and isinstance(detail['payments'],list)
+            print('RECEIVABLES_LIVE_SCHEMA_PASS: legacy accounts untouched until enrollment; schema and guarded admin detail are accessible')
             print('BUYER_PORTAL_DATABASE_PASS: secure link metadata, request tables and aggregated stock shortages')
             for item in payload.get('orders',[])[:1]:
               req=urllib.request.Request(base+'/api/orders/detail?id='+str(item['id']))
@@ -199,6 +216,7 @@ jobs:
             ui=r.read().decode('utf-8')
             assert all(k in ui for k in ['metric-orange','cancelled-order-row','data-product-move','orders/reissue','orders/delete','orders/delivery','deliveryLabel','movementLabel']), 'Front-end behaviors missing'
             assert all(k in ui for k in ['data-client-link','requests/link/issue','requests/link/revoke','requests/fulfill','loadBuyerRequests','buyer-home-summary']),'Buyer admin actions missing'
+            assert all(k in ui for k in ['clientReceivable','syncOrderPreviousBalance','receivables/opening','receivables/payments','receivables/payments/void','renderReceivableHome']),'Receivables UI behavior missing'
             assert 'serial-width-test' not in ui and 'serial-test' not in ui,'Old printer test handlers remain'
           print('ADMIN_DASHBOARD_LIVE_PASS: six KPIs, company settings, product sorting, invoice restore/delete, localized stock movements')
           print('SHIPPING_LIVE_READBACK_PASS: delivery button, state schema, invoice JS, thermal labels and no unauthenticated inventory access')
