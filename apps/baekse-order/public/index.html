@@ -1,14 +1,19 @@
 <!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>백세푸드 | 입출고·재고관리</title><link rel="stylesheet" href="/style.css"></head><body>
 <div id="login" class="login-shell"><form id="login-form" class="login-card"><div class="mark">백세푸드 <span>ORDER</span></div><h1>원재료 입출고 관리</h1><p>관리자만 거래·재고 내역에 접근할 수 있습니다.</p><label>관리자 비밀번호<input name="password" type="password" autocomplete="current-password" required placeholder="비밀번호 입력"></label><label class="remember-option"><input id="login-remember" name="remember" type="checkbox"><span>로그인 기억하기 (30일)</span></label><p class="remember-note">비밀번호 자체는 저장하지 않고 로그인 상태만 유지합니다. 공용 기기에서는 선택하지 마세요.</p><button class="primary" type="submit">로그인</button><p id="login-error" role="alert" class="error"></p></form></div>
 <div id="app" class="hidden"><header class="top"><div class="brand"><b>백세푸드</b><span>재고·거래명세표</span></div><div class="top-right"><span id="current-date"></span><button class="ghost" id="logout">로그아웃</button></div></header>
-<nav class="nav" id="nav"><button data-tab="home" class="selected">대시보드</button><button data-tab="order">출고 등록</button><button data-tab="requests">발주 요청</button><button data-tab="stock">입고·재고</button><button data-tab="bills">거래명세표</button><button data-tab="clients">거래처</button><button data-tab="products">제품</button><button data-tab="settings">관리자 설정</button></nav>
+<nav class="nav" id="nav"><button data-tab="home" class="selected">대시보드</button><button data-tab="order">출고 등록</button><button data-tab="requests">발주 요청</button><button data-tab="stock">입고·재고</button><button data-tab="bills">거래명세표</button><button data-tab="clients">거래처 관리</button><button data-tab="receivables">미수금 관리</button><button data-tab="products">제품 관리</button><button data-tab="settings">관리자 설정</button></nav>
 <main>
 <section class="page" data-page="home"><div class="page-head"><div><h1>운영 현황</h1><p>오늘의 출고와 제품별 재고를 확인하세요.</p></div><button class="primary" data-go="order">+ 출고 등록</button></div><div id="metrics" class="metrics"></div>
 <div class="panel buyer-dashboard-panel">
   <div class="panel-title"><h2>거래처 발주 현황</h2><button class="secondary" data-go="requests" type="button">발주 요청 보기</button></div>
   <div id="buyer-home-summary"></div>
-</div><div class="panel"><div class="panel-title"><h2>재고 현황</h2><button data-go="stock" class="linkbtn">입고 등록 →</button></div><div id="home-stock"></div></div><div class="panel"><div class="panel-title"><h2>최근 출고</h2><button data-go="bills" class="linkbtn">전체 보기 →</button></div><div id="home-orders"></div></div></section>
-<section class="page hidden" data-page="order"><div class="page-head"><div><h1>오늘의 출고 등록</h1><p>출고단가는 부가세 미포함 금액입니다. 재고는 저장 즉시 차감됩니다.</p></div></div><form id="order-form" class="panel"><div class="form-grid"><label>출고일<input type="date" id="order-date" required></label><label>거래처<select id="order-client" required></select></label></div><div class="table-overflow"><table><thead><tr><th>제품 / 단가</th><th>현재고</th><th style="width:110px">출고수량</th><th class="right">공급금액</th></tr></thead><tbody id="order-items"></tbody></table></div><div class="extras"><div class="panel-title"><h2>기타 (직접입력)</h2><button type="button" class="secondary" id="add-extra">+ 품목 추가</button></div><p class="hint">목록에 없는 제품·배송비 등을 직접 기입합니다. 기타 품목은 제품 재고에 영향을 주지 않습니다.</p><div id="extras"></div></div><div class="form-grid"><label>부가세 처리<select id="vat"><option value="tax">부가세 별도 10% 추가</option><option value="none">부가세 미계산 (0원)</option></select></label><label>전 잔고 (원)<input id="previous-balance" type="number" min="0" max="2000000000" step="1" value="0" required><small class="field-hint">기본 0원 · 출고 매출에는 포함하지 않고 청구 합계에만 더합니다.</small></label><label>비고<input id="order-memo" placeholder="선택 입력" maxlength="500"></label></div><div id="order-total" class="summary"></div><div class="action-row"><button type="submit" class="primary">출고 저장·거래명세표 만들기</button></div></form></section>
+</div>
+<div class="panel receivables-home-panel">
+ <div class="panel-title"><h2>거래처 미수금</h2><button class="secondary" data-go="receivables" type="button">미수금 관리</button></div>
+ <div id="receivable-home-summary">미수금 정보를 불러오는 중입니다.</div>
+</div>
+<div class="panel"><div class="panel-title"><h2>재고 현황</h2><button data-go="stock" class="linkbtn">입고 등록 →</button></div><div id="home-stock"></div></div><div class="panel"><div class="panel-title"><h2>최근 출고</h2><button data-go="bills" class="linkbtn">전체 보기 →</button></div><div id="home-orders"></div></div></section>
+<section class="page hidden" data-page="order"><div class="page-head"><div><h1>오늘의 출고 등록</h1><p>출고단가는 부가세 미포함 금액입니다. 재고는 저장 즉시 차감됩니다.</p></div></div><form id="order-form" class="panel"><div class="form-grid"><label>출고일<input type="date" id="order-date" required></label><label>거래처<select id="order-client" required></select></label></div><div class="table-overflow"><table><thead><tr><th>제품 / 단가</th><th>현재고</th><th style="width:110px">출고수량</th><th class="right">공급금액</th></tr></thead><tbody id="order-items"></tbody></table></div><div class="extras"><div class="panel-title"><h2>기타 (직접입력)</h2><button type="button" class="secondary" id="add-extra">+ 품목 추가</button></div><p class="hint">목록에 없는 제품·배송비 등을 직접 기입합니다. 기타 품목은 제품 재고에 영향을 주지 않습니다.</p><div id="extras"></div></div><div class="form-grid"><label>부가세 처리<select id="vat"><option value="none" selected>부가세 미계산 (0원)</option><option value="tax">부가세 별도 10% 추가</option></select></label><label>전 잔고 (원)<input id="previous-balance" type="number" min="0" max="2000000000" step="1" value="0" required><small id="previous-balance-help" class="field-hint">기본 0원 · 거래처별 기초 미수금을 설정하면 자동 입력됩니다.</small></label><label>비고<input id="order-memo" placeholder="선택 입력" maxlength="500"></label></div><div id="order-total" class="summary"></div><div class="action-row"><button type="submit" class="primary">출고 저장·거래명세표 만들기</button></div></form></section>
 <section class="page hidden" data-page="requests">
   <div class="page-head"><div><h1>거래처 발주 요청</h1><p>발주 접수만으로는 재고를 차감하지 않습니다. 출고처리 시에만 재고가 차감되고 거래명세표가 발행됩니다.</p></div><button type="button" class="secondary" id="refresh-requests">새로고침</button></div>
   <div class="panel"><div class="panel-title"><h2>입고 필요 수량</h2><button type="button" class="secondary" data-go="stock">입고·재고로 이동</button></div>
@@ -76,6 +81,37 @@
   <div class="action-row"><button id="copy-generated-link" class="primary" type="button">발주 링크 복사</button><button id="hide-generated-link" class="secondary" type="button">닫기</button></div>
   <p class="hint">이 주소는 거래처 전용 비밀 링크입니다. 다른 거래처에 전달하지 마세요. 보안상 링크는 생성 직후에만 표시되며 나중에 필요하면 다시 발급할 수 있습니다.</p>
 </div></section>
+<section class="page hidden" data-page="receivables">
+  <div class="page-head"><div><h1>미수금 관리</h1><p>거래처별 기초 미수금과 입금 내역을 관리합니다. 새로운 출고금액이 자동으로 누적됩니다.</p></div></div>
+  <div class="panel">
+    <div class="panel-title"><h2>거래처 미수금 현황</h2><span id="ar-count-label" class="muted"></span></div>
+    <div id="receivables-list">데이터를 불러오는 중입니다.</div>
+  </div>
+  <div class="panel">
+    <h2>거래처별 상세 관리</h2>
+    <label>거래처 선택<select id="ar-client-select"><option value="">거래처를 선택하세요</option></select></label>
+    <p class="hint ar-caution">관리 시작 전 발행한 명세표는 기초 미수금에 이미 반영된 것으로 간주하며 다시 합산하지 않습니다. 기존 명세표의 ‘전 잔고’는 중복 계산하지 않습니다.</p>
+    <div id="ar-current" class="ar-current">거래처를 선택하세요.</div>
+    <form id="ar-opening-form" class="ar-form hidden">
+      <div class="form-grid">
+        <label>기초 미수금 (원)<input id="ar-opening-amount" type="number" min="0" max="2000000000" step="1" required value="0"></label>
+        <label class="hidden" id="ar-opening-reason-wrap">기초잔액 수정 사유<input id="ar-opening-reason" maxlength="200" placeholder="수정 사유를 입력하세요"></label>
+      </div>
+      <div class="action-row"><button id="ar-opening-save" class="primary" type="submit">기초 미수금 등록·관리 시작</button></div>
+    </form>
+    <form id="ar-payment-form" class="ar-form hidden">
+      <h2>입금 등록</h2>
+      <div class="form-grid">
+        <label>입금일<input id="ar-paid-date" type="date" required></label>
+        <label>입금액 (원)<input id="ar-paid-amount" type="number" min="1" max="2000000000" step="1" required></label>
+        <label class="form-span-2">메모<input id="ar-paid-memo" maxlength="200" placeholder="예: 11월 4일 기업은행 입금"></label>
+      </div>
+      <div class="action-row"><button class="primary" type="submit">입금 등록</button></div>
+      <p class="hint">초과입금은 현재 지원하지 않습니다. 잘못 등록한 입금은 내역에서 취소할 수 있습니다.</p>
+    </form>
+    <div id="ar-payment-history"></div>
+  </div>
+</section>
 <section class="page hidden" data-page="products"><div class="page-head"><div><h1>제품 관리</h1><p>기존 출고 자료를 보호하기 위해 삭제는 판매중지(비활성화) 처리합니다.</p></div></div><div class="panel"><h2 id="product-form-title">제품 추가</h2><form id="product-form"><input type="hidden" name="id"><div class="form-grid"><label>제품명<input name="name" required maxlength="80"></label><label>매입단가 (원)<input name="cost" type="number" min="0" step="1" required></label><label>출고단가 (원 / 부가세 제외)<input name="price" type="number" min="0" step="1" required></label></div><div class="action-row"><button class="primary" type="submit">저장</button><button class="secondary" type="button" id="product-reset">새 제품</button></div></form></div><div class="panel"><h2>등록 제품</h2><div id="product-list"></div></div></section>
 <section class="page hidden" data-page="settings">
   <div class="page-head"><div><h1>관리자 설정</h1><p>회사 정보와 거래명세표 입금처를 관리합니다.</p></div></div>
