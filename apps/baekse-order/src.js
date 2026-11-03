@@ -1,5 +1,6 @@
 import { DurableObject } from 'cloudflare:workers';
 import {DEFAULT_PRODUCTS,onlyInt,safeText,dateCheck,calcTotals,calculatePayable,sessionDurationSeconds} from './logic.js';
+import {ensureBuyerSchema,buyerSupplySummary,buyerLinkSummaries,handleBuyerPublic,handleBuyerAdmin} from './requests.js';
 const json=(obj,status=200,headers={})=>new Response(JSON.stringify(obj),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...headers}});
 const err=(msg,status=400)=>json({error:msg},status);
 const encode = new TextEncoder();
@@ -48,6 +49,7 @@ export class OrderDatabase extends DurableObject {
       for (const [name,cost,price] of DEFAULT_PRODUCTS) this.sql.exec('INSERT INTO products (name,cost,price,created_at) VALUES (?,?,?,?)',name,cost,price,now());
     }
     this.sql.exec('UPDATE products SET sort_order=id WHERE sort_order=0');
+    ensureBuyerSchema(this);
     if(!this.sql.exec('SELECT id FROM clients LIMIT 1').toArray()[0]) this.sql.exec('INSERT INTO clients (business,person,phone,created_at) VALUES (?,?,?,?)','안산 중앙점','미입력','미입력',now());
   });
  }
@@ -59,6 +61,7 @@ export class OrderDatabase extends DurableObject {
  }
  async handle(req){
    const url=new URL(req.url), path=url.pathname;
+   if(path.startsWith('/api/buyer/'))return handleBuyerPublic(this,req,path);
    if(req.method==='POST' && path==='/api/login'){
       if(!this.env.ADMIN_PASSWORD||this.env.ADMIN_PASSWORD.length<12)return err('관리자 비밀번호 설정이 필요합니다',503);
       const info=await req.json(); const pass=String(info.password||'');
@@ -98,13 +101,16 @@ export class OrderDatabase extends DurableObject {
       const metrics={date:kstDate,month:kstMonth,today_count:todayStat.count,today_amount:todayStat.amount,month_count:monthStat.count,month_amount:monthStat.amount,cumulative_count:allStat.count,cumulative_amount:allStat.amount};
       const movements=this.all('SELECT m.*,p.name AS product_name FROM movements m JOIN products p ON p.id=m.product_id ORDER BY m.id DESC LIMIT 300');
       const receipt_settings=this.getOne('SELECT bank_name,account_number,account_holder,company_name,company_business_no,company_address,company_phone,company_email FROM receipt_settings WHERE id=1');
-      return json({products,clients,orders,movements,receipt_settings,metrics});
+      const buyer_dashboard=buyerSupplySummary(this);
+      const buyer_links=buyerLinkSummaries(this);
+      return json({products,clients,orders,movements,receipt_settings,metrics,buyer_dashboard,buyer_links});
    }
    if(path==='/api/export'&&req.method==='GET'){
-      const data={exported_at:now(),products:this.all('SELECT * FROM products'),clients:this.all('SELECT * FROM clients'),orders:this.all('SELECT * FROM orders'),lines:this.all('SELECT * FROM lines'),movements:this.all('SELECT * FROM movements'),audit:this.all('SELECT * FROM audit')};
+      const data={exported_at:now(),products:this.all('SELECT * FROM products'),clients:this.all('SELECT * FROM clients'),orders:this.all('SELECT * FROM orders'),lines:this.all('SELECT * FROM lines'),movements:this.all('SELECT * FROM movements'),buyer_requests:this.all('SELECT * FROM buyer_requests'),buyer_lines:this.all('SELECT * FROM buyer_lines'),buyer_links:buyerLinkSummaries(this),audit:this.all('SELECT * FROM audit')};
       return json(data,200,{'Content-Disposition':'attachment; filename="baekse-order-backup.json"'});
    }
    const data=req.method==='POST'?await req.json():{};
+   if(path.startsWith('/api/requests/'))return handleBuyerAdmin(this,req,path,data);
    if(path==='/api/receipt-settings'&&req.method==='POST'){
      const current=this.getOne('SELECT * FROM receipt_settings WHERE id=1');
      if(!current)throw new Error('관리자 설정이 준비되지 않았습니다');
