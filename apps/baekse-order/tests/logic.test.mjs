@@ -1,0 +1,7 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {DEFAULT_PRODUCTS,calcTotals,dateCheck,onlyInt,safeText,stockRemaining} from '../logic.js';
+test('초기 제품 6개와 단가',()=>{assert.equal(DEFAULT_PRODUCTS.length,6);assert.deepEqual(DEFAULT_PRODUCTS[0],['잉어반죽',6850,11000])});
+test('부가세 별도 10% 계산',()=>{assert.deepEqual(calcTotals([{qty:3,unit_price:11000},{qty:2,unit_price:9000},{qty:1,unit_price:9000}],'tax'),{supply:60000,tax:6000,total:66000});assert.equal(calcTotals([{qty:2,unit_price:9000}],'none').total,18000)});
+test('직접입력 기타 품목 금액',()=>{assert.equal(calcTotals([{qty:2,unit_price:3500}],'tax').total,7700)});
+test('수량 금액 날짜 검증',()=>{assert.throws(()=>onlyInt(-1));assert.throws(()=>onlyInt(1.5));assert.throws(()=>calcTotals([{qty:0,unit_price:10}],'tax'));assert.equal(dateCheck('2026-11-03'),'2026-11-03');assert.throws(()=>dateCheck('2026-02-30'));assert.equal(safeText(' 안산 중앙점 ','상호',true),'안산 중앙점')});
+test('입고 출고 취소 후 재고 일치',()=>assert.equal(stockRemaining(0,[{delta:10},{delta:-3},{delta:3}]),10));
