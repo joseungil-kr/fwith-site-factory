@@ -80,7 +80,7 @@ jobs:
           version=deployments[0]['versions'][0]
           assert version.get('percentage')==100,'Previous version is not deployed at 100%'
           previous=version['version_id']
-          assert previous=='098a3433-9179-4b89-b901-90e7a07afe2a','Worker version changed since last verified release'
+          assert previous=='fa3bf5aa-2255-46b4-b3e6-024297ee4afb','Worker version changed since last verified release'
           with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:
             f.write('previous_version='+previous+'\n')
           print('SAFE_ORDER_APP_UPDATE_PASS',hostname,'existingWorker',worker,'rollbackPinned',previous)
@@ -116,6 +116,7 @@ jobs:
                 html=r.read().decode('utf-8')
                 assert r.status==200 and 'id="login-remember"' in html and '로그인 기억하기' in html
                 assert all(mark in html for mark in ['id="serial-slot"','id="serial-baud"','id="serial-test"','id="serial-print"','id="serial-dots"','id="serial-font"','id="serial-cut"','id="serial-width-test"']), 'Web Serial toolbar missing'
+                assert all(mark in html for mark in ['id="previous-balance"','id="payment-form"','name="bank_name"','name="account_number"','name="account_holder"']), 'Editable account or previous balance field missing'
                 assert 'COM4 (현재 사용)' in html and '9600bps' in html and 'COM6' in html, 'COM range/default missing'
                 assert 'noindex' in r.headers.get('X-Robots-Tag','').lower()
                 assert 'script-src' in r.headers.get('Content-Security-Policy','')
@@ -126,7 +127,7 @@ jobs:
               time.sleep(8)
           with unauthed.open(base+'/serial-printer.js',timeout=25) as r:
             module=r.read().decode('utf-8')
-            assert r.status==200 and 'SerialReceiptPrinter' in module and 'requestPort()' in module and 'rasterBand' in module and 'buildRasterJob' in module and 'testWidth' in module and '0x56' in module
+            assert r.status==200 and 'SerialReceiptPrinter' in module and 'requestPort()' in module and 'rasterBand' in module and 'buildRasterJob' in module and 'testWidth' in module and '0x56' in module and '전 잔고' in module and '입금처' in module
             assert 'noindex' in r.headers.get('X-Robots-Tag','').lower()
           print('SERIAL_MODULE_PUBLIC_200: COM1-6 labels, 9600bps default, ESC/POS bitmap, noindex')
           try:unauthed.open(base+'/api/state',timeout=20)
@@ -156,6 +157,17 @@ jobs:
             payload=json.load(r)
             assert len(payload['products'])>=6,'Seed catalog not available'
             assert any(p['name']=='잉어반죽' and p['price']==11000 for p in payload['products'])
+            receipt_settings=payload.get('receipt_settings')
+            assert isinstance(receipt_settings,dict) and all(k in receipt_settings for k in ('bank_name','account_number','account_holder')),'Settings schema was not created safely'
+            for item in payload.get('orders',[])[:1]:
+              req=urllib.request.Request(base+'/api/orders/detail?id='+str(item['id']))
+              with op.open(req,timeout=25) as d:
+                invoice=json.load(d)
+                order=invoice['order']
+                assert isinstance(order.get('bank'),dict)
+                assert order.get('previous_balance',0)>=0
+                assert order.get('amount_due')==order['total']+order['previous_balance'],'Old and new invoice totals mismatch'
+            print('PAYMENT_FIELDS_LIVE_PASS: configurable bank persisted, legacy invoices readable, previous balance column available')
           logout(long)
           print('PRODUCTION_REMEMBER_30D_PASS: UI200, API401, short8h, long30d, secureCookie, logoutRevocation, seededProducts')
           for u in ['https://baeksefood.com','https://interpiad.com']:
