@@ -50,9 +50,9 @@ jobs:
               with urllib.request.urlopen(req,timeout=20) as r:
                 data=r.read().decode('utf-8','replace')
                 checks={
-                  '/':['id="serial-dots"','id="serial-font"','id="serial-cut"','80mm (현재 용지)','512도트','id="bill-delete"','id="bill-delivery"','name="company_name"','name="company_email"','관리자 설정','처음 한 번은','data-tab="requests"','id="request-list"','id="buyer-home-summary"'],
-                  '/app.js':['metric-orange','cancelled-order-row','data-product-move','orders/reissue','orders/delete','orders/delivery','deliveryLabel','movementLabel','company_name','requests/fulfill','requests/link/issue','buyer-home-summary'],
-                  '/style.css':['.metric.metric-orange','.bank-settings-grid','.cancelled-order-row','.order-move-buttons'],
+                  '/':['id="serial-dots"','id="serial-font"','id="serial-cut"','80mm (현재 용지)','512도트','id="bill-delete"','id="bill-delivery"','name="company_name"','name="company_email"','관리자 설정','처음 한 번은','data-tab="requests"','id="request-list"','id="buyer-home-summary"','data-tab="receivables"','id="ar-opening-form"','id="ar-payment-form"','id="ar-client-select"','id="ar-paid-amount"','id="ar-paid-date"','>거래처 관리</button>','>제품 관리</button>','<option value="none" selected>'],
+                  '/app.js':['metric-orange','cancelled-order-row','data-product-move','orders/reissue','orders/delete','orders/delivery','deliveryLabel','movementLabel','company_name','requests/fulfill','requests/link/issue','buyer-home-summary','clientReceivable','syncOrderPreviousBalance','receivables/opening','receivables/payments','receivables/payments/void'],
+                  '/style.css':['.metric.metric-orange','.bank-settings-grid','.cancelled-order-row','.order-move-buttons','.ar-current-stats','.ar-form'],
                   '/serial-printer.js':['WIDTH_CHOICES','80: 512','buildRasterJob','receiptShippingLabel','0x56'],
                   '/request/':['id="buyer-form"','id="buyer-products"','id="delivery-date"','noindex'],
                   '/buyer.js':['request_key','/api/buyer/','submit','overview'],
@@ -107,3 +107,5 @@ jobs:
 # Independent delivery-only release readback: button, JavaScript transitions, thermal labels, HTTP security.
 
 # Read-only active Worker/version preflight for receivables ledger rollout (2026-11-04).
+
+# Separate read-only HTTPS verification of receivables ledger UI, VAT defaults and business menus.
