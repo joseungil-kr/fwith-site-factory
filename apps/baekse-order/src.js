@@ -1,0 +1,153 @@
+import { DurableObject } from 'cloudflare:workers';
+import {DEFAULT_PRODUCTS,onlyInt,safeText,dateCheck,calcTotals} from './logic.js';
+const json=(obj,status=200,headers={})=>new Response(JSON.stringify(obj),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...headers}});
+const err=(msg,status=400)=>json({error:msg},status);
+const encode = new TextEncoder();
+const hex = bytes=>[...new Uint8Array(bytes)].map(b=>b.toString(16).padStart(2,'0')).join('');
+const digest=async s=>hex(await crypto.subtle.digest('SHA-256',encode.encode(s)));
+const cleanRows = c=>Array.from(c);
+const now=()=>new Date().toISOString();
+const cookie=(token,age)=>`bs_order_session=${token}; Path=/api; HttpOnly; Secure; SameSite=Strict; Max-Age=${age}`;
+export class OrderDatabase extends DurableObject {
+ constructor(ctx,env){
+  super(ctx,env);
+  this.ctx=ctx;this.env=env;this.sql=ctx.storage.sql;
+  ctx.blockConcurrencyWhile(async()=>{
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,cost INTEGER NOT NULL,price INTEGER NOT NULL,active INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL);`);
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY AUTOINCREMENT,business TEXT NOT NULL,person TEXT NOT NULL,phone TEXT NOT NULL,business_no TEXT NOT NULL DEFAULT '',address TEXT NOT NULL DEFAULT '',active INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL);`);
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS movements (id INTEGER PRIMARY KEY AUTOINCREMENT,product_id INTEGER NOT NULL,delta INTEGER NOT NULL,cost INTEGER NOT NULL DEFAULT 0,note TEXT NOT NULL DEFAULT '',source TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL);`);
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY AUTOINCREMENT,client_id INTEGER NOT NULL,client_snapshot TEXT NOT NULL,order_date TEXT NOT NULL,vat TEXT NOT NULL,supply INTEGER NOT NULL,tax INTEGER NOT NULL,total INTEGER NOT NULL,status TEXT NOT NULL DEFAULT 'issued',memo TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL,cancelled_at TEXT);`);
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS lines (id INTEGER PRIMARY KEY AUTOINCREMENT,order_id INTEGER NOT NULL,product_id INTEGER,name TEXT NOT NULL,qty INTEGER NOT NULL,unit_price INTEGER NOT NULL,cost INTEGER NOT NULL DEFAULT 0,line_total INTEGER NOT NULL);`);
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS audit (id INTEGER PRIMARY KEY AUTOINCREMENT,action TEXT NOT NULL,info TEXT NOT NULL,created_at TEXT NOT NULL);`);
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS sessions (hash TEXT PRIMARY KEY,expires INTEGER NOT NULL);`);
+    if(!this.sql.exec('SELECT id FROM products LIMIT 1').toArray()[0]) {
+      for (const [name,cost,price] of DEFAULT_PRODUCTS) this.sql.exec('INSERT INTO products (name,cost,price,created_at) VALUES (?,?,?,?)',name,cost,price,now());
+    }
+    if(!this.sql.exec('SELECT id FROM clients LIMIT 1').toArray()[0]) this.sql.exec('INSERT INTO clients (business,person,phone,created_at) VALUES (?,?,?,?)','안산 중앙점','미입력','미입력',now());
+  });
+ }
+ getOne(q,...args){return this.sql.exec(q,...args).toArray()[0]||null}
+ all(q,...args){return cleanRows(this.sql.exec(q,...args))}
+ audit(action,info){this.sql.exec('INSERT INTO audit (action,info,created_at) VALUES (?,?,?)',action,JSON.stringify(info),now())}
+ async fetch(req){
+   try {return await this.handle(req)}catch(e){return err(e.message||'처리 실패',e.status||400)}
+ }
+ async handle(req){
+   const url=new URL(req.url), path=url.pathname;
+   if(req.method==='POST' && path==='/api/login'){
+      if(!this.env.ADMIN_PASSWORD||this.env.ADMIN_PASSWORD.length<12)return err('관리자 비밀번호 설정이 필요합니다',503);
+      const info=await req.json(); const pass=String(info.password||'');
+      const ip=req.headers.get('CF-Connecting-IP')||'unknown';
+      const key='login:'+ip;const attempts=this.ctx.storage.kv.get(key)||{count:0,since:Date.now()};
+      if(Date.now()-attempts.since>900000){attempts.count=0;attempts.since=Date.now()}
+      if(attempts.count>=10)return err('로그인 시도 제한: 15분 후 다시 시도하세요',429);
+      if((await digest(pass))!==(await digest(this.env.ADMIN_PASSWORD))){attempts.count++;this.ctx.storage.kv.put(key,attempts);this.audit('login_failed',{ip});return err('로그인 정보가 일치하지 않습니다',401)}
+      this.ctx.storage.kv.delete(key);
+      const token=crypto.randomUUID()+crypto.randomUUID(),hash=await digest(token), expires=Date.now()+8*3600*1000;
+      this.sql.exec('DELETE FROM sessions WHERE expires<?',Date.now());
+      this.sql.exec('INSERT INTO sessions (hash,expires) VALUES (?,?)',hash,expires);this.audit('login',{});
+      return json({ok:true},200,{'Set-Cookie':cookie(token,8*3600)});
+   }
+   const token=(req.headers.get('Cookie')||'').match(/(?:^|;\s*)bs_order_session=([^;]+)/)?.[1];
+   if(!token)return err('로그인이 필요합니다',401);
+   const hash=await digest(token), session=this.getOne('SELECT expires FROM sessions WHERE hash=?',hash);
+   if(!session||session.expires<Date.now())return err('로그인이 필요합니다',401);
+   if(req.method!=='GET'){
+     const origin=req.headers.get('Origin');const referer=req.headers.get('Referer');const expected=new URL(req.url).origin;
+     if(origin!==expected && !(origin===null&&referer?.startsWith(expected+'/')))return err('Origin 검증 실패',403);
+     if(Number(req.headers.get('Content-Length')||0)>500000)return err('요청 크기 초과',413);
+   }
+   if(path==='/api/session'&&req.method==='GET')return json({authenticated:true});
+   if(path==='/api/logout'&&req.method==='POST'){this.sql.exec('DELETE FROM sessions WHERE hash=?',hash);return json({ok:true},200,{'Set-Cookie':cookie('',0)})}
+   if(path==='/api/state'&&req.method==='GET'){
+      const products=this.all('SELECT p.*,COALESCE((SELECT SUM(delta) FROM movements WHERE product_id=p.id),0) AS stock FROM products p ORDER BY id');
+      const clients=this.all('SELECT * FROM clients ORDER BY id');
+      const orders=this.all('SELECT o.id,o.order_date,o.status,o.supply,o.tax,o.total,o.memo,o.created_at, json_extract(o.client_snapshot,\'$.business\') AS client_name FROM orders o ORDER BY o.id DESC LIMIT 300');
+      const movements=this.all('SELECT m.*,p.name AS product_name FROM movements m JOIN products p ON p.id=m.product_id ORDER BY m.id DESC LIMIT 300');
+      return json({products,clients,orders,movements});
+   }
+   if(path==='/api/export'&&req.method==='GET'){
+      const data={exported_at:now(),products:this.all('SELECT * FROM products'),clients:this.all('SELECT * FROM clients'),orders:this.all('SELECT * FROM orders'),lines:this.all('SELECT * FROM lines'),movements:this.all('SELECT * FROM movements'),audit:this.all('SELECT * FROM audit')};
+      return json(data,200,{'Content-Disposition':'attachment; filename="baekse-order-backup.json"'});
+   }
+   const data=req.method==='POST'?await req.json():{};
+   if(path==='/api/products'&&req.method==='POST'){
+      const name=safeText(data.name,'제품명',true,80),cost=onlyInt(data.cost,'매입가',0,100000000),price=onlyInt(data.price,'출고가',0,100000000);
+      if(data.id){const old=this.getOne('SELECT * FROM products WHERE id=?',onlyInt(data.id,'제품ID',1));if(!old)throw new Error('제품이 없습니다');this.sql.exec('UPDATE products SET name=?,cost=?,price=? WHERE id=?',name,cost,price,old.id);this.audit('product_update',{id:old.id});}
+      else {this.sql.exec('INSERT INTO products(name,cost,price,created_at) VALUES (?,?,?,?)',name,cost,price,now());this.audit('product_create',{name})}
+      return json({ok:true});
+   }
+   if(path==='/api/products/toggle'&&req.method==='POST'){
+      const id=onlyInt(data.id,'제품ID',1),p=this.getOne('SELECT * FROM products WHERE id=?',id);if(!p)throw new Error('제품이 없습니다');this.sql.exec('UPDATE products SET active=? WHERE id=?',p.active?0:1,id);this.audit('product_toggle',{id,active:!p.active});return json({ok:true});
+   }
+   if(path==='/api/clients'&&req.method==='POST'){
+      const business=safeText(data.business,'상호',true,100),person=safeText(data.person,'이름',true,70),phone=safeText(data.phone,'전화번호',true,40),business_no=safeText(data.business_no,'사업자번호',false,50),address=safeText(data.address,'주소',false,300);
+      if(data.id){const id=onlyInt(data.id,'거래처ID',1);if(!this.getOne('SELECT id FROM clients WHERE id=?',id))throw new Error('거래처가 없습니다');this.sql.exec('UPDATE clients SET business=?,person=?,phone=?,business_no=?,address=? WHERE id=?',business,person,phone,business_no,address,id);this.audit('client_update',{id})}
+      else{this.sql.exec('INSERT INTO clients(business,person,phone,business_no,address,created_at) VALUES (?,?,?,?,?,?)',business,person,phone,business_no,address,now());this.audit('client_create',{business})}
+      return json({ok:true});
+   }
+   if(path==='/api/clients/toggle'&&req.method==='POST'){
+      const id=onlyInt(data.id,'거래처ID',1),c=this.getOne('SELECT * FROM clients WHERE id=?',id);if(!c)throw new Error('거래처가 없습니다');this.sql.exec('UPDATE clients SET active=? WHERE id=?',c.active?0:1,id);this.audit('client_toggle',{id,active:!c.active});return json({ok:true})
+   }
+   if(path==='/api/stock'&&req.method==='POST'){
+      const product_id=onlyInt(data.product_id,'제품ID',1),quantity=onlyInt(data.quantity,'입출고 수량',0,1000000),p=this.getOne('SELECT * FROM products WHERE id=?',product_id);if(!p||!p.active)throw new Error('유효하지 않은 제품');
+      const type=String(data.type);if(type!=='adjust'&&quantity<1)throw new Error('입고 수량은 1개 이상');const current=this.getOne('SELECT COALESCE(SUM(delta),0) AS qty FROM movements WHERE product_id=?',product_id).qty;
+      if(!['in','adjust','return'].includes(type))throw new Error('재고 처리 방식 오류');
+      const delta=type==='adjust'?onlyInt(data.adjustment,'조정 수량',-1000000,1000000)-current:quantity;
+      if(current+delta<0)throw new Error('재고가 마이너스가 될 수 없습니다');
+      const cost=onlyInt(data.cost??p.cost,'매입가',0,100000000),note=safeText(data.note,'메모',false,500);
+      this.sql.exec('INSERT INTO movements(product_id,delta,cost,note,source,created_at) VALUES (?,?,?,?,?,?)',product_id,delta,cost,note,type,now());this.audit('stock_change',{product_id,delta,type});return json({ok:true,stock:current+delta});
+   }
+   if(path==='/api/orders'&&req.method==='POST'){
+      const client=this.getOne('SELECT * FROM clients WHERE id=? AND active=1',onlyInt(data.client_id,'거래처',1));if(!client)throw new Error('거래처를 선택하세요');
+      if(client.person==='미입력'||client.phone==='미입력')throw new Error('거래처 필수 정보(이름·전화번호)를 먼저 입력하세요');
+      const order_date=dateCheck(data.order_date),vat=data.vat==='tax'?'tax':data.vat==='none'?'none':null;if(!vat)throw new Error('부가세를 선택하세요');
+      const memo=safeText(data.memo,'비고',false,500),list=Array.isArray(data.items)?data.items:[];
+      if(list.length===0||list.length>50)throw new Error('출고 품목은 1~50개 입력하세요');
+      const items=list.map(item=>{
+        const qty=onlyInt(item.qty,'수량',1,1000000);
+        if(item.product_id){const p=this.getOne('SELECT * FROM products WHERE id=? AND active=1',onlyInt(item.product_id,'제품ID',1));if(!p)throw new Error('등록되지 않은 상품');return{product_id:p.id,name:p.name,qty,unit_price:p.price,cost:p.cost}}
+        const name=safeText(item.name,'기타 품명',true,120),unit_price=onlyInt(item.unit_price,'기타 출고단가',0,100000000);
+        return {product_id:null,name,qty,unit_price,cost:0}
+      });
+      const totals=calcTotals(items,vat);
+      const grouped=new Map();for(const i of items)if(i.product_id)grouped.set(i.product_id,(grouped.get(i.product_id)||0)+i.qty);
+      for(const [id,q] of grouped){const remaining=this.getOne('SELECT COALESCE(SUM(delta),0) AS qty FROM movements WHERE product_id=?',id).qty;if(q>remaining)throw new Error(`${items.find(i=>i.product_id===id).name}: 재고 부족 (현재 ${remaining}개)`)}
+      let id;
+      this.ctx.storage.transactionSync(()=>{
+        this.sql.exec('INSERT INTO orders(client_id,client_snapshot,order_date,vat,supply,tax,total,memo,created_at) VALUES(?,?,?,?,?,?,?,?,?)',client.id,JSON.stringify({business:client.business,person:client.person,phone:client.phone,business_no:client.business_no,address:client.address}),order_date,vat,totals.supply,totals.tax,totals.total,memo,now());
+        id=this.getOne('SELECT last_insert_rowid() AS id').id;
+        for(const i of items){this.sql.exec('INSERT INTO lines(order_id,product_id,name,qty,unit_price,cost,line_total) VALUES(?,?,?,?,?,?,?)',id,i.product_id,i.name,i.qty,i.unit_price,i.cost,i.qty*i.unit_price);
+          if(i.product_id)this.sql.exec('INSERT INTO movements(product_id,delta,cost,note,source,created_at) VALUES(?,?,?,?,?,?)',i.product_id,-i.qty,i.cost,'출고 #'+id,'order:'+id,now());}
+        this.audit('order_create',{id,total:totals.total});
+      });
+      return json({ok:true,id,...totals});
+   }
+   if(path==='/api/orders/cancel'&&req.method==='POST'){
+      const id=onlyInt(data.id,'명세표 ID',1),order=this.getOne('SELECT * FROM orders WHERE id=?',id);if(!order||order.status!=='issued')throw new Error('취소할 수 없는 출고건');
+      this.ctx.storage.transactionSync(()=>{
+        const lines=this.all('SELECT * FROM lines WHERE order_id=?',id);for(const l of lines)if(l.product_id)this.sql.exec('INSERT INTO movements(product_id,delta,cost,note,source,created_at) VALUES(?,?,?,?,?,?)',l.product_id,l.qty,l.cost,'출고취소 #'+id,'cancel:'+id,now());
+        this.sql.exec('UPDATE orders SET status=?,cancelled_at=? WHERE id=?','cancelled',now(),id);this.audit('order_cancel',{id});
+      });return json({ok:true});
+   }
+   if(path==='/api/orders/detail'&&req.method==='GET'){
+     const id=onlyInt(Number(url.searchParams.get('id')),'명세표 ID',1),order=this.getOne('SELECT * FROM orders WHERE id=?',id);if(!order)return err('명세표를 찾을 수 없습니다',404);
+     return json({order:{...order,client:JSON.parse(order.client_snapshot)},items:this.all('SELECT * FROM lines WHERE order_id=? ORDER BY id',id)});
+   }
+   return err('없는 API 주소',404);
+ }
+}
+export default {
+ async fetch(request,env){
+   const url=new URL(request.url);
+   if(url.pathname.startsWith('/api/')){
+     if(!env.ORDER_DB)return err('DB 연결 없음',503);
+     const obj=env.ORDER_DB.get(env.ORDER_DB.idFromName('baekse-order-single-db'));
+     return obj.fetch(request);
+   }
+   if(!env.ASSETS)return err('정적 파일 미설정',503);
+   const res=await env.ASSETS.fetch(request);
+   const h=new Headers(res.headers);h.set('X-Robots-Tag','noindex, nofollow, noarchive');h.set('X-Content-Type-Options','nosniff');h.set('Referrer-Policy','no-referrer');h.set('Cache-Control','no-store');h.set('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'");
+   return new Response(res.body,{status:res.status,headers:h});
+ }
+};
