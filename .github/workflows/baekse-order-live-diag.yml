@@ -55,3 +55,5 @@ jobs:
               print('HTTP_READ',p,'ERROR_STATUS',e.code,'BODY_PREFIX',e.read(180).decode('utf-8','replace'))
             except Exception as e: print('HTTP_READ',p,'NETWORK_ERROR',type(e).__name__,str(e)[:150])
           PY
+
+# Independent HTTP regression after run_worker_first update; read only.
