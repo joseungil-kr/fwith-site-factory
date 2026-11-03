@@ -1,0 +1,11 @@
+{
+  "name": "baekse-order",
+  "main": "src.js",
+  "compatibility_date": "2026-10-21",
+  "workers_dev": true,
+  "preview_urls": false,
+  "keep_vars": true,
+  "assets": {"directory": "./public", "binding": "ASSETS", "run_worker_first": ["/api/*"]},
+  "durable_objects": {"bindings": [{"name": "ORDER_DB", "class_name": "OrderDatabase"}]},
+  "migrations": [{"tag":"v1","new_sqlite_classes":["OrderDatabase"]}]
+}
