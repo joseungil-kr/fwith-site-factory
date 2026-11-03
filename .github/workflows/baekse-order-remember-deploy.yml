@@ -1,0 +1,167 @@
+name: Baekse order update remember-me and admin Secret on existing Worker
+on:
+  push:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths:
+      - '.github/workflows/baekse-order-remember-deploy.yml'
+      - 'apps/baekse-order/src.js'
+      - 'apps/baekse-order/logic.js'
+      - 'apps/baekse-order/public/**'
+      - 'apps/baekse-order/wrangler.reused.jsonc'
+permissions:
+  contents: read
+concurrency:
+  group: baekse-order-existing-worker-updates
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      BAEKSE_ORDER_ADMIN_PASSWORD: ${{ secrets.BAEKSE_ORDER_ADMIN_PASSWORD }}
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/baekse-order-deploy-20261103
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Verify code, tests and admin credential presence
+        working-directory: apps/baekse-order
+        run: |
+          node --check src.js
+          node --check public/app.js
+          npm test
+          test "\${#BAEKSE_ORDER_ADMIN_PASSWORD}" -ge 12 || { echo 'GitHub secret BAEKSE_ORDER_ADMIN_PASSWORD is missing or too short'; exit 3; }
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$CLOUDFLARE_API_TOKEN"
+          node -e 'const j=JSON.parse(require("fs").readFileSync("wrangler.reused.jsonc","utf8")); if(j.name!=="funeralflower-home-preview"||j.keep_vars!==true||j.durable_objects.bindings[0].class_name!=="OrderDatabase")process.exit(1);'
+          echo "SOURCE_AND_SECRET_GATE_PASS"
+      - name: Check existing order domain / Worker identity and capture rollback version
+        id: guard
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os,json,urllib.request
+          a=os.environ['CLOUDFLARE_ACCOUNT_ID'];token=os.environ['CLOUDFLARE_API_TOKEN']
+          root='https://api.cloudflare.com/client/v4';worker='funeralflower-home-preview';hostname='order.baeksefood.com'
+          def get(p):
+            req=urllib.request.Request(root+p,headers={'Authorization':'Bearer '+token,'Accept':'application/json'})
+            with urllib.request.urlopen(req,timeout=30) as r:
+              x=json.load(r)
+              assert x.get('success'), 'Cloudflare read failed'
+              return x['result']
+          domains=get('/accounts/'+a+'/workers/domains')
+          linked=[x for x in domains if x.get('service')==worker]
+          assert len(linked)==1 and linked[0].get('hostname')==hostname, 'Worker is linked to an unexpected domain'
+          zones=get('/zones?name=baeksefood.com')
+          assert len(zones)==1 and zones[0].get('status')=='active' and zones[0].get('account',{}).get('id')==a,'Zone identity mismatch'
+          scripts=get('/accounts/'+a+'/workers/scripts')
+          assert any(x.get('id')==worker for x in scripts),'Must reuse the existing script, never create a new one'
+          pages=get('/accounts/'+a+'/workers/workers?per_page=200')
+          info=next((x for x in pages if x.get('name')==worker),None)
+          assert info,'Existing Worker missing'
+          obj=get('/accounts/'+a+'/workers/workers/'+info['id'])
+          refs=obj.get('references') or {}
+          assert not (refs.get('workers') or refs.get('dispatch_namespace_outbounds') or refs.get('queues')),'External Worker references detected'
+          assert all(x.get('worker_name')==worker for x in (refs.get('durable_objects') or [])),'DO is referenced by another Worker'
+          schedules=get('/accounts/'+a+'/workers/scripts/'+worker+'/schedules').get('schedules') or []
+          assert not schedules,'Unexpected scheduled jobs'
+          settings=get('/accounts/'+a+'/workers/scripts/'+worker+'/settings')
+          bindings={(x.get('type'),x.get('name')) for x in settings.get('bindings') or []}
+          required={('assets','ASSETS'),('durable_object_namespace','ORDER_DB')}
+          assert required.issubset(bindings) and bindings.issubset(required | {('secret_text','ADMIN_PASSWORD')}), 'Unexpected Worker binding'
+          deployments=get('/accounts/'+a+'/workers/scripts/'+worker+'/deployments')['deployments']
+          assert len(deployments)>0 and len(deployments[0].get('versions') or [])==1,'No stable rollback version'
+          version=deployments[0]['versions'][0]
+          assert version.get('percentage')==100,'Previous version is not deployed at 100%'
+          previous=version['version_id']
+          assert previous=='96017a51-b665-44d4-9635-2f0ac48ea2e1','Worker version changed since last verified release'
+          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:
+            f.write('previous_version='+previous+'\n')
+          print('SAFE_ORDER_APP_UPDATE_PASS',hostname,'existingWorker',worker,'rollbackPinned',previous)
+          PY
+      - name: Update existing Worker code and static assets (do not replace routes)
+        id: update
+        working-directory: apps/baekse-order
+        run: npx --yes wrangler@4.156.2 deploy --config wrangler.reused.jsonc
+      - name: Set administrator password from existing GitHub Secret
+        id: secret
+        working-directory: apps/baekse-order
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s' "$BAEKSE_ORDER_ADMIN_PASSWORD" | npx --yes wrangler@4.156.2 secret put ADMIN_PASSWORD --config wrangler.reused.jsonc
+          echo 'ADMIN_SECRET_DEPLOYED_WITHOUT_LOGGING_VALUE'
+      - name: Check live UI, cookie duration, password login and logout on actual domain
+        id: smoke
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os,json,time,http.cookiejar,urllib.request,urllib.error
+          base='https://order.baeksefood.com';password=os.environ['BAEKSE_ORDER_ADMIN_PASSWORD']
+          ua='Mozilla/5.0 (compatible; deployment verifier)'
+          def opener(jar=None):
+            op=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar)) if jar else urllib.request.build_opener()
+            op.addheaders=[('User-Agent',ua)]
+            return op
+          unauthed=opener()
+          for i in range(12):
+            try:
+              with unauthed.open(base+'/',timeout=25) as r:
+                html=r.read().decode('utf-8')
+                assert r.status==200 and 'id="login-remember"' in html and '로그인 기억하기' in html
+                assert 'noindex' in r.headers.get('X-Robots-Tag','').lower()
+                assert 'script-src' in r.headers.get('Content-Security-Policy','')
+              break
+            except Exception as e:
+              if i==11:raise
+              print('WAITING_FOR_UI_PROPAGATION',i,type(e).__name__)
+              time.sleep(8)
+          try:unauthed.open(base+'/api/state',timeout=20)
+          except urllib.error.HTTPError as e:assert e.code==401,'Anonymous API must reject'
+          else:raise AssertionError('Anonymous access to inventory')
+          jar=http.cookiejar.CookieJar();op=opener(jar)
+          def login(remember,seconds):
+            data=json.dumps({'password':password,'remember':remember}).encode('utf-8')
+            req=urllib.request.Request(base+'/api/login',data=data,method='POST',headers={'Content-Type':'application/json','Origin':base})
+            with op.open(req,timeout=30) as r:
+              payload=json.load(r);cookie=r.headers.get('Set-Cookie','')
+              assert payload['ok'] and payload.get('remembered') is remember
+              assert f'Max-Age={seconds}' in cookie, 'Cookie lifetime mismatch'
+              assert 'HttpOnly' in cookie and 'Secure' in cookie and 'SameSite=Strict' in cookie
+              return cookie.split(';')[0]
+          def logout(cookie):
+            req=urllib.request.Request(base+'/api/logout',method='POST',data=b'{}',headers={'Content-Type':'application/json','Origin':base})
+            with op.open(req,timeout=20) as r:assert r.status==200
+            try:unauthed.open(urllib.request.Request(base+'/api/session',headers={'Cookie':cookie}),timeout=20)
+            except urllib.error.HTTPError as e:assert e.code==401,'Logout did not revoke token'
+            else:raise AssertionError('Revoked token was accepted')
+          short=login(False,28800)
+          with op.open(base+'/api/session',timeout=20) as r:assert json.load(r)['authenticated'] is True
+          logout(short)
+          long=login(True,2592000)
+          with op.open(base+'/api/state',timeout=25) as r:
+            payload=json.load(r)
+            assert len(payload['products'])>=6,'Seed catalog not available'
+            assert any(p['name']=='잉어반죽' and p['price']==11000 for p in payload['products'])
+          logout(long)
+          print('PRODUCTION_REMEMBER_30D_PASS: UI200, API401, short8h, long30d, secureCookie, logoutRevocation, seededProducts')
+          for u in ['https://baeksefood.com','https://interpiad.com']:
+            with unauthed.open(u,timeout=25) as r:assert r.status==200
+          print('OTHER_SITES_UNCHANGED_HTTP200')
+          PY
+      - name: Roll back previous code version if production validation fails
+        if: ${{ failure() && steps.update.outcome == 'success' && steps.smoke.outcome != 'success' && steps.guard.outputs.previous_version != '' }}
+        working-directory: apps/baekse-order
+        run: npx --yes wrangler@4.156.2 versions deploy "${{ steps.guard.outputs.previous_version }}@100%" --yes --config wrangler.reused.jsonc
+      - name: Report live outcome
+        if: always()
+        run: |
+          echo '## Baekse secure remember-login production release' >> "$GITHUB_STEP_SUMMARY"
+          echo '- URL: https://order.baeksefood.com' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Reused existing Worker: funeralflower-home-preview' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Durable Object inventory data retained; no DNS/route changes.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- See smoke step for authentication and 8-hour/30-day cookie evidence.' >> "$GITHUB_STEP_SUMMARY"
