@@ -3,19 +3,50 @@ const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(
 const money=n=>(Number(n)||0).toLocaleString('ko-KR')+'원',fmt=n=>(Number(n)||0).toLocaleString('ko-KR');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const today=()=>new Date(Date.now()+9*3600000).toISOString().slice(0,10);
-let state={products:[],clients:[],orders:[],movements:[]},viewOrder=null;
+let state={products:[],clients:[],orders:[],movements:[]},viewOrder=null,buyerRequests=[];
 const toast=s=>{const t=$('#toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500)};
 async function api(path,body){const opt=body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)};let r=await fetch('/api/'+path,opt);let d=await r.json().catch(()=>({error:'서버 오류'}));if(!r.ok){if(r.status===401){$('#app').classList.add('hidden');$('#login').classList.remove('hidden')}throw new Error(d.error||'요청 실패')}return d}
-function show(tab){$$('[data-page]').forEach(x=>x.classList.toggle('hidden',x.dataset.page!==tab));$$('[data-tab]').forEach(x=>x.classList.toggle('selected',x.dataset.tab===tab));window.scrollTo(0,0)}
+function show(tab){$$('[data-page]').forEach(x=>x.classList.toggle('hidden',x.dataset.page!==tab));$$('[data-tab]').forEach(x=>x.classList.toggle('selected',x.dataset.tab===tab));window.scrollTo(0,0);if(tab==='requests')loadBuyerRequests().catch(e=>$('#request-list').textContent=e.message)}
 async function refresh(){state=await api('state');render()}
 function table(headers,rows){return `<div class="table-overflow"><table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')||`<tr><td colspan="${headers.length}">등록 내역이 없습니다.</td></tr>`}</tbody></table></div>`}
-function render(){renderHome();renderOrder();renderStock();renderClients();renderProducts();renderBills();renderSettings();}
+function render(){renderHome();renderBuyerDashboard();renderOrder();renderStock();renderClients();renderProducts();renderBills();renderSettings();}
 function renderSettings(){
  const s=state.receipt_settings||{};
  for(const key of ['company_name','company_business_no','company_address','company_phone','company_email','bank_name','account_number','account_holder']){
    $('#payment-form [name="'+key+'"]').value=s[key]||(key==='company_name'?'백세푸드':'');
  }
  $('.brand b').textContent=s.company_name||'백세푸드';
+}
+function renderBuyerDashboard(){
+ const v=state.buyer_dashboard||{pending_count:0,shortage_count:0,shortages:[]};
+ const pieces=['<div class="buyer-kpi"><strong>'+Number(v.pending_count||0)+'건</strong><span>신규 발주 대기</span></div>',
+   '<div class="buyer-kpi'+(v.shortage_count?' shortage-alert':'')+'"><strong>'+Number(v.shortage_count||0)+'품목</strong><span>추가 입고 필요</span></div>'];
+ if(v.shortages?.length){
+   pieces.push('<div class="buyer-alert-list">'+v.shortages.slice(0,4).map(p=>
+     '<span>'+esc(p.name)+' <b>부족 '+fmt(p.shortage)+'개</b></span>').join('')+'</div>');
+ }
+ $('#buyer-home-summary').innerHTML='<div class="buyer-dashboard-row">'+pieces.join('')+'</div>';
+}
+async function loadBuyerRequests(){
+ $('#request-list').textContent='발주 요청을 불러오는 중입니다.';
+ const result=await api('requests/list');
+ buyerRequests=result.requests||[];
+ const shortages=result.summary?.shortages||[];
+ $('#request-shortages').innerHTML=shortages.length?
+   shortages.map(p=>'<div class="shortage-item"><b>'+esc(p.name)+'</b><span>현재고 '+fmt(p.stock)+'개 / 미처리 발주 '+fmt(p.requested)+'개</span><strong>추가 입고 '+fmt(p.shortage)+'개 필요</strong></div>').join(''):
+   '<p class="hint">현재 추가 입고가 필요한 품목이 없습니다.</p>';
+ const labels={pending:'발주 대기',fulfilled:'출고 완료',cancelled:'발주 취소'};
+ $('#request-list').innerHTML=buyerRequests.length?buyerRequests.map(req=>{
+   const pending=req.status==='pending';
+   const rows=req.items.map(p=>'<li>'+esc(p.name)+' · '+fmt(p.qty)+'개 × '+money(p.unit_price)+'</li>').join('');
+   const total=req.items.reduce((n,p)=>n+p.qty*p.unit_price,0);
+   return '<article class="buyer-request-card"><div class="buyer-request-head"><div><strong>#'+req.id+' · '+esc(req.client_name)+'</strong><span>납품 요청일 '+esc(req.requested_delivery)+' · '+esc(req.created_at.slice(0,10))+'</span></div><span class="request-state '+(pending?'state-waiting':'')+'">'+labels[req.status]+'</span></div>'+
+   '<ul class="buyer-request-items">'+rows+'</ul><p class="buyer-request-sum">예상 공급가액: <b>'+money(total)+'</b></p>'+
+   (req.note?'<p class="buyer-request-note">요청사항: '+esc(req.note)+'</p>':'')+
+   (pending?'<div class="buyer-approval-controls"><label>부가세<select data-request-vat="'+req.id+'"><option value="none">0원</option><option value="tax">10% 추가</option></select></label><label>전 잔고<input data-request-balance="'+req.id+'" type="number" min="0" max="2000000000" value="0" inputmode="numeric"></label></div><div class="action-row"><button class="primary" data-request-fulfill="'+req.id+'" type="button">출고처리</button><button class="danger" data-request-cancel="'+req.id+'" type="button">발주 취소</button></div>':
+      req.issued_order_id?'<div class="action-row"><button class="secondary" data-request-invoice="'+req.issued_order_id+'" type="button">거래명세표 보기</button></div>':'')+
+   '</article>';
+ }).join(''):'<p class="hint">발주 요청 내역이 없습니다.</p>';
 }
 function renderHome(){
  const active=state.orders.filter(o=>o.status==='issued');
@@ -52,7 +83,19 @@ function movementLabel(source){
 function renderStock(){const old=$('#stock-product').value;$('#stock-product').innerHTML=state.products.filter(p=>p.active).map(p=>`<option value="${p.id}">${esc(p.name)} (현재 ${p.stock}개)</option>`).join('');$('#stock-product').value=old||String(state.products.find(p=>p.active)?.id||'');setStockCost();$('#stock-list').innerHTML=table(['제품','매입가','출고가 (VAT 별도)','재고'],state.products.filter(p=>p.active).map(p=>`<tr><td>${esc(p.name)}</td><td>${money(p.cost)}</td><td>${money(p.price)}</td><td><b>${fmt(p.stock)}개</b></td></tr>`));
  $('#movement-list').innerHTML=table(['일시','품명','수량변동','구분'],state.movements.slice(0,40).map(m=>`<tr><td>${esc(m.created_at.slice(0,16).replace('T',' '))}</td><td>${esc(m.product_name)}</td><td>${m.delta>0?'+':''}${fmt(m.delta)}개</td><td>${esc(movementLabel(m.source))}</td></tr>`));}
 function setStockCost(){const p=state.products.find(p=>p.id===Number($('#stock-product').value));if(p)$('#stock-cost').value=p.cost}
-function renderClients(){const id=$('#client-form [name=id]').value;$('#client-list').innerHTML=table(['상호 / 담당자','전화번호 / 사업자번호','상태','관리'],state.clients.map(c=>`<tr><td><b>${esc(c.business)}</b><span class="price-note">${esc(c.person)}${c.address?` · ${esc(c.address)}`:''}</span></td><td>${esc(c.phone)}<span class="price-note">${esc(c.business_no)}</span></td><td>${c.active?'사용중':'비활성'}</td><td><div class="row-action"><button class="secondary" data-client-edit="${c.id}">수정</button><button class="${c.active?'danger':'secondary'}" data-client-toggle="${c.id}">${c.active?'삭제':'복구'}</button></div></td></tr>`));$('#client-form-title').textContent=id?'거래처 수정':'거래처 추가'}
+function renderClients(){
+ const id=$('#client-form [name=id]').value;
+ $('#client-list').innerHTML=table(['상호 / 담당자','전화번호 / 사업자번호','상태','관리'],
+   state.clients.map(c=>{
+     const link=(state.buyer_links||[]).find(l=>l.client_id===c.id);
+     const activeLink=link&&!link.revoked_at;
+     const buttons=c.active?'<button class="secondary" data-client-link="'+c.id+'">'+(activeLink?'발주 링크 재발급':'발주 링크 만들기')+'</button>'+
+       (activeLink?'<button class="danger" data-client-link-revoke="'+c.id+'">링크 중지</button>':''):'';
+     return `<tr><td><b>${esc(c.business)}</b><span class="price-note">${esc(c.person)}${c.address?' · '+esc(c.address):''}</span></td><td>${esc(c.phone)}<span class="price-note">${esc(c.business_no)}</span></td><td>${c.active?'사용중':'비활성'}${activeLink?'<span class="price-note"> · 발주 링크 활성</span>':''}</td><td><div class="row-action"><button class="secondary" data-client-edit="${c.id}">수정</button><button class="${c.active?'danger':'secondary'}" data-client-toggle="${c.id}">${c.active?'삭제':'복구'}</button>${buttons}</div></td></tr>`;
+   })
+ );
+ $('#client-form-title').textContent=id?'거래처 수정':'거래처 추가';
+}
 function renderProducts(){
  const id=$('#product-form [name=id]').value;
  $('#product-list').innerHTML=table(['순서','제품명','매입단가','출고단가 (VAT 별도)','상태 / 관리'],state.products.map((p,index)=>`<tr><td><div class="order-move-buttons"><button class="secondary" type="button" data-product-move="up" data-id="${p.id}" aria-label="${esc(p.name)} 위로 이동" ${index===0?'disabled':''}>▲</button><button class="secondary" type="button" data-product-move="down" data-id="${p.id}" aria-label="${esc(p.name)} 아래로 이동" ${index===state.products.length-1?'disabled':''}>▼</button></div></td><td>${esc(p.name)}</td><td>${money(p.cost)}</td><td>${money(p.price)}</td><td><div class="row-action"><span class="pill ${p.active?'':'red'}">${p.active?'판매중':'비활성'}</span><button class="secondary" data-product-edit="${p.id}">수정</button><button class="${p.active?'danger':'secondary'}" data-product-toggle="${p.id}">${p.active?'삭제':'복구'}</button></div></td></tr>`));
@@ -85,7 +128,87 @@ $('#payment-form').addEventListener('submit',async e=>{
     toast('관리자 설정을 저장했습니다.');
   }catch(e){alert(e.message)}
 });
-$('#client-list').onclick=async e=>{let edit=e.target.closest('[data-client-edit]'),toggle=e.target.closest('[data-client-toggle]');if(edit){const c=state.clients.find(c=>c.id===Number(edit.dataset.clientEdit));for(const k of ['id','business','person','phone','business_no','address'])$('#client-form [name="'+k+'"]').value=c[k];$('#client-form').scrollIntoView({behavior:'smooth'});renderClients()}if(toggle){if(!confirm('거래처의 사용 상태를 변경하시겠습니까? 과거 명세표는 유지됩니다.'))return;try{await api('clients/toggle',{id:Number(toggle.dataset.clientToggle)});await refresh()}catch(e){alert(e.message)}}};
+$('#client-list').onclick=async e=>{
+ const edit=e.target.closest('[data-client-edit]'),
+       toggle=e.target.closest('[data-client-toggle]'),
+       issue=e.target.closest('[data-client-link]'),
+       revoke=e.target.closest('[data-client-link-revoke]');
+ if(edit){
+   const client=state.clients.find(c=>c.id===Number(edit.dataset.clientEdit));
+   for(const key of ['id','business','person','phone','business_no','address'])$('#client-form [name="'+key+'"]').value=client[key];
+   $('#client-form').scrollIntoView({behavior:'smooth'});renderClients();return;
+ }
+ if(toggle){
+   if(!confirm('거래처의 사용 상태를 변경하시겠습니까? 기존 발주와 명세표는 유지됩니다.'))return;
+   try{await api('clients/toggle',{id:Number(toggle.dataset.clientToggle)});await refresh()}
+   catch(err){alert(err.message)}
+   return;
+ }
+ if(issue){
+   const clientId=Number(issue.dataset.clientLink);
+   const client=state.clients.find(c=>c.id===clientId);
+   const existing=(state.buyer_links||[]).find(l=>l.client_id===clientId&&!l.revoked_at);
+   if(existing&&!confirm('새 발주 링크를 만들면 이 업체의 이전 링크는 더 이상 사용할 수 없습니다. 재발급할까요?'))return;
+   try{
+     const result=await api('requests/link/issue',{client_id:clientId});
+     $('#generated-link-value').value=result.url;
+     $('#link-client-name').textContent=client.business+'에만 전달하세요.';
+     $('#link-result').classList.remove('hidden');
+     await refresh();
+     $('#link-result').scrollIntoView({behavior:'smooth',block:'start'});
+   }catch(err){alert(err.message)}
+   return;
+ }
+ if(revoke){
+   const clientId=Number(revoke.dataset.clientLinkRevoke);
+   if(!confirm('이 거래처의 발주 링크를 중지할까요? 기존 발주 기록은 유지됩니다.'))return;
+   try{await api('requests/link/revoke',{client_id:clientId});$('#link-result').classList.add('hidden');await refresh();toast('발주 링크가 중지되었습니다.');}
+   catch(err){alert(err.message)}
+ }
+};
+$('#copy-generated-link').onclick=async()=>{
+ const input=$('#generated-link-value');
+ let copied=false;
+ try{
+   if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(input.value);copied=true}
+ }catch(_){}
+ if(!copied){
+   input.focus();input.select();
+   try{copied=document.execCommand('copy')}catch(_){}
+ }
+ toast(copied?'발주 링크를 복사했습니다. 카카오톡이나 문자에 붙여넣으세요.':'링크가 선택되었습니다. 길게 눌러 복사해 주세요.');
+};
+$('#hide-generated-link').onclick=()=>{$('#generated-link-value').value='';$('#link-result').classList.add('hidden')};
+$('#refresh-requests').onclick=()=>loadBuyerRequests().catch(e=>alert(e.message));
+$('#request-list').onclick=async e=>{
+ const fulfill=e.target.closest('[data-request-fulfill]'),
+       cancel=e.target.closest('[data-request-cancel]'),
+       invoice=e.target.closest('[data-request-invoice]');
+ if(invoice){show('bills');openBill(Number(invoice.dataset.requestInvoice)).catch(err=>alert(err.message));return}
+ if(cancel){
+   const id=Number(cancel.dataset.requestCancel);
+   if(!confirm('발주 #'+id+'을 취소할까요?'))return;
+   try{await api('requests/cancel',{id});await refresh();await loadBuyerRequests();toast('발주 요청을 취소했습니다.')}
+   catch(err){alert(err.message)}
+   return;
+ }
+ if(fulfill){
+   const id=Number(fulfill.dataset.requestFulfill),req=buyerRequests.find(r=>r.id===id);
+   const vat=$('[data-request-vat="'+id+'"]').value;
+   const balance=Number($('[data-request-balance="'+id+'"]').value);
+   if(!Number.isSafeInteger(balance)||balance<0){alert('전 잔고는 0원 이상의 정수로 입력하세요.');return}
+   if(!confirm(req.client_name+'의 발주 #'+id+'을 출고 처리할까요? 제품 재고가 차감되고 거래명세표가 발행됩니다.'))return;
+   fulfill.disabled=true;
+   try{
+     const result=await api('requests/fulfill',{id,vat,previous_balance:balance,order_date:today()});
+     await refresh();
+     toast('발주 #'+id+' 출고 완료, 명세표 #'+result.issued_order_id+' 발행');
+     show('bills');
+     await openBill(result.issued_order_id);
+   }catch(err){alert(err.message);await loadBuyerRequests()}
+   finally{fulfill.disabled=false}
+ }
+};
 $('#product-list').onclick=async e=>{
  const move=e.target.closest('[data-product-move]');
  if(move){
