@@ -50,7 +50,7 @@ jobs:
           else:raise AssertionError('No authentication bypass permitted')
           _,login=api('login',{'password':'ci-only-strong-example-password-2026'});assert login['ok']
           _,state=api('state');assert len(state['products'])==6
-          assert state['receipt_settings']=={'bank_name':'','account_number':'','account_holder':''},'Bank details must not be hardcoded'
+          assert all(state['receipt_settings'][k]=='' for k in ('bank_name','account_number','account_holder')) and state['receipt_settings']['company_name']=='백세푸드','Bank details must not be hardcoded; company has safe default'
           p=state['products'][0]
           c=state['clients'][0]
           assert c['business']=='안산 중앙점'
@@ -67,7 +67,7 @@ jobs:
           _,new_settings=api('receipt-settings',{'bank_name':'검증은행','account_number':'987-654-321','account_holder':'검증예금주'})
           assert new_settings['ok']
           _,s=api('state')
-          assert s['receipt_settings']=={'bank_name':'검증은행','account_number':'987-654-321','account_holder':'검증예금주'}
+          assert all(s['receipt_settings'][k]==v for k,v in {'bank_name':'검증은행','account_number':'987-654-321','account_holder':'검증예금주'}.items())
           _,bill=api('orders',{'client_id':c['id'],'order_date':'2026-11-03','vat':'none',
             'previous_balance':100000,'items':[{'name':'직접입력 상품','qty':1,'unit_price':93000}],'memo':'입금처 QA'})
           assert bill['supply']==93000 and bill['tax']==0 and bill['total']==93000
@@ -76,7 +76,7 @@ jobs:
           record=next(x for x in s['orders'] if x['id']==bill['id'])
           assert record['total']==93000 and record['amount_due']==193000 and record['previous_balance']==100000
           _,saved=api('orders/detail?id='+str(bill['id']))
-          assert saved['order']['bank']=={'bank_name':'검증은행','account_number':'987-654-321','account_holder':'검증예금주'}
+          assert all(saved['order']['bank'][k]==v for k,v in {'bank_name':'검증은행','account_number':'987-654-321','account_holder':'검증예금주'}.items())
           api('receipt-settings',{'bank_name':'변경은행','account_number':'123-111','account_holder':'변경예금주'})
           _,saved_again=api('orders/detail?id='+str(bill['id']))
           assert saved_again['order']['bank']==saved['order']['bank'],'Historical invoice account must be snapshotted'
@@ -85,6 +85,71 @@ jobs:
           _,export=api('export')
           assert len(export['audit'])>0 and len(export['orders'])==2
           assert any(x['id']==bill['id'] and x['previous_balance']==100000 for x in export['orders'])
+
+          # Product up/down elevators, and invoice ordering independent of products.
+          _,s=api('state')
+          assert [x['id'] for x in s['products']][:2]==[1,2]
+          api('products/move',{'id':2,'direction':'up'})
+          _,s=api('state')
+          assert [x['id'] for x in s['products']][:2]==[2,1]
+          api('products/move',{'id':2,'direction':'down'})
+          _,s=api('state')
+          assert [x['id'] for x in s['products']][:2]==[1,2]
+          # Editable company information and bank trio.
+          _,updated=api('receipt-settings',{
+            'company_name':'QA 주문회사','company_business_no':'123-45-67890',
+            'company_address':'경기도 QA 주소','company_phone':'010-3333-4444',
+            'company_email':'order@example.org',
+            'bank_name':'변경은행','account_number':'123-111','account_holder':'변경예금주'})
+          assert updated['ok']
+          _,s=api('state')
+          assert s['receipt_settings']['company_name']=='QA 주문회사'
+          assert s['receipt_settings']['company_email']=='order@example.org'
+          assert set(('today_count','today_amount','month_count','month_amount','cumulative_amount')).issubset(s['metrics'])
+          assert s['metrics']['cumulative_amount']==93000, 'Cancelled orders and prior balance must not inflate revenue'
+          assert s['metrics']['cumulative_count']==1
+          # Historical invoice supplier and bank are snapshots, not overwritten by editing settings.
+          _,unchanged=api('orders/detail?id='+str(bill['id']))
+          assert unchanged['order']['bank']['bank_name']=='검증은행'
+          assert unchanged['order']['bank']['company_name']=='백세푸드'
+          # Reissue cancelled invoice; original products and prices retained and stock deducted again.
+          api('orders/reissue',{'id':new['id']})
+          _,s=api('state')
+          assert next(o for o in s['orders'] if o['id']==new['id'])['status']=='issued'
+          assert s['products'][0]['stock']==7
+          assert s['metrics']['cumulative_amount']==131500
+          api('orders/cancel',{'id':new['id']})
+          _,s=api('state')
+          assert s['products'][0]['stock']==10
+          # Reissue blocked on insufficient stock: no partial order status changes.
+          api('stock',{'product_id':p['id'],'quantity':0,'adjustment':1,'type':'adjust','note':'test low stock'})
+          try: api('orders/reissue',{'id':new['id']})
+          except urllib.error.HTTPError as e:assert e.code==400
+          else:raise AssertionError('Reissue incorrectly allowed insufficient stock')
+          _,s=api('state')
+          assert next(o for o in s['orders'] if o['id']==new['id'])['status']=='cancelled'
+          api('stock',{'product_id':p['id'],'quantity':0,'adjustment':10,'type':'adjust','note':'restore for delete tests'})
+          # Permanent deletion of cancelled record must not alter inventory.
+          api('orders/delete',{'id':new['id'],'confirm':'DELETE'})
+          _,s=api('state')
+          assert s['products'][0]['stock']==10
+          assert not any(o['id']==new['id'] for o in s['orders'])
+          try: api('orders/detail?id='+str(new['id']))
+          except urllib.error.HTTPError as e:assert e.code==404
+          else:raise AssertionError('Deleted invoice is still accessible')
+          # Permanent deletion of issued record restores its stock.
+          _,other=api('orders',{'client_id':c['id'],'order_date':'2026-11-03','vat':'none','items':[{'product_id':p['id'],'qty':2}]})
+          _,detail=api('orders/detail?id='+str(other['id']))
+          assert detail['order']['bank']['company_name']=='QA 주문회사'
+          _,s=api('state');assert s['products'][0]['stock']==8
+          api('orders/delete',{'id':other['id'],'confirm':'DELETE'})
+          _,s=api('state')
+          assert s['products'][0]['stock']==10
+          assert s['metrics']['cumulative_amount']==93000
+          _,backup=api('export')
+          assert len(backup['orders'])==1
+          assert any(a['action']=='order_delete' for a in backup['audit'])
+          print('NEW_FEATURES_API_PASS: monthly/all-time full DB KPI, editable company, product sort, reissue, stock guard, invoice deletion')
           print('BILLING_QA_PASS: editable bank, historical snapshot, previous balance 100000, due 193000, actual sale remains 93000')
           print('LOCAL_API_INTEGRATION_PASS: initial catalog, login, required client, stock in/out, VAT extra, other manual item, cancellation, snapshot, export')
           PY
