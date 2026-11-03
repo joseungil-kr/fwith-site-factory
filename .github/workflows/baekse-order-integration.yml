@@ -321,6 +321,101 @@ jobs:
           print('BUYER_PORTAL_PASS: anonymous scoped links, rotation/revocation, oversized requests, consolidated shortage, stock-independent queue, atomic approval, unique issue, existing invoice and sales')
           print('NEW_FEATURES_API_PASS: monthly/all-time full DB KPI, editable company, product sort, reissue, stock guard, invoice deletion')
           print('BILLING_QA_PASS: editable bank, historical snapshot, previous balance 100000, due 193000, actual sale remains 93000')
+          # Receivables enrollment must freeze legacy orders into the opening balance,
+          # then count ONLY new issued sales (never previous_balance snapshots).
+          api('clients',{'business':'QA 미수금점','person':'매니저','phone':'010-5555-8888','business_no':'','address':''})
+          _,s=api('state')
+          trackedClient=next(c for c in s['clients'] if c['business']=='QA 미수금점')
+          clientId=trackedClient['id']
+          _,legacy=api('orders',{'client_id':clientId,'order_date':local_today,'vat':'none',
+              'previous_balance':5000,'items':[{'name':'이전 출고','qty':1,'unit_price':20000}]})
+          assert legacy['total']==20000 and legacy['amount_due']==25000
+          _,s=api('state')
+          assert not any(x['client_id']==clientId for x in s['receivables']['accounts'])
+          try:api('receivables/payments',{'client_id':clientId,'amount':1,'paid_date':local_today,
+                  'request_key':'3f037ec1-e808-4d82-92bf-b9a6f181fe1e'})
+          except urllib.error.HTTPError as e:assert e.code==400
+          else:raise AssertionError('Payment was permitted before opening balance enrollment')
+          _,opened=api('receivables/opening',{'client_id':clientId,'opening_balance':100000})
+          assert opened['account']['balance']==100000 and opened['account']['cutoff_order_id']==legacy['id']
+          try:api('receivables/opening',{'client_id':clientId,'opening_balance':100000})
+          except urllib.error.HTTPError as e:assert e.code==400
+          else:raise AssertionError('Double opening enrollment should fail')
+          _,newSale=api('orders',{'client_id':clientId,'order_date':local_today,'vat':'none',
+             'previous_balance':9999,'items':[{'name':'미수금 테스트','qty':1,'unit_price':93000}]})
+          assert newSale['total']==93000
+          assert newSale['previous_balance']==100000,'DB must ignore manual previous balance after enrollment'
+          assert newSale['amount_due']==193000
+          _,s=api('state')
+          ar=next(x for x in s['receivables']['accounts'] if x['client_id']==clientId)
+          assert ar['balance']==193000 and ar['issued_amount']==93000 and ar['issued_count']==1
+          _,detail=api('receivables/detail?client_id='+str(clientId))
+          assert detail['account']['balance']==193000 and detail['payments']==[]
+          requestKey='4a8ce290-93f9-47d7-98db-d782d1a530c2'
+          payPayload={'client_id':clientId,'amount':150000,'paid_date':local_today,
+             'memo':'기업은행 입금 테스트','request_key':requestKey}
+          _,payment=api('receivables/payments',payPayload)
+          assert payment['ok'] and payment['account']['balance']==43000
+          _,paymentAgain=api('receivables/payments',payPayload)
+          assert paymentAgain['duplicate'] and paymentAgain['id']==payment['id']
+          _,detail=api('receivables/detail?client_id='+str(clientId))
+          assert detail['account']['balance']==43000 and len(detail['payments'])==1
+          try:api('receivables/payments',{'client_id':clientId,'amount':43001,'paid_date':local_today,
+                  'request_key':'66e413f5-6233-48a7-b57f-9f100ae7fcf4'})
+          except urllib.error.HTTPError as e:assert e.code==400
+          else:raise AssertionError('Overpayment should be blocked by nonnegative ledger')
+          # Paid invoice cannot be cancelled or hard-deleted if that would create a negative balance.
+          try:api('orders/cancel',{'id':newSale['id']})
+          except urllib.error.HTTPError as e:assert e.code==400
+          else:raise AssertionError('Cancellation of paid invoice should be blocked')
+          try:api('orders/delete',{'id':newSale['id'],'confirm':'DELETE'})
+          except urllib.error.HTTPError as e:assert e.code==400
+          else:raise AssertionError('Deletion of paid invoice should be blocked')
+          # Buyer approval must also ignore stale/manual previous-balance submitted by the browser.
+          _,newLink=api('requests/link/issue',{'client_id':clientId})
+          token=newLink['url'].split('#',1)[1]
+          newOrder=public('submit',{'token':token,'request_key':'dce1c8e8-aeaa-43bf-b770-51ea5a53b965',
+            'requested_delivery':local_today,'items':[{'product_id':p['id'],'qty':1}]})
+          api('stock',{'product_id':p['id'],'quantity':1,'type':'in','cost':6850,'note':'미수금 QA 구매 발주 출고'})
+          _,approved=api('requests/fulfill',{'id':newOrder['id'],'vat':'none','previous_balance':1})
+          assert approved['previous_balance']==43000 and approved['total']==11000 and approved['amount_due']==54000
+          _,s=api('state')
+          account=next(x for x in s['receivables']['accounts'] if x['client_id']==clientId)
+          assert account['balance']==54000
+          assert s['products'][0]['stock']==0
+          # Correction is an audited opening balance change, without resetting cutoff/order records.
+          try:api('receivables/opening/revise',{'client_id':clientId,'opening_balance':0,'reason':'QA negative'})
+          except urllib.error.HTTPError as e:assert e.code==400
+          else:raise AssertionError('Illegal negative account correction should be blocked')
+          _,voided=api('receivables/payments/void',{'id':payment['id'],'reason':'입금 착오 취소 테스트'})
+          assert voided['account']['balance']==204000
+          try:api('receivables/payments/void',{'id':payment['id'],'reason':'중복 취소'})
+          except urllib.error.HTTPError as e:assert e.code==400
+          else:raise AssertionError('Re-void should be blocked')
+          _,dupVoid=api('receivables/payments',payPayload)
+          assert dupVoid['duplicate'] and dupVoid['voided'],'Voided payment key must not create duplicate entries'
+          _,cancelSale=api('orders/cancel',{'id':newSale['id']})
+          _,s=api('state')
+          ar=next(x for x in s['receivables']['accounts'] if x['client_id']==clientId)
+          assert ar['balance']==111000,'Cancellation must remove current sale only'
+          api('orders/reissue',{'id':newSale['id']})
+          _,s=api('state')
+          ar=next(x for x in s['receivables']['accounts'] if x['client_id']==clientId)
+          assert ar['balance']==204000,'Reissue must restore current sale only once'
+          api('orders/delete',{'id':newSale['id'],'confirm':'DELETE'})
+          _,s=api('state')
+          ar=next(x for x in s['receivables']['accounts'] if x['client_id']==clientId)
+          assert ar['balance']==111000,'Deletion must remove issued sale once, without altering ledger payments'
+          _,corrected=api('receivables/opening/revise',{'client_id':clientId,'opening_balance':80000,'reason':'기초잔액 정정 QA'})
+          assert corrected['account']['balance']==91000 and corrected['account']['cutoff_order_id']==legacy['id']
+          _,export=api('export')
+          assert any(x['client_id']==clientId and x['opening_balance']==80000 for x in export['receivable_accounts'])
+          assert len([x for x in export['receivable_payments'] if x['client_id']==clientId])==1
+          assert export['receivable_payments'][0]['voided_at']
+          _,s=api('state')
+          assert all('request_key' not in x for x in s['receivables']['accounts'])
+          assert any(x['action']=='receivable_payment_voided' for x in export['audit'])
+          print('RECEIVABLES_QA_PASS: pre-cutoff excluded, opening 100000, issue 93000, pay 150000, due 43000, buyer auto balance, reversals, cancellation and deletion guards, audited correction')
           print('LOCAL_API_INTEGRATION_PASS: initial catalog, login, required client, stock in/out, VAT extra, other manual item, cancellation, snapshot, export')
           PY
       - name: Print local Worker startup log on failure
