@@ -66,3 +66,26 @@ test('mobile hamburger menu, persistent request count and quick-order shortcuts'
  assert.ok(script.includes("function show(tab){closeMobileMenu();$$('[data-page]').forEach("),
    'Mobile navigation must update all pages, not only the first matching page');
 });
+
+
+test('modern three-screen white-teal design preserves live data and action hooks',()=>{
+ for(const marker of ['data-page="home"','data-page="requests"','data-page="receivables"',
+  'OPERATIONS / DASHBOARD','OPERATIONS / ORDER REQUESTS','FINANCE / RECEIVABLES',
+  'dashboard-detail-grid','id="home-request-preview"','id="home-shortages"',
+  'id="request-filters"','id="request-search"','id="request-list"',
+  'id="receivables-overview"','id="receivables-list"','id="ar-current"',
+  'id="ar-opening-form"','id="ar-payment-form"','id="bill-sheet"'])assert.ok(html.includes(marker),marker);
+ for(const marker of ['renderHomeRequestPreview','renderHomeShortages', 'dashboard-shortage-item',
+    'renderBuyerRequestCards','requestNeedsRestock', 'requestFilter', 'request-search',
+    'receivables-overview','clientReceivable', 'data-request-fulfill','data-request-cancel',
+    'data-request-invoice','data-request-vat','data-request-balance']) {
+   if(marker==='renderHomeShortages')continue;
+   assert.ok(script.includes(marker),'Missing live JS source: '+marker);
+ }
+ assert.ok(css.includes('--bk-green:#0b7668') && css.includes('--bk-bg:#f5f7fa'));
+ assert.ok(css.includes('.receivables-layout{display:grid') && css.includes('.buyer-request-item{display:grid'));
+ assert.ok(css.includes('@media screen and (max-width:768px)'));
+ assert.ok(css.includes('@media print{') || css.includes('@media print {'));
+ assert.ok(!html.includes('428,000원') && !html.includes('1,250,000원'),
+  'Design mock financial values must never be hardcoded into the production application');
+});

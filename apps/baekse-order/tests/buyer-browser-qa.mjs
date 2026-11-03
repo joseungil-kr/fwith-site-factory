@@ -25,6 +25,10 @@ try{
  await page.locator('#login-form button[type=submit]').click();
  await page.locator('#app:not(.hidden) #metrics').waitFor();
  assert.equal(await page.locator('.metric').count(),6);
+ assert.equal(await page.locator('[data-page=home] h1').innerText(),'운영 대시보드');
+ assert.equal(await page.locator('#metrics .metric').count(),6);
+ await page.locator('#home-shortages').waitFor();
+ await page.screenshot({path:path.join(out,'redesign-dashboard-mobile-390.png'),fullPage:true});
  const toggle=page.locator('#mobile-menu-toggle');
  const appNav=page.locator('#nav');
  async function selectTab(name){
@@ -88,6 +92,18 @@ try{
  assert.equal((await page.locator('#mobile-requests-pending').textContent()).trim(),'1','Mobile pending chip updates');
  assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주 요청(1)','Customer request must update admin nav badge');
  assert.ok((await page.locator('#request-shortages').innerText()).includes('추가 입고 20개 필요'));
+ assert.equal(await page.locator('#request-overview .request-overview-card').count(),3);
+ assert.ok(await page.locator('#request-filters').isVisible());
+ await page.locator('[data-request-filter=shortage]').click();
+ assert.equal(await page.locator('.buyer-request-card').count(),1,'Shortage filter must show pending orders with shortage');
+ await page.locator('#request-search').fill('unfindable-coffee-shop-991');
+ assert.equal(await page.locator('.buyer-request-card').count(),0,'Search must filter the order list');
+ await page.locator('#request-search').fill('안산');
+ assert.equal(await page.locator('.buyer-request-card').count(),1,'Real client search must find orders');
+ await page.locator('#request-search').fill('');
+ await page.locator('[data-request-filter=all]').click();
+ assert.ok(await page.locator('#request-list [data-request-fulfill]').first().isVisible());
+ await page.screenshot({path:path.join(out,'redesign-requests-mobile-390.png'),fullPage:true});
  const before=await page.evaluate(async()=>await (await fetch('/api/state')).json());
  assert.equal(before.products[0].stock,0,'Pending buyer request may not debit stock');
  await page.screenshot({path:path.join(out,'admin-shortage-390.png'),fullPage:true});
@@ -136,6 +152,13 @@ try{
  await page.locator('#bill-delivery').getByText('배송완료 처리').waitFor();
  assert.ok((await page.locator('#bill-sheet').innerText()).includes('출고완료(배송전)'));
  await page.screenshot({path:path.join(out,'admin-issued-invoice-1440.png'),fullPage:true});
+ await selectTab('home');
+ await page.locator('#home-request-preview .dashboard-request-item').waitFor({state:'detached'}).catch(()=>{});
+ assert.equal(await page.locator('.dashboard-detail-grid').count(),2);
+ await page.screenshot({path:path.join(out,'redesign-dashboard-desktop-1440.png'),fullPage:true});
+ await selectTab('requests');
+ await page.screenshot({path:path.join(out,'redesign-requests-desktop-1440.png'),fullPage:true});
+ await selectTab('bills');
  // Onboard a client to AR after it already has historical invoices: no double count.
  await page.setViewportSize({width:390,height:844});
  const financialBefore=await page.evaluate(async()=>await (await fetch('/api/state')).json());
@@ -148,6 +171,11 @@ try{
  await page.locator('#ar-paid-amount').fill('20000');
  await page.locator('#ar-payment-form button[type=submit]').click();
  await page.waitForFunction(()=>document.querySelector('.ar-current-stats strong')?.textContent==='80,000원');
+ assert.equal(await page.locator('#receivables-overview .receivable-stat').count(),3);
+ assert.ok(await page.locator('#receivables-list [data-ar-client]').first().isVisible());
+ const arWidth=await page.evaluate(()=>({viewport:innerWidth,doc:document.documentElement.scrollWidth}));
+ assert.ok(arWidth.doc<=arWidth.viewport+2,'Redesigned receivables page overflowed 390px: '+JSON.stringify(arWidth));
+ await page.screenshot({path:path.join(out,'redesign-receivables-mobile-390.png'),fullPage:true});
  await page.screenshot({path:path.join(out,'admin-receivables-390.png'),fullPage:true});
  const financialAfter=await page.evaluate(async()=>await (await fetch('/api/state')).json());
  assert.deepEqual(financialAfter.metrics,financialBefore.metrics,'Opening/payments cannot affect revenue KPIs');
