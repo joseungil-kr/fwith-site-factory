@@ -1,0 +1,39 @@
+name: Baekse order remember-me authenticated session tests
+on:
+  push:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths:
+      - 'apps/baekse-order/src.js'
+      - 'apps/baekse-order/logic.js'
+      - 'apps/baekse-order/public/**'
+      - 'apps/baekse-order/tests/**'
+      - '.github/workflows/baekse-order-remember-test.yml'
+permissions:
+  contents: read
+jobs:
+  auth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: feature/baekse-order-deploy-20261103}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Validate sources and 6 unit tests
+        working-directory: apps/baekse-order
+        run: |
+          node --check src.js
+          node --check public/app.js
+          node --check tests/remember-http.mjs
+          npm test
+      - name: Start isolated local Worker with non-production credential
+        working-directory: apps/baekse-order
+        run: |
+          npx --yes wrangler@4.156.2 dev --local --port 8787 --var ADMIN_PASSWORD:ci-only-strong-example-password-2026 >/tmp/baekse-remember-ci.log 2>&1 &
+          echo $! >/tmp/baekse-remember-ci.pid
+      - name: Assert cookie lifetime and server-side logout revocation
+        working-directory: apps/baekse-order
+        run: node tests/remember-http.mjs
+      - name: Log startup diagnostics on failure
+        if: failure()
+        run: tail -80 /tmp/baekse-remember-ci.log || true

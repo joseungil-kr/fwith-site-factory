@@ -1,5 +1,5 @@
 import { DurableObject } from 'cloudflare:workers';
-import {DEFAULT_PRODUCTS,onlyInt,safeText,dateCheck,calcTotals} from './logic.js';
+import {DEFAULT_PRODUCTS,onlyInt,safeText,dateCheck,calcTotals,sessionDurationSeconds} from './logic.js';
 const json=(obj,status=200,headers={})=>new Response(JSON.stringify(obj),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...headers}});
 const err=(msg,status=400)=>json({error:msg},status);
 const encode = new TextEncoder();
@@ -37,16 +37,18 @@ export class OrderDatabase extends DurableObject {
    if(req.method==='POST' && path==='/api/login'){
       if(!this.env.ADMIN_PASSWORD||this.env.ADMIN_PASSWORD.length<12)return err('관리자 비밀번호 설정이 필요합니다',503);
       const info=await req.json(); const pass=String(info.password||'');
+      // A persistent login stores an opaque cookie, never the administrator password.
+      const sessionAge=sessionDurationSeconds(info.remember);
       const ip=req.headers.get('CF-Connecting-IP')||'unknown';
       const key='login:'+ip;const attempts=this.ctx.storage.kv.get(key)||{count:0,since:Date.now()};
       if(Date.now()-attempts.since>900000){attempts.count=0;attempts.since=Date.now()}
       if(attempts.count>=10)return err('로그인 시도 제한: 15분 후 다시 시도하세요',429);
       if((await digest(pass))!==(await digest(this.env.ADMIN_PASSWORD))){attempts.count++;this.ctx.storage.kv.put(key,attempts);this.audit('login_failed',{ip});return err('로그인 정보가 일치하지 않습니다',401)}
       this.ctx.storage.kv.delete(key);
-      const token=crypto.randomUUID()+crypto.randomUUID(),hash=await digest(token), expires=Date.now()+8*3600*1000;
+      const token=crypto.randomUUID()+crypto.randomUUID(),hash=await digest(token), expires=Date.now()+sessionAge*1000;
       this.sql.exec('DELETE FROM sessions WHERE expires<?',Date.now());
       this.sql.exec('INSERT INTO sessions (hash,expires) VALUES (?,?)',hash,expires);this.audit('login',{});
-      return json({ok:true},200,{'Set-Cookie':cookie(token,8*3600)});
+      return json({ok:true,remembered:info.remember===true},200,{'Set-Cookie':cookie(token,sessionAge)});
    }
    const token=(req.headers.get('Cookie')||'').match(/(?:^|;\s*)bs_order_session=([^;]+)/)?.[1];
    if(!token)return err('로그인이 필요합니다',401);

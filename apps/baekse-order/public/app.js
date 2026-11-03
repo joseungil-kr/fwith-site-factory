@@ -31,7 +31,7 @@ async function openBill(id){viewOrder=await api('orders/detail?id='+id);const {o
 function printBill(size){if(!viewOrder)return toast('명세표를 먼저 선택하세요');document.body.classList.remove('print-58','print-80');if(size!=='a4')document.body.classList.add('print-'+size);window.print();setTimeout(()=>document.body.classList.remove('print-58','print-80'),1000)}
 function resetClient(){$('#client-form').reset();$('#client-form [name=id]').value='';$('#client-form-title').textContent='거래처 추가'}
 function resetProduct(){$('#product-form').reset();$('#product-form [name=id]').value='';$('#product-form-title').textContent='제품 추가'}
-$('#login-form').addEventListener('submit',async e=>{e.preventDefault();try{await api('login',{password:e.target.password.value});e.target.reset();$('#login').classList.add('hidden');$('#app').classList.remove('hidden');$('#login-error').textContent='';await refresh()}catch(e){$('#login-error').textContent=e.message}});
+$('#login-form').addEventListener('submit',async e=>{e.preventDefault();try{await api('login',{password:e.target.password.value,remember:e.target.elements.namedItem('remember').checked});e.target.reset();$('#login').classList.add('hidden');$('#app').classList.remove('hidden');$('#login-error').textContent='';await refresh()}catch(e){$('#login-error').textContent=e.message}});
 $('#logout').onclick=async()=>{await api('logout',{});location.reload()};
 $('#nav').onclick=e=>{let b=e.target.closest('button[data-tab]');if(b)show(b.dataset.tab)};
 document.body.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)show(b.dataset.go)});

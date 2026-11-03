@@ -1,3 +1,6 @@
+export const SESSION_SHORT_SECONDS = 8 * 60 * 60;
+export const SESSION_REMEMBER_SECONDS = 30 * 24 * 60 * 60;
+export const sessionDurationSeconds = remember => remember === true ? SESSION_REMEMBER_SECONDS : SESSION_SHORT_SECONDS;
 export const DEFAULT_PRODUCTS = [
   ['잉어반죽',6850,11000],['팥앙금',5150,9000],['슈크림',5150,9000],
   ['어묵',4500,7000],['주전자',9000,10000],['갈고리',1500,2000]
