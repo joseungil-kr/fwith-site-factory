@@ -44,6 +44,17 @@ jobs:
           host='funeralflower-home-preview.joseungil.workers.dev'
           try:print('IP_LOOKUP',host,[x[4][0] for x in socket.getaddrinfo(host,443)][:2])
           except Exception as e:print('DNS_ERROR',str(e)[:200])
+          for urlpath in ('/','/serial-printer.js'):
+            try:
+              req=urllib.request.Request('https://order.baeksefood.com'+urlpath,headers={'User-Agent':'Mozilla/5.0 (compatible; deployment verifier)'})
+              with urllib.request.urlopen(req,timeout=20) as r:
+                data=r.read().decode('utf-8','replace')
+                checks={'/':['id="serial-width-test"','id="serial-dots"','id="serial-font"','id="serial-cut"','80mm (현재 용지)','512도트'], '/serial-printer.js':['WIDTH_CHOICES','80: 512','buildRasterJob','0x56','testWidth']}
+                assert r.status==200 and all(marker in data for marker in checks[urlpath]),'Missing 80mm thermal receipt hotfix markers'
+                print('LIVE_THERMAL_READBACK_PASS',urlpath,'HTTP',r.status,'MARKERS',len(checks[urlpath]),'NOINDEX',r.headers.get('X-Robots-Tag'))
+            except Exception as e:
+              print('LIVE_THERMAL_READBACK_FAIL',urlpath,str(e)[:160])
+              raise
           for label,ua in [('python-default','Python-urllib/3.12'),('browser-style','Mozilla/5.0 (compatible; deployment verifier)')]:
             try:
               req=urllib.request.Request('https://'+host+'/',headers={'User-Agent':ua})
@@ -55,7 +66,7 @@ jobs:
               with urllib.request.urlopen(req,timeout=15) as r:print('LOGIN_POST_PROBE',label,r.status)
             except urllib.error.HTTPError as e:
               print('LOGIN_POST_PROBE',label,e.code,'BODY',e.read(120).decode('utf-8','replace'))
-          for p in ('/','/index.html','/api/session','/api/state','/app.js'):
+          for p in ('/','/index.html','/api/session','/api/state','/app.js','/serial-printer.js'):
             u='https://'+host+p
             try:
               req=urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0 (compatible; deployment verifier)'})
