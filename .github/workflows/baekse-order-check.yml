@@ -1,0 +1,61 @@
+name: Baekse Order build and deployment capability check
+on:
+  push:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths:
+      - 'apps/baekse-order/**'
+      - '.github/workflows/baekse-order-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-and-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      ADMIN_PASSWORD: ${{ secrets.BAEKSE_ORDER_ADMIN_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: feature/baekse-order-deploy-20261103}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Static source validation and unit tests
+        working-directory: apps/baekse-order
+        run: |
+          node --check src.js
+          node --check public/app.js
+          npm test
+      - name: Check deployment prerequisites without changes
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os,urllib.request,json,urllib.error
+          token=os.environ.get('CLOUDFLARE_API_TOKEN','')
+          account=os.environ.get('CLOUDFLARE_ACCOUNT_ID','')
+          print('Cloudflare token exists',bool(token),'account exists',bool(account))
+          print('Dedicated administrator password configured',bool(os.environ.get('ADMIN_PASSWORD')))
+          if not token or not account: raise SystemExit('Cloudflare credentials unavailable')
+          def req(path):
+            r=urllib.request.Request('https://api.cloudflare.com/client/v4'+path,headers={'Authorization':'Bearer '+token})
+            try:
+              with urllib.request.urlopen(r,timeout=25) as response:
+                d=json.load(response)
+                print('Read-only API',path.split('?')[0],response.status,'success',d.get('success'))
+                return d.get('result')
+            except urllib.error.HTTPError as e:
+              print('Read-only API',path.split('?')[0],e.code,'unavailable')
+              return None
+          zones=req('/zones?name=baeksefood.com')
+          if not zones or len(zones)!=1: raise SystemExit('baeksefood.com Cloudflare zone not accessible')
+          zone=zones[0]
+          print('Zone active',zone.get('status')=='active','account matches',zone.get('account',{}).get('id')==account)
+          if zone.get('account',{}).get('id')!=account: raise SystemExit('Domain belongs to a different account')
+          dns=req('/zones/'+zone['id']+'/dns_records?name=order.baeksefood.com')
+          if dns is not None: print('Existing order DNS records',[(r.get('type'),r.get('name')) for r in dns])
+          domains=req('/accounts/'+account+'/workers/domains')
+          if domains is not None: print('Existing custom hostname mappings',[(d.get('hostname'),d.get('service')) for d in domains if d.get('hostname')=='order.baeksefood.com'])
+          scripts=req('/accounts/'+account+'/workers/scripts')
+          if isinstance(scripts,list): print('Worker script name available',not any(s.get('id')=='baekse-order' for s in scripts))
+          PY
