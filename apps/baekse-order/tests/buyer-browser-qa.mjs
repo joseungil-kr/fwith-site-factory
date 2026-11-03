@@ -51,7 +51,7 @@ try{
  assert.ok(buyerDims[1]<=buyerDims[0]+2,'Buyer page horizontal overflow '+buyerDims.join('/'));
  await buyerPage.locator('#submit-order').click();
  await buyerPage.locator('#result').getByText(/접수 완료/).waitFor();
- assert.ok((await buyerPage.locator('#request-history').innerText()).includes('접수 대기'));
+ await buyerPage.locator('#request-history').getByText(/접수 대기/).waitFor();
  await page.locator('[data-tab=requests]').click();
  await page.locator('#request-list [data-request-fulfill]').waitFor();
  assert.ok((await page.locator('#request-shortages').innerText()).includes('추가 입고 20개 필요'));
