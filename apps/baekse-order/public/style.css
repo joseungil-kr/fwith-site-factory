@@ -43,3 +43,35 @@
 .bank-settings-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:14px 0}
 @media(min-width:1140px){.metrics{grid-template-columns:repeat(6,minmax(0,1fr));gap:9px}.metric{padding:16px 10px}.metric b{font-size:clamp(14px,1.4vw,22px);white-space:nowrap}.metric small{font-size:12px}}
 @media(max-width:740px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.bank-settings-grid{grid-template-columns:1fr}.metric b{font-size:20px}}
+
+/* Buyer request dashboard and administrator work queue. */
+.buyer-dashboard-panel{border-color:#d0e4d9}
+.buyer-dashboard-row{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.buyer-kpi{display:flex;align-items:center;gap:12px;border-radius:10px;background:#edf8f2;padding:12px 16px}
+.buyer-kpi strong{font-size:22px;color:#086d50}
+.buyer-kpi span{font-size:13px;color:#47675a}
+.buyer-kpi.shortage-alert{background:#fff1df}
+.buyer-kpi.shortage-alert strong,.buyer-kpi.shortage-alert span{color:#a65104}
+.buyer-alert-list{display:flex;flex-wrap:wrap;gap:8px}
+.buyer-alert-list span{font-size:12px;border-radius:8px;padding:8px 10px;background:#fff1df;color:#925012}
+.buyer-alert-list b{margin-left:6px}
+.buyer-shortage-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-top:15px}
+.shortage-item{background:#fff3e5;border:1px solid #ffdebc;border-radius:10px;padding:13px;display:flex;flex-direction:column;gap:6px}
+.shortage-item span{font-size:12px;color:#80614b}
+.shortage-item strong{font-size:15px;color:#b25107}
+.buyer-request-card{padding:18px;border:1px solid #dae8e0;border-radius:12px;margin-top:13px}
+.buyer-request-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.buyer-request-head div{display:flex;flex-direction:column;gap:5px}
+.buyer-request-head strong{font-size:16px}
+.buyer-request-head span:not(.request-state){font-size:12px;color:#677b70}
+.request-state{padding:5px 10px;border-radius:20px;background:#e7f6ef;color:#0b7057;font-size:12px;white-space:nowrap}
+.request-state.state-waiting{background:#fff1da;color:#a15a07}
+.buyer-request-items{padding-left:20px;line-height:1.7;font-size:14px;margin:12px 0}
+.buyer-request-sum{text-align:right;color:#36594a;font-size:13px}
+.buyer-request-note{background:#f5f9f6;padding:8px 10px;font-size:13px;border-radius:7px;white-space:pre-wrap;overflow-wrap:anywhere}
+.buyer-approval-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.buyer-approval-controls label{font-size:13px;font-weight:600}
+.buyer-approval-controls input,.buyer-approval-controls select{display:block;width:100%;margin-top:5px;padding:9px 10px;border:1px solid #c3d4c8;border-radius:8px;min-height:43px}
+#link-result input{display:block;width:100%;margin-top:8px;padding:12px;border:1px solid #a9c6b7;border-radius:8px;color:#195946;font-size:13px}
+#link-result label{display:block;font-size:13px;font-weight:600;margin:14px 0}
+@media(max-width:740px){.buyer-shortage-grid{grid-template-columns:1fr}.buyer-approval-controls{grid-template-columns:1fr}.buyer-kpi{width:100%}.buyer-request-card{padding:13px}}
