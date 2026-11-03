@@ -1,4 +1,4 @@
-import {SerialReceiptPrinter, checkedSettings} from './serial-printer.js';
+import {SerialReceiptPrinter, checkedSettings, PAPER_WIDTHS, WIDTH_CHOICES} from './serial-printer.js';
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
 const money=n=>(Number(n)||0).toLocaleString('ko-KR')+'원',fmt=n=>(Number(n)||0).toLocaleString('ko-KR');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -52,10 +52,21 @@ $('#bill-list').onclick=e=>{const b=e.target.closest('[data-bill-view]');if(b)op
 /* Serial receipt printer: COM labels are user settings, not native OS port enumeration.
    The browser only opens the physical device chosen by the operator in requestPort(). */
 const serialPrinter = new SerialReceiptPrinter();
-const serialSelectIds = ['serial-slot','serial-baud','serial-paper'];
+const serialSelectIds = ['serial-slot','serial-baud','serial-paper','serial-dots','serial-font'];
 const readSerialSettings = () => checkedSettings({
-  slot: $('#serial-slot').value, baudRate: $('#serial-baud').value, paperMm: $('#serial-paper').value
+  slot: $('#serial-slot').value, baudRate: $('#serial-baud').value,
+  paperMm: $('#serial-paper').value, dotWidth: $('#serial-dots').value,
+  fontSize: $('#serial-font').value, autoCut: $('#serial-cut').checked
 });
+function syncWidthOptions(requested=null) {
+  const paper=Number($('#serial-paper').value), choices=WIDTH_CHOICES[paper]||[];
+  const previous=Number(requested ?? $('#serial-dots').value);
+  const chosen=choices.includes(previous)?previous:PAPER_WIDTHS[paper];
+  const labels={360:'360도트',384:'384도트 (좁은 폭)',416:'416도트',432:'432도트',
+    448:'448도트',480:'480도트',512:'512도트 (기본 권장)',576:'576도트 (203dpi)'};
+  $('#serial-dots').innerHTML=choices.map(d=>'<option value="'+d+'">'+labels[d]+'</option>').join('');
+  $('#serial-dots').value=String(chosen);
+}
 function setSerialStatus(text, isError=false) {
   const el=$('#serial-status');
   el.textContent=text;
@@ -69,29 +80,41 @@ function updateSerialControls() {
   $('#serial-reconnect').disabled=!enabled||busy||connected;
   $('#serial-disconnect').disabled=busy||!connected;
   $('#serial-test').disabled=busy||!connected;
+  $('#serial-width-test').disabled=busy||!connected;
   $('#serial-print').disabled=busy||!connected||!viewOrder;
-  for(const id of serialSelectIds) $('#'+id).disabled=busy||connected;
+  for(const id of serialSelectIds) $('#'+id).disabled=busy||((id==='serial-slot'||id==='serial-baud')&&connected);
+  $('#serial-cut').disabled=busy;
 }
+let initialSerialPreferences={};
 try {
-  const previous=JSON.parse(localStorage.getItem('baekse-serial-preferences')||'{}');
-  for(const id of serialSelectIds) {
-    const key=id.replace('serial-','');
-    if(previous[key]!=null) {
+  initialSerialPreferences=JSON.parse(localStorage.getItem('baekse-serial-preferences')||'{}');
+  for(const id of ['serial-slot','serial-baud','serial-paper','serial-font']) {
+    const key=id.replace('serial-',''), value=initialSerialPreferences[key];
+    if(value!=null){
       const element=$('#'+id);
-      if(Array.from(element.options).some(option=>option.value===String(previous[key]))) element.value=String(previous[key]);
+      if([...element.options].some(o=>o.value===String(value))) element.value=String(value);
     }
   }
-} catch (_) { /* Storage may be blocked in private windows. */ }
+  if(typeof initialSerialPreferences.cut==='boolean') $('#serial-cut').checked=initialSerialPreferences.cut;
+} catch (_) { /* Storage may be unavailable; do not persist secrets here. */ }
+syncWidthOptions(initialSerialPreferences.dots);
+function rememberSerialSettings() {
+  try {
+    const s=readSerialSettings();
+    localStorage.setItem('baekse-serial-preferences',JSON.stringify({
+      slot:s.slot,baud:s.baudRate,paper:s.paperMm,dots:s.dotWidth,font:s.fontSize,cut:s.autoCut
+    }));
+    setSerialStatus('설정: COM'+s.slot+' / '+s.baudRate+'bps / '+s.dotWidth+'도트 / 글자 '+s.fontSize+'px. 인쇄폭 확인 출력으로 잘림을 조정하세요.');
+  } catch(e){setSerialStatus(e.message,true)}
+}
 for(const id of serialSelectIds) {
   $('#'+id).addEventListener('change',()=>{
-    try {
-      const prefs=readSerialSettings();
-      localStorage.setItem('baekse-serial-preferences',
-        JSON.stringify({slot:prefs.slot,baud:prefs.baudRate,paper:prefs.paperMm}));
-      setSerialStatus('COM'+prefs.slot+' / '+prefs.baudRate+'bps 선택됨. 장치 선택창에서 실제 COM 포트를 확인하세요.');
-    } catch (e) {setSerialStatus(e.message,true)}
+    if(id==='serial-paper') syncWidthOptions();
+    rememberSerialSettings();
   });
 }
+$('#serial-cut').addEventListener('change',rememberSerialSettings);
+
 async function serialAction(action, successText) {
   try {
     // Call action synchronously in this click event before the first await (Web Serial activation).
@@ -126,13 +149,18 @@ $('#serial-test').addEventListener('click',()=>serialAction(
   ()=>serialPrinter.test((sent,total)=>sendProgress('시험 출력',sent,total)),
   ()=>'시험 출력 데이터 전송 완료. 종이 출력 여부를 확인하세요.'
 ));
+$('#serial-width-test').addEventListener('click',()=>serialAction(
+  ()=>serialPrinter.testWidth(readSerialSettings(),
+      (sent,total)=>sendProgress('인쇄폭 확인',sent,total)),
+  ()=>'인쇄폭 확인 전송 완료. 양 끝의 세로선이 모두 보이는지 확인하세요.'
+));
 $('#serial-print').addEventListener('click',()=>serialAction(
-  ()=>serialPrinter.printInvoice(viewOrder,Number($('#serial-paper').value),
+  ()=>serialPrinter.printInvoice(viewOrder,readSerialSettings(),
       (sent,total)=>sendProgress('거래명세표',sent,total)),
-  ()=>'거래명세표 데이터 전송 완료. 프린터의 실제 출력 결과를 확인하세요.'
+  ()=>'인쇄 명령과 절단 명령 전송 완료. 실제 용지 출력과 절단 여부를 확인하세요.'
 ));
 if(serialPrinter.supported && window.isSecureContext) {
-  setSerialStatus('COM4 · 9600bps 기본 설정. ' +
+  setSerialStatus('기본값: COM4 · 9600bps · 80mm 용지 / 512도트. ' +
     '장치 선택·연결을 눌러 실제 COM4를 선택하세요.');
   if(typeof navigator.serial.addEventListener==='function') {
     navigator.serial.addEventListener('disconnect',event=>{
