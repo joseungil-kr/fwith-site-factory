@@ -9,7 +9,11 @@ async function api(path,body){const opt=body===undefined?{}:{method:'POST',heade
 function show(tab){$$('[data-page]').forEach(x=>x.classList.toggle('hidden',x.dataset.page!==tab));$$('[data-tab]').forEach(x=>x.classList.toggle('selected',x.dataset.tab===tab));window.scrollTo(0,0);if(tab==='requests')loadBuyerRequests().catch(e=>$('#request-list').textContent=e.message);if(tab==='receivables')loadReceivableDetail().catch(e=>alert(e.message))}
 async function refresh(){state=await api('state');render()}
 function table(headers,rows){return `<div class="table-overflow"><table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')||`<tr><td colspan="${headers.length}">등록 내역이 없습니다.</td></tr>`}</tbody></table></div>`}
-function render(){renderHome();renderBuyerDashboard();renderReceivableHome();renderOrder();renderStock();renderClients();renderReceivables();renderProducts();renderBills();renderSettings();}
+function renderRequestNavCount(){
+ const pending=Number(state.buyer_dashboard?.pending_count??0);
+ $('#nav-requests-pending').textContent=String(Number.isSafeInteger(pending)&&pending>=0?pending:0);
+}
+function render(){renderRequestNavCount();renderHome();renderBuyerDashboard();renderReceivableHome();renderOrder();renderStock();renderClients();renderReceivables();renderProducts();renderBills();renderSettings();}
 function renderSettings(){
  const s=state.receipt_settings||{};
  for(const key of ['company_name','company_business_no','company_address','company_phone','company_email','bank_name','account_number','account_holder']){
@@ -103,6 +107,11 @@ async function loadBuyerRequests(){
  $('#request-list').textContent='발주 요청을 불러오는 중입니다.';
  const result=await api('requests/list');
  buyerRequests=result.requests||[];
+ if(result.summary){
+   state.buyer_dashboard=result.summary;
+   renderRequestNavCount();
+   renderBuyerDashboard();
+ }
  const shortages=result.summary?.shortages||[];
  $('#request-shortages').innerHTML=shortages.length?
    shortages.map(p=>'<div class="shortage-item"><b>'+esc(p.name)+'</b><span>현재고 '+fmt(p.stock)+'개 / 미처리 발주 '+fmt(p.requested)+'개</span><strong>추가 입고 '+fmt(p.shortage)+'개 필요</strong></div>').join(''):

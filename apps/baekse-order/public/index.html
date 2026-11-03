@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>백세푸드 | 입출고·재고관리</title><link rel="stylesheet" href="/style.css"></head><body>
 <div id="login" class="login-shell"><form id="login-form" class="login-card"><div class="mark">백세푸드 <span>ORDER</span></div><h1>원재료 입출고 관리</h1><p>관리자만 거래·재고 내역에 접근할 수 있습니다.</p><label>관리자 비밀번호<input name="password" type="password" autocomplete="current-password" required placeholder="비밀번호 입력"></label><label class="remember-option"><input id="login-remember" name="remember" type="checkbox"><span>로그인 기억하기 (30일)</span></label><p class="remember-note">비밀번호 자체는 저장하지 않고 로그인 상태만 유지합니다. 공용 기기에서는 선택하지 마세요.</p><button class="primary" type="submit">로그인</button><p id="login-error" role="alert" class="error"></p></form></div>
 <div id="app" class="hidden"><header class="top"><div class="brand"><b>백세푸드</b><span>재고·거래명세표</span></div><div class="top-right"><span id="current-date"></span><button class="ghost" id="logout">로그아웃</button></div></header>
-<nav class="nav" id="nav"><button data-tab="home" class="selected">대시보드</button><button data-tab="order">출고 등록</button><button data-tab="requests">발주 요청</button><button data-tab="stock">입고·재고</button><button data-tab="bills">거래명세표</button><button data-tab="clients">거래처 관리</button><button data-tab="receivables">미수금 관리</button><button data-tab="products">제품 관리</button><button data-tab="settings">관리자 설정</button></nav>
+<nav class="nav" id="nav"><button data-tab="home" class="selected">대시보드</button><button data-tab="order">출고 등록</button><button data-tab="requests">발주 요청(<span id="nav-requests-pending">0</span>)</button><button data-tab="stock">입고·재고</button><button data-tab="bills">거래명세표</button><button data-tab="receivables">미수금 관리</button><button data-tab="products">제품 관리</button><button data-tab="clients">거래처 관리</button><button data-tab="settings">관리자 설정</button></nav>
 <main>
 <section class="page" data-page="home"><div class="page-head"><div><h1>운영 현황</h1><p>오늘의 출고와 제품별 재고를 확인하세요.</p></div><button class="primary" data-go="order">+ 출고 등록</button></div><div id="metrics" class="metrics"></div>
 <div class="panel buyer-dashboard-panel">
@@ -90,7 +90,6 @@
   <div class="panel">
     <h2>거래처별 상세 관리</h2>
     <label>거래처 선택<select id="ar-client-select"><option value="">거래처를 선택하세요</option></select></label>
-    <p class="hint ar-caution">관리 시작 전 발행한 명세표는 기초 미수금에 이미 반영된 것으로 간주하며 다시 합산하지 않습니다. 기존 명세표의 ‘전 잔고’는 중복 계산하지 않습니다.</p>
     <div id="ar-current" class="ar-current">거래처를 선택하세요.</div>
     <form id="ar-opening-form" class="ar-form hidden">
       <div class="form-grid">

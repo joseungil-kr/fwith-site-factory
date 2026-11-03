@@ -25,6 +25,7 @@ try{
  await page.locator('#login-form button[type=submit]').click();
  await page.locator('#app:not(.hidden) #metrics').waitFor();
  assert.equal(await page.locator('.metric').count(),6);
+ assert.equal((await page.locator('[data-tab=requests]').innerText()).trim(),'발주 요청(0)','Initially no pending buyer requests');
  await page.locator('[data-tab=clients]').click();
  await page.locator('[data-client-edit]').first().click();
  await page.locator('#client-form [name=person]').fill('QA발주담당');
@@ -54,6 +55,7 @@ try{
  await buyerPage.locator('#request-history').getByText(/접수 대기/).waitFor();
  await page.locator('[data-tab=requests]').click();
  await page.locator('#request-list [data-request-fulfill]').waitFor();
+ assert.equal((await page.locator('[data-tab=requests]').innerText()).trim(),'발주 요청(1)','Customer request must update admin nav badge');
  assert.ok((await page.locator('#request-shortages').innerText()).includes('추가 입고 20개 필요'));
  const before=await page.evaluate(async()=>await (await fetch('/api/state')).json());
  assert.equal(before.products[0].stock,0,'Pending buyer request may not debit stock');
@@ -75,6 +77,7 @@ try{
  const after=await page.evaluate(async()=>await (await fetch('/api/state')).json());
  assert.equal(after.products[0].stock,0,'Approved invoice should debit stock');
  assert.equal(after.buyer_dashboard.pending_count,0);
+ assert.equal((await page.locator('[data-tab=requests]').innerText()).trim(),'발주 요청(0)','Fulfilled order clears pending request count');
  await page.setViewportSize({width:1440,height:900});
  const snapshotBefore=await page.evaluate(async()=>({
    state:await (await fetch('/api/state')).json(),

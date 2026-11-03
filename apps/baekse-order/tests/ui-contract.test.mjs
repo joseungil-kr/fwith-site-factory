@@ -37,3 +37,15 @@ test('serial port directions are phrased for operators',()=>{
  assert.ok(html.includes('프린터가 사용 중'));
  assert.ok(!html.includes('COM 번호는 아래 설정용 이름'));
 });
+
+test('navigation order, pending request count and removed AR hint',()=>{
+ const nav=html.match(/<nav class="nav" id="nav">([\s\S]*?)<\/nav>/)?.[1]||'';
+ const tabs=[...nav.matchAll(/data-tab="([^"]+)"/g)].map(m=>m[1]);
+ assert.deepEqual(tabs,['home','order','requests','stock','bills','receivables','products','clients','settings']);
+ assert.ok(nav.includes('발주 요청(<span id="nav-requests-pending">0</span>)'));
+ assert.ok(script.includes('state.buyer_dashboard?.pending_count'));
+ assert.ok(script.includes('state.buyer_dashboard=result.summary'));
+ assert.ok(script.includes('renderRequestNavCount()'));
+ assert.ok(!html.includes('관리 시작 전 발행한 명세표는 기초 미수금에 이미 반영된 것으로 간주하며 다시 합산하지 않습니다.'));
+ assert.ok(!html.includes('기존 명세표의 ‘전 잔고’는 중복 계산하지 않습니다.'));
+});
