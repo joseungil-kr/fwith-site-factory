@@ -245,15 +245,28 @@ jobs:
           _,state=api('state')
           assert state['buyer_dashboard']['pending_count']==1
           assert state['buyer_dashboard']['shortage_count']==1
-          assert public('overview',{'token':newToken})['history'][0]['id']==placed['id']
+          # Two different clients request the same stockless item: aggregate outstanding demand.
+          firstAgain=public('submit',{'token':newToken,
+            'request_key':'7c39bc37-52ca-4dbd-9186-41987308a10c',
+            'requested_delivery':local_today,
+            'items':[{'product_id':p['id'],'qty':2}]})
+          _,state=api('state')
+          assert state['buyer_dashboard']['pending_count']==2
+          aggregate=next(z for z in state['buyer_dashboard']['shortages'] if z['product_id']==p['id'])
+          assert aggregate['requested']==3 and aggregate['stock']==0 and aggregate['shortage']==3
+          assert public('overview',{'token':newToken})['history'][0]['id']==firstAgain['id']
+          assert public('overview',{'token':newToken})['history'][1]['id']==placed['id']
           assert not any(z['id']==secondRequest['id'] for z in public('overview',{'token':newToken})['history'])
           api('requests/cancel',{'id':secondRequest['id']})
+          _,state=api('state')
+          assert state['buyer_dashboard']['shortage_count']==1
+          api('requests/cancel',{'id':firstAgain['id']})
           _,state=api('state')
           assert state['buyer_dashboard']['shortage_count']==0
           api('requests/link/revoke',{'client_id':another['id']})
           public_fails('overview',{'token':otherToken},403)
           _,export=api('export')
-          assert len(export['buyer_requests'])==2 and len(export['buyer_lines'])==3
+          assert len(export['buyer_requests'])==3 and len(export['buyer_lines'])==4
           assert not any('token_hash' in x for x in export['buyer_links'])
           print('BUYER_PORTAL_PASS: anonymous scoped links, rotation/revocation, oversized requests, consolidated shortage, stock-independent queue, atomic approval, unique issue, existing invoice and sales')
           print('NEW_FEATURES_API_PASS: monthly/all-time full DB KPI, editable company, product sort, reissue, stock guard, invoice deletion')
