@@ -56,7 +56,7 @@ jobs:
           script=next((s for s in scripts if s.get('id')==worker),None)
           assert script,'Target must be an existing Worker; creating new Workers is prohibited'
           # Reject any intervening worker revision, except for this workflow's own verified retries.
-          assert script.get('modified_on')=='2026-11-03T07:18:02.515681Z', 'Existing reviewed app changed since first deploy; refuse overwrite'
+          assert script.get('modified_on')=='2026-11-03T07:25:02.397723Z', 'Existing reviewed app changed since header deployment; refuse overwrite'
           newer=api('/accounts/'+account+'/workers/workers?per_page=200')['result']
           target=next((s for s in newer if s.get('name')==worker),None)
           assert target,'Worker reference verification unavailable'
@@ -123,21 +123,23 @@ jobs:
         run: |
           python3 - <<'PY'
           import urllib.request,urllib.error,time,os
+          opener=urllib.request.build_opener()
+          opener.addheaders=[('User-Agent','Mozilla/5.0 (compatible; deployment verifier)')]
           url='https://'+os.environ['TARGET_WORKER']+'.joseungil.workers.dev'
           previous=''
           for attempt in range(12):
             try:
-              with urllib.request.urlopen(url+'/',timeout=25) as r:
+              with opener.open(url+'/',timeout=25) as r:
                 html=r.read().decode()
                 assert r.status==200 and '백세푸드' in html and '로그인' in html
                 assert 'noindex' in r.headers.get('X-Robots-Tag','').lower()
               for path in ('/api/state','/api/session','/api/export'):
-                try:urllib.request.urlopen(url+path,timeout=20)
+                try:opener.open(url+path,timeout=20)
                 except urllib.error.HTTPError as e:assert e.code==401,(path,e.code)
                 else:raise AssertionError('Anonymous data leak '+path)
               pwd=os.environ.get('BAEKSE_ORDER_ADMIN_PASSWORD','')
               req=urllib.request.Request(url+'/api/login',data=b'{"password":"deliberately-invalid"}',headers={'Content-Type':'application/json'},method='POST')
-              try:urllib.request.urlopen(req,timeout=20)
+              try:opener.open(req,timeout=20)
               except urllib.error.HTTPError as e:
                 assert e.code==(401 if len(pwd)>=12 else 503),e.code
               else:raise AssertionError('Anonymous login bypass')
@@ -145,6 +147,7 @@ jobs:
               break
             except Exception as e:
               previous=str(e)
+              print('LIVE_CHECK_RETRY',attempt,type(e).__name__,previous[:100])
               if attempt==11:raise
               time.sleep(10)
           PY
@@ -184,26 +187,29 @@ jobs:
         run: |
           python3 - <<'PY'
           import os,urllib.request,urllib.error,time,socket
+          opener=urllib.request.build_opener()
+          opener.addheaders=[('User-Agent','Mozilla/5.0 (compatible; deployment verifier)')]
           base='https://'+os.environ['CUSTOM_HOST']
           last=''
           for n in range(12):
             try:
-              with urllib.request.urlopen(base+'/',timeout=25) as r:
+              with opener.open(base+'/',timeout=25) as r:
                 html=r.read().decode()
                 assert r.status==200 and '백세푸드' in html and '로그인' in html
                 assert 'noindex' in r.headers.get('X-Robots-Tag','').lower()
-              try:urllib.request.urlopen(base+'/api/state',timeout=20)
+              try:opener.open(base+'/api/state',timeout=20)
               except urllib.error.HTTPError as e:assert e.code==401,e.code
               else:raise AssertionError('Unauthenticated API disclosure')
               print('ORDER_DOMAIN_LIVE_HTTP_200',base,'API401','NOINDEX')
               break
             except Exception as e:
               last=str(e)
+              print('CUSTOM_DOMAIN_RETRY',n,type(e).__name__,last[:100])
               if n==11:raise AssertionError('Order domain not verified: '+last)
               time.sleep(15)
           for old in ('https://baeksefood.com','https://interpiad.com'):
             try:
-              with urllib.request.urlopen(old,timeout=25) as r:
+              with opener.open(old,timeout=25) as r:
                 print('EXISTING_SITE',old,r.status)
             except Exception as e:
               print('EXISTING_SITE_READBACK_FAILED',old,type(e).__name__)
