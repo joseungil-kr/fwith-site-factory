@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+<title>거래처 발주 요청 | 백세푸드</title>
+<link rel="stylesheet" href="/buyer.css">
+<script type="module" src="/buyer.js"></script>
+</head>
+<body>
+<main class="buyer-wrap">
+<header class="buyer-header"><div><p class="subhead" id="supplier">백세푸드</p><h1>거래처 발주 요청</h1></div><span class="status-tag">업체 전용</span></header>
+<div id="loading" class="buyer-card">발주 제품을 불러오는 중입니다.</div>
+<div id="failed" class="buyer-card error hidden" role="alert"></div>
+<section id="buyer-content" class="hidden">
+  <div class="buyer-card buyer-intro">
+    <strong id="business-name"></strong>
+    <p>필요한 제품과 수량을 입력해 주세요. 현재 재고보다 많이 요청해도 됩니다.</p>
+    <p>발주 요청만으로 실제 출고나 재고 차감은 이루어지지 않습니다.</p>
+  </div>
+  <form id="buyer-form" class="buyer-card">
+    <h2>제품 선택</h2>
+    <div id="buyer-products"></div>
+    <label class="field">희망 납품일
+      <input id="delivery-date" type="date" required>
+    </label>
+    <label class="field">요청사항 (선택)
+      <textarea id="request-note" maxlength="300" rows="3" placeholder="예: 오전 중 납품 부탁드립니다."></textarea>
+    </label>
+    <div class="buyer-total"><span>예상 공급가액 (부가세 별도)</span><strong id="estimated">0원</strong></div>
+    <button class="buyer-submit" id="submit-order" type="submit">발주 요청 보내기</button>
+    <p id="result" class="buyer-result" role="status" aria-live="polite"></p>
+  </form>
+  <section class="buyer-card">
+    <h2>이 업체의 최근 발주 상태</h2>
+    <div id="request-history">발주 내역이 없습니다.</div>
+  </section>
+  <p class="security-note">이 링크를 가진 사람은 해당 업체 이름으로 발주할 수 있습니다. 다른 사람에게 공유하지 마세요. 링크가 유출되면 공급업체에 재발급을 요청해 주세요.</p>
+</section>
+</main>
+</body>
+</html>
