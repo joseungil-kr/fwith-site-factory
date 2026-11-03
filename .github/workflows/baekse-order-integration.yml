@@ -149,6 +149,101 @@ jobs:
           _,backup=api('export')
           assert len(backup['orders'])==1
           assert any(a['action']=='order_delete' for a in backup['audit'])
+          # Trade-client link is scoped to the client and does not require administrator login.
+          _,initial=api('state')
+          assert initial['buyer_dashboard']['pending_count']==0
+          assert initial['buyer_links']==[]
+          _,link=api('requests/link/issue',{'client_id':c['id']})
+          assert link['url'].startswith(base+'/request/#')
+          token=link['url'].split('#',1)[1]
+          assert len(token)==64 and all(ch in '0123456789abcdef' for ch in token)
+          def public(path,payload):
+            req=urllib.request.Request(base+'/api/buyer/'+path,data=json.dumps(payload).encode(),
+              headers={'Content-Type':'application/json','Origin':base},method='POST')
+            with urllib.request.urlopen(req,timeout=25) as response:return json.load(response)
+          def public_fails(path,payload,code):
+            try: public(path,payload)
+            except urllib.error.HTTPError as e:assert e.code==code,(e.code,code)
+            else:raise AssertionError('Expected forbidden buyer endpoint: '+path)
+          public_fails('overview',{'token':'bad'},403)
+          overview=public('overview',{'token':token})
+          assert overview['client']['business']=='안산 중앙점'
+          assert len(overview['products'])==6 and not any('stock' in p for p in overview['products'])
+          assert overview['history']==[]
+          assert not any('clients' in k for k in overview)
+          request_key='37960518-397c-4ace-80f6-61e498600421'
+          local_today=time.strftime('%Y-%m-%d',time.gmtime(time.time()+9*3600))
+          orderData={'token':token,'request_key':request_key,'requested_delivery':local_today,
+            'note':'테스트 입고 요청','items':[{'product_id':p['id'],'qty':15},
+              {'product_id':s['products'][1]['id'],'qty':1}]}
+          placed=public('submit',orderData)
+          assert placed['status']=='pending'
+          repeated=public('submit',orderData)
+          assert repeated['id']==placed['id'] and repeated['duplicate']
+          _,state=api('state')
+          assert state['products'][0]['stock']==10 and state['products'][1]['stock']==0
+          assert state['metrics']['cumulative_amount']==93000,'Request may not increase sales'
+          assert state['buyer_dashboard']['pending_count']==1
+          assert state['buyer_dashboard']['shortage_count']==2
+          by_id={z['product_id']:z for z in state['buyer_dashboard']['shortages']}
+          assert by_id[p['id']]['shortage']==5
+          assert by_id[state['products'][1]['id']]['shortage']==1
+          _,queue=api('requests/list')
+          assert queue['requests'][0]['id']==placed['id'] and len(queue['requests'][0]['items'])==2
+          try: api('requests/fulfill',{'id':placed['id'],'vat':'none'})
+          except urllib.error.HTTPError as e:assert e.code==400
+          else:raise AssertionError('Fulfillment should fail closed on insufficient inventory')
+          _,state=api('state')
+          assert state['buyer_dashboard']['pending_count']==1 and state['products'][0]['stock']==10
+          # Rotate token; the original capability is invalidated without losing pending orders.
+          _,newLink=api('requests/link/issue',{'client_id':c['id']})
+          newToken=newLink['url'].split('#')[1]
+          assert newToken!=token
+          public_fails('overview',{'token':token},403)
+          newOverview=public('overview',{'token':newToken})
+          assert newOverview['history'][0]['id']==placed['id']
+          # Add enough stock then issue using the existing invoice and movement tables.
+          api('stock',{'product_id':p['id'],'quantity':5,'type':'in','cost':6850,'note':'발주부족 입고'})
+          p2=state['products'][1]
+          api('stock',{'product_id':p2['id'],'quantity':1,'type':'in','cost':p2['cost'],'note':'발주부족 입고'})
+          _,state=api('state')
+          assert state['buyer_dashboard']['shortage_count']==0
+          _,confirmed=api('requests/fulfill',{'id':placed['id'],'vat':'none','previous_balance':0})
+          assert confirmed['status']=='fulfilled' and confirmed['supply']==174000 and confirmed['total']==174000
+          _,state=api('state')
+          assert state['buyer_dashboard']['pending_count']==0
+          assert state['metrics']['cumulative_amount']==267000
+          assert state['products'][0]['stock']==0 and state['products'][1]['stock']==0
+          _,issued=api('orders/detail?id='+str(confirmed['issued_order_id']))
+          assert issued['order']['memo'].startswith('발주요청 #')
+          assert len(issued['items'])==2
+          try: api('requests/fulfill',{'id':placed['id'],'vat':'none'})
+          except urllib.error.HTTPError as e:assert e.code==400
+          else:raise AssertionError('Repeated approval duplicated invoice')
+          # Different clients cannot see each other's orders; per-client link can be revoked.
+          _,secondClient=api('clients',{'business':'QA 외부지점','person':'담당','phone':'010-9999-4444','business_no':'','address':''})
+          _,state=api('state')
+          another=next(z for z in state['clients'] if z['business']=='QA 외부지점')
+          _,otherLink=api('requests/link/issue',{'client_id':another['id']})
+          otherToken=otherLink['url'].split('#')[1]
+          assert public('overview',{'token':otherToken})['history']==[]
+          otherData={'token':otherToken,'request_key':'8d363496-66e5-4e2c-9131-1da202400340',
+            'requested_delivery':local_today,'items':[{'product_id':p['id'],'qty':1}]}
+          secondRequest=public('submit',otherData)
+          _,state=api('state')
+          assert state['buyer_dashboard']['pending_count']==1
+          assert state['buyer_dashboard']['shortage_count']==1
+          assert public('overview',{'token':newToken})['history'][0]['id']==placed['id']
+          assert not any(z['id']==secondRequest['id'] for z in public('overview',{'token':newToken})['history'])
+          api('requests/cancel',{'id':secondRequest['id']})
+          _,state=api('state')
+          assert state['buyer_dashboard']['shortage_count']==0
+          api('requests/link/revoke',{'client_id':another['id']})
+          public_fails('overview',{'token':otherToken},403)
+          _,export=api('export')
+          assert len(export['buyer_requests'])==2 and len(export['buyer_lines'])==3
+          assert not any('token_hash' in x for x in export['buyer_links'])
+          print('BUYER_PORTAL_PASS: anonymous scoped links, rotation/revocation, oversized requests, consolidated shortage, stock-independent queue, atomic approval, unique issue, existing invoice and sales')
           print('NEW_FEATURES_API_PASS: monthly/all-time full DB KPI, editable company, product sort, reissue, stock guard, invoice deletion')
           print('BILLING_QA_PASS: editable bank, historical snapshot, previous balance 100000, due 193000, actual sale remains 93000')
           print('LOCAL_API_INTEGRATION_PASS: initial catalog, login, required client, stock in/out, VAT extra, other manual item, cancellation, snapshot, export')
