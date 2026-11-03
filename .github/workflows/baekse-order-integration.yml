@@ -37,14 +37,14 @@ jobs:
           jar=http.cookiejar.CookieJar(); session_cookie=''
           opener=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
           def api(path,data=None):
-  global session_cookie
+            global session_cookie
             b=json.dumps(data).encode() if data is not None else None
             headers={'Origin':base,'Content-Type':'application/json'} if data is not None else {}
-  if session_cookie:headers['Cookie']=session_cookie
+            if session_cookie:headers['Cookie']=session_cookie
             req=urllib.request.Request(base+'/api/'+path,data=b,headers=headers)
             with opener.open(req,timeout=25) as r:
-    if path=='login':session_cookie=r.headers.get('Set-Cookie','').split(';')[0]
-    return r.status,json.load(r)
+              if path=='login':session_cookie=r.headers.get('Set-Cookie','').split(';')[0]
+              return r.status,json.load(r)
           try: api('state')
           except urllib.error.HTTPError as e:assert e.code==401
           else:raise AssertionError('No authentication bypass permitted')
