@@ -172,10 +172,10 @@ jobs:
                 assert isinstance(order.get('bank'),dict)
                 assert order.get('previous_balance',0)>=0
                 assert order.get('amount_due')==order['total']+order['previous_balance'],'Old and new invoice totals mismatch'
-            with unauthed.open(base+'/app.js',timeout=25) as r:
+          with unauthed.open(base+'/app.js',timeout=25) as r:
             ui=r.read().decode('utf-8')
             assert all(k in ui for k in ['metric-orange','cancelled-order-row','data-product-move','orders/reissue','orders/delete','movementLabel']), 'Front-end behaviors missing'
-            assert 'serial-width-test' not in ui and "serial-test" not in ui,'Old printer test handlers remain'
+            assert 'serial-width-test' not in ui and 'serial-test' not in ui,'Old printer test handlers remain'
           print('ADMIN_DASHBOARD_LIVE_PASS: six KPIs, company settings, product sorting, invoice restore/delete, localized stock movements')
           print('PAYMENT_FIELDS_LIVE_PASS: configurable bank persisted, legacy invoices readable, previous balance column available')
           logout(long)
