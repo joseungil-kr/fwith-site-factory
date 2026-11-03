@@ -1,10 +1,6 @@
 name: Baekse order guarded reuse of idle Cloudflare Worker
 on:
-  push:
-    branches: [feature/baekse-order-deploy-20261103]
-    paths:
-      - '.github/workflows/baekse-order-reuse-deploy.yml'
-      - 'apps/baekse-order/wrangler.reused.jsonc'
+  # Initial Worker reuse is complete. Do not rerun this first-attachment workflow on app changes.
   workflow_dispatch:
 permissions:
   contents: read
