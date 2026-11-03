@@ -1,0 +1,64 @@
+name: Baekse order isolated Worker deploy (locked until admin secret set)
+on:
+  push:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths:
+      - 'apps/baekse-order/**'
+      - '.github/workflows/baekse-order-worker.yml'
+permissions:
+  contents: read
+concurrency:
+  group: baekse-order-isolated-deploy
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: feature/baekse-order-deploy-20261103}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Test and reject missing deployment authority
+        shell: bash
+        working-directory: apps/baekse-order
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          node --check src.js
+          node --check public/app.js
+          npm test
+      - name: Deploy dedicated new Worker and SQLite Durable Object
+        working-directory: apps/baekse-order
+        shell: bash
+        run: |
+          npx --yes wrangler@4.148.0 deploy --config wrangler.jsonc
+      - name: Verify actual isolated workers.dev entry and protected API
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os,urllib.request,json,urllib.error,time
+          a=os.environ['CLOUDFLARE_ACCOUNT_ID'];t=os.environ['CLOUDFLARE_API_TOKEN']
+          req=urllib.request.Request('https://api.cloudflare.com/client/v4/accounts/'+a+'/workers/subdomain',headers={'Authorization':'Bearer '+t})
+          with urllib.request.urlopen(req,timeout=25) as r: j=json.load(r)
+          assert j.get('success') and j['result'].get('subdomain')
+          url='https://baekse-order.'+j['result']['subdomain']+'.workers.dev'
+          for attempt in range(8):
+            try:
+              with urllib.request.urlopen(url+'/',timeout=25) as r:
+                body=r.read().decode('utf-8')
+                assert r.status==200 and '백세푸드' in body and '로그인' in body
+                assert 'noindex' in r.headers.get('X-Robots-Tag','')
+              try:urllib.request.urlopen(url+'/api/session',timeout=20)
+              except urllib.error.HTTPError as e: assert e.code==401
+              else:raise AssertionError('API must reject anonymous users')
+              print('LIVE_LOCKED_PREVIEW_OK',url)
+              break
+            except Exception:
+              if attempt==7:raise
+              time.sleep(8)
+          PY
