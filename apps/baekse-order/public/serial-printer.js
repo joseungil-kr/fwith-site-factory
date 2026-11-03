@@ -36,13 +36,18 @@ export function makeReceiptRows(invoice) {
   const code = 'B' + String(o.order_date || '').replaceAll('-', '') + '-' +
     String(o.id || '').padStart(4, '0');
   const rows = [
-    {text: '백세푸드',align:'center',kind:'title'},
+    {text: String(o.bank?.company_name||'백세푸드'),align:'center',kind:'title'},
     {text: '거 래 명 세 표',align:'center',kind:'subtitle'},
     {text: '전표: ' + code},
     {text: '일자: ' + String(o.order_date || '')},
     {text: '거래처: ' + String(c.business || '')},
     {text: '담당자: ' + String(c.person || '') + '  ' + String(c.phone || '')},
   ];
+  const company=o.bank||{};
+  if(company.company_business_no)rows.push({text:'공급자 사업자번호: '+company.company_business_no});
+  if(company.company_phone)rows.push({text:'공급자 연락처: '+company.company_phone});
+  if(company.company_email)rows.push({text:'공급자 이메일: '+company.company_email});
+  if(company.company_address)rows.push({text:'공급자 주소: '+company.company_address});
   if (c.business_no) rows.push({text: '사업자번호: ' + String(c.business_no)});
   if (c.address) rows.push({text: '주소: ' + String(c.address)});
   rows.push({line:true});
