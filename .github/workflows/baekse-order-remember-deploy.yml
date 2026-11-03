@@ -83,7 +83,7 @@ jobs:
           version=deployments[0]['versions'][0]
           assert version.get('percentage')==100,'Previous version is not deployed at 100%'
           previous=version['version_id']
-          assert previous=='b44ce6eb-ae7d-4052-8ed5-e3eb44708968','Worker version changed since last verified release'
+          assert previous=='522a4e0f-0141-498b-8744-f049f589515e','Worker version changed since last verified release'
           with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:
             f.write('previous_version='+previous+'\n')
           print('SAFE_ORDER_APP_UPDATE_PASS',hostname,'existingWorker',worker,'rollbackPinned',previous)
@@ -131,6 +131,8 @@ jobs:
                 assert '<option value="none" selected>부가세 미계산 (0원)</option>' in html, 'Default VAT should be uncalculated'
                 assert all(x in html for x in ['id="mobile-menu-toggle"','aria-controls="nav"','aria-expanded="false"','id="mobile-requests"','id="mobile-requests-pending"','id="mobile-logout"','class="mobile-shortcuts"','data-go="order"']), 'Mobile menu, top pending count, or shortcuts missing'
                 assert all(x in html for x in ['data-tab="requests"','id="buyer-home-summary"','id="request-shortages"','id="request-list"','id="link-result"']),'Buyer request manager UI missing'
+                assert all(x in html for x in ('OPERATIONS / DASHBOARD','OPERATIONS / ORDER REQUESTS','FINANCE / RECEIVABLES','id="home-request-preview"','id="home-shortages"','id="request-search"','id="request-filters"','id="request-overview"','id="receivables-overview"','class="receivables-layout"')),'Modern ERP screen layouts missing'
+                assert '428,000원' not in html and '1,250,000원' not in html,'Mockup financial amounts were deployed'
                 assert 'COM4 (현재 사용)' in html and '9600bps' in html and 'COM6' in html, 'COM range/default missing'
                 assert 'noindex' in r.headers.get('X-Robots-Tag','').lower()
                 assert 'script-src' in r.headers.get('Content-Security-Policy','')
@@ -221,6 +223,7 @@ jobs:
           with unauthed.open(base+'/style.css',timeout=25) as r:
             css=r.read().decode('utf-8')
             assert r.status==200 and all(marker in css for marker in ['@media screen and (max-width:768px)','.nav.mobile-expanded','.mobile-header-actions','.mobile-shortcuts','.mobile-nav-logout']),'Responsive mobile styles missing'
+            assert all(k in css for k in ('--bk-green:#0b7668','--bk-bg:#f5f7fa','.dashboard-detail-grid{display:grid','.buyer-request-item{display:grid','.receivables-layout{display:grid')),'Modern three-screen CSS missing'
             assert 'noindex' in r.headers.get('X-Robots-Tag','').lower()
           with unauthed.open(base+'/app.js',timeout=25) as r:
             ui=r.read().decode('utf-8')
@@ -228,11 +231,13 @@ jobs:
             assert all(k in ui for k in ['data-client-link','requests/link/issue','requests/link/revoke','requests/fulfill','loadBuyerRequests','buyer-home-summary']),'Buyer admin actions missing'
             assert all(k in ui for k in ['renderRequestNavCount','nav-requests-pending','state.buyer_dashboard?.pending_count','state.buyer_dashboard=result.summary']),'Reactive buyer request nav count missing'
             assert all(k in ui for k in ['setMobileMenuOpen','closeMobileMenu','mobile-requests-pending','mobile-menu-toggle','mobile-logout','mobile-expanded']), 'Mobile menu behavior missing'
+            assert all(k in ui for k in ('renderHomeRequestPreview','renderBuyerRequestCards','requestNeedsRestock','requestFilter','renderReceivables','receivables-overview','request-search','request-filters')),'Data-driven design behavior missing'
             assert "function show(tab){closeMobileMenu();$$('[data-page]').forEach" in ui,'Mobile menu must render all pages on navigation'
             assert all(k in ui for k in ['clientReceivable','syncOrderPreviousBalance','receivables/opening','receivables/payments','receivables/payments/void','renderReceivableHome']),'Receivables UI behavior missing'
             assert 'serial-width-test' not in ui and 'serial-test' not in ui,'Old printer test handlers remain'
           print('ADMIN_DASHBOARD_LIVE_PASS: six KPIs, company settings, product sorting, invoice restore/delete, localized stock movements')
           print('RESPONSIVE_NAV_LIVE_PASS: 768px menu, persistent mobile buyer count, quick order, accessible logout, desktop nav preserved')
+          print('THREE_SCREEN_DESIGN_LIVE_PASS: dashboard, buyer request and receivables live markup, CSS and business controls')
           print('SHIPPING_LIVE_READBACK_PASS: delivery button, state schema, invoice JS, thermal labels and no unauthenticated inventory access')
           print('PAYMENT_FIELDS_LIVE_PASS: configurable bank persisted, legacy invoices readable, previous balance column available')
           logout(long)
