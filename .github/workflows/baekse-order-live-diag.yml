@@ -31,6 +31,11 @@ jobs:
           print('LATEST_VERSIONS',d['deployments'][0]['versions'])
           print('BINDINGS',[(b.get('type'),b.get('name')) for b in bs.get('bindings') or []])
           print('CUSTOM_DOMAINS',[(x.get('hostname'),x.get('service')) for x in maps if x.get('service')==name])
+          ws=get('/accounts/'+a+'/workers/workers?per_page=200')
+          w=next((x for x in ws if x.get('name')==name),None)
+          assert w
+          detail=get('/accounts/'+a+'/workers/workers/'+w['id'])
+          print('REFERENCES',detail.get('references'))
           PY
       - name: Read Worker hostname status and HTML hints
         run: |
