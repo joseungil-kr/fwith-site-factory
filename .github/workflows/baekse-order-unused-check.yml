@@ -1,63 +1,77 @@
-name: Baekse order verify superseded Hallflower preview is unreferenced
+name: Baekse order inventory unreferenced Worker candidates
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
     paths: ['.github/workflows/baekse-order-unused-check.yml']
 permissions: {contents: read}
 jobs:
-  read-only:
+  inventory:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 12
     env:
       CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      ORDER_PASS: ${{ secrets.BAEKSE_ORDER_ADMIN_PASSWORD }}
     steps:
-      - name: Check account-level Worker references and 7-day invocation metrics
+      - uses: actions/checkout@v4
+      - name: Read-only worker inventory + recent traffic + registry cross-reference
+        shell: bash
         run: |
           python3 - <<'PY'
           import os,json,urllib.request,urllib.error,datetime
-          a=os.getenv('CF_ACCOUNT','');t=os.getenv('CF_TOKEN','')
-          assert a and t, 'Missing existing Cloudflare account settings'
-          print('ADMIN_SECRET_PRESENT',bool(os.getenv('ORDER_PASS')),'LENGTH_OK',len(os.getenv('ORDER_PASS',''))>=12)
-          def get(url,data=None):
-            body=json.dumps(data).encode() if data is not None else None
-            req=urllib.request.Request(url,data=body,headers={'Authorization':'Bearer '+t,'Accept':'application/json','Content-Type':'application/json'})
+          a=os.getenv('CF_ACCOUNT');t=os.getenv('CF_TOKEN')
+          assert a and t,'Existing credentials missing'
+          root='https://api.cloudflare.com/client/v4'
+          def get(path,data=None):
+            req=urllib.request.Request(root+path,data=json.dumps(data).encode() if data is not None else None,headers={'Authorization':'Bearer '+t,'Content-Type':'application/json'})
             try:
               with urllib.request.urlopen(req,timeout=30) as h:
                 j=json.load(h)
-                print('HTTP',req.full_url.replace(a,'ACCOUNT').split('?')[0],h.status,'success',j.get('success'),'errors',[(e.get('code'),e.get('message','')[:100]) for e in (j.get('errors') or [])])
+                if not j.get('success',True) and 'data' not in j:print('API_FAILURE',path.split('?')[0],[e.get('code') for e in j.get('errors') or []])
                 return j
             except urllib.error.HTTPError as e:
-              print('HTTP',req.full_url.replace(a,'ACCOUNT').split('?')[0],e.code,'UNREADABLE')
+              print('API_ERROR',path.split('?')[0],e.code)
               return None
-          root='https://api.cloudflare.com/client/v4'
-          x=get(root+'/accounts/'+a+'/workers/workers?per_page=100')
-          if x and isinstance(x.get('result'),list):
-            target=next((v for v in x['result'] if v.get('name')=='sfv53-hallflower'),None)
-            print('TARGET_FROM_WORKERS_LIST',target and {k:target.get(k) for k in ['id','name','created_on']})
-            if target:
-              d=get(root+'/accounts/'+a+'/workers/workers/'+target['id'])
-              if d:
-                obj=d['result'];refs=obj.get('references') or {}
-                print('TARGET_REFERENCES', {k: len(v) if isinstance(v,list) else 'unknown' for k,v in refs.items()})
-                print('TARGET_SUBDOMAIN',obj.get('subdomain'))
-          else:print('WORKERS_DETAILS_UNAVAILABLE')
-          end=datetime.datetime.now(datetime.timezone.utc)
-          start=end-datetime.timedelta(days=7)
-          query="""query Q($accountTag: string!, $scriptName: string!, $start: Time!, $end: Time!) {
-            viewer { accounts(filter: { accountTag: $accountTag }) {
-              workersInvocationsAdaptive(limit: 1, filter: {scriptName:$scriptName, datetime_geq:$start, datetime_leq:$end}) {
-                sum { requests errors }
+          legacy=get('/accounts/'+a+'/workers/scripts')
+          domains=get('/accounts/'+a+'/workers/domains')
+          newer=get('/accounts/'+a+'/workers/workers?per_page=200')
+          assert legacy and domains and newer,'Unable to enumerate worker bindings'
+          attached={d.get('service') for d in domains.get('result') or []}
+          listed=newer.get('result') or []
+          byname={s['name']:s for s in listed}
+          unbound=sorted(s['id'] for s in legacy.get('result') or [] if s.get('id') not in attached)
+          print('UNBOUND_WORKERS',unbound)
+          now=datetime.datetime.now(datetime.timezone.utc);start=now-datetime.timedelta(days=7)
+          query="""query X($accountTag:string!,$start:Time!,$end:Time!){
+            viewer{accounts(filter:{accountTag:$accountTag}){
+              workersInvocationsAdaptive(limit:500,filter:{datetime_geq:$start,datetime_leq:$end},orderBy:[sum_requests_DESC]){
+                dimensions{scriptName}
+                sum{requests errors}
               }
-            } }
+            }}
           }"""
-          m=get(root+'/graphql',{'query':query,'variables':{'accountTag':a,'scriptName':'sfv53-hallflower','start':start.strftime('%Y-%m-%dT%H:%M:%SZ'),'end':end.strftime('%Y-%m-%dT%H:%M:%SZ')}})
-          if m:
-            try:
-              rows=m['data']['viewer']['accounts'][0]['workersInvocationsAdaptive']
-              print('LAST_7D_INVOCATIONS',rows)
-            except Exception as e:
-              print('ANALYTICS_UNREADABLE',str(m.get('errors',''))[:500])
-          print('UNUSED_CHECK_COMPLETE')
+          ans=get('/graphql',{'query':query,'variables':{'accountTag':a,'start':start.strftime('%Y-%m-%dT%H:%M:%SZ'),'end':now.strftime('%Y-%m-%dT%H:%M:%SZ')}})
+          traffic={}
+          if ans and ans.get('data'):
+            rows=ans['data']['viewer']['accounts'][0]['workersInvocationsAdaptive']
+            traffic={r['dimensions']['scriptName']:r['sum']['requests'] for r in rows if r.get('dimensions') and r.get('sum')}
+            print('ANALYTICS_TOTAL',len(rows))
+          else:print('ANALYTICS_UNAVAILABLE',(ans or {}).get('errors'))
+          registry=json.load(open('.github/site-factory-sites.json'))
+          reg=json.dumps(registry.get('sites',{}),ensure_ascii=False)
+          for n in unbound:
+            w=byname.get(n)
+            if not w:
+              print('CANDIDATE',n,'WORKER_ID_MISSING');continue
+            info=get('/accounts/'+a+'/workers/workers/'+w['id'])
+            if not info or not info.get('result'):print('CANDIDATE',n,'REFERENCES_UNREADABLE');continue
+            obj=info['result'];refs=obj.get('references') or {}
+            nz={k:len(v) for k,v in refs.items() if isinstance(v,list) and v}
+            schedules=get('/accounts/'+a+'/workers/scripts/'+n+'/schedules')
+            ncron=len(((schedules or {}).get('result') or {}).get('schedules') or [])
+            settings=get('/accounts/'+a+'/workers/scripts/'+n+'/settings')
+            bindings=[b.get('type')+':'+b.get('name') for b in (((settings or {}).get('result') or {}).get('bindings') or [])]
+            print('CANDIDATE',n,'requests7d',traffic.get(n,0) if ans and ans.get('data') else 'unknown',
+              'refs',nz,'cron',ncron if schedules else 'unreadable','bindings',bindings,'in_factory_registry',n in reg,
+              'last_modified',next((x.get('modified_on') for x in legacy['result'] if x.get('id')==n),None))
+          print('READ_ONLY_FINISHED')
           PY
