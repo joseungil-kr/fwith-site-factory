@@ -158,13 +158,14 @@ function renderStock(){const old=$('#stock-product').value;$('#stock-product').i
 function setStockCost(){const p=state.products.find(p=>p.id===Number($('#stock-product').value));if(p)$('#stock-cost').value=p.cost}
 function renderClients(){
  const id=$('#client-form [name=id]').value;
- $('#client-list').innerHTML=table(['상호 / 담당자','전화번호 / 사업자번호','상태','관리'],
-   state.clients.map(c=>{
-     const link=(state.buyer_links||[]).find(l=>l.client_id===c.id);
+ $('#client-list').innerHTML=table(['상호 / 담당자','전화번호 / 사업자번호','현재 미수금','상태','관리'],
+   state.clients.map(client=>{
+     const link=(state.buyer_links||[]).find(l=>l.client_id===client.id);
      const activeLink=link&&!link.revoked_at;
-     const buttons=c.active?'<button class="secondary" data-client-link="'+c.id+'">'+(activeLink?'발주 링크 재발급':'발주 링크 만들기')+'</button>'+
-       (activeLink?'<button class="danger" data-client-link-revoke="'+c.id+'">링크 중지</button>':''):'';
-     return `<tr><td><b>${esc(c.business)}</b><span class="price-note">${esc(c.person)}${c.address?' · '+esc(c.address):''}</span></td><td>${esc(c.phone)}<span class="price-note">${esc(c.business_no)}</span></td><td>${c.active?'사용중':'비활성'}${activeLink?'<span class="price-note"> · 발주 링크 활성</span>':''}</td><td><div class="row-action"><button class="secondary" data-client-edit="${c.id}">수정</button><button class="${c.active?'danger':'secondary'}" data-client-toggle="${c.id}">${c.active?'삭제':'복구'}</button>${buttons}</div></td></tr>`;
+     const balance=clientReceivable(client.id);
+     const buttons=client.active?'<button class="secondary" data-client-link="'+client.id+'">'+(activeLink?'발주 링크 재발급':'발주 링크 만들기')+'</button>'+
+       (activeLink?'<button class="danger" data-client-link-revoke="'+client.id+'">링크 중지</button>':''):'';
+     return `<tr><td><b>${esc(client.business)}</b><span class="price-note">${esc(client.person)}${client.address?' · '+esc(client.address):''}</span></td><td>${esc(client.phone)}<span class="price-note">${esc(client.business_no)}</span></td><td><b>${balance?money(balance.balance):'미설정'}</b></td><td>${client.active?'사용중':'비활성'}${activeLink?'<span class="price-note"> · 발주 링크 활성</span>':''}</td><td><div class="row-action"><button class="secondary" data-client-edit="${client.id}">수정</button><button class="${client.active?'danger':'secondary'}" data-client-toggle="${client.id}">${client.active?'삭제':'복구'}</button><button class="secondary" data-client-ar="${client.id}">미수금 관리</button>${buttons}</div></td></tr>`;
    })
  );
  $('#client-form-title').textContent=id?'거래처 수정':'거래처 추가';
@@ -208,6 +209,8 @@ $('#payment-form').addEventListener('submit',async e=>{
   }catch(e){alert(e.message)}
 });
 $('#client-list').onclick=async e=>{
+ const arManage=e.target.closest('[data-client-ar]');
+ if(arManage){show('receivables');$('#ar-client-select').value=arManage.dataset.clientAr;loadReceivableDetail().catch(err=>alert(err.message));return;}
  const edit=e.target.closest('[data-client-edit]'),
        toggle=e.target.closest('[data-client-toggle]'),
        issue=e.target.closest('[data-client-link]'),
@@ -287,6 +290,57 @@ $('#request-list').onclick=async e=>{
    }catch(err){alert(err.message);await loadBuyerRequests()}
    finally{fulfill.disabled=false}
  }
+};
+$('#ar-client-select').addEventListener('change',()=>{paymentRequestKey=null;loadReceivableDetail().catch(err=>alert(err.message))});
+$('#receivables-list').onclick=e=>{
+ const control=e.target.closest('[data-ar-client]');
+ if(!control)return;
+ $('#ar-client-select').value=control.dataset.arClient;
+ loadReceivableDetail().catch(err=>alert(err.message));
+ $('#ar-client-select').scrollIntoView({behavior:'smooth',block:'center'});
+};
+$('#ar-opening-form').addEventListener('submit',async event=>{
+ event.preventDefault();
+ const id=Number($('#ar-client-select').value),current=clientReceivable(id),
+       balance=Number($('#ar-opening-amount').value);
+ if(!id||!Number.isSafeInteger(balance)||balance<0){alert('거래처와 올바른 기초 미수금 금액을 입력하세요.');return}
+ const note=current?'수정 후 기존 입금·출고 내역은 그대로 유지됩니다. 계속할까요?':
+   '기존 거래명세표의 매출은 다시 합산하지 않습니다. 지금 확인한 실제 미수금을 기초잔액으로 등록할까요?';
+ if(!confirm(note))return;
+ try{
+   const payload={client_id:id,opening_balance:balance};
+   if(current)payload.reason=$('#ar-opening-reason').value.trim();
+   await api(current?'receivables/opening/revise':'receivables/opening',payload);
+   await refresh();await loadReceivableDetail();toast(current?'기초 미수금을 수정했습니다.':'미수금 자동관리를 시작했습니다.');
+ }catch(err){alert(err.message)}
+});
+$('#ar-payment-form').addEventListener('submit',async event=>{
+ event.preventDefault();
+ const id=Number($('#ar-client-select').value);
+ const amount=Number($('#ar-paid-amount').value);
+ if(!id||!Number.isSafeInteger(amount)||amount<1){alert('입금액은 1원 이상의 정수여야 합니다.');return}
+ if(!confirm(money(amount)+'을(를) 해당 거래처의 입금 내역으로 등록할까요?'))return;
+ const button=event.target.querySelector('button[type="submit"]');
+ button.disabled=true;
+ try{
+   paymentRequestKey=paymentRequestKey||crypto.randomUUID();
+   const result=await api('receivables/payments',{client_id:id,amount,
+      paid_date:$('#ar-paid-date').value,memo:$('#ar-paid-memo').value,request_key:paymentRequestKey});
+   paymentRequestKey=null;
+   $('#ar-paid-amount').value='';$('#ar-paid-memo').value='';
+   await refresh();await loadReceivableDetail();
+   toast(result.duplicate?'이미 접수된 입금 내역입니다.':'입금 내역을 저장했습니다.');
+ }catch(err){alert(err.message)}finally{button.disabled=false}
+});
+$('#ar-payment-history').onclick=async e=>{
+ const button=e.target.closest('[data-ar-void]');if(!button)return;
+ const reason=prompt('입금 취소 사유를 입력하세요. 취소 후 미수금에 다시 반영됩니다.');
+ if(reason===null||!reason.trim())return;
+ if(!confirm('입금 #'+button.dataset.arVoid+'을 취소할까요? 입금 내역은 감사 기록에 남습니다.'))return;
+ try{
+   await api('receivables/payments/void',{id:Number(button.dataset.arVoid),reason:reason.trim()});
+   await refresh();await loadReceivableDetail();toast('입금 취소를 반영했습니다.');
+ }catch(err){alert(err.message)}
 };
 $('#product-list').onclick=async e=>{
  const move=e.target.closest('[data-product-move]');
@@ -455,4 +509,4 @@ $('#bill-delete').onclick=async()=>{
  }catch(e){alert(e.message)}
 };
 $('#backup').onclick=async()=>{try{const d=await api('export'),blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='baekse-order-backup-'+today()+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}catch(e){alert(e.message)}};
-(async()=>{$('#current-date').textContent=today();$('#order-date').value=today();try{await api('session');$('#app').classList.remove('hidden');$('#login').classList.add('hidden');await refresh()}catch(e){$('#login').classList.remove('hidden')}})();
+(async()=>{$('#current-date').textContent=today();$('#order-date').value=today();$('#ar-paid-date').value=today();try{await api('session');$('#app').classList.remove('hidden');$('#login').classList.add('hidden');await refresh()}catch(e){$('#login').classList.remove('hidden')}})();
