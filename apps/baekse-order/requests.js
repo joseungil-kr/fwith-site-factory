@@ -1,4 +1,5 @@
 import {onlyInt,safeText,dateCheck,calcTotals,calculatePayable} from './logic.js';
+import {ensureReceivableOrderCanIssue} from './receivables.js';
 
 const now=()=>new Date().toISOString();
 const kstToday=()=>new Date(Date.now()+9*3600000).toISOString().slice(0,10);
@@ -145,9 +146,11 @@ export async function handleBuyerAdmin(db,request,path,data){
       vat=String(data.vat||'none');
       if(vat!=='none'&&vat!=='tax')throw new Error('부가세 선택이 올바르지 않습니다.');
       date=dateCheck(String(data.order_date||kstToday()));
-      previous_balance=onlyInt(data.previous_balance??0,'전 잔고',0,2000000000);
       memo=safeText('발주요청 #'+id+(order.note?' · '+order.note:''),'비고',false,500);
-      totals=calcTotals(lines,vat);amount_due=calculatePayable(totals.total,previous_balance);
+      totals=calcTotals(lines,vat);
+      // Tracked clients receive the current server-computed outstanding balance at approval.
+      previous_balance=ensureReceivableOrderCanIssue(db,client.id,totals.total,data.previous_balance??0).previous_balance;
+      amount_due=calculatePayable(totals.total,previous_balance);
     }catch(e){return fail(e.message);}
     const grouped=new Map();
     for(const line of lines)if(line.product_id)grouped.set(line.product_id,(grouped.get(line.product_id)||0)+line.qty);
