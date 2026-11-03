@@ -24,19 +24,35 @@
         <option value="115200">115200bps</option>
       </select>
     </label>
-    <label>영수증 용지 폭
-      <select id="serial-paper"><option value="58">58mm</option><option value="80">80mm</option></select>
+    <label>용지 규격
+      <select id="serial-paper"><option value="58">58mm</option><option value="80" selected>80mm (현재 용지)</option></select>
     </label>
+    <label>실제 인쇄폭 (잘림 보정)
+      <select id="serial-dots">
+        <option value="384">384도트 (매우 좁음)</option>
+        <option value="416">416도트</option>
+        <option value="432">432도트</option>
+        <option value="448">448도트</option>
+        <option value="480">480도트</option>
+        <option value="512" selected>512도트 (SAM4S 기본 후보)</option>
+        <option value="576">576도트 (203dpi 모델)</option>
+      </select>
+    </label>
+    <label>영수증 글자 크기
+      <select id="serial-font"><option value="22">보통 (22px)</option><option value="26" selected>크게 (26px)</option><option value="30">더 크게 (30px)</option></select>
+    </label>
+    <label class="serial-cut-label"><input id="serial-cut" type="checkbox" checked> 끝나면 자동 절단</label>
   </div>
   <div class="action-row serial-actions">
     <button id="serial-connect" class="primary" type="button">장치 선택·연결</button>
     <button id="serial-reconnect" class="secondary" type="button">허용된 장치 재연결</button>
     <button id="serial-disconnect" class="secondary" type="button" disabled>연결 해제</button>
     <button id="serial-test" class="secondary" type="button" disabled>시험 출력</button>
+    <button id="serial-width-test" class="secondary" type="button" disabled>인쇄폭 확인 출력</button>
     <button id="serial-print" class="primary" type="button" disabled>선택한 명세표 COM 직접 출력</button>
   </div>
   <p id="serial-status" class="serial-status" role="status" aria-live="polite">COM4 · 9600bps 설정됨. Chrome 또는 Edge에서 '장치 선택·연결'을 누르세요.</p>
-  <p class="serial-help">장치 선택창이 열리지 않으면 일반 Chrome/Edge 브라우저(HTTPS)로 접속하세요. 기존 POS가 COM4를 사용 중이면 포트를 동시에 열 수 없으므로 POS의 프린터 연결을 잠시 해제한 뒤 시험하세요. 한글 거래명세표는 ESC/POS 이미지 명령으로 전송되므로 프린터 모델별 호환성은 실물 시험 출력이 필요합니다. 실제 전송은 9600bps에서 다소 오래 걸릴 수 있습니다.</p>
+  <p class="serial-help">장치 선택창이 열리지 않으면 일반 Chrome/Edge 브라우저(HTTPS)로 접속하세요. 기존 POS가 COM4를 사용 중이면 포트를 동시에 열 수 없으므로 POS의 프린터 연결을 잠시 해제한 뒤 시험하세요. 80mm 용지의 기본 인쇄폭은 512도트입니다. 인쇄폭 확인 출력에서 오른쪽 선이 잘리면 480→448→432도트 순으로 낮추세요. 한글 명세표는 글자를 이미지로 만들어 한 번의 ESC/POS 인쇄 명령으로 전송한 뒤 자동 절단합니다(지원 모델). 9600bps 연결 자체의 전송속도 제한은 유지됩니다.</p>
 </div>
 <div class="panel hidden" id="bill-preview"><div class="panel-title"><h2>거래명세표 미리보기</h2><div class="action-row"><button id="bill-a4" class="secondary">A4 / PDF</button><button id="bill-58" class="secondary">58mm 영수증</button><button id="bill-80" class="secondary">80mm 영수증</button><button id="bill-cancel" class="danger">출고 취소</button></div></div><div id="bill-sheet"></div></div></section>
 <section class="page hidden" data-page="clients"><div class="page-head"><div><h1>거래처 관리</h1><p>상호·이름·전화번호는 필수, 사업자번호·주소는 선택입니다.</p></div></div><div class="panel"><h2 id="client-form-title">거래처 추가</h2><form id="client-form"><input type="hidden" name="id"><div class="form-grid"><label>상호 <em>*</em><input name="business" required maxlength="100" placeholder="예: 안산 중앙점"></label><label>이름 <em>*</em><input name="person" required maxlength="70" placeholder="담당자 이름"></label><label>전화번호 <em>*</em><input name="phone" required maxlength="40" type="tel" placeholder="010-0000-0000"></label><label>사업자등록번호<input name="business_no" maxlength="50"></label></div><label>주소<input name="address" maxlength="300" placeholder="선택 입력"></label><div class="action-row"><button class="primary" type="submit">저장</button><button class="secondary" type="button" id="client-reset">새 거래처</button></div></form></div><div class="panel"><h2>거래처 목록</h2><div id="client-list"></div></div></section>
