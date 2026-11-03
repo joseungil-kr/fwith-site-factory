@@ -50,8 +50,8 @@ jobs:
               with urllib.request.urlopen(req,timeout=20) as r:
                 data=r.read().decode('utf-8','replace')
                 checks={
-                  '/':['id="serial-dots"','id="serial-font"','id="serial-cut"','80mm (현재 용지)','512도트','id="bill-delete"','id="bill-delivery"','name="company_name"','name="company_email"','관리자 설정','처음 한 번은','data-tab="requests"','id="request-list"','id="buyer-home-summary"','data-tab="receivables"','id="ar-opening-form"','id="ar-payment-form"','id="ar-client-select"','id="ar-paid-amount"','id="ar-paid-date"','>거래처 관리</button>','>제품 관리</button>','<option value="none" selected>'],
-                  '/app.js':['metric-orange','cancelled-order-row','data-product-move','orders/reissue','orders/delete','orders/delivery','deliveryLabel','movementLabel','company_name','requests/fulfill','requests/link/issue','buyer-home-summary','clientReceivable','syncOrderPreviousBalance','receivables/opening','receivables/payments','receivables/payments/void'],
+                  '/':['id="serial-dots"','id="serial-font"','id="serial-cut"','80mm (현재 용지)','512도트','id="bill-delete"','id="bill-delivery"','name="company_name"','name="company_email"','관리자 설정','처음 한 번은','data-tab="requests"','id="request-list"','id="buyer-home-summary"','data-tab="receivables"','id="ar-opening-form"','id="ar-payment-form"','id="ar-client-select"','id="ar-paid-amount"','id="ar-paid-date"','>거래처 관리</button>','>제품 관리</button>','<option value="none" selected>','id="nav-requests-pending"','발주 요청(<span id="nav-requests-pending">0</span>)'],
+                  '/app.js':['metric-orange','cancelled-order-row','data-product-move','orders/reissue','orders/delete','orders/delivery','deliveryLabel','movementLabel','company_name','requests/fulfill','requests/link/issue','buyer-home-summary','clientReceivable','syncOrderPreviousBalance','receivables/opening','receivables/payments','receivables/payments/void','renderRequestNavCount','state.buyer_dashboard?.pending_count','state.buyer_dashboard=result.summary'],
                   '/style.css':['.metric.metric-orange','.bank-settings-grid','.cancelled-order-row','.order-move-buttons','.ar-current-stats','.ar-form'],
                   '/serial-printer.js':['WIDTH_CHOICES','80: 512','buildRasterJob','receiptShippingLabel','0x56'],
                   '/request/':['id="buyer-form"','id="buyer-products"','id="delivery-date"','noindex'],
@@ -61,6 +61,11 @@ jobs:
                 assert r.status==200 and all(marker in data for marker in checks[urlpath]),'Missing live admin/dashboard/thermal UI markers'
                 if urlpath=='/':
                   assert 'id="serial-test"' not in data and 'id="serial-width-test"' not in data,'Obsolete printer buttons returned'
+                  nav=data.split('<nav class="nav" id="nav">',1)[1].split('</nav>',1)[0]
+                  tabs=['data-tab="home"','data-tab="order"','data-tab="requests"','data-tab="stock"','data-tab="bills"','data-tab="receivables"','data-tab="products"','data-tab="clients"','data-tab="settings"']
+                  assert [nav.index(t) for t in tabs]==sorted(nav.index(t) for t in tabs),'Actual navigation order is wrong'
+                  assert '관리 시작 전 발행한 명세표는 기초 미수금에 이미 반영된 것으로 간주하며 다시 합산하지 않습니다.' not in data,'Removed AR hint returned'
+                  assert '기존 명세표의 ‘전 잔고’는 중복 계산하지 않습니다.' not in data,'Removed AR hint returned'
                 if urlpath=='/app.js':
                   assert "serial-test" not in data,'Obsolete printer handlers returned'
                 print('LIVE_UI_READBACK_PASS',urlpath,'HTTP',r.status,'MARKERS',len(checks[urlpath]),'NOINDEX',r.headers.get('X-Robots-Tag'))
