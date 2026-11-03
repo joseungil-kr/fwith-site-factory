@@ -21,7 +21,7 @@ test('Korean invoice content includes customer, VAT and manual item',()=>{
 });
 test('GS v 0 image encodes black pixels and preserves byte/padding order',()=>{
   const width=10,height=2,pixels=new Uint8ClampedArray(width*height*4).fill(255);
-  pixels[(0*width+0)*4+0]=0; pixels[(1*width+8)*4+0]=0;
+  for (const n of [0, width+8]) { for (let channel=0;channel<3;channel++) pixels[n*4+channel]=0; }
   const cmd=rasterBand({data:pixels,width,height},0,2);
   assert.deepEqual([...cmd.slice(0,8)],[29,118,48,0,2,0,2,0]);
   assert.deepEqual([...cmd.slice(8)],[128,0,0,128]);
