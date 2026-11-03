@@ -1,0 +1,44 @@
+name: Baekse order find unused Worker (read-only)
+on:
+  push:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths: ['.github/workflows/baekse-order-worker-inventory.yml']
+permissions: {contents: read}
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    env:
+      CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Enumerate Worker metadata and live hostname bindings without modifying anything
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os,json,urllib.request,urllib.error
+          t=os.environ['CF_TOKEN'];a=os.environ['CF_ACCOUNT']
+          def get(p):
+            r=urllib.request.Request('https://api.cloudflare.com/client/v4'+p,headers={'Authorization':'Bearer '+t})
+            try:
+              with urllib.request.urlopen(r,timeout=25) as res:
+                d=json.load(res);return d.get('result') if d.get('success') else None
+            except urllib.error.HTTPError as e:
+              print('READ_ERROR',p.split('?')[0],e.code);return None
+          scripts=get('/accounts/'+a+'/workers/scripts')
+          domains=get('/accounts/'+a+'/workers/domains')
+          zones=get('/zones?name=baeksefood.com')
+          routes=[]
+          if zones:
+            routes=get('/zones/'+zones[0]['id']+'/workers/routes') or []
+          print('TOTAL_WORKER_SCRIPTS',len(scripts or []))
+          attached={d.get('service') for d in domains or []}
+          routed={r.get('script') for r in routes or []}
+          for s in scripts or []:
+            n=s.get('id','')
+            print('WORKER',n,'custom_domain',n in attached,'route',n in routed,
+                  'created',s.get('created_on'),'modified',s.get('modified_on'),
+                  'usage_model',s.get('usage_model'),'environments',len(s.get('environments') or []))
+          print('CUSTOM_DOMAIN_COUNT',len(domains or []),'BAEKSE_ROUTE_COUNT',len(routes))
+          print('RISK_CONTROL','Read-only metadata, no domain or script modifications')
+          PY
