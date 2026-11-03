@@ -1,0 +1,50 @@
+name: Baekse buyer portal browser acceptance QA
+on:
+  push:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths:
+      - 'apps/baekse-order/requests.js'
+      - 'apps/baekse-order/public/buyer.js'
+      - 'apps/baekse-order/public/buyer.css'
+      - 'apps/baekse-order/public/request/**'
+      - 'apps/baekse-order/tests/buyer-browser-qa.mjs'
+      - '.github/workflows/baekse-order-buyer-browser.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: feature/baekse-order-deploy-20261103}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Install browser QA tools
+        working-directory: apps/baekse-order
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start local Cloudflare Durable Object app
+        working-directory: apps/baekse-order
+        run: |
+          node --check src.js
+          node --check requests.js
+          node --check public/buyer.js
+          npm test
+          npx --yes wrangler@4.156.2 dev --local --port 8787 --var ADMIN_PASSWORD:ci-only-strong-example-password-2026 >/tmp/baekse-buyer-qa.log 2>&1 &
+          echo $! >/tmp/baekse-buyer-qa.pid
+      - name: Browser-verify customer link, order, shortage and stock
+        working-directory: apps/baekse-order
+        run: node tests/buyer-browser-qa.mjs
+      - name: Publish local screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: baekse-buyer-local-qa
+          path: apps/baekse-order/qa-buyer-artifacts/
+          if-no-files-found: ignore
+          retention-days: 5
+      - name: Show local runtime logs on failure
+        if: failure()
+        run: tail -120 /tmp/baekse-buyer-qa.log || true
