@@ -57,11 +57,19 @@ export function makeReceiptRows(invoice) {
   rows.push({line:true});
   rows.push({text:'공급가액: ' + formatWon(o.supply),align:'right'});
   rows.push({text:'부가세: ' + formatWon(o.tax),align:'right'});
-  rows.push({text:'합계: ' + formatWon(o.total),align:'right',kind:'total'});
+  rows.push({text:'전 잔고: ' + formatWon(o.previous_balance||0),align:'right'});
+  rows.push({text:'합계: ' + formatWon(o.amount_due??(Number(o.total)+Number(o.previous_balance||0))),align:'right',kind:'total'});
   if (o.status !== 'issued') rows.push({text:'[출고 취소된 명세표]',align:'center',kind:'bold'});
   if (o.memo) rows.push({text:'비고: ' + String(o.memo)});
   rows.push({line:true});
-  rows.push({text:'위와 같이 출고하였습니다.',align:'center'});
+  rows.push({text:'위와같이 출고 하였습니다.',align:'center'});
+  const bank=o.bank||{};
+  if(bank.bank_name&&bank.account_number&&bank.account_holder){
+    rows.push({line:true});
+    rows.push({text:'입금처:',kind:'bold'});
+    rows.push({text:String(bank.bank_name)+' '+String(bank.account_number)});
+    rows.push({text:'예금주: '+String(bank.account_holder)});
+  }
   return rows;
 }
 

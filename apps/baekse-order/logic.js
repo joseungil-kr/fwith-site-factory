@@ -22,4 +22,10 @@ export const calcTotals = (items, vat) => {
   const tax=vat==='tax'?Math.round(supply*.1):0;
   return {supply,tax,total:supply+tax};
 };
+export const calculatePayable=(saleTotal,previousBalance=0)=>{
+  const sale=onlyInt(saleTotal,'출고금액',0,2_000_000_000);
+  const balance=onlyInt(previousBalance,'전 잔고',0,2_000_000_000);
+  if(sale+balance>2_000_000_000)throw new Error('최종 청구금액 한도 초과');
+  return sale+balance;
+};
 export const stockRemaining=(opening,entries)=>entries.reduce((n,e)=>n+e.delta,opening);

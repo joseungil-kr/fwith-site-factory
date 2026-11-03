@@ -82,3 +82,5 @@ test('full-width single raster image, linefeed, and one GS V 0 auto-cut from wor
   assert.deepEqual([...command[2]],[10,10,10,0x1d,0x56,0]);
   assert.deepEqual([...buildRasterJob({width,height,data:raw},false)[2]],[10,10,10]);
 });
+
+test('전 잔고는 부가세와 같은 글자 유형이고 입금처는 하단에 출력',()=>{const r=makeReceiptRows({order:{id:11,order_date:'2026-11-03',status:'issued',supply:93000,tax:0,total:93000,previous_balance:100000,amount_due:193000,client:{business:'안산 중앙점'},bank:{bank_name:'테스트은행',account_number:'987-654',account_holder:'테스트예금주'}},items:[{name:'잉어반죽',qty:1,unit_price:93000,line_total:93000}]});const txt=r.map(x=>x.text||'').join('|');for(const s of ['공급가액: 93,000원','부가세: 0원','전 잔고: 100,000원','합계: 193,000원','테스트은행 987-654','예금주: 테스트예금주'])assert.ok(txt.includes(s));assert.equal(r.find(x=>x.text?.startsWith('전 잔고')).kind,r.find(x=>x.text?.startsWith('부가세')).kind);});

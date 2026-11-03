@@ -1,5 +1,5 @@
 import { DurableObject } from 'cloudflare:workers';
-import {DEFAULT_PRODUCTS,onlyInt,safeText,dateCheck,calcTotals,sessionDurationSeconds} from './logic.js';
+import {DEFAULT_PRODUCTS,onlyInt,safeText,dateCheck,calcTotals,calculatePayable,sessionDurationSeconds} from './logic.js';
 const json=(obj,status=200,headers={})=>new Response(JSON.stringify(obj),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...headers}});
 const err=(msg,status=400)=>json({error:msg},status);
 const encode = new TextEncoder();
@@ -16,10 +16,23 @@ export class OrderDatabase extends DurableObject {
     this.sql.exec(`CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,cost INTEGER NOT NULL,price INTEGER NOT NULL,active INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL);`);
     this.sql.exec(`CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY AUTOINCREMENT,business TEXT NOT NULL,person TEXT NOT NULL,phone TEXT NOT NULL,business_no TEXT NOT NULL DEFAULT '',address TEXT NOT NULL DEFAULT '',active INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL);`);
     this.sql.exec(`CREATE TABLE IF NOT EXISTS movements (id INTEGER PRIMARY KEY AUTOINCREMENT,product_id INTEGER NOT NULL,delta INTEGER NOT NULL,cost INTEGER NOT NULL DEFAULT 0,note TEXT NOT NULL DEFAULT '',source TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL);`);
-    this.sql.exec(`CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY AUTOINCREMENT,client_id INTEGER NOT NULL,client_snapshot TEXT NOT NULL,order_date TEXT NOT NULL,vat TEXT NOT NULL,supply INTEGER NOT NULL,tax INTEGER NOT NULL,total INTEGER NOT NULL,status TEXT NOT NULL DEFAULT 'issued',memo TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL,cancelled_at TEXT);`);
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY AUTOINCREMENT,client_id INTEGER NOT NULL,client_snapshot TEXT NOT NULL,order_date TEXT NOT NULL,vat TEXT NOT NULL,supply INTEGER NOT NULL,tax INTEGER NOT NULL,total INTEGER NOT NULL,previous_balance INTEGER NOT NULL DEFAULT 0,bank_snapshot TEXT NOT NULL DEFAULT '{}',status TEXT NOT NULL DEFAULT 'issued',memo TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL,cancelled_at TEXT);`);
     this.sql.exec(`CREATE TABLE IF NOT EXISTS lines (id INTEGER PRIMARY KEY AUTOINCREMENT,order_id INTEGER NOT NULL,product_id INTEGER,name TEXT NOT NULL,qty INTEGER NOT NULL,unit_price INTEGER NOT NULL,cost INTEGER NOT NULL DEFAULT 0,line_total INTEGER NOT NULL);`);
     this.sql.exec(`CREATE TABLE IF NOT EXISTS audit (id INTEGER PRIMARY KEY AUTOINCREMENT,action TEXT NOT NULL,info TEXT NOT NULL,created_at TEXT NOT NULL);`);
     this.sql.exec(`CREATE TABLE IF NOT EXISTS sessions (hash TEXT PRIMARY KEY,expires INTEGER NOT NULL);`);
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS receipt_settings (
+      id INTEGER PRIMARY KEY CHECK(id=1),
+      bank_name TEXT NOT NULL DEFAULT '',
+      account_number TEXT NOT NULL DEFAULT '',
+      account_holder TEXT NOT NULL DEFAULT '',
+      updated_at TEXT NOT NULL
+    );`);
+    this.sql.exec("INSERT OR IGNORE INTO receipt_settings(id,bank_name,account_number,account_holder,updated_at) VALUES (1,'','','',?)",now());
+    // Non-destructive schema upgrade for existing Durable Object SQLite databases.
+    const orderCols=this.sql.exec('PRAGMA table_info(orders)').toArray().map(x=>x.name);
+    if(!orderCols.includes('previous_balance'))this.sql.exec('ALTER TABLE orders ADD COLUMN previous_balance INTEGER NOT NULL DEFAULT 0');
+    if(!orderCols.includes('bank_snapshot'))this.sql.exec("ALTER TABLE orders ADD COLUMN bank_snapshot TEXT NOT NULL DEFAULT '{}'");
+
     if(!this.sql.exec('SELECT id FROM products LIMIT 1').toArray()[0]) {
       for (const [name,cost,price] of DEFAULT_PRODUCTS) this.sql.exec('INSERT INTO products (name,cost,price,created_at) VALUES (?,?,?,?)',name,cost,price,now());
     }
@@ -64,15 +77,28 @@ export class OrderDatabase extends DurableObject {
    if(path==='/api/state'&&req.method==='GET'){
       const products=this.all('SELECT p.*,COALESCE((SELECT SUM(delta) FROM movements WHERE product_id=p.id),0) AS stock FROM products p ORDER BY id');
       const clients=this.all('SELECT * FROM clients ORDER BY id');
-      const orders=this.all('SELECT o.id,o.order_date,o.status,o.supply,o.tax,o.total,o.memo,o.created_at, json_extract(o.client_snapshot,\'$.business\') AS client_name FROM orders o ORDER BY o.id DESC LIMIT 300');
+      const orders=this.all('SELECT o.id,o.order_date,o.status,o.supply,o.tax,o.total,o.previous_balance,(o.total+o.previous_balance) AS amount_due,o.memo,o.created_at, json_extract(o.client_snapshot,\'$.business\') AS client_name FROM orders o ORDER BY o.id DESC LIMIT 300');
       const movements=this.all('SELECT m.*,p.name AS product_name FROM movements m JOIN products p ON p.id=m.product_id ORDER BY m.id DESC LIMIT 300');
-      return json({products,clients,orders,movements});
+      const receipt_settings=this.getOne('SELECT bank_name,account_number,account_holder FROM receipt_settings WHERE id=1');
+      return json({products,clients,orders,movements,receipt_settings});
    }
    if(path==='/api/export'&&req.method==='GET'){
       const data={exported_at:now(),products:this.all('SELECT * FROM products'),clients:this.all('SELECT * FROM clients'),orders:this.all('SELECT * FROM orders'),lines:this.all('SELECT * FROM lines'),movements:this.all('SELECT * FROM movements'),audit:this.all('SELECT * FROM audit')};
       return json(data,200,{'Content-Disposition':'attachment; filename="baekse-order-backup.json"'});
    }
    const data=req.method==='POST'?await req.json():{};
+   if(path==='/api/receipt-settings'&&req.method==='POST'){
+     const bank_name=safeText(data.bank_name,'은행명',false,80),
+       account_number=safeText(data.account_number,'계좌번호',false,60),
+       account_holder=safeText(data.account_holder,'예금주',false,80);
+     const values=[bank_name,account_number,account_holder];
+     if(values.some(Boolean)&&!values.every(Boolean))throw new Error('입금처는 은행명·계좌번호·예금주를 모두 입력하세요');
+     if(account_number&&!/^[0-9\-\s]{3,60}$/.test(account_number))throw new Error('계좌번호는 숫자, 공백, 하이픈만 입력하세요');
+     this.sql.exec('UPDATE receipt_settings SET bank_name=?,account_number=?,account_holder=?,updated_at=? WHERE id=1',
+       bank_name,account_number,account_holder,now());
+     this.audit('receipt_settings_update',{configured:Boolean(bank_name)});
+     return json({ok:true});
+   }
    if(path==='/api/products'&&req.method==='POST'){
       const name=safeText(data.name,'제품명',true,80),cost=onlyInt(data.cost,'매입가',0,100000000),price=onlyInt(data.price,'출고가',0,100000000);
       if(data.id){const old=this.getOne('SELECT * FROM products WHERE id=?',onlyInt(data.id,'제품ID',1));if(!old)throw new Error('제품이 없습니다');this.sql.exec('UPDATE products SET name=?,cost=?,price=? WHERE id=?',name,cost,price,old.id);this.audit('product_update',{id:old.id});}
@@ -113,17 +139,21 @@ export class OrderDatabase extends DurableObject {
         return {product_id:null,name,qty,unit_price,cost:0}
       });
       const totals=calcTotals(items,vat);
+      const previous_balance=onlyInt(data.previous_balance??0,'전 잔고',0,2_000_000_000);
+      const amount_due=calculatePayable(totals.total,previous_balance);
+      const bank_setting=this.getOne('SELECT bank_name,account_number,account_holder FROM receipt_settings WHERE id=1');
+      const bank_snapshot=JSON.stringify(bank_setting||{bank_name:'',account_number:'',account_holder:''});
       const grouped=new Map();for(const i of items)if(i.product_id)grouped.set(i.product_id,(grouped.get(i.product_id)||0)+i.qty);
       for(const [id,q] of grouped){const remaining=this.getOne('SELECT COALESCE(SUM(delta),0) AS qty FROM movements WHERE product_id=?',id).qty;if(q>remaining)throw new Error(`${items.find(i=>i.product_id===id).name}: 재고 부족 (현재 ${remaining}개)`)}
       let id;
       this.ctx.storage.transactionSync(()=>{
-        this.sql.exec('INSERT INTO orders(client_id,client_snapshot,order_date,vat,supply,tax,total,memo,created_at) VALUES(?,?,?,?,?,?,?,?,?)',client.id,JSON.stringify({business:client.business,person:client.person,phone:client.phone,business_no:client.business_no,address:client.address}),order_date,vat,totals.supply,totals.tax,totals.total,memo,now());
+        this.sql.exec('INSERT INTO orders(client_id,client_snapshot,order_date,vat,supply,tax,total,previous_balance,bank_snapshot,memo,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)',client.id,JSON.stringify({business:client.business,person:client.person,phone:client.phone,business_no:client.business_no,address:client.address}),order_date,vat,totals.supply,totals.tax,totals.total,previous_balance,bank_snapshot,memo,now());
         id=this.getOne('SELECT last_insert_rowid() AS id').id;
         for(const i of items){this.sql.exec('INSERT INTO lines(order_id,product_id,name,qty,unit_price,cost,line_total) VALUES(?,?,?,?,?,?,?)',id,i.product_id,i.name,i.qty,i.unit_price,i.cost,i.qty*i.unit_price);
           if(i.product_id)this.sql.exec('INSERT INTO movements(product_id,delta,cost,note,source,created_at) VALUES(?,?,?,?,?,?)',i.product_id,-i.qty,i.cost,'출고 #'+id,'order:'+id,now());}
-        this.audit('order_create',{id,total:totals.total});
+        this.audit('order_create',{id,total:totals.total,previous_balance,amount_due});
       });
-      return json({ok:true,id,...totals});
+      return json({ok:true,id,...totals,previous_balance,amount_due});
    }
    if(path==='/api/orders/cancel'&&req.method==='POST'){
       const id=onlyInt(data.id,'명세표 ID',1),order=this.getOne('SELECT * FROM orders WHERE id=?',id);if(!order||order.status!=='issued')throw new Error('취소할 수 없는 출고건');
@@ -134,7 +164,10 @@ export class OrderDatabase extends DurableObject {
    }
    if(path==='/api/orders/detail'&&req.method==='GET'){
      const id=onlyInt(Number(url.searchParams.get('id')),'명세표 ID',1),order=this.getOne('SELECT * FROM orders WHERE id=?',id);if(!order)return err('명세표를 찾을 수 없습니다',404);
-     return json({order:{...order,client:JSON.parse(order.client_snapshot)},items:this.all('SELECT * FROM lines WHERE order_id=? ORDER BY id',id)});
+     const bank_saved=JSON.parse(order.bank_snapshot||'{}');
+     const bank=Object.keys(bank_saved).length?bank_saved:(this.getOne('SELECT bank_name,account_number,account_holder FROM receipt_settings WHERE id=1')||{});
+     return json({order:{...order,client:JSON.parse(order.client_snapshot),bank,
+       amount_due:calculatePayable(order.total,order.previous_balance??0)},items:this.all('SELECT * FROM lines WHERE order_id=? ORDER BY id',id)});
    }
    return err('없는 API 주소',404);
  }
