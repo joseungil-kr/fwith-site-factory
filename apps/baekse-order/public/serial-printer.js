@@ -6,10 +6,11 @@
  */
 export const COM_SLOTS = Object.freeze([1, 2, 3, 4, 5, 6]);
 export const BAUD_RATES = Object.freeze([4800, 9600, 19200, 38400, 115200]);
-export const PAPER_WIDTHS = Object.freeze({58: 384, 80: 576});
+export const PAPER_WIDTHS = Object.freeze({58: 384, 80: 512});
+export const WIDTH_CHOICES = Object.freeze({58:[360,384], 80:[384,416,432,448,480,512,576]});
+export const FONT_CHOICES = Object.freeze([22,26,30]);
 const ESC = 0x1b, GS = 0x1d;
 const formatWon = v => new Intl.NumberFormat('ko-KR').format(Number(v) || 0) + '원';
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 export function checkedSettings(raw) {
   const slot = Number(raw.slot), baudRate = Number(raw.baudRate), paperMm = Number(raw.paperMm);
@@ -18,7 +19,12 @@ export function checkedSettings(raw) {
   if (!Object.prototype.hasOwnProperty.call(PAPER_WIDTHS, paperMm)) {
     throw new Error('용지 폭을 58mm 또는 80mm로 선택하세요.');
   }
-  return {slot, baudRate, paperMm};
+  const dotWidth = Number(raw.dotWidth ?? PAPER_WIDTHS[paperMm]);
+  const fontSize = Number(raw.fontSize ?? 26);
+  if (!WIDTH_CHOICES[paperMm].includes(dotWidth)) throw new Error('선택한 용지에서 사용할 수 없는 인쇄폭입니다.');
+  if (!FONT_CHOICES.includes(fontSize)) throw new Error('글자 크기를 22, 26, 30 중에서 선택하세요.');
+  const autoCut = raw.autoCut !== false;
+  return {slot, baudRate, paperMm, dotWidth, fontSize, autoCut};
 }
 
 export function makeReceiptRows(invoice) {
@@ -59,12 +65,13 @@ export function makeReceiptRows(invoice) {
   return rows;
 }
 
-function fontFor(row) {
+function fontFor(row, fontSize=26) {
   const family = '"Malgun Gothic", "Apple SD Gothic Neo", sans-serif';
-  if (row.kind === 'title') return 'bold 28px ' + family;
-  if (row.kind === 'subtitle') return 'bold 21px ' + family;
-  if (row.kind === 'total') return 'bold 21px ' + family;
-  return (row.kind === 'bold' ? 'bold ' : '') + '17px ' + family;
+  const px = row.kind === 'title' ? Math.round(fontSize*1.45) :
+    row.kind === 'subtitle' ? Math.round(fontSize*1.15) :
+    row.kind === 'total' ? Math.round(fontSize*1.27) : fontSize;
+  const strong = ['title','subtitle','total','bold'].includes(row.kind);
+  return (strong?'bold ':'') + px + 'px ' + family;
 }
 
 function wrapPixels(ctx, text, allowed) {
@@ -84,15 +91,17 @@ function wrapPixels(ctx, text, allowed) {
   return result;
 }
 
-export function drawInvoiceCanvas(invoice, paperMm, doc = document) {
-  const width = PAPER_WIDTHS[paperMm];
-  if (!width) throw new Error('지원하지 않는 용지 폭입니다.');
+export function drawInvoiceCanvas(invoice, paperMm, doc = document, options={}) {
+  const width = Number(options.dotWidth ?? PAPER_WIDTHS[paperMm]);
+  if (!WIDTH_CHOICES[paperMm]?.includes(width)) throw new Error('지원하지 않는 인쇄폭입니다.');
+  const fontSize = Number(options.fontSize ?? 26);
+  if (!FONT_CHOICES.includes(fontSize)) throw new Error('지원하지 않는 글자 크기입니다.');
   const rows = makeReceiptRows(invoice);
   const canvas = doc.createElement('canvas');
   canvas.width = width;
   const ctx = canvas.getContext('2d', {willReadFrequently:true});
   if (!ctx) throw new Error('브라우저에서 인쇄용 이미지를 만들 수 없습니다.');
-  const padding = paperMm === 58 ? 12 : 18;
+  const padding = paperMm === 58 ? 12 : 20;
   const maxWidth = width - padding * 2;
   const lines = [];
   for (const row of rows) {
@@ -100,10 +109,10 @@ export function drawInvoiceCanvas(invoice, paperMm, doc = document) {
       lines.push({line:true,height:18});
       continue;
     }
-    ctx.font = fontFor(row);
+    ctx.font = fontFor(row,fontSize);
     for (const text of wrapPixels(ctx, row.text, maxWidth)) {
       const big = ['title','subtitle','total'].includes(row.kind);
-      lines.push({...row,text,height:big ? 36 : 27});
+      lines.push({...row,text,height:Math.ceil((big ? fontSize*1.45 : fontSize)*1.36)+2});
     }
   }
   const height = 16 + lines.reduce((acc,line) => acc + line.height,0) + 18;
@@ -118,7 +127,7 @@ export function drawInvoiceCanvas(invoice, paperMm, doc = document) {
     if (line.line) {
       ctx.fillRect(padding,y + 7,maxWidth,1);
     } else {
-      ctx.font = fontFor(line);
+      ctx.font = fontFor(line,fontSize);
       ctx.textAlign = line.align || 'left';
       const x = line.align === 'right' ? width - padding :
                 line.align === 'center' ? width/2 : padding;
@@ -136,7 +145,7 @@ export function rasterBand(image, startRow = 0, rowCount = 48) {
   }
   const width = image.width, height = image.height;
   if (width < 1 || width > 1024 || height < 1 || height > 20000 ||
-      startRow < 0 || startRow >= height || rowCount < 1 || rowCount > 256) {
+      startRow < 0 || startRow >= height || rowCount < 1 || rowCount > 4096) {
     throw new Error('인쇄 이미지 크기가 유효하지 않습니다.');
   }
   const rows = Math.min(rowCount, height-startRow);
@@ -154,6 +163,20 @@ export function rasterBand(image, startRow = 0, rowCount = 48) {
     }
   }
   return data;
+}
+
+/** One ESC/POS raster-image job, matching the operator's known printtest.mjs:
+ * ESC @; GS v 0 [whole image, or 4096-row segments for unusually long receipts]; line feeds; optional GS V 0 cut.
+ * Unlike 48-dot bands, ordinary receipts are printed as one image.
+ */ 
+export function buildRasterJob(image, autoCut=true) {
+  if (!image || !Number.isInteger(image.height) || image.height < 1 || image.height > 20000) {
+    throw new Error('인쇄 이미지가 올바르지 않습니다.');
+  }
+  const blocks=[Uint8Array.from([ESC,0x40])];
+  for (let y=0; y<image.height; y+=4096) blocks.push(rasterBand(image,y,Math.min(4096,image.height-y)));
+  blocks.push(Uint8Array.from(autoCut?[10,10,10,GS,0x56,0x00]:[10,10,10]));
+  return blocks;
 }
 
 export function testReceiptBytes(settings) {
@@ -211,13 +234,14 @@ export class SerialReceiptPrinter {
       const total=blocks.reduce((n,b)=>n+b.length,0);
       let sent=0;
       for (const bytes of blocks) {
-        for(let i=0;i<bytes.length;i+=128){
-          const chunk=bytes.subarray(i,i+128);
+        // Web Serial WritableStream handles backpressure. Do not impose an extra
+        // full wire-time delay per 128-byte fragment: that doubled perceived latency.
+        // Keep one complete GS v 0 raster command, writing its payload in order.
+        for(let i=0; i<bytes.length; i+=2048) {
+          const chunk=bytes.subarray(i,i+2048);
           await writer.write(chunk);
           sent+=chunk.length;
           onProgress(sent,total);
-          // At 9600bps a byte takes roughly ten serial bits. Allow buffer to drain.
-          await delay(Math.ceil(10000 * chunk.length / this.settings.baudRate));
         }
       }
     } finally {
@@ -228,16 +252,29 @@ export class SerialReceiptPrinter {
   async test(onProgress) {
     await this._send([testReceiptBytes(this.settings)],onProgress);
   }
-  async printInvoice(invoice,paperMm,onProgress) {
+  async printInvoice(invoice,options,onProgress) {
     if (!this.connected) throw new Error('COM 포트가 연결되지 않았습니다.');
-    const width=Number(paperMm);
-    if (![58,80].includes(width)) throw new Error('58mm 또는 80mm를 선택하세요.');
-    const canvas=drawInvoiceCanvas(invoice,width);
+    const settings=checkedSettings({...this.settings,...(typeof options==='object'?options:{paperMm:options})});
+    const canvas=drawInvoiceCanvas(invoice,settings.paperMm,document,settings);
     const ctx=canvas.getContext('2d',{willReadFrequently:true});
     const image=ctx.getImageData(0,0,canvas.width,canvas.height);
-    const blocks=[Uint8Array.from([ESC,0x40])];
-    for (let y=0;y<image.height;y+=48) blocks.push(rasterBand(image,y,48));
-    blocks.push(Uint8Array.from([10,10,10,10]));
-    await this._send(blocks,onProgress);
+    await this._send(buildRasterJob(image,settings.autoCut),onProgress);
+  }
+  async testWidth(options,onProgress) {
+    if (!this.connected) throw new Error('먼저 COM 포트를 연결하세요.');
+    const settings=checkedSettings({...this.settings,...options});
+    const c=document.createElement('canvas');
+    c.width=settings.dotWidth;c.height=145;
+    const ctx=c.getContext('2d',{willReadFrequently:true});
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);
+    ctx.fillStyle='#000';
+    // Bars should appear on both sides. If the right one clips, select a smaller dot width.
+    ctx.fillRect(7,7,5,128);ctx.fillRect(c.width-12,7,5,128);
+    ctx.fillRect(7,7,c.width-14,3);ctx.fillRect(7,132,c.width-14,3);
+    ctx.textAlign='center';ctx.textBaseline='top';ctx.font='bold 25px "Malgun Gothic",sans-serif';
+    ctx.fillText(String(settings.dotWidth)+' DOT WIDTH',c.width/2,37);
+    ctx.font='20px "Malgun Gothic",sans-serif';
+    ctx.fillText('LEFT  |  RIGHT',c.width/2,80);
+    await this._send(buildRasterJob(ctx.getImageData(0,0,c.width,c.height),settings.autoCut),onProgress);
   }
 }
