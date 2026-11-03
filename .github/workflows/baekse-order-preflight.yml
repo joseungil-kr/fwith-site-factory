@@ -1,4 +1,4 @@
-name: Baekse order existing Worker route read-only inspect
+name: Baekse order hostname Pages and Worker diagnostic
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
@@ -12,65 +12,45 @@ jobs:
       CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
-      - name: Inspect precise domain and Worker without updating any resources
+      - name: Check whether Interpiad is Pages rather than Worker
         run: |
           python3 - <<'PY'
-          import json,os,urllib.request,urllib.error
-          t=os.environ.get("CF_TOKEN",""); account=os.environ.get("CF_ACCOUNT","")
-          print("TOKEN_PRESENT",bool(t),"ACCOUNT_PRESENT",bool(account))
-          if not t or not account: raise SystemExit("Missing API identity; aborted")
-          def api(path):
+          import json,os,urllib.request,urllib.error,socket
+          t=os.getenv('CF_TOKEN',''); a=os.getenv('CF_ACCOUNT','')
+          assert t and a,'Existing credentials missing'
+          def call(p):
+            req=urllib.request.Request('https://api.cloudflare.com/client/v4'+p,headers={'Authorization':'Bearer '+t})
             try:
-              req=urllib.request.Request("https://api.cloudflare.com/client/v4"+path,headers={"Authorization":"Bearer "+t,"Accept":"application/json"})
               with urllib.request.urlopen(req,timeout=25) as h:
-                j=json.load(h)
-                print("API_STATUS",path.split("?")[0],h.status,"OK",j.get("success"))
-                return j.get("result") if j.get("success") else None
+                r=json.load(h)
+                print('HTTP',p.split('?')[0],h.status,'success',r.get('success'),'count',len(r.get('result') or []))
+                return r
             except urllib.error.HTTPError as e:
-              print("API_STATUS",path.split("?")[0],e.code,"DENIED")
+              try: error=json.loads(e.read().decode()) 
+              except: error={}
+              print('HTTP',p.split('?')[0],e.code,'codes',[v.get('code') for v in error.get('errors',[])])
               return None
-            except Exception as e:
-              print("API_STATUS",path.split("?")[0],"ERROR",type(e).__name__)
-              return None
-          zones={}
-          for d in ["interapid.com","interpiad.com","baeksefood.com"]:
-            result=api("/zones?name="+d+"&per_page=5")
-            if isinstance(result,list):
-              for zone in result:
-                if zone.get("name")==d:
-                  zones[d]=zone.get("id")
-                  print("ZONE",d,"active",zone.get("status")=="active","account_match",zone.get("account",{}).get("id")==account)
-            else: print("ZONE",d,"not_found_or_unreadable")
-          domains=api("/accounts/"+account+"/workers/domains")
-          if isinstance(domains,list):
-            print("WORKER_DOMAINS_TOTAL",len(domains))
-            for v in domains:
-              h=v.get("hostname","")
-              if h in ("interapid.com","www.interapid.com","interpiad.com","www.interpiad.com","order.baeksefood.com"):
-                print("WORKER_DOMAIN_MATCH",h,"service",v.get("service"),"environment",v.get("environment"))
-          else: print("WORKER_DOMAINS_UNREADABLE")
-          scripts=api("/accounts/"+account+"/workers/scripts")
-          if isinstance(scripts,list):
-            print("WORKERS_TOTAL",len(scripts))
-            for x in scripts:
-              n=x.get("id",x.get("name",""))
-              if any(s in n.lower() for s in ("interpiad","interapid","baekse","order","interpia")):
-                print("SCRIPT_MATCH",n)
-          else: print("WORKERS_UNREADABLE")
-          for domain,zid in zones.items():
-            rs=api("/zones/"+zid+"/workers/routes")
-            if isinstance(rs,list):
-              print("ROUTES_COUNT",domain,len(rs))
-              for r in rs:
-                p=r.get("pattern","")
-                if domain=="interpiad.com" or "order.baeksefood.com" in p:
-                  if domain=="interpiad.com" or "order" in p: print("ROUTE",p,"script",r.get("script"))
-            elif rs is None: print("ROUTES_UNREADABLE",domain)
-          pg=api("/accounts/"+account+"/pages/projects?per_page=100")
-          if isinstance(pg,list):
-            for p in pg:
-              ds=p.get("domains") or []
-              if any("interpiad" in d or "interapid" in d or "baeksefood" in d for d in ds):
-                print("PAGES_PROJECT",p.get("name"),"domains",",".join(ds))
-          print("READ_ONLY_INSPECTION_COMPLETE")
+          for domain in ['interapid.com','interpiad.com','order.baeksefood.com']:
+            try: print('DNS_RESOLVES',domain,bool(socket.getaddrinfo(domain,443)))
+            except: print('DNS_RESOLVES',domain,False)
+          for uri in ['/accounts/'+a+'/pages/projects','/accounts/'+a+'/pages/projects?page=1&per_page=5']:
+            r=call(uri)
+            if r and isinstance(r.get('result'),list):
+              for p in r['result']:
+                ds=p.get('domains') or []
+                if any('interpiad' in str(d) or 'interapid' in str(d) or 'baeksefood' in str(d) for d in ds) or any(x in p.get('name','').lower() for x in ['interpiad','interapid','baekse']):
+                  source=(p.get('source') or {}).get('config') or {}
+                  print('PAGES_MATCH',p.get('name'),'DOMAINS',ds,'PRODUCTION_BRANCH',p.get('production_branch'),'REPO_NAME',source.get('repo_name'))
+          r=call('/accounts/'+a+'/workers/domains')
+          if r and isinstance(r.get('result'),list):
+            for v in r['result']:
+              if 'inter' in str(v.get('hostname','')).lower() or 'baeksefood' in str(v.get('hostname','')).lower():
+                print('WORKERS_CUSTOM_DOMAIN_MATCH',v.get('hostname'),v.get('service'))
+          r=call('/accounts/'+a+'/workers/scripts')
+          if r and isinstance(r.get('result'),list):
+            for v in r['result']:
+              n=v.get('id','')
+              if any(s in n.lower() for s in ['inter','homepage','baekse','order','website']):
+                print('SCRIPT_CANDIDATE',n)
+          print('DONE_WITHOUT_CHANGES')
           PY
