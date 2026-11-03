@@ -44,16 +44,19 @@ jobs:
           host='funeralflower-home-preview.joseungil.workers.dev'
           try:print('IP_LOOKUP',host,[x[4][0] for x in socket.getaddrinfo(host,443)][:2])
           except Exception as e:print('DNS_ERROR',str(e)[:200])
-          for urlpath in ('/','/app.js','/style.css','/serial-printer.js'):
+          for urlpath in ('/','/app.js','/style.css','/serial-printer.js','/request/','/buyer.js','/buyer.css'):
             try:
               req=urllib.request.Request('https://order.baeksefood.com'+urlpath,headers={'User-Agent':'Mozilla/5.0 (compatible; deployment verifier)'})
               with urllib.request.urlopen(req,timeout=20) as r:
                 data=r.read().decode('utf-8','replace')
                 checks={
-                  '/':['id="serial-dots"','id="serial-font"','id="serial-cut"','80mm (현재 용지)','512도트','id="bill-delete"','name="company_name"','name="company_email"','관리자 설정','처음 한 번은'],
-                  '/app.js':['metric-orange','cancelled-order-row','data-product-move','orders/reissue','orders/delete','movementLabel','company_name'],
+                  '/':['id="serial-dots"','id="serial-font"','id="serial-cut"','80mm (현재 용지)','512도트','id="bill-delete"','name="company_name"','name="company_email"','관리자 설정','처음 한 번은','data-tab="requests"','id="request-list"','id="buyer-home-summary"'],
+                  '/app.js':['metric-orange','cancelled-order-row','data-product-move','orders/reissue','orders/delete','movementLabel','company_name','requests/fulfill','requests/link/issue','buyer-home-summary'],
                   '/style.css':['.metric.metric-orange','.bank-settings-grid','.cancelled-order-row','.order-move-buttons'],
-                  '/serial-printer.js':['WIDTH_CHOICES','80: 512','buildRasterJob','0x56']
+                  '/serial-printer.js':['WIDTH_CHOICES','80: 512','buildRasterJob','0x56'],
+                  '/request/':['id="buyer-form"','id="buyer-products"','id="delivery-date"','noindex'],
+                  '/buyer.js':['request_key','/api/buyer/','submit','overview'],
+                  '/buyer.css':['buyer-product','buyer-submit']
                 }
                 assert r.status==200 and all(marker in data for marker in checks[urlpath]),'Missing live admin/dashboard/thermal UI markers'
                 if urlpath=='/':
