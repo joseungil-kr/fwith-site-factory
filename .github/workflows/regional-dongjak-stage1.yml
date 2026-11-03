@@ -21,6 +21,11 @@ on:
         required: true
         default: false
         type: boolean
+      omit_public_comparison_by_user:
+        description: Explicit user-authorized omission; public equivalence remains unchecked
+        required: true
+        default: false
+        type: boolean
       remaining_requests:
         description: Fresh observed account daily execution requests remaining (at least 20000)
         required: false
@@ -93,8 +98,11 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           REMAINING_REQUESTS: ${{ inputs.remaining_requests }}
           USAGE_OBSERVED_AT: ${{ inputs.usage_observed_at }}
+          OMIT_PUBLIC: ${{ inputs.omit_public_comparison_by_user }}
         run: |
-          python3 scripts/regional-worker-integration/execute_stage1.py \
+          extra=()
+          if [ "$OMIT_PUBLIC" = true ]; then extra+=(--omit-public-comparison-by-user); fi
+          python3 scripts/regional-worker-integration/execute_stage1.py "${extra[@]}" \
             --execute-reviewed-stage1 \
             --bundle "$RUNNER_TEMP/regional-stage1" \
             --wrangler "$RUNNER_TEMP/regional-tools/node_modules/wrangler/bin/wrangler.js" \

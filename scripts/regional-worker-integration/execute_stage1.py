@@ -306,7 +306,9 @@ def execute(provider, runner, probe, record):
     """Injectable state machine; one deploy maximum, one guarded rollback maximum."""
     original = provider.snapshot()
     check_state(original, D_VERSION)
-    baseline = probe()
+    baseline = probe() if probe is not None else None
+    if probe is None:
+        record('public_comparison_omitted_by_user')
     check_state(provider.snapshot(), D_VERSION, original)  # last read before mutation
     record('deploy_started')
     outcome = runner.run('deploy')
@@ -325,10 +327,11 @@ def execute(provider, runner, probe, record):
         postdeploy = provider.snapshot()
         check_state(postdeploy, pilot, original)
         require(outcome['ok'], 'deploy_reported_failure_with_known_uuid')
-        require(probe() == baseline, 'postdeploy_public_difference')
+        if probe is not None:
+            require(probe() == baseline, 'postdeploy_public_difference')
         check_state(provider.snapshot(), pilot, original)
-        record('pilot_verified', pilot_uuid=pilot)
-        return 'pilot_verified'
+        record('pilot_verified' if probe is not None else 'pilot_api_verified_public_unchecked', pilot_uuid=pilot)
+        return 'pilot_verified' if probe is not None else 'pilot_api_verified_public_unchecked'
     except Exception:
         record('postdeploy_failed')
         # A fresh read must prove ownership before ANY rollback; conflicts remain untouched.
@@ -344,7 +347,8 @@ def execute(provider, runner, probe, record):
         record('rollback_started', pilot_uuid=pilot)
         restored = runner.run('rollback')
         check_state(provider.snapshot(), D_VERSION, original)
-        require(probe() == baseline, 'rollback_public_difference')
+        if probe is not None:
+            require(probe() == baseline, 'rollback_public_difference')
         record('rollback_verified', command_success=restored['ok'])
         return 'rolled_back'
 
@@ -393,6 +397,7 @@ def main():
     mode.add_argument('--execute-reviewed-stage1', action='store_true')
     mode.add_argument('--diagnose-readonly', action='store_true')
     mode.add_argument('--public-preflight-readonly', action='store_true')
+    parser.add_argument('--omit-public-comparison-by-user', action='store_true')
     parser.add_argument('--bundle', type=Path)
     parser.add_argument('--wrangler', type=Path)
     parser.add_argument('--report', type=Path, required=True)
@@ -421,7 +426,7 @@ def main():
             age = (datetime.now(timezone.utc) - observed).total_seconds()
             require(0 <= age <= 900 and 20000 <= args.remaining_requests <= 100000, 'capacity_observation_stale_or_low')
             verify_bundle(args.bundle)
-            report['status'] = execute(Provider(record), Wrangler(args.wrangler, args.bundle), lambda: public_snapshot(record), record)
+            report['status'] = execute(Provider(record), Wrangler(args.wrangler, args.bundle), (None if args.omit_public_comparison_by_user else lambda: public_snapshot(record)), record)
     except Stop as error:
         report['status'] = 'stopped'
         report['reason'] = str(error)  # only our fixed codes, never provider bodies
@@ -430,7 +435,7 @@ def main():
         report['reason'] = 'unexpected_error_redacted'
     record('finished')
     print(json.dumps({'status': report['status']}))
-    return 0 if report['status'] in ['pilot_verified', 'diagnostic_verified'] else 1
+    return 0 if report['status'] in ['pilot_verified', 'pilot_api_verified_public_unchecked', 'diagnostic_verified'] else 1
 
 
 if __name__ == '__main__':
