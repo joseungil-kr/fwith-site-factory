@@ -200,7 +200,7 @@ export class OrderDatabase extends DurableObject {
       for(const [id,q] of grouped){const remaining=this.getOne('SELECT COALESCE(SUM(delta),0) AS qty FROM movements WHERE product_id=?',id).qty;if(q>remaining)throw new Error(`${items.find(i=>i.product_id===id).name}: 재고 부족 (현재 ${remaining}개)`)}
       let id;
       this.ctx.storage.transactionSync(()=>{
-        this.sql.exec('INSERT INTO orders(client_id,client_snapshot,order_date,vat,supply,tax,total,previous_balance,bank_snapshot,delivery_status,memo,created_at) VALUES(?,?,?,?,?,?,?,?,?,'pending',?,?)',client.id,JSON.stringify({business:client.business,person:client.person,phone:client.phone,business_no:client.business_no,address:client.address}),order_date,vat,totals.supply,totals.tax,totals.total,previous_balance,bank_snapshot,memo,now());
+        this.sql.exec("INSERT INTO orders(client_id,client_snapshot,order_date,vat,supply,tax,total,previous_balance,bank_snapshot,delivery_status,memo,created_at) VALUES(?,?,?,?,?,?,?,?,?,'pending',?,?)",client.id,JSON.stringify({business:client.business,person:client.person,phone:client.phone,business_no:client.business_no,address:client.address}),order_date,vat,totals.supply,totals.tax,totals.total,previous_balance,bank_snapshot,memo,now());
         id=this.getOne('SELECT last_insert_rowid() AS id').id;
         for(const i of items){this.sql.exec('INSERT INTO lines(order_id,product_id,name,qty,unit_price,cost,line_total) VALUES(?,?,?,?,?,?,?)',id,i.product_id,i.name,i.qty,i.unit_price,i.cost,i.qty*i.unit_price);
           if(i.product_id)this.sql.exec('INSERT INTO movements(product_id,delta,cost,note,source,created_at) VALUES(?,?,?,?,?,?)',i.product_id,-i.qty,i.cost,'출고 #'+id,'order:'+id,now());}
