@@ -34,7 +34,7 @@ jobs:
           node --check src.js
           node --check public/app.js
           npm test
-          node -e 'const j=require("./wrangler.reused.jsonc"); if(j.name!=="funeralflower-home-preview"||j.durable_objects.bindings[0].class_name!=="OrderDatabase")process.exit(1)'
+          node -e 'const j=JSON.parse(require("fs").readFileSync("./wrangler.reused.jsonc","utf8")); if(j.name!=="funeralflower-home-preview"||j.durable_objects.bindings[0].class_name!=="OrderDatabase")process.exit(1)'
       - name: Guarded Cloudflare candidate and target domain preflight (read only)
         id: guard
         shell: bash
