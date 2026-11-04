@@ -83,7 +83,7 @@ jobs:
           version=deployments[0]['versions'][0]
           assert version.get('percentage')==100,'Previous version is not deployed at 100%'
           previous=version['version_id']
-          assert previous=='522a4e0f-0141-498b-8744-f049f589515e','Worker version changed since last verified release'
+          assert previous=='53640a91-34a3-4a1d-93ed-ca16da256d86','Worker version changed since last verified release'
           with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:
             f.write('previous_version='+previous+'\n')
           print('SAFE_ORDER_APP_UPDATE_PASS',hostname,'existingWorker',worker,'rollbackPinned',previous)
@@ -121,13 +121,16 @@ jobs:
                 assert all(mark in html for mark in ['id="serial-slot"','id="serial-baud"','id="serial-print"','id="serial-dots"','id="serial-font"','id="serial-cut"']), 'Web Serial toolbar missing'
                 assert 'id="serial-test"' not in html and 'id="serial-width-test"' not in html,'Obsolete printer test buttons must be hidden'
                 assert all(mark in html for mark in ['id="previous-balance"','id="payment-form"','name="company_name"','name="company_business_no"','name="company_address"','name="company_phone"','name="company_email"','name="bank_name"','name="account_number"','name="account_holder"','id="bill-delete"','id="bill-delivery"']), 'Admin fields or delivery button missing'
-                assert '>관리자 설정</button>' in html and '처음 한 번은' in html,'Renamed admin tab or simplified help missing'
-                assert '<button data-tab="requests">발주 요청(<span id="nav-requests-pending">0</span>)</button>' in html,'Pending-count placeholder missing'
-                tabs=['data-tab="home"','data-tab="order"','data-tab="requests"','data-tab="stock"','data-tab="bills"','data-tab="receivables"','data-tab="products"','data-tab="clients"','data-tab="settings"']
-                assert [html.index(x) for x in tabs]==sorted(html.index(x) for x in tabs),'Admin navigation order mismatch'
+                assert '>설정</button>' in html and '처음 한 번은' in html,'Settings tab or simplified help missing'
+                assert '<button data-tab="requests">발주요청(<span id="nav-requests-pending">0</span>)</button>' in html,'Pending-count placeholder missing'
+                nav=html.split('<nav class="nav" id="nav">',1)[1].split('</nav>',1)[0]
+                tabs=['data-tab="home"','data-tab="order"','data-tab="requests"','data-tab="bills"','data-tab="products"','data-tab="clients"','data-tab="receivables"','data-tab="settings"']
+                assert nav.count('data-tab=')==len(tabs) and [nav.index(x) for x in tabs]==sorted(nav.index(x) for x in tabs),'Eight admin menus or order mismatch'
+                assert all(s in nav for s in ['>대시보드</button>','>출고등록</button>','>거래명세표</button>','>제품관리</button>','>거래처관리</button>','>미수금관리(입금관리)</button>','>설정</button>']),'Menu labels mismatch'
+                assert 'data-go="stock"' in html and 'data-page="stock"' in html,'Stock page is unreachable'
                 assert '관리 시작 전 발행한 명세표는 기초 미수금에 이미 반영된 것으로 간주하며 다시 합산하지 않습니다.' not in html,'Removed AR hint returned'
                 assert '기존 명세표의 ‘전 잔고’는 중복 계산하지 않습니다.' not in html,'Removed AR hint returned'
-                assert all(x in html for x in ['>거래처 관리</button>','>제품 관리</button>','data-tab="receivables"','id="ar-opening-form"','id="ar-payment-form"','id="ar-client-select"','id="ar-paid-amount"','id="ar-paid-date"','id="previous-balance-help"']), 'Receivables management UI incomplete'
+                assert all(x in html for x in ['>거래처관리</button>','>제품관리</button>','data-tab="receivables"','id="ar-opening-form"','id="ar-payment-form"','id="ar-client-select"','id="ar-paid-amount"','id="ar-paid-date"','id="previous-balance-help"']), 'Receivables management UI incomplete'
                 assert '<option value="none" selected>부가세 미계산 (0원)</option>' in html, 'Default VAT should be uncalculated'
                 assert all(x in html for x in ['id="mobile-menu-toggle"','aria-controls="nav"','aria-expanded="false"','id="mobile-requests"','id="mobile-requests-pending"','id="mobile-logout"','class="mobile-shortcuts"','data-go="order"']), 'Mobile menu, top pending count, or shortcuts missing'
                 assert all(x in html for x in ['data-tab="requests"','id="buyer-home-summary"','id="request-shortages"','id="request-list"','id="link-result"']),'Buyer request manager UI missing'
