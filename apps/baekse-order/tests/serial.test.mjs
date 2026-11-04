@@ -92,5 +92,16 @@ test('배송상태 출력은 취소를 최우선 처리하고 기존 출고는 �
   assert.equal(receiptShippingLabel({status:'cancelled',delivery_status:'delivered'}),'취소됨');
   const o={id:31,order_date:'2026-11-04',status:'issued',delivery_status:'delivered',
     supply:1000,tax:0,total:1000,client:{business:'테스트'}};
-  assert.ok(makeReceiptRows({order:o,items:[]}).some(row=>row.text==='상태: 출고완료(배송완료)'));
+  const rows=makeReceiptRows({order:{...o,memo:'내부 참고',bank:{company_name:'백세푸드',company_email:'private@example.com',company_business_no:'000-00-00000',company_address:'테스트 공급자 주소',company_phone:'031-000-0000'},client:{business:'테스트 거래처',person:'담당자',phone:'010-0000-0000',address:'테스트 배송 주소'}},items:[]});
+  const text=rows.map(row=>row.text||'').join('|');
+  for(const word of ['상태:','비고:','이메일:','출고단가:','private@example.com','내부 참고'])assert.ok(!text.includes(word),word+' must not appear on printed receipt');
+  for(const word of ['전표번호:','출고일:','거래처:','공급자: 백세푸드','사업자등록번호:','테스트 배송 주소','테스트 공급자 주소','연락처:','공급가액:','합계:'])assert.ok(text.includes(word),word+' must remain');
+  const recipient=rows.findIndex(row=>row.text?.includes('테스트 배송 주소'));
+  const supplier=rows.findIndex(row=>row.text==='공급자: 백세푸드');
+  const items=rows.findIndex(row=>row.text==='품명 / 수량 x 단가');
+  assert.ok(recipient<supplier && supplier<items,'recipient, supplier, items must stay in order');
+  assert.ok(rows.slice(recipient+1,supplier).some(row=>row.line),'divider between recipient and supplier');
+  assert.ok(rows.slice(supplier+1,items).some(row=>row.line),'divider before item table');
+  const cancelled=makeReceiptRows({order:{...o,status:'cancelled'},items:[]});
+  assert.ok(cancelled.some(row=>row.text==='[출고 취소된 명세표]'),'Cancelled slip must keep safety warning');
 });

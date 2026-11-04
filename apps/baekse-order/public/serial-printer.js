@@ -42,23 +42,22 @@ export function makeReceiptRows(invoice) {
   const c = o.client || {};
   const code = 'B' + String(o.order_date || '').replaceAll('-', '') + '-' +
     String(o.id || '').padStart(4, '0');
-  const rows = [
-    {text: String(o.bank?.company_name||'백세푸드'),align:'center',kind:'title'},
-    {text: '거 래 명 세 표',align:'center',kind:'subtitle'},
-    {text: '전표: ' + code},
-    {text: '일자: ' + String(o.order_date || '')},
-    {text: '상태: ' + receiptShippingLabel(o)},
-    {text: '거래처: ' + String(c.business || '')},
-    {text: '담당자: ' + String(c.person || '') + '  ' + String(c.phone || '')},
-  ];
   const company=o.bank||{};
-  if(company.company_business_no)rows.push({text:'공급자 사업자번호: '+company.company_business_no});
-  if(company.company_phone)rows.push({text:'공급자 연락처: '+company.company_phone});
-  if(company.company_email)rows.push({text:'공급자 이메일: '+company.company_email});
-  if(company.company_address)rows.push({text:'공급자 주소: '+company.company_address});
-  if (c.business_no) rows.push({text: '사업자번호: ' + String(c.business_no)});
-  if (c.address) rows.push({text: '주소: ' + String(c.address)});
-  rows.push({line:true});
+  const rows = [
+    {text:'거 래 명 세 표',align:'center',kind:'title'},
+    {text:'전표번호: '+code},
+    {text:'출고일: '+String(o.order_date||'')},
+    {text:'거래처: '+String(c.business||'')},
+    {text:'담당자: '+[c.person,c.phone].filter(Boolean).join(' / ')}
+  ];
+  if(c.business_no)rows.push({text:'사업자번호: '+String(c.business_no)});
+  if(c.address)rows.push({text:'주소: '+String(c.address)});
+  rows.push({line:true}); // 거래처와 공급자 구분
+  rows.push({text:'공급자: '+String(company.company_name||'백세푸드')});
+  if(company.company_business_no)rows.push({text:'사업자등록번호: '+String(company.company_business_no)});
+  if(company.company_address)rows.push({text:'주소: '+String(company.company_address)});
+  if(company.company_phone)rows.push({text:'연락처: '+String(company.company_phone)});
+  rows.push({line:true}); // 공급자 정보와 품목 구분
   rows.push({text:'품명 / 수량 x 단가',kind:'bold'});
   for (const item of invoice.items) {
     rows.push({text:String(item.name || ''),kind:'bold'});
@@ -73,7 +72,6 @@ export function makeReceiptRows(invoice) {
   rows.push({text:'전 잔고: ' + formatWon(o.previous_balance||0),align:'right'});
   rows.push({text:'합계: ' + formatWon(o.amount_due??(Number(o.total)+Number(o.previous_balance||0))),align:'right',kind:'total'});
   if (o.status !== 'issued') rows.push({text:'[출고 취소된 명세표]',align:'center',kind:'bold'});
-  if (o.memo) rows.push({text:'비고: ' + String(o.memo)});
   rows.push({line:true});
   rows.push({text:'위와같이 출고 하였습니다.',align:'center'});
   const bank=o.bank||{};

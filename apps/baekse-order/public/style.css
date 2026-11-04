@@ -26,6 +26,11 @@
 .invoice-amount-small{font-size:12px;font-weight:400;color:#687b70;line-height:1.85}
 .invoice-grand{font-size:20px;font-weight:750;color:#202b26;border-top:1px solid #d9e3dc;margin-top:8px;padding-top:7px}
 .invoice-payment{margin-top:10px;text-align:center;border-top:1px solid #d9e3dc;padding-top:12px;font-size:13px;font-weight:600;line-height:1.6;overflow-wrap:anywhere}
+/* Printed invoice sections: recipient | supplier and divider above item rows. */
+.invoice .invoice-meta{padding-bottom:14px;border-bottom:1px solid #d9e3dc}
+.invoice .invoice-meta>div+div{border-left:1px solid #d9e3dc;padding-left:16px}
+@media(max-width:740px){.invoice .invoice-meta>div+div{border-left:0;border-top:1px solid #d9e3dc;padding:12px 0 0;margin-top:12px}}
+@media print{body.print-58 .invoice .invoice-meta>div+div,body.print-80 .invoice .invoice-meta>div+div{border-left:0;border-top:1px solid #d9e3dc;padding:10px 0 0;margin-top:10px}}
 .field-hint{display:block;color:#71847b;font-size:12px;font-weight:400;margin-top:6px;line-height:1.5}
 
 /* Six dashboard metrics, with orange low-stock emphasis. */

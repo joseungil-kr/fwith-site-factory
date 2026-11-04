@@ -94,3 +94,21 @@ test('modern three-screen white-teal design preserves live data and action hooks
  assert.ok(!html.includes('428,000원') && !html.includes('1,250,000원'),
   'Design mock financial values must never be hardcoded into the production application');
 });
+
+test('invoice print preview omits operational metadata while keeping financial details',()=>{
+ const start=script.indexOf('async function openBill(');
+ const end=script.indexOf('function printBill(',start);
+ assert.ok(start>=0&&end>start,'Invoice preview function missing');
+ const invoice=script.slice(start,end);
+ for(const label of ['<b>이메일:</b>','<b>출고단가:</b>','<b>상태:</b>','<b>비고:</b>']){
+   assert.ok(!invoice.includes(label),'Unwanted invoice field: '+label);
+ }
+ for(const label of ['<b>전표번호:</b>','<b>출고일:</b>','<b>거래처:</b>','<b>공급자:</b>','<b>사업자등록번호:</b>','<b>연락처:</b>','공급가액','부가세','전 잔고','합계','입금처:']){
+   assert.ok(invoice.includes(label),'Required invoice field missing: '+label);
+ }
+ assert.ok(css.includes('.invoice .invoice-meta{padding-bottom:14px;border-bottom:1px solid #d9e3dc}'));
+ assert.ok(css.includes('.invoice .invoice-meta>div+div{border-left:1px solid #d9e3dc;'));
+ assert.ok(html.includes('id="order-memo"'),'Memo must remain available internally');
+ assert.ok(html.includes('name="company_email"'),'Email settings must remain available');
+ assert.ok(script.includes('deliveryLabel(o)'),'Delivery state must remain in administrator history');
+});
