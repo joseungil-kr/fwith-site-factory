@@ -43,9 +43,9 @@ test('serial port directions are phrased for operators',()=>{
 test('navigation order, pending request count and removed AR hint',()=>{
  const nav=html.match(/<nav class="nav" id="nav">([\s\S]*?)<\/nav>/)?.[1]||'';
  const tabs=[...nav.matchAll(/data-tab="([^"]+)"/g)].map(m=>m[1]);
- assert.deepEqual(tabs,['home','order','requests','bills','products','clients','receivables','settings']);
+ assert.deepEqual(tabs,['home','order','requests','bills','products','stock','clients','receivables','settings']);
  assert.ok(nav.includes('>미수금관리(입금관리)</button>'));
- assert.ok(!nav.includes('data-tab="stock"'));
+ assert.ok(nav.includes('<button data-tab="stock">재고관리</button>'));
  assert.ok(html.includes('data-go="stock"'));
  assert.ok(nav.includes('발주요청(<span id="nav-requests-pending">0</span>)'));
  assert.ok(script.includes('state.buyer_dashboard?.pending_count'));

@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 
 const html=readFileSync(new URL('../public/index.html',import.meta.url),'utf8');
 
-test('administrator navigation has exactly eight requested items, labels and order',()=>{
+test('administrator navigation has exactly nine requested items, labels and order',()=>{
   const nav=html.match(/<nav class="nav" id="nav">([\s\S]*?)<\/nav>/)?.[1];
   assert.ok(nav,'administrator nav must exist');
   const items=[...nav.matchAll(/<button data-tab="([^"]+)"(?: class="[^"]*")?>([\s\S]*?)<\/button>/g)].map(([,id,raw])=>({id,label:raw.replace(/<[^>]+>/g,'').trim()}));
@@ -14,12 +14,13 @@ test('administrator navigation has exactly eight requested items, labels and ord
     {id:'requests',label:'발주요청(0)'},
     {id:'bills',label:'거래명세표'},
     {id:'products',label:'제품관리'},
+    {id:'stock',label:'재고관리'},
     {id:'clients',label:'거래처관리'},
     {id:'receivables',label:'미수금관리(입금관리)'},
     {id:'settings',label:'설정'}
   ]);
   for(const item of items)assert.ok(html.includes('data-page="'+item.id+'"'),'No screen for '+item.id);
-  assert.ok(!nav.includes('data-tab="stock"'),'Stock must not be in top menu');
+  assert.ok(nav.includes('data-tab="stock"'),'Stock must be in top menu');
 });
 
 test('stock and inventory management remains accessible from product management',()=>{

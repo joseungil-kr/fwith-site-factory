@@ -84,7 +84,7 @@ jobs:
           version=deployments[0]['versions'][0]
           assert version.get('percentage')==100,'Previous version is not deployed at 100%'
           previous=version['version_id']
-          assert previous=='53640a91-34a3-4a1d-93ed-ca16da256d86','Worker version changed since last verified release'
+          assert previous=='d713cf9d-54d6-4226-a1d8-ebecd59ac3d0','Worker version changed since last verified release'
           with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:
             f.write('previous_version='+previous+'\n')
           print('SAFE_ORDER_APP_UPDATE_PASS',hostname,'existingWorker',worker,'rollbackPinned',previous)
@@ -125,9 +125,9 @@ jobs:
                 assert '>설정</button>' in html and '처음 한 번은' in html,'Settings tab or simplified help missing'
                 assert '<button data-tab="requests">발주요청(<span id="nav-requests-pending">0</span>)</button>' in html,'Pending-count placeholder missing'
                 nav=html.split('<nav class="nav" id="nav">',1)[1].split('</nav>',1)[0]
-                tabs=['data-tab="home"','data-tab="order"','data-tab="requests"','data-tab="bills"','data-tab="products"','data-tab="clients"','data-tab="receivables"','data-tab="settings"']
-                assert nav.count('data-tab=')==len(tabs) and [nav.index(x) for x in tabs]==sorted(nav.index(x) for x in tabs),'Eight admin menus or order mismatch'
-                assert all(s in nav for s in ['>대시보드</button>','>출고등록</button>','>거래명세표</button>','>제품관리</button>','>거래처관리</button>','>미수금관리(입금관리)</button>','>설정</button>']),'Menu labels mismatch'
+                tabs=['data-tab="home"','data-tab="order"','data-tab="requests"','data-tab="bills"','data-tab="products"','data-tab="stock"','data-tab="clients"','data-tab="receivables"','data-tab="settings"']
+                assert nav.count('data-tab=')==len(tabs) and [nav.index(x) for x in tabs]==sorted(nav.index(x) for x in tabs),'Nine admin menus or order mismatch'
+                assert all(s in nav for s in ['>대시보드</button>','>출고등록</button>','>거래명세표</button>','>제품관리</button>','>재고관리</button>','>거래처관리</button>','>미수금관리(입금관리)</button>','>설정</button>']),'Menu labels mismatch'
                 assert 'data-go="stock"' in html and 'data-page="stock"' in html,'Stock page is unreachable'
                 assert '관리 시작 전 발행한 명세표는 기초 미수금에 이미 반영된 것으로 간주하며 다시 합산하지 않습니다.' not in html,'Removed AR hint returned'
                 assert '기존 명세표의 ‘전 잔고’는 중복 계산하지 않습니다.' not in html,'Removed AR hint returned'
