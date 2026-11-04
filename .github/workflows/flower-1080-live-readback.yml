@@ -1,0 +1,81 @@
+name: Nalmada Flower public-domain all 1080 HTML HTTP readback
+on:
+  push:
+    branches: [feature/flower-1080-production-preflight-20261027]
+    paths:
+      - '.github/workflows/flower-1080-live-readback.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: joseungil-kr/site-factory-v5
+          ref: 30c8f5a2507df1da3073e9c236c0ba697c39962b
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Independently test 1080 HTTPS pages, sitemap policy and all shared image assets
+        run: |
+          python - <<'PY'
+          from concurrent.futures import ThreadPoolExecutor,as_completed
+          from urllib.request import urlopen,Request
+          from urllib.error import HTTPError,URLError
+          import json,html,time
+          from pathlib import Path
+          source=json.loads(Path('data/flower/v4_facilities_1080.snapshot.json').read_text(encoding='utf-8'))
+          facilities=source['facilities']
+          assert len(facilities)==1080
+          ids=[x['id'] for x in facilities]
+          assert len(set(ids))==1080
+          origin='https://flower.nalmada.net'
+          def test_one(item):
+              path='/'+item['id']+'.html'
+              last=None
+              for attempt in range(2):
+                  try:
+                      req=Request(origin+path,headers={'User-Agent':'Nalmada-Flower-Release-Readback/1'})
+                      with urlopen(req,timeout=18) as r:
+                          status=r.status;header=r.headers.get('X-Robots-Tag','');body=r.read().decode('utf-8','replace')
+                      assert status==200,(path,status)
+                      assert 'noindex' in header.lower(),(path,header)
+                      assert '<meta name="robots" content="noindex,nofollow">' in body,path
+                      assert '근조화환 주문 가격안내' in body and '날마다꽃' in body,path
+                      assert html.escape(item['facilityName']) in body,(path,item['facilityName'])
+                      return (path,None)
+                  except Exception as e:
+                      last=type(e).__name__+':'+str(e)[:160]
+                      if attempt==0:time.sleep(.25)
+              return (path,last)
+          errors=[]
+          with ThreadPoolExecutor(max_workers=8) as executor:
+              futures=[executor.submit(test_one,f) for f in facilities]
+              for fut in as_completed(futures):
+                  path,error=fut.result()
+                  if error:errors.append({'path':path,'error':error})
+          print('FLOWER_FULL_PAGE_HTTP_AUDIT='+json.dumps({
+              'expected':1080,'succeeded':1080-len(errors),
+              'failed':len(errors),'errors':errors[:20],
+              'origin':origin,'noindexRequired':True
+          },ensure_ascii=False),flush=True)
+          if errors:raise SystemExit(1)
+          for p in ('/','/halls.json','/robots.txt','/assets/css/site.css',
+                    '/assets/images/B201.jpg','/assets/images/B203.jpg',
+                    '/assets/images/B205.jpg','/assets/images/A160.jpg','/assets/images/D143.jpg'):
+              req=Request(origin+p,headers={'User-Agent':'Nalmada-Flower-Readback/1'})
+              with urlopen(req,timeout=20) as r:
+                  assert r.status==200,(p,r.status)
+                  body=r.read()
+                  if p=='/halls.json':
+                      assert len(json.loads(body))==1080
+                  if p=='/robots.txt':
+                      assert 'Disallow: /' in body.decode()
+                  if p.endswith('.jpg'):
+                      assert len(body)>8000
+                  print('FLOWER_ASSET_HTTP_200',p,len(body),flush=True)
+          print('FLOWER_ALL_1080_PUBLIC_DOMAIN_HTTP_VERIFIED')
+          PY

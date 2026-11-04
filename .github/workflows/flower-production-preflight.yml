@@ -1,0 +1,68 @@
+name: Nalmada Flower production custom-domain read-only preflight
+on:
+  push:
+    branches: [feature/flower-1080-production-preflight-20261027]
+    paths:
+      - '.github/workflows/flower-production-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read-only verify Cloudflare account, DNS, worker binding and exact domain
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          python - <<'PY'
+          import os,json,urllib.request,urllib.parse,urllib.error
+          account=os.environ.get('CLOUDFLARE_ACCOUNT_ID','')
+          token=os.environ.get('CLOUDFLARE_API_TOKEN','')
+          if not account or not token:raise RuntimeError('Missing Cloudflare credentials in trusted repo')
+          def read(path):
+              req=urllib.request.Request('https://api.cloudflare.com/client/v4'+path,headers={'Authorization':'Bearer '+token,'Accept':'application/json'})
+              with urllib.request.urlopen(req,timeout=30) as r: result=json.load(r)
+              if not result.get('success'):raise RuntimeError('Cloudflare read returned unsuccessful response')
+              return result['result']
+          domains=read('/accounts/'+account+'/workers/domains')
+          proof=[('flower-a.fwith.kr','flower-matrix-a-prod'),('flower-b.fwith.kr','flower-matrix-b-prod')]
+          verified=all(any(x.get('hostname')==name and x.get('service')==worker for x in domains) for name,worker in proof)
+          if not verified:raise RuntimeError('V4 domain/worker ownership proof did not match. Abort.')
+          zones=read('/zones?name=nalmada.net&per_page=50')
+          active=[z for z in zones if z.get('name')=='nalmada.net' and z.get('account',{}).get('id')==account and z.get('status')=='active']
+          if len(active)!=1:raise RuntimeError('No exact active nalmada.net zone in verified V4 Cloudflare account')
+          zone=active[0]['id']
+          matching=[{'host':d['hostname'],'worker':d.get('service')} for d in domains if d.get('hostname')=='flower.nalmada.net']
+          try:
+              records=read('/zones/'+zone+'/dns_records?name=flower.nalmada.net&per_page=100')
+              dns=[{'type':r['type'],'name':r['name'],'proxied':r.get('proxied')} for r in records]
+              dns_error=None
+          except urllib.error.HTTPError as e:
+              dns=[];dns_error='HTTP '+str(e.code)+' DNS read unavailable'
+          dns_public={}
+          for record_type in ('A','AAAA','CNAME','TXT'):
+              query='https://cloudflare-dns.com/dns-query?'+urllib.parse.urlencode({'name':'flower.nalmada.net','type':record_type})
+              request=urllib.request.Request(query,headers={'Accept':'application/dns-json','User-Agent':'Flower-Release-Preflight/1'})
+              try:
+                  with urllib.request.urlopen(request,timeout=15) as result:
+                      answer=json.load(result)
+                  dns_public[record_type]={'status':answer.get('Status'),'answers':[
+                      {'type':x.get('type'),'name':x.get('name'),'ttl':x.get('TTL')}
+                      for x in answer.get('Answer',[]) ]}
+              except Exception as exc:dns_public[record_type]={'error':type(exc).__name__}
+          host_results={}
+          for host in ['https://flower.nalmada.net/','https://sfv5-nalmada-flower-preview.joseungil.workers.dev/']:
+              try:
+                  with urllib.request.urlopen(urllib.request.Request(host,headers={'User-Agent':'Flower-Release-Preflight/1'}),timeout=15) as res:
+                      host_results[host]=res.status
+              except urllib.error.HTTPError as e:host_results[host]=e.code
+              except Exception as e:host_results[host]=type(e).__name__
+          print('FLOWER_PRODUCTION_PREFLIGHT='+json.dumps({'zoneActive':True,'v4ProofVerified':True,'customDomains':matching,'dnsRecords':dns,'dnsReadError':dns_error,'publicDNS':dns_public,'httpObservations':host_results},ensure_ascii=False))
+          PY
