@@ -14,7 +14,9 @@ test('six KPI cards include current month and orange low stock',()=>{
  for(const word of ['month_count','month_amount','cumulative_amount',"SUM(total)"])assert.ok(worker.includes(word));
 });
 test('company settings have five fields and a three-column bank row',()=>{
- assert.ok(html.includes('>관리자 설정</button>'));
+ assert.ok(html.includes('>설정</button>'));
+ assert.ok(html.includes('data-tab="settings"'));
+ assert.ok(html.includes('<h1>관리자 설정</h1>'));
  for(const key of ['company_name','company_business_no','company_address','company_phone','company_email','bank_name','account_number','account_holder']){
    assert.ok(html.includes('name="'+key+'"'),key);
  }
@@ -41,8 +43,11 @@ test('serial port directions are phrased for operators',()=>{
 test('navigation order, pending request count and removed AR hint',()=>{
  const nav=html.match(/<nav class="nav" id="nav">([\s\S]*?)<\/nav>/)?.[1]||'';
  const tabs=[...nav.matchAll(/data-tab="([^"]+)"/g)].map(m=>m[1]);
- assert.deepEqual(tabs,['home','order','requests','stock','bills','receivables','products','clients','settings']);
- assert.ok(nav.includes('발주 요청(<span id="nav-requests-pending">0</span>)'));
+ assert.deepEqual(tabs,['home','order','requests','bills','products','clients','receivables','settings']);
+ assert.ok(nav.includes('>미수금관리(입금관리)</button>'));
+ assert.ok(!nav.includes('data-tab="stock"'));
+ assert.ok(html.includes('data-go="stock"'));
+ assert.ok(nav.includes('발주요청(<span id="nav-requests-pending">0</span>)'));
  assert.ok(script.includes('state.buyer_dashboard?.pending_count'));
  assert.ok(script.includes('state.buyer_dashboard=result.summary'));
  assert.ok(script.includes('renderRequestNavCount()'));
