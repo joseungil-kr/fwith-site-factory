@@ -70,7 +70,16 @@ jobs:
                   assert '428,000원' not in data and '1,250,000원' not in data,'Static mockup financial values in production'
                 if urlpath=='/app.js':
                   assert "serial-test" not in data,'Obsolete printer handlers returned'
-                  assert "function show(tab){closeMobileMenu();$$('[data-page]').forEach" in data, 'Mobile tab navigation regression'
+                  assert "function show(tab){closeMobileMenu();$('[data-page]').forEach" in data, 'Mobile tab navigation regression'
+                  preview=data.split('async function openBill(',1)[1].split('function printBill(',1)[0]
+                  assert all(x not in preview for x in ('<b>이메일:</b>','<b>출고단가:</b>','<b>상태:</b>','<b>비고:</b>')),'Unnecessary printable invoice fields returned'
+                  assert all(x in preview for x in ('<b>공급자:</b>','<b>거래처:</b>','공급가액','부가세','전 잔고','입금처:')),'Invoice financial fields incomplete'
+                if urlpath=='/serial-printer.js':
+                  receipt=data.split('export function makeReceiptRows(',1)[1].split('function fontFor(',1)[0]
+                  assert all(x not in receipt for x in ('receiptShippingLabel(o)','company.company_email','o.memo','출고단가:')),'Unnecessary thermal receipt fields returned'
+                  assert all(x in receipt for x in ("text:'공급자: '","text:'전표번호: '","text:'출고일: '","rows.push({line:true})")),'Thermal receipt headings or separators missing'
+                if urlpath=='/style.css':
+                  assert '.invoice .invoice-meta{padding-bottom:14px;border-bottom:1px solid #d9e3dc}' in data and '.invoice .invoice-meta>div+div{border-left:1px solid #d9e3dc;' in data,'A4 print dividers missing'
                 print('LIVE_UI_READBACK_PASS',urlpath,'HTTP',r.status,'MARKERS',len(checks[urlpath]),'NOINDEX',r.headers.get('X-Robots-Tag'))
             except Exception as e:
               print('LIVE_UI_READBACK_FAIL',urlpath,str(e)[:160])
