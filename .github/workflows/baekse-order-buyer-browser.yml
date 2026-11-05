@@ -10,6 +10,11 @@ on:
       - 'apps/baekse-order/tests/buyer-browser-qa.mjs'
       - '.github/workflows/baekse-order-buyer-browser.yml'
   workflow_dispatch:
+  pull_request:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths:
+      - 'apps/baekse-order/tests/buyer-browser-qa.mjs'
+      - '.github/workflows/baekse-order-buyer-browser.yml'
 permissions: {contents: read}
 jobs:
   browser-qa:
@@ -17,7 +22,6 @@ jobs:
     timeout-minutes: 22
     steps:
       - uses: actions/checkout@v4
-        with: {ref: feature/baekse-order-deploy-20261103}
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
       - name: Install browser QA tools
