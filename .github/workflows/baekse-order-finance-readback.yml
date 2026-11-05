@@ -1,0 +1,75 @@
+name: Baekse finance and internal migration read-only verification
+on:
+  push:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths: ['.github/workflows/baekse-order-finance-readback.yml']
+permissions: {contents: read}
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      ADMIN_PASSWORD: ${{ secrets.BAEKSE_ORDER_ADMIN_PASSWORD }}
+    steps:
+      - name: Verify live issue types, finance summaries, and safe exact-name migration
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request,urllib.error,http.cookiejar
+          root='https://order.baeksefood.com'
+          jar=http.cookiejar.CookieJar()
+          op=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
+          op.addheaders=[('User-Agent','Mozilla/5.0 (compatible; read-only finance verifier)')]
+          for asset in ('/','/app.js','/style.css','/serial-printer.js'):
+            with op.open(root+asset,timeout=20) as response:
+              body=response.read().decode('utf-8')
+              assert response.status==200,'Unexpected static status'
+              if asset=='/':
+                assert '<button data-tab="receivables">매출관리</button>' in body
+                assert 'id="order-type"' in body and 'id="sales-by-client"' in body and 'id="sales-payments"' in body
+              if asset=='/app.js':
+                assert 'data-client-link-copy' in body and 'issuedBuyerUrls.get(id)' in body
+                assert 'renderSalesTables' in body and 'currentOrderType' in body
+              if asset=='/style.css': assert '#app .client-link-copy{background:#1764c5' in body
+              if asset=='/serial-printer.js': assert "o.order_type==='internal'" in body
+            print('ASSET_READBACK_PASS',asset)
+          pwd=os.environ['ADMIN_PASSWORD']
+          assert len(pwd)>=12
+          req=urllib.request.Request(root+'/api/login',data=json.dumps({'password':pwd}).encode(),method='POST',headers={'Content-Type':'application/json','Origin':root})
+          with op.open(req,timeout=20) as res:
+            assert res.status==200 and json.load(res)['ok'] is True
+          with op.open(root+'/api/state',timeout=30) as res:
+            state=json.load(res)
+          clients=state['clients'];orders=state['orders'];metrics=state['metrics'];sales=state.get('sales',{});receipt=state.get('receivables',{})
+          assert 'today_internal_cost' in metrics and 'cumulative_internal_cost' in metrics
+          assert isinstance(sales.get('by_client'),list) and isinstance(sales.get('completed_payments'),list)
+          assert all(o.get('order_type') in ('sale','internal') for o in orders)
+          assert all(o['amount_due']==0 for o in orders if o['order_type']=='internal')
+          assert all(o['amount_due']==o['total']+o['previous_balance'] for o in orders if o['order_type']=='sale')
+          for c in clients:
+            if c.get('default_order_type')=='internal':
+              assert all(int(x.get('client_id'))!=c['id'] for x in sales['by_client'] if x['sale_amount']>0),'Internal client still has sales'
+          for p in sales['completed_payments']:
+            assert p['amount']>0 and p['client_id'] in [c['id'] for c in clients]
+          exact=[c for c in clients if c['business'].strip()=='안산 백세보리밥']
+          migrated=state.get('internal_migration')
+          print('EXACT_INTERNAL_TARGET_COUNT',len(exact))
+          print('MIGRATION_MARKER_PRESENT',bool(migrated))
+          if len(exact)==1:
+            client=exact[0]
+            if migrated:
+              assert migrated['client_id']==client['id']
+              assert client['default_order_type']=='internal'
+              assert all(o['order_type']=='internal' for o in orders if o['client_name'].strip()=='안산 백세보리밥')
+              print('TARGET_INTERNAL_MIGRATED',migrated['orders_reclassified'],'ORDERS','INTERNAL_COST',migrated['internal_cost_snapshot'])
+            else:
+              print('TARGET_MIGRATION_NOT_APPLIED_REQUIRES_REVIEW')
+          elif len(exact)==0:
+            print('TARGET_MIGRATION_UNAPPLIED_NO_EXACT_MATCH')
+          else:
+            print('TARGET_MIGRATION_UNAPPLIED_DUPLICATE_NAMES')
+          print('SALES_TOTAL',sum(c['sale_amount'] for c in sales['by_client']))
+          print('CASH_PAID',sales.get('total_paid'))
+          print('RECEIVABLE_TOTAL',receipt.get('total'))
+          print('INTERNAL_COST',metrics['cumulative_internal_cost'])
+          print('FINANCE_READ_ONLY_PASS')
+          PY
