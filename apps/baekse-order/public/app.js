@@ -329,9 +329,37 @@ function deliveryLabel(order){
  if(order.delivery_status==='pending')return '출고완료(배송전)';
  return '출고완료(배송상태 미확인)';
 }
-function renderBills(){const selected=$('#bill-client-filter').value;$('#bill-client-filter').innerHTML='<option value="">전체 거래처</option>'+state.clients.map(c=>`<option value="${c.id}">${esc(c.business)}</option>`).join('');$('#bill-client-filter').value=selected;
- const filterDate=$('#bill-date-filter').value,filterClient=$('#bill-client-filter').selectedOptions[0]?.text;const list=state.orders.filter(o=>(!filterDate||o.order_date===filterDate)&&(!selected||o.client_name===filterClient));$('#bill-list').innerHTML=table(['명세표','출고일','거래처','공급가액','부가세','전 잔고','합계 / 상태',''],list.map(o=>`<tr class="${o.status==='cancelled'?'cancelled-order-row':''}"><td class="num">#${o.id}</td><td>${esc(o.order_date)}</td><td>${esc(o.client_name)}</td><td>${money(o.supply)}</td><td>${money(o.tax)}</td><td>${money(o.previous_balance||0)}</td><td>${money(o.amount_due??o.total)}<span class="price-note">${esc(deliveryLabel(o))}</span></td><td><button class="secondary" data-bill-view="${o.id}">보기</button></td></tr>`))}
-async function openBill(id){viewOrder=await api('orders/detail?id='+id);const {order:o,items}=viewOrder;const bank=o.bank||{};const bankFields=[bank.bank_name,bank.account_number,bank.account_holder].filter(Boolean).map(esc).join(' ');const bankBlock=bankFields?'<div class="invoice-payment"><b>입금처:</b> '+bankFields+'</div>':'';$('#bill-preview').classList.remove('hidden');$('#bill-cancel').disabled=false;$('#bill-cancel').textContent=o.status==='issued'?'출고취소':'출고처리';$('#bill-cancel').className=o.status==='issued'?'danger':'secondary';$('#bill-delivery').classList.toggle('hidden',o.status!=='issued');$('#bill-delivery').textContent=o.delivery_status==='delivered'?'배송전으로 변경':'배송완료 처리';$('#bill-sheet').innerHTML=`<article class="invoice ${o.status!=='issued'?'cancelled':''}"><h2>거 래 명 세 표</h2><div class="invoice-meta"><div><p><b>전표번호:</b> ${esc('B'+o.order_date.replaceAll('-','')+'-'+String(o.id).padStart(4,'0'))}</p><p><b>출고일:</b> ${esc(o.order_date)}</p><p><b>거래처:</b> ${esc(o.client.business)}</p><p><b>담당자:</b> ${esc(o.client.person)} / ${esc(o.client.phone)}</p>${o.client.business_no?`<p><b>사업자번호:</b> ${esc(o.client.business_no)}</p>`:''}${o.client.address?`<p><b>주소:</b> ${esc(o.client.address)}</p>`:''}</div><div><p><b>공급자:</b> ${esc(bank.company_name||'백세푸드')}</p>${bank.company_business_no?`<p><b>사업자등록번호:</b> ${esc(bank.company_business_no)}</p>`:''}${bank.company_address?`<p><b>주소:</b> ${esc(bank.company_address)}</p>`:''}${bank.company_phone?`<p><b>연락처:</b> ${esc(bank.company_phone)}</p>`:''}</div></div>${table(['품명','수량','단가','금액'],items.map(i=>`<tr><td>${esc(i.name)}</td><td>${fmt(i.qty)}</td><td>${money(i.unit_price)}</td><td>${money(i.line_total)}</td></tr>`))}<div class="invoice-total"><div class="invoice-amount-small">공급가액 ${money(o.supply)}</div><div class="invoice-amount-small">부가세 ${money(o.tax)}</div><div class="invoice-amount-small">전 잔고 ${money(o.previous_balance||0)}</div><div class="invoice-grand">합계 ${money(o.amount_due??(o.total+Number(o.previous_balance||0)))}</div></div><div class="invoice-footer">위와같이 출고 하였습니다.</div>${bankBlock}</article>`;updateSerialControls();$('#bill-preview').scrollIntoView({behavior:'smooth',block:'start'})}
+function renderBills(){
+ const selected=$('#bill-client-filter').value;
+ $('#bill-client-filter').innerHTML='<option value="">전체 거래처</option>'+state.clients.map(c=>'<option value="'+c.id+'">'+esc(c.business)+'</option>').join('');
+ $('#bill-client-filter').value=selected;
+ const filterDate=$('#bill-date-filter').value,filterClient=$('#bill-client-filter').selectedOptions[0]?.text;
+ const rows=state.orders.filter(o=>(!filterDate||o.order_date===filterDate)&&(!selected||o.client_name===filterClient));
+ $('#bill-list').innerHTML=table(['명세표','출고일','거래처','구분','금액 / 원가','상태',''],rows.map(o=>{
+   const internal=o.order_type==='internal';
+   return '<tr class="'+(o.status==='cancelled'?'cancelled-order-row':'')+'"><td class="num">#'+o.id+'</td><td>'+esc(o.order_date)+'</td><td>'+esc(o.client_name)+'</td><td>'+(internal?'내부출고':'판매출고')+'</td><td>'+money(internal?o.internal_cost:(o.amount_due??o.total))+'</td><td>'+esc(deliveryLabel(o))+'</td><td><button class="secondary" data-bill-view="'+o.id+'">보기</button></td></tr>';
+ }));
+}
+async function openBill(id){
+ viewOrder=await api('orders/detail?id='+id);
+ const {order:o,items}=viewOrder,internal=o.order_type==='internal',bank=o.bank||{};
+ const bankFields=[bank.bank_name,bank.account_number,bank.account_holder].filter(Boolean).map(esc).join(' ');
+ const bankBlock=!internal&&bankFields?'<div class="invoice-payment"><b>입금처:</b> '+bankFields+'</div>':'';
+ $('#bill-preview').classList.remove('hidden');
+ $('#bill-cancel').disabled=false;
+ $('#bill-cancel').textContent=o.status==='issued'?'출고취소':'출고처리';
+ $('#bill-cancel').className=o.status==='issued'?'danger':'secondary';
+ $('#bill-delivery').classList.toggle('hidden',o.status!=='issued');
+ $('#bill-delivery').textContent=o.delivery_status==='delivered'?'배송전으로 변경':'배송완료 처리';
+ const lineTable=table(['품명','수량',internal?'원가':'단가',internal?'원가합계':'금액'],
+   items.map(i=>'<tr><td>'+esc(i.name)+'</td><td>'+fmt(i.qty)+'</td><td>'+money(internal?i.cost:i.unit_price)+'</td><td>'+money(internal?i.qty*i.cost:i.line_total)+'</td></tr>'));
+ const totals=internal?
+   '<div class="invoice-total"><div class="invoice-grand">내부출고 원가 합계 '+money(o.internal_cost??items.reduce((n,i)=>n+i.qty*i.cost,0))+'</div><div class="invoice-amount-small">판매매출 반영 0원 · 입금 없음</div></div>':
+   '<div class="invoice-total"><div class="invoice-amount-small">공급가액 '+money(o.supply)+'</div><div class="invoice-amount-small">부가세 '+money(o.tax)+'</div><div class="invoice-amount-small">전 잔고 '+money(o.previous_balance||0)+'</div><div class="invoice-grand">합계 '+money(o.amount_due??(o.total+Number(o.previous_balance||0)))+'</div></div>';
+ $('#bill-sheet').innerHTML='<article class="invoice '+(o.status!=='issued'?'cancelled':'')+'"><h2>'+(internal?'내 부 출 고 내 역 서':'거 래 명 세 표')+'</h2><div class="invoice-meta"><div><p><b>전표번호:</b> '+esc('B'+o.order_date.replaceAll('-','')+'-'+String(o.id).padStart(4,'0'))+'</p><p><b>출고일:</b> '+esc(o.order_date)+'</p><p><b>거래처:</b> '+esc(o.client.business)+'</p><p><b>담당자:</b> '+esc(o.client.person)+' / '+esc(o.client.phone)+'</p>'+(o.client.business_no?'<p><b>사업자번호:</b> '+esc(o.client.business_no)+'</p>':'')+(o.client.address?'<p><b>주소:</b> '+esc(o.client.address)+'</p>':'')+'</div><div><p><b>공급자:</b> '+esc(bank.company_name||'백세푸드')+'</p>'+(bank.company_business_no?'<p><b>사업자등록번호:</b> '+esc(bank.company_business_no)+'</p>':'')+(bank.company_address?'<p><b>주소:</b> '+esc(bank.company_address)+'</p>':'')+(bank.company_phone?'<p><b>연락처:</b> '+esc(bank.company_phone)+'</p>':'')+'</div></div>'+lineTable+totals+'<div class="invoice-footer">위와같이 출고 하였습니다.</div>'+bankBlock+'</article>';
+ updateSerialControls();
+ $('#bill-preview').scrollIntoView({behavior:'smooth',block:'start'});
+}
 function printBill(size){if(!viewOrder)return toast('명세표를 먼저 선택하세요');document.body.classList.remove('print-58','print-80');if(size!=='a4')document.body.classList.add('print-'+size);window.print();setTimeout(()=>document.body.classList.remove('print-58','print-80'),1000)}
 function resetClient(){$('#client-form').reset();$('#client-form [name=id]').value='';$('#client-form-title').textContent='거래처 추가'}
 function resetProduct(){$('#product-form').reset();$('#product-form [name=id]').value='';$('#product-form-title').textContent='제품 추가'}

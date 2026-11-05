@@ -132,3 +132,13 @@ test('sales management displays sale and cash payment while internal issue exclu
  for(const name of ['renderSalesTables','currentOrderType','month_internal_cost','cumulative_internal_cost',"issuedBuyerUrls.get(id)"])assert.ok(script.includes(name),name);
  for(const query of ["AND order_type='sale'","order_type='internal'","schema_migrations","internal_cost"])assert.ok(worker.includes(query),query);
 });
+
+test('internal invoice prints original cost but never prints an invoice payment destination',()=>{
+ const body=script.slice(script.indexOf('async function openBill('),script.indexOf('function printBill('));
+ assert.ok(body.includes("o.order_type==='internal'"));
+ assert.ok(body.includes("i.qty*i.cost"));
+ assert.ok(body.includes("!internal&&bankFields"));
+ assert.ok(body.includes("판매매출 반영 0원 · 입금 없음"));
+ assert.ok(body.includes("내 부 출 고 내 역 서"));
+ assert.ok(body.includes("'내부출고 원가 합계 '"));
+});
