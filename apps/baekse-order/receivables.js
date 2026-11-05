@@ -28,7 +28,7 @@ export function getReceivable(db,clientId){
   const account=getAccount(db,clientId);
   if(!account)return null;
   const sale=one(db,"SELECT COALESCE(SUM(total),0) AS amount,COUNT(*) AS count FROM orders WHERE client_id=? AND id>? AND status='issued' AND order_type='sale'",clientId,account.cutoff_order_id);
-  const paid=one(db,'SELECT COALESCE(SUM(amount),0) AS amount FROM receivable_payments WHERE client_id=? AND kind='cash' AND voided_at IS NULL',clientId);
+  const paid=one(db,"SELECT COALESCE(SUM(amount),0) AS amount FROM receivable_payments WHERE client_id=? AND kind='cash' AND voided_at IS NULL",clientId);
   const balance=account.opening_balance+sale.amount-paid.amount;
   if(!Number.isSafeInteger(balance))throw new Error('미수금 누계의 허용 범위를 초과했습니다.');
   return {client_id:clientId,opening_balance:account.opening_balance,cutoff_order_id:account.cutoff_order_id,
