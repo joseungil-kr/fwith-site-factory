@@ -112,3 +112,14 @@ test('invoice print preview omits operational metadata while keeping financial d
  assert.ok(html.includes('name="company_email"'),'Email settings must remain available');
  assert.ok(script.includes('deliveryLabel(o)'),'Delivery state must remain in administrator history');
 });
+
+test('partner table includes blue copy link directly before stop, without reissuing an existing token',()=>{
+ assert.ok(script.includes('data-client-link-copy'));
+ assert.ok(script.indexOf('data-client-link-copy')<script.indexOf('data-client-link-revoke'));
+ assert.ok(script.includes('issuedBuyerUrls.get(id)'));
+ assert.ok(script.includes('issuedBuyerUrls.set(clientId,result.url)'));
+ assert.ok(script.includes('issuedBuyerUrls.delete(clientId)'));
+ assert.ok(script.includes("if(!url){"));
+ assert.ok(!script.includes("api('requests/link/issue',{client_id:id})"),'Copy must not silently rotate an existing buyer token');
+ assert.ok(css.includes('#app .client-link-copy{background:#1764c5'));
+});

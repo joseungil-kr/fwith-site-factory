@@ -4,6 +4,8 @@ const money=n=>(Number(n)||0).toLocaleString('ko-KR')+'원',fmt=n=>(Number(n)||0
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const today=()=>new Date(Date.now()+9*3600000).toISOString().slice(0,10);
 let state={products:[],clients:[],orders:[],movements:[]},viewOrder=null,buyerRequests=[],lastBalanceClientId=null,paymentRequestKey=null;
+// Issued bearer links stay in memory only; the server stores hashes, never recoverable tokens.
+const issuedBuyerUrls=new Map();
 const toast=s=>{const t=$('#toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500)};
 async function api(path,body){const opt=body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)};let r=await fetch('/api/'+path,opt);let d=await r.json().catch(()=>({error:'서버 오류'}));if(!r.ok){if(r.status===401){$('#app').classList.add('hidden');$('#login').classList.remove('hidden')}throw new Error(d.error||'요청 실패')}return d}
 function setMobileMenuOpen(open){
@@ -309,7 +311,7 @@ function renderClients(){
      const activeLink=link&&!link.revoked_at;
      const balance=client.default_order_type==='internal'?null:clientReceivable(client.id);
      const buttons=client.active?'<button class="secondary" data-client-link="'+client.id+'">'+(activeLink?'발주 링크 재발급':'발주 링크 만들기')+'</button>'+
-       (activeLink?'<button class="danger" data-client-link-revoke="'+client.id+'">링크 중지</button>':''):'';
+       (activeLink?'<button class="client-link-copy" type="button" data-client-link-copy="'+client.id+'">링크복사</button><button class="danger" data-client-link-revoke="'+client.id+'">링크 중지</button>':''):'';
      return `<tr><td><b>${esc(client.business)}</b><span class="price-note">${esc(client.person)}${client.address?' · '+esc(client.address):''}</span></td><td>${esc(client.phone)}<span class="price-note">${esc(client.business_no)}</span></td><td><b>${client.default_order_type==='internal'?'해당 없음':balance?money(balance.balance):'미설정'}</b></td><td>${client.active?'사용중':'비활성'} · ${client.default_order_type==='internal'?'내부출고':'판매출고'}${activeLink?'<span class="price-note"> · 발주 링크 활성</span>':''}</td><td><div class="row-action"><button class="secondary" data-client-edit="${client.id}">수정</button><button class="${client.active?'danger':'secondary'}" data-client-toggle="${client.id}">${client.active?'삭제':'복구'}</button>${client.default_order_type==='internal'?'':'<button class="secondary" data-client-ar="${client.id}">매출관리</button>'}${buttons}</div></td></tr>`;
    })
  );
@@ -385,6 +387,7 @@ $('#client-list').onclick=async e=>{
  const edit=e.target.closest('[data-client-edit]'),
        toggle=e.target.closest('[data-client-toggle]'),
        issue=e.target.closest('[data-client-link]'),
+       copy=e.target.closest('[data-client-link-copy]'),
        revoke=e.target.closest('[data-client-link-revoke]');
  if(edit){
    const client=state.clients.find(c=>c.id===Number(edit.dataset.clientEdit));
@@ -397,6 +400,23 @@ $('#client-list').onclick=async e=>{
    catch(err){alert(err.message)}
    return;
  }
+ if(copy){
+   const id=Number(copy.dataset.clientLinkCopy),url=issuedBuyerUrls.get(id);
+   if(!url){
+     alert('보안상 기존 발주 링크는 서버에 복원할 수 없는 해시로만 저장됩니다. 이 브라우저에서 새로 발급한 링크만 바로 복사할 수 있습니다. 현재 링크를 유지하려면 거래처에 보낸 이전 메시지에서 복사하세요. 재발급하면 기존 링크는 중지됩니다.');
+     return;
+   }
+   try{
+     if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(url);
+     else{
+       const text=$('#generated-link-value');
+       text.value=url;text.focus();text.select();
+       if(!document.execCommand('copy'))throw new Error('클립보드 복사 실패');
+     }
+     toast('발주 링크를 복사했습니다.');
+   }catch(err){alert('복사가 차단되었습니다. 새로 발급된 링크 입력창에서 직접 복사해 주세요.');}
+   return;
+ }
  if(issue){
    const clientId=Number(issue.dataset.clientLink);
    const client=state.clients.find(c=>c.id===clientId);
@@ -404,6 +424,7 @@ $('#client-list').onclick=async e=>{
    if(existing&&!confirm('새 발주 링크를 만들면 이 업체의 이전 링크는 더 이상 사용할 수 없습니다. 재발급할까요?'))return;
    try{
      const result=await api('requests/link/issue',{client_id:clientId});
+     issuedBuyerUrls.set(clientId,result.url);
      $('#generated-link-value').value=result.url;
      $('#link-client-name').textContent=client.business+'에만 전달하세요.';
      $('#link-result').classList.remove('hidden');
@@ -415,7 +436,7 @@ $('#client-list').onclick=async e=>{
  if(revoke){
    const clientId=Number(revoke.dataset.clientLinkRevoke);
    if(!confirm('이 거래처의 발주 링크를 중지할까요? 기존 발주 기록은 유지됩니다.'))return;
-   try{await api('requests/link/revoke',{client_id:clientId});$('#link-result').classList.add('hidden');await refresh();toast('발주 링크가 중지되었습니다.');}
+   try{await api('requests/link/revoke',{client_id:clientId});issuedBuyerUrls.delete(clientId);$('#generated-link-value').value='';$('#link-result').classList.add('hidden');await refresh();toast('발주 링크가 중지되었습니다.');}
    catch(err){alert(err.message)}
  }
 };
