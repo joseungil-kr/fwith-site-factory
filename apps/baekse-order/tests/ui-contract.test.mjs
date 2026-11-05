@@ -142,3 +142,11 @@ test('internal invoice prints original cost but never prints an invoice payment 
  assert.ok(body.includes("내 부 출 고 내 역 서"));
  assert.ok(body.includes("'내부출고 원가 합계 '"));
 });
+
+test('exact-location legacy migration is guarded, reversible from preserved rows, and idempotent',()=>{
+ for(const marker of ["'ansan-baekseboribap-internal-20261105'","TRIM(business)","orders:5","issued_sales:125000","payments:3","active_amount:49000","cutoff:7","payment_snapshots","unexpected_live_ledger_revision","kind='internal_adjustment'","INSERT INTO schema_migrations"])
+  assert.ok(worker.includes(marker),'Migration missing '+marker);
+ assert.ok(worker.includes('UPDATE orders SET order_type=\'internal\''),'Original orders must be reclassified, not duplicated');
+ assert.ok(worker.includes("UPDATE clients SET default_order_type='internal'"));
+ assert.ok(worker.includes("this.ctx.storage.transactionSync"));
+});

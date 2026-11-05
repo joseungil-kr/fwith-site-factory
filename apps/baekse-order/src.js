@@ -70,15 +70,36 @@ export class OrderDatabase extends DurableObject {
         const old=this.getOne("SELECT COUNT(*) AS n,COALESCE(SUM(CASE WHEN status='issued' THEN total ELSE 0 END),0) AS issued_sales FROM orders WHERE client_id=? AND order_type='sale'",clientId);
         const internal=this.getOne("SELECT COALESCE(SUM(l.qty*l.cost),0) AS amount FROM orders o JOIN lines l ON l.order_id=o.id WHERE o.client_id=? AND o.order_type='sale' AND o.status='issued'",clientId);
         const payments=this.getOne("SELECT COUNT(*) AS n,COALESCE(SUM(CASE WHEN voided_at IS NULL THEN amount ELSE 0 END),0) AS active_amount FROM receivable_payments WHERE client_id=? AND kind='cash'",clientId);
-        if(payments.n>0){this.audit('internal_reclassification_blocked',{client_id:clientId,reason:'existing_cash_payments',payments:payments.n});}
-        else{
-        const meta={client_id:clientId,orders_reclassified:old.n,issued_sales_excluded:old.issued_sales,internal_cost_snapshot:internal.amount,payments_reclassified:0,noncash_payment_amount:0};
-        this.ctx.storage.transactionSync(()=>{
-          this.sql.exec("UPDATE clients SET default_order_type='internal' WHERE id=?",clientId);
-          this.sql.exec("UPDATE orders SET order_type='internal' WHERE client_id=? AND order_type='sale'",clientId);
-          this.sql.exec('INSERT INTO schema_migrations(name,applied_at,details) VALUES(?,?,?)',marker,now(),JSON.stringify(meta));
-          this.audit('internal_reclassification',meta);
-        });
+        // Live read-only reconciliation on 2026-11-05 verified one exact target,
+        // 5 sale-classified orders / 125000 sale amount, and 3 registered cash
+        // ledger items / 49000 active amount. The owner confirmed no cash
+        // actually exchanged at this internal outlet. Do not delete any row:
+        // relabel historical settlement entries as noncash internal adjustments,
+        // preserve their dates/amounts/memos, and retain a full audit snapshot.
+        const account=this.getOne('SELECT opening_balance,cutoff_order_id FROM receivable_accounts WHERE client_id=?',clientId);
+        const expected={orders:5,issued_sales:125000,payments:3,active_amount:49000,opening_balance:0,cutoff:7};
+        const matchesPreflight=old.n===expected.orders&&old.issued_sales===expected.issued_sales&&
+          payments.n===expected.payments&&payments.active_amount===expected.active_amount&&
+          account?.opening_balance===expected.opening_balance&&account?.cutoff_order_id===expected.cutoff;
+        if(!matchesPreflight){
+          this.audit('internal_reclassification_blocked',{
+            client_id:clientId,reason:'unexpected_live_ledger_revision',
+            orders:old.n,issued_sales:old.issued_sales,payments:payments.n,
+            active_payment_amount:payments.active_amount,
+            opening_balance:account?.opening_balance,cutoff:account?.cutoff_order_id
+          });
+        }else{
+          const paymentRows=this.all("SELECT id,amount,paid_date,memo,voided_at,kind FROM receivable_payments WHERE client_id=? AND kind='cash' ORDER BY id",clientId);
+          const meta={client_id:clientId,orders_reclassified:old.n,issued_sales_excluded:old.issued_sales,
+            internal_cost_snapshot:internal.amount,payments_reclassified:paymentRows.length,
+            noncash_payment_amount:payments.active_amount,payment_snapshots:paymentRows};
+          this.ctx.storage.transactionSync(()=>{
+            this.sql.exec("UPDATE clients SET default_order_type='internal' WHERE id=?",clientId);
+            this.sql.exec("UPDATE orders SET order_type='internal' WHERE client_id=? AND order_type='sale'",clientId);
+            this.sql.exec("UPDATE receivable_payments SET kind='internal_adjustment' WHERE client_id=? AND kind='cash'",clientId);
+            this.sql.exec('INSERT INTO schema_migrations(name,applied_at,details) VALUES(?,?,?)',marker,now(),JSON.stringify(meta));
+            this.audit('internal_reclassification',meta);
+          });
         }
       }
       // Zero/multiple exact matches: no fuzzy conversion and no migration marker.
