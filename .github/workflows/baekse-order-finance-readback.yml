@@ -3,6 +3,9 @@ on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
     paths: ['.github/workflows/baekse-order-finance-readback.yml']
+  pull_request:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths: ['.github/workflows/baekse-order-finance-readback.yml']
 permissions: {contents: read}
 jobs:
   verify:
@@ -26,8 +29,10 @@ jobs:
               if asset=='/':
                 assert '<button data-tab="receivables">매출관리</button>' in body
                 assert 'id="order-type"' in body and 'id="sales-by-client"' in body and 'id="sales-payments"' in body
+                assert 'id="link-result"' not in body and 'id="generated-link-value"' not in body
               if asset=='/app.js':
-                assert 'data-client-link-copy' in body and 'issuedBuyerUrls.get(id)' in body
+                assert 'data-client-link-copy' in body and 'const url=entry?.url;' in body
+                assert 'issuedBuyerUrls' not in body and 'link-result' not in body
                 assert 'renderSalesTables' in body and 'currentOrderType' in body
               if asset=='/style.css': assert '#app .client-link-copy{background:#1764c5' in body
               if asset=='/serial-printer.js': assert "o.order_type==='internal'" in body
@@ -40,6 +45,18 @@ jobs:
           with op.open(root+'/api/state',timeout=30) as res:
             state=json.load(res)
           clients=state['clients'];orders=state['orders'];metrics=state['metrics'];sales=state.get('sales',{});receipt=state.get('receivables',{})
+          links=[x for x in state.get('buyer_links',[]) if not x.get('revoked_at')]
+          all_urls=[x.get('url') for x in links]
+          assert all(isinstance(u,str) and u.startswith(root+'/request/#') and len(u.split('#',1)[1])==64 for u in all_urls),'Active buyer URL missing or malformed'
+          assert len(all_urls)==len(set(all_urls)),'Different clients share a buyer link'
+          client_index={c['id']:c['business'] for c in clients}
+          for l in links[:4]:
+            payload={'token':l['url'].split('#',1)[1]}
+            req=urllib.request.Request(root+'/api/buyer/overview',data=json.dumps(payload).encode(),method='POST',headers={'Origin':root,'Content-Type':'application/json'})
+            with op.open(req,timeout=20) as res:
+              actual=json.load(res)['client']['business']
+            assert actual==client_index[l['client_id']],'Buyer link points to a different client'
+          print('BUYER_LINKS_UNIQUE',len(links),'AUTHENTICATED',min(len(links),4))
           assert 'today_internal_cost' in metrics and 'cumulative_internal_cost' in metrics
           assert isinstance(sales.get('by_client'),list) and isinstance(sales.get('completed_payments'),list)
           assert all(o.get('order_type') in ('sale','internal') for o in orders)
