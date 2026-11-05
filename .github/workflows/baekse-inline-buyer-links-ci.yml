@@ -1,0 +1,34 @@
+name: Baekse buyer link inline and isolation tests
+on:
+  push:
+    branches:
+      - fix/baekse-inline-buyer-links-20261105
+      - feature/baekse-order-deploy-20261103
+    paths:
+      - 'apps/baekse-order/**'
+      - '.github/workflows/baekse-inline-buyer-links-ci.yml'
+  pull_request:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths:
+      - 'apps/baekse-order/**'
+      - '.github/workflows/baekse-inline-buyer-links-ci.yml'
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax of production modules
+        working-directory: apps/baekse-order
+        run: |
+          node --check src.js
+          node --check requests.js
+          node --check public/app.js
+      - name: Buyer link regression tests
+        working-directory: apps/baekse-order
+        run: node --test tests/buyer-links-inline.test.mjs

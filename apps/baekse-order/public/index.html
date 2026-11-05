@@ -94,16 +94,10 @@
 </div>
 <div class="panel hidden" id="bill-preview"><div class="panel-title"><h2>거래명세표 미리보기</h2><div class="action-row"><button id="bill-a4" class="secondary">A4 / PDF</button><button id="bill-58" class="secondary">58mm 영수증</button><button id="bill-80" class="secondary">80mm 영수증</button><button id="bill-delivery" class="secondary hidden" type="button">배송완료 처리</button><button id="bill-cancel" class="danger">출고취소</button><button id="bill-delete" class="danger">삭제</button></div></div><div id="bill-sheet"></div></div></section>
 <section class="page hidden" data-page="clients"><div class="page-head"><div><h1>거래처 관리</h1><p>상호·이름·전화번호는 필수, 사업자번호·주소는 선택입니다.</p></div></div><div class="panel"><h2 id="client-form-title">거래처 추가</h2><form id="client-form"><input type="hidden" name="id"><div class="form-grid"><label>상호 <em>*</em><input name="business" required maxlength="100" placeholder="예: 안산 중앙점"></label><label>이름 <em>*</em><input name="person" required maxlength="70" placeholder="담당자 이름"></label><label>전화번호 <em>*</em><input name="phone" required maxlength="40" type="tel" placeholder="010-0000-0000"></label><label>사업자등록번호<input name="business_no" maxlength="50"></label><label>기본 출고 유형<select name="default_order_type"><option value="sale">판매출고 거래처</option><option value="internal">내부출고 지점</option></select></label></div><label>주소<input name="address" maxlength="300" placeholder="선택 입력"></label><div class="action-row"><button class="primary" type="submit">저장</button><button class="secondary" type="button" id="client-reset">새 거래처</button></div></form></div><div class="panel"><h2>거래처 목록</h2>
-  <p class="hint" style="margin-bottom:12px">거래처별로 발주 링크를 만들고 카카오톡이나 문자로 전달하세요. 링크를 재발급하면 이전 링크는 더 이상 사용할 수 없습니다.</p>
+  <p class="hint" style="margin-bottom:12px">거래처 담당자 이름 아래에 발주링크가 표시됩니다. [링크복사]를 눌러 해당 업체에만 전달하세요. 재발급하면 그 업체의 이전 링크가 중지됩니다.</p>
   <div id="client-list"></div>
 </div>
-<div class="panel hidden" id="link-result">
-  <div class="panel-title"><h2>거래처 전용 발주 링크</h2></div>
-  <p class="hint" id="link-client-name"></p>
-  <label>전달할 링크<input id="generated-link-value" type="text" readonly autocomplete="off" aria-label="거래처 전용 발주 링크"></label>
-  <div class="action-row"><button id="copy-generated-link" class="primary" type="button">발주 링크 복사</button><button id="hide-generated-link" class="secondary" type="button">닫기</button></div>
-  <p class="hint">이 주소는 거래처 전용 비밀 링크입니다. 다른 거래처에 전달하지 마세요. 보안상 링크는 생성 직후에만 표시되며 나중에 필요하면 다시 발급할 수 있습니다.</p>
-</div></section>
+</section>
 <section class="page hidden page-receivables" data-page="receivables">
   <div class="page-head page-head-modern"><div><p class="screen-eyebrow">FINANCE / SALES</p><h1>매출관리</h1><p>판매출고 매출과 거래처별 미수금·실제 입금완료 내역을 확인합니다. 내부출고는 매출에 포함하지 않습니다.</p></div></div>
   <div id="receivables-overview" class="receivables-overview"></div><section class="panel"><div class="panel-title"><h2>거래처별 판매매출·입금·미수금</h2></div><div id="sales-by-client"></div></section><section class="panel"><div class="panel-title"><h2>입금완료 내역</h2><span class="muted">실제 등록된 현금 입금 기준 · 최근 200건</span></div><div id="sales-payments"></div></section>

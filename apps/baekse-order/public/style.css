@@ -338,3 +338,11 @@
 #app .client-link-copy{background:#1764c5;border:1px solid #1555a5;color:#fff;white-space:nowrap}
 #app .client-link-copy:hover{background:#124f9b}
 #app .client-link-copy:focus-visible{outline:3px solid #91c5ff;outline-offset:2px}
+
+/* Buyer URLs are shown directly beneath each client contact in the directory. */
+#client-list .buyer-link-row{display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap;margin-top:8px;line-height:1.5;max-width:100%;font-size:12px}
+#client-list .buyer-link-label{white-space:nowrap;color:#465a52;font-weight:650}
+#client-list .buyer-link-url{color:#1764c5;overflow-wrap:anywhere;word-break:break-all;min-width:0;flex:1 1 200px;text-decoration:underline;text-underline-offset:2px}
+#client-list .buyer-link-empty{color:#7d8882}
+#client-list .buyer-link-row button.client-link-copy{background:#1764c5;color:#fff;border-color:#1764c5;padding:6px 10px;font-size:12px;min-height:34px;white-space:nowrap;flex:none}
+@media(max-width:740px){#client-list .buyer-link-row{align-items:flex-start}#client-list .buyer-link-url{flex-basis:100%}}
