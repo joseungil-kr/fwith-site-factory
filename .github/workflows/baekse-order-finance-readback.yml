@@ -71,6 +71,11 @@ jobs:
               assert migrated['client_id']==client['id']
               assert client['default_order_type']=='internal'
               assert all(o['order_type']=='internal' for o in orders if o['client_name'].strip()=='안산 백세보리밥')
+              assert migrated['orders_reclassified']==5 and migrated['issued_sales_excluded']==125000
+              assert migrated['payments_reclassified']==3 and migrated['noncash_payment_amount']==49000
+              assert len(migrated['payment_snapshots'])==3,'Historical payment audit snapshots missing'
+              assert not cash,'Internal settlement must not appear as actual cash income'
+              assert partner_row.get('sale_amount',0)==0,'Internal branch still counted as sales'
               print('TARGET_INTERNAL_MIGRATED',migrated['orders_reclassified'],'ORDERS','INTERNAL_COST',migrated['internal_cost_snapshot'])
             else:
               print('TARGET_MIGRATION_NOT_APPLIED_REQUIRES_REVIEW')
@@ -84,3 +89,5 @@ jobs:
           print('INTERNAL_COST',metrics['cumulative_internal_cost'])
           print('FINANCE_READ_ONLY_PASS')
           PY
+
+# Independent post-migration read-only reconciliation of five historic internal orders and three noncash adjustments.
