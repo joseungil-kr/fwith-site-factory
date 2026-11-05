@@ -1,5 +1,5 @@
 import { DurableObject } from 'cloudflare:workers';
-import {DEFAULT_PRODUCTS,onlyInt,safeText,dateCheck,calcTotals,calculatePayable,sessionDurationSeconds} from './logic.js';
+import {DEFAULT_PRODUCTS,onlyInt,safeText,dateCheck,calcTotals,calcInternalCost,normalizeOrderType,calculatePayable,sessionDurationSeconds} from './logic.js';
 import {ensureBuyerSchema,buyerSupplySummary,buyerLinkSummaries,handleBuyerPublic,handleBuyerAdmin} from './requests.js';
 import {ensureReceivableSchema,getReceivables,ensureReceivableOrderCanIssue,assertReceivableOrderRemoval,handleReceivablesAdmin} from './receivables.js';
 const json=(obj,status=200,headers={})=>new Response(JSON.stringify(obj),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...headers}});
@@ -16,9 +16,9 @@ export class OrderDatabase extends DurableObject {
   this.ctx=ctx;this.env=env;this.sql=ctx.storage.sql;
   ctx.blockConcurrencyWhile(async()=>{
     this.sql.exec(`CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,cost INTEGER NOT NULL,price INTEGER NOT NULL,active INTEGER NOT NULL DEFAULT 1,sort_order INTEGER NOT NULL DEFAULT 0,created_at TEXT NOT NULL);`);
-    this.sql.exec(`CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY AUTOINCREMENT,business TEXT NOT NULL,person TEXT NOT NULL,phone TEXT NOT NULL,business_no TEXT NOT NULL DEFAULT '',address TEXT NOT NULL DEFAULT '',active INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL);`);
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY AUTOINCREMENT,business TEXT NOT NULL,person TEXT NOT NULL,phone TEXT NOT NULL,business_no TEXT NOT NULL DEFAULT '',address TEXT NOT NULL DEFAULT '',default_order_type TEXT NOT NULL DEFAULT 'sale',active INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL);`);
     this.sql.exec(`CREATE TABLE IF NOT EXISTS movements (id INTEGER PRIMARY KEY AUTOINCREMENT,product_id INTEGER NOT NULL,delta INTEGER NOT NULL,cost INTEGER NOT NULL DEFAULT 0,note TEXT NOT NULL DEFAULT '',source TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL);`);
-    this.sql.exec(`CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY AUTOINCREMENT,client_id INTEGER NOT NULL,client_snapshot TEXT NOT NULL,order_date TEXT NOT NULL,vat TEXT NOT NULL,supply INTEGER NOT NULL,tax INTEGER NOT NULL,total INTEGER NOT NULL,previous_balance INTEGER NOT NULL DEFAULT 0,bank_snapshot TEXT NOT NULL DEFAULT '{}',status TEXT NOT NULL DEFAULT 'issued',delivery_status TEXT NOT NULL DEFAULT 'unknown',delivered_at TEXT,memo TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL,cancelled_at TEXT);`);
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY AUTOINCREMENT,client_id INTEGER NOT NULL,client_snapshot TEXT NOT NULL,order_date TEXT NOT NULL,vat TEXT NOT NULL,supply INTEGER NOT NULL,tax INTEGER NOT NULL,total INTEGER NOT NULL,order_type TEXT NOT NULL DEFAULT 'sale',previous_balance INTEGER NOT NULL DEFAULT 0,bank_snapshot TEXT NOT NULL DEFAULT '{}',status TEXT NOT NULL DEFAULT 'issued',delivery_status TEXT NOT NULL DEFAULT 'unknown',delivered_at TEXT,memo TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL,cancelled_at TEXT);`);
     this.sql.exec(`CREATE TABLE IF NOT EXISTS lines (id INTEGER PRIMARY KEY AUTOINCREMENT,order_id INTEGER NOT NULL,product_id INTEGER,name TEXT NOT NULL,qty INTEGER NOT NULL,unit_price INTEGER NOT NULL,cost INTEGER NOT NULL DEFAULT 0,line_total INTEGER NOT NULL);`);
     this.sql.exec(`CREATE TABLE IF NOT EXISTS audit (id INTEGER PRIMARY KEY AUTOINCREMENT,action TEXT NOT NULL,info TEXT NOT NULL,created_at TEXT NOT NULL);`);
     this.sql.exec(`CREATE TABLE IF NOT EXISTS sessions (hash TEXT PRIMARY KEY,expires INTEGER NOT NULL);`);
@@ -37,11 +37,14 @@ export class OrderDatabase extends DurableObject {
     this.sql.exec("INSERT OR IGNORE INTO receipt_settings(id,bank_name,account_number,account_holder,updated_at) VALUES (1,'','','',?)",now());
     // Non-destructive schema upgrade for existing Durable Object SQLite databases.
     const orderCols=this.sql.exec('PRAGMA table_info(orders)').toArray().map(x=>x.name);
+    if(!orderCols.includes('order_type'))this.sql.exec("ALTER TABLE orders ADD COLUMN order_type TEXT NOT NULL DEFAULT 'sale'");
     if(!orderCols.includes('previous_balance'))this.sql.exec('ALTER TABLE orders ADD COLUMN previous_balance INTEGER NOT NULL DEFAULT 0');
     if(!orderCols.includes('bank_snapshot'))this.sql.exec("ALTER TABLE orders ADD COLUMN bank_snapshot TEXT NOT NULL DEFAULT '{}'");
     // Historic records have unknown delivery state; never fabricate a completed delivery.
     if(!orderCols.includes('delivery_status'))this.sql.exec("ALTER TABLE orders ADD COLUMN delivery_status TEXT NOT NULL DEFAULT 'unknown'");
     if(!orderCols.includes('delivered_at'))this.sql.exec('ALTER TABLE orders ADD COLUMN delivered_at TEXT');
+    const clientCols=this.sql.exec('PRAGMA table_info(clients)').toArray().map(x=>x.name);
+    if(!clientCols.includes('default_order_type'))this.sql.exec("ALTER TABLE clients ADD COLUMN default_order_type TEXT NOT NULL DEFAULT 'sale'");
     const productCols=this.sql.exec('PRAGMA table_info(products)').toArray().map(x=>x.name);
     if(!productCols.includes('sort_order'))this.sql.exec('ALTER TABLE products ADD COLUMN sort_order INTEGER NOT NULL DEFAULT 0');
     const settingCols=this.sql.exec('PRAGMA table_info(receipt_settings)').toArray().map(x=>x.name);
@@ -56,6 +59,28 @@ export class OrderDatabase extends DurableObject {
     ensureBuyerSchema(this);
     ensureReceivableSchema(this);
     if(!this.sql.exec('SELECT id FROM clients LIMIT 1').toArray()[0]) this.sql.exec('INSERT INTO clients (business,person,phone,created_at) VALUES (?,?,?,?)','안산 중앙점','미입력','미입력',now());
+    // Reclassify exactly one verified internal location, once. Preserve source orders,
+    // canceled status, original price snapshots, stock movements and payment rows.
+    this.sql.exec("CREATE TABLE IF NOT EXISTS schema_migrations (name TEXT PRIMARY KEY,applied_at TEXT NOT NULL,details TEXT NOT NULL)");
+    const marker='ansan-baekseboribap-internal-20261105';
+    if(!this.getOne('SELECT name FROM schema_migrations WHERE name=?',marker)){
+      const matches=this.all("SELECT id FROM clients WHERE TRIM(business)=?",'안산 백세보리밥');
+      if(matches.length===1){
+        const clientId=matches[0].id;
+        const old=this.getOne("SELECT COUNT(*) AS n,COALESCE(SUM(CASE WHEN status='issued' THEN total ELSE 0 END),0) AS issued_sales FROM orders WHERE client_id=? AND order_type='sale'",clientId);
+        const internal=this.getOne("SELECT COALESCE(SUM(l.qty*l.cost),0) AS amount FROM orders o JOIN lines l ON l.order_id=o.id WHERE o.client_id=? AND o.order_type='sale' AND o.status='issued'",clientId);
+        const payments=this.getOne("SELECT COUNT(*) AS n,COALESCE(SUM(CASE WHEN voided_at IS NULL THEN amount ELSE 0 END),0) AS active_amount FROM receivable_payments WHERE client_id=? AND kind='cash'",clientId);
+        const meta={client_id:clientId,orders_reclassified:old.n,issued_sales_excluded:old.issued_sales,internal_cost_snapshot:internal.amount,payments_reclassified:payments.n,noncash_payment_amount:payments.active_amount};
+        this.ctx.storage.transactionSync(()=>{
+          this.sql.exec("UPDATE clients SET default_order_type='internal' WHERE id=?",clientId);
+          this.sql.exec("UPDATE orders SET order_type='internal' WHERE client_id=? AND order_type='sale'",clientId);
+          this.sql.exec("UPDATE receivable_payments SET kind='internal_adjustment' WHERE client_id=? AND kind='cash'",clientId);
+          this.sql.exec('INSERT INTO schema_migrations(name,applied_at,details) VALUES(?,?,?)',marker,now(),JSON.stringify(meta));
+          this.audit('internal_reclassification',meta);
+        });
+      }
+      // Zero/multiple exact matches: no fuzzy conversion and no migration marker.
+    }
   });
  }
  getOne(q,...args){return this.sql.exec(q,...args).toArray()[0]||null}
