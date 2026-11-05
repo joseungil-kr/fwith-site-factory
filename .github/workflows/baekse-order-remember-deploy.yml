@@ -84,7 +84,7 @@ jobs:
           version=deployments[0]['versions'][0]
           assert version.get('percentage')==100,'Previous version is not deployed at 100%'
           previous=version['version_id']
-          assert previous=='77bfc012-4aad-4733-bf9c-49681ec9bd9d','Worker version changed since last verified release'
+          assert previous=='7e6a76e6-ca58-4f63-a580-fcf2ccad7e97','Worker version changed since last verified release'
           with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:
             f.write('previous_version='+previous+'\n')
           print('SAFE_ORDER_APP_UPDATE_PASS',hostname,'existingWorker',worker,'rollbackPinned',previous)
@@ -127,7 +127,7 @@ jobs:
                 nav=html.split('<nav class="nav" id="nav">',1)[1].split('</nav>',1)[0]
                 tabs=['data-tab="home"','data-tab="order"','data-tab="requests"','data-tab="bills"','data-tab="products"','data-tab="stock"','data-tab="clients"','data-tab="receivables"','data-tab="settings"']
                 assert nav.count('data-tab=')==len(tabs) and [nav.index(x) for x in tabs]==sorted(nav.index(x) for x in tabs),'Nine admin menus or order mismatch'
-                assert all(s in nav for s in ['>대시보드</button>','>출고등록</button>','>거래명세표</button>','>제품관리</button>','>재고관리</button>','>거래처관리</button>','>미수금관리(입금관리)</button>','>설정</button>']),'Menu labels mismatch'
+                assert all(s in nav for s in ['>대시보드</button>','>출고등록</button>','>거래명세표</button>','>제품관리</button>','>재고관리</button>','>거래처관리</button>','>매출관리</button>','>설정</button>']),'Menu labels mismatch'
                 assert 'data-go="stock"' in html and 'data-page="stock"' in html,'Stock page is unreachable'
                 assert '관리 시작 전 발행한 명세표는 기초 미수금에 이미 반영된 것으로 간주하며 다시 합산하지 않습니다.' not in html,'Removed AR hint returned'
                 assert '기존 명세표의 ‘전 잔고’는 중복 계산하지 않습니다.' not in html,'Removed AR hint returned'
@@ -135,7 +135,7 @@ jobs:
                 assert '<option value="none" selected>부가세 미계산 (0원)</option>' in html, 'Default VAT should be uncalculated'
                 assert all(x in html for x in ['id="mobile-menu-toggle"','aria-controls="nav"','aria-expanded="false"','id="mobile-requests"','id="mobile-requests-pending"','id="mobile-logout"','class="mobile-shortcuts"','data-go="order"']), 'Mobile menu, top pending count, or shortcuts missing'
                 assert all(x in html for x in ['data-tab="requests"','id="buyer-home-summary"','id="request-shortages"','id="request-list"','id="link-result"']),'Buyer request manager UI missing'
-                assert all(x in html for x in ('OPERATIONS / DASHBOARD','OPERATIONS / ORDER REQUESTS','FINANCE / RECEIVABLES','id="home-request-preview"','id="home-shortages"','id="request-search"','id="request-filters"','id="request-overview"','id="receivables-overview"','class="receivables-layout"')),'Modern ERP screen layouts missing'
+                assert all(x in html for x in ('OPERATIONS / DASHBOARD','OPERATIONS / ORDER REQUESTS','FINANCE / SALES','id="home-request-preview"','id="home-shortages"','id="request-search"','id="request-filters"','id="request-overview"','id="receivables-overview"','class="receivables-layout"')),'Modern ERP screen layouts missing'
                 assert '428,000원' not in html and '1,250,000원' not in html,'Mockup financial amounts were deployed'
                 assert 'COM4 (현재 사용)' in html and '9600bps' in html and 'COM6' in html, 'COM range/default missing'
                 assert 'noindex' in r.headers.get('X-Robots-Tag','').lower()

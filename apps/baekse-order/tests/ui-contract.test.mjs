@@ -122,6 +122,9 @@ test('partner table includes blue copy link directly before stop, without reissu
  assert.ok(script.includes("if(!url){"));
  assert.ok(!script.includes("api('requests/link/issue',{client_id:id})"),'Copy must not silently rotate an existing buyer token');
  assert.ok(css.includes('#app .client-link-copy{background:#1764c5'));
+ assert.ok(html.includes('id="sales-by-client"'));
+ assert.ok(html.includes('id="sales-payments"'));
+ assert.ok(html.includes('name="default_order_type"'));
 });
 
 test('sales management displays sale and cash payment while internal issue excludes receivables',()=>{
