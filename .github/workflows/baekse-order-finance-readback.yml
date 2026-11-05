@@ -56,6 +56,17 @@ jobs:
           print('MIGRATION_MARKER_PRESENT',bool(migrated))
           if len(exact)==1:
             client=exact[0]
+            matching=[o for o in orders if o['client_name'].strip()=='안산 백세보리밥']
+            partner_row=next((x for x in sales['by_client'] if x['client_id']==client['id']),{})
+            acct=next((x for x in receipt.get('accounts',[]) if x['client_id']==client['id']),None)
+            cash=[x for x in sales['completed_payments'] if x['client_id']==client['id']]
+            print('TARGET_SALE_ORDER_COUNT_IN_LIST',sum(x['order_type']=='sale' for x in matching))
+            print('TARGET_SALE_TOTAL',partner_row.get('sale_amount'))
+            print('TARGET_CASH_PAYMENT_COUNT_ACTIVE',len(cash))
+            print('TARGET_CASH_PAID_AMOUNT_ACTIVE',sum(x['amount'] for x in cash))
+            print('TARGET_RECEIVABLE_TRACKED',bool(acct))
+            if acct: print('TARGET_RECEIVABLE_BALANCE',acct.get('balance'),'OPENING',acct.get('opening_balance'),'CUTOFF',acct.get('cutoff_order_id'))
+            print('TARGET_DEFAULT_TYPE',client.get('default_order_type'))
             if migrated:
               assert migrated['client_id']==client['id']
               assert client['default_order_type']=='internal'
