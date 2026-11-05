@@ -223,7 +223,11 @@ jobs:
                 order=invoice['order']
                 assert isinstance(order.get('bank'),dict)
                 assert order.get('previous_balance',0)>=0
-                assert order.get('amount_due')==order['total']+order['previous_balance'],'Old and new invoice totals mismatch'
+                if order.get('order_type')=='internal':
+                  assert order.get('amount_due')==0,'Internal dispatch must not generate a receivable'
+                  assert isinstance(order.get('internal_cost'),int) and order['internal_cost']>=0,'Internal cost is missing'
+                else:
+                  assert order.get('amount_due')==order['total']+order['previous_balance'],'Sale invoice totals mismatch'
           with unauthed.open(base+'/style.css',timeout=25) as r:
             css=r.read().decode('utf-8')
             assert r.status==200 and all(marker in css for marker in ['@media screen and (max-width:768px)','.nav.mobile-expanded','.mobile-header-actions','.mobile-shortcuts','.mobile-nav-logout']),'Responsive mobile styles missing'
