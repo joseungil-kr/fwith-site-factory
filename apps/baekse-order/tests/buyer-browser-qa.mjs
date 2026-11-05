@@ -25,9 +25,9 @@ try{
  await page.locator('#login-form [name=password]').fill('ci-only-strong-example-password-2026');
  await page.locator('#login-form button[type=submit]').click();
  await page.locator('#app:not(.hidden) #metrics').waitFor();
- assert.equal(await page.locator('.metric').count(),6);
+ assert.equal(await page.locator('.metric').count(),8,'Dashboard now includes two internal-dispatch KPIs');
  assert.equal(await page.locator('[data-page=home] h1').innerText(),'운영 대시보드');
- assert.equal(await page.locator('#metrics .metric').count(),6);
+ assert.equal(await page.locator('#metrics .metric').count(),8);
  await page.locator('#home-shortages').waitFor();
  await page.screenshot({path:path.join(out,'redesign-dashboard-mobile-390.png'),fullPage:true});
  const toggle=page.locator('#mobile-menu-toggle');
