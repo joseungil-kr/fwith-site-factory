@@ -122,19 +122,27 @@ export class OrderDatabase extends DurableObject {
    if(path==='/api/state'&&req.method==='GET'){
       const products=this.all('SELECT p.*,COALESCE((SELECT SUM(delta) FROM movements WHERE product_id=p.id),0) AS stock FROM products p ORDER BY p.sort_order,p.id');
       const clients=this.all('SELECT * FROM clients ORDER BY id');
-      const orders=this.all('SELECT o.id,o.order_date,o.status,o.delivery_status,o.delivered_at,o.supply,o.tax,o.total,o.previous_balance,(o.total+o.previous_balance) AS amount_due,o.memo,o.created_at, json_extract(o.client_snapshot,\'$.business\') AS client_name FROM orders o ORDER BY o.id DESC LIMIT 300');
+      const orders=this.all("SELECT o.id,o.order_date,o.order_type,o.status,o.delivery_status,o.delivered_at,o.supply,o.tax,o.total,o.previous_balance,CASE WHEN o.order_type='internal' THEN 0 ELSE o.total+o.previous_balance END AS amount_due,COALESCE((SELECT SUM(l.qty*l.cost) FROM lines l WHERE l.order_id=o.id),0) AS internal_cost,o.memo,o.created_at,json_extract(o.client_snapshot,'$.business') AS client_name FROM orders o ORDER BY o.id DESC LIMIT 300");
       const kstDate=new Date(Date.now()+9*3600000).toISOString().slice(0,10);
       const kstMonth=kstDate.slice(0,7);
-      const todayStat=this.getOne("SELECT COUNT(*) AS count,COALESCE(SUM(total),0) AS amount FROM orders WHERE status='issued' AND order_date=?",kstDate);
-      const monthStat=this.getOne("SELECT COUNT(*) AS count,COALESCE(SUM(total),0) AS amount FROM orders WHERE status='issued' AND substr(order_date,1,7)=?",kstMonth);
-      const allStat=this.getOne("SELECT COUNT(*) AS count,COALESCE(SUM(total),0) AS amount FROM orders WHERE status='issued'");
-      const metrics={date:kstDate,month:kstMonth,today_count:todayStat.count,today_amount:todayStat.amount,month_count:monthStat.count,month_amount:monthStat.amount,cumulative_count:allStat.count,cumulative_amount:allStat.amount};
+      const todayStat=this.getOne("SELECT COUNT(*) AS count,COALESCE(SUM(total),0) AS amount FROM orders WHERE status='issued' AND order_type='sale' AND order_date=?",kstDate);
+      const monthStat=this.getOne("SELECT COUNT(*) AS count,COALESCE(SUM(total),0) AS amount FROM orders WHERE status='issued' AND order_type='sale' AND substr(order_date,1,7)=?",kstMonth);
+      const allStat=this.getOne("SELECT COUNT(*) AS count,COALESCE(SUM(total),0) AS amount FROM orders WHERE status='issued' AND order_type='sale'");
+      const intToday=this.getOne("SELECT COUNT(*) AS count,COALESCE(SUM((SELECT COALESCE(SUM(l.qty*l.cost),0) FROM lines l WHERE l.order_id=o.id)),0) AS amount FROM orders o WHERE o.status='issued' AND o.order_type='internal' AND o.order_date=?",kstDate);
+      const intMonth=this.getOne("SELECT COUNT(*) AS count,COALESCE(SUM((SELECT COALESCE(SUM(l.qty*l.cost),0) FROM lines l WHERE l.order_id=o.id)),0) AS amount FROM orders o WHERE o.status='issued' AND o.order_type='internal' AND substr(o.order_date,1,7)=?",kstMonth);
+      const intAll=this.getOne("SELECT COUNT(*) AS count,COALESCE(SUM((SELECT COALESCE(SUM(l.qty*l.cost),0) FROM lines l WHERE l.order_id=o.id)),0) AS amount FROM orders o WHERE o.status='issued' AND o.order_type='internal'");
+      const metrics={date:kstDate,month:kstMonth,today_count:todayStat.count,today_amount:todayStat.amount,month_count:monthStat.count,month_amount:monthStat.amount,cumulative_count:allStat.count,cumulative_amount:allStat.amount,today_internal_count:intToday.count,today_internal_cost:intToday.amount,month_internal_count:intMonth.count,month_internal_cost:intMonth.amount,cumulative_internal_count:intAll.count,cumulative_internal_cost:intAll.amount};
       const movements=this.all('SELECT m.*,p.name AS product_name FROM movements m JOIN products p ON p.id=m.product_id ORDER BY m.id DESC LIMIT 300');
       const receipt_settings=this.getOne('SELECT bank_name,account_number,account_holder,company_name,company_business_no,company_address,company_phone,company_email FROM receipt_settings WHERE id=1');
       const buyer_dashboard=buyerSupplySummary(this);
       const buyer_links=buyerLinkSummaries(this);
       const receivables=getReceivables(this);
-      return json({products,clients,orders,movements,receipt_settings,metrics,buyer_dashboard,buyer_links,receivables});
+      const by_client=this.all("SELECT c.id AS client_id,c.business,COALESCE(SUM(CASE WHEN o.status='issued' AND o.order_type='sale' THEN o.total ELSE 0 END),0) AS sale_amount,COALESCE(SUM(CASE WHEN o.status='issued' AND o.order_type='sale' THEN 1 ELSE 0 END),0) AS sale_count,COALESCE((SELECT SUM(p.amount) FROM receivable_payments p WHERE p.client_id=c.id AND p.kind='cash' AND p.voided_at IS NULL),0) AS paid_amount FROM clients c LEFT JOIN orders o ON o.client_id=c.id GROUP BY c.id ORDER BY c.id");
+      const completed_payments=this.all("SELECT p.id,p.client_id,p.paid_date,p.amount,p.memo,c.business AS client_name FROM receivable_payments p JOIN clients c ON c.id=p.client_id WHERE p.kind='cash' AND p.voided_at IS NULL ORDER BY p.paid_date DESC,p.id DESC LIMIT 200");
+      const total_paid=this.getOne("SELECT COALESCE(SUM(amount),0) AS amount FROM receivable_payments WHERE kind='cash' AND voided_at IS NULL").amount;
+      const sales={by_client,completed_payments,total_paid};
+      const internal_migration=this.getOne("SELECT details FROM schema_migrations WHERE name='ansan-baekseboribap-internal-20261105'");
+      return json({products,clients,orders,movements,receipt_settings,metrics,buyer_dashboard,buyer_links,receivables,sales,internal_migration:internal_migration?JSON.parse(internal_migration.details):null});
    }
    if(path==='/api/export'&&req.method==='GET'){
       const data={exported_at:now(),products:this.all('SELECT * FROM products'),clients:this.all('SELECT * FROM clients'),orders:this.all('SELECT * FROM orders'),lines:this.all('SELECT * FROM lines'),movements:this.all('SELECT * FROM movements'),buyer_requests:this.all('SELECT * FROM buyer_requests'),buyer_lines:this.all('SELECT * FROM buyer_lines'),buyer_links:buyerLinkSummaries(this),receivable_accounts:this.all('SELECT * FROM receivable_accounts'),receivable_payments:this.all('SELECT * FROM receivable_payments'),audit:this.all('SELECT * FROM audit')};
