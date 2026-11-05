@@ -58,7 +58,7 @@ try{
  assert.ok(await page.locator('[data-page="order"]').isVisible(),'Mobile shortcut navigates to order registration');
  await selectTab('home');
  assert.ok(await page.locator('[data-page="home"]').isVisible(),'Navigation should return to dashboard');
- assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주 요청(0)','Initially no pending buyer requests');
+ assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주요청(0)','Initially no pending buyer requests');
  await selectTab('clients');
  await page.locator('[data-client-edit]').first().click();
  await page.locator('#client-form [name=person]').fill('QA발주담당');
@@ -126,7 +126,7 @@ try{
  assert.equal(await appNav.isVisible(),false,'Mobile header request chip must navigate without expanding the menu');
  await page.locator('#request-list [data-request-fulfill]').waitFor();
  assert.equal((await page.locator('#mobile-requests-pending').textContent()).trim(),'1','Mobile pending chip updates');
- assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주 요청(1)','Customer request must update admin nav badge');
+ assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주요청(1)','Customer request must update admin nav badge');
  assert.ok((await page.locator('#request-shortages').innerText()).includes('추가 입고 20개 필요'));
  assert.equal(await page.locator('#request-overview .request-overview-card').count(),3);
  assert.ok(await page.locator('#request-filters').isVisible());
@@ -161,7 +161,7 @@ try{
  assert.equal(after.products[0].stock,0,'Approved invoice should debit stock');
  assert.equal(after.buyer_dashboard.pending_count,0);
  assert.equal((await page.locator('#mobile-requests-pending').textContent()).trim(),'0','Mobile pending chip clears after approval');
- assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주 요청(0)','Fulfilled order clears pending request count');
+ assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주요청(0)','Fulfilled order clears pending request count');
  await page.setViewportSize({width:1440,height:900});
  assert.equal(await toggle.isVisible(),false,'Hamburger button must be hidden on desktop');
  assert.ok(await appNav.isVisible(),'Desktop navigation should remain fully visible');
