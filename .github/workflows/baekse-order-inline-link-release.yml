@@ -1,0 +1,73 @@
+name: Baekse inline buyer links production release
+on:
+  push:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths: ['.github/workflows/baekse-order-inline-link-release.yml']
+permissions:
+  contents: read
+concurrency:
+  group: baekse-order-live-release
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify exact existing Worker target and test buyer link isolation
+        working-directory: apps/baekse-order
+        run: |
+          node -e "const c=require('./wrangler.jsonc');if(c.name!=='baekse-order'||c.keep_vars!==true)process.exit(1)"
+          node --check src.js
+          node --check requests.js
+          node --check public/app.js
+          node --test tests/buyer-links-inline.test.mjs
+      - name: Update only the existing baekse-order Worker; preserve its vars and routes
+        working-directory: apps/baekse-order
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_SEND_METRICS: 'false'
+        run: npx --yes wrangler@4.148.0 deploy --config wrangler.jsonc
+      - name: Read back live public UI and authenticated per-client URLs
+        env:
+          ADMIN_PASSWORD: ${{ secrets.BAEKSE_ORDER_ADMIN_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import json,os,re,urllib.request,http.cookiejar
+          root='https://order.baeksefood.com'
+          opener=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
+          opener.addheaders=[('User-Agent','Mozilla/5.0 (Baekse post-release read-only QA)')]
+          with opener.open(root+'/',timeout=30) as r:
+            assert r.status==200
+            html=r.read().decode()
+          assert 'id="link-result"' not in html
+          assert 'id="client-list"' in html
+          with opener.open(root+'/app.js',timeout=30) as r:
+            assert r.status==200
+            app=r.read().decode()
+          assert 'const url=entry?.url' in app and 'buyer-link-row' in app
+          assert 'issuedBuyerUrls' not in app
+          print('LIVE_UI_READBACK_PASS')
+          pwd=os.environ['ADMIN_PASSWORD']
+          assert len(pwd)>=12
+          request=urllib.request.Request(root+'/api/login',method='POST',headers={'Content-Type':'application/json','Origin':root},data=json.dumps({'password':pwd}).encode())
+          with opener.open(request,timeout=30) as r:
+            assert r.status==200 and json.load(r)['ok'] is True
+          with opener.open(root+'/api/state',timeout=30) as r:
+            data=json.load(r)
+          links=[x for x in data.get('buyer_links',[]) if x.get('revoked_at') is None]
+          urls=[x.get('url') for x in links]
+          assert all(isinstance(u,str) and re.fullmatch(re.escape(root)+r'/request/#[0-9a-f]{64}',u) for u in urls)
+          assert len(urls)==len(set(urls))
+          names={c['id']:c['business'] for c in data['clients']}
+          for link in links[:4]:
+            req=urllib.request.Request(root+'/api/buyer/overview',method='POST',headers={'Content-Type':'application/json','Origin':root},data=json.dumps({'token':link['url'].split('#',1)[1]}).encode())
+            with opener.open(req,timeout=20) as res:
+              result=json.load(res)
+            assert result['client']['business']==names[link['client_id']]
+          print('BUYER_LINK_LIVE_PASS_COUNT',len(links),'VERIFIED',min(4,len(links)))
+          PY
