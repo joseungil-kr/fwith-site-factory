@@ -171,10 +171,10 @@ try{
    exportData:await (await fetch('/api/export')).json()
  }));
  await page.locator('#bill-delivery').getByText('배송완료 처리').waitFor();
- assert.ok((await page.locator('#bill-sheet').innerText()).includes('출고완료(배송전)'));
+ assert.ok((await page.locator('#bill-list').innerText()).includes('출고완료(배송전)'));
  await page.locator('#bill-delivery').click();
  await page.locator('#bill-delivery').getByText('배송전으로 변경').waitFor();
- assert.ok((await page.locator('#bill-sheet').innerText()).includes('출고완료(배송완료)'));
+ assert.ok((await page.locator('#bill-list').innerText()).includes('출고완료(배송완료)'));
  const snapshotDelivered=await page.evaluate(async()=>({
    state:await (await fetch('/api/state')).json(),
    exportData:await (await fetch('/api/export')).json()
@@ -186,7 +186,7 @@ try{
  await page.screenshot({path:path.join(out,'admin-delivered-invoice-1440.png'),fullPage:true});
  await page.locator('#bill-delivery').click();
  await page.locator('#bill-delivery').getByText('배송완료 처리').waitFor();
- assert.ok((await page.locator('#bill-sheet').innerText()).includes('출고완료(배송전)'));
+ assert.ok((await page.locator('#bill-list').innerText()).includes('출고완료(배송전)'));
  await page.screenshot({path:path.join(out,'admin-issued-invoice-1440.png'),fullPage:true});
  await selectTab('home');
  await page.locator('#home-request-preview .dashboard-request-item').waitFor({state:'detached'}).catch(()=>{});
