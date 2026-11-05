@@ -84,7 +84,7 @@ jobs:
           version=deployments[0]['versions'][0]
           assert version.get('percentage')==100,'Previous version is not deployed at 100%'
           previous=version['version_id']
-          assert previous=='7e6a76e6-ca58-4f63-a580-fcf2ccad7e97','Worker version changed since last verified release'
+          assert previous=='41f5a7e4-470a-49f5-8750-3d2dbb086abc','Worker version changed since last verified release'
           with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:
             f.write('previous_version='+previous+'\n')
           print('SAFE_ORDER_APP_UPDATE_PASS',hostname,'existingWorker',worker,'rollbackPinned',previous)
