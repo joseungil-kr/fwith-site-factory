@@ -1,6 +1,6 @@
 import { DurableObject } from 'cloudflare:workers';
 import {DEFAULT_PRODUCTS,onlyInt,safeText,dateCheck,calcTotals,calcInternalCost,normalizeOrderType,calculatePayable,sessionDurationSeconds} from './logic.js';
-import {ensureBuyerSchema,buyerSupplySummary,buyerLinkSummaries,handleBuyerPublic,handleBuyerAdmin} from './requests.js';
+import {ensureBuyerSchema,buyerSupplySummary,buyerLinkSummaries,buyerLinkDisplaySummaries,handleBuyerPublic,handleBuyerAdmin} from './requests.js';
 import {ensureReceivableSchema,getReceivables,ensureReceivableOrderCanIssue,assertReceivableOrderRemoval,handleReceivablesAdmin} from './receivables.js';
 const json=(obj,status=200,headers={})=>new Response(JSON.stringify(obj),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...headers}});
 const err=(msg,status=400)=>json({error:msg},status);
@@ -158,7 +158,7 @@ export class OrderDatabase extends DurableObject {
       const movements=this.all('SELECT m.*,p.name AS product_name FROM movements m JOIN products p ON p.id=m.product_id ORDER BY m.id DESC LIMIT 300');
       const receipt_settings=this.getOne('SELECT bank_name,account_number,account_holder,company_name,company_business_no,company_address,company_phone,company_email FROM receipt_settings WHERE id=1');
       const buyer_dashboard=buyerSupplySummary(this);
-      const buyer_links=buyerLinkSummaries(this);
+      const buyer_links=await buyerLinkDisplaySummaries(this,new URL(req.url).origin);
       const receivables=getReceivables(this);
       const by_client=this.all("SELECT c.id AS client_id,c.business,COALESCE(SUM(CASE WHEN o.status='issued' AND o.order_type='sale' THEN o.total ELSE 0 END),0) AS sale_amount,COALESCE(SUM(CASE WHEN o.status='issued' AND o.order_type='sale' THEN 1 ELSE 0 END),0) AS sale_count,COALESCE((SELECT SUM(p.amount) FROM receivable_payments p WHERE p.client_id=c.id AND p.kind='cash' AND p.voided_at IS NULL),0) AS paid_amount FROM clients c LEFT JOIN orders o ON o.client_id=c.id GROUP BY c.id ORDER BY c.id");
       const completed_payments=this.all("SELECT p.id,p.client_id,p.paid_date,p.amount,p.memo,c.business AS client_name FROM receivable_payments p JOIN clients c ON c.id=p.client_id WHERE p.kind='cash' AND p.voided_at IS NULL ORDER BY p.paid_date DESC,p.id DESC LIMIT 200");
