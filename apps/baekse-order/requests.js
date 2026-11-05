@@ -12,6 +12,33 @@ const all=(db,query,...args)=>db.all(query,...args);
 const hashHex=async input=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(input)))].map(b=>b.toString(16).padStart(2,'0')).join('');
 const generateToken=()=>[...crypto.getRandomValues(new Uint8Array(32))].map(b=>b.toString(16).padStart(2,'0')).join('');
 const VALID_TOKEN=/^[a-f0-9]{64}$/;
+const DISPLAY_TOKEN_PREFIX='ba5e';
+const DISPLAY_KEY_NAME='buyer_link_display_signing_key_v1';
+const toHex=bytes=>[...new Uint8Array(bytes)].map(b=>b.toString(16).padStart(2,'0')).join('');
+// A private signing key allows safe reconstruction of administrator-visible
+// per-client links. The original random bearer token remains hashed only.
+function getDisplaySigningBytes(db){
+  let value=db.ctx.storage.kv.get(DISPLAY_KEY_NAME);
+  if(!VALID_TOKEN.test(value||'')){
+    value=generateToken();
+    db.ctx.storage.kv.put(DISPLAY_KEY_NAME,value);
+  }
+  return Uint8Array.from(value.match(/.{2}/g),b=>parseInt(b,16));
+}
+async function signedDisplayToken(db,link){
+  const idHex=Number(link.client_id).toString(16).padStart(12,'0');
+  if(idHex.length!==12)throw new Error('지원하지 않는 거래처 ID');
+  const key=await crypto.subtle.importKey('raw',getDisplaySigningBytes(db),{name:'HMAC',hash:'SHA-256'},false,['sign']);
+  const message='buyer-link-display-v1:'+link.client_id+':'+link.token_hash+':'+link.issued_at;
+  const mac=toHex(await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(message)));
+  return DISPLAY_TOKEN_PREFIX+idHex+mac.slice(0,48);
+}
+function constantTimeEqual(a,b){
+  if(typeof a!=='string'||typeof b!=='string'||a.length!==b.length)return false;
+  let difference=0;
+  for(let i=0;i<a.length;i++)difference|=a.charCodeAt(i)^b.charCodeAt(i);
+  return difference===0;
+}
 const VALID_REQUEST_KEY=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 
 export function ensureBuyerSchema(db){
@@ -32,12 +59,32 @@ export function buyerSupplySummary(db){
 export function buyerLinkSummaries(db){
   return all(db,'SELECT client_id,issued_at,revoked_at FROM buyer_links ORDER BY client_id');
 }
+// Only the authenticated administrator state API calls this. No plaintext token
+// is written to SQL or included in the full-data export.
+export async function buyerLinkDisplaySummaries(db,origin){
+  const rows=all(db,'SELECT client_id,token_hash,issued_at,revoked_at FROM buyer_links ORDER BY client_id');
+  const display=[];
+  for(const link of rows){
+    display.push({client_id:link.client_id,issued_at:link.issued_at,revoked_at:link.revoked_at,
+      url:link.revoked_at?null:origin+'/request/#'+await signedDisplayToken(db,link)});
+  }
+  return display;
+}
 
 async function getClientByToken(db,token){
   if(typeof token!=='string'||!VALID_TOKEN.test(token))return null;
   const token_hash=await hashHex(token);
   const row=one(db,"SELECT c.id,c.business,c.active FROM buyer_links l JOIN clients c ON c.id=l.client_id WHERE l.token_hash=? AND l.revoked_at IS NULL AND c.active=1",token_hash);
-  return row||null;
+  if(row)return row;
+  // Previously issued raw URLs remain valid. New display URLs are an additional
+  // per-client signed credential, invalidated on reissue and revocation.
+  if(!token.startsWith(DISPLAY_TOKEN_PREFIX))return null;
+  const clientId=Number.parseInt(token.slice(4,16),16);
+  if(!Number.isSafeInteger(clientId)||clientId<1)return null;
+  const link=one(db,'SELECT l.client_id,l.token_hash,l.issued_at,c.id,c.business,c.active FROM buyer_links l JOIN clients c ON c.id=l.client_id WHERE l.client_id=? AND l.revoked_at IS NULL AND c.active=1',clientId);
+  if(!link)return null;
+  const expected=await signedDisplayToken(db,link);
+  return constantTimeEqual(token,expected)?{id:link.id,business:link.business,active:link.active}:null;
 }
 
 async function getBody(request,maxLength=16000){
@@ -111,10 +158,11 @@ export async function handleBuyerAdmin(db,request,path,data){
     const client=one(db,'SELECT id,active FROM clients WHERE id=?',client_id);
     if(!client||!client.active)return fail('사용 중인 거래처만 발주 링크를 만들 수 있습니다.');
     const token=generateToken(),token_hash=await hashHex(token);
-    db.sql.exec("INSERT INTO buyer_links(client_id,token_hash,issued_at,revoked_at) VALUES(?,?,?,NULL) ON CONFLICT(client_id) DO UPDATE SET token_hash=excluded.token_hash,issued_at=excluded.issued_at,revoked_at=NULL",client_id,token_hash,now());
+    const issuedAt=now();
+    db.sql.exec("INSERT INTO buyer_links(client_id,token_hash,issued_at,revoked_at) VALUES(?,?,?,NULL) ON CONFLICT(client_id) DO UPDATE SET token_hash=excluded.token_hash,issued_at=excluded.issued_at,revoked_at=NULL",client_id,token_hash,issuedAt);
     db.audit('buyer_link_issued',{client_id});
     const origin=new URL(request.url).origin;
-    return response({ok:true,url:origin+'/request/#'+token,client_id});
+    return response({ok:true,url:origin+'/request/#'+await signedDisplayToken(db,{client_id,token_hash,issued_at:issuedAt}),client_id});
   }
   if(path==='/api/requests/link/revoke'){
     const client_id=onlyInt(data.client_id,'거래처',1);
