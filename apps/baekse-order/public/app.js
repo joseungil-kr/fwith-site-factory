@@ -25,7 +25,7 @@ function renderRequestNavCount(){
  $('#mobile-requests-pending').textContent=count;
  $('#mobile-requests').classList.toggle('has-pending',Number(count)>0);
 }
-function render(){renderRequestNavCount();renderHome();renderBuyerDashboard();renderReceivableHome();renderOrder();renderStock();renderClients();renderReceivables();renderProducts();renderBills();renderSettings();}
+function render(){renderRequestNavCount();renderHome();renderBuyerDashboard();renderReceivableHome();renderOrder();renderStock();renderClients();renderReceivables();renderSalesTables();renderProducts();renderBills();renderSettings();}
 function renderSettings(){
  const s=state.receipt_settings||{};
  for(const key of ['company_name','company_business_no','company_address','company_phone','company_email','bank_name','account_number','account_holder']){
@@ -38,25 +38,34 @@ function clientReceivable(id){
 }
 function renderReceivableHome(){
  const accounts=state.receivables||{accounts:[],total:0,tracked_clients:0};
- const missing=Math.max(0,state.clients.length-accounts.tracked_clients);
+ const missing=Math.max(0,state.clients.filter(c=>c.default_order_type!=='internal').length-accounts.tracked_clients);
  $('#receivable-home-summary').innerHTML='<div class="buyer-dashboard-row">'+
    '<div class="buyer-kpi"><strong>'+money(accounts.total||0)+'</strong><span>미수금 관리 중인 거래처 합계</span></div>'+
    '<div class="buyer-kpi'+(missing?' shortage-alert':'')+'"><strong>'+missing+'곳</strong><span>기초 미수금 미설정</span></div></div>';
+}
+function renderSalesTables(){
+ const clients=state.clients.filter(c=>c.default_order_type!=='internal');
+ const details=state.sales?.by_client||[],payments=state.sales?.completed_payments||[];
+ $('#sales-by-client').innerHTML=table(['거래처','판매매출 누계','입금완료 누계','현재 미수금'],clients.map(c=>{
+   const r=details.find(x=>Number(x.client_id)===Number(c.id))||{},a=clientReceivable(c.id);
+   return '<tr><td><b>'+esc(c.business)+'</b></td><td>'+money(r.sale_amount||0)+'</td><td>'+money(r.paid_amount||0)+'</td><td>'+(a?money(a.balance):'<span class="muted">기초잔액 미설정</span>')+'</td></tr>';
+ }));
+ $('#sales-payments').innerHTML=payments.length?table(['입금일','거래처','입금액','상태','메모'],payments.map(p=>'<tr><td>'+esc(p.paid_date)+'</td><td>'+esc(p.client_name)+'</td><td>'+money(p.amount)+'</td><td><span class="pill">입금완료</span></td><td>'+esc(p.memo||'')+'</td></tr>')):'<p class="hint">실제 입금으로 등록된 내역이 없습니다. 판매출고만으로 입금완료가 되지는 않습니다.</p>';
 }
 function renderReceivables(){
  const accountList=state.receivables?.accounts||[];
  const selected=$('#ar-client-select').value;
  $('#ar-client-select').innerHTML='<option value="">거래처 선택</option>'+
-   state.clients.map(client=>'<option value="'+client.id+'">'+esc(client.business)+'</option>').join('');
- if(selected&&state.clients.some(client=>String(client.id)===selected))$('#ar-client-select').value=selected;
- const count=state.clients.length,tracked=accountList.length,missing=Math.max(0,count-tracked);
+   state.clients.filter(client=>client.default_order_type!=='internal').map(client=>'<option value="'+client.id+'">'+esc(client.business)+'</option>').join('');
+ if(selected&&state.clients.some(client=>String(client.id)===selected&&client.default_order_type!=='internal'))$('#ar-client-select').value=selected;
+ const count=state.clients.filter(c=>c.default_order_type!=='internal').length,tracked=accountList.length,missing=Math.max(0,count-tracked);
  $('#ar-count-label').textContent='관리 '+tracked+'곳 / 전체 '+count+'곳';
  $('#receivables-overview').innerHTML=
    '<div class="receivable-stat"><span>현재 미수금 합계</span><strong>'+money(state.receivables?.total||0)+'</strong></div>'+
    '<div class="receivable-stat"><span>관리 거래처</span><strong>'+tracked+'곳</strong></div>'+
    '<div class="receivable-stat'+(missing?' warn':'')+'"><span>기초잔액 미설정</span><strong>'+missing+'곳</strong></div>';
  $('#receivables-list').innerHTML=table(['거래처','입금 누계','현재 미수금'],
-   state.clients.map(client=>{
+   state.clients.filter(client=>client.default_order_type!=='internal').map(client=>{
      const account=clientReceivable(client.id);
      const balance=account?money(account.balance):'미설정';
      return '<tr class="'+(selected===String(client.id)?'highlighted':'')+'"><td><strong>'+esc(client.business)+
@@ -90,12 +99,12 @@ async function loadReceivableDetail(){
    $('#ar-current').innerHTML='<p>이 업체는 아직 미수금 자동계산이 설정되지 않았습니다.</p>'+
      '<p class="hint">거래처의 현재 실제 미수금을 확인해 기초잔액으로 입력하세요. 과거 명세표는 다시 합산하지 않습니다.</p>';
  }
- const payments=d.payments||[];
+ const payments=(d.payments||[]).filter(p=>p.kind==='cash');
  $('#ar-payment-history').innerHTML=a?
-   '<h2>입금 내역 (최근 100건)</h2>'+table(['입금일','금액','메모','처리'],
+   '<h2>입금완료 내역 (최근 100건)</h2>'+table(['입금일','금액','메모','처리'],
      payments.map(p=>'<tr class="'+(p.voided_at?'ar-voided':'')+'"><td>'+esc(p.paid_date)+'</td>'+
        '<td>'+money(p.amount)+'</td><td>'+esc(p.memo||'')+'</td><td>'+
-       (p.voided_at?'취소됨':'<button class="danger" type="button" data-ar-void="'+p.id+'">입금 취소</button>')+'</td></tr>')):'';
+       (p.voided_at?'취소됨':'입금완료 <button class="danger" type="button" data-ar-void="'+p.id+'">입금 취소</button>')+'</td></tr>')):'';
 }
 function syncOrderPreviousBalance(){
  const clientId=Number($('#order-client').value),a=clientReceivable(clientId);
@@ -231,7 +240,7 @@ function renderBuyerRequestCards(){
 }
 
 function renderHome(){
- const active=state.orders.filter(o=>o.status==='issued');
+ const active=state.orders.filter(o=>o.status==='issued'&&o.order_type!=='internal');
  const day=today(),month=day.slice(0,7),monthLabel=Number(day.slice(5,7))+'월';
  const stats=state.metrics||{};
  const countDay=stats.today_count??active.filter(o=>o.order_date===day).length;
@@ -242,11 +251,12 @@ function renderHome(){
  const shortage=state.products.filter(p=>p.active&&p.stock<=3);
  const cards=[['오늘 출고',countDay+'건',false],['오늘 출고금액',money(sumDay),false],
    [monthLabel+' 출고',countMonth+'건',false],[monthLabel+' 출고금액',money(sumMonth),false],
-   ['재고 3개 이하 제품',shortage.length+'개',true],['누적출고금액',money(cumulative),false]];
+   ['재고 3개 이하 제품',shortage.length+'개',true],['누적출고금액',money(cumulative),false],
+   [monthLabel+' 내부출고 원가',money(stats.month_internal_cost||0),false],['누적 내부출고 원가',money(stats.cumulative_internal_cost||0),false]];
  $('#metrics').innerHTML=cards.map(([name,value,warning])=>'<div class="metric'+(warning?' metric-orange':'')+
    '"><small>'+esc(name)+'</small><b>'+esc(value)+'</b></div>').join('');
  $('#home-stock').innerHTML=table(['제품','현재고','출고단가'],state.products.filter(p=>p.active).map(p=>`<tr><td>${esc(p.name)}</td><td><span class="pill ${p.stock<=3?'orange':''}">${fmt(p.stock)}개</span></td><td>${money(p.price)}</td></tr>`));
- $('#home-orders').innerHTML=table(['날짜','거래처','금액','상태'],state.orders.slice(0,7).map(o=>`<tr><td>${esc(o.order_date)}</td><td>${esc(o.client_name)}</td><td>${money(o.total)}</td><td>${o.status==='issued'?'완료':'취소'}</td></tr>`));
+ $('#home-orders').innerHTML=table(['날짜','거래처','구분','매출 / 내부원가','상태'],state.orders.slice(0,7).map(o=>`<tr><td>${esc(o.order_date)}</td><td>${esc(o.client_name)}</td><td>${o.order_type==='internal'?'내부출고':'판매출고'}</td><td>${money(o.order_type==='internal'?o.internal_cost:o.total)}</td><td>${o.status==='issued'?'완료':'취소'}</td></tr>`));
  renderHomeRequestPreview();
 }
 function renderOrder(){const client=$('#order-client').value;$('#order-client').innerHTML=`<option value="">거래처 선택</option>`+state.clients.filter(c=>c.active).map(c=>`<option value="${c.id}">${esc(c.business)}</option>`).join('');$('#order-client').value=client||String(state.clients.find(c=>c.active)?.id||'');
