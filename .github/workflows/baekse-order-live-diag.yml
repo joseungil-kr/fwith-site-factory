@@ -36,6 +36,16 @@ jobs:
               orders=[o for o in state.get('orders',[]) if o.get('client_name')==c.get('business')]
               accounts=[a for a in state.get('receivables',{}).get('accounts',[]) if a.get('client_id')==c['id']]
               print('CANDIDATE_SUMMARY',json.dumps({'client_id':c['id'],'business':c['business'],'order_count_in_recent_window':len(orders),'issued_count':sum(o['status']=='issued' for o in orders),'issued_sale_amount_in_window':sum(o['total'] for o in orders if o['status']=='issued'),'ar_account_count':len(accounts),'ar_opening_balance':accounts[0]['opening_balance'] if accounts else 0,'ar_paid_amount':accounts[0]['paid_amount'] if accounts else 0,'ar_balance':accounts[0]['balance'] if accounts else 0},ensure_ascii=False))
+            for target in exact:
+              orders=[o for o in state.get('orders',[]) if o.get('client_name')==target.get('business')]
+              for order in orders:
+                with op.open(base+'/api/orders/detail?id='+str(order['id']),timeout=20) as response:detail=json.load(response)
+                costs=sum(int(i.get('qty') or 0)*int(i.get('cost') or 0) for i in detail['items'])
+                print('LEGACY_ORDER_COST',json.dumps({'id':order['id'],'status':order['status'],'order_date':order['order_date'],'sale_total':order['total'],'estimated_internal_cost_snapshot':costs},ensure_ascii=False))
+              with op.open(base+'/api/receivables/detail?client_id='+str(target['id']),timeout=20) as response:d=json.load(response)
+              account=d.get('account') or {}
+              payments=d.get('payments') or []
+              print('LEGACY_RECEIVABLE_DETAIL',json.dumps({'client_id':target['id'],'cutoff_order_id':account.get('cutoff_order_id'),'payments_count':len(payments),'active_payments_count':sum(not p.get('voided_at') for p in payments),'active_payment_amount':sum(p['amount'] for p in payments if not p.get('voided_at'))},ensure_ascii=False))
             print('TARGET_PREFLIGHT_READ_COMPLETE')
           finally:
             try:
