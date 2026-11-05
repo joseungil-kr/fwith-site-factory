@@ -15,6 +15,7 @@ assert.equal(ready,true,'Buyer static page not served');
 const browser=await chromium.launch({headless:true});
 try{
  const admin=await browser.newContext({viewport:{width:390,height:844},locale:'ko-KR',timezoneId:'Asia/Seoul'});
+ await admin.grantPermissions(['clipboard-read','clipboard-write'],{origin:base});
  const page=await admin.newPage();
  const dialogs=[];
  page.on('dialog',async d=>{dialogs.push(d.message());await d.accept()});
@@ -65,10 +66,45 @@ try{
  await page.locator('#client-form button[type=submit]').click();
  await page.locator('#client-list').getByText('QA발주담당').waitFor();
  await page.locator('[data-client-link]').first().click();
- await page.locator('#link-result:not(.hidden)').waitFor();
- const link=await page.locator('#generated-link-value').inputValue();
- assert.ok(link.includes('/request/#')&&link.split('#')[1].length===64,'Private link must have 256-bit token');
+ const firstRow=page.locator('#client-list tr').filter({hasText:'안산 중앙점'}).first();
+ await firstRow.locator('.buyer-link-url').waitFor();
+ const link=(await firstRow.locator('.buyer-link-url').innerText()).trim();
+ assert.ok(link.includes('/request/#')&&link.split('#')[1].length===64,'Private link must have a 64-hex token');
+ assert.equal(await firstRow.locator('.buyer-link-url').getAttribute('href'),link,'Displayed link must match its actual destination');
+ await firstRow.locator('[data-client-link-copy]').click();
+ assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),link,'First buyer copy must write the exact displayed link');
+ // Add a second client to prove buttons never reuse the previous buyer's clipboard URL.
+ await page.locator('#client-reset').click();
+ await page.locator('#client-form [name=business]').fill('QA 다른 거래처');
+ await page.locator('#client-form [name=person]').fill('QA별도담당');
+ await page.locator('#client-form [name=phone]').fill('010-1111-3333');
+ await page.locator('#client-form button[type=submit]').click();
+ const secondRow=page.locator('#client-list tr').filter({hasText:'QA 다른 거래처'}).first();
+ await secondRow.locator('[data-client-link]').click();
+ await secondRow.locator('.buyer-link-url').waitFor();
+ const secondLink=(await secondRow.locator('.buyer-link-url').innerText()).trim();
+ assert.notEqual(secondLink,link,'Two clients must receive different URLs');
+ await secondRow.locator('[data-client-link-copy]').click();
+ assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),secondLink,'Second buyer must copy only its own link');
+ // Server-reconstructed display URLs must survive reload and still map to the same clients.
+ await page.reload({waitUntil:'networkidle'});
+ await page.locator('#app:not(.hidden) #metrics').waitFor();
+ await selectTab('clients');
+ const firstAgain=page.locator('#client-list tr').filter({hasText:'안산 중앙점'}).first();
+ const secondAgain=page.locator('#client-list tr').filter({hasText:'QA 다른 거래처'}).first();
+ assert.equal((await firstAgain.locator('.buyer-link-url').innerText()).trim(),link,'First URL must survive reload');
+ assert.equal((await secondAgain.locator('.buyer-link-url').innerText()).trim(),secondLink,'Second URL must survive reload');
+ await firstAgain.locator('[data-client-link-copy]').click();
+ assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),link,'After reload the first buyer copies its own URL');
+ await secondAgain.locator('[data-client-link-copy]').click();
+ assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),secondLink,'After reload the second buyer copies its own URL');
  await page.screenshot({path:path.join(out,'admin-share-link-390.png'),fullPage:true});
+ const checkOther=await browser.newContext({viewport:{width:390,height:844},locale:'ko-KR'});
+ const otherPage=await checkOther.newPage();
+ await otherPage.goto(secondLink,{waitUntil:'networkidle'});
+ await otherPage.locator('#buyer-content:not(.hidden)').waitFor();
+ assert.equal((await otherPage.locator('#business-name').innerText()).trim(),'QA 다른 거래처');
+ await checkOther.close();
  const buyer=await browser.newContext({viewport:{width:390,height:844},locale:'ko-KR',timezoneId:'Asia/Seoul'});
  const buyerPage=await buyer.newPage();
  buyerPage.on('pageerror',e=>errors.push('buyer: '+e.message));
@@ -186,5 +222,5 @@ try{
  assert.equal(await page.locator('#previous-balance').evaluate(el=>el.readOnly),true);
  await page.screenshot({path:path.join(out,'admin-auto-balance-390.png'),fullPage:true});
  assert.deepEqual(errors,[]);
- console.log('BUYER_BROWSER_QA_PASS: mobile 390, desktop 1440, client-only link, 20-unit order with zero stock, admin shortage, guarded approval, invoice, delivery toggle, receivable opening, payment and automated prior balance; no stock/revenue mutation');
+ console.log('BUYER_BROWSER_QA_PASS: mobile 390, desktop 1440, two-client distinct URLs and actual clipboard copy, stable reload, buyer isolation, 20-unit order, guarded approval, invoice, delivery toggle, receivables; no production data touched');
 }finally{await browser.close()}
