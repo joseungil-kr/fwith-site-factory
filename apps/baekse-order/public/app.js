@@ -106,19 +106,29 @@ async function loadReceivableDetail(){
        '<td>'+money(p.amount)+'</td><td>'+esc(p.memo||'')+'</td><td>'+
        (p.voided_at?'취소됨':'입금완료 <button class="danger" type="button" data-ar-void="'+p.id+'">입금 취소</button>')+'</td></tr>')):'';
 }
-function syncOrderPreviousBalance(){
- const clientId=Number($('#order-client').value),a=clientReceivable(clientId);
- const previous=$('#previous-balance'),hint=$('#previous-balance-help');
- if(a){
-   previous.value=String(a.balance);previous.readOnly=true;
-   hint.textContent='자동 입력: 거래처 미수금 원장 기준 '+money(a.balance)+' · 출고 저장 시 최신 금액을 다시 계산합니다.';
- }else{
-   if(lastBalanceClientId!==clientId)previous.value='0';
-   previous.readOnly=false;
-   hint.textContent='미수금 관리 미설정 · 기본 0원(수동 입력). 거래처별 미수금 관리에서 자동계산을 설정할 수 있습니다.';
- }
- lastBalanceClientId=clientId;
+function currentOrderType(){return $('#order-type').value==='internal'?'internal':'sale'}
+function setOrderTypeUI(){
+ const internal=currentOrderType()==='internal';
+ $('#order-vat-field').classList.toggle('hidden',internal);$('#order-balance-field').classList.toggle('hidden',internal);
+ if(internal){$('#vat').value='none';$('#previous-balance').value='0';$('#previous-balance').readOnly=true;}
+ $('#order-submit').textContent=internal?'내부출고 저장·원가 기록':'판매출고 저장·거래명세표 발행';
+ $('#order-type-help').textContent=internal?'재고를 차감하고 원가만 기록합니다. 매출·미수금은 0원입니다.':'판매출고는 매출 및 미수금에 반영됩니다.';
+ const ps=state.products.filter(p=>p.active);
+ $$('#order-items .price-note').forEach((el,i)=>{const p=ps[i];if(p)el.textContent=money(internal?p.cost:p.price)+' / 개 · '+(internal?'내부사용 원가':'부가세 별도')});
  updateTotals();
+}
+function syncOrderPreviousBalance(){
+ const clientId=Number($('#order-client').value),client=state.clients.find(c=>c.id===clientId),a=clientReceivable(clientId);
+ const previous=$('#previous-balance'),hint=$('#previous-balance-help');
+ if(lastBalanceClientId!==clientId)$('#order-type').value=client?.default_order_type==='internal'?'internal':'sale';
+ $('#order-type option[value="sale"]').disabled=client?.default_order_type==='internal';
+ if(currentOrderType()==='internal'){
+  previous.value='0';previous.readOnly=true;hint.textContent='내부출고에는 미수금이 없습니다.';
+  lastBalanceClientId=clientId;setOrderTypeUI();return;
+ }
+ if(a){previous.value=String(a.balance);previous.readOnly=true;hint.textContent='미수금 자동 입력: '+money(a.balance);}
+ else{if(lastBalanceClientId!==clientId)previous.value='0';previous.readOnly=false;hint.textContent='기초 미수금 미설정 · 기본 0원';}
+ lastBalanceClientId=clientId;setOrderTypeUI();
 }
 function renderBuyerDashboard(){
  const v=state.buyer_dashboard||{pending_count:0,shortage_count:0,shortages:[]};
@@ -259,12 +269,27 @@ function renderHome(){
  $('#home-orders').innerHTML=table(['날짜','거래처','구분','매출 / 내부원가','상태'],state.orders.slice(0,7).map(o=>`<tr><td>${esc(o.order_date)}</td><td>${esc(o.client_name)}</td><td>${o.order_type==='internal'?'내부출고':'판매출고'}</td><td>${money(o.order_type==='internal'?o.internal_cost:o.total)}</td><td>${o.status==='issued'?'완료':'취소'}</td></tr>`));
  renderHomeRequestPreview();
 }
-function renderOrder(){const client=$('#order-client').value;$('#order-client').innerHTML=`<option value="">거래처 선택</option>`+state.clients.filter(c=>c.active).map(c=>`<option value="${c.id}">${esc(c.business)}</option>`).join('');$('#order-client').value=client||String(state.clients.find(c=>c.active)?.id||'');
+function renderOrder(){
+ const client=$('#order-client').value;
+ $('#order-client').innerHTML='<option value="">거래처 선택</option>'+state.clients.filter(c=>c.active).map(c=>'<option value="'+c.id+'">'+esc(c.business)+'</option>').join('');
+ $('#order-client').value=client||String(state.clients.find(c=>c.active)?.id||'');
  const old={};$$('#order-items input').forEach(i=>old[i.dataset.id]=i.value);
- $('#order-items').innerHTML=state.products.filter(p=>p.active).map(p=>`<tr><td><b>${esc(p.name)}</b><span class="price-note">${money(p.price)} / 개 · 부가세 별도</span></td><td>${fmt(p.stock)}개</td><td><input type="number" min="0" max="${Math.max(0,p.stock)}" step="1" data-id="${p.id}" value="${esc(old[p.id]??0)}" aria-label="${esc(p.name)} 출고수량"></td><td class="right num" data-total="${p.id}">0원</td></tr>`).join('');syncOrderPreviousBalance()}
+ $('#order-items').innerHTML=state.products.filter(p=>p.active).map(p=>'<tr><td><b>'+esc(p.name)+'</b><span class="price-note">'+money(p.price)+' / 개 · 부가세 별도</span></td><td>'+fmt(p.stock)+'개</td><td><input type="number" min="0" max="'+Math.max(0,p.stock)+'" step="1" data-id="'+p.id+'" value="'+esc(old[p.id]??0)+'" aria-label="'+esc(p.name)+' 출고수량"></td><td class="right num" data-total="'+p.id+'">0원</td></tr>').join('');
+ syncOrderPreviousBalance();
+}
 function getItems(){const items=[];for(const i of $$('#order-items input')){const n=Number(i.value);if(!Number.isSafeInteger(n)||n<0)throw new Error('수량은 0 이상의 정수여야 합니다');if(n===0)continue;const p=state.products.find(p=>p.id===Number(i.dataset.id));if(n>p.stock)throw new Error(`${p.name} 재고 부족`);items.push({product_id:p.id,qty:n,unit_price:p.price,name:p.name});}
  for(const el of $$('.extra-row')){const name=el.querySelector('[data-extra="name"]').value.trim(),qty=Number(el.querySelector('[data-extra="qty"]').value),unit_price=Number(el.querySelector('[data-extra="price"]').value);if(!name&&!qty&&!unit_price)continue;if(!name||!Number.isSafeInteger(qty)||qty<1||!Number.isSafeInteger(unit_price)||unit_price<0)throw new Error('기타 품명·수량·단가를 모두 정확히 입력하세요');items.push({name,qty,unit_price})}return items}
-function updateTotals(){try{let items=getItems(),supply=items.reduce((a,i)=>a+i.qty*i.unit_price,0),tax=$('#vat').value==='tax'?Math.round(supply*.1):0,previousBalance=Number($('#previous-balance').value);if(!Number.isSafeInteger(previousBalance)||previousBalance<0||previousBalance>2000000000)throw new Error('전 잔고는 0원 이상의 정수로 입력하세요');$$('#order-items input').forEach(input=>{const p=state.products.find(p=>p.id===Number(input.dataset.id));const target=$(`[data-total="${p.id}"]`);if(target)target.textContent=money(Number(input.value)*p.price)});$('#order-total').innerHTML=`<div><span>공급가액 (부가세 제외)</span><b>${money(supply)}</b></div><div><span>부가세</span><b>${money(tax)}</b></div><div><span>전 잔고</span><b>${money(previousBalance)}</b></div><div class="grand"><span>합계</span><b>${money(supply+tax+previousBalance)}</b></div>`}catch(e){$('#order-total').textContent=e.message}}
+function updateTotals(){
+ try{
+  const items=getItems(),internal=currentOrderType()==='internal';
+  const supply=internal?0:items.reduce((n,i)=>n+i.qty*i.unit_price,0);
+  const cost=items.reduce((n,i)=>{const p=state.products.find(p=>p.id===Number(i.product_id));return n+i.qty*(p?p.cost:i.unit_price)},0);
+  const tax=internal?0:($('#vat').value==='tax'?Math.round(supply*.1):0),previousBalance=internal?0:Number($('#previous-balance').value);
+  if(!Number.isSafeInteger(previousBalance)||previousBalance<0||previousBalance>2000000000)throw new Error('전 잔고는 0원 이상의 정수로 입력하세요');
+  $$('#order-items input').forEach(input=>{const p=state.products.find(p=>p.id===Number(input.dataset.id));const target=$('[data-total="'+p.id+'"]');if(target)target.textContent=money(Number(input.value)*(internal?p.cost:p.price))});
+  $('#order-total').innerHTML=internal?'<div><span>내부출고 원가</span><b>'+money(cost)+'</b></div><div class="grand"><span>판매매출 반영</span><b>0원</b></div>':'<div><span>공급가액 (부가세 제외)</span><b>'+money(supply)+'</b></div><div><span>부가세</span><b>'+money(tax)+'</b></div><div><span>전 잔고</span><b>'+money(previousBalance)+'</b></div><div class="grand"><span>합계</span><b>'+money(supply+tax+previousBalance)+'</b></div>';
+ }catch(e){$('#order-total').textContent=e.message}
+}
 function addExtra(){const r=document.createElement('div');r.className='extra-row';r.innerHTML=`<label>품명<input data-extra="name" maxlength="120" placeholder="예: 배송비"></label><label>수량<input data-extra="qty" type="number" min="1" step="1" placeholder="수량"></label><label>출고단가 (부가세 제외)<input data-extra="price" type="number" min="0" step="1" placeholder="금액"></label><button type="button" class="danger extra-remove" aria-label="기타 항목 삭제">삭제</button>`;$('#extras').append(r)}
 function movementLabel(source){
  const value=String(source||'');
@@ -282,10 +307,10 @@ function renderClients(){
    state.clients.map(client=>{
      const link=(state.buyer_links||[]).find(l=>l.client_id===client.id);
      const activeLink=link&&!link.revoked_at;
-     const balance=clientReceivable(client.id);
+     const balance=client.default_order_type==='internal'?null:clientReceivable(client.id);
      const buttons=client.active?'<button class="secondary" data-client-link="'+client.id+'">'+(activeLink?'발주 링크 재발급':'발주 링크 만들기')+'</button>'+
        (activeLink?'<button class="danger" data-client-link-revoke="'+client.id+'">링크 중지</button>':''):'';
-     return `<tr><td><b>${esc(client.business)}</b><span class="price-note">${esc(client.person)}${client.address?' · '+esc(client.address):''}</span></td><td>${esc(client.phone)}<span class="price-note">${esc(client.business_no)}</span></td><td><b>${balance?money(balance.balance):'미설정'}</b></td><td>${client.active?'사용중':'비활성'}${activeLink?'<span class="price-note"> · 발주 링크 활성</span>':''}</td><td><div class="row-action"><button class="secondary" data-client-edit="${client.id}">수정</button><button class="${client.active?'danger':'secondary'}" data-client-toggle="${client.id}">${client.active?'삭제':'복구'}</button><button class="secondary" data-client-ar="${client.id}">미수금 관리</button>${buttons}</div></td></tr>`;
+     return `<tr><td><b>${esc(client.business)}</b><span class="price-note">${esc(client.person)}${client.address?' · '+esc(client.address):''}</span></td><td>${esc(client.phone)}<span class="price-note">${esc(client.business_no)}</span></td><td><b>${client.default_order_type==='internal'?'해당 없음':balance?money(balance.balance):'미설정'}</b></td><td>${client.active?'사용중':'비활성'} · ${client.default_order_type==='internal'?'내부출고':'판매출고'}${activeLink?'<span class="price-note"> · 발주 링크 활성</span>':''}</td><td><div class="row-action"><button class="secondary" data-client-edit="${client.id}">수정</button><button class="${client.active?'danger':'secondary'}" data-client-toggle="${client.id}">${client.active?'삭제':'복구'}</button>${client.default_order_type==='internal'?'':'<button class="secondary" data-client-ar="${client.id}">매출관리</button>'}${buttons}</div></td></tr>`;
    })
  );
  $('#client-form-title').textContent=id?'거래처 수정':'거래처 추가';
@@ -330,8 +355,16 @@ window.addEventListener('resize',()=>{
 });
 document.body.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)show(b.dataset.go)});
 $('#add-extra').onclick=addExtra;$('#extras').onclick=e=>{if(e.target.closest('.extra-remove')){e.target.closest('.extra-row').remove();updateTotals()}};
-$('#order-form').addEventListener('input',updateTotals);$('#vat').addEventListener('change',updateTotals);$('#order-client').addEventListener('change',syncOrderPreviousBalance);
-$('#order-form').addEventListener('submit',async e=>{e.preventDefault();try{const items=getItems();if(!items.length)throw new Error('출고 품목을 한 개 이상 입력하세요');if(!confirm('재고를 차감하고 거래명세표를 발행할까요?'))return;const r=await api('orders',{client_id:Number($('#order-client').value),order_date:$('#order-date').value,vat:$('#vat').value,previous_balance:Number($('#previous-balance').value||0),memo:$('#order-memo').value,items});toast('출고 등록 및 거래명세표 발행 완료');$$('#order-items input').forEach(i=>i.value=0);$('#extras').innerHTML='';$('#order-memo').value='';$('#previous-balance').value='0';await refresh();show('bills');await openBill(r.id)}catch(e){alert(e.message)}});
+$('#order-form').addEventListener('input',updateTotals);$('#vat').addEventListener('change',updateTotals);$('#order-type').addEventListener('change',setOrderTypeUI);$('#order-client').addEventListener('change',syncOrderPreviousBalance);
+$('#order-form').addEventListener('submit',async e=>{e.preventDefault();try{
+ const items=getItems(),internal=currentOrderType()==='internal';
+ if(!items.length)throw new Error('출고 품목을 한 개 이상 입력하세요');
+ if(!confirm(internal?'재고를 차감하고 내부출고 원가만 기록할까요? 매출은 발생하지 않습니다.':'재고를 차감하고 판매 거래명세표를 발행할까요?'))return;
+ const r=await api('orders',{client_id:Number($('#order-client').value),order_type:currentOrderType(),order_date:$('#order-date').value,vat:$('#vat').value,previous_balance:internal?0:Number($('#previous-balance').value||0),memo:$('#order-memo').value,items});
+ toast(internal?'내부출고 및 원가 기록 완료':'판매출고 및 명세표 발행 완료');
+ $$('#order-items input').forEach(i=>i.value=0);$('#extras').innerHTML='';$('#order-memo').value='';$('#previous-balance').value='0';
+ await refresh();show('bills');await openBill(r.id);
+}catch(e){alert(e.message)}});
 $('#stock-product').onchange=setStockCost;$('#stock-type').onchange=()=>{$('#stock-qty-label').firstChild.textContent=$('#stock-type').value==='adjust'?'실사 재고수량':'수량';$('#stock-qty').min=$('#stock-type').value==='adjust'?'0':'1'};
 $('#stock-form').addEventListener('submit',async e=>{e.preventDefault();try{let type=$('#stock-type').value,quantity=Number($('#stock-qty').value);await api('stock',{product_id:Number($('#stock-product').value),type,quantity,adjustment:type==='adjust'?quantity:undefined,cost:Number($('#stock-cost').value),note:$('#stock-note').value});toast('재고 변경을 저장했습니다');$('#stock-qty').value='';$('#stock-note').value='';await refresh()}catch(e){alert(e.message)}});
 $('#client-form').addEventListener('submit',async e=>{e.preventDefault();try{const f=new FormData(e.target),d=Object.fromEntries(f);if(d.id)d.id=Number(d.id);await api('clients',d);resetClient();await refresh();toast('거래처 저장 완료')}catch(e){alert(e.message)}});
@@ -355,7 +388,7 @@ $('#client-list').onclick=async e=>{
        revoke=e.target.closest('[data-client-link-revoke]');
  if(edit){
    const client=state.clients.find(c=>c.id===Number(edit.dataset.clientEdit));
-   for(const key of ['id','business','person','phone','business_no','address'])$('#client-form [name="'+key+'"]').value=client[key];
+   for(const key of ['id','business','person','phone','business_no','address','default_order_type'])$('#client-form [name="'+key+'"]').value=client[key]||'sale';
    $('#client-form').scrollIntoView({behavior:'smooth'});renderClients();return;
  }
  if(toggle){
