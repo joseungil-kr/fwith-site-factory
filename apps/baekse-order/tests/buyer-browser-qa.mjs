@@ -15,6 +15,7 @@ assert.equal(ready,true,'Buyer static page not served');
 const browser=await chromium.launch({headless:true});
 try{
  const admin=await browser.newContext({viewport:{width:390,height:844},locale:'ko-KR',timezoneId:'Asia/Seoul'});
+ await admin.grantPermissions(['clipboard-read','clipboard-write'],{origin:base});
  const page=await admin.newPage();
  const dialogs=[];
  page.on('dialog',async d=>{dialogs.push(d.message());await d.accept()});
@@ -24,9 +25,9 @@ try{
  await page.locator('#login-form [name=password]').fill('ci-only-strong-example-password-2026');
  await page.locator('#login-form button[type=submit]').click();
  await page.locator('#app:not(.hidden) #metrics').waitFor();
- assert.equal(await page.locator('.metric').count(),6);
+ assert.equal(await page.locator('.metric').count(),8,'Dashboard now includes two internal-dispatch KPIs');
  assert.equal(await page.locator('[data-page=home] h1').innerText(),'운영 대시보드');
- assert.equal(await page.locator('#metrics .metric').count(),6);
+ assert.equal(await page.locator('#metrics .metric').count(),8);
  await page.locator('#home-shortages').waitFor();
  await page.screenshot({path:path.join(out,'redesign-dashboard-mobile-390.png'),fullPage:true});
  const toggle=page.locator('#mobile-menu-toggle');
@@ -57,7 +58,7 @@ try{
  assert.ok(await page.locator('[data-page="order"]').isVisible(),'Mobile shortcut navigates to order registration');
  await selectTab('home');
  assert.ok(await page.locator('[data-page="home"]').isVisible(),'Navigation should return to dashboard');
- assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주 요청(0)','Initially no pending buyer requests');
+ assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주요청(0)','Initially no pending buyer requests');
  await selectTab('clients');
  await page.locator('[data-client-edit]').first().click();
  await page.locator('#client-form [name=person]').fill('QA발주담당');
@@ -65,10 +66,45 @@ try{
  await page.locator('#client-form button[type=submit]').click();
  await page.locator('#client-list').getByText('QA발주담당').waitFor();
  await page.locator('[data-client-link]').first().click();
- await page.locator('#link-result:not(.hidden)').waitFor();
- const link=await page.locator('#generated-link-value').inputValue();
- assert.ok(link.includes('/request/#')&&link.split('#')[1].length===64,'Private link must have 256-bit token');
+ const firstRow=page.locator('#client-list tr').filter({hasText:'안산 중앙점'}).first();
+ await firstRow.locator('.buyer-link-url').waitFor();
+ const link=(await firstRow.locator('.buyer-link-url').innerText()).trim();
+ assert.ok(link.includes('/request/#')&&link.split('#')[1].length===64,'Private link must have a 64-hex token');
+ assert.equal(await firstRow.locator('.buyer-link-url').getAttribute('href'),link,'Displayed link must match its actual destination');
+ await firstRow.locator('[data-client-link-copy]').click();
+ assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),link,'First buyer copy must write the exact displayed link');
+ // Add a second client to prove buttons never reuse the previous buyer's clipboard URL.
+ await page.locator('#client-reset').click();
+ await page.locator('#client-form [name=business]').fill('QA 다른 거래처');
+ await page.locator('#client-form [name=person]').fill('QA별도담당');
+ await page.locator('#client-form [name=phone]').fill('010-1111-3333');
+ await page.locator('#client-form button[type=submit]').click();
+ const secondRow=page.locator('#client-list tr').filter({hasText:'QA 다른 거래처'}).first();
+ await secondRow.locator('[data-client-link]').click();
+ await secondRow.locator('.buyer-link-url').waitFor();
+ const secondLink=(await secondRow.locator('.buyer-link-url').innerText()).trim();
+ assert.notEqual(secondLink,link,'Two clients must receive different URLs');
+ await secondRow.locator('[data-client-link-copy]').click();
+ assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),secondLink,'Second buyer must copy only its own link');
+ // Server-reconstructed display URLs must survive reload and still map to the same clients.
+ await page.reload({waitUntil:'networkidle'});
+ await page.locator('#app:not(.hidden) #metrics').waitFor();
+ await selectTab('clients');
+ const firstAgain=page.locator('#client-list tr').filter({hasText:'안산 중앙점'}).first();
+ const secondAgain=page.locator('#client-list tr').filter({hasText:'QA 다른 거래처'}).first();
+ assert.equal((await firstAgain.locator('.buyer-link-url').innerText()).trim(),link,'First URL must survive reload');
+ assert.equal((await secondAgain.locator('.buyer-link-url').innerText()).trim(),secondLink,'Second URL must survive reload');
+ await firstAgain.locator('[data-client-link-copy]').click();
+ assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),link,'After reload the first buyer copies its own URL');
+ await secondAgain.locator('[data-client-link-copy]').click();
+ assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),secondLink,'After reload the second buyer copies its own URL');
  await page.screenshot({path:path.join(out,'admin-share-link-390.png'),fullPage:true});
+ const checkOther=await browser.newContext({viewport:{width:390,height:844},locale:'ko-KR'});
+ const otherPage=await checkOther.newPage();
+ await otherPage.goto(secondLink,{waitUntil:'networkidle'});
+ await otherPage.locator('#buyer-content:not(.hidden)').waitFor();
+ assert.equal((await otherPage.locator('#business-name').innerText()).trim(),'QA 다른 거래처');
+ await checkOther.close();
  const buyer=await browser.newContext({viewport:{width:390,height:844},locale:'ko-KR',timezoneId:'Asia/Seoul'});
  const buyerPage=await buyer.newPage();
  buyerPage.on('pageerror',e=>errors.push('buyer: '+e.message));
@@ -90,7 +126,7 @@ try{
  assert.equal(await appNav.isVisible(),false,'Mobile header request chip must navigate without expanding the menu');
  await page.locator('#request-list [data-request-fulfill]').waitFor();
  assert.equal((await page.locator('#mobile-requests-pending').textContent()).trim(),'1','Mobile pending chip updates');
- assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주 요청(1)','Customer request must update admin nav badge');
+ assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주요청(1)','Customer request must update admin nav badge');
  assert.ok((await page.locator('#request-shortages').innerText()).includes('추가 입고 20개 필요'));
  assert.equal(await page.locator('#request-overview .request-overview-card').count(),3);
  assert.ok(await page.locator('#request-filters').isVisible());
@@ -125,7 +161,7 @@ try{
  assert.equal(after.products[0].stock,0,'Approved invoice should debit stock');
  assert.equal(after.buyer_dashboard.pending_count,0);
  assert.equal((await page.locator('#mobile-requests-pending').textContent()).trim(),'0','Mobile pending chip clears after approval');
- assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주 요청(0)','Fulfilled order clears pending request count');
+ assert.equal((await page.locator('[data-tab=requests]').textContent()).trim(),'발주요청(0)','Fulfilled order clears pending request count');
  await page.setViewportSize({width:1440,height:900});
  assert.equal(await toggle.isVisible(),false,'Hamburger button must be hidden on desktop');
  assert.ok(await appNav.isVisible(),'Desktop navigation should remain fully visible');
@@ -135,10 +171,10 @@ try{
    exportData:await (await fetch('/api/export')).json()
  }));
  await page.locator('#bill-delivery').getByText('배송완료 처리').waitFor();
- assert.ok((await page.locator('#bill-sheet').innerText()).includes('출고완료(배송전)'));
+ assert.ok((await page.locator('#bill-list').innerText()).includes('출고완료(배송전)'));
  await page.locator('#bill-delivery').click();
  await page.locator('#bill-delivery').getByText('배송전으로 변경').waitFor();
- assert.ok((await page.locator('#bill-sheet').innerText()).includes('출고완료(배송완료)'));
+ assert.ok((await page.locator('#bill-list').innerText()).includes('출고완료(배송완료)'));
  const snapshotDelivered=await page.evaluate(async()=>({
    state:await (await fetch('/api/state')).json(),
    exportData:await (await fetch('/api/export')).json()
@@ -150,7 +186,7 @@ try{
  await page.screenshot({path:path.join(out,'admin-delivered-invoice-1440.png'),fullPage:true});
  await page.locator('#bill-delivery').click();
  await page.locator('#bill-delivery').getByText('배송완료 처리').waitFor();
- assert.ok((await page.locator('#bill-sheet').innerText()).includes('출고완료(배송전)'));
+ assert.ok((await page.locator('#bill-list').innerText()).includes('출고완료(배송전)'));
  await page.screenshot({path:path.join(out,'admin-issued-invoice-1440.png'),fullPage:true});
  await selectTab('home');
  await page.locator('#home-request-preview .dashboard-request-item').waitFor({state:'detached'}).catch(()=>{});
@@ -186,5 +222,5 @@ try{
  assert.equal(await page.locator('#previous-balance').evaluate(el=>el.readOnly),true);
  await page.screenshot({path:path.join(out,'admin-auto-balance-390.png'),fullPage:true});
  assert.deepEqual(errors,[]);
- console.log('BUYER_BROWSER_QA_PASS: mobile 390, desktop 1440, client-only link, 20-unit order with zero stock, admin shortage, guarded approval, invoice, delivery toggle, receivable opening, payment and automated prior balance; no stock/revenue mutation');
+ console.log('BUYER_BROWSER_QA_PASS: mobile 390, desktop 1440, two-client distinct URLs and actual clipboard copy, stable reload, buyer isolation, 20-unit order, guarded approval, invoice, delivery toggle, receivables; no production data touched');
 }finally{await browser.close()}
