@@ -1,4 +1,4 @@
-import {onlyInt,safeText,dateCheck,calcTotals,calculatePayable} from './logic.js';
+import {onlyInt,safeText,dateCheck,calcTotals,calcInternalCost,calculatePayable} from './logic.js';
 import {ensureReceivableOrderCanIssue} from './receivables.js';
 
 const now=()=>new Date().toISOString();
@@ -141,16 +141,17 @@ export async function handleBuyerAdmin(db,request,path,data){
     if(client.person==='미입력'||client.phone==='미입력')return fail('거래처 담당자·전화번호를 먼저 등록하세요.');
     const lines=all(db,'SELECT * FROM buyer_lines WHERE request_id=? ORDER BY id',id);
     if(lines.length===0)return fail('발주 품목이 없습니다.');
-    let vat,date,previous_balance,memo,totals,amount_due;
+    const order_type=client.default_order_type==='internal'?'internal':'sale';
+    let vat,date,previous_balance,memo,totals,amount_due,internal_cost;
     try{
-      vat=String(data.vat||'none');
+      vat=order_type==='internal'?'none':String(data.vat||'none');
       if(vat!=='none'&&vat!=='tax')throw new Error('부가세 선택이 올바르지 않습니다.');
       date=dateCheck(String(data.order_date||kstToday()));
       memo=safeText('발주요청 #'+id+(order.note?' · '+order.note:''),'비고',false,500);
-      totals=calcTotals(lines,vat);
-      // Tracked clients receive the current server-computed outstanding balance at approval.
-      previous_balance=ensureReceivableOrderCanIssue(db,client.id,totals.total,data.previous_balance??0).previous_balance;
-      amount_due=calculatePayable(totals.total,previous_balance);
+      totals=order_type==='internal'?{supply:0,tax:0,total:0}:calcTotals(lines,vat);
+      internal_cost=order_type==='internal'?calcInternalCost(lines.map(i=>({...i,cost:one(db,'SELECT cost FROM products WHERE id=?',i.product_id)?.cost||0}))):0;
+      previous_balance=order_type==='internal'?0:ensureReceivableOrderCanIssue(db,client.id,totals.total,data.previous_balance??0).previous_balance;
+      amount_due=order_type==='internal'?0:calculatePayable(totals.total,previous_balance);
     }catch(e){return fail(e.message);}
     const grouped=new Map();
     for(const line of lines)if(line.product_id)grouped.set(line.product_id,(grouped.get(line.product_id)||0)+line.qty);
@@ -164,22 +165,22 @@ export async function handleBuyerAdmin(db,request,path,data){
     const client_snapshot=JSON.stringify({business:client.business,person:client.person,phone:client.phone,business_no:client.business_no,address:client.address});
     let issued_order_id;
     db.ctx.storage.transactionSync(()=>{
-      db.sql.exec("INSERT INTO orders(client_id,client_snapshot,order_date,vat,supply,tax,total,previous_balance,bank_snapshot,delivery_status,memo,created_at) VALUES(?,?,?,?,?,?,?,?,?,'pending',?,?)",
-        client.id,client_snapshot,date,vat,totals.supply,totals.tax,totals.total,previous_balance,JSON.stringify(seller||{}),memo,now());
+      db.sql.exec("INSERT INTO orders(client_id,client_snapshot,order_date,order_type,vat,supply,tax,total,previous_balance,bank_snapshot,delivery_status,memo,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,'pending',?,?)",
+        client.id,client_snapshot,date,order_type,vat,totals.supply,totals.tax,totals.total,previous_balance,JSON.stringify(seller||{}),memo,now());
       issued_order_id=one(db,'SELECT last_insert_rowid() AS id').id;
       for(const line of lines){
         const product=one(db,'SELECT cost FROM products WHERE id=?',line.product_id);
         const cost=product?.cost||0;
         db.sql.exec('INSERT INTO lines(order_id,product_id,name,qty,unit_price,cost,line_total) VALUES(?,?,?,?,?,?,?)',
-          issued_order_id,line.product_id,line.name,line.qty,line.unit_price,cost,line.qty*line.unit_price);
+          issued_order_id,line.product_id,line.name,line.qty,order_type==='internal'?0:line.unit_price,cost,order_type==='internal'?0:line.qty*line.unit_price);
         db.sql.exec('INSERT INTO movements(product_id,delta,cost,note,source,created_at) VALUES(?,?,?,?,?,?)',
           line.product_id,-line.qty,cost,'발주출고 #'+id,'order:'+issued_order_id,now());
       }
       db.sql.exec("UPDATE buyer_requests SET status='fulfilled',processed_at=?,issued_order_id=? WHERE id=? AND status='pending'",
         now(),issued_order_id,id);
-      db.audit('buyer_request_fulfilled',{id,issued_order_id,client_id:client.id,supply:totals.supply});
+      db.audit('buyer_request_fulfilled',{id,issued_order_id,client_id:client.id,order_type,supply:totals.supply,internal_cost});
     });
-    return response({ok:true,id,issued_order_id,status:'fulfilled',...totals,previous_balance,amount_due});
+    return response({ok:true,id,issued_order_id,status:'fulfilled',order_type,internal_cost,...totals,previous_balance,amount_due});
   }
   return fail('없는 발주 관리 API 주소입니다.',404);
 }
