@@ -219,20 +219,21 @@ function renderBuyerRequestCards(){
  const labels={pending:'발주 대기',fulfilled:'출고 완료',cancelled:'발주 취소'};
  $('#request-list').innerHTML=rows.length?rows.map(req=>{
    const pending=req.status==='pending',short=requestNeedsRestock(req);
+   const internal=state.clients.find(c=>Number(c.id)===Number(req.client_id))?.default_order_type==='internal';
    const clientBalance=clientReceivable(req.client_id);
-   const total=req.items.reduce((v,item)=>v+Number(item.qty)*Number(item.unit_price),0);
+   const total=req.items.reduce((v,item)=>{const p=state.products.find(p=>Number(p.id)===Number(item.product_id));return v+Number(item.qty)*Number(internal?(p?.cost||0):item.unit_price)},0);
    const lines=req.items.map(item=>{
      const stock=stocks.get(Number(item.product_id));
      const stockLabel=stock===undefined?'미확인':fmt(stock)+'개';
      return '<div class="buyer-request-item"><span class="request-item-name">'+esc(item.name)+
        '</span><span>'+fmt(item.qty)+'개</span><span class="'+(stock!==undefined&&stock<item.qty?'request-item-low':'')+'">'+
-       stockLabel+'</span><span>'+money(Number(item.qty)*Number(item.unit_price))+'</span></div>';
+       stockLabel+'</span><span>'+money(Number(item.qty)*Number(internal?(state.products.find(p=>Number(p.id)===Number(item.product_id))?.cost||0):item.unit_price))+'</span></div>';
    }).join('');
    const status=pending?(short?'입고 검토':'출고 검토'):labels[req.status]||esc(req.status);
    const controls=pending?
-     '<div class="buyer-approval-controls"><label>부가세<select data-request-vat="'+req.id+'"><option value="none">0원</option><option value="tax">10% 추가</option></select></label>'+
-     '<label>전 잔고<input data-request-balance="'+req.id+'" type="number" min="0" max="2000000000" value="'+(clientBalance?clientBalance.balance:0)+'" '+(clientBalance?'readonly':'')+' inputmode="numeric"></label></div>'+
-     (clientBalance?'<p class="hint">전 잔고 자동 입력: '+money(clientBalance.balance)+' (출고 확정 시 최신 잔액 적용)</p>':
+     (internal?'':'<div class="buyer-approval-controls"><label>부가세<select data-request-vat="'+req.id+'"><option value="none">0원</option><option value="tax">10% 추가</option></select></label>'+
+     '<label>전 잔고<input data-request-balance="'+req.id+'" type="number" min="0" max="2000000000" value="'+(clientBalance?clientBalance.balance:0)+'" '+(clientBalance?'readonly':'')+' inputmode="numeric"></label></div>')+
+     (internal?'<p class="hint">내부출고: 재고만 차감하며 매출은 0원입니다.</p>':clientBalance?'<p class="hint">전 잔고 자동 입력: '+money(clientBalance.balance)+' (출고 확정 시 최신 잔액 적용)</p>':
        '<p class="hint">미수금 관리 미설정: 전 잔고 수동 입력</p>')+
      '<div class="action-row"><button class="primary" type="button" data-request-fulfill="'+req.id+'">출고처리</button>'+
      '<button class="secondary" type="button" data-request-cancel="'+req.id+'">발주 취소</button></div>':
@@ -246,7 +247,7 @@ function renderBuyerRequestCards(){
      '<span class="request-state '+(pending&&short?'state-waiting':'')+'">'+status+'</span></div>'+
      '<div class="buyer-request-items-header" aria-hidden="true"><span>발주 제품</span><span>수량</span><span>현재고</span><span>공급금액</span></div>'+
      '<div class="buyer-request-items">'+lines+'</div>'+note+label+
-     '<div class="buyer-request-sum"><span>예상 공급가액 · 부가세 별도</span><b>'+money(total)+'</b></div>'+
+     '<div class="buyer-request-sum"><span>'+(internal?'예상 내부출고 원가 · 매출 0원':'예상 공급가액 · 부가세 별도')+'</span><b>'+money(total)+'</b></div>'+
      controls+'</article>';
  }).join(''):'<div class="panel"><p class="dashboard-empty">조건에 맞는 발주 내역이 없습니다.</p></div>';
 }
@@ -470,8 +471,9 @@ $('#request-list').onclick=async e=>{
  }
  if(fulfill){
    const id=Number(fulfill.dataset.requestFulfill),req=buyerRequests.find(r=>r.id===id);
-   const vat=$('[data-request-vat="'+id+'"]').value;
-   const balance=Number($('[data-request-balance="'+id+'"]').value);
+   const internal=state.clients.find(c=>Number(c.id)===Number(req.client_id))?.default_order_type==='internal';
+   const vat=internal?'none':$('[data-request-vat="'+id+'"]').value;
+   const balance=internal?0:Number($('[data-request-balance="'+id+'"]').value);
    if(!Number.isSafeInteger(balance)||balance<0){alert('전 잔고는 0원 이상의 정수로 입력하세요.');return}
    if(!confirm(req.client_name+'의 발주 #'+id+'을 출고 처리할까요? 제품 재고가 차감되고 거래명세표가 발행됩니다.'))return;
    fulfill.disabled=true;

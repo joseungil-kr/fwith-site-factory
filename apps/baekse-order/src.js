@@ -70,14 +70,16 @@ export class OrderDatabase extends DurableObject {
         const old=this.getOne("SELECT COUNT(*) AS n,COALESCE(SUM(CASE WHEN status='issued' THEN total ELSE 0 END),0) AS issued_sales FROM orders WHERE client_id=? AND order_type='sale'",clientId);
         const internal=this.getOne("SELECT COALESCE(SUM(l.qty*l.cost),0) AS amount FROM orders o JOIN lines l ON l.order_id=o.id WHERE o.client_id=? AND o.order_type='sale' AND o.status='issued'",clientId);
         const payments=this.getOne("SELECT COUNT(*) AS n,COALESCE(SUM(CASE WHEN voided_at IS NULL THEN amount ELSE 0 END),0) AS active_amount FROM receivable_payments WHERE client_id=? AND kind='cash'",clientId);
-        const meta={client_id:clientId,orders_reclassified:old.n,issued_sales_excluded:old.issued_sales,internal_cost_snapshot:internal.amount,payments_reclassified:payments.n,noncash_payment_amount:payments.active_amount};
+        if(payments.n>0){this.audit('internal_reclassification_blocked',{client_id:clientId,reason:'existing_cash_payments',payments:payments.n});}
+        else{
+        const meta={client_id:clientId,orders_reclassified:old.n,issued_sales_excluded:old.issued_sales,internal_cost_snapshot:internal.amount,payments_reclassified:0,noncash_payment_amount:0};
         this.ctx.storage.transactionSync(()=>{
           this.sql.exec("UPDATE clients SET default_order_type='internal' WHERE id=?",clientId);
           this.sql.exec("UPDATE orders SET order_type='internal' WHERE client_id=? AND order_type='sale'",clientId);
-          this.sql.exec("UPDATE receivable_payments SET kind='internal_adjustment' WHERE client_id=? AND kind='cash'",clientId);
           this.sql.exec('INSERT INTO schema_migrations(name,applied_at,details) VALUES(?,?,?)',marker,now(),JSON.stringify(meta));
           this.audit('internal_reclassification',meta);
         });
+        }
       }
       // Zero/multiple exact matches: no fuzzy conversion and no migration marker.
     }

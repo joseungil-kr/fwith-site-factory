@@ -75,7 +75,7 @@ test('mobile hamburger menu, persistent request count and quick-order shortcuts'
 
 test('modern three-screen white-teal design preserves live data and action hooks',()=>{
  for(const marker of ['data-page="home"','data-page="requests"','data-page="receivables"',
-  'OPERATIONS / DASHBOARD','OPERATIONS / ORDER REQUESTS','FINANCE / RECEIVABLES',
+  'OPERATIONS / DASHBOARD','OPERATIONS / ORDER REQUESTS','FINANCE / SALES',
   'dashboard-detail-grid','id="home-request-preview"','id="home-shortages"',
   'id="request-filters"','id="request-search"','id="request-list"',
   'id="receivables-overview"','id="receivables-list"','id="ar-current"',
@@ -122,4 +122,10 @@ test('partner table includes blue copy link directly before stop, without reissu
  assert.ok(script.includes("if(!url){"));
  assert.ok(!script.includes("api('requests/link/issue',{client_id:id})"),'Copy must not silently rotate an existing buyer token');
  assert.ok(css.includes('#app .client-link-copy{background:#1764c5'));
+});
+
+test('sales management displays sale and cash payment while internal issue excludes receivables',()=>{
+ for(const label of ['id="order-type"','value="internal"','id="sales-by-client"','id="sales-payments"','<h1>매출관리</h1>'])assert.ok(html.includes(label),label);
+ for(const name of ['renderSalesTables','currentOrderType','month_internal_cost','cumulative_internal_cost',"issuedBuyerUrls.get(id)"])assert.ok(script.includes(name),name);
+ for(const query of ["AND order_type='sale'","order_type='internal'","schema_migrations","internal_cost"])assert.ok(worker.includes(query),query);
 });
