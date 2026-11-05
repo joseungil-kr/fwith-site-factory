@@ -113,23 +113,24 @@ test('invoice print preview omits operational metadata while keeping financial d
  assert.ok(script.includes('deliveryLabel(o)'),'Delivery state must remain in administrator history');
 });
 
-test('partner table includes blue copy link directly before stop, without reissuing an existing token',()=>{
- assert.ok(script.includes('data-client-link-copy'));
- assert.ok(script.indexOf('data-client-link-copy')<script.indexOf('data-client-link-revoke'));
- assert.ok(script.includes('issuedBuyerUrls.get(id)'));
- assert.ok(script.includes('issuedBuyerUrls.set(clientId,result.url)'));
- assert.ok(script.includes('issuedBuyerUrls.delete(clientId)'));
- assert.ok(script.includes("if(!url){"));
- assert.ok(!script.includes("api('requests/link/issue',{client_id:id})"),'Copy must not silently rotate an existing buyer token');
- assert.ok(css.includes('#app .client-link-copy{background:#1764c5'));
- assert.ok(html.includes('id="sales-by-client"'));
- assert.ok(html.includes('id="sales-payments"'));
- assert.ok(html.includes('name="default_order_type"'));
+test('partner contact shows distinct signed URL and copies only selected buyer link, without rotating token',()=>{
+  assert.ok(script.includes('data-client-link-copy'));
+  assert.ok(script.includes('buyer-link-row'),'Buyer link must be visible beneath the contact name');
+  assert.ok(script.includes('const url=entry?.url;'),'Copy must use selected client URL');
+  assert.ok(script.includes('Number(l.client_id)===id&&!l.revoked_at'),'Copy must select the exact client');
+  assert.ok(script.includes('navigator.clipboard.writeText(url)'),'Copy must use the selected URL');
+  assert.ok(!script.includes('issuedBuyerUrls'),'Memory-only links must not be reused');
+  assert.ok(!html.includes('id="link-result"'),'Separate buyer link panel must be removed');
+  assert.ok(!script.includes("api('requests/link/issue',{client_id:id})"),'Copy must not rotate buyer token');
+  assert.ok(css.includes('#app .client-link-copy{background:#1764c5'));
+  assert.ok(html.includes('id="sales-by-client"'));
+  assert.ok(html.includes('id="sales-payments"'));
+  assert.ok(html.includes('name="default_order_type"'));
 });
 
 test('sales management displays sale and cash payment while internal issue excludes receivables',()=>{
  for(const label of ['id="order-type"','value="internal"','id="sales-by-client"','id="sales-payments"','<h1>매출관리</h1>'])assert.ok(html.includes(label),label);
- for(const name of ['renderSalesTables','currentOrderType','month_internal_cost','cumulative_internal_cost',"issuedBuyerUrls.get(id)"])assert.ok(script.includes(name),name);
+ for(const name of ['renderSalesTables','currentOrderType','month_internal_cost','cumulative_internal_cost',"const url=entry?.url;"])assert.ok(script.includes(name),name);
  for(const query of ["AND order_type='sale'","order_type='internal'","schema_migrations","internal_cost"])assert.ok(worker.includes(query),query);
 });
 
