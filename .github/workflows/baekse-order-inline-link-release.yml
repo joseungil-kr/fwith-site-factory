@@ -6,68 +6,115 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: baekse-order-live-release
+  group: baekse-order-existing-worker-updates
   cancel-in-progress: false
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      BAEKSE_ORDER_ADMIN_PASSWORD: ${{ secrets.BAEKSE_ORDER_ADMIN_PASSWORD }}
+      WRANGLER_SEND_METRICS: 'false'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify exact existing Worker target and test buyer link isolation
+      - name: Test code and guard the exact reused Worker configuration
         working-directory: apps/baekse-order
         run: |
-          node -e "const fs=require('fs');const c=JSON.parse(fs.readFileSync('wrangler.jsonc','utf8'));if(c.name!=='baekse-order'||c.keep_vars!==true)process.exit(1)"
+          node -e "const fs=require('fs');const c=JSON.parse(fs.readFileSync('wrangler.reused.jsonc','utf8'));if(c.name!=='funeralflower-home-preview'||c.keep_vars!==true||c.durable_objects.bindings[0].class_name!=='OrderDatabase')process.exit(1)"
           node --check src.js
           node --check requests.js
           node --check public/app.js
           node --test tests/buyer-links-inline.test.mjs
-      - name: Update only the existing baekse-order Worker; preserve its vars and routes
-        working-directory: apps/baekse-order
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          WRANGLER_SEND_METRICS: 'false'
-        run: npx --yes wrangler@4.148.0 deploy --config wrangler.jsonc
-      - name: Read back live public UI and authenticated per-client URLs
-        env:
-          ADMIN_PASSWORD: ${{ secrets.BAEKSE_ORDER_ADMIN_PASSWORD }}
+          test "${#CLOUDFLARE_ACCOUNT_ID}" -gt 0
+          test "${#CLOUDFLARE_API_TOKEN}" -gt 0
+          test "${#BAEKSE_ORDER_ADMIN_PASSWORD}" -ge 12
+      - name: Verify existing live Worker domain and capture rollback version (read only)
+        id: guard
         run: |
           python3 - <<'PY'
-          import json,os,re,urllib.request,http.cookiejar
+          import json,os,urllib.request
+          account=os.environ['CLOUDFLARE_ACCOUNT_ID'];token=os.environ['CLOUDFLARE_API_TOKEN']
+          worker='funeralflower-home-preview';host='order.baeksefood.com';root='https://api.cloudflare.com/client/v4'
+          def get(path):
+            req=urllib.request.Request(root+path,headers={'Authorization':'Bearer '+token,'Accept':'application/json'})
+            with urllib.request.urlopen(req,timeout=30) as res:data=json.load(res)
+            assert data.get('success'), 'Cloudflare preflight API failed'
+            return data['result']
+          scripts=get('/accounts/'+account+'/workers/scripts')
+          assert any(x.get('id')==worker for x in scripts), 'Target must already exist'
+          domains=get('/accounts/'+account+'/workers/domains')
+          linked=[x for x in domains if x.get('service')==worker]
+          assert len(linked)==1 and linked[0]['hostname']==host, 'Target Worker has unexpected domain bindings'
+          assert len([x for x in domains if x.get('hostname')==host])==1,'Order host mapping ambiguous'
+          settings=get('/accounts/'+account+'/workers/scripts/'+worker+'/settings')
+          bindings={(x.get('type'),x.get('name')) for x in settings.get('bindings') or []}
+          required={('assets','ASSETS'),('durable_object_namespace','ORDER_DB')}
+          assert required.issubset(bindings),'Required Worker bindings absent'
+          assert bindings.issubset(required|{('secret_text','ADMIN_PASSWORD')}),'Unexpected production bindings'
+          schedules=get('/accounts/'+account+'/workers/scripts/'+worker+'/schedules')
+          assert not (schedules.get('schedules') or []),'Unexpected cron triggers'
+          deployments=get('/accounts/'+account+'/workers/scripts/'+worker+'/deployments')['deployments']
+          versions=deployments[0].get('versions') or []
+          assert len(versions)==1 and versions[0].get('percentage')==100,'Current deployment not stable'
+          prev=versions[0]['version_id']
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('previous_version='+prev+'\n')
+          print('EXISTING_WORKER_DOMAIN_BINDING_PASS',worker,host)
+          print('ROLLBACK_VERSION_RECORDED')
+          PY
+      - name: Update existing Worker code and static assets, preserving Secret and routes
+        id: update
+        working-directory: apps/baekse-order
+        run: npx --yes wrangler@4.156.2 deploy --config wrangler.reused.jsonc
+      - name: Independent post-deployment HTTP and buyer link readback (read only)
+        id: smoke
+        run: |
+          python3 - <<'PY'
+          import json,os,re,time,urllib.request,urllib.error,http.cookiejar
           root='https://order.baeksefood.com'
           opener=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
           opener.addheaders=[('User-Agent','Mozilla/5.0 (Baekse post-release read-only QA)')]
-          with opener.open(root+'/',timeout=30) as r:
-            assert r.status==200
-            html=r.read().decode()
-          assert 'id="link-result"' not in html
-          assert 'id="client-list"' in html
-          with opener.open(root+'/app.js',timeout=30) as r:
-            assert r.status==200
-            app=r.read().decode()
-          assert 'const url=entry?.url' in app and 'buyer-link-row' in app
-          assert 'issuedBuyerUrls' not in app
-          print('LIVE_UI_READBACK_PASS')
-          pwd=os.environ['ADMIN_PASSWORD']
-          assert len(pwd)>=12
-          request=urllib.request.Request(root+'/api/login',method='POST',headers={'Content-Type':'application/json','Origin':root},data=json.dumps({'password':pwd}).encode())
-          with opener.open(request,timeout=30) as r:
-            assert r.status==200 and json.load(r)['ok'] is True
-          with opener.open(root+'/api/state',timeout=30) as r:
-            data=json.load(r)
-          links=[x for x in data.get('buyer_links',[]) if x.get('revoked_at') is None]
+          for retry in range(10):
+            try:
+              with opener.open(root+'/',timeout=30) as res:
+                html=res.read().decode('utf-8')
+                assert res.status==200 and 'id="client-list"' in html
+              with opener.open(root+'/app.js',timeout=30) as res:
+                app=res.read().decode('utf-8')
+                assert res.status==200
+              assert 'id="link-result"' not in html,'Legacy popup still deployed'
+              assert 'const url=entry?.url' in app and 'buyer-link-row' in app,'Inline client link UI missing'
+              assert 'issuedBuyerUrls' not in app,'Legacy memory-only link code still deployed'
+              break
+            except Exception as e:
+              print('PUBLIC_PROPAGATION_RETRY',retry,type(e).__name__)
+              if retry==9:raise
+              time.sleep(6)
+          print('INLINE_CLIENT_LINK_UI_PUBLIC_PASS')
+          try:
+            opener.open(root+'/api/state',timeout=20)
+          except urllib.error.HTTPError as e:assert e.code==401
+          else:raise AssertionError('Anonymous finance API exposed')
+          pwd=os.environ['BAEKSE_ORDER_ADMIN_PASSWORD']
+          req=urllib.request.Request(root+'/api/login',method='POST',headers={'Content-Type':'application/json','Origin':root},data=json.dumps({'password':pwd}).encode())
+          with opener.open(req,timeout=30) as res:assert res.status==200 and json.load(res)['ok'] is True
+          with opener.open(root+'/api/state',timeout=30) as res:data=json.load(res)
+          links=[x for x in data.get('buyer_links',[]) if not x.get('revoked_at')]
           urls=[x.get('url') for x in links]
-          assert all(isinstance(u,str) and re.fullmatch(re.escape(root)+r'/request/#[0-9a-f]{64}',u) for u in urls)
-          assert len(urls)==len(set(urls))
+          assert all(isinstance(u,str) and re.fullmatch(re.escape(root)+r'/request/#[0-9a-f]{64}',u) for u in urls),'Malformed displayed link'
+          assert len(urls)==len(set(urls)),'Two buyers share same URL'
           names={c['id']:c['business'] for c in data['clients']}
           for link in links[:4]:
             req=urllib.request.Request(root+'/api/buyer/overview',method='POST',headers={'Content-Type':'application/json','Origin':root},data=json.dumps({'token':link['url'].split('#',1)[1]}).encode())
-            with opener.open(req,timeout=20) as res:
-              result=json.load(res)
-            assert result['client']['business']==names[link['client_id']]
-          print('BUYER_LINK_LIVE_PASS_COUNT',len(links),'VERIFIED',min(4,len(links)))
+            with opener.open(req,timeout=20) as res:detail=json.load(res)
+            assert detail['client']['business']==names[link['client_id']],'Wrong buyer routing'
+          print('LIVE_BUYER_LINK_ISOLATION_PASS','active_links',len(links),'checked',min(len(links),4))
           PY
+      - name: Restore previous version only if deployed update fails smoke test
+        if: ${{ failure() && steps.guard.outputs.previous_version != '' && steps.update.outcome == 'success' && steps.smoke.outcome != 'success' }}
+        working-directory: apps/baekse-order
+        run: npx --yes wrangler@4.156.2 versions deploy "${{ steps.guard.outputs.previous_version }}@100%" --yes --config wrangler.reused.jsonc
