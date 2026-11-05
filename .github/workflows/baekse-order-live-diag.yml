@@ -12,6 +12,37 @@ jobs:
       CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
     steps:
+      - name: Inspect internal-branch legacy orders without changing business records
+        env:
+          ORDER_ADMIN_FOR_READ: ${{ secrets.BAEKSE_ORDER_ADMIN_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import os,json,urllib.request,http.cookiejar
+          base='https://order.baeksefood.com';jar=http.cookiejar.CookieJar()
+          op=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
+          op.addheaders=[('User-Agent','Mozilla/5.0 (compatible; baekse-reclassification-preflight)')]
+          secret=os.environ['ORDER_ADMIN_FOR_READ']
+          assert len(secret)>=12,'Missing existing admin credential for diagnostic'
+          data=json.dumps({'password':secret,'remember':False}).encode()
+          req=urllib.request.Request(base+'/api/login',data=data,headers={'Content-Type':'application/json','Origin':base,'User-Agent':'Mozilla/5.0 (compatible; baekse-reclassification-preflight)'},method='POST')
+          try:
+            with op.open(req,timeout=20) as response:assert response.status==200,'Admin authentication unsuccessful'
+            with op.open(base+'/api/state',timeout=25) as response: state=json.load(response)
+            candidates=[c for c in state.get('clients',[]) if '백세보리밥' in c.get('business','')]
+            exact=[c for c in candidates if c.get('business','').strip()=='안산 백세보리밥']
+            print('MATCHED_CLIENT_COUNT',len(exact),'SIMILAR_NAMES',[(c['id'],c['business']) for c in candidates])
+            print('STATE_ORDER_WINDOW',len(state.get('orders',[])))
+            for c in candidates:
+              orders=[o for o in state.get('orders',[]) if o.get('client_name')==c.get('business')]
+              accounts=[a for a in state.get('receivables',{}).get('accounts',[]) if a.get('client_id')==c['id']]
+              print('CANDIDATE_SUMMARY',json.dumps({'client_id':c['id'],'business':c['business'],'order_count_in_recent_window':len(orders),'issued_count':sum(o['status']=='issued' for o in orders),'issued_sale_amount_in_window':sum(o['total'] for o in orders if o['status']=='issued'),'ar_account_count':len(accounts),'ar_opening_balance':accounts[0]['opening_balance'] if accounts else 0,'ar_paid_amount':accounts[0]['paid_amount'] if accounts else 0,'ar_balance':accounts[0]['balance'] if accounts else 0},ensure_ascii=False))
+            print('TARGET_PREFLIGHT_READ_COMPLETE')
+          finally:
+            try:
+              logout=urllib.request.Request(base+'/api/logout',data=b'{}',headers={'Content-Type':'application/json','Origin':base,'User-Agent':'Mozilla/5.0 (compatible; baekse-reclassification-preflight)'},method='POST')
+              op.open(logout,timeout=15).close()
+            except Exception as e:print('SESSION_LOGOUT_WARNING',type(e).__name__)
+          PY
       - name: Inspect exact active Worker revision and binding metadata
         run: |
           python3 - <<'PY'
