@@ -140,7 +140,7 @@ test('internal invoice prints original cost but never prints an invoice payment 
  assert.ok(body.includes("!internal&&bankFields"));
  assert.ok(body.includes("판매매출 반영 0원 · 입금 없음"));
  assert.ok(body.includes("내 부 출 고 내 역 서"));
- assert.ok(body.includes("'내부출고 원가 합계 '"));
+ assert.ok(body.includes('내부출고 원가 합계 '));
 });
 
 test('exact-location legacy migration is guarded, reversible from preserved rows, and idempotent',()=>{
