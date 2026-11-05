@@ -200,8 +200,17 @@ export class OrderDatabase extends DurableObject {
    }
    if(path==='/api/clients'&&req.method==='POST'){
       const business=safeText(data.business,'상호',true,100),person=safeText(data.person,'이름',true,70),phone=safeText(data.phone,'전화번호',true,40),business_no=safeText(data.business_no,'사업자번호',false,50),address=safeText(data.address,'주소',false,300);
-      if(data.id){const id=onlyInt(data.id,'거래처ID',1);if(!this.getOne('SELECT id FROM clients WHERE id=?',id))throw new Error('거래처가 없습니다');this.sql.exec('UPDATE clients SET business=?,person=?,phone=?,business_no=?,address=? WHERE id=?',business,person,phone,business_no,address,id);this.audit('client_update',{id})}
-      else{this.sql.exec('INSERT INTO clients(business,person,phone,business_no,address,created_at) VALUES (?,?,?,?,?,?)',business,person,phone,business_no,address,now());this.audit('client_create',{business})}
+      if(data.id){
+        const id=onlyInt(data.id,'거래처ID',1),existing=this.getOne('SELECT * FROM clients WHERE id=?',id);
+        if(!existing)throw new Error('거래처가 없습니다');
+        const default_order_type=normalizeOrderType(data.default_order_type??existing.default_order_type);
+        this.sql.exec('UPDATE clients SET business=?,person=?,phone=?,business_no=?,address=?,default_order_type=? WHERE id=?',business,person,phone,business_no,address,default_order_type,id);
+        this.audit('client_update',{id,default_order_type});
+      }else{
+        const default_order_type=normalizeOrderType(data.default_order_type??'sale');
+        this.sql.exec('INSERT INTO clients(business,person,phone,business_no,address,default_order_type,created_at) VALUES (?,?,?,?,?,?,?)',business,person,phone,business_no,address,default_order_type,now());
+        this.audit('client_create',{business,default_order_type});
+      }
       return json({ok:true});
    }
    if(path==='/api/clients/toggle'&&req.method==='POST'){
@@ -219,32 +228,35 @@ export class OrderDatabase extends DurableObject {
    if(path==='/api/orders'&&req.method==='POST'){
       const client=this.getOne('SELECT * FROM clients WHERE id=? AND active=1',onlyInt(data.client_id,'거래처',1));if(!client)throw new Error('거래처를 선택하세요');
       if(client.person==='미입력'||client.phone==='미입력')throw new Error('거래처 필수 정보(이름·전화번호)를 먼저 입력하세요');
-      const order_date=dateCheck(data.order_date),vat=data.vat==='tax'?'tax':data.vat==='none'?'none':null;if(!vat)throw new Error('부가세를 선택하세요');
+      const order_type=normalizeOrderType(data.order_type??client.default_order_type??'sale');
+      const order_date=dateCheck(data.order_date),vat=order_type==='internal'?'none':data.vat==='tax'?'tax':data.vat==='none'?'none':null;if(!vat)throw new Error('부가세를 선택하세요');
       const memo=safeText(data.memo,'비고',false,500),list=Array.isArray(data.items)?data.items:[];
       if(list.length===0||list.length>50)throw new Error('출고 품목은 1~50개 입력하세요');
       const items=list.map(item=>{
         const qty=onlyInt(item.qty,'수량',1,1000000);
-        if(item.product_id){const p=this.getOne('SELECT * FROM products WHERE id=? AND active=1',onlyInt(item.product_id,'제품ID',1));if(!p)throw new Error('등록되지 않은 상품');return{product_id:p.id,name:p.name,qty,unit_price:p.price,cost:p.cost}}
-        const name=safeText(item.name,'기타 품명',true,120),unit_price=onlyInt(item.unit_price,'기타 출고단가',0,100000000);
-        return {product_id:null,name,qty,unit_price,cost:0}
+        if(item.product_id){const p=this.getOne('SELECT * FROM products WHERE id=? AND active=1',onlyInt(item.product_id,'제품ID',1));if(!p)throw new Error('등록되지 않은 상품');return{product_id:p.id,name:p.name,qty,unit_price:order_type==='internal'?0:p.price,cost:p.cost}}
+        const name=safeText(item.name,'기타 품명',true,120),price=onlyInt(item.unit_price,'기타 단가 또는 내부출고 원가',0,100000000);
+        return {product_id:null,name,qty,unit_price:order_type==='internal'?0:price,cost:order_type==='internal'?price:0}
       });
-      const totals=calcTotals(items,vat);
-      // If receivables tracking is enabled, the DB is authoritative: ignore client-supplied balance.
-      const {tracked:receivable_tracked,previous_balance}=ensureReceivableOrderCanIssue(this,client.id,totals.total,data.previous_balance??0);
-      const amount_due=calculatePayable(totals.total,previous_balance);
+      const totals=order_type==='internal'?{supply:0,tax:0,total:0}:calcTotals(items,vat);
+      const internal_cost=order_type==='internal'?calcInternalCost(items):0;
+      // Internal usage is a stock/cost event only, never a cash sale or receivable.
+      const ledger=order_type==='internal'?{tracked:false,previous_balance:0}:ensureReceivableOrderCanIssue(this,client.id,totals.total,data.previous_balance??0);
+      const {tracked:receivable_tracked,previous_balance}=ledger;
+      const amount_due=order_type==='internal'?0:calculatePayable(totals.total,previous_balance);
       const bank_setting=this.getOne('SELECT bank_name,account_number,account_holder,company_name,company_business_no,company_address,company_phone,company_email FROM receipt_settings WHERE id=1');
       const bank_snapshot=JSON.stringify(bank_setting||{bank_name:'',account_number:'',account_holder:''});
       const grouped=new Map();for(const i of items)if(i.product_id)grouped.set(i.product_id,(grouped.get(i.product_id)||0)+i.qty);
       for(const [id,q] of grouped){const remaining=this.getOne('SELECT COALESCE(SUM(delta),0) AS qty FROM movements WHERE product_id=?',id).qty;if(q>remaining)throw new Error(`${items.find(i=>i.product_id===id).name}: 재고 부족 (현재 ${remaining}개)`)}
       let id;
       this.ctx.storage.transactionSync(()=>{
-        this.sql.exec("INSERT INTO orders(client_id,client_snapshot,order_date,vat,supply,tax,total,previous_balance,bank_snapshot,delivery_status,memo,created_at) VALUES(?,?,?,?,?,?,?,?,?,'pending',?,?)",client.id,JSON.stringify({business:client.business,person:client.person,phone:client.phone,business_no:client.business_no,address:client.address}),order_date,vat,totals.supply,totals.tax,totals.total,previous_balance,bank_snapshot,memo,now());
+        this.sql.exec("INSERT INTO orders(client_id,client_snapshot,order_date,order_type,vat,supply,tax,total,previous_balance,bank_snapshot,delivery_status,memo,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,'pending',?,?)",client.id,JSON.stringify({business:client.business,person:client.person,phone:client.phone,business_no:client.business_no,address:client.address}),order_date,order_type,vat,totals.supply,totals.tax,totals.total,previous_balance,bank_snapshot,memo,now());
         id=this.getOne('SELECT last_insert_rowid() AS id').id;
         for(const i of items){this.sql.exec('INSERT INTO lines(order_id,product_id,name,qty,unit_price,cost,line_total) VALUES(?,?,?,?,?,?,?)',id,i.product_id,i.name,i.qty,i.unit_price,i.cost,i.qty*i.unit_price);
           if(i.product_id)this.sql.exec('INSERT INTO movements(product_id,delta,cost,note,source,created_at) VALUES(?,?,?,?,?,?)',i.product_id,-i.qty,i.cost,'출고 #'+id,'order:'+id,now());}
-        this.audit('order_create',{id,total:totals.total,previous_balance,amount_due,receivable_tracked});
+        this.audit('order_create',{id,order_type,total:totals.total,internal_cost,previous_balance,amount_due,receivable_tracked});
       });
-      return json({ok:true,id,...totals,previous_balance,amount_due});
+      return json({ok:true,id,order_type,internal_cost,...totals,previous_balance,amount_due});
    }
    if(path==='/api/orders/cancel'&&req.method==='POST'){
       const id=onlyInt(data.id,'명세표 ID',1),order=this.getOne('SELECT * FROM orders WHERE id=?',id);if(!order||order.status!=='issued')throw new Error('취소할 수 없는 출고건');
@@ -312,8 +324,10 @@ export class OrderDatabase extends DurableObject {
      const bank_saved=JSON.parse(order.bank_snapshot||'{}');
      const current_settings=this.getOne('SELECT bank_name,account_number,account_holder,company_name,company_business_no,company_address,company_phone,company_email FROM receipt_settings WHERE id=1')||{};
      const bank={...current_settings,...bank_saved};
-     return json({order:{...order,client:JSON.parse(order.client_snapshot),bank,
-       amount_due:calculatePayable(order.total,order.previous_balance??0)},items:this.all('SELECT * FROM lines WHERE order_id=? ORDER BY id',id)});
+     const items=this.all('SELECT * FROM lines WHERE order_id=? ORDER BY id',id);
+     const internal_cost=items.reduce((n,l)=>n+l.qty*l.cost,0);
+     return json({order:{...order,client:JSON.parse(order.client_snapshot),bank,internal_cost,
+       amount_due:order.order_type==='internal'?0:calculatePayable(order.total,order.previous_balance??0)},items});
    }
    return err('없는 API 주소',404);
  }
