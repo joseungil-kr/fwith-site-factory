@@ -29,3 +29,15 @@ export const calculatePayable=(saleTotal,previousBalance=0)=>{
   return sale+balance;
 };
 export const stockRemaining=(opening,entries)=>entries.reduce((n,e)=>n+e.delta,opening);
+
+/** Inventory consumption uses the captured cost, never a fictitious selling price. */
+export const normalizeOrderType=value=>{
+  const kind=String(value??'sale');
+  if(!['sale','internal'].includes(kind))throw new Error('출고 구분은 판매출고 또는 내부출고만 가능합니다.');
+  return kind;
+};
+export const calcInternalCost=items=>{
+  const sum=items.reduce((v,i)=>v+onlyInt(i.qty,'수량',1,999999)*onlyInt(i.cost,'출고 원가',0,100000000),0);
+  if(!Number.isSafeInteger(sum)||sum>2_000_000_000)throw new Error('내부출고 원가 한도 초과');
+  return sum;
+};
