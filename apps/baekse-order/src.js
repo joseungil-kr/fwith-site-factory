@@ -229,6 +229,7 @@ export class OrderDatabase extends DurableObject {
       const client=this.getOne('SELECT * FROM clients WHERE id=? AND active=1',onlyInt(data.client_id,'거래처',1));if(!client)throw new Error('거래처를 선택하세요');
       if(client.person==='미입력'||client.phone==='미입력')throw new Error('거래처 필수 정보(이름·전화번호)를 먼저 입력하세요');
       const order_type=normalizeOrderType(data.order_type??client.default_order_type??'sale');
+      if(client.default_order_type==='internal'&&order_type!=='internal')throw new Error('내부출고 지점은 판매출고로 등록할 수 없습니다.');
       const order_date=dateCheck(data.order_date),vat=order_type==='internal'?'none':data.vat==='tax'?'tax':data.vat==='none'?'none':null;if(!vat)throw new Error('부가세를 선택하세요');
       const memo=safeText(data.memo,'비고',false,500),list=Array.isArray(data.items)?data.items:[];
       if(list.length===0||list.length>50)throw new Error('출고 품목은 1~50개 입력하세요');

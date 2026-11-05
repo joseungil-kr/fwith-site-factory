@@ -36,7 +36,7 @@ export function getReceivable(db,clientId){
     issued_count:sale.count,paid_amount:paid.amount,balance};
 }
 export function getReceivables(db){
-  const accounts=rows(db,'SELECT client_id FROM receivable_accounts ORDER BY client_id');
+  const accounts=rows(db,"SELECT a.client_id FROM receivable_accounts a JOIN clients c ON c.id=a.client_id WHERE c.default_order_type<>'internal' ORDER BY a.client_id");
   const result=accounts.map(a=>getReceivable(db,a.client_id));
   return {accounts:result,total:result.reduce((n,a)=>n+a.balance,0),tracked_clients:result.length};
 }

@@ -43,8 +43,9 @@ export function makeReceiptRows(invoice) {
   const code = 'B' + String(o.order_date || '').replaceAll('-', '') + '-' +
     String(o.id || '').padStart(4, '0');
   const company=o.bank||{};
+  const internal=o.order_type==='internal';
   const rows = [
-    {text:'거 래 명 세 표',align:'center',kind:'title'},
+    {text:internal?'내 부 출 고 내 역 서':'거 래 명 세 표',align:'center',kind:'title'},
     {text:'전표번호: '+code},
     {text:'출고일: '+String(o.order_date||'')},
     {text:'거래처: '+String(c.business||'')},
@@ -58,24 +59,28 @@ export function makeReceiptRows(invoice) {
   if(company.company_address)rows.push({text:'주소: '+String(company.company_address)});
   if(company.company_phone)rows.push({text:'연락처: '+String(company.company_phone)});
   rows.push({line:true}); // 공급자 정보와 품목 구분
-  rows.push({text:'품명 / 수량 x 단가',kind:'bold'});
+  rows.push({text:internal?'품명 / 수량 x 원가':'품명 / 수량 x 단가',kind:'bold'});
   for (const item of invoice.items) {
     rows.push({text:String(item.name || ''),kind:'bold'});
     rows.push({
-      text:String(item.qty) + ' x ' + formatWon(item.unit_price) + ' = ' + formatWon(item.line_total),
+      text:String(item.qty) + ' x ' + formatWon(internal?item.cost:item.unit_price) + ' = ' + formatWon(internal?item.qty*item.cost:item.line_total),
       align:'right'
     });
   }
   rows.push({line:true});
+  if(internal){
+    rows.push({text:'내부출고 원가 합계: '+formatWon(o.internal_cost??invoice.items.reduce((n,i)=>n+i.qty*i.cost,0)),align:'right',kind:'total'});
+  }else{
   rows.push({text:'공급가액: ' + formatWon(o.supply),align:'right'});
   rows.push({text:'부가세: ' + formatWon(o.tax),align:'right'});
   rows.push({text:'전 잔고: ' + formatWon(o.previous_balance||0),align:'right'});
   rows.push({text:'합계: ' + formatWon(o.amount_due??(Number(o.total)+Number(o.previous_balance||0))),align:'right',kind:'total'});
+  }
   if (o.status !== 'issued') rows.push({text:'[출고 취소된 명세표]',align:'center',kind:'bold'});
   rows.push({line:true});
   rows.push({text:'위와같이 출고 하였습니다.',align:'center'});
   const bank=o.bank||{};
-  if(bank.bank_name&&bank.account_number&&bank.account_holder){
+  if(!internal&&bank.bank_name&&bank.account_number&&bank.account_holder){
     rows.push({line:true});
     rows.push({text:'입금처:',kind:'bold'});
     rows.push({text:String(bank.bank_name)+' '+String(bank.account_number)});

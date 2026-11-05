@@ -16,7 +16,7 @@ test('administrator navigation has exactly nine requested items, labels and orde
     {id:'products',label:'제품관리'},
     {id:'stock',label:'재고관리'},
     {id:'clients',label:'거래처관리'},
-    {id:'receivables',label:'미수금관리(입금관리)'},
+    {id:'receivables',label:'매출관리'},
     {id:'settings',label:'설정'}
   ]);
   for(const item of items)assert.ok(html.includes('data-page="'+item.id+'"'),'No screen for '+item.id);
