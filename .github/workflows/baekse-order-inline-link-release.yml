@@ -20,7 +20,7 @@ jobs:
       - name: Verify exact existing Worker target and test buyer link isolation
         working-directory: apps/baekse-order
         run: |
-          node -e "const c=require('./wrangler.jsonc');if(c.name!=='baekse-order'||c.keep_vars!==true)process.exit(1)"
+          node -e "const fs=require('fs');const c=JSON.parse(fs.readFileSync('wrangler.jsonc','utf8'));if(c.name!=='baekse-order'||c.keep_vars!==true)process.exit(1)"
           node --check src.js
           node --check requests.js
           node --check public/app.js
