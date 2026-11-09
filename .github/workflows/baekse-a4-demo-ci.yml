@@ -1,0 +1,63 @@
+name: Baekse A4 two-copy 33-item print QA
+on:
+  push:
+    branches: [feature/baekse-a4-dual-print-33-demo-20261109]
+    paths:
+      - 'apps/baekse-order/**'
+      - '.github/workflows/baekse-a4-demo-ci.yml'
+  pull_request:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths:
+      - 'apps/baekse-order/**'
+      - '.github/workflows/baekse-a4-demo-ci.yml'
+permissions: {contents: read}
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Syntax and all read-only invoice regression tests
+        working-directory: apps/baekse-order
+        run: |
+          node --check public/print-form/print-data.mjs
+          node --check public/print-form/print-form.js
+          node --check public/app.js
+          npm test
+      - name: Chromium and PDF page-count helper
+        working-directory: apps/baekse-order
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+          python3 -m pip install --quiet --user pypdf
+      - name: Start local-only Baekse Worker
+        working-directory: apps/baekse-order
+        run: |
+          npx --yes wrangler@4.156.2 dev --local --port 8787 --var ADMIN_PASSWORD:ci-only-strong-example-password-2026 >/tmp/baekse-a4-ci.log 2>&1 &
+          echo $! >/tmp/baekse-a4-ci.pid
+      - name: Open demo, invoke print, render PDF and assert 3 physical pages
+        working-directory: apps/baekse-order
+        run: |
+          node tests/a4-dual-browser-qa.mjs
+          python3 - <<'PY'
+          from pypdf import PdfReader
+          p=PdfReader('qa-a4-artifacts/a4-landscape-33-items.pdf')
+          assert len(p.pages)==3,f'Expected 3 A4 sheets, got {len(p.pages)}'
+          for n,page in enumerate(p.pages,1):
+            w=float(page.mediabox.width);h=float(page.mediabox.height)
+            assert 835<w<850 and 590<h<600,(n,w,h)
+          print('A4_LANDSCAPE_PDF_3_PAGES_PASS')
+          PY
+      - name: Save sample PDF and screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: baekse-a4-33-demo
+          path: apps/baekse-order/qa-a4-artifacts/
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Show local-only startup logs on failure
+        if: failure()
+        run: tail -100 /tmp/baekse-a4-ci.log || true
