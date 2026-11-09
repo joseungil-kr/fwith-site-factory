@@ -178,11 +178,15 @@ button,input,select{font:inherit}
 }
 .print-sheet .slip .parties th{background:#fff}
 .print-sheet .cut-marker{border-left:.3mm dashed #626c6c;font-weight:700}
+.cut-marker .cut-label{position:absolute;left:1mm;top:1mm;display:inline-block;white-space:nowrap;transform-origin:left top;transform:rotate(90deg);font-size:7pt;line-height:1;background:#fff;padding:0 .5mm}
 
 /* Two-row supplier details vs two-row recipient details.
    A heavier line begins the recipient section in both copies. */
-.parties tr.party-supplier-start > *{border-top:.4mm solid #606a6c}
-.parties tr.party-buyer-start > *{border-top:.75mm double #526062}
+.parties tr.party-supplier-start > *,
+.parties tr.party-buyer-start > *{border-top:.18mm solid #526062}
+.buyer-contact-entry{display:flex;align-items:center;gap:.6mm;width:100%;height:100%;min-width:0}
+.buyer-contact-entry > input,.buyer-contact-entry > .mirror{flex:1 1 auto;min-width:0;width:0}
+.buyer-honorific{flex:0 0 auto;white-space:nowrap;font-size:6.2pt;font-weight:650;color:#303a3b;padding-right:.4mm}
 .parties tr.party-supplier-start > th:first-child,
 .parties tr.party-buyer-start > th:first-child{
  color:#172c2a;
