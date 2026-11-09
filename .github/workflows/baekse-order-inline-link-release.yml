@@ -1,4 +1,4 @@
-name: Baekse guarded single party lines contact honorific and cut label release 20261109
+name: Baekse guarded 4 by 4 printed invoice and revised financial footer release 20261109
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
@@ -97,13 +97,20 @@ jobs:
               for path,markers in [
                 ('/print-form/',['id="print-now"','가상 거래 33품목','noindex']),
                 ('/print-form/print-form.js', ['window.print()','BAEKSE_PRINT_DATA','fromOrderDetail']),
-                ('/print-form/print-data.mjs',['LINES_PER_PAGE=15','makeDemoDocument','renderPrintSheets']),
+                ('/print-form/print-data.mjs',['LINES_PER_PAGE=15','makeDemoDocument','renderPrintSheets',
+                  'th(\'공급자 등록번호\')','th(\'공급받는자\')','th(\'공급자 상호\')',
+                  'th(\'청구액\')','th(\'총액\')','summary-blank','cell(currentCharge','cell(grandTotal']),
                 ('/print-form/print-form.css',['@page{size:A4 landscape;margin:0}','height:112mm','.cut-line'])
               ]:
                 with opener.open(root+path,timeout=30) as asset:
                   content=asset.read().decode('utf-8')
                   assert asset.status==200 and all(marker in content for marker in markers),'A4 demo missing/broken '+path
               print('A4_2UP_DEMO_PUBLIC_ASSETS_PASS')
+              with opener.open(root+'/print-form/print-data.mjs',timeout=30) as asset:
+                source=asset.read().decode('utf-8')
+                assert '아래와 같이 계산합니다.' not in source, 'Old invoice header helper text still live'
+                assert "th('입 금')" not in source and "th('잔 금')" not in source,'Removed footer payment and balance headings still live'
+              print('ORDER_PRINT_FOUR_BY_FOUR_AND_TOTAL_FOOTER_PUBLIC_PASS')
               for path,markers in [
                 ('/manual-invoice/',['id="print-form"','data-form="invoice"','@page{size:A4 landscape;margin:0}']),
                 ('/simple-receipt/',['id="print-form"','data-form="receipt"','@page{size:A4 portrait;margin:0}',
