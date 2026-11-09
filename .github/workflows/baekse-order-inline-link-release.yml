@@ -91,6 +91,8 @@ jobs:
               assert 'const url=entry?.url' in app and 'buyer-link-row' in app,'Inline client link UI missing'
               assert 'issuedBuyerUrls' not in app,'Legacy memory-only link code still deployed'
               assert 'id="bill-a4-dual"' in html,'New A4 two-up print button missing'
+              assert 'id="bill-a4"' not in html and 'A4 / PDF</button>' not in html,'Retired A4/PDF button still public'
+              assert "$('#bill-a4').onclick" not in app,'Retired A4 button script still public'
               assert "window.open('/print-form/?mode=invoice','_blank')" in app,'Existing invoice handoff not connected'
               for path,markers in [
                 ('/print-form/',['id="print-now"','가상 거래 33품목','noindex']),
