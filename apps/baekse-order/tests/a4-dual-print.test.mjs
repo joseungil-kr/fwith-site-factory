@@ -102,7 +102,7 @@ test('all 33 demo forms use the requested exact four-row four-column party grid'
   rows.forEach((row,index)=>{
    const headers=[...row.matchAll(/<th scope="row">([^<]+)<\/th>/g)].map(x=>x[1]);
    assert.deepEqual(headers,labels[index],'Header order must match requested arrangement');
-   assert.equal((row.match(/<td(?: class="[^"]*")?>/g)||[]).length,2,'Exactly two data fields per row');
+   assert.equal((row.match(/<td(?:\s[^>]*)?>/g)||[]).length,2,'Exactly two data fields per row');
   });
   assert.ok(!table.includes('아래와 같이 계산합니다.'),'Remove generic introduction');
   assert.ok(!table.includes('담당: '),'Remove the extra contact block');
@@ -126,8 +126,8 @@ test('financial footer has charge before previous balance, no payment, and the g
    ['공급가액','부가세','청구액']);
   assert.deepEqual([...rows[1].matchAll(/<th scope="row">([^<]+)<\/th>/g)].map(x=>x[1]),
    ['전 잔고','총액']);
-  assert.equal((rows[0].match(/<td(?: class="[^"]*")?>/g)||[]).length,3);
-  assert.equal((rows[1].match(/<td(?: class="[^"]*")?>/g)||[]).length,3);
+  assert.equal((rows[0].match(/<td(?:\s[^>]*)?>/g)||[]).length,3);
+  assert.equal((rows[1].match(/<td(?:\s[^>]*)?>/g)||[]).length,3);
   assert.ok(rows[1].includes('<td colspan="2" class="summary-blank"></td>'));
   assert.ok(rows[0].includes('₩ '+wonForTest(charge)));
   assert.ok(rows[1].includes('₩ '+wonForTest(doc.previous)));
