@@ -187,12 +187,12 @@ function renderHomeRequestPreview(){
 }
 async function loadBuyerRequests(){
  const requestId=++buyerListFetchSeq;
+ const badgeId=++pendingBadgeFetchSeq;
  $('#request-list').textContent='발주 요청을 불러오는 중입니다.';
  const result=await api('requests/list');
  if(requestId!==buyerListFetchSeq)return;
- pendingBadgeFetchSeq++;
  buyerRequests=result.requests||[];
- if(result.summary){
+ if(result.summary&&badgeId===pendingBadgeFetchSeq){
    state.buyer_dashboard=result.summary;
    renderRequestNavCount();
    renderBuyerDashboard();
