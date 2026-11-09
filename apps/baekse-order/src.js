@@ -371,8 +371,11 @@ export default {
    // and empty-print query variants preserve the original noindex policy.
    const indexableInvoice=(url.pathname==='/manual-invoice/'||url.pathname==='/manual-invoice')
      && !url.searchParams.has('blank') && res.status===200;
-   const publicOgImage=url.pathname==='/manual-invoice/og-image.png'&&res.status===200;
-   h.set('X-Robots-Tag',indexableInvoice||publicOgImage?'index, follow, max-image-preview:large':'noindex, nofollow, noarchive');
+   const indexableReceipt=(url.pathname==='/simple-receipt/'||url.pathname==='/simple-receipt')
+     && !url.searchParams.has('blank') && res.status===200;
+   const publicOgImage=(url.pathname==='/manual-invoice/og-image.png'||url.pathname==='/simple-receipt/og-image.png')
+     && res.status===200;
+   h.set('X-Robots-Tag',indexableInvoice||indexableReceipt||publicOgImage?'index, follow, max-image-preview:large':'noindex, nofollow, noarchive');
    h.set('X-Content-Type-Options','nosniff');h.set('Referrer-Policy','no-referrer');h.set('Cache-Control','no-store');h.set('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'");
    return new Response(res.body,{status:res.status,headers:h});
  }
