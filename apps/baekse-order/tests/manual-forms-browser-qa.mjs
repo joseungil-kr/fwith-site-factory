@@ -61,6 +61,11 @@ try{
  assert.equal((await page.locator('[data-copy=recipient] [data-calc=grand]').first().innerText()).trim(),'127,500');
  assert.equal((await page.locator('[data-copy=recipient] [data-calc=balance]').innerText()).trim(),'97,500');
  await testWithinPage();
+ for(const copy of ['supplier','recipient']){
+  assert.equal(
+   await page.locator('[data-copy="'+copy+'"] tr.party-buyer-start > th').first().evaluate(el=>getComputedStyle(el).borderTopStyle),
+   'double','Invoice must separate supplier/buyer sections with two thin lines');
+ }
  await page.screenshot({path:'qa-manual-forms/manual-invoice-desktop.png',fullPage:true});
  await page.pdf({path:'qa-manual-forms/manual-invoice-A4-landscape.pdf',printBackground:true,preferCSSPageSize:true});
  assert.equal((await page.locator('.seo-guide').isVisible()),true,'Search help is visible on screen');
@@ -123,6 +128,7 @@ try{
        border:getStyle('[data-copy="'+copy+'"]').borderTopColor,
        supplierLine:parseFloat(getStyle(prefix+'tr.party-supplier-start > th').borderTopWidth),
        buyerLine:parseFloat(getStyle(prefix+'tr.party-buyer-start > th').borderTopWidth),
+       buyerStyle:getStyle(prefix+'tr.party-buyer-start > th').borderTopStyle,
        headerBackground:getStyle(prefix+'.form-head').backgroundColor
      };
    };
@@ -133,6 +139,8 @@ try{
    'Left slip must have a stronger horizontal separator between supplier and buyer fields');
  assert.ok(partySections.right.buyerLine>partySections.right.supplierLine+1,
    'Right slip must have the same supplier/buyer separator');
+ assert.equal(partySections.left.buyerStyle,'double','Left receipt needs a double-line divider');
+ assert.equal(partySections.right.buyerStyle,'double','Right receipt needs a double-line divider');
  assert.equal(partySections.left.border,partySections.right.border,'Copies share the same neutral border');
  assert.equal(partySections.left.headerBackground,'rgb(255, 255, 255)','Left header should be white');
  assert.equal(partySections.right.headerBackground,'rgb(255, 255, 255)','Right header should be white');
