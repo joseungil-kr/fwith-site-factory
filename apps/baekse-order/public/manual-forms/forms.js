@@ -1,6 +1,7 @@
 // Independent client-only editable forms. No network access, cookies, storage or ERP mutation.
 const mode=document.body.dataset.form==='receipt'?'receipt':'invoice';
 const receipt=mode==='receipt';
+const blankMode=!receipt&&new URLSearchParams(location.search).get('blank')==='1';
 const count=receipt?10:15;
 const root=document.getElementById('print-root');
 const feedback=document.getElementById('feedback');
@@ -55,7 +56,7 @@ function itemsTable(editable){
  rows.map(i=>unitRow(i,editable)).join('')+'</tbody></table>';
 }
 function preface(){
- return '<div class="amount-line"><span>'+(receipt?'영수 합계금액':'합계금액 (전 잔고 반영)')+'</span><strong>₩ '+output('grand')+'</strong><span>원정</span></div>';
+ return '<div class="amount-line"><span'+(receipt?'':' data-tax-caption')+'>'+(receipt?'영수 합계금액':'합계금액(부가세별도)')+'</span><strong>₩ '+output(receipt?'grand':'invoiceTotal')+'</strong><span>원정</span></div>';
 }
 function summary(editable){
  if(receipt){
@@ -64,11 +65,11 @@ function summary(editable){
    '</tbody></table>'+
    '<div class="receipt-ack">위 금액을 정히 영수합니다.</div>';
  }
- const vat=editable?'<select aria-label="부가세 계산" data-field="vatMode"><option value="none" selected>미계산</option><option value="tax">10% 추가</option></select>':mirror('vatMode');
+ const vat=editable?'<button id="vat-toggle" class="vat-toggle" type="button" aria-label="부가세 자동입력 전환" aria-pressed="false" data-field="vatMode" value="none">부가세 자동입력</button>':mirror('vatMode');
  return '<table class="summary invoice-summary"><tbody>'+
   '<tr><th>공급가액</th><td>₩ '+output('supply')+'</td><th>부가세 '+vat+'</th><td>₩ '+output('tax')+'</td></tr>'+
   '<tr><th>전 잔고</th><td>'+ (editable?field('previous','전 잔고',true,'number','0'):mirror('previous'))+'</td><th>입 금</th><td>'+(editable?field('paid','입금액',true,'number','0'):mirror('paid'))+'</td></tr>'+
-  '<tr><th>잔 금</th><td>₩ '+output('balance')+'</td><th>합계금액</th><td>₩ '+output('grand')+'</td></tr>'+
+  '<tr><th>잔 금</th><td>₩ '+output('balance')+'</td><th>청구합계</th><td>₩ '+output('grand')+'</td></tr>'+
   '</tbody></table>';
 }
 function copy(type){
@@ -85,7 +86,7 @@ function read(key){
  return field?field.value:'';
 }
 function setCalculated(key,value){
- root.querySelectorAll('[data-calc="'+key+'"]').forEach(el=>{el.textContent=won(value)});
+ root.querySelectorAll('[data-calc="'+key+'"]').forEach(el=>{el.textContent=blankMode?'':won(value)});
 }
 function synchronize(){
  for(const el of root.querySelectorAll('.slip[data-copy="supplier"] [data-field]')){
@@ -105,6 +106,11 @@ function synchronize(){
   setCalculated('item-'+i+'-amount',amount);
   if(!receipt)setCalculated('item-'+i+'-tax',lineTax);
  }
+ if(!receipt){
+  const enabled=read('vatMode')==='tax';
+  root.querySelectorAll('[data-tax-caption]').forEach(el=>{el.textContent=enabled?'합계금액(부가세포함)':'합계금액(부가세별도)'});
+  setCalculated('invoiceTotal',supply+tax);
+ }
  const previous=receipt?0:cleanNumber(read('previous'));
  const paid=receipt?0:cleanNumber(read('paid'));
  const grand=supply+tax+previous;
@@ -116,16 +122,37 @@ function synchronize(){
 }
 root.addEventListener('input',synchronize);
 root.addEventListener('change',synchronize);
+if(!receipt){
+ root.addEventListener('click',event=>{
+  const toggle=event.target.closest('#vat-toggle');
+  if(!toggle)return;
+  const enabled=toggle.value!=='tax';
+  toggle.value=enabled?'tax':'none';
+  toggle.textContent=enabled?'부가세 별도':'부가세 자동입력';
+  toggle.setAttribute('aria-pressed',String(enabled));
+  synchronize();
+ });
+}
 const now=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 const dateField=root.querySelector('.slip[data-copy="supplier"] [data-field="writtenDate"]');
-if(dateField)dateField.value=now;
+if(dateField&&!blankMode)dateField.value=now;
 synchronize();
 document.getElementById('print-form').addEventListener('click',()=>window.print());
 document.getElementById('clear-form').addEventListener('click',()=>{
  if(!window.confirm('모든 입력 내용을 초기화할까요?'))return;
  root.querySelectorAll('.slip[data-copy="supplier"] input').forEach(i=>{i.value=''});
- const vat=root.querySelector('.slip[data-copy="supplier"] [data-field="vatMode"]');
- if(vat)vat.value='none';
+ const vat=root.querySelector('#vat-toggle');
+ if(vat){
+  vat.value='none';
+  vat.textContent='부가세 자동입력';
+  vat.setAttribute('aria-pressed','false');
+ }
  if(dateField)dateField.value=now;
  synchronize();
 });
+if(blankMode&&new URLSearchParams(location.search).get('print')==='1'){
+ window.addEventListener('load',()=>{
+  window.focus();
+  setTimeout(()=>window.print(),350);
+ },{once:true});
+}
