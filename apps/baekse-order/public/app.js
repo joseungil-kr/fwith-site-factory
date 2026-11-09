@@ -17,7 +17,7 @@ function setMobileMenuOpen(open){
  $('#mobile-menu-glyph').textContent=expanded?'×':'☰';
 }
 function closeMobileMenu(){setMobileMenuOpen(false)}
-function show(tab){closeMobileMenu();$('[data-page]').forEach(x=>x.classList.toggle('hidden',x.dataset.page!==tab));$('[data-tab]').forEach(x=>x.classList.toggle('selected',x.dataset.tab===tab));window.scrollTo(0,0);if(tab==='requests')loadBuyerRequests().catch(e=>$('#request-list').textContent=e.message);else safeRefreshRequestBadge();if(tab==='receivables')loadReceivableDetail().catch(e=>alert(e.message))}
+function show(tab){closeMobileMenu();$$('[data-page]').forEach(x=>x.classList.toggle('hidden',x.dataset.page!==tab));$$('[data-tab]').forEach(x=>x.classList.toggle('selected',x.dataset.tab===tab));window.scrollTo(0,0);if(tab==='requests')loadBuyerRequests().catch(e=>$('#request-list').textContent=e.message);else safeRefreshRequestBadge();if(tab==='receivables')loadReceivableDetail().catch(e=>alert(e.message))}
 async function refreshRequestBadge(){
  if(document.hidden||$('#app').classList.contains('hidden'))return;
  const requestId=++pendingBadgeFetchSeq;
