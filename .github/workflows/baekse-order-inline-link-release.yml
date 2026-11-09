@@ -1,4 +1,4 @@
-name: Baekse guarded A4 2-up 33-item demo release 20261109
+name: Baekse guarded standalone manual forms release 20261109
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
@@ -104,6 +104,17 @@ jobs:
                   content=asset.read().decode('utf-8')
                   assert asset.status==200 and all(marker in content for marker in markers),'A4 demo missing/broken '+path
               print('A4_2UP_DEMO_PUBLIC_ASSETS_PASS')
+              for path,markers in [
+                ('/manual-invoice/',['id="print-form"','data-form="invoice"','@page{size:A4 landscape;margin:0}']),
+                ('/simple-receipt/',['id="print-form"','data-form="receipt"','@page{size:A4 portrait;margin:0}']),
+                ('/manual-forms/forms.js',["copy('supplier')+copy('recipient')","root.addEventListener('input',synchronize)","window.print()"]),
+                ('/manual-forms/forms.css',['.print-sheet.invoice{width:297mm;height:209mm','.print-sheet.receipt{width:210mm;height:296mm'])
+              ]:
+                with opener.open(root+path,timeout=30) as asset:
+                  content=asset.read().decode('utf-8')
+                  assert asset.status==200 and all(marker in content for marker in markers),'Standalone manual form missing or wrong '+path
+                  assert 'noindex' in asset.headers.get('X-Robots-Tag','').lower(), 'Manual form asset must be noindex '+path
+              print('STANDALONE_MANUAL_FORMS_PUBLIC_PASS')
               assert '<button class="brand" type="button" data-go="home" aria-label="대시보드로 이동"><b>백세푸드</b></button>' in html, 'Dashboard company button missing'
               assert 'brand-emblem' not in html and 'Operations Management' not in html, 'Removed emblem or subtitle still live'
               assert "function show(tab){closeMobileMenu();$$('[data-page]').forEach" in app,'All-page navigation is broken'
