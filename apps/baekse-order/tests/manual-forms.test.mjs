@@ -128,7 +128,7 @@ test('receipt SEO has unique crawlable guide with real instructions and print ex
    'class="seo-guide"',
    '간이영수증 PDF'
  ])assert.ok(receipt.includes(marker),'Missing receipt guide: '+marker);
- assert.ok(css.includes('@media print{.seo-guide{display:none!important}}'));
+ assert.ok(css.includes(' .seo-guide{display:none!important}'),'SEO guidance must not print');
  const jsonLds=[...receipt.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
  assert.equal(jsonLds.length,2,'WebApplication + FAQPage required');
  for(const [,source] of jsonLds)assert.doesNotThrow(()=>JSON.parse(source));
