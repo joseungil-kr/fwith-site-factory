@@ -4,6 +4,7 @@ const money=n=>(Number(n)||0).toLocaleString('ko-KR')+'원',fmt=n=>(Number(n)||0
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const today=()=>new Date(Date.now()+9*3600000).toISOString().slice(0,10);
 let state={products:[],clients:[],orders:[],movements:[]},viewOrder=null,buyerRequests=[],lastBalanceClientId=null,paymentRequestKey=null;
+let pendingBadgeFetchSeq=0,buyerListFetchSeq=0;
 // Per-client links come from authenticated state; never cache bearer tokens in browser storage.
 const toast=s=>{const t=$('#toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500)};
 async function api(path,body){const opt=body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)};let r=await fetch('/api/'+path,opt);let d=await r.json().catch(()=>({error:'서버 오류'}));if(!r.ok){if(r.status===401){$('#app').classList.add('hidden');$('#login').classList.remove('hidden')}throw new Error(d.error||'요청 실패')}return d}
@@ -16,8 +17,21 @@ function setMobileMenuOpen(open){
  $('#mobile-menu-glyph').textContent=expanded?'×':'☰';
 }
 function closeMobileMenu(){setMobileMenuOpen(false)}
-function show(tab){closeMobileMenu();$$('[data-page]').forEach(x=>x.classList.toggle('hidden',x.dataset.page!==tab));$$('[data-tab]').forEach(x=>x.classList.toggle('selected',x.dataset.tab===tab));window.scrollTo(0,0);if(tab==='requests')loadBuyerRequests().catch(e=>$('#request-list').textContent=e.message);if(tab==='receivables')loadReceivableDetail().catch(e=>alert(e.message))}
-async function refresh(){state=await api('state');render();loadBuyerRequests().catch(e=>{const el=$('#home-request-preview');if(el)el.textContent='발주 목록을 확인할 수 없습니다. 새로고침해 주세요.'})}
+function show(tab){closeMobileMenu();$$('[data-page]').forEach(x=>x.classList.toggle('hidden',x.dataset.page!==tab));$$('[data-tab]').forEach(x=>x.classList.toggle('selected',x.dataset.tab===tab));window.scrollTo(0,0);if(tab==='requests')loadBuyerRequests().catch(e=>$('#request-list').textContent=e.message);else safeRefreshRequestBadge();if(tab==='receivables')loadReceivableDetail().catch(e=>alert(e.message))}
+async function refreshRequestBadge(){
+ if(document.hidden||$('#app').classList.contains('hidden'))return;
+ const requestId=++pendingBadgeFetchSeq;
+ const result=await api('requests/list');
+ if(requestId!==pendingBadgeFetchSeq||!result.summary)return;
+ const previousCount=Number(state.buyer_dashboard?.pending_count??0);
+ state.buyer_dashboard=result.summary;
+ renderRequestNavCount();
+ renderBuyerDashboard();
+ if(Number(result.summary.pending_count??0)!==previousCount&&!$('[data-page="home"]').classList.contains('hidden'))
+   loadBuyerRequests().catch(()=>{});
+}
+function safeRefreshRequestBadge(){refreshRequestBadge().catch(()=>{});}
+async function refresh(){pendingBadgeFetchSeq++;buyerListFetchSeq++;state=await api('state');render();loadBuyerRequests().catch(e=>{const el=$('#home-request-preview');if(el)el.textContent='발주 목록을 확인할 수 없습니다. 새로고침해 주세요.'})}
 function table(headers,rows){return `<div class="table-overflow"><table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')||`<tr><td colspan="${headers.length}">등록 내역이 없습니다.</td></tr>`}</tbody></table></div>`}
 function renderRequestNavCount(){
  const pending=Number(state.buyer_dashboard?.pending_count??0);
@@ -172,10 +186,13 @@ function renderHomeRequestPreview(){
  }).join('');
 }
 async function loadBuyerRequests(){
+ const requestId=++buyerListFetchSeq;
+ const badgeId=++pendingBadgeFetchSeq;
  $('#request-list').textContent='발주 요청을 불러오는 중입니다.';
  const result=await api('requests/list');
+ if(requestId!==buyerListFetchSeq)return;
  buyerRequests=result.requests||[];
- if(result.summary){
+ if(result.summary&&badgeId===pendingBadgeFetchSeq){
    state.buyer_dashboard=result.summary;
    renderRequestNavCount();
    renderBuyerDashboard();
@@ -386,6 +403,9 @@ document.addEventListener('click',e=>{
 window.addEventListener('resize',()=>{
  if(window.innerWidth>768&&$('#mobile-menu-toggle').getAttribute('aria-expanded')==='true')closeMobileMenu();
 });
+window.addEventListener('focus',safeRefreshRequestBadge);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)safeRefreshRequestBadge()});
+setInterval(safeRefreshRequestBadge,60_000);
 document.body.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)show(b.dataset.go)});
 $('#add-extra').onclick=addExtra;$('#extras').onclick=e=>{if(e.target.closest('.extra-remove')){e.target.closest('.extra-row').remove();updateTotals()}};
 $('#order-form').addEventListener('input',updateTotals);$('#vat').addEventListener('change',updateTotals);$('#order-type').addEventListener('change',setOrderTypeUI);$('#order-client').addEventListener('change',syncOrderPreviousBalance);

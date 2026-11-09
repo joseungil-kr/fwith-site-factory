@@ -37,3 +37,25 @@ test('mobile toggle, buyer pending counter and tab click handlers remain wired',
   assert.ok(app.includes("$('#nav').onclick="));
   assert.ok(app.includes("e.target.closest('[data-go]')"));
 });
+
+test('text-only company brand links to dashboard and stays configurable',()=>{
+  assert.ok(html.includes('<button class="brand" type="button" data-go="home" aria-label="대시보드로 이동"><b>백세푸드</b></button>'));
+  assert.ok(!html.includes('brand-emblem')&&!html.includes('Operations Management'));
+  const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
+  assert.ok(app.includes("$('.brand b').textContent=s.company_name||'백세푸드'"));
+  assert.ok(app.includes("e.target.closest('[data-go]')"));
+});
+
+test('pending request count refreshes on navigation, focus and 60s poll without clearing other pages',()=>{
+  const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
+  assert.ok(app.includes("else safeRefreshRequestBadge()"));
+  assert.ok(app.includes("function refreshRequestBadge()"));
+  assert.ok(app.includes("document.hidden||$('#app').classList.contains('hidden')"));
+  assert.ok(app.includes("if(requestId!==pendingBadgeFetchSeq||!result.summary)return"));
+  assert.ok(app.includes("state.buyer_dashboard=result.summary"));
+  assert.ok(app.includes("document.addEventListener('visibilitychange'"));
+  assert.ok(app.includes("window.addEventListener('focus',safeRefreshRequestBadge)"));
+  assert.ok(app.includes("setInterval(safeRefreshRequestBadge,60_000)"));
+  assert.ok(app.includes("if(requestId!==buyerListFetchSeq)return"));
+  assert.ok(app.includes("renderRequestNavCount()"));
+});
