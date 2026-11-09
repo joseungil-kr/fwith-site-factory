@@ -94,19 +94,26 @@ test('receipt uses 15 rows and explicitly labels business parties while invoice 
  assert.ok(css.includes('.receipt .item-table tbody tr{height:8.75mm}'));
  assert.ok(css.includes('.receipt .parties .p-label{width:21%}'));
 });
-test('role-colored and thicker borders visually distinguish both copies and print faithfully',()=>{
- for(const token of [
-   '.slip[data-copy="supplier"]{border:.65mm solid #0a715e}',
-   '.slip[data-copy="recipient"]{border:.65mm solid #305e82}',
-   '.slip[data-copy="supplier"] .form-head',
-   '.slip[data-copy="recipient"] .form-head',
-   '.slip[data-copy="supplier"] .copy-name',
-   '.slip[data-copy="recipient"] .copy-name',
-   '.slip[data-copy="supplier"] .parties th',
-   '.slip[data-copy="recipient"] .parties th',
-   '.cut-marker{border-left:.55mm dashed #3a4647',
-   '-webkit-print-color-adjust:exact'
- ])assert.ok(css.includes(token),'Missing role distinction: '+token);
+test('supplier and buyer information blocks are separated within each slip, with neutral white paper styling',()=>{
+ for(const marker of [
+   'party-supplier party-supplier-start',
+   'party-buyer party-buyer-start',
+   'class="party-supplier"',
+   'class="party-buyer"'
+ ])assert.ok(js.includes(marker),'Missing party information block marker: '+marker);
+ for(const marker of [
+   '.print-sheet .slip[data-copy="supplier"],',
+   '.print-sheet .slip[data-copy="recipient"]{border:.35mm solid #303a3b}',
+   '.parties tr.party-supplier-start > *{border-top:.4mm solid #606a6c}',
+   '.parties tr.party-buyer-start > *{border-top:.95mm solid #202829}',
+   '.print-sheet .slip .form-head{',
+   'background:#fff!important;',
+   '.print-sheet .slip .parties th{background:#fff}'
+ ])assert.ok(css.includes(marker),'Missing white print or party divider: '+marker);
+ assert.ok(!css.includes('background:#dff3e9'));
+ assert.ok(!css.includes('background:#e3eef8'));
+ assert.ok(!css.includes('border:.65mm solid #0a715e'));
+ assert.ok(!css.includes('border:.65mm solid #305e82'));
 });
 test('receipt SEO has unique crawlable guide with real instructions and print exclusion',()=>{
  assert.ok(receipt.includes('<title>무료 간이영수증 양식 | 온라인 영수증 작성·PDF 저장</title>'));
