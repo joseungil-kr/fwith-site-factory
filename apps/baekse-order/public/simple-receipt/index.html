@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<title>수기입력 간이영수증 | A4 세로 2부 출력</title>
+<link rel="stylesheet" href="/manual-forms/forms.css"><style>@page{size:A4 portrait;margin:0}</style>
+<script type="module" src="/manual-forms/forms.js"></script></head>
+<body data-form="receipt">
+<header class="toolbar">
+ <div class="toolbar-info"><h1>수기입력 간이영수증</h1><p>왼쪽 영수증에 입력하면 오른쪽 보관용이 자동 완성됩니다. 10품목 · A4 세로 한 장.</p></div>
+ <nav class="toolbar-nav"><a href="/manual-invoice/">거래명세표</a><button id="clear-form" type="button" class="minor">전체 초기화</button><button id="print-form" type="button" class="primary">출력하기 / PDF 저장</button></nav>
+</header>
+<p class="print-hint">인쇄 설정: A4 · <b>세로</b> · 배율 100% · 머리글/바닥글 끄기 · 여백 없음. 입력내용은 서버에 저장되지 않습니다.</p>
+<main id="print-root" aria-label="간이영수증 공급자용과 공급받는 자용"></main>
+<div id="feedback" role="status" aria-live="polite"></div>
+</body></html>

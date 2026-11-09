@@ -35,9 +35,10 @@ test('33 simulated line items automatically render as three A4 landscape paper s
 });
 
 test('legacy app functionality remains with an opt-in A4 landscape print action',()=>{
- for(const marker of ['id="bill-a4"','id="bill-a4-dual"','id="bill-58"','id="bill-80"','id="serial-print"'])
+ for(const marker of ['id="bill-a4-dual"','id="bill-58"','id="bill-80"','id="serial-print"'])
   assert.ok(index.includes(marker),marker);
- assert.ok(app.includes("$('#bill-a4').onclick=()=>printBill('a4')"));
+ assert.ok(!index.includes('id="bill-a4"'),'Legacy A4/PDF button must not appear');
+ assert.ok(!app.includes("$('#bill-a4').onclick"),'Retired A4 handler must not remain');
  assert.ok(app.includes("$('#bill-a4-dual').onclick=()=>{"));
  assert.ok(app.includes("window.open('/print-form/?mode=invoice','_blank')"));
  assert.ok(app.includes("event.origin!==location.origin||event.source!==pop"));

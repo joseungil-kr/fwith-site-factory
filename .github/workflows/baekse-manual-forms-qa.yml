@@ -1,0 +1,60 @@
+name: Baekse standalone editable forms print QA
+on:
+  push:
+    branches: [feature/baekse-manual-forms-20261109]
+    paths: ['apps/baekse-order/**', '.github/workflows/baekse-manual-forms-qa.yml']
+  pull_request:
+    branches: [feature/baekse-order-deploy-20261103]
+    paths: ['apps/baekse-order/**', '.github/workflows/baekse-manual-forms-qa.yml']
+permissions: {contents: read}
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Syntax and all Baekse regression tests
+        working-directory: apps/baekse-order
+        run: |
+          node --check public/manual-forms/forms.js
+          node --check public/app.js
+          npm test
+      - name: Install Chromium and PDF inspect tool
+        working-directory: apps/baekse-order
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+          python3 -m pip install --quiet --user pypdf
+      - name: Serve only static test forms without connecting operational database
+        run: |
+          python3 -m http.server 8787 --directory apps/baekse-order/public >/tmp/baekse-manual-server.log 2>&1 &
+      - name: Browser acceptance test and print PDFs
+        working-directory: apps/baekse-order
+        run: |
+          node tests/manual-forms-browser-qa.mjs
+          python3 - <<'PY'
+          from pypdf import PdfReader
+          for name,portrait in [('manual-invoice-A4-landscape.pdf',False),('simple-receipt-A4-portrait.pdf',True)]:
+            path='qa-manual-forms/'+name
+            pdf=PdfReader(path)
+            assert len(pdf.pages)==1,(name,'page count',len(pdf.pages))
+            width=float(pdf.pages[0].mediabox.width)
+            height=float(pdf.pages[0].mediabox.height)
+            assert (width<height)==portrait,(name,'orientation',width,height)
+            assert 590<min(width,height)<600 and 835<max(width,height)<850,(name,'not A4',width,height)
+            assert len(pdf.pages[0].get_contents().get_data())>3000,(name,'unexpected empty print stream')
+            print(name,'PAPER_1_PAGE_PASS',int(width),int(height))
+          PY
+      - name: Archive screenshots and two sample PDFs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: baekse-manual-forms-samples
+          path: apps/baekse-order/qa-manual-forms/
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: Static server log on failure
+        if: failure()
+        run: tail -50 /tmp/baekse-manual-server.log || true

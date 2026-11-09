@@ -703,7 +703,7 @@ if(serialPrinter.supported && window.isSecureContext) {
 }
 updateSerialControls();
 
-$('#bill-a4').onclick=()=>printBill('a4');$('#bill-58').onclick=()=>printBill('58');$('#bill-80').onclick=()=>printBill('80');
+$('#bill-58').onclick=()=>printBill('58');$('#bill-80').onclick=()=>printBill('80');
 $('#bill-a4-dual').onclick=()=>{
  if(!viewOrder){toast('명세표를 먼저 선택하세요');return}
  const detail=viewOrder;
