@@ -34,6 +34,13 @@ try{
  assert.equal(await page.locator('[data-copy=recipient] .item-table tbody tr').count(),15);
  await page.locator('[data-copy=supplier] [data-field=supplier]').fill('백세푸드 테스트');
  await page.locator('[data-copy=supplier] [data-field=buyer]').fill('안산 중앙점 테스트');
+ await page.locator('[data-copy=supplier] [data-field=buyerContact]').fill('홍길동');
+ for(const copy of ['supplier','recipient']){
+  assert.equal((await page.locator('[data-copy="'+copy+'"] .parties tr.party-buyer-start > th').first().innerText()).trim(),'공급받는자');
+  assert.equal((await page.locator('[data-copy="'+copy+'"] .parties tr.party-buyer-start > th').nth(1).innerText()).trim(),'담당자');
+  assert.equal((await page.locator('[data-copy="'+copy+'"] .buyer-honorific').innerText()).trim(),'귀하');
+  assert.equal(await page.locator('[data-copy="'+copy+'"] .parties tr:first-child th').count(),1,'Date row must not duplicate buyer contact');
+ }
  await page.locator('[data-copy=supplier] [data-field=supplierNo]').fill('123-45-67890');
  await page.locator('[data-copy=supplier] [data-field=item-0-name]').fill('잉어반죽');
  await page.locator('[data-copy=supplier] [data-field=item-0-qty]').fill('2');
@@ -42,6 +49,7 @@ try{
  await page.locator('[data-copy=supplier] [data-field=paid]').fill('30000');
  assert.equal((await page.locator('[data-copy=recipient] [data-mirror=supplier]').innerText()).trim(),'백세푸드 테스트');
  assert.equal((await page.locator('[data-copy=recipient] [data-mirror=buyer]').innerText()).trim(),'안산 중앙점 테스트');
+ assert.equal((await page.locator('[data-copy=recipient] [data-mirror=buyerContact]').innerText()).trim(),'홍길동');
  assert.equal((await page.locator('[data-copy=recipient] [data-mirror=item-0-name]').innerText()).trim(),'잉어반죽');
  assert.equal((await page.locator('[data-copy=recipient] [data-mirror=item-0-qty]').innerText()).trim(),'2');
  assert.equal((await page.locator('[data-copy=recipient] [data-calc=item-0-amount]').innerText()).trim(),'25,000');
@@ -62,10 +70,20 @@ try{
  assert.equal((await page.locator('[data-copy=recipient] [data-calc=balance]').innerText()).trim(),'97,500');
  await testWithinPage();
  for(const copy of ['supplier','recipient']){
-  assert.equal(
-   await page.locator('[data-copy="'+copy+'"] tr.party-buyer-start > th').first().evaluate(el=>getComputedStyle(el).borderTopStyle),
-   'double','Invoice must separate supplier/buyer sections with two thin lines');
+  const lines=await page.locator('[data-copy="'+copy+'"] .parties').evaluate(el=>{
+   const check=sel=>{
+    const st=getComputedStyle(el.querySelector(sel));
+    return {style:st.borderTopStyle,width:parseFloat(st.borderTopWidth)};
+   };
+   return [check('tr.party-supplier-start > th'),check('tr.party-buyer-start > th')];
+  });
+  for(const line of lines){
+   assert.equal(line.style,'solid','Both party row borders must be single, not double');
+   assert.ok(line.width>0&&line.width<2,'Party separator must be thin');
+  }
  }
+ const cutAngle=await page.locator('.cut-label').evaluate(el=>new DOMMatrix(getComputedStyle(el).transform).b);
+ assert.ok(Math.abs(cutAngle-1)<0.01,'Cut caption must rotate clockwise 90 degrees');
  await page.screenshot({path:'qa-manual-forms/manual-invoice-desktop.png',fullPage:true});
  await page.pdf({path:'qa-manual-forms/manual-invoice-A4-landscape.pdf',printBackground:true,preferCSSPageSize:true});
  assert.equal((await page.locator('.seo-guide').isVisible()),true,'Search help is visible on screen');
@@ -105,6 +123,7 @@ try{
  assert.equal(await page.locator('[data-copy=recipient] .item-table tbody tr').count(),15);
  await page.locator('[data-copy=supplier] [data-field=supplier]').fill('영수증 공급자');
  await page.locator('[data-copy=supplier] [data-field=buyer]').fill('영수증 고객');
+ await page.locator('[data-copy=supplier] [data-field=buyerContact]').fill('김담당');
  await page.locator('[data-copy=supplier] [data-field=item-0-name]').fill('꼬치어묵');
  await page.locator('[data-copy=supplier] [data-field=item-0-qty]').fill('3');
  await page.locator('[data-copy=supplier] [data-field=item-0-price]').fill('8000');
@@ -112,7 +131,12 @@ try{
  await page.locator('[data-copy=supplier] [data-field=item-14-qty]').fill('2');
  await page.locator('[data-copy=supplier] [data-field=item-14-price]').fill('3500');
  assert.equal(await page.locator('[data-copy=supplier] .parties tr:nth-child(2) th').first().innerText(),'공급자(상호)');
- assert.equal(await page.locator('[data-copy=recipient] .parties tr:nth-child(4) th').first().innerText(),'공급받는자(상호)');
+ assert.equal(await page.locator('[data-copy=recipient] .parties tr:nth-child(4) th').first().innerText(),'공급받는자');
+ for(const copy of ['supplier','recipient']){
+  assert.equal((await page.locator('[data-copy="'+copy+'"] .parties tr.party-buyer-start th').nth(1).innerText()).trim(),'담당자');
+  assert.equal((await page.locator('[data-copy="'+copy+'"] .buyer-honorific').innerText()).trim(),'귀하');
+ }
+ assert.equal((await page.locator('[data-copy=recipient] [data-mirror=buyerContact]').innerText()).trim(),'김담당');
  assert.equal((await page.locator('[data-copy=recipient] [data-mirror=item-14-name]').innerText()).trim(),'추가 품목 15번');
  assert.equal((await page.locator('[data-copy=recipient] [data-calc=item-14-amount]').innerText()).trim(),'7,000');
  assert.equal((await page.locator('[data-copy=recipient] [data-mirror=supplier]').innerText()).trim(),'영수증 공급자');
@@ -124,27 +148,32 @@ try{
    const getStyle=(sel)=>getComputedStyle(sheet.querySelector(sel));
    const readCopy=copy=>{
      const prefix='[data-copy="'+copy+'"] ';
+     const line=sel=>{
+       const st=getStyle(prefix+sel);
+       return {style:st.borderTopStyle,width:parseFloat(st.borderTopWidth)};
+     };
      return {
        border:getStyle('[data-copy="'+copy+'"]').borderTopColor,
-       supplierLine:parseFloat(getStyle(prefix+'tr.party-supplier-start > th').borderTopWidth),
-       buyerLine:parseFloat(getStyle(prefix+'tr.party-buyer-start > th').borderTopWidth),
-       buyerStyle:getStyle(prefix+'tr.party-buyer-start > th').borderTopStyle,
+       supplierLine:line('tr.party-supplier-start > th'),
+       buyerLine:line('tr.party-buyer-start > th'),
        headerBackground:getStyle(prefix+'.form-head').backgroundColor
      };
    };
    return {left:readCopy('supplier'),right:readCopy('recipient'),
      cutWidth:parseFloat(getStyle('.cut-marker').borderLeftWidth)};
  });
- assert.ok(partySections.left.buyerLine>0&&partySections.left.buyerLine<3.3,
-   'Left slip divider must consist of thin lines, not a thick rule');
- assert.ok(partySections.right.buyerLine>0&&partySections.right.buyerLine<3.3,
-   'Right slip divider must consist of thin lines, not a thick rule');
- assert.equal(partySections.left.buyerStyle,'double','Left receipt needs a double-line divider');
- assert.equal(partySections.right.buyerStyle,'double','Right receipt needs a double-line divider');
+ for(const side of [partySections.left,partySections.right]){
+  for(const line of [side.supplierLine,side.buyerLine]){
+   assert.equal(line.style,'solid','Receipt must display exactly one thin line at each boundary');
+   assert.ok(line.width>0&&line.width<2,'Receipt line is too thick');
+  }
+ }
  assert.equal(partySections.left.border,partySections.right.border,'Copies share the same neutral border');
  assert.equal(partySections.left.headerBackground,'rgb(255, 255, 255)','Left header should be white');
  assert.equal(partySections.right.headerBackground,'rgb(255, 255, 255)','Right header should be white');
  assert.ok(partySections.cutWidth>=1,'Central cutting guide must remain visible');
+ const receiptCutAngle=await page.locator('.cut-label').evaluate(el=>new DOMMatrix(getComputedStyle(el).transform).b);
+ assert.ok(Math.abs(receiptCutAngle-1)<0.01,'Receipt cut caption must rotate clockwise 90 degrees');
  assert.equal(await page.locator('h1').count(),1,'Only one SEO h1');
  assert.ok(await page.locator('.seo-guide').isVisible(),'Receipt help must be visible on screen');
  await page.screenshot({path:'qa-manual-forms/simple-receipt-desktop.png',fullPage:true});

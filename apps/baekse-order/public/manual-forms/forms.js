@@ -12,7 +12,7 @@ const cleanNumber=v=>{
  return Number.isFinite(n)&&n>0?Math.floor(n):0;
 };
 const won=n=>currency.format(Math.max(0,Math.round(n)));
-const fieldNames=['writtenDate','slipNumber','supplier','supplierNo','supplierAddress','supplierPhone','buyer','buyerNo','buyerAddress','buyerContact','memo','previous','paid','vatMode'];
+const fieldNames=['writtenDate','slipNumber','supplier','supplierNo','supplierAddress','supplierPhone','buyer','buyerAddress','buyerContact','memo','previous','paid','vatMode'];
 const rows=Array.from({length:count},(_,index)=>index);
 const input=(key,label,kind='text',placeholder='')=>{
  const max=key.includes('Address')?80:key==='memo'?110:50;
@@ -27,15 +27,15 @@ const output=(key)=>'<span class="calculated" data-calc="'+key+'">0</span>';
 function headline(copy){
  return '<div class="form-head"><span class="form-id">'+field('slipNumber','명세표 번호',copy==='supplier','text','No.')+'</span>'+
  '<strong>'+(receipt?'간 이 영 수 증':'거 래 명 세 표')+'</strong><span class="copy-name">'+
- (copy==='supplier'?'공급자 보관용':'공급받는 자 보관용')+'</span></div>';
+ (copy==='supplier'?'공급자 보관용':'공급받는자 보관용')+'</span></div>';
 }
 function parties(editable){
  return '<table class="parties"><colgroup><col class="p-label"><col class="p-data"><col class="p-label"><col class="p-data"></colgroup><tbody>'+
- '<tr><th>작성일</th><td>'+field('writtenDate','작성일',editable)+'</td><th>담당자</th><td>'+field('buyerContact','공급받는 자 담당자',editable)+'</td></tr>'+
+ '<tr><th>작성일</th><td colspan="3">'+field('writtenDate','작성일',editable)+'</td></tr>'+
  '<tr class="party-supplier party-supplier-start"><th>'+(receipt?'공급자(상호)':'공급자')+'</th><td>'+field('supplier','공급자 상호',editable)+'</td><th>등록번호</th><td>'+field('supplierNo','공급자 사업자번호',editable)+'</td></tr>'+
  '<tr class="party-supplier"><th>소재지</th><td>'+field('supplierAddress','공급자 주소',editable)+'</td><th>연락처</th><td>'+field('supplierPhone','공급자 전화번호',editable)+'</td></tr>'+
- '<tr class="party-buyer party-buyer-start"><th>'+(receipt?'공급받는자(상호)':'공급받는 자')+'</th><td>'+field('buyer','공급받는 자 상호',editable)+'</td><th>등록번호</th><td>'+field('buyerNo','공급받는 자 사업자번호',editable)+'</td></tr>'+
- '<tr class="party-buyer"><th>소재지</th><td colspan="3">'+field('buyerAddress','공급받는 자 주소',editable)+'</td></tr>'+
+ '<tr class="party-buyer party-buyer-start"><th>공급받는자</th><td>'+field('buyer','공급받는자 상호',editable)+'</td><th>담당자</th><td><span class="buyer-contact-entry">'+field('buyerContact','공급받는자 담당자',editable)+'<span class="buyer-honorific">귀하</span></span></td></tr>'+
+ '<tr class="party-buyer"><th>소재지</th><td colspan="3">'+field('buyerAddress','공급받는자 주소',editable)+'</td></tr>'+
  '</tbody></table>';
 }
 function unitRow(i,editable){
@@ -79,7 +79,7 @@ function copy(type){
   '<div class="bottom-row"><span>'+(receipt?'위와 같이 영수함':'위와 같이 거래함')+'</span><span>인수자: __________________</span></div></article>';
 }
 root.innerHTML='<section class="print-sheet '+mode+'" aria-label="'+(receipt?'A4 세로':'A4 가로')+' 2부 인쇄 양식">'+
- '<span class="cut-marker" aria-hidden="true">✂ 절취선</span>'+
+ '<span class="cut-marker" aria-hidden="true"><span class="cut-label">✂ 절취선</span></span>'+
  '<div class="slips">'+copy('supplier')+copy('recipient')+'</div></section>';
 function read(key){
  const field=root.querySelector('.slip[data-copy="supplier"] [data-field="'+key+'"]');
