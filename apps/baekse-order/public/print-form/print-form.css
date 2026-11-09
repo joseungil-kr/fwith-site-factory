@@ -1,0 +1,68 @@
+/* A4 landscape, two A5-like copies per physical page. Fixed 15-item grid on every copy. */
+:root{font-family:system-ui,-apple-system,"Malgun Gothic",sans-serif;color:#1c2426;background:#ecf0f3;font-synthesis:none}
+*{box-sizing:border-box}
+body{margin:0}
+.toolbar{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 24px;background:#fff;border-bottom:1px solid #d8dfe3;box-shadow:0 2px 12px #0000000b}
+.toolbar h1{font-size:19px;margin:0 0 5px}
+.toolbar p{font-size:12px;color:#52646c;margin:0;line-height:1.5}
+.toolbar-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.toolbar button,.toolbar a{font:inherit;font-size:14px;font-weight:750;border-radius:8px;padding:12px 18px;cursor:pointer;border:1px solid #0c7769;color:#0c7769;background:#fff;text-decoration:none;white-space:nowrap}
+.toolbar #print-now{color:#fff;background:#0b7768}
+.toolbar button:hover,.toolbar a:hover{filter:brightness(.94)}
+.toolbar button:focus-visible,.toolbar a:focus-visible{outline:3px solid #55aa9b;outline-offset:2px}
+.toolbar button:disabled{opacity:.5;cursor:default}
+#status{font-size:13px;color:#375e58;padding:10px 24px;text-align:center}
+#pages{padding:12px 10px 24px;overflow-x:auto}
+.paper-sheet{position:relative;margin:0 auto 18px;width:297mm;height:209mm;padding:6mm 6mm 5mm;display:flex;justify-content:space-between;gap:5mm;background:#fff;box-shadow:0 6px 30px #17242d30;overflow:hidden}
+.cut-line{position:absolute;left:50%;top:3mm;bottom:3mm;border-left:.2mm dashed #9b9b9b;pointer-events:none}
+.cut-line span{position:absolute;top:1mm;left:1mm;transform:rotate(90deg) translateX(0);transform-origin:left top;white-space:nowrap;color:#8f8f8f;background:#fff;padding:0 2px;font-size:6.5pt}
+.slip-copy{position:relative;width:calc((100% - 5mm)/2);height:100%;border:.34mm solid #30383a;padding:.8mm;display:flex;flex-direction:column;color:#141c1e;overflow:hidden}
+.slip-copy table{border-collapse:collapse;table-layout:fixed;width:100%;font-variant-numeric:tabular-nums}
+.slip-copy td,.slip-copy th{border:.17mm solid #535c5e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 .8mm;vertical-align:middle}
+.slip-copy th{font-weight:700;background:#f7f7f7}
+.slip-top{display:grid;grid-template-columns:28mm minmax(0,1fr) 28mm;align-items:center;height:13mm;flex:none;border:.17mm solid #535c5e;border-bottom:0;text-align:center}
+.slip-top h2{font-size:13.5pt;letter-spacing:1.2pt;margin:0;white-space:nowrap;font-weight:850}
+.slip-number{font-size:6.7pt;overflow:hidden;text-overflow:ellipsis;padding:0 1mm}
+.slip-type{font-size:7pt;font-weight:750;white-space:nowrap}
+.party-table{height:29mm;flex:none;font-size:7pt;line-height:1.2}
+.party-table th{font-size:6.5pt;letter-spacing:-.2pt}
+.party-table .party-name{font-weight:750;font-size:7.3pt}
+.party-table .date-value{font-weight:700;letter-spacing:-.3pt}
+.total-banner{height:12mm;flex:none;display:grid;grid-template-columns:18mm 1fr;border:.17mm solid #535c5e;border-top:0;align-items:center;text-align:center}
+.total-banner strong{font-size:7.8pt;line-height:1.16}
+.total-banner>div{font-size:9pt;font-weight:700;text-align:center}
+.total-banner b{font-size:12pt;font-weight:850}
+.total-banner span{font-size:7pt;font-weight:500}
+.items-table{height:112mm;flex:none;font-size:7.1pt}
+.items-table thead tr{height:7mm}
+.items-table thead th{font-size:7pt;text-align:center;letter-spacing:-.1pt}
+.items-table tbody tr{height:7mm;max-height:7mm}
+.items-table tbody td{font-size:7pt;line-height:1.1}
+.items-table tbody .item-name{font-size:7.2pt;font-weight:570}
+.items-table tbody .numeric{text-align:right}
+.items-table .empty-line td:first-child{background:linear-gradient(135deg,transparent 49.2%,#c4c9cc 49.5%,#c4c9cc 50.5%,transparent 50.8%) no-repeat;background-size:100% 100%}
+.summary-table{height:16mm;flex:none;font-size:7.5pt}
+.summary-table th{width:13%;font-size:7pt}
+.summary-table td{width:20%;font-size:7.1pt}
+.summary-table td.numeric{text-align:right;font-weight:700}
+.bank-line{height:7mm;flex:none;padding:1.7mm 1mm;border:.17mm solid #535c5e;border-top:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:7pt}
+.slip-footer{flex:1;display:flex;align-items:center;justify-content:space-between;gap:2mm;padding:0 1mm;font-size:6.9pt}
+.sample-mark{position:absolute;right:2mm;top:14mm;z-index:1;border:1px solid #d15c5c;background:#fff5f4;color:#ab2e2e;border-radius:2mm;font-size:6.3pt;padding:.4mm 1mm;transform:rotate(-2deg);white-space:nowrap}
+.cancel-mark{position:absolute;z-index:3;top:48%;left:16%;transform:rotate(-17deg);font-size:31pt;font-weight:900;color:#b52b2b96;border:1mm solid #b52b2b96;padding:3mm 5mm;pointer-events:none}
+.missing{padding:30px;max-width:640px;margin:40px auto;background:white;border:1px solid #ddd;border-radius:12px;text-align:center}
+@page{size:A4 landscape;margin:0}
+@media print{
+ html,body{background:#fff!important;width:297mm;margin:0!important;padding:0!important}
+ .toolbar,#status{display:none!important}
+ #pages{padding:0!important;overflow:visible!important;margin:0!important}
+ .paper-sheet{width:297mm!important;height:209mm!important;margin:0!important;padding:6mm 6mm 5mm!important;box-shadow:none!important;break-after:page;page-break-after:always}
+ .paper-sheet:last-child{break-after:auto;page-break-after:auto}
+ .slip-copy{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+ .cut-line{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+}
+@media screen and (max-width:980px){
+ .toolbar{position:static;align-items:flex-start;flex-wrap:wrap}
+ .toolbar-actions{width:100%}
+ #pages{padding-left:8px;padding-right:8px}
+ .paper-sheet{margin-left:0;margin-right:0}
+}
