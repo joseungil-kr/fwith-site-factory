@@ -164,29 +164,45 @@ button,input,select{font:inherit}
 }
 
 
-/* Both slips use visibly different roles on screen and on paper.
-   Distinction does not rely on color alone: heavy border + explicit copy label. */
-.print-sheet .slip[data-copy="supplier"]{border:.65mm solid #0a715e}
-.print-sheet .slip[data-copy="recipient"]{border:.65mm solid #305e82}
-.print-sheet .slip[data-copy="supplier"] .form-head{
- background:#dff3e9;
- border-top:1.2mm solid #0a715e;
+/* Supplier and buyer business fields are separate sections *within each slip*.
+   The two copies share an identical, neutral print design. */
+.print-sheet .slip[data-copy="supplier"],
+.print-sheet .slip[data-copy="recipient"]{border:.35mm solid #303a3b}
+.print-sheet .slip .form-head{
+ background:#fff;
+ border-top:0;
 }
-.print-sheet .slip[data-copy="recipient"] .form-head{
- background:#e3eef8;
- border-top:1.2mm solid #305e82;
+.print-sheet .slip .copy-name{
+ color:#263331;
+ font-weight:850;
 }
-.print-sheet .slip[data-copy="supplier"] .copy-name{color:#055a4a;font-weight:950}
-.print-sheet .slip[data-copy="recipient"] .copy-name{color:#173c60;font-weight:950}
-.print-sheet .slip[data-copy="supplier"] .parties th{background:#edf8f2}
-.print-sheet .slip[data-copy="recipient"] .parties th{background:#edf3fa}
-.print-sheet .cut-marker{border-left:.55mm dashed #3a4647;font-weight:800}
+.print-sheet .slip .parties th{background:#fff}
+.print-sheet .cut-marker{border-left:.3mm dashed #626c6c;font-weight:700}
+
+/* Two-row supplier details vs two-row recipient details.
+   A heavier line begins the recipient section in both copies. */
+.parties tr.party-supplier-start > *{border-top:.4mm solid #606a6c}
+.parties tr.party-buyer-start > *{border-top:.95mm solid #202829}
+.parties tr.party-supplier-start > th:first-child,
+.parties tr.party-buyer-start > th:first-child{
+ color:#172c2a;
+ font-weight:900;
+}
 @media print{
- .print-sheet .slip,.print-sheet .form-head,.print-sheet .copy-name,
- .print-sheet .parties th,.print-sheet .cut-marker{
+ .print-sheet .slip,
+ .print-sheet .slip th,
+ .print-sheet .slip td,
+ .print-sheet .slip .form-head,
+ .print-sheet .slip .parties th{
+  background:#fff!important;
   print-color-adjust:exact;
   -webkit-print-color-adjust:exact;
  }
+ .print-sheet .slip .copy-name{color:#263331!important}
+ .print-sheet .slip input,
+ .print-sheet .slip select{
+  background:transparent!important;
+  color:#141c1d!important;
+ }
+ .seo-guide{display:none!important}
 }
-/* Separate editorial guidance is intentionally absent from the paper and PDF. */
-@media print{.seo-guide{display:none!important}}
