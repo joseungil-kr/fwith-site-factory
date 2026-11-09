@@ -1,4 +1,4 @@
-name: Baekse inline buyer links production release
+name: Baekse guarded header and request badge release 20261109
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
@@ -30,6 +30,7 @@ jobs:
           node --check requests.js
           node --check public/app.js
           node --test tests/buyer-links-inline.test.mjs
+          npm test
           test "${#CLOUDFLARE_ACCOUNT_ID}" -gt 0
           test "${#CLOUDFLARE_API_TOKEN}" -gt 0
           test "${#BAEKSE_ORDER_ADMIN_PASSWORD}" -ge 12
@@ -89,12 +90,16 @@ jobs:
               assert 'id="link-result"' not in html,'Legacy popup still deployed'
               assert 'const url=entry?.url' in app and 'buyer-link-row' in app,'Inline client link UI missing'
               assert 'issuedBuyerUrls' not in app,'Legacy memory-only link code still deployed'
+              assert '<button class="brand" type="button" data-go="home" aria-label="대시보드로 이동"><b>백세푸드</b></button>' in html, 'Dashboard company button missing'
+              assert 'brand-emblem' not in html and 'Operations Management' not in html, 'Removed emblem or subtitle still live'
+              assert "function show(tab){closeMobileMenu();$$('[data-page]').forEach" in app,'All-page navigation is broken'
+              assert 'function refreshRequestBadge()' in app and 'setInterval(safeRefreshRequestBadge,60_000)' in app,'Pending request badge refresh logic missing'
               break
             except Exception as e:
               print('PUBLIC_PROPAGATION_RETRY',retry,type(e).__name__)
               if retry==9:raise
               time.sleep(6)
-          print('INLINE_CLIENT_LINK_UI_PUBLIC_PASS')
+          print('BRAND_NAV_AND_PENDING_BADGE_PUBLIC_PASS')
           try:
             opener.open(root+'/api/state',timeout=20)
           except urllib.error.HTTPError as e:assert e.code==401
