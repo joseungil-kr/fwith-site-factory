@@ -1,0 +1,51 @@
+name: Baekse manual invoice PNG OG image
+on:
+  push:
+    branches: [feature/baekse-manual-invoice-vat-seo-20261109]
+    paths:
+      - 'apps/baekse-order/scripts/generate-invoice-og.py'
+      - '.github/workflows/baekse-invoice-og-image.yml'
+permissions:
+  contents: write
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: true}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install CJK font and Pillow
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-nanum
+          python3 -m pip install --quiet pillow
+      - name: Build PNG and confirm social preview dimensions
+        run: |
+          python3 apps/baekse-order/scripts/generate-invoice-og.py
+          python3 - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          p=Path('apps/baekse-order/public/manual-invoice/og-image.png')
+          with Image.open(p) as image:
+            assert image.size==(1200,630),image.size
+            assert image.format=='PNG'
+            image.verify()
+          assert p.stat().st_size>5000,p.stat().st_size
+          print('OG_PNG_1200_630_VALID',p.stat().st_size)
+          PY
+      - name: Commit generated image only to isolated feature branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add apps/baekse-order/public/manual-invoice/og-image.png
+          if git diff --cached --quiet; then
+            echo 'OG_PNG_UNCHANGED'
+          else
+            git commit -m 'asset(baekse): add verified 1200x630 invoice social preview'
+            git push origin HEAD:feature/baekse-manual-invoice-vat-seo-20261109
+            echo 'OG_PNG_COMMITTED'
+          fi
