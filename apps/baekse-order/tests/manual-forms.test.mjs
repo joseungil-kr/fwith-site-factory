@@ -105,7 +105,7 @@ test('supplier and buyer information blocks are separated within each slip, with
    '.print-sheet .slip[data-copy="supplier"],',
    '.print-sheet .slip[data-copy="recipient"]{border:.35mm solid #303a3b}',
    '.parties tr.party-supplier-start > *{border-top:.4mm solid #606a6c}',
-   '.parties tr.party-buyer-start > *{border-top:.95mm solid #202829}',
+   '.parties tr.party-buyer-start > *{border-top:.75mm double #526062}',
    '.print-sheet .slip .form-head{',
    'background:#fff!important;',
    '.print-sheet .slip .parties th{background:#fff}'
