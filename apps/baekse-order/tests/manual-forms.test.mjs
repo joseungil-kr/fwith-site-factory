@@ -32,7 +32,7 @@ test('right-hand form mirrors the left-hand form; amounts are calculated client-
  assert.ok(js.includes("const grand=supply+tax+previous"));
  assert.ok(js.includes("const balance=Math.max(0,grand-paid)"));
  assert.ok(js.includes("document.getElementById('clear-form')"));
- for(const token of ['supplier','supplierNo','supplierAddress','supplierPhone','buyer','buyerNo','buyerAddress','buyerContact','writtenDate','slipNumber','qty','price','vatMode','previous','paid'])
+ for(const token of ['supplier','supplierNo','supplierAddress','supplierPhone','buyer','buyerAddress','buyerContact','writtenDate','slipNumber','qty','price','vatMode','previous','paid'])
   assert.ok(js.includes(token),token);
 });
 test('public forms have no ERP credentials or transaction/PII persistence',()=>{
@@ -87,10 +87,15 @@ test('free manual invoice landing has meaningful crawlable guide but printing hi
  assert.ok(css.includes('.invoice .amount-line>span:first-child{font-size:11pt'));
 });
 
-test('receipt uses 15 rows and explicitly labels business parties while invoice labels remain unchanged',()=>{
+test('receipt and invoice retain 15 rows and use the exact recipient business and contact labels',()=>{
  assert.ok(js.includes("const count=15;"));
  assert.ok(js.includes("(receipt?'공급자(상호)':'공급자')"));
- assert.ok(js.includes("(receipt?'공급받는자(상호)':'공급받는 자')"));
+ assert.ok(js.includes('<th>공급받는자</th>'));
+ assert.ok(js.includes('<th>담당자</th><td><span class="buyer-contact-entry">'));
+ assert.ok(js.includes('buyer-honorific'));
+ assert.ok(js.includes('귀하</span>'));
+ assert.ok(js.includes("field('buyerContact','공급받는자 담당자',editable)"));
+ assert.ok(!js.includes('buyerNo'),'Old recipient registration-number field must be absent');
  assert.ok(css.includes('.receipt .item-table tbody tr{height:8.75mm}'));
  assert.ok(css.includes('.receipt .parties .p-label{width:21%}'));
 });
@@ -104,8 +109,8 @@ test('supplier and buyer information blocks are separated within each slip, with
  for(const marker of [
    '.print-sheet .slip[data-copy="supplier"],',
    '.print-sheet .slip[data-copy="recipient"]{border:.35mm solid #303a3b}',
-   '.parties tr.party-supplier-start > *{border-top:.4mm solid #606a6c}',
-   '.parties tr.party-buyer-start > *{border-top:.75mm double #526062}',
+   '.parties tr.party-supplier-start > *,',
+   '.parties tr.party-buyer-start > *{border-top:.18mm solid #526062}',
    '.print-sheet .slip .form-head{',
    'background:#fff!important;',
    '.print-sheet .slip .parties th{background:#fff}'
@@ -114,6 +119,12 @@ test('supplier and buyer information blocks are separated within each slip, with
  assert.ok(!css.includes('background:#e3eef8'));
  assert.ok(!css.includes('border:.65mm solid #0a715e'));
  assert.ok(!css.includes('border:.65mm solid #305e82'));
+ assert.ok(!css.includes('border-top:.75mm double'));
+ assert.ok(!css.includes('border-top:.4mm solid #606a6c'));
+ for(const marker of ['.buyer-contact-entry{display:flex','buyer-honorific{flex:0 0 auto',
+   '.cut-marker .cut-label{position:absolute','transform:rotate(90deg)'])
+  assert.ok(css.includes(marker),'Missing contact suffix or rotated cut caption: '+marker);
+ assert.ok(js.includes('<span class="cut-label">✂ 절취선</span>'));
 });
 test('receipt SEO has unique crawlable guide with real instructions and print exclusion',()=>{
  assert.ok(receipt.includes('<title>무료 간이영수증 양식 | 온라인 영수증 작성·PDF 저장</title>'));
