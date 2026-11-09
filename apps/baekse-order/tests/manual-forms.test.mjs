@@ -21,7 +21,7 @@ test('standalone invoice and receipt have correct page orientations and print ac
  assert.ok(css.includes('.print-sheet.receipt{width:210mm;height:296mm'));
 });
 test('right-hand form mirrors the left-hand form; amounts are calculated client-side',()=>{
- assert.ok(js.includes("const count=receipt?10:15"));
+ assert.ok(js.includes("const count=15"));
  assert.ok(js.includes('data-copy="'+( 'vendor' || 'supplier')+'"')===false); // no hidden third-party data model
  assert.ok(js.includes("copy('supplier')+copy('recipient')"));
  assert.ok(js.includes("root.addEventListener('input',synchronize)"));
@@ -43,25 +43,36 @@ test('public forms have no ERP credentials or transaction/PII persistence',()=>{
  assert.ok(js.includes('target.textContent='));
 });
 
-test('manual invoice is the only search-indexable static page; noindex protects admin and receipt',()=>{
+test('both public forms are separately indexable; admin and blank variants remain noindex',()=>{
  const worker=readFileSync(new URL('../src.js',import.meta.url),'utf8');
  const robots=readFileSync(new URL('robots.txt',root),'utf8');
  const sitemap=readFileSync(new URL('sitemap.xml',root),'utf8');
  assert.ok(invoice.includes('meta name="robots" content="index,follow'));
- assert.ok(receipt.includes('noindex,nofollow,noarchive'));
+ assert.ok(receipt.includes('meta name="robots" content="index,follow'));
  assert.ok(invoice.includes('<link rel="canonical" href="https://order.baeksefood.com/manual-invoice/">'));
  for(const item of ['name="description"','property="og:image"','property="og:title"','name="twitter:card"','"@type":"WebApplication"','"@type":"FAQPage"'])
   assert.ok(invoice.includes(item),item);
  assert.ok(worker.includes("!url.searchParams.has('blank')"),'Blank print page must be noindex');
- assert.ok(worker.includes("indexableInvoice||publicOgImage?'index, follow, max-image-preview:large':'noindex, nofollow, noarchive'"));
+ assert.ok(worker.includes("indexableInvoice||indexableReceipt||publicOgImage?'index, follow, max-image-preview:large':'noindex, nofollow, noarchive'"));
  assert.ok(robots.includes('Sitemap: https://order.baeksefood.com/sitemap.xml'));
  assert.ok(sitemap.includes('<loc>https://order.baeksefood.com/manual-invoice/</loc>'));
+ assert.ok(sitemap.includes('<loc>https://order.baeksefood.com/simple-receipt/</loc>'));
+ assert.ok(robots.includes('Allow: /simple-receipt/'));
+ assert.ok(!robots.includes('Disallow: /simple-receipt/'));
  assert.ok(!sitemap.includes('<loc>https://order.baeksefood.com/request/</loc>'));
  const img=readFileSync(new URL('manual-invoice/og-image.png',root));
  assert.equal(img.subarray(0,8).toString('hex'),'89504e470d0a1a0a');
  assert.equal(img.readUInt32BE(16),1200);
  assert.equal(img.readUInt32BE(20),630);
  assert.ok(img.length>5000);
+ const receiptOg=readFileSync(new URL('simple-receipt/og-image.png',root));
+ assert.equal(receiptOg.subarray(0,8).toString('hex'),'89504e470d0a1a0a');
+ assert.equal(receiptOg.readUInt32BE(16),1200);
+ assert.equal(receiptOg.readUInt32BE(20),630);
+ assert.ok(receiptOg.length>5000);
+ assert.ok(receipt.includes('<link rel="canonical" href="https://order.baeksefood.com/simple-receipt/">'));
+ for(const marker of ['name="description"','property="og:image"','property="og:title"','name="twitter:card"','"@type":"WebApplication"','"@type":"FAQPage"'])
+   assert.ok(receipt.includes(marker),'Missing receipt SEO: '+marker);
 });
 test('free manual invoice landing has meaningful crawlable guide but printing hides guide',()=>{
  for(const item of ['class="seo-guide"','무료 온라인 거래명세표','빈 양식 PDF 다운로드','거래명세서 작성 방법','자주 묻는 질문','세금계산서의 차이'])
@@ -74,4 +85,45 @@ test('free manual invoice landing has meaningful crawlable guide but printing hi
  assert.ok(js.includes('vat-toggle'));
  assert.ok(!js.includes('<select aria-label="부가세 계산"'));
  assert.ok(css.includes('.invoice .amount-line>span:first-child{font-size:11pt'));
+});
+
+test('receipt uses 15 rows and explicitly labels business parties while invoice labels remain unchanged',()=>{
+ assert.ok(js.includes("const count=15;"));
+ assert.ok(js.includes("(receipt?'공급자(상호)':'공급자')"));
+ assert.ok(js.includes("(receipt?'공급받는자(상호)':'공급받는 자')"));
+ assert.ok(css.includes('.receipt .item-table tbody tr{height:8.75mm}'));
+ assert.ok(css.includes('.receipt .parties .p-label{width:21%}'));
+});
+test('role-colored and thicker borders visually distinguish both copies and print faithfully',()=>{
+ for(const token of [
+   '.slip[data-copy="supplier"]{border:.65mm solid #0a715e}',
+   '.slip[data-copy="recipient"]{border:.65mm solid #305e82}',
+   '.slip[data-copy="supplier"] .form-head',
+   '.slip[data-copy="recipient"] .form-head',
+   '.slip[data-copy="supplier"] .copy-name',
+   '.slip[data-copy="recipient"] .copy-name',
+   '.slip[data-copy="supplier"] .parties th',
+   '.slip[data-copy="recipient"] .parties th',
+   '.cut-marker{border-left:.55mm dashed #3a4647',
+   '-webkit-print-color-adjust:exact'
+ ])assert.ok(css.includes(token),'Missing role distinction: '+token);
+});
+test('receipt SEO has unique crawlable guide with real instructions and print exclusion',()=>{
+ assert.ok(receipt.includes('<title>무료 간이영수증 양식 | 온라인 영수증 작성·PDF 저장</title>'));
+ for(const marker of [
+   '<h1>무료 온라인 간이영수증 양식',
+   '<h2 id="guide-title">',
+   '<h3>간이영수증 온라인 작성 방법',
+   '<h3>자주 묻는 질문',
+   'A4 세로',
+   '15개 품목',
+   '세금계산서·현금영수증',
+   'class="seo-guide"',
+   '간이영수증 PDF'
+ ])assert.ok(receipt.includes(marker),'Missing receipt guide: '+marker);
+ assert.ok(css.includes('@media print{.seo-guide{display:none!important}}'));
+ const jsonLds=[...receipt.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+ assert.equal(jsonLds.length,2,'WebApplication + FAQPage required');
+ for(const [,source] of jsonLds)assert.doesNotThrow(()=>JSON.parse(source));
+ assert.deepEqual(jsonLds.map(([,source])=>JSON.parse(source)['@type']),['WebApplication','FAQPage']);
 });

@@ -1,4 +1,4 @@
-name: Baekse guarded public invoice VAT and SEO release 20261109
+name: Baekse guarded 15-row receipt and indexed public templates release 20261109
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
@@ -106,32 +106,40 @@ jobs:
               print('A4_2UP_DEMO_PUBLIC_ASSETS_PASS')
               for path,markers in [
                 ('/manual-invoice/',['id="print-form"','data-form="invoice"','@page{size:A4 landscape;margin:0}']),
-                ('/simple-receipt/',['id="print-form"','data-form="receipt"','@page{size:A4 portrait;margin:0}']),
-                ('/manual-forms/forms.js',["copy('supplier')+copy('recipient')","root.addEventListener('input',synchronize)","window.print()"]),
-                ('/manual-forms/forms.css',['.print-sheet.invoice{width:297mm;height:209mm','.print-sheet.receipt{width:210mm;height:296mm'])
+                ('/simple-receipt/',['id="print-form"','data-form="receipt"','@page{size:A4 portrait;margin:0}',
+                  '15품목','<title>무료 간이영수증 양식 | 온라인 영수증 작성·PDF 저장</title>','class="seo-guide"','property="og:image"']),
+                ('/manual-forms/forms.js',["copy('supplier')+copy('recipient')","root.addEventListener('input',synchronize)","window.print()",
+                  'const count=15;', "receipt?'공급자(상호)'", "receipt?'공급받는자(상호)'"]),
+                ('/manual-forms/forms.css',['.print-sheet.invoice{width:297mm;height:209mm','.print-sheet.receipt{width:210mm;height:296mm',
+                  '.receipt .item-table tbody tr{height:8.75mm}', '.slip[data-copy="supplier"]{border:.65mm solid #0a715e}',
+                  '.slip[data-copy="recipient"]{border:.65mm solid #305e82'])
               ]:
                 with opener.open(root+path,timeout=30) as asset:
                   content=asset.read().decode('utf-8')
                   assert asset.status==200 and all(marker in content for marker in markers),'Standalone manual form missing or wrong '+path
                   robots=asset.headers.get('X-Robots-Tag','').lower()
-                  if path=='/manual-invoice/':
-                    assert 'index' in robots and 'noindex' not in robots,'Free manual invoice landing must be indexable'
-                    assert '<title>무료 온라인 거래명세표, 거래명세서 양식</title>' in content,'SEO page title wrong'
+                  if path in ('/manual-invoice/','/simple-receipt/'):
+                    assert 'index' in robots and 'noindex' not in robots,'Public free form unexpectedly noindex '+path
+                    if path=='/manual-invoice/':
+                      assert '<title>무료 온라인 거래명세표, 거래명세서 양식</title>' in content,'Invoice page title wrong'
+                    else:
+                      assert '<title>무료 간이영수증 양식 | 온라인 영수증 작성·PDF 저장</title>' in content,'Receipt page title wrong'
                     assert 'property="og:image"' in content and 'class="seo-guide"' in content,'SEO markup or guide missing'
                   else:
                     assert 'noindex' in robots, 'Unrelated page/asset must preserve noindex '+path
               print('STANDALONE_MANUAL_FORMS_PUBLIC_PASS')
               with opener.open(root+'/manual-invoice/?blank=1&print=1',timeout=30) as asset:
                 assert 'noindex' in asset.headers.get('X-Robots-Tag','').lower(),'Blank print variants must be noindex'
-              with opener.open(root+'/manual-invoice/og-image.png',timeout=30) as asset:
-                img=asset.read()
-                assert asset.status==200 and asset.headers.get('Content-Type','').startswith('image/png'),'Missing OG PNG'
-                assert img[:8]==bytes.fromhex('89504e470d0a1a0a') and len(img)>5000,'Invalid OG PNG'
-                assert 'noindex' not in asset.headers.get('X-Robots-Tag','').lower(),'OG PNG is unintentionally noindex'
-              for path,needle in [('/robots.txt','Sitemap: https://order.baeksefood.com/sitemap.xml'),('/sitemap.xml','<loc>https://order.baeksefood.com/manual-invoice/</loc>')]:
+              for imagepath in ('/manual-invoice/og-image.png','/simple-receipt/og-image.png'):
+                with opener.open(root+imagepath,timeout=30) as asset:
+                  img=asset.read()
+                  assert asset.status==200 and asset.headers.get('Content-Type','').startswith('image/png'),'Missing OG PNG '+imagepath
+                  assert img[:8]==bytes.fromhex('89504e470d0a1a0a') and len(img)>5000,'Invalid OG PNG '+imagepath
+                  assert 'noindex' not in asset.headers.get('X-Robots-Tag','').lower(),'OG PNG unintentionally noindex '+imagepath
+              for path,needle in [('/robots.txt','Sitemap: https://order.baeksefood.com/sitemap.xml'),('/sitemap.xml','<loc>https://order.baeksefood.com/manual-invoice/</loc>'),('/sitemap.xml','<loc>https://order.baeksefood.com/simple-receipt/</loc>')]:
                 with opener.open(root+path,timeout=30) as asset:
                   assert asset.status==200 and needle in asset.read().decode('utf-8'),'Search discovery missing '+path
-              print('PUBLIC_INVOICE_SEO_INDEXING_AND_OG_PASS')
+              print('PUBLIC_FREE_FORMS_SEO_INDEXING_AND_OG_PASS')
               assert '<button class="brand" type="button" data-go="home" aria-label="대시보드로 이동"><b>백세푸드</b></button>' in html, 'Dashboard company button missing'
               assert 'brand-emblem' not in html and 'Operations Management' not in html, 'Removed emblem or subtitle still live'
               assert "function show(tab){closeMobileMenu();$$('[data-page]').forEach" in app,'All-page navigation is broken'

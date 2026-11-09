@@ -96,24 +96,49 @@ try{
 
  await page.goto(base+'/simple-receipt/',{waitUntil:'networkidle'});
  assert.equal(await page.locator('.slip').count(),2);
- assert.equal(await page.locator('[data-copy=supplier] .item-table tbody tr').count(),10);
- assert.equal(await page.locator('[data-copy=recipient] .item-table tbody tr').count(),10);
+ assert.equal(await page.locator('[data-copy=supplier] .item-table tbody tr').count(),15);
+ assert.equal(await page.locator('[data-copy=recipient] .item-table tbody tr').count(),15);
  await page.locator('[data-copy=supplier] [data-field=supplier]').fill('영수증 공급자');
  await page.locator('[data-copy=supplier] [data-field=buyer]').fill('영수증 고객');
  await page.locator('[data-copy=supplier] [data-field=item-0-name]').fill('꼬치어묵');
  await page.locator('[data-copy=supplier] [data-field=item-0-qty]').fill('3');
  await page.locator('[data-copy=supplier] [data-field=item-0-price]').fill('8000');
+ await page.locator('[data-copy=supplier] [data-field=item-14-name]').fill('추가 품목 15번');
+ await page.locator('[data-copy=supplier] [data-field=item-14-qty]').fill('2');
+ await page.locator('[data-copy=supplier] [data-field=item-14-price]').fill('3500');
+ assert.equal(await page.locator('[data-copy=supplier] .parties tr:nth-child(2) th').first().innerText(),'공급자(상호)');
+ assert.equal(await page.locator('[data-copy=recipient] .parties tr:nth-child(4) th').first().innerText(),'공급받는자(상호)');
+ assert.equal((await page.locator('[data-copy=recipient] [data-mirror=item-14-name]').innerText()).trim(),'추가 품목 15번');
+ assert.equal((await page.locator('[data-copy=recipient] [data-calc=item-14-amount]').innerText()).trim(),'7,000');
  assert.equal((await page.locator('[data-copy=recipient] [data-mirror=supplier]').innerText()).trim(),'영수증 공급자');
  assert.equal((await page.locator('[data-copy=recipient] [data-mirror=buyer]').innerText()).trim(),'영수증 고객');
- assert.equal((await page.locator('[data-copy=recipient] [data-calc=grand]').first().innerText()).trim(),'24,000');
+ assert.equal((await page.locator('[data-copy=recipient] [data-calc=grand]').first().innerText()).trim(),'31,000');
  assert.equal((await page.locator('[data-copy=recipient] [data-calc=item-0-amount]').innerText()).trim(),'24,000');
  await testWithinPage();
+ const roleVisuals=await page.locator('.print-sheet').evaluate(sheet=>{
+   const style=sel=>getComputedStyle(sheet.querySelector(sel));
+   return {
+     leftBorder:style('[data-copy="supplier"]').borderTopColor,
+     rightBorder:style('[data-copy="recipient"]').borderTopColor,
+     leftHeading:style('[data-copy="supplier"] .form-head').backgroundColor,
+     rightHeading:style('[data-copy="recipient"] .form-head').backgroundColor,
+     cutWidth:style('.cut-marker').borderLeftWidth
+   };
+ });
+ assert.notEqual(roleVisuals.leftBorder,roleVisuals.rightBorder,'Supplier vs recipient borders must have distinct colors');
+ assert.notEqual(roleVisuals.leftHeading,roleVisuals.rightHeading,'Headers must look visibly different');
+ assert.ok(parseFloat(roleVisuals.cutWidth)>1,'Central cut guide should be visible');
+ assert.equal(await page.locator('h1').count(),1,'Only one SEO h1');
+ assert.ok(await page.locator('.seo-guide').isVisible(),'Receipt help must be visible on screen');
  await page.screenshot({path:'qa-manual-forms/simple-receipt-desktop.png',fullPage:true});
+ await page.emulateMedia({media:'print'});
+ assert.equal(await page.locator('.seo-guide').isVisible(),false,'SEO instructions must not be included in PDF/print');
+ await page.emulateMedia({media:null});
  await page.pdf({path:'qa-manual-forms/simple-receipt-A4-portrait.pdf',printBackground:true,preferCSSPageSize:true});
  await page.evaluate(()=>{window.__printWasCalled=false;window.print=()=>{window.__printWasCalled=true}});
  await page.locator('#print-form').click();
  assert.equal(await page.evaluate(()=>window.__printWasCalled),true,'Receipt print button');
  assert.deepEqual(errors,[],'Browser JS errors');
  assert.deepEqual(writes,[],'No server write requests from standalone forms');
- console.log('MANUAL_FORMS_BROWSER_PASS: live mirroring, invoice 15 rows A4 landscape, receipt 10 rows A4 portrait, VAT, previous/paid, print buttons, no network writes');
+ console.log('MANUAL_FORMS_BROWSER_PASS: live mirroring, invoice 15 rows A4 landscape, receipt 15 rows A4 portrait, colored roles, print-only template, no server writes');
 }finally{await browser.close()}

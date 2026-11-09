@@ -13,22 +13,29 @@ for(const [path,expected] of [
  ['/manual-invoice/','index'],
  ['/manual-invoice/?blank=1&print=1','noindex'],
  ['/','noindex'],
- ['/simple-receipt/','noindex'],
+ ['/simple-receipt/','index'],
+ ['/simple-receipt/?blank=1','noindex'],
  ['/print-form/','noindex'],
  ['/request/','noindex'],
- ['/manual-invoice/og-image.png','index']
+ ['/manual-invoice/og-image.png','index'],
+ ['/simple-receipt/og-image.png','index']
 ]){
  const response=await fetch(base+path);
  assert.equal(response.status,200,path);
  const robots=response.headers.get('x-robots-tag')||'';
  assert.equal(robots.includes('noindex'),expected==='noindex',path+' x-robots-tag='+robots);
  if(expected==='index')assert.ok(robots.includes('index')&&robots.includes('follow'),path+' '+robots);
- if(path==='/manual-invoice/'){
+ if(path==='/manual-invoice/'||path==='/simple-receipt/'){
   const html=await response.text();
   assert.ok(html.includes('name="robots" content="index,follow'));
   assert.ok(html.includes('property="og:image"'));
   assert.ok(html.includes('class="seo-guide"'));
   assert.ok(html.includes('rel="canonical"'));
+  if(path==='/simple-receipt/'){
+   assert.ok(html.includes('15품목')&&html.includes('<h3>간이영수증 온라인 작성 방법'));
+   assert.ok(html.includes('simple-receipt/og-image.png'));
+   assert.ok(html.includes('무료 간이영수증 양식'));
+  }
  }
  if(path.includes('og-image.png')){
   assert.equal(response.headers.get('content-type')?.split(';')[0],'image/png');
@@ -40,7 +47,9 @@ for(const path of ['/robots.txt','/sitemap.xml']){
  assert.equal(r.status,200,path);
  const body=await r.text();
  assert.ok(body.includes(path==='/robots.txt'?'Sitemap: https://order.baeksefood.com/sitemap.xml':'<loc>https://order.baeksefood.com/manual-invoice/</loc>'),path);
+ if(path==='/robots.txt')assert.ok(body.includes('Allow: /simple-receipt/'));
+ if(path==='/sitemap.xml')assert.ok(body.includes('<loc>https://order.baeksefood.com/simple-receipt/</loc>'));
 }
 const api=await fetch(base+'/api/state');
 assert.equal(api.status,401,'Anonymous ERP access must remain blocked');
-console.log('INVOICE_SEO_WORKER_PASS indexable one public invoice URL only, blank variants and ERP still noindex');
+console.log('PUBLIC_FORMS_SEO_WORKER_PASS indexable invoice and receipt URLs and OG images, blank variants and ERP still noindex');

@@ -1,0 +1,51 @@
+name: Baekse simple receipt OG preview PNG
+on:
+  push:
+    branches: [feature/baekse-receipt-15-seo-20261109]
+    paths:
+      - 'apps/baekse-order/scripts/generate-receipt-og.py'
+      - '.github/workflows/baekse-receipt-og-image.yml'
+permissions:
+  contents: write
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: true}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install Korean fonts and Pillow
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-nanum
+          python3 -m pip install --quiet pillow
+      - name: Generate and verify original PNG
+        run: |
+          python3 apps/baekse-order/scripts/generate-receipt-og.py
+          python3 - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          p=Path('apps/baekse-order/public/simple-receipt/og-image.png')
+          with Image.open(p) as im:
+            assert im.size==(1200,630),im.size
+            assert im.format=='PNG'
+            im.verify()
+          assert p.stat().st_size>=5000,p.stat().st_size
+          print('RECEIPT_OG_IMAGE_VERIFIED_1200x630',p.stat().st_size)
+          PY
+      - name: Commit verified generated image to isolated branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add apps/baekse-order/public/simple-receipt/og-image.png
+          if git diff --cached --quiet; then
+            echo 'RECEIPT_OG_UNCHANGED'
+          else
+            git commit -m 'asset(baekse): receipt-specific verified 1200x630 Open Graph preview'
+            git push origin HEAD:feature/baekse-receipt-15-seo-20261109
+            echo 'RECEIPT_OG_PUSHED'
+          fi
