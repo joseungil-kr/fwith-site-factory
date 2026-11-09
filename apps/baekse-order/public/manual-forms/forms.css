@@ -120,3 +120,45 @@ button,input,select{font:inherit}
  .slip input,.slip select{background:transparent!important;color:#141c1d!important;outline:none!important}
  .slip input::placeholder{color:transparent!important}
 }
+
+
+/* Interactive tax button and full-size amount label on the transaction sheet. */
+.invoice .amount-line{grid-template-columns:51% minmax(0,1fr) 7mm}
+.invoice .amount-line>span:first-child{font-size:11pt;font-weight:850;letter-spacing:-.3pt;white-space:nowrap}
+.invoice .amount-line strong{font-size:11pt}
+.invoice-summary th{overflow:visible;white-space:nowrap}
+.invoice-summary th .vat-toggle{display:inline-block;vertical-align:middle;width:auto;height:auto;min-height:4mm;max-width:31mm;margin-left:.7mm;padding:1mm 1.2mm;border:1px solid #06786a;border-radius:2mm;font-size:6.1pt;font-weight:700;line-height:1.15;background:#e9f5f0;color:#07695d;white-space:nowrap;cursor:pointer}
+.invoice-summary th .vat-toggle[aria-pressed="true"]{background:#087968;color:#fff}
+.invoice-summary th .vat-toggle:focus-visible{outline:2px solid #0b9076}
+@media print{.invoice-summary th .vat-toggle{display:none!important}}
+
+/* Search-readable help content must never appear in printed/PDF form. */
+.seo-guide{background:#fff;border-top:1px solid #dce6e4;padding:45px 24px 58px;color:#263a38}
+.guide-inner{max-width:1020px;margin:0 auto}
+.seo-guide .guide-eyebrow{font-size:12px;font-weight:850;letter-spacing:.08em;color:#0a7e6a}
+.seo-guide h2{font-size:clamp(24px,3vw,32px);font-weight:850;line-height:1.35;letter-spacing:-.05em;margin:10px 0 20px}
+.seo-guide h3{font-size:clamp(18px,2vw,22px);font-weight:800;letter-spacing:-.035em;margin:36px 0 14px}
+.seo-guide h4{font-size:16px;font-weight:800;margin:0 0 9px}
+.seo-guide p{font-size:15px;line-height:1.9;margin:0 0 14px;color:#475958;overflow-wrap:anywhere}
+.seo-guide ol{margin:0 0 20px;padding-left:24px}
+.seo-guide li{padding-left:5px;margin:9px 0;font-size:15px;line-height:1.9;color:#425453}
+.seo-guide strong{color:#123e37}
+.seo-guide .guide-features{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:20px 0 8px}
+.seo-guide .guide-features article{border:1px solid #dbe8e4;border-radius:12px;background:#f8fbfa;padding:20px}
+.seo-guide .guide-features p{font-size:14px;margin:0}
+.seo-guide .guide-faq{margin-top:12px;border-top:1px solid #d8e4df}
+.seo-guide details{border-bottom:1px solid #d8e4df}
+.seo-guide summary{cursor:pointer;padding:16px 6px;font-size:15px;font-weight:750;color:#143e36}
+.seo-guide details>p{padding:0 6px 17px;margin:0}
+.seo-guide .guide-footer{margin:30px 0 0;font-size:14px}
+.seo-guide a{color:#006f60;text-decoration:underline;text-underline-offset:3px}
+#blank-pdf{background:#edf7f3;border-color:#9accbb}
+@media screen and (max-width:650px){
+ .seo-guide{padding:32px 18px}
+ .seo-guide .guide-features{grid-template-columns:1fr}
+ .seo-guide li{font-size:14px}
+}
+@media print{
+ .seo-guide,.guide-inner,body>noscript{display:none!important}
+ #blank-pdf{display:none!important}
+}

@@ -1,4 +1,4 @@
-name: Baekse guarded standalone manual forms release 20261109
+name: Baekse guarded public invoice VAT and SEO release 20261109
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
@@ -113,8 +113,25 @@ jobs:
                 with opener.open(root+path,timeout=30) as asset:
                   content=asset.read().decode('utf-8')
                   assert asset.status==200 and all(marker in content for marker in markers),'Standalone manual form missing or wrong '+path
-                  assert 'noindex' in asset.headers.get('X-Robots-Tag','').lower(), 'Manual form asset must be noindex '+path
+                  robots=asset.headers.get('X-Robots-Tag','').lower()
+                  if path=='/manual-invoice/':
+                    assert 'index' in robots and 'noindex' not in robots,'Free manual invoice landing must be indexable'
+                    assert '<title>무료 온라인 거래명세표, 거래명세서 양식</title>' in content,'SEO page title wrong'
+                    assert 'property="og:image"' in content and 'class="seo-guide"' in content,'SEO markup or guide missing'
+                  else:
+                    assert 'noindex' in robots, 'Unrelated page/asset must preserve noindex '+path
               print('STANDALONE_MANUAL_FORMS_PUBLIC_PASS')
+              with opener.open(root+'/manual-invoice/?blank=1&print=1',timeout=30) as asset:
+                assert 'noindex' in asset.headers.get('X-Robots-Tag','').lower(),'Blank print variants must be noindex'
+              with opener.open(root+'/manual-invoice/og-image.png',timeout=30) as asset:
+                img=asset.read()
+                assert asset.status==200 and asset.headers.get('Content-Type','').startswith('image/png'),'Missing OG PNG'
+                assert img[:8]==bytes.fromhex('89504e470d0a1a0a') and len(img)>5000,'Invalid OG PNG'
+                assert 'noindex' not in asset.headers.get('X-Robots-Tag','').lower(),'OG PNG is unintentionally noindex'
+              for path,needle in [('/robots.txt','Sitemap: https://order.baeksefood.com/sitemap.xml'),('/sitemap.xml','<loc>https://order.baeksefood.com/manual-invoice/</loc>')]:
+                with opener.open(root+path,timeout=30) as asset:
+                  assert asset.status==200 and needle in asset.read().decode('utf-8'),'Search discovery missing '+path
+              print('PUBLIC_INVOICE_SEO_INDEXING_AND_OG_PASS')
               assert '<button class="brand" type="button" data-go="home" aria-label="대시보드로 이동"><b>백세푸드</b></button>' in html, 'Dashboard company button missing'
               assert 'brand-emblem' not in html and 'Operations Management' not in html, 'Removed emblem or subtitle still live'
               assert "function show(tab){closeMobileMenu();$$('[data-page]').forEach" in app,'All-page navigation is broken'

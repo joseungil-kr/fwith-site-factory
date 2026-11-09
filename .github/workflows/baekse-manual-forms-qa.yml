@@ -1,7 +1,7 @@
 name: Baekse standalone editable forms print QA
 on:
   push:
-    branches: [feature/baekse-manual-forms-20261109]
+    branches: [feature/baekse-manual-forms-20261109, feature/baekse-manual-invoice-vat-seo-20261109]
     paths: ['apps/baekse-order/**', '.github/workflows/baekse-manual-forms-qa.yml']
   pull_request:
     branches: [feature/baekse-order-deploy-20261103]
@@ -36,7 +36,7 @@ jobs:
           node tests/manual-forms-browser-qa.mjs
           python3 - <<'PY'
           from pypdf import PdfReader
-          for name,portrait in [('manual-invoice-A4-landscape.pdf',False),('simple-receipt-A4-portrait.pdf',True)]:
+          for name,portrait in [('manual-invoice-A4-landscape.pdf',False),('blank-manual-invoice.pdf',False),('simple-receipt-A4-portrait.pdf',True)]:
             path='qa-manual-forms/'+name
             pdf=PdfReader(path)
             assert len(pdf.pages)==1,(name,'page count',len(pdf.pages))
@@ -47,7 +47,12 @@ jobs:
             assert len(pdf.pages[0].get_contents().get_data())>3000,(name,'unexpected empty print stream')
             print(name,'PAPER_1_PAGE_PASS',int(width),int(height))
           PY
-      - name: Archive screenshots and two sample PDFs
+      - name: Verify Cloudflare Worker indexing and ERP isolation locally
+        working-directory: apps/baekse-order
+        run: |
+          npx --yes wrangler@4.156.2 dev --config wrangler.reused.jsonc --local --port 8788 --var ADMIN_PASSWORD:ci-only-strong-example-password-2026 >/tmp/baekse-seo-worker.log 2>&1 &
+          node tests/manual-invoice-robots-http.mjs
+      - name: Archive screenshots and three sample PDFs
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -57,4 +62,6 @@ jobs:
           if-no-files-found: ignore
       - name: Static server log on failure
         if: failure()
-        run: tail -50 /tmp/baekse-manual-server.log || true
+        run: |
+          tail -50 /tmp/baekse-manual-server.log || true
+          tail -50 /tmp/baekse-seo-worker.log || true
