@@ -1,4 +1,4 @@
-name: Baekse guarded 15-row receipt and indexed public templates release 20261109
+name: Baekse guarded white print and party section divider release 20261109
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
@@ -109,10 +109,12 @@ jobs:
                 ('/simple-receipt/',['id="print-form"','data-form="receipt"','@page{size:A4 portrait;margin:0}',
                   '15품목','<title>무료 간이영수증 양식 | 온라인 영수증 작성·PDF 저장</title>','class="seo-guide"','property="og:image"']),
                 ('/manual-forms/forms.js',["copy('supplier')+copy('recipient')","root.addEventListener('input',synchronize)","window.print()",
-                  'const count=15;', "receipt?'공급자(상호)'", "receipt?'공급받는자(상호)'"]),
+                  'const count=15;', "receipt?'공급자(상호)'", "receipt?'공급받는자(상호)'",
+                  'party-supplier party-supplier-start','party-buyer party-buyer-start']),
                 ('/manual-forms/forms.css',['.print-sheet.invoice{width:297mm;height:209mm','.print-sheet.receipt{width:210mm;height:296mm',
-                  '.receipt .item-table tbody tr{height:8.75mm}', '.slip[data-copy="supplier"]{border:.65mm solid #0a715e}',
-                  '.slip[data-copy="recipient"]{border:.65mm solid #305e82'])
+                  '.receipt .item-table tbody tr{height:8.75mm}',
+                  '.parties tr.party-buyer-start > *{border-top:.95mm solid #202829}',
+                  '.print-sheet .slip .form-head{', '.print-sheet .slip .parties th{background:#fff}'])
               ]:
                 with opener.open(root+path,timeout=30) as asset:
                   content=asset.read().decode('utf-8')
@@ -127,6 +129,8 @@ jobs:
                     assert 'property="og:image"' in content and 'class="seo-guide"' in content,'SEO markup or guide missing'
                   else:
                     assert 'noindex' in robots, 'Unrelated page/asset must preserve noindex '+path
+              assert 'border:.65mm solid #0a715e' not in content and 'border:.65mm solid #305e82' not in content, 'Old colored borders remain'
+              print('WHITE_PRINT_AND_INSLIP_PARTY_DIVIDER_PUBLIC_PASS')
               print('STANDALONE_MANUAL_FORMS_PUBLIC_PASS')
               with opener.open(root+'/manual-invoice/?blank=1&print=1',timeout=30) as asset:
                 assert 'noindex' in asset.headers.get('X-Robots-Tag','').lower(),'Blank print variants must be noindex'
