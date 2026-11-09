@@ -83,3 +83,75 @@ test('two-copy layout has fixed rows, cut guides, A4 landscape and explicit user
  assert.ok(script.includes('window.print()'));
  assert.ok(page.includes('noindex,nofollow,noarchive'));
 });
+
+
+test('all 33 demo forms use the requested exact four-row four-column party grid',()=>{
+ const doc=makeDemoDocument(), html=renderPrintSheets(doc);
+ const tables=[...html.matchAll(/<table class="party-table"[\s\S]*?<\/table>/g)].map(x=>x[0]);
+ assert.equal(tables.length,6,'Each of 3 A4 sheets contains two party tables');
+ const labels=[
+  ['작성일','공급자 등록번호'],
+  ['공급받는자','공급자 상호'],
+  ['연락처','연락처'],
+  ['주소','주소']
+ ];
+ for(const table of tables){
+  assert.equal((table.match(/<col style=/g)||[]).length,4,'Exactly four fixed columns');
+  const rows=[...table.matchAll(/<tr>([\s\S]*?)<\/tr>/g)].map(x=>x[1]);
+  assert.equal(rows.length,4,'Exactly four information rows');
+  rows.forEach((row,index)=>{
+   const headers=[...row.matchAll(/<th scope="row">([^<]+)<\/th>/g)].map(x=>x[1]);
+   assert.deepEqual(headers,labels[index],'Header order must match requested arrangement');
+   assert.equal((row.match(/<td(?: class="[^"]*")?>/g)||[]).length,2,'Exactly two data fields per row');
+  });
+  assert.ok(!table.includes('아래와 같이 계산합니다.'),'Remove generic introduction');
+  assert.ok(!table.includes('담당: '),'Remove the extra contact block');
+  assert.ok(!table.includes('사업자: '),'Remove extra registration block');
+  assert.ok(table.includes('백세푸드 (시연)'));
+  assert.ok(table.includes('가상 거래처 중앙점'));
+ }
+});
+
+test('financial footer has charge before previous balance, no payment, and the grand total',()=>{
+ const doc=makeDemoDocument();
+ const html=renderPrintSheets(doc);
+ const summary=[...html.matchAll(/<table class="summary-table"[\s\S]*?<\/table>/g)].map(x=>x[0]);
+ assert.equal(summary.length,6);
+ const charge=doc.supply+doc.tax;
+ assert.equal(doc.total,charge+doc.previous);
+ for(const table of summary){
+  const rows=[...table.matchAll(/<tr>([\s\S]*?)<\/tr>/g)].map(x=>x[1]);
+  assert.equal(rows.length,2);
+  assert.deepEqual([...rows[0].matchAll(/<th scope="row">([^<]+)<\/th>/g)].map(x=>x[1]),
+   ['공급가액','부가세','청구액']);
+  assert.deepEqual([...rows[1].matchAll(/<th scope="row">([^<]+)<\/th>/g)].map(x=>x[1]),
+   ['전 잔고','총액']);
+  assert.equal((rows[0].match(/<td(?: class="[^"]*")?>/g)||[]).length,3);
+  assert.equal((rows[1].match(/<td(?: class="[^"]*")?>/g)||[]).length,3);
+  assert.ok(rows[1].includes('<td colspan="2" class="summary-blank"></td>'));
+  assert.ok(rows[0].includes('₩ '+wonForTest(charge)));
+  assert.ok(rows[1].includes('₩ '+wonForTest(doc.previous)));
+  assert.ok(rows[1].includes('₩ '+wonForTest(doc.total)));
+  assert.ok(!table.includes('입 금'));
+  assert.ok(!table.includes('잔 금'));
+ }
+});
+function wonForTest(n){return n.toLocaleString('ko-KR');}
+
+test('real order detail uses recorded supplier, recipient, company number, phones, addresses and total',()=>{
+ const data={order:{id:207,order_date:'2026-11-09',order_type:'sale',status:'issued',
+  supply:20000,tax:2000,previous_balance:80000,amount_due:102000,
+  client:{business:'안산중앙점',person:'담당자',phone:'010-2222-3333',business_no:'001-01-00001',address:'경기 안산 고객주소'},
+  bank:{company_name:'백세푸드',company_business_no:'304-04-85025',company_phone:'031-407-0103',
+   company_address:'경기 안산 공급자주소'}},
+  items:[{name:'잉어반죽',qty:2,unit_price:10000,line_total:20000}]};
+ const doc=fromOrderDetail(data);
+ const html=renderPrintSheets(doc);
+ assert.equal((html.match(/class="party-table"/g)||[]).length,2);
+ for(const expected of ['안산중앙점','백세푸드','304-04-85025','010-2222-3333','031-407-0103',
+   '경기 안산 고객주소','경기 안산 공급자주소'])assert.ok(html.includes(expected),expected);
+ for(const expected of ['공급가액','20,000','부가세','2,000','청구액','22,000','전 잔고','80,000','총액','102,000'])
+  assert.ok(html.includes(expected),expected);
+ assert.ok(!html.includes('001-01-00001'),'Recipient registration number is intentionally absent from 4x4 layout');
+ assert.ok(!html.includes('입 금')&&!html.includes('잔 금'));
+});
