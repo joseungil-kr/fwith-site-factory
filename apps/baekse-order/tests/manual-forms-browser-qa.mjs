@@ -66,7 +66,7 @@ try{
  assert.equal((await page.locator('.seo-guide').isVisible()),true,'Search help is visible on screen');
  await page.emulateMedia({media:'print'});
  assert.equal(await page.locator('.seo-guide').isVisible(),false,'Search help must not print');
- await page.emulateMedia({media:'screen'});
+ await page.emulateMedia({media:null});
  // A clean blank-print tab must not alter the current entry in the original tab.
  const blankPopupPromise=page.waitForEvent('popup');
  await page.locator('#blank-pdf').click();
