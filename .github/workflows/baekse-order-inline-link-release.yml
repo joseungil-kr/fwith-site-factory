@@ -1,4 +1,4 @@
-name: Baekse guarded header and request badge release 20261109
+name: Baekse guarded A4 2-up 33-item demo release 20261109
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
@@ -90,6 +90,18 @@ jobs:
               assert 'id="link-result"' not in html,'Legacy popup still deployed'
               assert 'const url=entry?.url' in app and 'buyer-link-row' in app,'Inline client link UI missing'
               assert 'issuedBuyerUrls' not in app,'Legacy memory-only link code still deployed'
+              assert 'id="bill-a4-dual"' in html,'New A4 two-up print button missing'
+              assert "window.open('/print-form/?mode=invoice','_blank')" in app,'Existing invoice handoff not connected'
+              for path,markers in [
+                ('/print-form/',['id="print-now"','가상 거래 33품목','noindex']),
+                ('/print-form/print-form.js', ['window.print()','BAEKSE_PRINT_DATA','fromOrderDetail']),
+                ('/print-form/print-data.mjs',['LINES_PER_PAGE=15','makeDemoDocument','renderPrintSheets']),
+                ('/print-form/print-form.css',['@page{size:A4 landscape;margin:0}','height:112mm','.cut-line'])
+              ]:
+                with opener.open(root+path,timeout=30) as asset:
+                  content=asset.read().decode('utf-8')
+                  assert asset.status==200 and all(marker in content for marker in markers),'A4 demo missing/broken '+path
+              print('A4_2UP_DEMO_PUBLIC_ASSETS_PASS')
               assert '<button class="brand" type="button" data-go="home" aria-label="대시보드로 이동"><b>백세푸드</b></button>' in html, 'Dashboard company button missing'
               assert 'brand-emblem' not in html and 'Operations Management' not in html, 'Removed emblem or subtitle still live'
               assert "function show(tab){closeMobileMenu();$$('[data-page]').forEach" in app,'All-page navigation is broken'

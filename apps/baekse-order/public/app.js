@@ -704,6 +704,19 @@ if(serialPrinter.supported && window.isSecureContext) {
 updateSerialControls();
 
 $('#bill-a4').onclick=()=>printBill('a4');$('#bill-58').onclick=()=>printBill('58');$('#bill-80').onclick=()=>printBill('80');
+$('#bill-a4-dual').onclick=()=>{
+ if(!viewOrder){toast('명세표를 먼저 선택하세요');return}
+ const detail=viewOrder;
+ let pop;
+ const onReady=event=>{
+  if(event.origin!==location.origin||event.source!==pop||event.data?.type!=='BAEKSE_PRINT_READY')return;
+  try{pop.postMessage({type:'BAEKSE_PRINT_DATA',detail},location.origin)}finally{window.removeEventListener('message',onReady)}
+ };
+ window.addEventListener('message',onReady);
+ pop=window.open('/print-form/?mode=invoice','_blank');
+ if(!pop){window.removeEventListener('message',onReady);toast('팝업을 허용한 뒤 다시 눌러 주세요.');return}
+ setTimeout(()=>window.removeEventListener('message',onReady),30000);
+};
 $('#bill-delivery').onclick=async()=>{
  if(!viewOrder||viewOrder.order.status!=='issued')return;
  const id=viewOrder.order.id;
