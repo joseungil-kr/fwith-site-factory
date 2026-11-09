@@ -115,19 +115,28 @@ try{
  assert.equal((await page.locator('[data-copy=recipient] [data-calc=grand]').first().innerText()).trim(),'31,000');
  assert.equal((await page.locator('[data-copy=recipient] [data-calc=item-0-amount]').innerText()).trim(),'24,000');
  await testWithinPage();
- const roleVisuals=await page.locator('.print-sheet').evaluate(sheet=>{
-   const style=sel=>getComputedStyle(sheet.querySelector(sel));
-   return {
-     leftBorder:style('[data-copy="supplier"]').borderTopColor,
-     rightBorder:style('[data-copy="recipient"]').borderTopColor,
-     leftHeading:style('[data-copy="supplier"] .form-head').backgroundColor,
-     rightHeading:style('[data-copy="recipient"] .form-head').backgroundColor,
-     cutWidth:style('.cut-marker').borderLeftWidth
+ const partySections=await page.locator('.print-sheet').evaluate(sheet=>{
+   const getStyle=(sel)=>getComputedStyle(sheet.querySelector(sel));
+   const readCopy=copy=>{
+     const prefix='[data-copy="'+copy+'"] ';
+     return {
+       border:getStyle('[data-copy="'+copy+'"]').borderTopColor,
+       supplierLine:parseFloat(getStyle(prefix+'tr.party-supplier-start > th').borderTopWidth),
+       buyerLine:parseFloat(getStyle(prefix+'tr.party-buyer-start > th').borderTopWidth),
+       headerBackground:getStyle(prefix+'.form-head').backgroundColor
+     };
    };
+   return {left:readCopy('supplier'),right:readCopy('recipient'),
+     cutWidth:parseFloat(getStyle('.cut-marker').borderLeftWidth)};
  });
- assert.notEqual(roleVisuals.leftBorder,roleVisuals.rightBorder,'Supplier vs recipient borders must have distinct colors');
- assert.notEqual(roleVisuals.leftHeading,roleVisuals.rightHeading,'Headers must look visibly different');
- assert.ok(parseFloat(roleVisuals.cutWidth)>1,'Central cut guide should be visible');
+ assert.ok(partySections.left.buyerLine>partySections.left.supplierLine+1,
+   'Left slip must have a stronger horizontal separator between supplier and buyer fields');
+ assert.ok(partySections.right.buyerLine>partySections.right.supplierLine+1,
+   'Right slip must have the same supplier/buyer separator');
+ assert.equal(partySections.left.border,partySections.right.border,'Copies share the same neutral border');
+ assert.equal(partySections.left.headerBackground,'rgb(255, 255, 255)','Left header should be white');
+ assert.equal(partySections.right.headerBackground,'rgb(255, 255, 255)','Right header should be white');
+ assert.ok(partySections.cutWidth>=1,'Central cutting guide must remain visible');
  assert.equal(await page.locator('h1').count(),1,'Only one SEO h1');
  assert.ok(await page.locator('.seo-guide').isVisible(),'Receipt help must be visible on screen');
  await page.screenshot({path:'qa-manual-forms/simple-receipt-desktop.png',fullPage:true});
@@ -140,5 +149,5 @@ try{
  assert.equal(await page.evaluate(()=>window.__printWasCalled),true,'Receipt print button');
  assert.deepEqual(errors,[],'Browser JS errors');
  assert.deepEqual(writes,[],'No server write requests from standalone forms');
- console.log('MANUAL_FORMS_BROWSER_PASS: live mirroring, invoice 15 rows A4 landscape, receipt 15 rows A4 portrait, colored roles, print-only template, no server writes');
+ console.log('MANUAL_FORMS_BROWSER_PASS: live mirroring, invoice 15 rows A4 landscape, receipt 15 rows A4 portrait, white copies with supplier/buyer section dividers, print-only template, no server writes');
 }finally{await browser.close()}
