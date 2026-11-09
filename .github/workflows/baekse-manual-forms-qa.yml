@@ -50,7 +50,7 @@ jobs:
       - name: Verify Cloudflare Worker indexing and ERP isolation locally
         working-directory: apps/baekse-order
         run: |
-          npx --yes wrangler@4.156.2 dev --local --port 8788 --var ADMIN_PASSWORD:ci-only-strong-example-password-2026 >/tmp/baekse-seo-worker.log 2>&1 &
+          npx --yes wrangler@4.156.2 dev --config wrangler.reused.jsonc --local --port 8788 --var ADMIN_PASSWORD:ci-only-strong-example-password-2026 >/tmp/baekse-seo-worker.log 2>&1 &
           node tests/manual-invoice-robots-http.mjs
       - name: Archive screenshots and three sample PDFs
         if: always()
