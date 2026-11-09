@@ -49,6 +49,11 @@ jobs:
             w=float(page.mediabox.width);h=float(page.mediabox.height)
             assert 835<w<850 and 590<h<600,(n,w,h)
           print('A4_LANDSCAPE_PDF_3_PAGES_PASS')
+          live=PdfReader('qa-a4-artifacts/live-invoice-A4-four-column.pdf')
+          assert len(live.pages)==1,('Live order must print on one A4 landscape sheet',len(live.pages))
+          w=float(live.pages[0].mediabox.width);h=float(live.pages[0].mediabox.height)
+          assert 835<w<850 and 590<h<600,(w,h)
+          print('A4_LIVE_INVOICE_4X4_ONE_PAGE_PASS')
           PY
       - name: Save sample PDF and screenshot
         if: always()
