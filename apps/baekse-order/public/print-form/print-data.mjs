@@ -97,23 +97,24 @@ function copyHtml(doc,chunk,page,totalPages,copyType){
  const cancelled=doc.cancelled?'<span class="cancel-mark">출고취소</span>':'';
  const bank=doc.kind==='internal'?'내부출고 · 매출 및 미수금 미반영':doc.bank?'입금처: '+doc.bank:'입금처 미등록';
  const invoiceAmount=doc.kind==='internal'?doc.supply:doc.total;
- const paidLabel=doc.paid===null?'(별도 기록)':'₩ '+won(doc.paid);
- const balanceLabel=doc.kind==='internal'?'—':'₩ '+won(doc.balance);
+ // Net charge is the current supply plus tax; total additionally includes previous balance.
+ const currentCharge=doc.kind==='internal'?'—':'₩ '+won(doc.supply+doc.tax);
+ const grandTotal=doc.kind==='internal'?'—':'₩ '+won(doc.total);
  return [
   '<article class="slip-copy" data-copy="'+(vendor?'vendor':'customer')+'" data-page="'+page+'">',
   '<div class="slip-top"><span class="slip-number">'+escapeHtml(doc.voucher)+'</span><h2>'+title+'</h2><span class="slip-type">'+copyLabel+'</span></div>',
-  '<table class="party-table" aria-label="사업자 및 거래처 정보"><colgroup><col style="width:12%"><col style="width:12%"><col style="width:27%"><col style="width:11%"><col style="width:13%"><col style="width:25%"></colgroup><tbody>',
-  '<tr>'+th('작성일')+cell(doc.date,'date-value')+cell('아래와 같이 계산합니다.')+th('공급자')+th('등록번호')+cell(doc.supplier.number)+'</tr>',
-  '<tr>'+th('공급받는 자')+th('상호')+cell(doc.recipient.name,'party-name')+th('공급자')+th('상호')+cell(doc.supplier.name,'party-name')+'</tr>',
-  '<tr>'+th('연락처')+cell(doc.recipient.phone)+cell('담당: '+doc.recipient.person)+th('연락처')+th('전화')+cell(doc.supplier.phone)+'</tr>',
-  '<tr>'+th('주소')+cell(doc.recipient.address,'wide-addr')+cell('사업자: '+doc.recipient.number)+th('주소')+th('소재지')+cell(doc.supplier.address,'wide-addr')+'</tr>',
+  '<table class="party-table" aria-label="사업자 및 거래처 정보"><colgroup><col style="width:13%"><col style="width:36%"><col style="width:17%"><col style="width:34%"></colgroup><tbody>',
+  '<tr>'+th('작성일')+cell(doc.date,'date-value')+th('공급자 등록번호')+cell(doc.supplier.number,'party-number')+'</tr>',
+  '<tr>'+th('공급받는자')+cell(doc.recipient.name,'party-name')+th('공급자 상호')+cell(doc.supplier.name,'party-name')+'</tr>',
+  '<tr>'+th('연락처')+cell(doc.recipient.phone)+th('연락처')+cell(doc.supplier.phone)+'</tr>',
+  '<tr>'+th('주소')+cell(doc.recipient.address,'wide-addr')+th('주소')+cell(doc.supplier.address,'wide-addr')+'</tr>',
   '</tbody></table>',
   '<div class="total-banner"><strong>합계금액<br> (전체)</strong><div>금 <b>'+won(invoiceAmount)+'</b> 원정 <span>(₩ '+won(invoiceAmount)+')</span></div></div>',
   '<table class="items-table" aria-label="품목 명세 15행"><colgroup><col style="width:9%"><col style="width:25%"><col style="width:11%"><col style="width:8%"><col style="width:12%"><col style="width:16%"><col style="width:10%"><col style="width:9%"></colgroup>',
   '<thead><tr><th>월일</th><th>품 목</th><th>규 격</th><th>수량</th><th>단 가</th><th>공급가액</th><th>세 액</th><th>비고</th></tr></thead><tbody>'+rows+'</tbody></table>',
-  '<table class="summary-table" aria-label="금액 정산"><tbody>',
-  '<tr>'+th(doc.kind==='internal'?'원가합계':'공급가액')+cell('₩ '+won(doc.supply),'numeric')+th('부가세')+cell('₩ '+won(doc.tax),'numeric')+th('청구액')+cell(doc.kind==='internal'?'—':'₩ '+won(doc.total),'numeric')+'</tr>',
-  '<tr>'+th('전 잔고')+cell(doc.kind==='internal'?'—':'₩ '+won(doc.previous),'numeric')+th('입 금')+cell(doc.kind==='internal'?'—':paidLabel,'numeric')+th('잔 금')+cell(balanceLabel,'numeric')+'</tr>',
+  '<table class="summary-table" aria-label="금액 정산"><colgroup><col style="width:12%"><col style="width:21%"><col style="width:12%"><col style="width:21%"><col style="width:12%"><col style="width:22%"></colgroup><tbody>',
+  '<tr>'+th(doc.kind==='internal'?'원가합계':'공급가액')+cell('₩ '+won(doc.supply),'numeric')+th('부가세')+cell('₩ '+won(doc.tax),'numeric')+th('청구액')+cell(currentCharge,'numeric')+'</tr>',
+  '<tr>'+th('전 잔고')+cell(doc.kind==='internal'?'—':'₩ '+won(doc.previous),'numeric')+'<td colspan="2" class="summary-blank"></td>'+th('총액')+cell(grandTotal,'numeric')+'</tr>',
   '</tbody></table>',
   '<div class="bank-line">'+escapeHtml(bank)+'</div>',
   '<div class="slip-footer"><span>인수자: __________________</span><span>'+page+' / '+totalPages+' 페이지 · 전체 '+doc.lines.length+'품목</span></div>',
