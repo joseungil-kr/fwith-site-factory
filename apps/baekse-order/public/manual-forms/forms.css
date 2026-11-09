@@ -1,0 +1,122 @@
+:root{font-family:system-ui,-apple-system,"Malgun Gothic",sans-serif;color:#263331;background:#eef1f3;font-synthesis:none}
+*{box-sizing:border-box}
+body{margin:0}
+button,input,select{font:inherit}
+.toolbar{background:#fff;border-bottom:1px solid #d8e1e3;box-shadow:0 2px 12px #0000000b;padding:15px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.toolbar-info h1{font-size:20px;margin:0 0 5px;font-weight:850}
+.toolbar-info p{font-size:13px;color:#65767b;margin:0;line-height:1.5}
+.toolbar-nav{display:flex;gap:8px;flex-wrap:wrap}
+.toolbar-nav a,.toolbar-nav button{background:#fff;color:#0b685d;text-decoration:none;border:1px solid #0b7669;border-radius:8px;padding:10px 14px;min-height:42px;cursor:pointer;font-weight:700;font-size:13px}
+.toolbar-nav button.primary{background:#0b7669;color:#fff}
+.toolbar-nav button.minor{border-color:#d1dcdb;color:#667677}
+.toolbar-nav a:hover,.toolbar-nav button:hover{filter:brightness(.94)}
+.toolbar-nav a:focus-visible,.toolbar-nav button:focus-visible{outline:3px solid #63ad9e;outline-offset:2px}
+.print-hint{font-size:13px;color:#536367;text-align:center;padding:10px;margin:0}
+#print-root{overflow:auto;padding:6px 10px 28px}
+.print-sheet{position:relative;margin:0 auto 20px;box-shadow:0 6px 22px #15353626;background:#fff;overflow:hidden}
+.print-sheet.invoice{width:297mm;height:209mm;padding:5mm}
+.print-sheet.receipt{width:210mm;height:296mm;padding:5mm}
+.print-sheet .slips{height:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5mm}
+.cut-marker{position:absolute;left:50%;top:3mm;bottom:3mm;border-left:.24mm dashed #9aa3a5;font-size:7pt;color:#66777a;z-index:2;pointer-events:none}
+.cut-marker::first-letter{color:#31403d}
+.slip{min-width:0;display:flex;flex-direction:column;background:#fff;border:.35mm solid #303a3b;padding:2.1mm;overflow:hidden;font-variant-numeric:tabular-nums}
+.slip *{min-width:0}
+.slip table{width:100%;border-collapse:collapse;table-layout:fixed;flex:none}
+.slip th,.slip td{border:.18mm solid #526062;vertical-align:middle;padding:0 .8mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.1}
+.slip th{background:#f5f7f7;text-align:center;font-weight:720}
+.form-head{height:12mm;flex:none;display:grid;grid-template-columns:28mm 1fr 28mm;align-items:center;border:.18mm solid #526062;border-bottom:0;text-align:center;overflow:hidden}
+.form-head>strong{font-size:13.2pt;font-weight:900;white-space:nowrap;letter-spacing:.3pt}
+.form-id{padding:0 .6mm;font-size:6.8pt}
+.copy-name{font-size:7pt;font-weight:850}
+.slip input,.slip select{width:100%;height:100%;min-height:0;border:0;padding:0 .6mm;color:#194b48;background:#e9f5f3;outline-offset:0;font-weight:620;display:block;max-width:100%;text-overflow:ellipsis}
+.slip input:focus-visible,.slip select:focus-visible{outline:1px solid #169b7d;background:#dbf0e9}
+.slip input::placeholder{font-weight:400;color:#a0b1af}
+.slip select{font-size:6.5pt;padding:0}
+.slip span.mirror{display:block;width:100%;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slip span.calculated{font-weight:700;white-space:nowrap}
+.parties{height:28mm;font-size:6.8pt}
+.parties tr{height:5.6mm}
+.parties th{font-size:6.3pt}
+.parties td input,.parties td .mirror{font-size:6.8pt;letter-spacing:-.15pt}
+.parties .p-label{width:15%}
+.parties .p-data{width:35%}
+.amount-line{height:9mm;display:grid;align-items:center;grid-template-columns:44% 1fr 10mm;gap:.7mm;border:.18mm solid #526062;border-top:0;padding:0 1mm;flex:none;font-size:7pt}
+.amount-line>span:first-child{font-weight:800;letter-spacing:-.15pt}
+.amount-line strong{font-size:11pt;white-space:nowrap;text-align:right}
+.amount-line span:last-child{text-align:center}
+.item-table{height:110mm;font-size:6.8pt}
+.item-table thead{height:7mm}
+.item-table thead th{font-size:6.5pt}
+.item-table tbody tr{height:6.86mm}
+.item-table td{padding:0 .28mm}
+.item-table td input{font-size:6.8pt;padding:0 .25mm}
+.item-table td.numeric{text-align:right}
+.item-table td.numeric input{text-align:right}
+.item-table td.numeric .calculated{display:block;text-align:right;padding:0 .25mm}
+.item-table .col-date{width:9%}
+.item-table .col-name{width:25%}
+.item-table .col-spec{width:11%}
+.item-table .col-qty{width:8%}
+.item-table .col-price{width:12%}
+.item-table .col-amount{width:16%}
+.item-table .col-tax{width:10%}
+.item-table .col-note{width:9%}
+.summary{font-size:7pt;height:18mm}
+.summary tr{height:6mm}
+.summary th{font-size:6.6pt}
+.summary td{text-align:right;font-size:7pt;font-weight:700;padding:0 1mm}
+.summary td input{text-align:right;font-size:7pt}
+.summary td .mirror{font-size:7pt}
+.invoice-summary th{width:22%}
+.invoice-summary td{width:28%}
+.invoice-summary th select{display:inline-block;width:32%;height:4mm;vertical-align:middle;margin-left:.7mm}
+.invoice-summary th .mirror{display:inline;font-size:6pt;font-weight:400}
+.notice{display:flex;align-items:center;gap:3mm;padding:0 .7mm;min-height:7mm;max-height:7mm;flex:none;border:.18mm solid #526062;border-top:0;font-size:6.9pt;overflow:hidden}
+.notice input,.notice .mirror{flex:1}
+.bottom-row{display:flex;gap:2mm;align-items:center;justify-content:space-between;margin-top:auto;padding:0 1mm;font-size:6.9pt;min-height:5mm}
+.receipt .slip{padding:2mm}
+.receipt .form-head{grid-template-columns:16mm 1fr 26mm;height:16mm}
+.receipt .form-head strong{font-size:12pt;letter-spacing:0}
+.receipt .form-id{font-size:6.3pt}
+.receipt .copy-name{font-size:6.3pt}
+.receipt .parties{height:48mm;font-size:6.1pt}
+.receipt .parties tr{height:9.6mm}
+.receipt .parties th{font-size:6.1pt}
+.receipt .parties td input,.receipt .parties td .mirror{font-size:6.5pt}
+.receipt .parties .p-label{width:18%}
+.receipt .parties .p-data{width:32%}
+.receipt .amount-line{height:17mm;grid-template-columns:35% 1fr 8mm;gap:1mm}
+.receipt .amount-line span{font-size:7pt}
+.receipt .amount-line strong{font-size:10.5pt}
+.receipt .item-table{height:144mm;font-size:7pt}
+.receipt .item-table thead{height:10mm}
+.receipt .item-table tbody tr{height:13.4mm}
+.receipt .item-table td input{font-size:7.1pt}
+.receipt .item-table .col-name{width:36%}
+.receipt .item-table .col-spec{width:15%}
+.receipt .item-table .col-qty{width:10%}
+.receipt .item-table .col-price{width:17%}
+.receipt .item-table .col-amount{width:22%}
+.receipt .summary{height:18mm}
+.receipt .summary tr{height:18mm}
+.receipt .summary th{width:23%;font-size:6.4pt}
+.receipt .summary td{width:27%;font-size:7.1pt}
+.receipt .receipt-ack{height:14mm;display:flex;align-items:center;justify-content:center;font-size:8.2pt;font-weight:750;border:.18mm solid #526062;border-top:0}
+.receipt .notice{height:14mm;min-height:14mm;max-height:14mm}
+.receipt .bottom-row{font-size:7.1pt;height:12mm}
+#feedback{color:#ad4435;font-size:13px;text-align:center;min-height:20px;padding-bottom:10px}
+@media screen and (max-width:1100px){
+ #print-root{padding:10px;overflow-x:auto}
+ .print-sheet{margin-left:0;margin-right:0}
+}
+@media print{
+ html,body{margin:0!important;padding:0!important;width:auto!important;background:#fff!important}
+ .toolbar,.print-hint,#feedback{display:none!important}
+ #print-root{padding:0!important;margin:0!important;overflow:visible!important}
+ .print-sheet{margin:0!important;box-shadow:none!important;break-inside:avoid;page-break-inside:avoid}
+ .print-sheet.invoice{width:297mm!important;height:209mm!important;padding:5mm!important}
+ .print-sheet.receipt{width:210mm!important;height:296mm!important;padding:5mm!important}
+ .slip,.cut-marker,.slip th{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+ .slip input,.slip select{background:transparent!important;color:#141c1d!important;outline:none!important}
+ .slip input::placeholder{color:transparent!important}
+}
