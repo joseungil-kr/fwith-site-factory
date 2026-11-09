@@ -135,10 +135,10 @@ try{
    return {left:readCopy('supplier'),right:readCopy('recipient'),
      cutWidth:parseFloat(getStyle('.cut-marker').borderLeftWidth)};
  });
- assert.ok(partySections.left.buyerLine>partySections.left.supplierLine+1,
-   'Left slip must have a stronger horizontal separator between supplier and buyer fields');
- assert.ok(partySections.right.buyerLine>partySections.right.supplierLine+1,
-   'Right slip must have the same supplier/buyer separator');
+ assert.ok(partySections.left.buyerLine>0&&partySections.left.buyerLine<3.3,
+   'Left slip divider must consist of thin lines, not a thick rule');
+ assert.ok(partySections.right.buyerLine>0&&partySections.right.buyerLine<3.3,
+   'Right slip divider must consist of thin lines, not a thick rule');
  assert.equal(partySections.left.buyerStyle,'double','Left receipt needs a double-line divider');
  assert.equal(partySections.right.buyerStyle,'double','Right receipt needs a double-line divider');
  assert.equal(partySections.left.border,partySections.right.border,'Copies share the same neutral border');
