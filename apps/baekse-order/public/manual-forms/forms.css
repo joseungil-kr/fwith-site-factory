@@ -81,16 +81,16 @@ button,input,select{font:inherit}
 .receipt .copy-name{font-size:6.3pt}
 .receipt .parties{height:48mm;font-size:6.1pt}
 .receipt .parties tr{height:9.6mm}
-.receipt .parties th{font-size:6.1pt}
+.receipt .parties th{font-size:5.35pt;letter-spacing:-.18pt}
 .receipt .parties td input,.receipt .parties td .mirror{font-size:6.5pt}
-.receipt .parties .p-label{width:18%}
-.receipt .parties .p-data{width:32%}
+.receipt .parties .p-label{width:21%}
+.receipt .parties .p-data{width:29%}
 .receipt .amount-line{height:17mm;grid-template-columns:35% 1fr 8mm;gap:1mm}
 .receipt .amount-line span{font-size:7pt}
 .receipt .amount-line strong{font-size:10.5pt}
 .receipt .item-table{height:144mm;font-size:7pt}
 .receipt .item-table thead{height:10mm}
-.receipt .item-table tbody tr{height:13.4mm}
+.receipt .item-table tbody tr{height:8.75mm}
 .receipt .item-table td input{font-size:7.1pt}
 .receipt .item-table .col-name{width:36%}
 .receipt .item-table .col-spec{width:15%}
@@ -162,3 +162,31 @@ button,input,select{font:inherit}
  .seo-guide,.guide-inner,body>noscript{display:none!important}
  #blank-pdf{display:none!important}
 }
+
+
+/* Both slips use visibly different roles on screen and on paper.
+   Distinction does not rely on color alone: heavy border + explicit copy label. */
+.print-sheet .slip[data-copy="supplier"]{border:.65mm solid #0a715e}
+.print-sheet .slip[data-copy="recipient"]{border:.65mm solid #305e82}
+.print-sheet .slip[data-copy="supplier"] .form-head{
+ background:#dff3e9;
+ border-top:1.2mm solid #0a715e;
+}
+.print-sheet .slip[data-copy="recipient"] .form-head{
+ background:#e3eef8;
+ border-top:1.2mm solid #305e82;
+}
+.print-sheet .slip[data-copy="supplier"] .copy-name{color:#055a4a;font-weight:950}
+.print-sheet .slip[data-copy="recipient"] .copy-name{color:#173c60;font-weight:950}
+.print-sheet .slip[data-copy="supplier"] .parties th{background:#edf8f2}
+.print-sheet .slip[data-copy="recipient"] .parties th{background:#edf3fa}
+.print-sheet .cut-marker{border-left:.55mm dashed #3a4647;font-weight:800}
+@media print{
+ .print-sheet .slip,.print-sheet .form-head,.print-sheet .copy-name,
+ .print-sheet .parties th,.print-sheet .cut-marker{
+  print-color-adjust:exact;
+  -webkit-print-color-adjust:exact;
+ }
+}
+/* Separate editorial guidance is intentionally absent from the paper and PDF. */
+@media print{.seo-guide{display:none!important}}
