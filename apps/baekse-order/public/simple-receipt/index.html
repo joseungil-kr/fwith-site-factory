@@ -1,17 +1,123 @@
 <!doctype html>
-<html lang="ko"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow,noarchive">
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b7669">
+<meta name="color-scheme" content="light">
 <meta name="referrer" content="no-referrer">
-<title>수기입력 간이영수증 | A4 세로 2부 출력</title>
-<link rel="stylesheet" href="/manual-forms/forms.css"><style>@page{size:A4 portrait;margin:0}</style>
-<script type="module" src="/manual-forms/forms.js"></script></head>
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<title>무료 간이영수증 양식 | 온라인 영수증 작성·PDF 저장</title>
+<meta name="description" content="무료 간이영수증 양식에 공급자·공급받는 자, 품목·수량·단가를 입력하세요. 15개 품목의 금액을 자동 계산하고 영수증 2부를 A4 세로 한 장에 출력하거나 PDF로 무료 저장할 수 있습니다.">
+<meta name="author" content="백세푸드">
+<link rel="canonical" href="https://order.baeksefood.com/simple-receipt/">
+<link rel="icon" type="image/svg+xml" href="/simple-receipt/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="백세푸드 무료 서식">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="무료 간이영수증 양식 · 온라인 작성과 PDF 저장">
+<meta property="og:description" content="간이영수증 15품목 자동계산. 왼쪽에 입력하면 오른쪽도 자동으로 완성되어 A4 세로 2부 인쇄 또는 PDF 저장이 가능합니다.">
+<meta property="og:url" content="https://order.baeksefood.com/simple-receipt/">
+<meta property="og:image" content="https://order.baeksefood.com/simple-receipt/og-image.png">
+<meta property="og:image:secure_url" content="https://order.baeksefood.com/simple-receipt/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="무료 온라인 간이영수증 서식: A4 세로 영수증 2부, 자동계산, PDF 저장">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="무료 간이영수증 양식 · 온라인 작성·PDF 저장">
+<meta name="twitter:description" content="회원가입 없이 간이영수증 15품목 입력, 금액 자동 합산, A4 세로 2부 인쇄와 PDF 무료 저장.">
+<meta name="twitter:image" content="https://order.baeksefood.com/simple-receipt/og-image.png">
+<link rel="stylesheet" href="/manual-forms/forms.css">
+<style>@page{size:A4 portrait;margin:0}</style>
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"WebApplication",
+ "@id":"https://order.baeksefood.com/simple-receipt/#app",
+ "name":"무료 온라인 간이영수증 양식 작성기",
+ "url":"https://order.baeksefood.com/simple-receipt/",
+ "description":"공급자와 공급받는 자, 품목, 수량, 단가를 입력하면 간이영수증 2부가 자동 완성되고 금액이 합산되어 A4 세로 출력 또는 PDF 저장이 가능한 무료 웹 도구",
+ "inLanguage":"ko-KR",
+ "applicationCategory":"BusinessApplication",
+ "operatingSystem":"Any",
+ "browserRequirements":"최신 웹브라우저 및 프린터 또는 PDF 저장 기능",
+ "isAccessibleForFree":true,
+ "offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},
+ "featureList":["공급자용과 공급받는 자용 2부 자동 완성","최대 15개 품목 수량과 단가 자동계산","A4 세로 한 장에 영수증 2부 인쇄","간이영수증 PDF 무료 저장","회원가입 없는 작성"]
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"FAQPage",
+ "mainEntity":[
+  {"@type":"Question","name":"간이영수증을 무료로 작성하고 PDF로 저장할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네. 왼쪽 양식에 공급자·공급받는 자와 거래 품목을 입력한 다음 출력하기 / PDF 저장 버튼을 누르고 인쇄 창에서 PDF로 저장을 선택하면 됩니다. 별도 회원가입은 필요하지 않습니다."}},
+  {"@type":"Question","name":"공급자용과 공급받는 자용 영수증을 따로 입력하나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 왼쪽 공급자 보관용만 작성하면 오른쪽 공급받는 자 보관용에 같은 정보와 금액이 즉시 자동 복사됩니다."}},
+  {"@type":"Question","name":"간이영수증에 품목을 몇 개까지 입력할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"현재 한 장에 최대 15개 품목을 기재할 수 있습니다. 품목별 수량에 단가를 곱하여 금액을 계산하고 전체 영수금액을 자동 합산합니다."}},
+  {"@type":"Question","name":"간이영수증은 세금계산서나 현금영수증을 대신하나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 간이영수증은 거래 내역이나 대금 수령을 기록하는 일반 서식이며, 세금계산서나 현금영수증을 대신하는 적격증빙으로 항상 인정되는 것은 아닙니다. 거래 유형과 세법상 증빙 요건을 별도로 확인하세요."}}
+ ]
+}
+</script>
+<script type="module" src="/manual-forms/forms.js"></script>
+</head>
 <body data-form="receipt">
 <header class="toolbar">
- <div class="toolbar-info"><h1>수기입력 간이영수증</h1><p>왼쪽 영수증에 입력하면 오른쪽 보관용이 자동 완성됩니다. 10품목 · A4 세로 한 장.</p></div>
- <nav class="toolbar-nav"><a href="/manual-invoice/">거래명세표</a><button id="clear-form" type="button" class="minor">전체 초기화</button><button id="print-form" type="button" class="primary">출력하기 / PDF 저장</button></nav>
+ <div class="toolbar-info">
+  <h1>무료 온라인 간이영수증 양식 · PDF 저장</h1>
+  <p>왼쪽 공급자 보관용에만 입력하면 오른쪽에도 자동 반영됩니다. 15품목 · A4 세로 한 장에 영수증 2부.</p>
+ </div>
+ <nav class="toolbar-nav" aria-label="간이영수증 주요 기능">
+  <a href="/manual-invoice/">무료 거래명세표</a>
+  <button id="clear-form" type="button" class="minor">전체 초기화</button>
+  <button id="print-form" type="button" class="primary">출력하기 / PDF 저장</button>
+ </nav>
 </header>
-<p class="print-hint">인쇄 설정: A4 · <b>세로</b> · 배율 100% · 머리글/바닥글 끄기 · 여백 없음. 입력내용은 서버에 저장되지 않습니다.</p>
-<main id="print-root" aria-label="간이영수증 공급자용과 공급받는 자용"></main>
+<p class="print-hint">인쇄 설정: A4 · <b>세로</b> · 배율 100% · 머리글/바닥글 끄기 · 여백 없음. 입력 정보는 이 페이지에서 서버로 전송하거나 저장하지 않습니다.</p>
+<main id="print-root" aria-label="간이영수증 공급자 보관용과 공급받는 자 보관용"></main>
 <div id="feedback" role="status" aria-live="polite"></div>
-</body></html>
+<noscript><p>간이영수증 작성과 자동계산을 이용하려면 브라우저에서 자바스크립트를 활성화하세요.</p></noscript>
+
+<section class="seo-guide" aria-labelledby="guide-title">
+ <div class="guide-inner">
+  <p class="guide-eyebrow">무료 업무 서식 · 간이영수증 작성 안내</p>
+  <h2 id="guide-title">간이영수증 양식 작성과 무료 PDF 저장 방법</h2>
+  <p>이 페이지는 물품 판매, 식자재 납품, 소규모 거래 등에서 사용할 <strong>무료 온라인 간이영수증 작성 도구</strong>입니다. 별도의 영수증 프로그램을 설치하거나 회원가입하지 않아도 브라우저에서 바로 사용할 수 있습니다. 공급자와 공급받는 자의 상호, 작성일, 품목과 금액을 한 번 입력하면 동일한 서식 두 부가 자동으로 채워집니다.</p>
+  <p>양식은 <strong>A4 세로 용지 한 장</strong>에 왼쪽 <strong>공급자 보관용</strong>과 오른쪽 <strong>공급받는 자 보관용</strong>을 나란히 배치했습니다. 보관용마다 제목 영역과 테두리 색을 달리하고 중앙 절취선을 넣어 쉽게 구분할 수 있습니다. 한 장에 최대 <strong>15개 품목</strong>을 적을 수 있습니다.</p>
+
+  <h3>간이영수증 온라인 작성 방법</h3>
+  <ol>
+   <li><strong>작성일과 사업자 정보:</strong> 왼쪽 양식에 작성일, 공급자(상호), 공급받는자(상호), 각 사업자등록번호, 소재지, 연락처 등을 기입합니다.</li>
+   <li><strong>거래 품목 입력:</strong> 품목명, 규격, 수량, 단가를 최대 15행까지 입력합니다. 해당 행의 금액이 수량 × 단가로 자동 계산됩니다.</li>
+   <li><strong>자동 복사·합계 확인:</strong> 오른쪽 공급받는 자 보관용에 입력 정보와 전체 영수금액이 자동으로 반영되는지 확인합니다.</li>
+   <li><strong>출력 또는 PDF 무료 저장:</strong> <b>출력하기 / PDF 저장</b>을 클릭합니다. 인쇄 창에서 프린터를 선택하거나 <b>PDF로 저장</b>을 선택하세요. A4 세로, 배율 100%, 머리글·바닥글 끄기를 권장합니다.</li>
+   <li><strong>보관:</strong> 종이로 인쇄했다면 중앙 절취선을 따라 나눠 공급자와 공급받는 자가 각각 한 장씩 보관할 수 있습니다.</li>
+  </ol>
+
+  <h3>빈 간이영수증 서식을 출력하려면?</h3>
+  <p><strong>별도 품목을 입력하지 않은 상태에서 출력하기를 누르면 빈 품목 칸을 가진 양식을 인쇄할 수 있습니다.</strong> 공급자의 상호, 연락처 같은 기본 정보만 먼저 입력한 뒤 PDF로 저장하거나 종이에 출력해 두고 필요할 때 수기로 품목과 금액을 적을 수도 있습니다. 작성일 등 기본값을 비우려면 해당 입력란을 직접 지우세요.</p>
+  <p>입력값을 전체 초기화하려면 <b>전체 초기화</b> 버튼을 사용하세요. 입력 내용은 브라우저에서만 처리되며 자동으로 서버에 저장되지 않습니다. 작성 중 창을 닫거나 페이지를 새로고침하면 입력값이 사라질 수 있으니 필요한 서식은 인쇄 또는 PDF로 저장하는 것이 좋습니다.</p>
+
+  <h3>간이영수증 양식의 주요 기능</h3>
+  <div class="guide-features">
+   <article><h4>15품목 자동 금액 계산</h4><p>수량과 단가를 입력하면 품목별 금액 및 영수금액 합계가 계산됩니다. 합계를 따로 계산해서 적을 필요가 없습니다.</p></article>
+   <article><h4>공급자용·공급받는 자용 자동 복사</h4><p>왼쪽 공급자 보관용에 한 번 작성한 내용을 오른쪽 양식에 실시간으로 반영합니다. 두 부를 따로 작성하지 않아도 됩니다.</p></article>
+   <article><h4>A4 세로 2부 출력</h4><p>한 장의 A4 세로 용지에 2부가 인쇄됩니다. 색상과 굵은 경계선, 보관용 표기로 문서를 구분합니다.</p></article>
+   <article><h4>회원가입 없는 PDF 저장</h4><p>브라우저 인쇄 창의 PDF 저장 기능을 이용합니다. 회원가입과 유료 다운로드 없이 사용할 수 있습니다.</p></article>
+  </div>
+
+  <h3>간이영수증과 세금계산서·현금영수증은 다른가요?</h3>
+  <p>간이영수증은 거래한 품목과 금액, 대금 수령 사실을 적는 서식입니다. <strong>이 간이영수증이 부가가치세법상 세금계산서나 현금영수증을 대신하는 것은 아닙니다.</strong> 비용처리나 매입세액 공제에 필요한 증빙은 거래 금액, 거래 내용과 관련 세법에 따라 달라질 수 있으므로 실제 회계처리 전 별도로 확인하세요. 본 페이지는 전자세금계산서 또는 법정 현금영수증 발급 서비스를 제공하지 않습니다.</p>
+
+  <h3>자주 묻는 질문</h3>
+  <div class="guide-faq">
+   <details><summary>간이영수증을 무료로 작성하고 PDF로 저장할 수 있나요?</summary><p>네. 왼쪽 양식에 공급자·공급받는 자와 거래 품목을 입력한 다음 출력하기 / PDF 저장 버튼을 누르고 인쇄 창에서 PDF로 저장을 선택하면 됩니다. 별도 회원가입은 필요하지 않습니다.</p></details>
+   <details><summary>공급자용과 공급받는 자용 영수증을 따로 입력하나요?</summary><p>아닙니다. 왼쪽 공급자 보관용만 작성하면 오른쪽 공급받는 자 보관용에 같은 정보와 금액이 즉시 자동 복사됩니다.</p></details>
+   <details><summary>간이영수증에 품목을 몇 개까지 입력할 수 있나요?</summary><p>현재 한 장에 최대 15개 품목을 기재할 수 있습니다. 품목별 수량에 단가를 곱하여 금액을 계산하고 전체 영수금액을 자동 합산합니다.</p></details>
+   <details><summary>간이영수증은 세금계산서나 현금영수증을 대신하나요?</summary><p>아닙니다. 간이영수증은 거래 내역이나 대금 수령을 기록하는 일반 서식이며, 세금계산서나 현금영수증을 대신하는 적격증빙으로 항상 인정되는 것은 아닙니다. 거래 유형과 세법상 증빙 요건을 별도로 확인하세요.</p></details>
+  </div>
+  <p class="guide-footer">함께 사용하기: <a href="/manual-invoice/">무료 온라인 거래명세표 양식</a> · 이 사용설명과 FAQ는 영수증 인쇄물 또는 PDF에 포함되지 않습니다.</p>
+ </div>
+</section>
+</body>
+</html>
