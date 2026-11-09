@@ -39,7 +39,7 @@ for(const path of ['/robots.txt','/sitemap.xml']){
  const r=await fetch(base+path);
  assert.equal(r.status,200,path);
  const body=await r.text();
- assert.ok(body.includes('https://order.baeksefood.com/manual-invoice/'),path);
+ assert.ok(body.includes(path==='/robots.txt'?'Sitemap: https://order.baeksefood.com/sitemap.xml':'<loc>https://order.baeksefood.com/manual-invoice/</loc>'),path);
 }
 const api=await fetch(base+'/api/state');
 assert.equal(api.status,401,'Anonymous ERP access must remain blocked');
