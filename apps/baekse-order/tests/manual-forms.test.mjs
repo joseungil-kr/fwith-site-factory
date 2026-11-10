@@ -187,3 +187,27 @@ test('portrait top-bottom A4 has a horizontal cut guide and a compact two-copy 1
  assert.ok(css.includes('.print-sheet.invoice{width:297mm;height:209mm'));
  assert.ok(css.includes('.print-sheet.receipt{width:210mm;height:296mm'));
 });
+
+
+test('portrait invoice colors every supplier/red and recipient/blue table/text separately',()=>{
+ const red='.print-sheet.invoice-vertical .slip[data-copy="supplier"]{--copy-ink:#9a2630}';
+ const blue='.print-sheet.invoice-vertical .slip[data-copy="recipient"]{--copy-ink:#244a89}';
+ assert.ok(css.includes(red),'Supplier top copy must be red');
+ assert.ok(css.includes(blue),'Recipient bottom copy must be blue');
+ for(const marker of [
+  '.print-sheet.invoice-vertical .slip[data-copy]{',
+  'border-color:var(--copy-ink);',
+  '.print-sheet.invoice-vertical .slip[data-copy] th,',
+  '.print-sheet.invoice-vertical .slip[data-copy] td,',
+  '.print-sheet.invoice-vertical .slip[data-copy] input,',
+  '.print-sheet.invoice-vertical .slip[data-copy] .mirror,',
+  '.print-sheet.invoice-vertical .slip[data-copy] .calculated{',
+  'color:var(--copy-ink);',
+  'color:var(--copy-ink)!important;',
+  'border-color:var(--copy-ink)!important;',
+  '-webkit-print-color-adjust:exact;'
+ ])assert.ok(css.includes(marker),'Missing exact-color role rule '+marker);
+ assert.ok(!css.includes('.print-sheet.invoice .slip[data-copy="supplier"]{--copy-ink:'),
+   'Color must be scoped to vertical variant, not original landscape invoice');
+ assert.ok(css.includes('background:#fff!important;'),'Paper must remain white');
+});
