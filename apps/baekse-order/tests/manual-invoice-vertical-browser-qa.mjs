@@ -32,6 +32,8 @@ try{
  await original.goto(host+'/manual-invoice/',{waitUntil:'networkidle'});
  const oldInputNames=await original.locator('[data-copy="supplier"] [data-field]').evaluateAll(nodes=>nodes.map(n=>n.dataset.field).sort());
  assert.deepEqual(upperInputNames,oldInputNames,'Top/bottom variant must share exact input field names with original invoice');
+ const originalInk=await original.locator('.slip[data-copy="supplier"]').evaluate(el=>getComputedStyle(el).borderTopColor);
+ assert.notEqual(originalInk,'rgb(154, 38, 48)','Existing A4 landscape invoice must not inherit the new red ink');
  await original.close();
  const geometry=await page.locator('.print-sheet').evaluate(sheet=>{
   const box=sheet.getBoundingClientRect();
@@ -96,6 +98,33 @@ try{
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=invoiceTotal]').innerText()).trim(),'36,300');
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=grand]').first().innerText()).trim(),'136,300');
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=balance]').innerText()).trim(),'106,300');
+ for(const media of ['screen','print']){
+  await page.emulateMedia({media});
+  for(const [copy,expected] of [['supplier','rgb(154, 38, 48)'],['recipient','rgb(36, 74, 137)']]){
+   const ink=await page.locator('.slip[data-copy="'+copy+'"]').evaluate(slip=>{
+    const get=(selector,property)=>getComputedStyle(slip.querySelector(selector))[property];
+    return {
+     border:getComputedStyle(slip).borderTopColor,
+     title:get('.form-head>strong','color'),
+     heading:get('.form-head','borderLeftColor'),
+     headingBackground:get('.form-head','backgroundColor'),
+     copyLabel:get('.copy-name','color'),
+     tableLabel:get('.parties th','color'),
+     tableGrid:get('.item-table td','borderTopColor'),
+     typedText:get('input[data-field="supplier"]','color'),
+     calculatedText:get('.calculated','color'),
+     mirrorText:slip.dataset.copy==='recipient'?get('[data-mirror="buyer"]','color'):null
+    };
+   });
+   for(const key of ['border','title','heading','copyLabel','tableLabel','tableGrid','typedText','calculatedText']){
+    if(key==='typedText'&&copy==='recipient')continue;
+    assert.equal(ink[key],expected,media+' '+copy+' '+key+' must use the requested role color');
+   }
+   if(copy==='recipient')assert.equal(ink.mirrorText,expected,media+' recipient mirrored data text');
+   if(media==='print')assert.equal(ink.headingBackground,'rgb(255, 255, 255)','Both printed forms must have white background');
+  }
+ }
+ await page.emulateMedia({media:null});
  await page.locator('.print-sheet').screenshot({path:resolve('qa-manual-vertical/vertical-screen.png')});
  await page.pdf({path:resolve('qa-manual-vertical/vertical-invoice-portrait.pdf'),printBackground:true,preferCSSPageSize:true});
  await page.evaluate(()=>{window.__didPrint=false;window.print=()=>{window.__didPrint=true}});
@@ -110,5 +139,5 @@ try{
  await blank.close();
  assert.deepEqual(pageErrors,[],'Unexpected client errors');
  assert.deepEqual(networkWrites,[],'Independent form must never send input data to server');
- console.log('TOP_BOTTOM_INVOICE_BROWSER_PASS A4 portrait supplier-above-recipient, same 15 fields, VAT and balance mirror, blank PDF, horizontal cut');
+ console.log('TOP_BOTTOM_INVOICE_BROWSER_PASS A4 portrait supplier RED top and recipient BLUE bottom in screen/print, same 15 fields, VAT mirror, blank PDF, horizontal cut');
 }finally{await browser.close()}
