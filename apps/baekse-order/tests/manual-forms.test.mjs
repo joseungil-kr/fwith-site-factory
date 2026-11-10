@@ -267,3 +267,21 @@ test('only A4 vertical invoice shows a Korean full-won total, preserving old tem
  assert.ok(original.includes('data-form="invoice"')&&vertical.includes('data-form="invoice-vertical"'));
  assert.ok(!original.includes('data-amount-korean'));
 });
+
+
+test('all three standalone forms comma-format unit prices and leave unfinished rows blank',()=>{
+ for(const snippet of [
+  "function formatUnitPriceInput(el){",
+  "const digits=raw.replace(/\\D/g,'');",
+  "const grouped=digits.replace(/\\B(?=(\\d{3})+(?!\\d))/g,',');",
+  "el.setSelectionRange(at,at);",
+  "const complete=qtyText.trim()!==''&&priceText.trim()!=='';",
+  "setCalculated('item-'+i+'-amount',amount,!complete);",
+  "setCalculated('item-'+i+'-tax',lineTax,!complete);",
+  "root.addEventListener('input',event=>{"
+ ])assert.ok(js.includes(snippet),'Missing unit price or empty-row logic '+snippet);
+ assert.ok(js.includes("el.textContent=blankMode||empty?'':won(value)"));
+ assert.ok(js.includes("data-field$=\\"-price\\""),'Only unit price inputs should be grouped');
+ assert.ok(js.includes("const count=verticalInvoice?10:15;"),'10-row vertical, 15-row others unchanged');
+ assert.ok(!js.includes("data-calc=\\"'+key+'\\">0</span>"),'Initial calculated values must not be hardcoded to zero');
+});
