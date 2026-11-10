@@ -447,3 +447,25 @@ button,input,select{font:inherit}
   -webkit-print-color-adjust:exact;
  }
 }
+
+
+/* Korean accounting text for both invoice layouts. Landscape has narrower half-width slips;
+   the portrait form retains its existing larger font and role-based red/blue ink. */
+.print-sheet.invoice:not(.invoice-vertical) .slip .invoice-korean-line{
+ grid-template-columns:32% minmax(0,1fr);
+ gap:.6mm;
+}
+.print-sheet.invoice:not(.invoice-vertical) .slip .invoice-korean-line>span:first-child{
+ font-size:8.1pt;
+ white-space:nowrap;
+ letter-spacing:-.3pt;
+}
+.print-sheet.invoice:not(.invoice-vertical) .slip .invoice-korean-line strong.amount-korean{
+ display:block;
+ min-width:0;
+ font-size:8.1pt;
+ font-weight:850;
+ text-align:right;
+ letter-spacing:-.3pt;
+ white-space:nowrap;
+}
