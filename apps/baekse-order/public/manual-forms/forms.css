@@ -282,3 +282,58 @@ button,input,select{font:inherit}
  }
  .print-sheet.invoice-vertical .cut-marker .cut-label{transform:none!important}
 }
+
+
+/* A4 portrait two-up color convention: TOP supplier copy is RED, BOTTOM recipient copy
+   is BLUE. Scope all color changes to the new vertical template only; horizontal
+   invoices and simple receipts retain their existing neutral monochrome print. */
+.print-sheet.invoice-vertical .slip[data-copy="supplier"]{--copy-ink:#9a2630}
+.print-sheet.invoice-vertical .slip[data-copy="recipient"]{--copy-ink:#244a89}
+.print-sheet.invoice-vertical .slip[data-copy]{
+ color:var(--copy-ink);
+ border-color:var(--copy-ink);
+ background:#fff;
+}
+.print-sheet.invoice-vertical .slip[data-copy] .form-head,
+.print-sheet.invoice-vertical .slip[data-copy] .amount-line,
+.print-sheet.invoice-vertical .slip[data-copy] .notice,
+.print-sheet.invoice-vertical .slip[data-copy] th,
+.print-sheet.invoice-vertical .slip[data-copy] td{
+ border-color:var(--copy-ink);
+}
+.print-sheet.invoice-vertical .slip[data-copy] th,
+.print-sheet.invoice-vertical .slip[data-copy] td,
+.print-sheet.invoice-vertical .slip[data-copy] .form-head>strong,
+.print-sheet.invoice-vertical .slip[data-copy] .copy-name,
+.print-sheet.invoice-vertical .slip[data-copy] .slip-number,
+.print-sheet.invoice-vertical .slip[data-copy] .buyer-honorific,
+.print-sheet.invoice-vertical .slip[data-copy] input,
+.print-sheet.invoice-vertical .slip[data-copy] .mirror,
+.print-sheet.invoice-vertical .slip[data-copy] .calculated{
+ color:var(--copy-ink);
+}
+@media print{
+ .print-sheet.invoice-vertical .slip[data-copy]{
+  color:var(--copy-ink)!important;
+  border-color:var(--copy-ink)!important;
+  background:#fff!important;
+  print-color-adjust:exact;
+  -webkit-print-color-adjust:exact;
+ }
+ .print-sheet.invoice-vertical .slip[data-copy] th,
+ .print-sheet.invoice-vertical .slip[data-copy] td,
+ .print-sheet.invoice-vertical .slip[data-copy] .form-head,
+ .print-sheet.invoice-vertical .slip[data-copy] .amount-line,
+ .print-sheet.invoice-vertical .slip[data-copy] .notice{
+  border-color:var(--copy-ink)!important;
+  background:#fff!important;
+ }
+ .print-sheet.invoice-vertical .slip[data-copy] input,
+ .print-sheet.invoice-vertical .slip[data-copy] .copy-name,
+ .print-sheet.invoice-vertical .slip[data-copy] .buyer-honorific,
+ .print-sheet.invoice-vertical .slip[data-copy] .form-head>strong,
+ .print-sheet.invoice-vertical .slip[data-copy] th,
+ .print-sheet.invoice-vertical .slip[data-copy] td{
+  color:var(--copy-ink)!important;
+ }
+}
