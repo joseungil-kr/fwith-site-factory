@@ -422,3 +422,28 @@ button,input,select{font:inherit}
   color:var(--copy-ink)!important;
  }
 }
+
+
+/* Korean amount words for portrait top/bottom invoice only.
+   Keep enough space for "일백오십구만사천오백원 정 (₩1,594,500)" on each half. */
+.print-sheet.invoice-vertical .slip .vertical-amount-line{
+ grid-template-columns:36% minmax(0,1fr);
+ gap:1mm;
+}
+.print-sheet.invoice-vertical .slip .vertical-amount-line strong.amount-korean{
+ display:block;
+ min-width:0;
+ text-align:right;
+ font-size:8.8pt;
+ font-weight:850;
+ letter-spacing:-.15pt;
+ white-space:nowrap;
+ overflow:visible;
+}
+@media print{
+ .print-sheet.invoice-vertical .slip .vertical-amount-line strong.amount-korean{
+  color:var(--copy-ink)!important;
+  print-color-adjust:exact;
+  -webkit-print-color-adjust:exact;
+ }
+}
