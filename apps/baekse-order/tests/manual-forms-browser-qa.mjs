@@ -45,6 +45,9 @@ try{
  await page.locator('[data-copy=supplier] [data-field=item-0-name]').fill('잉어반죽');
  await page.locator('[data-copy=supplier] [data-field=item-0-qty]').fill('2');
  await page.locator('[data-copy=supplier] [data-field=item-0-price]').fill('12500');
+ assert.equal(await page.locator('[data-copy=supplier] [data-field=item-0-price]').inputValue(),'12,500');
+ assert.equal((await page.locator('[data-copy=recipient] [data-calc="item-1-amount"]').innerText()).trim(),'');
+ assert.equal((await page.locator('[data-copy=recipient] [data-calc="item-1-tax"]').innerText()).trim(),'');
  await page.locator('[data-copy=supplier] [data-field=previous]').fill('100000');
  await page.locator('[data-copy=supplier] [data-field=paid]').fill('30000');
  assert.equal((await page.locator('[data-copy=recipient] [data-mirror=supplier]').innerText()).trim(),'백세푸드 테스트');
@@ -127,9 +130,12 @@ try{
  await page.locator('[data-copy=supplier] [data-field=item-0-name]').fill('꼬치어묵');
  await page.locator('[data-copy=supplier] [data-field=item-0-qty]').fill('3');
  await page.locator('[data-copy=supplier] [data-field=item-0-price]').fill('8000');
+ assert.equal(await page.locator('[data-copy=supplier] [data-field=item-0-price]').inputValue(),'8,000');
+ assert.equal((await page.locator('[data-copy=recipient] [data-calc="item-1-amount"]').innerText()).trim(),'','Receipt unused row must remain blank');
  await page.locator('[data-copy=supplier] [data-field=item-14-name]').fill('추가 품목 15번');
  await page.locator('[data-copy=supplier] [data-field=item-14-qty]').fill('2');
  await page.locator('[data-copy=supplier] [data-field=item-14-price]').fill('3500');
+ assert.equal(await page.locator('[data-copy=supplier] [data-field=item-14-price]').inputValue(),'3,500');
  assert.equal(await page.locator('[data-copy=supplier] .parties tr:nth-child(2) th').first().innerText(),'공급자(상호)');
  assert.equal(await page.locator('[data-copy=recipient] .parties tr:nth-child(4) th').first().innerText(),'공급받는자');
  for(const copy of ['supplier','recipient']){
