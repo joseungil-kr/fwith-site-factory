@@ -337,3 +337,88 @@ button,input,select{font:inherit}
   color:var(--copy-ink)!important;
  }
 }
+
+
+/* Vertical A4 variant only: 10 transaction lines, four shared rows for the
+   recipient on the left and supplier on the right. Both side titles read top-down. */
+.print-sheet.invoice-vertical .vertical-party-details{
+ flex:none;
+ height:25mm;
+ display:flex;
+ flex-direction:column;
+ min-width:0;
+}
+.print-sheet.invoice-vertical .vertical-date-row{
+ display:flex;
+ align-items:center;
+ flex:none;
+ height:4.5mm;
+ min-width:0;
+ border:.18mm solid #526062;
+ border-bottom:0;
+}
+.print-sheet.invoice-vertical .vertical-date-row>strong{
+ flex:0 0 17mm;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ height:100%;
+ font-size:7pt;
+ border-right:.18mm solid #526062;
+}
+.print-sheet.invoice-vertical .vertical-date-row>input,
+.print-sheet.invoice-vertical .vertical-date-row>.mirror{
+ flex:1 1 auto;
+ min-width:0;
+ height:100%;
+ line-height:4.3mm;
+ font-size:7.2pt;
+ padding:0 1mm;
+}
+.print-sheet.invoice-vertical .vertical-party-table{
+ width:100%;
+ flex:none;
+ height:20.5mm;
+ table-layout:fixed;
+}
+.print-sheet.invoice-vertical .vertical-party-table tr{height:5.125mm}
+.print-sheet.invoice-vertical .vertical-party-table col.vertical-party-side{width:5.5%}
+.print-sheet.invoice-vertical .vertical-party-table col.vertical-party-field{width:11%}
+.print-sheet.invoice-vertical .vertical-party-table col.vertical-party-data{width:33.5%}
+.print-sheet.invoice-vertical .vertical-party-table .vertical-side-label{
+ writing-mode:vertical-rl;
+ text-orientation:upright;
+ font-weight:850;
+ font-size:7pt;
+ letter-spacing:0;
+ line-height:1.05;
+ padding:0;
+ text-align:center;
+ white-space:nowrap;
+}
+.print-sheet.invoice-vertical .vertical-party-table th:not(.vertical-side-label){
+ font-size:6.9pt;
+ letter-spacing:-.18pt;
+}
+.print-sheet.invoice-vertical .vertical-party-table td>input,
+.print-sheet.invoice-vertical .vertical-party-table td>.mirror{font-size:7.2pt}
+.print-sheet.invoice-vertical .slip .item-table{height:72mm}
+.print-sheet.invoice-vertical .slip .item-table tbody tr{height:6.7mm}
+.print-sheet.invoice-vertical .slip[data-copy] .vertical-date-row,
+.print-sheet.invoice-vertical .slip[data-copy] .vertical-date-row>strong{
+ border-color:var(--copy-ink);
+ color:var(--copy-ink);
+}
+@media print{
+ .print-sheet.invoice-vertical .slip[data-copy] .vertical-date-row,
+ .print-sheet.invoice-vertical .slip[data-copy] .vertical-party-table{
+  background:#fff!important;
+  print-color-adjust:exact;
+  -webkit-print-color-adjust:exact;
+ }
+ .print-sheet.invoice-vertical .slip[data-copy] .vertical-date-row,
+ .print-sheet.invoice-vertical .slip[data-copy] .vertical-date-row>strong{
+  border-color:var(--copy-ink)!important;
+  color:var(--copy-ink)!important;
+ }
+}
