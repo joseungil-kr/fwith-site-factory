@@ -26,15 +26,45 @@ try{
  assert.equal(await page.locator('.slip[data-copy="supplier"]').count(),1);
  assert.equal(await page.locator('.slip[data-copy="recipient"]').count(),1);
  for(const copy of ['supplier','recipient'])
-  assert.equal(await page.locator('.slip[data-copy="'+copy+'"] .item-table tbody tr').count(),15);
+  assert.equal(await page.locator('.slip[data-copy="'+copy+'"] .item-table tbody tr').count(),10);
  const upperInputNames=await page.locator('[data-copy="supplier"] [data-field]').evaluateAll(nodes=>nodes.map(n=>n.dataset.field).sort());
  const original=await context.newPage();
  await original.goto(host+'/manual-invoice/',{waitUntil:'networkidle'});
  const oldInputNames=await original.locator('[data-copy="supplier"] [data-field]').evaluateAll(nodes=>nodes.map(n=>n.dataset.field).sort());
- assert.deepEqual(upperInputNames,oldInputNames,'Top/bottom variant must share exact input field names with original invoice');
+ assert.equal(await original.locator('[data-copy="supplier"] .item-table tbody tr').count(),15);
+ const oldShared=oldInputNames.filter(name=>name!=='buyerContact'&&!/^item-(1[0-4])-/u.test(name));
+ const verticalShared=upperInputNames.filter(name=>!['buyerNo','buyerPhone'].includes(name));
+ assert.deepEqual(verticalShared,oldShared,'Finance and 10 shared item rows must retain identical field names');
+ assert.ok(upperInputNames.includes('buyerNo'),'Recipient registration number required');
+ assert.ok(upperInputNames.includes('buyerPhone'),'Recipient phone required');
+ assert.ok(!upperInputNames.includes('buyerContact'),'New 4-field layout replaces separate contact-person entry');
  const originalInk=await original.locator('.slip[data-copy="supplier"]').evaluate(el=>getComputedStyle(el).borderTopColor);
  assert.notEqual(originalInk,'rgb(154, 38, 48)','Existing A4 landscape invoice must not inherit the new red ink');
  await original.close();
+ const expectedEntries=[['상호','buyer','supplier'],['등록번호','buyerNo','supplierNo'],['소재지','buyerAddress','supplierAddress'],['연락처','buyerPhone','supplierPhone']];
+ for(const copy of ['supplier','recipient']){
+  const table=page.locator('.slip[data-copy="'+copy+'"] .vertical-party-table');
+  assert.equal(await table.locator('tbody tr').count(),4,'There must be four business information rows');
+  assert.equal(await table.locator('col').count(),6,'Buyer and supplier each have 3 physical columns');
+  const heads=await table.locator('.vertical-side-label').allTextContents();
+  assert.deepEqual(heads,['공급받는자','공급자']);
+  for(const label of await table.locator('.vertical-side-label').all()){
+   assert.equal(await label.getAttribute('rowspan'),'4','Vertical title spans exactly four rows');
+   assert.equal(await label.evaluate(el=>getComputedStyle(el).writingMode),'vertical-rl');
+   assert.equal(await label.evaluate(el=>getComputedStyle(el).textOrientation),'upright');
+  }
+  for(let n=0;n<4;n++){
+   const row=table.locator('tbody tr').nth(n);
+   assert.deepEqual(await row.locator('th:not(.vertical-side-label)').allTextContents(),[expectedEntries[n][0],expectedEntries[n][0]]);
+   const cells=await row.locator('td').all();
+   assert.equal(cells.length,2);
+   for(let j=0;j<2;j++){
+    const field=expectedEntries[n][j+1];
+    const target=copy==='supplier'?cells[j].locator('input[data-field="'+field+'"]'):cells[j].locator('[data-mirror="'+field+'"]');
+    assert.equal(await target.count(),1,'Correct '+(j===0?'buyer':'supplier')+' field on row '+n);
+   }
+  }
+ }
  const geometry=await page.locator('.print-sheet').evaluate(sheet=>{
   const box=sheet.getBoundingClientRect();
   const top=sheet.querySelector('[data-copy="supplier"]');
@@ -73,22 +103,24 @@ try{
  await fill('supplierPhone','031-407-0103');
  await fill('supplierAddress','경기 안산 공급자주소');
  await fill('buyer','안산중앙점');
- await fill('buyerContact','김담당');
+ await fill('buyerNo','110-11-11011');
+ await fill('buyerPhone','010-1234-5678');
  await fill('buyerAddress','경기 안산 거래처주소');
  await fill('item-0-name','잉어반죽');
  await fill('item-0-qty','2');
  await fill('item-0-price','12500');
- await fill('item-14-name','팥앙금');
- await fill('item-14-qty','1');
- await fill('item-14-price','8000');
+ await fill('item-9-name','팥앙금');
+ await fill('item-9-qty','1');
+ await fill('item-9-price','8000');
  await fill('previous','100000');
  await fill('paid','30000');
  assert.equal((await page.locator('[data-copy="recipient"] [data-mirror=buyer]').innerText()).trim(),'안산중앙점');
- assert.equal((await page.locator('[data-copy="recipient"] [data-mirror=buyerContact]').innerText()).trim(),'김담당');
+ assert.equal((await page.locator('[data-copy="recipient"] [data-mirror=buyerNo]').innerText()).trim(),'110-11-11011');
+ assert.equal((await page.locator('[data-copy="recipient"] [data-mirror=buyerPhone]').innerText()).trim(),'010-1234-5678');
  assert.equal((await page.locator('[data-copy="recipient"] [data-mirror=supplier]').innerText()).trim(),'백세푸드');
- assert.equal((await page.locator('[data-copy="recipient"] [data-mirror=item-14-name]').innerText()).trim(),'팥앙금');
+ assert.equal((await page.locator('[data-copy="recipient"] [data-mirror=item-9-name]').innerText()).trim(),'팥앙금');
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=item-0-amount]').innerText()).trim(),'25,000');
- assert.equal((await page.locator('[data-copy="recipient"] [data-calc=item-14-amount]').innerText()).trim(),'8,000');
+ assert.equal((await page.locator('[data-copy="recipient"] [data-calc=item-9-amount]').innerText()).trim(),'8,000');
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=supply]').first().innerText()).trim(),'33,000');
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=invoiceTotal]').innerText()).trim(),'33,000');
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=grand]').first().innerText()).trim(),'133,000');
@@ -109,7 +141,7 @@ try{
      heading:get('.form-head','borderLeftColor'),
      headingBackground:get('.form-head','backgroundColor'),
      copyLabel:get('.copy-name','color'),
-     tableLabel:get('.parties th','color'),
+     tableLabel:get('.vertical-party-table th','color'),
      tableGrid:get('.item-table td','borderTopColor'),
      typedText:slip.dataset.copy==='supplier'?get('input[data-field="supplier"]','color'):null,
      calculatedText:get('.calculated','color'),
@@ -139,5 +171,5 @@ try{
  await blank.close();
  assert.deepEqual(pageErrors,[],'Unexpected client errors');
  assert.deepEqual(networkWrites,[],'Independent form must never send input data to server');
- console.log('TOP_BOTTOM_INVOICE_BROWSER_PASS A4 portrait supplier RED top and recipient BLUE bottom in screen/print, same 15 fields, VAT mirror, blank PDF, horizontal cut');
+ console.log('TOP_BOTTOM_INVOICE_BROWSER_PASS A4 portrait supplier RED top and recipient BLUE bottom in screen/print, same 10 shared line fields, VAT mirror, blank PDF, horizontal cut');
 }finally{await browser.close()}
