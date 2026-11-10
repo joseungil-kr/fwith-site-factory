@@ -25,7 +25,7 @@ test('right-hand form mirrors the left-hand form; amounts are calculated client-
  assert.ok(js.includes('data-copy="'+( 'vendor' || 'supplier')+'"')===false); // no hidden third-party data model
  assert.ok(js.includes("copy('supplier')+copy('recipient')"));
  assert.ok(js.includes("root.addEventListener('input',event=>{"));
- assert.ok(js.includes("root.addEventListener('change',synchronize)"));
+ assert.ok(js.includes("root.addEventListener('change',event=>{"));
  assert.ok(js.includes("Math.round(amount*.1)"));
  assert.ok(js.includes("toggle.textContent=enabled?'부가세 별도':'부가세 자동입력'"));
  assert.ok(js.includes("setCalculated('invoiceTotal',supply+tax)"));
