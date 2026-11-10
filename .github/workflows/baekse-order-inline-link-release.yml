@@ -161,7 +161,7 @@ jobs:
                   content=asset.read().decode('utf-8')
                   assert asset.status==200 and all(marker in content for marker in markers),'Standalone manual form missing or wrong '+path
                   if path in ('/manual-invoice/','/manual-invoice-vertical/','/simple-receipt/'):
-                    nav=re.search(r'<nav class="toolbar-nav"[\\s\\S]*?</nav>',content)
+                    nav=re.search(r'<nav class="toolbar-nav"[\s\S]*?</nav>',content)
                     assert nav and '백세푸드 홈' not in nav.group(0),'Legacy home menu still live '+path
                     assert len(re.findall(r'<a\\b',nav.group(0)))==4,'Form link count mismatch '+path
                     assert len(re.findall(r'<button\\b',nav.group(0)))==2,'Action button count mismatch '+path
