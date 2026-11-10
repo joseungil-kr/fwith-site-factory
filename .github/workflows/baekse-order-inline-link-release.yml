@@ -1,4 +1,4 @@
-name: Baekse guarded A4 portrait top-bottom invoice release 20261110
+name: Baekse guarded A4 portrait role-ink colors release 20261110
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
@@ -128,7 +128,11 @@ jobs:
                   'transform:rotate(90deg)','buyer-honorific{flex:0 0 auto',
                   '.print-sheet.invoice.invoice-vertical{width:210mm;height:296mm;padding:4mm}',
                   'grid-template-rows:repeat(2,minmax(0,1fr));','height:294mm!important;',
-                  '.print-sheet .slip .form-head{', '.print-sheet .slip .parties th{background:#fff}'])
+                  '.print-sheet .slip .form-head{', '.print-sheet .slip .parties th{background:#fff}',
+                  '.print-sheet.invoice-vertical .slip[data-copy="supplier"]{--copy-ink:#9a2630}',
+                  '.print-sheet.invoice-vertical .slip[data-copy="recipient"]{--copy-ink:#244a89}',
+                  'border-color:var(--copy-ink)!important;',
+                  'color:var(--copy-ink)!important;'])
               ]:
                 with opener.open(root+path,timeout=30) as asset:
                   content=asset.read().decode('utf-8')
@@ -151,6 +155,7 @@ jobs:
                 assert response.status==200 and 'data-form="invoice-vertical"' in content, 'Top/bottom blank variant unavailable'
                 assert 'noindex' in response.headers.get('X-Robots-Tag','').lower(), 'Top/bottom blank variant must be noindex'
               print('TOP_BOTTOM_A4_PORTRAIT_PUBLIC_PASS')
+              print('A4_PORTRAIT_ROLE_INK_SUPPLIER_RED_RECIPIENT_BLUE_PASS')
               print('STANDALONE_MANUAL_FORMS_PUBLIC_PASS')
               with opener.open(root+'/manual-invoice/?blank=1&print=1',timeout=30) as asset:
                 assert 'noindex' in asset.headers.get('X-Robots-Tag','').lower(),'Blank print variants must be noindex'
