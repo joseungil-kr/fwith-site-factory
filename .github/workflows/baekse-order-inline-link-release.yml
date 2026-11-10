@@ -117,7 +117,7 @@ jobs:
                   '빈 양식 PDF','/manual-forms/forms.js']),
                 ('/simple-receipt/',['id="print-form"','data-form="receipt"','@page{size:A4 portrait;margin:0}',
                   '15품목','<title>무료 간이영수증 양식 | 온라인 영수증 작성·PDF 저장</title>','class="seo-guide"','property="og:image"']),
-                ('/manual-forms/forms.js',["copy('supplier')+copy('recipient')","root.addEventListener('input',synchronize)","window.print()",
+                ('/manual-forms/forms.js',["copy('supplier')+copy('recipient')","root.addEventListener('input',event=>{","window.print()",
                   'const count=verticalInvoice?10:15;', "receipt?'공급자(상호)'", '<th>공급받는자</th>', '<th>담당자</th>',
                   'buyer-contact-entry','buyer-honorific','귀하',
                   'party-supplier party-supplier-start','party-buyer party-buyer-start','cut-label',
