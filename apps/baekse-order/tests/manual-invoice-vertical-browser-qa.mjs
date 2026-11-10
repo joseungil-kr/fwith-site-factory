@@ -27,6 +27,18 @@ try{
  assert.equal(await page.locator('.slip[data-copy="recipient"]').count(),1);
  for(const copy of ['supplier','recipient'])
   assert.equal(await page.locator('.slip[data-copy="'+copy+'"] .item-table tbody tr').count(),10);
+ for(const copy of ['supplier','recipient']){
+  for(const line of [0,5,9]){
+   assert.equal((await page.locator('[data-copy="'+copy+'"] [data-calc="item-'+line+'-amount"]').innerText()).trim(),'','Blank line amount should not display 0');
+   assert.equal((await page.locator('[data-copy="'+copy+'"] [data-calc="item-'+line+'-tax"]').innerText()).trim(),'','Blank line tax should not display 0');
+  }
+ }
+ const priceTest=page.locator('[data-copy="supplier"] [data-field="item-0-price"]');
+ await priceTest.pressSequentially('1594500');
+ assert.equal(await priceTest.inputValue(),'1,594,500','Typing price automatically groups thousands');
+ assert.equal((await page.locator('[data-copy="recipient"] [data-calc="item-0-amount"]').innerText()).trim(),'','A price alone must not create a line total');
+ await priceTest.fill('');
+ assert.equal((await page.locator('[data-copy="recipient"] [data-calc="item-0-amount"]').innerText()).trim(),'','Clearing price restores blank amount');
  const upperInputNames=await page.locator('[data-copy="supplier"] [data-field]').evaluateAll(nodes=>nodes.map(n=>n.dataset.field).sort());
  const original=await context.newPage();
  await original.goto(host+'/manual-invoice/',{waitUntil:'networkidle'});
@@ -109,9 +121,11 @@ try{
  await fill('item-0-name','잉어반죽');
  await fill('item-0-qty','2');
  await fill('item-0-price','12500');
+ assert.equal(await page.locator('[data-copy="supplier"] [data-field="item-0-price"]').inputValue(),'12,500');
  await fill('item-9-name','팥앙금');
  await fill('item-9-qty','1');
  await fill('item-9-price','8000');
+ assert.equal(await page.locator('[data-copy="supplier"] [data-field="item-9-price"]').inputValue(),'8,000');
  await fill('previous','100000');
  await fill('paid','30000');
  assert.equal((await page.locator('[data-copy="recipient"] [data-mirror=buyer]').innerText()).trim(),'안산중앙점');
@@ -130,10 +144,17 @@ try{
  assert.equal((await page.locator('[data-copy="recipient"] [data-amount-korean]').innerText()).trim(),'삼만육천삼백원 정 (₩36,300)');
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=grand]').first().innerText()).trim(),'136,300');
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=balance]').innerText()).trim(),'106,300');
+ for(const copy of ['supplier','recipient']){
+  for(const line of [1,5,8]){
+   assert.equal((await page.locator('[data-copy="'+copy+'"] [data-calc="item-'+line+'-amount"]').innerText()).trim(),'');
+   assert.equal((await page.locator('[data-copy="'+copy+'"] [data-calc="item-'+line+'-tax"]').innerText()).trim(),'');
+  }
+ }
  // User's requested amount example; both identical copies should update immediately.
  await page.locator('#vat-toggle').click();
  await fill('item-0-qty','1');
  await fill('item-0-price','1594500');
+ assert.equal(await page.locator('[data-copy="supplier"] [data-field="item-0-price"]').inputValue(),'1,594,500');
  await fill('item-9-qty','0');
  await fill('item-9-price','0');
  await fill('previous','0');
@@ -191,6 +212,8 @@ try{
  assert.equal(await blank.locator('[data-copy="supplier"] [data-field=supplier]').inputValue(),'');
  assert.equal((await blank.locator('[data-copy="recipient"] [data-calc=grand]').first().innerText()).trim(),'');
  assert.equal((await blank.locator('[data-copy="recipient"] [data-amount-korean]').innerText()).trim(),'','Blank form must not print an automatic amount');
+ assert.equal((await blank.locator('[data-copy="recipient"] [data-calc="item-0-amount"]').innerText()).trim(),'');
+ assert.equal((await blank.locator('[data-copy="recipient"] [data-calc="item-0-tax"]').innerText()).trim(),'');
  await blank.pdf({path:resolve('qa-manual-vertical/vertical-blank-portrait.pdf'),printBackground:true,preferCSSPageSize:true});
  await blank.close();
  assert.deepEqual(pageErrors,[],'Unexpected client errors');
