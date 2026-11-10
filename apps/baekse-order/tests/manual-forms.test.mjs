@@ -280,3 +280,31 @@ test('three form variants group unit prices and show no 0 in unfilled rows',()=>
  assert.ok(js.includes('const output=(key)=>'));
  assert.ok(!js.includes('">0</span>'),'Calculated item cells must not contain default zero');
 });
+
+
+test('all three form pages share the same top navigation order, unique active state, and Baekse homepage',()=>{
+ const items=[
+  {file:'manual-invoice/index.html',self:'/manual-invoice/'},
+  {file:'manual-invoice-vertical/index.html',self:'/manual-invoice-vertical/'},
+  {file:'simple-receipt/index.html',self:'/simple-receipt/'}
+ ];
+ const routes=['https://baeksefood.com/','/manual-invoice/','/manual-invoice-vertical/','/simple-receipt/'];
+ for(const {file,self} of items){
+  const html=readFileSync(new URL(file,root),'utf8');
+  const segment=html.match(/<nav class="toolbar-nav"[\s\S]*?<\/nav>/)?.[0];
+  assert.ok(segment,'Missing shared form menu '+file);
+  assert.ok(segment.includes('aria-label="백세푸드 무료 서식 상단 메뉴"'));
+  let position=-1;
+  for(const href of routes){
+   const next=segment.indexOf('href="'+href+'"');
+   assert.ok(next>position,'Menu items must appear in the same order: '+file+' '+href);
+   position=next;
+  }
+  assert.equal((segment.match(/aria-current="page"/g)||[]).length,1,'Exactly one active menu item');
+  assert.ok(segment.includes('href="'+self+'" aria-current="page"'));
+  assert.ok(segment.includes('id="clear-form"'));
+  assert.ok(segment.includes('id="print-form"'));
+ }
+ assert.ok(css.includes('.toolbar-nav a[aria-current="page"]{'));
+ assert.ok(css.includes('.toolbar-nav .form-home-link{'));
+});
