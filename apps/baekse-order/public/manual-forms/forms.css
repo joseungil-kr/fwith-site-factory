@@ -8,7 +8,6 @@ button,input,select{font:inherit}
 .toolbar-nav{display:flex;gap:8px;flex-wrap:wrap}
 .toolbar-nav a,.toolbar-nav button{background:#fff;color:#0b685d;text-decoration:none;border:1px solid #0b7669;border-radius:8px;padding:10px 14px;min-height:42px;cursor:pointer;font-weight:700;font-size:13px}
 .toolbar-nav a[aria-current="page"]{background:#e5f3ef;color:#07594f;border-color:#73b9a9;font-weight:850}
-.toolbar-nav .form-home-link{border-color:#c5d5d1;color:#3c5852}
 .toolbar-nav button.primary{background:#0b7669;color:#fff}
 .toolbar-nav button.minor{border-color:#d1dcdb;color:#667677}
 .toolbar-nav a:hover,.toolbar-nav button:hover{filter:brightness(.94)}
@@ -473,9 +472,8 @@ button,input,select{font:inherit}
 }
 
 
-/* Stable two-tier navigation for all three public forms.
-   Fixed link/action slots prevent the receipt (which lacks a blank-PDF button)
-   from collapsing to one row or shifting Reset/Print while switching forms. */
+/* Six controls in one horizontal row on all three form pages.
+   Narrow screens scroll horizontally rather than wrapping the menu. */
 @media screen{
  .toolbar{
   display:grid;
@@ -504,10 +502,17 @@ button,input,select{font:inherit}
  }
  .toolbar-nav{
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  grid-template-rows:repeat(2,minmax(42px,auto));
+  grid-template-columns:repeat(6,minmax(170px,1fr));
+  grid-template-rows:minmax(42px,auto);
   gap:8px;
   align-items:stretch;
+  min-width:0;
+  max-width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
+  overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
  }
  .toolbar-nav a,.toolbar-nav button{
   display:flex;
@@ -518,12 +523,10 @@ button,input,select{font:inherit}
   min-height:42px;
   line-height:1.3;
   padding:8px 7px;
-  overflow-wrap:anywhere;
-  word-break:keep-all;
+  white-space:nowrap;
+  overflow-wrap:normal;
+  word-break:normal;
  }
- .toolbar-nav #blank-pdf{grid-row:2;grid-column:1}
- .toolbar-nav #clear-form{grid-row:2;grid-column:2}
- .toolbar-nav #print-form{grid-row:2;grid-column:3 / 5}
 }
 @media screen and (max-width:650px){
  .toolbar-info h1{
@@ -535,10 +538,11 @@ button,input,select{font:inherit}
   -webkit-line-clamp:2;
  }
  .toolbar-nav{
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  grid-template-rows:repeat(4,minmax(42px,auto));
+  gap:6px;
+  grid-template-columns:repeat(6,minmax(165px,1fr));
  }
- .toolbar-nav #blank-pdf{grid-column:1;grid-row:3}
- .toolbar-nav #clear-form{grid-column:2;grid-row:3}
- .toolbar-nav #print-form{grid-column:1 / -1;grid-row:4}
+ .toolbar-nav a,.toolbar-nav button{
+  font-size:12px;
+  padding:8px 6px;
+ }
 }

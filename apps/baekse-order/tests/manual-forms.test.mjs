@@ -282,70 +282,58 @@ test('three form variants group unit prices and show no 0 in unfilled rows',()=>
 });
 
 
-test('all three form pages share the same top navigation order, unique active state, and Baekse homepage',()=>{
+test('three public form navs share six controls and do not expose the Baekse home shortcut',()=>{
  const items=[
   {file:'manual-invoice/index.html',self:'/manual-invoice/'},
   {file:'manual-invoice-vertical/index.html',self:'/manual-invoice-vertical/'},
   {file:'simple-receipt/index.html',self:'/simple-receipt/'}
  ];
- const routes=['https://baeksefood.com/','/manual-invoice/','/manual-invoice-vertical/','/simple-receipt/'];
+ const routes=['/manual-invoice/','/manual-invoice-vertical/','/simple-receipt/'];
+ const labels=['거래명세표 A4 가로','거래명세표 A4 세로','간이영수증',
+   '빈 양식 PDF 다운로드','전체 초기화','출력하기 / PDF 저장'];
  for(const {file,self} of items){
   const html=readFileSync(new URL(file,root),'utf8');
-  const segment=html.match(/<nav class="toolbar-nav"[\s\S]*?<\/nav>/)?.[0];
-  assert.ok(segment,'Missing shared form menu '+file);
-  assert.ok(segment.includes('aria-label="백세푸드 무료 서식 상단 메뉴"'));
+  const nav=html.match(/<nav class="toolbar-nav"[\s\S]*?<\/nav>/)?.[0];
+  assert.ok(nav,'Missing shared form navigation: '+file);
+  assert.ok(!nav.includes('백세푸드 홈'),'Removed homepage button must not remain: '+file);
+  assert.ok(!nav.includes('href="https://baeksefood.com/"'),'Homepage navigation must be absent');
   let position=-1;
   for(const href of routes){
-   const next=segment.indexOf('href="'+href+'"');
-   assert.ok(next>position,'Menu items must appear in the same order: '+file+' '+href);
+   const next=nav.indexOf('href="'+href+'"');
+   assert.ok(next>position,'Form links out of order in '+file+' '+href);
    position=next;
   }
-  assert.equal((segment.match(/aria-current="page"/g)||[]).length,1,'Exactly one active menu item');
-  assert.ok(segment.includes('href="'+self+'" aria-current="page"'));
-  assert.ok(segment.includes('id="clear-form"'));
-  assert.ok(segment.includes('id="print-form"'));
- }
- assert.ok(css.includes('.toolbar-nav a[aria-current="page"]{'));
- assert.ok(css.includes('.toolbar-nav .form-home-link{'));
-});
-
-
-test('all three forms reserve exactly the same two-tier header and PDF/action slots',()=>{
- const pages=[
-  'manual-invoice/index.html',
-  'manual-invoice-vertical/index.html',
-  'simple-receipt/index.html'
- ];
- const labels=['백세푸드 홈','거래명세표 A4 가로','거래명세표 A4 세로','간이영수증',
-   '빈 양식 PDF 다운로드','전체 초기화','출력하기 / PDF 저장'];
- for(const file of pages){
-  const html=readFileSync(new URL(file,root),'utf8');
-  const nav=html.match(/<nav class="toolbar-nav"[\s\S]*?<\/nav>/)?.[0];
-  assert.ok(nav,'Missing top menu '+file);
-  let start=-1;
+  let labelPosition=-1;
   for(const label of labels){
    const next=nav.indexOf('>'+label+'</');
-   assert.ok(next>start,'Header labels/order mismatch '+file+': '+label);
-   start=next;
+   assert.ok(next>labelPosition,'Menu label order mismatch in '+file+': '+label);
+   labelPosition=next;
   }
-  assert.equal((nav.match(/<a\b/g)||[]).length,5,'Five real links must be visible');
-  assert.equal((nav.match(/<button\b/g)||[]).length,2,'Only two real action buttons');
+  assert.equal((nav.match(/<a\b/g)||[]).length,4,'Three forms plus blank PDF link');
+  assert.equal((nav.match(/<button\b/g)||[]).length,2,'Reset and Print actions');
+  assert.equal((nav.match(/aria-current="page"/g)||[]).length,1);
+  assert.ok(nav.includes('href="'+self+'" aria-current="page"'));
   assert.ok(nav.includes('id="blank-pdf"'));
+  assert.ok(nav.includes('id="clear-form"'));
+  assert.ok(nav.includes('id="print-form"'));
  }
+ assert.ok(css.includes('.toolbar-nav a[aria-current="page"]{'));
+ assert.ok(!css.includes('.toolbar-nav .form-home-link{'));
  const receipt=readFileSync(new URL('simple-receipt/index.html',root),'utf8');
  assert.ok(receipt.includes('href="https://baeksefood.com/downloads/print-forms/receipt.pdf"'));
+});
+
+test('three form headers always use one horizontally scrollable nav row',()=>{
  for(const marker of [
-  '@media screen{',
-  'grid-template-columns:repeat(4,minmax(0,1fr));',
-  'grid-template-rows:repeat(2,minmax(42px,auto));',
-  '.toolbar-nav #blank-pdf{grid-row:2;grid-column:1}',
-  '.toolbar-nav #clear-form{grid-row:2;grid-column:2}',
-  '.toolbar-nav #print-form{grid-row:2;grid-column:3 / 5}',
-  '@media screen and (max-width:650px){',
-  'grid-template-columns:repeat(2,minmax(0,1fr));',
-  'grid-template-rows:repeat(4,minmax(42px,auto));',
-  '.toolbar-nav #print-form{grid-column:1 / -1;grid-row:4}'
- ])assert.ok(css.includes(marker),'Missing consistent toolbar CSS: '+marker);
+  'grid-template-columns:repeat(6,minmax(170px,1fr));',
+  'grid-template-rows:minmax(42px,auto);',
+  'overflow-x:auto;',
+  'white-space:nowrap;',
+  'grid-template-columns:repeat(6,minmax(165px,1fr));',
+  '@media screen and (max-width:650px){'
+ ])assert.ok(css.includes(marker),'Missing one-row toolbar rule '+marker);
+ assert.ok(!css.includes('grid-template-rows:repeat(4,minmax(42px,auto));'));
+ assert.ok(!css.includes('.toolbar-nav #print-form{grid-column:1 / -1;grid-row:4}'));
  assert.ok(css.includes('@media print{')&&css.includes('.toolbar,.print-hint,#feedback{display:none!important}'),
-  'Navigation must still be hidden in paper print/PDF');
+   'Navigation must still be hidden in paper print/PDF');
 });

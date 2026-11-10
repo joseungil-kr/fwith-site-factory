@@ -1,4 +1,4 @@
-name: Baekse guarded three form stable two-row header release 20261110
+name: Baekse guarded one-row six-control forms release 20261110
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
@@ -114,14 +114,14 @@ jobs:
               for path,markers in [
                 ('/manual-invoice/',['id="print-form"','data-form="invoice"','@page{size:A4 landscape;margin:0}',
                   'href="/manual-invoice-vertical/"','href="/simple-receipt/"','id="blank-pdf"',
-                  'href="https://baeksefood.com/"', 'aria-current="page"']),
+                   'aria-current="page"']),
                 ('/manual-invoice-vertical/',['id="print-form"','data-form="invoice-vertical"','@page{size:A4 portrait;margin:0}',
-                  '빈 양식 PDF 다운로드','/manual-forms/forms.js','href="/simple-receipt/"','href="https://baeksefood.com/"',
+                  '빈 양식 PDF 다운로드','/manual-forms/forms.js','href="/simple-receipt/"',
                   'aria-current="page"']),
                 ('/simple-receipt/',['id="print-form"','data-form="receipt"','@page{size:A4 portrait;margin:0}',
                   '15품목','<title>무료 간이영수증 양식 | 온라인 영수증 작성·PDF 저장</title>',
                   'class="seo-guide"','property="og:image"',
-                  'href="/manual-invoice-vertical/"','href="https://baeksefood.com/"','aria-current="page"',
+                  'href="/manual-invoice-vertical/"','aria-current="page"',
                   'id="blank-pdf"','https://baeksefood.com/downloads/print-forms/receipt.pdf']),
                 ('/manual-forms/forms.js',["copy('supplier')+copy('recipient')","root.addEventListener('input',event=>{","window.print()",
                   'const count=verticalInvoice?10:15;', "receipt?'공급자(상호)'", '<th>공급받는자</th>', '<th>담당자</th>',
@@ -151,17 +151,20 @@ jobs:
                   'border-color:var(--copy-ink)!important;',
                   'color:var(--copy-ink)!important;',
                   '.toolbar-nav a[aria-current="page"]{',
-                  'grid-template-columns:repeat(4,minmax(0,1fr));',
-                  'grid-template-rows:repeat(2,minmax(42px,auto));',
-                  '.toolbar-nav #blank-pdf{grid-row:2;grid-column:1}',
-                  '.toolbar-nav #clear-form{grid-row:2;grid-column:2}',
-                  '.toolbar-nav #print-form{grid-row:2;grid-column:3 / 5}',
+                  'grid-template-columns:repeat(6,minmax(170px,1fr));',
+                  'grid-template-rows:minmax(42px,auto);',
+                  'overflow-x:auto;', 'white-space:nowrap;',
                   '@media screen and (max-width:650px){',
-                  '.toolbar-nav #print-form{grid-column:1 / -1;grid-row:4}'])
+                  'grid-template-columns:repeat(6,minmax(165px,1fr));'])
               ]:
                 with opener.open(root+path,timeout=30) as asset:
                   content=asset.read().decode('utf-8')
                   assert asset.status==200 and all(marker in content for marker in markers),'Standalone manual form missing or wrong '+path
+                  if path in ('/manual-invoice/','/manual-invoice-vertical/','/simple-receipt/'):
+                    nav=re.search(r'<nav class="toolbar-nav"[\\s\\S]*?</nav>',content)
+                    assert nav and '백세푸드 홈' not in nav.group(0),'Legacy home menu still live '+path
+                    assert len(re.findall(r'<a\\b',nav.group(0)))==4,'Form link count mismatch '+path
+                    assert len(re.findall(r'<button\\b',nav.group(0)))==2,'Action button count mismatch '+path
                   robots=asset.headers.get('X-Robots-Tag','').lower()
                   if path in ('/manual-invoice/','/simple-receipt/'):
                     assert 'index' in robots and 'noindex' not in robots,'Public free form unexpectedly noindex '+path
@@ -190,7 +193,7 @@ jobs:
               print('A4_PORTRAIT_ROLE_INK_SUPPLIER_RED_RECIPIENT_BLUE_PASS')
               print('STANDALONE_MANUAL_FORMS_PUBLIC_PASS')
               print('THREE_FORM_IDENTICAL_TOP_NAV_AND_ACTIVE_STATES_PASS')
-              print('ALL_3_FORMS_TWO_ROW_HEADER_WITH_RECEIPT_BLANK_PDF_PASS')
+              print('ALL_3_FORMS_ONE_ROW_NAV_WITH_RECEIPT_BLANK_PDF_PASS')
               with opener.open(root+'/manual-invoice/?blank=1&print=1',timeout=30) as asset:
                 assert 'noindex' in asset.headers.get('X-Robots-Tag','').lower(),'Blank print variants must be noindex'
               for imagepath in ('/manual-invoice/og-image.png','/simple-receipt/og-image.png'):
