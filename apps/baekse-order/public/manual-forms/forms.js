@@ -3,7 +3,7 @@ const mode=document.body.dataset.form==='receipt'?'receipt':'invoice';
 const receipt=mode==='receipt';
 const verticalInvoice=document.body.dataset.form==='invoice-vertical';
 const blankMode=!receipt&&new URLSearchParams(location.search).get('blank')==='1';
-const count=15;
+const count=verticalInvoice?10:15;
 const root=document.getElementById('print-root');
 const feedback=document.getElementById('feedback');
 const currency=new Intl.NumberFormat('ko-KR');
@@ -31,6 +31,23 @@ function headline(copy){
  (copy==='supplier'?'공급자 보관용':'공급받는자 보관용')+'</span></div>';
 }
 function parties(editable){
+ if(verticalInvoice){
+  return '<div class="vertical-party-details">'+
+   '<div class="vertical-date-row"><strong>거래일자</strong>'+field('writtenDate','작성일',editable)+'</div>'+
+   '<table class="vertical-party-table" aria-label="공급받는자 및 공급자 정보"><colgroup>'+
+   '<col class="vertical-party-side"><col class="vertical-party-field"><col class="vertical-party-data">'+
+   '<col class="vertical-party-side"><col class="vertical-party-field"><col class="vertical-party-data">'+
+   '</colgroup><tbody>'+
+   '<tr><th class="vertical-side-label" rowspan="4" scope="rowgroup">공급받는자</th><th scope="row">상호</th><td>'+field('buyer','공급받는자 상호',editable)+'</td>'+
+   '<th class="vertical-side-label" rowspan="4" scope="rowgroup">공급자</th><th scope="row">상호</th><td>'+field('supplier','공급자 상호',editable)+'</td></tr>'+
+   '<tr><th scope="row">등록번호</th><td>'+field('buyerNo','공급받는자 등록번호',editable)+'</td>'+
+   '<th scope="row">등록번호</th><td>'+field('supplierNo','공급자 등록번호',editable)+'</td></tr>'+
+   '<tr><th scope="row">소재지</th><td>'+field('buyerAddress','공급받는자 소재지',editable)+'</td>'+
+   '<th scope="row">소재지</th><td>'+field('supplierAddress','공급자 소재지',editable)+'</td></tr>'+
+   '<tr><th scope="row">연락처</th><td>'+field('buyerPhone','공급받는자 연락처',editable)+'</td>'+
+   '<th scope="row">연락처</th><td>'+field('supplierPhone','공급자 연락처',editable)+'</td></tr>'+
+   '</tbody></table></div>';
+ }
  return '<table class="parties"><colgroup><col class="p-label"><col class="p-data"><col class="p-label"><col class="p-data"></colgroup><tbody>'+
  '<tr><th>작성일</th><td colspan="3">'+field('writtenDate','작성일',editable)+'</td></tr>'+
  '<tr class="party-supplier party-supplier-start"><th>'+(receipt?'공급자(상호)':'공급자')+'</th><td>'+field('supplier','공급자 상호',editable)+'</td><th>등록번호</th><td>'+field('supplierNo','공급자 사업자번호',editable)+'</td></tr>'+
