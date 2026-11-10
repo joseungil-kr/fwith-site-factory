@@ -21,7 +21,7 @@ test('standalone invoice and receipt have correct page orientations and print ac
  assert.ok(css.includes('.print-sheet.receipt{width:210mm;height:296mm'));
 });
 test('right-hand form mirrors the left-hand form; amounts are calculated client-side',()=>{
- assert.ok(js.includes("const count=15"));
+ assert.ok(js.includes("const count=verticalInvoice?10:15;"));
  assert.ok(js.includes('data-copy="'+( 'vendor' || 'supplier')+'"')===false); // no hidden third-party data model
  assert.ok(js.includes("copy('supplier')+copy('recipient')"));
  assert.ok(js.includes("root.addEventListener('input',synchronize)"));
@@ -88,14 +88,14 @@ test('free manual invoice landing has meaningful crawlable guide but printing hi
 });
 
 test('receipt and invoice retain 15 rows and use the exact recipient business and contact labels',()=>{
- assert.ok(js.includes("const count=15;"));
+ assert.ok(js.includes("const count=verticalInvoice?10:15;"));
  assert.ok(js.includes("(receipt?'공급자(상호)':'공급자')"));
  assert.ok(js.includes('<th>공급받는자</th>'));
  assert.ok(js.includes('<th>담당자</th><td><span class="buyer-contact-entry">'));
  assert.ok(js.includes('buyer-honorific'));
  assert.ok(js.includes('귀하</span>'));
  assert.ok(js.includes("field('buyerContact','공급받는자 담당자',editable)"));
- assert.ok(!js.includes('buyerNo'),'Old recipient registration-number field must be absent');
+ assert.ok(js.includes("field('buyerNo','공급받는자 등록번호',editable)"),'Recipient registration is available only in the vertical format');
  assert.ok(css.includes('.receipt .item-table tbody tr{height:8.75mm}'));
  assert.ok(css.includes('.receipt .parties .p-label{width:21%}'));
 });
@@ -147,7 +147,7 @@ test('receipt SEO has unique crawlable guide with real instructions and print ex
 });
 
 
-test('new top-bottom A4 invoice reuses the exact fields and 15-row logic',()=>{
+test('top-bottom A4 uses 10 rows and preserves shared financial input fields',()=>{
  const vertical=readFileSync(new URL('manual-invoice-vertical/index.html',root),'utf8');
  assert.ok(vertical.includes('data-form="invoice-vertical"'));
  assert.ok(vertical.includes('@page{size:A4 portrait;margin:0}'));
@@ -162,20 +162,20 @@ test('new top-bottom A4 invoice reuses the exact fields and 15-row logic',()=>{
  assert.ok(js.includes("const verticalInvoice=document.body.dataset.form==='invoice-vertical'"));
  assert.ok(js.includes("verticalInvoice?' invoice-vertical':''"));
  assert.ok(js.includes("copy('supplier')+copy('recipient')"));
- assert.ok(js.includes('const count=15'));
+ assert.ok(js.includes('const count=verticalInvoice?10:15;'));
  for(const name of ['writtenDate','slipNumber','supplier','supplierNo','supplierAddress','supplierPhone',
    'buyer','buyerAddress','buyerContact','memo','previous','paid','vatMode','item-'])
   assert.ok(js.includes(name),'Existing field must remain in shared form engine: '+name);
 });
 
-test('portrait top-bottom A4 has a horizontal cut guide and a compact two-copy 15-row grid',()=>{
+test('portrait top-bottom A4 has a horizontal cut guide and compact 10-row grid',()=>{
  for(const marker of [
   '.print-sheet.invoice.invoice-vertical{width:210mm;height:296mm;padding:4mm}',
   '.print-sheet.invoice-vertical .slips{',
   'grid-template-columns:minmax(0,1fr);',
   'grid-template-rows:repeat(2,minmax(0,1fr));',
-  '.print-sheet.invoice-vertical .slip .item-table{height:78mm',
-  '.print-sheet.invoice-vertical .slip .item-table tbody tr{height:4.85mm}',
+  '.print-sheet.invoice-vertical .slip .item-table{height:72mm',
+  '.print-sheet.invoice-vertical .slip .item-table tbody tr{height:6.7mm}',
   '.print-sheet.invoice-vertical .cut-marker{',
   'border-top:.3mm dashed #626c6c;',
   '.print-sheet.invoice-vertical .cut-marker .cut-label{',
@@ -210,4 +210,39 @@ test('portrait invoice colors every supplier/red and recipient/blue table/text s
  assert.ok(!css.includes('.print-sheet.invoice .slip[data-copy="supplier"]{--copy-ink:'),
    'Color must be scoped to vertical variant, not original landscape invoice');
  assert.ok(css.includes('background:#fff!important;'),'Paper must remain white');
+});
+
+
+test('vertical invoice has exactly four rows each for buyer-left and supplier-right, vertical names',()=>{
+ assert.ok(js.includes('if(verticalInvoice){'),'Only vertical invoice may use paired 4-field layout');
+ assert.ok(js.includes('<table class="vertical-party-table"'));
+ assert.ok(js.includes('<th class="vertical-side-label" rowspan="4" scope="rowgroup">공급받는자</th>'));
+ assert.ok(js.includes('<th class="vertical-side-label" rowspan="4" scope="rowgroup">공급자</th>'));
+ for(const name of ['상호','등록번호','소재지','연락처']){
+  const re=new RegExp('scope="row">'+name+'</th>','g');
+  assert.equal([...js.matchAll(re)].length,2,name+' must appear for buyer and supplier');
+ }
+ for(const fragment of [
+  "field('buyer','공급받는자 상호',editable)",
+  "field('buyerNo','공급받는자 등록번호',editable)",
+  "field('buyerAddress','공급받는자 소재지',editable)",
+  "field('buyerPhone','공급받는자 연락처',editable)",
+  "field('supplier','공급자 상호',editable)",
+  "field('supplierNo','공급자 등록번호',editable)",
+  "field('supplierAddress','공급자 소재지',editable)",
+  "field('supplierPhone','공급자 연락처',editable)",
+  "field('writtenDate','작성일',editable)"
+ ])assert.ok(js.includes(fragment),fragment);
+ for(const fragment of [
+  'writing-mode:vertical-rl;',
+  'text-orientation:upright;',
+  '.vertical-party-table tr{height:5.125mm}',
+  '.vertical-party-table col.vertical-party-side{width:5.5%}',
+  '.vertical-party-table col.vertical-party-field{width:11%}',
+  '.vertical-party-table col.vertical-party-data{width:33.5%}'
+ ])assert.ok(css.includes(fragment),fragment);
+ const vertical=readFileSync(new URL('manual-invoice-vertical/index.html',root),'utf8');
+ assert.ok(vertical.includes('10품목'));
+ assert.ok(vertical.includes('좌측')||vertical.includes('왼쪽 공급받는자'));
+ assert.ok(!vertical.includes('15품목'),'Outdated vertical page description');
 });
