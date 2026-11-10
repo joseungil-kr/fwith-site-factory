@@ -60,13 +60,13 @@ try{
  assert.equal((await page.locator('[data-copy=recipient] [data-calc=tax]').innerText()).trim(),'0');
  assert.equal((await page.locator('[data-copy=recipient] [data-calc=grand]').first().innerText()).trim(),'125,000');
  assert.equal((await page.locator('[data-copy=recipient] [data-calc=balance]').innerText()).trim(),'95,000');
- assert.equal((await page.locator('[data-copy=recipient] [data-calc=invoiceTotal]').innerText()).trim(),'25,000','Transaction total excludes previous balance');
+ assert.equal((await page.locator('[data-copy=recipient] [data-amount-korean]').innerText()).trim(),'이만오천원 정 (₩25,000)','Transaction words exclude previous balance');
  assert.equal((await page.locator('[data-copy=supplier] [data-tax-caption]').innerText()).trim(),'합계금액(부가세별도)');
  await page.locator('#vat-toggle').click();
  assert.equal((await page.locator('#vat-toggle').innerText()).trim(),'부가세 별도');
  assert.equal(await page.locator('#vat-toggle').getAttribute('aria-pressed'),'true');
  assert.equal((await page.locator('[data-copy=supplier] [data-tax-caption]').innerText()).trim(),'합계금액(부가세포함)');
- assert.equal((await page.locator('[data-copy=recipient] [data-calc=invoiceTotal]').innerText()).trim(),'27,500');
+ assert.equal((await page.locator('[data-copy=recipient] [data-amount-korean]').innerText()).trim(),'이만칠천오백원 정 (₩27,500)');
  assert.equal((await page.locator('[data-copy=recipient] [data-mirror=vatMode]').innerText()).trim(),'10%');
  assert.equal((await page.locator('[data-copy=recipient] [data-calc=tax]').innerText()).trim(),'2,500');
  assert.equal((await page.locator('[data-copy=recipient] [data-calc=grand]').first().innerText()).trim(),'127,500');
@@ -102,12 +102,12 @@ try{
  assert.ok(blank.url().includes('blank=1'));
  assert.equal(await blank.locator('[data-copy=supplier] [data-field=supplier]').inputValue(),'');
  assert.equal(await blank.locator('[data-copy=supplier] [data-field=writtenDate]').inputValue(),'');
- assert.equal((await blank.locator('[data-copy=recipient] [data-calc=invoiceTotal]').innerText()).trim(),'');
+ assert.equal((await blank.locator('[data-copy=recipient] [data-amount-korean]').innerText()).trim(),'');
  assert.equal((await blank.locator('[data-copy=recipient] [data-mirror=buyer]').innerText()).trim(),'');
  await blank.pdf({path:'qa-manual-forms/blank-manual-invoice.pdf',printBackground:true,preferCSSPageSize:true});
  await blank.close();
  assert.equal(await page.locator('[data-copy=supplier] [data-field=supplier]').inputValue(),'백세푸드 테스트');
- assert.equal((await page.locator('[data-copy=recipient] [data-calc=invoiceTotal]').innerText()).trim(),'27,500');
+ assert.equal((await page.locator('[data-copy=recipient] [data-amount-korean]').innerText()).trim(),'이만칠천오백원 정 (₩27,500)');
  await page.locator('#vat-toggle').click();
  assert.equal((await page.locator('#vat-toggle').innerText()).trim(),'부가세 자동입력');
  assert.equal((await page.locator('[data-copy=recipient] [data-calc=tax]').innerText()).trim(),'0');
@@ -119,6 +119,27 @@ try{
  await page.locator('#clear-form').click();
  assert.equal((await page.locator('[data-copy=recipient] [data-calc=supply]').innerText()).trim(),'0');
  assert.equal((await page.locator('[data-copy=recipient] [data-mirror=supplier]').innerText()).trim(),'');
+
+ // A long, real requested Korean amount must fit on BOTH A4 landscape half-width copies.
+ const largeInvoice=await context.newPage();
+ await largeInvoice.goto(base+'/manual-invoice/',{waitUntil:'networkidle'});
+ const fillLarge=async(k,v)=>largeInvoice.locator('[data-copy=supplier] [data-field="'+k+'"]').fill(v);
+ await fillLarge('item-0-name','잉어반죽');
+ await fillLarge('item-0-qty','1');
+ await fillLarge('item-0-price','1594500');
+ const expectedWords='일백오십구만사천오백원 정 (₩1,594,500)';
+ assert.equal(await largeInvoice.locator('[data-copy=supplier] [data-field=item-0-price]').inputValue(),'1,594,500');
+ for(const copy of ['supplier','recipient']){
+  const label=largeInvoice.locator('[data-copy="'+copy+'"] .invoice-korean-line [data-amount-korean]');
+  assert.equal((await label.innerText()).trim(),expectedWords);
+  const size=await label.evaluate(el=>{
+   const r=el.getBoundingClientRect(),parent=el.closest('.amount-line').getBoundingClientRect();
+   return {right:r.right,parentRight:parent.right,scroll:el.scrollWidth,client:el.clientWidth};
+  });
+  assert.ok(size.right<=size.parentRight+1&&size.scroll<=size.client+2,'Full Korean amount must fit in landscape half: '+JSON.stringify(size));
+ }
+ await largeInvoice.pdf({path:'qa-manual-forms/manual-invoice-A4-landscape-korean-large.pdf',printBackground:true,preferCSSPageSize:true});
+ await largeInvoice.close();
 
  await page.goto(base+'/simple-receipt/',{waitUntil:'networkidle'});
  assert.equal(await page.locator('.slip').count(),2);
