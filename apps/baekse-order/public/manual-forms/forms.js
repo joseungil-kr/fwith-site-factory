@@ -1,3 +1,4 @@
+import {koreanWonText} from './korean-money.mjs';
 // Independent client-only editable forms. No network access, cookies, storage or ERP mutation.
 const mode=document.body.dataset.form==='receipt'?'receipt':'invoice';
 const receipt=mode==='receipt';
@@ -74,6 +75,9 @@ function itemsTable(editable){
  rows.map(i=>unitRow(i,editable)).join('')+'</tbody></table>';
 }
 function preface(){
+ if(verticalInvoice){
+  return '<div class="amount-line vertical-amount-line"><span data-tax-caption>합계금액(부가세별도)</span><strong class="amount-korean" data-amount-korean></strong></div>';
+ }
  return '<div class="amount-line"><span'+(receipt?'':' data-tax-caption')+'>'+(receipt?'영수 합계금액':'합계금액(부가세별도)')+'</span><strong>₩ '+output(receipt?'grand':'invoiceTotal')+'</strong><span>원정</span></div>';
 }
 function summary(editable){
@@ -128,6 +132,7 @@ function synchronize(){
   const enabled=read('vatMode')==='tax';
   root.querySelectorAll('[data-tax-caption]').forEach(el=>{el.textContent=enabled?'합계금액(부가세포함)':'합계금액(부가세별도)'});
   setCalculated('invoiceTotal',supply+tax);
+  if(verticalInvoice)root.querySelectorAll('[data-amount-korean]').forEach(el=>{el.textContent=blankMode?'':koreanWonText(supply+tax)});
  }
  const previous=receipt?0:cleanNumber(read('previous'));
  const paid=receipt?0:cleanNumber(read('paid'));
