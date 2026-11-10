@@ -1,4 +1,4 @@
-name: Baekse guarded 4 by 4 printed invoice and revised financial footer release 20261109
+name: Baekse guarded A4 portrait top-bottom invoice release 20261110
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
@@ -112,17 +112,22 @@ jobs:
                 assert "th('입 금')" not in source and "th('잔 금')" not in source,'Removed footer payment and balance headings still live'
               print('ORDER_PRINT_FOUR_BY_FOUR_AND_TOTAL_FOOTER_PUBLIC_PASS')
               for path,markers in [
-                ('/manual-invoice/',['id="print-form"','data-form="invoice"','@page{size:A4 landscape;margin:0}']),
+                ('/manual-invoice/',['id="print-form"','data-form="invoice"','@page{size:A4 landscape;margin:0}', 'href="/manual-invoice-vertical/"']),
+                ('/manual-invoice-vertical/',['id="print-form"','data-form="invoice-vertical"','@page{size:A4 portrait;margin:0}',
+                  '빈 양식 PDF','/manual-forms/forms.js']),
                 ('/simple-receipt/',['id="print-form"','data-form="receipt"','@page{size:A4 portrait;margin:0}',
                   '15품목','<title>무료 간이영수증 양식 | 온라인 영수증 작성·PDF 저장</title>','class="seo-guide"','property="og:image"']),
                 ('/manual-forms/forms.js',["copy('supplier')+copy('recipient')","root.addEventListener('input',synchronize)","window.print()",
                   'const count=15;', "receipt?'공급자(상호)'", '<th>공급받는자</th>', '<th>담당자</th>',
                   'buyer-contact-entry','buyer-honorific','귀하',
-                  'party-supplier party-supplier-start','party-buyer party-buyer-start','cut-label']),
+                  'party-supplier party-supplier-start','party-buyer party-buyer-start','cut-label',
+                  "const verticalInvoice=document.body.dataset.form==='invoice-vertical'"]),
                 ('/manual-forms/forms.css',['.print-sheet.invoice{width:297mm;height:209mm','.print-sheet.receipt{width:210mm;height:296mm',
                   '.receipt .item-table tbody tr{height:8.75mm}',
                   '.parties tr.party-buyer-start > *{border-top:.18mm solid #526062}',
                   'transform:rotate(90deg)','buyer-honorific{flex:0 0 auto',
+                  '.print-sheet.invoice.invoice-vertical{width:210mm;height:296mm;padding:4mm}',
+                  'grid-template-rows:repeat(2,minmax(0,1fr));','height:294mm!important;',
                   '.print-sheet .slip .form-head{', '.print-sheet .slip .parties th{background:#fff}'])
               ]:
                 with opener.open(root+path,timeout=30) as asset:
@@ -141,6 +146,11 @@ jobs:
               assert 'border:.65mm solid #0a715e' not in content and 'border:.65mm solid #305e82' not in content, 'Old colored borders remain'
               assert 'border-top:.75mm double' not in content and 'border-top:.95mm solid' not in content, 'Old double or thick borders remain'
               print('WHITE_PRINT_AND_INSLIP_PARTY_DIVIDER_PUBLIC_PASS')
+              with opener.open(root+'/manual-invoice-vertical/?blank=1',timeout=30) as response:
+                content=response.read().decode('utf-8')
+                assert response.status==200 and 'data-form="invoice-vertical"' in content, 'Top/bottom blank variant unavailable'
+                assert 'noindex' in response.headers.get('X-Robots-Tag','').lower(), 'Top/bottom blank variant must be noindex'
+              print('TOP_BOTTOM_A4_PORTRAIT_PUBLIC_PASS')
               print('STANDALONE_MANUAL_FORMS_PUBLIC_PASS')
               with opener.open(root+'/manual-invoice/?blank=1&print=1',timeout=30) as asset:
                 assert 'noindex' in asset.headers.get('X-Robots-Tag','').lower(),'Blank print variants must be noindex'
