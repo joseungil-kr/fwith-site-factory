@@ -122,14 +122,36 @@ try{
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=item-0-amount]').innerText()).trim(),'25,000');
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=item-9-amount]').innerText()).trim(),'8,000');
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=supply]').first().innerText()).trim(),'33,000');
- assert.equal((await page.locator('[data-copy="recipient"] [data-calc=invoiceTotal]').innerText()).trim(),'33,000');
+ assert.equal((await page.locator('[data-copy="recipient"] [data-amount-korean]').innerText()).trim(),'삼만삼천원 정 (₩33,000)');
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=grand]').first().innerText()).trim(),'133,000');
  await page.locator('#vat-toggle').click();
  assert.equal((await page.locator('#vat-toggle').innerText()).trim(),'부가세 별도');
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=tax]').innerText()).trim(),'3,300');
- assert.equal((await page.locator('[data-copy="recipient"] [data-calc=invoiceTotal]').innerText()).trim(),'36,300');
+ assert.equal((await page.locator('[data-copy="recipient"] [data-amount-korean]').innerText()).trim(),'삼만육천삼백원 정 (₩36,300)');
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=grand]').first().innerText()).trim(),'136,300');
  assert.equal((await page.locator('[data-copy="recipient"] [data-calc=balance]').innerText()).trim(),'106,300');
+ // User's requested amount example; both identical copies should update immediately.
+ await page.locator('#vat-toggle').click();
+ await fill('item-0-qty','1');
+ await fill('item-0-price','1594500');
+ await fill('item-9-qty','0');
+ await fill('item-9-price','0');
+ await fill('previous','0');
+ await fill('paid','0');
+ const requestedWords='일백오십구만사천오백원 정 (₩1,594,500)';
+ for(const copy of ['supplier','recipient']){
+  const banner=page.locator('[data-copy="'+copy+'"] .vertical-amount-line');
+  assert.equal(await banner.locator('[data-amount-korean]').innerText(),requestedWords);
+  assert.equal((await banner.locator('[data-tax-caption]').innerText()).trim(),'합계금액(부가세별도)');
+  const fit=await banner.evaluate(element=>{
+   const width=element.getBoundingClientRect().right-element.getBoundingClientRect().left;
+   const word=element.querySelector('.amount-korean');
+   const box=word.getBoundingClientRect();
+   return {width,wordRight:box.right,bannerRight:element.getBoundingClientRect().right,scroll:word.scrollWidth,client:word.clientWidth};
+  });
+  assert.ok(fit.wordRight<=fit.bannerRight+1&&fit.scroll<=fit.client+2,'Korean total should fit within the slip: '+JSON.stringify(fit));
+ }
+ assert.equal((await page.locator('[data-copy="recipient"] [data-calc=grand]').first().innerText()).trim(),'1,594,500');
  for(const media of ['screen','print']){
   await page.emulateMedia({media});
   for(const [copy,expected] of [['supplier','rgb(154, 38, 48)'],['recipient','rgb(36, 74, 137)']]){
@@ -145,10 +167,11 @@ try{
      tableGrid:get('.item-table td','borderTopColor'),
      typedText:slip.dataset.copy==='supplier'?get('input[data-field="supplier"]','color'):null,
      calculatedText:get('.calculated','color'),
+     koreanTotal:get('.amount-korean','color'),
      mirrorText:slip.dataset.copy==='recipient'?get('[data-mirror="buyer"]','color'):null
     };
    });
-   for(const key of ['border','title','heading','copyLabel','tableLabel','tableGrid','typedText','calculatedText']){
+   for(const key of ['border','title','heading','copyLabel','tableLabel','tableGrid','typedText','calculatedText','koreanTotal']){
     if(key==='typedText'&&copy==='recipient')continue;
     assert.equal(ink[key],expected,media+' '+copy+' '+key+' must use the requested role color');
    }
@@ -167,9 +190,10 @@ try{
  assert.equal(await blank.locator('[data-copy="supplier"] [data-field=writtenDate]').inputValue(),'');
  assert.equal(await blank.locator('[data-copy="supplier"] [data-field=supplier]').inputValue(),'');
  assert.equal((await blank.locator('[data-copy="recipient"] [data-calc=grand]').first().innerText()).trim(),'');
+ assert.equal((await blank.locator('[data-copy="recipient"] [data-amount-korean]').innerText()).trim(),'','Blank form must not print an automatic amount');
  await blank.pdf({path:resolve('qa-manual-vertical/vertical-blank-portrait.pdf'),printBackground:true,preferCSSPageSize:true});
  await blank.close();
  assert.deepEqual(pageErrors,[],'Unexpected client errors');
  assert.deepEqual(networkWrites,[],'Independent form must never send input data to server');
- console.log('TOP_BOTTOM_INVOICE_BROWSER_PASS A4 portrait supplier RED top and recipient BLUE bottom in screen/print, same 10 shared line fields, VAT mirror, blank PDF, horizontal cut');
+ console.log('TOP_BOTTOM_INVOICE_BROWSER_PASS A4 portrait red/blue ink, Korean 1594500-won total mirrored and fitted, 10 rows, VAT toggle, one-page PDF, blank copy');
 }finally{await browser.close()}

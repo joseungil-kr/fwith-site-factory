@@ -246,3 +246,24 @@ test('vertical invoice has exactly four rows each for buyer-left and supplier-ri
  assert.ok(vertical.includes('좌측')||vertical.includes('왼쪽 공급받는자'));
  assert.ok(!vertical.includes('15품목'),'Outdated vertical page description');
 });
+
+
+test('only A4 vertical invoice shows a Korean full-won total, preserving old templates',()=>{
+ assert.ok(js.startsWith("import {koreanWonText} from './korean-money.mjs';"));
+ assert.ok(js.includes('if(verticalInvoice){'));
+ assert.ok(js.includes('class="amount-line vertical-amount-line"'));
+ assert.ok(js.includes('class="amount-korean" data-amount-korean'));
+ assert.ok(js.includes("koreanWonText(supply+tax)"),'Use transaction supply and VAT, not previous balance');
+ assert.ok(js.includes("el.textContent=blankMode?'':koreanWonText(supply+tax)"),'Blank forms should not print text');
+ for(const marker of [
+   '.print-sheet.invoice-vertical .slip .vertical-amount-line{',
+   'grid-template-columns:36% minmax(0,1fr);',
+   '.print-sheet.invoice-vertical .slip .vertical-amount-line strong.amount-korean{',
+   'white-space:nowrap;',
+   'color:var(--copy-ink)!important;'
+ ])assert.ok(css.includes(marker),'Korean amount styling absent: '+marker);
+ const original=readFileSync(new URL('manual-invoice/index.html',root),'utf8');
+ const vertical=readFileSync(new URL('manual-invoice-vertical/index.html',root),'utf8');
+ assert.ok(original.includes('data-form="invoice"')&&vertical.includes('data-form="invoice-vertical"'));
+ assert.ok(!original.includes('data-amount-korean'));
+});
