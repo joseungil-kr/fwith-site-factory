@@ -308,3 +308,44 @@ test('all three form pages share the same top navigation order, unique active st
  assert.ok(css.includes('.toolbar-nav a[aria-current="page"]{'));
  assert.ok(css.includes('.toolbar-nav .form-home-link{'));
 });
+
+
+test('all three forms reserve exactly the same two-tier header and PDF/action slots',()=>{
+ const pages=[
+  'manual-invoice/index.html',
+  'manual-invoice-vertical/index.html',
+  'simple-receipt/index.html'
+ ];
+ const labels=['백세푸드 홈','거래명세표 A4 가로','거래명세표 A4 세로','간이영수증',
+   '빈 양식 PDF 다운로드','전체 초기화','출력하기 / PDF 저장'];
+ for(const file of pages){
+  const html=readFileSync(new URL(file,root),'utf8');
+  const nav=html.match(/<nav class="toolbar-nav"[\s\S]*?<\/nav>/)?.[0];
+  assert.ok(nav,'Missing top menu '+file);
+  let start=-1;
+  for(const label of labels){
+   const next=nav.indexOf('>'+label+'</');
+   assert.ok(next>start,'Header labels/order mismatch '+file+': '+label);
+   start=next;
+  }
+  assert.equal((nav.match(/<a\b/g)||[]).length,5,'Five real links must be visible');
+  assert.equal((nav.match(/<button\b/g)||[]).length,2,'Only two real action buttons');
+  assert.ok(nav.includes('id="blank-pdf"'));
+ }
+ const receipt=readFileSync(new URL('simple-receipt/index.html',root),'utf8');
+ assert.ok(receipt.includes('href="https://baeksefood.com/downloads/print-forms/receipt.pdf"'));
+ for(const marker of [
+  '@media screen{',
+  'grid-template-columns:repeat(4,minmax(0,1fr));',
+  'grid-template-rows:repeat(2,minmax(42px,auto));',
+  '.toolbar-nav #blank-pdf{grid-row:2;grid-column:1}',
+  '.toolbar-nav #clear-form{grid-row:2;grid-column:2}',
+  '.toolbar-nav #print-form{grid-row:2;grid-column:3 / 5}',
+  '@media screen and (max-width:650px){',
+  'grid-template-columns:repeat(2,minmax(0,1fr));',
+  'grid-template-rows:repeat(4,minmax(42px,auto));',
+  '.toolbar-nav #print-form{grid-column:1 / -1;grid-row:4}'
+ ])assert.ok(css.includes(marker),'Missing consistent toolbar CSS: '+marker);
+ assert.ok(css.includes('@media print{')&&css.includes('.toolbar,.print-hint,#feedback{display:none!important}'),
+  'Navigation must still be hidden in paper print/PDF');
+});
