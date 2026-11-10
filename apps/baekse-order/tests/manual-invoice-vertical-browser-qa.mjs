@@ -111,7 +111,7 @@ try{
      copyLabel:get('.copy-name','color'),
      tableLabel:get('.parties th','color'),
      tableGrid:get('.item-table td','borderTopColor'),
-     typedText:get('input[data-field="supplier"]','color'),
+     typedText:slip.dataset.copy==='supplier'?get('input[data-field="supplier"]','color'):null,
      calculatedText:get('.calculated','color'),
      mirrorText:slip.dataset.copy==='recipient'?get('[data-mirror="buyer"]','color'):null
     };
