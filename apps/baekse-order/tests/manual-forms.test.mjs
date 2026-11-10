@@ -282,58 +282,44 @@ test('three form variants group unit prices and show no 0 in unfilled rows',()=>
 });
 
 
-test('three public form navs share six controls and do not expose the Baekse home shortcut',()=>{
- const items=[
-  {file:'manual-invoice/index.html',self:'/manual-invoice/'},
-  {file:'manual-invoice-vertical/index.html',self:'/manual-invoice-vertical/'},
-  {file:'simple-receipt/index.html',self:'/simple-receipt/'}
+test('three forms offer a stable hamburger menu, primary print action and no homepage shortcut',()=>{
+ const pages=[
+  {name:'manual-invoice/index.html',self:'/manual-invoice/'},
+  {name:'manual-invoice-vertical/index.html',self:'/manual-invoice-vertical/'},
+  {name:'simple-receipt/index.html',self:'/simple-receipt/'}
  ];
- const routes=['/manual-invoice/','/manual-invoice-vertical/','/simple-receipt/'];
- const labels=['거래명세표 A4 가로','거래명세표 A4 세로','간이영수증',
-   '빈 양식 PDF 다운로드','전체 초기화','출력하기 / PDF 저장'];
- for(const {file,self} of items){
-  const html=readFileSync(new URL(file,root),'utf8');
-  const nav=html.match(/<nav class="toolbar-nav"[\s\S]*?<\/nav>/)?.[0];
-  assert.ok(nav,'Missing shared form navigation: '+file);
-  assert.ok(!nav.includes('백세푸드 홈'),'Removed homepage button must not remain: '+file);
-  assert.ok(!nav.includes('href="https://baeksefood.com/"'),'Homepage navigation must be absent');
-  let position=-1;
-  for(const href of routes){
-   const next=nav.indexOf('href="'+href+'"');
-   assert.ok(next>position,'Form links out of order in '+file+' '+href);
-   position=next;
-  }
-  let labelPosition=-1;
-  for(const label of labels){
-   const next=nav.indexOf('>'+label+'</');
-   assert.ok(next>labelPosition,'Menu label order mismatch in '+file+': '+label);
-   labelPosition=next;
-  }
-  assert.equal((nav.match(/<a\b/g)||[]).length,4,'Three forms plus blank PDF link');
-  assert.equal((nav.match(/<button\b/g)||[]).length,2,'Reset and Print actions');
+ const labels=['거래명세표 A4 가로','거래명세표 A4 세로','간이영수증','빈 양식 PDF 다운로드','전체 초기화'];
+ for(const {name,self} of pages){
+  const html=readFileSync(new URL(name,root),'utf8');
+  const nav=html.match(/<nav id="form-menu" class="toolbar-nav"[\s\S]*?<\/nav>/)?.[0];
+  assert.ok(nav,'Missing More navigation on '+name);
+  assert.ok(!nav.includes('백세푸드 홈'));
+  assert.equal((nav.match(/<a\b/g)||[]).length,4);
+  assert.equal((nav.match(/<button\b/g)||[]).length,1);
   assert.equal((nav.match(/aria-current="page"/g)||[]).length,1);
   assert.ok(nav.includes('href="'+self+'" aria-current="page"'));
-  assert.ok(nav.includes('id="blank-pdf"'));
-  assert.ok(nav.includes('id="clear-form"'));
-  assert.ok(nav.includes('id="print-form"'));
+  let last=-1;
+  for(const label of labels){const pos=nav.indexOf('>'+label+'</');assert.ok(pos>last,'More menu order '+label);last=pos;}
+  assert.equal((html.match(/id="print-form"/g)||[]).length,1);
+  assert.equal((html.match(/id="menu-toggle"/g)||[]).length,1);
+  assert.ok(html.includes('aria-controls="form-menu" aria-expanded="false"'));
  }
- assert.ok(css.includes('.toolbar-nav a[aria-current="page"]{'));
  assert.ok(!css.includes('.toolbar-nav .form-home-link{'));
- const receipt=readFileSync(new URL('simple-receipt/index.html',root),'utf8');
- assert.ok(receipt.includes('href="https://baeksefood.com/downloads/print-forms/receipt.pdf"'));
 });
-
-test('three form headers always use one horizontally scrollable nav row',()=>{
+test('mobile screen uses stacked cards, hamburger and preview toggle while print A4 stays fixed',()=>{
  for(const marker of [
-  'grid-template-columns:repeat(6,minmax(170px,1fr));',
-  'grid-template-rows:minmax(42px,auto);',
-  'overflow-x:auto;',
-  'white-space:nowrap;',
-  'grid-template-columns:repeat(6,minmax(165px,1fr));',
-  '@media screen and (max-width:650px){'
- ])assert.ok(css.includes(marker),'Missing one-row toolbar rule '+marker);
- assert.ok(!css.includes('grid-template-rows:repeat(4,minmax(42px,auto));'));
- assert.ok(!css.includes('.toolbar-nav #print-form{grid-column:1 / -1;grid-row:4}'));
- assert.ok(css.includes('@media print{')&&css.includes('.toolbar,.print-hint,#feedback{display:none!important}'),
-   'Navigation must still be hidden in paper print/PDF');
+  '@media screen and (max-width:1100px){',
+  '.toolbar-nav.is-open{display:grid}',
+  '.print-sheet .slips,.print-sheet.invoice-vertical .slips{',
+  '.print-sheet .slip .item-table tbody tr::before{',
+  'content:attr(data-mobile-label);',
+  '.print-sheet .slip[data-copy="recipient"].recipient-collapsed{display:none}',
+  '.print-sheet.invoice{width:297mm;height:209mm',
+  '.print-sheet.receipt{width:210mm;height:296mm',
+  '.print-sheet.invoice.invoice-vertical{width:210mm;height:296mm;padding:4mm}'
+ ])assert.ok(css.includes(marker),'Missing critical layout '+marker);
+ assert.ok(js.includes('const mobilePartyLabels=['));
+ assert.ok(js.includes("toggle.id='recipient-toggle'"));
+ assert.ok(js.includes("event.key==='Escape'"));
+ assert.ok(css.includes('.toolbar,.print-hint,#feedback{display:none!important}'));
 });

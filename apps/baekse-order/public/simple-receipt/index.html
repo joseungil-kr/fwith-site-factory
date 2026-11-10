@@ -67,14 +67,18 @@
   <h1>무료 온라인 간이영수증 양식 · PDF 저장</h1>
   <p>왼쪽 공급자 보관용에만 입력하면 오른쪽에도 자동 반영됩니다. 15품목 · A4 세로 한 장에 영수증 2부.</p>
  </div>
- <nav class="toolbar-nav" aria-label="백세푸드 무료 서식 상단 메뉴">
+ <div class="toolbar-controls">
+  <nav id="form-menu" class="toolbar-nav" aria-label="백세푸드 무료 서식 상단 메뉴">
     <a href="/manual-invoice/">거래명세표 A4 가로</a>
   <a href="/manual-invoice-vertical/">거래명세표 A4 세로</a>
   <a href="/simple-receipt/" aria-current="page">간이영수증</a>
   <a id="blank-pdf" href="https://baeksefood.com/downloads/print-forms/receipt.pdf" target="_blank" rel="noopener noreferrer" aria-label="빈 간이영수증 PDF 파일을 새 창에서 열기">빈 양식 PDF 다운로드</a>
   <button id="clear-form" type="button" class="minor">전체 초기화</button>
-  <button id="print-form" type="button" class="primary">출력하기 / PDF 저장</button>
+  
  </nav>
+  <button id="print-form" type="button" class="primary">출력하기 / PDF 저장</button>
+  <button id="menu-toggle" type="button" class="menu-toggle" aria-controls="form-menu" aria-expanded="false" aria-label="더보기 메뉴 열기"><span aria-hidden="true">☰</span><span>더보기</span></button>
+ </div>
 </header>
 <p class="print-hint">인쇄 설정: A4 · <b>세로</b> · 배율 100% · 머리글/바닥글 끄기 · 여백 없음. 입력 정보는 이 페이지에서 서버로 전송하거나 저장하지 않습니다.</p>
 <main id="print-root" aria-label="간이영수증 공급자 보관용과 공급받는 자 보관용"></main>

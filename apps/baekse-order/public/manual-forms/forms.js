@@ -62,9 +62,9 @@ function unitRow(i,editable){
  const labels={date:'월일',name:'품목',spec:'규격',qty:'수량',price:'단가',amount:receipt?'금액':'공급가액',tax:'세액',note:'비고'};
  return '<tr data-line="'+i+'">'+keys.map(k=>{
   const rawKey='item-'+i+'-'+k;
-  if(k==='amount'||k==='tax')return '<td class="numeric">'+output(rawKey)+'</td>';
+  if(k==='amount'||k==='tax')return '<td class="numeric" data-mobile-label="'+labels[k]+'">'+output(rawKey)+'</td>';
   const type=(k==='qty'||k==='price')?'number':'text';
-  return '<td class="'+(k==='name'?'product-name ':'')+((k==='qty'||k==='price')?'numeric':'')+'">'+field(rawKey,labels[k]+' '+(i+1)+'행',editable,type)+'</td>';
+  return '<td data-mobile-label="'+labels[k]+'" class="'+(k==='name'?'product-name ':'')+((k==='qty'||k==='price')?'numeric':'')+'">'+field(rawKey,labels[k]+' '+(i+1)+'행',editable,type)+'</td>';
  }).join('')+'</tr>';
 }
 function itemsTable(editable){
@@ -103,6 +103,66 @@ function copy(type){
 root.innerHTML='<section class="print-sheet '+mode+(verticalInvoice?' invoice-vertical':'')+'" aria-label="'+(receipt||verticalInvoice?'A4 세로':'A4 가로')+' 2부 인쇄 양식">'+
  '<span class="cut-marker" aria-hidden="true"><span class="cut-label">✂ 절취선</span></span>'+
  '<div class="slips">'+copy('supplier')+copy('recipient')+'</div></section>';
+
+const mobilePartyLabels=[
+ ['공급받는자 상호','공급자 상호'],
+ ['공급받는자 등록번호','공급자 등록번호'],
+ ['공급받는자 소재지','공급자 소재지'],
+ ['공급받는자 연락처','공급자 연락처']
+];
+if(verticalInvoice){
+ root.querySelectorAll('.vertical-party-table').forEach(table=>{
+  table.querySelectorAll('tr').forEach((tr,row)=>{
+   tr.querySelectorAll('td').forEach((cell,col)=>{cell.dataset.mobileLabel=mobilePartyLabels[row][col]});
+  });
+ });
+}
+const recipientCopy=root.querySelector('.slip[data-copy="recipient"]');
+if(recipientCopy){
+ recipientCopy.id='recipient-copy';
+ const toggle=document.createElement('button');
+ toggle.id='recipient-toggle';
+ toggle.type='button';
+ toggle.className='mobile-copy-toggle';
+ toggle.setAttribute('aria-expanded','true');
+ toggle.setAttribute('aria-controls','recipient-copy');
+ toggle.textContent='공급받는자 보관용 미리보기 접기 ▲';
+ recipientCopy.before(toggle);
+ toggle.addEventListener('click',()=>{
+  const collapsed=recipientCopy.classList.toggle('recipient-collapsed');
+  toggle.setAttribute('aria-expanded',String(!collapsed));
+  toggle.textContent=collapsed?'공급받는자 보관용 미리보기 펼치기 ▼':'공급받는자 보관용 미리보기 접기 ▲';
+ });
+}
+const menu=document.getElementById('form-menu');
+const menuToggle=document.getElementById('menu-toggle');
+if(menu&&menuToggle){
+ const closeMenu=()=>{
+  menu.classList.remove('is-open');
+  menuToggle.setAttribute('aria-expanded','false');
+  menuToggle.setAttribute('aria-label','더보기 메뉴 열기');
+ };
+ menuToggle.addEventListener('click',()=>{
+  const open=!menu.classList.contains('is-open');
+  menu.classList.toggle('is-open',open);
+  menuToggle.setAttribute('aria-expanded',String(open));
+  menuToggle.setAttribute('aria-label',open?'더보기 메뉴 닫기':'더보기 메뉴 열기');
+ });
+ document.addEventListener('pointerdown',event=>{
+  if(!menu.contains(event.target)&&!menuToggle.contains(event.target))closeMenu();
+ });
+ document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&menu.classList.contains('is-open')){
+   closeMenu();
+   menuToggle.focus();
+  }
+ });
+ menu.addEventListener('click',event=>{
+  if(event.target.closest('a')||event.target.closest('#clear-form'))closeMenu();
+ });
+ window.addEventListener('resize',()=>{if(window.innerWidth>1100)closeMenu()});
+}
+
 function read(key){
  const field=root.querySelector('.slip[data-copy="supplier"] [data-field="'+key+'"]');
  return field?field.value:'';
