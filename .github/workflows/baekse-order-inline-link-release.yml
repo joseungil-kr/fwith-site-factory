@@ -1,4 +1,4 @@
-name: Baekse guarded A4 portrait 10-row buyer-left supplier-right release 20261110
+name: Baekse guarded vertical Korean total amount release 20261110
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
@@ -122,7 +122,9 @@ jobs:
                   'buyer-contact-entry','buyer-honorific','귀하',
                   'party-supplier party-supplier-start','party-buyer party-buyer-start','cut-label',
                   "const verticalInvoice=document.body.dataset.form==='invoice-vertical'",
-                  'vertical-party-table','vertical-side-label','buyerNo','buyerPhone']),
+                  'vertical-party-table','vertical-side-label','buyerNo','buyerPhone',
+                  "import {koreanWonText} from './korean-money.mjs'",
+                  'data-amount-korean','koreanWonText(supply+tax)']),
                 ('/manual-forms/forms.css',['.print-sheet.invoice{width:297mm;height:209mm','.print-sheet.receipt{width:210mm;height:296mm',
                   '.receipt .item-table tbody tr{height:8.75mm}',
                   '.parties tr.party-buyer-start > *{border-top:.18mm solid #526062}',
@@ -135,6 +137,7 @@ jobs:
                   '.vertical-party-table .vertical-side-label{', 'writing-mode:vertical-rl;',
                   '.print-sheet.invoice-vertical .slip .item-table{height:72mm}',
                   '.print-sheet.invoice-vertical .slip .item-table tbody tr{height:6.7mm}',
+                  '.print-sheet.invoice-vertical .slip .vertical-amount-line strong.amount-korean{',
                   'border-color:var(--copy-ink)!important;',
                   'color:var(--copy-ink)!important;'])
               ]:
@@ -159,6 +162,11 @@ jobs:
                 assert response.status==200 and 'data-form="invoice-vertical"' in content, 'Top/bottom blank variant unavailable'
                 assert 'noindex' in response.headers.get('X-Robots-Tag','').lower(), 'Top/bottom blank variant must be noindex'
               print('TOP_BOTTOM_A4_PORTRAIT_PUBLIC_PASS')
+              with opener.open(root+'/manual-forms/korean-money.mjs',timeout=30) as asset:
+                source=asset.read().decode('utf-8')
+                assert asset.status==200 and 'export function koreanWonText(value)' in source, 'Korean amount formatter missing'
+                assert 'fragments.join' in source and '원 정 (₩' in source,'Korean amount output format missing'
+              print('VERTICAL_KOREAN_AMOUNT_PUBLIC_PASS')
               print('VERTICAL_10_ROW_TWO_PARTY_PANELS_PUBLIC_PASS')
               print('A4_PORTRAIT_ROLE_INK_SUPPLIER_RED_RECIPIENT_BLUE_PASS')
               print('STANDALONE_MANUAL_FORMS_PUBLIC_PASS')
