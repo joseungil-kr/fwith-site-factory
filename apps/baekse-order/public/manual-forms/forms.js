@@ -25,7 +25,7 @@ const mirror=key=>'<span class="mirror" data-mirror="'+key+'"></span>';
 function field(key,label,editable,kind='text',placeholder=''){
  return editable?input(key,label,kind,placeholder):mirror(key);
 }
-const output=(key)=>'<span class="calculated" data-calc="'+key+'">0</span>';
+const output=(key)=>'<span class="calculated" data-calc="'+key+'"></span>';
 function headline(copy){
  return '<div class="form-head"><span class="form-id">'+field('slipNumber','명세표 번호',copy==='supplier','text','No.')+'</span>'+
  '<strong>'+(receipt?'간 이 영 수 증':'거 래 명 세 표')+'</strong><span class="copy-name">'+
@@ -75,10 +75,10 @@ function itemsTable(editable){
  rows.map(i=>unitRow(i,editable)).join('')+'</tbody></table>';
 }
 function preface(){
- if(verticalInvoice){
-  return '<div class="amount-line vertical-amount-line"><span data-tax-caption>합계금액(부가세별도)</span><strong class="amount-korean" data-amount-korean></strong></div>';
+ if(!receipt){
+  return '<div class="amount-line invoice-korean-line'+(verticalInvoice?' vertical-amount-line':'')+'"><span data-tax-caption>합계금액(부가세별도)</span><strong class="amount-korean" data-amount-korean></strong></div>';
  }
- return '<div class="amount-line"><span'+(receipt?'':' data-tax-caption')+'>'+(receipt?'영수 합계금액':'합계금액(부가세별도)')+'</span><strong>₩ '+output(receipt?'grand':'invoiceTotal')+'</strong><span>원정</span></div>';
+ return '<div class="amount-line"><span>영수 합계금액</span><strong>₩ '+output('grand')+'</strong><span>원정</span></div>';
 }
 function summary(editable){
  if(receipt){
@@ -107,8 +107,27 @@ function read(key){
  const field=root.querySelector('.slip[data-copy="supplier"] [data-field="'+key+'"]');
  return field?field.value:'';
 }
-function setCalculated(key,value){
- root.querySelectorAll('[data-calc="'+key+'"]').forEach(el=>{el.textContent=blankMode?'':won(value)});
+function setCalculated(key,value,empty=false){
+ root.querySelectorAll('[data-calc="'+key+'"]').forEach(el=>{el.textContent=blankMode||empty?'':won(value)});
+}
+// Format only unit prices as integers with thousands separators; keep the insertion caret stable.
+function formatUnitPriceInput(el){
+ const raw=el.value;
+ const cursor=el.selectionStart??raw.length;
+ const digitsBefore=raw.slice(0,cursor).replace(/\D/g,'').length;
+ const digits=raw.replace(/\D/g,'');
+ const grouped=digits.replace(/\B(?=(\d{3})+(?!\d))/g,',');
+ if(grouped===raw)return;
+ el.value=grouped;
+ if(document.activeElement===el){
+  let at=0,seen=0;
+  while(at<grouped.length&&seen<digitsBefore){
+   if(grouped[at]!==',')seen++;
+   at++;
+  }
+  if(grouped[at]===',')at++;
+  el.setSelectionRange(at,at);
+ }
 }
 function synchronize(){
  for(const el of root.querySelectorAll('.slip[data-copy="supplier"] [data-field]')){
@@ -120,19 +139,22 @@ function synchronize(){
  }
  let supply=0,tax=0;
  for(const i of rows){
-  const qty=cleanNumber(read('item-'+i+'-qty'));
-  const price=cleanNumber(read('item-'+i+'-price'));
+  const qtyText=read('item-'+i+'-qty');
+  const priceText=read('item-'+i+'-price');
+  const complete=qtyText.trim()!==''&&priceText.trim()!=='';
+  const qty=cleanNumber(qtyText);
+  const price=cleanNumber(priceText);
   const amount=qty*price;
   const lineTax=receipt||read('vatMode')!=='tax'?0:Math.round(amount*.1);
   supply+=amount;tax+=lineTax;
-  setCalculated('item-'+i+'-amount',amount);
-  if(!receipt)setCalculated('item-'+i+'-tax',lineTax);
+  setCalculated('item-'+i+'-amount',amount,!complete);
+  if(!receipt)setCalculated('item-'+i+'-tax',lineTax,!complete);
  }
  if(!receipt){
   const enabled=read('vatMode')==='tax';
   root.querySelectorAll('[data-tax-caption]').forEach(el=>{el.textContent=enabled?'합계금액(부가세포함)':'합계금액(부가세별도)'});
   setCalculated('invoiceTotal',supply+tax);
-  if(verticalInvoice)root.querySelectorAll('[data-amount-korean]').forEach(el=>{el.textContent=blankMode?'':koreanWonText(supply+tax)});
+  root.querySelectorAll('[data-amount-korean]').forEach(el=>{el.textContent=blankMode?'':koreanWonText(supply+tax)});
  }
  const previous=receipt?0:cleanNumber(read('previous'));
  const paid=receipt?0:cleanNumber(read('paid'));
@@ -143,8 +165,16 @@ function synchronize(){
  if(!receipt&&paid>grand)feedback.textContent='입금액이 청구합계를 초과합니다. 입력값을 확인하세요.';
  else feedback.textContent='';
 }
-root.addEventListener('input',synchronize);
-root.addEventListener('change',synchronize);
+root.addEventListener('input',event=>{
+ if(event.target.matches?.('.slip[data-copy="supplier"] input[data-field^="item-"][data-field$="-price"]')&&!event.isComposing)
+  formatUnitPriceInput(event.target);
+ synchronize();
+});
+root.addEventListener('change',event=>{
+ if(event.target.matches?.('.slip[data-copy="supplier"] input[data-field^="item-"][data-field$="-price"]'))
+  formatUnitPriceInput(event.target);
+ synchronize();
+});
 if(!receipt){
  root.addEventListener('click',event=>{
   const toggle=event.target.closest('#vat-toggle');

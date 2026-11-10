@@ -1,4 +1,4 @@
-name: Baekse guarded vertical Korean total amount release 20261110
+name: Baekse guarded three-form price commas empty item rows and two Korean totals release 20261110
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
@@ -117,12 +117,15 @@ jobs:
                   '빈 양식 PDF','/manual-forms/forms.js']),
                 ('/simple-receipt/',['id="print-form"','data-form="receipt"','@page{size:A4 portrait;margin:0}',
                   '15품목','<title>무료 간이영수증 양식 | 온라인 영수증 작성·PDF 저장</title>','class="seo-guide"','property="og:image"']),
-                ('/manual-forms/forms.js',["copy('supplier')+copy('recipient')","root.addEventListener('input',synchronize)","window.print()",
+                ('/manual-forms/forms.js',["copy('supplier')+copy('recipient')","root.addEventListener('input',event=>{","window.print()",
                   'const count=verticalInvoice?10:15;', "receipt?'공급자(상호)'", '<th>공급받는자</th>', '<th>담당자</th>',
                   'buyer-contact-entry','buyer-honorific','귀하',
                   'party-supplier party-supplier-start','party-buyer party-buyer-start','cut-label',
                   "const verticalInvoice=document.body.dataset.form==='invoice-vertical'",
                   'vertical-party-table','vertical-side-label','buyerNo','buyerPhone',
+                  'function formatUnitPriceInput(el){',
+                  "const complete=qtyText.trim()!==''&&priceText.trim()!=='';",
+                  'invoice-korean-line','data-amount-korean',
                   "import {koreanWonText} from './korean-money.mjs'",
                   'data-amount-korean','koreanWonText(supply+tax)']),
                 ('/manual-forms/forms.css',['.print-sheet.invoice{width:297mm;height:209mm','.print-sheet.receipt{width:210mm;height:296mm',
@@ -138,6 +141,7 @@ jobs:
                   '.print-sheet.invoice-vertical .slip .item-table{height:72mm}',
                   '.print-sheet.invoice-vertical .slip .item-table tbody tr{height:6.7mm}',
                   '.print-sheet.invoice-vertical .slip .vertical-amount-line strong.amount-korean{',
+                  '.print-sheet.invoice:not(.invoice-vertical) .slip .invoice-korean-line strong.amount-korean{',
                   'border-color:var(--copy-ink)!important;',
                   'color:var(--copy-ink)!important;'])
               ]:
@@ -167,6 +171,7 @@ jobs:
                 assert asset.status==200 and 'export function koreanWonText(value)' in source, 'Korean amount formatter missing'
                 assert 'fragments.join' in source and '원 정 (₩' in source,'Korean amount output format missing'
               print('VERTICAL_KOREAN_AMOUNT_PUBLIC_PASS')
+              print('ALL_THREE_FORMS_COMMA_PRICES_EMPTY_ITEMS_AND_BOTH_KOREAN_INVOICE_TOTALS_PASS')
               print('VERTICAL_10_ROW_TWO_PARTY_PANELS_PUBLIC_PASS')
               print('A4_PORTRAIT_ROLE_INK_SUPPLIER_RED_RECIPIENT_BLUE_PASS')
               print('STANDALONE_MANUAL_FORMS_PUBLIC_PASS')

@@ -24,8 +24,8 @@ test('right-hand form mirrors the left-hand form; amounts are calculated client-
  assert.ok(js.includes("const count=verticalInvoice?10:15;"));
  assert.ok(js.includes('data-copy="'+( 'vendor' || 'supplier')+'"')===false); // no hidden third-party data model
  assert.ok(js.includes("copy('supplier')+copy('recipient')"));
- assert.ok(js.includes("root.addEventListener('input',synchronize)"));
- assert.ok(js.includes("root.addEventListener('change',synchronize)"));
+ assert.ok(js.includes("root.addEventListener('input',event=>{"));
+ assert.ok(js.includes("root.addEventListener('change',event=>{"));
  assert.ok(js.includes("Math.round(amount*.1)"));
  assert.ok(js.includes("toggle.textContent=enabled?'부가세 별도':'부가세 자동입력'"));
  assert.ok(js.includes("setCalculated('invoiceTotal',supply+tax)"));
@@ -248,22 +248,35 @@ test('vertical invoice has exactly four rows each for buyer-left and supplier-ri
 });
 
 
-test('only A4 vertical invoice shows a Korean full-won total, preserving old templates',()=>{
+test('both invoices display Korean full-won totals, while receipt remains numeric',()=>{
  assert.ok(js.startsWith("import {koreanWonText} from './korean-money.mjs';"));
- assert.ok(js.includes('if(verticalInvoice){'));
- assert.ok(js.includes('class="amount-line vertical-amount-line"'));
+ assert.ok(js.includes("if(!receipt){"));
+ assert.ok(js.includes('invoice-korean-line'));
  assert.ok(js.includes('class="amount-korean" data-amount-korean'));
- assert.ok(js.includes("koreanWonText(supply+tax)"),'Use transaction supply and VAT, not previous balance');
- assert.ok(js.includes("el.textContent=blankMode?'':koreanWonText(supply+tax)"),'Blank forms should not print text');
- for(const marker of [
-   '.print-sheet.invoice-vertical .slip .vertical-amount-line{',
-   'grid-template-columns:36% minmax(0,1fr);',
-   '.print-sheet.invoice-vertical .slip .vertical-amount-line strong.amount-korean{',
-   'white-space:nowrap;',
-   'color:var(--copy-ink)!important;'
- ])assert.ok(css.includes(marker),'Korean amount styling absent: '+marker);
+ assert.ok(js.includes("koreanWonText(supply+tax)"),'Words are current supply+VAT, without old balance');
+ assert.ok(js.includes("el.textContent=blankMode?'':koreanWonText(supply+tax)"),'Blank PDF must not print a total');
+ assert.ok(css.includes('.print-sheet.invoice:not(.invoice-vertical) .slip .invoice-korean-line strong.amount-korean{'));
+ assert.ok(css.includes('.print-sheet.invoice-vertical .slip .vertical-amount-line strong.amount-korean{'));
  const original=readFileSync(new URL('manual-invoice/index.html',root),'utf8');
  const vertical=readFileSync(new URL('manual-invoice-vertical/index.html',root),'utf8');
  assert.ok(original.includes('data-form="invoice"')&&vertical.includes('data-form="invoice-vertical"'));
- assert.ok(!original.includes('data-amount-korean'));
+ assert.ok(!receipt.includes('data-amount-korean'));
+});
+
+test('three form variants group unit prices and show no 0 in unfilled rows',()=>{
+ for(const fragment of [
+  'function formatUnitPriceInput(el){',
+  "const digits=raw.replace(/\\D/g,'');",
+  "const grouped=digits.replace(/\\B(?=(\\d{3})+(?!\\d))/g,',');",
+  'el.setSelectionRange(at,at);',
+  "const complete=qtyText.trim()!==''&&priceText.trim()!=='';",
+  "setCalculated('item-'+i+'-amount',amount,!complete);",
+  "setCalculated('item-'+i+'-tax',lineTax,!complete);",
+  "root.addEventListener('input',event=>{",
+  "el.textContent=blankMode||empty?'':won(value)",
+  'data-field$="-price"',
+  'const count=verticalInvoice?10:15;'
+ ])assert.ok(js.includes(fragment),'Missing shared format/blank behavior: '+fragment);
+ assert.ok(js.includes('const output=(key)=>'));
+ assert.ok(!js.includes('">0</span>'),'Calculated item cells must not contain default zero');
 });

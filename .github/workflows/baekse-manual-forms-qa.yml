@@ -36,7 +36,7 @@ jobs:
           node tests/manual-forms-browser-qa.mjs
           python3 - <<'PY'
           from pypdf import PdfReader
-          for name,portrait in [('manual-invoice-A4-landscape.pdf',False),('blank-manual-invoice.pdf',False),('simple-receipt-A4-portrait.pdf',True)]:
+          for name,portrait in [('manual-invoice-A4-landscape.pdf',False),('manual-invoice-A4-landscape-korean-large.pdf',False),('blank-manual-invoice.pdf',False),('simple-receipt-A4-portrait.pdf',True)]:
             path='qa-manual-forms/'+name
             pdf=PdfReader(path)
             assert len(pdf.pages)==1,(name,'page count',len(pdf.pages))
@@ -68,7 +68,7 @@ jobs:
         run: |
           npx --yes wrangler@4.156.2 dev --config wrangler.reused.jsonc --local --port 8788 --var ADMIN_PASSWORD:ci-only-strong-example-password-2026 >/tmp/baekse-seo-worker.log 2>&1 &
           node tests/manual-invoice-robots-http.mjs
-      - name: Archive screenshots and three sample PDFs
+      - name: Archive screenshots and Korean large-sum A4 samples
         if: always()
         uses: actions/upload-artifact@v4
         with:
