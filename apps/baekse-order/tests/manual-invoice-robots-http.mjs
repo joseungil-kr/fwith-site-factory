@@ -12,6 +12,8 @@ assert.equal(booted,true,'Local Cloudflare Worker did not start');
 for(const [path,expected] of [
  ['/manual-invoice/','index'],
  ['/manual-invoice/?blank=1&print=1','noindex'],
+ ['/manual-invoice-vertical/','noindex'],
+ ['/manual-invoice-vertical/?blank=1','noindex'],
  ['/','noindex'],
  ['/simple-receipt/','index'],
  ['/simple-receipt/?blank=1','noindex'],

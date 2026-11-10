@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,follow,noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0b7669">
+<title>거래명세표 상하 2분할 양식 | A4 세로 무료 출력</title>
+<meta name="description" content="무료 거래명세표 상하 2분할 서식. 위쪽에 작성한 공급자·공급받는자·15품목·부가세·전 잔고·입금 정보를 아래쪽에 자동 복사하며 A4 세로 용지 한 장에 2부 인쇄합니다.">
+<link rel="stylesheet" href="/manual-forms/forms.css">
+<style>@page{size:A4 portrait;margin:0}</style>
+<script type="module" src="/manual-forms/forms.js"></script>
+</head>
+<body data-form="invoice-vertical">
+<header class="toolbar">
+  <div class="toolbar-info">
+    <h1>거래명세표 상·하 2분할 (A4 세로)</h1>
+    <p>위쪽 <b>공급자 보관용</b>에 입력하면 아래쪽 <b>공급받는자 보관용</b>에 자동 반영됩니다. 기존 양식과 동일한 15개 품목·금액·부가세·잔액 계산을 지원합니다.</p>
+  </div>
+  <nav class="toolbar-nav" aria-label="거래명세표 출력 옵션">
+    <a href="/manual-invoice/">좌·우 2분할 (A4 가로)</a>
+    <a href="/simple-receipt/">간이영수증</a>
+    <a id="blank-pdf" href="/manual-invoice-vertical/?blank=1&amp;print=1" target="_blank" rel="noopener noreferrer">빈 양식 PDF</a>
+    <button id="clear-form" type="button" class="minor">전체 초기화</button>
+    <button id="print-form" type="button" class="primary">출력하기 / PDF 저장</button>
+  </nav>
+</header>
+<p class="print-hint">인쇄 설정: A4 · <b>세로</b> · 배율 100% · 머리글/바닥글 끄기 · 여백 없음. 가운데 절취선을 따라 자르세요. 입력 정보는 서버에 저장되지 않습니다.</p>
+<main id="print-root" aria-label="거래명세표 위쪽 공급자 보관용과 아래쪽 공급받는자 보관용"></main>
+<div id="feedback" role="status" aria-live="polite"></div>
+<noscript><p>입력·자동계산과 인쇄 기능을 사용하려면 브라우저의 자바스크립트를 켜세요.</p></noscript>
+</body>
+</html>

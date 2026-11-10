@@ -145,3 +145,45 @@ test('receipt SEO has unique crawlable guide with real instructions and print ex
  for(const [,source] of jsonLds)assert.doesNotThrow(()=>JSON.parse(source));
  assert.deepEqual(jsonLds.map(([,source])=>JSON.parse(source)['@type']),['WebApplication','FAQPage']);
 });
+
+
+test('new top-bottom A4 invoice reuses the exact fields and 15-row logic',()=>{
+ const vertical=readFileSync(new URL('manual-invoice-vertical/index.html',root),'utf8');
+ assert.ok(vertical.includes('data-form="invoice-vertical"'));
+ assert.ok(vertical.includes('@page{size:A4 portrait;margin:0}'));
+ assert.ok(vertical.includes('href="/manual-forms/forms.css"'));
+ assert.ok(vertical.includes('src="/manual-forms/forms.js"'));
+ assert.ok(vertical.includes('noindex,follow,noarchive'));
+ assert.ok(vertical.includes('id="print-root"'));
+ assert.ok(vertical.includes('id="print-form"'));
+ assert.ok(vertical.includes('id="blank-pdf"'));
+ assert.ok(vertical.includes('id="clear-form"'));
+ assert.ok(invoice.includes('href="/manual-invoice-vertical/"'),'Original free invoice must link the variant');
+ assert.ok(js.includes("const verticalInvoice=document.body.dataset.form==='invoice-vertical'"));
+ assert.ok(js.includes("verticalInvoice?' invoice-vertical':''"));
+ assert.ok(js.includes("copy('supplier')+copy('recipient')"));
+ assert.ok(js.includes('const count=15'));
+ for(const name of ['writtenDate','slipNumber','supplier','supplierNo','supplierAddress','supplierPhone',
+   'buyer','buyerAddress','buyerContact','memo','previous','paid','vatMode','item-'])
+  assert.ok(js.includes(name),'Existing field must remain in shared form engine: '+name);
+});
+
+test('portrait top-bottom A4 has a horizontal cut guide and a compact two-copy 15-row grid',()=>{
+ for(const marker of [
+  '.print-sheet.invoice.invoice-vertical{width:210mm;height:296mm;padding:4mm}',
+  '.print-sheet.invoice-vertical .slips{',
+  'grid-template-columns:minmax(0,1fr);',
+  'grid-template-rows:repeat(2,minmax(0,1fr));',
+  '.print-sheet.invoice-vertical .slip .item-table{height:78mm',
+  '.print-sheet.invoice-vertical .slip .item-table tbody tr{height:4.85mm}',
+  '.print-sheet.invoice-vertical .cut-marker{',
+  'border-top:.3mm dashed #626c6c;',
+  '.print-sheet.invoice-vertical .cut-marker .cut-label{',
+  'transform:none;',
+  '.print-sheet.invoice.invoice-vertical{',
+  'height:294mm!important;',
+ ])
+  assert.ok(css.includes(marker),'Missing portrait print constraint '+marker);
+ assert.ok(css.includes('.print-sheet.invoice{width:297mm;height:209mm'));
+ assert.ok(css.includes('.print-sheet.receipt{width:210mm;height:296mm'));
+});

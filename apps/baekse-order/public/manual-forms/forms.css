@@ -210,3 +210,75 @@ button,input,select{font:inherit}
  }
  .seo-guide{display:none!important}
 }
+
+
+/* Optional A4 portrait top/bottom invoice. Uses the same real fields and calculations as the
+   existing side-by-side invoice. This rule set is scoped to invoice-vertical only. */
+.print-sheet.invoice.invoice-vertical{width:210mm;height:296mm;padding:4mm}
+.print-sheet.invoice-vertical .slips{
+ grid-template-columns:minmax(0,1fr);
+ grid-template-rows:repeat(2,minmax(0,1fr));
+ gap:4mm;
+}
+.print-sheet.invoice-vertical .slip{
+ width:100%;
+ height:100%;
+ min-height:0;
+ padding:1mm;
+}
+.print-sheet.invoice-vertical .slip .form-head{
+ height:9.5mm;
+ grid-template-columns:26mm minmax(0,1fr) 32mm;
+}
+.print-sheet.invoice-vertical .slip .form-head>strong{font-size:12.5pt}
+.print-sheet.invoice-vertical .slip .copy-name{font-size:7.4pt}
+.print-sheet.invoice-vertical .slip .parties{height:20mm}
+.print-sheet.invoice-vertical .slip .parties tr{height:4mm}
+.print-sheet.invoice-vertical .slip .parties th{font-size:7.0pt}
+.print-sheet.invoice-vertical .slip .parties td input,
+.print-sheet.invoice-vertical .slip .parties td .mirror{font-size:7.2pt}
+.print-sheet.invoice-vertical .slip .amount-line{height:8mm;grid-template-columns:36% minmax(0,1fr) 9mm}
+.print-sheet.invoice-vertical .slip .amount-line>span:first-child{font-size:10pt}
+.print-sheet.invoice-vertical .slip .amount-line strong{font-size:11pt}
+.print-sheet.invoice-vertical .slip .item-table{height:78mm;font-size:7pt}
+.print-sheet.invoice-vertical .slip .item-table thead{height:5mm}
+.print-sheet.invoice-vertical .slip .item-table thead th{font-size:7pt}
+.print-sheet.invoice-vertical .slip .item-table tbody tr{height:4.85mm}
+.print-sheet.invoice-vertical .slip .item-table td input{font-size:7pt}
+.print-sheet.invoice-vertical .slip .summary{height:12.5mm;font-size:7pt}
+.print-sheet.invoice-vertical .slip .summary tr{height:4.16mm}
+.print-sheet.invoice-vertical .slip .summary th{font-size:6.9pt}
+.print-sheet.invoice-vertical .slip .summary td,
+.print-sheet.invoice-vertical .slip .summary td input{font-size:7pt}
+.print-sheet.invoice-vertical .slip .notice{min-height:5mm;max-height:5mm;font-size:7pt}
+.print-sheet.invoice-vertical .slip .bottom-row{min-height:4mm;font-size:7pt}
+.print-sheet.invoice-vertical .cut-marker{
+ left:4mm;
+ right:4mm;
+ top:50%;
+ bottom:auto;
+ height:0;
+ border-left:0;
+ border-top:.3mm dashed #626c6c;
+}
+.print-sheet.invoice-vertical .cut-marker .cut-label{
+ top:-2mm;
+ left:3mm;
+ transform:none;
+ transform-origin:center;
+}
+@media print{
+ .print-sheet.invoice.invoice-vertical{
+  width:210mm!important;
+  height:294mm!important;
+  padding:4mm!important;
+  page-break-after:auto!important;
+  break-after:auto!important;
+ }
+ .print-sheet.invoice-vertical .slip{
+  background:#fff!important;
+  print-color-adjust:exact;
+  -webkit-print-color-adjust:exact;
+ }
+ .print-sheet.invoice-vertical .cut-marker .cut-label{transform:none!important}
+}

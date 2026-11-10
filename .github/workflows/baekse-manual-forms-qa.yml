@@ -1,7 +1,7 @@
 name: Baekse standalone editable forms print QA
 on:
   push:
-    branches: [feature/baekse-manual-forms-20261109, feature/baekse-manual-invoice-vat-seo-20261109, feature/baekse-receipt-15-seo-20261109]
+    branches: [feature/baekse-manual-forms-20261109, feature/baekse-manual-invoice-vat-seo-20261109, feature/baekse-receipt-15-seo-20261109, feature/baekse-manual-invoice-top-bottom-20261110]
     paths: ['apps/baekse-order/**', '.github/workflows/baekse-manual-forms-qa.yml']
   pull_request:
     branches: [feature/baekse-order-deploy-20261103]
@@ -47,6 +47,22 @@ jobs:
             assert len(pdf.pages[0].get_contents().get_data())>3000,(name,'unexpected empty print stream')
             print(name,'PAPER_1_PAGE_PASS',int(width),int(height))
           PY
+      - name: Browser-check A4 portrait top and bottom invoice, ensure precisely one PDF page
+        working-directory: apps/baekse-order
+        run: |
+          node tests/manual-invoice-vertical-browser-qa.mjs
+          python3 - <<'PY'
+          from pypdf import PdfReader
+          for name in ['vertical-invoice-portrait.pdf','vertical-blank-portrait.pdf']:
+            file='qa-manual-vertical/'+name
+            pdf=PdfReader(file)
+            assert len(pdf.pages)==1,('top/bottom must fit one A4 page',name,len(pdf.pages))
+            width=float(pdf.pages[0].mediabox.width)
+            height=float(pdf.pages[0].mediabox.height)
+            assert 590<width<600 and 835<height<850,('A4 portrait required',name,width,height)
+            assert len(pdf.pages[0].get_contents().get_data())>3000,'PDF page is unexpectedly empty'
+            print('TOP_BOTTOM_PORTRAIT_PDF_ONE_PAGE_PASS',name,int(width),int(height))
+          PY
       - name: Verify Cloudflare Worker indexing and ERP isolation locally
         working-directory: apps/baekse-order
         run: |
@@ -57,7 +73,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: baekse-manual-forms-samples
-          path: apps/baekse-order/qa-manual-forms/
+          path: |
+            apps/baekse-order/qa-manual-forms/
+            apps/baekse-order/qa-manual-vertical/
           retention-days: 7
           if-no-files-found: ignore
       - name: Static server log on failure
