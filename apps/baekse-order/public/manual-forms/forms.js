@@ -1,6 +1,7 @@
 // Independent client-only editable forms. No network access, cookies, storage or ERP mutation.
 const mode=document.body.dataset.form==='receipt'?'receipt':'invoice';
 const receipt=mode==='receipt';
+const verticalInvoice=document.body.dataset.form==='invoice-vertical';
 const blankMode=!receipt&&new URLSearchParams(location.search).get('blank')==='1';
 const count=15;
 const root=document.getElementById('print-root');
@@ -78,7 +79,7 @@ function copy(type){
   '<div class="notice">'+(receipt?'공급자 서명 또는 날인: __________________':'추가 메모: ')+(receipt?'':field('memo','메모',editable))+'</div>'+
   '<div class="bottom-row"><span>'+(receipt?'위와 같이 영수함':'위와 같이 거래함')+'</span><span>인수자: __________________</span></div></article>';
 }
-root.innerHTML='<section class="print-sheet '+mode+'" aria-label="'+(receipt?'A4 세로':'A4 가로')+' 2부 인쇄 양식">'+
+root.innerHTML='<section class="print-sheet '+mode+(verticalInvoice?' invoice-vertical':'')+'" aria-label="'+(receipt||verticalInvoice?'A4 세로':'A4 가로')+' 2부 인쇄 양식">'+
  '<span class="cut-marker" aria-hidden="true"><span class="cut-label">✂ 절취선</span></span>'+
  '<div class="slips">'+copy('supplier')+copy('recipient')+'</div></section>';
 function read(key){
