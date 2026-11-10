@@ -47,6 +47,9 @@ jobs:
             assert len(pdf.pages[0].get_contents().get_data())>3000,(name,'unexpected empty print stream')
             print(name,'PAPER_1_PAGE_PASS',int(width),int(height))
           PY
+      - name: Verify identical top-menu layout on three pages at desktop and mobile widths
+        working-directory: apps/baekse-order
+        run: node tests/manual-form-header-layout-browser-qa.mjs
       - name: Browser-check A4 portrait top and bottom invoice, ensure precisely one PDF page
         working-directory: apps/baekse-order
         run: |
