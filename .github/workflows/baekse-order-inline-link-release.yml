@@ -1,4 +1,4 @@
-name: Baekse guarded one-row six-control forms release 20261110
+name: Baekse guarded mobile stacked forms and More menu release 20261110
 on:
   push:
     branches: [feature/baekse-order-deploy-20261103]
@@ -151,11 +151,13 @@ jobs:
                   'border-color:var(--copy-ink)!important;',
                   'color:var(--copy-ink)!important;',
                   '.toolbar-nav a[aria-current="page"]{',
-                  'grid-template-columns:repeat(6,minmax(170px,1fr));',
-                  'grid-template-rows:minmax(42px,auto);',
-                  'overflow-x:auto;', 'white-space:nowrap;',
-                  '@media screen and (max-width:650px){',
-                  'grid-template-columns:repeat(6,minmax(165px,1fr));'])
+                  '@media screen and (max-width:1100px){',
+                  '.toolbar-nav.is-open{display:grid}',
+                  'grid-template-columns:repeat(2,minmax(0,1fr));',
+                  '.print-sheet .slip .item-table tbody tr::before{',
+                  'content:attr(data-mobile-label);',
+                  '.mobile-copy-toggle{',
+                  '.print-sheet .slip[data-copy="recipient"].recipient-collapsed{display:none}'])
               ]:
                 with opener.open(root+path,timeout=30) as asset:
                   content=asset.read().decode('utf-8')
@@ -164,7 +166,9 @@ jobs:
                     nav=re.search(r'<nav class="toolbar-nav"[\s\S]*?</nav>',content)
                     assert nav and '백세푸드 홈' not in nav.group(0),'Legacy home menu still live '+path
                     assert nav.group(0).count('<a ')==4,'Form link count mismatch '+path
-                    assert nav.group(0).count('<button ')==2,'Action button count mismatch '+path
+                    assert nav.group(0).count('<button ')==1,'More menu reset button count mismatch '+path
+                    assert content.count('id="print-form"')==1,'Primary print action missing '+path
+                    assert 'id="menu-toggle"' in content and 'id="form-menu"' in content,'Mobile More control absent '+path
                   robots=asset.headers.get('X-Robots-Tag','').lower()
                   if path in ('/manual-invoice/','/simple-receipt/'):
                     assert 'index' in robots and 'noindex' not in robots,'Public free form unexpectedly noindex '+path
@@ -193,7 +197,7 @@ jobs:
               print('A4_PORTRAIT_ROLE_INK_SUPPLIER_RED_RECIPIENT_BLUE_PASS')
               print('STANDALONE_MANUAL_FORMS_PUBLIC_PASS')
               print('THREE_FORM_IDENTICAL_TOP_NAV_AND_ACTIVE_STATES_PASS')
-              print('ALL_3_FORMS_ONE_ROW_NAV_WITH_RECEIPT_BLANK_PDF_PASS')
+              print('ALL_3_FORMS_MOBILE_STACKED_HAMBURGER_PRINT_PASS')
               with opener.open(root+'/manual-invoice/?blank=1&print=1',timeout=30) as asset:
                 assert 'noindex' in asset.headers.get('X-Robots-Tag','').lower(),'Blank print variants must be noindex'
               for imagepath in ('/manual-invoice/og-image.png','/simple-receipt/og-image.png'):
