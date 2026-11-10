@@ -876,3 +876,6 @@ button,input,select{font:inherit}
  .print-sheet .slip .parties tr{grid-template-columns:minmax(72px,33%) minmax(0,1fr)}
  .print-sheet .slip .item-table tbody tr{padding:7px;gap:7px}
 }
+
+/* The optional mobile-only preview toggle must never alter physical A4 copies. */
+@media print{.mobile-copy-toggle{display:none!important}}
