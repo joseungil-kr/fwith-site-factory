@@ -104,6 +104,44 @@ export class OrderDatabase extends DurableObject {
       }
       // Zero/multiple exact matches: no fuzzy conversion and no migration marker.
     }
+    // One-off, owner-authorized correction of an issued invoice's printed previous balance.
+    // This is a document snapshot correction, NOT a ledger/payment/stock adjustment.
+    const invoice18Marker='ansan-central-issued-invoice18-previous-312000-to-zero-20261111';
+    if(!this.getOne('SELECT name FROM schema_migrations WHERE name=?',invoice18Marker)){
+      const order=this.getOne('SELECT id,client_id,client_snapshot,order_date,order_type,status,supply,tax,total,previous_balance FROM orders WHERE id=?',18);
+      const client=order?this.getOne('SELECT business FROM clients WHERE id=?',order.client_id):null;
+      const lines=order?this.all('SELECT name,qty,unit_price,line_total FROM lines WHERE order_id=? ORDER BY id',18):[];
+      const expectedLines=[
+        ['잉어반죽',12,11000,132000],
+        ['팥앙금',8,9000,72000],
+        ['슈크림',6,9000,54000]
+      ];
+      const matches=order?.id===18 &&
+        order.order_date==='2026-11-11' && order.order_type==='sale' && order.status==='issued' &&
+        order.supply===258000 && order.tax===0 && order.total===258000 &&
+        order.previous_balance===312000 && client?.business==='안산 중앙점' &&
+        JSON.parse(order.client_snapshot||'{}').business==='안산 중앙점' &&
+        lines.length===expectedLines.length && lines.every((line,i)=>{
+          const e=expectedLines[i];
+          return line.name===e[0]&&line.qty===e[1]&&line.unit_price===e[2]&&line.line_total===e[3];
+        });
+      // If the live data differs, deliberately change nothing; guarded release QA fails closed.
+      if(matches){
+        const receipt={
+          order_id:18,order_date:'2026-11-11',
+          client:'안산 중앙점',previous_balance_before:312000,previous_balance_after:0,
+          original_amount_due:570000,corrected_amount_due:258000,unchanged_sale_total:258000,
+          reason:'Owner requested correction: full previous balance was paid before issuance but posted afterward.'
+        };
+        this.ctx.storage.transactionSync(()=>{
+          this.sql.exec("UPDATE orders SET previous_balance=0 WHERE id=18 AND previous_balance=312000 AND total=258000 AND status='issued' AND order_type='sale'");
+          const updated=this.getOne('SELECT previous_balance,total FROM orders WHERE id=?',18);
+          if(updated?.previous_balance!==0||updated.total!==258000)throw new Error('Invoice 18 one-off adjustment verification failed');
+          this.sql.exec('INSERT INTO schema_migrations(name,applied_at,details) VALUES(?,?,?)',invoice18Marker,now(),JSON.stringify(receipt));
+          this.audit('invoice_previous_balance_corrected_once',receipt);
+        });
+      }
+    }
   });
  }
  getOne(q,...args){return this.sql.exec(q,...args).toArray()[0]||null}
