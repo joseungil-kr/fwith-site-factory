@@ -58,3 +58,10 @@ test('buyer line insert failure rolls back accepted order and cannot notify',asy
  assert.equal(d.getOne('SELECT COUNT(*) AS n FROM buyer_requests').n,0);
  assert.equal(d.getOne('SELECT COUNT(*) AS n FROM telegram_order_outbox').n,0);
 });
+test('noncanonical host accepts the existing buyer request but never enqueues Telegram',async()=>{
+ const d=make();const original=request();const body=await original.text();const host='https://funeralflower-home-preview.example.workers.dev';
+ const alternate=new Request(host+path,{method:'POST',headers:{Origin:host,'Content-Type':'application/json'},body});
+ const response=await handleBuyerPublic(d,alternate,path);assert.equal(response.status,200);
+ assert.equal(d.getOne('SELECT COUNT(*) AS n FROM buyer_requests').n,1);
+ assert.equal(d.getOne("SELECT COUNT(*) AS n FROM sqlite_master WHERE type='table' AND name='telegram_order_outbox'").n,0);
+});

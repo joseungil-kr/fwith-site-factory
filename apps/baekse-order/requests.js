@@ -131,7 +131,7 @@ export async function handleBuyerPublic(db,request,path){
     });
     calcTotals(items,'none'); // No inventory validation at request stage.
   }catch(e){return fail(e.message||'발주 내용을 다시 확인해 주세요.');}
-  const telegramTarget=await prepareTelegram(db);
+  const telegramTarget=new URL(request.url).origin==='https://order.baeksefood.com' ? await prepareTelegram(db) : null;
   const existing=one(db,'SELECT id,status FROM buyer_requests WHERE client_id=? AND request_key=?',client.id,request_key);
   if(existing)return response({ok:true,id:existing.id,status:existing.status,duplicate:true});
   const pendingCount=one(db,"SELECT COUNT(*) AS n FROM buyer_requests WHERE client_id=? AND status='pending'",client.id).n;
