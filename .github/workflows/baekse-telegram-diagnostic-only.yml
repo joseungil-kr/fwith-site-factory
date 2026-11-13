@@ -1,4 +1,4 @@
-name: Baekse read-only endpoint diagnostics
+name: Baekse inactive version read-only verification
 on:
   push:
     branches: [review/baekse-order-telegram-20261113]
@@ -20,5 +20,5 @@ jobs:
         with: {ref: '${{ github.sha }}'}
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
-      - name: One-pass labeled read-only endpoint diagnostics
-        run: python scripts/baekse-telegram-endpoint-diagnostic.py
+      - name: Read active and inactive immutable version metadata only
+        run: python scripts/diagnostics/baekse/inactive_readonly_diagnostic.py
