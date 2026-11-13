@@ -1,0 +1,24 @@
+name: Baekse read-only endpoint diagnostics
+on:
+  push:
+    branches: [review/baekse-order-telegram-20261113]
+    paths: ['.github/workflows/baekse-telegram-diagnostic-only.yml']
+permissions: {contents: read}
+concurrency:
+  group: baekse-order-existing-worker-updates
+  cancel-in-progress: false
+jobs:
+  diagnose:
+    if: github.repository == 'joseungil-kr/fwith-site-factory'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ github.sha }}'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: One-pass labeled read-only endpoint diagnostics
+        run: python scripts/baekse-telegram-endpoint-diagnostic.py
