@@ -1,0 +1,23 @@
+name: Baekse token diagnostic read-only preflight
+on:
+  push:
+    branches: [review/baekse-order-telegram-20261113]
+    paths: ['.github/workflows/baekse-token-diagnostic-preflight.yml']
+permissions: {contents: read}
+concurrency:
+  group: baekse-order-existing-worker-updates
+  cancel-in-progress: false
+jobs:
+  read_only_preflight:
+    if: github.repository == 'joseungil-kr/fwith-site-factory' && github.ref == 'refs/heads/review/baekse-order-telegram-20261113'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.BAEKSE_ORDER_RELEASE_CF_TOKEN }}
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ github.sha }}'}
+      - name: Read only script telemetry shape; never upload or invoke
+        run: python scripts/diagnostics/baekse/token_diagnostic_guard.py telemetry-preflight
