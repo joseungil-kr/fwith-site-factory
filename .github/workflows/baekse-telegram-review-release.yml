@@ -1,0 +1,95 @@
+name: Baekse Telegram code-only guarded release
+on:
+  push:
+    branches: [review/baekse-order-telegram-20261113]
+    paths: ['.github/workflows/baekse-telegram-review-release.yml']
+permissions: {contents: read}
+concurrency:
+  group: baekse-order-existing-worker-updates
+  cancel-in-progress: false
+jobs:
+  release:
+    if: github.repository == 'joseungil-kr/fwith-site-factory'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SOURCE_SHA: 49c9926ef6761442431ca15627ca2c560eacb3e5
+      # Replace with full dashboard-read ID before publishing when available.
+      # Guard captures complete current ID once, then requires exact unchanged ID.
+      EXPECTED_LIVE_VERSION: '54478f7d'
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ github.sha }}', path: release}
+      - uses: actions/checkout@v4
+        with: {ref: '${{ env.SOURCE_SHA }}', path: source}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Verify immutable code, tests and config
+        working-directory: source/apps/baekse-order
+        run: |
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          node --check src.js
+          node --check requests.js
+          node --check telegram-orders.js
+          npm test
+          node --input-type=module -e "import fs from 'node:fs';const c=JSON.parse(fs.readFileSync('wrangler.reused.jsonc'));if(c.name!=='funeralflower-home-preview'||c.keep_vars!==true||c.workers_dev!==true||c.preview_urls!==false||c.routes!==undefined||c.vars!==undefined||c.durable_objects.bindings.length!==1||c.durable_objects.bindings[0].name!=='ORDER_DB'||c.durable_objects.bindings[0].class_name!=='OrderDatabase'||JSON.stringify(c.migrations)!==JSON.stringify([{tag:'baekse-order-v1-20261103',new_sqlite_classes:['OrderDatabase']}]))process.exit(1)"
+      - name: Read-only capture
+        id: guard
+        run: python release/scripts/baekse-telegram-release-guard.py capture
+      - name: Upload inactive immutable version only
+        id: upload
+        working-directory: source/apps/baekse-order
+        run: |
+          python "$GITHUB_WORKSPACE/release/scripts/baekse-telegram-release-guard.py" predeploy
+          set -o pipefail
+          npx --yes wrangler@4.156.2 versions upload --config wrangler.reused.jsonc --keep-vars --tag "$SOURCE_SHA" --message 'Reviewed Baekse code-only Telegram candidate' | tee "$RUNNER_TEMP/baekse-upload.log"
+          python - <<'PYUPLOAD'
+          import os,re,pathlib
+          text=(pathlib.Path(os.environ['RUNNER_TEMP'])/'baekse-upload.log').read_text()
+          ids=re.findall(r'Worker Version ID:\s*([0-9a-f]{8}-[0-9a-f-]{27})',text)
+          assert len(ids)==1,'Cannot uniquely identify uploaded version'
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('uploaded_version='+ids[0]+'\n')
+          PYUPLOAD
+      - name: Verify inactive metadata then activate that exact version
+        id: deploy
+        env:
+          UPLOADED_VERSION: ${{ steps.upload.outputs.uploaded_version }}
+        working-directory: source/apps/baekse-order
+        run: |
+          python "$GITHUB_WORKSPACE/release/scripts/baekse-telegram-release-guard.py" uploaded
+          python "$GITHUB_WORKSPACE/release/scripts/baekse-telegram-release-guard.py" predeploy
+          npx --yes wrangler@4.156.2 versions deploy "$UPLOADED_VERSION@100%" --yes --config wrangler.reused.jsonc
+      - name: Independent version and binding readback
+        id: version
+        env:
+          UPLOADED_VERSION: ${{ steps.upload.outputs.uploaded_version }}
+        run: python release/scripts/baekse-telegram-release-guard.py post
+      - name: Public HTTP smoke only; no login/order/Telegram send
+        id: smoke
+        working-directory: source/apps/baekse-order
+        run: |
+          python - <<'PY'
+          import urllib.request,urllib.error,hashlib,pathlib
+          base='https://order.baeksefood.com'
+          for path in ('/','/app.js','/buyer.js','/request/'):
+            with urllib.request.urlopen(base+path,timeout=30) as r:
+              body=r.read();assert r.status==200
+              assert 'noindex' in r.headers.get('X-Robots-Tag','')
+              assert 'no-store' in r.headers.get('Cache-Control','')
+              local=pathlib.Path('public')/('index.html' if path=='/' else path.lstrip('/')+('index.html' if path.endswith('/') else ''))
+              assert hashlib.sha256(body).digest()==hashlib.sha256(local.read_bytes()).digest(),'Public asset differs from pinned source'
+          try:urllib.request.urlopen(base+'/api/session',timeout=30)
+          except urllib.error.HTTPError as e:assert e.code==401
+          else:raise AssertionError('Anonymous administrator session unexpectedly accepted')
+          print('PUBLIC_HTTP_SMOKE_PASS: pinned assets/noindex/no-store/auth; zero test sends')
+          PY
+      - name: Roll back only independently verified deployment after smoke failure
+        if: ${{ failure() && steps.deploy.outcome == 'success' && steps.version.outcome == 'success' && steps.smoke.outcome == 'failure' }}
+        working-directory: source/apps/baekse-order
+        run: |
+          python "$GITHUB_WORKSPACE/release/scripts/baekse-telegram-release-guard.py" rollback-safe
+          npx --yes wrangler@4.156.2 versions deploy '${{ steps.guard.outputs.previous_version }}@100%' --yes --config wrangler.reused.jsonc
+          python "$GITHUB_WORKSPACE/release/scripts/baekse-telegram-release-guard.py" rolled-back
