@@ -65,8 +65,47 @@ def snapshot():
  return {'version':version,'scope':scope,'bindings':normalized,'telemetry':obs,'tail_consumers':settings.get('tail_consumers') or [],'logpush':settings['logpush']}
 def output(k,v):
  with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write(k+'='+v+'\n')
+def telemetry_shape(value):
+ def field(obj,key):
+  if not isinstance(obj,dict) or key not in obj:return {'type':'missing'}
+  v=obj[key]
+  if v is None:return {'type':'null'}
+  if isinstance(v,bool):return {'type':'boolean','value':v}
+  if isinstance(v,list):return {'type':'array','count':min(len(v),1000),'count_capped':len(v)>1000}
+  if isinstance(v,dict):return {'type':'object'}
+  return {'type':'other'}
+ out={k:field(value,k) for k in ('logpush','tail_consumers','observability')}
+ obs=value.get('observability') if isinstance(value,dict) else None
+ out['observability_enabled']=field(obs,'enabled')
+ for name in ('logs','traces','agents','issues'):
+  out[name]=field(obs,name)
+  item=obs.get(name) if isinstance(obs,dict) else None
+  out[name+'_enabled']=field(item,'enabled')
+  out[name+'_destinations']=field(item,'destinations')
+ return out
+def compare_telemetry():
+ prefix='/accounts/'+ACCOUNT+'/workers/scripts/'+WORKER
+ expected='8e38b102-c4a6-4321-befb-fae7b275c942'
+ def active():
+  deployments=get(prefix+'/deployments')['deployments']
+  assert deployments,'No deployment'
+  versions=deployments[0].get('versions') or []
+  assert len(versions)==1 and versions[0].get('version_id')==expected and versions[0].get('percentage')==100,'Expected active version changed'
+ active()
+ immutable=get(prefix+'/versions/'+expected)
+ assert immutable.get('id')==expected,'Immutable identity mismatch'
+ result={'active_exact_expected_100':True}
+ for endpoint in ('script-settings','settings'):
+  result[endpoint]=telemetry_shape(get(prefix+'/'+endpoint))
+ resources=immutable.get('resources')
+ result['immutable_resources']=telemetry_shape(resources)
+ result['immutable_root']=telemetry_shape(immutable)
+ active()
+ print(json.dumps(result,sort_keys=True))
+ print('SHAPE_COMPARISON_ONLY: no safety pass; no upload, activation or invocation')
 def main():
  mode=sys.argv[1]
+ if mode=='telemetry-compare':compare_telemetry();return
  if mode=='telemetry-preflight':
   v=get('/accounts/'+ACCOUNT+'/workers/scripts/'+WORKER+'/script-settings')
   obs=v.get('observability')

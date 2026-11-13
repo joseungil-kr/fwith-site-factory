@@ -19,5 +19,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: {ref: '${{ github.sha }}'}
-      - name: Read only script telemetry shape; never upload or invoke
-        run: python scripts/diagnostics/baekse/token_diagnostic_guard.py telemetry-preflight
+      - name: Compare read-only telemetry endpoints and exact active version; never upload or invoke
+        run: python scripts/diagnostics/baekse/token_diagnostic_guard.py telemetry-compare
