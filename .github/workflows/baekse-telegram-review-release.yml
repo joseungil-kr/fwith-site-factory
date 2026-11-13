@@ -1,4 +1,4 @@
-name: Baekse Telegram single-flag guarded activation
+name: Baekse Telegram inactive upload only
 on:
   push:
     branches: [review/baekse-order-telegram-20261113]
@@ -8,7 +8,7 @@ concurrency:
   group: baekse-order-existing-worker-updates
   cancel-in-progress: false
 jobs:
-  release:
+  prepare_inactive:
     if: github.repository == 'joseungil-kr/fwith-site-factory'
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -38,12 +38,9 @@ jobs:
       - name: Read-only capture
         id: guard
         run: python release/scripts/diagnostics/baekse/enable_guard.py capture
-      # The four tested public assets are unchanged between predecessor 068a77be
-      # and pinned source 49c9926; actual baseline bytes must still match.
-      - name: One-pass baseline gate before any upload or activation
-        id: baseline
-        working-directory: source/apps/baekse-order
-        run: python "$GITHUB_WORKSPACE/release/scripts/diagnostics/baekse/public_gate.py" baseline public
+      # Browser Integrity Check rejects the CI public HTTP client.
+      # This job uses only the permitted control-plane API, never the public host.
+      # It neither activates the uploaded version nor substitutes a smoke PASS.
       - name: Upload inactive immutable version only
         id: upload
         working-directory: source/apps/baekse-order
@@ -58,28 +55,12 @@ jobs:
           assert len(ids)==1,'Cannot uniquely identify uploaded version'
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('uploaded_version='+ids[0]+'\n')
           PYUPLOAD
-      - name: Verify inactive metadata then activate that exact version
-        id: deploy
+      - name: Verify inactive version metadata and unchanged production
+        id: uploaded
         env:
           UPLOADED_VERSION: ${{ steps.upload.outputs.uploaded_version }}
-        working-directory: source/apps/baekse-order
         run: |
-          python "$GITHUB_WORKSPACE/release/scripts/diagnostics/baekse/enable_guard.py" uploaded
-          python "$GITHUB_WORKSPACE/release/scripts/diagnostics/baekse/enable_guard.py" predeploy
-          npx --yes wrangler@4.156.2 versions deploy "$UPLOADED_VERSION@100%" --yes --config wrangler.reused.jsonc
-      - name: Independent version and binding readback
-        id: version
-        env:
-          UPLOADED_VERSION: ${{ steps.upload.outputs.uploaded_version }}
-        run: python release/scripts/diagnostics/baekse/enable_guard.py post
-      - name: Public HTTP smoke only; no login/order/Telegram test send
-        id: smoke
-        working-directory: source/apps/baekse-order
-        run: python "$GITHUB_WORKSPACE/release/scripts/diagnostics/baekse/public_gate.py" candidate public
-      - name: Roll back only independently verified deployment after smoke failure
-        if: ${{ failure() && steps.deploy.outcome == 'success' && steps.version.outcome == 'success' && steps.smoke.outcome == 'failure' }}
-        working-directory: source/apps/baekse-order
-        run: |
-          python "$GITHUB_WORKSPACE/release/scripts/diagnostics/baekse/enable_guard.py" rollback-safe
-          npx --yes wrangler@4.156.2 versions deploy '${{ steps.guard.outputs.previous_version }}@100%' --yes --config wrangler.reused.jsonc
-          python "$GITHUB_WORKSPACE/release/scripts/diagnostics/baekse/enable_guard.py" rolled-back
+          python release/scripts/diagnostics/baekse/enable_guard.py uploaded
+          python release/scripts/diagnostics/baekse/enable_guard.py predeploy
+          echo "INACTIVE_ONLY_VERIFIED: version=${{ steps.upload.outputs.uploaded_version }}; previous=${{ steps.guard.outputs.previous_version }}; source=$SOURCE_SHA"
+          echo "NOT_ACTIVATED: genuine operator browser verification is a separate required step"
