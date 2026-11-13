@@ -1,3 +1,4 @@
+import {recoverTelegram,telegramAlarm} from './telegram-orders.js';
 import { DurableObject } from 'cloudflare:workers';
 import {DEFAULT_PRODUCTS,onlyInt,safeText,dateCheck,calcTotals,calcInternalCost,normalizeOrderType,calculatePayable,sessionDurationSeconds} from './logic.js';
 import {ensureBuyerSchema,buyerSupplySummary,buyerLinkSummaries,buyerLinkDisplaySummaries,handleBuyerPublic,handleBuyerAdmin} from './requests.js';
@@ -11,6 +12,7 @@ const cleanRows = c=>Array.from(c);
 const now=()=>new Date().toISOString();
 const cookie=(token,age)=>`bs_order_session=${token}; Path=/api; HttpOnly; Secure; SameSite=Strict; Max-Age=${age}`;
 export class OrderDatabase extends DurableObject {
+ async alarm(){await telegramAlarm(this);}
  constructor(ctx,env){
   super(ctx,env);
   this.ctx=ctx;this.env=env;this.sql=ctx.storage.sql;
@@ -142,6 +144,7 @@ export class OrderDatabase extends DurableObject {
         });
       }
     }
+    await recoverTelegram(this);
   });
  }
  getOne(q,...args){return this.sql.exec(q,...args).toArray()[0]||null}
@@ -418,3 +421,4 @@ export default {
    return new Response(res.body,{status:res.status,headers:h});
  }
 };
+

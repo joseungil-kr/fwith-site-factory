@@ -1,3 +1,4 @@
+import {prepareTelegram,enqueueTelegram,kickTelegram} from './telegram-orders.js';
 import {onlyInt,safeText,dateCheck,calcTotals,calcInternalCost,calculatePayable} from './logic.js';
 import {ensureReceivableOrderCanIssue} from './receivables.js';
 
@@ -130,6 +131,7 @@ export async function handleBuyerPublic(db,request,path){
     });
     calcTotals(items,'none'); // No inventory validation at request stage.
   }catch(e){return fail(e.message||'발주 내용을 다시 확인해 주세요.');}
+  const telegramTarget=await prepareTelegram(db);
   const existing=one(db,'SELECT id,status FROM buyer_requests WHERE client_id=? AND request_key=?',client.id,request_key);
   if(existing)return response({ok:true,id:existing.id,status:existing.status,duplicate:true});
   const pendingCount=one(db,"SELECT COUNT(*) AS n FROM buyer_requests WHERE client_id=? AND status='pending'",client.id).n;
@@ -140,7 +142,9 @@ export async function handleBuyerPublic(db,request,path){
     id=one(db,'SELECT last_insert_rowid() AS id').id;
     for(const item of items)db.sql.exec('INSERT INTO buyer_lines(request_id,product_id,name,unit_price,qty) VALUES(?,?,?,?,?)',id,item.product_id,item.name,item.unit_price,item.qty);
     db.audit('buyer_request_created',{id,client_id:client.id,lines:items.length});
+    enqueueTelegram(db,id,telegramTarget);
   });
+  kickTelegram(db);
   return response({ok:true,id,status:'pending'});
 }
 
@@ -232,3 +236,4 @@ export async function handleBuyerAdmin(db,request,path,data){
   }
   return fail('없는 발주 관리 API 주소입니다.',404);
 }
+
