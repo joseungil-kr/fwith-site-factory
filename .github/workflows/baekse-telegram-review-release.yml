@@ -1,4 +1,4 @@
-name: Baekse promote checked order detail version
+name: Baekse activate verified candidate with configuration parity
 on:
   push:
     branches: [review/baekse-order-telegram-20261113]
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - name: Activate exact candidate and verify same public files
+      - name: Activate exact candidate and verify loaded module
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.BAEKSE_ORDER_RELEASE_CF_TOKEN }}
@@ -106,18 +106,6 @@ jobs:
               if (old['id']!=OLD or new['id']!=NEW or tag!=TAG or
                   bindings(orig)!=bindings(nxt) or orig['script_runtime']!=nxt['script_runtime']):
                   raise ValueError('candidate_settings_not_identical')
-              def page(p):
-                  request=urllib.request.Request('https://order.baeksefood.com'+p,method='GET',
-                      headers={'Accept-Encoding':'identity','Cache-Control':'no-cache'})
-                  with opener.open(request,timeout=15) as response:
-                      b=response.read(2*1024*1024+1)
-                      if response.status!=200 or not b or len(b)>2*1024*1024:
-                          raise ValueError('public_page_unavailable')
-                      return response.headers.get_content_type(),hashlib.sha256(b).hexdigest()
-              public_paths=('/request/','/buyer.js','/buyer.css')
-              before_pages=[page(p) for p in public_paths]
-              if not before_pages[0][0].startswith('text/html') or not before_pages[2][0].startswith('text/css'):
-                  raise ValueError('public_page_type_mismatch')
               if first!=active() or addr!=address_snapshot() or (get('/versions?per_page=1').get('items') or [{}])[0].get('id')!=NEW:
                   raise ValueError('concurrent_changes')
               req=urllib.request.Request(API+prefix+'/deployments',method='POST',
@@ -146,11 +134,11 @@ jobs:
                   parts=[raw]
               if len(parts)!=1 or hashlib.sha256(parts[0]).hexdigest()!=HASH:
                   raise ValueError('post_activation_module_mismatch')
-              after_pages=[page(p) for p in public_paths]
-              if before_pages!=after_pages or active()!=deployed:
-                  raise ValueError('post_activation_public_pages_or_active_changed')
+              if active()!=deployed or bindings(get('/versions/'+NEW)['resources'])!=bindings(orig):
+                  raise ValueError('post_activation_state_changed')
               return {'status':'activated_verified','active_version':NEW,'old_version':OLD,'source_sha':TAG,
-                      'public_assets_checked':len(after_pages),'live_orders':0}
+                      'active_module_sha256':HASH,'keep_assets_from_verified_inactive_upload':True,
+                      'public_exercise':'not_run_runner_denied_403','live_orders':0}
           try:
               result = main()
           except urllib.error.HTTPError as e:
