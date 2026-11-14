@@ -142,7 +142,7 @@ export async function handleBuyerPublic(db,request,path){
     id=one(db,'SELECT last_insert_rowid() AS id').id;
     for(const item of items)db.sql.exec('INSERT INTO buyer_lines(request_id,product_id,name,unit_price,qty) VALUES(?,?,?,?,?)',id,item.product_id,item.name,item.unit_price,item.qty);
     db.audit('buyer_request_created',{id,client_id:client.id,lines:items.length});
-    enqueueTelegram(db,id,telegramTarget);
+    enqueueTelegram(db,id,telegramTarget,{business:client.business,items});
   });
   kickTelegram(db);
   return response({ok:true,id,status:'pending'});
