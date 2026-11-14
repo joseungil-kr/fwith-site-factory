@@ -1,4 +1,4 @@
-name: Baekse active and candidate bundle preflight read-only
+name: Baekse verified promotion status read-only
 on:
   push:
     branches: [review/baekse-order-telegram-20261113]
@@ -13,37 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: '49c9926ef6761442431ca15627ca2c560eacb3e5'
-          path: baseline
-          persist-credentials: false
-      - uses: actions/checkout@v4
-        with:
-          ref: 'aa40653898b52c9b36f2dd7d3a38baf358b5b025'
-          path: candidate
-          persist-credentials: false
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - name: Rebuild known source without deployment
-        working-directory: baseline/apps/baekse-order
-        env:
-          WRANGLER_SEND_METRICS: 'false'
-          CI: 'true'
-        shell: bash
-        run: |
-          test -z "${CLOUDFLARE_API_TOKEN:-}"
-          npx --yes wrangler@4.156.2 deploy --dry-run --config wrangler.reused.jsonc --outdir "$RUNNER_TEMP/baekse-baseline"
-      - name: Rebuild candidate without deployment
-        working-directory: candidate/apps/baekse-order
-        env:
-          WRANGLER_SEND_METRICS: 'false'
-          CI: 'true'
-        shell: bash
-        run: |
-          test -z "${CLOUDFLARE_API_TOKEN:-}"
-          npx --yes wrangler@4.156.2 deploy --dry-run --config wrangler.reused.jsonc --outdir "$RUNNER_TEMP/baekse-candidate"
       - name: Compare immutable Worker code metadata
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -52,12 +21,8 @@ jobs:
         run: |
           python3 - <<'PY'
           import json
-          import hashlib
-          from email.parser import BytesParser
-          from email.policy import default
           import os
           import re
-          from pathlib import Path
           import urllib.error
           import urllib.request
           import uuid
@@ -101,86 +66,7 @@ jobs:
               status = "unavailable"
               if all(isinstance(h, str) and h.strip() for h in etags):
                   status = "equal" if etags[0] == etags[1] else "different"
-              def safe_tag(doc):
-                  tag = (doc.get("annotations") or doc.get("metadata", {}).get("annotations") or {}).get("workers/tag", "")
-                  return tag if isinstance(tag, str) and re.fullmatch(r"[0-9a-f]{40}", tag) else None
-              request = urllib.request.Request(API + prefix + "/content/v2", method="GET",
-                  headers={"Authorization": "Bearer " + token})
-              linked = False
-              raw = b''
-              media = ''
-              content_status = None
-              try:
-                  with opener.open(request, timeout=15) as response:
-                      content_status = int(response.status)
-                      raw = response.read(8*1024*1024+1)
-                      media = response.headers.get('Content-Type', '')
-                      hdr = response.headers.get("ETag", "").strip('"')
-                      etag = etags[1]
-                      linked = bool(raw and len(raw) <= 8*1024*1024 and isinstance(etag, str) and hdr and hdr == etag.strip('"'))
-              except urllib.error.HTTPError as e:
-                  content_status = int(e.code)
-              stable = first == active()
-              parts = []
-              digest = None
-              if linked and stable:
-                  if media.lower().startswith('multipart/') and '\n' not in media and '\r' not in media:
-                      message = BytesParser(policy=default).parsebytes(
-                          ('Content-Type: ' + media + '\r\nMIME-Version: 1.0\r\n\r\n').encode('ascii') + raw)
-                      parts = [p.get_payload(decode=True) or b'' for p in message.iter_parts()]
-                  elif media.partition(';')[0].strip().lower() in (
-                      'application/javascript', 'text/javascript', 'application/octet-stream'):
-                      parts = [raw]
-                  digest = hashlib.sha256(raw).hexdigest()
-              def occurrences(needle):
-                  return sum(part.count(needle) for part in parts)
-              script = observed.get('resources', {}).get('script', {})
-              runtime = observed.get('resources', {}).get('script_runtime', {})
-              observed_bindings = observed.get('resources', {}).get('bindings') or []
-              binding_names = {b.get('name'): b.get('type') for b in observed_bindings if isinstance(b, dict)}
-              built = [
-                  p.read_bytes() for p in (Path(os.environ['RUNNER_TEMP']) / 'baekse-baseline').rglob('*.js')
-                  if p.is_file() and p.stat().st_size <= 8*1024*1024
-              ]
-              live_module_match = len(parts) == 1 and len(built) == 1 and parts[0] == built[0]
-              def no_trailing_sourcemap(b):
-                  return re.sub(rb'\r?\n//# sourceMappingURL=[^\r\n]+\r?\n?$', b'\n', b).rstrip(b'\r\n')
-              loose_match = len(parts)==1 and len(built)==1 and no_trailing_sourcemap(parts[0])==no_trailing_sourcemap(built[0])
-              latest_rows = get('/versions?per_page=1').get('items') or []
-              latest_is_active = bool(latest_rows and latest_rows[0].get('id') == current)
-              stable = stable and first == active()
-              cfiles = [p for p in (Path(os.environ['RUNNER_TEMP'])/'baekse-candidate').rglob('*.js')
-                        if p.is_file() and p.stat().st_size <= 8*1024*1024]
-              candidate_sha = hashlib.sha256(cfiles[0].read_bytes()).hexdigest() if len(cfiles) == 1 else None
-              assets = runtime.get('assets')
-              def public_shape(d):
-                  if isinstance(d, dict):
-                      return {k:public_shape(v) for k,v in d.items() if re.fullmatch(r'[a-z_]{1,40}', k)}
-                  return type(d).__name__
-              shape = {
-                  'part_count': len(parts), 'candidate_module_sha256': candidate_sha,
-                  'runtime_schema': public_shape(runtime), 'assets_schema': public_shape(assets),
-                  'binding_schema': {b['name']:public_shape(b) for b in observed_bindings if isinstance(b,dict) and b.get('name') in ('ASSETS','ORDER_DB','ADMIN_PASSWORD','TELEGRAM_ORDER_CHAT_ID','TELEGRAM_ORDER_BOT_TOKEN','TELEGRAM_ORDER_ENABLED')}, 'built_module_count': len(built),
-                  'historical_source_immutable_byte_match': live_module_match and stable,
-                  'historical_source_match_ignoring_trailing_sourcemap': loose_match and stable,
-                  'latest_uploaded_is_active': latest_is_active and stable, 'assets_binding_seen': binding_names.get('ASSETS') == 'assets',
-                  'order_db_seen': binding_names.get('ORDER_DB') == 'durable_object_namespace',
-                  'telegram_binding_types': all(binding_names.get(k) == t for k,t in [
-                      ('TELEGRAM_ORDER_BOT_TOKEN','secret_text'),('TELEGRAM_ORDER_CHAT_ID','secret_text'),
-                      ('TELEGRAM_ORDER_ENABLED','plain_text')]),
-                  'http_body_sha256': digest, 'script_assets_field_present': 'assets' in script,
-                  'runtime_assets_field_present': 'assets' in runtime,
-                  'buyer_creation_marker': occurrences(b'buyer_request_created'),
-                  'outbox_insert_marker': occurrences(b'INSERT OR IGNORE INTO telegram_order_outbox'),
-                  'telegram_send_marker': occurrences(b'/sendMessage'),
-                  'summary_column_marker': occurrences(b'message_text'),
-              }
-              return {"status": status, "baseline_version": BASE, "active_version": current,
-                      "baseline_source_tag": safe_tag(previous) if stable else None,
-                      "active_source_tag": safe_tag(observed) if stable else None,
-                      "script_content_http": content_status,
-                      "script_content_linked_to_active": linked and stable,
-                      "deployment_stable": stable, "active_bundle_shape": shape}
+              return {"status": status, "baseline_version": BASE, "active_version": current, "candidate_is_active": current == '9a039178-4468-4d19-88cb-68c95f4c5652'}
           
           try:
               result = main()
