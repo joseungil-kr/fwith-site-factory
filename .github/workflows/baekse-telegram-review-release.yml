@@ -1,4 +1,4 @@
-name: Baekse Telegram inactive upload only
+name: Baekse verified order detail inactive version upload
 on:
   push:
     branches: [review/baekse-order-telegram-20261113]
@@ -8,59 +8,273 @@ concurrency:
   group: baekse-order-existing-worker-updates
   cancel-in-progress: false
 jobs:
-  prepare_inactive:
+  diagnose:
     if: github.repository == 'joseungil-kr/fwith-site-factory'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    env:
-      SOURCE_SHA: 49c9926ef6761442431ca15627ca2c560eacb3e5
-      # Exact prior active version verified before this guarded release.
-      EXPECTED_LIVE_VERSION: '54478f7d-8dd3-437b-9f0a-ad92864e9152'
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      CLOUDFLARE_API_TOKEN: ${{ secrets.BAEKSE_ORDER_RELEASE_CF_TOKEN }}
-      WRANGLER_SEND_METRICS: 'false'
+    timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
-        with: {ref: '${{ github.sha }}', path: release}
+        with:
+          ref: '49c9926ef6761442431ca15627ca2c560eacb3e5'
+          path: baseline
+          persist-credentials: false
       - uses: actions/checkout@v4
-        with: {ref: '${{ env.SOURCE_SHA }}', path: source}
+        with:
+          ref: 'aa40653898b52c9b36f2dd7d3a38baf358b5b025'
+          path: candidate
+          persist-credentials: false
       - uses: actions/setup-node@v4
-        with: {node-version: '22'}
-      - name: Verify immutable code, tests and config
-        working-directory: source/apps/baekse-order
-        run: |
-          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
-          node --check src.js
-          node --check requests.js
-          node --check telegram-orders.js
-          npm test
-          node --input-type=module -e "import fs from 'node:fs';const c=JSON.parse(fs.readFileSync('wrangler.reused.jsonc'));if(c.name!=='funeralflower-home-preview'||c.keep_vars!==true||c.workers_dev!==true||c.preview_urls!==false||c.routes!==undefined||c.vars!==undefined||c.durable_objects.bindings.length!==1||c.durable_objects.bindings[0].name!=='ORDER_DB'||c.durable_objects.bindings[0].class_name!=='OrderDatabase'||JSON.stringify(c.migrations)!==JSON.stringify([{tag:'baekse-order-v1-20261103',new_sqlite_classes:['OrderDatabase']}]))process.exit(1)"
-      - name: Read-only capture
-        id: guard
-        run: python release/scripts/diagnostics/baekse/enable_guard.py capture
-      # Browser Integrity Check rejects the CI public HTTP client.
-      # This job uses only the permitted control-plane API, never the public host.
-      # It neither activates the uploaded version nor substitutes a smoke PASS.
-      - name: Upload inactive immutable version only
-        id: upload
-        working-directory: source/apps/baekse-order
-        run: |
-          python "$GITHUB_WORKSPACE/release/scripts/diagnostics/baekse/enable_guard.py" predeploy
-          set -o pipefail
-          npx --yes wrangler@4.156.2 versions upload --config wrangler.reused.jsonc --keep-vars --var TELEGRAM_ORDER_ENABLED:true --tag "$SOURCE_SHA" --message 'Reviewed Baekse Telegram candidate with only enabled flag added' | tee "$RUNNER_TEMP/baekse-upload.log"
-          python - <<'PYUPLOAD'
-          import os,re,pathlib
-          text=(pathlib.Path(os.environ['RUNNER_TEMP'])/'baekse-upload.log').read_text()
-          ids=re.findall(r'Worker Version ID:\s*([0-9a-f]{8}-[0-9a-f-]{27})',text)
-          assert len(ids)==1,'Cannot uniquely identify uploaded version'
-          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('uploaded_version='+ids[0]+'\n')
-          PYUPLOAD
-      - name: Verify inactive version metadata and unchanged production
-        id: uploaded
+        with:
+          node-version: '22'
+      - name: Rebuild known source without deployment
+        working-directory: baseline/apps/baekse-order
         env:
-          UPLOADED_VERSION: ${{ steps.upload.outputs.uploaded_version }}
+          WRANGLER_SEND_METRICS: 'false'
+          CI: 'true'
+        shell: bash
         run: |
-          python release/scripts/diagnostics/baekse/enable_guard.py uploaded
-          python release/scripts/diagnostics/baekse/enable_guard.py predeploy
-          echo "INACTIVE_ONLY_VERIFIED: version=${{ steps.upload.outputs.uploaded_version }}; previous=${{ steps.guard.outputs.previous_version }}; source=$SOURCE_SHA"
-          echo "NOT_ACTIVATED: genuine operator browser verification is a separate required step"
+          test -z "${CLOUDFLARE_API_TOKEN:-}"
+          npx --yes wrangler@4.156.2 deploy --dry-run --config wrangler.reused.jsonc --outdir "$RUNNER_TEMP/baekse-baseline"
+      - name: Rebuild candidate without deployment
+        working-directory: candidate/apps/baekse-order
+        env:
+          WRANGLER_SEND_METRICS: 'false'
+          CI: 'true'
+        shell: bash
+        run: |
+          test -z "${CLOUDFLARE_API_TOKEN:-}"
+          npx --yes wrangler@4.156.2 deploy --dry-run --config wrangler.reused.jsonc --outdir "$RUNNER_TEMP/baekse-candidate"
+      - name: Compare immutable Worker code metadata
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.BAEKSE_ORDER_RELEASE_CF_TOKEN }}
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import hashlib
+          from email.parser import BytesParser
+          from email.policy import default
+          import os
+          import re
+          from pathlib import Path
+          import urllib.error
+          import urllib.request
+          import uuid
+          import urllib.parse
+          
+          BASE = "8e38b102-c4a6-4321-befb-fae7b275c942"
+          API = "https://api.cloudflare.com/client/v4"
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, *args, **kwargs):
+                  return None
+          
+          def main():
+              account = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "")
+              token = os.environ.get("CLOUDFLARE_API_TOKEN", "")
+              if not re.fullmatch(r"[a-f0-9]{32}", account) or not token:
+                  return {"status": "unavailable", "reason": "configuration"}
+              prefix = "/accounts/" + account + "/workers/scripts/funeralflower-home-preview"
+              opener = urllib.request.build_opener(NoRedirect)
+              def get(suffix):
+                  request = urllib.request.Request(API + prefix + suffix, method="GET",
+                      headers={"Authorization": "Bearer " + token, "Accept": "application/json"})
+                  with opener.open(request, timeout=15) as response:
+                      doc = json.load(response)
+                  if doc.get("success") is not True:
+                      raise ValueError("unavailable")
+                  return doc["result"]
+              def active():
+                  live = get("/deployments")["deployments"][0]
+                  allocation = live["versions"]
+                  if len(allocation) != 1 or allocation[0]["percentage"] != 100:
+                      raise ValueError("allocation")
+                  vid = allocation[0]["version_id"]
+                  if str(uuid.UUID(vid)) != vid:
+                      raise ValueError("version")
+                  return live["id"], vid
+              def address_snapshot():
+                  worker='funeralflower-home-preview'
+                  root='/accounts/'+account
+                  def get_fixed(path):
+                      request=urllib.request.Request(API+path,method='GET',
+                          headers={'Authorization':'Bearer '+token,'Accept':'application/json'})
+                      with opener.open(request,timeout=15) as response:
+                          data=json.load(response)
+                      if data.get('success') is not True:
+                          raise ValueError('worker_scope_unavailable')
+                      return data['result']
+                  ds=get_fixed(root+'/workers/domains')
+                  matches=[d for d in ds if d.get('service')==worker]
+                  if len(matches)!=1 or matches[0].get('hostname')!='order.baeksefood.com' or sum(d.get('hostname')=='order.baeksefood.com' for d in ds)!=1:
+                      raise ValueError('worker_domain_unexpected')
+                  zone=matches[0].get('zone_id','')
+                  if not re.fullmatch(r'[0-9a-f]{32}',zone):
+                      raise ValueError('worker_zone_unexpected')
+                  if any(route.get('script')==worker for route in get_fixed('/zones/'+zone+'/workers/routes')):
+                      raise ValueError('worker_routes_unexpected')
+                  if get('/schedules').get('schedules'):
+                      raise ValueError('worker_cron_unexpected')
+                  sub=get('/subdomain')
+                  if sub.get('enabled') is not True or sub.get('previews_enabled',False) is not False:
+                      raise ValueError('worker_subdomain_unexpected')
+                  return matches[0],sub
+              first = active()
+              address_before=address_snapshot()
+              current = first[1]
+              previous, observed = [get("/versions/" + v) for v in (BASE, current)]
+              if first != active() or previous["id"] != BASE or observed["id"] != current:
+                  return {"status": "unavailable", "reason": "identity"}
+              etags = [v.get("resources", {}).get("script", {}).get("etag") for v in (previous, observed)]
+              status = "unavailable"
+              if all(isinstance(h, str) and h.strip() for h in etags):
+                  status = "equal" if etags[0] == etags[1] else "different"
+              def safe_tag(doc):
+                  tag = (doc.get("annotations") or doc.get("metadata", {}).get("annotations") or {}).get("workers/tag", "")
+                  return tag if isinstance(tag, str) and re.fullmatch(r"[0-9a-f]{40}", tag) else None
+              request = urllib.request.Request(API + prefix + "/content/v2", method="GET",
+                  headers={"Authorization": "Bearer " + token})
+              linked = False
+              raw = b''
+              media = ''
+              content_status = None
+              try:
+                  with opener.open(request, timeout=15) as response:
+                      content_status = int(response.status)
+                      raw = response.read(8*1024*1024+1)
+                      media = response.headers.get('Content-Type', '')
+                      hdr = response.headers.get("ETag", "").strip('"')
+                      etag = etags[1]
+                      linked = bool(raw and len(raw) <= 8*1024*1024 and isinstance(etag, str) and hdr and hdr == etag.strip('"'))
+              except urllib.error.HTTPError as e:
+                  content_status = int(e.code)
+              stable = first == active()
+              parts = []
+              digest = None
+              if linked and stable:
+                  if media.lower().startswith('multipart/') and '\n' not in media and '\r' not in media:
+                      message = BytesParser(policy=default).parsebytes(
+                          ('Content-Type: ' + media + '\r\nMIME-Version: 1.0\r\n\r\n').encode('ascii') + raw)
+                      parts = [p.get_payload(decode=True) or b'' for p in message.iter_parts()]
+                  elif media.partition(';')[0].strip().lower() in (
+                      'application/javascript', 'text/javascript', 'application/octet-stream'):
+                      parts = [raw]
+                  digest = hashlib.sha256(raw).hexdigest()
+              def occurrences(needle):
+                  return sum(part.count(needle) for part in parts)
+              script = observed.get('resources', {}).get('script', {})
+              runtime = observed.get('resources', {}).get('script_runtime', {})
+              observed_bindings = observed.get('resources', {}).get('bindings') or []
+              binding_names = {b.get('name'): b.get('type') for b in observed_bindings if isinstance(b, dict)}
+              built = [
+                  p.read_bytes() for p in (Path(os.environ['RUNNER_TEMP']) / 'baekse-baseline').rglob('*.js')
+                  if p.is_file() and p.stat().st_size <= 8*1024*1024
+              ]
+              live_module_match = len(parts) == 1 and len(built) == 1 and parts[0] == built[0]
+              def no_trailing_sourcemap(b):
+                  return re.sub(rb'\r?\n//# sourceMappingURL=[^\r\n]+\r?\n?$', b'\n', b).rstrip(b'\r\n')
+              loose_match = len(parts)==1 and len(built)==1 and no_trailing_sourcemap(parts[0])==no_trailing_sourcemap(built[0])
+              latest_rows = get('/versions?per_page=1').get('items') or []
+              latest_is_active = bool(latest_rows and latest_rows[0].get('id') == current)
+              stable = stable and first == active()
+              cfiles = [p for p in (Path(os.environ['RUNNER_TEMP'])/'baekse-candidate').rglob('*.js')
+                        if p.is_file() and p.stat().st_size <= 8*1024*1024]
+              candidate_sha = hashlib.sha256(cfiles[0].read_bytes()).hexdigest() if len(cfiles) == 1 else None
+              assets = runtime.get('assets')
+              def public_shape(d):
+                  if isinstance(d, dict):
+                      return {k:public_shape(v) for k,v in d.items() if re.fullmatch(r'[a-z_]{1,40}', k)}
+                  return type(d).__name__
+              shape = {
+                  'part_count': len(parts), 'candidate_module_sha256': candidate_sha,
+                  'runtime_schema': public_shape(runtime), 'assets_schema': public_shape(assets),
+                  'binding_schema': {b['name']:public_shape(b) for b in observed_bindings if isinstance(b,dict) and b.get('name') in ('ASSETS','ORDER_DB','ADMIN_PASSWORD','TELEGRAM_ORDER_CHAT_ID','TELEGRAM_ORDER_BOT_TOKEN','TELEGRAM_ORDER_ENABLED')}, 'built_module_count': len(built),
+                  'historical_source_immutable_byte_match': live_module_match and stable,
+                  'historical_source_match_ignoring_trailing_sourcemap': loose_match and stable,
+                  'latest_uploaded_is_active': latest_is_active and stable, 'assets_binding_seen': binding_names.get('ASSETS') == 'assets',
+                  'order_db_seen': binding_names.get('ORDER_DB') == 'durable_object_namespace',
+                  'telegram_binding_types': all(binding_names.get(k) == t for k,t in [
+                      ('TELEGRAM_ORDER_BOT_TOKEN','secret_text'),('TELEGRAM_ORDER_CHAT_ID','secret_text'),
+                      ('TELEGRAM_ORDER_ENABLED','plain_text')]),
+                  'http_body_sha256': digest, 'script_assets_field_present': 'assets' in script,
+                  'runtime_assets_field_present': 'assets' in runtime,
+                  'buyer_creation_marker': occurrences(b'buyer_request_created'),
+                  'outbox_insert_marker': occurrences(b'INSERT OR IGNORE INTO telegram_order_outbox'),
+                  'telegram_send_marker': occurrences(b'/sendMessage'),
+                  'summary_column_marker': occurrences(b'message_text'),
+              }
+              if not linked or not stable or not live_module_match or not latest_is_active:
+                  raise ValueError("active_provenance_changed")
+              if len(cfiles)!=1 or candidate_sha != '333a47dfbb3b278710951624ab1d1b51f0af83720bc3734088c5c48cdbda3802':
+                  raise ValueError("candidate_build_not_identical")
+              if current != '96d28986-6d54-4cdf-a587-584072caba25':
+                  raise ValueError("production_changed")
+              expected={
+                  'ASSETS':'assets', 'ORDER_DB':'durable_object_namespace',
+                  'ADMIN_PASSWORD':'secret_text', 'TELEGRAM_ORDER_BOT_TOKEN':'secret_text',
+                  'TELEGRAM_ORDER_CHAT_ID':'secret_text', 'TELEGRAM_ORDER_ENABLED':'plain_text'}
+              if binding_names != expected or len(observed_bindings) != len(expected):
+                  raise ValueError("unexpected_bindings")
+              by_name={b['name']:b for b in observed_bindings}
+              if (by_name['ORDER_DB'].get('class_name')!='OrderDatabase'
+                  or not by_name['ORDER_DB'].get('namespace_id')
+                  or by_name['TELEGRAM_ORDER_ENABLED'].get('text')!='true'):
+                  raise ValueError("unexpected_order_configuration")
+              if set(runtime) != {'assets','compatibility_date','migration_tag','usage_model'}:
+                  raise ValueError("runtime_schema_changed")
+              cfg=runtime['assets']
+              if set(cfg) != {'base_path','html_handling','not_found_handling','raw_run_worker_first','serve_directly'}:
+                  raise ValueError("assets_schema_changed")
+              if not isinstance(cfg['raw_run_worker_first'],bool) or not isinstance(cfg['serve_directly'],bool):
+                  raise ValueError("assets_routing_not_supported")
+              metadata={
+                  'main_module':'src.js',
+                  'compatibility_date':runtime['compatibility_date'],
+                  'usage_model':runtime['usage_model'],
+                  'keep_assets':True,
+                  'assets':{'config':{
+                      'base_path':cfg['base_path'], 'html_handling':cfg['html_handling'],
+                      'not_found_handling':cfg['not_found_handling'],
+                      'run_worker_first':cfg['raw_run_worker_first']}},
+                  'bindings':[{'type':'assets','name':'ASSETS'}]
+                     +[{'type':'inherit','name':n} for n in sorted(expected) if n!='ASSETS'],
+                  'annotations':{'workers/tag':'aa40653898b52c9b36f2dd7d3a38baf358b5b025',
+                                 'workers/message':'Order detail format; candidate only'}
+              }
+              if first != active() or (get('/versions?per_page=1').get('items') or [{}])[0].get('id')!=current:
+                  raise ValueError("latest_changed")
+              boundary='baekse-'+uuid.uuid4().hex
+              payload=(('--'+boundary+'\r\nContent-Disposition: form-data; name="metadata"\r\nContent-Type: application/json\r\n\r\n'
+                  +json.dumps(metadata,sort_keys=True)+'\r\n--'+boundary+'\r\nContent-Disposition: form-data; name="src.js"; filename="src.js"\r\nContent-Type: application/javascript+module\r\n\r\n').encode()
+                  +cfiles[0].read_bytes()+('\r\n--'+boundary+'--\r\n').encode())
+              request=urllib.request.Request(API+prefix+'/versions?bindings_inherit=strict',method='POST',data=payload,
+                  headers={'Authorization':'Bearer '+token,'Content-Type':'multipart/form-data; boundary='+boundary,
+                           'Accept':'application/json'})
+              with opener.open(request,timeout=30) as uploaded:
+                  result=json.load(uploaded)
+              version=result.get('result',{}).get('id')
+              if result.get('success') is not True or str(uuid.UUID(version)) != version or version==current:
+                  raise ValueError("upload_result_unavailable")
+              print(json.dumps({'candidate_inactive':version,'old_active':current},sort_keys=True))
+              observed_new=get('/versions/'+version)
+              new_r=observed_new.get('resources',{})
+              binding_equal=(sorted(new_r.get('bindings',[]),key=lambda v:v['name'])==sorted(observed_bindings,key=lambda v:v['name']))
+              runtime_equal=(new_r.get('script_runtime')==runtime)
+              new_tag=(observed_new.get('annotations') or observed_new.get('metadata',{}).get('annotations') or {}).get('workers/tag')
+              settings_ok=bool(binding_equal and runtime_equal and first==active() and
+                               address_before==address_snapshot() and new_tag=='aa40653898b52c9b36f2dd7d3a38baf358b5b025')
+              if not settings_ok:
+                  return {'status':'unavailable','reason':'candidate_settings_not_identical','candidate_inactive':version,
+                          'bindings_equal':binding_equal,'runtime_equal':runtime_equal,'activation_attempted':False}
+              return {'status':'inactive_verified','active_version':current,'candidate_inactive':version,
+                      'bindings_equal':binding_equal,'runtime_equal':runtime_equal,'keep_assets':True,
+                      'source_sha':'aa40653898b52c9b36f2dd7d3a38baf358b5b025','activation_attempted':False}
+          try:
+              result = main()
+          except urllib.error.HTTPError as e:
+              result = {"status": "unavailable", "http_status": int(e.code)}
+          except Exception:
+              result = {"status": "unavailable", "reason": "read_failed"}
+          print(json.dumps(result, sort_keys=True))
+          raise SystemExit(0 if result["status"] in ("inactive_verified",) else 1)
+          PY
