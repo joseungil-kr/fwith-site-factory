@@ -1,4 +1,4 @@
-name: Baekse inactive version read-only verification
+name: Baekse active code identity read-only verification
 on:
   push:
     branches: [review/baekse-order-telegram-20261113]
@@ -11,14 +11,69 @@ jobs:
   diagnose:
     if: github.repository == 'joseungil-kr/fwith-site-factory'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
-    env:
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      CLOUDFLARE_API_TOKEN: ${{ secrets.BAEKSE_ORDER_RELEASE_CF_TOKEN }}
+    timeout-minutes: 3
     steps:
-      - uses: actions/checkout@v4
-        with: {ref: '${{ github.sha }}'}
-      - uses: actions/setup-python@v5
-        with: {python-version: '3.12'}
-      - name: Read active and inactive immutable version metadata only
-        run: python scripts/diagnostics/baekse/inactive_readonly_diagnostic.py
+      - name: Compare immutable Worker code metadata
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.BAEKSE_ORDER_RELEASE_CF_TOKEN }}
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          import urllib.error
+          import urllib.request
+          import uuid
+          
+          BASE = "8e38b102-c4a6-4321-befb-fae7b275c942"
+          API = "https://api.cloudflare.com/client/v4"
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, *args, **kwargs):
+                  return None
+          
+          def main():
+              account = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "")
+              token = os.environ.get("CLOUDFLARE_API_TOKEN", "")
+              if not re.fullmatch(r"[a-f0-9]{32}", account) or not token:
+                  return {"status": "unavailable", "reason": "configuration"}
+              prefix = "/accounts/" + account + "/workers/scripts/funeralflower-home-preview"
+              opener = urllib.request.build_opener(NoRedirect)
+              def get(suffix):
+                  request = urllib.request.Request(API + prefix + suffix, method="GET",
+                      headers={"Authorization": "Bearer " + token, "Accept": "application/json"})
+                  with opener.open(request, timeout=15) as response:
+                      doc = json.load(response)
+                  if doc.get("success") is not True:
+                      raise ValueError("unavailable")
+                  return doc["result"]
+              def active():
+                  live = get("/deployments")["deployments"][0]
+                  allocation = live["versions"]
+                  if len(allocation) != 1 or allocation[0]["percentage"] != 100:
+                      raise ValueError("allocation")
+                  vid = allocation[0]["version_id"]
+                  if str(uuid.UUID(vid)) != vid:
+                      raise ValueError("version")
+                  return live["id"], vid
+              first = active()
+              current = first[1]
+              previous, observed = [get("/versions/" + v) for v in (BASE, current)]
+              if first != active() or previous["id"] != BASE or observed["id"] != current:
+                  return {"status": "unavailable", "reason": "identity"}
+              etags = [v.get("resources", {}).get("script", {}).get("etag") for v in (previous, observed)]
+              status = "unavailable"
+              if all(isinstance(h, str) and h.strip() for h in etags):
+                  status = "equal" if etags[0] == etags[1] else "different"
+              return {"status": status, "baseline_version": BASE, "active_version": current}
+          
+          try:
+              result = main()
+          except urllib.error.HTTPError as e:
+              result = {"status": "unavailable", "http_status": int(e.code)}
+          except Exception:
+              result = {"status": "unavailable", "reason": "read_failed"}
+          print(json.dumps(result, sort_keys=True))
+          raise SystemExit(0 if result["status"] in ("equal", "different") else 1)
+          PY
