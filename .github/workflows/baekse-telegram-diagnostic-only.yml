@@ -1,4 +1,4 @@
-name: Baekse verified promotion status read-only
+name: Identify blocked Baekse promotion precheck without any write
 on:
   push:
     branches: [review/baekse-order-telegram-20261113]
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - name: Compare immutable Worker code metadata
+      - name: Read promotion prerequisites only
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.BAEKSE_ORDER_RELEASE_CF_TOKEN }}
@@ -21,11 +21,16 @@ jobs:
         run: |
           python3 - <<'PY'
           import json
+          import hashlib
+          from email.parser import BytesParser
+          from email.policy import default
           import os
           import re
+          from pathlib import Path
           import urllib.error
           import urllib.request
           import uuid
+          import urllib.parse
           
           BASE = "8e38b102-c4a6-4321-befb-fae7b275c942"
           API = "https://api.cloudflare.com/client/v4"
@@ -57,17 +62,69 @@ jobs:
                   if str(uuid.UUID(vid)) != vid:
                       raise ValueError("version")
                   return live["id"], vid
-              first = active()
-              current = first[1]
-              previous, observed = [get("/versions/" + v) for v in (BASE, current)]
-              if first != active() or previous["id"] != BASE or observed["id"] != current:
-                  return {"status": "unavailable", "reason": "identity"}
-              etags = [v.get("resources", {}).get("script", {}).get("etag") for v in (previous, observed)]
-              status = "unavailable"
-              if all(isinstance(h, str) and h.strip() for h in etags):
-                  status = "equal" if etags[0] == etags[1] else "different"
-              return {"status": status, "baseline_version": BASE, "active_version": current, "candidate_is_active": current == '9a039178-4468-4d19-88cb-68c95f4c5652'}
-          
+              def address_snapshot():
+                  worker='funeralflower-home-preview'
+                  root='/accounts/'+account
+                  def get_fixed(path):
+                      request=urllib.request.Request(API+path,method='GET',
+                          headers={'Authorization':'Bearer '+token,'Accept':'application/json'})
+                      with opener.open(request,timeout=15) as response:
+                          data=json.load(response)
+                      if data.get('success') is not True:
+                          raise ValueError('worker_scope_unavailable')
+                      return data['result']
+                  ds=get_fixed(root+'/workers/domains')
+                  matches=[d for d in ds if d.get('service')==worker]
+                  if len(matches)!=1 or matches[0].get('hostname')!='order.baeksefood.com' or sum(d.get('hostname')=='order.baeksefood.com' for d in ds)!=1:
+                      raise ValueError('worker_domain_unexpected')
+                  zone=matches[0].get('zone_id','')
+                  if not re.fullmatch(r'[0-9a-f]{32}',zone):
+                      raise ValueError('worker_zone_unexpected')
+                  if any(route.get('script')==worker for route in get_fixed('/zones/'+zone+'/workers/routes')):
+                      raise ValueError('worker_routes_unexpected')
+                  if get('/schedules').get('schedules'):
+                      raise ValueError('worker_cron_unexpected')
+                  sub=get('/subdomain')
+                  if sub.get('enabled') is not True or sub.get('previews_enabled',False) is not False:
+                      raise ValueError('worker_subdomain_unexpected')
+                  return matches[0],sub
+              OLD='96d28986-6d54-4cdf-a587-584072caba25'
+              NEW='9a039178-4468-4d19-88cb-68c95f4c5652'
+              TAG='aa40653898b52c9b36f2dd7d3a38baf358b5b025'
+              HASH='333a47dfbb3b278710951624ab1d1b51f0af83720bc3734088c5c48cdbda3802'
+              first=active()
+              if first[1]!=OLD:
+                  raise ValueError('unexpected_live_version')
+              addr=address_snapshot()
+              if (get('/versions?per_page=1').get('items') or [{}])[0].get('id')!=NEW:
+                  raise ValueError('candidate_not_latest')
+              old,new=[get('/versions/'+v) for v in (OLD,NEW)]
+              orig=old['resources']; nxt=new['resources']
+              def bindings(doc):
+                  return sorted(doc['bindings'],key=lambda v:v['name'])
+              tag=(new.get('annotations') or new.get('metadata',{}).get('annotations') or {}).get('workers/tag')
+              if (old['id']!=OLD or new['id']!=NEW or tag!=TAG or
+                  bindings(orig)!=bindings(nxt) or orig['script_runtime']!=nxt['script_runtime']):
+                  raise ValueError('candidate_settings_not_identical')
+              def page(p):
+                  request=urllib.request.Request('https://order.baeksefood.com'+p,method='GET',
+                      headers={'Accept-Encoding':'identity','Cache-Control':'no-cache'})
+                  with opener.open(request,timeout=15) as response:
+                      b=response.read(2*1024*1024+1)
+                      if response.status!=200 or not b or len(b)>2*1024*1024:
+                          raise ValueError('public_page_unavailable')
+                      return response.headers.get_content_type(),hashlib.sha256(b).hexdigest()
+              public_paths=('/request/','/buyer.js','/buyer.css')
+              print(json.dumps({'scope_and_candidate_read':'pass','active_before':OLD},sort_keys=True))
+              statuses={}
+              for p in public_paths:
+                  try:
+                      page(p)
+                      statuses[p]=200
+                  except urllib.error.HTTPError as e:
+                      statuses[p]=int(e.code)
+                      break
+              return {'status':'precheck_informational','public_reads':statuses,'no_activation':True}
           try:
               result = main()
           except urllib.error.HTTPError as e:
@@ -75,5 +132,5 @@ jobs:
           except Exception:
               result = {"status": "unavailable", "reason": "read_failed"}
           print(json.dumps(result, sort_keys=True))
-          raise SystemExit(0 if result["status"] in ("equal", "different") else 1)
+          raise SystemExit(0 if result["status"] in ("precheck_informational",) else 1)
           PY
