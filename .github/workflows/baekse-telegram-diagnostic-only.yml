@@ -1,4 +1,4 @@
-name: Baekse active code identity read-only verification
+name: Baekse active source provenance read-only verification
 on:
   push:
     branches: [review/baekse-order-telegram-20261113]
@@ -66,7 +66,29 @@ jobs:
               status = "unavailable"
               if all(isinstance(h, str) and h.strip() for h in etags):
                   status = "equal" if etags[0] == etags[1] else "different"
-              return {"status": status, "baseline_version": BASE, "active_version": current}
+              def safe_tag(doc):
+                  tag = (doc.get("annotations") or doc.get("metadata", {}).get("annotations") or {}).get("workers/tag", "")
+                  return tag if isinstance(tag, str) and re.fullmatch(r"[0-9a-f]{40}", tag) else None
+              request = urllib.request.Request(API + prefix + "/content/v2", method="GET",
+                  headers={"Authorization": "Bearer " + token})
+              linked = False
+              content_status = None
+              try:
+                  with opener.open(request, timeout=15) as response:
+                      content_status = int(response.status)
+                      raw = response.read(8*1024*1024+1)
+                      hdr = response.headers.get("ETag", "").strip('"')
+                      etag = etags[1]
+                      linked = bool(raw and len(raw) <= 8*1024*1024 and isinstance(etag, str) and hdr and hdr == etag.strip('"'))
+              except urllib.error.HTTPError as e:
+                  content_status = int(e.code)
+              stable = first == active()
+              return {"status": status, "baseline_version": BASE, "active_version": current,
+                      "baseline_source_tag": safe_tag(previous) if stable else None,
+                      "active_source_tag": safe_tag(observed) if stable else None,
+                      "script_content_http": content_status,
+                      "script_content_linked_to_active": linked and stable,
+                      "deployment_stable": stable}
           
           try:
               result = main()
