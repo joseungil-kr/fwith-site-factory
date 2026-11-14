@@ -1,4 +1,4 @@
-name: Baekse active bundle shape read-only verification
+name: Baekse active bundle reproduction read-only verification
 on:
   push:
     branches: [review/baekse-order-telegram-20261113]
@@ -13,6 +13,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: '49c9926ef6761442431ca15627ca2c560eacb3e5'
+          path: baseline
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rebuild known source without deployment
+        working-directory: baseline/apps/baekse-order
+        env:
+          WRANGLER_SEND_METRICS: 'false'
+          CI: 'true'
+        shell: bash
+        run: |
+          test -z "${CLOUDFLARE_API_TOKEN:-}"
+          npx --yes wrangler@4.156.2 deploy --dry-run --config wrangler.reused.jsonc --outdir "$RUNNER_TEMP/baekse-baseline"
       - name: Compare immutable Worker code metadata
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -26,6 +43,7 @@ jobs:
           from email.policy import default
           import os
           import re
+          from pathlib import Path
           import urllib.error
           import urllib.request
           import uuid
@@ -106,8 +124,22 @@ jobs:
               runtime = observed.get('resources', {}).get('script_runtime', {})
               observed_bindings = observed.get('resources', {}).get('bindings') or []
               binding_names = {b.get('name'): b.get('type') for b in observed_bindings if isinstance(b, dict)}
+              built = [
+                  p.read_bytes() for p in (Path(os.environ['RUNNER_TEMP']) / 'baekse-baseline').rglob('*.js')
+                  if p.is_file() and p.stat().st_size <= 8*1024*1024
+              ]
+              live_module_match = len(parts) == 1 and len(built) == 1 and parts[0] == built[0]
+              def no_trailing_sourcemap(b):
+                  return re.sub(rb'\r?\n//# sourceMappingURL=[^\r\n]+\r?\n?$', b'\n', b).rstrip(b'\r\n')
+              loose_match = len(parts)==1 and len(built)==1 and no_trailing_sourcemap(parts[0])==no_trailing_sourcemap(built[0])
+              latest_rows = get('/versions?per_page=1').get('items') or []
+              latest_is_active = bool(latest_rows and latest_rows[0].get('id') == current)
+              stable = stable and first == active()
               shape = {
-                  'part_count': len(parts), 'assets_binding_seen': binding_names.get('ASSETS') == 'assets',
+                  'part_count': len(parts), 'built_module_count': len(built),
+                  'historical_source_immutable_byte_match': live_module_match and stable,
+                  'historical_source_match_ignoring_trailing_sourcemap': loose_match and stable,
+                  'latest_uploaded_is_active': latest_is_active and stable, 'assets_binding_seen': binding_names.get('ASSETS') == 'assets',
                   'order_db_seen': binding_names.get('ORDER_DB') == 'durable_object_namespace',
                   'telegram_binding_types': all(binding_names.get(k) == t for k,t in [
                       ('TELEGRAM_ORDER_BOT_TOKEN','secret_text'),('TELEGRAM_ORDER_CHAT_ID','secret_text'),
